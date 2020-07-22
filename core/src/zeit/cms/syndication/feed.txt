@@ -364,11 +364,10 @@ in it:
 >>> article = Article('art1')
 >>> feed.insert(0, article)
 >>> print(feed.xml_source)
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<channel...>
   <title>Politik</title>
   <container>
-    <block href="art1".../>
+    <block ...href="art1".../>
   </container>
   <object_limit>50</object_limit>
 </channel>
@@ -398,18 +397,17 @@ Insert the article to the feed:
 
 >>> feed.insert(0, art2)
 >>> print(feed.xml_source)
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<channel...>
   <title>Politik</title>
   <container>
-    <block href="art2" uniqueId="art2" year="2007" issue="4" ressort="International" serie="Autotest">
+    <block ...href="art2"...year="2007" issue="4" ressort="International" serie="Autotest">
       <supertitle py:pytype="str">Frankreich</supertitle>
       <title py:pytype="str">Keine Sieger</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
     </block>
-    <block href="art1".../>
+    <block ...href="art1".../>
   </container>
   <object_limit>50</object_limit>
 </channel>
@@ -423,15 +421,15 @@ changes:
 >>> art2.teaserSupertitle = 'Fronkroisch'
 >>> feed.updateMetadata(art2)
 >>> print(feed.xml_source)
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"...>
+<channel...>
   <title>Politik</title>
   <container>
-    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
+    <block ...href="art2"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       ...
     </block>
-    <block href="art1".../>
+    <block ...href="art1".../>
   </container>
   <object_limit>50</object_limit>
 </channel>

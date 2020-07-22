@@ -73,6 +73,26 @@ class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
             IFoo,
             list(zeit.cms.content.sources.AddableCMSContentTypeSource()(None)))
 
+    def test_to_override_title_or_type_set_tagged_values_to_none(self):
+        source = zeit.cms.content.sources.AddableCMSContentTypeSource()(
+            None).factory
+
+        class IFoo(zeit.cms.interfaces.ICMSContent):
+            pass
+        IFoo.setTaggedValue('zeit.cms.title', 'My Foo')
+        IFoo.setTaggedValue('zeit.cms.type', 'foo')
+
+        self.assertEqual('My Foo', source.getTitle(None, IFoo))
+        self.assertEqual('foo', source.getToken(None, IFoo))
+
+        class IBar(IFoo):
+            pass
+        IBar.setTaggedValue('zeit.cms.title', None)
+        IBar.setTaggedValue('zeit.cms.type', None)
+
+        self.assertEqual(str(IBar), source.getTitle(None, IBar))
+        self.assertEqual(str(IBar), source.getToken(None, IBar))
+
 
 class StorystreamReferenceTest(zeit.cms.testing.ZeitCmsTestCase):
 

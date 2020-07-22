@@ -2,10 +2,55 @@ vivi.core changes
 =================
 
 
-4.36.1 (unreleased)
+4.36.7 (unreleased)
 -------------------
 
 - WOMA-111: Provide plural property from ingredients whitelist
+
+
+4.36.6 (2020-07-20)
+-------------------
+
+- WOMA-136_2: Update list of ingredient units
+
+- WOMA-137: Allow duplicate ingredients in recipe list module
+
+
+4.36.5 (2020-07-14)
+-------------------
+
+- FIX: Handle zope.interface now inheriting getTaggedValues(),
+  which broke IBreakingNews type/token in the AddableCMSContentTypeSource
+
+
+4.36.4 (2020-07-13)
+-------------------
+
+- MAINT: Make forward-compatible with zope.interface-5.0
+
+
+4.36.3 (2020-07-10)
+-------------------
+
+- WOMA-96: Don't change access for non performing articles in channel 'wochenmarkt'
+
+- FIX: Remove optional chaining for better browser support
+
+- WOMA-136: Update list of ingredient units
+
+
+4.36.2 (2020-07-08)
+-------------------
+
+- WOMA-126: Remove duplicates in recipe from ES payload.
+
+- WOMA-130: Use ids for ingredient units
+
+
+4.36.1 (2020-07-07)
+-------------------
+
+- FIX: Make `available` work for article modules
 
 
 4.36.0 (2020-07-03)

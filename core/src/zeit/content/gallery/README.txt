@@ -204,7 +204,7 @@ When we assign the entry the change will be reflected:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <text...xsi:nil="true"/>
           <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
             <bu xsi:nil="true"/>
           </image>
@@ -213,7 +213,7 @@ When we assign the entry the change will be reflected:
           </thumbnail>
         </block>
         <block name="01.jpg">
-          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <text...>
             <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
@@ -249,7 +249,7 @@ well:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <text...xsi:nil="true"/>
           <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
             <bu xsi:nil="true"/>
           </image>
@@ -259,7 +259,7 @@ well:
         </block>
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <text...>
             <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
@@ -317,7 +317,7 @@ True
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <text...xsi:nil="true"/>
           <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
             <bu xsi:nil="true"/>
           </image>
@@ -327,7 +327,7 @@ True
         </block>
         <block layout="image-only" name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <text...>
             <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
@@ -363,7 +363,7 @@ u'image-only'
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <text...xsi:nil="true"/>
           <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
             <bu xsi:nil="true"/>
           </image>
@@ -373,7 +373,7 @@ u'image-only'
         </block>
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <text...>
             <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
@@ -462,7 +462,7 @@ This is of course reflected int he XML:
       <container>
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <text...>
             <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
@@ -476,7 +476,7 @@ This is of course reflected int he XML:
           </thumbnail>
         </block>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <text...xsi:nil="true"/>
           <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
             <bu xsi:nil="true"/>
           </image>
@@ -582,7 +582,7 @@ Note that his has *not* changed the xml so far:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <text...xsi:nil="true"/>
           <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
             <bu xsi:nil="true"/>
           </image>
@@ -592,7 +592,7 @@ Note that his has *not* changed the xml so far:
         </block>
         <block name="01.jpg">
           <title py:pytype="str">Der Wecker klingelt</title>
-          <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <text...>
             <p py:pytype="str">Seit zwei Uhr in der Früh</p>
           </text>
           <caption...>Gallery &amp; caption</caption>
@@ -751,7 +751,7 @@ The entries' text is wrapped in a <p> node:
 >>> entry.text
 <Element text at ...>
 >>> print(zeit.cms.testing.xmltotext(entry.text))
-<text xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<text...>
   <p>
                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
                  <a href="fooo">link</a>

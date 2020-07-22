@@ -41,7 +41,7 @@ Replacing node when there are siblings present
 >>> field.set(content, root.child)
 >>> field.set(content, lxml.objectify.E.new())
 >>> print(zeit.cms.testing.xmltotext(root))
-<root xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<root...>
   <new/>
   <child/>
 </root>

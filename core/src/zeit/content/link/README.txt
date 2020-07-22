@@ -69,12 +69,10 @@ Create a channel and insert the link:
 
 
 >>> print(feed.xml_source)
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<channel...>
   <title/>
   <container>
-    <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
+    <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"...
       href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com" ns0:target="_blank">
       ...
@@ -91,12 +89,10 @@ channel:
 >>> link.target = None
 >>> feed.updateMetadata(link)
 >>> print(feed.xml_source)
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<channel...>
   <title/>
   <container>
-    <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
+    <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"...
       href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com">
       ...

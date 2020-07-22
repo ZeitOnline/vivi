@@ -207,7 +207,13 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             {'bool': {'should': [
                 {'term': {'payload.workflow.product-id': x.id}}
                 for x in self._all_products]}},
+            {'bool': {'must_not': {
+                'term': {
+                    'payload.document.channels': 'zeit-magazin wochenmarkt'
+                }
+            }}},
         ]
+
         result = elastic.search({'query': {'bool': {
             'filter': query + additional_query_constraints,
             'must_not': [

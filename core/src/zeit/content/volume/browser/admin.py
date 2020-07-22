@@ -1,6 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
-import cgi
+import html
 import json
 import zeit.cms.admin.browser.admin
 import zope.browserpage.namedtemplate
@@ -44,7 +44,7 @@ def render_publish_action(action):
         u'<button id="{name}" type="button" class="button" onclick='
         u'"zeit.cms.lightbox_form(\'{url}/@@do-publish-all\')">'
         u'{label}</button>'.format(
-            name=action.__name__, label=cgi.escape(label, quote=True),
+            name=action.__name__, label=html.escape(label, quote=True),
             url=context_url))
 
 

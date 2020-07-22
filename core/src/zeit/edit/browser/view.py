@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import cgi
+import html
 import json
 import logging
 import pkg_resources
@@ -117,7 +117,7 @@ def validate(context):
     if validator.status:
         css_class = 'validation-%s' % validator.status
         messages = '\n'.join(validator.messages)
-        messages = cgi.escape(messages)
+        messages = html.escape(messages)
     else:
         css_class = ''
         messages = ''
@@ -206,7 +206,7 @@ class ErrorPreventingViewletManager(
             error_msg = _(
                 "There was an error rendering ${name}: ${exc_type} ${exc_msg}",
                 mapping=mapping)
-            log.warn('There was an error rendering %s at %s' % (
+            log.warning('There was an error rendering %s at %s' % (
                 mapping['name'], self.request.getURL()), exc_info=True)
             return self.wrapper.format(
                 error_msg=xml.sax.saxutils.escape(zope.i18n.translate(

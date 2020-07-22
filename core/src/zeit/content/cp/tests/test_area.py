@@ -367,6 +367,7 @@ class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
         area.query = (('serie', 'eq', autotest),)
         lxml.objectify.deannotate(area.xml, cleanup_namespaces=True)
         self.assertEllipsis(
-            '<query...><condition...type="serie">Autotest</condition></query>',
+            '<query...><condition...type="serie"...>Autotest'
+            '</condition></query>',
             lxml.etree.tostring(area.xml.query, encoding=six.text_type))
         self.assertEqual((('serie', 'eq', autotest),), area.query)

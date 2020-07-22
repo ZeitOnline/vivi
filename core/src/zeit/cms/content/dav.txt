@@ -626,7 +626,7 @@ subscriber:
 ...     print("    New: %s" % event.new_value)
 ...     print("    NS: %s" % event.property_namespace)
 ...     print("    Name: %s" % event.property_name)
-...     print("    Field: %s" % event.field)
+...     print("    Field: %r" % event.field)
 ...
 >>> site_manager.registerHandler(
 ...     print_change,
