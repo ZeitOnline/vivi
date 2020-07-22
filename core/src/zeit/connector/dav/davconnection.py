@@ -48,8 +48,8 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
                     *args, **kwargs)
             except zeit.connector.dav.interfaces.DavXmlParseError as e:
                 last_error = e.args[0].last_error
-                if (last_error and
-                        last_error.type_name == 'ERR_TAG_NOT_FINISHED' and
+                if (last_error and last_error.type_name in [
+                        'ERR_TAG_NOT_FINISHED', 'ERR_LTSLASH_REQUIRED'] and
                         tries < 3):
                     # When we got incomplete data, wait a bit and try again.
                     time.sleep(random.uniform(0, 2 ** tries))

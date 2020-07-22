@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import zeit.content.article.edit.browser.testing
 
 
@@ -75,15 +76,6 @@ class FormLoader(
             '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
             'Bandnudeln')
 
-        # Duplicates should be prevented
-        s.type('//input[@name="add_ingredient"]', 'Nudel')
-        s.waitForVisible('css=ul.ui-autocomplete li')
-        # XXX This is tricky, but we somehow need to lose focus on the whole
-        # widget and blur does not work this time. Maybe there is another way?
-        s.clickAt('css=ul.ui-autocomplete li', '-20,0')
-        s.waitForVisible('css=li.ingredient__item')
-        self.assertEqual(s.getCssCount('css=li.ingredient__item'), 2)  # not 3
-
         # Reorder ingredients
         s.dragAndDrop('css=.ingredient__label', '0,50')
         s.waitForVisible('css=li.ingredient__item')
@@ -131,10 +123,35 @@ class FormLoader(
         s.runScript(
             'document.querySelector("input.ingredient__amount").blur()')
         s.waitForCssCount('css=.dirty', 0)
-        s.assertAttribute(
-            'css=.ingredients-widget input@value',
-            '[{"code":"brathaehnchen","label":"Brathähnchen",'
-            '"amount":"2","unit":"","details":""}]')
+        ingredient_data = json.loads(
+            s.getAttribute('css=.ingredients-widget input@value'))[0]
+        assert ingredient_data.get('code') == 'brathaehnchen'
+        assert ingredient_data.get('label') == 'Brathähnchen'
+        assert ingredient_data.get('amount') == '2'
+        assert ingredient_data.get('unit') == ''
+        assert ingredient_data.get('details') == ''
+        assert ingredient_data.get('unique_id') is not None
+
+    def test_duplicate_ingredients_should_be_allowed(self):
+        s = self.selenium
+        self.add_article()
+        self.create_block('recipelist')
+
+        # Add first ingredient
+        s.type('//input[@name="add_ingredient"]', 'Nudel')
+        s.waitForVisible('css=ul.ui-autocomplete li')
+        s.click('css=ul.ui-autocomplete li')
+
+        # Add duplicate ingredient
+        s.type('//input[@name="add_ingredient"]', 'Nudel')
+        s.waitForVisible('css=ul.ui-autocomplete li')
+        s.click('css=ul.ui-autocomplete li')
+        self.assertEqual(s.getCssCount('css=li.ingredient__item'), 2)
+
+        # ids should be different.
+        uid1 = s.getAttribute('//li[@class="ingredient__item"][1] @data-id')
+        uid2 = s.getAttribute('//li[@class="ingredient__item"][2] @data-id')
+        assert uid1 != uid2
 
     def test_ingredient_units_should_be_fetched_from_endpoint(self):
         s = self.selenium
@@ -144,10 +161,15 @@ class FormLoader(
         s.click('//option[text()="Stück"]')
         s.clickAt('css=.ingredient__unit', '0,40')
         s.waitForCssCount('css=.dirty', 0)
-        s.assertValue('css=.ingredient__unit', 'stueck')
-        s.assertAttribute(
-            'css=.ingredients-widget input@value',
-            '[{"code":"brathaehnchen","label":"Brathähnchen",'
-            '"amount":"","unit":"stueck","details":""}]')
 
+        # Stored in html element
+        s.assertValue('css=.ingredient__unit', 'stueck')
+
+        # Check if all units are available for selection
         s.assertCssCount('css=.ingredient__unit option', 3)
+
+        # Stored in JSON
+        ingredient_data = json.loads(
+            s.getAttribute('css=.ingredients-widget input@value'))[0]
+        assert ingredient_data.get('code') == 'brathaehnchen'
+        assert ingredient_data.get('unit') == 'stueck'

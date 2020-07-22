@@ -2,12 +2,18 @@ vivi.core changes
 =================
 
 
-4.36.6 (unreleased)
+4.36.7 (unreleased)
+-------------------
+
+- WOMA-133: Fetch ingredient units from configuration file
+
+
+4.36.6 (2020-07-20)
 -------------------
 
 - WOMA-136_2: Update list of ingredient units
 
-- WOMA-133: Fetch ingredient units from configuration file
+- WOMA-137: Allow duplicate ingredients in recipe list module
 
 
 4.36.5 (2020-07-14)

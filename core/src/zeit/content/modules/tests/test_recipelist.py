@@ -3,7 +3,7 @@ from zeit.content.modules.interfaces import validate_servings
 from zeit.content.modules.recipelist import Ingredient
 import lxml.objectify
 import mock
-import six
+import zeit.cms.testing
 import zeit.content.modules.embed
 import zeit.content.modules.testing
 
@@ -40,11 +40,11 @@ class RecipeListTest(
         self.assertEqual(['banana', 'milk'], (
             [x.code for x in self.module.ingredients]))
 
-    def test_set_should_add_duplicate_values_only_once(self):
+    def test_set_should_allow_duplicate_ingredients(self):
         ingredients = self.setup_ingredients('banana')
         banana = ingredients['banana']
         self.module.ingredients = [banana, banana]
-        self.assertEqual(['banana'], (
+        self.assertEqual(['banana', 'banana'], (
             [x.code for x in self.module.ingredients]))
 
     def test_set_should_write_ingredients_to_xml_head(self):
@@ -55,9 +55,7 @@ class RecipeListTest(
         self.assertEllipsis(
             '<ingredient... amount="2" code="banana" '
             'details="sautiert" unit="g"/>',
-            lxml.etree.tostring(
-                self.module.xml.ingredient,
-                encoding=six.text_type))
+            zeit.cms.testing.xmltotext(self.module.xml.ingredient))
 
     def test_removing_all_ingredients_should_leave_no_trace(self):
         ingredients = self.setup_ingredients('banana')

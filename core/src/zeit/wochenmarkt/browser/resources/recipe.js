@@ -100,7 +100,8 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         $('> li', self.list).each(function(i, el) {
             el = $(el);
             result.push({
-                code: el.attr('cms:uniqueId'),
+                unique_id: el.attr('data-id'),
+                code: el.attr('data-code'),
                 label: el.contents().get(0).text,
                 amount: el.attr('data-amount'),
                 unit: el.attr('data-unit'),
@@ -112,10 +113,10 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
 
     update_entry: function(data) {
         const parent_el = event.target.parentElement;
-        const id = parent_el.getAttribute('cms:uniqueid');
+        const id = parent_el.getAttribute('data-id');
         let ingredients = JSON.parse(data.value);
         ingredients.forEach(function(i) {
-            if (i.code === id) {
+            if (i.unique_id === id) {
                 const val = event.target.value;
                 // amount either needs to be a number or empty.
                 if (event.target.getAttribute('data-id') === 'amount' && (isNaN(Number(val)) && val !== '')) {
@@ -146,8 +147,17 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
 
     _add: function(code, label, amount, unit, details) {
         var self = this;
+        // As it is possible to add duplicate ingredients, we cannot rely on the
+        // ingredient id (aka code) alone. Thus we add a random number stub,
+        // serving as unique id. Since we're dealing only with a relatively
+        // small number of ingredients per document, using a simple random
+        // function is sufficient.
+        //
+        // Math.random() always returns something like 0.123..., so for our id,
+        // we only want to use the stub from the right side of the comma.
+        const unique_id = code + '_' + Math.random().toString().split('.')[1];
         var item = LI(
-            {'class': 'ingredient__item', 'cms:uniqueId': code, 'data-amount': amount, 'data-unit': unit, 'data-details': details, 'data-name': 'ingredient__item'},
+            {'class': 'ingredient__item', 'data-id': unique_id, 'data-code': code, 'data-amount': amount, 'data-unit': unit, 'data-details': details, 'data-name': 'ingredient__item'},
             A({'class': 'ingredient__label'}, label),
             INPUT({'id': self.id + '.ingredient__amount', 'class': 'ingredient__amount', 'data-id': 'amount', 'placeholder': 'Anzahl'}),
         );
