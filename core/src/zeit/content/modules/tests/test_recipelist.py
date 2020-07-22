@@ -77,7 +77,9 @@ class RecipeListTest(
     def test_servings_should_be_validated(self):
         assert validate_servings('1') is True
         assert validate_servings('1-2') is True
+        assert validate_servings('9-12') is True
         assert validate_servings('10-12') is True
+        assert validate_servings('100-225') is True
 
         with self.assertRaises(ValidationError):
             validate_servings('')

@@ -5,7 +5,7 @@ vivi.core changes
 4.36.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-141: Update portion range validation for servings
 
 
 4.36.6 (2020-07-20)
