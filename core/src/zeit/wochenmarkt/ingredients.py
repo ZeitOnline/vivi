@@ -77,7 +77,7 @@ class IngredientsWhitelist(
     def category(self, category, term=''):
         return [
             ingredient for ingredient in self.search(term)
-            if ingredient.category == category]
+            if getattr(ingredient, 'category', None) == category]
 
     def get(self, code):
         result = self.data.get(code)
