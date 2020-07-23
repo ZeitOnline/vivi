@@ -227,10 +227,13 @@ VALID_SERVINGS = re.compile(r'^[1-9]\d*(-\d+)?$')
 
 def validate_servings(value):
     if VALID_SERVINGS.match(value) is not None:
-        v = value.split('-')
-        # In case it's a range, the second value must be higher.
-        if len(v) == 1 or v[0] < v[1]:
-            return True
+        try:
+            v = list(map(int, value.split('-')))
+            # In case it's a range, the second value must be higher.
+            if len(v) == 1 or int(v[0]) < int(v[1]):
+                return True
+        except ValueError:
+            pass
     raise zeit.cms.interfaces.ValidationError(
         _('Value must be number or range.'))
 
