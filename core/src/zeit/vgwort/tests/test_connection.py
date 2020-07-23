@@ -168,6 +168,14 @@ class HTTPErrorTest(unittest.TestCase):
             zeit.vgwort.interfaces.TechnicalError,
             lambda: list(service.order_pixels(1)))
 
+    def test_connection_error_should_raise_technical_error(self):
+        service = zeit.vgwort.connection.PixelService(
+            'http://unavailable_address', '', '')
+        time.sleep(1)
+        with self.assertRaises(zeit.vgwort.interfaces.TechnicalError) as e:
+            list(service.order_pixels(1))
+        self.assertIn('ConnectionError', e.exception.args[0])
+
 
 class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
