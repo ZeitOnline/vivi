@@ -8,29 +8,34 @@ import zope.interface
 
 class Ingredient(object):
 
-    def __init__(self, code, label, amount, unit, details):
+    def __init__(self, code, label, **kwargs):
         self.code = code
         self.label = label
-        self.amount = amount
-        self.unit = unit
-        self.details = details
+        self.amount = kwargs.get('amount')
+        self.unit = kwargs.get('unit')
+        self.details = kwargs.get('details')
+        self.plural = kwargs.get('plural')
 
     @classmethod
     def from_xml(cls, node):
         code = node.get('code')
         try:
-            name = zope.component.getUtility(
+            ingredient = zope.component.getUtility(
                 zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                    code).name
+                    code)
+            # These attributes have to be available:
+            name = ingredient.name  # This also represents the singular.
+            plural = ingredient.plural
         except AttributeError:
             # Take care of insufficient whitelist data e.g. missing entries.
             return None
         return cls(
             code,
             name,
-            node.get('amount', ''),
-            node.get('unit', ''),
-            node.get('details', ''))
+            amount=node.get('amount', ''),
+            unit=node.get('unit', ''),
+            details=node.get('details', ''),
+            plural=plural)
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)

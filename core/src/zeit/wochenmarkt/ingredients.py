@@ -77,7 +77,7 @@ class IngredientsWhitelist(
     def category(self, category, term=''):
         return [
             ingredient for ingredient in self.search(term)
-            if ingredient.category == category]
+            if getattr(ingredient, 'category', None) == category]
 
     def get(self, code):
         result = self.data.get(code)
@@ -88,14 +88,18 @@ class IngredientsWhitelist(
         xml = self._get_tree()
         ingredients = collections.OrderedDict()
         for ingredient_node in xml.xpath('//ingredient'):
-            ingredient = Ingredient(
-                ingredient_node.get('id'),
-                name=six.text_type(ingredient_node.get('singular')).strip(),
-                category=ingredient_node.getparent().tag,
-                qwords=ingredient_node.get('q'),
-                qwords_category=ingredient_node.getparent().get('q'),
-                singular=ingredient_node.get('singular'),
-                plural=ingredient_node.get('plural'))
+            try:
+                ingredient = Ingredient(
+                    ingredient_node.get('id'),
+                    name=six.text_type(
+                        ingredient_node.get('singular')).strip(),
+                    category=ingredient_node.getparent().tag,
+                    qwords=ingredient_node.get('q'),
+                    qwords_category=ingredient_node.getparent().get('q'),
+                    singular=ingredient_node.get('singular'),
+                    plural=ingredient_node.get('plural').strip())
+            except AttributeError:
+                continue
             ingredients[ingredient_node.get('id')] = ingredient
         log.info('Ingredients loaded.')
         return ingredients
