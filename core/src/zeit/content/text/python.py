@@ -9,20 +9,12 @@ class Break(Exception):
     pass
 
 
-@zope.interface.implementer(zeit.content.text.interfaces.IPythonScript)
-class PythonScript(zeit.content.text.text.Text):
+class EvalExecHelper(object):
 
-    def __call__(self, **kw):
-        self._v_result = None
-        code = compile(self.text, filename=self.uniqueId, mode='exec')
+    def _globals(self):
         globs = globals()
         globs['__return'] = self._store_result
-        globs['context'] = kw
-        try:
-            eval(code, globs)
-        except Break:
-            pass
-        return self._v_result
+        return globs
 
     def _store_result(self, value):
         """We want to support multiple statements with a return value.
@@ -34,6 +26,21 @@ class PythonScript(zeit.content.text.text.Text):
         """
         self._v_result = value
         raise Break()
+
+
+@zope.interface.implementer(zeit.content.text.interfaces.IPythonScript)
+class PythonScript(zeit.content.text.text.Text, EvalExecHelper):
+
+    def __call__(self, **kw):
+        self._v_result = None
+        code = compile(self.text, filename=self.uniqueId, mode='exec')
+        globs = self._globals()
+        globs['context'] = kw
+        try:
+            eval(code, globs)
+        except Break:
+            pass
+        return self._v_result
 
 
 class PythonScriptType(zeit.content.text.text.TextType):

@@ -7,6 +7,7 @@ import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.modules.interfaces
 import zeit.content.text.interfaces
+import zeit.content.text.python
 import zeit.content.text.text
 import zope.interface
 import zope.schema  # noqa make available to eval()
@@ -16,7 +17,8 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.content.text.interfaces.IEmbed)
-class Embed(zeit.content.text.text.Text):
+class Embed(zeit.content.text.text.Text,
+            zeit.content.text.python.EvalExecHelper):
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IEmbed,
@@ -26,13 +28,17 @@ class Embed(zeit.content.text.text.Text):
     @property
     def parameter_fields(self):
         try:
+            code = self.parameter_definition or '__return({})'
+            if '__return' not in code:
+                code = '__return(%s)' % code
             # XXX Cases like `zope.schema.Choice(source=zeit.content.image
             # .interfaces.imageSource)` currently work only accidentally, since
             # everything we need apparently is imported elsewhere already.
-            code = compile(
-                self.parameter_definition or '{}',
-                filename=self.uniqueId, mode='eval')
-            fields = eval(code, globals())
+            code = compile(code, filename=self.uniqueId, mode='exec')
+            try:
+                fields = eval(code, self._globals())
+            except zeit.content.text.python.Break:
+                fields = self._v_result
         except Exception:
             log.warning(
                 'Parameter definition of %s had errors, treated as empty',

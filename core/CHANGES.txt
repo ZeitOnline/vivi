@@ -2,10 +2,12 @@ vivi.core changes
 =================
 
 
-4.36.8 (unreleased)
+4.37.0 (unreleased)
 -------------------
 
 - WOMA-111: Provide plural property from ingredients whitelist
+
+- MAINT: Support variables in pembed parameter definitions
 
 
 4.36.7 (2020-07-23)
