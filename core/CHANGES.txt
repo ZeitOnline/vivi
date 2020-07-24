@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.37.0 (unreleased)
+4.37.0 (2020-07-24)
 -------------------
 
 - WOMA-111: Provide plural property from ingredients whitelist
