@@ -1,4 +1,3 @@
-from __future__ import unicode_literals  # for eval() since IDAVToken is fussy
 from zeit.cms.i18n import MessageFactory as _
 import collections  # noqa make available to eval()
 import logging
