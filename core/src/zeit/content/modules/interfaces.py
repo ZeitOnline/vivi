@@ -218,6 +218,10 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
         tree = self._get_tree()
         return [six.text_type(node) for node in tree.xpath(self.xpath)]
 
+    def getNodes(self):
+        tree = self._get_tree()
+        return [node for node in tree.xpath(self.xpath)]
+
 
 # Servings are valid if all of these are satisfied:
 # <num> is a number > 0
