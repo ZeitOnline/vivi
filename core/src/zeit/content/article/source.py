@@ -9,7 +9,7 @@ class BookRecensionCategories(zeit.cms.content.sources.SimpleXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'book-recension-categories'
-    default_filename = 'article-recension-categories.xml'
+    default_filename = 'literatur_categorys.xml'
 
 
 class GenreSource(zeit.cms.content.sources.XMLSource):
