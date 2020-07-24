@@ -28,6 +28,13 @@ __return({foo: zope.schema.TextLine()})
         field = params['one']
         self.assertIsInstance(field, zope.schema.TextLine)
 
+    def test_imports_required_packages(self):
+        embed = self.create(
+            'collections.OrderedDict([("one", zope.schema.TextLine())])')
+        params = embed.parameter_fields
+        field = params['one']
+        self.assertIsInstance(field, zope.schema.TextLine)
+
     def test_errors_are_ignored_silently(self):
         embed = self.create('{"one": zope.schema.TextLin()}')
         self.assertEqual({}, embed.parameter_fields)

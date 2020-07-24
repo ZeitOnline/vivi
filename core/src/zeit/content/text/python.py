@@ -11,8 +11,7 @@ class Break(Exception):
 
 class EvalExecHelper(object):
 
-    def _globals(self):
-        globs = globals()
+    def _globals(self, globs):
         globs['__return'] = self._store_result
         return globs
 
@@ -34,7 +33,7 @@ class PythonScript(zeit.content.text.text.Text, EvalExecHelper):
     def __call__(self, **kw):
         self._v_result = None
         code = compile(self.text, filename=self.uniqueId, mode='exec')
-        globs = self._globals()
+        globs = self._globals(globals())
         globs['context'] = kw
         try:
             eval(code, globs)

@@ -35,7 +35,7 @@ class Embed(zeit.content.text.text.Text,
             # everything we need apparently is imported elsewhere already.
             code = compile(code, filename=self.uniqueId, mode='exec')
             try:
-                fields = eval(code, self._globals())
+                fields = eval(code, self._globals(globals()))
             except zeit.content.text.python.Break:
                 fields = self._v_result
         except Exception:
