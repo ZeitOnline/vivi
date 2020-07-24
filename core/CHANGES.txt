@@ -5,7 +5,7 @@ vivi.core changes
 4.37.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1264: Change default filename for recension categories
 
 
 4.37.0 (2020-07-24)
