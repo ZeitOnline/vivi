@@ -47,7 +47,7 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
         self.http.response_headers = [{'X-FM-Data-Access-Token': 'token'}, {}]
         self.http.response_body = ['', self.EMPTY_SEARCH_RESULT]
         self.assertEqual([], self.api.search('foo'))
-        self.assertEqual('token', self.api.auth_token())
+        self.assertEqual('token', self.api.auth_token('hdok'))
         self.assertEqual(2, len(self.http.requests))
         request = self.http.requests[-1]
         self.assertEqual('Bearer token', request['headers']['Authorization'])

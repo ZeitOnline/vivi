@@ -18,9 +18,8 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 class Honorar(object):
 
-    def __init__(self, url, url_invalid_gcids, username, password):
-        self.url = url
-        self.url_invalid_gcids = url_invalid_gcids
+    def __init__(self, url_hdok, url_blacklist, username, password):
+        self.urls = {'hdok': url_hdok, 'blacklist': url_blacklist}
         self.username = username
         self.password = password
 
@@ -32,7 +31,7 @@ class Honorar(object):
         gcid, vorname, nachname, titel (and some others)
         """
         result = self._request(
-            'POST /hdok/layouts/RESTautorenStamm/_find', json={
+            'POST /layouts/RESTautorenStamm/_find', db='hdok', json={
                 'query': [
                     {'nameGesamtSuchtext': query},
                     {'typ': '4', 'omit': 'true'},
@@ -55,10 +54,11 @@ class Honorar(object):
         data['typ'] = '1'
         # Bypass HDok's duplicate detection, since we already perform that.
         data['anlage'] = 'setzen'
-        result = self._request('GET /hdok/layouts/leer/records/1', params={
-            'script': 'restNeuAutor',
-            'script.param': b64encode(json.dumps(data))
-        })
+        result = self._request(
+            'GET /layouts/leer/records/1', db='hdok', params={
+                'script': 'restNeuAutor',
+                'script.param': b64encode(json.dumps(data))
+            })
         try:
             data = json.loads(result['response']['scriptResult'])
             return data['gcid']
@@ -70,7 +70,7 @@ class Honorar(object):
                             datetime.timedelta(days=days_ago)).strftime(
                                 '%m/%d/%Y %H:%M:%S')
         return self._request(
-            'POST /blacklist.fmp12/layouts/blacklist/_find', json={
+            'POST /layouts/blacklist/_find', db='blacklist', json={
                 'query': [{
                     'geloeschtGCID': '*',
                     'ts': timestamp
@@ -78,19 +78,15 @@ class Honorar(object):
                 'limit': '1000000', 'offset': '1'
             })
 
-    def _request(self, request, retries=0, **kw):
+    def _request(self, request, db, retries=0, **kw):
         if retries > 1:
             raise ValueError('Request %s failed' % request)
 
         verb, path = request.split(' ')
-        auth_token = self.auth_token()
-        url = self.url
-        if 'blacklist' in path:
-            auth_token = self.auth_token_invalid_gcids()
-            url = self.url_invalid_gcids
+        auth_token = self.auth_token(db)
         method = getattr(requests, verb.lower())
         try:
-            r = method(url + path, headers={
+            r = method(self.urls[db] + path, headers={
                 'Authorization': 'Bearer %s' % auth_token,
                 'User-Agent': requests.utils.default_user_agent(
                     'zeit.content.author-%s/python-requests' % (
@@ -120,16 +116,8 @@ class Honorar(object):
             raise
 
     @CONFIG_CACHE.cache_on_arguments()
-    def auth_token(self):
-        r = requests.post(self.url + '/hdok.fmp12/sessions',
-                          auth=(self.username, self.password),
-                          headers={'Content-Type': 'application/json'})
-        r.raise_for_status()
-        return r.headers.get('X-FM-Data-Access-Token')
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def auth_token_invalid_gcids(self):
-        r = requests.post(self.url_invalid_gcids + '/blacklist.fmp12/sessions',
+    def auth_token(self, db):
+        r = requests.post(self.urls[db] + '/sessions',
                           auth=(self.username, self.password),
                           headers={'Content-Type': 'application/json'})
         r.raise_for_status()
@@ -145,8 +133,8 @@ def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.author')
     return Honorar(
-        config['honorar-url'],
-        config['honorar-url-invalid-gcids'],
+        config['honorar-url-hdok'],
+        config['honorar-url-blacklist'],
         config['honorar-username'],
         config['honorar-password'])
 
