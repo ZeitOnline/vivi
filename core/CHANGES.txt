@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.38.1 (unreleased)
+4.38.1 (2020-07-28)
 -------------------
 
 - BUG-1255: Prevent adding the same author to an article twice
