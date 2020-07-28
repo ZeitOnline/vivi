@@ -1,5 +1,4 @@
 from lxml.objectify import E
-import collections
 import zeit.cms.content.property
 import zeit.content.modules.interfaces
 import zeit.edit.block
@@ -9,29 +8,34 @@ import zope.interface
 
 class Ingredient(object):
 
-    def __init__(self, code, label, amount, unit, details):
+    def __init__(self, code, label, **kwargs):
         self.code = code
         self.label = label
-        self.amount = amount
-        self.unit = unit
-        self.details = details
+        self.amount = kwargs.get('amount')
+        self.unit = kwargs.get('unit')
+        self.details = kwargs.get('details')
+        self.plural = kwargs.get('plural')
 
     @classmethod
     def from_xml(cls, node):
         code = node.get('code')
         try:
-            name = zope.component.getUtility(
+            ingredient = zope.component.getUtility(
                 zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                    code).name
+                    code)
+            # These attributes have to be available:
+            name = ingredient.name  # This also represents the singular.
+            plural = ingredient.plural
         except AttributeError:
             # Take care of insufficient whitelist data e.g. missing entries.
             return None
         return cls(
             code,
             name,
-            node.get('amount', ''),
-            node.get('unit', ''),
-            node.get('details', ''))
+            amount=node.get('amount', ''),
+            unit=node.get('unit', ''),
+            details=node.get('details', ''),
+            plural=plural)
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)
@@ -78,7 +82,6 @@ class RecipeList(zeit.edit.block.Element):
     def ingredients(self, value):
         for node in self.xml.xpath('./ingredient'):
             node.getparent().remove(node)
-        value = self._remove_duplicates(value)
         for item in value:
             self.xml.append(
                 E.ingredient(
@@ -86,10 +89,3 @@ class RecipeList(zeit.edit.block.Element):
                     amount=item.amount if hasattr(item, 'amount') else '',
                     unit=item.unit if hasattr(item, 'unit') else '',
                     details=item.details if hasattr(item, 'details') else ''))
-
-    def _remove_duplicates(self, ingredients):
-        result = collections.OrderedDict()
-        for ingredient in ingredients:
-            if ingredient.code not in result:
-                result[ingredient.code] = ingredient
-        return result.values()

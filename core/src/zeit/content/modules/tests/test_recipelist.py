@@ -3,7 +3,7 @@ from zeit.content.modules.interfaces import validate_servings
 from zeit.content.modules.recipelist import Ingredient
 import lxml.objectify
 import mock
-import six
+import zeit.cms.testing
 import zeit.content.modules.embed
 import zeit.content.modules.testing
 
@@ -40,11 +40,11 @@ class RecipeListTest(
         self.assertEqual(['banana', 'milk'], (
             [x.code for x in self.module.ingredients]))
 
-    def test_set_should_add_duplicate_values_only_once(self):
+    def test_set_should_allow_duplicate_ingredients(self):
         ingredients = self.setup_ingredients('banana')
         banana = ingredients['banana']
         self.module.ingredients = [banana, banana]
-        self.assertEqual(['banana'], (
+        self.assertEqual(['banana', 'banana'], (
             [x.code for x in self.module.ingredients]))
 
     def test_set_should_write_ingredients_to_xml_head(self):
@@ -55,9 +55,7 @@ class RecipeListTest(
         self.assertEllipsis(
             '<ingredient... amount="2" code="banana" '
             'details="sautiert" unit="g"/>',
-            lxml.etree.tostring(
-                self.module.xml.ingredient,
-                encoding=six.text_type))
+            zeit.cms.testing.xmltotext(self.module.xml.ingredient))
 
     def test_removing_all_ingredients_should_leave_no_trace(self):
         ingredients = self.setup_ingredients('banana')
@@ -68,18 +66,30 @@ class RecipeListTest(
         self.assertEqual(0, len(self.module.xml.xpath('//ingredient')))
 
     def test_unavailable_ingredients_should_just_be_skipped(self):
-        categories = self.setup_ingredients('moepelspeck', 'banana')
-        moepelspeck = categories['moepelspeck']
-        banana = categories['banana']
+        ingredients = self.setup_ingredients('moepelspeck', 'banana')
+        moepelspeck = ingredients['moepelspeck']
+        banana = ingredients['banana']
         content = self.get_content()
         content.ingredients = [moepelspeck, banana]
+        result = content.ingredients
+        self.assertEqual(['banana'], [x.code for x in result])
+
+    def test_incomplete_ingredients_should_be_skipped(self):
+        # physalis is missing @plural
+        ingredients = self.setup_ingredients('physalis', 'banana')
+        physalis = ingredients['physalis']
+        banana = ingredients['banana']
+        content = self.get_content()
+        content.ingredients = [physalis, banana]
         result = content.ingredients
         self.assertEqual(['banana'], [x.code for x in result])
 
     def test_servings_should_be_validated(self):
         assert validate_servings('1') is True
         assert validate_servings('1-2') is True
+        assert validate_servings('9-12') is True
         assert validate_servings('10-12') is True
+        assert validate_servings('100-225') is True
 
         with self.assertRaises(ValidationError):
             validate_servings('')
@@ -98,9 +108,17 @@ class RecipeListTest(
         with self.assertRaises(ValidationError):
             validate_servings('1-a')
 
+    def test_ingredients_should_receive_properties_from_whitelist(self):
+        node = lxml.objectify.XML(
+            '<ingredient code="banana" amount="1" unit="kg"/>')
+        ingredient = Ingredient(None, None).from_xml(node)
+        assert ingredient.code == 'banana'
+        assert ingredient.label == 'Banane'
+        assert ingredient.plural == 'Bananen'
+
     def test_missing_xml_attributes_should_have_empty_string_as_default(self):
         node = lxml.objectify.XML(
             '<ingredient code="banana" amount="1" unit="kg"/>')
-        ingredient = Ingredient(None, None, None, None, None).from_xml(node)
+        ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.details == ''  # not provided as xml attribute

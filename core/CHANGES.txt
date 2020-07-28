@@ -2,10 +2,44 @@ vivi.core changes
 =================
 
 
-4.36.6 (unreleased)
+4.37.3 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+4.37.2 (2020-07-28)
+-------------------
+
+- MAINT: Make date_print_published writeable via admin tab
+
+
+4.37.1 (2020-07-24)
+-------------------
+
+- FIX: Import necessary packages for pembeds
+
+
+4.37.0 (2020-07-24)
+-------------------
+
+- WOMA-111: Provide plural property from ingredients whitelist
+
+- MAINT: Support variables in pembed parameter definitions
+
+
+4.36.7 (2020-07-23)
+-------------------
+
+- WOMA-141: Update portion range validation for servings
+
+
+4.36.6 (2020-07-20)
 -------------------
 
 - WOMA-136_2: Update list of ingredient units
+
+- WOMA-137: Allow duplicate ingredients in recipe list module
 
 
 4.36.5 (2020-07-14)

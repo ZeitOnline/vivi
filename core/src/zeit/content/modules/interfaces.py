@@ -218,6 +218,10 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
         tree = self._get_tree()
         return [six.text_type(node) for node in tree.xpath(self.xpath)]
 
+    def getNodes(self):
+        tree = self._get_tree()
+        return [node for node in tree.xpath(self.xpath)]
+
 
 # Servings are valid if all of these are satisfied:
 # <num> is a number > 0
@@ -227,10 +231,13 @@ VALID_SERVINGS = re.compile(r'^[1-9]\d*(-\d+)?$')
 
 def validate_servings(value):
     if VALID_SERVINGS.match(value) is not None:
-        v = value.split('-')
-        # In case it's a range, the second value must be higher.
-        if len(v) == 1 or v[0] < v[1]:
-            return True
+        try:
+            v = list(map(int, value.split('-')))
+            # In case it's a range, the second value must be higher.
+            if len(v) == 1 or int(v[0]) < int(v[1]):
+                return True
+        except ValueError:
+            pass
     raise zeit.cms.interfaces.ValidationError(
         _('Value must be number or range.'))
 

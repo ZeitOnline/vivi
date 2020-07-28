@@ -69,8 +69,7 @@ class IPublishInfo(zope.interface.Interface):
 
     date_print_published = zope.schema.Datetime(
         title=_('Date of print publication'),
-        required=False,
-        readonly=True)
+        required=False)
 
     last_published_by = zope.schema.TextLine(
         title=_('Last published by'),
