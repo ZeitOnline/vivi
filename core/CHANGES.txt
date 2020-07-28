@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.38.0 (unreleased)
+4.38.0 (2020-07-28)
 -------------------
 
 - ZON-6037: Introduce zeit.zett.interfaces.IZTTContent
