@@ -455,7 +455,7 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
             target=self.target_unique_id)))
 
     def __eq__(self, other):
-        return (type(self) == type(other) and
+        return (self.__class__ == other.__class__ and
                 self.__parent__.uniqueId == other.__parent__.uniqueId and
                 self.attribute == other.attribute and
                 self.target.uniqueId == other.target_unique_id)

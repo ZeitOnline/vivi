@@ -100,6 +100,9 @@ class ReferencePropertyTest(
         self.assertEqual(
             'http://xml.zeit.de/target', content.references[0].target.uniqueId)
 
+        ref = content.references[0]
+        self.assertEqual(ref, ref)
+
     def test_reference_to_unknown_content_is_not_returned(self):
         content = self.repository['content']
         content.references = (content.references.create(
