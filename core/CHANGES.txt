@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.37.2 (unreleased)
+4.37.2 (2020-07-28)
 -------------------
 
 - MAINT: Make date_print_published writeable via admin tab
