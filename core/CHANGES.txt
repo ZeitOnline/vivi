@@ -2,8 +2,10 @@ vivi.core changes
 =================
 
 
-4.37.3 (unreleased)
+4.38.0 (unreleased)
 -------------------
+
+- ZON-6037: Introduce zeit.zett.interfaces.IZTTContent
 
 - ZON-5959: Implement querying HDok for blacklisted entries
 
