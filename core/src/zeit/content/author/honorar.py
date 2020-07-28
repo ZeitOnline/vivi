@@ -69,7 +69,7 @@ class Honorar(object):
         timestamp = '>=' + (datetime.datetime.today() -
                             datetime.timedelta(days=days_ago)).strftime(
                                 '%m/%d/%Y %H:%M:%S')
-        return self._request(
+        result = self._request(
             'POST /layouts/blacklist/_find', db='blacklist', json={
                 'query': [{
                     'geloeschtGCID': '*',
@@ -77,6 +77,7 @@ class Honorar(object):
                 }],
                 'limit': '1000000', 'offset': '1'
             })
+        return [x['fieldData'] for x in result['response']['data']]
 
     def _request(self, request, db, retries=0, **kw):
         if retries > 1:
