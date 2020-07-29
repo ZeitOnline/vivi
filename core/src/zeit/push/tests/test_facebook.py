@@ -80,6 +80,12 @@ class FacebookMessageTest(zeit.push.testing.TestCase):
         message.config = push.message_config[0]
         self.assertEqual('facebook', message.text)
 
+    def test_adds_campaign_parameters_to_url(self):
+        content = self.repository['testcontent']
+        message = zope.component.getAdapter(
+            content, zeit.push.interfaces.IMessage, name='facebook')
+        self.assertIn('wt_zmc=sm.int.zonaudev.facebook', message.url)
+
     def test_breaking_flag_is_removed_from_service_after_send(self):
         content = ExampleContentType()
         self.repository['foo'] = content

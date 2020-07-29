@@ -7,6 +7,8 @@ vivi.core changes
 
 - WOMA-133: Fetch ingredient units from configuration file
 
+- ZON-6041: Add campaign parameters to twitter/facebook push URLs
+
 
 4.38.1 (2020-07-28)
 -------------------
