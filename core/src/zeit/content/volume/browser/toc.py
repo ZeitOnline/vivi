@@ -157,6 +157,10 @@ class Toc(zeit.cms.browser.view.Base):
                     continue
                 toc_entry = self._create_toc_element(article.xml)
                 if toc_entry:
+                    if (article.main_image and
+                            article.main_image.target is not None):
+                        toc_entry['image_url'] = self.url(
+                            article.main_image.target)
                     toc_entry['preview_url'] = zope.component.getMultiAdapter(
                         (article, 'preview'), IPreviewURL)
                     result_for_product[article.printRessort].append(toc_entry)
@@ -368,8 +372,10 @@ class Toc(zeit.cms.browser.view.Base):
         page = toc_entry.get('page')
         if page == sys.maxsize:
             page = ''
-        return [str(page), title_teaser, '', '', toc_entry.get('access')] + \
-            [''] * 14 + [toc_entry.get('preview_url', '')]
+        return (
+            [str(page), title_teaser, '', '', toc_entry.get('access')] +
+            [''] * 8 + [toc_entry.get('image_url', '')] +
+            [''] * 5 + [toc_entry.get('preview_url', '')])
 
 
 PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)

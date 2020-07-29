@@ -9,6 +9,8 @@ vivi.core changes
 
 - ZON-6041: Add campaign parameters to twitter/facebook push URLs
 
+- ZON-6006: Add article main image url to volume toc.csv
+
 
 4.38.1 (2020-07-28)
 -------------------
