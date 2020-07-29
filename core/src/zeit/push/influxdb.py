@@ -28,8 +28,8 @@ class Connection(object):
         try:
             requests.post(
                 '{url}/db/{database}/series'.format(
-                    url=self.base_url, database=self.database,
-                    timeout=2),
+                    url=self.base_url, database=self.database),
+                timeout=2,
                 params={'u': self.user, 'p': self.password}, json=data)
         except Exception:
             log.warning(
