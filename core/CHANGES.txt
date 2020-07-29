@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.38.2 (unreleased)
+4.38.2 (2020-07-29)
 -------------------
 
 - WOMA-133: Fetch ingredient units from configuration file
