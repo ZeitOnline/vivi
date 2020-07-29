@@ -136,7 +136,7 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
             zeit.push.interfaces.IPushNotifier, name='twitter')
         self.assertEqual(
             u'See this video!', twitter.calls[0][0])
-        self.assertEqual(
+        self.assertIn(
             u'http://www.zeit.de/video/my-video', twitter.calls[0][1])
         params = twitter.calls[0][2]
         del params['message']

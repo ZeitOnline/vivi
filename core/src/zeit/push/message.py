@@ -72,11 +72,10 @@ class Message(grok.Adapter):
             zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url'])
 
     @staticmethod
-    def add_query_params(url, params):
+    def add_query_params(url, **params):
         parts = list(urllib.parse.urlparse(url))
         query = dict(urllib.parse.parse_qs(parts[4]))
-        for key, value in params.items():
-            query[key] = value
+        query.update(params)
         parts[4] = urllib.parse.urlencode(query)
         return urllib.parse.urlunparse(parts)
 
