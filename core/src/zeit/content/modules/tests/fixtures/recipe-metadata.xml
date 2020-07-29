@@ -10,4 +10,9 @@
     <time>30-60 Minuten</time>
     <time>über 60 Minuten</time>
   </times>
+  <units>
+    <unit code="" singular="" plural=""/>
+    <unit code="stueck" singular="Stück" plural="Stücke" ingredient_singular="true"/>
+    <unit code="kg" singular="kg" plural="kg" ingredient_plural="true"/>
+  </units>
 </recipe-metadata>

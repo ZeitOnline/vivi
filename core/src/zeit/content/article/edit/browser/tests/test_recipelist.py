@@ -46,7 +46,9 @@ class RecipeListTest(
             b.contents)
 
 
-class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
+class FormLoader(
+        zeit.content.article.edit.browser.testing.EditorTestCase,
+        zeit.content.article.edit.browser.testing.RecipeListHelper):
 
     def test_recipelist_form_is_loaded(self):
         s = self.selenium
@@ -57,14 +59,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_ingredients_should_be_organized_through_recipelist(self):
         s = self.selenium
-        self.add_article()
-        self.create_block('recipelist')
-        s.waitForElementPresent('//input[@name="add_ingredient"]')
-
-        # Add first ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brath')
-        s.waitForVisible('css=ul.ui-autocomplete li')
-        s.click('css=ul.ui-autocomplete li')
+        self.setup_ingredient()
 
         self.assertEqual(s.getCssCount('css=li.ingredient__item'), 1)
         s.assertText('css=a.ingredient__label', 'Brathähnchen')
@@ -94,14 +89,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_ingredient_amount_should_be_validated(self):
         s = self.selenium
-        self.add_article()
-        self.create_block('recipelist')
-        s.waitForElementPresent('//input[@name="add_ingredient"]')
-
-        # Add ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brath')
-        s.waitForVisible('css=ul.ui-autocomplete li')
-        s.click('css=ul.ui-autocomplete li')
+        self.setup_ingredient()
 
         # Should accept numbers
         s.type('css=input.ingredient__amount', '2')
@@ -129,14 +117,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_ingredient_should_store_values_as_json(self):
         s = self.selenium
-        self.add_article()
-        self.create_block('recipelist')
-        s.waitForElementPresent('//input[@name="add_ingredient"]')
-
-        # Add ingredient
-        s.type('//input[@name="add_ingredient"]', 'Brath')
-        s.waitForVisible('css=ul.ui-autocomplete li')
-        s.click('css=ul.ui-autocomplete li')
+        self.setup_ingredient()
 
         s.type('css=input.ingredient__amount', '2')
         s.runScript(
@@ -171,3 +152,24 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         uid1 = s.getAttribute('//li[@class="ingredient__item"][1] @data-id')
         uid2 = s.getAttribute('//li[@class="ingredient__item"][2] @data-id')
         assert uid1 != uid2
+
+    def test_ingredient_units_should_be_fetched_from_endpoint(self):
+        s = self.selenium
+        self.setup_ingredient()
+
+        s.click('css=.ingredient__unit')
+        s.click('//option[text()="Stück"]')
+        s.clickAt('css=.ingredient__unit', '0,40')
+        s.waitForCssCount('css=.dirty', 0)
+
+        # Stored in html element
+        s.assertValue('css=.ingredient__unit', 'stueck')
+
+        # Check if all units are available for selection
+        s.assertCssCount('css=.ingredient__unit option', 3)
+
+        # Stored in JSON
+        ingredient_data = json.loads(
+            s.getAttribute('css=.ingredients-widget input@value'))[0]
+        assert ingredient_data.get('code') == 'brathaehnchen'
+        assert ingredient_data.get('unit') == 'stueck'

@@ -223,6 +223,12 @@ class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
         return [node for node in tree.xpath(self.xpath)]
 
 
+class RecipeUnitsSource(RecipeMetadataSource):
+
+    def __init__(self):
+        super().__init__('//unit')
+
+
 # Servings are valid if all of these are satisfied:
 # <num> is a number > 0
 # format is: <num> or <num>-<num>

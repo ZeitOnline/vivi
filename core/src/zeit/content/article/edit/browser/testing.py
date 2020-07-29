@@ -109,3 +109,19 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase,
                      EditorHelper):
     window_width = 1600
     window_height = 1000
+
+
+class RecipeListHelper(object):
+
+    editable_locator = '.block.type-p .editable'
+
+    def setup_ingredient(self, add_location='/repository'):
+        s = self.selenium
+        self.add_article()
+        self.create_block('recipelist')
+        s.waitForElementPresent('//input[@name="add_ingredient"]')
+
+        # Add ingredient
+        s.type('//input[@name="add_ingredient"]', 'Brath')
+        s.waitForVisible('css=ul.ui-autocomplete li')
+        s.click('css=ul.ui-autocomplete li')
