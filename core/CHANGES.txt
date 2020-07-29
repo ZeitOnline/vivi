@@ -5,7 +5,7 @@ vivi.core changes
 4.38.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-5981: Restrict retract/delete for authors to producing
 
 
 4.38.2 (2020-07-29)
