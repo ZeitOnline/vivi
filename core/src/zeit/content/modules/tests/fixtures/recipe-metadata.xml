@@ -11,6 +11,15 @@
     <time>über 60 Minuten</time>
   </times>
   <units>
+      <!--
+￼      code: die id der Einheit
+￼      singular: die Singularform der Einheit
+￼      plural: die Pluralform der Einheit
+￼      ingredient_singular: Zutaten mit dieser Einheit werden immer im Singular dargestellt
+￼      ingredient_plural: Zutaten mit dieser Einheit werden immer im Plural dargestellt
+￼
+￼      Sollte keine der Angaben vorhanden sein, entscheidet die Zutatenmenge über den Numerus.
+￼    -->
     <unit code="" singular="" plural=""/>
     <unit code="stueck" singular="Stück" plural="Stücke" ingredient_singular="true"/>
     <unit code="kg" singular="kg" plural="kg" ingredient_plural="true"/>
