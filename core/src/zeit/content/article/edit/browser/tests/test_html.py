@@ -62,6 +62,16 @@ class HTMLConvertTest(
                          self.eval('window.jQuery(".editable")[0].innerHTML'))
         s.assertXpathCount('//*[@class="editable"]//br', 0)
 
+    def test_trailing_br_does_not_break_see_BUG_1273(self):
+        self.execute("""\
+            window.tree = MochiKit.DOM.createDOM('p');
+            window.tree.innerHTML = '<p>foo</p><br><br>';
+            window.cloned = window.tree.cloneNode(true);
+            window.zeit.content.article.html.to_xml(window.cloned);
+        """)
+        # br/br transforms to p, and empty p is removed
+        self.assertEqual('<p>foo</p>', self.eval('window.cloned.innerHTML'))
+
     def test_single_br_is_conserved(self):
         s = self.selenium
         self.create('<p>foo<br>bar</p>')
