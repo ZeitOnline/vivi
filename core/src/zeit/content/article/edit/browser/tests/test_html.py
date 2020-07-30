@@ -45,6 +45,14 @@ class HTMLConvertTest(
         s.assertElementPresent('jquery=.editable p:contains(foo)')
         s.assertXpathCount('//*[@class="editable"]//p', 1)
 
+    def test_empty_p_are_removed(self):
+        s = self.selenium
+        self.create('<p>foo</p><p></p><p></p>')
+        self.convert()
+        self.assertEqual(
+            '<p>foo</p>', self.eval('window.jQuery(".editable")[0].innerHTML'))
+        s.assertXpathCount('//*[@class="editable"]//p', 1)
+
     def test_all_double_brs_are_translated_to_p(self):
         s = self.selenium
         self.create('<p>foo<br><br>bar<br><br>baz</p>')

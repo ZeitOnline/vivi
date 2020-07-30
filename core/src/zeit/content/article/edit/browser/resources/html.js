@@ -56,7 +56,9 @@ function translate_tags(tree) {
 
 
 function kill_empty_p(tree) {
-    forEach(tree.childNodes, function(el) {
+    var children = [];
+    MochiKit.Base.extend(children, tree.childNodes);
+    forEach(children, function(el) {
         if (tag(el) == 'p' && ! el.hasChildNodes()) {
             MochiKit.DOM.removeElement(el);
         } else {
