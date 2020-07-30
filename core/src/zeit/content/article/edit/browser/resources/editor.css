@@ -2021,8 +2021,13 @@
 }
 
 #edit-form-article-content .type-recipelist .fieldname-title,
-#edit-form-article-content .type-recipelist .fieldname-subheading {
+#edit-form-article-content .type-recipelist .fieldname-subheading,
+#edit-form-article-content .type-recipelist .fieldname-special_ingredient {
   width: auto !important;
+}
+
+#edit-form-article-content .type-recipelist .fieldname-special_ingredient {
+  margin-bottom: 4em;
 }
 
 #edit-form-article-content .type-recipelist .fieldname-complexity,

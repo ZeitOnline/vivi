@@ -72,6 +72,10 @@ class RecipeList(zeit.edit.block.Element):
         '.servings',
         zeit.content.modules.interfaces.IRecipeList['servings'])
 
+    special_ingredient = zeit.cms.content.property.ObjectPathProperty(
+        '.special_ingredient',
+        zeit.content.modules.interfaces.IRecipeList['special_ingredient'])
+
     @property
     def ingredients(self):
         ingredients = [Ingredient.from_xml(x) for x in self.xml.xpath(

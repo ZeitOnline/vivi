@@ -281,6 +281,13 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         required=False,
         constraint=validate_servings)
 
+    special_ingredient = zope.schema.TextLine(
+        title=_('Special ingredient'),
+        description=_(
+            'A non-searchable free text ingredient without a cp '
+            '(e.g. an extra portion of love)'),
+        required=False)
+
     ingredients = zope.schema.Tuple(
         title=_('Ingredients'),
         value_type=zope.schema.Choice(
