@@ -7,6 +7,8 @@ vivi.core changes
 
 - ZON-5981: Restrict retract/delete for authors to producing
 
+- BUG-1205: Prevent creating several <br> when pressing enter in content-editable
+
 
 4.38.2 (2020-07-29)
 -------------------
