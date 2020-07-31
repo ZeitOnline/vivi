@@ -137,6 +137,16 @@
     />
 
   <permission
+    id="zeit.content.author.Retract"
+    title="Retract Author objects"
+    />
+
+  <permission
+    id="zeit.content.author.Delete"
+    title="Delete Author objects"
+    />
+
+  <permission
     id="zeit.content.text.AddEmbed"
     title="Add Embed objects"
     />
