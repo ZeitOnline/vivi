@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.38.3 (unreleased)
+4.38.3 (2020-07-31)
 -------------------
 
 - BUG-1205: Prevent creating several <br> when pressing enter in content-editable
