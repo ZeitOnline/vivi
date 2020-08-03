@@ -2,6 +2,7 @@ import logging
 import operator
 import requests
 import requests.auth
+import requests.exceptions
 import six.moves.urllib.parse
 import threading
 import zeep
@@ -76,6 +77,9 @@ class VGWortWebService(object):
                 raise zeit.vgwort.interfaces.WebServiceError(e.message)
             except zeep.exceptions.TransportError as e:
                 raise zeit.vgwort.interfaces.TechnicalError(e.message)
+            except requests.exceptions.RequestException as e:
+                # No e.message available here.
+                raise zeit.vgwort.interfaces.TechnicalError(str(e))
 
     def create(self, type_, **kw):
         cls = self.client.get_type('{%s}%s' % (self.namespace, type_))
