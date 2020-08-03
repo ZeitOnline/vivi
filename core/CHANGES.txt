@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.38.4 (unreleased)
+4.38.4 (2020-08-03)
 -------------------
 
 - ZON-5981: Restrict retract/delete for authors to producing
