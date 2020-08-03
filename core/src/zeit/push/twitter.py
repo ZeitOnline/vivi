@@ -60,5 +60,16 @@ class Message(zeit.push.message.Message):
         return text
 
     @property
+    def url(self):
+        return self.add_query_params(
+            super().url,
+            wt_zmc='sm.int.zonaudev.twitter.ref.zeitde.redpost.link.x',
+            utm_medium='sm',
+            utm_source='twitter_zonaudev_int',
+            utm_campaign='ref',
+            utm_content='zeitde_redpost_link_x',
+        )
+
+    @property
     def log_message_details(self):
         return 'Account %s' % self.config.get('account', '-')

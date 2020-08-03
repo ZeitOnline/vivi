@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import logging
+import urllib.parse
 import zeit.cms.interfaces
 import zeit.objectlog.interfaces
 import zeit.push.interfaces
@@ -69,6 +70,14 @@ class Message(grok.Adapter):
             'zeit.push')
         return zeit.push.interfaces.IPushURL(self.context).replace(
             zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url'])
+
+    @staticmethod
+    def add_query_params(url, **params):
+        parts = list(urllib.parse.urlparse(url))
+        query = dict(urllib.parse.parse_qs(parts[4]))
+        query.update(params)
+        parts[4] = urllib.parse.urlencode(query)
+        return urllib.parse.urlunparse(parts)
 
     @zope.cachedescriptors.property.Lazy
     def object_log(self):

@@ -78,3 +78,9 @@ class TwitterMessageTest(zeit.push.testing.TestCase):
         # (see zeit.push.workflow.PushMessages._create_message)
         message.config = push.message_config[0]
         self.assertEqual('foobar', message.text)
+
+    def test_adds_campaign_parameters_to_url(self):
+        content = self.repository['testcontent']
+        message = zope.component.getAdapter(
+            content, zeit.push.interfaces.IMessage, name='twitter')
+        self.assertIn('wt_zmc=sm.int.zonaudev.twitter', message.url)

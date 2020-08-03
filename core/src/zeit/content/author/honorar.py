@@ -1,6 +1,7 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import base64
 import json
+import datetime
 import logging
 import pkg_resources
 import requests
@@ -17,8 +18,8 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 class Honorar(object):
 
-    def __init__(self, url, username, password):
-        self.url = url
+    def __init__(self, url_hdok, url_blacklist, username, password):
+        self.urls = {'hdok': url_hdok, 'blacklist': url_blacklist}
         self.username = username
         self.password = password
 
@@ -29,15 +30,16 @@ class Honorar(object):
         Returns a list of dicts with keys
         gcid, vorname, nachname, titel (and some others)
         """
-        result = self._request('POST /layouts/RESTautorenStamm/_find', json={
-            'query': [
-                {'nameGesamtSuchtext': query},
-                {'typ': '4', 'omit': 'true'},
-                {'status': '>=50', 'omit': 'true'},
-            ],
-            'sort': [{'fieldName': 'nameGesamt', 'sortOrder': 'ascend'}],
-            'limit': str(count),
-        })
+        result = self._request(
+            'POST /layouts/RESTautorenStamm/_find', db='hdok', json={
+                'query': [
+                    {'nameGesamtSuchtext': query},
+                    {'typ': '4', 'omit': 'true'},
+                    {'status': '>=50', 'omit': 'true'},
+                ],
+                'sort': [{'fieldName': 'nameGesamt', 'sortOrder': 'ascend'}],
+                'limit': str(count),
+            })
         return [x['fieldData'] for x in result['response']['data']]
 
     def create(self, data):
@@ -52,25 +54,41 @@ class Honorar(object):
         data['typ'] = '1'
         # Bypass HDok's duplicate detection, since we already perform that.
         data['anlage'] = 'setzen'
-        result = self._request('GET /layouts/leer/records/1', params={
-            'script': 'restNeuAutor',
-            'script.param': b64encode(json.dumps(data))
-        })
+        result = self._request(
+            'GET /layouts/leer/records/1', db='hdok', params={
+                'script': 'restNeuAutor',
+                'script.param': b64encode(json.dumps(data))
+            })
         try:
             data = json.loads(result['response']['scriptResult'])
             return data['gcid']
         except Exception:
             raise RuntimeError('Invalid HDok gcid result: %s' % result)
 
-    def _request(self, request, retries=0, **kw):
+    def invalid_gcids(self, days_ago):
+        timestamp = '>=' + (datetime.datetime.today() -
+                            datetime.timedelta(days=days_ago)).strftime(
+                                '%m/%d/%Y %H:%M:%S')
+        result = self._request(
+            'POST /layouts/blacklist/_find', db='blacklist', json={
+                'query': [{
+                    'geloeschtGCID': '*',
+                    'ts': timestamp
+                }],
+                'limit': '1000000', 'offset': '1'
+            })
+        return [x['fieldData'] for x in result['response']['data']]
+
+    def _request(self, request, db, retries=0, **kw):
         if retries > 1:
             raise ValueError('Request %s failed' % request)
 
         verb, path = request.split(' ')
+        auth_token = self.auth_token(db)
         method = getattr(requests, verb.lower())
         try:
-            r = method(self.url + path, headers={
-                'Authorization': 'Bearer %s' % self.auth_token(),
+            r = method(self.urls[db] + path, headers={
+                'Authorization': 'Bearer %s' % auth_token,
                 'User-Agent': requests.utils.default_user_agent(
                     'zeit.content.author-%s/python-requests' % (
                         pkg_resources.get_distribution('vivi.core').version))
@@ -99,8 +117,8 @@ class Honorar(object):
             raise
 
     @CONFIG_CACHE.cache_on_arguments()
-    def auth_token(self):
-        r = requests.post(self.url + '/sessions',
+    def auth_token(self, db):
+        r = requests.post(self.urls[db] + '/sessions',
                           auth=(self.username, self.password),
                           headers={'Content-Type': 'application/json'})
         r.raise_for_status()
@@ -116,7 +134,8 @@ def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.author')
     return Honorar(
-        config['honorar-url'],
+        config['honorar-url-hdok'],
+        config['honorar-url-blacklist'],
         config['honorar-username'],
         config['honorar-password'])
 

@@ -34,7 +34,7 @@
   </poultry>
   <fruits>
     <ingredient id="banana" q="Banane" singular="Banane" plural="Bananen" />
-    <ingredient id="physalis" q="Physalis" singular="Physalis" plural="Physalis" />
+    <ingredient id="physalis" q="Physalis" singular="Physalis" /> <!-- missing plural -->
     <ingredient id="pomeranze" q="Bitterorange,Pomeranze" singular="Pomeranze" plural="Pomeranzen" />
   </fruits>
 </ingredients>

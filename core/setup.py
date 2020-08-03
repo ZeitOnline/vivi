@@ -1,16 +1,9 @@
 from setuptools import setup, find_packages
-import sys
-
-
-if sys.version_info < (3,):
-    guppy = ['guppy']
-else:
-    guppy = ['guppy3']
 
 
 setup(
     name='vivi.core',
-    version='4.36.8.dev0',
+    version='4.38.4.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -96,7 +89,7 @@ setup(
         'zope.xmlpickle',
     ],
     extras_require={
-        'ui': guppy + [
+        'ui': [
             'Pygments',
             'ZConfig',
             'celery >= 4.0',
@@ -107,6 +100,7 @@ setup(
             'fanstatic',
             'gocept.fckeditor[fanstatic]',
             'gocept.pagelet',
+            'guppy3',
             'js.backbone',
             'js.cropper',
             'js.handlebars',

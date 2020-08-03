@@ -515,6 +515,7 @@ zeit.content.article.Editable = gocept.Class.extend({
      },
 
     _get_cursor_position: function() {
+        // Approach inspired by <https://stackoverflow.com/a/6847328>
         var self = this;
         var pos = {x:0,y:0};
         var selection = window.getSelection();
@@ -540,9 +541,15 @@ zeit.content.article.Editable = gocept.Class.extend({
             pos.y = tmp_pos.top;
             pos.x = tmp_pos.left;
             tmp_el.remove();
-            if (par.children().length==0){
-                // allow empty paragraphs while editing
-                document.execCommand('insertHTML', false,'<br type="_moz" />');
+            if (par.children().length==0) {
+                // Firefox requires an editable <p> to have _something_ inside
+                // it, otherwise there's nowhere to place the cursor. By default
+                // FF creates and deletes <br> for that purpose, so we do too.
+                // Example FF behaviour:
+                //  <p>asdf|</p> type 4xbackspace
+                //  <p>|<br></p> type `asdf`, then enter
+                //  <p>asdf</p><p><br></p> Note NO br in the first p!
+                par.append('<br type="moz"/>');
             }
         } else {
             return null;

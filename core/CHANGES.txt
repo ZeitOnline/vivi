@@ -2,10 +2,62 @@ vivi.core changes
 =================
 
 
-4.36.8 (unreleased)
+4.38.4 (unreleased)
 -------------------
 
 - FIX: Catch vgwort connection errors, raising a TechnicalError
+
+
+4.38.3 (2020-07-31)
+-------------------
+
+- ZON-5981: Restrict retract/delete for authors to producing
+
+- BUG-1205: Prevent creating several <br> when pressing enter in content-editable
+
+
+4.38.2 (2020-07-29)
+-------------------
+
+- WOMA-133: Fetch ingredient units from configuration file
+
+- ZON-6041: Add campaign parameters to twitter/facebook push URLs
+
+- ZON-6006: Add article main image url to volume toc.csv
+
+
+4.38.1 (2020-07-28)
+-------------------
+
+- BUG-1255: Prevent adding the same author to an article twice
+
+
+4.38.0 (2020-07-28)
+-------------------
+
+- ZON-6037: Introduce zeit.zett.interfaces.IZTTContent
+
+- ZON-5959: Implement querying HDok for blacklisted entries
+
+
+4.37.2 (2020-07-28)
+-------------------
+
+- MAINT: Make date_print_published writeable via admin tab
+
+
+4.37.1 (2020-07-24)
+-------------------
+
+- FIX: Import necessary packages for pembeds
+
+
+4.37.0 (2020-07-24)
+-------------------
+
+- WOMA-111: Provide plural property from ingredients whitelist
+
+- MAINT: Support variables in pembed parameter definitions
 
 
 4.36.7 (2020-07-23)
