@@ -5,13 +5,13 @@ vivi.core changes
 4.38.4 (unreleased)
 -------------------
 
+- ZON-5981: Restrict retract/delete for authors to producing
+
 - FIX: Catch vgwort connection errors, raising a TechnicalError
 
 
 4.38.3 (2020-07-31)
 -------------------
-
-- ZON-5981: Restrict retract/delete for authors to producing
 
 - BUG-1205: Prevent creating several <br> when pressing enter in content-editable
 
