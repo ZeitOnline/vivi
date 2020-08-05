@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.38.5 (unreleased)
+4.39.0 (2020-08-05)
 -------------------
 
 - WOMA-143: Add "special ingredient" to recipelist module
