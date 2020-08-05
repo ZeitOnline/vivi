@@ -267,13 +267,13 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         default=False)
 
     complexity = zope.schema.Choice(
-        title=_("Complexity"),
-        source=RecipeMetadataSource("*//complexity"),
+        title=_('Complexity'),
+        source=RecipeMetadataSource('*//complexity'),
         required=False)
 
     time = zope.schema.Choice(
-        title=_("Time"),
-        source=RecipeMetadataSource("*//time"),
+        title=_('Time'),
+        source=RecipeMetadataSource('*//time'),
         required=False)
 
     servings = zope.schema.TextLine(
@@ -281,8 +281,15 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
         required=False,
         constraint=validate_servings)
 
+    special_ingredient = zope.schema.TextLine(
+        title=_('Special ingredient'),
+        description=_(
+            'A non-searchable free text ingredient without a cp '
+            '(e.g. an extra portion of love)'),
+        required=False)
+
     ingredients = zope.schema.Tuple(
-        title=_("Ingredients"),
+        title=_('Ingredients'),
         value_type=zope.schema.Choice(
             source=zeit.wochenmarkt.sources.ingredientsSource),
         default=(),
