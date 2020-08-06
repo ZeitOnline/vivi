@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.39.1 (unreleased)
+4.39.1 (2020-08-06)
 -------------------
 
 - BUG-1273: Handle toplevel `br` nodes that can appear when pasting content
