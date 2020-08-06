@@ -280,6 +280,9 @@ zeit.cms.with_lock = function(callable) {
     d.addCallback(function(result) {
         return pfunc();
     });
+    d.addErrback(function(error) {
+        zeit.cms.log_error(error);
+    });
     d.addBoth(function(result_or_error) {
         zeit.cms.request_lock.release();
         return result_or_error;

@@ -45,6 +45,14 @@ class HTMLConvertTest(
         s.assertElementPresent('jquery=.editable p:contains(foo)')
         s.assertXpathCount('//*[@class="editable"]//p', 1)
 
+    def test_empty_p_are_removed(self):
+        s = self.selenium
+        self.create('<p>foo</p><p></p><p></p>')
+        self.convert()
+        self.assertEqual(
+            '<p>foo</p>', self.eval('window.jQuery(".editable")[0].innerHTML'))
+        s.assertXpathCount('//*[@class="editable"]//p', 1)
+
     def test_all_double_brs_are_translated_to_p(self):
         s = self.selenium
         self.create('<p>foo<br><br>bar<br><br>baz</p>')
@@ -53,6 +61,16 @@ class HTMLConvertTest(
         self.assertEqual('<p>foo</p><p>bar</p><p>baz</p>',
                          self.eval('window.jQuery(".editable")[0].innerHTML'))
         s.assertXpathCount('//*[@class="editable"]//br', 0)
+
+    def test_trailing_br_does_not_break_see_BUG_1273(self):
+        self.execute("""\
+            window.tree = MochiKit.DOM.createDOM('p');
+            window.tree.innerHTML = '<p>foo</p><br><br>';
+            window.cloned = window.tree.cloneNode(true);
+            window.zeit.content.article.html.to_xml(window.cloned);
+        """)
+        # br/br transforms to p, and empty p is removed
+        self.assertEqual('<p>foo</p>', self.eval('window.cloned.innerHTML'))
 
     def test_single_br_is_conserved(self):
         s = self.selenium

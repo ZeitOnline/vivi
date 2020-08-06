@@ -7,8 +7,8 @@ zeit.content.article.html.to_xml = function(tree) {
     var steps = [
         wrap_toplevel_children_in_p,
         translate_tags,
-        kill_empty_p,
         replace_double_br_with_p,
+        kill_empty_p,
         escape_missing_href,
         normalize_quotation_marks
     ];
@@ -56,7 +56,9 @@ function translate_tags(tree) {
 
 
 function kill_empty_p(tree) {
-    forEach(tree.childNodes, function(el) {
+    var children = [];
+    MochiKit.Base.extend(children, tree.childNodes);
+    forEach(children, function(el) {
         if (tag(el) == 'p' && ! el.hasChildNodes()) {
             MochiKit.DOM.removeElement(el);
         } else {
@@ -115,7 +117,8 @@ function wrap_toplevel_children_in_p(tree) {
     };
 
     forEach(tree.childNodes, function(el) {
-        if (el.nodeType == el.TEXT_NODE || display(el) == 'inline') {
+        if (el.nodeType == el.TEXT_NODE || display(el) == 'inline' ||
+            tag(el) == 'br') {
             collect.push(el);
         } else {
             if (collect.length) {
