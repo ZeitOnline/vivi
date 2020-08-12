@@ -12,7 +12,7 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
     form_fields = FormFields(
         zeit.content.article.interfaces.IArticle).select(
-        'template', 'header_layout')
+        'template', 'header_layout', 'header_color')
 
     def render(self):
         result = super(EditTemplate, self).render()
