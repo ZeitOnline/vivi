@@ -148,7 +148,7 @@ class ArticleHeaderColorSource(zeit.cms.content.sources.MasterSlaveSource):
     product_configuration = ArticleTemplateSource.product_configuration
     config_url = ArticleTemplateSource.config_url
     default_filename = ArticleTemplateSource.default_filename
-    attribute = 'name'
+    attribute = 'value'
     slave_tag = 'color'
     master_node_xpath = '/templates/template'
     master_value_key = 'template'
