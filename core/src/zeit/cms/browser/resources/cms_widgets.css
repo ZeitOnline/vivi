@@ -433,7 +433,10 @@ table.properties textarea {
   padding-left: 0;
 }
 
-
+div.fieldname-image > .widget > img {
+  max-width: 600px;
+  height: auto;
+}
 
 
 .objectsequencewidget input.autocomplete {
