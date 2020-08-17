@@ -3,6 +3,7 @@ from zeit.content.article.edit.browser.form import FormFields
 import zeit.cms.content.browser.widget
 import zeit.content.article.source
 import zeit.edit.browser.form
+import zope.interface
 
 
 class EditTemplate(zeit.edit.browser.form.InlineForm):
@@ -22,7 +23,10 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
     zeit.cms.configure_master_slave(
         "%s.", "template", "header_layout",
         "@@zeit.content.article.update_articletemplate.json");
-</script>""" % self.prefix
+    zeit.cms.configure_master_slave(
+        "%s.", "template", "header_color",
+        "@@zeit.content.article.update_articleheader.json");
+</script>""" % (self.prefix, self.prefix)
         return result
 
     def _success_handler(self):
@@ -35,3 +39,33 @@ class TemplateUpdater(
 
     master_source = zeit.content.article.source.ArticleTemplateSource()
     slave_source = zeit.content.article.source.ArticleHeaderSource()
+
+
+class HeaderUpdater(
+        zeit.cms.content.browser.widget.MasterSlaveDropdownUpdater):
+
+    master_source = zeit.content.article.source.ArticleTemplateSource()
+    slave_source = zeit.content.article.source.ArticleHeaderColorSource()
+
+    def get_result(self, master_token):
+        try:
+            master_value = self.master_terms.getValue(master_token)
+        except KeyError:
+            return []
+
+        @zope.interface.implementer(
+            self.slave_source.factory.master_value_iface)
+        class Fake(object):
+            pass
+        fake = Fake()
+        setattr(fake, self.slave_source.factory.master_value_key, master_value)
+
+        source = self.slave_source(fake)
+        terms = zope.component.getMultiAdapter(
+            (source, self.request), zope.app.form.browser.interfaces.ITerms)
+        result = []
+        for value in source:
+            term = terms.getTerm(value)
+            result.append((term.title, term.token))
+
+        return sorted(result)
