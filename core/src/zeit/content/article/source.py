@@ -143,24 +143,12 @@ class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
         return six.text_type(node['title'])
 
 
-class ArticleHeaderColorSource(zeit.cms.content.sources.MasterSlaveSource):
+class ArticleHeaderColorSource(ArticleHeaderSource):
 
-    product_configuration = ArticleTemplateSource.product_configuration
-    config_url = ArticleTemplateSource.config_url
-    default_filename = ArticleTemplateSource.default_filename
     attribute = 'value'
     slave_tag = 'color'
     master_node_xpath = '/templates/template'
     master_value_key = 'template'
-
-    @property
-    def master_value_iface(self):
-        # prevent circular import
-        import zeit.content.article.interfaces
-        return zeit.content.article.interfaces.IArticleMetadata
-
-    def _get_title_for(self, node):
-        return six.text_type(node['title'])
 
 
 class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
