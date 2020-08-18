@@ -76,6 +76,6 @@ Siehe:
 ``core/src/zeit/wochenmarkt/browser/widget.py``
 ``core/src/zeit/content/modules/recipelist.py``
 
-Jeder Zutat können weitere Informationen hinterlegt werden, wie z.B. Menge,
+Zu jeder Zutat können weitere Informationen hinterlegt werden, wie z.B. Menge,
 Details, Einheit, etc. Letzteres ist ein Auswahlfeld, dessen Inhalt ebenfalls
 aus der ``recipe-metadata.xml`` stammt.
