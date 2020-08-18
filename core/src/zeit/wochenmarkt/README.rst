@@ -43,7 +43,7 @@ Beilage".
 
 **Sonderzutat** ist ein reines Freitextfeld ohne Validierung, das nie
 durchsuchbar ist und keine Zutaten-CP erhält. Hier können Redakteure eine
-besondere "Zutate" eintragen, wie z.B. "eine Extraportion Liebe" oder "drei
+besondere "Zutat" eintragen, wie z.B. "eine Extraportion Liebe" oder "drei
 Einmachgläser".
 
 **Zutaten** (siehe Zutaten).
