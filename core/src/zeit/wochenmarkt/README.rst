@@ -24,7 +24,7 @@ lassen sich Kategorien dem Rezeptartikel hinzufügen, sortieren und löschen.
 
 Rezeptlisten
 ------------
-Rezeptlisten stehen Artikeln des Ressorts ZEIT Magain als Modul über
+Rezeptlisten stehen Artikeln des Ressorts ZEIT Magazin als Modul über
 ``zeit.content.modules.recipelist.RecipeList`` zur Verfügung. Sie können wie
 gewohnt in den Artikeltext platziert und beliebig verschoben werden.
 Rezeptlisten verfügen über folgende Metadaten:
