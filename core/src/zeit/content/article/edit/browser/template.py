@@ -3,7 +3,6 @@ from zeit.content.article.edit.browser.form import FormFields
 import zeit.cms.content.browser.widget
 import zeit.content.article.source
 import zeit.edit.browser.form
-import zope.interface
 
 
 class EditTemplate(zeit.edit.browser.form.InlineForm):
@@ -46,26 +45,3 @@ class HeaderUpdater(
 
     master_source = zeit.content.article.source.ArticleTemplateSource()
     slave_source = zeit.content.article.source.ArticleHeaderColorSource()
-
-    def get_result(self, master_token):
-        try:
-            master_value = self.master_terms.getValue(master_token)
-        except KeyError:
-            return []
-
-        @zope.interface.implementer(
-            self.slave_source.factory.master_value_iface)
-        class Fake(object):
-            pass
-        fake = Fake()
-        setattr(fake, self.slave_source.factory.master_value_key, master_value)
-
-        source = self.slave_source(fake)
-        terms = zope.component.getMultiAdapter(
-            (source, self.request), zope.app.form.browser.interfaces.ITerms)
-        result = []
-        for value in source:
-            term = terms.getTerm(value)
-            result.append((term.title, term.token))
-
-        return sorted(result)
