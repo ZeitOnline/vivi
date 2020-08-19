@@ -145,10 +145,9 @@ class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
 
 class ArticleHeaderColorSource(ArticleHeaderSource):
 
-    attribute = 'value'
     slave_tag = 'color'
-    master_node_xpath = '/templates/template'
-    master_value_key = 'template'
+    master_node_xpath = '/templates/template/header'
+    master_value_key = 'header'
 
 
 class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):

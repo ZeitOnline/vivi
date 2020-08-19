@@ -23,7 +23,7 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
         "%s.", "template", "header_layout",
         "@@zeit.content.article.update_articletemplate.json");
     zeit.cms.configure_master_slave(
-        "%s.", "template", "header_color",
+        "%s.", "header_layout", "header_color",
         "@@zeit.content.article.update_articleheader.json");
 </script>""" % (self.prefix, self.prefix)
         return result
@@ -43,5 +43,5 @@ class TemplateUpdater(
 class HeaderUpdater(
         zeit.cms.content.browser.widget.MasterSlaveDropdownUpdater):
 
-    master_source = zeit.content.article.source.ArticleTemplateSource()
+    master_source = zeit.content.article.source.ArticleHeaderSource()
     slave_source = zeit.content.article.source.ArticleHeaderColorSource()
