@@ -10,7 +10,6 @@ import zeit.push.browser.form
 import zeit.wysiwyg.interfaces
 import zope.formlib.form
 
-import pdb
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
@@ -72,8 +71,7 @@ class DisplayImageWidget(zope.app.form.browser.widget.DisplayWidget):
         else:
             content = self.context.default
         image = zope.component.getMultiAdapter(
-            (content, self.request), name='view.html')
-        pdb.set_trace()
+            (content, self.request), name='preview')
         return image.tag()
 
     def hasInput(self):
