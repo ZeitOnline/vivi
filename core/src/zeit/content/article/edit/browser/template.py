@@ -19,8 +19,8 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
         if result:
             result += """\
 <script type="text/javascript">
-    zeit.cms.configure_master_slave(
-        "%s.", "template", "header_layout",
+    zeit.cms.configure_multigeneration(
+        "%s.", "template", "header_layout", "header_color",
         "@@zeit.content.article.update_articletemplate.json");
     zeit.cms.configure_master_slave(
         "%s.", "header_layout", "header_color",

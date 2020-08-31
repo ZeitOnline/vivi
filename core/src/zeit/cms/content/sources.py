@@ -322,7 +322,7 @@ class MasterSlaveSource(XMLSource):
                 value=master_value))
         if not nodes:
             return None
-        assert len(nodes) == 1
+        # assert len(nodes) == 1
         return nodes
 
     def _get_master_value(self, context):
