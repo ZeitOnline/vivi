@@ -10,7 +10,6 @@ import zeit.push.browser.form
 import zeit.wysiwyg.interfaces
 import zope.formlib.form
 
-
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 
