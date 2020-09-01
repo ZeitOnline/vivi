@@ -24,7 +24,7 @@ lassen sich Kategorien dem Rezeptartikel hinzufügen, sortieren und löschen.
 
 Rezeptlisten
 ------------
-Rezeptlisten stehen Artikeln des Ressorts ZEIT Magain als Modul über
+Rezeptlisten stehen Artikeln des Ressorts ZEIT Magazin als Modul über
 ``zeit.content.modules.recipelist.RecipeList`` zur Verfügung. Sie können wie
 gewohnt in den Artikeltext platziert und beliebig verschoben werden.
 Rezeptlisten verfügen über folgende Metadaten:
@@ -43,7 +43,7 @@ Beilage".
 
 **Sonderzutat** ist ein reines Freitextfeld ohne Validierung, das nie
 durchsuchbar ist und keine Zutaten-CP erhält. Hier können Redakteure eine
-besondere "Zutate" eintragen, wie z.B. "eine Extraportion Liebe" oder "drei
+besondere "Zutat" eintragen, wie z.B. "eine Extraportion Liebe" oder "drei
 Einmachgläser".
 
 **Zutaten** (siehe Zutaten).
@@ -76,6 +76,6 @@ Siehe:
 ``core/src/zeit/wochenmarkt/browser/widget.py``
 ``core/src/zeit/content/modules/recipelist.py``
 
-Jeder Zutat können weitere Informationen hinterlegt werden, wie z.B. Menge,
+Zu jeder Zutat können weitere Informationen hinterlegt werden, wie z.B. Menge,
 Details, Einheit, etc. Letzteres ist ein Auswahlfeld, dessen Inhalt ebenfalls
 aus der ``recipe-metadata.xml`` stammt.
