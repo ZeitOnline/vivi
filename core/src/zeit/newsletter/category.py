@@ -118,8 +118,8 @@ class NewsletterCategory(NewsletterCategoryBase,
         now = datetime.datetime.now(pytz.UTC)
         result = connector.search(
             [FIRST_RELEASED, DAILY_NEWSLETTER], (
-            FIRST_RELEASED.between(timestamp.isoformat(), now.isoformat()) &
-            (DAILY_NEWSLETTER == 'yes')))  # noqa
+                FIRST_RELEASED.between(timestamp.isoformat(), now.isoformat()) &
+                (DAILY_NEWSLETTER == 'yes')))  # noqa
         for item in result:
             unique_id = item[0]
             obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
