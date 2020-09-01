@@ -116,10 +116,9 @@ class NewsletterCategory(NewsletterCategoryBase,
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         now = datetime.datetime.now(pytz.UTC)
-        result = connector.search(
-            [FIRST_RELEASED, DAILY_NEWSLETTER], (
-                FIRST_RELEASED.between(timestamp.isoformat(), now.isoformat()) &
-                (DAILY_NEWSLETTER == 'yes')))  # noqa
+        result = connector.search([FIRST_RELEASED, DAILY_NEWSLETTER], (
+            FIRST_RELEASED.between(timestamp.isoformat(), now.isoformat()) &
+            (DAILY_NEWSLETTER == 'yes')))  # noqa
         for item in result:
             unique_id = item[0]
             obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
