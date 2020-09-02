@@ -549,7 +549,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 //  <p>asdf|</p> type 4xbackspace
                 //  <p>|<br></p> type `asdf`, then enter
                 //  <p>asdf</p><p><br></p> Note NO br in the first p!
-                par.append('<br type="moz"/>');
+                par.append('<br/>');
             }
         } else {
             return null;
