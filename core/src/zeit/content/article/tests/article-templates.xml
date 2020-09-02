@@ -1,0 +1,50 @@
+<templates>
+  <template name="zon-article" available="zeit.cms.section.interfaces.IZONContent">
+    <title>Artikel</title>
+    <header name="default" default_for="zeit.cms.section.interfaces.IZONContent">
+      <title>Standard</title>
+    </header>
+    <header name="embed" allow_header_module="true">
+      <title>Header-Modul oben</title>
+    </header>
+    <header name="podcast" allow_header_module="true">
+      <title>Podcast</title>
+    </header>
+    <header name="narrow">
+      <title>Spiele</title>
+    </header>
+  </template>
+  <template name="visual-article">
+    <title>Visual Article</title>
+    <header name="embed" allow_header_module="true">
+      <title>Header-Modul oben</title>
+    </header>
+    <header name="fullwidth-classic">
+      <title>Vollbreit, classic</title>
+    </header>
+    <header name="fullwidth-split">
+      <title>Vollbreit, split (also, geteilt, ja?)</title>
+      <color name="#eeeefa">
+        <title>Steingrau frisch</title>
+      </color>
+      <color name="#ccccca">
+        <title>Mausgrau</title>
+      </color>
+      <color name="#085066">
+        <title>Kornblau</title>
+      </color>
+    </header>
+    <header name="fullwidth-alternative">
+      <title>Vollbreit, alternative</title>
+      <color name="#eeeef0">
+        <title>Silbergrau 1</title>
+      </color>
+      <color name="#cccccf">
+        <title>Silbergrau 2</title>
+      </color>
+      <color name="#085064">
+        <title>Ozeanblau 4</title>
+      </color>
+    </header>
+  </template>
+</templates>
