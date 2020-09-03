@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.39.2 (unreleased)
+4.39.2 (2020-09-03)
 -------------------
 
 - BUG-1283: Size of images in image gallery editor is max 500 px x 500 px
