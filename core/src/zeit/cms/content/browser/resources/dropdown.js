@@ -52,7 +52,7 @@ zeit.cms.MasterSlaveDropDown = gocept.Class.extend({
 });
 
 
-zeit.cms.MultiGenerationDropDown = gocept.Class.extend({
+zeit.cms.MultiGenerationDropDown = zeit.cms.MasterSlaveDropDown.extend({
 
     construct: function(grandparent, parent, child, update_url) {
         var self = this;
@@ -72,11 +72,6 @@ zeit.cms.MultiGenerationDropDown = gocept.Class.extend({
 
         MochiKit.Signal.connect(grandparent, 'onchange', self, self.update);
         self.update();
-    },
-
-    destroy: function() {
-        var self = this;
-        MochiKit.Signal.disconnectAllTo(self, self.update);
     },
 
     update: function(event) {
