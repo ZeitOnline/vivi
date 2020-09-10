@@ -16,10 +16,10 @@ Get the json view:
 ...     (getRootFolder(), request), name='subnavigationupdater.json')
 
 
->>> u'Deutschland' in updater.master_source
+>>> u'Deutschland' in updater.parent_source
 True
->>> dt_term = updater.master_terms.getTerm(u'Deutschland')
->>> updater(master_token=dt_term.token)
+>>> dt_term = updater.parent_terms.getTerm(u'Deutschland')
+>>> updater(parent_token=dt_term.token)
 '[["Datenschutz", "3da775df8d065507c482a20bf7a93427"],
   ["Integration", "1115b855bb2a508bc2ca0609cc2d0f65"],
   ["Joschka Fisher", "d3eaed24e3bebd3c218443bd44778823"],
@@ -34,5 +34,5 @@ Make sure those results are cached:
 
 For values which are not in the source we'll get an empty list:
 
->>> updater(master_token='foo')
+>>> updater(parent_token='foo')
 '[]'

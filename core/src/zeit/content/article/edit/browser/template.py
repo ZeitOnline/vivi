@@ -36,12 +36,12 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
 class TemplateUpdater(
         zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
 
-    master_source = zeit.content.article.source.ArticleTemplateSource()
-    slave_source = zeit.content.article.source.ArticleHeaderSource()
+    parent_source = zeit.content.article.source.ArticleTemplateSource()
+    child_source = zeit.content.article.source.ArticleHeaderSource()
 
 
 class HeaderUpdater(
         zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
 
-    master_source = zeit.content.article.source.ArticleHeaderSource()
-    slave_source = zeit.content.article.source.ArticleHeaderColorSource()
+    parent_source = zeit.content.article.source.ArticleHeaderSource()
+    child_source = zeit.content.article.source.ArticleHeaderColorSource()
