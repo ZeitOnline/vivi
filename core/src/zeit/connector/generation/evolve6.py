@@ -1,7 +1,7 @@
 import BTrees
 import zeit.connector.cache
 import zeit.connector.interfaces
-import zope.app.zopeappgenerations
+import zope.generations.utility
 import zope.component
 import zope.component.hooks
 
@@ -19,7 +19,7 @@ def update(root):
 def evolve(context):
     site = zope.component.hooks.getSite()
     try:
-        root = zope.app.zopeappgenerations.getRootFolder(context)
+        root = zope.generations.utility.getRootFolder(context)
         zope.component.hooks.setSite(root)
         update(root)
     finally:
