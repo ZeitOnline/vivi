@@ -129,12 +129,12 @@ class ArticleHeaderSource(zeit.cms.content.sources.ParentChildSource):
     config_url = ArticleTemplateSource.config_url
     default_filename = ArticleTemplateSource.default_filename
     attribute = 'name'
-    slave_tag = 'header'
-    master_node_xpath = '/templates/template'
-    master_value_key = 'template'
+    child_tag = 'header'
+    parent_node_xpath = '/templates/template'
+    parent_value_key = 'template'
 
     @property
-    def master_value_iface(self):
+    def parent_value_iface(self):
         # prevent circular import
         import zeit.content.article.interfaces
         return zeit.content.article.interfaces.IArticleMetadata
@@ -145,9 +145,9 @@ class ArticleHeaderSource(zeit.cms.content.sources.ParentChildSource):
 
 class ArticleHeaderColorSource(ArticleHeaderSource):
 
-    slave_tag = 'color'
-    master_node_xpath = '/templates/template/header'
-    master_value_key = 'header'
+    child_tag = 'color'
+    parent_node_xpath = '/templates/template/header'
+    parent_value_key = 'header'
 
 
 class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):

@@ -22,7 +22,7 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
     zeit.cms.configure_multigeneration(
         "%s.", "template", "header_layout", "header_color",
         "@@zeit.content.article.update_articletemplate.json");
-    zeit.cms.configure_master_slave(
+    zeit.cms.configure_parent_child(
         "%s.", "header_layout", "header_color",
         "@@zeit.content.article.update_articleheader.json");
 </script>""" % (self.prefix, self.prefix)

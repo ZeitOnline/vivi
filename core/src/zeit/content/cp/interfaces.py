@@ -326,8 +326,8 @@ class QueryOperatorSource(SimpleDictSource):
 
 class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
 
-    def _get_master_value(self, context):
-        # `context` is the IArea, which is adaptable to `master_value_iface`
+    def _get_parent_value(self, context):
+        # `context` is the IArea, which is adaptable to `parent_value_iface`
         # ICommonMetadata, since it is adaptable to ICenterPage -- but of
         # course we don't want to restrict the query subressort according to
         # the CP's ressort. So we disable this validation here and rely on the
