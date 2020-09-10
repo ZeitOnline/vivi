@@ -264,7 +264,7 @@ class RessortSource(XMLSource):
         return six.text_type(node['title'])
 
 
-class MasterSlaveSource(XMLSource):
+class ParentChildSource(XMLSource):
 
     slave_tag = NotImplemented
     master_node_xpath = NotImplemented
@@ -336,7 +336,7 @@ class MasterSlaveSource(XMLSource):
         return getattr(data, self.master_value_key)
 
 
-class SubRessortSource(MasterSlaveSource):
+class SubRessortSource(ParentChildSource):
 
     config_url = RessortSource.config_url
     default_filename = RessortSource.default_filename
@@ -366,7 +366,7 @@ class ChannelSource(XMLSource):
         return six.text_type(node['title'])
 
 
-class SubChannelSource(MasterSlaveSource):
+class SubChannelSource(ParentChildSource):
 
     config_url = ChannelSource.config_url
     default_filename = ChannelSource.default_filename
@@ -383,13 +383,13 @@ class SubChannelSource(MasterSlaveSource):
 
     def _get_master_nodes(self, context):
         if type(context).__name__ == 'Fake':
-            # for .browser.MasterSlaveDropdownUpdater
+            # for .browser.ParentChildDropdownUpdater
             return super(SubChannelSource, self)._get_master_nodes(context)
         # The ``channels`` field is a list of combination values.
         # The formlib validation machinery does not give us enough context
         # to determine the master value, so we are forced to allow all values.
         # We can get away with this since the UI only offers valid subchannel
-        # values (powered by MasterSlaveDropdownUpdater above).
+        # values (powered by ParentChildDropdownUpdater above).
         tree = self._get_tree()
         all_nodes = tree.xpath(self.master_node_xpath)
         return all_nodes

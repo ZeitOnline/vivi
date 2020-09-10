@@ -123,7 +123,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 ARTICLE_TEMPLATE_SOURCE = ArticleTemplateSource()
 
 
-class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
+class ArticleHeaderSource(zeit.cms.content.sources.ParentChildSource):
 
     product_configuration = ArticleTemplateSource.product_configuration
     config_url = ArticleTemplateSource.config_url
