@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.39.3 (unreleased)
+4.39.3 (2020-09-10)
 -------------------
 
 - MAINT: Update zeit.connector to current zope.generations API
