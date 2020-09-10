@@ -54,11 +54,11 @@ zeit.cms.MasterSlaveDropDown = gocept.Class.extend({
 
 zeit.cms.MultiGenerationDropDown = zeit.cms.MasterSlaveDropDown.extend({
 
-    construct: function(grandparent, parent, child, update_url) {
+    construct: function(parent, child, grandchild, update_url) {
         var self = this;
-        self.grandparent = grandparent;
         self.parent = parent;
         self.child = child;
+        self.grandchild = grandchild;
         self.update_url = update_url;
 
         // XXX The following selector makes sense only in part of the forms
@@ -67,29 +67,29 @@ zeit.cms.MultiGenerationDropDown = zeit.cms.MasterSlaveDropDown.extend({
         // fix #10664, the resulting difference in behaviour between
         // addcentral and, e.g., an article's edit form happened to be what
         // was requested, so we left it at that.
-        self.parent_field = jQuery(parent).closest('.field');
         self.child_field = jQuery(child).closest('.field');
+        self.grandchild_field = jQuery(grandchild).closest('.field');
 
-        MochiKit.Signal.connect(grandparent, 'onchange', self, self.update);
+        MochiKit.Signal.connect(parent, 'onchange', self, self.update);
         self.update();
     },
 
     update: function(event) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            self.update_url, {master_token: self.grandparent.value});
+            self.update_url, {master_token: self.parent.value});
         d.addCallback(function(result) {
             var data = MochiKit.Async.evalJSONRequest(result);
 
             if (data.length == 0) {
-                self.parent_field.hide();
                 self.child_field.hide();
+                self.grandchild_field.hide();
             } else {
-                self.parent_field.show();
+                self.child_field.show();
             }
 
-            var selected = self.parent.value;
-            self.parent.options.length = 1;
+            var selected = self.child.value;
+            self.child.options.length = 1;
             forEach(data, function(new_option) {
                 var label = new_option[0];
                 var value = new_option[1];
@@ -97,7 +97,7 @@ zeit.cms.MultiGenerationDropDown = zeit.cms.MasterSlaveDropDown.extend({
                 if (value == selected) {
                     option.selected = true;
                 }
-                self.parent.options[self.parent.options.length] = option;
+                self.child.options[self.child.options.length] = option;
             });
         });
     }
@@ -127,25 +127,25 @@ zeit.cms.configure_master_slave = function(prefix, master, slave, update_url) {
 };
 
 
-zeit.cms.configure_multigeneration = function(prefix, grandparent, parent, child, update_url) {
+zeit.cms.configure_multigeneration = function(prefix, parent, child, grandchild, update_url) {
     if (isUndefinedOrNull(prefix)) {
         prefix = 'form.';
     }
-    grandparent = $(prefix + grandparent);
     parent = $(prefix + parent);
     child = $(prefix + child);
+    grandchild = $(prefix + grandchild);
 
-    if (isNull(grandparent) || isNull(parent) || isNull(child)) {
+    if (isNull(parent) || isNull(child) || isNull(grandchild)) {
         return;
     }
-    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[grandparent.name])) {
-        zeit.cms.master_slave_dropdown[grandparent.name].destroy();
+    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[parent.name])) {
+        zeit.cms.master_slave_dropdown[parent.name].destroy();
     }
     var path = window.location.pathname.split('/').slice(0, -1);
     path.push(update_url);
     path = path.join('/');
-    zeit.cms.master_slave_dropdown[grandparent.name] =
-        new zeit.cms.MultiGenerationDropDown(grandparent, parent, child, path);
+    zeit.cms.master_slave_dropdown[parent.name] =
+        new zeit.cms.MultiGenerationDropDown(parent, child, grandchild, path);
 };
 
 
@@ -175,11 +175,11 @@ zeit.cms.configure_channel_dropdowns = function(
 
 /**
  * The item currently in display belongs to the <select>, not the <option>,
- * but since CSS doesn't have neither a parent selector nor a
+ * but since CSS doesn't have neither a child selector nor a
  * 'attribute != value' comparison, we need to use JS for this.
  */
 zeit.cms.style_dropdowns = function(container) {
-    jQuery('.required option[value = ""]', container).parent().css(
+    jQuery('.required option[value = ""]', container).child().css(
         'color', 'red');
     jQuery('.required option[value = ""]', container).css('color', 'red');
     jQuery('.required option[value != ""]', container).css('color', 'black');
