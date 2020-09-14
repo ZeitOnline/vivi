@@ -1,6 +1,6 @@
 import zope.component
 import zope.component.hooks
-import zope.app.zopeappgenerations
+import zope.generations.utility
 
 
 generation = 1
@@ -20,7 +20,7 @@ def update(root):
 def evolve(context):
     site = zope.component.hooks.getSite()
     try:
-        root = zope.app.zopeappgenerations.getRootFolder(context)
+        root = zope.generations.utility.getRootFolder(context)
         zope.component.hooks.setSite(root)
         update(root)
     finally:
