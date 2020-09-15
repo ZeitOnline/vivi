@@ -162,11 +162,11 @@ zeit.cms.configure_channel_dropdowns = function(
 
 /**
  * The item currently in display belongs to the <select>, not the <option>,
- * but since CSS doesn't have neither a child selector nor a
+ * but since CSS doesn't have neither a parent selector nor a
  * 'attribute != value' comparison, we need to use JS for this.
  */
 zeit.cms.style_dropdowns = function(container) {
-    jQuery('.required option[value = ""]', container).child().css(
+    jQuery('.required option[value = ""]', container).parent().css(
         'color', 'red');
     jQuery('.required option[value = ""]', container).css('color', 'red');
     jQuery('.required option[value != ""]', container).css('color', 'black');
