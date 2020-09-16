@@ -56,9 +56,22 @@ zeit.cms.MultiGenerationDropDown = zeit.cms.ParentChildDropDown.extend({
 
     construct: function(parent, child, grandchild, update_url) {
         var self = this;
+        self.parent = parent;
+        self.child = child;
         self.grandchild = grandchild;
+        self.update_url = update_url;
+
+        // XXX The following selector makes sense only in part of the forms
+        // used by vivi. In particular, it doesn't work for the subpage form
+        // of addcentral. When we implemented hiding the child drop-down to
+        // fix #10664, the resulting difference in behaviour between
+        // addcentral and, e.g., an article's edit form happened to be what
+        // was requested, so we left it at that.
+        self.child_field = jQuery(child).closest('.field');
         self.grandchild_field = jQuery(grandchild).closest('.field');
-        arguments.callee.$.construct.call(self);
+
+        MochiKit.Signal.connect(parent, 'onchange', self, self.update);
+        self.update();
     },
 
     update: function(event) {
