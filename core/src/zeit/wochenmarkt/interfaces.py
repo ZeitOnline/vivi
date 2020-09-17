@@ -53,6 +53,9 @@ class IIngredientsWhitelist(zope.interface.Interface):
     def plural(id):
         """Returns the plural for an ingredient id."""
 
+    def diet(id):
+        """Returns a list of diet types for an ingredient id."""
+
     def get(id):
         """Return the ingredient for the given id."""
 
