@@ -32,6 +32,7 @@ class Ingredient(object):
                 'qwords_category') else None
         self.singular = kwargs.get('singular')
         self.plural = kwargs.get('plural')
+        self.diet = kwargs.get('diet')
         self.__name__ = self.code
 
 
@@ -97,7 +98,8 @@ class IngredientsWhitelist(
                     qwords=ingredient_node.get('q'),
                     qwords_category=ingredient_node.getparent().get('q'),
                     singular=ingredient_node.get('singular'),
-                    plural=ingredient_node.get('plural').strip())
+                    plural=ingredient_node.get('plural').strip(),
+                    diet=ingredient_node.get('diet'))
             except AttributeError:
                 continue
             ingredients[ingredient_node.get('id')] = ingredient

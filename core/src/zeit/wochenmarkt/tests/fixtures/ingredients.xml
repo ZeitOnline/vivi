@@ -1,40 +1,40 @@
 <?xml version="1.0" ?>
 <ingredients>
   <chicken q="Hahn">
-    <ingredient id="brathaehnchen" q="Hühnchen, Hähnchen" singular="Brathähnchen" plural="Brathähnchen" />
-    <ingredient id="chicken-nuggets" q="Hühnchen,Hähnchen" singular="Chicken Nugget" plural="Chicken Nuggets" />
+    <ingredient id="brathaehnchen" q="Hühnchen, Hähnchen" singular="Brathähnchen" plural="Brathähnchen" diet="omnivore" />
+    <ingredient id="chicken-nuggets" q="Hühnchen,Hähnchen" singular="Chicken Nugget" plural="Chicken Nuggets" diet="omnivore" />
   </chicken>
   <fish q="Fisch, Meeresfrüchte">
-    <ingredient id="calamari" q="Tintenfisch,Kalamar" singular="Calamari" plural="Calamari" />
-    <ingredient id="crevetten" q="Krevetten,Garnelen,Garnele" singular="Crevette" plural="Crevetten" />
+    <ingredient id="calamari" q="Tintenfisch,Kalamar" singular="Calamari" plural="Calamari" diet="omnivore" />
+    <ingredient id="crevetten" q="Krevetten,Garnelen,Garnele" singular="Crevette" plural="Crevetten" diet="omnivore" />
   </fish>
   <meat>
-    <ingredient id="bratenfond" q="Kraftbrühe,Fond" singular="Bratenfond" plural="Bratenfond" />
-    <ingredient id="bratwurst" q="Grillwurst,Wurst" singular="Bratwurst" plural="Bratwürste" />
+    <ingredient id="bratenfond" q="Kraftbrühe,Fond" singular="Bratenfond" plural="Bratenfond" diet="omnivore" />
+    <ingredient id="bratwurst" q="Grillwurst,Wurst" singular="Bratwurst" plural="Bratwürste" diet="omnivore" />
   </meat>
   <other>
-    <ingredient id="ei" q="Ei" singular="Ei" plural="Eier" />
-    <ingredient id="eis" q="Eis" singular="Eis" plural="Eis" />
-    <ingredient id="brei" q="Brei" singular="Brei" plural="Breie" />
-    <ingredient id="bandnudeln" q="Nudeln,Pasta" singular="Bandnudeln" plural="Bandnudeln" />
-    <ingredient id="basmatireis" q="Reis,Basmati" singular="Basmatireis" plural="Basmatireis" />
-    <ingredient id="milk" q="Milch" singular="Milch" plural="Milch" />
+    <ingredient id="ei" q="Ei" singular="Ei" plural="Eier" diet="vegetarian" />
+    <ingredient id="eis" q="Eis" singular="Eis" plural="Eis" diet="vegetarian" />
+    <ingredient id="brei" q="Brei" singular="Brei" plural="Breie" diet="vegetarian" />
+    <ingredient id="bandnudeln" q="Nudeln,Pasta" singular="Bandnudeln" plural="Bandnudeln" diet="vegan" />
+    <ingredient id="basmatireis" q="Reis,Basmati" singular="Basmatireis" plural="Basmatireis" diet="vegan" />
+    <ingredient id="milk" q="Milch" singular="Milch" plural="Milch" diet="vegetarian" />
   </other>
   <spices>
-    <ingredient id="muskatnuss" q="" singular="Muskatnuss,Muskat" plural="Muskatnüsse" />
-    <ingredient id="natron" q="" singular="Natron" plural="Natron" />
+    <ingredient id="muskatnuss" q="" singular="Muskatnuss,Muskat" plural="Muskatnüsse" diet="vegan" />
+    <ingredient id="natron" q="" singular="Natron" plural="Natron"  diet="vegan" />
   </spices>
   <vegetables>
-    <ingredient id="gurke" q="" singular="Gurke" plural="Gurken" />
-    <ingredient id="tomate" q="Tomate,Tomaten" singular="Tomate" plural="Tomaten" />
+    <ingredient id="gurke" q="" singular="Gurke" plural="Gurken" diet="vegan" />
+    <ingredient id="tomate" q="Tomate,Tomaten" singular="Tomate" plural="Tomaten" diet="vegan" />
   </vegetables>
   <poultry>
-    <ingredient id="haenchenkeule" q="Hühnchen,Hähnchen" singular="Hänchenkeule" plural="Hänchenkeulen" />
-    <ingredient id="truthahnbrust" q="Truthahn,Pute" singular="Truthahnbrust" plural="Truthahnbrüste" />
+    <ingredient id="haenchenkeule" q="Hühnchen,Hähnchen" singular="Hänchenkeule" plural="Hänchenkeulen" diet="omnivore" />
+    <ingredient id="truthahnbrust" q="Truthahn,Pute" singular="Truthahnbrust" plural="Truthahnbrüste" diet="omnivore" />
   </poultry>
   <fruits>
-    <ingredient id="banana" q="Banane" singular="Banane" plural="Bananen" />
-    <ingredient id="physalis" q="Physalis" singular="Physalis" /> <!-- missing plural -->
-    <ingredient id="pomeranze" q="Bitterorange,Pomeranze" singular="Pomeranze" plural="Pomeranzen" />
+    <ingredient id="banana" q="Banane" singular="Banane" plural="Bananen" diet="vegan" />
+    <ingredient id="physalis" q="Physalis" singular="Physalis" diet="vegan" /> <!-- missing plural -->
+    <ingredient id="pomeranze" q="Bitterorange,Pomeranze" singular="Pomeranze" plural="Pomeranzen" diet="vegan" />
   </fruits>
 </ingredients>
