@@ -29,26 +29,31 @@ zeit.cms.ParentChildDropDown = gocept.Class.extend({
             self.update_url, {parent_token: self.parent.value});
         d.addCallback(function(result) {
             var data = MochiKit.Async.evalJSONRequest(result);
+            self._update(data);
+        });
+    },
 
-            if (data.length == 0) {
-                self.child_field.hide();
-            } else {
-                self.child_field.show();
+    _update: function(data) {
+        var self = this;
+        if (data.length == 0) {
+            self.child_field.hide();
+        } else {
+            self.child_field.show();
+        }
+
+        var selected = self.child.value;
+        self.child.options.length = 1;
+        forEach(data, function(new_option) {
+            var label = new_option[0];
+            var value = new_option[1];
+            var option = new Option(label, value);
+            if (value == selected) {
+                option.selected = true;
             }
-
-            var selected = self.child.value;
-            self.child.options.length = 1;
-            forEach(data, function(new_option) {
-                var label = new_option[0];
-                var value = new_option[1];
-                var option = new Option(label, value);
-                if (value == selected) {
-                    option.selected = true;
-                }
-                self.child.options[self.child.options.length] = option;
-            });
+            self.child.options[self.child.options.length] = option;
         });
     }
+
 });
 
 
@@ -56,50 +61,14 @@ zeit.cms.MultiGenerationDropDown = zeit.cms.ParentChildDropDown.extend({
 
     construct: function(parent, child, grandchild, update_url) {
         var self = this;
-        self.parent = parent;
-        self.child = child;
-        self.grandchild = grandchild;
-        self.update_url = update_url;
-
-        // XXX The following selector makes sense only in part of the forms
-        // used by vivi. In particular, it doesn't work for the subpage form
-        // of addcentral. When we implemented hiding the child drop-down to
-        // fix #10664, the resulting difference in behaviour between
-        // addcentral and, e.g., an article's edit form happened to be what
-        // was requested, so we left it at that.
-        self.child_field = jQuery(child).closest('.field');
         self.grandchild_field = jQuery(grandchild).closest('.field');
-
-        MochiKit.Signal.connect(parent, 'onchange', self, self.update);
-        self.update();
+        arguments.callee.$.construct.call(self, parent, child, update_url);
     },
 
-    update: function(event) {
+    _update: function(data) {
         var self = this;
-        var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            self.update_url, {parent_token: self.parent.value});
-        d.addCallback(function(result) {
-            var data = MochiKit.Async.evalJSONRequest(result);
-
-            if (data.length == 0) {
-                self.child_field.hide();
-                self.grandchild_field.hide();
-            } else {
-                self.child_field.show();
-            }
-
-            var selected = self.child.value;
-            self.child.options.length = 1;
-            forEach(data, function(new_option) {
-                var label = new_option[0];
-                var value = new_option[1];
-                var option = new Option(label, value);
-                if (value == selected) {
-                    option.selected = true;
-                }
-                self.child.options[self.child.options.length] = option;
-            });
-        });
+        self.grandchild_field.hide();
+        arguments.callee.$._update.call(self, data);
     }
 });
 
