@@ -5,7 +5,7 @@ vivi.core changes
 4.39.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-181: Add notification for empty recipe title
 
 
 4.39.4 (2020-09-21)

@@ -2051,6 +2051,17 @@
   width: 3em !important;
 }
 
+#edit-form-article-content .type-recipelist .fieldname-title.notification:before {
+  border-radius: 3px;
+  border: 1px solid #269;
+  box-shadow: 1px 1px 2px #aaa;
+  color: #269;
+  content: 'Bitte trag einen Rezeptnamen im Rezept Modul ein, außer du hast mit diesem Rezept Modul nur eine Zwischenüberschrift definiert. (Nur so wird der Artikel später von Suchmaschinen als Rezept erkannt.)';
+  display: block;
+  margin-bottom: 0.5em;
+  padding: 0.8em;
+}
+
 /* Dirty hacks to prevent the whole line of widgets to wrap abominable on error */
 #edit-form-article-content .type-recipelist .fieldname-complexity div.error,
 #edit-form-article-content .type-recipelist .fieldname-time div.error,

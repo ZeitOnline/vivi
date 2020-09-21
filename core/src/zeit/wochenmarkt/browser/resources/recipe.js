@@ -39,6 +39,7 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
         self._initialize_autocomplete();
         self._initialize_sortable();
         self.element.addEventListener("change", function() { self.update_entry(self.data) } );
+        self.validate_recipe_title();
     },
 
     _initialize_autocomplete: function() {
@@ -130,6 +131,16 @@ zeit.wochenmarkt.IngredientsWidget = gocept.Class.extend({
             }
         });
         data.value = JSON.stringify(ingredients);
+    },
+
+    validate_recipe_title: function() {
+        // It's just a simple notification that does not prevent the article
+        // form being edited, checked in or published.
+        const title_id = this.id.replace('.ingredients', '.title');
+        const title = document.getElementById(title_id);
+        if (title.value === "") {
+            title.closest('.fieldname-title').classList.add('notification');
+        }
     },
 
     delete: function(event) {
