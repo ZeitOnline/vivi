@@ -5,7 +5,7 @@ vivi.core changes
 4.39.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- WOMA-240: Add diet to wochenmarkt ingredients.
 
 
 4.39.3 (2020-09-10)
