@@ -1,6 +1,6 @@
 zeit.cms.ParentChildDropDown = gocept.Class.extend({
 
-    construct: function(parent, child, update_url) {
+    construct: function(parent, child, update_url, grandchild) {
         var self = this;
         self.parent = parent;
         self.child = child;
@@ -13,6 +13,12 @@ zeit.cms.ParentChildDropDown = gocept.Class.extend({
         // addcentral and, e.g., an article's edit form happened to be what
         // was requested, so we left it at that.
         self.child_field = jQuery(child).closest('.field');
+
+        if (!isUndefinedOrNull(grandchild)) {
+            self.grandchild_field = jQuery(grandchild).closest('.field');
+        } else {
+            self.grandchild_field = null;
+        }
 
         MochiKit.Signal.connect(parent, 'onchange', self, self.update);
         self.update();
@@ -29,53 +35,36 @@ zeit.cms.ParentChildDropDown = gocept.Class.extend({
             self.update_url, {parent_token: self.parent.value});
         d.addCallback(function(result) {
             var data = MochiKit.Async.evalJSONRequest(result);
-            self._update(data);
-        });
-    },
-
-    _update: function(data) {
-        var self = this;
-        if (data.length == 0) {
-            self.child_field.hide();
-        } else {
-            self.child_field.show();
-        }
-
-        var selected = self.child.value;
-        self.child.options.length = 1;
-        forEach(data, function(new_option) {
-            var label = new_option[0];
-            var value = new_option[1];
-            var option = new Option(label, value);
-            if (value == selected) {
-                option.selected = true;
+            if (data.length == 0) {
+                self.child_field.hide();
+            } else {
+                self.child_field.show();
             }
-            self.child.options[self.child.options.length] = option;
+
+            var selected = self.child.value;
+            self.child.options.length = 1;
+            forEach(data, function(new_option) {
+                var label = new_option[0];
+                var value = new_option[1];
+                var option = new Option(label, value);
+                if (value == selected) {
+                    option.selected = true;
+                }
+                self.child.options[self.child.options.length] = option;
+            });
+
+            if (!isNull(self.grandchild_field)) {
+                self.grandchild_field.hide();
+            }
         });
-    }
-
-});
-
-
-zeit.cms.MultiGenerationDropDown = zeit.cms.ParentChildDropDown.extend({
-
-    construct: function(parent, child, grandchild, update_url) {
-        var self = this;
-        self.grandchild_field = jQuery(grandchild).closest('.field');
-        arguments.callee.$.construct.call(self, parent, child, update_url);
     },
 
-    _update: function(data) {
-        var self = this;
-        self.grandchild_field.hide();
-        arguments.callee.$._update.call(self, data);
-    }
 });
-
 
 zeit.cms.parent_child_dropdown = {};
 
-zeit.cms.configure_parent_child = function(prefix, parent, child, update_url) {
+zeit.cms.configure_parent_child = function(
+        prefix, parent, child, update_url, grandchild) {
     if (isUndefinedOrNull(prefix)) {
         prefix = 'form.';
     }
@@ -85,36 +74,23 @@ zeit.cms.configure_parent_child = function(prefix, parent, child, update_url) {
     if (isNull(parent) || isNull(child)) {
         return;
     }
+
+    if (!isUndefinedOrNull(grandchild)) {
+        grandchild = $(prefix + grandchild);
+        if (isNull(grandchild)) {
+            return;
+        }
+    }
+
     if (!isUndefinedOrNull(zeit.cms.parent_child_dropdown[parent.name])) {
         zeit.cms.parent_child_dropdown[parent.name].destroy();
     }
     var path = window.location.pathname.split('/').slice(0, -1);
     path.push(update_url);
     path = path.join('/');
+
     zeit.cms.parent_child_dropdown[parent.name] =
-        new zeit.cms.ParentChildDropDown(parent, child, path);
-};
-
-
-zeit.cms.configure_multigeneration = function(prefix, parent, child, grandchild, update_url) {
-    if (isUndefinedOrNull(prefix)) {
-        prefix = 'form.';
-    }
-    parent = $(prefix + parent);
-    child = $(prefix + child);
-    grandchild = $(prefix + grandchild);
-
-    if (isNull(parent) || isNull(child) || isNull(grandchild)) {
-        return;
-    }
-    if (!isUndefinedOrNull(zeit.cms.parent_child_dropdown[parent.name])) {
-        zeit.cms.parent_child_dropdown[parent.name].destroy();
-    }
-    var path = window.location.pathname.split('/').slice(0, -1);
-    path.push(update_url);
-    path = path.join('/');
-    zeit.cms.parent_child_dropdown[parent.name] =
-        new zeit.cms.MultiGenerationDropDown(parent, child, grandchild, path);
+        new zeit.cms.ParentChildDropDown(parent, child, path, grandchild);
 };
 
 
