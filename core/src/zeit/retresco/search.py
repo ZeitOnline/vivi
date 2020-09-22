@@ -73,6 +73,14 @@ class Elasticsearch(object):
         result.hits = response['hits']['total']
         return result
 
+    def aggregate(self, query):
+        """Returns aggregated data from payload aggregations. Consult Elastic
+        Search - Aggregations documentation for further information."""
+
+        __traceback_info__ = (self.index, query)
+        response = self.client.search(index=self.index, body=json.dumps(query))
+        return response['aggregations']
+
     def date_range(self, start, end):
         return date_range(start, end)
 
