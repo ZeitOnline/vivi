@@ -7,6 +7,8 @@ vivi.core changes
 
 - WOMA-181: Add notification for empty recipe title
 
+- WOMA-204: Add aggregations to retresco.ElasticSearch query api
+
 
 4.39.4 (2020-09-21)
 -------------------
