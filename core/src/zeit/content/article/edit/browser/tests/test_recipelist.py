@@ -173,3 +173,25 @@ class FormLoader(
             s.getAttribute('css=.ingredients-widget input@value'))[0]
         assert ingredient_data.get('code') == 'brathaehnchen'
         assert ingredient_data.get('unit') == 'stueck'
+
+    def test_unset_recipe_title_should_print_hint(self):
+        s = self.selenium
+        self.add_article()
+        self.create_block('recipelist')
+
+        # Accessing pseudo elements in selenium is slightly annoying...
+        title_content = (
+            'window.getComputedStyle(document.querySelector('
+            '".type-recipelist .fieldname-title"), ":before"'
+            ').getPropertyValue("content")')
+
+        title_field = '.type-recipelist .fieldname-title input'
+
+        # Show notification if no title has been set
+        assert "Bitte trag einen Rezeptnamen" in s.getEval(title_content)
+
+        # After setting the title, the notification should disappear
+        s.type('css=' + title_field, 'bananabread')
+        s.runScript('document.querySelector("' + title_field + '").blur()')
+        s.waitForCssCount('css=.dirty', 0)
+        assert '"none"' == s.getEval(title_content)
