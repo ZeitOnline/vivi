@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.40.0 (unreleased)
+4.40.0 (2020-09-28)
 -------------------
 
 - ZON-6068: Implement IArticle.header_color
