@@ -1,20 +1,26 @@
-zeit.cms.MasterSlaveDropDown = gocept.Class.extend({
+zeit.cms.ParentChildDropDown = gocept.Class.extend({
 
-    construct: function(master, slave, update_url) {
+    construct: function(parent, child, update_url, grandchild) {
         var self = this;
-        self.master = master;
-        self.slave = slave;
+        self.parent = parent;
+        self.child = child;
         self.update_url = update_url;
 
         // XXX The following selector makes sense only in part of the forms
         // used by vivi. In particular, it doesn't work for the subpage form
-        // of addcentral. When we implemented hiding the slave drop-down to
+        // of addcentral. When we implemented hiding the child drop-down to
         // fix #10664, the resulting difference in behaviour between
         // addcentral and, e.g., an article's edit form happened to be what
         // was requested, so we left it at that.
-        self.slave_field = jQuery(slave).closest('.field');
+        self.child_field = jQuery(child).closest('.field');
 
-        MochiKit.Signal.connect(master, 'onchange', self, self.update);
+        if (!isUndefinedOrNull(grandchild)) {
+            self.grandchild_field = jQuery(grandchild).closest('.field');
+        } else {
+            self.grandchild_field = null;
+        }
+
+        MochiKit.Signal.connect(parent, 'onchange', self, self.update);
         self.update();
     },
 
@@ -26,18 +32,17 @@ zeit.cms.MasterSlaveDropDown = gocept.Class.extend({
     update: function(event) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            self.update_url, {master_token: self.master.value});
+            self.update_url, {parent_token: self.parent.value});
         d.addCallback(function(result) {
             var data = MochiKit.Async.evalJSONRequest(result);
-
             if (data.length == 0) {
-                self.slave_field.hide();
+                self.child_field.hide();
             } else {
-                self.slave_field.show();
+                self.child_field.show();
             }
 
-            var selected = self.slave.value;
-            self.slave.options.length = 1;
+            var selected = self.child.value;
+            self.child.options.length = 1;
             forEach(data, function(new_option) {
                 var label = new_option[0];
                 var value = new_option[1];
@@ -45,56 +50,70 @@ zeit.cms.MasterSlaveDropDown = gocept.Class.extend({
                 if (value == selected) {
                     option.selected = true;
                 }
-                self.slave.options[self.slave.options.length] = option;
+                self.child.options[self.child.options.length] = option;
             });
+
+            if (!isNull(self.grandchild_field)) {
+                self.grandchild_field.hide();
+            }
         });
-    }
+    },
+
 });
 
+zeit.cms.parent_child_dropdown = {};
 
-zeit.cms.master_slave_dropdown = {};
-
-zeit.cms.configure_master_slave = function(prefix, master, slave, update_url) {
+zeit.cms.configure_parent_child = function(
+        prefix, parent, child, update_url, grandchild) {
     if (isUndefinedOrNull(prefix)) {
         prefix = 'form.';
     }
-    master = $(prefix + master);
-    slave = $(prefix + slave);
+    parent = $(prefix + parent);
+    child = $(prefix + child);
 
-    if (isNull(master) || isNull(slave)) {
+    if (isNull(parent) || isNull(child)) {
         return;
     }
-    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[master.name])) {
-        zeit.cms.master_slave_dropdown[master.name].destroy();
+
+    if (!isUndefinedOrNull(grandchild)) {
+        grandchild = $(prefix + grandchild);
+        if (isNull(grandchild)) {
+            return;
+        }
+    }
+
+    if (!isUndefinedOrNull(zeit.cms.parent_child_dropdown[parent.name])) {
+        zeit.cms.parent_child_dropdown[parent.name].destroy();
     }
     var path = window.location.pathname.split('/').slice(0, -1);
     path.push(update_url);
     path = path.join('/');
-    zeit.cms.master_slave_dropdown[master.name] =
-        new zeit.cms.MasterSlaveDropDown(master, slave, path);
+
+    zeit.cms.parent_child_dropdown[parent.name] =
+        new zeit.cms.ParentChildDropDown(parent, child, path, grandchild);
 };
 
 
 zeit.cms.configure_ressort_dropdown = function(prefix) {
-    zeit.cms.configure_master_slave(
+    zeit.cms.configure_parent_child(
         prefix, 'ressort', 'sub_ressort', '@@subnavigationupdater.json');
 };
 
 
 zeit.cms.configure_channel_dropdowns = function(
-        prefix, field, master_index, slave_index) {
+        prefix, field, parent_index, child_index) {
     // XXX Rather ugly API to support usage in both z.c.article and z.c.cp.
     if (isUndefinedOrNull(prefix)) {
         prefix = 'form.';
     }
-    var masters = jQuery(
-        '[id^="' + prefix + field + '"][id$="combination_' + master_index + '"]'
+    var parents = jQuery(
+        '[id^="' + prefix + field + '"][id$="combination_' + parent_index + '"]'
         );
 
-    jQuery.each(masters, function(index, value) {
-        zeit.cms.configure_master_slave(
-            prefix, field + '.' + index + '..combination_' + master_index,
-            field + '.' + index + '..combination_' + slave_index,
+    jQuery.each(parents, function(index, value) {
+        zeit.cms.configure_parent_child(
+            prefix, field + '.' + index + '..combination_' + parent_index,
+            field + '.' + index + '..combination_' + child_index,
             '@@channelupdater.json');
     });
 };

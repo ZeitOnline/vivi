@@ -12,17 +12,20 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
     form_fields = FormFields(
         zeit.content.article.interfaces.IArticle).select(
-        'template', 'header_layout')
+        'template', 'header_layout', 'header_color')
 
     def render(self):
         result = super(EditTemplate, self).render()
         if result:
             result += """\
 <script type="text/javascript">
-    zeit.cms.configure_master_slave(
+    zeit.cms.configure_parent_child(
         "%s.", "template", "header_layout",
-        "@@zeit.content.article.update_articletemplate.json");
-</script>""" % self.prefix
+        "@@zeit.content.article.update_articletemplate.json", "header_color");
+    zeit.cms.configure_parent_child(
+        "%s.", "header_layout", "header_color",
+        "@@zeit.content.article.update_articleheader.json");
+</script>""" % (self.prefix, self.prefix)
         return result
 
     def _success_handler(self):
@@ -31,7 +34,14 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
 
 
 class TemplateUpdater(
-        zeit.cms.content.browser.widget.MasterSlaveDropdownUpdater):
+        zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
 
-    master_source = zeit.content.article.source.ArticleTemplateSource()
-    slave_source = zeit.content.article.source.ArticleHeaderSource()
+    parent_source = zeit.content.article.source.ArticleTemplateSource()
+    child_source = zeit.content.article.source.ArticleHeaderSource()
+
+
+class HeaderUpdater(
+        zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
+
+    parent_source = zeit.content.article.source.ArticleHeaderSource()
+    child_source = zeit.content.article.source.ArticleHeaderColorSource()

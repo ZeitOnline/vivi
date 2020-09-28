@@ -75,6 +75,11 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.article.source.ArticleHeaderSource(),
         required=False)
 
+    header_color = zope.schema.Choice(
+        title=_("Header color"),
+        source=zeit.content.article.source.ArticleHeaderColorSource(),
+        required=False)
+
     is_instant_article = zope.schema.Bool(
         title=_('Is instant article'),
         default=False,

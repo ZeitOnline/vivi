@@ -1018,6 +1018,14 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.content.article.update_articleheader.json"
+    class=".template.HeaderUpdater"
+    permission="zope.View"
+    />
+
   <class class=".push.AuthorPush">
     <require
       interface=".push.IAuthorPush"

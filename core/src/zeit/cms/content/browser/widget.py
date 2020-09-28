@@ -70,32 +70,32 @@ class CombinationWidget(
         'combinationwidget.pt')
 
 
-class MasterSlaveDropdownUpdater(object):
+class ParentChildDropdownUpdater(object):
 
-    master_source = NotImplemented
-    slave_source = NotImplemented
+    parent_source = NotImplemented
+    child_source = NotImplemented
 
     def __init__(self, context, request):
-        super(MasterSlaveDropdownUpdater, self).__init__(context, request)
-        self.master_source = self.master_source(self.context)
-        self.master_terms = zope.component.getMultiAdapter(
-            (self.master_source, request),
+        super(ParentChildDropdownUpdater, self).__init__(context, request)
+        self.parent_source = self.parent_source(self.context)
+        self.parent_terms = zope.component.getMultiAdapter(
+            (self.parent_source, request),
             zope.app.form.browser.interfaces.ITerms)
 
-    def get_result(self, master_token):
+    def get_result(self, parent_token):
         try:
-            master_value = self.master_terms.getValue(master_token)
+            parent_value = self.parent_terms.getValue(parent_token)
         except KeyError:
             return []
 
         @zope.interface.implementer(
-            self.slave_source.factory.master_value_iface)
+            self.child_source.factory.parent_value_iface)
         class Fake(object):
             pass
         fake = Fake()
-        setattr(fake, self.slave_source.factory.master_value_key, master_value)
+        setattr(fake, self.child_source.factory.parent_value_key, parent_value)
 
-        source = self.slave_source(fake)
+        source = self.child_source(fake)
         terms = zope.component.getMultiAdapter(
             (source, self.request), zope.app.form.browser.interfaces.ITerms)
         result = []
@@ -105,20 +105,20 @@ class MasterSlaveDropdownUpdater(object):
 
         return sorted(result)
 
-    def __call__(self, master_token):
-        result = self.get_result(master_token)
+    def __call__(self, parent_token):
+        result = self.get_result(parent_token)
         self.request.response.setHeader('Cache-Control', 'public;max-age=3600')
         self.request.response.setHeader('Content-Type', 'application/json')
         return json.dumps(sorted(result)).encode('utf8')
 
 
-class SubNavigationUpdater(MasterSlaveDropdownUpdater):
+class SubNavigationUpdater(ParentChildDropdownUpdater):
 
-    master_source = zeit.cms.content.sources.RessortSource()
-    slave_source = zeit.cms.content.sources.SubRessortSource()
+    parent_source = zeit.cms.content.sources.RessortSource()
+    child_source = zeit.cms.content.sources.SubRessortSource()
 
 
-class ChannelUpdater(MasterSlaveDropdownUpdater):
+class ChannelUpdater(ParentChildDropdownUpdater):
 
-    master_source = zeit.cms.content.sources.ChannelSource()
-    slave_source = zeit.cms.content.sources.SubChannelSource()
+    parent_source = zeit.cms.content.sources.ChannelSource()
+    child_source = zeit.cms.content.sources.SubChannelSource()

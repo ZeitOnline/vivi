@@ -186,6 +186,12 @@ class LayoutHeaderByArticleTemplate(
         source = zeit.content.article.source.ArticleTemplateSource().factory
         self.assertTrue(source.allow_header_module(article))
 
+    def test_header_layout_should_allow_for_backgroundcolor(self):
+        article = self.get_article()
+        source = zeit.content.article.source.ArticleHeaderColorSource().factory
+        assert source.child_tag == 'color'
+        assert '#cccccf' in source.getValues(article)
+
 
 class DefaultTemplateByContentType(
         zeit.content.article.testing.FunctionalTestCase):

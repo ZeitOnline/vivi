@@ -264,89 +264,89 @@ class RessortSource(XMLSource):
         return six.text_type(node['title'])
 
 
-class MasterSlaveSource(XMLSource):
+class ParentChildSource(XMLSource):
 
-    slave_tag = NotImplemented
-    master_node_xpath = NotImplemented
-    master_value_iface = NotImplemented
-    master_value_key = NotImplemented
+    child_tag = NotImplemented
+    parent_node_xpath = NotImplemented
+    parent_value_iface = NotImplemented
+    parent_value_key = NotImplemented
 
     def getValues(self, context):
         __traceback_info__ = (context,)
-        master_nodes = self._get_master_nodes(context)
-        slave_nodes = reduce(
+        parent_nodes = self._get_parent_nodes(context)
+        child_nodes = reduce(
             operator.add, [
-                node.findall(self.slave_tag) for node in master_nodes])
+                node.findall(self.child_tag) for node in parent_nodes])
         result = set([six.text_type(node.get(self.attribute))
-                      for node in slave_nodes
+                      for node in child_nodes
                       if self.isAvailable(node, context)])
         return result
 
     def getTitle(self, context, value):
         tree = self._get_tree()
-        master_value = self._get_master_value(context)
-        if master_value is None:
+        parent_value = self._get_parent_value(context)
+        if parent_value is None:
             nodes = tree.xpath(
-                '//{slave_tag}[@{attribute} = {value}]'.format(
-                    slave_tag=self.slave_tag,
+                '//{child_tag}[@{attribute} = {value}]'.format(
+                    child_tag=self.child_tag,
                     attribute=self.attribute,
                     value=xml.sax.saxutils.quoteattr(value)))
         else:
             nodes = tree.xpath(
-                '{master_node_xpath}[@{attribute} = {master}]'
-                '/{slave_tag}[@{attribute} = {value}]'.format(
-                    master_node_xpath=self.master_node_xpath,
+                '{parent_node_xpath}[@{attribute} = {master}]'
+                '/{child_tag}[@{attribute} = {value}]'.format(
+                    parent_node_xpath=self.parent_node_xpath,
                     attribute=self.attribute,
-                    slave_tag=self.slave_tag,
-                    master=xml.sax.saxutils.quoteattr(master_value),
+                    child_tag=self.child_tag,
+                    master=xml.sax.saxutils.quoteattr(parent_value),
                     value=xml.sax.saxutils.quoteattr(value)))
         if nodes:
             return six.text_type(self._get_title_for(nodes[0]))
         return value
 
-    def _get_master_nodes(self, context):
+    def _get_parent_nodes(self, context):
         tree = self._get_tree()
-        all_nodes = tree.xpath(self.master_node_xpath)
-        master_value = self._get_master_value(context)
-        if not master_value:
+        all_nodes = tree.xpath(self.parent_node_xpath)
+        parent_value = self._get_parent_value(context)
+        if not parent_value:
             return all_nodes
 
         nodes = tree.xpath(
-            '{master_node_xpath}[@{attribute} = "{value}"]'.format(
-                master_node_xpath=self.master_node_xpath,
+            '{parent_node_xpath}[@{attribute} = "{value}"]'.format(
+                parent_node_xpath=self.parent_node_xpath,
                 attribute=self.attribute,
                 # XXX not sure why we do manual quoting instead of quoteattr
                 # here, doesn't feel as it was thought through. There's a
                 # random doctest example about 'Bildung & Beruf' however that
                 # breaks if I change it.
-                value=master_value))
+                value=parent_value))
         if not nodes:
             return None
-        assert len(nodes) == 1
+        # assert len(nodes) == 1
         return nodes
 
-    def _get_master_value(self, context):
+    def _get_parent_value(self, context):
         if isinstance(context, six.text_type):
             return context
         if zeit.cms.interfaces.ICMSContent.providedBy(context):
             return None
-        data = self.master_value_iface(context, None)
+        data = self.parent_value_iface(context, None)
         if data is None:
             return None
-        return getattr(data, self.master_value_key)
+        return getattr(data, self.parent_value_key)
 
 
-class SubRessortSource(MasterSlaveSource):
+class SubRessortSource(ParentChildSource):
 
     config_url = RessortSource.config_url
     default_filename = RessortSource.default_filename
     attribute = RessortSource.attribute
-    slave_tag = 'subnavigation'
-    master_node_xpath = '/ressorts/ressort'
-    master_value_key = 'ressort'
+    child_tag = 'subnavigation'
+    parent_node_xpath = '/ressorts/ressort'
+    parent_value_key = 'ressort'
 
     @property
-    def master_value_iface(self):
+    def parent_value_iface(self):
         # prevent circular import
         import zeit.cms.content.interfaces
         return zeit.cms.content.interfaces.ICommonMetadata
@@ -366,32 +366,32 @@ class ChannelSource(XMLSource):
         return six.text_type(node['title'])
 
 
-class SubChannelSource(MasterSlaveSource):
+class SubChannelSource(ParentChildSource):
 
     config_url = ChannelSource.config_url
     default_filename = ChannelSource.default_filename
     attribute = ChannelSource.attribute
-    slave_tag = 'subnavigation'
-    master_node_xpath = '/ressorts/ressort'
-    master_value_key = 'ressort'
+    child_tag = 'subnavigation'
+    parent_node_xpath = '/ressorts/ressort'
+    parent_value_key = 'ressort'
 
     @property
-    def master_value_iface(self):
+    def parent_value_iface(self):
         # prevent circular import
         import zeit.cms.content.interfaces
         return zeit.cms.content.interfaces.ICommonMetadata
 
-    def _get_master_nodes(self, context):
+    def _get_parent_nodes(self, context):
         if type(context).__name__ == 'Fake':
-            # for .browser.MasterSlaveDropdownUpdater
-            return super(SubChannelSource, self)._get_master_nodes(context)
+            # for .browser.ParentChildDropdownUpdater
+            return super(SubChannelSource, self)._get_parent_nodes(context)
         # The ``channels`` field is a list of combination values.
         # The formlib validation machinery does not give us enough context
         # to determine the master value, so we are forced to allow all values.
         # We can get away with this since the UI only offers valid subchannel
-        # values (powered by MasterSlaveDropdownUpdater above).
+        # values (powered by ParentChildDropdownUpdater above).
         tree = self._get_tree()
-        all_nodes = tree.xpath(self.master_node_xpath)
+        all_nodes = tree.xpath(self.parent_node_xpath)
         return all_nodes
 
     def _get_title_for(self, node):
