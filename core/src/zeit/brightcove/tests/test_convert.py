@@ -135,12 +135,14 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
         from zeit.content.author.author import Author
         self.repository['a1'] = Author()
         cms = CMSVideo()
+        self.repository['vid'] = cms
         bc = BCVideo()
+        next_year = datetime.now().year + 1
         bc.data = {
             'id': 'myvid',
             'name': 'title',
             'created_at': '2017-05-15T08:24:55.916Z',
-            'schedule': {'ends_at': '2018-03-13T23:00:00.000Z',
+            'schedule': {'ends_at': '%s-03-13T23:00:00.000Z' % next_year,
                          'starts_at': None},
             'state': 'ACTIVE',
             'economics': 'AD_SUPPORTED',
@@ -179,7 +181,9 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
             zeit.cms.related.interfaces.IRelatedContent(cms).related)
         self.assertEqual('Chefsache', cms.serie.serienname)
         self.assertEqual(
-            datetime(2018, 3, 13, 23, 0, tzinfo=pytz.UTC), cms.expires)
+            datetime(next_year, 3, 13, 23, 0, tzinfo=pytz.UTC), cms.expires)
+        publish = zeit.cms.workflow.interfaces.IPublishInfo(cms)
+        self.assertEqual((None, cms.expires), publish.release_period)
 
     def test_creates_deleted_video_on_notfound(self):
         with mock.patch('zeit.brightcove.connection.CMSAPI.get_video') as get:
