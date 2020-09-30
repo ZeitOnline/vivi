@@ -81,7 +81,8 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
             zeit.content.author.interfaces.IHonorar)
         api.search.return_value = [
             {'gcid': '1234', 'vorname': 'Secret', 'nachname': 'Identity',
-             'kuenstlervorname': 'William', 'nachname': 'Shakespeare'},
+             'kuenstlervorname': 'William',
+             'kuenstlernachname': 'Shakespeare'},
             {'gcid': '2345', 'vorname': 'Random', 'nachname': 'Filler'},
         ]
         b = self.browser
