@@ -219,10 +219,9 @@ class Video(Converter):
             for code in custom.get('cmskeywords', '').split(';')]
         cmsobj.keywords = tuple([x for x in keywords if x is not None])
 
-        publish = zeit.cms.workflow.interfaces.IPublishInfo(cmsobj)
-        publish.date_first_released = self.cms_date(data.get('published_at'))
-        if cmsobj.expires and cmsobj.expires > pendulum.now():
-            publish.release_period = (None, cmsobj.expires)
+        zeit.cms.workflow.interfaces.IPublishInfo(
+            cmsobj).date_first_released = self.cms_date(
+                data.get('published_at'))
         zeit.cms.content.interfaces.ISemanticChange(
             cmsobj).last_semantic_change = self.cms_date(
                 data.get('updated_at'))

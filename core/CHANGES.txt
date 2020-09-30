@@ -7,6 +7,9 @@ vivi.core changes
 
 - BUG-1302: Don't overzealously remove invalid field values
 
+- Revert BUG-1291 for now, newly added videos cannot set up timebased
+  retract currently
+
 
 4.40.2 (2020-09-30)
 -------------------
