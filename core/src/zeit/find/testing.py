@@ -50,3 +50,27 @@ WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
+
+
+class SearchMockLayer(plone.testing.Layer):
+
+    def setUp(self):
+        registry = zope.component.getGlobalSiteManager()
+        self['old_es'] = registry.queryUtility(zeit.find.interfaces.ICMSSearch)
+        self['es_mock'] = mock.Mock()
+        self['es_mock'].search.return_value = zeit.cms.interfaces.Result()
+        registry.registerUtility(
+            self['es_mock'], zeit.find.interfaces.ICMSSearch)
+
+    def tearDown(self):
+        del self['es_mock']
+        if self['old_es'] is not None:
+            zope.component.getGlobalSiteManager().registerUtility(
+                self['old_es'], zeit.find.interfaces.ICMSSearch)
+        del self['old_es']
+
+    def testTearDown(self):
+        self['es_mock'].reset_mock()
+
+
+SEARCH_MOCK_LAYER = SearchMockLayer()
