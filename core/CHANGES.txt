@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.40.2 (unreleased)
+4.40.2 (2020-09-30)
 -------------------
 
 - BUG-1291: Set up timebased retract for videos according to the BC
