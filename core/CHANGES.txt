@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.40.3 (unreleased)
+4.40.3 (2020-09-30)
 -------------------
 
 - BUG-1302: Don't overzealously remove invalid field values
