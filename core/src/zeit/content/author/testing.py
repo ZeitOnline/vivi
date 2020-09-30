@@ -35,7 +35,8 @@ class HonorarMockLayer(plone.testing.Layer):
 HONORAR_MOCK_LAYER = HonorarMockLayer()
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, HONORAR_MOCK_LAYER))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(
+    ZCML_LAYER, zeit.find.testing.SEARCH_MOCK_LAYER, HONORAR_MOCK_LAYER))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 

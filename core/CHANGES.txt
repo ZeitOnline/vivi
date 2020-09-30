@@ -5,7 +5,7 @@ vivi.core changes
 4.40.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1307: Don't notify HDok during retract
 
 
 4.40.0 (2020-09-28)

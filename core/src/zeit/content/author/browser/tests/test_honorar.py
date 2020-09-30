@@ -3,6 +3,7 @@ import mock
 import zeit.content.author.author
 import zeit.content.author.interfaces
 import zeit.content.author.testing
+import zeit.find.interfaces
 import zope.component
 
 
@@ -103,13 +104,13 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl('VG-Wort ID').value = '12345'
         b.getControl('Honorar ID').value = '12345'
         b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
-        with mock.patch('zeit.find.search.Elasticsearch.search') as search:
-            search.return_value = zeit.cms.interfaces.Result([{
-                'url': '/author/foo',
-                'payload': {'xml': {'honorar_id': 12345}}
-            }])
-            search.return_value.hits = 1
-            b.getControl(name='form.actions.add').click()
+        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        es.search.return_value = zeit.cms.interfaces.Result([{
+            'url': '/author/foo',
+            'payload': {'xml': {'honorar_id': 12345}}
+        }])
+        es.search.return_value.hits = 1
+        b.getControl(name='form.actions.add').click()
         self.assertEllipsis(
             '...Author with honorar ID 12345...'
             'redirect_to?unique_id=http://xml.zeit.de/author/foo...',
