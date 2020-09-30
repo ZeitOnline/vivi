@@ -96,15 +96,7 @@ def apply_default_values(context, interface, set_none=False):
         # don't cause a field to be written unnecessarily
         if current == default:
             continue
-        # if a value exists, don't overwrite it if it's valid (#10362)
+        # if a value exists, don't overwrite it
         if current is not EMPTY and current is not field.missing_value:
-            field = field.bind(context)
-            try:
-                field.validate(current)
-            except zope.schema.ValidationError:
-                pass
-            else:
-                continue
-        # now we have both an attribute without a meaningful value and a
-        # meaningful value to set it to
+            continue
         setattr(context, name, default)
