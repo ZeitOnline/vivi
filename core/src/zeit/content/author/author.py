@@ -20,6 +20,7 @@ import zeit.content.author.interfaces
 import zeit.find.interfaces
 import zeit.workflow.dependency
 import zope.interface
+import zope.lifecycleevent
 import zope.security.proxy
 
 
@@ -210,15 +211,28 @@ def update_freetext_on_add(context, event):
 
 @grok.subscribe(
     zeit.content.author.interfaces.IAuthor,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
-def create_honorar_entry(context, event):
-    if context.honorar_id:
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def create_honorar_on_checkin(context, event):
+    if event.publishing:  # Prevent creating hdok entries during retract.
+        return
+    _create_honorar_entry(context)
+
+
+@grok.subscribe(
+    zeit.content.author.interfaces.IAuthor,
+    zope.lifecycleevent.IObjectCreatedEvent)
+def create_honorar_on_add(context, event):
+    _create_honorar_entry(context)
+
+
+def _create_honorar_entry(author):
+    if author.honorar_id:
         return
     api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
-    context.honorar_id = api.create({
-        'vorname': context.firstname,
-        'nachname': context.lastname,
-        'anlageAssetId': context.uniqueId,
+    author.honorar_id = api.create({
+        'vorname': author.firstname,
+        'nachname': author.lastname,
+        'anlageAssetId': author.uniqueId,
     })
 
 

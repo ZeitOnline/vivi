@@ -8,6 +8,8 @@ import zeit.content.author.honorar
 import zeit.content.author.interfaces
 import zeit.content.author.testing
 import zope.component
+import zope.event
+import zope.lifecycleevent
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
@@ -73,20 +75,31 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
         author = zeit.content.author.author.Author()
         author.firstname = u'William'
         author.lastname = u'Shakespeare'
-        self.repository['author'] = author
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
         self.assertTrue(api.create.called)
-        self.assertEqual(
-            'mock-honorar-id', self.repository['author'].honorar_id)
+        self.assertEqual('mock-honorar-id', author.honorar_id)
 
     def test_honorar_id_present_is_left_alone(self):
         author = zeit.content.author.author.Author()
         author.firstname = u'William'
         author.lastname = u'Shakespeare'
         author.honorar_id = u'manual-id'
-        self.repository['author'] = author
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
         self.assertFalse(api.create.called)
-        self.assertEqual('manual-id', self.repository['author'].honorar_id)
+        self.assertEqual('manual-id', author.honorar_id)
+
+    def test_does_not_create_hdok_on_retract(self):
+        api = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        self.repository['author'] = author
+        pub = zeit.cms.workflow.interfaces.IPublish(self.repository['author'])
+        pub.publish(background=False)
+        pub.retract(background=False)
+        self.assertFalse(api.create.called)

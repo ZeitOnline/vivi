@@ -27,7 +27,6 @@ Authors
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
   <display_name>William Shakespeare</display_name>
-  <honorar_id>mock-honorar-id</honorar_id>
 </author>
 
 The default display name is 'Firstname Lastname', but any user-entered value
@@ -43,7 +42,6 @@ takes precedence:
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
   <display_name>Flub</display_name>
-  <honorar_id>mock-honorar-id</honorar_id>
   <entered_display_name>Flub</entered_display_name>
 </author>
 
@@ -57,7 +55,6 @@ takes precedence:
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
   <display_name>William Shakespeare</display_name>
-  <honorar_id>mock-honorar-id</honorar_id>
 </author>
 
 The author image group is stored using the IImages interface.
