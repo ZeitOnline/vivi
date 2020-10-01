@@ -205,6 +205,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.topiclink_url_3',
         zeit.content.cp.interfaces.IArea['topiclink_url_3'])
 
+    area_color_theme = (
+        zeit.cms.content.property.ObjectPathAttributeProperty(
+            '.', 'area_color_theme'))
+
     @property
     def image(self):
         if self._image:
