@@ -2,10 +2,12 @@ vivi.core changes
 =================
 
 
-4.40.4 (unreleased)
+4.41.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PERF: Make mime type detection optional in filesystem connector.
+  We actually only need this for the vivi tests, but not in zeit.web,
+  and it causes significant overhead.
 
 
 4.40.3 (2020-09-30)

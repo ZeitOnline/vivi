@@ -6,7 +6,6 @@ import email.utils
 import gocept.cache.property
 import logging
 import lxml.etree
-import magic
 import os
 import os.path
 import six
@@ -151,12 +150,7 @@ class Connector(object):
                 'collection'):
             return 'httpd/unix-directory'
         davtype = ('getcontenttype', 'DAV:')
-        if davtype in properties:
-            return properties[davtype]
-        body = self._get_body(id)
-        head = body.read(200)
-        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
-            return m.id_buffer(head) or ''
+        return properties.get(davtype, '')
 
     def __setitem__(self, id, object):
         raise NotImplementedError()

@@ -5,6 +5,7 @@ import datetime
 import logging
 import os
 import os.path
+import magic
 import pkg_resources
 import pytz
 import random
@@ -42,8 +43,9 @@ class Connector(zeit.connector.filesystem.Connector):
     child_name_cache = zeit.connector.cache.AlwaysEmptyDict()
     canonical_id_cache = zeit.connector.cache.AlwaysEmptyDict()
 
-    def __init__(self, repository_path):
+    def __init__(self, repository_path, detect_mime_type=True):
         super(Connector, self).__init__(repository_path)
+        self.detect_mime_type = detect_mime_type
         self._reset()
 
     def _reset(self):
@@ -76,6 +78,15 @@ class Connector(zeit.connector.filesystem.Connector):
         if id in self._deleted:
             raise KeyError(six.text_type(id))
         return super(Connector, self).__getitem__(id)
+
+    def _get_content_type(self, id):
+        result = super(Connector, self)._get_content_type(id)
+        if result or not self.detect_mime_type:
+            return result
+        body = self._get_body(id)
+        head = body.read(200)
+        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+            return m.id_buffer(head) or ''
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
@@ -293,9 +304,9 @@ class Connector(zeit.connector.filesystem.Connector):
 def connector_factory():
     import zope.app.appsetup.product
     config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.connector')
-    repository_path = (config or {}).get('repository-path')
+        'zeit.connector') or {}
+    repository_path = config.get('repository-path')
     if not repository_path:
         repository_path = pkg_resources.resource_filename(
             __name__, 'testcontent')
-    return Connector(repository_path)
+    return Connector(repository_path, config.get('detect-mime-type', True))
