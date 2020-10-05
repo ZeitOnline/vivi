@@ -136,11 +136,12 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
         self.repository['a1'] = Author()
         cms = CMSVideo()
         bc = BCVideo()
+        next_year = datetime.now().year + 1
         bc.data = {
             'id': 'myvid',
             'name': 'title',
             'created_at': '2017-05-15T08:24:55.916Z',
-            'schedule': {'ends_at': '2018-03-13T23:00:00.000Z',
+            'schedule': {'ends_at': '%s-03-13T23:00:00.000Z' % next_year,
                          'starts_at': None},
             'state': 'ACTIVE',
             'economics': 'AD_SUPPORTED',
@@ -161,7 +162,10 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
                 'src': 'http://example.com/rendition',
             }],
         }
-        bc.apply_to_cms(cms)
+        with mock.patch(
+                'zeit.workflow.publish.RETRACT_TASK.apply_async') as retract:
+            bc.apply_to_cms(cms)
+            assert retract.call_args[0][0] == ([bc.uniqueId],)
         self.assertEqual('myvid', cms.external_id)
         self.assertEqual('title', cms.title)
         self.assertEqual(True, cms.commentsAllowed)
@@ -179,7 +183,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
             zeit.cms.related.interfaces.IRelatedContent(cms).related)
         self.assertEqual('Chefsache', cms.serie.serienname)
         self.assertEqual(
-            datetime(2018, 3, 13, 23, 0, tzinfo=pytz.UTC), cms.expires)
+            datetime(next_year, 3, 13, 23, 0, tzinfo=pytz.UTC), cms.expires)
 
     def test_creates_deleted_video_on_notfound(self):
         with mock.patch('zeit.brightcove.connection.CMSAPI.get_video') as get:

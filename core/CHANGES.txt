@@ -5,7 +5,8 @@ vivi.core changes
 4.41.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1291: Set up timebased retract for videos according to the BC
+  expires field (take two, after 4.40.3)
 
 
 4.41.0 (2020-10-01)
