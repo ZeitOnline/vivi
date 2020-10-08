@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.42.0 (unreleased)
+4.42.0 (2020-10-08)
 -------------------
 
 - STO-82: Make MemoryFile usable as a context manager
