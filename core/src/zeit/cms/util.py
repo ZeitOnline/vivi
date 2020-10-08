@@ -16,3 +16,9 @@ class MemoryFile(object):
 
     def close(self):
         self.seek(0)
+
+    def __enter__(self):
+        return self.data.__enter__()
+
+    def __exit__(self, *args):
+        self.close()
