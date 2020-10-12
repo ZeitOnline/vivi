@@ -235,7 +235,9 @@ class VariantTraverser(object):
             six.moves.urllib.parse.urlparse(url).query)
 
         if 'width' in params and 'height' in params:
-            result['size'] = [int(params['width'][0]), int(params['height'][0])]
+            result['size'] = [
+                int(params['width'][0]),
+                int(params['height'][0])]
         if 'scale' in params:
             result['scale'] = float(params['scale'][0])
         if 'fill' in params:
