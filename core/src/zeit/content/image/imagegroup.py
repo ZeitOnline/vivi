@@ -221,10 +221,27 @@ class VariantTraverser(object):
             'fill': self._parse_fill(url),
             'viewport': self._parse_viewport(url),
         }
+        # query parameters take precedence:
+        result.update(self.parse_params(url))
         # Make sure no invalid or redundant modifiers were provided
         if len([x for x in result.values() if x]) != len(url.split('__')):
             raise KeyError(url)
         result['url'] = url
+        return result
+
+    def parse_params(self, url):
+        result = dict()
+        params = six.moves.urllib.parse.parse_qs(
+            six.moves.urllib.parse.urlparse(url).query)
+
+        if 'width' in params and 'height' in params:
+            result['size'] = [int(params['width'][0]), int(params['height'][0])]
+        if 'scale' in params:
+            result['scale'] = float(params['scale'][0])
+        if 'fill' in params:
+            result['fill'] = params['fill'][0]
+        if 'viewport' in params:
+            result['viewport'] = params['viewport'][0]
         return result
 
     def _parse_variant(self, url):
