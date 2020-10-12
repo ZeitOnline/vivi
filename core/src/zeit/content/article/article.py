@@ -62,7 +62,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_recensions', 'artbox_thema', 'genre', 'template',
-         'header_layout', 'header_color', 'is_instant_article', 'is_amp',
+         'header_layout', 'header_color', 'is_amp',
          'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
          'recent_comments_first'))
 
@@ -208,8 +208,7 @@ def disallowCommentsIfCommentsAreNotShown(object, event):
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
-def disable_is_amp_and_is_instant_article_if_access_is_restricted(
-        article, event):
+def disable_is_amp_if_access_is_restricted(article, event):
     """Restricted content should not be promoted by Google."""
     for desc in event.descriptions:
         if (desc.interface is zeit.cms.content.interfaces.ICommonMetadata and
@@ -220,7 +219,6 @@ def disable_is_amp_and_is_instant_article_if_access_is_restricted(
 
     if article.access and article.access != u'free':
         article.is_amp = False
-        article.is_instant_article = False
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle)

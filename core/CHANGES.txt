@@ -5,7 +5,7 @@ vivi.core changes
 4.42.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BEM-62: Remove obsolete `IArticle.is_instant_article`
 
 
 4.42.0 (2020-10-08)
