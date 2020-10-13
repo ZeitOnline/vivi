@@ -29,6 +29,7 @@ product_config = """
     layout-css-path /data/cp-layouts/layouts.css
     header-image-variant cinema
     cp-automatic-feed-source file://{fixtures}/feeds.xml
+    area-color-themes-source file://{fixtures}/area-color-themes.xml
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))

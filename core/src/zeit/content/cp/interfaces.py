@@ -443,6 +443,22 @@ def automatic_area_can_read_teasers_automatically(data):
     return False
 
 
+class AreaColorThemesSource(zeit.cms.content.sources.XMLSource):
+
+    attribute = 'name'
+    config_url = 'area-color-themes-source'
+    default_filename = 'area-color-themes.xml'
+    product_configuration = 'zeit.content.cp'
+    title_xpath = '/color-themes/theme'
+
+    def isAvailable(self, node, context):
+        cp = zeit.content.cp.interfaces.ICenterPage(context, None)
+        return super(AreaColorThemesSource, self).isAvailable(node, cp)
+
+
+AREA_COLOR_THEMES_SOURCE = AreaColorThemesSource()
+
+
 class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
 
     # Use a schema field so the security can declare it as writable,
@@ -586,6 +602,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
     rss_feed = zope.schema.Choice(
         title=_('RSS-Feed'),
         source=AUTOMATIC_FEED_SOURCE,
+        required=False)
+
+    area_color_theme = zope.schema.Choice(
+        title=_("Area color theme (ze.tt only)"),
+        source=AREA_COLOR_THEMES_SOURCE,
         required=False)
 
     # XXX really ugly styling hack
