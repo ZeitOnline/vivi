@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.42.1 (unreleased)
+4.43.0 (2020-10-13)
 -------------------
 
 - ZETT-46: Add color theme selection to area settings
