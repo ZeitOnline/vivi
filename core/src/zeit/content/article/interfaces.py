@@ -80,11 +80,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.article.source.ArticleHeaderColorSource(),
         required=False)
 
-    is_instant_article = zope.schema.Bool(
-        title=_('Is instant article'),
-        default=False,
-        required=False)
-
     is_amp = zope.schema.Bool(
         title=_('Is AMP'),
         default=True,

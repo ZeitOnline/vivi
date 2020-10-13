@@ -2,10 +2,25 @@ vivi.core changes
 =================
 
 
-4.41.1 (unreleased)
+4.42.1 (unreleased)
 -------------------
 
 - ZETT-46: Add color theme selection to area settings
+
+- BEM-62: Remove obsolete `IArticle.is_instant_article`
+
+
+4.42.0 (2020-10-08)
+-------------------
+
+- STO-82: Make MemoryFile usable as a context manager
+
+
+4.41.1 (2020-10-06)
+-------------------
+
+- BUG-1291: Set up timebased retract for videos according to the BC
+  expires field (take two, after 4.40.3)
 
 
 4.41.0 (2020-10-01)

@@ -84,7 +84,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'in_rankings': 'yes',
                     'is_amp': True,
                     'is_content': 'yes',
-                    'is_instant_article': False,
                     'last_modified_by': u'zope.user',
                     'lead_candidate': True,
                     'mostread': 'yes',

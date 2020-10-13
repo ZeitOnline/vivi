@@ -178,11 +178,7 @@ def request_acs(email):
         return None
 
 
-# Note: This is needed by the publisher and zeit.vgwort, among others.
-# Publisher only indexes the freetext field at the moment.
-# zeit.vgwort.report uses the fact that the references to author objects are
-# copied to the freetext 'author' webdav property to filter out which content
-# objects to report.
+# Note: This is used by the publisher to send to speech.zeit.de and api-solr.
 def update_author_freetext(content):
     content.authors = [x.target.display_name for x in content.authorships]
 
