@@ -242,6 +242,35 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         image.load()
         self.assertEqual('WEBP', image.format)
 
+    def test_parse_url_variant(self):
+        result = self.traverser.parse_url('cinema__300x160__scale_2.25__0000ff')
+        assert result['size'] == [300, 160]
+        assert result['scale'] == 2.25
+        assert result['fill'] == '0000ff'
+        assert result['viewport'] is None
+
+    def test_parse_url_variant_params_override(self):
+        result = self.traverser.parse_url('cinema__200x80__scale_2.25__0000ff?scale=3.0&width=300&height=160&fill=000000')
+        assert result['size'] == [300, 160]
+        assert result['scale'] == 3.0
+        assert result['fill'] == '000000'
+        assert result['viewport'] is None
+
+    def test_parse_size_from_params(self):
+        result = self.traverser.parse_params('cinema?scale=3.0&width=300&height=160')
+        assert result['size'] == [300, 160]
+
+    def test_parse_scale_from_params(self):
+        result = self.traverser.parse_params('cinema?scale=3.0&width=300&height=160')
+        assert result['scale'] == 3.0
+
+    def test_parse_fill_from_params(self):
+        result = self.traverser.parse_params('cinema?fill=0000ff&scale=3.0&width=300&height=160')
+        assert result['fill'] == '0000ff'
+
+    def test_parse_viewport_from_params(self):
+        result = self.traverser.parse_params('cinema?fill=0000ff&viewport=foo')
+        assert result['viewport'] == 'foo'
 
 class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
 

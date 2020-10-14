@@ -15,6 +15,8 @@ vivi.core changes
 
 - BEM-62: Remove obsolete `IArticle.is_instant_article`
 
+- ZON-6149: Allow to specify imagegroup variants via query parameters
+
 
 4.42.0 (2020-10-08)
 -------------------
