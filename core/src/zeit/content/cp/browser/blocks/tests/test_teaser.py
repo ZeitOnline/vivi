@@ -212,6 +212,9 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
             zeit.edit.interfaces.IElement)
         assert block.force_mobile_image
 
+    def test_teaser_forces_mobile_image_per_default(self):
+        assert self.create_teaserblock('large').force_mobile_image
+
     def test_teaser_with_non_quote_layout_shows_teaser_text(
             self):
         article = self.create_article_with_citation()
