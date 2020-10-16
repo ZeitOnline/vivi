@@ -774,7 +774,11 @@ class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
 
 
 class IReadAutomaticTeaserBlock(IReadTeaserBlock):
-    pass
+
+    force_mobile_image = zope.schema.Bool(
+        title=_('Force image on mobile'),
+        required=False,
+        default=False)
 
 
 class IWriteAutomaticTeaserBlock(IWriteTeaserBlock):
