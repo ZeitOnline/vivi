@@ -28,7 +28,7 @@ class TeaserBlock(
 
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
-            'force_mobile_image'])
+            'force_mobile_image'], use_default=True)
 
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
