@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import collections
 import jinja2
 import jinja2.utils
+import jinja2.debug
 import mock
 import sys
 import zeit.cms.interfaces
@@ -36,6 +37,7 @@ class Environment(jinja2.Environment):
     def handle_exception(self, exc_info=None):
         return rewrite_traceback_stack(exc_info)
 
+
 def rewrite_traceback_stack(source=None):
     """Rewrite the current exception to replace any tracebacks from
     within compiled template code with tracebacks that look like they
@@ -69,8 +71,10 @@ def rewrite_traceback_stack(source=None):
 
         # Outside of runtime, so the frame isn't executing template
         # code, but it still needs to point at the template.
-        tb = fake_traceback(
-            exc_value, None, exc_value.filename or "<unknown>", exc_value.lineno
+        tb = jinja2.debug.fake_traceback(
+            exc_value, None,
+            exc_value.filename or "<unknown>",
+            exc_value.lineno
         )
     else:
         # Skip the frame for the render function.
@@ -83,7 +87,7 @@ def rewrite_traceback_stack(source=None):
     while tb is not None:
         # Skip frames decorated with @internalcode. These are internal
         # calls that aren't useful in template debugging output.
-        if tb.tb_frame.f_code in internal_code:
+        if tb.tb_frame.f_code in jinja2.debug.internal_code:
             tb = tb.tb_next
             continue
 
@@ -91,7 +95,7 @@ def rewrite_traceback_stack(source=None):
 
         if template is not None:
             lineno = template.get_corresponding_lineno(tb.tb_lineno)
-            fake_tb = fake_traceback(exc_value, tb, template.filename, lineno)
+            fake_tb = jinja2.debug.fake_traceback(exc_value, tb, template.filename, lineno)
             stack.append(fake_tb)
         else:
             stack.append(tb)
@@ -102,7 +106,7 @@ def rewrite_traceback_stack(source=None):
 
     # Assign tb_next in reverse to avoid circular references.
     for tb in reversed(stack):
-        tb_next = tb_set_next(tb, tb_next)
+        tb_next = jinja2.debug.tb_set_next(tb, tb_next)
 
     return exc_type, exc_value, tb_next
 
