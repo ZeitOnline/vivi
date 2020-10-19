@@ -110,7 +110,6 @@ def rewrite_traceback_stack(source=None):
 
     return exc_type, exc_value, tb_next
 
-
 class Template(jinja2.Template):
 
     jinja2.Template.environment_class = Environment
