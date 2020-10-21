@@ -249,6 +249,13 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         assert result['fill'] == '0000ff'
         assert result['viewport'] is None
 
+    def test_parse_url_variant_params(self):
+        result = self.traverser.parse_url('cinema__200x80__scale_2.25__0000ff?scale=3.0&width=300&height=160&fill=000000')
+        assert result['size'] == [300, 160]
+        assert result['scale'] == 3.0
+        assert result['fill'] == '000000'
+        assert result['viewport'] is None
+
     def test_parse_url_variant_params_override(self):
         result = self.traverser.parse_url('cinema__200x80__scale_2.25__0000ff?scale=3.0&width=300&height=160&fill=000000')
         assert result['size'] == [300, 160]
