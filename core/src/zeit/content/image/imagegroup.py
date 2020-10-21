@@ -229,6 +229,8 @@ class VariantTraverser(object):
         if '__' in path:
             if len([x for x in result.values() if x]) != len(path.split('__')):
                 raise KeyError(path)
+        if result['variant'] is None:
+            raise KeyError(url)
         result['url'] = path
         return result
 
@@ -247,6 +249,8 @@ class VariantTraverser(object):
             result['fill'] = params['fill'][0]
         if 'viewport' in params:
             result['viewport'] = params['viewport'][0]
+        if 'variant' in params:
+            result['variant'] = self._parse_variant_by_name(params['variant'][0])
         return result
 
     def _parse_variant(self, url):
@@ -258,8 +262,6 @@ class VariantTraverser(object):
         variant = self._parse_variant_by_name(url)
         if variant is not None:
             return variant
-
-        raise KeyError(url)
 
     def _parse_variant_by_name(self, url):
         """Select the biggest Variant among those with the given name.
