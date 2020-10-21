@@ -250,7 +250,8 @@ class VariantTraverser(object):
         if 'viewport' in params:
             result['viewport'] = params['viewport'][0]
         if 'variant' in params:
-            result['variant'] = self._parse_variant_by_name(params['variant'][0])
+            result['variant'] = self._parse_variant_by_name(
+                params['variant'][0])
         return result
 
     def _parse_variant(self, url):
