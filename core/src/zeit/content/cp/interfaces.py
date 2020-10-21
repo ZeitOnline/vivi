@@ -757,8 +757,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     force_mobile_image = zope.schema.Bool(
         title=_('Force image on mobile'),
-        required=False,
-        default=False)
+        default=True)
 
 
 class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
@@ -775,7 +774,11 @@ class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
 
 
 class IReadAutomaticTeaserBlock(IReadTeaserBlock):
-    pass
+
+    force_mobile_image = zope.schema.Bool(
+        title=_('Force image on mobile'),
+        required=False,
+        default=False)
 
 
 class IWriteAutomaticTeaserBlock(IWriteTeaserBlock):
