@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.43.2 (unreleased)
+4.43.2 (2020-10-22)
 -------------------
 
 - ZON-6149: Pass url during image traversal
