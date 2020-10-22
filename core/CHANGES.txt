@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.43.1 (unreleased)
+4.43.1 (2020-10-22)
 -------------------
 
 - ZON-5577: Set default for `force_mobile_images` to true 
