@@ -9,6 +9,7 @@ import lxml.objectify
 import os.path
 import persistent
 import re
+import urllib
 import six.moves.urllib.parse
 import sys
 import z3c.traverser.interfaces
@@ -214,19 +215,23 @@ class VariantTraverser(object):
                 self.context, name, request)
 
     def parse_url(self, url):
+        path = urllib.parse.urlsplit(url).path
         result = {
-            'variant': self._parse_variant(url),
-            'size': self._parse_size(url),
-            'scale': self._parse_scale(url),
-            'fill': self._parse_fill(url),
-            'viewport': self._parse_viewport(url),
+            'variant': self._parse_variant(path),
+            'size': self._parse_size(path),
+            'scale': self._parse_scale(path),
+            'fill': self._parse_fill(path),
+            'viewport': self._parse_viewport(path),
         }
         # query parameters take precedence:
         result.update(self.parse_params(url))
-        # Make sure no invalid or redundant modifiers were provided
-        if len([x for x in result.values() if x]) != len(url.split('__')):
+        # Make sure no invalid or redundant modifiers were provided in path
+        if '__' in path:
+            if len([x for x in result.values() if x]) != len(path.split('__')):
+                raise KeyError(path)
+        if result['variant'] is None:
             raise KeyError(url)
-        result['url'] = url
+        result['url'] = path
         return result
 
     def parse_params(self, url):
@@ -244,6 +249,9 @@ class VariantTraverser(object):
             result['fill'] = params['fill'][0]
         if 'viewport' in params:
             result['viewport'] = params['viewport'][0]
+        if 'variant' in params:
+            result['variant'] = self._parse_variant_by_name(
+                params['variant'][0])
         return result
 
     def _parse_variant(self, url):
@@ -255,8 +263,6 @@ class VariantTraverser(object):
         variant = self._parse_variant_by_name(url)
         if variant is not None:
             return variant
-
-        raise KeyError(url)
 
     def _parse_variant_by_name(self, url):
         """Select the biggest Variant among those with the given name.
