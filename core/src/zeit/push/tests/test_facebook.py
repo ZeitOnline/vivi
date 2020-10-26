@@ -4,11 +4,11 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import fb
 import os
 import time
-import unittest
 import zeit.push.facebook
 import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
+import requests
 
 
 class FacebookTest(zeit.push.testing.TestCase):
@@ -26,14 +26,17 @@ class FacebookTest(zeit.push.testing.TestCase):
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
 
-    # Only relevant for the skipped test
-    # def tearDown(self):
-    #     for status in self.api.get_object(
-    #             cat='single', id='me', fields=['feed'])['feed']['data']:
-    #         if 'message' in status and self.nugget in status['message']:
-    #             self.api.delete(id=status['id'])
+        URL = 'https://graph.facebook.com?access_token=' + self.access_token
+        self.current_api_version = float(
+            requests.head(URL).headers['facebook-api-version'][1:])
 
-    @unittest.skip('Facebook says the content was reported as abusive')
+    # Only relevant for the test_send_posts_status test
+    def tearDown(self):
+        for status in self.api.get_object(
+                cat='single', id='me', fields=['feed'])['feed']['data']:
+            if 'message' in status and self.nugget in status['message']:
+                self.api.delete(id=status['id'])
+
     def test_send_posts_status(self):
         facebook = zeit.push.facebook.Connection()
         facebook.send(
@@ -42,8 +45,26 @@ class FacebookTest(zeit.push.testing.TestCase):
 
         for status in self.api.get_object(
                 cat='single', id='me', fields=['feed'])['feed']['data']:
+
             if self.nugget in status['message']:
-                self.assertStartsWith('http://example.com/', status['link'])
+                post_id = status['id']
+
+                fields = ['message']
+                if self.current_api_version > 3.2:
+                    fields.append('attachments')
+                else:
+                    fields.append('links')
+
+                status = self.api.get_object(
+                    cat='single', id=post_id, fields=fields)
+
+                if self.current_api_version > 3.2:
+                    self.assertIn('example.com', status[
+                        'attachments']['data'][0]['target']['url'])
+                else:
+                    self.assertStartsWith(
+                        'http://example.com/', status['link'])
+
                 self.assertIn(u'faceboök', status['message'])
                 break
         else:
