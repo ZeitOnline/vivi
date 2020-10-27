@@ -98,11 +98,18 @@ def create_access_token(argv=None):
 
     # Step 1: Get user token. <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#login>
+    scopes = ','.join([
+        'pages_read_engagement',
+        'pages_manage_posts',
+        'business_management',
+        'pages_manage_metadata',
+        'pages_show_list'
+    ])
     login_url = ('https://www.facebook.com/dialog/oauth?' +
                  six.moves.urllib.parse.urlencode({
                      'client_id': options.app_id,
                      'redirect_uri': options.redirect_uri,
-                     'scope': 'manage_pages,publish_pages',
+                     'scope': scopes,
                  }))
     print(u'Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
         login_url))
