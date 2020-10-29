@@ -49,21 +49,12 @@ class FacebookTest(zeit.push.testing.TestCase):
             if self.nugget in status['message']:
                 post_id = status['id']
 
-                fields = ['message']
-                if self.current_api_version > 3.2:
-                    fields.append('attachments')
-                else:
-                    fields.append('links')
-
+                fields = ['message', 'attachments']
                 status = self.api.get_object(
                     cat='single', id=post_id, fields=fields)
 
-                if self.current_api_version > 3.2:
-                    self.assertIn('example.com', status[
-                        'attachments']['data'][0]['target']['url'])
-                else:
-                    self.assertStartsWith(
-                        'http://example.com/', status['link'])
+                self.assertIn('example.com', status[
+                    'attachments']['data'][0]['target']['url'])
 
                 self.assertIn(u'faceboök', status['message'])
                 break
