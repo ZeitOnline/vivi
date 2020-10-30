@@ -5,7 +5,7 @@ vivi.core changes
 4.43.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6140: Support additional attributes from newslettersignup config
 
 
 4.43.2 (2020-10-22)
