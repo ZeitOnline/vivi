@@ -236,6 +236,25 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MetadataForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.metadata-audio-speechbert"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="25"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.metadata-audio-speechbert"
+    class=".form.MetadataAudioSpeechbert"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MetadataForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.recipe-categories"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
