@@ -2,10 +2,16 @@ vivi.core changes
 =================
 
 
-4.43.3 (unreleased)
+4.43.4 (unreleased)
 -------------------
 
 - ZON-6162: Update jinja to 2.11.2
+
+
+4.43.3 (2020-11-05)
+-------------------
+
+- ZON-6140: Support additional attributes from newslettersignup config
 
 
 4.43.2 (2020-10-22)
