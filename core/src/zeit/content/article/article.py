@@ -221,6 +221,21 @@ def disable_is_amp_if_access_is_restricted(article, event):
         article.is_amp = False
 
 
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def modify_speechbert_audio_depeding_on_genre(article, event):
+    """Checkbox speechbert audio depends on article-genres.xml"""
+    genres = zeit.content.article.interfaces.IArticle['genre'].source(None)
+    for desc in event.descriptions:
+        if (desc.interface is zeit.content.article.interfaces.IArticle and
+                'genre' in desc.attributes):
+            if genres.audio(article.genre) == 'speechbert':
+                article.audio_speechbert = True
+            else:
+                article.audio_speechbert = False
+
+
 @grok.adapter(zeit.content.article.interfaces.IArticle)
 @grok.implementer(zeit.edit.interfaces.IElementReferences)
 def iter_referenced_content(context):

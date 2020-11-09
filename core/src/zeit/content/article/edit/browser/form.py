@@ -331,12 +331,6 @@ class MetadataAudioSpeechbert(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(IArticle).select('audio_speechbert')
     css_class = 'audio-speechbert'
 
-    def render(self):
-        genres = zeit.content.article.interfaces.IArticle['genre'].source(None)
-        if genres.audio(IArticle(self.context).genre) == 'speechbert':
-            self.context.audio_speechbert = True
-        return super(MetadataAudioSpeechbert, self).render()
-
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     """Teaser workflow forms."""
