@@ -4,6 +4,7 @@ import jinja2
 import jinja2.utils
 import jinja2.debug
 import mock
+import traceback
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.text.interfaces
@@ -38,11 +39,14 @@ class Template(jinja2.Template):
         # Patched from upstream to remove any and all dict-wrapping, so we can
         # also pass in a defaultdict to dummy-render a template.
         try:
-            return ''.join(str(i) for i in self.root_render_func(
+            # Don't use jinja concat function to prevent TypeError
+            # if value is None
+            return ''.join(str(value) for value in self.root_render_func(
                 self.new_context(variables, shared=True)))
         except Exception:
-            # XXX: Will this be used in some points?
-            return jinja2.debug.rewrite_traceback_stack(variables)
+            lines = traceback.format_exception(
+                *jinja2.debug.rewrite_traceback_stack(variables))
+            return ''.join(lines).rstrip()
 
 
 class MockDict(collections.defaultdict):
