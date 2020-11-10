@@ -1,10 +1,10 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.browser.error import ExceptionFormatter
 import collections
 import jinja2
 import jinja2.utils
 import jinja2.debug
 import mock
+from zeit.cms.browser.error import getFormattedException
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.text.interfaces
@@ -20,8 +20,13 @@ class JinjaTemplate(zeit.content.text.text.Text):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
 
     def __call__(self, variables, **kw):
-        template = Template(self.text, **kw)
-        return template.render(variables)
+        try:
+            template = Template(self.text, **kw)
+            return template.render(variables)
+        except Exception:
+            # Return formatted exception at TemplateSyntaxError
+            return getFormattedException(
+                jinja2.debug.rewrite_traceback_stack(variables))
 
 
 class JinjaTemplateType(zeit.content.text.text.TextType):
@@ -44,9 +49,8 @@ class Template(jinja2.Template):
             return ''.join(str(value) for value in self.root_render_func(
                 self.new_context(variables, shared=True)))
         except Exception:
-            return ''.join(
-                str(value) for value in ExceptionFormatter().formatException(
-                    *jinja2.debug.rewrite_traceback_stack(variables)))
+            return getFormattedException(
+                jinja2.debug.rewrite_traceback_stack(variables))
 
 
 class MockDict(collections.defaultdict):
