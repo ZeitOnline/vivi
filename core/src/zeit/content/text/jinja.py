@@ -1,10 +1,10 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.browser.error import ExceptionFormatter
 import collections
 import jinja2
 import jinja2.utils
 import jinja2.debug
 import mock
-import traceback
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.text.interfaces
@@ -39,14 +39,14 @@ class Template(jinja2.Template):
         # Patched from upstream to remove any and all dict-wrapping, so we can
         # also pass in a defaultdict to dummy-render a template.
         try:
-            # Don't use jinja concat function to prevent TypeError
-            # if value is None
+            # Don't use jinja concat function
+            # to prevent TypeError if value is None
             return ''.join(str(value) for value in self.root_render_func(
                 self.new_context(variables, shared=True)))
         except Exception:
-            lines = traceback.format_exception(
-                *jinja2.debug.rewrite_traceback_stack(variables))
-            return ''.join(lines).rstrip()
+            return ''.join(
+                str(value) for value in ExceptionFormatter().formatException(
+                    *jinja2.debug.rewrite_traceback_stack(variables)))
 
 
 class MockDict(collections.defaultdict):
