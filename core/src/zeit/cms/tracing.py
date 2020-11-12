@@ -1,6 +1,8 @@
 from unittest import mock
+import contextlib
 import logging
 import random
+import sys
 import uuid
 import zeit.cms.interfaces
 import zope.interface
@@ -26,12 +28,24 @@ class FakeTracer(object):
     def add_span_data(self, span, **kw):
         pass
 
-    def end_span(self, span, exc_info):
+    def end_span(self, span, exc_info=()):
         pass
+
+    @contextlib.contextmanager
+    def span(self, typ, name, **kw):
+        span = self.start_span(typ, name, **kw)
+        exc_info = []
+        try:
+            yield span
+        except Exception:
+            exc_info[:] = sys.exc_info()
+            raise
+        finally:
+            self.end_span(span, exc_info)
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
-class APMTracer(object):
+class APMTracer(FakeTracer):
 
     def __init__(self, service_name, service_version, environment, hostname,
                  apm_url, apm_token):
@@ -80,7 +94,7 @@ class APMTracer(object):
     def add_span_data(self, span, **kw):
         span.labels.update(kw)
 
-    def end_span(self, span, exc_info):
+    def end_span(self, span, exc_info=()):
         span.__exit__(*exc_info)
 
 
@@ -91,7 +105,7 @@ except ImportError:
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
-class HoneyTracer(object):
+class HoneyTracer(FakeTracer):
 
     def __init__(self, service_name, service_version, environment, hostname,
                  apikey, dataset):
@@ -136,7 +150,7 @@ class HoneyTracer(object):
     def add_span_data(self, span, **kw):
         beeline.add_context(kw)
 
-    def end_span(self, span, exc_info=None):
+    def end_span(self, span, exc_info=()):
         if exc_info and exc_info[0]:
             beeline.add_context({
                 'error': str(exc_info[0]),

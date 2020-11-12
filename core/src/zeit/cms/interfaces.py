@@ -124,13 +124,17 @@ class ITracer(zope.interface.Interface):
     def end_trace(trace, name='unknown', status_code=599, **kw):
         pass
 
+    def span(self, typ, name, **kw):
+        """context manager for start_span/end_span"""
+        pass
+
     def start_span(typ, name, **kw):
         pass
 
     def add_span_data(span, **kw):
         pass
 
-    def end_span(span, exc_info):
+    def end_span(span, exc_info=()):
         pass
 
 
