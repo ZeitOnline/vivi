@@ -1,3 +1,4 @@
+from zeit.cms.interfaces import CONFIG_CACHE
 import collections.abc
 import copy
 import grokcore.component as grok
@@ -79,7 +80,7 @@ class Variants(grok.Adapter, collections.abc.Mapping):
 
 
 @grok.implementer(zeit.content.image.interfaces.IVariant)
-class Variant(object):
+class Variant(zeit.cms.content.sources.AllowedBase):
 
     DEFAULT_NAME = 'default'
     interface = zeit.content.image.interfaces.IVariant
@@ -93,6 +94,7 @@ class Variant(object):
     sharpness = None
 
     def __init__(self, **kw):
+        super().__init__(kw['id'], kw['id'], kw.get('available'))
         """Set attributes that are part of the Schema and convert their type"""
         fields = zope.schema.getFields(self.interface)
         for key, value in kw.items():
@@ -170,28 +172,19 @@ class Variant(object):
             self.name, self.max_size)
 
 
-class VariantSource(zeit.cms.content.sources.XMLSource):
+class VariantSource(
+        zeit.cms.content.sources.ObjectSource,
+        zeit.cms.content.sources.SimpleContextualXMLSource):
 
     product_configuration = 'zeit.content.image'
     config_url = 'variant-source'
     default_filename = 'image-variants.xml'
 
-    def getTitle(self, context, value):
-        return value.id
-
-    def getToken(self, context, value):
-        return value.id
-
-    def getValues(self, context):
-        return self.values(context).values()
-
-    def values(self, context):
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
         tree = self._get_tree()
         result = collections.OrderedDict()
         for node in tree.iterchildren('*'):
-            if not self.isAvailable(node, context):
-                continue
-
             sizes = list(node.iterchildren('size'))
             if not sizes:
                 # If there are no children, create a Variant from parent node
@@ -206,9 +199,6 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
                     node.attrib, size.attrib))
                 result[variant.id] = variant
         return result
-
-    def find(self, context, id):
-        return self.values(context)[id]
 
     def _merge_attributes(self, parent_attr, child_attr):
         """Merge attributes from parent with those from child.
