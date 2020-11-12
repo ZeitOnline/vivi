@@ -116,6 +116,24 @@ class Result(list):
     hits = 0
 
 
+class ITracer(zope.interface.Interface):
+
+    def start_trace(trace_id=None, parent_id=None):
+        pass
+
+    def end_trace(trace, name='unknown', status_code=599, **kw):
+        pass
+
+    def start_span(typ, name, **kw):
+        pass
+
+    def add_span_data(span, **kw):
+        pass
+
+    def end_span(span, exc_info):
+        pass
+
+
 def normalize_filename(filename):
     # NOTE: The master version of the algorithm is implemented in JS in
     # zeit.cms.browser.js:filename.js, keep in sync!

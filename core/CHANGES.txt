@@ -2,10 +2,11 @@ vivi.core changes
 =================
 
 
-4.43.4 (unreleased)
+4.44.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Move tracing implementation from zeit.web here so we can
+  instrument vivi code paths as well
 
 
 4.43.3 (2020-11-05)
