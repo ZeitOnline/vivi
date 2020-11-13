@@ -23,6 +23,9 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
         def byline(self, name):
             return self.factory.findNode(name, 'byline')
 
+        def audio(self, name):
+            return self.factory.findNode(name, 'audio')
+
         def feedback(self, name):
             return self.factory.findNode(name, 'feedback')
 

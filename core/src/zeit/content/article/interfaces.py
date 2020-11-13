@@ -50,6 +50,11 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.article.source.GenreSource(),
         required=False)
 
+    audio_speechbert = zope.schema.Bool(
+        title=_("Speechbert Audio"),
+        required=False,
+        default=False)
+
     main_image = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
         description=_("Drag an image group here"),
