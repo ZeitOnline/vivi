@@ -180,6 +180,17 @@ class VariantSource(
     config_url = 'variant-source'
     default_filename = 'image-variants.xml'
 
+    def find(self, context, id):
+        result = super().find(context, id)
+        if result is None:
+            return None
+        # Don't let Variants._copy_missing_fields() change cached instances.
+        # This is done here so zeit.web can easily circumvent it (since it has
+        # to subclass VariantSource anyway) -- as it turns out, creating as
+        # many new objects as currently necessitated e.g. by
+        # VariantTraverser.all_variants_with_name() is rather expensive.
+        return copy.copy(result)
+
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         tree = self._get_tree()
