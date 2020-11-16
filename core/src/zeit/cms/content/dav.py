@@ -435,8 +435,7 @@ class GenericProperty(object):
             raise ValueError(str(e))
         if xml.tag != 'pickle':
             raise ValueError("Invalid pickle.")
-        return zope.xmlpickle.loads(
-            lxml.etree.tostring(xml))
+        return zope.xmlpickle.loads(value)
 
     def toProperty(self, value):
         xml = lxml.etree.fromstring(zope.xmlpickle.dumps(value))
