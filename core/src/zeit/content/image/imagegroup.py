@@ -57,9 +57,7 @@ class ImageGroupBase(object):
 
     @property
     def variants(self):
-        if self._variants is None:
-            return {}
-        return self._variants
+        return self._variants or {}
 
     @variants.setter
     def variants(self, value):
