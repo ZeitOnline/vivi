@@ -73,7 +73,10 @@ class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
         super(VariantProperties, self).setUp()
         self.group = (
             zeit.content.image.testing.create_image_group_with_master_image())
-        self.variants = IVariants(self.group)
+
+    @property
+    def variants(self):
+        return IVariants(self.group)
 
     def test_ratio_is_float_representation_of_aspect_ratio(self):
         self.assertEqual('1:1', self.variants['square'].aspect_ratio)

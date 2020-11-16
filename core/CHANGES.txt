@@ -5,7 +5,7 @@ vivi.core changes
 4.44.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- PERF: Cache immutable values while calculating image variants
 
 
 4.44.0 (2020-11-13)

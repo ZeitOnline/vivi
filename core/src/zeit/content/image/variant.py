@@ -1,4 +1,5 @@
 from zeit.cms.interfaces import CONFIG_CACHE
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections.abc
 import copy
 import grokcore.component as grok
@@ -17,12 +18,13 @@ class Variants(grok.Adapter, collections.abc.Mapping):
 
     def __init__(self, context):
         super(Variants, self).__init__(context)
+        self.settings = self.context.variants
         self.__parent__ = context
 
     def __getitem__(self, key):
         """Retrieve Variant for JSON Requests"""
-        if key in self.context.variants:
-            variant = Variant(id=key, **self.context.variants[key])
+        if key in self.settings:
+            variant = Variant(id=key, **self.settings[key])
             config = VARIANT_SOURCE.factory.find(self.context, key)
             self._copy_missing_fields(config, variant)
         else:
@@ -69,9 +71,9 @@ class Variants(grok.Adapter, collections.abc.Mapping):
     def __len__(self):
         return len(self.keys())
 
-    @property
+    @cachedproperty
     def default_variant(self):
-        if Variant.DEFAULT_NAME in self.context.variants:
+        if Variant.DEFAULT_NAME in self.settings:
             default = self[Variant.DEFAULT_NAME]
         else:
             default = VARIANT_SOURCE.factory.find(
