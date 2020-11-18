@@ -4,7 +4,6 @@ import jinja2
 import jinja2.utils
 import jinja2.debug
 import mock
-from zeit.cms.browser.error import getFormattedException
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.text.interfaces
@@ -20,13 +19,8 @@ class JinjaTemplate(zeit.content.text.text.Text):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
 
     def __call__(self, variables, **kw):
-        try:
-            template = Template(self.text, **kw)
-            return template.render(variables)
-        except Exception:
-            # Return formatted exception at TemplateSyntaxError
-            return getFormattedException(
-                jinja2.debug.rewrite_traceback_stack(variables))
+        template = Template(self.text, **kw)
+        return template.render(variables)
 
 
 class JinjaTemplateType(zeit.content.text.text.TextType):
@@ -49,8 +43,7 @@ class Template(jinja2.Template):
             return ''.join(str(value) for value in self.root_render_func(
                 self.new_context(variables, shared=True)))
         except Exception:
-            return getFormattedException(
-                jinja2.debug.rewrite_traceback_stack(variables))
+            return jinja2.debug.rewrite_traceback_stack()
 
 
 class MockDict(collections.defaultdict):
