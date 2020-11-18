@@ -29,6 +29,7 @@ from zeit.connector.interfaces import (  # noqa
 
 CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
 FEATURE_CACHE = pyramid_dogpile_cache2.get_region('feature')
+NEWSIMPORT_CACHE = pyramid_dogpile_cache2.get_region('newsimport')
 
 
 class ICMSContentType(zope.interface.interfaces.IInterface):

@@ -510,9 +510,10 @@ cms_product_config = """\
   trisolute-ressort-url file://{base}/tagging/tests/fixtures/tris-ressorts.xml
   breadcrumbs-use-common-metadata true
 
-  cache-regions config, feature, dav
+  cache-regions config, feature, newsimport, dav
   cache-expiration-config 600
   cache-expiration-feature 15
+  cache-expiration-newsimport 900
   cache-expiration-dav 0
   feature-toggle-source file://{base}/content/feature-toggle.xml
 
