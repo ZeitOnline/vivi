@@ -2,7 +2,7 @@ vivi.core changes
 =================
 
 
-4.44.2 (unreleased)
+4.44.2 (2020-11-19)
 -------------------
 
 - STO-82: Make MemoryFile pickleable
