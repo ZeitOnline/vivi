@@ -122,6 +122,7 @@ class ProductConfigLayer(plone.testing.Layer):
                     previous[key] = copy.deepcopy(product[key])
                 else:
                     previous[key] = self.DELETE
+            self._update(package, config)
 
     def tearDown(self):
         zope.app.appsetup.product.setProductConfiguration(self.package, None)
