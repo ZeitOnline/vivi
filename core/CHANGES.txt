@@ -5,7 +5,7 @@ vivi.core changes
 4.44.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Update product-config in test setup.
 
 
 4.44.2 (2020-11-19)
