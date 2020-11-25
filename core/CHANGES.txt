@@ -5,7 +5,7 @@ vivi.core changes
 4.44.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6213: Fix zeit.cms newsimport test setup.
 
 
 4.44.3 (2020-11-25)
