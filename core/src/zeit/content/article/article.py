@@ -61,8 +61,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'artbox_thema', 'genre', 'template',
-         'header_layout', 'header_color', 'is_amp',
+        ('has_recensions', 'artbox_thema', 'genre', 'audio_speechbert',
+         'template', 'header_layout', 'header_color', 'is_amp',
          'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
          'recent_comments_first'))
 
@@ -219,6 +219,21 @@ def disable_is_amp_if_access_is_restricted(article, event):
 
     if article.access and article.access != u'free':
         article.is_amp = False
+
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def modify_speechbert_audio_depeding_on_genre(article, event):
+    """Checkbox speechbert audio depends on article-genres.xml"""
+    genres = zeit.content.article.interfaces.IArticle['genre'].source(None)
+    for desc in event.descriptions:
+        if (desc.interface is zeit.content.article.interfaces.IArticle and
+                'genre' in desc.attributes):
+            if genres.audio(article.genre) == 'speechbert':
+                article.audio_speechbert = True
+            else:
+                article.audio_speechbert = False
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle)

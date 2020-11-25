@@ -297,6 +297,7 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
 
     def _success_handler(self):
         self.signal('reload-inline-form', 'recipe-categories')
+        self.signal('reload-inline-form', 'audio-speechbert')
 
 
 class MetadataNL(zeit.edit.browser.form.InlineForm):
@@ -320,6 +321,15 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
             fields += (
                 'commentsAllowed', 'commentsPremoderate')
         return FormFields(ICommonMetadata).select(*fields)
+
+
+class MetadataAudioSpeechbert(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'audio-speechbert'
+    undo_description = _('edit audio_speechbert')
+    form_fields = FormFields(IArticle).select('audio_speechbert')
+    css_class = 'audio-speechbert'
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):

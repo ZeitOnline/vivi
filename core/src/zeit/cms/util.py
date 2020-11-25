@@ -22,3 +22,9 @@ class MemoryFile(object):
 
     def __exit__(self, *args):
         self.close()
+
+    # pickle support, since zeit.web wants to put these in a dogpile.cache
+    data = None
+
+    def __getstate__(self):
+        return {'data': self.data}
