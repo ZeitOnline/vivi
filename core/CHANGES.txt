@@ -5,7 +5,7 @@ vivi.core changes
 4.44.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- STO-57: Add type declarations for countings and foldable
 
 
 4.44.4 (2020-11-25)
