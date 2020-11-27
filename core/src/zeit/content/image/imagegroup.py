@@ -57,9 +57,7 @@ class ImageGroupBase(object):
 
     @property
     def variants(self):
-        if self._variants is None:
-            return {}
-        return self._variants
+        return self._variants or {}
 
     @variants.setter
     def variants(self, value):
@@ -138,17 +136,26 @@ class ImageGroupBase(object):
                 variant.max_width < sys.maxsize > variant.max_height):
             size = [variant.max_width, variant.max_height]
 
-        # Be defensive about missing meta files, so source could not be
-        # recognized as an image (for zeit.web)
-        transform = zeit.content.image.interfaces.ITransform(source, None)
-        if transform is None:
-            return None
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.span(
+                'code', 'zeit.content.image.imagegroup.create_variant',
+                content=str(self), variant=variant.name,
+                viewport=viewport) as span:
+            if size is not None:
+                tracer.add_span_data(span, width=size[0], height=size[1])
 
-        image = transform.create_variant_image(variant, size, fill, format)
-        image.__name__ = url or variant.name
-        image.__parent__ = self
-        image.uniqueId = u'%s%s' % (self.uniqueId, image.__name__)
-        image.variant_source = source.__name__
+            # Be defensive about missing meta files, so source could not be
+            # recognized as an image (for zeit.web)
+            transform = zeit.content.image.interfaces.ITransform(source, None)
+            if transform is None:
+                return None
+
+            image = transform.create_variant_image(variant, size, fill, format)
+            image.__name__ = url or variant.name
+            image.__parent__ = self
+            image.uniqueId = u'%s%s' % (self.uniqueId, image.__name__)
+            image.variant_source = source.__name__
+
         return image
 
     def variant_url(self, name, width=None, height=None,

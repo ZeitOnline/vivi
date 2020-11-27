@@ -609,6 +609,19 @@ class CMSSearch(Converter):
         }}}
 
 
+# additional DAV type declarations
+# without these `countings` and `foldable` will received yes/no values,
+# which breaks validation with recent versions of Elasticsearch
+zeit.cms.content.dav.DAVProperty(
+    zope.schema.Bool(),
+    'http://namespaces.zeit.de/CMS/document',
+    'countings')
+zeit.cms.content.dav.DAVProperty(
+    zope.schema.Bool(),
+    'http://namespaces.zeit.de/CMS/document',
+    'foldable')
+
+
 @grok.adapter(zope.interface.Interface)
 @grok.implementer(zeit.retresco.interfaces.IBody)
 def body_default(context):

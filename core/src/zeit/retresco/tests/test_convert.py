@@ -67,6 +67,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'document': {
                     'DailyNL': False,
                     'artbox_thema': False,
+                    'audio_speechbert': False,
                     'author': ['Hans Meiser'],
                     'banner': True,
                     'banner_content': True,
@@ -74,8 +75,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'comments': False,
                     'comments_premoderate': False,
                     'copyrights': 'ZEIT online',
-                    'countings': 'yes',
-                    'foldable': 'yes',
+                    'countings': True,
+                    'foldable': True,
                     'has_recensions': False,
                     'header_layout': u'default',
                     'hide_adblocker_notification': False,
