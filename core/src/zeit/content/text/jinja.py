@@ -9,6 +9,7 @@ import zeit.cms.type
 import zeit.content.text.interfaces
 import zeit.content.text.text
 import zope.interface
+import traceback
 
 
 @zope.interface.implementer(zeit.content.text.interfaces.IJinjaTemplate)
@@ -43,7 +44,8 @@ class Template(jinja2.Template):
             return ''.join(str(value) for value in self.root_render_func(
                 self.new_context(variables, shared=True)))
         except Exception:
-            return jinja2.debug.rewrite_traceback_stack()
+            return ''.join(traceback.format_exception(
+                *jinja2.debug.rewrite_traceback_stack()))
 
 
 class MockDict(collections.defaultdict):
