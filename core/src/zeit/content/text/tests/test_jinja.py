@@ -1,3 +1,5 @@
+import sys
+import traceback
 import zeit.content.text.jinja
 import zeit.content.text.testing
 
@@ -16,6 +18,22 @@ class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
 
         tpl = self.create('{{fo}}')
         self.assertEqual('', tpl({'foo': 'bar'}))
+
+        tpl = self.create('{{fo()}')
+        formatted_exc = ''
+        try:
+            tpl({})
+        except Exception:
+            formatted_exc = ''.join(traceback.format_exception(
+                *sys.exc_info()))
+        self.assertIn(
+            "jinja2.exceptions.TemplateSyntaxError: unexpected '}'",
+            formatted_exc)
+
+        tpl = self.create('{{fo()}}')
+        self.assertIn(
+            "jinja2.exceptions.UndefinedError: \'fo\' is undefined",
+            tpl({}))
 
     def test_mockdict_responds_to_any_variable(self):
         tpl = self.create('{{foo.bar.baz}}')
