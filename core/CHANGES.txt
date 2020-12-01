@@ -5,6 +5,8 @@ vivi.core changes
 4.44.5 (unreleased)
 -------------------
 
+- ZON-6214: Sends article to the ContentHub, even if it was "only published"
+
 - STO-57: Add type declarations for countings and foldable
 
 

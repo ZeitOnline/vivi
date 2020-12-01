@@ -20,8 +20,6 @@ log = logging.getLogger(__name__)
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def notify_after_checkin(context, event):
-    if event.publishing:
-        return
     # XXX Work around redis/ZODB race condition, see BUG-796.
     for hook in HOOKS:
         notify_webhook.apply_async((context.uniqueId, hook.url), countdown=5)
