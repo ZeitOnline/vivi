@@ -20,8 +20,12 @@ class JinjaTemplate(zeit.content.text.text.Text):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
 
     def __call__(self, variables, **kw):
-        template = Template(self.text, **kw)
-        return template.render(variables)
+        try:
+            template = Template(self.text, **kw)
+            return template.render(variables)
+        except Exception:
+            return ''.join(traceback.format_exception(
+                *jinja2.debug.rewrite_traceback_stack()))
 
 
 class JinjaTemplateType(zeit.content.text.text.TextType):
