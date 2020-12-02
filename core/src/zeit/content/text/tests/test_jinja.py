@@ -1,5 +1,3 @@
-import sys
-import traceback
 import zeit.content.text.jinja
 import zeit.content.text.testing
 
@@ -20,15 +18,9 @@ class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
         self.assertEqual('', tpl({'foo': 'bar'}))
 
         tpl = self.create('{{fo()}')
-        formatted_exc = ''
-        try:
-            tpl({})
-        except Exception:
-            formatted_exc = ''.join(traceback.format_exception(
-                *sys.exc_info()))
         self.assertIn(
             "jinja2.exceptions.TemplateSyntaxError: unexpected '}'",
-            formatted_exc)
+            tpl({}))
 
         tpl = self.create('{{fo()}}')
         self.assertIn(
