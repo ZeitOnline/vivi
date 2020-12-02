@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import bugsnag
 import grokcore.component as grok
+import jinja2.exceptions
 import json
 import logging
 import mock
@@ -119,8 +120,8 @@ class Message(zeit.push.message.Message):
 
     APP_IDENTIFIER = 'zeitapp'
 
-    def render(self):
-        return self.validate_template(self._render())
+    def render(self, raise_err=True):
+        return self.validate_template(self._render(), raise_err)
 
     def _render(self):
         template = self.find_template(self.config.get('payload_template'))
@@ -143,11 +144,18 @@ class Message(zeit.push.message.Message):
         })
         return result
 
-    def validate_template(self, text):
-        # If not proper json, a pretty good ValueError will be raised here.
-        result = json.loads(text, strict=False)
-        # XXX Maybe use the urbanairship python module validation API.
-        return result['messages']
+    def validate_template(self, text, raise_err=True):
+        try:
+            # If not proper json, a pretty good ValueError will be raised here.
+            # On a TemplateSyntaxError or UndefinedError the 'text'-Parameter
+            # is the formatted Exception of these two exceptions.
+            result = json.loads(text, strict=False)
+            # XXX Maybe use the urbanairship python module validation API.
+            return result['messages']
+        except Exception:
+            if raise_err:
+                raise jinja2.exceptions.TemplateError(text)
+            return ''
 
     def find_template(self, name):
         source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE
