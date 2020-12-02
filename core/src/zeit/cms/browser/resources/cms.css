@@ -436,8 +436,8 @@ pre {
   background: transparent url("layout/logo_zar.png") no-repeat left center;
 }
 
-.section-IZETTSection #main-navigation > li:first-child > a {
-    background: transparent url("layout/logo_zett.png") no-repeat left center;
+.section-IZTTSection #main-navigation > li:first-child > a {
+    background: transparent url("layout/logo_ztt.png") no-repeat left center;
 }
 
 .environment-staging #main-navigation > li:first-child > a {
