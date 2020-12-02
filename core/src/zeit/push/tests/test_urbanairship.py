@@ -3,9 +3,11 @@ from datetime import datetime
 from zeit.cms.interfaces import ICMSContent
 from zope.lifecycleevent import ObjectCreatedEvent
 import json
+import jinja2.exceptions
 import mock
 import os
 import pytz
+from pytest import raises
 import unittest
 import urbanairship.push.core
 import zeit.cms.checkout.helper
@@ -212,6 +214,56 @@ class MessageTest(zeit.push.testing.TestCase):
         self.assertEqual(u'Bildß', payload[0].get('message'))
         self.assertEqual(message.context.title, payload[0].get('title'))
 
+    def test_payload_template_syntaxerror_should_raise_templateerror(self):
+        template_content = u"""{"messages":[{
+            "title": "{{article.title}}",
+            "message": "{%if not uses_image %}Bildß{% endif %"
+        }]}"""
+        self.create_payload_template(template_content, 'bar.json')
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        with raises(jinja2.exceptions.TemplateError):
+            message.render()
+
+    def test_payload_template_undefinederror_should_raise_templateerror(self):
+        template_content = u"""{"messages":[{
+            "title": "{{articel.title}}",
+            "message": "{%if not uses_image %}Bildß{% endif %}"
+        }]}"""
+        self.create_payload_template(template_content, 'bar.json')
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        with raises(jinja2.exceptions.TemplateError):
+            message.render()
+
+    def test_payload_template_syntaxerror_should_return_emptystring(self):
+        template_content = u"""{"messages":[{
+            "title": "{{article.title}}",
+            "message": "{%if not uses_image %}Bildß{% endif %"
+        }]}"""
+        self.create_payload_template(template_content, 'bar.json')
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        self.assertEqual('', message.render(raise_err=False))
+
+    def test_payload_template_undefinederror_should_return_emptystring(self):
+        template_content = u"""{"messages":[{
+            "title": "{{articel.title}}",
+            "message": "{%if not uses_image %}Bildß{% endif %}"
+        }]}"""
+        self.create_payload_template(template_content, 'bar.json')
+        message = zope.component.getAdapter(
+            self.create_content(),
+            zeit.push.interfaces.IMessage, name=self.name)
+        message.config['payload_template'] = 'bar.json'
+        self.assertEqual('', message.render(raise_err=False))
+
     def test_deep_link_starts_with_app_identifier(self):
         message = zope.component.getAdapter(
             self.create_content(),
@@ -369,6 +421,26 @@ class PushTest(zeit.push.testing.TestCase):
             1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             invalid_connection.send('any', 'any', message=self.message)
+
+    def test_template_error_should_raise(self):
+        template_contents = [
+            u"""{"messages":[{
+                "title": "{{article.title}}",
+                "message": "{%if not uses_image %}Bildß{% endif %"
+            }]}""",
+            u"""{"messages":[{
+                "title": "{{articel.title}}",
+                "message": "{%if not uses_image %}Bildß{% endif %}"
+            }]}"""
+        ]
+
+        for template_content in template_contents:
+            with mock.patch('urbanairship.push.core.Push.send', send):
+                with mock.patch('urbanairship.push.core.PushResponse'):
+                    self.create_payload_template(template_content, 'bar.json')
+                    self.message.config['payload_template'] = 'bar.json'
+                    with raises(jinja2.exceptions.TemplateError):
+                        self.api.send('any', 'any', message=self.message)
 
     def test_server_error_should_raise(self):
         response = mock.Mock()
