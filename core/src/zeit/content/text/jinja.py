@@ -1,3 +1,4 @@
+from jinja2.runtime import Undefined
 from zeit.cms.i18n import MessageFactory as _
 import collections
 import jinja2
@@ -65,5 +66,7 @@ class MockDict(collections.defaultdict):
 def json_escape(value):
     if isinstance(value, str):
         return value.replace('"', r'\"')
+    elif isinstance(value, Undefined):
+        return ''
     else:
         return value
