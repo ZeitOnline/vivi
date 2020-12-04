@@ -22,6 +22,8 @@ class JinjaTemplate(zeit.content.text.text.Text):
         patch = None
         if kw.pop('output_format', None) == 'json':
             # Kludgy way to make jinja autoescape work for JSON instead of HTML
+            # XXX This is not threadsafe! We should probably look into a more
+            # stable solution, like https://github.com/pallets/jinja/issues/503
             kw['autoescape'] = True
             patch = mock.patch('jinja2.runtime.escape', new=json_escape)
             patch.start()
