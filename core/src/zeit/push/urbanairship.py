@@ -124,9 +124,7 @@ class Message(zeit.push.message.Message):
 
     def _render(self):
         template = self.find_template(self.config.get('payload_template'))
-        # Kludgy way to make jinja autoescape work for JSON instead of HTML.
-        with mock.patch('jinja2.runtime.escape', new=json_escape):
-            return template(self.template_variables, autoescape=True)
+        return template(self.template_variables, output_format='json')
 
     @property
     def template_variables(self):
@@ -219,15 +217,7 @@ def from_product_config():
         expire_interval=int(config['urbanairship-expire-interval']))
 
 
-def json_escape(value):
-    if isinstance(value, six.string_types):
-        return value.replace('"', r'\"')
-    else:
-        return value
-
-
 def print_payload_documentation():
-    import mock
     import zeit.connector.interfaces
     import zeit.content.article.article
     import zeit.content.image.image

@@ -1,9 +1,9 @@
+from jinja2.runtime import Undefined
 from zeit.cms.i18n import MessageFactory as _
 import collections
 import jinja2
 import jinja2.utils
 import mock
-import sys
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.text.interfaces
@@ -19,8 +19,19 @@ class JinjaTemplate(zeit.content.text.text.Text):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
 
     def __call__(self, variables, **kw):
+        patch = None
+        if kw.pop('output_format', None) == 'json':
+            # Kludgy way to make jinja autoescape work for JSON instead of HTML
+            # XXX This is not threadsafe! We should probably look into a more
+            # stable solution, like https://github.com/pallets/jinja/issues/503
+            kw['autoescape'] = True
+            patch = mock.patch('jinja2.runtime.escape', new=json_escape)
+            patch.start()
         template = Template(self.text, **kw)
-        return template.render(variables)
+        result = template.render(variables)
+        if patch:
+            patch.stop()
+        return result
 
 
 class JinjaTemplateType(zeit.content.text.text.TextType):
@@ -42,8 +53,7 @@ class Template(jinja2.Template):
                 self.root_render_func(
                     self.new_context(variables, shared=True)))
         except Exception:
-            exc_info = sys.exc_info()
-        return self.environment.handle_exception(exc_info, True)
+            self.environment.handle_exception()
 
 
 class MockDict(collections.defaultdict):
@@ -53,3 +63,12 @@ class MockDict(collections.defaultdict):
 
     def __contains__(self, key):
         return True
+
+
+def json_escape(value):
+    if isinstance(value, str):
+        return value.replace('"', r'\"')
+    elif isinstance(value, Undefined):
+        return ''
+    else:
+        return value
