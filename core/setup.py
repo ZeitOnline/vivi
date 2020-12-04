@@ -16,7 +16,7 @@ setup(
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'BTrees',
-        'Jinja2',
+        'Jinja2 >= 2.11.0.dev0',
         'Pillow',
         'PyJWT',
         'cryptography',  # so pyjwt can offer RSA

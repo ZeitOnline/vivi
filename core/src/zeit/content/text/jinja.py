@@ -3,7 +3,6 @@ import collections
 import jinja2
 import jinja2.utils
 import mock
-import sys
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.text.interfaces
@@ -42,8 +41,7 @@ class Template(jinja2.Template):
                 self.root_render_func(
                     self.new_context(variables, shared=True)))
         except Exception:
-            exc_info = sys.exc_info()
-        return self.environment.handle_exception(exc_info, True)
+            self.environment.handle_exception()
 
 
 class MockDict(collections.defaultdict):
