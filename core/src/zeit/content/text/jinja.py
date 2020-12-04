@@ -18,8 +18,17 @@ class JinjaTemplate(zeit.content.text.text.Text):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
 
     def __call__(self, variables, **kw):
+        patch = None
+        if kw.pop('output_format', None) == 'json':
+            # Kludgy way to make jinja autoescape work for JSON instead of HTML
+            kw['autoescape'] = True
+            patch = mock.patch('jinja2.runtime.escape', new=json_escape)
+            patch.start()
         template = Template(self.text, **kw)
-        return template.render(variables)
+        result = template.render(variables)
+        if patch:
+            patch.stop()
+        return result
 
 
 class JinjaTemplateType(zeit.content.text.text.TextType):
@@ -51,3 +60,10 @@ class MockDict(collections.defaultdict):
 
     def __contains__(self, key):
         return True
+
+
+def json_escape(value):
+    if isinstance(value, str):
+        return value.replace('"', r'\"')
+    else:
+        return value

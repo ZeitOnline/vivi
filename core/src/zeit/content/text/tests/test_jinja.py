@@ -1,3 +1,4 @@
+import json
 import sys
 import traceback
 import zeit.content.text.jinja
@@ -32,3 +33,12 @@ class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
                 traceback.format_exception(*sys.exc_info()))
         else:
             self.fail('did not raise')
+
+    def test_escapes_variables_for_json(self):
+        tpl = self.create("""{
+            "title": "{{foo}}",
+            "undefined": "{{nonexistent}}"
+        }""")
+        result = tpl({'foo': 'with "quotes"'}, output_format='json')
+        result = json.loads(result)
+        self.assertEqual({'title': 'with "quotes"', 'undefined': ''}, result)
