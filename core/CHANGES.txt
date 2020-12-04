@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.44.6 (unreleased)
+4.45.0 (2020-12-04)
 -------------------
 
 - ZETT-90: Add vivi logo for ze.tt
