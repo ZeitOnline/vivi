@@ -26,6 +26,12 @@ class RecipeCategoriesTest(
         b.open('@@contents')
         sb_cb = b.xpath('//input[@id="audio-speechbert.audio_speechbert"]')[0]
         self.assertFalse(sb_cb.checked)
+        # Finally: Select 'no genre' option
+        genre.value = ''
+        b.getControl(name='metadata-genre.actions.apply').click()
+        b.open('@@contents')
+        sb_cb = b.xpath('//input[@id="audio-speechbert.audio_speechbert"]')[0]
+        self.assertFalse(sb_cb.checked)
 
     def test_genre_should_toggle_recipe_categories(self):
         b = self.browser
