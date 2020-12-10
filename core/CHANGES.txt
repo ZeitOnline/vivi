@@ -4,7 +4,7 @@ vivi.core changes
 4.45.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1480: Log pickle on unpickling errors
 
 
 4.45.1 (2020-12-10)
