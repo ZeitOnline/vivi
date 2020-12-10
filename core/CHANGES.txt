@@ -4,7 +4,7 @@ vivi.core changes
 4.45.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1480: Log error when unpickling lxml
 
 
 4.45.0 (2020-12-04)
