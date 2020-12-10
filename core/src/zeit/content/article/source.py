@@ -26,8 +26,6 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
         def audio(self, name):
             if name:
                 return self.factory.findNode(name, 'audio')
-            else:
-                pass
 
         def feedback(self, name):
             return self.factory.findNode(name, 'feedback')
