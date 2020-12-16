@@ -12,4 +12,11 @@
     preserveOriginal="true"
     replacement=".security_patch.instancecheck_with_zope_proxy" />
 
+  <monkey:patch
+    description="More diagnostics for UnpicklingError"
+    class="ZODB.serialize.ObjectReader"
+    original="getState"
+    preserveOriginal="true"
+    replacement=".zodb_patch.getState_with_logging" />
+
 </configure>
