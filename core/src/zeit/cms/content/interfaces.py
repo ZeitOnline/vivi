@@ -73,7 +73,7 @@ class ICommonMetadata(zope.interface.Interface):
     volume = zope.schema.Int(
         title=_("Volume"),
         min=1,
-        max=53,
+        max=54,
         required=False)
 
     page = zope.schema.Int(

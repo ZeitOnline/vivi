@@ -40,7 +40,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
     volume = zope.schema.Int(
         title=_("Volume"),
         min=1,
-        max=53)
+        max=54)
 
     teaserText = zope.schema.Text(
         title=_("Volume text"),
