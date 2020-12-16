@@ -1,4 +1,4 @@
-from six import StringIO
+from six import BytesIO
 import base64
 import lxml.etree
 import os.path
@@ -64,7 +64,7 @@ class MDB(object):
         body = XML_TAGS.sub('', response)
         body = base64.b64decode(body)
         # Cannot use cStringIO since we need to set additional attributes.
-        result = StringIO(body)
+        result = BytesIO(body)
         result.filename = FILE_NAME_ATTRIBUTE.search(response).group(1)
         result.mdb_id = mdb_id
         result.headers = {'content-type': 'image/%s' % os.path.splitext(
