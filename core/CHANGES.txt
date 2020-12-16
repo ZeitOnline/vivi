@@ -4,7 +4,7 @@ vivi.core changes
 4.45.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6319: Fix behavior for select the 'no genre' option 
 
 
 4.45.4 (2020-12-16)
