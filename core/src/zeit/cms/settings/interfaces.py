@@ -14,7 +14,7 @@ class IGlobalSettings(zope.interface.Interface):
     default_volume = zope.schema.Int(
         title=_("Default volume"),
         min=1,
-        max=53)
+        max=54)
 
     def get_working_directory(template):
         """Return the collection which is the main working directory.
