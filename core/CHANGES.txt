@@ -4,7 +4,7 @@ vivi.core changes
 4.45.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-1490: Allow volume to be set to 54 (everywhere)
 
 
 4.45.3 (2020-12-16)
