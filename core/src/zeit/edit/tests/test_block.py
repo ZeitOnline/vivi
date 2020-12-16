@@ -1,6 +1,6 @@
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import lxml.objectify
-import mock
 import persistent.interfaces
 import zeit.cms.interfaces
 import zeit.edit.testing

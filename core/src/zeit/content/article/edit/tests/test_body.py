@@ -1,5 +1,5 @@
+from unittest import mock
 import gocept.testing.mock
-import mock
 import six
 import unittest
 import zeit.cms.testing

@@ -1,7 +1,7 @@
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.testing.assertion
 import lxml.etree
-import mock
 import plone.testing.zca
 import unittest
 import zeit.cms.content.interfaces

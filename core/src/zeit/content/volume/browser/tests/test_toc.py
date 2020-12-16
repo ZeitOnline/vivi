@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict, OrderedDict
+from unittest import mock
 from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
 import lxml.etree
-import mock
 import sys
 import zeit.cms.content.add
 import zeit.cms.content.sources

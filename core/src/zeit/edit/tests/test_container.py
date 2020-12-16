@@ -1,6 +1,6 @@
 from persistent.interfaces import IPersistent
+from unittest import mock
 import lxml.objectify
-import mock
 import unittest
 import zeit.cms.workingcopy.interfaces
 import zeit.edit.container

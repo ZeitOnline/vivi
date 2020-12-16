@@ -1,5 +1,5 @@
+from unittest import mock
 from zeit.cms.testing import copy_inherited_functions
-import mock
 import unittest
 import zeit.cms.content.tests.test_contentsource
 import zeit.cms.testing

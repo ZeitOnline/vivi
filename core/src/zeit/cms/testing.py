@@ -1,6 +1,6 @@
-from __future__ import absolute_import
 from six import StringIO
 from six.moves.urllib.parse import urljoin
+from unittest import mock
 import ZODB
 import ZODB.DemoStorage
 import base64
@@ -21,7 +21,6 @@ import kombu
 import logging
 import lxml.etree
 import lxml.html
-import mock
 import os
 import pkg_resources
 import plone.testing

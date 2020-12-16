@@ -1,9 +1,9 @@
 # coding=utf-8
 from datetime import datetime
+from unittest import mock
 from zeit.cms.interfaces import ICMSContent
 from zope.lifecycleevent import ObjectCreatedEvent
 import json
-import mock
 import os
 import pytz
 import unittest

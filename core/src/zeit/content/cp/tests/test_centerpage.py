@@ -1,7 +1,7 @@
 # coding: utf-8
+from unittest import mock
 from xmldiff.main import diff_trees
 from zeit.cms.checkout.helper import checked_out
-import mock
 import unittest
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing

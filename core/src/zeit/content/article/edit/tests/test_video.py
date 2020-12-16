@@ -1,6 +1,6 @@
 from datetime import datetime
+from unittest import mock
 import contextlib
-import mock
 import pytz
 import unittest
 import zeit.content.article.testing

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
-import mock
 import zeit.cms.content.field
 import zeit.cms.interfaces
 import zeit.content.volume.testing

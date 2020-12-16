@@ -1,7 +1,7 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import lxml.objectify
-import mock
 import six
 import zeit.content.modules.rawtext
 import zeit.content.modules.testing

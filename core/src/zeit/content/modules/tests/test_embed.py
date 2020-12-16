@@ -1,5 +1,5 @@
+from unittest import mock
 import lxml.objectify
-import mock
 import zeit.content.modules.embed
 import zeit.content.modules.testing
 

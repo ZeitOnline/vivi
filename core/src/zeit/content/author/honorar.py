@@ -142,7 +142,7 @@ def from_product_config():
 
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 def MockHonorar():
-    import mock  # testing dependency
+    from unittest import mock  # testing dependency
     honorar = mock.Mock()
     zope.interface.alsoProvides(
         honorar, zeit.content.author.interfaces.IHonorar)

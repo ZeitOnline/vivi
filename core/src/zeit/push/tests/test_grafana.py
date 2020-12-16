@@ -1,5 +1,5 @@
+from unittest import mock
 from zeit.cms.interfaces import ICMSContent
-import mock
 import zeit.push.grafana
 import zeit.push.testing
 import zeit.push.urbanairship

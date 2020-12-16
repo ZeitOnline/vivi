@@ -49,7 +49,7 @@ We now will add objects to the feed. Let's create some fake object:
 ...         self.uniqueId = id
 
 
->>> import mock
+>>> from unittest import mock
 >>> rename_patch = mock.patch('zeit.cms.syndication.feed.IRenameInfo')
 >>> RenameInfo = rename_patch.start()
 >>> RenameInfo().previous_uniqueIds = ()
@@ -447,4 +447,4 @@ ignored silently when updating metadata:
 Teardown
 ========
 
->>> rename_patch.stop()
+>>> _ = rename_patch.stop()

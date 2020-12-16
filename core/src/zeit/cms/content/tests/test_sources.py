@@ -1,4 +1,4 @@
-from mock import Mock
+from unittest.mock import Mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.lxml.objectify

@@ -1,10 +1,10 @@
 # coding: utf8
 from selenium.webdriver.common.keys import Keys
+from unittest import mock
 from zeit.content.article.edit.browser.edit import SaveText, AutoSaveText
 import gocept.testing.mock
 import json
 import lxml.objectify
-import mock
 import time
 import transaction
 import unittest

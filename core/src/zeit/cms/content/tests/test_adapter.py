@@ -1,5 +1,5 @@
+from unittest import mock
 import lxml.etree
-import mock
 import zeit.cms.checkout.interfaces
 import zeit.cms.testing
 

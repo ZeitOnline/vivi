@@ -1,5 +1,5 @@
+from unittest import mock
 import gocept.testing.assertion
-import mock
 import unittest
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing

@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
 import zeit.edit.interfaces
