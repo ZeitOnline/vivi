@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import elasticsearch
 import elasticsearch.connection
 import elasticsearch.transport

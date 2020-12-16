@@ -1,5 +1,4 @@
 # coding: utf-8
-from __future__ import absolute_import
 from datetime import datetime, timedelta
 from unittest import mock
 from zeit.cms.content.sources import FEATURE_TOGGLES

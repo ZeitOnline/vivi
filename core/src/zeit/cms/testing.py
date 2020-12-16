@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from six import StringIO
 from six.moves.urllib.parse import urljoin
 from unittest import mock

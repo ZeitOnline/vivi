@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 import unittest
 import zeit.cms.browser.form
 import zeit.cms.testing

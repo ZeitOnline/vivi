@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from io import BytesIO
 import six.moves.http_client
 import six.moves.xmlrpc_client
