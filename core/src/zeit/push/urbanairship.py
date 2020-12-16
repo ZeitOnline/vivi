@@ -1,12 +1,12 @@
 # coding: utf-8
 from __future__ import absolute_import
 from datetime import datetime, timedelta
+from unittest import mock
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import bugsnag
 import grokcore.component as grok
 import json
 import logging
-import mock
 import pkg_resources
 import pytz
 import re

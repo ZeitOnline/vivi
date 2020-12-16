@@ -1,5 +1,5 @@
+from unittest import mock
 from zeit.newsletter.newsletter import Newsletter
-import mock
 import transaction
 import zeit.cms.testing
 import zeit.newsletter.testing

@@ -1,7 +1,7 @@
+from unittest import mock
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import lxml.cssselect
-import mock
 import transaction
 import unittest
 import zeit.cms.browser.interfaces

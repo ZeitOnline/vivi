@@ -1,5 +1,5 @@
+from unittest import mock
 import gocept.httpserverlayer.custom
-import mock
 import pkg_resources
 import six
 import time

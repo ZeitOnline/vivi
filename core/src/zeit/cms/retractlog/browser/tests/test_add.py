@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import mock
 import zeit.cms.content.add
 import zeit.cms.testing
 import zeit.cms.retractlog

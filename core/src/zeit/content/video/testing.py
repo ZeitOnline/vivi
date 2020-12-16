@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 import plone.testing
 import zeit.cms.repository.folder
 import zeit.cms.testing

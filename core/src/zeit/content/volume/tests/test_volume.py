@@ -1,12 +1,12 @@
 # coding: utf-8
 from datetime import datetime
+from unittest import mock
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import lxml.etree
 import lxml.objectify
-import mock
 import pytz
 import requests_mock
 import six

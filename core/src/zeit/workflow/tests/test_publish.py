@@ -1,5 +1,6 @@
 from datetime import datetime
 from six import StringIO
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
@@ -7,7 +8,6 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
 import logging
-import mock
 import os
 import pytz
 import shutil

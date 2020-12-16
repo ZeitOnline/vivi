@@ -1,9 +1,9 @@
+from unittest import mock
 from zeit.cms.checkout.interfaces import CheckinCheckoutError
 from zeit.cms.checkout.interfaces import ICheckinManager, ICheckoutManager
 from zeit.cms.checkout.interfaces import IValidateCheckinEvent
 import copy
 import datetime
-import mock
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces

@@ -36,7 +36,6 @@ setup(
         'iso8601>=0.1.2',
         'lxml>=2.0.2',
         'martian',
-        'mock',
         'pendulum>=2.0.0.dev0',
         'persistent',
         'pyramid_dogpile_cache2',

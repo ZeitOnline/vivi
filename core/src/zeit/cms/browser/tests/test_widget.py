@@ -1,11 +1,11 @@
 # coding: utf8
+from unittest import mock
 from selenium.webdriver.common.keys import Keys
 from zeit.cms.browser.widget import ObjectSequenceDisplayWidget
 from zeit.cms.browser.widget import ObjectSequenceWidget
 from zeit.cms.browser.widget import ReferenceSequenceWidget
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import contextlib
-import mock
 import os
 import os.path
 import unittest

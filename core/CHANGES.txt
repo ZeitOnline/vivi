@@ -6,6 +6,8 @@ vivi.core changes
 
 - ZON-6319: Fix behavior for select the 'no genre' option 
 
+- BEM-70: mock is included in the stdlib in py3
+
 
 4.45.4 (2020-12-16)
 -------------------

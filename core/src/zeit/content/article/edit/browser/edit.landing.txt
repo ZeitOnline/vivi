@@ -4,7 +4,7 @@ Landing zones
 Mock UUID to generate known Ids.
 
 >>> import gocept.testing.mock
->>> import mock
+>>> from unittest import mock
 >>> patches = gocept.testing.mock.Patches()
 >>> fake_uuid = mock.Mock(side_effect=lambda: 'id-%s' % fake_uuid.call_count)
 >>> _ = patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)

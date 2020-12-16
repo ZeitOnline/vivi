@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces

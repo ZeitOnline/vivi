@@ -1,7 +1,7 @@
+from unittest import mock
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import lxml.etree
-import mock
 import transaction
 import zeit.cms.checkout.helper
 import zeit.content.article.interfaces

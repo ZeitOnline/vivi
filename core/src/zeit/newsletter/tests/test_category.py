@@ -1,10 +1,10 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.newsletter.category import NewsletterCategory
 from zeit.newsletter.interfaces import INewsletterCategory
 from zeit.newsletter.newsletter import Newsletter
 import datetime
-import mock
 import pytz
 import zeit.cms.repository.folder
 import zeit.newsletter.testing

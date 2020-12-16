@@ -1,7 +1,7 @@
 # coding: utf8
 from io import BytesIO
+from unittest import mock
 from zeit.connector.testing import copy_inherited_functions
-import mock
 import transaction
 import unittest
 import zeit.connector.connector
