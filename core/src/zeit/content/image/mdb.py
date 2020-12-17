@@ -6,7 +6,6 @@ import pendulum
 import pkg_resources
 import re
 import requests
-import six
 import zeit.content.image.interfaces
 import zope.interface
 
@@ -98,8 +97,8 @@ class FakeMDB(MDB):
             filename = 'mdb-meta.xml'
         return requests_mock.create_response(
             requests.Request(url='http://example.invalid'),
-            text=six.ensure_text(pkg_resources.resource_string(
-                __name__, 'tests/fixtures/%s' % filename)))
+            content=pkg_resources.resource_string(
+                __name__, 'tests/fixtures/%s' % filename))
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
