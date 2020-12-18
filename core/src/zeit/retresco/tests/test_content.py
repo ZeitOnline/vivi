@@ -11,6 +11,10 @@ import zeit.retresco.testing
 import zope.schema
 
 
+class IExample(zope.interface.Interface):
+    pass
+
+
 class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def compare(self, interface, original, new, exclude):
@@ -72,6 +76,15 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertIs(True, info.published)
+
+    def test_restores_provided_interfaces(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article) as co:
+            zope.interface.alsoProvides(co, IExample)
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertTrue(IExample.providedBy(content))
 
     def test_IImages_work_with_TMSContent(self):
         article = zeit.cms.interfaces.ICMSContent(
