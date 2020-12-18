@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.46.1 (unreleased)
+4.46.1 (2020-12-18)
 -------------------
 
 - BUG-1342: Fix accessing dotted property names in TMSContent
