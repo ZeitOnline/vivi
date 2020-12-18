@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.45.6 (unreleased)
+4.45.6 (2020-12-18)
 -------------------
 
 - ZON-6306: Fix text/bytes handling in MDB interface
