@@ -167,9 +167,11 @@ class WebDAVProperties(grok.Adapter, collections.MutableMapping):
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
 
     def __getitem__(self, key):
-        name, ns = map(unquote_es_field_name, key)
-        namespace = ns.replace(
+        name, namespace = key
+        namespace = namespace.replace(
             zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
+        name = quote_es_field_name(name)
+        namespace = quote_es_field_name(namespace)
         return self.context._tms_payload[namespace][name]
 
     def keys(self):
