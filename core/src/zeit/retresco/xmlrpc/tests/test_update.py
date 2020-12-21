@@ -1,8 +1,8 @@
 # coding: utf-8
 from six import StringIO
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import logging
-import mock
 import zeit.cms.interfaces
 import zeit.cms.webtest
 import zeit.retresco.testing

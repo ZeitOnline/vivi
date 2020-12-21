@@ -1,10 +1,10 @@
 # coding: utf-8
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.content.rawxml.rawxml import RawXML
 import jinja2
 import lxml.etree
-import mock
 import pkg_resources
 import six
 import transaction

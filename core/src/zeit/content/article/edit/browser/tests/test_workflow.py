@@ -1,6 +1,6 @@
 from selenium.webdriver.common.keys import Keys
+from unittest import mock
 import datetime
-import mock
 import transaction
 import unittest
 import zeit.cms.tagging.testing

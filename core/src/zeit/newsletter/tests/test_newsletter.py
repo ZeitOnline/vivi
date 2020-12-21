@@ -1,6 +1,6 @@
 from datetime import datetime
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
-import mock
 import pytz
 import zeit.cms.testing
 import zeit.newsletter.testing

@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing

@@ -1,6 +1,6 @@
+from unittest import mock
 from zeit.newsletter.category import NewsletterCategory
 import datetime
-import mock
 import pytz
 import transaction
 import zeit.cms.repository.folder

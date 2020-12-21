@@ -1,7 +1,7 @@
 from datetime import datetime
+from unittest import mock
 from zeit.brightcove.convert import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
-import mock
 import pytz
 import six
 import zope.component

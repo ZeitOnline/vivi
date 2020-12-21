@@ -1,5 +1,5 @@
 # coding: utf-8
-import mock
+from unittest import mock
 import zeit.content.author.author
 import zeit.content.author.interfaces
 import zeit.content.author.testing

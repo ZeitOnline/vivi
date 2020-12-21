@@ -1,5 +1,5 @@
+from unittest import mock
 import logging
-import mock
 import unittest
 import zeit.brightcove.testing
 

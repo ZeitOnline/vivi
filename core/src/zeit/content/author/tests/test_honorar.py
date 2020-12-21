@@ -1,7 +1,7 @@
 from base64 import b64decode
 from six.moves.urllib.parse import urlparse, parse_qs
+from unittest import mock
 import json
-import mock
 import plone.testing
 import zeit.cms.testing
 import zeit.content.author.honorar

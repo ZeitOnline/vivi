@@ -1,10 +1,68 @@
 vivi.core changes
 =================
 
-4.44.6 (unreleased)
+4.46.2 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+4.46.1 (2020-12-18)
+-------------------
+
+- BUG-1342: Fix accessing dotted property names in TMSContent
+
+
+4.46.0 (2020-12-18)
+-------------------
+
+- BUG-1342: Apply provided interfaces to TMSContent
+
+
+4.45.6 (2020-12-18)
+-------------------
+
+- ZON-6306: Fix text/bytes handling in MDB interface
+
+
+4.45.5 (2020-12-16)
+-------------------
+
+- ZON-6319: Fix behavior for select the 'no genre' option 
+
+- BEM-70: mock is included in the stdlib in py3
+
+
+4.45.4 (2020-12-16)
+-------------------
+
+- OPS-1490: Allow volume to be set to 54 (everywhere)
+
+
+4.45.3 (2020-12-16)
+-------------------
+
+- OPS-1490: Allow volume to be set to 54
+
+
+4.45.2 (2020-12-10)
+-------------------
+
+- OPS-1480: Log pickle on unpickling errors
+
+
+4.45.1 (2020-12-10)
+-------------------
+
+- OPS-1480: Log error when unpickling lxml
+
+
+4.45.0 (2020-12-04)
 -------------------
 
 - ZETT-90: Add vivi logo for ze.tt
+
+- ZON-6162: Update to jinja-2.11
 
 
 4.44.5 (2020-12-01)

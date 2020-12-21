@@ -1,7 +1,6 @@
-from __future__ import absolute_import
 from six import StringIO
+from unittest import mock
 import json
-import mock
 import pkg_resources
 import plone.testing
 import zeit.cms.content.interfaces

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.44.6.dev0',
+    version='4.46.2.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -16,7 +16,7 @@ setup(
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'BTrees',
-        'Jinja2',
+        'Jinja2 >= 2.11.0.dev0',
         'Pillow',
         'PyJWT',
         'cryptography',  # so pyjwt can offer RSA
@@ -36,7 +36,6 @@ setup(
         'iso8601>=0.1.2',
         'lxml>=2.0.2',
         'martian',
-        'mock',
         'pendulum>=2.0.0.dev0',
         'persistent',
         'pyramid_dogpile_cache2',

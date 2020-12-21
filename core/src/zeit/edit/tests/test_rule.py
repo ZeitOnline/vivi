@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from six import StringIO
+from unittest import mock
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-import mock
 import pytz
 import unittest
 import zeit.cms.testcontenttype.interfaces

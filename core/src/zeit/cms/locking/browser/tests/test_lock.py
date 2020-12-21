@@ -1,5 +1,5 @@
 from datetime import datetime
-import mock
+from unittest import mock
 import pytz
 import six.moves.urllib.error
 import time

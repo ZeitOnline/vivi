@@ -1,10 +1,10 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import Product
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import celery.exceptions
 import lxml.objectify
-import mock
 import plone.testing
 import requests.exceptions
 import zeit.cms.checkout.webhook

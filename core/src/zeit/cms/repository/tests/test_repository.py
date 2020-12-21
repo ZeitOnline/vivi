@@ -1,10 +1,10 @@
+from unittest import mock
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.repository import live_url_to_content
 from zeit.cms.repository.repository import live_https_url_to_content
 from zeit.cms.repository.repository import vivi_url_to_content
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.testing.mock
-import mock
 import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
