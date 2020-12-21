@@ -650,6 +650,33 @@
     weight="10"
     />
 
+    <browser:page
+    for="zeit.content.article.edit.interfaces.ITopicboxMultiple"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-topicbox-multiple"
+    class=".edit.EditTopicboxMultiple"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ITopicboxMultiple"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-topicbox-multiple"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <adapter
+    for=".field.DynamicCombination
+    zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.IInputWidget"
+    factory=".widget.DynamicCombinationWidget2"
+    permission="zope.Public"
+    />
+
    <!-- newslettersignup -->
 
    <browser:viewlet

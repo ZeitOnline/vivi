@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
+from zeit.content.article.edit.browser.field import DynamicCombination
 import collections
 import datetime
 import six
@@ -18,6 +19,7 @@ import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zope.schema
 import zope.security.proxy
+import zeit.content.cp.interfaces
 
 
 class IArticleArea(zeit.edit.interfaces.IArea):
@@ -619,6 +621,31 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         """
         Iterable of ICMSContent
         """
+
+class ITopicboxMultiple(ITopicbox):
+    """
+    Element which references other Source
+    """
+
+    query = zope.schema.Tuple(
+        title=_('Custom Query'),
+        value_type=DynamicCombination(
+            zope.schema.Choice(
+                title=_('Custom Query Type'),
+                source=zeit.content.cp.interfaces.QueryTypeSource(), default='channels'),
+            zeit.content.cp.interfaces.IQueryConditions,
+            zope.schema.Choice(
+                title=_('Custom Query Operator'),
+                source=zeit.content.cp.interfaces.QueryOperatorSource(), default='eq'),
+        ),
+        default=(),
+        required=True)
+
+    query_order = zope.schema.Choice(
+        title=_('Sort order'),
+        source=zeit.content.cp.interfaces.QuerySortOrderSource(),
+        default=u'payload.workflow.date_last_published_semantic:desc',
+        required=True)
 
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):

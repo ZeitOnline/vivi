@@ -24,6 +24,7 @@
   <module id="recipelist">Rezeptliste</module>
   <module id="studycourse">Studiengang-Orientierungsangebot</module>
   <module id="topicbox">Themenbox</module>
+  <module id="topicbox_multiple">Themenbox Multiple</module>
   <module id="video">Video</module>
   <module id="volume">Ausgabe</module>
 </modules>
