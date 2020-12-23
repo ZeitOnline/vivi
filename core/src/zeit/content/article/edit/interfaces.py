@@ -622,10 +622,49 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         Iterable of ICMSContent
         """
 
-class ITopicboxMultiple(ITopicbox):
+
+class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
     """
     Element which references other Source
     """
+
+    supertitle = zope.schema.TextLine(
+        title=_('Supertitle'),
+        description=_('Please take care of capitalisation.'),
+        max_length=30)
+
+    title = zope.schema.TextLine(
+        title=_("Title"),
+        max_length=30)
+
+    first_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article/cp/link here"),
+        source=TopicReferenceSource(allow_cp=True))
+
+    second_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article/link here"),
+        source=TopicReferenceSource(),
+        required=False)
+
+    third_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article/link here"),
+        source=TopicReferenceSource(),
+        required=False)
+
+    link = zope.schema.TextLine(
+        title=_('Link'),
+        required=False)
+
+    link_text = zope.schema.TextLine(
+        title=_("Linktext"),
+        required=False,
+        max_length=30)
+
+    referenced_cp = zope.interface.Attribute(
+        'Referenced CP or None')
 
     query = zope.schema.Tuple(
         title=_('Custom Query'),
@@ -646,6 +685,11 @@ class ITopicboxMultiple(ITopicbox):
         source=zeit.content.cp.interfaces.QuerySortOrderSource(),
         default=u'payload.workflow.date_last_published_semantic:desc',
         required=True)
+
+    def values():
+        """
+        Iterable of ICMSContent
+        """
 
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
