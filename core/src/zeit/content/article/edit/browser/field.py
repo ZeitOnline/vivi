@@ -8,7 +8,6 @@ log = logging.getLogger(__name__)
 class DynamicCombination(zc.form.field.Combination):
 
     def __init__(self, type_field, type_interface, *fields, **kw):
-        log.info('DynamicCombination init')
         self.type_field = type_field
         self.type_field.__name__ = "combination_00"
         self.fields = (type_field,) + fields

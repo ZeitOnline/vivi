@@ -3,7 +3,9 @@ from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.content.article.edit.browser.field import DynamicCombination
 import collections
 import datetime
+import re
 import six
+import zc.sourcefactory.contextual
 import zeit.cms.content.field
 import zeit.content.article.interfaces
 import zeit.content.article.source
@@ -20,6 +22,9 @@ import zeit.edit.interfaces
 import zope.schema
 import zope.security.proxy
 import zeit.content.cp.interfaces
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class IArticleArea(zeit.edit.interfaces.IArea):
@@ -622,10 +627,152 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         Iterable of ICMSContent
         """
 
-class ITopicboxMultiple(ITopicbox):
+class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, url, timeout):
+        super(AutomaticFeed, self).__init__(id, title, None)
+        self.url = url
+        self.timeout = timeout
+
+class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
+                          zeit.cms.content.sources.SimpleContextualXMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'cp-automatic-feed-source'
+    default_filename = 'cp-automatic-feeds.xml'
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _values(self):
+        result = collections.OrderedDict()
+        for node in self._get_tree().iterchildren('*'):
+            feed = AutomaticFeed(
+                six.text_type(node.get('id')),
+                six.text_type(node.text.strip()),
+                six.text_type(node.get('url')),
+                int(node.get('timeout', 2))
+            )
+            result[feed.id] = feed
+        return result
+
+AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
+
+
+class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
+                            zeit.cms.content.sources.CachedXMLBase):
+
+    COMMENT = re.compile(r'\s*//')
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'topicpage-filter-source'
+    default_filename = 'topicpage-filters.json'
+
+    def json_data(self):
+        result = collections.OrderedDict()
+        for row in self._get_tree():
+            if len(row) != 1:
+                continue
+            key = list(row.keys())[0]
+            result[key] = row[key]
+        return result
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _get_tree_from_url(self, url):
+        try:
+            data = []
+            for line in six.moves.urllib.request.urlopen(url):
+                line = six.ensure_text(line)
+                if self.COMMENT.search(line):
+                    continue
+                data.append(line)
+            data = '\n'.join(data)
+            return json.loads(data)
+        except Exception:
+            log.warning(
+                'TopicpageFilterSource could not parse %s', url, exc_info=True)
+            return {}
+
+    def getValues(self):
+        return self.json_data().keys()
+
+    def getTitle(self, value):
+        return self.json_data()[value].get('title', value)
+
+    def getToken(self, value):
+        return value
+
+
+class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('centerpage', _('automatic-area-type-centerpage')),
+        ('custom', _('automatic-area-type-custom')),
+        ('topicpage', _('automatic-area-type-topicpage')),
+        ('query', _('automatic-area-type-query')),
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+        ('rss-feed', _('automatic-area-type-rss-feed'))
+    ])
+
+
+class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
     """
     Element which references other Source
     """
+
+    supertitle = zope.schema.TextLine(
+        title=_('Supertitle'),
+        description=_('Please take care of capitalisation.'),
+        max_length=30)
+
+    title = zope.schema.TextLine(
+        title=_("Title"),
+        max_length=30)
+
+    first_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article/cp/link here"),
+        source=TopicReferenceSource(allow_cp=True))
+
+    second_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article/link here"),
+        source=TopicReferenceSource(),
+        required=False)
+
+    third_reference = zope.schema.Choice(
+        title=_("Reference"),
+        description=_("Drag article/link here"),
+        source=TopicReferenceSource(),
+        required=False)
+
+    link = zope.schema.TextLine(
+        title=_('Link'),
+        required=False)
+
+    link_text = zope.schema.TextLine(
+        title=_("Linktext"),
+        required=False,
+        max_length=30)
+
+    count = zope.schema.Int(title=_('Amount of teasers'), default=3)
+
+    elasticsearch_raw_query = zope.schema.Text(
+        title=_('Elasticsearch raw query'),
+        required=False)
+
+    elasticsearch_raw_order = zope.schema.TextLine(
+        title=_('Sort order'),
+        default=u'payload.document.date_first_released:desc',
+        required=False)
+
+    hide_dupes = zope.schema.Bool(
+        title=_('Hide duplicate teasers'),
+        default=True)
+
+    is_complete_query = zope.schema.Bool(
+        title=_('Take over complete query body'),
+        description=_('Remember to add payload.workflow.published:true'),
+        default=False,
+        required=False)
 
     query = zope.schema.Tuple(
         title=_('Custom Query'),
@@ -639,13 +786,42 @@ class ITopicboxMultiple(ITopicbox):
                 source=zeit.content.cp.interfaces.QueryOperatorSource(), default='eq'),
         ),
         default=(),
-        required=True)
+        required=False)
 
     query_order = zope.schema.Choice(
         title=_('Sort order'),
         source=zeit.content.cp.interfaces.QuerySortOrderSource(),
         default=u'payload.workflow.date_last_published_semantic:desc',
         required=True)
+
+    centerpage = zope.schema.Choice(
+        title=_('Get teasers from CenterPage'),
+        source=zeit.content.cp.source.centerPageSource,
+        required=False)
+
+    rss_feed = zope.schema.Choice(
+        title=_('RSS-Feed'),
+        source=AUTOMATIC_FEED_SOURCE,
+        required=False)
+
+    source = zope.schema.Bool(
+        title=_('source'),
+        default=False)
+
+    source_type = zope.schema.Choice(
+        title=_('source-type'),
+        source=TopicboxSourceType(),
+        required=True,
+        default='centerpage')
+
+    topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage'),
+        required=False)
+
+    topicpage_filter = zope.schema.Choice(
+        title=_('Topicpage filter'),
+        source=TopicpageFilterSource(),
+        required=False)
 
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):

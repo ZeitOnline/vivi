@@ -475,11 +475,11 @@ class EditTopicboxMultiple(zeit.edit.browser.form.InlineForm,
             *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit topic box')
 
-    #def setUpWidgets(self, *args, **kw):
-        # super(EditTopicboxMultiple, self).setUpWidgets(*args, **kw)
-        #self.set_charlimit('title')
-        #self.set_charlimit('supertitle')
-        #self.set_charlimit('link_text')
+    def setUpWidgets(self, *args, **kw):
+        super(EditTopicboxMultiple, self).setUpWidgets(*args, **kw)
+        self.set_charlimit('title')
+        self.set_charlimit('supertitle')
+        self.set_charlimit('link_text')
 
     @property
     def prefix(self):
