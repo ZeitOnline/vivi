@@ -4,6 +4,7 @@ from zeit.content.article.edit.browser.field import DynamicCombination
 import collections
 import datetime
 import re
+import json
 import six
 import zc.sourcefactory.contextual
 import zeit.cms.content.field
@@ -634,6 +635,7 @@ class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
         super(AutomaticFeed, self).__init__(id, title, None)
         self.url = url
         self.timeout = timeout
+
 
 class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
                           zeit.cms.content.sources.SimpleContextualXMLSource):

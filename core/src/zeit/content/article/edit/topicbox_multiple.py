@@ -29,9 +29,6 @@ class ReferencedCpFallbackProperty(
         return value
 
 
-
-
-
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicboxMultiple)
 class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
@@ -94,9 +91,10 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         # but a sane user should not ignore the errormessage shown in the
         # cp-editor and preview.
         # Checking for larger circles is not reasonable here.
-        if value.uniqueId == \
-                zeit.content.cp.interfaces.ICenterPage(self).uniqueId:
-            raise ValueError("A centerpage can't reference itself!")
+        if value is not None:
+            if value.uniqueId == \
+                    zeit.content.article.interfaces.IArticle(self).uniqueId:
+                raise ValueError("A centerpage can't reference itself!")
         self._centerpage = value
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -137,10 +135,12 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
     elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
         zeit.content.article.edit.interfaces.ITopicboxMultiple['elasticsearch_raw_query'])
+
     elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_order',
         zeit.content.article.edit.interfaces.ITopicboxMultiple['elasticsearch_raw_order'],
         use_default=True)
+
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
         zeit.content.article.edit.interfaces.ITopicboxMultiple['is_complete_query'],
@@ -149,9 +149,11 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
     topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage',
         zeit.content.article.edit.interfaces.ITopicboxMultiple['topicpage'])
+
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
         zeit.content.article.edit.interfaces.ITopicboxMultiple['topicpage_filter'])
+
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
         zeit.content.article.edit.interfaces.ITopicboxMultiple['is_complete_query'],
@@ -191,7 +193,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         (copying it to the auto block at the same position).
 
         """
-        self.adjust_auto_blocks_to_count()
+        # self.adjust_auto_blocks_to_count()
 
         order = self.keys()
         for block in self.values():
@@ -209,6 +211,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
         # Preserve order of blocks that are kept when turning AutoPilot on.
         self.updateOrder(order)
+
 
     def _materialize_auto_blocks(self):
         """Replace automatic teaser blocks by teaser blocks with same content
@@ -312,4 +315,3 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = TopicboxMultiple
     title = _('Topicbox Multiple')
-
