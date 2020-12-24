@@ -1,8 +1,8 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import mock
 import zeit.cms.testing
 import zope.copypastemove.interfaces
 

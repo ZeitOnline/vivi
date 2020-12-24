@@ -1,7 +1,6 @@
 # coding: utf-8
-from __future__ import absolute_import
+from unittest import mock
 import gocept.httpserverlayer.static
-import mock
 import plone.testing
 import transaction
 import zeit.cms.testing

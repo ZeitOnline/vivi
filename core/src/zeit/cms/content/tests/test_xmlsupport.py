@@ -1,5 +1,5 @@
+from unittest import mock
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-import mock
 import persistent
 import unittest
 import zeit.cms.content.xmlsupport

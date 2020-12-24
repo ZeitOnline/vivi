@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 import zeit.brightcove.convert
 import zeit.brightcove.testing
 import zeit.cms.testing

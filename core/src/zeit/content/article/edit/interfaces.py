@@ -627,6 +627,7 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         Iterable of ICMSContent
         """
 
+
 class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, url, timeout):
@@ -822,6 +823,11 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
         title=_('Topicpage filter'),
         source=TopicpageFilterSource(),
         required=False)
+
+    def values():
+        """
+        Iterable of ICMSContent
+        """
 
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):

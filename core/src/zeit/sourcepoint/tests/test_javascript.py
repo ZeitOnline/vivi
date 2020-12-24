@@ -1,6 +1,6 @@
 from datetime import datetime
+from unittest import mock
 from zeit.cms.testing import clock
-import mock
 import transaction
 import zeit.cms.testing
 import zeit.content.text.text

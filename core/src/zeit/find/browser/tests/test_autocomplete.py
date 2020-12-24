@@ -1,5 +1,5 @@
+from unittest import mock
 from zeit.cms.browser.widget import AutocompleteSourceQuery
-import mock
 import unittest
 import zeit.cms.testing
 import zeit.find.testing

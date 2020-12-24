@@ -1,4 +1,4 @@
-from mock import Mock
+from unittest.mock import Mock
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.edit.browser.form

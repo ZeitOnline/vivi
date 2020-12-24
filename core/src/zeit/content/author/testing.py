@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 import pkg_resources
 import plone.testing
 import zeit.cms.testing

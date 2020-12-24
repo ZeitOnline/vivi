@@ -1,6 +1,6 @@
+from unittest import mock
 import gocept.selenium
 import json
-import mock
 import pkg_resources
 import plone.testing
 import zeit.cms.testing

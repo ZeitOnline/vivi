@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
 import json
-import mock
 import os
 import pytest
 import requests.adapters

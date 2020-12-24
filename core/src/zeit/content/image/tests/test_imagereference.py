@@ -1,10 +1,10 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImageMetadata
-import mock
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zope.copypastemove.interfaces

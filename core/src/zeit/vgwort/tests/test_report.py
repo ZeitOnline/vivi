@@ -1,5 +1,5 @@
+from unittest import mock
 import datetime
-import mock
 import pytz
 import time
 import zeit.cms.testcontenttype.testcontenttype

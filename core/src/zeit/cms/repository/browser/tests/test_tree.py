@@ -1,5 +1,5 @@
 # coding: utf8
-import mock
+from unittest import mock
 import zeit.cms.browser.interfaces
 import zeit.cms.repository.browser.repository
 import zeit.cms.testing

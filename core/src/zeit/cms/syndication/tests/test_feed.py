@@ -1,6 +1,6 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 import lxml.objectify
-import mock
 import zeit.cms.content.interfaces
 import zeit.cms.syndication.feed
 import zeit.cms.testing

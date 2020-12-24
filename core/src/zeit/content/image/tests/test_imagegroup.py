@@ -1,9 +1,9 @@
 # coding: utf-8
+from unittest import mock
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
 from zope.publisher.interfaces import NotFound
 import PIL
-import mock
 import zeit.cms.repository.interfaces
 import zeit.content.image.testing
 import zope.event

@@ -1,8 +1,8 @@
+from unittest import mock
 from zeit.cms.interfaces import ValidationError
 from zeit.content.modules.interfaces import validate_servings
 from zeit.content.modules.recipelist import Ingredient
 import lxml.objectify
-import mock
 import zeit.cms.testing
 import zeit.content.modules.embed
 import zeit.content.modules.testing

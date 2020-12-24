@@ -1,5 +1,5 @@
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import mock
 import zeit.cms.testing
 import zope.copypastemove.interfaces
 

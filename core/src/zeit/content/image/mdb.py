@@ -1,4 +1,4 @@
-from six import StringIO
+from io import BytesIO
 import base64
 import lxml.etree
 import os.path
@@ -6,7 +6,6 @@ import pendulum
 import pkg_resources
 import re
 import requests
-import six
 import zeit.content.image.interfaces
 import zope.interface
 
@@ -63,8 +62,7 @@ class MDB(object):
         # put that through an XML parser without a really good reason.
         body = XML_TAGS.sub('', response)
         body = base64.b64decode(body)
-        # Cannot use cStringIO since we need to set additional attributes.
-        result = StringIO(body)
+        result = BytesIO(body)
         result.filename = FILE_NAME_ATTRIBUTE.search(response).group(1)
         result.mdb_id = mdb_id
         result.headers = {'content-type': 'image/%s' % os.path.splitext(
@@ -98,8 +96,8 @@ class FakeMDB(MDB):
             filename = 'mdb-meta.xml'
         return requests_mock.create_response(
             requests.Request(url='http://example.invalid'),
-            text=six.ensure_text(pkg_resources.resource_string(
-                __name__, 'tests/fixtures/%s' % filename)))
+            content=pkg_resources.resource_string(
+                __name__, 'tests/fixtures/%s' % filename))
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)

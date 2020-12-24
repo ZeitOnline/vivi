@@ -1,6 +1,6 @@
 from six.moves.urllib.error import HTTPError
+from unittest import mock
 import json
-import mock
 import zeit.cms.interfaces
 import zeit.retresco.testing
 

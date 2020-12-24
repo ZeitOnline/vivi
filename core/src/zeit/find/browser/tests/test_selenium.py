@@ -1,5 +1,5 @@
 # coding: utf8
-import mock
+from unittest import mock
 import zeit.cms.testing
 import zeit.find.testing
 

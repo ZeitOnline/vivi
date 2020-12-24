@@ -1,7 +1,7 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.article import Article
 import gocept.testing.mock
-import mock
 import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing

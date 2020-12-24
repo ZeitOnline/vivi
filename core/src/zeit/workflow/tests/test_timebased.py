@@ -1,13 +1,13 @@
 from ..timebased import TimeBasedWorkflow
 from datetime import datetime, timedelta
 from six import StringIO
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import celery.result
 import celery_longterm_scheduler
 import logging
-import mock
 import pytz
 import transaction
 import zeit.cms.testing

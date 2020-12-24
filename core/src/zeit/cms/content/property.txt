@@ -20,7 +20,7 @@ Normally the document root is the `xml` attribute.  Create a test class:
 
 >>> from zeit.cms.content.property import ObjectPathProperty
 >>> import lxml.objectify
->>> import mock
+>>> from unittest import mock
 >>> import persistent
 >>> class Content(persistent.Persistent):
 ...     xml = lxml.objectify.fromstring(

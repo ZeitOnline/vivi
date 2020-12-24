@@ -1,3 +1,4 @@
+from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
 import collections
 import grokcore.component as grok
 import lxml.objectify
@@ -138,7 +139,25 @@ def from_tms_representation(context):
             'TMS' + typ.factory.__name__, (Content, typ.factory), {})
         zope.component.provideUtility(
             tms_typ, zeit.retresco.interfaces.ITMSContent, name=doc_type)
-    return tms_typ(context)
+    content = tms_typ(context)
+    # XXX This event is not really applicable, since the whole point is that we
+    # have no DAV resource here. However, it currently has only one handler,
+    # `zeit.cms.type.restore_provided_interfaces_from_dav`, which only wants
+    # the properties, which we do have. So we keep that protocol for now by
+    # faking the expected API.
+    zope.event.notify(AfterObjectConstructedEvent(
+        content, FakeDAVResource(content, doc_type)))
+    return content
+
+
+# Not an adapter to IResource on purpose, since a) ITMSContent->IResource is
+# not actually a semantically useful gesture and b) this only fakes enough to
+# make properties work.
+class FakeDAVResource(zeit.connector.resource.Resource):
+
+    def __init__(self, content, type):
+        super().__init__(content.uniqueId, content.__name__, type, 'fake data',
+                         zeit.connector.interfaces.IWebDAVProperties(content))
 
 
 @grok.implementer(zeit.retresco.interfaces.IElasticDAVProperties)
@@ -148,9 +167,11 @@ class WebDAVProperties(grok.Adapter, collections.MutableMapping):
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
 
     def __getitem__(self, key):
-        name, ns = map(unquote_es_field_name, key)
-        namespace = ns.replace(
+        name, namespace = key
+        namespace = namespace.replace(
             zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
+        name = quote_es_field_name(name)
+        namespace = quote_es_field_name(namespace)
         return self.context._tms_payload[namespace][name]
 
     def keys(self):

@@ -11,6 +11,10 @@ import zeit.retresco.testing
 import zope.schema
 
 
+class IExample(zope.interface.Interface):
+    pass
+
+
 class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def compare(self, interface, original, new, exclude):
@@ -73,6 +77,15 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertIs(True, info.published)
 
+    def test_restores_provided_interfaces(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article) as co:
+            zope.interface.alsoProvides(co, IExample)
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        self.assertTrue(IExample.providedBy(content))
+
     def test_IImages_work_with_TMSContent(self):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
@@ -107,16 +120,17 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(None, images.fill_color)
 
     def test_quotes_dot_for_elasticsearch_field_names(self):
-        data = {
-            'doc_type': 'gallery',
-            'payload': {'zeit.content.gallery': {'type': 'standalone'}}}
+        gallery_type = (
+            'type', 'http://namespaces.zeit.de/CMS/zeit.content.gallery')
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article) as co:
+            props = zeit.connector.interfaces.IWebDAVProperties(co)
+            props[gallery_type] = 'standalone'
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         content = zeit.retresco.interfaces.ITMSContent(data)
         props = zeit.connector.interfaces.IWebDAVProperties(content)
-        self.assertEqual('standalone', props[(
-            'type', 'http://namespaces.zeit.de/CMS/zeit.content.gallery')])
-        self.assertEqual(
-            [('type', 'http://namespaces.zeit.de/CMS/zeit.content.gallery')],
-            list(props.keys()))
+        self.assertEqual('standalone', props[gallery_type])
 
     def test_unknown_type_creates_UnknownResource(self):
         data = {'doc_type': 'nonexistent'}

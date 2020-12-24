@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zope.lifecycleevent import Attributes
 from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
-import mock
 import requests_mock
 import six.moves.urllib.parse
 import zeit.cms.interfaces

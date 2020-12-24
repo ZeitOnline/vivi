@@ -1,6 +1,10 @@
+import logging
 import lxml.etree
 import lxml.objectify
 import six.moves.copyreg
+
+
+log = logging.getLogger(__name__)
 
 
 def treeFactory(state):
@@ -8,6 +12,7 @@ def treeFactory(state):
     try:
         return lxml.objectify.fromstring(state)
     except Exception as e:
+        log.error('Error during unpickling', exc_info=True)
         return lxml.objectify.fromstring(
             '<error><!-- XML-FEHLER: %s\n\n%s\n\n--></error>' % (e, state))
 

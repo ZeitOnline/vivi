@@ -1,7 +1,7 @@
-# encoding: utf-8
+# coding: utf-8
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree
-import mock
 import six
 import unittest
 import zeit.cms.tagging.interfaces

@@ -1,7 +1,7 @@
 # coding: utf8
+from unittest import mock
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-import mock
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
