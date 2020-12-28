@@ -5,6 +5,7 @@ import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zope.component
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import lxml
 import gocept.form.grouped
 import logging
@@ -32,6 +33,11 @@ class ReferencedCpFallbackProperty(
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicboxMultiple)
 class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
+    # def __init__(self, context, third):
+    #     self.context = context
+    #     self.xml = self.context.xml
+    #     self.__parent__ = self.context
+
     type = 'topicbox_multiple'
 
     _source = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -51,10 +57,9 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
     @source.setter
     def source(self, value):
         if self.source and not value:
-            self._materialize_auto_blocks()
-        self._source = value
+            self._source = value
         if value:
-            self._create_auto_blocks()
+            self._set_references()
 
     @property
     def source_type(self):
@@ -187,62 +192,41 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         '.topiclink_url_3',
         zeit.content.cp.interfaces.IArea['topiclink_url_3'])
 
-    def _create_auto_blocks(self):
-        """Add automatic teaser blocks so we have #count of them.
-        We _replace_ previously materialized ones, preserving their #layout
-        (copying it to the auto block at the same position).
-
+    def _set_references(self):
+        """Set the thre references fields to Content Query result.
         """
-        # self.adjust_auto_blocks_to_count()
+        self.first_reference = self.values[0]
+        self.second_reference = self.values[1]
+        self.third_reference = self.values[2]
 
-        order = self.keys()
-        for block in self.values():
-            if not block.volatile:
-                continue
+    @property
+    def values(self):
+        if not self.source:
+            return [
+                self.first_reference,
+                self.second_reference,
+                self.third_reference]
 
-            auto_block = self.create_item('auto-teaser')
-            auto_block.__name__ = block.__name__  # required to updateOrder
+        try:
+            content = self._content_query()
+            return [
+                content[0].uniqueId,
+                content[1].uniqueId,
+                content[2].uniqueId]
+        except (LookupError, ValueError):
+            log.warning('%s found no IContentQuery type %s',
+                        self.context, self.source_type)
+            return [
+                self.first_reference,
+                self.second_reference,
+                self.third_reference]
 
-            if ITeaserBlock.providedBy(block):
-                auto_block.layout = block.layout
-
-            # Only deletes first occurrence of __name__, i.e. `block`
-            del self[block.__name__]
-
-        # Preserve order of blocks that are kept when turning AutoPilot on.
-        self.updateOrder(order)
-
-
-    def _materialize_auto_blocks(self):
-        """Replace automatic teaser blocks by teaser blocks with same content
-        and same attributes (e.g. `layout`).
-
-        (Make sure this method only runs when #automatic is enabled, otherwise
-        IRenderedArea will not retrieve results from the content query source.)
-
-        """
-        order = self.keys()
-        for old in zeit.content.cp.interfaces.IRenderedArea(self).values():
-            if not IAutomaticTeaserBlock.providedBy(old):
-                continue
-
-            # Delete automatic teaser first, since adding normal teaser will
-            # delete the last automatic teaser via the
-            # `adjust_auto_blocks_to_count` event handler.
-            # (Deleting doesn't remove __name__ or __parent__, so we can still
-            # copy those afterwards)
-            del self[old.__name__]
-
-            new = self.create_item('teaser')
-            new.update(old)
-
-        # Preserve order of non-auto blocks.
-        self.updateOrder(order)
-
-        # Remove unfilled auto blocks.
-        for block in list(self.values()):
-            if IAutomaticTeaserBlock.providedBy(block):
-                del self[block.__name__]
+    @property
+    def _content_query(self):
+        content = zope.component.getAdapter(
+            self, zeit.content.article.edit.interfaces.IContentQuery,
+            name=self.source_type or '')
+        return content
 
     @property
     def query(self):
@@ -315,3 +299,370 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = TopicboxMultiple
     title = _('Topicbox Multiple')
+
+
+@grok.implementer(zeit.content.article.edit.interfaces.IContentQuery)
+class ContentQuery(grok.Adapter):
+
+    grok.context(zeit.content.article.edit.interfaces.ITopicboxMultiple)
+    grok.baseclass()
+
+    total_hits = NotImplemented
+
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self):
+        raise NotImplementedError()
+
+    @property
+    def start(self):
+        """Offset the result by this many content objects"""
+        return self.context.start
+
+    @property
+    def rows(self):
+        """Number of content objects per page"""
+        return self.context.count
+
+    @property
+    def existing_teasers(self):
+        # ToDo: Compare current teaser uniqueId with predecessors to avoid dupes.
+        return False
+
+
+class ElasticsearchContentQuery(ContentQuery):
+    """Search via Elasticsearch."""
+
+    grok.name('elasticsearch-query')
+
+    include_payload = False  # Extension point for zeit.web and its LazyProxy.
+
+    def __init__(self, context):
+        super(ElasticsearchContentQuery, self).__init__(context)
+        self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
+        self.order = self.context.elasticsearch_raw_order
+
+    def __call__(self):
+        self.total_hits = 0
+        result = []
+
+        try:
+            query = self._build_query()
+        except Exception:
+            log.warning(
+                'Error compiling elasticsearch query %r for %s',
+                self.query, self.context.uniqueId, exc_info=True)
+            return result
+
+        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        try:
+            response = es.search(
+                query, self.order,
+                start=self.start, rows=self.rows,
+                include_payload=self.include_payload)
+        except Exception as e:
+            log.warning(
+                'Error during elasticsearch query %r for %s',
+                self.query, self.context.uniqueId, exc_info=True)
+            if 'Result window is too large' in str(e):
+                # We have to determine the actually available number of hits.
+                response = es.search(
+                    query, self.order, start=0, rows=0,
+                    include_payload=self.include_payload)
+            else:
+                response = zeit.cms.interfaces.Result()
+
+        self.total_hits = response.hits
+        for item in response:
+            content = self._resolve(item)
+            if content is not None:
+                result.append(content)
+        return result
+
+    def _build_query(self):
+        if self.context.is_complete_query:
+            query = self.query
+            if self.hide_dupes_clause:
+                query = {'query': {'bool': {
+                    'must': query,
+                    'must_not': self.hide_dupes_clause}}}
+        else:
+            _query = self.query.get('query', {})
+            if not isinstance(_query, list):
+                _query = [_query]
+            query = {'query': {'bool': {
+                'filter': _query + self._additional_clauses,
+                'must_not': self._additional_not_clauses[:]}}}
+            if self.hide_dupes_clause:
+                query['query']['bool']['must_not'].append(
+                    self.hide_dupes_clause)
+        return query
+
+    _additional_clauses = [
+        {'term': {'payload.workflow.published': True}}
+    ]
+
+    _additional_not_clauses = [
+        {'term': {'payload.zeit__DOT__content__DOT__gallery.type': 'inline'}}
+    ]
+
+    def _resolve(self, doc):
+        return zeit.cms.interfaces.ICMSContent(
+            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
+
+    @cachedproperty
+    def hide_dupes_clause(self):
+        """Perform de-duplication of results.
+
+        Create an id query for teasers that already exist on the CP.
+        """
+        if not self.context.hide_dupes or not self.existing_teasers:
+            return None
+        ids = []
+        for content in self.existing_teasers:
+            id = getattr(zeit.cms.content.interfaces.IUUID(content, None),
+                         'id', None)
+            if id:
+                ids.append(id)
+        if not ids:
+            return None
+        return {'ids': {'values': ids}}
+
+
+class CustomContentQuery(ElasticsearchContentQuery):
+
+    grok.name('custom')
+
+    SOLR_TO_ES_SORT = {
+        'date-last-published-semantic desc': (
+            'payload.workflow.date_last_published_semantic:desc'),
+        'last-semantic-change desc': (
+            'payload.document.last-semantic-change:desc'),
+        'date-first-released desc': (
+            'payload.document.date_first_released:desc'),
+    }
+
+    ES_FIELD_NAMES = {
+        'authorships': 'payload.head.authors',
+        'channels': 'payload.document.channels.hierarchy',
+        'content_type': 'doc_type',
+    }
+
+    def __init__(self, context):
+        # Skip direct superclass, as we set `query` and `order` differently.
+        super(ElasticsearchContentQuery, self).__init__(context)
+        self.query = self._make_custom_query()
+        self.order = self.context.query_order
+        if self.order in self.SOLR_TO_ES_SORT:  # BBB
+            self.order = self.SOLR_TO_ES_SORT[self.order]
+
+    def _make_custom_query(self):
+        fields = {}
+        for item in self.context.query:
+            typ = item[0]
+            fields.setdefault(typ, []).append(item)
+
+        must = []
+        must_not = []
+        for typ in sorted(fields):  # Provide stable sorting for tests
+            positive = []
+            for item in fields[typ]:
+                if item[1] == 'neq':
+                    must_not.append(self._make_clause(typ, item))
+                else:
+                    positive.append(item)
+            if len(positive) > 1:
+                must.append({'bool': {'should': [
+                    self._make_clause(typ, x) for x in positive]}})
+            elif len(positive) == 1:
+                must.append(self._make_clause(typ, positive[0]))
+        # We rely on _build_query() putting this inside a bool/filter context
+        query = {'query': {'bool': {}}}
+        if must:
+            query['query']['bool']['filter'] = must
+        if must_not:
+            query['query']['bool']['must_not'] = must_not
+        return query
+
+    def _make_clause(self, typ, item):
+        if typ == 'ressort':  # XXX Generalize to lookup instead of if?
+            return self._make_ressort_condition(item)
+        else:
+            return self._make_condition(item)
+
+    def _make_condition(self, item):
+        typ, operator, value = self.context.context._serialize_query_item(item)
+        fieldname = self.ES_FIELD_NAMES.get(typ)
+        if not fieldname:
+            fieldname = self._fieldname_from_property(typ)
+        return {'term': {fieldname: value}}
+
+    def _fieldname_from_property(self, typ):
+        # XXX Generalize the class?
+        prop = getattr(zeit.content.article.article.Article, typ)
+        if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
+            raise ValueError('Cannot determine field name for %s', typ)
+        return 'payload.%s.%s' % (
+            zeit.retresco.content.davproperty_to_es(
+                prop.namespace, prop.name))
+
+    def _make_ressort_condition(self, item):
+        if item[3]:
+            return {'bool': {'must': [
+                {'term': {
+                    self._fieldname_from_property('ressort'): item[2]}},
+                {'term': {
+                    self._fieldname_from_property('sub_ressort'): item[3]}},
+            ]}}
+        else:
+            return {'term': {
+                self._fieldname_from_property('ressort'): item[2]}}
+
+
+class TMSContentQuery(ContentQuery):
+
+    grok.name('topicpage')
+
+    def __init__(self, context):
+        super(TMSContentQuery, self).__init__(context)
+        self.topicpage = self.context.referenced_topicpage
+        self.filter_id = self.context.topicpage_filter
+
+    def __call__(self):
+        result, _ = self._fetch(self.start)
+        return result
+
+    def _fetch(self, start):
+        """Extension point for zeit.web to do pagination and de-duping."""
+
+        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        rows = self._teaser_count + 5  # total teasers + some spares
+        key = (self.topicpage, self.filter_id, start)
+        if key in cache:
+            response, start, _ = cache[key]
+        else:
+            response, hits = self._get_documents(start=start, rows=rows)
+            cache[key] = response, start, hits
+
+        result = []
+        dupes = 0
+        while len(result) < self.rows:
+            try:
+                item = next(response)
+            except StopIteration:
+                start = start + rows            # fetch next batch
+                response, hits = self._get_documents(start=start, rows=rows)
+                cache[key] = response, start, hits
+                try:
+                    item = next(response)
+                except StopIteration:
+                    break                       # results are exhausted
+
+            content = self._resolve(item)
+            if content is None:
+                continue
+            if self.context.hide_dupes and content in self.existing_teasers:
+                dupes += 1
+            else:
+                result.append(content)
+
+        return result, dupes
+
+    def _get_documents(self, **kw):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        try:
+            response = tms.get_topicpage_documents(
+                id=self.topicpage, filter=self.filter_id, **kw)
+        except Exception as e:
+            log.warning('Error during TMS query %r for %s',
+                        self.topicpage, self.context.uniqueId, exc_info=True)
+            if 'Result window is too large' in str(e):
+                # We have to determine the actually available number of hits.
+                kw['start'] = 0
+                kw['rows'] = 0
+                return self._get_documents(**kw)
+            return iter([]), 0
+        else:
+            return iter(response), response.hits
+
+    def _resolve(self, doc):
+        return zeit.cms.interfaces.ICMSContent(
+            zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
+
+    @property
+    def _teaser_count(self):
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        return sum(
+            a.count for a in cp.cached_areas
+            if a.automatic and a.count and a.automatic_type == 'topicpage' and
+            a.referenced_topicpage == self.topicpage)
+
+    @property
+    def total_hits(self):
+        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        key = (self.topicpage, self.filter_id, self.start)
+        if key in cache:
+            _, _, hits = cache[key]
+        else:
+            _, hits = self._get_documents(start=self.start, rows=0)
+        return hits
+
+
+class CenterpageContentQuery(ContentQuery):
+
+    grok.name('centerpage')
+    # XXX If zeit.web wanted to implement pagination for CP queries, we'd have
+    # to walk over the *whole* referenced CP to compute total_hits, which could
+    # be rather expensive.
+
+    def __call__(self):
+        teasered = zeit.content.cp.interfaces.ITeaseredContent(
+            self.context.centerpage, iter([]))
+        result = []
+        for content in teasered:
+            if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
+                continue
+            if self.context.hide_dupes and content in self.existing_teasers:
+                 continue
+            result.append(content)
+            if len(result) >= self.rows:
+                break
+        return result
+
+
+class RSSFeedContentQuery(ContentQuery):
+
+    grok.name('rss-feed')
+
+    def __call__(self):
+        self.total_hits = 0
+        feed_data = self._parse_feed()
+        self.total_hits = len(feed_data)
+        return feed_data
+
+    @property
+    def rss_feed(self):
+        return self.context.rss_feed
+
+    def _parse_feed(self):
+        if not self.rss_feed:
+            return []
+        items = []
+        try:
+            content = self._get_feed(self.rss_feed.url,
+                                     self.rss_feed.timeout)
+            xml = lxml.etree.fromstring(content)
+        except (requests.exceptions.RequestException,
+                lxml.etree.XMLSyntaxError) as e:
+            log.debug('Could not fetch feed {}: {}'.format(
+                self.rss_feed.url, e))
+            return []
+        for item in xml.xpath('/rss/channel/item'):
+            link = zeit.content.cp.blocks.rss.RSSLink(item, self.rss_feed)
+            items.append(link)
+        return items
+
+    def _get_feed(self, url, timeout):
+        return requests.get(url, timeout=timeout).content
+

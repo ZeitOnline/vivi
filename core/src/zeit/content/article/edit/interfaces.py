@@ -832,6 +832,15 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
         """
 
 
+class IContentQuery(zope.interface.Interface):
+    """Mechanism to retrieve content objects.
+    Used to register named adapters for the different IArea.automatic_types.
+    """
+
+    def __call__(self):
+        """Returns list of content objects."""
+
+
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
     pass
 
