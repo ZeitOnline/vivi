@@ -9,7 +9,6 @@ import zope.component
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import lxml
 import json
-import requests
 import logging
 
 log = logging.getLogger(__name__)
@@ -326,16 +325,6 @@ class ContentQuery(grok.Adapter):
         raise NotImplementedError()
 
     @property
-    def start(self):
-        """Offset the result by this many content objects"""
-        return self.context.start
-
-    @property
-    def rows(self):
-        """Number of content objects per page"""
-        return self.context.count
-
-    @property
     def existing_teasers(self):
         # ToDo: Compare current teaser uniqueId with
         # predecessors to avoid dupes.
@@ -369,8 +358,7 @@ class ElasticsearchContentQuery(ContentQuery):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         try:
             response = es.search(
-                query, self.order,
-                start=self.start, rows=self.rows,
+                query, self.order, rows=3,
                 include_payload=self.include_payload)
         except Exception as e:
             log.warning(
