@@ -16,9 +16,6 @@ class DynamicCombinationWidget2(
     @cachedproperty
     def widgets(self):
         type_field = self.context.type_field.bind(self.context.context)
-        #log.info('DynamicCombinationWidget2 type_field: {}'.format(type_field))
-        #log.info('DynamicCombinationWidget2 type_field.default: {}'.format(type_field.default))
-        log.info('DynamicCombinationWidget2 self._data: {}'.format(self._data))
         selector = type_field.default
         result = [self._create_widget(type_field)]
         if self.hasInput():
@@ -60,10 +57,8 @@ class DynamicCombinationWidget2(
         missing_value = field.missing_value
         if value is not missing_value:
             try:
-                log.info('render: value is not missing_value | try')
                 len(value)
             except (TypeError, AttributeError):
-                log.info('render: value is not missing_value | except')
                 value = missing_value
             # patched
             # else:
@@ -71,13 +66,10 @@ class DynamicCombinationWidget2(
             #         value = missing_value
         if value is not missing_value:
             hasInput = self.hasInput()
-            log.info('render: value is not missing_value | hasInput')
             for w, v in map(lambda *args: args, self.widgets, value):
-                log.info('render: value is not missing_value | loop')
                 if not hasInput or v != w.context.missing_value:
                     w.setRenderedValue(v)
         for w in self.widgets:
-            log.info('render: value is not missing_value | loop2')
             if zope.schema.interfaces.IBool.providedBy(w.context):
                 w.invert_label = True
             else:
