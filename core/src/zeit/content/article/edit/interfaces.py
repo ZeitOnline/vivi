@@ -704,15 +704,14 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
         return value
 
 
-class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
+class TopicboxMultipleSourceType(zeit.content.cp.interfaces.SimpleDictSource):
 
     values = collections.OrderedDict([
         ('centerpage', _('automatic-area-type-centerpage')),
         ('custom', _('automatic-area-type-custom')),
         ('topicpage', _('automatic-area-type-topicpage')),
         ('query', _('automatic-area-type-query')),
-        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
-        ('rss-feed', _('automatic-area-type-rss-feed'))
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query'))
     ])
 
 
@@ -813,7 +812,7 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
 
     source_type = zope.schema.Choice(
         title=_('source-type'),
-        source=TopicboxSourceType(),
+        source=TopicboxMultipleSourceType(),
         required=True,
         default='centerpage')
 
