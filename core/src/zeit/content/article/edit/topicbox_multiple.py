@@ -1,16 +1,23 @@
 # -*- coding: utf-8 -*-
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+from zeit.content.cp.centerpage import writeabledict
 import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zope.component
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import lxml
-import gocept.form.grouped
+import json
+import requests
 import logging
 
 log = logging.getLogger(__name__)
+
+
+def centerpage_cache(context, name, factory=writeabledict):
+    cp = zeit.content.cp.interfaces.ICenterPage(context)
+    return cp.cache.setdefault(name, factory())
 
 
 class ReferencedCpFallbackProperty(
@@ -33,11 +40,6 @@ class ReferencedCpFallbackProperty(
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicboxMultiple)
 class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
-    # def __init__(self, context, third):
-    #     self.context = context
-    #     self.xml = self.context.xml
-    #     self.__parent__ = self.context
-
     type = 'topicbox_multiple'
 
     _source = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -56,8 +58,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
     @source.setter
     def source(self, value):
-        if self.source and not value:
-            self._source = value
+        self._source = value
         if value:
             self._set_references()
 
@@ -73,7 +74,8 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         self._source_type = value
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', zeit.content.article.edit.interfaces.ITopicboxMultiple['count'])
+        '.', 'count',
+        zeit.content.article.edit.interfaces.ITopicboxMultiple['count'])
 
     @property
     def count(self):
@@ -107,10 +109,12 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicboxMultiple['supertitle'])
 
     title = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'title', zeit.content.article.edit.interfaces.ITopicboxMultiple['title'])
+        '.', 'title',
+        zeit.content.article.edit.interfaces.ITopicboxMultiple['title'])
 
     link = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'link', zeit.content.article.edit.interfaces.ITopicboxMultiple['link'])
+        '.', 'link',
+        zeit.content.article.edit.interfaces.ITopicboxMultiple['link'])
 
     link_text = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'link_text',
@@ -134,22 +138,24 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicboxMultiple['query_order'])
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.content.article.edit.interfaces.ITopicboxMultiple['hide_dupes'],
+        '.', 'hide-dupes',
+        zeit.content.article.edit.interfaces.ITopicboxMultiple['hide_dupes'],
         use_default=True)
 
     elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
-        zeit.content.article.edit.interfaces.ITopicboxMultiple['elasticsearch_raw_query'])
+        zeit.content.article.edit.interfaces.ITopicboxMultiple[
+            'elasticsearch_raw_query'])
 
     elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_order',
-        zeit.content.article.edit.interfaces.ITopicboxMultiple['elasticsearch_raw_order'],
-        use_default=True)
+        zeit.content.article.edit.interfaces.ITopicboxMultiple[
+            'elasticsearch_raw_order'], use_default=True)
 
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
-        zeit.content.article.edit.interfaces.ITopicboxMultiple['is_complete_query'],
-        use_default=True)
+        zeit.content.article.edit.interfaces.ITopicboxMultiple[
+            'is_complete_query'], use_default=True)
 
     topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage',
@@ -157,11 +163,13 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
-        zeit.content.article.edit.interfaces.ITopicboxMultiple['topicpage_filter'])
+        zeit.content.article.edit.interfaces.ITopicboxMultiple[
+            'topicpage_filter'])
 
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
-        zeit.content.article.edit.interfaces.ITopicboxMultiple['is_complete_query'],
+        zeit.content.article.edit.interfaces.ITopicboxMultiple[
+            'is_complete_query'],
         use_default=True)
 
     rss_feed = zeit.cms.content.property.DAVConverterWrapper(
@@ -193,15 +201,19 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         zeit.content.cp.interfaces.IArea['topiclink_url_3'])
 
     def _set_references(self):
-        """Set the thre references fields to Content Query result.
-        """
-        self.first_reference = self.values[0]
-        self.second_reference = self.values[1]
-        self.third_reference = self.values[2]
+        # Set the three references fields to Content Query result.
+
+        for val in self.values:
+            if self.first_reference is None:
+                self.first_reference = val
+            elif self.second_reference is None:
+                self.second_reference = val
+            elif self.third_reference is None:
+                self.third_reference = val
 
     @property
     def values(self):
-        if not self.source:
+        if not self._source:
             return [
                 self.first_reference,
                 self.second_reference,
@@ -209,10 +221,8 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
         try:
             content = self._content_query()
-            return [
-                content[0].uniqueId,
-                content[1].uniqueId,
-                content[2].uniqueId]
+            return content
+
         except (LookupError, ValueError):
             log.warning('%s found no IContentQuery type %s',
                         self.context, self.source_type)
@@ -327,7 +337,8 @@ class ContentQuery(grok.Adapter):
 
     @property
     def existing_teasers(self):
-        # ToDo: Compare current teaser uniqueId with predecessors to avoid dupes.
+        # ToDo: Compare current teaser uniqueId with
+        # predecessors to avoid dupes.
         return False
 
 
@@ -623,46 +634,7 @@ class CenterpageContentQuery(ContentQuery):
         for content in teasered:
             if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
                 continue
-            if self.context.hide_dupes and content in self.existing_teasers:
-                 continue
             result.append(content)
             if len(result) >= self.rows:
                 break
         return result
-
-
-class RSSFeedContentQuery(ContentQuery):
-
-    grok.name('rss-feed')
-
-    def __call__(self):
-        self.total_hits = 0
-        feed_data = self._parse_feed()
-        self.total_hits = len(feed_data)
-        return feed_data
-
-    @property
-    def rss_feed(self):
-        return self.context.rss_feed
-
-    def _parse_feed(self):
-        if not self.rss_feed:
-            return []
-        items = []
-        try:
-            content = self._get_feed(self.rss_feed.url,
-                                     self.rss_feed.timeout)
-            xml = lxml.etree.fromstring(content)
-        except (requests.exceptions.RequestException,
-                lxml.etree.XMLSyntaxError) as e:
-            log.debug('Could not fetch feed {}: {}'.format(
-                self.rss_feed.url, e))
-            return []
-        for item in xml.xpath('/rss/channel/item'):
-            link = zeit.content.cp.blocks.rss.RSSLink(item, self.rss_feed)
-            items.append(link)
-        return items
-
-    def _get_feed(self, url, timeout):
-        return requests.get(url, timeout=timeout).content
-
