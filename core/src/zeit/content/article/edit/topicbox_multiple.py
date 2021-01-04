@@ -71,6 +71,8 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
     @source_type.setter
     def source_type(self, value):
         self._source_type = value
+        if self._source:
+            self._set_references()
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count',
@@ -201,6 +203,10 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
     def _set_references(self):
         # Set the three references fields to Content Query result.
+        if self._source:
+            self.first_reference = None
+            self.second_reference = None
+            self.third_reference = None
 
         for val in self.values:
             if self.first_reference is None:
@@ -217,6 +223,9 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
                 self.first_reference,
                 self.second_reference,
                 self.third_reference]
+
+        if self.source_type == 'centerpage':
+            return [self.centerpage, None, None, ]
 
         try:
             content = self._content_query()
@@ -432,6 +441,7 @@ class ElasticsearchContentQuery(ContentQuery):
 class CustomContentQuery(ElasticsearchContentQuery):
 
     grok.name('custom')
+    grok.context(zeit.content.article.edit.interfaces.ITopicboxMultiple)
 
     SOLR_TO_ES_SORT = {
         'date-last-published-semantic desc': (
@@ -491,7 +501,8 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return self._make_condition(item)
 
     def _make_condition(self, item):
-        typ, operator, value = self.context.context._serialize_query_item(item)
+        # import pdb; pdb.set_trace()
+        typ, operator, value = self.context._serialize_query_item(item)
         fieldname = self.ES_FIELD_NAMES.get(typ)
         if not fieldname:
             fieldname = self._fieldname_from_property(typ)
@@ -525,33 +536,34 @@ class TMSContentQuery(ContentQuery):
 
     def __init__(self, context):
         super(TMSContentQuery, self).__init__(context)
-        self.topicpage = self.context.referenced_topicpage
+        self.topicpage = self.context.topicpage
         self.filter_id = self.context.topicpage_filter
 
     def __call__(self):
-        result, _ = self._fetch(self.start)
+        result, _ = self._fetch(start=0)
         return result
 
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        #cache = centerpage_cache(self.context, 'tms_topic_queries')
+        cache = {}
         rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
         else:
-            response, hits = self._get_documents(start=start, rows=rows)
+            response, hits = self._get_documents(start=start, rows=3)
             cache[key] = response, start, hits
 
         result = []
         dupes = 0
-        while len(result) < self.rows:
+        while len(result) < 3:
             try:
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start=start, rows=rows)
+                response, hits = self._get_documents(start=start, rows=3)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -591,6 +603,7 @@ class TMSContentQuery(ContentQuery):
 
     @property
     def _teaser_count(self):
+        return 3
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         return sum(
             a.count for a in cp.cached_areas
@@ -599,7 +612,8 @@ class TMSContentQuery(ContentQuery):
 
     @property
     def total_hits(self):
-        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        # cache = centerpage_cache(self.context, 'tms_topic_queries')
+        cache = {}
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]
@@ -623,6 +637,6 @@ class CenterpageContentQuery(ContentQuery):
             if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
                 continue
             result.append(content)
-            if len(result) >= self.rows:
-                break
+            #if len(result) >= self.rows:
+            #    break
         return result

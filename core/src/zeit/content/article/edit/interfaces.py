@@ -585,6 +585,7 @@ class TopicMultipleReferenceSource(
 
     def __init__(self):
         self._allowed_interfaces = (
+            zeit.content.cp.interfaces.ICenterPage,
             zeit.content.article.interfaces.IArticle,
             zeit.content.gallery.interfaces.IGallery,
             zeit.content.link.interfaces.ILink)
@@ -746,7 +747,8 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
-        source=TopicMultipleReferenceSource())
+        source=TopicMultipleReferenceSource(),
+        required=False)
 
     second_reference = zope.schema.Choice(
         title=_("Reference"),
