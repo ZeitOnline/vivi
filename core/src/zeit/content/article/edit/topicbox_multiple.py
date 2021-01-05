@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
-from zeit.content.cp.centerpage import writeabledict
-import zeit.cms.content.reference
-import zeit.content.article.edit.block
-import zeit.content.article.edit.interfaces
 import zope.component
-from zope.cachedescriptors.property import Lazy as cachedproperty
+import zeit.content.article.edit.interfaces
+import zeit.content.article.edit.block
+import zeit.cms.content.reference
 import lxml
-import json
 import logging
-
+import json
+import grokcore.component as grok
+from zope.cachedescriptors.property import Lazy as cachedproperty
+from zeit.content.cp.centerpage import writeabledict
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.edit.interfaces import TopicMultipleReferenceSource
 log = logging.getLogger(__name__)
 
 
@@ -19,25 +19,10 @@ def centerpage_cache(context, name, factory=writeabledict):
     return cp.cache.setdefault(name, factory())
 
 
-class ReferencedCpFallbackProperty(
-        zeit.cms.content.property.ObjectPathProperty):
-    """
-    Special ObjectPathProperty which looks up an attribute
-    from the referenced cp as a fallback.
-    """
-
-    def __get__(self, instance, class_):
-        value = super(ReferencedCpFallbackProperty, self).__get__(
-            instance, class_)
-        if value == self.field.missing_value and instance.referenced_cp:
-            value = getattr(instance.referenced_cp,
-                            self.field.__name__,
-                            self.field.default)
-        return value
-
-
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicboxMultiple)
 class TopicboxMultiple(zeit.content.article.edit.block.Block):
+
+    MAX_RESULTS = 5
 
     type = 'topicbox_multiple'
 
@@ -85,7 +70,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
     @count.setter
     def count(self, value):
         if not value:
-            self._count = 3
+            self._count = self.MAX_RESULTS
         else:
             self._count = value
 
@@ -167,40 +152,6 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicboxMultiple[
             'topicpage_filter'])
 
-    is_complete_query = zeit.cms.content.property.ObjectPathProperty(
-        '.elasticsearch_complete_query',
-        zeit.content.article.edit.interfaces.ITopicboxMultiple[
-            'is_complete_query'],
-        use_default=True)
-
-    rss_feed = zeit.cms.content.property.DAVConverterWrapper(
-        zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
-        zeit.content.article.edit.interfaces.ITopicboxMultiple['rss_feed'])
-
-    topiclink_label_1 = ReferencedCpFallbackProperty(
-        '.topiclink_label_1',
-        zeit.content.cp.interfaces.IArea['topiclink_label_1'])
-
-    topiclink_url_1 = ReferencedCpFallbackProperty(
-        '.topiclink_url_1',
-        zeit.content.cp.interfaces.IArea['topiclink_url_1'])
-
-    topiclink_label_2 = ReferencedCpFallbackProperty(
-        '.topiclink_label_2',
-        zeit.content.cp.interfaces.IArea['topiclink_label_2'])
-
-    topiclink_url_2 = ReferencedCpFallbackProperty(
-        '.topiclink_url_2',
-        zeit.content.cp.interfaces.IArea['topiclink_url_2'])
-
-    topiclink_label_3 = ReferencedCpFallbackProperty(
-        '.topiclink_label_3',
-        zeit.content.cp.interfaces.IArea['topiclink_label_3'])
-
-    topiclink_url_3 = ReferencedCpFallbackProperty(
-        '.topiclink_url_3',
-        zeit.content.cp.interfaces.IArea['topiclink_url_3'])
-
     def _set_references(self):
         # Set the three references fields to Content Query result.
         if self._source:
@@ -228,8 +179,19 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
             return [self.centerpage, None, None, ]
 
         try:
-            content = self._content_query()
-            return content
+            filtered_content = []
+            content = iter(self._content_query())
+
+            while(len(filtered_content)) < 3:
+                try:
+                    item = next(content)
+                    allow_cp = self.source_type == 'centerpage'
+                    if TopicMultipleReferenceSource(
+                            allow_cp).verify_interface(item):
+                        filtered_content.append(item)
+                except StopIteration:
+                    break
+            return filtered_content
 
         except (LookupError, ValueError):
             log.warning('%s found no IContentQuery type %s',
@@ -293,7 +255,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         field = zeit.content.cp.interfaces.IArea[
             'query'].value_type.type_interface[typ]
 
-        if len(item) > 3:
+        if len(item) > self.MAX_RESULTS:
             value = item[2:]
         else:
             value = item[2]
@@ -337,7 +299,7 @@ class ContentQuery(grok.Adapter):
     def existing_teasers(self):
         # ToDo: Compare current teaser uniqueId with
         # predecessors to avoid dupes.
-        return False
+        return []
 
 
 class ElasticsearchContentQuery(ContentQuery):
@@ -367,7 +329,7 @@ class ElasticsearchContentQuery(ContentQuery):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         try:
             response = es.search(
-                query, self.order, rows=3,
+                query, self.order, rows=self.context.MAX_RESULTS,
                 include_payload=self.include_payload)
         except Exception as e:
             log.warning(
@@ -429,8 +391,9 @@ class ElasticsearchContentQuery(ContentQuery):
             return None
         ids = []
         for content in self.existing_teasers:
-            id = getattr(zeit.cms.content.interfaces.IUUID(content, None),
-                         'id', None)
+            id = getattr(
+                zeit.cms.content.interfaces.IUUID(content, None),
+                'id', None)
             if id:
                 ids.append(id)
         if not ids:
@@ -501,7 +464,6 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return self._make_condition(item)
 
     def _make_condition(self, item):
-        # import pdb; pdb.set_trace()
         typ, operator, value = self.context._serialize_query_item(item)
         fieldname = self.ES_FIELD_NAMES.get(typ)
         if not fieldname:
@@ -546,24 +508,30 @@ class TMSContentQuery(ContentQuery):
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        #cache = centerpage_cache(self.context, 'tms_topic_queries')
+        # cache = centerpage_cache(self.context, 'tms_topic_queries')
         cache = {}
-        rows = self._teaser_count + 5  # total teasers + some spares
+
+        # total teasers + some spares
+        rows = self._teaser_count + self.context.MAX_RESULTS
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
         else:
-            response, hits = self._get_documents(start=start, rows=3)
+            response, hits = self._get_documents(
+                start=start,
+                rows=self.context.MAX_RESULTS)
             cache[key] = response, start, hits
 
         result = []
         dupes = 0
-        while len(result) < 3:
+        while len(result) < self.context.MAX_RESULTS:
             try:
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start=start, rows=3)
+                response, hits = self._get_documents(
+                    start=start,
+                    rows=self.context.MAX_RESULTS)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -573,7 +541,8 @@ class TMSContentQuery(ContentQuery):
             content = self._resolve(item)
             if content is None:
                 continue
-            if self.context.hide_dupes and content in self.existing_teasers:
+
+            if content in self.existing_teasers:
                 dupes += 1
             else:
                 result.append(content)
@@ -604,6 +573,7 @@ class TMSContentQuery(ContentQuery):
     @property
     def _teaser_count(self):
         return 3
+
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         return sum(
             a.count for a in cp.cached_areas
@@ -637,6 +607,7 @@ class CenterpageContentQuery(ContentQuery):
             if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
                 continue
             result.append(content)
-            #if len(result) >= self.rows:
-            #    break
+
+            if len(result) >= self.context.MAX_RESULTS:
+                break
         return result
