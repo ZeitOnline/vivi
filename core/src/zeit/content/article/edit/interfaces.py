@@ -583,16 +583,19 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 class TopicMultipleReferenceSource(
         zeit.cms.content.contentsource.CMSContentSource):
 
-    def __init__(self):
+    def __init__(self, allow_cp=False):
+        self.allow_cp = allow_cp
         self._allowed_interfaces = (
-            zeit.content.cp.interfaces.ICenterPage,
             zeit.content.article.interfaces.IArticle,
             zeit.content.gallery.interfaces.IGallery,
             zeit.content.link.interfaces.ILink)
 
     @property
     def check_interfaces(self):
-        return self._allowed_interfaces
+        if not self.allow_cp:
+            return self._allowed_interfaces
+        return self._allowed_interfaces + (
+            zeit.content.cp.interfaces.ICenterPage, )
 
 
 class ITopicbox(zeit.edit.interfaces.IBlock):
@@ -672,6 +675,7 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
             result[feed.id] = feed
         return result
 
+
 AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
 
 
@@ -725,7 +729,6 @@ class TopicboxMultipleSourceType(zeit.content.cp.interfaces.SimpleDictSource):
         ('centerpage', _('automatic-area-type-centerpage')),
         ('custom', _('automatic-area-type-custom')),
         ('topicpage', _('automatic-area-type-topicpage')),
-        ('query', _('automatic-area-type-query')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query'))
     ])
 
@@ -747,7 +750,7 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
-        source=TopicMultipleReferenceSource(),
+        source=TopicMultipleReferenceSource(allow_cp=True),
         required=False)
 
     second_reference = zope.schema.Choice(
@@ -797,11 +800,13 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
         value_type=DynamicCombination(
             zope.schema.Choice(
                 title=_('Custom Query Type'),
-                source=zeit.content.cp.interfaces.QueryTypeSource(), default='channels'),
+                source=zeit.content.cp.interfaces.QueryTypeSource(),
+                default='channels'),
             zeit.content.cp.interfaces.IQueryConditions,
             zope.schema.Choice(
                 title=_('Custom Query Operator'),
-                source=zeit.content.cp.interfaces.QueryOperatorSource(), default='eq'),
+                source=zeit.content.cp.interfaces.QueryOperatorSource(),
+                default='eq'),
         ),
         default=(),
         required=False)
@@ -815,11 +820,6 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
     centerpage = zope.schema.Choice(
         title=_('Get teasers from CenterPage'),
         source=zeit.content.cp.source.centerPageSource,
-        required=False)
-
-    rss_feed = zope.schema.Choice(
-        title=_('RSS-Feed'),
-        source=AUTOMATIC_FEED_SOURCE,
         required=False)
 
     source = zope.schema.Bool(
