@@ -25,12 +25,13 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
 class TMS(object):
 
-    def __init__(self, url, username=None, password=None):
-        self.url = url
-        if self.url.endswith('/'):
-            self.url = self.url[:-1]
-        self.username = username
-        self.password = password
+    def __init__(self, primary, secondary=None):
+        self.primary = primary
+        self.secondary = secondary or {}
+        for conn in primary, secondary:
+            url = conn.get('url') or ''
+            if url.endswith('/'):
+                conn['url'] = url.rstrip('/')
 
     def extract_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
@@ -220,12 +221,19 @@ class TMS(object):
                 raise
 
     def _request(self, request, **kw):
+        result = self._request_one(tms=self.primary, request=request, **kw)
+        verb, _, _ = request.partition(' ')
+        if verb in {'POST', 'PUT', 'DELETE'} and self.secondary.get('url'):
+            self._request_one(tms=self.secondary, request=request, **kw)
+        return result
+
+    def _request_one(self, tms, request, **kw):
         verb, path = request.split(' ', 1)
         method = getattr(requests, verb.lower())
-        if self.username:
-            kw['auth'] = (self.username, self.password)
+        if tms.get('username'):
+            kw['auth'] = (tms['username'], tms['password'])
         try:
-            url = self.url + path
+            url = tms['url'] + path
             if 'in-text-linked' in kw.get('params', {}).keys():
                 url = url + '?in-text-linked'
                 kw.pop('params')
@@ -251,8 +259,16 @@ class TMS(object):
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
+    prefix = 'primary-' if 'primary-base-url' in config else ''
     return TMS(
-        config['base-url'], config.get('username'), config.get('password'))
+        primary=dict(
+            url=config.get('{}base-url'.format(prefix)),
+            username=config.get('{}username'.format(prefix)),
+            password=config.get('{}password'.format(prefix))),
+        secondary=dict(
+            url=config.get('secondary-base-url'),
+            username=config.get('secondary-username'),
+            password=config.get('secondary-password')))
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
