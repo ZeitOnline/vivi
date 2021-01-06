@@ -173,15 +173,12 @@ class ImageTransform(object):
         image = zeit.content.image.image.TemporaryImage()
         if not format:
             format = self.context.format
-        # XXX Maybe encoder setting should be made configurable.
-        if format in ('JPG', 'JPEG'):
-            options = {'progressive': True, 'quality': 85, 'optimize': True}
-        elif format == 'PNG':
-            options = {'optimize': True}
-        elif format == 'WEBP':
-            options = {'quality': 85}
-        else:
-            options = {}
+        # Yay consistency
+        if format == 'JPG':
+            format = 'JPEG'
+
+        options = zeit.content.image.interfaces.ENCODER_PARAMETERS.find(format)
+
         pil_image.save(image.open('w'), format, **options)
         image.__parent__ = self.context
         image_times = zope.dublincore.interfaces.IDCTimes(self.context, None)

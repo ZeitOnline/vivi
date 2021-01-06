@@ -1,10 +1,12 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE
 import PIL.Image
 import six
 import zc.form.field
 import zc.form.interfaces
 import zc.sourcefactory.contextual
+import zc.sourcefactory.factories
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -462,3 +464,25 @@ class IMDB(zope.interface.Interface):
 
     def get_body(mdb_id):
         """Returns a file-like object containing the raw image data."""
+
+
+class EncoderParameters(zeit.cms.content.sources.CachedXMLBase):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'encoder-parameters'
+    default_filename = 'image-encoders.xml'
+
+    def find(self, typ):
+        return self.values().get(typ) or {}
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def values(self):
+        result = {}
+        for encoder in self._get_tree().iterfind('encoder'):
+            result[encoder.get('name')] = params = {}
+            for node in encoder.iterfind('param'):
+                params[node.get('name')] = node.pyval
+        return result
+
+
+ENCODER_PARAMETERS = EncoderParameters()
