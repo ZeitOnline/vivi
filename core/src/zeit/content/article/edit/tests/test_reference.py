@@ -1,4 +1,5 @@
 from unittest import mock
+from zeit.cms.checkout.helper import checked_out
 import unittest
 import zeit.content.article.testing
 import zope.lifecycleevent
@@ -213,7 +214,6 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
             None, datetime.datetime(2005, 1, 2, tzinfo=pytz.UTC))
 
         #
-        from zeit.cms.checkout.helper import checked_out
         with checked_out(self.repository['article']):
             pass
         self.assertEqual(
@@ -248,6 +248,16 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         volume = Volume()
         volume.product = zeit.cms.content.sources.Product(u'ZEI')
         self.assert_updated(volume, 'volume', reference_field=True)
+
+    def test_empty_reference_should_not_break_metadata_update(self):
+        for typ in ['gallery', 'portraitbox', 'infobox',
+                    'image', 'author', 'volume']:
+            article = self.get_article()
+            self.get_factory(article, typ)()
+            self.repository['article'] = article
+            with self.assertNothingRaised():
+                with checked_out(self.repository['article']):
+                    pass
 
 
 class EmptyMarkerTest(object):
