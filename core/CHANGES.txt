@@ -4,7 +4,7 @@ vivi.core changes
 4.47.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1324: Handle image/author/volume modules correctly during checkin
 
 
 4.47.0 (2021-01-06)

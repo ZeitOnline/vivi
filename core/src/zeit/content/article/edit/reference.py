@@ -184,11 +184,16 @@ def reset_local_properties(context, event):
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_reference_metadata(article, event):
     for block in article.body.values():
-        if (zeit.content.article.edit.interfaces.IImage.providedBy(block) and
-                block.references is not None):
+        # XXX Do we need a more explicit connection from block instance to
+        # its "block type" interface?
+        iface = list(zope.interface.providedBy(block))[0]
+        if not issubclass(
+                iface, zeit.content.article.edit.interfaces.IReference):
+            continue
+        if isinstance(iface['references'],
+                      zeit.cms.content.interfaces.ReferenceField):
             cls = type((zope.security.proxy.getObject(block)))
             cls.references.update_metadata(block)
-        elif (zeit.content.article.edit.interfaces.IReference.providedBy(
-                block) and block.references is not None):
+        elif block.references is not None:
             # Re-assigning the old value updates xml metadata
             block.references = block.references
