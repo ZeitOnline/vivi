@@ -191,12 +191,16 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         # class and doe the one of the grandparent.
         super(zeit.content.article.testing.FunctionalTestCase, self).setUp()
 
-    def assert_updated(self, referenced, factory_name):
+    def assert_updated(self, referenced, factory_name, reference_field=False):
         self.repository['refed'] = referenced
         #
         article = self.get_article()
         reference = self.get_factory(article, factory_name)()
-        reference.references = self.repository['refed']
+        if reference_field:
+            reference.references = reference.references.create(
+                self.repository['refed'])
+        else:
+            reference.references = self.repository['refed']
         self.repository['article'] = article
 
         #
@@ -230,6 +234,20 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
     def test_infobox_metadata_should_be_updated(self):
         from zeit.content.infobox.infobox import Infobox
         self.assert_updated(Infobox(), 'infobox')
+
+    def test_image_metadata_should_be_updated(self):
+        from zeit.content.image.image import LocalImage
+        self.assert_updated(LocalImage(), 'image', reference_field=True)
+
+    def test_author_metadata_should_be_updated(self):
+        from zeit.content.author.author import Author
+        self.assert_updated(Author(), 'author', reference_field=True)
+
+    def test_volume_metadata_should_be_updated(self):
+        from zeit.content.volume.volume import Volume
+        volume = Volume()
+        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        self.assert_updated(volume, 'volume', reference_field=True)
 
 
 class EmptyMarkerTest(object):
