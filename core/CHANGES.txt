@@ -6,6 +6,8 @@ vivi.core changes
 
 - BUG-1315: Fix Update-Token-Tool for Facebook
 
+- OPS-1516: Make image encoder parameters configurable
+
 
 4.46.1 (2020-12-18)
 -------------------
