@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.46.2 (unreleased)
+4.47.0 (2021-01-06)
 -------------------
 
 - BUG-1315: Fix Update-Token-Tool for Facebook
