@@ -26,9 +26,9 @@ log = logging.getLogger(__name__)
 class TMS(object):
 
     def __init__(self, primary, secondary=None):
-        self.primary = primary
-        self.secondary = secondary or {}
-        for conn in primary, secondary:
+        self.primary = dict(primary)
+        self.secondary = dict(secondary or {})
+        for conn in self.primary, self.secondary:
             url = conn.get('url') or ''
             if url.endswith('/'):
                 conn['url'] = url.rstrip('/')
