@@ -256,7 +256,7 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):
         super(IntegrationTest, self).setUp()
         self.tms = zeit.retresco.connection.TMS(
-            os.environ['ZEIT_RETRESCO_URL'])
+            primary=dict(url=os.environ['ZEIT_RETRESCO_URL']))
         self.article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(self.article):
