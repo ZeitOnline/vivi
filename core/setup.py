@@ -24,7 +24,7 @@ setup(
         'beautifulsoup4',
         'bugsnag',
         'collective.monkeypatcher',
-        'elasticsearch >=7.0.0, <8.0.0',
+        'elasticsearch >=2.0.0, <3.0.0',
         'fb',
         'filemagic',
         'gocept.cache >= 2.1',
