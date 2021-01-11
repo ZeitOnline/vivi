@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
-import zope.component
-import zeit.content.article.edit.interfaces
-import zeit.content.article.edit.block
-import zeit.cms.content.reference
-import lxml
-import logging
-import json
 import grokcore.component as grok
-from zope.cachedescriptors.property import Lazy as cachedproperty
-from zeit.content.cp.centerpage import writeabledict
+import json
+import logging
+import lxml
+import zeit.cms.content.reference
+import zeit.content.article.edit.block
+import zeit.content.article.edit.interfaces
+import zope.component
+
+from zeit.cms.content.contentuuid import ContentUUID
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.article.edit.interfaces import TopicMultipleReferenceSource
+from zeit.content.article.edit.interfaces import TopicReferenceSource
+from zeit.content.cp.centerpage import writeabledict
+from zope.cachedescriptors.property import Lazy as cachedproperty
+
 log = logging.getLogger(__name__)
 
 
@@ -186,7 +189,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
                 try:
                     item = next(content)
                     allow_cp = self.source_type == 'centerpage'
-                    if TopicMultipleReferenceSource(
+                    if TopicReferenceSource(
                             allow_cp).verify_interface(item):
                         filtered_content.append(item)
                 except StopIteration:
@@ -255,7 +258,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         field = zeit.content.cp.interfaces.IArea[
             'query'].value_type.type_interface[typ]
 
-        if len(item) > self.MAX_RESULTS:
+        if len(item) > self.count:
             value = item[2:]
         else:
             value = item[2]
@@ -329,7 +332,7 @@ class ElasticsearchContentQuery(ContentQuery):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         try:
             response = es.search(
-                query, self.order, rows=self.context.MAX_RESULTS,
+                query, self.order, rows=self.context.count,
                 include_payload=self.include_payload)
         except Exception as e:
             log.warning(
@@ -512,26 +515,26 @@ class TMSContentQuery(ContentQuery):
         cache = {}
 
         # total teasers + some spares
-        rows = self._teaser_count + self.context.MAX_RESULTS
+        rows = self._teaser_count + self.context.count
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
         else:
             response, hits = self._get_documents(
                 start=start,
-                rows=self.context.MAX_RESULTS)
+                rows=self.context.count)
             cache[key] = response, start, hits
 
         result = []
         dupes = 0
-        while len(result) < self.context.MAX_RESULTS:
+        while len(result) < self.context.count:
             try:
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
                 response, hits = self._get_documents(
                     start=start,
-                    rows=self.context.MAX_RESULTS)
+                    rows=self.context.count)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -608,6 +611,35 @@ class CenterpageContentQuery(ContentQuery):
                 continue
             result.append(content)
 
-            if len(result) >= self.context.MAX_RESULTS:
+            if len(result) >= self.context.count:
                 break
         return result
+
+
+class TMSRelatedApiQuery(TMSContentQuery):
+
+    grok.name('related-api')
+
+    def __init__(self, context):
+        super(TMSRelatedApiQuery, self).__init__(context)
+
+    def _get_documents(self, **kw):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        try:
+            current_article = zeit.content.article.interfaces.IArticle(
+                self.context)
+            uuid = ContentUUID(current_article)
+            response = tms.get_related_documents(
+                uuid=uuid, rows=self.context.count)
+        except Exception as e:
+            if e.status == 404:
+                log.warning(
+                    'TMSRelatedAPI error. No document with id %s',
+                    uuid)
+            else:
+                log.warning(
+                    'Error during TMSRelatedAPI for %s',
+                    self.context.uniqueId, exc_info=True)
+            return iter([]), 0
+        else:
+            return iter(response), response.hits

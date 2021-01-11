@@ -116,6 +116,10 @@ class ITMS(zope.interface.Interface):
         already published content.
         """
 
+    def get_related_documents(uuid, rows=15):
+        """Returns a list of documents that relates to the given uuid
+        """
+
 
 class TMSError(Exception):
     """Service was unable to process a request because of semantic problems."""
