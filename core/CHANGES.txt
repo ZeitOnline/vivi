@@ -4,7 +4,7 @@ vivi.core changes
 4.47.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- STO-59: Allow Vivi to talk to two TMS instances
 
 
 4.47.0 (2021-01-06)
