@@ -185,6 +185,9 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
             filtered_content = []
             content = iter(self._content_query())
 
+            if content is None:
+                return filtered_content
+
             while(len(filtered_content)) < 3:
                 try:
                     item = next(content)
@@ -630,12 +633,12 @@ class TMSRelatedApiQuery(TMSContentQuery):
                 self.context)
             uuid = ContentUUID(current_article)
             response = tms.get_related_documents(
-                uuid=uuid, rows=self.context.count)
+                uuid=uuid.id, rows=self.context.count)
         except Exception as e:
             if e.status == 404:
                 log.warning(
                     'TMSRelatedAPI error. No document with id %s',
-                    uuid)
+                    uuid.id)
             else:
                 log.warning(
                     'Error during TMSRelatedAPI for %s',
