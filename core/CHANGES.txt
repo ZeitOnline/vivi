@@ -1,10 +1,22 @@
 vivi.core changes
 =================
 
-4.47.1 (unreleased)
+4.48.1 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.48.0 (2021-01-11)
+-------------------
+
+- STO-59: Allow Vivi to talk to two TMS instances
+
+
+4.47.1 (2021-01-06)
+-------------------
+
+- BUG-1324: Handle image/author/volume modules correctly during checkin
 
 
 4.47.0 (2021-01-06)

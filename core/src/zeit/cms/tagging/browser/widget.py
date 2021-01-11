@@ -86,7 +86,7 @@ class Widget(grok.MultiAdapter,
             # an abstraction instead doesn't really seem worthwile either.
             import zeit.retresco.interfaces
             tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-            return six.moves.urllib.parse.urlparse(tms.url).netloc
+            return six.moves.urllib.parse.urlparse(tms.primary['url']).netloc
         except (ImportError, LookupError):
             return None
 
