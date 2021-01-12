@@ -1,0 +1,135 @@
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <header/>
+    <rankedTags>
+      <tag type="keyword" py:pytype="str">Coronavirus</tag>
+      <tag type="keyword" py:pytype="str">Gesundheitsamt</tag>
+      <tag type="keyword" py:pytype="str">Pandemie</tag>
+      <tag type="organisation" py:pytype="str">RKI</tag>
+      <tag type="location" py:pytype="str">Sachsen</tag>
+      <tag type="keyword" py:pytype="str">Neuinfektion</tag>
+    </rankedTags>
+    <author hdok="10038844" href="http://xml.zeit.de/autoren/P/Mathias_Peer/index" publication-date="" expires="">
+      <display_name py:pytype="str">Mathias Peer</display_name>
+    </author>
+    <image base-id="http://xml.zeit.de/wissen/gesundheit/2021-01/coronavirus-neuinfektionen-rki-gesundheitsaemter-deutschland-todesfaelle-sachsen-bild/" type="jpg" title="coronavirus-neuinfektionen-rki-gesundheitsaemter-deutschland-todesfaelle-sachsen-bild" publication-date="" expires="" title_local="coronavirus-neuinfektionen-rki-gesundheitsaemter-deutschland-todesfaelle-sachsen-bild" caption_local="Employees move coffins with the lettering 'Corona' through the mourning hall before cremation at the crematorium in Meissen, eastern Germany on January 13, 2021, during the ongoing novel coronavirus (Covid-19) pandemic. - Most of the deceased, who will be cremated here, have died of or with the coronavirus. (Photo by JENS SCHLUETER / AFP) (Photo by JENS SCHLUETER/AFP via Getty Images)">
+      <bu py:pytype="str">Employees move coffins with the lettering 'Corona' through the mourning hall before cremation at the crematorium in Meissen, eastern Germany on January 13, 2021, during the ongoing novel coronavirus (Covid-19) pandemic. - Most of the deceased, who will be cremated here, have died of or with the coronavirus. (Photo by JENS SCHLUETER / AFP) (Photo by JENS SCHLUETER/AFP via Getty Images)</bu>
+      <copyright py:pytype="str">Jens Schlueter</copyright>
+    </image>
+    <agency href="http://xml.zeit.de/autoren/reuters" publication-date="" expires="">
+      <display_name py:pytype="str">Reuters  </display_name>
+    </agency>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="audio_speechbert">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Mathias Peer</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="banner_content">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="channels">Wissen Gesundheit</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments_premoderate">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="corrected">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2021-01-14T07:26:04.680591+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">2021-01-14T01:22:24.297734+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2021-01-14T07:26:06.310158+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">2021-01-14T07:26:05.101527+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published_semantic">2021-01-14T06:14:10.805676+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="edited">yes</attribute>
+    <attribute py:pytype="str" ns="http://apache.org/dav/props/" name="executable">F</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="genre">nachricht</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="header_layout">default</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="hide_adblocker_notification">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="hide_ligatus_recommendations">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="is_amp">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last-semantic-change">2021-01-14T06:13:34.414867+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">ldap.krueger</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="lead_candidate">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="overscrolling">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="prevent_ligatus_indexing">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="previous_uniqueIds">http://xml.zeit.de/wissen/gesundheit/2021-01/ffe65672-c976-4576-835f-bdd43536c056.tmp</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">e29dec5bc9b54107a2f00dbcd0d14b40</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="recent_comments_first">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Wissen</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="seo_optimized">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="short_text">Das #RKI hat mit 1.244 #Coronavirus-Toten einen neuen Höchstwert registriert. </attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="sub_ressort">Gesundheit</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="template">zon-article</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="text-length">3228</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="tldr_milestone">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="type">article</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:afee1a99-02f8-4e98-bf62-685f6c18d5d7}</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2021</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
+  &lt;initialized_object&gt;
+    &lt;klass&gt;
+      &lt;global name="Provides" module="zope.interface.declarations"/&gt;
+    &lt;/klass&gt;
+    &lt;arguments&gt;
+      &lt;tuple&gt;
+        &lt;global name="Article" module="zeit.content.article.article"/&gt;
+        &lt;global name="IZONArticle" module="zeit.content.article.interfaces"/&gt;
+        &lt;global name="IZONContent" module="zeit.cms.section.interfaces"/&gt;
+        &lt;global name="Interface" module="zope.interface"/&gt;
+      &lt;/tuple&gt;
+    &lt;/arguments&gt;
+  &lt;/initialized_object&gt;
+&lt;/pickle&gt;</attribute>
+  </head>
+  <body>
+    <supertitle>Coronavirus</supertitle>
+    <title>RKI meldet mit 1.244 Toten neuen Höchstwert</title>
+    <subtitle>Die Zahl der Coronavirus-Todesfälle steigt weiter. Die meisten an Covid-19 Verstorbenen gibt es in Sachsen. Auch bei den Neuinfektionen zeigt die Kurve wieder nach oben.</subtitle>
+    <division type="page">
+      <image base-id="http://xml.zeit.de/wissen/gesundheit/2021-01/coronavirus-neuinfektionen-rki-gesundheitsaemter-deutschland-todesfaelle-sachsen-bild/" type="jpg" title="coronavirus-neuinfektionen-rki-gesundheitsaemter-deutschland-todesfaelle-sachsen-bild" publication-date="" expires="" display_mode="column-width" variant_name="wide" is_empty="False" caption_local="In einem Krematorium in Meißen transportieren Mitarbeiter Särge mit der Aufschrift &quot;Corona&quot;. " title_local="coronavirus-neuinfektionen-rki-gesundheitsaemter-deutschland-todesfaelle-sachsen-bild">
+        <bu py:pytype="str">Employees move coffins with the lettering 'Corona' through the mourning hall before cremation at the crematorium in Meissen, eastern Germany on January 13, 2021, during the ongoing novel coronavirus (Covid-19) pandemic. - Most of the deceased, who will be cremated here, have died of or with the coronavirus. (Photo by JENS SCHLUETER / AFP) (Photo by JENS SCHLUETER/AFP via Getty Images)</bu>
+        <copyright py:pytype="str">Jens Schlueter</copyright>
+      </image>
+      <p>Das Robert Koch-Institut (RKI) hat einen neuen Höchstwert von 1.244 weiteren Todesfällen im Zusammenhang mit einer Coronavirus-Infektion gemeldet. Das deckt sich im Wesentlichen mit der Zahl, die die Gesundheitsämter <a class="" href="https://www.zeit.de/wissen/gesundheit/coronavirus-echtzeit-karte-deutschland-landkreise-infektionen-ausbreitung#karte">nach Recherchen von ZEIT ONLINE</a> binnen eines Tages meldeten, nämlich 1.243 Tote. Das sind 102 Todesfälle <a class="" href="https://www.zeit.de/wissen/gesundheit/2021-01/coronavirus-neuinfektionen-rki-gesundheitsaemter-deutschland-todesfaelle-1301">mehr als am Vortag</a> und 219 mehr als in der Vorwoche. Der bisherige Tageshöchstwert ist am 5. Januar mit 1.232 Verstorbenen gemeldet worden.</p>
+      <rawtext>
+        <text_reference type="intern" href="http://xml.zeit.de/administratives/embeds/2020/starterkit/corona-pembed" publication-date="" expires=""/>
+      </rawtext>
+      <p>Die Zahl der bei den Gesundheitsämtern verzeichneten Neuinfektionen lag bei 23.615. Das sind rund 7.500 Fälle mehr als am Vortag und rund 2.700 Infektionen weniger als vor einer Woche. Der Vorwochenvergleich ist wegen Meldeverzögerungen nach dem Jahreswechsel nur eingeschränkt aussagekräftig. <br/></p>
+      <topicbox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" supertitle="Das Beste aus Z+" title="Nordseeinseln">
+        <first_reference type="intern" href="http://xml.zeit.de/hamburg/2021-01/inselbewohner-corona-lockdown-freiheitsbeschraenkung-norddeutschland-inseln" year="2021" issue="1" ressort="Hamburg" contenttype="article" publication-date="" expires="" author="Tom Kroll">
+          <supertitle py:pytype="str">Inselbewohner während Corona</supertitle>
+          <title py:pytype="str">Inseln der Seligen?</title>
+          <text py:pytype="str">Wenn die 15-Kilometer-Regel kommt, dürfen die Bewohner der Nordseeinseln nur noch mit triftigem Grund an Land. Die Isolation finden nicht alle schlecht.</text>
+          <description py:pytype="str">Wenn die 15-Kilometer-Regel kommt, dürfen die Bewohner der Nordseeinseln nur noch mit triftigem Grund an Land. Die Isolation finden nicht alle schlecht.</description>
+          <byline xsi:nil="true"/>
+          <image base-id="http://xml.zeit.de/hamburg/2021-01/inselbewohner-corona-lockdown-freiheitsbeschraenkung-norddeutschland/" type="jpg" title="Leuchtturm " publication-date="2021-01-08T10:34:52+00:00" expires="2021-04-08T09:34:58+00:00">
+            <bu py:pytype="str">Gefangen auf der Insel? Sylts Bürgermeister ist froh über die neuen Corona Regeln, denn sie schützen seine Bevölkerung. </bu>
+            <copyright py:pytype="str">Axel Heimken</copyright>
+          </image>
+          <author hdok="10054120" href="http://xml.zeit.de/autoren/K/Tom_Kroll/index" publication-date="" expires="">
+            <display_name py:pytype="str">Tom Kroll</display_name>
+          </author>
+        </first_reference>
+      </topicbox>
+      <p>Das RKI meldete bei den Neuinfektionen einen leicht höheren Wert von 25.164. Die Daten von ZEIT ONLINE basieren auf direkten Angaben der Landkreise, sind weniger von verzögerten Meldeketten betroffen als die Zahlen des Robert Koch-Instituts und können daher abweichen. Die Sieben-Tage-Inzidenz betrug 151,2. Sie lag damit leicht unter dem Wert des Vortages. Bei dem Wert handelt es sich um die Zahl der Neuinfektionen pro 100.000 Einwohnern in diesem Zeitraum.</p>
+      <p>Die meisten <a class="" href="https://www.zeit.de/thema/neuinfektion" target="_blank">Neuinfektionen</a> binnen eines Tages meldete Nordrhein-Westfalen mit 4.101 Fällen, gefolgt von Bayern mit 3.580 und Baden-Württemberg mit 2.920 Fällen. Bei den Städten gab es die meisten Neuinfektionen in Berlin mit 1.222 Fällen. In München wurden 440 und in Hamburg 396 Neuinfektionen registriert. <br/></p>
+      <rawtext>
+        <text_reference type="intern" href="http://xml.zeit.de/administratives/embeds/kennzahlen-erklaerung" publication-date="" expires=""/>
+      </rawtext>
+      <p>Sachsen meldete die meisten Todesfälle. Dort registrierten die Behörden 266 Tote innerhalb von 24 Stunden. Das ist ein neuer Höchstwert. In Nordrhein-Westfalen wurden 192 und in Bayern 146 Verstorbene gemeldet. Neue Höchstwerte gab es auch in Berlin mit 76 und in Sachsen-Anhalt mit 62 Todesfällen. Berlin ist damit auch die Stadt mit den meisten neuen Todesfällen. Dahinter stehen Dresden mit 39 Toten sowie Chemnitz und der Landkreis Leipzig mit je 33 Fällen.</p>
+      <p>In 13 Kreisen wurden keine neuen Infektionen gemeldet. Am Vortag war dies in 15 Kreisen der Fall.</p>
+      <infobox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" is_empty="False" href="http://xml.zeit.de/wissen/gesundheit/2020-08/was-bedeuten-die-corona-zahlen-infobox" ressort="Wissen" contenttype="infobox" publication-date="" expires="">
+        <supertitle py:pytype="str">Was bedeuten die Corona-Zahlen?</supertitle>
+        <title xsi:nil="true"/>
+        <text xsi:nil="true"/>
+        <description xsi:nil="true"/>
+        <byline xsi:nil="true"/>
+      </infobox>
+    </division>
+  </body>
+  <teaser>
+    <text>Die Zahl der Coronavirus-Todesfälle steigt weiter. Die meisten an Covid-19 Verstorbenen gibt es in Sachsen. Auch bei den Neuinfektionen zeigt die Kurve wieder nach oben.</text>
+    <title>RKI meldet mit 1.244 Toten neuen Höchstwert</title>
+    <supertitle>Coronavirus</supertitle>
+  </teaser>
+</article>

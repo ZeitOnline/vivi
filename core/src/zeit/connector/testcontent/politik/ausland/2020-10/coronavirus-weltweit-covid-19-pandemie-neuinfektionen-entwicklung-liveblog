@@ -1,0 +1,137 @@
+<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <head>
+    <header/>
+    <rankedTags>
+      <tag type="keyword" py:pytype="str">Coronavirus</tag>
+      <tag type="keyword" py:pytype="str">Pandemie</tag>
+      <tag type="keyword" py:pytype="str">Gesundheitswesen</tag>
+      <tag type="keyword" py:pytype="str">Lockdown</tag>
+      <tag type="keyword" py:pytype="str">Covid-19</tag>
+    </rankedTags>
+    <author hdok="10001517" href="http://xml.zeit.de/autoren/B/Andrea_Buhtz/index" publication-date="" expires="">
+      <display_name py:pytype="str">Andrea Buhtz</display_name>
+    </author>
+    <author xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" hdok="10001728" href="http://xml.zeit.de/autoren/G/Sarah-Lena_Grahn/index" publication-date="" expires="">
+      <image base-id="http://xml.zeit.de/autoren/G/Sarah-Lena_Grahn/sarah-lena-grahn/" type="" title="sarah-lena-grahn" alt="Sarah Lena Grahn" publication-date="" expires="">
+        <bu xsi:nil="true"/>
+        <copyright xsi:nil="true"/>
+      </image>
+      <display_name py:pytype="str">Sarah Lena Grahn</display_name>
+    </author>
+    <author hdok="10001730" href="http://xml.zeit.de/autoren/K/Alena_Kammer/index" publication-date="" expires="">
+      <display_name py:pytype="str">Alena Kammer</display_name>
+    </author>
+    <image base-id="http://xml.zeit.de/politik/ausland/2021-01/coronavirus-weltweit-covid-19-pandemie-china-entwicklung-liveblog/" type="jpg" title="coronavirus-weltweit-covid-19-pandemie-china-entwicklung-liveblog" publication-date="" expires="" title_local="coronavirus-weltweit-covid-19-pandemie-china-entwicklung-liveblog" caption_local="People wearing face masks walk outside a shopping mall complex during rush hour in Wuhan on January 13, 2021, a day before a team of WHO experts will land directly in Wuhan, according to China's foreign ministry, to start their long-delayed probe into the Covid-19 coronavirus at the virus epicentre. Bild: Nicolas Asfouri/AFP/Getty Images">
+      <bu py:pytype="str">People wearing face masks walk outside a shopping mall complex during rush hour in Wuhan on January 13, 2021, a day before a team of WHO experts will land directly in Wuhan, according to China's foreign ministry, to start their long-delayed probe into the Covid-19 coronavirus at the virus epicentre. Bild: Nicolas Asfouri/AFP/Getty Images</bu>
+      <copyright py:pytype="str">Nicolas Asfouri</copyright>
+    </image>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="audio_speechbert">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Andrea Buhtz;Sarah Lena Grahn;Alena Kammer</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="banner_content">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="channels">Politik Ausland</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments_premoderate">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="corrected">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2021-01-14T07:42:56.383765+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">2020-10-23T05:38:43.618390+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2021-01-14T07:42:58.127503+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">2021-01-14T07:42:56.894954+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published_semantic">2021-01-14T07:42:56.894954+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="edited">yes</attribute>
+    <attribute py:pytype="str" ns="http://apache.org/dav/props/" name="executable">F</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="hide_adblocker_notification">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="hide_ligatus_recommendations">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="is_amp">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="is_instant_article">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last-semantic-change">2021-01-14T07:42:45.146067+00:00</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">ldap.grahn</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="lead_candidate">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="overscrolling">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="prevent_ligatus_indexing">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="previous_uniqueIds">http://xml.zeit.de/politik/ausland/2020-10/a9bf546f-628b-4f3f-97d4-5d8f7e182c0d.tmp</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">68c894c577ee437286a5a34980d5f2ba</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="recent_comments_first">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Politik</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="seo_optimized">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="short_text">#Italien sieht die Pandemie "in einer expansiven Phase" und verlängert den Notstand bis Ende April. #Russland weitet Impfungkampagne aus. Ärger in Großbritannien über Lebensmittelpakete der Regierung. #Corona-News aus aller Welt</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="sub_ressort">Ausland</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="template">zon-liveblog</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="text-length">991</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="tldr_milestone">no</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="type">article</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:1e3abf6a-9f37-4f6f-a6ae-e6b79ea56e70}</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">38</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2020</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
+  &lt;initialized_object&gt;
+    &lt;klass&gt;
+      &lt;global name="Provides" module="zope.interface.declarations"/&gt;
+    &lt;/klass&gt;
+    &lt;arguments&gt;
+      &lt;tuple&gt;
+        &lt;global name="Article" module="zeit.content.article.article"/&gt;
+        &lt;global name="IZONArticle" module="zeit.content.article.interfaces"/&gt;
+        &lt;global name="IZONContent" module="zeit.cms.section.interfaces"/&gt;
+        &lt;global name="Interface" module="zope.interface"/&gt;
+      &lt;/tuple&gt;
+    &lt;/arguments&gt;
+  &lt;/initialized_object&gt;
+&lt;/pickle&gt;</attribute>
+  </head>
+  <body>
+    <supertitle>Coronavirus weltweit</supertitle>
+    <title>Neuinfektionen in China auf höchstem Stand seit zehn Monaten</title>
+    <subtitle>Am stärksten betroffen ist die Provinz Hebei rund um die Hauptstadt Peking. Der Notstand in Italien soll bis Ende April gelten. Corona-News aus aller Welt</subtitle>
+    <division type="page">
+      <image base-id="http://xml.zeit.de/politik/ausland/2021-01/coronavirus-weltweit-covid-19-pandemie-china-entwicklung-liveblog/" type="jpg" title="coronavirus-weltweit-covid-19-pandemie-china-entwicklung-liveblog" publication-date="" expires="" display_mode="column-width" variant_name="wide" is_empty="False" title_local="coronavirus-weltweit-covid-19-pandemie-china-entwicklung-liveblog" caption_local="People wearing face masks walk outside a shopping mall complex during rush hour in Wuhan on January 13, 2021, a day before a team of WHO experts will land directly in Wuhan, according to China's foreign ministry, to start their long-delayed probe into the Covid-19 coronavirus at the virus epicentre. Bild: Nicolas Asfouri/AFP/Getty Images">
+        <bu py:pytype="str">People wearing face masks walk outside a shopping mall complex during rush hour in Wuhan on January 13, 2021, a day before a team of WHO experts will land directly in Wuhan, according to China's foreign ministry, to start their long-delayed probe into the Covid-19 coronavirus at the virus epicentre. Bild: Nicolas Asfouri/AFP/Getty Images</bu>
+        <copyright py:pytype="str">Nicolas Asfouri</copyright>
+      </image>
+      <ul>
+        <li>
+          <em>An dieser Stelle bündeln wir wichtige Corona-Meldungen aus aller
+ Welt, heute unter anderem aus China, Ungarn, Italien, Großbritannien, den USA und Österreich.<br/></em>
+        </li>
+        <li>
+          <em>Die wichtigsten Zahlen zur Corona-Pandemie finden Sie </em>
+          <em><a class="" href="https://www.zeit.de/wissen/gesundheit/coronavirus-echtzeit-karte-deutschland-landkreise-infektionen-ausbreitung" target="_blank">hier</a>.</em>
+        </li>
+        <li>
+          <em>Alle Artikel zum Thema finden Sie auf unserer <a class="" href="https://www.zeit.de/thema/coronavirus" target="_blank">Themenseite</a></em>
+          <em>.</em>
+        </li>
+        <li>
+          <em>Neben eigenen Recherchen verwenden wir auch Material der Nachrichtenagenturen dpa, AP, AFP, KNA und Reuters.</em>
+        </li>
+      </ul>
+      <rawtext>
+        <text_reference type="intern" href="http://xml.zeit.de/administratives/embeds/2020/starterkit/corona-multiple-countries" publication-date="" expires=""/>
+        <param id="mode">count</param>
+        <param id="country4">Weltweit</param>
+        <param id="country1">CN</param>
+        <param id="country2">RU</param>
+        <param id="country3">IT</param>
+      </rawtext>
+      <liveblog blogID="5f919b89b1316300f6b09a27" collapse-preceding-content="False"/>
+      <p>
+        <br/>
+      </p>
+      <p>
+        <br/>
+      </p>
+    </division>
+  </body>
+  <teaser>
+    <supertitle>Coronavirus weltweit</supertitle>
+    <text>Am stärksten betroffen ist die Provinz Hebei rund um die Hauptstadt Peking. Der Notstand in Italien soll bis Ende April gelten. Corona-News aus aller Welt</text>
+    <title>Neuinfektionen in China auf höchstem Stand seit zehn Monaten</title>
+  </teaser>
+</article>

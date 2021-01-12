@@ -1,4 +1,6 @@
+from unittest import mock
 import gocept.selenium
+import json
 import pkg_resources
 import plone.testing
 import re
@@ -52,6 +54,33 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
 
 
+class ElasticsearchMockLayer(plone.testing.Layer):
+
+    def setUp(self):
+        self['elasticsearch_mocker'] = mock.patch(
+             'elasticsearch.client.Elasticsearch.search')
+        self['elasticsearch'] = self['elasticsearch_mocker'].start()
+        filename = pkg_resources.resource_filename(
+            'zeit.content.article.tests', 'elasticsearch_search_response.json')
+        with open(filename) as response:
+            result = zeit.cms.interfaces.Result(json.load(response))
+            result.hits = 4
+            self['elasticsearch'].search.return_value = result
+        zope.interface.alsoProvides(self['elasticsearch'],
+                                    zeit.retresco.interfaces.IElasticsearch)
+        zope.component.getSiteManager().registerUtility(self['elasticsearch'])
+
+
+    def tearDown(self):
+        zope.component.getSiteManager().unregisterUtility(
+            self['elasticsearch'])
+        del self['elasticsearch']
+        self['elasticsearch_mocker'].stop()
+        del self['elasticsearch_mocker']
+
+
+ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
+
 class ArticleLayer(plone.testing.Layer):
 
     defaultBases = (PUSH_LAYER,)
@@ -66,6 +95,9 @@ class ArticleLayer(plone.testing.Layer):
 
 
 LAYER = ArticleLayer()
+MOCK_LAYER = plone.testing.Layer(
+    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer',
+    module=__name__)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,

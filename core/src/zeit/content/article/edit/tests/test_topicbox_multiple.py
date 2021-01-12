@@ -7,6 +7,8 @@ from zeit.content.article.edit.topicbox_multiple import TopicboxMultiple
 
 class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
 
+    layer = zeit.content.article.testing.MOCK_LAYER
+
     def get_topicbox_multiple(self):
         import lxml.objectify
         box = TopicboxMultiple(None, lxml.objectify.E.topicbox_multiple())
@@ -41,3 +43,21 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             'http://xml.zeit.de/online/2007/01/index',
             box.first_reference.uniqueId)
+
+    def test_source_elasticsearch_query(self):
+        box = self.get_topicbox_multiple()
+        box.source_type = 'elasticsearch-query'
+        box.elasticsearch_raw_query = '{}'
+        box.source = True
+        self.assertEqual('http://xml.zeit.de/politik/ausland/2020-10/'
+                         'coronavirus-weltweit-covid-19-pandemie-'
+                         'neuinfektionen-entwicklung-liveblog',
+                         box.first_reference.uniqueId)
+        self.assertEqual('http://xml.zeit.de/politik/deutschland/2021-01/'
+                         'bundeswehr-annegret-kramp-karrenbauer-drohne-'
+                         'luftverteidigung',
+                         box.second_reference.uniqueId)
+        self.assertEqual('http://xml.zeit.de/wissen/gesundheit/2021-01/'
+                         'coronavirus-neuinfektionen-rki-gesundheitsaemter-'
+                         'deutschland-todesfaelle-sachsen',
+                         box.third_reference.uniqueId)
