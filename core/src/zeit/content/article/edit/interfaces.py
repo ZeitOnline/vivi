@@ -580,24 +580,6 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
             zeit.content.cp.interfaces.ICenterPage, )
 
 
-class TopicMultipleReferenceSource(
-        zeit.cms.content.contentsource.CMSContentSource):
-
-    def __init__(self, allow_cp=False):
-        self.allow_cp = allow_cp
-        self._allowed_interfaces = (
-            zeit.content.article.interfaces.IArticle,
-            zeit.content.gallery.interfaces.IGallery,
-            zeit.content.link.interfaces.ILink)
-
-    @property
-    def check_interfaces(self):
-        if not self.allow_cp:
-            return self._allowed_interfaces
-        return self._allowed_interfaces + (
-            zeit.content.cp.interfaces.ICenterPage, )
-
-
 class ITopicbox(zeit.edit.interfaces.IBlock):
     """
     Element which references other Articles
@@ -750,19 +732,19 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
-        source=TopicMultipleReferenceSource(allow_cp=True),
+        source=TopicReferenceSource(allow_cp=True),
         required=False)
 
     second_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/link here"),
-        source=TopicMultipleReferenceSource(),
+        source=TopicReferenceSource(),
         required=False)
 
     third_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/link here"),
-        source=TopicMultipleReferenceSource(),
+        source=TopicReferenceSource(),
         required=False)
 
     link = zope.schema.TextLine(
