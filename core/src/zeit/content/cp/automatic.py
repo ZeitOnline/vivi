@@ -130,7 +130,7 @@ def is_lead_candidate(content):
 @grok.implementer(zeit.content.cp.interfaces.IContentQuery)
 class ContentQuery(grok.Adapter):
 
-    grok.context(zeit.content.article.edit.interfaces.ITopicboxMultiple)
+    grok.context(zeit.content.cp.interfaces.IRenderedArea)
     grok.baseclass()
 
     total_hits = NotImplemented
@@ -470,13 +470,13 @@ class CenterpageContentQuery(ContentQuery):
 
     def __call__(self):
         teasered = zeit.content.cp.interfaces.ITeaseredContent(
-            self.context.centerpage, iter([]))
+            self.context.referenced_cp, iter([]))
         result = []
         for content in teasered:
             if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
                 continue
-            # if self.context.hide_dupes and content in self.existing_teasers:
-            #     continue
+            if self.context.hide_dupes and content in self.existing_teasers:
+                continue
             result.append(content)
             if len(result) >= self.rows:
                 break

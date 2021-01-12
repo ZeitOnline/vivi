@@ -466,8 +466,9 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
         return 'topicbox.{0}'.format(self.context.__name__)
 
 
-class EditTopicboxMultiple(zeit.edit.browser.form.InlineForm,
-                   zeit.cms.browser.form.CharlimitMixin):
+class EditTopicboxMultiple(
+        zeit.edit.browser.form.InlineForm,
+        zeit.cms.browser.form.CharlimitMixin):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
