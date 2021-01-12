@@ -41,3 +41,13 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             'http://xml.zeit.de/online/2007/01/index',
             box.first_reference.uniqueId)
+
+    def test_source_elasticsearch_query(self):
+        box = self.get_topicbox_multiple()
+        box.source_type = 'elasticsearch-query'
+        box.query = '{}'
+        box.source = True
+        import pdb; pdb.set_true()
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/index',
+            box.first_reference.uniqueId)
