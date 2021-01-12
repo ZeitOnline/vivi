@@ -10,7 +10,7 @@ import grokcore.component as grok
 from zope.cachedescriptors.property import Lazy as cachedproperty
 from zeit.content.cp.centerpage import writeabledict
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.article.edit.interfaces import TopicMultipleReferenceSource
+from zeit.content.article.edit.interfaces import TopicReferenceSource
 log = logging.getLogger(__name__)
 
 
@@ -186,7 +186,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
                 try:
                     item = next(content)
                     allow_cp = self.source_type == 'centerpage'
-                    if TopicMultipleReferenceSource(
+                    if TopicReferenceSource(
                             allow_cp).verify_interface(item):
                         filtered_content.append(item)
                 except StopIteration:
