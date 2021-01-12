@@ -3,6 +3,7 @@ from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
+from zeit.retresco.interfaces import DAV_NAMESPACE_BASE
 from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
 import grokcore.component as grok
 import logging
@@ -199,6 +200,16 @@ class CMSContent(Converter):
         return result
 
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
+    DEPRECATED = {
+        ('document', 'breaking_news'),
+        ('document', 'comments_api_v2'),
+        ('document', 'countings'),
+        ('document', 'export_cds'),
+        ('document', 'foldable'),
+        ('document', 'is_instant_article'),
+        ('document', 'minimal_header'),
+        ('document', 'rebrush_website_content'),
+    }
 
     def collect_dav_properties(self):
         result = {}
@@ -206,7 +217,9 @@ class CMSContent(Converter):
         for (name, ns), value in properties.items():
             if ns is None:
                 ns = ''
-            if not ns.startswith(zeit.retresco.interfaces.DAV_NAMESPACE_BASE):
+            if not ns.startswith(DAV_NAMESPACE_BASE):
+                continue
+            if (ns.replace(DAV_NAMESPACE_BASE, ''), name) in self.DEPRECATED:
                 continue
 
             field = None
@@ -607,19 +620,6 @@ class CMSSearch(Converter):
             'cms_preview_url': preview_url,
             'publish_status': IPublicationStatus(self.content).published,
         }}}
-
-
-# additional DAV type declarations
-# without these `countings` and `foldable` will received yes/no values,
-# which breaks validation with recent versions of Elasticsearch
-zeit.cms.content.dav.DAVProperty(
-    zope.schema.Bool(),
-    'http://namespaces.zeit.de/CMS/document',
-    'countings')
-zeit.cms.content.dav.DAVProperty(
-    zope.schema.Bool(),
-    'http://namespaces.zeit.de/CMS/document',
-    'foldable')
 
 
 @grok.adapter(zope.interface.Interface)
