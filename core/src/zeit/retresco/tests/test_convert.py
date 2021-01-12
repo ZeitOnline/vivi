@@ -468,12 +468,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             {'type': 'facebook', 'account': 'fb-test', 'enabled': False},
             {'type': 'facebook', 'account': 'fb-magazin', 'enabled': False},
             {'type': 'mobile', 'payload_template': 'mytemplate.json',
-             'enabled': True},
+             'enabled': True, 'uses_image': 1},
         ]
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual({
             'facebook': {'account': ['fb-test', 'fb-magazin']},
-            'mobile': {'payload_template': ['mytemplate.json']},
+            'mobile': {'payload_template': ['mytemplate.json'],
+                       'uses_image': [True]},
         }, data['payload']['push'])
 
     def test_converts_gallery_count(self):

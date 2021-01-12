@@ -392,6 +392,10 @@ class Push(Converter):
             config.pop('enabled', None)
             data = result.setdefault(typ, {})
             for key, value in config.items():
+                # XXX Work around zope.xmlpickle serialization bug; we *know*
+                # that (currently) message_config uses no int anywhere.
+                if isinstance(value, int):
+                    value = bool(value)
                 data.setdefault(key, []).append(value)
         return {'payload': {'push': result}}
 
