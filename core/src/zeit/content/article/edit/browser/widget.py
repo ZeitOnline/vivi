@@ -26,8 +26,8 @@ class DynamicCombinationWidget2(
                 pass
         elif self._renderedValueSet():
             log.error('no Input')
-            #selector = self._data[0]
-        
+            # selector = self._data[0]
+
         for field in self.context.generate_fields(selector):
             result.append(self._create_widget(field))
         return result
