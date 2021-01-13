@@ -11,6 +11,9 @@ import zope.component
 from zeit.cms.content.contentuuid import ContentUUID
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import TopicReferenceSource
+from zeit.content.cp.centerpage import writeabledict
+from zope.cachedescriptors.property import Lazy as cachedproperty
+
 log = logging.getLogger(__name__)
 
 
