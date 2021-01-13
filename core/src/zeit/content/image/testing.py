@@ -16,6 +16,7 @@ product_config = """
     display-type-source file://{here}/tests/fixtures/display-types.xml
     variant-source file://{here}/tests/fixtures/variants.xml
     copyright-company-source file://{here}/tests/fixtures/copyright-company.xml
+    encoder-parameters file://{here}/tests/fixtures/encoders.xml
     mdb-api-url http://example.invalid
     mdb-api-username mdbuser
     mdb-api-password mdbpass
