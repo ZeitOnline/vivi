@@ -1,10 +1,16 @@
 vivi.core changes
 =================
 
-4.48.1 (unreleased)
+4.48.2 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.48.1 (2021-01-12)
+-------------------
+
+- STO-172: Don't send obsolete DAV properties to TMS
 
 
 4.48.0 (2021-01-11)

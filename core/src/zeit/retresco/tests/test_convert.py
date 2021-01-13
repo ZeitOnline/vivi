@@ -75,8 +75,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'comments': False,
                     'comments_premoderate': False,
                     'copyrights': 'ZEIT online',
-                    'countings': True,
-                    'foldable': True,
                     'has_recensions': False,
                     'header_layout': u'default',
                     'hide_adblocker_notification': False,
@@ -258,6 +256,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertNotIn('page', data['payload']['document'])
         self.assertNotIn('vgwort', data['payload'])
+
+    def test_drops_deprecated_properties(self):
+        content = create_testcontent()
+        props = zeit.connector.interfaces.IWebDAVProperties(content)
+        props[('countings', 'http://namespaces.zeit.de/CMS/document')] = 'yes'
+        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
+        self.assertNotIn('countings', data['payload']['document'])
 
     def test_converts_image(self):
         image = zeit.cms.interfaces.ICMSContent(
@@ -463,12 +468,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             {'type': 'facebook', 'account': 'fb-test', 'enabled': False},
             {'type': 'facebook', 'account': 'fb-magazin', 'enabled': False},
             {'type': 'mobile', 'payload_template': 'mytemplate.json',
-             'enabled': True},
+             'enabled': True, 'uses_image': 1},
         ]
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual({
             'facebook': {'account': ['fb-test', 'fb-magazin']},
-            'mobile': {'payload_template': ['mytemplate.json']},
+            'mobile': {'payload_template': ['mytemplate.json'],
+                       'uses_image': [True]},
         }, data['payload']['push'])
 
     def test_converts_gallery_count(self):
