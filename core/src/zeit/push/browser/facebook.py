@@ -70,8 +70,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
             }))
         if 'error' in r.text:
             raise ValueError(r.text)
-        result = six.moves.urllib.parse.parse_qs(r.text)
-        short_lived_user_token = result['access_token'][0]
+        short_lived_user_token = r.json()['access_token']
 
         # Step 2: Exchange for long-lived token.
         # <https://developers.facebook.com
@@ -86,8 +85,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
             }))
         if 'error' in r.text:
             raise ValueError(r.text)
-        result = six.moves.urllib.parse.parse_qs(r.text)
-        long_lived_user_token = result['access_token'][0]
+        long_lived_user_token = r.json()['access_token']
 
         # Step 3. Retrieve page access token. <https://developers.facebook.com
         # /docs/facebook-login/access-tokens/#pagetokens>

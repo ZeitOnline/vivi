@@ -61,3 +61,4 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
                          'coronavirus-neuinfektionen-rki-gesundheitsaemter-'
                          'deutschland-todesfaelle-sachsen',
                          box.third_reference.uniqueId)
+

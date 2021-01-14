@@ -9,6 +9,7 @@ import pytest
 import requests.adapters
 import requests.exceptions
 import time
+import urllib.parse
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
 import zeit.content.rawxml.rawxml
@@ -225,9 +226,16 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         tms.get_article_keywords(self.repository['testcontent'])
         # First requests will be enrich and index
-        self.assertTrue(
-            '/in-text-linked-documents/' in
-            self.layer['request_handler'].requests[2].get('path'))
+        content = self.repository['testcontent']
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
+        self.assertEqual(['{} {}'.format(r['verb'], urllib.parse.unquote(
+            r['path'])) for r in self.layer['request_handler'].requests], [
+            'POST /enrich?in-text-linked',
+            'POST /another-tms/enrich?in-text-linked',
+            'PUT /content/{}'.format(uuid),
+            'PUT /another-tms/content/{}'.format(uuid),
+            'GET /in-text-linked-documents/{}'.format(uuid),
+        ])
 
     def test_get_article_keywords_uses_preview_endpoint_if_param_set(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -248,7 +256,7 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):
         super(IntegrationTest, self).setUp()
         self.tms = zeit.retresco.connection.TMS(
-            os.environ['ZEIT_RETRESCO_URL'])
+            primary=dict(url=os.environ['ZEIT_RETRESCO_URL']))
         self.article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(self.article):
