@@ -44,7 +44,7 @@ setup(
         'setuptools',
         'transaction',
         'tweepy',
-        'urbanairship >= 1.0',
+        'urbanairship >= 3.1.0',
         'webob',
         'werkzeug',
         'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched
