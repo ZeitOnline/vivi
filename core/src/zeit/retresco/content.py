@@ -1,5 +1,5 @@
 from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
-import collections
+import collections.abc
 import grokcore.component as grok
 import lxml.objectify
 import os.path
@@ -161,7 +161,7 @@ class FakeDAVResource(zeit.connector.resource.Resource):
 
 
 @grok.implementer(zeit.retresco.interfaces.IElasticDAVProperties)
-class WebDAVProperties(grok.Adapter, collections.MutableMapping):
+class WebDAVProperties(grok.Adapter, collections.abc.MutableMapping):
 
     grok.context(zeit.retresco.interfaces.ITMSContent)
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
