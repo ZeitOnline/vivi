@@ -70,7 +70,6 @@ class ElasticsearchMockLayer(plone.testing.Layer):
                                     zeit.retresco.interfaces.IElasticsearch)
         zope.component.getSiteManager().registerUtility(self['elasticsearch'])
 
-
     def tearDown(self):
         zope.component.getSiteManager().unregisterUtility(
             self['elasticsearch'])
@@ -80,6 +79,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 
 
 ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
+
 
 class ArticleLayer(plone.testing.Layer):
 
