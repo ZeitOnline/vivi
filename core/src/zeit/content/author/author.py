@@ -2,7 +2,7 @@ from requests.exceptions import RequestException
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
-import collections
+import collections.abc
 import grokcore.component as grok
 import lxml.objectify
 import requests
@@ -270,7 +270,7 @@ def author_location(type_, adder):
 @grok.implementer(zeit.content.author.interfaces.IBiographyQuestions)
 class BiographyQuestions(
         grok.Adapter,
-        collections.MutableMapping,
+        collections.abc.MutableMapping,
         zeit.cms.content.xmlsupport.Persistent):
 
     grok.context(zeit.content.author.interfaces.IAuthor)

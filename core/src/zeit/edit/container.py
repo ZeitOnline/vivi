@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 import grokcore.component as grok
 import logging
 import lxml.etree
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.edit.interfaces.IContainer)
 class Base(zeit.edit.block.Element,
            zope.container.contained.Contained,
-           collections.MutableMapping):
+           collections.abc.MutableMapping):
 
     def __init__(self, context, xml):
         self.xml = xml

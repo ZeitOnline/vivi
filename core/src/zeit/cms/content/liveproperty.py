@@ -1,7 +1,7 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 from zeit.connector.interfaces import DeleteProperty
-import collections
+import collections.abc
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
@@ -13,7 +13,7 @@ import zope.security.interfaces
 @zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 @zope.interface.provider(zeit.cms.content.interfaces.ILivePropertyManager)
-class LiveProperties(collections.MutableMapping):
+class LiveProperties(collections.abc.MutableMapping):
     """Webdav properties which are updated upon change."""
 
     live_properties = dict()

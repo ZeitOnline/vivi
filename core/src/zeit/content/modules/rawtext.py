@@ -1,7 +1,7 @@
 from zeit.cms.content.property import DAVConverterWrapper
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import collections
+import collections.abc
 import grokcore.component as grok
 import lxml.objectify
 import six
@@ -44,7 +44,7 @@ class RawText(zeit.edit.block.Element):
 @grok.implementer(zeit.content.modules.interfaces.IEmbedParameters)
 class EmbedParameters(
         grok.Adapter,
-        collections.MutableMapping,
+        collections.abc.MutableMapping,
         zeit.cms.content.xmlsupport.Persistent):
     # 99% copy&paste from z.c.author.author.BiographyQuestions, changed the tag
     # name to `param` from `question` and added type conversion.

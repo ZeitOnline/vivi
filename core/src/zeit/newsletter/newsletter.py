@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import collections
+import collections.abc
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import pkg_resources
@@ -19,7 +19,7 @@ BODY_NAME = 'newsletter_body'
 
 @zope.interface.implementer(zeit.newsletter.interfaces.INewsletter)
 class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
-                 collections.Mapping):
+                 collections.abc.Mapping):
 
     default_template = pkg_resources.resource_string(
         __name__, 'template.xml').decode('utf-8')
