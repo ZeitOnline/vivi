@@ -34,7 +34,7 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
         box.first_reference = article
         self.assertEqual([article, None, None, ], box.values)
 
-    def test_source_cp(self):
+    def test_source_centerpage(self):
         box = self.get_topicbox_multiple()
         box.source_type = 'centerpage'
         box.centerpage = zeit.cms.interfaces.ICMSContent(
@@ -44,7 +44,7 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/index',
             box.first_reference.uniqueId)
 
-    def test_source_elasticsearch_query(self):
+    def test_source_elasticsearch(self):
         box = self.get_topicbox_multiple()
         box.source_type = 'elasticsearch-query'
         box.elasticsearch_raw_query = '{}'
@@ -62,3 +62,20 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
                          'deutschland-todesfaelle-sachsen',
                          box.third_reference.uniqueId)
 
+    def test_source_custom(self):
+        box = self.get_topicbox_multiple()
+        box.source_type = 'custom'
+        box.query = (('ressort', 'eq', 'Politik', 'Partnerschaft'),)
+        box.source = True
+        self.assertEqual('http://xml.zeit.de/politik/ausland/2020-10/'
+                         'coronavirus-weltweit-covid-19-pandemie-'
+                         'neuinfektionen-entwicklung-liveblog',
+                         box.first_reference.uniqueId)
+        self.assertEqual('http://xml.zeit.de/politik/deutschland/2021-01/'
+                         'bundeswehr-annegret-kramp-karrenbauer-drohne-'
+                         'luftverteidigung',
+                         box.second_reference.uniqueId)
+        self.assertEqual('http://xml.zeit.de/wissen/gesundheit/2021-01/'
+                         'coronavirus-neuinfektionen-rki-gesundheitsaemter-'
+                         'deutschland-todesfaelle-sachsen',
+                         box.third_reference.uniqueId)

@@ -255,7 +255,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
         field = zeit.content.cp.interfaces.IArea[
             'query'].value_type.type_interface[typ]
 
-        if len(item) > self.MAX_RESULTS:
+        if len(item) > 3:
             value = item[2:]
         else:
             value = item[2]

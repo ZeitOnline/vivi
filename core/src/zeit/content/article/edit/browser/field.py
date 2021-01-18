@@ -21,7 +21,6 @@ class DynamicCombination(zc.form.field.Combination):
             field = self.type_interface[selector]
         except KeyError:
             log.error('DynamicCombination KeyError')
-        #   import pdb; pdb.set_trace()
         if not field:
             return None
         if zope.schema.interfaces.ICollection.providedBy(field):
