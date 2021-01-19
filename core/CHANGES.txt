@@ -4,7 +4,7 @@ vivi.core changes
 4.48.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- STO-59: Upgrade elastic client library to 7.x (it's bw-compat to 2.x)
 
 
 4.48.1 (2021-01-12)
