@@ -673,7 +673,7 @@
     for=".field.DynamicCombination
     zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.browser.interfaces.IInputWidget"
-    factory=".widget.DynamicCombinationWidget2"
+    factory=".widget.DynamicCombinationWidget"
     permission="zope.Public"
     />
 

@@ -7,7 +7,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class DynamicCombinationWidget2(
+class DynamicCombinationWidget(
         zeit.cms.content.browser.widget.CombinationWidget):
     """Determines which further subwidgets to render according to the value of
     the first subwidget.
@@ -39,7 +39,7 @@ class DynamicCombinationWidget2(
         return widget
 
     def setRenderedValue(self, value):
-        super(DynamicCombinationWidget2, self).setRenderedValue(value)
+        super().setRenderedValue(value)
         # SequenceWidget calls setPrefix first and setRenderedValue later, so
         # when self.widgets is called the first time, self._data has not been
         # set yet. Thus we have to recreate the widgets, now that we know the
