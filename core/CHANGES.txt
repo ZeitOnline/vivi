@@ -4,7 +4,7 @@ vivi.core changes
 4.48.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- STO-59: Keep internal API of TMS connection stable for zeit.web
 
 
 4.48.2 (2021-01-19)
