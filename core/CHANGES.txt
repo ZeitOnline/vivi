@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.48.4 (unreleased)
+4.48.4 (2021-01-21)
 -------------------
 
 - STO-179: Remove overspecific `type` restriction from ES queries
