@@ -220,6 +220,10 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
         def CAMPUS_ACCOUNT(self):
             return self.factory.campus_account()
 
+        @property
+        def ZETT_ACCOUNT(self):
+            return self.factory.zett_account()
+
     @classmethod
     def main_account(cls):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -237,6 +241,12 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
         config = zope.app.appsetup.product.getProductConfiguration(
             cls.product_configuration)
         return config['facebook-campus-account']
+
+    @classmethod
+    def zett_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            cls.product_configuration)
+        return config['facebook-zett-account']
 
     def isAvailable(self, node, context):
         return (
@@ -313,6 +323,11 @@ class IAccountData(zope.interface.Interface):
         title=_('Enable Facebook Campus'))
     facebook_campus_text = zope.schema.Text(
         title=_('Facebook Campus Text'), required=False)
+
+    facebook_zett_enabled = zope.schema.Bool(
+        title=_('Enable Facebook ze.tt'))
+    facebook_zett_text = zope.schema.Text(
+        title=_('Facebook ze.tt Text'), required=False)
 
     twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort_text = zope.schema.Text(
