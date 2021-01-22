@@ -66,7 +66,7 @@ class Elasticsearch(object):
         __traceback_info__ = (self.index, query)
         response = self.client.search(
             index=self.index, body=json.dumps(query),
-            sort=sort_order, from_=start, size=rows, doc_type='documents')
+            sort=sort_order, from_=start, size=rows)
         result = zeit.cms.interfaces.Result(
             [x['_source'] for x in response['hits']['hits']])
         result.hits = response['hits']['total']
