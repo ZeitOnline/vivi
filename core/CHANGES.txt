@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.48.5 (unreleased)
+4.48.5 (2021-01-25)
 -------------------
 
 - STO-179: Handle changed "total hits" ES search API response
