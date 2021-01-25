@@ -563,6 +563,61 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
     )
 
 
+class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
+                            zeit.cms.content.sources.CachedXMLBase):
+
+    COMMENT = re.compile(r'\s*//')
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'topicpage-filter-source'
+    default_filename = 'topicpage-filters.json'
+
+    def json_data(self):
+        result = collections.OrderedDict()
+        for row in self._get_tree():
+            if len(row) != 1:
+                continue
+            key = list(row.keys())[0]
+            result[key] = row[key]
+        return result
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _get_tree_from_url(self, url):
+        try:
+            data = []
+            for line in six.moves.urllib.request.urlopen(url):
+                line = six.ensure_text(line)
+                if self.COMMENT.search(line):
+                    continue
+                data.append(line)
+            data = '\n'.join(data)
+            return json.loads(data)
+        except Exception:
+            log.warning(
+                'TopicpageFilterSource could not parse %s', url, exc_info=True)
+            return {}
+
+    def getValues(self):
+        return self.json_data().keys()
+
+    def getTitle(self, value):
+        return self.json_data()[value].get('title', value)
+
+    def getToken(self, value):
+        return value
+
+
+class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('manuell', _('manuell')),
+        ('centerpage', _('automatic-area-type-centerpage')),
+        ('custom', _('automatic-area-type-custom')),
+        ('topicpage', _('automatic-area-type-topicpage')),
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query'))
+    ])
+
+
 class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 
     def __init__(self, allow_cp=False):
@@ -623,6 +678,39 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
     referenced_cp = zope.interface.Attribute(
         'Referenced CP or None')
 
+    show_manuell = zope.schema.Bool(
+        title=_('show_manuell'),
+        default=True)
+
+    elasticsearch_raw_query = zope.schema.Text(
+        title=_('Elasticsearch raw query'),
+        required=False)
+
+    elasticsearch_raw_order = zope.schema.TextLine(
+        title=_('Sort order'),
+        default=u'payload.document.date_first_released:desc',
+        required=False)
+
+    centerpage = zope.schema.Choice(
+        title=_('Get teasers from CenterPage'),
+        source=zeit.content.cp.source.centerPageSource,
+        required=False)
+
+    source_type = zope.schema.Choice(
+        title=_('source-type'),
+        source=TopicboxSourceType(),
+        required=True,
+        default='centerpage')
+
+    topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage'),
+        required=False)
+
+    topicpage_filter = zope.schema.Choice(
+        title=_('Topicpage filter'),
+        source=TopicpageFilterSource(),
+        required=False)
+
     def values():
         """
         Iterable of ICMSContent
@@ -659,60 +747,6 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
 
 
 AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
-
-
-class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
-                            zeit.cms.content.sources.CachedXMLBase):
-
-    COMMENT = re.compile(r'\s*//')
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'topicpage-filter-source'
-    default_filename = 'topicpage-filters.json'
-
-    def json_data(self):
-        result = collections.OrderedDict()
-        for row in self._get_tree():
-            if len(row) != 1:
-                continue
-            key = list(row.keys())[0]
-            result[key] = row[key]
-        return result
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _get_tree_from_url(self, url):
-        try:
-            data = []
-            for line in six.moves.urllib.request.urlopen(url):
-                line = six.ensure_text(line)
-                if self.COMMENT.search(line):
-                    continue
-                data.append(line)
-            data = '\n'.join(data)
-            return json.loads(data)
-        except Exception:
-            log.warning(
-                'TopicpageFilterSource could not parse %s', url, exc_info=True)
-            return {}
-
-    def getValues(self):
-        return self.json_data().keys()
-
-    def getTitle(self, value):
-        return self.json_data()[value].get('title', value)
-
-    def getToken(self, value):
-        return value
-
-
-class TopicboxMultipleSourceType(zeit.content.cp.interfaces.SimpleDictSource):
-
-    values = collections.OrderedDict([
-        ('centerpage', _('automatic-area-type-centerpage')),
-        ('custom', _('automatic-area-type-custom')),
-        ('topicpage', _('automatic-area-type-topicpage')),
-        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query'))
-    ])
 
 
 class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
@@ -810,7 +844,7 @@ class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
 
     source_type = zope.schema.Choice(
         title=_('source-type'),
-        source=TopicboxMultipleSourceType(),
+        source=TopicboxSourceType(),
         required=True,
         default='centerpage')
 

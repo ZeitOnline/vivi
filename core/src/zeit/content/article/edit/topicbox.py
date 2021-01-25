@@ -14,6 +14,7 @@ import zope.component
 class Topicbox(zeit.content.article.edit.block.Block):
 
     type = 'topicbox'
+    cssClass = 'topicbox'
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle',
@@ -38,6 +39,35 @@ class Topicbox(zeit.content.article.edit.block.Block):
     third_reference = zeit.cms.content.reference.SingleResource(
         '.third_reference', 'related')
 
+    show_manuell = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'show_manuell',
+        zeit.content.article.edit.interfaces.ITopicbox['show_manuell'],
+        use_default=True)
+
+    elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_raw_query',
+        zeit.content.article.edit.interfaces.ITopicbox[
+            'elasticsearch_raw_query'])
+
+    elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_raw_order',
+        zeit.content.article.edit.interfaces.ITopicbox[
+            'elasticsearch_raw_order'], use_default=True)
+
+    centerpage = zeit.cms.content.property.SingleResource('.centerpage')
+
+    source_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'source_type',
+        zeit.content.article.edit.interfaces.ITopicbox['source_type'])
+
+    topicpage = zeit.cms.content.property.ObjectPathProperty(
+        '.topicpage',
+        zeit.content.article.edit.interfaces.ITopicbox['topicpage'])
+
+    topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
+        '.topicpage_filter',
+        zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
+
     @property
     def _reference_properties(self):
         return (self.first_reference,
@@ -53,12 +83,13 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     def values(self):
         if self.referenced_cp:
-            parent_article = zeit.content.article.interfaces.IArticle(self,
-                                                                      None)
+            parent_article = zeit.content.article.interfaces.IArticle(
+                self, None)
             return itertools.islice(
-                filter(lambda x: x != parent_article,
-                       zeit.edit.interfaces.IElementReferences(
-                           self.referenced_cp)),
+                filter(
+                    lambda x: x != parent_article,
+                    zeit.edit.interfaces.IElementReferences(
+                        self.referenced_cp)),
                 len(self._reference_properties))
         return (content for content in self._reference_properties if content)
 

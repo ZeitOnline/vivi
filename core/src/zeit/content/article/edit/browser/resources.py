@@ -6,6 +6,7 @@ import zeit.edit.browser.resources
 lib = Library('zeit.content.article', 'resources')
 
 Resource('editor.css')
+Resource('topicbox.css')
 
 Resource('replace.js', depends=[
     zeit.cms.browser.resources.base,
@@ -21,6 +22,8 @@ Resource('editor.js', depends=[
     replace_js,  # noqa
     editor_css,  # noqa
 ])
+
+Resource('topicbox.js', depends=[zeit.cms.browser.resources.base])
 
 Resource('counter.js', depends=[zeit.cms.browser.resources.base,
                                 zeit.cms.browser.resources.counter_js])

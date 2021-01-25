@@ -92,4 +92,11 @@
             update_copyright_visibility);
 
         });
+
+    $(document).bind('fragment-ready', function () {
+            var source_type = document.querySelectorAll("[id$='source_type']");
+            if ( source_type.length > 0){
+                eval_source_type(source_type);
+            }
+        });
 })();
