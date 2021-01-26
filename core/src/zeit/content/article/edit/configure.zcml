@@ -376,17 +376,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <class class=".topicbox_multiple.TopicboxMultiple">
-    <require
-      interface=".interfaces.ITopicboxMultiple"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.ITopicboxMultiple"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <class class=".box.Box">
     <require
       interface=".interfaces.IBox"

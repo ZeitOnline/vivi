@@ -34,16 +34,6 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
         box.first_reference = article
         self.assertEqual([article, None, None, ], box.values)
 
-    def test_topicbox_multiple_source_centerpage(self):
-        box = self.get_topicbox_multiple()
-        box.source_type = 'centerpage'
-        box.centerpage = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/index')
-        box.source = True
-        self.assertEqual(
-            'http://xml.zeit.de/online/2007/01/index',
-            box.first_reference.uniqueId)
-
     def test_topicbox_multiple_source_elasticsearch(self):
         box = self.get_topicbox_multiple()
         box.source_type = 'elasticsearch-query'

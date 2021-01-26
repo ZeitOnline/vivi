@@ -76,3 +76,48 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.second_reference = zeit.cms.interfaces.ICMSContent(
             "http://xml.zeit.de/online/2007/01/Somalia")
         self.assertEqual([self.repository['foo'], ], list(box.values()))
+
+    def test_topicbox_source_centerpage(self):
+        box = self.get_topicbox()
+        box.source_type = 'centerpage'
+        box.centerpage = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/index')
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/index',
+            box.values[0].uniqueId)
+        self.assertEqual(None, box.values[1].uniqueId)
+        self.assertEqual(None, box.values[2].uniqueId)
+
+    def test_topicbox_source_elasticsearch(self):
+        box = self.get_topicbox()
+        box.source_type = 'elasticsearch-query'
+        box.elasticsearch_raw_query = '{}'
+        self.assertEqual('http://xml.zeit.de/politik/ausland/2020-10/'
+                         'coronavirus-weltweit-covid-19-pandemie-'
+                         'neuinfektionen-entwicklung-liveblog',
+                         box.values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/politik/deutschland/2021-01/'
+                         'bundeswehr-annegret-kramp-karrenbauer-drohne-'
+                         'luftverteidigung',
+                         box.values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/wissen/gesundheit/2021-01/'
+                         'coronavirus-neuinfektionen-rki-gesundheitsaemter-'
+                         'deutschland-todesfaelle-sachsen',
+                         box.values[2].uniqueId)
+
+    def test_topicbox_source_topicpage(self):
+        box = self.get_topicbox()
+        box.source_type = 'topicpage'
+        box.topicpage = 'angela-merkel'
+        self.assertEqual('http://xml.zeit.de/politik/ausland/2020-10/'
+                         'coronavirus-weltweit-covid-19-pandemie-'
+                         'neuinfektionen-entwicklung-liveblog',
+                         box.values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/politik/deutschland/2021-01/'
+                         'bundeswehr-annegret-kramp-karrenbauer-drohne-'
+                         'luftverteidigung',
+                         box.values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/wissen/gesundheit/2021-01/'
+                         'coronavirus-neuinfektionen-rki-gesundheitsaemter-'
+                         'deutschland-todesfaelle-sachsen',
+                         box.values[2].uniqueId)
