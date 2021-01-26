@@ -707,6 +707,9 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         source=TopicpageFilterSource(),
         required=False)
 
+    count = zope.schema.Int(title=_('Amount of teasers'), default=3)
+
+
     def values():
         """
         Iterable of ICMSContent

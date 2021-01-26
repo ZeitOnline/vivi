@@ -5,6 +5,7 @@ from zeit.content.article.edit.interfaces import TopicReferenceSource
 from zeit.content.cp.centerpage import writeabledict
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import json
 import logging
 import lxml
 import zeit.cms.content.reference
@@ -73,6 +74,33 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.topicpage_filter',
         zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
 
+    _count = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'count',
+        zeit.content.article.edit.interfaces.ITopicbox['count'])
+
+    @property
+    def source_type(self):
+        result = self._source_type
+        if result == 'channel':  # BBB
+            result = 'custom'
+        return result
+
+    @source_type.setter
+    def source_type(self, value):
+        self._source_type = value
+
+    @property
+    def count(self):
+        return 5
+        return self._count
+
+    @count.setter
+    def count(self, value):
+        self._count = 5
+        if not value:
+            self._count = 5
+        else:
+            self._count = value
 
     @property
     def values(self):
@@ -103,8 +131,8 @@ class Topicbox(zeit.content.article.edit.block.Block):
             return filtered_content
 
         except (LookupError, ValueError):
-            log.warning('%s found no IContentQuery type %s',
-                        self.context, self.source_type)
+            log.warning('found no IContentQuery type %s',
+                        self.source_type)
             return [
                 self.first_reference,
                 self.second_reference,

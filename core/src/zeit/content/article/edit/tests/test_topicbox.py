@@ -107,6 +107,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
     def test_topicbox_source_topicpage(self):
         box = self.get_topicbox()
+        box.count = 5
         box.source_type = 'topicpage'
         box.topicpage = 'angela-merkel'
         self.assertEqual('http://xml.zeit.de/politik/ausland/2020-10/'

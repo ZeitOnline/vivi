@@ -72,6 +72,7 @@ class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
 
     def test_topicbox_multiple_topicpage(self):
         box = self.get_topicbox_multiple()
+        box.count = 5
         box.source_type = 'topicpage'
         box.topicpage = 'angela-merkel'
         box.source = True

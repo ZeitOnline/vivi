@@ -172,7 +172,6 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
     @property
     def values(self):
-        import pdb; pdb.set_trace()
         if not self._source:
             return [
                 self.first_reference,
