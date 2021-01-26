@@ -11,8 +11,11 @@ function display_elements(selected_source_type) {
         'elasticsearch_raw_order',
     ];
 
-    switch (selected_source_type.toLowerCase()) {
+    var selected_source_type = selected_source_type.toLowerCase();
+
+    switch (selected_source_type) {
         case 'manuell':
+            hide_references(false);
             break;
         case 'centerpage':
             cssClasses.push('centerpage');
@@ -30,7 +33,11 @@ function display_elements(selected_source_type) {
         default:
             break;
     }
-    
+
+    if (selected_source_type != 'manuell') {
+        hide_references(true);
+    }
+
     classes.forEach((cls) => {
         var el = document.querySelectorAll(cssClass + cls);
         if (el.length > 0) {
@@ -46,14 +53,25 @@ function display_elements(selected_source_type) {
     });
 }
 
+function hide_references(hide) {
+    var cssClassReferences = "[class*='fieldname-NAME_reference']";
+    ['first', 'second', 'third'].forEach((ref) => {
+        var reference = document.querySelectorAll(cssClassReferences.replace('NAME', ref));
+        if (reference.length > 0) {
+            reference[0].style.display = hide ? 'none' : 'block';
+        }
+    });
+}
+
 function eval_source_type(el) {
-    var sel_val = el[0].selectedOptions[0].text;
-    display_elements(sel_val);
+    if (el.length > 0) {
+        var sel_val = el[0].selectedOptions[0].text;
+        display_elements(sel_val);
+    }
 }
 
 document.addEventListener('change', (e) => {
     if (e.target && e.target.id.indexOf('source_type') > -1) {
-        
         var val = document.getElementById(e.target.id);
         if (val == undefined) {
             return;
