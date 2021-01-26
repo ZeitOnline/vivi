@@ -14,7 +14,6 @@ import zope.component
 class Topicbox(zeit.content.article.edit.block.Block):
 
     type = 'topicbox'
-    cssClass = 'topicbox'
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle',
@@ -38,11 +37,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     third_reference = zeit.cms.content.reference.SingleResource(
         '.third_reference', 'related')
-
-    show_manuell = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'show_manuell',
-        zeit.content.article.edit.interfaces.ITopicbox['show_manuell'],
-        use_default=True)
 
     elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',

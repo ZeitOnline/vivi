@@ -46,14 +46,12 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
     @source.setter
     def source(self, value):
         self._source = value
-        self.setFilterState()
         if value:
             self._set_references()
 
     @property
     def source_type(self):
         result = self._source_type
-        self.setFilterState()
         if result == 'channel':  # BBB
             result = 'custom'
         return result
@@ -61,22 +59,12 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
     @source_type.setter
     def source_type(self, value):
         self._source_type = value
-        self.setFilterState()
         if self._source:
             self._set_references()
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count',
         zeit.content.article.edit.interfaces.ITopicboxMultiple['count'])
-
-    def setFilterState(self):
-        _filter = zeit.content.article.edit.interfaces.ITopicboxMultiple[
-            'topicpage_filter']
-
-        if self._source and self._source_type == 'related-api':
-            _filter.readonly = True
-        else:
-            _filter.readonly = False
 
     @property
     def count(self):
@@ -184,6 +172,7 @@ class TopicboxMultiple(zeit.content.article.edit.block.Block):
 
     @property
     def values(self):
+        import pdb; pdb.set_trace()
         if not self._source:
             return [
                 self.first_reference,

@@ -612,9 +612,9 @@ class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
     values = collections.OrderedDict([
         ('manuell', _('manuell')),
         ('centerpage', _('automatic-area-type-centerpage')),
-        ('custom', _('automatic-area-type-custom')),
         ('topicpage', _('automatic-area-type-topicpage')),
-        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query'))
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+        ('related-api', _('tms-related-api'))
     ])
 
 
@@ -677,10 +677,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
 
     referenced_cp = zope.interface.Attribute(
         'Referenced CP or None')
-
-    show_manuell = zope.schema.Bool(
-        title=_('show_manuell'),
-        default=True)
 
     elasticsearch_raw_query = zope.schema.Text(
         title=_('Elasticsearch raw query'),

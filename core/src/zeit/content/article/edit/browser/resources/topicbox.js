@@ -20,8 +20,6 @@ function display_elements(selected_source_type) {
         case 'centerpage':
             cssClasses.push('centerpage');
             break;
-        case 'individuelle Abfrage':
-            break;
         case 'tms-themenseite':
             cssClasses.push('topicpage');
             cssClasses.push('topicpage_filter');
@@ -29,6 +27,9 @@ function display_elements(selected_source_type) {
         case 'es-query':
             cssClasses.push('elasticsearch_raw_query');
             cssClasses.push('elasticsearch_raw_order');
+            break;
+        case 'tms-related-api':
+            // hide all elements on related-api
             break;
         default:
             break;
