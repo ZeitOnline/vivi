@@ -713,38 +713,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         """
 
 
-class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
-
-    def __init__(self, id, title, url, timeout):
-        super(AutomaticFeed, self).__init__(id, title, None)
-        self.url = url
-        self.timeout = timeout
-
-
-class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
-                          zeit.cms.content.sources.SimpleContextualXMLSource):
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'cp-automatic-feed-source'
-    default_filename = 'cp-automatic-feeds.xml'
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _values(self):
-        result = collections.OrderedDict()
-        for node in self._get_tree().iterchildren('*'):
-            feed = AutomaticFeed(
-                six.text_type(node.get('id')),
-                six.text_type(node.text.strip()),
-                six.text_type(node.get('url')),
-                int(node.get('timeout', 2))
-            )
-            result[feed.id] = feed
-        return result
-
-
-AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
-
-
 class ITopicboxMultiple(zeit.edit.interfaces.IBlock):
     """
     Element which references other Source
