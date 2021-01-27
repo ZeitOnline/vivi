@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
-from zeit.content.article.edit.browser.field import DynamicCombination
 import collections
 import datetime
 import re
@@ -718,7 +717,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         required=False)
 
     count = zope.schema.Int(title=_('Amount of teasers'), default=3)
-
 
     def values():
         """

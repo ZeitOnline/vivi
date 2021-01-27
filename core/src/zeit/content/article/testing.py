@@ -58,7 +58,7 @@ class ElasticsearchMockLayer(plone.testing.Layer):
 
     def setUp(self):
         self['elasticsearch_mocker'] = mock.patch(
-             'elasticsearch.client.Elasticsearch.search')
+            'elasticsearch.client.Elasticsearch.search')
         self['elasticsearch'] = self['elasticsearch_mocker'].start()
         self['tms'] = mock.Mock()
         filename = pkg_resources.resource_filename(
