@@ -33,6 +33,9 @@ class TMS(object):
             if url.endswith('/'):
                 conn['url'] = url.rstrip('/')
 
+        # Keep internal API stable for zeit.web
+        self.url = self.primary['url']
+
     def extract_keywords(self, content):
         __traceback_info__ = (content.uniqueId,)
 

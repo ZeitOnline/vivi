@@ -4,7 +4,7 @@ from io import BytesIO
 import BTrees
 import ZODB.POSException
 import ZODB.blob
-import collections
+import collections.abc
 import gocept.lxml.objectify
 import logging
 import lxml.objectify
@@ -495,7 +495,7 @@ class ChildNameCache(PersistentCache):
         return set(a) == set(b)
 
 
-class AlwaysEmptyDict(collections.MutableMapping):
+class AlwaysEmptyDict(collections.abc.MutableMapping):
     """Used by mock connector to disable filesystem transaction bound cache."""
 
     def __getitem__(self, key):

@@ -63,13 +63,21 @@ class Elasticsearch(object):
             if include_payload:
                 query['_source'].append('payload')
 
+        # XXX Kludgy heuristics, should we use an explicit "elasticsearch
+        # version" setting instead?
+        if 'cloud.es.io' in self.client.transport.hosts[0]:
+            query['track_total_hits'] = True
+
         __traceback_info__ = (self.index, query)
         response = self.client.search(
             index=self.index, body=json.dumps(query),
-            sort=sort_order, from_=start, size=rows, doc_type='documents')
+            sort=sort_order, from_=start, size=rows)
         result = zeit.cms.interfaces.Result(
             [x['_source'] for x in response['hits']['hits']])
-        result.hits = response['hits']['total']
+        if isinstance(response['hits']['total'], int):  # BBB ES-2.x
+            result.hits = response['hits']['total']
+        else:
+            result.hits = response['hits']['total']['value']
         return result
 
     def aggregate(self, query):

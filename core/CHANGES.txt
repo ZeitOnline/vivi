@@ -1,10 +1,34 @@
 vivi.core changes
 =================
 
-4.48.2 (unreleased)
+4.48.6 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.48.5 (2021-01-25)
+-------------------
+
+- STO-179: Handle changed "total hits" ES search API response
+
+
+4.48.4 (2021-01-21)
+-------------------
+
+- STO-179: Remove overspecific `type` restriction from ES queries
+
+
+4.48.3 (2021-01-21)
+-------------------
+
+- STO-59: Keep internal API of TMS connection stable for zeit.web
+
+
+4.48.2 (2021-01-19)
+-------------------
+
+- STO-59: Upgrade elastic client library to 7.x (it's bw-compat to 2.x)
 
 
 4.48.1 (2021-01-12)
