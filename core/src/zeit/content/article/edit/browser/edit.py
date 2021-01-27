@@ -466,27 +466,6 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
         return 'topicbox.{0}'.format(self.context.__name__)
 
 
-class EditTopicboxMultiple(
-        zeit.edit.browser.form.InlineForm,
-        zeit.cms.browser.form.CharlimitMixin):
-
-    legend = None
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.ITopicboxMultiple).omit(
-            *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit topic box')
-
-    def setUpWidgets(self, *args, **kw):
-        super(EditTopicboxMultiple, self).setUpWidgets(*args, **kw)
-        self.set_charlimit('title')
-        self.set_charlimit('supertitle')
-        self.set_charlimit('link_text')
-
-    @property
-    def prefix(self):
-        return 'topicbox_multiple.{0}'.format(self.context.__name__)
-
-
 class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
 
     legend = ''
