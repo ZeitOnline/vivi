@@ -40,7 +40,7 @@ class Connection(object):
         self.credentials = {
             'android': [android_application_key, android_master_secret],
             'ios': [ios_application_key, ios_master_secret],
-            'openchannel': [openchannel_application_key,
+            'open::slack': [openchannel_application_key,
                             openchannel_master_secret],
             'web': [web_application_key, web_master_secret]
         }
