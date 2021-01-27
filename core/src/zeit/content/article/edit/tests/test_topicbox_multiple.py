@@ -5,7 +5,7 @@ import zeit.edit.interfaces
 from zeit.content.article.edit.topicbox_multiple import TopicboxMultiple
 
 
-class TestTopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
+class TestNOETopicboxMultiple(zeit.content.article.testing.FunctionalTestCase):
 
     layer = zeit.content.article.testing.MOCK_LAYER
 

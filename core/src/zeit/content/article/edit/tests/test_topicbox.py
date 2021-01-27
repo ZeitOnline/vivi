@@ -7,6 +7,8 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
 class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
+    layer = zeit.content.article.testing.MOCK_LAYER
+
     def get_topicbox(self):
         from zeit.content.article.edit.topicbox import Topicbox
         import lxml.objectify
@@ -80,13 +82,19 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
     def test_topicbox_source_centerpage(self):
         box = self.get_topicbox()
         box.source_type = 'centerpage'
-        box.centerpage = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/index')
+        self.repository['art1'] = zeit.content.article.article.Article()
+        self.repository['art2'] = zeit.content.article.article.Article()
+        self.repository['art3'] = zeit.content.article.article.Article()
+        box.centerpage = self.get_cp(content=[
+            self.repository['art1'],
+            self.repository['art2'],
+            self.repository['art3'], ])
         self.assertEqual(
-            'http://xml.zeit.de/online/2007/01/index',
-            box.values[0].uniqueId)
-        self.assertEqual(None, box.values[1].uniqueId)
-        self.assertEqual(None, box.values[2].uniqueId)
+            'http://xml.zeit.de/art1', list(box.values())[0].uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/art2', list(box.values())[1].uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/art3', list(box.values())[2].uniqueId)
 
     def test_topicbox_source_elasticsearch(self):
         box = self.get_topicbox()
@@ -95,15 +103,15 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/politik/ausland/2020-10/'
                          'coronavirus-weltweit-covid-19-pandemie-'
                          'neuinfektionen-entwicklung-liveblog',
-                         box.values[0].uniqueId)
+                         list(box.values())[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/politik/deutschland/2021-01/'
                          'bundeswehr-annegret-kramp-karrenbauer-drohne-'
                          'luftverteidigung',
-                         box.values[1].uniqueId)
+                         list(box.values())[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/wissen/gesundheit/2021-01/'
                          'coronavirus-neuinfektionen-rki-gesundheitsaemter-'
                          'deutschland-todesfaelle-sachsen',
-                         box.values[2].uniqueId)
+                         list(box.values())[2].uniqueId)
 
     def test_topicbox_source_topicpage(self):
         box = self.get_topicbox()
@@ -113,12 +121,12 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/politik/ausland/2020-10/'
                          'coronavirus-weltweit-covid-19-pandemie-'
                          'neuinfektionen-entwicklung-liveblog',
-                         box.values[0].uniqueId)
+                         list(box.values())[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/politik/deutschland/2021-01/'
                          'bundeswehr-annegret-kramp-karrenbauer-drohne-'
                          'luftverteidigung',
-                         box.values[1].uniqueId)
+                         list(box.values())[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/wissen/gesundheit/2021-01/'
                          'coronavirus-neuinfektionen-rki-gesundheitsaemter-'
                          'deutschland-todesfaelle-sachsen',
-                         box.values[2].uniqueId)
+                         list(box.values())[2].uniqueId)

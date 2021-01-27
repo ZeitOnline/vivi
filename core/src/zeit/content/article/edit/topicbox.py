@@ -5,6 +5,7 @@ from zeit.content.article.edit.interfaces import TopicReferenceSource
 from zeit.content.cp.centerpage import writeabledict
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import itertools
 import json
 import logging
 import lxml
@@ -26,6 +27,14 @@ def centerpage_cache(context, name, factory=writeabledict):
 class Topicbox(zeit.content.article.edit.block.Block):
 
     type = 'topicbox'
+
+    _count = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'count',
+        zeit.content.article.edit.interfaces.ITopicbox['count'])
+
+    _source_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'source_type',
+        zeit.content.article.edit.interfaces.ITopicbox['source_type'])
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle',
@@ -60,6 +69,16 @@ class Topicbox(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicbox[
             'elasticsearch_raw_order'], use_default=True)
 
+    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'hide-dupes',
+        zeit.content.article.edit.interfaces.ITopicbox['hide_dupes'],
+        use_default=True)
+
+    is_complete_query = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_complete_query',
+        zeit.content.article.edit.interfaces.ITopicbox[
+            'is_complete_query'], use_default=True)
+
     centerpage = zeit.cms.content.property.SingleResource('.centerpage')
 
     source_type = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -74,15 +93,11 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.topicpage_filter',
         zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
 
-    _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count',
-        zeit.content.article.edit.interfaces.ITopicbox['count'])
-
     @property
     def source_type(self):
         result = self._source_type
-        if result == 'channel':  # BBB
-            result = 'custom'
+        if not result:
+            result = 'manuell'
         return result
 
     @source_type.setter
@@ -103,21 +118,40 @@ class Topicbox(zeit.content.article.edit.block.Block):
             self._count = value
 
     @property
-    def values(self):
-        if self.source_type == 'manuell':
-            return [
-                self.first_reference,
+    def _reference_properties(self):
+        return (self.first_reference,
                 self.second_reference,
-                self.third_reference]
-        elif self.source_type == 'centerpage':
-            return [self.centerpage, None, None, ]
+                self.third_reference)
+
+    @property
+    def referenced_cp(self):
+        if not self.source_type == 'manuell':
+            return None
+        import zeit.content.cp.interfaces
+        if zeit.content.cp.interfaces.ICenterPage.providedBy(
+                self.first_reference):
+            return self.first_reference
+
+    def values(self):
+        if self.referenced_cp:
+            parent_article = zeit.content.article.interfaces.IArticle(self,
+                                                                      None)
+            return itertools.islice(
+                filter(lambda x: x != parent_article,
+                       zeit.edit.interfaces.IElementReferences(
+                           self.referenced_cp)),
+                len(self._reference_properties))
+
+        if self.source_type == 'manuell':
+            return (
+                content for content in self._reference_properties if content)
 
         try:
             filtered_content = []
             content = iter(self._content_query())
 
             if content is None:
-                return filtered_content
+                return ()
 
             while(len(filtered_content)) < 3:
                 try:
@@ -128,15 +162,13 @@ class Topicbox(zeit.content.article.edit.block.Block):
                         filtered_content.append(item)
                 except StopIteration:
                     break
-            return filtered_content
+            return iter(filtered_content)
 
         except (LookupError, ValueError):
             log.warning('found no IContentQuery type %s',
                         self.source_type)
-            return [
-                self.first_reference,
-                self.second_reference,
-                self.third_reference]
+            return (
+                content for content in self._reference_properties if content)
 
     @property
     def _content_query(self):
