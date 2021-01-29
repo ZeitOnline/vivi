@@ -58,7 +58,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 datetime(2014, 7, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(self.api, 'push') as push:
                 self.api.send('any', 'any', message=self.message)
-                self.assertEqual(2, push.call_count)
+                self.assertEqual(3, push.call_count)
                 android = push.call_args_list[0][0][0]
                 self.assertEqual(['android'], android.device_types)
                 self.assertEqual(
@@ -83,6 +83,18 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 self.assertEqual('foo', ios.notification['alert'])
                 self.assertEqual(
                     u'Rückkehr der Warlords', ios.notification['ios']['title'])
+
+                open_slack = push.call_args_list[2][0][0]
+                self.assertEqual(['open::slack'], open_slack.device_types)
+                self.assertEqual(
+                    '2014-07-01T11:15:07', open_slack.options['expiry'])
+                self.assertEqual(
+                    {u'open_channel': u'cec48c28-4486-4c95-989e-0bbed3edc714'},
+                    open_slack.audience)
+                self.assertEqual('foo', open_slack.notification['alert'])
+                self.assertEqual(
+                    u'Nicht Corona',
+                    open_slack.notification['open::slack']['extra']['recipients'])
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
