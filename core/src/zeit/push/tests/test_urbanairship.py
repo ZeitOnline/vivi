@@ -40,7 +40,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def setUp(self):
         super(ConnectionTest, self).setUp()
         self.api = zeit.push.urbanairship.Connection(
-            None, None, None, None, None, None, 3600)
+            None, None, None, None, None, None, None, None, 3600)
         self.message = zeit.push.urbanairship.Message(
             ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
         self.message.config = {
@@ -333,6 +333,10 @@ class PushTest(zeit.push.testing.TestCase):
             os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET'],
             os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_OPENCHANNEL_APPLICATION_KEY'],
+            os.environ[
+                'ZEIT_PUSH_URBANAIRSHIP_OPENCHANNEL_MASTER_SECRET'],
+            os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY'],
             os.environ[
                 'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
@@ -349,7 +353,7 @@ class PushTest(zeit.push.testing.TestCase):
     def test_invalid_credentials_should_raise(self):
         invalid_connection = zeit.push.urbanairship.Connection(
             'invalid', 'invalid', 'invalid', 'invalid', 'invalid', 'invalid',
-            1)
+            'invalid', 'invalid', 1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             invalid_connection.send('any', 'any', message=self.message)
 
