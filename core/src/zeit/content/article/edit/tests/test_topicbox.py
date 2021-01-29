@@ -94,32 +94,26 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             self.repository['art1'],
             self.repository['art2'],
             self.repository['art3'], ])
-        self.assertEqual(
-            'http://xml.zeit.de/art1', list(box.values())[0].uniqueId)
-        self.assertEqual(
-            'http://xml.zeit.de/art2', list(box.values())[1].uniqueId)
-        self.assertEqual(
-            'http://xml.zeit.de/art3', list(box.values())[2].uniqueId)
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
 
     def test_topicbox_source_elasticsearch(self):
         box = self.get_topicbox()
         box.source_type = 'elasticsearch-query'
         box.elasticsearch_raw_query = '{}'
-        self.assertEqual('http://xml.zeit.de/art1',
-                         list(box.values())[0].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art2',
-                         list(box.values())[1].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art3',
-                         list(box.values())[2].uniqueId)
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
 
     def test_topicbox_source_topicpage(self):
         box = self.get_topicbox()
         box.count = 5
         box.source_type = 'topicpage'
         box.topicpage = 'angela-merkel'
-        self.assertEqual('http://xml.zeit.de/art1',
-                         list(box.values())[0].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art2',
-                         list(box.values())[1].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art3',
-                         list(box.values())[2].uniqueId)
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
