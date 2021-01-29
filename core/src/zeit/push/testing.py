@@ -37,6 +37,7 @@ product_config = """\
   facebook-main-account fb-test
   facebook-magazin-account fb-magazin
   facebook-campus-account fb-campus
+  facebook-zett-account fb-zett
   facebook-breaking-news-expiration 1800
   push-target-url http://www.zeit.de/
   mobile-image-url http://img.zeit.de/

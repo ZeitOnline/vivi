@@ -1,3 +1,4 @@
+from zeit.zett.interfaces import IZTTSection, IZTTFolder
 import plone.testing
 import zeit.cms.testing
 import zeit.cms.repository.interfaces
@@ -18,7 +19,10 @@ class Layer(plone.testing.Layer):
         with zeit.cms.testing.site(self['zodbApp']):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
-            repository['zett'] = zeit.cms.repository.folder.Folder()
+            zett = zeit.cms.repository.folder.Folder()
+            zope.interface.alsoProvides(zett, IZTTSection)
+            zope.interface.alsoProvides(zett, IZTTFolder)
+            repository['zett'] = zett
 
 
 LAYER = Layer()

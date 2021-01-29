@@ -206,6 +206,33 @@ class AccountData(grok.Adapter):
             override_text=value)
 
     @property
+    def facebook_zett_enabled(self):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self.push.get(type='facebook', account=source.ZETT_ACCOUNT)
+        return service and service.get('enabled')
+
+    @facebook_zett_enabled.setter
+    def facebook_zett_enabled(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.ZETT_ACCOUNT),
+            enabled=value)
+
+    @property
+    def facebook_zett_text(self):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        service = self.push.get(
+            type='facebook', account=source.ZETT_ACCOUNT)
+        return service and service.get('override_text')
+
+    @facebook_zett_text.setter
+    def facebook_zett_text(self, value):
+        source = zeit.push.interfaces.facebookAccountSource(None)
+        self.push.set(dict(
+            type='facebook', account=source.ZETT_ACCOUNT),
+            override_text=value)
+
+    @property
     def twitter_main_enabled(self):
         source = zeit.push.interfaces.twitterAccountSource(None)
         service = self.push.get(type='twitter', account=source.MAIN_ACCOUNT)

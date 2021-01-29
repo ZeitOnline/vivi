@@ -72,7 +72,7 @@ class FacebookAccountsTest(zeit.push.testing.TestCase):
 
     def test_main_account_is_excluded_from_source(self):
         self.assertEqual(
-            ['fb-magazin', 'fb-campus'],
+            ['fb-magazin', 'fb-campus', 'fb-zett'],
             list(zeit.push.interfaces.facebookAccountSource(None)))
 
 

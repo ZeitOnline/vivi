@@ -1,10 +1,16 @@
 vivi.core changes
 =================
 
-4.48.6 (unreleased)
+4.48.7 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.48.6 (2021-01-29)
+-------------------
+
+- ZETT-98: Provide social channels facebook and twitter for zett
 
 
 4.48.5 (2021-01-25)
