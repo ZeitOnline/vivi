@@ -11,5 +11,6 @@
   <include package="zeit.content.cp" file="ftesting.zcml"/>
 
   <include package="zeit.zett" />
+  <include package="zeit.zett.browser" />
 
 </configure>
