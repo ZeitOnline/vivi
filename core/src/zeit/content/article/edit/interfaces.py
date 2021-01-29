@@ -2,7 +2,10 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import datetime
+import re
+import json
 import six
+import zc.sourcefactory.contextual
 import zeit.cms.content.field
 import zeit.content.article.interfaces
 import zeit.content.article.source
@@ -18,6 +21,10 @@ import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zope.schema
 import zope.security.proxy
+import zeit.content.cp.interfaces
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class IArticleArea(zeit.edit.interfaces.IArea):
@@ -555,6 +562,61 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
     )
 
 
+class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
+                            zeit.cms.content.sources.CachedXMLBase):
+
+    COMMENT = re.compile(r'\s*//')
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'topicpage-filter-source'
+    default_filename = 'topicpage-filters.json'
+
+    def json_data(self):
+        result = collections.OrderedDict()
+        for row in self._get_tree():
+            if len(row) != 1:
+                continue
+            key = list(row.keys())[0]
+            result[key] = row[key]
+        return result
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _get_tree_from_url(self, url):
+        try:
+            data = []
+            for line in six.moves.urllib.request.urlopen(url):
+                line = six.ensure_text(line)
+                if self.COMMENT.search(line):
+                    continue
+                data.append(line)
+            data = '\n'.join(data)
+            return json.loads(data)
+        except Exception:
+            log.warning(
+                'TopicpageFilterSource could not parse %s', url, exc_info=True)
+            return {}
+
+    def getValues(self):
+        return self.json_data().keys()
+
+    def getTitle(self, value):
+        return self.json_data()[value].get('title', value)
+
+    def getToken(self, value):
+        return value
+
+
+class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('manuell', _('manuell')),
+        ('centerpage', _('automatic-area-type-centerpage')),
+        ('topicpage', _('automatic-area-type-topicpage')),
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+        ('related-api', _('tms-related-api'))
+    ])
+
+
 class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 
     def __init__(self, allow_cp=False):
@@ -615,10 +677,60 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
     referenced_cp = zope.interface.Attribute(
         'Referenced CP or None')
 
+    elasticsearch_raw_query = zope.schema.Text(
+        title=_('Elasticsearch raw query'),
+        required=False)
+
+    elasticsearch_raw_order = zope.schema.TextLine(
+        title=_('Sort order'),
+        default=u'payload.document.date_first_released:desc',
+        required=False)
+
+    hide_dupes = zope.schema.Bool(
+        title=_('Hide duplicate teasers'),
+        default=True)
+
+    is_complete_query = zope.schema.Bool(
+        title=_('Take over complete query body'),
+        description=_('Remember to add payload.workflow.published:true'),
+        default=False,
+        required=False)
+
+    centerpage = zope.schema.Choice(
+        title=_('Get teasers from CenterPage'),
+        source=zeit.content.cp.source.centerPageSource,
+        required=False)
+
+    source_type = zope.schema.Choice(
+        title=_('source-type'),
+        source=TopicboxSourceType(),
+        required=True,
+        default='centerpage')
+
+    topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage'),
+        required=False)
+
+    topicpage_filter = zope.schema.Choice(
+        title=_('Topicpage filter'),
+        source=TopicpageFilterSource(),
+        required=False)
+
+    count = zope.schema.Int(title=_('Amount of teasers'), default=3)
+
     def values():
         """
         Iterable of ICMSContent
         """
+
+
+class IContentQuery(zope.interface.Interface):
+    """Mechanism to retrieve content objects.
+    Used to register named adapters for the different IArea.automatic_types.
+    """
+
+    def __call__(self):
+        """Returns list of content objects."""
 
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
