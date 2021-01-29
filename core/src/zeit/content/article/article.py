@@ -1,6 +1,7 @@
 from six import StringIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+import gocept.cache.property
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
@@ -46,6 +47,10 @@ ARTICLE_TEMPLATE = """\
 </article>"""
 
 
+class writeabledict(dict):
+    """dict with all (especially write) methods allowed by security"""
+
+
 @zope.interface.implementer(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.interfaces.IEditorialContent)
@@ -53,6 +58,9 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     """Article is the main content type in the Zeit CMS."""
 
     default_template = ARTICLE_TEMPLATE
+
+    cache = gocept.cache.property.TransactionBoundCache(
+        '_v_article_cache', writeabledict)
 
     textLength = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['textLength'],

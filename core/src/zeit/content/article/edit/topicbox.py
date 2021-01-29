@@ -9,6 +9,7 @@ import itertools
 import json
 import logging
 import lxml
+import operator
 import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
@@ -18,9 +19,24 @@ import zope.component
 log = logging.getLogger(__name__)
 
 
-def centerpage_cache(context, name, factory=writeabledict):
-    cp = zeit.content.cp.interfaces.ICenterPage(context)
-    return cp.cache.setdefault(name, factory())
+def article_cache(article, name, factory=writeabledict):
+    return article.cache.setdefault(name, factory())
+
+
+def cached_on_article(keyfunc=operator.attrgetter('__name__'), attr=None):
+    """ Decorator to cache the results of the function in a dictionary
+        on the centerpage.  The dictionary keys are built using the optional
+        `keyfunc`, which is called with `self` as a single argument. """
+    def decorator(fn):
+        def wrapper(self, *args, **kw):
+            article = self.__parent__
+            cache = article_cache(article, attr or fn.__name__)
+            key = keyfunc(article)
+            if key not in cache:
+                cache[key] = fn(self, *args, **kw)
+            return cache[key]
+        return wrapper
+    return decorator
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicbox)
@@ -132,6 +148,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
                 self.first_reference):
             return self.first_reference
 
+    @cached_on_article(attr='topicbox_values')
     def values(self):
         if self.referenced_cp:
             parent_article = zeit.content.article.interfaces.IArticle(self,
