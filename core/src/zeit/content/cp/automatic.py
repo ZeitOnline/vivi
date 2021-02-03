@@ -1,5 +1,5 @@
 from zeit.content.cp.centerpage import writeabledict
-from zeit.content.cp.interfaces import IAutomaticTeaserBlock
+from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
@@ -21,19 +21,21 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-def centerpage_cache(context, name, factory=writeabledict):
-    cp = zeit.content.cp.interfaces.ICenterPage(context)
-    return cp.cache.setdefault(name, factory())
+def parent_cache(context, parent_iface, name, factory=writeabledict):
+    parent = parent_iface(context)
+    return parent.cache.setdefault(name, factory())
 
 
-def cached_on_centerpage(keyfunc=operator.attrgetter('__name__'), attr=None):
+def cached_on_parent(
+        parent_iface, attr=None, keyfunc=operator.attrgetter('__name__'),
+        factory=writeabledict):
     """ Decorator to cache the results of the function in a dictionary
         on the centerpage.  The dictionary keys are built using the optional
         `keyfunc`, which is called with `self` as a single argument. """
     def decorator(fn):
         def wrapper(self, *args, **kw):
             content = self.context
-            cache = centerpage_cache(content, attr or fn.__name__)
+            cache = parent_cache(content, parent_iface, attr or fn.__name__)
             key = keyfunc(content)
             if key not in cache:
                 cache[key] = fn(self, *args, **kw)
@@ -63,7 +65,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    @cached_on_centerpage(attr='area_values')
+    @cached_on_parent(ICenterPage, 'area_values')
     def values(self):
         if not self.automatic:
             return self.context.values()
@@ -152,14 +154,14 @@ class ContentQuery(grok.Adapter):
         return self.context.count
 
     @property
-    @cached_on_centerpage()
+    @cached_on_parent(ICenterPage)
     def existing_teasers(self):
         current_area = self.context
-        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
-        area_teasered_content = centerpage_cache(
-            current_area, 'area_teasered_content')
-        area_manual_content = centerpage_cache(
-            current_area, 'area_manual_content')
+        cp = ICenterPage(self.context)
+        area_teasered_content = parent_cache(
+            cp, ICenterPage, 'area_teasered_content')
+        area_manual_content = parent_cache(
+            cp, ICenterPage, 'area_manual_content')
 
         seen = set()
         above = True
@@ -388,7 +390,7 @@ class TMSContentQuery(ContentQuery):
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        cache = parent_cache(self.context, ICenterPage, 'tms_topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
@@ -452,7 +454,7 @@ class TMSContentQuery(ContentQuery):
 
     @property
     def total_hits(self):
-        cache = centerpage_cache(self.context, 'tms_topic_queries')
+        cache = parent_cache(self.context, ICenterPage, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]
