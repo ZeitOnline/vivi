@@ -1,6 +1,7 @@
 from six import StringIO
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.content.cp.centerpage import writeabledict
 import gocept.cache.property
 import grokcore.component as grok
 import lxml.etree
@@ -45,10 +46,6 @@ ARTICLE_TEMPLATE = """\
         <subtitle/>
     </body>
 </article>"""
-
-
-class writeabledict(dict):
-    """dict with all (especially write) methods allowed by security"""
 
 
 @zope.interface.implementer(

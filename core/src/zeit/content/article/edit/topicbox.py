@@ -2,14 +2,14 @@
 from zeit.cms.content.contentuuid import ContentUUID
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import TopicReferenceSource
-from zeit.content.cp.centerpage import writeabledict
+from zeit.content.article.interfaces import IArticle
+from zeit.content.cp.automatic import cached_on_parent
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import itertools
 import json
 import logging
 import lxml
-import operator
 import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
@@ -17,26 +17,6 @@ import zeit.content.image.interfaces
 import zope.component
 
 log = logging.getLogger(__name__)
-
-
-def article_cache(article, name, factory=writeabledict):
-    return article.cache.setdefault(name, factory())
-
-
-def cached_on_article(keyfunc=operator.attrgetter('__name__'), attr=None):
-    """ Decorator to cache the results of the function in a dictionary
-        on the centerpage.  The dictionary keys are built using the optional
-        `keyfunc`, which is called with `self` as a single argument. """
-    def decorator(fn):
-        def wrapper(self, *args, **kw):
-            article = self.__parent__
-            cache = article_cache(article, attr or fn.__name__)
-            key = keyfunc(article)
-            if key not in cache:
-                cache[key] = fn(self, *args, **kw)
-            return cache[key]
-        return wrapper
-    return decorator
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicbox)
@@ -148,7 +128,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
                 self.first_reference):
             return self.first_reference
 
-    @cached_on_article(attr='topicbox_values')
+    @cached_on_parent(IArticle, 'topicbox_values')
     def values(self):
         if self.referenced_cp:
             parent_article = zeit.content.article.interfaces.IArticle(self,
