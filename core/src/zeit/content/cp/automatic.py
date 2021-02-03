@@ -5,7 +5,6 @@ import grokcore.component as grok
 import json
 import logging
 import lxml
-import operator
 import requests
 import zeit.cms.interfaces
 import zeit.cms.content.interfaces
@@ -27,16 +26,14 @@ def parent_cache(context, parent_iface, name, factory=writeabledict):
 
 
 def cached_on_parent(
-        parent_iface, attr=None, keyfunc=operator.attrgetter('__name__'),
-        factory=writeabledict):
+        parent_iface, attr=None, keyfunc=lambda x: x, factory=writeabledict):
     """ Decorator to cache the results of the function in a dictionary
         on the centerpage.  The dictionary keys are built using the optional
         `keyfunc`, which is called with `self` as a single argument. """
     def decorator(fn):
         def wrapper(self, *args, **kw):
-            content = self.context
-            cache = parent_cache(content, parent_iface, attr or fn.__name__)
-            key = keyfunc(content)
+            cache = parent_cache(self, parent_iface, attr or fn.__name__)
+            key = keyfunc(self)
             if key not in cache:
                 cache[key] = fn(self, *args, **kw)
             return cache[key]
@@ -65,7 +62,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    @cached_on_parent(ICenterPage, 'area_values')
+    @cached_on_parent(ICenterPage, 'area_values', lambda x: x.context.__name__)
     def values(self):
         if not self.automatic:
             return self.context.values()
@@ -154,7 +151,7 @@ class ContentQuery(grok.Adapter):
         return self.context.count
 
     @property
-    @cached_on_parent(ICenterPage)
+    @cached_on_parent(ICenterPage, keyfunc=lambda x: x.context.__name__)
     def existing_teasers(self):
         current_area = self.context
         cp = ICenterPage(self.context)
@@ -183,6 +180,12 @@ class ContentQuery(grok.Adapter):
                             area))
                 seen.update(area_manual_content[area])
         return seen
+
+
+@grok.adapter(zeit.content.cp.interfaces.IContentQuery)
+@grok.implementer(zeit.content.cp.interfaces.ICenterPage)
+def query_to_centerpage(context):
+    return zeit.content.cp.interfaces.ICenterPage(context.context, None)
 
 
 class ElasticsearchContentQuery(ContentQuery):
@@ -390,7 +393,7 @@ class TMSContentQuery(ContentQuery):
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        cache = parent_cache(self.context, ICenterPage, 'tms_topic_queries')
+        cache = parent_cache(self, ICenterPage, 'tms_topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
@@ -454,7 +457,7 @@ class TMSContentQuery(ContentQuery):
 
     @property
     def total_hits(self):
-        cache = parent_cache(self.context, ICenterPage, 'tms_topic_queries')
+        cache = parent_cache(self, ICenterPage, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]
