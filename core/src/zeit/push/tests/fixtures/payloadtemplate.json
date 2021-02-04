@@ -1,3 +1,15 @@
+{# Macro to set recipients list for open channel #}
+{% macro recipients_list() -%}
+{% set name_parts = article.__name__.split('-') %}
+
+{% if 'coronavirus' in name_parts or 'corona' in name_parts %}
+  "Lesetipp, Test"
+{% else %}
+  "Nicht Corona"
+{% endif %}
+{%- endmacro %}
+
+
 {
   "default_title": "Default title",
   "messages": [
@@ -65,5 +77,23 @@
         "title": "{{article.title}}"
       }
     }
-  }
+  },
+	{
+		 "device_types":[
+				"open::slack"
+		 ],
+			"notification": {
+				"alert": "{{text}}",
+				"open::slack": {
+					 "extra": {
+							"url": "{{ zon_link }}",
+							"headline": "{{ article.title }}",
+							"recipients": {{ recipients_list() }}
+					 }
+				}
+		 },
+		 "audience": {
+				"open_channel": "cec48c28-4486-4c95-989e-0bbed3edc714"
+		 }
+	}
 ]}

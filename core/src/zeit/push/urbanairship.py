@@ -34,11 +34,14 @@ class Connection(object):
 
     def __init__(self, android_application_key, android_master_secret,
                  ios_application_key, ios_master_secret,
+                 openchannel_application_key, openchannel_master_secret,
                  web_application_key, web_master_secret, expire_interval,
                  ):
         self.credentials = {
             'android': [android_application_key, android_master_secret],
             'ios': [ios_application_key, ios_master_secret],
+            'open::slack': [openchannel_application_key,
+                            openchannel_master_secret],
             'web': [web_application_key, web_master_secret]
         }
         self.expire_interval = expire_interval
@@ -211,6 +214,10 @@ def from_product_config():
         android_master_secret=config['urbanairship-android-master-secret'],
         ios_application_key=config['urbanairship-ios-application-key'],
         ios_master_secret=config['urbanairship-ios-master-secret'],
+        openchannel_application_key=(
+            config['urbanairship-openchannel-application-key']),
+        openchannel_master_secret=(
+            config['urbanairship-openchannel-master-secret']),
         web_application_key=config['urbanairship-web-application-key'],
         web_master_secret=config['urbanairship-web-master-secret'],
         expire_interval=int(config['urbanairship-expire-interval']))
@@ -227,8 +234,9 @@ def print_payload_documentation():
             print(json_dump_sphinx(data.payload))
     conn = PayloadDocumentation(
         'android_application_key', 'android_master_secret',
-        'ios_application_key', 'ios_master_secret', 'web_application_key',
-        'web_master_secret', expire_interval=9000)
+        'ios_application_key', 'ios_master_secret',
+        'openchannel_application_key', 'openchannel_master_secret',
+        'web_application_key', 'web_master_secret', expire_interval=9000)
 
     config = {
         'push-target-url': 'http://www.zeit.de/',

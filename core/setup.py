@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.48.7.dev0',
+    version='4.48.8.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -44,7 +44,7 @@ setup(
         'setuptools',
         'transaction',
         'tweepy',
-        'urbanairship >= 1.0',
+        'urbanairship >= 3.1.0',
         'webob',
         'werkzeug',
         'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched
