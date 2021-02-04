@@ -1039,8 +1039,6 @@ class ConvertingRestructuredTextWidgetTest(
                 '<strong>foo</strong>', self.widget._getFormValue())
 
 
-@unittest.skipUnless(
-    os.path.exists('/usr/bin/pandoc'), 'pandoc not available')
 class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
