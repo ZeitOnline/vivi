@@ -13,3 +13,6 @@ class TickarooLiveblog(zeit.edit.block.Element):
     collapse_preceding_content = ObjectPathAttributeProperty(
         '.', 'collapse_preceding_content',
         ITickarooLiveblog['collapse_preceding_content'])
+
+    status = ObjectPathAttributeProperty(
+        '.', 'status', ITickarooLiveblog['status'])

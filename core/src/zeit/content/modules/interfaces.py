@@ -206,19 +206,11 @@ class IMail(zeit.edit.interfaces.IBlock):
     body = zope.interface.Attribute('Email body')
 
 
-class RecipeMetadataSource(zeit.cms.content.sources.XMLSource):
+class RecipeMetadataSource(zeit.cms.content.sources.SearchableXMLSource):
 
     product_configuration = 'zeit.content.modules'
     config_url = 'recipe-metadata-source'
     default_filename = 'recipe-metadata.xml'
-
-    def __init__(self, xpath):
-        super(RecipeMetadataSource, self).__init__()
-        self.xpath = xpath
-
-    def getValues(self, context):
-        tree = self._get_tree()
-        return [six.text_type(node) for node in tree.xpath(self.xpath)]
 
     def getNodes(self):
         tree = self._get_tree()
@@ -314,4 +306,9 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
     collapse_preceding_content = zope.schema.Bool(
         title=_('Collapse preceding content'),
         default=True,
+        required=False)
+
+    status = zope.schema.Choice(
+        title=_('Liveblog status'),
+        source=LiveblogSource('*//status'),
         required=False)
