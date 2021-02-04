@@ -13,6 +13,7 @@
   <module id="ingredientdice">Zutatenwürfel</module>
   <module id="jobboxticker">Jobticker Modul</module>
   <module id="liveblog">Liveblog</module>
+  <module id="tickaroo_liveblog">Tickaroo Liveblog</module>
   <module id="mail">Mail-Formular</module>
   <module id="newslettersignup">Newsletter Signup Modul</module>
   <module id="podcast">Podcast-Block</module>

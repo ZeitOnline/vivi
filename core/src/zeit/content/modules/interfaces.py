@@ -296,3 +296,22 @@ class IRecipeList(zeit.edit.interfaces.IBlock):
             source=zeit.wochenmarkt.sources.ingredientsSource),
         default=(),
         required=False)
+
+
+class LiveblogSource(zeit.cms.content.sources.SearchableXMLSource):
+    """A source for all liveblog config."""
+
+    attribute = 'id'
+    default_filename = 'liveblog.xml'
+    product_configuration = 'zeit.content.modules'
+
+
+class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
+
+    liveblog_id = zope.schema.TextLine(
+        title=_('Liveblog id'))
+
+    collapse_preceding_content = zope.schema.Bool(
+        title=_('Collapse preceding content'),
+        default=True,
+        required=False)
