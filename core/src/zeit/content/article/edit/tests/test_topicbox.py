@@ -105,8 +105,8 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.elasticsearch_raw_query = '{}'
         values = list(box.values())
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
 
     def test_topicbox_source_topicpage(self):
         box = self.get_topicbox()
@@ -115,5 +115,5 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.topicpage = 'angela-merkel'
         values = list(box.values())
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
-        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
