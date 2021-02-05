@@ -1053,11 +1053,11 @@ class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
     def test_converts_input_to_html(self):
         self.request.form[self.widget.name] = '**umläut**'
         self.assertEqual(
-            '<p><strong>umläut</strong></p>\n', self.widget.getInputValue())
+            '<p><strong>umläut</strong></p>', self.widget.getInputValue())
 
     def test_converts_to_markdown_for_rendering(self):
         self.widget.setRenderedValue('<strong>umläut</strong>')
-        self.assertEqual('**umläut**\n', self.widget._getFormValue())
+        self.assertEqual('**umläut**', self.widget._getFormValue())
 
     def test_respects_missing_value(self):
         self.request.form[self.widget.name] = ''
