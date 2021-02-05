@@ -24,7 +24,7 @@ import zope.schema.interfaces
 class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
-        super(TestObjectDetails, self).setUp()
+        super().setUp()
         self.browser.open(
             'http://localhost:8080/++skin++vivi/repository/testcontent/')
 
@@ -116,7 +116,7 @@ class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
             widget._toFieldValue(['http://xml.zeit.de/testcontent']))
 
     def test_uniqueId_not_in_source_should_raise(self):
-        class FakeSource(object):
+        class FakeSource:
             def __contains__(self, value):
                 return False
 
@@ -138,7 +138,7 @@ class TestObjectSequenceWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestObjectSequenceWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
 
     def get_field(self):
@@ -251,7 +251,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestObjectSequenceWidgetJavascript, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget.html')
 
@@ -440,13 +440,13 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(ObjectWidgetDetailViews, self).setUp()
+        super().setUp()
         ObjectWidgetMyDetails.raise_error = False
         setup_mydetails()
 
     def tearDown(self):
         teardown_mydetails()
-        super(ObjectWidgetDetailViews, self).tearDown()
+        super().tearDown()
 
     def test_object_sequence_widgets_use_their_configured_views(self):
         self.open(
@@ -494,7 +494,7 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestObjectSequenceWidgetAutocompleteJavascript, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/'
             'objectsequencewidget-autocomplete.html')
@@ -525,7 +525,7 @@ class TestDropObjectWidgetFoo(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestDropObjectWidgetFoo, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget.html')
 
@@ -574,7 +574,7 @@ class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestDropObjectWidgetAccept, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget-accept.html')
 
@@ -601,7 +601,7 @@ class TestDropObjectWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestDropObjectWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
 
     def get_choice(self):
@@ -710,7 +710,7 @@ class DropObjectWidget(zeit.cms.testing.ZeitCmsTestCase):
             widget._toFieldValue('http://xml.zeit.de/testcontent'))
 
     def test_uniqueId_not_in_source_should_raise(self):
-        class FakeSource(object):
+        class FakeSource:
             def __contains__(self, value):
                 return False
 
@@ -766,13 +766,13 @@ class TestObjectSequenceDisplayWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestObjectSequenceDisplayWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
         setup_mydetails()
 
     def tearDown(self):
         teardown_mydetails()
-        super(TestObjectSequenceDisplayWidgetIntegration, self).tearDown()
+        super().tearDown()
 
     def get_field(self):
         import zeit.cms.content.contentsource
@@ -826,13 +826,13 @@ class TestDropObjectDisplayWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestDropObjectDisplayWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
         setup_mydetails()
 
     def tearDown(self):
         teardown_mydetails()
-        super(TestDropObjectDisplayWidgetIntegration, self).tearDown()
+        super().tearDown()
 
     def get_field(self):
         import zeit.cms.content.contentsource
@@ -882,7 +882,7 @@ class TestDropObjectDisplayWidgetIntegration(
 class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(TestReferenceSequenceWidget, self).setUp()
+        super().setUp()
         ExampleContentType.references = \
             zeit.cms.content.reference.ReferenceProperty(
                 '.body.references.reference', 'related')
@@ -890,7 +890,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['target'] = ExampleContentType()
 
         @zope.interface.implementer(zope.schema.interfaces.ISource)
-        class FakeSource(object):
+        class FakeSource:
 
             def __contains__(self, value):
                 return True
@@ -902,7 +902,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def tearDown(self):
         del ExampleContentType.references
-        super(TestReferenceSequenceWidget, self).tearDown()
+        super().tearDown()
 
     def test_invalid_unique_id_fails_validation(self):
         widget = ReferenceSequenceWidget(self.field, mock.Mock(), mock.Mock())
@@ -930,7 +930,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
             self.repository['target'], result[0].target)
 
     def test_content_not_in_source_should_raise(self):
-        class FakeSource(object):
+        class FakeSource:
             def __contains__(self, value):
                 return False
 
@@ -947,7 +947,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 class RestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(RestructuredTextWidgetTest, self).setUp()
+        super().setUp()
         from zeit.cms.browser.widget import RestructuredTextWidget
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
@@ -980,7 +980,7 @@ class RestructuredTextWidgetJavascriptTest(
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(RestructuredTextWidgetJavascriptTest, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/restructuredtext.html')
 
@@ -1013,7 +1013,7 @@ class ConvertingRestructuredTextWidgetTest(
         zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(ConvertingRestructuredTextWidgetTest, self).setUp()
+        super().setUp()
         from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
@@ -1042,7 +1042,7 @@ class ConvertingRestructuredTextWidgetTest(
 class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(MarkdownWidgetTest, self).setUp()
+        super().setUp()
         from zeit.cms.browser.widget import MarkdownWidget
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
