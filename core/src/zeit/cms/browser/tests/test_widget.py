@@ -39,14 +39,14 @@ class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_should_contain_teaser_title(self):
         with self.get_content() as co:
-            co.teaserTitle = u'test title'
+            co.teaserTitle = 'test title'
         self.browser.open('@@object-details')
         self.assert_ellipsis(
             '...<div class="teaser_title">test title</div>...')
 
     def test_should_contain_metadata(self):
         with self.get_content() as co:
-            co.ressort = u'International'
+            co.ressort = 'International'
         self.browser.handleErrors = False
         self.browser.open('@@object-details')
         self.assert_ellipsis("""...<ul class="metadata">
@@ -210,7 +210,7 @@ class TestObjectSequenceWidgetIntegration(
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         field = self.get_field()
         content = ExampleContentType()
-        content.ressort = u'Politik'
+        content.ressort = 'Politik'
         field = field.bind(content)
         widget = self.get_widget(field)
         widget.add_type = (
@@ -226,7 +226,7 @@ class TestObjectSequenceWidgetIntegration(
         widget = self.get_widget(field)
         with mock.patch.object(
                 field.value_type.source, 'get_check_types') as types:
-            types.return_value = [u'foo', 'bar']
+            types.return_value = ['foo', 'bar']
             self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
 
     def test_widget_detail_view_name_can_be_configured(self):
@@ -239,7 +239,7 @@ class TestObjectSequenceWidgetIntegration(
 
     def test_shows_description_if_present(self):
         field = self.get_field()
-        field.description = u'foo'
+        field.description = 'foo'
         widget = self.get_widget(field)
         self.assert_ellipsis("""...
             new zeit.cms.ObjectSequenceWidget(
@@ -263,7 +263,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def test_widget_should_render_note_about_new_items(self):
         s = self.selenium
         s.waitForTextPresent(
-            u'Ziehen Sie Inhalte hierher um sie zu verknüpfen.')
+            'Ziehen Sie Inhalte hierher um sie zu verknüpfen.')
 
     def test_widget_should_insert_dropped_objects(self):
         s = self.selenium
@@ -642,7 +642,7 @@ class TestDropObjectWidgetIntegration(
         ANY = None
         widget = DropObjectWidget(choice, choice.source, ANY)
         with mock.patch.object(choice.source, 'get_check_types') as types:
-            types.return_value = [u'foo', 'bar']
+            types.return_value = ['foo', 'bar']
             self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
 
     def test_widget_detail_view_name_can_be_configured(self):
@@ -656,7 +656,7 @@ class TestDropObjectWidgetIntegration(
 
     def test_shows_description_if_present(self):
         choice = self.get_choice()
-        choice.description = u'foo'
+        choice.description = 'foo'
         request = zope.publisher.browser.TestRequest()
         widget = zeit.cms.browser.widget.DropObjectWidget(
             choice, choice.source, request)
@@ -675,7 +675,7 @@ class TestDropObjectWidgetIntegration(
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
         content = ExampleContentType()
-        content.ressort = u'Politik'
+        content.ressort = 'Politik'
         choice = choice.bind(content)
         widget = zeit.cms.browser.widget.DropObjectWidget(
             choice, choice.source, request)
@@ -1051,13 +1051,13 @@ class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
         self.widget = MarkdownWidget(field, self.request)
 
     def test_converts_input_to_html(self):
-        self.request.form[self.widget.name] = u'**umläut**'
+        self.request.form[self.widget.name] = '**umläut**'
         self.assertEqual(
-            u'<p><strong>umläut</strong></p>\n', self.widget.getInputValue())
+            '<p><strong>umläut</strong></p>\n', self.widget.getInputValue())
 
     def test_converts_to_markdown_for_rendering(self):
-        self.widget.setRenderedValue(u'<strong>umläut</strong>')
-        self.assertEqual(u'**umläut**\n', self.widget._getFormValue())
+        self.widget.setRenderedValue('<strong>umläut</strong>')
+        self.assertEqual('**umläut**\n', self.widget._getFormValue())
 
     def test_respects_missing_value(self):
         self.request.form[self.widget.name] = ''
