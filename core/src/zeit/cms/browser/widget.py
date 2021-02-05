@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 import docutils.core
 import grokcore.component as grok
 import json
+import markdown
 import markdownify
 import pypandoc
 import urllib.parse
@@ -678,8 +679,7 @@ class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
         if not value:
             return value
         try:
-            return pypandoc.convert_text(value, to='html', format='markdown',
-                                         extra_args=self._extra_pandoc_args)
+            return markdown.markdown(value)
         except OSError:
             return value
 
