@@ -3,8 +3,10 @@ from zeit.cms.i18n import MessageFactory as _
 import docutils.core
 import grokcore.component as grok
 import json
+import markdown
+import markdownify
 import pypandoc
-import six.moves.urllib.parse
+import urllib.parse
 import time
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
@@ -39,7 +41,7 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
         'object-reference-widget.pt')
 
     def __init__(self, context, source, request):
-        super(ObjectReferenceWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -124,7 +126,7 @@ class ObjectReferenceSequenceWidget(
         quoted_name = xml.sax.saxutils.quoteattr(self.name)
         result = ['<div id=%s>%s</div>' % (
             quoted_name,
-            super(ObjectReferenceSequenceWidget, self).__call__())]
+            super().__call__())]
         result.append('<script language="javascript">')
         result.append('new zeit.cms.ObjectReferenceSequenceWidget(%s);' %
                       quoted_name)
@@ -137,7 +139,7 @@ class ObjectReferenceDisplayWidget(
     """DEPRECATED, superceeded by DropObjectDisplayWidget"""
 
     def __init__(self, context, source, request):
-        super(ObjectReferenceDisplayWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -189,7 +191,7 @@ def objectDisplayWidgetMultiplexer(context, field, request):
         zope.app.form.interfaces.IDisplayWidget)
 
 
-class AddViewMixin(object):
+class AddViewMixin:
 
     @zope.cachedescriptors.property.Lazy
     def add_view(self):
@@ -232,7 +234,7 @@ class ObjectSequenceWidget(
     display_url_field = True
 
     def __init__(self, context, source, request):
-        super(ObjectSequenceWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -323,8 +325,7 @@ class ObjectSequenceDisplayWidget(
     detail_view_name = '@@object-details'
 
     def __init__(self, context, source, request):
-        super(ObjectSequenceDisplayWidget, self).__init__(
-            context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -356,8 +357,8 @@ class DropObjectDisplayWidget(ObjectSequenceDisplayWidget):
 
 
 def js_escape_check_types(source):
-    # convert unicode, JS needs 'foo', not u'foo'
-    return json.dumps([u'type-' + x for x in source.get_check_types()])
+    # convert unicode, JS needs 'foo', not 'foo'
+    return json.dumps(['type-' + x for x in source.get_check_types()])
 
 
 class ContentNotFoundError(zope.formlib.interfaces.ConversionError):
@@ -366,7 +367,7 @@ class ContentNotFoundError(zope.formlib.interfaces.ConversionError):
         msg = _("The object '${id}' could not be found.",
                 mapping=dict(id=uniqueId))
         msg = zope.i18n.translate(msg, context=request)
-        super(ContentNotFoundError, self).__init__(msg)
+        super().__init__(msg)
 
 
 class WrongContentTypeError(zope.formlib.interfaces.ConversionError):
@@ -375,7 +376,7 @@ class WrongContentTypeError(zope.formlib.interfaces.ConversionError):
         msg = _("'${id}' does not have an accepted type (${types}).",
                 mapping=dict(id=uniqueId, types=', '.join(accepted_types)))
         msg = zope.i18n.translate(msg, context=request)
-        super(WrongContentTypeError, self).__init__(msg)
+        super().__init__(msg)
 
 
 class DropObjectWidget(
@@ -392,7 +393,7 @@ class DropObjectWidget(
     display_url_field = True
 
     def __init__(self, context, source, request):
-        super(DropObjectWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -461,8 +462,8 @@ class ReferenceSequenceWidget(ObjectSequenceWidget):
 
 def resolve_reference(unique_id, field, source, request):
     if not field.context.uniqueId:  # Support AddForms
-        params = six.moves.urllib.parse.parse_qs(
-            six.moves.urllib.parse.urlparse(unique_id).query)
+        params = urllib.parse.parse_qs(
+            urllib.parse.urlparse(unique_id).query)
         if 'target' in params:
             unique_id = params['target'][0]
 
@@ -515,7 +516,7 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
     """A datetime widget with additional buttons."""
 
     def __call__(self):
-        html = super(self.__class__, self).__call__()
+        html = super().__call__()
         week = DATETIME_WIDGET_ADDITIONAL % dict(
             field=self.name,
             label="1W",
@@ -528,12 +529,12 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
             increase="date.setMonth(date.getMonth() + 1)")
         infty = DATETIME_WIDGET_INFTY % dict(
             field=self.name)
-        return (u'<div class="dateTimeWidget">' +
+        return ('<div class="dateTimeWidget">' +
                 html + week + month + infty +
                 '</div>')
 
     def _configuration(self):
-        conf = super(DatetimeWidget, self)._configuration()
+        conf = super()._configuration()
         conf.onClose = "zeit.cms.get_datetime_close('{0}')".format(self.name)
         return conf
 
@@ -541,11 +542,11 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
 class CheckBoxWidget(zope.formlib.boolwidgets.CheckBoxWidget):
 
     def __init__(self, context, request):
-        super(CheckBoxWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.reversed = True
 
     def __call__(self):
-        result = super(CheckBoxWidget, self).__call__()
+        result = super().__call__()
         result += '\n<span class="checkbox"></span>'
         return result
 
@@ -575,7 +576,7 @@ class RestructuredTextWidget(zope.formlib.textwidgets.TextAreaWidget):
         'rst-widget.pt')
 
     def __call__(self):
-        self.textarea = super(RestructuredTextWidget, self).__call__()
+        self.textarea = super().__call__()
         return self.template()
 
     @property
@@ -586,21 +587,19 @@ class RestructuredTextWidget(zope.formlib.textwidgets.TextAreaWidget):
 class ConvertingRestructuredTextWidget(RestructuredTextWidget):
 
     def _toFieldValue(self, value):
-        value = super(ConvertingRestructuredTextWidget, self)._toFieldValue(
-            value)
+        value = super()._toFieldValue(value)
         return rst2html(value)
 
     def _toFormValue(self, value):
-        value = super(ConvertingRestructuredTextWidget, self)._toFormValue(
-            value)
+        value = super()._toFormValue(value)
         return html2rst(value)
 
 
 class RestructuredTextDisplayWidget(zope.formlib.widgets.DisplayWidget):
 
     def __call__(self):
-        value = super(RestructuredTextDisplayWidget, self).__call__()
-        return (u'<div class="rst-display-widget">%s</div>' % rst2html(value)
+        value = super().__call__()
+        return ('<div class="rst-display-widget">%s</div>' % rst2html(value)
                 if value else value)
 
 
@@ -609,7 +608,7 @@ class AutocompleteWidget(zope.formlib.textwidgets.TextWidget):
     cssClass = 'autocomplete-widget'
 
     def __init__(self, context, source, request):
-        super(AutocompleteWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
         self.extra = 'cms:autocomplete-source="%s"' % (
             self.query_url)
@@ -624,7 +623,7 @@ class AutocompleteWidget(zope.formlib.textwidgets.TextWidget):
 class AutocompleteDisplayWidget(zope.formlib.widgets.DisplayWidget):
 
     def __init__(self, context, source, request):
-        super(AutocompleteDisplayWidget, self).__init__(context, request)
+        super().__init__(context, request)
 
 
 class AutocompleteSourceQuery(grok.MultiAdapter,
@@ -641,9 +640,9 @@ class AutocompleteSourceQuery(grok.MultiAdapter,
 
     def __call__(self):
         return (
-            u'<input type="text" class="autocomplete" '
-            u'placeholder={placeholder} '
-            u'cms:autocomplete-source="{url}" />').format(
+            '<input type="text" class="autocomplete" '
+            'placeholder={placeholder} '
+            'cms:autocomplete-source="{url}" />').format(
             url=zope.component.queryMultiAdapter(
                 (self.source, self.request),
                 zeit.cms.browser.interfaces.ISourceQueryURL),
@@ -661,7 +660,7 @@ def empty_toFieldValue(self, input):
     # XXX Work around formlib bug, browser always POSTs the parameter with
     # no value, which somehow gets converted to a list containing an empty
     # string [''], which formlib does not expect.
-    if input == [u'']:
+    if input == ['']:
         input = None
     return orig_toFieldValue(self, input)
 
@@ -672,24 +671,21 @@ zope.formlib.itemswidgets.MultiDataHelper._toFieldValue = empty_toFieldValue
 
 class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
 
-    _extra_pandoc_args = ["--email-obfuscation", "none"]
-
     def _toFieldValue(self, value):
-        value = super(MarkdownWidget, self)._toFieldValue(
+        value = super()._toFieldValue(
             value)
         if not value:
             return value
         try:
-            return pypandoc.convert_text(value, to='html', format='markdown',
-                                         extra_args=self._extra_pandoc_args)
+            return markdown.markdown(value)
         except OSError:
             return value
 
     def _toFormValue(self, value):
-        value = super(MarkdownWidget, self)._toFormValue(
+        value = super()._toFormValue(
             value)
         try:
-            return pypandoc.convert_text(value, to='markdown', format='html')
+            return markdownify.markdownify(value)
         except OSError:
             return value
 
