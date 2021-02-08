@@ -903,6 +903,9 @@ class IMarkupBlock(IBlock):
         title=_('Contents'),
         description=_('Use Markdown'),
         required=False)
+    markdown = zope.schema.Text(
+        title=_('Markdown contents'),
+        description=_('Store text as markdown'),
     alignment = zope.schema.Choice(
         title=_('Alignment'),
         description=_('Choose alignment'),
