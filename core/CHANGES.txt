@@ -4,6 +4,8 @@ vivi.core changes
 4.48.8 (unreleased)
 -------------------
 
+- ZON-6383: Handle Markdown using python libraries
+
 - ZON-6346: Add article module for tickaroo liveblog
 
 
