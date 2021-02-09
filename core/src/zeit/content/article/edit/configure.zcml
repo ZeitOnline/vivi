@@ -251,6 +251,23 @@
       />
   </class>
 
+  <adapter
+    factory=".liveblog.TickarooLiveblogFactory"
+    provides=".interfaces.ITickarooLiveblog"
+    trusted="yes"
+    />
+
+  <class class=".liveblog.TickarooLiveblog">
+    <require
+      interface=".interfaces.ITickarooLiveblog"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITickarooLiveblog"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".cardstack.Cardstack">
     <require
       interface=".interfaces.ICardstack"

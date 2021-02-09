@@ -34,6 +34,25 @@ class UnresolveableSource(zeit.cms.content.sources.XMLSource):
 """)
 
 
+class ExampleNestedSource(zeit.cms.content.sources.SearchableXMLSource):
+
+    attribute = NotImplemented
+
+    def _get_tree(self):
+        return gocept.lxml.objectify.fromstring("""\
+<items>
+  <cherries>
+    <cherry id="cherry_one">Cherry One</cherry>
+    <cherry id="cherry_two">Cherry Two</cherry>
+  </cherries>
+  <raisins>
+    <raisin id="raisin_one">Raisin One</raisin>
+    <raisin id="raisin_two">Raisin Two</raisin>
+  </raisins>
+</items>
+""")
+
+
 class XMLSourceTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_values_without_available_attribute_are_returned_for_all_contexts(
@@ -59,6 +78,22 @@ class XMLSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         context = Mock()
         zope.interface.alsoProvides(context, zeit.cms.interfaces.IAsset)
         self.assertEqual(['one', 'two', 'three'], source.getValues(context))
+
+
+class SearchableXMLSourceTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_searchable_source_should_return_text_values_by_xpath(self):
+        cherry_source = ExampleNestedSource('cherries/*').factory
+        self.assertEqual(
+            ['Cherry One', 'Cherry Two'],
+            cherry_source.getValues(Mock()))
+
+    def test_searchable_source_should_return_attribute_values_by_xpath(self):
+        cherry_source = ExampleNestedSource('*//cherry').factory
+        cherry_source.attribute = 'id'
+        self.assertEqual(
+            ['cherry_one', 'cherry_two'],
+            cherry_source.getValues(Mock()))
 
 
 class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
