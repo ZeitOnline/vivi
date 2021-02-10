@@ -670,7 +670,8 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
-        source=TopicReferenceSource(allow_cp=True))
+        source=TopicReferenceSource(allow_cp=True),
+        required=False)
 
     second_reference = zope.schema.Choice(
         title=_("Reference"),
