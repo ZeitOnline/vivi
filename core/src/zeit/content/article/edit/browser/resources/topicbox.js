@@ -30,7 +30,10 @@ function display_elements(selected_source_type) {
             cssClasses.push('elasticsearch_raw_order');
             break;
         case 'tms-related-api':
-            cssClasses.push('config_query');
+            cssClasses.push('topicpage_filter');
+            break;
+        case 'config-query':
+            cssClasses.push('config_query')
             break;
         default:
             break;
