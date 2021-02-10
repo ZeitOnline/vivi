@@ -89,7 +89,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.topicpage_filter',
         zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
 
-    _config_query = zeit.cms.content.ObjectPathProperty(
+    _config_query = zeit.cms.content.property.ObjectPathProperty(
         '.config_query',
         zeit.content.article.edit.interfaces.ITopicbox['config_query'])
 
