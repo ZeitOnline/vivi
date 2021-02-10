@@ -404,6 +404,10 @@ class ILiveblog(zeit.edit.interfaces.IBlock):
         required=False)
 
 
+class ITickarooLiveblog(zeit.content.modules.interfaces.ITickarooLiveblog):
+    pass
+
+
 class ICardstack(zeit.edit.interfaces.IBlock):
 
     card_id = zope.schema.TextLine(

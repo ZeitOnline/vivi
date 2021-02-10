@@ -321,6 +321,15 @@ class EditLiveblog(zeit.edit.browser.form.InlineForm):
         return 'liveblog.{0}'.format(self.context.__name__)
 
 
+class EditTickarooLiveblog(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    undo_description = _('edit tickaroo liveblog')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.modules.interfaces.ITickarooLiveblog).omit(
+            *list(zeit.edit.interfaces.IBlock))
+
+
 class EditCardstack(zeit.edit.browser.form.InlineForm):
 
     legend = None

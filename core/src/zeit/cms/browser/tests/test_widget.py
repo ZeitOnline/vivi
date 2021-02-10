@@ -24,7 +24,7 @@ import zope.schema.interfaces
 class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
-        super(TestObjectDetails, self).setUp()
+        super().setUp()
         self.browser.open(
             'http://localhost:8080/++skin++vivi/repository/testcontent/')
 
@@ -39,14 +39,14 @@ class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_should_contain_teaser_title(self):
         with self.get_content() as co:
-            co.teaserTitle = u'test title'
+            co.teaserTitle = 'test title'
         self.browser.open('@@object-details')
         self.assert_ellipsis(
             '...<div class="teaser_title">test title</div>...')
 
     def test_should_contain_metadata(self):
         with self.get_content() as co:
-            co.ressort = u'International'
+            co.ressort = 'International'
         self.browser.handleErrors = False
         self.browser.open('@@object-details')
         self.assert_ellipsis("""...<ul class="metadata">
@@ -116,7 +116,7 @@ class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
             widget._toFieldValue(['http://xml.zeit.de/testcontent']))
 
     def test_uniqueId_not_in_source_should_raise(self):
-        class FakeSource(object):
+        class FakeSource:
             def __contains__(self, value):
                 return False
 
@@ -138,7 +138,7 @@ class TestObjectSequenceWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestObjectSequenceWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
 
     def get_field(self):
@@ -210,7 +210,7 @@ class TestObjectSequenceWidgetIntegration(
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         field = self.get_field()
         content = ExampleContentType()
-        content.ressort = u'Politik'
+        content.ressort = 'Politik'
         field = field.bind(content)
         widget = self.get_widget(field)
         widget.add_type = (
@@ -226,7 +226,7 @@ class TestObjectSequenceWidgetIntegration(
         widget = self.get_widget(field)
         with mock.patch.object(
                 field.value_type.source, 'get_check_types') as types:
-            types.return_value = [u'foo', 'bar']
+            types.return_value = ['foo', 'bar']
             self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
 
     def test_widget_detail_view_name_can_be_configured(self):
@@ -239,7 +239,7 @@ class TestObjectSequenceWidgetIntegration(
 
     def test_shows_description_if_present(self):
         field = self.get_field()
-        field.description = u'foo'
+        field.description = 'foo'
         widget = self.get_widget(field)
         self.assert_ellipsis("""...
             new zeit.cms.ObjectSequenceWidget(
@@ -251,7 +251,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestObjectSequenceWidgetJavascript, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget.html')
 
@@ -263,7 +263,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def test_widget_should_render_note_about_new_items(self):
         s = self.selenium
         s.waitForTextPresent(
-            u'Ziehen Sie Inhalte hierher um sie zu verknüpfen.')
+            'Ziehen Sie Inhalte hierher um sie zu verknüpfen.')
 
     def test_widget_should_insert_dropped_objects(self):
         s = self.selenium
@@ -440,13 +440,13 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(ObjectWidgetDetailViews, self).setUp()
+        super().setUp()
         ObjectWidgetMyDetails.raise_error = False
         setup_mydetails()
 
     def tearDown(self):
         teardown_mydetails()
-        super(ObjectWidgetDetailViews, self).tearDown()
+        super().tearDown()
 
     def test_object_sequence_widgets_use_their_configured_views(self):
         self.open(
@@ -494,7 +494,7 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestObjectSequenceWidgetAutocompleteJavascript, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/'
             'objectsequencewidget-autocomplete.html')
@@ -525,7 +525,7 @@ class TestDropObjectWidgetFoo(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestDropObjectWidgetFoo, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget.html')
 
@@ -574,7 +574,7 @@ class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestDropObjectWidgetAccept, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget-accept.html')
 
@@ -601,7 +601,7 @@ class TestDropObjectWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestDropObjectWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
 
     def get_choice(self):
@@ -642,7 +642,7 @@ class TestDropObjectWidgetIntegration(
         ANY = None
         widget = DropObjectWidget(choice, choice.source, ANY)
         with mock.patch.object(choice.source, 'get_check_types') as types:
-            types.return_value = [u'foo', 'bar']
+            types.return_value = ['foo', 'bar']
             self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
 
     def test_widget_detail_view_name_can_be_configured(self):
@@ -656,7 +656,7 @@ class TestDropObjectWidgetIntegration(
 
     def test_shows_description_if_present(self):
         choice = self.get_choice()
-        choice.description = u'foo'
+        choice.description = 'foo'
         request = zope.publisher.browser.TestRequest()
         widget = zeit.cms.browser.widget.DropObjectWidget(
             choice, choice.source, request)
@@ -675,7 +675,7 @@ class TestDropObjectWidgetIntegration(
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
         content = ExampleContentType()
-        content.ressort = u'Politik'
+        content.ressort = 'Politik'
         choice = choice.bind(content)
         widget = zeit.cms.browser.widget.DropObjectWidget(
             choice, choice.source, request)
@@ -710,7 +710,7 @@ class DropObjectWidget(zeit.cms.testing.ZeitCmsTestCase):
             widget._toFieldValue('http://xml.zeit.de/testcontent'))
 
     def test_uniqueId_not_in_source_should_raise(self):
-        class FakeSource(object):
+        class FakeSource:
             def __contains__(self, value):
                 return False
 
@@ -766,13 +766,13 @@ class TestObjectSequenceDisplayWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestObjectSequenceDisplayWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
         setup_mydetails()
 
     def tearDown(self):
         teardown_mydetails()
-        super(TestObjectSequenceDisplayWidgetIntegration, self).tearDown()
+        super().tearDown()
 
     def get_field(self):
         import zeit.cms.content.contentsource
@@ -826,13 +826,13 @@ class TestDropObjectDisplayWidgetIntegration(
 
     def setUp(self):
         import zope.security.management
-        super(TestDropObjectDisplayWidgetIntegration, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
         setup_mydetails()
 
     def tearDown(self):
         teardown_mydetails()
-        super(TestDropObjectDisplayWidgetIntegration, self).tearDown()
+        super().tearDown()
 
     def get_field(self):
         import zeit.cms.content.contentsource
@@ -882,7 +882,7 @@ class TestDropObjectDisplayWidgetIntegration(
 class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(TestReferenceSequenceWidget, self).setUp()
+        super().setUp()
         ExampleContentType.references = \
             zeit.cms.content.reference.ReferenceProperty(
                 '.body.references.reference', 'related')
@@ -890,7 +890,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['target'] = ExampleContentType()
 
         @zope.interface.implementer(zope.schema.interfaces.ISource)
-        class FakeSource(object):
+        class FakeSource:
 
             def __contains__(self, value):
                 return True
@@ -902,7 +902,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def tearDown(self):
         del ExampleContentType.references
-        super(TestReferenceSequenceWidget, self).tearDown()
+        super().tearDown()
 
     def test_invalid_unique_id_fails_validation(self):
         widget = ReferenceSequenceWidget(self.field, mock.Mock(), mock.Mock())
@@ -930,7 +930,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
             self.repository['target'], result[0].target)
 
     def test_content_not_in_source_should_raise(self):
-        class FakeSource(object):
+        class FakeSource:
             def __contains__(self, value):
                 return False
 
@@ -947,7 +947,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 class RestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(RestructuredTextWidgetTest, self).setUp()
+        super().setUp()
         from zeit.cms.browser.widget import RestructuredTextWidget
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
@@ -980,7 +980,7 @@ class RestructuredTextWidgetJavascriptTest(
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(RestructuredTextWidgetJavascriptTest, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/restructuredtext.html')
 
@@ -1013,7 +1013,7 @@ class ConvertingRestructuredTextWidgetTest(
         zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(ConvertingRestructuredTextWidgetTest, self).setUp()
+        super().setUp()
         from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
@@ -1039,12 +1039,10 @@ class ConvertingRestructuredTextWidgetTest(
                 '<strong>foo</strong>', self.widget._getFormValue())
 
 
-@unittest.skipUnless(
-    os.path.exists('/usr/bin/pandoc'), 'pandoc not available')
 class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(MarkdownWidgetTest, self).setUp()
+        super().setUp()
         from zeit.cms.browser.widget import MarkdownWidget
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
@@ -1053,13 +1051,13 @@ class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
         self.widget = MarkdownWidget(field, self.request)
 
     def test_converts_input_to_html(self):
-        self.request.form[self.widget.name] = u'**umläut**'
+        self.request.form[self.widget.name] = '**umläut**'
         self.assertEqual(
-            u'<p><strong>umläut</strong></p>\n', self.widget.getInputValue())
+            '<p><strong>umläut</strong></p>', self.widget.getInputValue())
 
     def test_converts_to_markdown_for_rendering(self):
-        self.widget.setRenderedValue(u'<strong>umläut</strong>')
-        self.assertEqual(u'**umläut**\n', self.widget._getFormValue())
+        self.widget.setRenderedValue('<strong>umläut</strong>')
+        self.assertEqual('**umläut**', self.widget._getFormValue())
 
     def test_respects_missing_value(self):
         self.request.form[self.widget.name] = ''

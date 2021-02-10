@@ -115,6 +115,25 @@ class XMLSource(
         return six.text_type(node.text).strip()
 
 
+class SearchableXMLSource(XMLSource):
+
+    def __init__(self, xpath):
+        super().__init__()
+        self.xpath = xpath
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        if self.attribute is NotImplemented:
+            # Return text value of nodes
+            return [six.text_type(node)
+                    for node in tree.xpath(self.xpath)
+                    if self.isAvailable(node, context)]
+        # Return value of provided attribute for nodes
+        return [six.text_type(node.get(self.attribute))
+                for node in tree.xpath(self.xpath)
+                if self.isAvailable(node, context)]
+
+
 def parse_available_interface_list(text):
     result = []
     if text is None:
