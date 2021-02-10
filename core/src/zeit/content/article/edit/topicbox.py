@@ -504,7 +504,12 @@ class TMSRelatedApiQuery(TMSContentQuery):
     grok.name('related-api')
 
     def __init__(self, context):
-        super(TMSRelatedApiQuery, self).__init__(context)
+        super().__init__(context)
+        self.filter_id = None
+        try:
+            self.filter_id = self.context.topicpage_filter
+        except Exception:
+            pass
 
     def _get_documents(self, **kw):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -513,7 +518,9 @@ class TMSRelatedApiQuery(TMSContentQuery):
                 self.context)
             uuid = ContentUUID(current_article)
             response = tms.get_related_documents(
-                uuid=uuid.id, rows=self.context.count)
+                uuid=uuid.id,
+                rows=self.context.count,
+                filtername=self.filter_id)
         except Exception as e:
             if e.status == 404:
                 log.warning(
