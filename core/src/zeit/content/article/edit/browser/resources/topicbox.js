@@ -9,6 +9,7 @@ function display_elements(selected_source_type) {
         'topicpage_filter',
         'elasticsearch_raw_query',
         'elasticsearch_raw_order',
+        'config_query',
     ];
 
     var selected_source_type = selected_source_type.toLowerCase();
@@ -29,7 +30,7 @@ function display_elements(selected_source_type) {
             cssClasses.push('elasticsearch_raw_order');
             break;
         case 'tms-related-api':
-            // hide all elements on related-api
+            cssClasses.push('config_query');
             break;
         default:
             break;

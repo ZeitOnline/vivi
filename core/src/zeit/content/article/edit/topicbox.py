@@ -89,6 +89,18 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.topicpage_filter',
         zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
 
+    _config_query = zeit.cms.content.ObjectPathProperty(
+        '.config_query',
+        zeit.content.article.edit.interfaces.ITopicbox['config_query'])
+
+    @property
+    def config_query(self):
+        return self._config_query
+
+    @config_query.setter
+    def config_query(self, value):
+        self._config_query = value
+
     @property
     def source_type(self):
         result = self._source_type
@@ -533,3 +545,26 @@ class TMSRelatedApiQuery(TMSContentQuery):
             return iter([]), 0
         else:
             return iter(response), response.hits
+
+
+class ConfigQuery(ContentQuery):
+    """Search via Elasticsearch."""
+
+    grok.name('config-query')
+
+    def __init__(self, context):
+        super().__init__(context)
+        factory = zeit.content.article.edit.interfaces.ITopicbox[
+            'config_query'].source.factory
+        query = factory.getQuery(context._config_query)
+        if query is None:
+            query = None
+
+        self.query = query
+
+    def _build_query(self):
+        # This function returns the complete value of the
+        # 'query'-key in die topicpage-esqueries.json
+        # The queries has to be complete queries.
+        return self.query
+

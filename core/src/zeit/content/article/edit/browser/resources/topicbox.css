@@ -2,6 +2,7 @@
 .type-article #edit-form-article-content .fieldname-elasticsearch_raw_order,
 .type-article #edit-form-article-content .fieldname-centerpage,
 .type-article #edit-form-article-content .fieldname-topicpage,
-.type-article #edit-form-article-content .fieldname-topicpage_filter {
+.type-article #edit-form-article-content .fieldname-topicpage_filter,
+.type-article #edit-form-article-content .fieldname-config_query {
     display: none;
 }
