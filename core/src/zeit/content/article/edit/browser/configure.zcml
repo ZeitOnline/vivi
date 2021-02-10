@@ -482,6 +482,27 @@
     weight="10"
     />
 
+  <!-- tickaroo liveblog -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ITickarooLiveblog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-liveblog-tickaroo"
+    class=".edit.EditTickarooLiveblog"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ITickarooLiveblog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-liveblog-tickaroo"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
   <!-- cardstack -->
 
   <browser:page
