@@ -32,6 +32,8 @@ product_config = """
   citation-layout-source file://{base}/edit/tests/citation-layouts.xml
   box-layout-source file://{base}/edit/tests/box-layouts.xml
   puzzleforms-source file://{base}/edit/tests/puzzleforms.xml
+  topicpage-filter-source file://{base}/tests/topicpage-esqueries.json
+  config-base-url file://{base}/tests/
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 

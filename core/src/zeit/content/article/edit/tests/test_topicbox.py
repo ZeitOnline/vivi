@@ -3,6 +3,7 @@ import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.content.video.video
 import zeit.edit.interfaces
+import zope.component
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
 
@@ -117,3 +118,34 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
+
+    def test_topicbox_source_config_query_complete_query(self):
+        box = self.get_topicbox()
+        box.source_type = 'config-query'
+        box.config_query = 'esquery1'
+        contentquery = zope.component.getAdapter(
+            box,
+            zeit.content.article.edit.interfaces.IContentQuery,
+            name=box.source_type)
+        query = contentquery.query
+        values = list(box.values())
+        self.assertEqual({'query': {'term': {'doc_type': 'TESTTYPE'}}}, query)
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
+
+    def test_topicbox_source_config_query_not_complete_query(self):
+        box = self.get_topicbox()
+        box.source_type = 'config-query'
+        box.config_query = 'esquery2'
+        contentquery = zope.component.getAdapter(
+            box,
+            zeit.content.article.edit.interfaces.IContentQuery,
+            name=box.source_type)
+        query = contentquery.query
+        values = list(box.values())
+        self.assertEqual({'query': {'term': {'doc_type': 'TESTTYPE2'}}}, query)
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
+
