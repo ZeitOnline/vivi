@@ -1,7 +1,13 @@
 vivi.core changes
 =================
 
-4.48.8 (unreleased)
+4.48.9 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+4.48.8 (2021-02-10)
 -------------------
 
 - ZON-6383: Handle Markdown using python libraries

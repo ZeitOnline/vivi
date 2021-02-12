@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+import markdownify
 import grokcore.component as grok
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
@@ -13,6 +14,10 @@ class MarkupBlock(zeit.content.cp.blocks.block.Block):
     text = zeit.cms.content.property.Structure('.text')
     alignment = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'align', zeit.content.cp.interfaces.IMarkupBlock['alignment'])
+
+    @property
+    def markdown(self):
+        return markdownify.markdownify(self.text)
 
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):
