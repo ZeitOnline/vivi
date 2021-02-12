@@ -596,8 +596,9 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
             data = '\n'.join(data)
             return json.loads(data)
         except Exception:
+            clsname = self.__class__.__name__
             log.warning(
-                'TopicpageFilterSource could not parse %s', url, exc_info=True)
+                '%s could not parse %s', clsname, url, exc_info=True)
             return {}
 
     def getValues(self):
@@ -610,6 +611,18 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
         return value
 
 
+class ConfigQuerySource(TopicpageFilterSource):
+
+    product_configuration = 'zeit.content.article'
+    default_filename = 'topicpage-esqueries.json'
+
+    def getQuery(self, value):
+        try:
+            return self.json_data()[value].get('query', value)
+        except Exception:
+            return None
+
+
 class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
 
     values = collections.OrderedDict([
@@ -617,7 +630,8 @@ class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
         ('centerpage', _('automatic-area-type-centerpage')),
         ('topicpage', _('automatic-area-type-topicpage')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
-        ('related-api', _('tms-related-api'))
+        ('related-api', _('tms-related-api')),
+        ('config-query', _('config-query'))
     ])
 
 
@@ -716,6 +730,11 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
     topicpage_filter = zope.schema.Choice(
         title=_('Topicpage filter'),
         source=TopicpageFilterSource(),
+        required=False)
+
+    config_query = zope.schema.Choice(
+        title=_('Config-Query'),
+        source=ConfigQuerySource(),
         required=False)
 
     count = zope.schema.Int(title=_('Amount of teasers'), default=3)
