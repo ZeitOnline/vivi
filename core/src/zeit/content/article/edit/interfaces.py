@@ -618,7 +618,7 @@ class ConfigQuerySource(TopicpageFilterSource):
 
     def getQuery(self, value):
         try:
-            return json_date()[value].get('query', value)
+            return self.json_data()[value].get('query', value)
         except Exception:
             return None
 
