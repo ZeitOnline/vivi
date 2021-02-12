@@ -158,7 +158,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
         try:
             filtered_content = []
             content = iter(self._content_query())
-
             if content is None:
                 return ()
 
@@ -547,7 +546,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
             return iter(response), response.hits
 
 
-class ConfigQuery(ContentQuery):
+class ConfigQuery(ElasticsearchContentQuery):
     """Search via Elasticsearch."""
 
     grok.name('config-query')
@@ -556,15 +555,11 @@ class ConfigQuery(ContentQuery):
         super().__init__(context)
         factory = zeit.content.article.edit.interfaces.ITopicbox[
             'config_query'].source.factory
-        query = factory.getQuery(context._config_query)
-        if query is None:
-            query = None
-
-        self.query = query
+        self.query = factory.getQuery(context._config_query)
+        if self.query.get('query', {}) == {}:
+            self.query = {
+                'query': self.query
+            }
 
     def _build_query(self):
-        # This function returns the complete value of the
-        # 'query'-key in die topicpage-esqueries.json
-        # The queries has to be complete queries.
         return self.query
-
