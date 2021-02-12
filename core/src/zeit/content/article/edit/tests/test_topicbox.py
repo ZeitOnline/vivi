@@ -119,6 +119,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
 
+<<<<<<< HEAD
     def test_topicbox_source_config_query_complete_query(self):
         box = self.get_topicbox()
         box.source_type = 'config-query'
@@ -149,3 +150,15 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
 
+    def test_topicbox_values_deduplication(self):
+        box = self.get_topicbox()
+        box.source_type = 'centerpage'
+        box.centerpage = self.get_cp(content=[
+            self.repository['art1'],
+            self.repository['art2'],
+            self.repository['art2'],
+            self.repository['art3'], ])
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
