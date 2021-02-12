@@ -4,7 +4,6 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import TopicReferenceSource
 from zeit.content.article.interfaces import IArticle
 from zeit.content.cp.automatic import cached_on_parent
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import itertools
 import json
