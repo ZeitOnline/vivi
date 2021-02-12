@@ -687,10 +687,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         default=u'payload.document.date_first_released:desc',
         required=False)
 
-    hide_dupes = zope.schema.Bool(
-        title=_('Hide duplicate teasers'),
-        default=True)
-
     is_complete_query = zope.schema.Bool(
         title=_('Take over complete query body'),
         description=_('Remember to add payload.workflow.published:true'),
