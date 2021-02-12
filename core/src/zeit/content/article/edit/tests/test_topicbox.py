@@ -119,7 +119,6 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
 
-<<<<<<< HEAD
     def test_topicbox_source_config_query_complete_query(self):
         box = self.get_topicbox()
         box.source_type = 'config-query'
