@@ -65,11 +65,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicbox[
             'elasticsearch_raw_order'], use_default=True)
 
-    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes',
-        zeit.content.article.edit.interfaces.ITopicbox['hide_dupes'],
-        use_default=True)
-
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
         zeit.content.article.edit.interfaces.ITopicbox[
@@ -153,6 +148,8 @@ class Topicbox(zeit.content.article.edit.block.Block):
             while(len(filtered_content)) < 3:
                 try:
                     item = next(content)
+                    if item in filtered_content:
+                        continue
                     allow_cp = self.source_type == 'centerpage'
                     if TopicReferenceSource(
                             allow_cp).verify_interface(item):
@@ -330,10 +327,6 @@ class ElasticsearchContentQuery(ContentQuery):
     def _build_query(self):
         if self.context.is_complete_query:
             query = self.query
-            if self.hide_dupes_clause:
-                query = {'query': {'bool': {
-                    'must': query,
-                    'must_not': self.hide_dupes_clause}}}
         else:
             _query = self.query.get('query', {})
             if not isinstance(_query, list):
@@ -341,9 +334,6 @@ class ElasticsearchContentQuery(ContentQuery):
             query = {'query': {'bool': {
                 'filter': _query + self._additional_clauses,
                 'must_not': self._additional_not_clauses[:]}}}
-            if self.hide_dupes_clause:
-                query['query']['bool']['must_not'].append(
-                    self.hide_dupes_clause)
         return query
 
     _additional_clauses = [
@@ -357,25 +347,6 @@ class ElasticsearchContentQuery(ContentQuery):
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
-
-    @cachedproperty
-    def hide_dupes_clause(self):
-        """Perform de-duplication of results.
-
-        Create an id query for teasers that already exist on the CP.
-        """
-        if not self.context.hide_dupes or not self.existing_teasers:
-            return None
-        ids = []
-        for content in self.existing_teasers:
-            id = getattr(
-                zeit.cms.content.interfaces.IUUID(content, None),
-                'id', None)
-            if id:
-                ids.append(id)
-        if not ids:
-            return None
-        return {'ids': {'values': ids}}
 
 
 class TMSContentQuery(ContentQuery):
