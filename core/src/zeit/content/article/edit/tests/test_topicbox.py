@@ -88,6 +88,10 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             "http://xml.zeit.de/online/2007/01/Somalia")
         self.assertEqual([self.repository['foo'], ], list(box.values()))
 
+    def test_topicbox_defaults_to_source_type_manuell(self):
+        box = self.get_topicbox()
+        self.assertEqual('manuell', box.source_type)
+
     def test_topicbox_source_centerpage(self):
         box = self.get_topicbox()
         box.source_type = 'centerpage'
