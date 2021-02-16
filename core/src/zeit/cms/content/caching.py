@@ -1,3 +1,4 @@
+from operator import itemgetter
 from os import environ, stat
 from zope.component import getUtility
 from zeit.connector.interfaces import IConnector
@@ -6,13 +7,15 @@ from zeit.connector.interfaces import IConnector
 class ContentCache(object):
 
     def __getattr__(self, name):
-        assert name == 'cache'
+        if name != 'cache':
+            raise AttributeError(name)
         size = environ.get('CONTENT_CACHE_SIZE')
         connector = getUtility(IConnector)
         if size is not None and hasattr(connector, '_path'):
             self.size = size
             self.connector = connector
             self.cache = {}
+            self.hits = self.misses = 0
             return self.cache
         else:
             return None
@@ -38,7 +41,29 @@ class ContentCache(object):
         cache = obj.setdefault(mtime, {})
         if key not in cache:
             cache[key] = factory()
+            self.misses += 1
+        else:
+            self.hits += 1
+        obj['used'] = obj.get('used', 0) + 1
         return cache[key]
 
+    @property
+    def usage(self):
+        cache = self.cache
+        stats = (dict(uid=uid, used=cache[uid]['used']) for uid in cache)
+        return sorted(stats, key=itemgetter('used'))
 
-get = ContentCache().get
+    def info(self):
+        cache = self.cache
+        usage = {info['uid']: info['used'] for info in reversed(self.usage)}
+        return dict(
+            size=self.size,
+            count=len(cache),
+            hits=self.hits,
+            misses=self.misses,
+            usage=usage)
+
+
+__cache = ContentCache()
+get = __cache.get
+info = __cache.info
