@@ -90,7 +90,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
     def test_topicbox_defaults_to_source_type_manuell(self):
         box = self.get_topicbox()
-        self.assertEqual('manuell', box.source_type)
+        self.assertEqual('klassisch', box.source_type)
 
     def test_topicbox_source_centerpage(self):
         box = self.get_topicbox()

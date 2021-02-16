@@ -626,7 +626,7 @@ class ConfigQuerySource(TopicpageFilterSource):
 class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
 
     values = collections.OrderedDict([
-        ('manuell', _('manuell')),
+        ('klassisch', _('klassisch')),
         ('centerpage', _('automatic-area-type-centerpage')),
         ('topicpage', _('automatic-area-type-topicpage')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
@@ -706,12 +706,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         default=u'payload.document.date_first_released:desc',
         required=False)
 
-    is_complete_query = zope.schema.Bool(
-        title=_('Take over complete query body'),
-        description=_('Remember to add payload.workflow.published:true'),
-        default=False,
-        required=False)
-
     centerpage = zope.schema.Choice(
         title=_('Get teasers from CenterPage'),
         source=zeit.content.cp.source.centerPageSource,
@@ -736,8 +730,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         title=_('Config-Query'),
         source=ConfigQuerySource(),
         required=False)
-
-    count = zope.schema.Int(title=_('Amount of teasers'), default=3)
 
     def values():
         """

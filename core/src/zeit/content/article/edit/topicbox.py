@@ -23,10 +23,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     type = 'topicbox'
 
-    _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count',
-        zeit.content.article.edit.interfaces.ITopicbox['count'])
-
     _source_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'source_type',
         zeit.content.article.edit.interfaces.ITopicbox['source_type'])
@@ -64,11 +60,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicbox[
             'elasticsearch_raw_order'], use_default=True)
 
-    is_complete_query = zeit.cms.content.property.ObjectPathProperty(
-        '.elasticsearch_complete_query',
-        zeit.content.article.edit.interfaces.ITopicbox[
-            'is_complete_query'], use_default=True)
-
     centerpage = zeit.cms.content.property.SingleResource('.centerpage')
 
     source_type = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -99,7 +90,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def source_type(self):
         result = self._source_type
         if not result:
-            result = 'manuell'
+            result = 'klassisch'
         return result
 
     @source_type.setter
@@ -107,17 +98,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
         self._source_type = value
 
     @property
-    def count(self):
-        return 5
-        return self._count
-
-    @count.setter
-    def count(self, value):
-        self._count = 5
-        if not value:
-            self._count = 5
-        else:
-            self._count = value
+    def teaser_amount(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.article')
+        return int(config['topicbox-teaser-amount'])
 
     @property
     def _reference_properties(self):
@@ -127,7 +111,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     @property
     def referenced_cp(self):
-        if not self.source_type == 'manuell':
+        if not self.source_type == 'klassisch':
             return None
         import zeit.content.cp.interfaces
         if zeit.content.cp.interfaces.ICenterPage.providedBy(
@@ -145,7 +129,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
                            self.referenced_cp)),
                 len(self._reference_properties))
 
-        if self.source_type == 'manuell':
+        if self.source_type == 'klassisch':
             return (
                 content for content in self._reference_properties if content)
 
@@ -228,7 +212,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
         field = zeit.content.cp.interfaces.IArea[
             'query'].value_type.type_interface[typ]
 
-        if len(item) > self.count:
+        if len(item) > self.teaser_amount:
             value = item[2:]
         else:
             value = item[2]
@@ -271,19 +255,11 @@ class ContentQuery(grok.Adapter):
     grok.context(zeit.content.article.edit.interfaces.ITopicbox)
     grok.baseclass()
 
-    total_hits = NotImplemented
-
     def __init__(self, context):
         self.context = context
 
     def __call__(self):
         raise NotImplementedError()
-
-    @property
-    def existing_teasers(self):
-        # ToDo: Compare current teaser uniqueId with
-        # predecessors to avoid dupes.
-        return []
 
 
 class ElasticsearchContentQuery(ContentQuery):
@@ -299,7 +275,6 @@ class ElasticsearchContentQuery(ContentQuery):
         self.order = self.context.elasticsearch_raw_order
 
     def __call__(self):
-        self.total_hits = 0
         result = []
 
         try:
@@ -313,21 +288,19 @@ class ElasticsearchContentQuery(ContentQuery):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         try:
             response = es.search(
-                query, self.order, rows=self.context.count,
+                query, self.order, rows=self.context.teaser_amount,
                 include_payload=self.include_payload)
         except Exception as e:
             log.warning(
                 'Error during elasticsearch query %r for %s',
                 self.query, self.context.uniqueId, exc_info=True)
             if 'Result window is too large' in str(e):
-                # We have to determine the actually available number of hits.
                 response = es.search(
                     query, self.order, start=0, rows=0,
                     include_payload=self.include_payload)
             else:
                 response = zeit.cms.interfaces.Result()
 
-        self.total_hits = response.hits
         for item in response:
             content = self._resolve(item)
             if content is not None:
@@ -335,15 +308,12 @@ class ElasticsearchContentQuery(ContentQuery):
         return result
 
     def _build_query(self):
-        if self.context.is_complete_query:
-            query = self.query
-        else:
-            _query = self.query.get('query', {})
-            if not isinstance(_query, list):
-                _query = [_query]
-            query = {'query': {'bool': {
-                'filter': _query + self._additional_clauses,
-                'must_not': self._additional_not_clauses[:]}}}
+        _query = self.query.get('query', {})
+        if not isinstance(_query, list):
+            _query = [_query]
+        query = {'query': {'bool': {
+            'filter': _query + self._additional_clauses,
+            'must_not': self._additional_not_clauses[:]}}}
         return query
 
     _additional_clauses = [
@@ -369,52 +339,28 @@ class TMSContentQuery(ContentQuery):
         self.filter_id = self.context.topicpage_filter
 
     def __call__(self):
-        result, _ = self._fetch(start=0)
+        result = self._fetch()
         return result
 
-    def _fetch(self, start):
+    def _fetch(self):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        # cache = centerpage_cache(self.context, 'tms_topic_queries')
-        cache = {}
-
-        # total teasers + some spares
-        rows = self._teaser_count + self.context.count
-        key = (self.topicpage, self.filter_id, start)
-        if key in cache:
-            response, start, _ = cache[key]
-        else:
-            response, hits = self._get_documents(
-                start=start,
-                rows=self.context.count)
-            cache[key] = response, start, hits
+        response = self._get_documents(rows=self.context.teaser_amount)
 
         result = []
-        dupes = 0
-        while len(result) < self.context.count:
+        while len(result) < self.context.teaser_amount:
             try:
                 item = next(response)
             except StopIteration:
-                start = start + rows            # fetch next batch
-                response, hits = self._get_documents(
-                    start=start,
-                    rows=self.context.count)
-                cache[key] = response, start, hits
-                try:
-                    item = next(response)
-                except StopIteration:
-                    break                       # results are exhausted
+                break
 
             content = self._resolve(item)
             if content is None:
                 continue
 
-            if content in self.existing_teasers:
-                dupes += 1
-            else:
-                result.append(content)
+            result.append(content)
 
-        return result, dupes
+        return result
 
     def _get_documents(self, **kw):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -425,46 +371,21 @@ class TMSContentQuery(ContentQuery):
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
             if 'Result window is too large' in str(e):
-                # We have to determine the actually available number of hits.
                 kw['start'] = 0
                 kw['rows'] = 0
                 return self._get_documents(**kw)
             return iter([]), 0
         else:
-            return iter(response), response.hits
+            return iter(response)
 
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
-    @property
-    def _teaser_count(self):
-        return 3
-
-        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
-        return sum(
-            a.count for a in cp.cached_areas
-            if a.automatic and a.count and a.automatic_type == 'topicpage' and
-            a.referenced_topicpage == self.topicpage)
-
-    @property
-    def total_hits(self):
-        # cache = centerpage_cache(self.context, 'tms_topic_queries')
-        cache = {}
-        key = (self.topicpage, self.filter_id, self.start)
-        if key in cache:
-            _, _, hits = cache[key]
-        else:
-            _, hits = self._get_documents(start=self.start, rows=0)
-        return hits
-
 
 class CenterpageContentQuery(ContentQuery):
 
     grok.name('centerpage')
-    # XXX If zeit.web wanted to implement pagination for CP queries, we'd have
-    # to walk over the *whole* referenced CP to compute total_hits, which could
-    # be rather expensive.
 
     def __call__(self):
         teasered = zeit.content.cp.interfaces.ITeaseredContent(
@@ -474,8 +395,7 @@ class CenterpageContentQuery(ContentQuery):
             if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
                 continue
             result.append(content)
-
-            if len(result) >= self.context.count:
+            if len(result) >= self.context.teaser_amount:
                 break
         return result
 
@@ -500,7 +420,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
             uuid = ContentUUID(current_article)
             response = tms.get_related_documents(
                 uuid=uuid.id,
-                rows=self.context.count,
+                rows=self.context.teaser_amount,
                 filtername=self.filter_id)
         except Exception as e:
             if e.status == 404:
@@ -511,9 +431,9 @@ class TMSRelatedApiQuery(TMSContentQuery):
                 log.warning(
                     'Error during TMSRelatedAPI for %s',
                     self.context.uniqueId, exc_info=True)
-            return iter([]), 0
+            return iter([])
         else:
-            return iter(response), response.hits
+            return iter(response)
 
 
 class ConfigQuery(ElasticsearchContentQuery):

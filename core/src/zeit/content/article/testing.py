@@ -29,6 +29,7 @@ product_config = """
   template-source file://{base}/edit/tests/templates.xml
   module-source file://{base}/edit/tests/modules.xml
   header-module-source file://{base}/edit/tests/header-modules.xml
+  topicbox-teaser-amount 5
   citation-layout-source file://{base}/edit/tests/citation-layouts.xml
   box-layout-source file://{base}/edit/tests/box-layouts.xml
   puzzleforms-source file://{base}/edit/tests/puzzleforms.xml
