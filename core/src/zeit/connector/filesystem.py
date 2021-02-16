@@ -313,12 +313,14 @@ class Connector(object):
         self.property_cache[id] = properties
         return properties
 
-    def _get_lastmodified(self, id):
+    def _get_lastmodified(self, id, raw=False):
         filename = self._absolute_path(self._path(id))
         try:
             mtime = os.stat(filename).st_mtime
         except OSError:
             return None
+        if raw:
+            return int(mtime)
         return email.utils.formatdate(mtime, usegmt=True)
 
 
