@@ -1,4 +1,4 @@
-from os import environ
+from os import environ, stat
 from zope.component import getUtility
 from zeit.connector.interfaces import IConnector
 
@@ -9,7 +9,7 @@ class ContentCache(object):
         assert name == 'cache'
         size = environ.get('CONTENT_CACHE_SIZE')
         connector = getUtility(IConnector)
-        if size is not None and hasattr(connector, '_get_lastmodified'):
+        if size is not None and hasattr(connector, '_path'):
             self.size = size
             self.connector = connector
             self.cache = {}
@@ -17,12 +17,25 @@ class ContentCache(object):
         else:
             return None
 
-    def get(self, unique_id, key, factory):
+    def path(self, unique_id):
+        return self.connector._absolute_path(self.connector._path(unique_id))
+
+    def mtime(self, filename):
+        try:
+            mtime = stat(filename).st_mtime
+        except OSError:
+            return None
+        return int(mtime)
+
+    def get(self, unique_id, key, factory, suffix=''):
         cache = self.cache
         if not unique_id or cache is None:
             return factory()
-        mtime = self.connector._get_lastmodified(unique_id, raw=True)
-        cache = self.cache.setdefault(unique_id, {}).setdefault(mtime, {})
+        obj = self.cache.setdefault(unique_id, {})
+        if 'path' not in obj:
+            obj['path'] = self.path(unique_id)
+        mtime = self.mtime(obj['path'] + suffix)
+        cache = obj.setdefault(mtime, {})
         if key not in cache:
             cache[key] = factory()
         return cache[key]

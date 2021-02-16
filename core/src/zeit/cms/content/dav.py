@@ -56,7 +56,7 @@ class DAVProperty(object):
         if properties is None and hasattr(instance, 'uniqueId'):
             key = self.field.__name__, self.namespace, self.name
             return zeit.cms.content.caching.get(
-                instance.uniqueId, key=key, factory=fact)
+                instance.uniqueId, key=key, factory=fact, suffix='.meta')
         else:
             return fact()
 
