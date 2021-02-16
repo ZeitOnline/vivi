@@ -1,5 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 import datetime
+import functools
 import grokcore.component as grok
 import logging
 import lxml.etree
@@ -10,6 +11,7 @@ import sys
 import time
 import zeit.cms.content.interfaces
 import zeit.cms.content.liveproperty
+import zeit.cms.content.caching
 import zeit.cms.grok
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -50,6 +52,15 @@ class DAVProperty(object):
         __traceback_info = (instance, )  # noqa
         if instance is None:
             return self
+        fact = functools.partial(self.__fetch__, instance, class_, properties)
+        if properties is None and hasattr(instance, 'uniqueId'):
+            key = self.field.__name__, self.namespace, self.name
+            return zeit.cms.content.caching.get(
+                instance.uniqueId, key=key, factory=fact)
+        else:
+            return fact()
+
+    def __fetch__(self, instance, class_, properties=None):
         if properties is None:
             properties = zeit.cms.interfaces.IWebDAVReadProperties(instance)
         dav_value = properties.get((self.name, self.namespace),
