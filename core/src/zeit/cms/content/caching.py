@@ -1,7 +1,10 @@
+from collections import defaultdict
 from operator import itemgetter
 from os import environ, stat
+from os.path import join
 from time import time
 from zope.component import getUtility
+from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.connector.interfaces import IConnector
 
 
@@ -13,20 +16,23 @@ class ContentCache(object):
         size = environ.get('CONTENT_CACHE_SIZE')
         check = environ.get('CONTENT_CACHE_CHECK')
         connector = getUtility(IConnector)
-        if size is not None and hasattr(connector, '_path'):
+        if size is not None and hasattr(connector, 'repository_path'):
             self.size = int(size)
             self.check = int(check) if check is not None else self.size / 5
             self.connector = connector
-            self.cache = {}
+            self.cache = defaultdict(dict)
             self.hits = self.misses = 0
             return self.cache
         else:
             return None
 
     def path(self, unique_id):
-        return self.connector._absolute_path(self.connector._path(unique_id))
+        if not unique_id.startswith(ID_NAMESPACE):
+            raise ValueError('The id %r is invalid.' % unique_id)
+        return unique_id.replace(ID_NAMESPACE, '', 1).rstrip('/')
 
-    def mtime(self, filename):
+    def mtime(self, path):
+        filename = join(self.connector.repository_path, path)
         try:
             mtime = stat(filename).st_mtime
         except OSError:
@@ -37,12 +43,13 @@ class ContentCache(object):
         cache = self.cache
         if not unique_id or cache is None:
             return factory()
-        obj = self.cache.setdefault(unique_id, {})
+        path = self.path(unique_id)
+        mtime = self.mtime(path + suffix)
+        if mtime is None:
+            return factory()
+        obj = cache[path]
         obj['used'] = obj.get('used', 0) + 1
         obj['last'] = time()
-        if 'path' not in obj:
-            obj['path'] = self.path(unique_id)
-        mtime = self.mtime(obj['path'] + suffix)
         cache = obj.setdefault(mtime, {})
         if key not in cache:
             cache[key] = factory()
