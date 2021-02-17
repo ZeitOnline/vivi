@@ -32,9 +32,8 @@ class ContentCache(object):
             return None
 
     def path(self, unique_id):
-        if not unique_id.startswith(ID_NAMESPACE):
-            raise ValueError('The id %r is invalid.' % unique_id)
-        return unique_id.replace(ID_NAMESPACE, '', 1).rstrip('/')
+        if unique_id is not None and unique_id.startswith(ID_NAMESPACE):
+            return unique_id.replace(ID_NAMESPACE, '', 1).rstrip('/')
 
     def mtime(self, path):
         filename = join(self.connector.repository_path, path)
@@ -46,9 +45,9 @@ class ContentCache(object):
 
     def get(self, unique_id, key, factory, suffix=''):
         cache = self.cache
-        if not unique_id or cache is None:
-            return factory()
         path = self.path(unique_id)
+        if not path or cache is None:
+            return factory()
         mtime = self.mtime(path + suffix)
         if mtime is None:
             return factory()
