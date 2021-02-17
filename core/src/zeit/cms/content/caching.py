@@ -1,4 +1,5 @@
 from collections import defaultdict
+from logging import getLogger
 from operator import itemgetter
 from os import environ, stat
 from os.path import join
@@ -6,6 +7,9 @@ from time import time
 from zope.component import getUtility
 from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.connector.interfaces import IConnector
+
+
+log = getLogger(__name__)
 
 
 class ContentCache(object):
@@ -22,6 +26,7 @@ class ContentCache(object):
             self.connector = connector
             self.cache = defaultdict(dict)
             self.hits = self.misses = 0
+            log.info('initialized content cache (size %s)', size)
             return self.cache
         else:
             return None
@@ -54,6 +59,7 @@ class ContentCache(object):
         if key not in cache:
             cache[key] = factory()
             self.misses += 1
+            log.debug('added %s (%s)', key, mtime)
             if self.misses % self.check == 0:
                 self.cleanup()
         else:
@@ -63,7 +69,10 @@ class ContentCache(object):
     def cleanup(self):
         cache = self.cache
         over = len(cache) - self.size
+        log.info('size: %d/%d, hits: %d, misses: %d',
+                 over + self.size, self.size, self.hits, self.misses)
         if over > 0:
+            log.debug('removing %d items', over)
             last = sorted((cache[uid]['last'], uid) for uid in cache)
             for _, (_, uid) in zip(range(over), last):
                 del cache[uid]
