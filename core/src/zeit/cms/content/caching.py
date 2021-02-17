@@ -1,5 +1,6 @@
 from operator import itemgetter
 from os import environ, stat
+from time import time
 from zope.component import getUtility
 from zeit.connector.interfaces import IConnector
 
@@ -10,9 +11,11 @@ class ContentCache(object):
         if name != 'cache':
             raise AttributeError(name)
         size = environ.get('CONTENT_CACHE_SIZE')
+        check = environ.get('CONTENT_CACHE_CHECK')
         connector = getUtility(IConnector)
         if size is not None and hasattr(connector, '_path'):
-            self.size = size
+            self.size = int(size)
+            self.check = int(check) if check is not None else self.size / 5
             self.connector = connector
             self.cache = {}
             self.hits = self.misses = 0
@@ -35,6 +38,8 @@ class ContentCache(object):
         if not unique_id or cache is None:
             return factory()
         obj = self.cache.setdefault(unique_id, {})
+        obj['used'] = obj.get('used', 0) + 1
+        obj['last'] = time()
         if 'path' not in obj:
             obj['path'] = self.path(unique_id)
         mtime = self.mtime(obj['path'] + suffix)
@@ -42,10 +47,19 @@ class ContentCache(object):
         if key not in cache:
             cache[key] = factory()
             self.misses += 1
+            if self.misses % self.check == 0:
+                self.cleanup()
         else:
             self.hits += 1
-        obj['used'] = obj.get('used', 0) + 1
         return cache[key]
+
+    def cleanup(self):
+        cache = self.cache
+        over = len(cache) - self.size
+        if over > 0:
+            last = sorted((cache[uid]['last'], uid) for uid in cache)
+            for _, (_, uid) in zip(range(over), last):
+                del cache[uid]
 
     @property
     def usage(self):
