@@ -15,7 +15,7 @@ function display_elements(selected_source_type) {
     var selected_source_type = selected_source_type.toLowerCase();
 
     switch (selected_source_type) {
-        case 'manuell':
+        case 'klassisch':
             hide_references(false);
             break;
         case 'centerpage':
@@ -39,7 +39,7 @@ function display_elements(selected_source_type) {
             break;
     }
 
-    if (selected_source_type != 'manuell') {
+    if (selected_source_type != 'klassisch') {
         hide_references(true);
     }
 
