@@ -7,6 +7,7 @@ from time import time
 from zope.component import getUtility
 from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.connector.interfaces import IConnector
+from zeit.connector.filesystem import Connector
 
 
 log = getLogger(__name__)
@@ -20,7 +21,7 @@ class ContentCache(object):
         size = environ.get('CONTENT_CACHE_SIZE')
         check = environ.get('CONTENT_CACHE_CHECK')
         connector = getUtility(IConnector)
-        if size is not None and hasattr(connector, 'repository_path'):
+        if size is not None and type(connector) is Connector:
             self.size = int(size)
             self.check = int(check) if check is not None else self.size / 5
             self.connector = connector
