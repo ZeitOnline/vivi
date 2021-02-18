@@ -41,6 +41,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.', 'link_text',
         zeit.content.article.edit.interfaces.ITopicbox['link_text'])
 
+    source_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'source_type',
+        zeit.content.article.edit.interfaces.ITopicbox['source_type'])
+
     first_reference = zeit.cms.content.reference.SingleResource(
         '.first_reference', 'related')
 
@@ -61,10 +65,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
             'elasticsearch_raw_order'], use_default=True)
 
     centerpage = zeit.cms.content.property.SingleResource('.centerpage')
-
-    source_type = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'source_type',
-        zeit.content.article.edit.interfaces.ITopicbox['source_type'])
 
     topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage',

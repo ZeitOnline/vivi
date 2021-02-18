@@ -667,6 +667,21 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         title=_("Title"),
         max_length=30)
 
+    link = zope.schema.TextLine(
+        title=_('Link'),
+        required=False)
+
+    link_text = zope.schema.TextLine(
+        title=_("Linktext"),
+        required=False,
+        max_length=30)
+
+    source_type = zope.schema.Choice(
+        title=_('source-type'),
+        source=TopicboxSourceType(),
+        required=True,
+        default='centerpage')
+
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
@@ -685,15 +700,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         source=TopicReferenceSource(),
         required=False)
 
-    link = zope.schema.TextLine(
-        title=_('Link'),
-        required=False)
-
-    link_text = zope.schema.TextLine(
-        title=_("Linktext"),
-        required=False,
-        max_length=30)
-
     referenced_cp = zope.interface.Attribute(
         'Referenced CP or None')
 
@@ -710,12 +716,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         title=_('Get teasers from CenterPage'),
         source=zeit.content.cp.source.centerPageSource,
         required=False)
-
-    source_type = zope.schema.Choice(
-        title=_('source-type'),
-        source=TopicboxSourceType(),
-        required=True,
-        default='centerpage')
 
     topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage'),

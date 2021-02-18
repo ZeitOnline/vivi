@@ -458,9 +458,19 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
                    zeit.cms.browser.form.CharlimitMixin):
 
     legend = None
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.ITopicbox,
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.article.edit.interfaces.ITopicbox).select(
+            'supertitle', 'title', 'link', 'link_text').omit(
+            *list(zeit.edit.interfaces.IBlock))
+    form_fields += zope.formlib.form.Fields(
         zeit.content.image.interfaces.IImages).omit(
+            *list(zeit.edit.interfaces.IBlock))
+    form_fields += zope.formlib.form.Fields(
+        zeit.content.article.edit.interfaces.ITopicbox).select(
+            'source_type', 'first_reference', 'second_reference',
+            'third_reference', 'elasticsearch_raw_query',
+            'elasticsearch_raw_order', 'centerpage', 'topicpage',
+            'topicpage_filter', 'config_query').omit(
             *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit topic box')
 
