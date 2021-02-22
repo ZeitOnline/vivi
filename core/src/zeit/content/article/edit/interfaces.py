@@ -626,11 +626,11 @@ class ConfigQuerySource(TopicpageFilterSource):
 class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
 
     values = collections.OrderedDict([
-        ('klassisch', _('klassisch')),
-        ('centerpage', _('automatic-area-type-centerpage')),
-        ('topicpage', _('automatic-area-type-topicpage')),
-        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
-        ('related-api', _('tms-related-api')),
+        ('manual', _('manual')),
+        ('centerpage', _('centerpage')),
+        ('topicpage', _('topicpage')),
+        ('elasticsearch-query', _('elasticsearch-query')),
+        ('related-api', _('related-api')),
         ('config-query', _('config-query'))
     ])
 
@@ -677,7 +677,7 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         max_length=30)
 
     source_type = zope.schema.Choice(
-        title=_('source-type'),
+        title=_('Source'),
         source=TopicboxSourceType(),
         required=True,
         default='centerpage')
@@ -713,7 +713,7 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         required=False)
 
     centerpage = zope.schema.Choice(
-        title=_('Get teasers from CenterPage'),
+        title=_('Referenced Centerpage'),
         source=zeit.content.cp.source.centerPageSource,
         required=False)
 

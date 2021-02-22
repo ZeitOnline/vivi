@@ -18,10 +18,10 @@ function display_elements(selected_source_type) {
         case 'klassisch':
             hide_references(false);
             break;
-        case 'centerpage':
+        case 'referenzierte centerpage':
             cssClasses.push('centerpage');
             break;
-        case 'tms-themenseite':
+        case 'referenzierte themenseite':
             cssClasses.push('topicpage');
             cssClasses.push('topicpage_filter');
             break;
@@ -29,10 +29,10 @@ function display_elements(selected_source_type) {
             cssClasses.push('elasticsearch_raw_query');
             cssClasses.push('elasticsearch_raw_order');
             break;
-        case 'tms-related-api':
+        case 'related-api':
             cssClasses.push('topicpage_filter');
             break;
-        case 'config-query':
+        case 'konfigurationsdatei':
             cssClasses.push('config_query')
             break;
         default:
