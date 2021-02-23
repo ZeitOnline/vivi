@@ -76,8 +76,49 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         assert b.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 2
 
-    def test_least_used_content_is_removed(self):
-        NotImplemented
+    def test_least_recently_used_content_is_removed(self):
+        cache = vars(caching)['__cache'].cache
+        ICMSContent('http://xml.zeit.de/2006/49/Young')
+        ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
+        ICMSContent('http://xml.zeit.de/2007/01/Macher')
+        ICMSContent('http://xml.zeit.de/2007/01/Miami')
+        ICMSContent('http://xml.zeit.de/2007/02/Verfolgt')
+        assert len(cache) == 5
+        assert '2006/49/Young' in cache
+        assert '2007/01/Miami' in cache
+        assert '2007/02/Vita' not in cache
+        ICMSContent('http://xml.zeit.de/2007/02/Vita')
+        assert len(cache) == 5
+        assert '2006/49/Young' not in cache
+        assert '2007/01/Miami' in cache
+        assert '2007/02/Vita' in cache
+        ICMSContent('http://xml.zeit.de/2006/49/Young')
+        ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
+        ICMSContent('http://xml.zeit.de/2007/01/Macher')
+        assert len(cache) == 5
+        assert '2007/02/Vita' in cache
+        assert '2006/49/Young' in cache
+        assert '2007/01/Miami' not in cache
 
     def test_cache_info(self):
-        NotImplemented
+        assert caching.info() == dict(
+            size=5, count=0, hits=0, misses=0, usage={})
+        ICMSContent('http://xml.zeit.de/2006/49/Young')
+        ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
+        ICMSContent('http://xml.zeit.de/2007/01/Macher')
+        assert caching.info() == dict(
+            size=5, count=3, hits=0, misses=3, usage={
+                '2006/49/Young': 1,
+                '2006/52/Stimmts': 1,
+                '2007/01/Macher': 1,
+            })
+        ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
+        ICMSContent('http://xml.zeit.de/2007/01/Macher')
+        ICMSContent('http://xml.zeit.de/2007/02/Vita')
+        assert caching.info() == dict(
+            size=5, count=4, hits=2, misses=4, usage={
+                '2006/49/Young': 1,
+                '2006/52/Stimmts': 2,
+                '2007/01/Macher': 2,
+                '2007/02/Vita': 1,
+            })
