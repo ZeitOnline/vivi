@@ -24,9 +24,14 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         self.getcontent_patch = patch.object(
             type(repository), 'getContent', wraps=repository.getContent)
         self.getcontent = self.getcontent_patch.start()
+        self.getproperty_patch = patch(
+            'zeit.cms.content.dav.CollectionTextLineProperty.fromProperty',
+            return_value=('Icke', 'Er'))
+        self.getproperty = self.getproperty_patch.start()
         self.path = Path(path)
 
     def tearDown(self):
+        self.getproperty_patch.stop()
         self.getcontent_patch.stop()
         cache = vars(caching)['__cache']    # reset the cache by removing
         if hasattr(cache, 'cache'):         # the `cache` attribute
@@ -52,10 +57,24 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         assert a is not b
 
     def test_dav_properties_are_cached(self):
-        NotImplemented
+        assert self.getproperty.call_count == 0
+        a = ICMSContent('http://xml.zeit.de/testcontent')
+        assert a.authors == ('Icke', 'Er')
+        assert self.getproperty.call_count == 1
+        commit()                            # new transaction (aka request)
+        b = ICMSContent('http://xml.zeit.de/testcontent')
+        assert b.authors == ('Icke', 'Er')
+        assert self.getproperty.call_count == 1
 
     def test_dav_properties_are_invalidated_by_update(self):
-        NotImplemented
+        a = ICMSContent('http://xml.zeit.de/testcontent')
+        assert a.authors == ('Icke', 'Er')
+        assert self.getproperty.call_count == 1
+        commit()                            # new transaction (aka request)
+        self.path.joinpath('testcontent.meta').touch()
+        b = ICMSContent('http://xml.zeit.de/testcontent')
+        assert b.authors == ('Icke', 'Er')
+        assert self.getproperty.call_count == 2
 
     def test_least_used_content_is_removed(self):
         NotImplemented
