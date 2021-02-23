@@ -1,6 +1,7 @@
 from mock import patch
 from os import environ
 from pathlib import Path
+from transaction import commit
 from zeit.cms.content import caching
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.interfaces import IRepository
@@ -34,17 +35,21 @@ class FilesystemCachingTest(ZeitCmsTestCase):
 
     def test_content_is_cached(self):
         assert self.getcontent.call_count == 0
-        ICMSContent('http://xml.zeit.de/testcontent')
+        a = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
-        ICMSContent('http://xml.zeit.de/testcontent')
+        commit()                            # new transaction (aka request)
+        b = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
+        assert a is b
 
     def test_content_is_invalidated_by_update(self):
-        ICMSContent('http://xml.zeit.de/testcontent')
+        a = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
+        commit()                            # new transaction (aka request)
         self.path.joinpath('testcontent').touch()
-        ICMSContent('http://xml.zeit.de/testcontent')
+        b = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 2
+        assert a is not b
 
     def test_dav_properties_are_cached(self):
         NotImplemented
