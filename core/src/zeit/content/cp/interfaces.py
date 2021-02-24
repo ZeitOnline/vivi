@@ -676,24 +676,6 @@ class IRenderedArea(IArea):
         'This is an extension point for zeit.web to do pagination.')
 
 
-class IContentQuery(zope.interface.Interface):
-    """Mechanism to retrieve content objects.
-    Used to register named adapters for the different IArea.automatic_types.
-    """
-
-    total_hits = zope.interface.Attribute(
-        'Total number of available results (only available after calling)')
-
-    def __call__(self):
-        """Returns list of content objects."""
-
-    existing_teasers = zope.interface.Attribute(
-        """Returns a set of ICMSContent objects that are already present on
-        the CP in other areas. If IArea.hide_dupes is True, these should be
-        not be repeated, and thus excluded from our query result.
-        """)
-
-
 class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
     """Returns an iterable content objects in a CenterPage, that are referenced
     by ITeaserBlocks, in the same order they appear in the CenterPage.
