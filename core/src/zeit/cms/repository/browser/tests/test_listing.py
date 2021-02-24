@@ -5,6 +5,7 @@ import zeit.cms.testing
 class TestListing(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
+    window_height = 800
 
     def test_tablelisting_filter(self):
         s = self.selenium
