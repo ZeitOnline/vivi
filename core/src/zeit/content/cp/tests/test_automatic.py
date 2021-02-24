@@ -9,7 +9,7 @@ import requests_mock
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.content.cp.automatic
+import zeit.contentquery.query
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -524,6 +524,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def create_automatic_area(self, cp, count=3, type='centerpage'):
         area = cp['feature'].create_item('area')
+        self.automatic_area = zeit.content.cp.automatic.AutomaticArea(area)
         area.count = count
         area.automatic_type = type
         area.automatic = True
@@ -630,7 +631,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         def resolve_tmscontent(self, doc):
             return zeit.retresco.content.from_tms_representation(doc)
 
-        with mock.patch('zeit.content.cp.automatic.TMSContentQuery._resolve',
+        with mock.patch('zeit.contentquery.query.TMSContentQuery._resolve',
                         new=resolve_tmscontent):
             self.assertEqual(
                 'http://xml.zeit.de/t2',
@@ -656,7 +657,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         def resolve_tmscontent(self, doc):
             return zeit.retresco.content.from_tms_representation(doc)
 
-        with mock.patch('zeit.content.cp.automatic.TMSContentQuery._resolve',
+        with mock.patch('zeit.contentquery.query.TMSContentQuery._resolve',
                         new=resolve_tmscontent):
             self.assertUniqueIds(a1, '/teaser-0', '/teaser-1')
             self.assertUniqueIds(a2, '/teaser-2', '/teaser-3', '/teaser-4')
@@ -732,11 +733,13 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_teaser_count(self):
         a1 = self.create_automatic_area(self.cp, count=0, type='topicpage')
+        a1_automatic_area = self.automatic_area
         a2 = self.create_automatic_area(self.cp, count=0, type='topicpage')
         a3 = self.create_automatic_area(self.cp, count=2)
         a1.referenced_topicpage = 'tms-id'
         a3.referenced_topicpage = 'tms-id'
-        tms_query = zeit.content.cp.automatic.TMSContentQuery(a1)
+        tms_query = zeit.contentquery.query.TMSContentQuery(
+            a1_automatic_area)
         self.assertEqual(tms_query._teaser_count, 0)
         a2.count = 3
         self.assertEqual(tms_query._teaser_count, 0)
@@ -749,6 +752,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_total_hits_can_be_called_first(self):
         area = self.create_automatic_area(self.cp)
+        automatic_area = self.automatic_area
         area.start = 0          # TODO: are we sure this is _always_ set?
         tms = mock.Mock()
         zope.component.getGlobalSiteManager().registerUtility(
@@ -756,7 +760,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         results = zeit.cms.interfaces.Result([])
         results.hits = 42
         tms.get_topicpage_documents.return_value = results
-        tms_query = zeit.content.cp.automatic.TMSContentQuery(area)
+        tms_query = zeit.contentquery.query.TMSContentQuery(
+            automatic_area)
         self.assertEqual(tms_query.total_hits, 42)
 
 
@@ -826,8 +831,10 @@ class AutomaticRSSTest(HideDupesTest):
 
     def test_rss_content_query_creates_teasers_from_feed(self):
         area = self.create_automatic_area(self.cp, count=3, type='rss-feed')
+        automatic_area = self.automatic_area
         m = self.mocked_rss_query(area)
-        rss_query = zeit.content.cp.automatic.RSSFeedContentQuery(area)
+        rss_query = zeit.contentquery.query.RSSFeedContentQuery(
+            automatic_area)
         with m:
             result = rss_query()
         self.assertEqual(3, len(result))
