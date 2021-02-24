@@ -262,7 +262,7 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
         super(RetryTest, self).tearDown()
 
     def test_retries_on_technical_error(self):
-        self.tms.enrich.side_effect = [TechnicalError('internal'), None]
+        self.tms.enrich.side_effect = [TechnicalError('internal', 500), None]
         result = zeit.retresco.update.index_async.delay(
             'http://xml.zeit.de/testcontent')
         transaction.commit()

@@ -121,12 +121,16 @@ class TMSError(Exception):
     """Service was unable to process a request because of semantic problems."""
 
     def __init__(self, message, status):
-        super(TMSError, self).__init__(message)
+        super().__init__(message)
         self.status = status
 
 
 class TechnicalError(Exception):
     """Service had a technical error. The request can be retried."""
+
+    def __init__(self, message, status):
+        super().__init__(message)
+        self.status = status
 
 
 class ITMSRepresentation(zope.interface.Interface):
