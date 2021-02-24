@@ -40,39 +40,39 @@ class FilesystemCachingTest(ZeitCmsTestCase):
 
     def test_content_is_cached(self):
         assert self.getcontent.call_count == 0
-        a = ICMSContent('http://xml.zeit.de/othertestcontent')
+        a = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
         commit()                            # new transaction (aka request)
-        b = ICMSContent('http://xml.zeit.de/othertestcontent')
+        b = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
         assert a is b
 
     def test_content_is_invalidated_by_update(self):
-        a = ICMSContent('http://xml.zeit.de/othertestcontent')
+        a = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
         commit()                            # new transaction (aka request)
-        self.path.joinpath('othertestcontent').touch()
-        b = ICMSContent('http://xml.zeit.de/othertestcontent')
+        self.path.joinpath('testcontent').touch()
+        b = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 2
         assert a is not b
 
     def test_dav_properties_are_cached(self):
         assert self.getproperty.call_count == 0
-        a = ICMSContent('http://xml.zeit.de/othertestcontent')
+        a = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert a.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 1
         commit()                            # new transaction (aka request)
-        b = ICMSContent('http://xml.zeit.de/othertestcontent')
+        b = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert b.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 1
 
     def test_dav_properties_are_invalidated_by_update(self):
-        a = ICMSContent('http://xml.zeit.de/othertestcontent')
+        a = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert a.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 1
         commit()                            # new transaction (aka request)
-        self.path.joinpath('othertestcontent.meta').touch()
-        b = ICMSContent('http://xml.zeit.de/othertestcontent')
+        self.path.joinpath('contentwithproperty.meta').touch()
+        b = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert b.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 2
 
