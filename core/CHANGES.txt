@@ -4,7 +4,7 @@ vivi.core changes
 4.49.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6346: Make tickaroo liveblog status required
 
 
 4.49.0 (2021-02-24)

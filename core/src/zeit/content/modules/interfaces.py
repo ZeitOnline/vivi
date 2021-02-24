@@ -311,4 +311,4 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
     status = zope.schema.Choice(
         title=_('Liveblog status'),
         source=LiveblogSource('*//status'),
-        required=False)
+        required=True)
