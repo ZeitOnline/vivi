@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.48.9 (unreleased)
+4.49.0 (2021-02-24)
 -------------------
 
 - MAINT: Add status code to retresco TechnicalError
