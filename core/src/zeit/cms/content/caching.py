@@ -25,7 +25,7 @@ class ContentCache(object):
             self.size = int(size)
             self.check = int(check) if check is not None else self.size / 5
             self.connector = connector
-            self.cache = defaultdict(dict)
+            self.cache = defaultdict(lambda: dict(used=0, mtimes={}, data={}))
             self.hits = self.misses = 0
             log.info('initialized content cache (size %s)', size)
             return self.cache
@@ -53,10 +53,10 @@ class ContentCache(object):
         if mtime is None:
             return factory()
         obj = cache[path]
-        obj['used'] = obj.get('used', 0) + 1
+        obj['used'] += 1
         obj['last'] = time()
-        if mtime != obj.setdefault('mtimes', {}).get(suffix):
-            obj['data'] = {}
+        if mtime != obj['mtimes'].get(suffix):
+            obj['data'].clear()
             obj['mtimes'][suffix] = mtime
         cache = obj['data']
         if key not in cache:
