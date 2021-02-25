@@ -55,7 +55,10 @@ class ContentCache(object):
         obj = cache[path]
         obj['used'] = obj.get('used', 0) + 1
         obj['last'] = time()
-        cache = obj.setdefault(mtime, {})
+        if mtime != obj.setdefault('mtimes', {}).get(suffix):
+            obj['data'] = {}
+            obj['mtimes'][suffix] = mtime
+        cache = obj['data']
         if key not in cache:
             cache[key] = factory()
             self.misses += 1
