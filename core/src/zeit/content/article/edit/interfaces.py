@@ -2,7 +2,10 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import datetime
+import re
+import json
 import six
+import zc.sourcefactory.contextual
 import zeit.cms.content.field
 import zeit.content.article.interfaces
 import zeit.content.article.source
@@ -18,6 +21,10 @@ import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zope.schema
 import zope.security.proxy
+import zeit.content.cp.interfaces
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class IArticleArea(zeit.edit.interfaces.IArea):
@@ -559,6 +566,75 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
     )
 
 
+class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
+                            zeit.cms.content.sources.CachedXMLBase):
+
+    COMMENT = re.compile(r'\s*//')
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'topicpage-filter-source'
+    default_filename = 'topicpage-filters.json'
+
+    def json_data(self):
+        result = collections.OrderedDict()
+        for row in self._get_tree():
+            if len(row) != 1:
+                continue
+            key = list(row.keys())[0]
+            result[key] = row[key]
+        return result
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _get_tree_from_url(self, url):
+        try:
+            data = []
+            for line in six.moves.urllib.request.urlopen(url):
+                line = six.ensure_text(line)
+                if self.COMMENT.search(line):
+                    continue
+                data.append(line)
+            data = '\n'.join(data)
+            return json.loads(data)
+        except Exception:
+            clsname = self.__class__.__name__
+            log.warning(
+                '%s could not parse %s', clsname, url, exc_info=True)
+            return {}
+
+    def getValues(self):
+        return self.json_data().keys()
+
+    def getTitle(self, value):
+        return self.json_data()[value].get('title', value)
+
+    def getToken(self, value):
+        return value
+
+
+class ConfigQuerySource(TopicpageFilterSource):
+
+    product_configuration = 'zeit.content.article'
+    default_filename = 'topicpage-esqueries.json'
+
+    def getQuery(self, value):
+        try:
+            return self.json_data()[value].get('query', value)
+        except Exception:
+            return None
+
+
+class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('manual', _('manual')),
+        ('centerpage', _('centerpage')),
+        ('topicpage', _('topicpage')),
+        ('elasticsearch-query', _('elasticsearch-query')),
+        ('related-api', _('related-api')),
+        ('config-query', _('config-query'))
+    ])
+
+
 class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 
     def __init__(self, allow_cp=False):
@@ -566,6 +642,7 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
         self._allowed_interfaces = (
             zeit.content.article.interfaces.IArticle,
             zeit.content.gallery.interfaces.IGallery,
+            zeit.content.video.interfaces.IVideo,
             zeit.content.link.interfaces.ILink)
 
     @property
@@ -590,10 +667,26 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         title=_("Title"),
         max_length=30)
 
+    link = zope.schema.TextLine(
+        title=_('Link'),
+        required=False)
+
+    link_text = zope.schema.TextLine(
+        title=_("Linktext"),
+        required=False,
+        max_length=30)
+
+    automatic_type = zope.schema.Choice(
+        title=_('Source'),
+        source=TopicboxSourceType(),
+        required=True,
+        default='centerpage')
+
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
-        source=TopicReferenceSource(allow_cp=True))
+        source=TopicReferenceSource(allow_cp=True),
+        required=False)
 
     second_reference = zope.schema.Choice(
         title=_("Reference"),
@@ -607,17 +700,36 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         source=TopicReferenceSource(),
         required=False)
 
-    link = zope.schema.TextLine(
-        title=_('Link'),
-        required=False)
-
-    link_text = zope.schema.TextLine(
-        title=_("Linktext"),
-        required=False,
-        max_length=30)
-
     referenced_cp = zope.interface.Attribute(
         'Referenced CP or None')
+
+    elasticsearch_raw_query = zope.schema.Text(
+        title=_('Elasticsearch raw query'),
+        required=False)
+
+    elasticsearch_raw_order = zope.schema.TextLine(
+        title=_('Sort order'),
+        default=u'payload.document.date_first_released:desc',
+        required=False)
+
+    centerpage = zope.schema.Choice(
+        title=_('Referenced Centerpage'),
+        source=zeit.content.cp.source.centerPageSource,
+        required=False)
+
+    topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage'),
+        required=False)
+
+    topicpage_filter = zope.schema.Choice(
+        title=_('Topicpage filter'),
+        source=TopicpageFilterSource(),
+        required=False)
+
+    config_query = zope.schema.Choice(
+        title=_('Config-Query'),
+        source=ConfigQuerySource(),
+        required=False)
 
     def values():
         """

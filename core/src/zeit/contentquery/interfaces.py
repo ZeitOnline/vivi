@@ -170,7 +170,7 @@ class IQueryConditions(zeit.content.article.interfaces.IArticle):
 class IContentQuery(zope.interface.Interface):
     """Mechanism to retrieve content objects.
     Used to register named adapters for the different IArea.automatic_type's
-    and article module ITopicbox.source_type's
+    and article module ITopicbox.automatic_type's
     """
 
     total_hits = zope.interface.Attribute(

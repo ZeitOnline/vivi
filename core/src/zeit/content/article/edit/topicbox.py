@@ -1,19 +1,30 @@
 # -*- coding: utf-8 -*-
-from six.moves import filter
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.edit.interfaces import TopicReferenceSource
+from zeit.content.article.interfaces import IArticle
+from zeit.content.cp.automatic import cached_on_parent
 import grokcore.component as grok
 import itertools
+import logging
+import lxml
 import zeit.cms.content.reference
+import zeit.contentquery.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
 import zope.component
+
+log = logging.getLogger(__name__)
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicbox)
 class Topicbox(zeit.content.article.edit.block.Block):
 
     type = 'topicbox'
+
+    _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'automatic_type',
+        zeit.content.article.edit.interfaces.ITopicbox['automatic_type'])
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle',
@@ -29,6 +40,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.', 'link_text',
         zeit.content.article.edit.interfaces.ITopicbox['link_text'])
 
+    automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'automatic_type',
+        zeit.content.article.edit.interfaces.ITopicbox['automatic_type'])
+
     first_reference = zeit.cms.content.reference.SingleResource(
         '.first_reference', 'related')
 
@@ -38,6 +53,55 @@ class Topicbox(zeit.content.article.edit.block.Block):
     third_reference = zeit.cms.content.reference.SingleResource(
         '.third_reference', 'related')
 
+    elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_raw_query',
+        zeit.content.article.edit.interfaces.ITopicbox[
+            'elasticsearch_raw_query'])
+
+    elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_raw_order',
+        zeit.content.article.edit.interfaces.ITopicbox[
+            'elasticsearch_raw_order'], use_default=True)
+
+    centerpage = zeit.cms.content.property.SingleResource('.centerpage')
+
+    topicpage = zeit.cms.content.property.ObjectPathProperty(
+        '.topicpage',
+        zeit.content.article.edit.interfaces.ITopicbox['topicpage'])
+
+    topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
+        '.topicpage_filter',
+        zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
+
+    _config_query = zeit.cms.content.property.ObjectPathProperty(
+        '.config_query',
+        zeit.content.article.edit.interfaces.ITopicbox['config_query'])
+
+    @property
+    def config_query(self):
+        return self._config_query
+
+    @config_query.setter
+    def config_query(self, value):
+        self._config_query = value
+
+    @property
+    def automatic_type(self):
+        result = self._automatic_type
+        if not result:
+            result = 'klassisch'
+        return result
+
+    @automatic_type.setter
+    def automatic_type(self, value):
+        self._automatic_type = value
+
+    @property
+    def teaser_amount(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.article')
+        return int(config['topicbox-teaser-amount'])
+
     @property
     def _reference_properties(self):
         return (self.first_reference,
@@ -46,11 +110,14 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     @property
     def referenced_cp(self):
+        if not self.automatic_type == 'klassisch':
+            return None
         import zeit.content.cp.interfaces
         if zeit.content.cp.interfaces.ICenterPage.providedBy(
                 self.first_reference):
             return self.first_reference
 
+    @cached_on_parent(IArticle, 'topicbox_values')
     def values(self):
         if self.referenced_cp:
             parent_article = zeit.content.article.interfaces.IArticle(self,
@@ -60,7 +127,107 @@ class Topicbox(zeit.content.article.edit.block.Block):
                        zeit.edit.interfaces.IElementReferences(
                            self.referenced_cp)),
                 len(self._reference_properties))
-        return (content for content in self._reference_properties if content)
+
+        if self.automatic_type == 'klassisch':
+            return (
+                content for content in self._reference_properties if content)
+
+        try:
+            filtered_content = []
+            content = iter(self._content_query())
+            if content is None:
+                return ()
+
+            while(len(filtered_content)) < 3:
+                try:
+                    item = next(content)
+                    if item in filtered_content:
+                        continue
+                    allow_cp = self.automatic_type == 'centerpage'
+                    if TopicReferenceSource(
+                            allow_cp).verify_interface(item):
+                        filtered_content.append(item)
+                except StopIteration:
+                    break
+            return iter(filtered_content)
+
+        except (LookupError, ValueError):
+            log.warning('found no IContentQuery type %s',
+                        self.automatic_type)
+            return (
+                content for content in self._reference_properties if content)
+
+    @property
+    def _content_query(self):
+        content = zope.component.getAdapter(
+            self, zeit.contentquery.interfaces.IContentQuery,
+            name=self.automatic_type or '')
+        return content
+
+    @property
+    def query(self):
+        if not hasattr(self.xml, 'query'):
+            return ()
+        result = []
+        for condition in self.xml.query.getchildren():
+            typ = condition.get('type')
+            if typ == 'Channel':  # BBB
+                typ = 'channels'
+            operator = condition.get('operator')
+            if not operator:  # BBB
+                operator = 'eq'
+            value = self._converter(typ).fromProperty(str(condition))
+            field = zeit.content.cp.interfaces.IArea[
+                'query'].value_type.type_interface[typ]
+            if zope.schema.interfaces.ICollection.providedBy(field):
+                value = value[0]
+            # CombinationWidget needs items to be flattened
+            if not isinstance(value, tuple):
+                value = (value,)
+            result.append((typ, operator) + value)
+        return tuple(result)
+
+    @query.setter
+    def query(self, value):
+        try:
+            self.xml.remove(self.xml.query)
+        except AttributeError:
+            pass
+
+        if not value:
+            return
+
+        E = lxml.objectify.E
+        query = E.query()
+        for item in value:
+            typ, operator, val = self._serialize_query_item(item)
+            query.append(E.condition(val, type=typ, operator=operator))
+        self.xml.append(query)
+
+    def _serialize_query_item(self, item):
+        typ = item[0]
+        operator = item[1]
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[typ]
+
+        if len(item) > self.teaser_amount:
+            value = item[2:]
+        else:
+            value = item[2]
+        if zope.schema.interfaces.ICollection.providedBy(field):
+            value = field._type((value,))  # tuple(already_tuple) is a no-op
+        value = self._converter(typ).toProperty(value)
+
+        return typ, operator, value
+
+    def _converter(self, selector):
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[selector]
+        field = field.bind(zeit.content.article.interfaces.IArticle(self))
+        props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+        return zope.component.getMultiAdapter(
+            (field, props),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 
 @zope.component.adapter(zeit.content.article.edit.interfaces.ITopicbox)
