@@ -12,6 +12,7 @@ import zeit.cms.interfaces
 import zeit.contentquery.query
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
+import zeit.contentquery.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
@@ -773,7 +774,7 @@ class AutomaticRSSTest(HideDupesTest):
         return lxml.etree.parse(url)
 
     def mocked_rss_query(self, area):
-        source = zeit.content.cp.interfaces.AUTOMATIC_FEED_SOURCE
+        source = zeit.contentquery.interfaces.AUTOMATIC_FEED_SOURCE
         spektrum_feed = source.factory.find(None, 'spektrum')
         area.rss_feed = spektrum_feed.id
         m = requests_mock.Mocker()
