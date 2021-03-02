@@ -5,12 +5,12 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
-import six
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
+import zeit.contentquery.helper
 import zeit.edit.container
 import zeit.edit.interfaces
 import zope.component
@@ -90,6 +90,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     type = 'area'
 
+    query = zeit.contentquery.helper.QueryHelper()
+
     kind = ObjectPathAttributeProperty(
         '.', 'kind', zeit.content.cp.interfaces.IArea['kind'],
         use_default=True)
@@ -156,10 +158,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     referenced_topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.referenced_topicpage',
-        zeit.content.cp.interfaces.IArea['referenced_topicpage'])
+        zeit.contentquery.interfaces.IConfiguration['referenced_topicpage'])
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
-        zeit.content.cp.interfaces.IArea['topicpage_filter'])
+        zeit.contentquery.interfaces.IConfiguration['topicpage_filter'])
 
     query_order = zeit.cms.content.property.ObjectPathProperty(
         '.query_order', zeit.content.cp.interfaces.IArea['query_order'],
@@ -179,7 +181,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     rss_feed = zeit.cms.content.property.DAVConverterWrapper(
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
-        zeit.content.cp.interfaces.IArea['rss_feed'])
+        zeit.contentquery.interfaces.IConfiguration['rss_feed'])
 
     topiclink_label_1 = ReferencedCpFallbackProperty(
         '.topiclink_label_1',
@@ -407,47 +409,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def filter_values(self, *interfaces):
         return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(
             *interfaces)
-
-    @property
-    def query(self):
-        if not hasattr(self.xml, 'query'):
-            return ()
-
-        result = []
-        for condition in self.xml.query.getchildren():
-            typ = condition.get('type')
-            if typ == 'Channel':  # BBB
-                typ = 'channels'
-            operator = condition.get('operator')
-            if not operator:  # BBB
-                operator = 'eq'
-            value = self._converter(typ).fromProperty(six.text_type(condition))
-            field = zeit.content.cp.interfaces.IArea[
-                'query'].value_type.type_interface[typ]
-            if zope.schema.interfaces.ICollection.providedBy(field):
-                value = value[0]
-            # CombinationWidget needs items to be flattened
-            if not isinstance(value, tuple):
-                value = (value,)
-            result.append((typ, operator) + value)
-        return tuple(result)
-
-    @query.setter
-    def query(self, value):
-        try:
-            self.xml.remove(self.xml.query)
-        except AttributeError:
-            pass
-
-        if not value:
-            return
-
-        E = lxml.objectify.E
-        query = E.query()
-        for item in value:
-            typ, operator, val = self._serialize_query_item(item)
-            query.append(E.condition(val, type=typ, operator=operator))
-        self.xml.append(query)
 
     def _serialize_query_item(self, item):
         typ = item[0]

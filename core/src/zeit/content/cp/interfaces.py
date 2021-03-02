@@ -4,7 +4,6 @@ import collections
 import fractions
 import json
 import logging
-import re
 import six
 import six.moves.urllib.request
 import zc.sourcefactory.contextual
@@ -270,38 +269,6 @@ class AutomaticTypeSource(SimpleDictSource):
         return value
 
 
-class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
-
-    def __init__(self, id, title, url, timeout):
-        super(AutomaticFeed, self).__init__(id, title, None)
-        self.url = url
-        self.timeout = timeout
-
-
-class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
-                          zeit.cms.content.sources.SimpleContextualXMLSource):
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'cp-automatic-feed-source'
-    default_filename = 'cp-automatic-feeds.xml'
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _values(self):
-        result = collections.OrderedDict()
-        for node in self._get_tree().iterchildren('*'):
-            feed = AutomaticFeed(
-                six.text_type(node.get('id')),
-                six.text_type(node.text.strip()),
-                six.text_type(node.get('url')),
-                int(node.get('timeout', 2))
-            )
-            result[feed.id] = feed
-        return result
-
-
-AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
-
-
 class QueryTypeSource(SimpleDictSource):
 
     values = collections.OrderedDict([
@@ -375,50 +342,6 @@ class QuerySortOrderSource(SimpleDictSource):
         ('payload.document.date_first_released:desc',
          _('query-sort-order-first-released')),
     ))
-
-
-class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
-                            zeit.cms.content.sources.CachedXMLBase):
-
-    COMMENT = re.compile(r'\s*//')
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'topicpage-filter-source'
-    default_filename = 'topicpage-filters.json'
-
-    def json_data(self):
-        result = collections.OrderedDict()
-        for row in self._get_tree():
-            if len(row) != 1:
-                continue
-            key = list(row.keys())[0]
-            result[key] = row[key]
-        return result
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _get_tree_from_url(self, url):
-        try:
-            data = []
-            for line in six.moves.urllib.request.urlopen(url):
-                line = six.ensure_text(line)
-                if self.COMMENT.search(line):
-                    continue
-                data.append(line)
-            data = '\n'.join(data)
-            return json.loads(data)
-        except Exception:
-            log.warning(
-                'TopicpageFilterSource could not parse %s', url, exc_info=True)
-            return {}
-
-    def getValues(self):
-        return self.json_data().keys()
-
-    def getTitle(self, value):
-        return self.json_data()[value].get('title', value)
-
-    def getToken(self, value):
-        return value
 
 
 def automatic_area_can_read_teasers_automatically(data):
@@ -577,15 +500,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
         default=u'payload.workflow.date_last_published_semantic:desc',
         required=True)
 
-    referenced_topicpage = zope.schema.TextLine(
-        title=_('Referenced Topicpage'),
-        required=False)
-
-    topicpage_filter = zope.schema.Choice(
-        title=_('Topicpage filter'),
-        source=TopicpageFilterSource(),
-        required=False)
-
     elasticsearch_raw_query = zope.schema.Text(
         title=_('Elasticsearch raw query'),
         required=False)
@@ -597,11 +511,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
         title=_('Take over complete query body'),
         description=_('Remember to add payload.workflow.published:true'),
         default=False,
-        required=False)
-
-    rss_feed = zope.schema.Choice(
-        title=_('RSS-Feed'),
-        source=AUTOMATIC_FEED_SOURCE,
         required=False)
 
     area_color_theme = zope.schema.Choice(

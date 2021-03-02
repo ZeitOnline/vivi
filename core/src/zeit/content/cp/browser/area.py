@@ -179,7 +179,9 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             'count', 'query', 'query_order',
             'elasticsearch_raw_query', 'elasticsearch_raw_order',
             'is_complete_query',
-            'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
+            'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes')
+    form_fields += zope.formlib.form.FormFields(
+        zeit.contentquery.interfaces.IConfiguration).select(
             'referenced_topicpage', 'topicpage_filter', 'rss_feed')
 
     field_groups = (

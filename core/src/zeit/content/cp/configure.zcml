@@ -134,7 +134,7 @@
       />
   </class>
 
-  <class class=".interfaces.AutomaticFeed">
+  <class class="zeit.contentquery.interfaces.AutomaticFeed">
   <require
       attributes="id"
       permission="zope.View"
