@@ -1,5 +1,6 @@
-from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE
+from zeit.contentquery.interfaces import IConfiguration
 import collections
 import fractions
 import json
@@ -382,7 +383,7 @@ class AreaColorThemesSource(zeit.cms.content.sources.XMLSource):
 AREA_COLOR_THEMES_SOURCE = AreaColorThemesSource()
 
 
-class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks):
+class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks, IConfiguration):
 
     # Use a schema field so the security can declare it as writable,
     # since in ILocation __parent__ is only an Attribute.
