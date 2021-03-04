@@ -17,19 +17,20 @@ import zope.component
 log = logging.getLogger(__name__)
 
 
-def parent_cache(context, parent_iface, name, factory=writeabledict):
-    parent = parent_iface(context)
+def parent_cache(context, doc_iface, name, factory=writeabledict):
+    parent = doc_iface(context)
     return parent.cache.setdefault(name, factory())
 
 
 def cached_on_parent(
-        parent_iface, attr=None, keyfunc=lambda x: x, factory=writeabledict):
+        doc_iface, attr=None, keyfunc=lambda x: x, factory=writeabledict):
     """ Decorator to cache the results of the function in a dictionary
         on the centerpage.  The dictionary keys are built using the optional
         `keyfunc`, which is called with `self` as a single argument. """
     def decorator(fn):
         def wrapper(self, *args, **kw):
-            cache = parent_cache(self, parent_iface, attr or fn.__name__)
+            import pdb;pdb.set_trace()
+            cache = parent_cache(self, doc_iface, attr or fn.__name__)
             key = keyfunc(self)
             if key not in cache:
                 cache[key] = fn(self, *args, **kw)
@@ -43,12 +44,12 @@ def cached_on_parent(
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     start = 0  # Extension point for zeit.web to do pagination
+    doc_iface = ICenterPage
 
     def __init__(self, context):
         self.context = context
         self.xml = self.context.xml
         self.__parent__ = self.context
-        self.parent_iface = ICenterPage
 
     # Convenience: Delegate IArea to our context, so we can be used like one.
     def __getattr__(self, name):

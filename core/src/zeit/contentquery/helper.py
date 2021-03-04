@@ -1,10 +1,38 @@
-from zeit.cms.content.property import ObjectPathProperty
+import zeit.cms.content.property
 from zeit.contentquery.interfaces import IConfiguration
 import lxml.etree
 import lxml.objectify
 import six
+import zeit.content.cp.interfaces
 import zeit.contentquery.interfaces
 import zope.component
+
+
+class AutomaticTypeHelper(object):
+    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
+    """
+    mapping = None
+
+    def __get__(self, context, class_):
+        if context._automatic_type in self.mapping:
+            return self.mapping[context._automatic_type]
+        return context._automatic_type
+
+    def __set__(self, context, value):
+        context._automatic_type = value
+
+
+class CountHelper(object):
+    """Returns a Count of teasers for the CP AutomaticArea
+       and article's topicbox
+    """
+    def __get__(self, context, class_):
+        return context._count
+
+    def __set__(self, context, value):
+        context._count = value
+        if context.count_helper_tasks:
+            context.count_helper_tasks()
 
 
 class QueryHelper(object):
@@ -26,8 +54,7 @@ class QueryHelper(object):
                 operator = 'eq'
             value = context._converter(typ).fromProperty(
                 six.text_type(condition))
-            field = zeit.content.cp.interfaces.IArea[
-                'query'].value_type.type_interface[typ]
+            field = IConfiguration['query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):
                 value = value[0]
             # CombinationWidget needs items to be flattened
@@ -50,9 +77,33 @@ class QueryHelper(object):
         E = lxml.objectify.E
         query = E.query()
         for item in value:
-            typ, operator, val = context._serialize_query_item(item)
+            typ, operator, val = self._serialize_query_item(context, item)
             query.append(E.condition(val, type=typ, operator=operator))
         context.xml.append(query)
+
+    def _serialize_query_item(self, context, item):
+        typ = item[0]
+        operator = item[1]
+        field = IConfiguration['query'].value_type.type_interface[typ]
+
+        if len(item) > 3:
+            value = item[2:]
+        else:
+            value = item[2]
+        if zope.schema.interfaces.ICollection.providedBy(field):
+            value = field._type((value,))  # tuple(already_tuple) is a no-op
+        value = self._converter(context, typ).toProperty(value)
+
+        return typ, operator, value
+
+    def _converter(self, context, selector):
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[selector]
+        field = field.bind(context.doc_iface(context))
+        props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+        return zope.component.getMultiAdapter(
+            (field, props),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 
 class ReferencedCenterpageHelper(object):
@@ -68,6 +119,6 @@ class ReferencedCenterpageHelper(object):
         # cp-editor and preview.
         # Checking for larger circles is not reasonable here.
         ref = zeit.content.cp.interfaces.ICenterPage
-        if value.uniqueId == ref(self).uniqueId:
+        if value.uniqueId == ref(context).uniqueId:
             raise ValueError("A centerpage can't reference itself!")
         context._referenced_cp = value
