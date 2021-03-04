@@ -90,7 +90,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     type = 'area'
 
+    automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
+    automatic_type.mapping = {'channel': 'custom'}
     query = zeit.contentquery.helper.QueryHelper()
+    referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     kind = ObjectPathAttributeProperty(
         '.', 'kind', zeit.content.cp.interfaces.IArea['kind'],
@@ -128,26 +131,15 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic_type',
-        zeit.content.cp.interfaces.IArea['automatic_type'])
-
-    @property
-    def automatic_type(self):
-        result = self._automatic_type
-        if result == 'channel':  # BBB
-            result = 'custom'
-        return result
-
-    @automatic_type.setter
-    def automatic_type(self, value):
-        self._automatic_type = value
+        zeit.contentquery.interfaces.IConfiguration['automatic_type'])
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', zeit.content.cp.interfaces.IArea['count'])
+        '.', 'count', zeit.contentquery.interfaces.IConfiguration['count'])
 
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.content.cp.interfaces.IArea['hide_dupes'],
+        '.', 'hide-dupes', zeit.contentquery.interfaces.IConfiguration['hide_dupes'],
         use_default=True)
 
     require_lead_candidates = (
@@ -164,19 +156,20 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.contentquery.interfaces.IConfiguration['topicpage_filter'])
 
     query_order = zeit.cms.content.property.ObjectPathProperty(
-        '.query_order', zeit.content.cp.interfaces.IArea['query_order'],
+        '.query_order',
+        zeit.contentquery.interfaces.IConfiguration['query_order'],
         use_default=True)
 
     elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
-        zeit.content.cp.interfaces.IArea['elasticsearch_raw_query'])
+        zeit.contentquery.interfaces.IConfiguration['elasticsearch_raw_query'])
     elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_order',
-        zeit.content.cp.interfaces.IArea['elasticsearch_raw_order'],
+        zeit.contentquery.interfaces.IConfiguration['elasticsearch_raw_order'],
         use_default=True)
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
-        zeit.content.cp.interfaces.IArea['is_complete_query'],
+        zeit.contentquery.interfaces.IConfiguration['is_complete_query'],
         use_default=True)
 
     rss_feed = zeit.cms.content.property.DAVConverterWrapper(
@@ -211,6 +204,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.cms.content.property.ObjectPathAttributeProperty(
             '.', 'area_color_theme'))
 
+    def __init__(self, context, xml):
+        super().__init__(context, xml)
+        if self._automatic_type == 'channel':
+            self.automatic_type = 'custom'
+
     @property
     def image(self):
         if self._image:
@@ -240,21 +238,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             self._first_teaser_layout = None
         else:
             self._first_teaser_layout = value.id
-
-    @property
-    def referenced_cp(self):
-        return self._referenced_cp
-
-    @referenced_cp.setter
-    def referenced_cp(self, value):
-        # It is still possible to build larger circles (e.g A->C->A)
-        # but a sane user should not ignore the errormessage shown in the
-        # cp-editor and preview.
-        # Checking for larger circles is not reasonable here.
-        if value.uniqueId == \
-                zeit.content.cp.interfaces.ICenterPage(self).uniqueId:
-            raise ValueError("A centerpage can't reference itself!")
-        self._referenced_cp = value
 
     @property
     def default_teaser_layout(self):

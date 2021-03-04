@@ -50,4 +50,4 @@ class TopicpageFilterSourceTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_parses_filter_json(self):
         self.assertEqual(
             ['videos'],
-            list(zeit.content.cp.interfaces.TopicpageFilterSource()))
+            list(zeit.contentquery.interfaces.TopicpageFilterSource()))

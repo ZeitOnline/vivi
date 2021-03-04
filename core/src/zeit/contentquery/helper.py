@@ -3,8 +3,23 @@ from zeit.contentquery.interfaces import IConfiguration
 import lxml.etree
 import lxml.objectify
 import six
+import zeit.content.cp.interfaces
 import zeit.contentquery.interfaces
 import zope.component
+
+
+class AutomaticTypeHelper(object):
+    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
+    """
+    mapping = None
+
+    def __get__(self, context, class_):
+        if context._automatic_type in self.mapping:
+            return self.mapping[context._automatic_type]
+        return context._automatic_type
+
+    def __set__(self, context, value):
+        context._automatic_type = value
 
 
 class QueryHelper(object):
@@ -26,8 +41,7 @@ class QueryHelper(object):
                 operator = 'eq'
             value = context._converter(typ).fromProperty(
                 six.text_type(condition))
-            field = zeit.content.cp.interfaces.IArea[
-                'query'].value_type.type_interface[typ]
+            field = IConfiguration['query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):
                 value = value[0]
             # CombinationWidget needs items to be flattened
@@ -68,6 +82,6 @@ class ReferencedCenterpageHelper(object):
         # cp-editor and preview.
         # Checking for larger circles is not reasonable here.
         ref = zeit.content.cp.interfaces.ICenterPage
-        if value.uniqueId == ref(self).uniqueId:
+        if value.uniqueId == ref(context).uniqueId:
             raise ValueError("A centerpage can't reference itself!")
         context._referenced_cp = value
