@@ -41,7 +41,7 @@ class QueryHelper(object):
 
     def __get__(self, context, class_):
         """ Returns query
-        """       
+        """
         if not hasattr(context.xml, 'query'):
             return ()
         result = []
@@ -52,7 +52,7 @@ class QueryHelper(object):
             operator = condition.get('operator')
             if not operator:  # BBB
                 operator = 'eq'
-            value = context._converter(typ).fromProperty(
+            value = self._converter(context, typ).fromProperty(
                 six.text_type(condition))
             field = IConfiguration['query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):

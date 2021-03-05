@@ -12,6 +12,7 @@ import zeit.content.cp.blocks.rss
 import zeit.content.cp.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
+from zeit.contentquery.helper import QueryHelper
 import zope.component
 
 
@@ -205,7 +206,8 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return self._make_condition(item)
 
     def _make_condition(self, item):
-        typ, operator, value = self.context.context._serialize_query_item(item)
+        q = QueryHelper()
+        typ, operator, value = q._serialize_query_item(self.context, item)
         fieldname = self.ES_FIELD_NAMES.get(typ)
         if not fieldname:
             fieldname = self._fieldname_from_property(typ)
