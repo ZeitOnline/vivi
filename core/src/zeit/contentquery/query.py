@@ -250,7 +250,7 @@ class TMSContentQuery(ContentQuery):
         """Extension point for zeit.web to do pagination and de-duping."""
 
         cache = parent_cache(
-            self, self.context.parent_iface, 'tms_topic_queries')
+            self, self.context.doc_iface, 'tms_topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
@@ -306,7 +306,7 @@ class TMSContentQuery(ContentQuery):
 
     @property
     def _teaser_count(self):
-        doc = self.context.parent_iface(self.context)
+        doc = self.context.doc_iface(self.context)
         return sum(
             a.count for a in doc.cached_areas
             if a.automatic and a.count and a.automatic_type == 'topicpage' and
@@ -315,7 +315,7 @@ class TMSContentQuery(ContentQuery):
     @property
     def total_hits(self):
         cache = parent_cache(
-            self, self.context.parent_iface, 'tms_topic_queries')
+            self, self.context.doc_iface, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]

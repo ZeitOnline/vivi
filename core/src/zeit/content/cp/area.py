@@ -89,9 +89,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
 
     type = 'area'
+    doc_iface = zeit.content.cp.interfaces.ICenterPage
 
     automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
     automatic_type.mapping = {'channel': 'custom'}
+    count = zeit.contentquery.helper.CountHelper()
     query = zeit.contentquery.helper.QueryHelper()
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
@@ -295,13 +297,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if value:
             self._create_auto_blocks()
 
-    @property
-    def count(self):
-        return self._count
-
-    @count.setter
-    def count(self, value):
-        self._count = value
+    def count_helper_tasks(self):
         self.adjust_auto_blocks_to_count()
 
     def adjust_auto_blocks_to_count(self):
@@ -392,31 +388,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def filter_values(self, *interfaces):
         return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(
             *interfaces)
-
-    def _serialize_query_item(self, item):
-        typ = item[0]
-        operator = item[1]
-        field = zeit.content.cp.interfaces.IArea[
-            'query'].value_type.type_interface[typ]
-
-        if len(item) > 3:
-            value = item[2:]
-        else:
-            value = item[2]
-        if zope.schema.interfaces.ICollection.providedBy(field):
-            value = field._type((value,))  # tuple(already_tuple) is a no-op
-        value = self._converter(typ).toProperty(value)
-
-        return typ, operator, value
-
-    def _converter(self, selector):
-        field = zeit.content.cp.interfaces.IArea[
-            'query'].value_type.type_interface[selector]
-        field = field.bind(zeit.content.cp.interfaces.ICenterPage(self))
-        props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
-        return zope.component.getMultiAdapter(
-            (field, props),
-            zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 
 class AreaFactory(zeit.edit.block.ElementFactory):

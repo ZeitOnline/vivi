@@ -1,4 +1,4 @@
-from zeit.cms.content.property import ObjectPathProperty
+import zeit.cms.content.property
 from zeit.contentquery.interfaces import IConfiguration
 import lxml.etree
 import lxml.objectify
@@ -20,6 +20,19 @@ class AutomaticTypeHelper(object):
 
     def __set__(self, context, value):
         context._automatic_type = value
+
+
+class CountHelper(object):
+    """Returns a Count of teasers for the CP AutomaticArea
+       and article's topicbox
+    """
+    def __get__(self, context, class_):
+        return context._count
+
+    def __set__(self, context, value):
+        context._count = value
+        if context.count_helper_tasks:
+            context.count_helper_tasks()
 
 
 class QueryHelper(object):
@@ -64,9 +77,33 @@ class QueryHelper(object):
         E = lxml.objectify.E
         query = E.query()
         for item in value:
-            typ, operator, val = context._serialize_query_item(item)
+            typ, operator, val = self._serialize_query_item(context, item)
             query.append(E.condition(val, type=typ, operator=operator))
         context.xml.append(query)
+
+    def _serialize_query_item(self, context, item):
+        typ = item[0]
+        operator = item[1]
+        field = IConfiguration['query'].value_type.type_interface[typ]
+
+        if len(item) > 3:
+            value = item[2:]
+        else:
+            value = item[2]
+        if zope.schema.interfaces.ICollection.providedBy(field):
+            value = field._type((value,))  # tuple(already_tuple) is a no-op
+        value = self._converter(context, typ).toProperty(value)
+
+        return typ, operator, value
+
+    def _converter(self, context, selector):
+        field = zeit.content.cp.interfaces.IArea[
+            'query'].value_type.type_interface[selector]
+        field = field.bind(context.doc_iface(context))
+        props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
+        return zope.component.getMultiAdapter(
+            (field, props),
+            zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 
 class ReferencedCenterpageHelper(object):
