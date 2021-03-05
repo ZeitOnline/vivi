@@ -29,7 +29,6 @@ def cached_on_parent(
         `keyfunc`, which is called with `self` as a single argument. """
     def decorator(fn):
         def wrapper(self, *args, **kw):
-            import pdb;pdb.set_trace()
             cache = parent_cache(self, doc_iface, attr or fn.__name__)
             key = keyfunc(self)
             if key not in cache:

@@ -97,8 +97,7 @@ class QueryHelper(object):
         return typ, operator, value
 
     def _converter(self, context, selector):
-        field = zeit.content.cp.interfaces.IArea[
-            'query'].value_type.type_interface[selector]
+        field = IConfiguration['query'].value_type.type_interface[selector]
         field = field.bind(context.doc_iface(context))
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
         return zope.component.getMultiAdapter(
