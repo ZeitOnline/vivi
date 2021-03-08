@@ -210,8 +210,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     def __init__(self, context, xml):
         super().__init__(context, xml)
-        if self._automatic_type == 'channel':
-            self.automatic_type = 'custom'
 
     @property
     def image(self):

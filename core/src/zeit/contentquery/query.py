@@ -166,6 +166,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
     def __init__(self, context):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
+        self.queryhelper = QueryHelper()
         self.query = self._make_custom_query()
         self.order = self.context.query_order
         if self.order in self.SOLR_TO_ES_SORT:  # BBB
@@ -200,14 +201,15 @@ class CustomContentQuery(ElasticsearchContentQuery):
         return query
 
     def _make_clause(self, typ, item):
-        if typ == 'ressort':  # XXX Generalize to lookup instead of if?
-            return self._make_ressort_condition(item)
-        else:
+        try:
+            func = getattr(self, '_make_{}_condition'.format(typ))
+            return func(item)
+        except AttributeError:
             return self._make_condition(item)
 
     def _make_condition(self, item):
-        q = QueryHelper()
-        typ, operator, value = q._serialize_query_item(self.context, item)
+        typ, operator, value = self.queryhelper._serialize_query_item(
+            self.context, item)
         fieldname = self.ES_FIELD_NAMES.get(typ)
         if not fieldname:
             fieldname = self._fieldname_from_property(typ)
