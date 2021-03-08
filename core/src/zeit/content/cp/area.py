@@ -89,10 +89,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
 
     type = 'area'
+
     doc_iface = zeit.content.cp.interfaces.ICenterPage
 
     automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
     automatic_type.mapping = {'channel': 'custom'}
+
     count = zeit.contentquery.helper.CountHelper()
     query = zeit.contentquery.helper.QueryHelper()
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
@@ -141,8 +143,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.contentquery.interfaces.IConfiguration['hide_dupes'],
-        use_default=True)
+        '.', 'hide-dupes', zeit.contentquery.interfaces.IConfiguration[
+            'hide_dupes'], use_default=True)
 
     require_lead_candidates = (
         zeit.cms.content.property.ObjectPathAttributeProperty(

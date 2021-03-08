@@ -8,7 +8,7 @@ import zeit.contentquery.interfaces
 import zope.component
 
 
-class AutomaticTypeHelper(object):
+class AutomaticTypeHelper:
     """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
     """
     mapping = None
@@ -22,7 +22,7 @@ class AutomaticTypeHelper(object):
         context._automatic_type = value
 
 
-class CountHelper(object):
+class CountHelper:
     """Returns a Count of teasers for the CP AutomaticArea
        and article's topicbox
     """
@@ -35,7 +35,7 @@ class CountHelper(object):
             context.count_helper_tasks()
 
 
-class QueryHelper(object):
+class QueryHelper:
     """Returns a query for AutomaticArea's parent Area and Topicboxes.
     """
 
@@ -105,7 +105,7 @@ class QueryHelper(object):
             zeit.cms.content.interfaces.IDAVPropertyConverter)
 
 
-class ReferencedCenterpageHelper(object):
+class ReferencedCenterpageHelper:
     """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
     """
 

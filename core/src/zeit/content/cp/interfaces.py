@@ -1,12 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.contentquery.interfaces import IConfiguration
 import collections
 import fractions
 import json
 import logging
-import six
-import six.moves.urllib.request
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
@@ -23,7 +20,6 @@ import zeit.content.image.interfaces
 import zeit.content.modules.interfaces
 import zeit.content.modules.jobticker
 import zeit.content.video.interfaces
-from zeit.contentquery.interfaces import IConfiguration, SimpleDictSource
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
 import zope.i18n
@@ -282,7 +278,10 @@ class AreaColorThemesSource(zeit.cms.content.sources.XMLSource):
 AREA_COLOR_THEMES_SOURCE = AreaColorThemesSource()
 
 
-class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks, IConfiguration):
+class IReadArea(
+        zeit.edit.interfaces.IReadContainer,
+        ITopicLinks,
+        IConfiguration):
 
     # Use a schema field so the security can declare it as writable,
     # since in ILocation __parent__ is only an Attribute.

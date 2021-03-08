@@ -252,10 +252,12 @@ class IConfiguration(zope.interface.Interface):
     elasticsearch_raw_query = zope.schema.Text(
         title=_('Elasticsearch raw query'),
         required=False)
+
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
         default=u'payload.document.date_first_released:desc',
         required=False)
+
     is_complete_query = zope.schema.Bool(
         title=_('Take over complete query body'),
         description=_('Remember to add payload.workflow.published:true'),

@@ -154,6 +154,7 @@ def is_lead_candidate(content):
         return False
     return metadata.lead_candidate
 
+
 @grok.adapter(zeit.contentquery.interfaces.IContentQuery)
 @grok.implementer(zeit.content.cp.interfaces.ICenterPage)
 def query_to_centerpage(context):
