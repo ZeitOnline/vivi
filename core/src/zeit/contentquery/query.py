@@ -14,6 +14,7 @@ import zeit.retresco.content
 import zeit.retresco.interfaces
 from zeit.contentquery.helper import QueryHelper
 import zope.component
+import zope.interface
 
 
 log = logging.getLogger(__name__)
@@ -22,7 +23,7 @@ log = logging.getLogger(__name__)
 @grok.implementer(zeit.contentquery.interfaces.IContentQuery)
 class ContentQuery(grok.Adapter):
 
-    grok.context(zeit.content.cp.interfaces.IRenderedArea)
+    grok.context(zope.interface.Interface)
     grok.baseclass()
 
     total_hits = NotImplemented

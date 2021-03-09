@@ -210,9 +210,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.cms.content.property.ObjectPathAttributeProperty(
             '.', 'area_color_theme'))
 
-    def __init__(self, context, xml):
-        super().__init__(context, xml)
-
     @property
     def image(self):
         if self._image:
