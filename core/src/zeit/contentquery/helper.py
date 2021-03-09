@@ -38,6 +38,7 @@ class CountHelper:
 class QueryHelper:
     """Returns a query for AutomaticArea's parent Area and Topicboxes.
     """
+    mapping = None
 
     def __get__(self, context, class_):
         """ Returns query
@@ -47,8 +48,8 @@ class QueryHelper:
         result = []
         for condition in context.xml.query.getchildren():
             typ = condition.get('type')
-            if typ == 'Channel':  # BBB
-                typ = 'channels'
+            if typ in self.mapping:
+                typ = self.mapping[typ]
             operator = condition.get('operator')
             if not operator:  # BBB
                 operator = 'eq'

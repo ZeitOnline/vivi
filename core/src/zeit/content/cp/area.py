@@ -97,6 +97,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     count = zeit.contentquery.helper.CountHelper()
     query = zeit.contentquery.helper.QueryHelper()
+    query.mapping = {'Channel': 'channels'}
+
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     kind = ObjectPathAttributeProperty(
