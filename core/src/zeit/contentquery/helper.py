@@ -109,16 +109,12 @@ class QueryHelper:
 class ReferencedCenterpageHelper:
     """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
     """
-
     def __get__(self, context, class_):
+        if hasattr(context, '_referenced_cp_get_helper_tasks'):
+            return context._referenced_cp_get_helper_tasks()
         return context._referenced_cp
 
     def __set__(self, context, value):
-        # It is still possible to build larger circles (e.g A->C->A)
-        # but a sane user should not ignore the errormessage shown in the
-        # cp-editor and preview.
-        # Checking for larger circles is not reasonable here.
-        ref = zeit.content.cp.interfaces.ICenterPage
-        if value.uniqueId == ref(context).uniqueId:
-            raise ValueError("A centerpage can't reference itself!")
+        if hasattr(context, '_referenced_cp_set_helper_tasks'):
+            context._referenced_cp_set_helper_tasks(value)
         context._referenced_cp = value

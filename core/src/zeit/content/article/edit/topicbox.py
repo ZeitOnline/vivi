@@ -9,6 +9,7 @@ import logging
 import lxml
 import zeit.cms.content.reference
 import zeit.contentquery.interfaces
+import zeit.contentquery.helper
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
@@ -21,6 +22,8 @@ log = logging.getLogger(__name__)
 class Topicbox(zeit.content.article.edit.block.Block):
 
     type = 'topicbox'
+
+    referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic_type',
@@ -63,7 +66,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicbox[
             'elasticsearch_raw_order'], use_default=True)
 
-    centerpage = zeit.cms.content.property.SingleResource('.centerpage')
+    _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage',
@@ -96,6 +99,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def automatic_type(self, value):
         self._automatic_type = value
 
+    def referenced_cp_helper_tasks(self):
+        if self.automatic_type == 'klassisch':
+            return self.get_centerpage_from_first_reference()
+
     @property
     def teaser_amount(self):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -108,10 +115,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
                 self.second_reference,
                 self.third_reference)
 
-    @property
-    def referenced_cp(self):
-        if not self.automatic_type == 'klassisch':
-            return None
+    def get_centerpage_from_first_reference(self):
         import zeit.content.cp.interfaces
         if zeit.content.cp.interfaces.ICenterPage.providedBy(
                 self.first_reference):
@@ -229,6 +233,9 @@ class Topicbox(zeit.content.article.edit.block.Block):
             (field, props),
             zeit.cms.content.interfaces.IDAVPropertyConverter)
 
+    @property
+    def existing_teasers(self):
+        return set()
 
 @zope.component.adapter(zeit.content.article.edit.interfaces.ITopicbox)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)

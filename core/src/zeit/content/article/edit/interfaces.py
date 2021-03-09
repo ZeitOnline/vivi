@@ -20,6 +20,7 @@ import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zope.schema
+import zeit.contentquery.interfaces
 import zope.security.proxy
 import zeit.content.cp.interfaces
 import logging
@@ -623,7 +624,7 @@ class ConfigQuerySource(TopicpageFilterSource):
             return None
 
 
-class TopicboxSourceType(zeit.content.cp.interfaces.SimpleDictSource):
+class TopicboxSourceType(zeit.contentquery.interfaces.SimpleDictSource):
 
     values = collections.OrderedDict([
         ('manual', _('manual')),
@@ -653,7 +654,8 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
             zeit.content.cp.interfaces.ICenterPage, )
 
 
-class ITopicbox(zeit.edit.interfaces.IBlock):
+class ITopicbox(zeit.edit.interfaces.IBlock,
+                zeit.contentquery.interfaces.IConfiguration):
     """
     Element which references other Articles
     """
@@ -710,11 +712,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
         default=u'payload.document.date_first_released:desc',
-        required=False)
-
-    centerpage = zope.schema.Choice(
-        title=_('Referenced Centerpage'),
-        source=zeit.content.cp.source.centerPageSource,
         required=False)
 
     topicpage = zope.schema.TextLine(

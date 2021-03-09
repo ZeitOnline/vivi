@@ -13,6 +13,7 @@ import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
 import zope.security
+import zeit.contentquery.interfaces
 
 
 class Empty(object):
@@ -469,8 +470,15 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
         zeit.content.article.edit.interfaces.ITopicbox).select(
             'automatic_type', 'first_reference', 'second_reference',
             'third_reference', 'elasticsearch_raw_query',
-            'elasticsearch_raw_order', 'centerpage', 'topicpage',
-            'topicpage_filter', 'config_query').omit(
+            'elasticsearch_raw_order').omit(
+            *list(zeit.edit.interfaces.IBlock))
+    form_fields += zope.formlib.form.Fields(
+        zeit.contentquery.interfaces.IConfiguration).select(
+            'referenced_cp').omit(
+            *list(zeit.edit.interfaces.IBlock))
+    form_fields += zope.formlib.form.Fields(
+        zeit.content.article.edit.interfaces.ITopicbox).select(
+            'topicpage', 'topicpage_filter', 'config_query').omit(
             *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit topic box')
 

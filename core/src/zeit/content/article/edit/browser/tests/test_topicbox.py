@@ -53,9 +53,9 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Supertitle').value = 'Centerpage-Bar'
         b.getControl('Link').value = 'https://centerpages.com'
         b.getControl('Linktext').value = 'Centerpage-Baz'
-        b.getControl('Source').displayValue = ['centerpage']
+        b.getControl('Source').displayValue = ['referenced_cp']
         b.getControl(
-            'Referenced Centerpage').value = 'http://xml.zeit.de/cp'
+            'Get teasers from CenterPage').value = 'http://xml.zeit.de/cp'
         b.getControl('Apply').click()
         b.open('@@edit-%s?show_form=1' % self.block_type)
         self.assertEqual('Centerpage-Foo', b.getControl('Title').value)
@@ -66,7 +66,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual('Centerpage-Baz', b.getControl('Linktext').value)
         self.assertEqual(
             'http://xml.zeit.de/cp',
-            b.getControl('Referenced Centerpage').value)
+            b.getControl('Get teasers from CenterPage').value)
 
     def test_topicbox_source_topicpage_form_saves_values(self):
         self.get_article(with_empty_block=True)

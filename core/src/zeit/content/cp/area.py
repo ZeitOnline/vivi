@@ -301,6 +301,18 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def count_helper_tasks(self):
         self.adjust_auto_blocks_to_count()
 
+    def _referenced_cp_set_helper_tasks(self, value):
+        self.check_for_self_reference(value)
+
+    def check_for_self_reference(self, value):
+        # It is still possible to build larger circles (e.g A->C->A)
+        # but a sane user should not ignore the errormessage shown in the
+        # cp-editor and preview.
+        # Checking for larger circles is not reasonable here.
+        ref = zeit.content.cp.interfaces.ICenterPage
+        if value.uniqueId == ref(self).uniqueId:
+            raise ValueError("A centerpage can't reference itself!")
+
     def adjust_auto_blocks_to_count(self):
         """Does not touch any block that is not an IAutomaticTeaserBlock, so
         only the number of _automatic_ teasers is configured via the
