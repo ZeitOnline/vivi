@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.49.1 (unreleased)
+4.49.1 (2021-03-10)
 -------------------
 
 - ZON-6346: Make tickaroo liveblog status required
