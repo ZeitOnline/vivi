@@ -6,6 +6,8 @@ vivi.core changes
 
 - ZON-6346: Make tickaroo liveblog status required
 
+- BUG-1311: Show "steal lock" button only if user has the required permission
+
 
 4.49.0 (2021-02-24)
 -------------------
