@@ -109,8 +109,7 @@ class SecurityPolicyXLSSheetCase(object):
             self.assertEqual(
                 (int(status) < 400), expected,
                 '%s: %s (expected <400: %s)\n%s' % (
-                    path.encode('utf8'), status, bool(expected),
-                    self.browser.contents))
+                    path, status, bool(expected), self.browser.contents))
 
     def __str__(self):
         return '%s (%s.%s)' % (
