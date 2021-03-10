@@ -8,6 +8,8 @@ vivi.core changes
 
 - BUG-1311: Show "steal lock" button only if user has the required permission
 
+- BUG-1366: Make sorting listings work again for py3
+
 
 4.49.0 (2021-02-24)
 -------------------

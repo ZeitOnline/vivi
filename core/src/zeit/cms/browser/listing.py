@@ -150,6 +150,7 @@ class GetterColumn(zc.table.column.GetterColumn):
         cell_formatter = kw.pop('cell_formatter', None)
         if cell_formatter is not None:
             self.cell_formatter = cell_formatter
+        self.sort_default = kw.pop('sort_default', '')
         # Skip immediate superclass and its assignments
         super(zc.table.column.GetterColumn, self).__init__(*args, **kw)
 
@@ -165,6 +166,12 @@ class GetterColumn(zc.table.column.GetterColumn):
         if value is None:
             return u''
         return six.text_type(value)
+
+    def getSortKey(self, item, formatter):
+        value = super().getSortKey(item, formatter)
+        # XXX `is not None` would feel more correct, but we have unclean data,
+        # and for empty string it's the same result in either case.
+        return value if value else self.sort_default
 
 
 class MetadataColumn(GetterColumn):
@@ -256,7 +263,7 @@ class HitColumn(GetterColumn):
 
     def getSortKey(self, item, formatter):
         counter = self.getter(item, formatter)
-        return counter.total_hits, counter.hits
+        return counter.total_hits or 0, counter.hits or 0
 
 
 class DatetimeColumn(GetterColumn):
@@ -318,7 +325,8 @@ class Listing(object):
         GetterColumn(
             _('Page'),
             name='page',
-            getter=lambda t, c: t.page),
+            getter=lambda t, c: t.page,
+            sort_default=-1),
         MetadataColumn(u'Metadaten', name='metadata'),
     )
 
