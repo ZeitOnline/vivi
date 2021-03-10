@@ -4,7 +4,7 @@ vivi.core changes
 4.49.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1366: Make sorting volume listings work again for py3
 
 
 4.49.1 (2021-03-10)
