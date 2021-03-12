@@ -240,7 +240,7 @@ class BelowAreaSource(
         return value.__name__
 
 
-class AutomaticTypeSource(zeit.contentquery.interfaces.SimpleDictSource):
+class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict([
         ('centerpage', _('automatic-area-type-centerpage')),
@@ -647,7 +647,7 @@ class IHeaderImageBlock(IBlock):
         default=False)
 
 
-class AlignmentSource(zeit.contentquery.interfaces.SimpleDictSource):
+class AlignmentSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict((
         ('left', _('left')),
@@ -670,7 +670,7 @@ class IMarkupBlock(IBlock):
         default='left')
 
 
-class CardstackColorSource(zeit.contentquery.interfaces.SimpleDictSource):
+class CardstackColorSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict((
         (color, color) for color in [

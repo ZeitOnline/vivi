@@ -23,7 +23,7 @@ log = logging.getLogger(__name__)
 @grok.implementer(zeit.contentquery.interfaces.IContentQuery)
 class ContentQuery(grok.Adapter):
 
-    grok.context(zope.interface.Interface)
+    grok.context(zeit.contentquery.interfaces.IConfiguration)
     grok.baseclass()
 
     total_hits = NotImplemented

@@ -28,8 +28,6 @@
 
   <include package="zeit.content.gallery" />
 
-  <include package="zeit.contentquery" />
-
   <!-- Allow test user to create and move areas -->
   <grant
     principal="zope.Authenticated"

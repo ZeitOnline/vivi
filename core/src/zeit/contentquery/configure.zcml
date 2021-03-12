@@ -5,4 +5,15 @@
 
   <grok:grok package="." exclude="browser" />
 
+  <class class="zeit.contentquery.interfaces.AutomaticFeed">
+    <require
+        attributes="id"
+        permission="zope.View"
+        />
+    <require
+        set_attributes="id"
+        permission="zeit.EditContent"
+        />
+  </class>
+
 </configure>

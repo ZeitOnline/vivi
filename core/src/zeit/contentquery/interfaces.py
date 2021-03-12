@@ -47,18 +47,7 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
 AUTOMATIC_FEED_SOURCE = AutomaticFeedSource()
 
 
-class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    values = collections.OrderedDict()
-
-    def getValues(self):
-        return self.values.keys()
-
-    def getTitle(self, value):
-        return self.values.get(value, value)
-
-
-class QuerySortOrderSource(SimpleDictSource):
+class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict((
         ('payload.workflow.date_last_published_semantic:desc',
@@ -70,7 +59,7 @@ class QuerySortOrderSource(SimpleDictSource):
     ))
 
 
-class QueryTypeSource(SimpleDictSource):
+class QueryTypeSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict([
         ('channels', _('query-type-channels')),
@@ -84,7 +73,7 @@ class QueryTypeSource(SimpleDictSource):
     ])
 
 
-class QueryOperatorSource(SimpleDictSource):
+class QueryOperatorSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict([
         ('eq', _('query-operator-equal')),

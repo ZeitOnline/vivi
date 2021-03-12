@@ -6,6 +6,7 @@
 
   <!-- include zeit.edit early to make sure the grokkers are grokked. -->
   <include package="zeit.edit" />
+  <include package="zeit.contentquery" />
 
   <grok:grok package="." exclude="browser" />
 
@@ -130,17 +131,6 @@
       />
     <require
       set_schema="zeit.content.cp.interfaces.IRenderedArea"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <class class="zeit.contentquery.interfaces.AutomaticFeed">
-  <require
-      attributes="id"
-      permission="zope.View"
-      />
-  <require
-      set_attributes="id"
       permission="zeit.EditContent"
       />
   </class>
