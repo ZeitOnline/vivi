@@ -84,22 +84,6 @@ class QueryTypeSource(SimpleDictSource):
     ])
 
 
-class AutomaticTypeSource(SimpleDictSource):
-
-    values = collections.OrderedDict([
-        ('centerpage', _('automatic-area-type-centerpage')),
-        ('custom', _('automatic-area-type-custom')),
-        ('topicpage', _('automatic-area-type-topicpage')),
-        ('query', _('automatic-area-type-query')),
-        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
-        ('rss-feed', _('automatic-area-type-rss-feed'))
-    ])
-
-    def getToken(self, value):
-        # JS needs to use these values, don't MD5 them.
-        return value
-
-
 class QueryOperatorSource(SimpleDictSource):
 
     values = collections.OrderedDict([
@@ -214,13 +198,10 @@ class IContentQuery(zope.interface.Interface):
 
 
 class IConfiguration(zope.interface.Interface):
-    automatic_type = zope.schema.Choice(
-        title=_('automatic-area-type'),
-        source=AutomaticTypeSource(),
-        required=True)
-    automatic_type.__doc__ = """Determines from where IRenderedArea retrieves
-    content objects. Will look up a utility of that name for IContentQuery.
-    """
+    automatic_type = zope.interface.Attribute("Automatic type")
+    automatic_type.__doc__ = """
+        Determines from where content objects will be retrieved.
+        Will look up a utility of that name for IContentQuery."""
 
     # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)

@@ -240,6 +240,22 @@ class BelowAreaSource(
         return value.__name__
 
 
+class AutomaticTypeSource(zeit.contentquery.interfaces.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('centerpage', _('automatic-area-type-centerpage')),
+        ('custom', _('automatic-area-type-custom')),
+        ('topicpage', _('automatic-area-type-topicpage')),
+        ('query', _('automatic-area-type-query')),
+        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+        ('rss-feed', _('automatic-area-type-rss-feed'))
+    ])
+
+    def getToken(self, value):
+        # JS needs to use these values, don't MD5 them.
+        return value
+
+
 def automatic_area_can_read_teasers_automatically(data):
     if data.automatic_type == 'centerpage' and data.referenced_cp:
         return True
@@ -359,6 +375,11 @@ class IReadArea(
     automatic.__doc__ = """If True, IRenderedArea.values() will populate
     any IAutomaticTeaserBlock with content, as specified by automatic_type.
     """
+
+    automatic_type = zope.schema.Choice(
+        title=_('automatic-area-type'),
+        source=AutomaticTypeSource(),
+        required=True)
 
     area_color_theme = zope.schema.Choice(
         title=_("Area color theme (ze.tt only)"),

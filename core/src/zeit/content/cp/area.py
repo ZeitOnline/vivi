@@ -137,7 +137,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic_type',
-        zeit.contentquery.interfaces.IConfiguration['automatic_type'])
+        zeit.content.cp.interfaces.IArea['automatic_type'])
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.contentquery.interfaces.IConfiguration['count'])
