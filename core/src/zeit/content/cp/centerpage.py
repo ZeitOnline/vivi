@@ -1,3 +1,4 @@
+from zeit.cms.content.cache import writeabledict
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
@@ -34,10 +35,6 @@ def create_delegate(name):
     def delegate(self, *args, **kw):
         return getattr(self.body, name)(*args, **kw)
     return delegate
-
-
-class writeabledict(dict):
-    """dict with all (especially write) methods allowed by security"""
 
 
 @zope.interface.implementer(

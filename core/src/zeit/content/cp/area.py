@@ -1,6 +1,6 @@
+from zeit.cms.content.cache import content_cache, cached_on_content
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.cp.centerpage import writeabledict
 from zeit.content.cp.interfaces import (
     IAutomaticTeaserBlock, ICenterPage, ITeaserBlock)
 import gocept.lxml.interfaces
@@ -18,27 +18,6 @@ import zeit.edit.interfaces
 import zope.component
 import zope.container.interfaces
 import zope.interface
-
-
-def parent_cache(context, doc_iface, name, factory=writeabledict):
-    parent = doc_iface(context)
-    return parent.cache.setdefault(name, factory())
-
-
-def cached_on_parent(
-        doc_iface, attr=None, keyfunc=lambda x: x, factory=writeabledict):
-    """ Decorator to cache the results of the function in a dictionary
-        on the centerpage.  The dictionary keys are built using the optional
-        `keyfunc`, which is called with `self` as a single argument. """
-    def decorator(fn):
-        def wrapper(self, *args, **kw):
-            cache = parent_cache(self, doc_iface, attr or fn.__name__)
-            key = keyfunc(self)
-            if key not in cache:
-                cache[key] = fn(self, *args, **kw)
-            return cache[key]
-        return wrapper
-    return decorator
 
 
 @zope.component.adapter(
@@ -408,13 +387,13 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 del self[block.__name__]
 
     @property
-    @cached_on_parent(ICenterPage, keyfunc=lambda x: x.__name__)
+    @cached_on_content(ICenterPage, keyfunc=lambda x: x.__name__)
     def existing_teasers(self):
         current_area = self
         cp = ICenterPage(self)
-        area_teasered_content = parent_cache(
+        area_teasered_content = content_cache(
             cp, ICenterPage, 'area_teasered_content')
-        area_manual_content = parent_cache(
+        area_manual_content = content_cache(
             cp, ICenterPage, 'area_manual_content')
 
         seen = set()

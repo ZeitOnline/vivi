@@ -1,4 +1,4 @@
-from zeit.content.cp.area import cached_on_parent
+from zeit.content.cp.area import cached_on_content
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
@@ -40,7 +40,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    @cached_on_parent(ICenterPage, 'area_values', lambda x: x.context.__name__)
+    @cached_on_content(ICenterPage, 'area_values', lambda x: x.context.__name__)
     def values(self):
         if not self.automatic:
             return self.context.values()

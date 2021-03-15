@@ -1,16 +1,17 @@
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import json
 import logging
 import re
 import six
 import zc.sourcefactory.basic
+import zeit.cms.content.property
 import zeit.cms.content.sources
 import zeit.content.article.interfaces
 import zeit.content.cp.field
 import zeit.content.cp.source
 import zope.interface
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.interfaces import CONFIG_CACHE
 
 log = logging.getLogger(__name__)
 

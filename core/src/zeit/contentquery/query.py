@@ -1,4 +1,4 @@
-from zeit.content.cp.area import parent_cache
+from zeit.cms.content.cache import content_cache
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
@@ -254,7 +254,7 @@ class TMSContentQuery(ContentQuery):
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        cache = parent_cache(
+        cache = content_cache(
             self, self.context.doc_iface, 'tms_topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
@@ -319,7 +319,7 @@ class TMSContentQuery(ContentQuery):
 
     @property
     def total_hits(self):
-        cache = parent_cache(
+        cache = content_cache(
             self, self.context.doc_iface, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
