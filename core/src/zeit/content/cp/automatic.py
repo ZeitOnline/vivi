@@ -40,7 +40,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    @cached_on_content(ICenterPage, 'area_values', lambda x: x.context.__name__)
+    @cached_on_content(
+        ICenterPage, 'area_values', lambda x: x.context.__name__)
     def values(self):
         if not self.automatic:
             return self.context.values()
