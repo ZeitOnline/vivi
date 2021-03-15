@@ -1,8 +1,10 @@
 vivi.core changes
 =================
 
-4.49.3 (unreleased)
+4.50.0 (unreleased)
 -------------------
+
+- ZON-6478: Move content query functionality to its own module
 
 - BUG-1250: Hide no more needed 'external' author checkbox
 
