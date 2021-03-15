@@ -195,6 +195,8 @@ class IConfiguration(zope.interface.Interface):
     # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
 
+    existing_teasers = zope.interface.Attribute("Existing teasers")
+
     hide_dupes = zope.schema.Bool(
         title=_('Hide duplicate teasers'),
         default=True)

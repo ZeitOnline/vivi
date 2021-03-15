@@ -1,4 +1,4 @@
-from zeit.content.cp.automatic import parent_cache
+from zeit.content.cp.area import parent_cache
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json

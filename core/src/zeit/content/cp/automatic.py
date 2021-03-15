@@ -1,12 +1,12 @@
-from zeit.content.cp.centerpage import writeabledict
+from zeit.content.cp.area import cached_on_parent
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import logging
-import zeit.cms.interfaces
 import zeit.cms.content.interfaces
-import zeit.content.cp.blocks.teaser
+import zeit.cms.interfaces
 import zeit.content.cp.blocks.rss
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.contentquery.interfaces
 import zeit.retresco.content
@@ -15,27 +15,6 @@ import zope.component
 
 
 log = logging.getLogger(__name__)
-
-
-def parent_cache(context, doc_iface, name, factory=writeabledict):
-    parent = doc_iface(context)
-    return parent.cache.setdefault(name, factory())
-
-
-def cached_on_parent(
-        doc_iface, attr=None, keyfunc=lambda x: x, factory=writeabledict):
-    """ Decorator to cache the results of the function in a dictionary
-        on the centerpage.  The dictionary keys are built using the optional
-        `keyfunc`, which is called with `self` as a single argument. """
-    def decorator(fn):
-        def wrapper(self, *args, **kw):
-            cache = parent_cache(self, doc_iface, attr or fn.__name__)
-            key = keyfunc(self)
-            if key not in cache:
-                cache[key] = fn(self, *args, **kw)
-            return cache[key]
-        return wrapper
-    return decorator
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.IArea)
@@ -47,6 +26,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     def __init__(self, context):
         self.context = context
+        self.existing_teasers = self.context.existing_teasers
         self.xml = self.context.xml
         self.__parent__ = self.context
 
@@ -99,37 +79,6 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         return zope.component.getAdapter(
             self, zeit.contentquery.interfaces.IContentQuery,
             name=self.automatic_type or '')
-
-    @property
-    @cached_on_parent(ICenterPage, keyfunc=lambda x: x.context.__name__)
-    def existing_teasers(self):
-        current_area = self.context
-        cp = ICenterPage(self.context)
-        area_teasered_content = parent_cache(
-            cp, ICenterPage, 'area_teasered_content')
-        area_manual_content = parent_cache(
-            cp, ICenterPage, 'area_manual_content')
-
-        seen = set()
-        above = True
-        for area in cp.cached_areas:
-            if area == current_area:
-                above = False
-            if above:  # automatic teasers above current area
-                if area not in area_teasered_content:
-                    area_teasered_content[area] = set(
-                        zeit.content.cp.interfaces.ITeaseredContent(area))
-                seen.update(area_teasered_content[area])
-            else:  # manual teasers below (or in) current area
-                if area not in area_manual_content:
-                    # Probably not worth a separate adapter (like
-                    # ITeaseredContent), since the use case is pretty
-                    # specialised.
-                    area_manual_content[area] = set(
-                        zeit.content.cp.blocks.teaser.extract_manual_teasers(
-                            area))
-                seen.update(area_manual_content[area])
-        return seen
 
     def filter_values(self, *interfaces):
         # XXX copy&paste from zeit.edit.container.Base.filter_values
