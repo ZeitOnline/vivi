@@ -130,7 +130,28 @@
       permission="zope.View"
       />
     <require
+      interface="zeit.contentquery.interfaces.IContentQuery"
+      permission="zope.View"
+      />
+    <require
       set_schema="zeit.content.cp.interfaces.IRenderedArea"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".area.Area"
+    provides="zeit.contentquery.interfaces.IContentQuery"
+    trusted="yes"
+    />
+
+  <class class=".interfaces.AutomaticFeed">
+  <require
+      attributes="id"
+      permission="zope.View"
+      />
+  <require
+      set_attributes="id"
       permission="zeit.EditContent"
       />
   </class>

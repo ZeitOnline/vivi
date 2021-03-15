@@ -2,7 +2,7 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import TopicReferenceSource
 from zeit.content.article.interfaces import IArticle
-from zeit.content.cp.automatic import cached_on_parent
+from zeit.cms.content.cache import cached_on_content
 import grokcore.component as grok
 import itertools
 import logging
@@ -21,6 +21,7 @@ log = logging.getLogger(__name__)
 @grok.implementer(zeit.content.article.edit.interfaces.ITopicbox)
 class Topicbox(zeit.content.article.edit.block.Block):
 
+    start = 0
     type = 'topicbox'
 
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
@@ -68,9 +69,9 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
-    topicpage = zeit.cms.content.property.ObjectPathProperty(
-        '.topicpage',
-        zeit.content.article.edit.interfaces.ITopicbox['topicpage'])
+    referenced_topicpage = zeit.cms.content.property.ObjectPathProperty(
+        '.referenced_topicpage',
+        zeit.content.article.edit.interfaces.ITopicbox['referenced_topicpage'])
 
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
@@ -92,15 +93,19 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def automatic_type(self):
         result = self._automatic_type
         if not result:
-            result = 'klassisch'
+            result = 'manual'
         return result
 
     @automatic_type.setter
     def automatic_type(self, value):
         self._automatic_type = value
 
+    @property
+    def existing_teasers(self):
+        return set()
+
     def referenced_cp_helper_tasks(self):
-        if self.automatic_type == 'klassisch':
+        if self.automatic_type == 'manual':
             return self.get_centerpage_from_first_reference()
 
     @property
@@ -121,8 +126,12 @@ class Topicbox(zeit.content.article.edit.block.Block):
                 self.first_reference):
             return self.first_reference
 
-    @cached_on_parent(IArticle, 'topicbox_values')
+    @cached_on_content(IArticle, 'topicbox_values')
     def values(self):
+        if self.automatic_type == 'manual':
+            return (
+                content for content in self._reference_properties if content)
+
         if self.referenced_cp:
             parent_article = zeit.content.article.interfaces.IArticle(self,
                                                                       None)
@@ -131,10 +140,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
                        zeit.edit.interfaces.IElementReferences(
                            self.referenced_cp)),
                 len(self._reference_properties))
-
-        if self.automatic_type == 'klassisch':
-            return (
-                content for content in self._reference_properties if content)
 
         try:
             filtered_content = []

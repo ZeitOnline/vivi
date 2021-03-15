@@ -468,17 +468,10 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
             *list(zeit.edit.interfaces.IBlock))
     form_fields += zope.formlib.form.Fields(
         zeit.content.article.edit.interfaces.ITopicbox).select(
-            'automatic_type', 'first_reference', 'second_reference',
-            'third_reference', 'elasticsearch_raw_query',
-            'elasticsearch_raw_order').omit(
-            *list(zeit.edit.interfaces.IBlock))
-    form_fields += zope.formlib.form.Fields(
-        zeit.contentquery.interfaces.IConfiguration).select(
-            'referenced_cp').omit(
-            *list(zeit.edit.interfaces.IBlock))
-    form_fields += zope.formlib.form.Fields(
-        zeit.content.article.edit.interfaces.ITopicbox).select(
-            'topicpage', 'topicpage_filter', 'config_query').omit(
+            'first_reference', 'second_reference',
+            'third_reference', 'automatic_type', 'referenced_cp',
+            'elasticsearch_raw_query', 'elasticsearch_raw_order',
+            'referenced_topicpage', 'topicpage_filter', 'config_query').omit(
             *list(zeit.edit.interfaces.IBlock))
     undo_description = _('edit topic box')
 

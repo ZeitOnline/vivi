@@ -7,6 +7,7 @@ import json
 import six
 import zc.sourcefactory.contextual
 import zeit.cms.content.field
+import zeit.cms.content.sources
 import zeit.content.article.interfaces
 import zeit.content.article.source
 import zeit.content.gallery.interfaces
@@ -624,7 +625,7 @@ class ConfigQuerySource(TopicpageFilterSource):
             return None
 
 
-class TopicboxSourceType(zeit.contentquery.interfaces.SimpleDictSource):
+class TopicboxSourceType(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict([
         ('manual', _('manual')),
@@ -700,27 +701,6 @@ class ITopicbox(zeit.edit.interfaces.IBlock,
         title=_("Reference"),
         description=_("Drag article/link here"),
         source=TopicReferenceSource(),
-        required=False)
-
-    referenced_cp = zope.interface.Attribute(
-        'Referenced CP or None')
-
-    elasticsearch_raw_query = zope.schema.Text(
-        title=_('Elasticsearch raw query'),
-        required=False)
-
-    elasticsearch_raw_order = zope.schema.TextLine(
-        title=_('Sort order'),
-        default=u'payload.document.date_first_released:desc',
-        required=False)
-
-    topicpage = zope.schema.TextLine(
-        title=_('Referenced Topicpage'),
-        required=False)
-
-    topicpage_filter = zope.schema.Choice(
-        title=_('Topicpage filter'),
-        source=TopicpageFilterSource(),
         required=False)
 
     config_query = zope.schema.Choice(

@@ -53,7 +53,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Supertitle').value = 'Centerpage-Bar'
         b.getControl('Link').value = 'https://centerpages.com'
         b.getControl('Linktext').value = 'Centerpage-Baz'
-        b.getControl('Source').displayValue = ['referenced_cp']
+        b.getControl('Source').displayValue = ['centerpage']
         b.getControl(
             'Get teasers from CenterPage').value = 'http://xml.zeit.de/cp'
         b.getControl('Apply').click()
