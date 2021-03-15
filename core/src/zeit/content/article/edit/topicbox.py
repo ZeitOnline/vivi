@@ -23,6 +23,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     start = 0
     type = 'topicbox'
+    doc_iface = IArticle
 
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 

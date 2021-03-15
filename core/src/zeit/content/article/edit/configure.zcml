@@ -1,5 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
+  <include package="zeit.contentquery" />
   <class class=".body.EditableBody">
     <require
       interface="zeit.edit.interfaces.IReadContainer"
