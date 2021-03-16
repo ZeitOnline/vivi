@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.50.0 (unreleased)
+4.50.0 (2021-03-16)
 -------------------
 
 - ZON-6478: Move content query functionality to its own module
