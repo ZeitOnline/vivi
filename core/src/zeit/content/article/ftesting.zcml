@@ -30,8 +30,6 @@
   <include package="zeit.content.cp" />
   <include package="zeit.content.video" />
 
-  <include package="zeit.contentquery" />
-
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
 

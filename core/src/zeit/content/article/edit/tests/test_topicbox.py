@@ -117,7 +117,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box = self.get_topicbox()
         box.count = 5
         box.automatic_type = 'topicpage'
-        box.topicpage = 'angela-merkel'
+        box.referenced_topicpage = 'angela-merkel'
         values = list(box.values())
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)

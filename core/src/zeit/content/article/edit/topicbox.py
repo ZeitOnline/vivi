@@ -32,11 +32,14 @@ class Topicbox(zeit.content.article.edit.block.Block):
     query = zeit.contentquery.helper.QueryHelper()
 
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
-    referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
-    _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'automatic_type',
-        zeit.content.article.edit.interfaces.ITopicbox['automatic_type'])
+    is_complete_query = zeit.cms.content.property.ObjectPathProperty(
+        '.elasticsearch_complete_query',
+        zeit.content.article.edit.interfaces.ITopicbox['is_complete_query'],
+        use_default=True)
+
+    _count = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'count', zeit.content.article.edit.interfaces.ITopicbox['count'])
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle',
@@ -52,7 +55,11 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.', 'link_text',
         zeit.content.article.edit.interfaces.ITopicbox['link_text'])
 
-    automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'hide-dupes', zeit.content.article.edit.interfaces.ITopicbox[
+            'hide_dupes'], use_default=True)
+
+    _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic_type',
         zeit.content.article.edit.interfaces.ITopicbox['automatic_type'])
 
@@ -97,6 +104,9 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def config_query(self, value):
         self._config_query = value
 
+    def count_helper_tasks(self):
+        pass
+
     @property
     def existing_teasers(self):
         return set()
@@ -125,10 +135,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     @cached_on_content(IArticle, 'topicbox_values')
     def values(self):
-        if self.automatic_type == 'manual':
-            return (
-                content for content in self._reference_properties if content)
-
         if self.referenced_cp:
             parent_article = zeit.content.article.interfaces.IArticle(self,
                                                                       None)
@@ -137,6 +143,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
                        zeit.edit.interfaces.IElementReferences(
                            self.referenced_cp)),
                 len(self._reference_properties))
+
+        if self.automatic_type == 'manual':
+            return (
+                content for content in self._reference_properties if content)
 
         try:
             filtered_content = []
