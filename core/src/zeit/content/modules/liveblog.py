@@ -16,3 +16,6 @@ class TickarooLiveblog(zeit.edit.block.Element):
 
     status = ObjectPathAttributeProperty(
         '.', 'status', ITickarooLiveblog['status'])
+
+    theme = ObjectPathAttributeProperty(
+        '.', 'theme', ITickarooLiveblog['theme'])

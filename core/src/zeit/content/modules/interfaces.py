@@ -312,3 +312,9 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         title=_('Liveblog status'),
         source=LiveblogSource('*//status'),
         required=True)
+
+    theme = zope.schema.Choice(
+        title=_('Liveblog theme'),
+        source=LiveblogSource('*//theme'),
+        default='default',
+        required=True)
