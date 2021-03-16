@@ -25,6 +25,13 @@ class Topicbox(zeit.content.article.edit.block.Block):
     type = 'topicbox'
     doc_iface = IArticle
 
+    automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
+    automatic_type.mapping = {None: 'manual'}
+
+    count = zeit.contentquery.helper.CountHelper()
+    query = zeit.contentquery.helper.QueryHelper()
+
+    referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -91,21 +98,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
         self._config_query = value
 
     @property
-    def automatic_type(self):
-        result = self._automatic_type
-        if not result:
-            result = 'manual'
-        return result
-
-    @automatic_type.setter
-    def automatic_type(self, value):
-        self._automatic_type = value
-
-    @property
     def existing_teasers(self):
         return set()
 
-    def referenced_cp_helper_tasks(self):
+    def _referenced_cp_get_helper_tasks(self):
         if self.automatic_type == 'manual':
             return self.get_centerpage_from_first_reference()
 
@@ -173,46 +169,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
             self, zeit.contentquery.interfaces.IContentQuery,
             name=self.automatic_type or '')
         return content
-
-    @property
-    def query(self):
-        if not hasattr(self.xml, 'query'):
-            return ()
-        result = []
-        for condition in self.xml.query.getchildren():
-            typ = condition.get('type')
-            if typ == 'Channel':  # BBB
-                typ = 'channels'
-            operator = condition.get('operator')
-            if not operator:  # BBB
-                operator = 'eq'
-            value = self._converter(typ).fromProperty(str(condition))
-            field = zeit.content.cp.interfaces.IArea[
-                'query'].value_type.type_interface[typ]
-            if zope.schema.interfaces.ICollection.providedBy(field):
-                value = value[0]
-            # CombinationWidget needs items to be flattened
-            if not isinstance(value, tuple):
-                value = (value,)
-            result.append((typ, operator) + value)
-        return tuple(result)
-
-    @query.setter
-    def query(self, value):
-        try:
-            self.xml.remove(self.xml.query)
-        except AttributeError:
-            pass
-
-        if not value:
-            return
-
-        E = lxml.objectify.E
-        query = E.query()
-        for item in value:
-            typ, operator, val = self._serialize_query_item(item)
-            query.append(E.condition(val, type=typ, operator=operator))
-        self.xml.append(query)
 
     def _serialize_query_item(self, item):
         typ = item[0]
