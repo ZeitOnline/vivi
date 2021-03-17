@@ -4,7 +4,7 @@ vivi.core changes
 4.50.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6521: Support theme in liveblogs
 
 
 4.50.0 (2021-03-16)
