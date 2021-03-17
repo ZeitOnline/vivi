@@ -1,4 +1,6 @@
 from zeit.cms.content.cache import content_cache
+from zeit.cms.content.contentuuid import ContentUUID
+from zeit.contentquery.helper import QueryHelper
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
@@ -12,7 +14,6 @@ import zeit.content.cp.blocks.rss
 import zeit.content.cp.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
-from zeit.contentquery.helper import QueryHelper
 import zope.component
 import zope.interface
 
@@ -256,7 +257,7 @@ class TMSContentQuery(ContentQuery):
 
         cache = content_cache(
             self, self.context.doc_iface, 'tms_topic_queries')
-        rows = self._teaser_count + 5  # total teasers + some spares
+        rows = self.context._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
@@ -308,14 +309,6 @@ class TMSContentQuery(ContentQuery):
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
-
-    @property
-    def _teaser_count(self):
-        doc = self.context.doc_iface(self.context)
-        return sum(
-            a.count for a in doc.cached_areas
-            if a.automatic and a.count and a.automatic_type == 'topicpage' and
-            a.referenced_topicpage == self.topicpage)
 
     @property
     def total_hits(self):
@@ -385,3 +378,58 @@ class RSSFeedContentQuery(ContentQuery):
 
     def _get_feed(self, url, timeout):
         return requests.get(url, timeout=timeout).content
+
+
+class TMSRelatedApiQuery(TMSContentQuery):
+
+    grok.name('related-api')
+
+    def __init__(self, context):
+        super().__init__(context)
+        self.filter_id = None
+        try:
+            self.filter_id = self.context.topicpage_filter
+        except Exception:
+            pass
+
+    def _get_documents(self, **kw):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        try:
+            current_article = zeit.content.article.interfaces.IArticle(
+                self.context)
+            uuid = ContentUUID(current_article)
+            response = tms.get_related_documents(
+                uuid=uuid.id,
+                rows=self.context.teaser_amount,
+                filtername=self.filter_id)
+        except Exception as e:
+            if e.status == 404:
+                log.warning(
+                    'TMSRelatedAPI error. No document with id %s',
+                    uuid.id)
+            else:
+                log.warning(
+                    'Error during TMSRelatedAPI for %s',
+                    self.context.uniqueId, exc_info=True)
+            return iter([])
+        else:
+            return iter(response)
+
+
+class ConfigQuery(ElasticsearchContentQuery):
+    """Search via Elasticsearch."""
+
+    grok.name('config-query')
+
+    def __init__(self, context):
+        super().__init__(context)
+        factory = zeit.content.article.edit.interfaces.ITopicbox[
+            'config_query'].source.factory
+        self.query = factory.getQuery(context._config_query)
+        if self.query.get('query', {}) == {}:
+            self.query = {
+                'query': self.query
+            }
+
+    def _build_query(self):
+        return self.query

@@ -9,11 +9,11 @@ import zope.component
 
 
 class AutomaticTypeHelper:
-    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
-    """
+    """Returns a type for a area/module that uses content queries."""
     mapping = None
 
     def __get__(self, context, class_):
+        """ Allows value mapping via dictionary."""
         if context._automatic_type in self.mapping:
             return self.mapping[context._automatic_type]
         return context._automatic_type
@@ -22,27 +22,12 @@ class AutomaticTypeHelper:
         context._automatic_type = value
 
 
-class CountHelper:
-    """Returns a Count of teasers for the CP AutomaticArea
-       and article's topicbox
-    """
-    def __get__(self, context, class_):
-        return context._count
-
-    def __set__(self, context, value):
-        context._count = value
-        if context.count_helper_tasks:
-            context.count_helper_tasks()
-
-
 class QueryHelper:
-    """Returns a query for AutomaticArea's parent Area and Topicboxes.
-    """
+    """Returns a query for a area/module that uses content queries."""
     mapping = None
 
     def __get__(self, context, class_):
-        """ Returns query
-        """
+        """ Allows value mapping via dictionary."""
         if not hasattr(context.xml, 'query'):
             return ()
         result = []
@@ -65,8 +50,6 @@ class QueryHelper:
         return tuple(result)
 
     def __set__(self, context, value):
-        """ Sets values for query
-        """
         try:
             context.xml.remove(context.xml.query)
         except AttributeError:
@@ -107,18 +90,15 @@ class QueryHelper:
 
 
 class ReferencedCenterpageHelper:
-    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
+    """Returns a referenced CP for a area/module that uses a CP content query.
     """
-
     def __get__(self, context, class_):
+        if hasattr(context, '_referenced_cp_get_helper_tasks'):
+            if context._referenced_cp_get_helper_tasks() is not None:
+                return context._referenced_cp_get_helper_tasks()
         return context._referenced_cp
 
     def __set__(self, context, value):
-        # It is still possible to build larger circles (e.g A->C->A)
-        # but a sane user should not ignore the errormessage shown in the
-        # cp-editor and preview.
-        # Checking for larger circles is not reasonable here.
-        ref = zeit.content.cp.interfaces.ICenterPage
-        if value.uniqueId == ref(context).uniqueId:
-            raise ValueError("A centerpage can't reference itself!")
+        if hasattr(context, '_referenced_cp_set_helper_tasks'):
+            context._referenced_cp_set_helper_tasks(value)
         context._referenced_cp = value

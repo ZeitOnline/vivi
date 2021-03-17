@@ -1,11 +1,22 @@
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zeit.content.video.video
 import zeit.edit.interfaces
+import zope.component
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
 
 class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
+
+    layer = zeit.content.article.testing.MOCK_LAYER
+
+    def setUp(self):
+        super().setUp()
+        self.repository['art1'] = zeit.content.article.article.Article()
+        self.repository['art2'] = zeit.content.article.article.Article()
+        self.repository['art3'] = zeit.content.article.article.Article()
+        self.repository['video'] = zeit.content.video.video.Video()
 
     def get_topicbox(self):
         from zeit.content.article.edit.topicbox import Topicbox
@@ -76,3 +87,80 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.second_reference = zeit.cms.interfaces.ICMSContent(
             "http://xml.zeit.de/online/2007/01/Somalia")
         self.assertEqual([self.repository['foo'], ], list(box.values()))
+
+    def test_topicbox_defaults_to_automatic_type_manual(self):
+        box = self.get_topicbox()
+        self.assertEqual('manual', box.automatic_type)
+
+    def test_topicbox_source_centerpage(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'centerpage'
+        box.referenced_cp = self.get_cp(content=[
+            self.repository['art1'],
+            self.repository['art2'],
+            self.repository['art3'], ])
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
+
+    def test_topicbox_source_elasticsearch(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'elasticsearch-query'
+        box.elasticsearch_raw_query = '{}'
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
+
+    def test_topicbox_source_topicpage(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'topicpage'
+        box.referenced_topicpage = 'angela-merkel'
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
+
+    def test_topicbox_source_config_query_complete_query(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'config-query'
+        box.config_query = 'esquery1'
+        contentquery = zope.component.getAdapter(
+            box,
+            zeit.contentquery.interfaces.IContentQuery,
+            name=box.automatic_type)
+        query = contentquery.query
+        values = list(box.values())
+        self.assertEqual({'query': {'term': {'doc_type': 'TESTTYPE'}}}, query)
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
+
+    def test_topicbox_source_config_query_not_complete_query(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'config-query'
+        box.config_query = 'esquery2'
+        contentquery = zope.component.getAdapter(
+            box,
+            zeit.contentquery.interfaces.IContentQuery,
+            name=box.automatic_type)
+        query = contentquery.query
+        values = list(box.values())
+        self.assertEqual({'query': {'term': {'doc_type': 'TESTTYPE2'}}}, query)
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
+
+    def test_topicbox_values_deduplication(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'centerpage'
+        box.referenced_cp = self.get_cp(content=[
+            self.repository['art1'],
+            self.repository['art2'],
+            self.repository['art2'],
+            self.repository['art3'], ])
+        values = list(box.values())
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
+        self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
