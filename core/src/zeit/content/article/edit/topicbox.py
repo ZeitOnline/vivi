@@ -108,6 +108,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
         pass
 
     @property
+    def _teaser_count(self):
+        return 0
+
+    @property
     def existing_teasers(self):
         return set()
 

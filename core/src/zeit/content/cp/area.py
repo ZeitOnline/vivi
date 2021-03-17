@@ -399,6 +399,13 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 del self[block.__name__]
 
     @property
+    def _teaser_count(self):
+        return sum(
+            a.count for a in self.doc_iface(self)
+            if a.automatic and a.count and a.automatic_type == 'topicpage' and
+            a.referenced_topicpage == self.topicpage)
+
+    @property
     @cached_on_content(ICenterPage, keyfunc=lambda x: x.__name__)
     def existing_teasers(self):
         current_area = self
