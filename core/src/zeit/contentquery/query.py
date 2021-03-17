@@ -315,7 +315,7 @@ class TMSContentQuery(ContentQuery):
         return sum(
             a.count for a in doc.cached_areas
             if a.automatic and a.count and a.automatic_type == 'topicpage' and
-            a.referenced_topicpage == self.referenced_topicpage)
+            a.referenced_topicpage == self.topicpage)
 
     @property
     def total_hits(self):
