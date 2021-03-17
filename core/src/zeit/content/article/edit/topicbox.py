@@ -179,9 +179,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
             name=self.automatic_type or '')
         return content
 
-    @property
-    def existing_teasers(self):
-        return set()
 
 @zope.component.adapter(zeit.content.article.edit.interfaces.ITopicbox)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)

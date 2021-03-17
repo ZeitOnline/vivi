@@ -91,14 +91,13 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
 
     type = 'area'
-
     doc_iface = zeit.content.cp.interfaces.ICenterPage
 
+    # Declare descriptor attributes
     automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
     automatic_type.mapping = {'channel': 'custom'}
     query = zeit.contentquery.helper.QueryHelper()
     query.mapping = {'Channel': 'channels'}
-
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     kind = ObjectPathAttributeProperty(
@@ -140,12 +139,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IArea['automatic_type'])
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', zeit.contentquery.interfaces.IConfiguration['count'])
+        '.', 'count', zeit.content.cp.interfaces.IArea['count'])
 
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.contentquery.interfaces.IConfiguration[
+        '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
             'hide_dupes'], use_default=True)
 
     require_lead_candidates = (
@@ -156,31 +155,31 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     referenced_topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.referenced_topicpage',
-        zeit.contentquery.interfaces.IConfiguration['referenced_topicpage'])
+        zeit.content.cp.interfaces.IArea['referenced_topicpage'])
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
-        zeit.contentquery.interfaces.IConfiguration['topicpage_filter'])
+        zeit.content.cp.interfaces.IArea['topicpage_filter'])
 
     query_order = zeit.cms.content.property.ObjectPathProperty(
         '.query_order',
-        zeit.contentquery.interfaces.IConfiguration['query_order'],
+        zeit.content.cp.interfaces.IArea['query_order'],
         use_default=True)
 
     elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
-        zeit.contentquery.interfaces.IConfiguration['elasticsearch_raw_query'])
+        zeit.content.cp.interfaces.IArea['elasticsearch_raw_query'])
     elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_order',
-        zeit.contentquery.interfaces.IConfiguration['elasticsearch_raw_order'],
+        zeit.content.cp.interfaces.IArea['elasticsearch_raw_order'],
         use_default=True)
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
-        zeit.contentquery.interfaces.IConfiguration['is_complete_query'],
+        zeit.content.cp.interfaces.IArea['is_complete_query'],
         use_default=True)
 
     rss_feed = zeit.cms.content.property.DAVConverterWrapper(
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
-        zeit.contentquery.interfaces.IConfiguration['rss_feed'])
+        zeit.content.cp.interfaces.IArea['rss_feed'])
 
     topiclink_label_1 = ReferencedCpFallbackProperty(
         '.topiclink_label_1',

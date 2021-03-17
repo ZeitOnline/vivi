@@ -310,7 +310,6 @@ class TMSContentQuery(ContentQuery):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
-
     @property
     def total_hits(self):
         cache = content_cache(
