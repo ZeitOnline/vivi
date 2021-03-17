@@ -401,9 +401,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @property
     def _teaser_count(self):
         return sum(
-            a.count for a in self.doc_iface(self)
-            if a.automatic and a.count and a.automatic_type == 'topicpage' and
-            a.referenced_topicpage == self.topicpage)
+            a.count for a in self.doc_iface(self).cached_areas
+            if a.automatic and a.count
+            and a.automatic_type == 'topicpage'
+            and a.referenced_topicpage == self.referenced_topicpage)
 
     @property
     @cached_on_content(ICenterPage, keyfunc=lambda x: x.__name__)
