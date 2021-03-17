@@ -51,8 +51,6 @@ We have to publish another url to see if articles are listed:
       2008 3 7  12:47:16
     </td>
     <td>
-    </td>
-    <td>
       International
     </td>
 ...
