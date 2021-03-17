@@ -25,10 +25,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
     type = 'topicbox'
     doc_iface = IArticle
 
+    # Declare descriptor attributes
     automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
     automatic_type.mapping = {None: 'manual'}
     query = zeit.contentquery.helper.QueryHelper()
-
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
@@ -134,6 +134,9 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     @cached_on_content(IArticle, 'topicbox_values')
     def values(self):
+        """This case returns the old centerpage topicbox with first_reference
+        sets the centerpage. In that case automatic_type is always manual
+        (default)"""
         if self.referenced_cp and self.automatic_type == 'manual':
             parent_article = zeit.content.article.interfaces.IArticle(self,
                                                                       None)
@@ -142,11 +145,12 @@ class Topicbox(zeit.content.article.edit.block.Block):
                        zeit.edit.interfaces.IElementReferences(
                            self.referenced_cp)),
                 len(self._reference_properties))
-
+        """Old style topicbox with 3 manual references"""
         if self.automatic_type == 'manual':
             return (
                 content for content in self._reference_properties if content)
 
+        """All content query driven topicboxes"""
         try:
             filtered_content = []
             content = iter(self._content_query())
@@ -169,8 +173,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
         except (LookupError, ValueError):
             log.warning('found no IContentQuery type %s',
                         self.automatic_type)
-            return (
-                content for content in self._reference_properties if content)
+            return ()
 
     @property
     def _content_query(self):
