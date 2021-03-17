@@ -1,7 +1,7 @@
 from six import StringIO
+from zeit.cms.content.cache import writeabledict
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.content.cp.centerpage import writeabledict
 import gocept.cache.property
 import grokcore.component as grok
 import lxml.etree

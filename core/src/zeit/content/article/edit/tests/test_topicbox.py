@@ -115,7 +115,6 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
     def test_topicbox_source_topicpage(self):
         box = self.get_topicbox()
-        box.count = 5
         box.automatic_type = 'topicpage'
         box.referenced_topicpage = 'angela-merkel'
         values = list(box.values())
@@ -156,7 +155,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
     def test_topicbox_values_deduplication(self):
         box = self.get_topicbox()
         box.automatic_type = 'centerpage'
-        box.centerpage = self.get_cp(content=[
+        box.referenced_cp = self.get_cp(content=[
             self.repository['art1'],
             self.repository['art2'],
             self.repository['art2'],

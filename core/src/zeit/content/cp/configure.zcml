@@ -136,12 +136,6 @@
   </class>
 
   <adapter
-    factory=".area.Area"
-    provides="zeit.contentquery.interfaces.IContentQuery"
-    trusted="yes"
-    />
-
-  <adapter
     factory=".automatic.AutomaticArea"
     trusted="yes" />
 

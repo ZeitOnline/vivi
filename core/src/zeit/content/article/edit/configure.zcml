@@ -384,12 +384,6 @@
     trusted="yes"
     />
 
-  <adapter
-    factory=".topicbox.Topicbox"
-    provides="zeit.contentquery.interfaces.IContentQuery"
-    trusted="yes"
-    />
-
   <class class=".topicbox.TopicboxImages">
     <require
       interface="zeit.content.image.interfaces.IImages"

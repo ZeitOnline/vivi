@@ -96,8 +96,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
     automatic_type.mapping = {'channel': 'custom'}
-
-    count = zeit.contentquery.helper.CountHelper()
     query = zeit.contentquery.helper.QueryHelper()
     query.mapping = {'Channel': 'channels'}
 
@@ -298,7 +296,13 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if value:
             self._create_auto_blocks()
 
-    def count_helper_tasks(self):
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, value):
+        self._count = value
         self.adjust_auto_blocks_to_count()
 
     def _referenced_cp_set_helper_tasks(self, value):

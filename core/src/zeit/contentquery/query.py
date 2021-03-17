@@ -257,7 +257,7 @@ class TMSContentQuery(ContentQuery):
 
         cache = content_cache(
             self, self.context.doc_iface, 'tms_topic_queries')
-        rows = self.context.context._teaser_count + 5  # total teasers + some spares
+        rows = self.context._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]

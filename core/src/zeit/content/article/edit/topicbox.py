@@ -6,13 +6,13 @@ from zeit.cms.content.cache import cached_on_content
 import grokcore.component as grok
 import itertools
 import logging
-import lxml
 import zeit.cms.content.reference
 import zeit.contentquery.interfaces
 import zeit.contentquery.helper
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
+import zope.app.appsetup.product
 import zope.component
 
 log = logging.getLogger(__name__)
@@ -27,8 +27,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
     automatic_type.mapping = {None: 'manual'}
-
-    count = zeit.contentquery.helper.CountHelper()
     query = zeit.contentquery.helper.QueryHelper()
 
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
@@ -97,15 +95,18 @@ class Topicbox(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicbox['config_query'])
 
     @property
+    def count(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.article')
+        return int(config['topicbox-teaser-amount'])
+
+    @property
     def config_query(self):
         return self._config_query
 
     @config_query.setter
     def config_query(self, value):
         self._config_query = value
-
-    def count_helper_tasks(self):
-        pass
 
     @property
     def _teaser_count(self):
@@ -118,12 +119,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def _referenced_cp_get_helper_tasks(self):
         if self.automatic_type == 'manual':
             return self.get_centerpage_from_first_reference()
-
-    @property
-    def teaser_amount(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.article')
-        return int(config['topicbox-teaser-amount'])
 
     @property
     def _reference_properties(self):
@@ -139,7 +134,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     @cached_on_content(IArticle, 'topicbox_values')
     def values(self):
-        if self.referenced_cp:
+        if self.referenced_cp and self.automatic_type == 'manual':
             parent_article = zeit.content.article.interfaces.IArticle(self,
                                                                       None)
             return itertools.islice(
@@ -183,31 +178,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
             self, zeit.contentquery.interfaces.IContentQuery,
             name=self.automatic_type or '')
         return content
-
-    def _serialize_query_item(self, item):
-        typ = item[0]
-        operator = item[1]
-        field = zeit.content.cp.interfaces.IArea[
-            'query'].value_type.type_interface[typ]
-
-        if len(item) > self.teaser_amount:
-            value = item[2:]
-        else:
-            value = item[2]
-        if zope.schema.interfaces.ICollection.providedBy(field):
-            value = field._type((value,))  # tuple(already_tuple) is a no-op
-        value = self._converter(typ).toProperty(value)
-
-        return typ, operator, value
-
-    def _converter(self, selector):
-        field = zeit.content.cp.interfaces.IArea[
-            'query'].value_type.type_interface[selector]
-        field = field.bind(zeit.content.article.interfaces.IArticle(self))
-        props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
-        return zope.component.getMultiAdapter(
-            (field, props),
-            zeit.cms.content.interfaces.IDAVPropertyConverter)
 
     @property
     def existing_teasers(self):

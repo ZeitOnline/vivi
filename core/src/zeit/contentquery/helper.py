@@ -22,19 +22,6 @@ class AutomaticTypeHelper:
         context._automatic_type = value
 
 
-class CountHelper:
-    """Returns a Count of teasers for the CP AutomaticArea
-       and article's topicbox
-    """
-    def __get__(self, context, class_):
-        return context._count
-
-    def __set__(self, context, value):
-        context._count = value
-        if context.count_helper_tasks:
-            context.count_helper_tasks()
-
-
 class QueryHelper:
     """Returns a query for AutomaticArea's parent Area and Topicboxes.
     """
