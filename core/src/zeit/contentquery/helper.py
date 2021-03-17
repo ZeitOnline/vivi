@@ -9,11 +9,11 @@ import zope.component
 
 
 class AutomaticTypeHelper:
-    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
-    """
+    """Returns a type for a area/module that uses content queries."""
     mapping = None
 
     def __get__(self, context, class_):
+        """ Allows value mapping via dictionary."""
         if context._automatic_type in self.mapping:
             return self.mapping[context._automatic_type]
         return context._automatic_type
@@ -23,13 +23,11 @@ class AutomaticTypeHelper:
 
 
 class QueryHelper:
-    """Returns a query for AutomaticArea's parent Area and Topicboxes.
-    """
+    """Returns a query for a area/module that uses content queries."""
     mapping = None
 
     def __get__(self, context, class_):
-        """ Returns query
-        """
+        """ Allows value mapping via dictionary."""
         if not hasattr(context.xml, 'query'):
             return ()
         result = []
@@ -52,8 +50,6 @@ class QueryHelper:
         return tuple(result)
 
     def __set__(self, context, value):
-        """ Sets values for query
-        """
         try:
             context.xml.remove(context.xml.query)
         except AttributeError:
@@ -94,7 +90,7 @@ class QueryHelper:
 
 
 class ReferencedCenterpageHelper:
-    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
+    """Returns a referenced CP for a area/module that uses a CP content query.
     """
     def __get__(self, context, class_):
         if hasattr(context, '_referenced_cp_get_helper_tasks'):
