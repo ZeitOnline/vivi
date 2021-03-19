@@ -179,13 +179,6 @@ class IContentQuery(zope.interface.Interface):
     def __call__(self):
         """Returns list of content objects."""
 
-    existing_teasers = zope.interface.Attribute(
-        """Returns a set of ICMSContent objects that are already present on
-        the CP in other areas and in topicboxes in articles.
-        If IArea.hide_dupes is True, these should be not be repeated, and
-        thus excluded from our query result.
-        """)
-
 
 class IConfiguration(zope.interface.Interface):
     automatic_type = zope.interface.Attribute("Automatic type")
@@ -196,7 +189,10 @@ class IConfiguration(zope.interface.Interface):
     # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
 
-    existing_teasers = zope.interface.Attribute("Existing teasers")
+    existing_teasers = zope.interface.Attribute(
+        """Returns a set of ICMSContent objects that are already present on
+        the CP. If IArea.hide_dupes is True, these should be not be repeated,
+        and thus excluded from our query result.""")
 
     hide_dupes = zope.schema.Bool(
         title=_('Hide duplicate teasers'),

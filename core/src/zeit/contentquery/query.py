@@ -28,10 +28,6 @@ class ContentQuery(grok.Adapter):
 
     total_hits = NotImplemented
 
-    def __init__(self, context):
-        self.context = context
-        self.existing_teasers = self.context.existing_teasers
-
     def __call__(self):
         raise NotImplementedError()
 
@@ -132,10 +128,10 @@ class ElasticsearchContentQuery(ContentQuery):
 
         Create an id query for teasers that already exist on the CP.
         """
-        if not self.context.hide_dupes or not self.existing_teasers:
+        if not self.context.hide_dupes or not self.context.existing_teasers:
             return None
         ids = []
-        for content in self.existing_teasers:
+        for content in self.context.existing_teasers:
             id = getattr(zeit.cms.content.interfaces.IUUID(content, None),
                          'id', None)
             if id:
@@ -281,7 +277,8 @@ class TMSContentQuery(ContentQuery):
             content = self._resolve(item)
             if content is None:
                 continue
-            if self.context.hide_dupes and content in self.existing_teasers:
+            if (self.context.hide_dupes
+                    and content in self.context.existing_teasers):
                 dupes += 1
             else:
                 result.append(content)
@@ -343,7 +340,8 @@ class CenterpageContentQuery(ContentQuery):
         for content in teasered:
             if zeit.content.cp.blocks.rss.IRSSLink.providedBy(content):
                 continue
-            if self.context.hide_dupes and content in self.existing_teasers:
+            if (self.context.hide_dupes
+                    and content in self.context.existing_teasers):
                 continue
             result.append(content)
             if len(result) >= self.rows:
