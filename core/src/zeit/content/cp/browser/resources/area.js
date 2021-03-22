@@ -25,6 +25,17 @@ $(document).bind('fragment-ready', function(event) {
     if (! type_select.length) {
         return;
     }
+
+    var fieldsets = event.__target.getElementsByTagName('fieldset');
+    if (fieldsets.length > 0) {
+        var fieldset_topicbox_id = fieldsets[0].id;
+        if (fieldset_topicbox_id !== undefined) {
+            if (fieldset_topicbox_id.indexOf('form-topicbox.id-') > -1) {
+                return;
+            }
+        }
+    }
+
     show_matching_field(event.__target, type_select.val());
     type_select.on(
         'change', function() {
