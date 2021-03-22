@@ -26,8 +26,6 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     def __init__(self, context):
         self.context = context
-        self.existing_teasers = self.context.existing_teasers
-        self._teaser_count = self.context._teaser_count
         self.xml = self.context.xml
         self.__parent__ = self.context
 

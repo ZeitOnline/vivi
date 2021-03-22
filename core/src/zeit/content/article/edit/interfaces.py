@@ -625,7 +625,7 @@ class ConfigQuerySource(TopicpageFilterSource):
             return None
 
 
-class TopicboxSourceType(zeit.cms.content.sources.SimpleDictSource):
+class TopicboxTypeSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict([
         ('manual', _('manual')),
@@ -680,10 +680,10 @@ class ITopicbox(zeit.edit.interfaces.IBlock,
         max_length=30)
 
     automatic_type = zope.schema.Choice(
-        title=_('Source'),
-        source=TopicboxSourceType(),
+        title=_('Automatic type'),
+        source=TopicboxTypeSource(),
         required=True,
-        default='centerpage')
+        default='manual')
 
     first_reference = zope.schema.Choice(
         title=_("Reference"),

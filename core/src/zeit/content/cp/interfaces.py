@@ -377,7 +377,7 @@ class IReadArea(
     """
 
     automatic_type = zope.schema.Choice(
-        title=_('automatic-area-type'),
+        title=_('Automatic type'),
         source=AutomaticTypeSource(),
         required=True)
 
