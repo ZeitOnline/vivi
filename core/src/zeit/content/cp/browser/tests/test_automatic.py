@@ -26,7 +26,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
     def test_stores_elasticsearch_query_properties_in_xml(self):
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('automatic-area-type', index=0).displayValue = [
+        b.getControl('Automatic type', index=0).displayValue = [
             'elasticsearch-query']
         b.getControl('Elasticsearch raw query').value = (
             '{"query": {"match_all": {}}}')
@@ -48,7 +48,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('automatic-area-type', index=0).displayValue = [
+        b.getControl('Automatic type', index=0).displayValue = [
             'centerpage']
         b.getControl(name='form.referenced_cp').value = 'http://xml.zeit.de/cp'
         b.getControl('Apply').click()
@@ -65,7 +65,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
     def test_stores_topicpage_properties_in_xml(self):
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('automatic-area-type', index=0).displayValue = [
+        b.getControl('Automatic type', index=0).displayValue = [
             'topicpage']
         b.getControl(name='form.referenced_topicpage').value = 'tms-id'
         b.getControl('Apply').click()
@@ -82,7 +82,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
     def test_stores_rss_feed_in_xml(self):
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('automatic-area-type', index=0).displayValue = [
+        b.getControl('Automatic type', index=0).displayValue = [
             'rss-feed']
         b.getControl(name='form.rss_feed').value = ['zett']
         b.getControl('Apply').click()
@@ -122,7 +122,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.click('css=.block.type-area .edit-link')
         sel.waitForElementPresent('css=.lightbox')
         sel.waitForElementPresent('id=form.automatic_type')
-        sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
+        sel.select('id=form.automatic_type', 'Automatic type-centerpage')
         sel.type('id=form.referenced_cp.url',
                  'http://xml.zeit.de/cp_with_teaser')
         sel.type('id=form.count', 1)
@@ -158,7 +158,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.waitForElementPresent('id=form.automatic_type')
 
         sel.assertNotVisible('css=.fieldname-referenced_cp')
-        sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
+        sel.select('id=form.automatic_type', 'Automatic type-centerpage')
         sel.assertVisible('css=.fieldname-referenced_cp')
 
     def test_clicking_on_image_toggles_checkbox(self):

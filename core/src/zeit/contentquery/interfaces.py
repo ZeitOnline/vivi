@@ -238,6 +238,8 @@ class IConfiguration(zope.interface.Interface):
         source=zeit.content.cp.source.centerPageSource,
         required=False)
 
+    _teaser_count = zope.interface.Attribute("Topicpage teaser count")
+
     referenced_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage'),
         required=False)
