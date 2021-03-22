@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Mar 17 14:26:44 2021\n"
+"POT-Creation-Date: Wed Mar 24 15:04:41 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
 #: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
@@ -351,6 +351,7 @@ msgstr "Treffer"
 #: zeit/cms/content/interfaces.py:694
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:37
+#: zeit/contentquery/interfaces.py:153
 msgid "Ressort"
 msgstr "Ressort"
 
@@ -640,7 +641,7 @@ msgid "Options"
 msgstr "Optionen"
 
 #: zeit/cms/content/browser/form.py:30 zeit/cms/content/interfaces.py:122
-#: zeit/content/article/interfaces.py:174
+#: zeit/content/article/interfaces.py:174 zeit/contentquery/interfaces.py:144
 msgid "Authors"
 msgstr "Autoren"
 
@@ -756,6 +757,7 @@ msgid "Volume"
 msgstr "Ausgabe"
 
 #: zeit/cms/content/interfaces.py:89 zeit/cms/content/interfaces.py:699
+#: zeit/contentquery/interfaces.py:156
 msgid "Sub ressort"
 msgstr "Unterressort"
 
@@ -1260,6 +1262,7 @@ msgid "File"
 msgstr "Datei"
 
 #: zeit/cms/repository/browser/file_details.pt:10
+#: zeit/contentquery/interfaces.py:166
 msgid "Content type"
 msgstr "Content-Type"
 
@@ -2497,11 +2500,11 @@ msgstr "Klassisch"
 
 #: zeit/content/article/edit/interfaces.py:632
 msgid "centerpage"
-msgstr "Referenzierte Centerpage"
+msgstr "Centerpage"
 
 #: zeit/content/article/edit/interfaces.py:633
 msgid "topicpage"
-msgstr "Referenzierte Themenseite"
+msgstr "Themenseite"
 
 #: zeit/content/article/edit/interfaces.py:634
 msgid "elasticsearch-query"
@@ -4148,6 +4151,110 @@ msgstr "Ausgaben-Hinweis"
 msgid "Date of digital publication"
 msgstr "Erstveröffentlichungstermin"
 
+#: zeit/contentquery/interfaces.py:55
+msgid "query-sort-order-last-published-semantic"
+msgstr "Letzte Veröffentlichung nach letzter Änderung"
+
+#: zeit/contentquery/interfaces.py:57
+msgid "query-sort-order-last-semantic-change"
+msgstr "Letzte Aktualisierung"
+
+#: zeit/contentquery/interfaces.py:59
+msgid "query-sort-order-first-released"
+msgstr "Erstveröffentlichung"
+
+#: zeit/contentquery/interfaces.py:66
+msgid "query-type-channels"
+msgstr "Channel"
+
+#: zeit/contentquery/interfaces.py:67
+msgid "query-type-serie"
+msgstr "Serie"
+
+#: zeit/contentquery/interfaces.py:68
+msgid "query-type-product"
+msgstr "Quelle"
+
+#: zeit/contentquery/interfaces.py:69
+msgid "query-type-ressort"
+msgstr "Ressort"
+
+#: zeit/contentquery/interfaces.py:70
+msgid "query-type-genre"
+msgstr "Genre"
+
+#: zeit/contentquery/interfaces.py:71
+msgid "query-type-authorships"
+msgstr "Autor"
+
+#: zeit/contentquery/interfaces.py:72
+msgid "query-type-access"
+msgstr "Verfügbarkeit"
+
+#: zeit/contentquery/interfaces.py:73
+msgid "query-type-content-type"
+msgstr "Content-Typ"
+
+#: zeit/contentquery/interfaces.py:80
+msgid "query-operator-equal"
+msgstr "ist gleich"
+
+#: zeit/contentquery/interfaces.py:81
+msgid "query-operator-notequal"
+msgstr "ist ungleich"
+
+#: zeit/contentquery/interfaces.py:190
+msgid "Amount of teasers"
+msgstr "Anzahl Teaser"
+
+#: zeit/contentquery/interfaces.py:198
+msgid "Hide duplicate teasers"
+msgstr "Dubletten vermeiden"
+
+#: zeit/contentquery/interfaces.py:202
+msgid "Custom Query"
+msgstr "UND-Bedingung"
+
+#: zeit/contentquery/interfaces.py:205
+msgid "Custom Query Type"
+msgstr " "
+
+#: zeit/contentquery/interfaces.py:209
+msgid "Custom Query Operator"
+msgstr " Operator"
+
+#: zeit/contentquery/interfaces.py:216 zeit/contentquery/interfaces.py:226
+msgid "Sort order"
+msgstr "Sortierung"
+
+#: zeit/contentquery/interfaces.py:222
+msgid "Elasticsearch raw query"
+msgstr "ES-Query"
+
+#: zeit/contentquery/interfaces.py:231
+msgid "Take over complete query body"
+msgstr "Query nicht nachverarbeiten (published:true nicht vergessen)"
+
+#: zeit/contentquery/interfaces.py:232
+msgid "Remember to add payload.workflow.published:true"
+msgstr "payload.workflow.published:true nicht vergessen"
+
+#: zeit/contentquery/interfaces.py:237
+msgid "Get teasers from CenterPage"
+msgstr "Teaser beziehen von..."
+
+#: zeit/contentquery/interfaces.py:244
+msgid "Referenced Topicpage"
+msgstr "ID"
+
+#: zeit/contentquery/interfaces.py:248
+msgid "Topicpage filter"
+msgstr "Filter"
+
+#: zeit/contentquery/interfaces.py:253
+msgid "RSS-Feed"
+msgstr "RSS-Feed"
+
 #: zeit/edit/browser/block.py:37 zeit/edit/browser/landing.py:91
 msgid "add '${type}' block"
 msgstr "'${type}'-Block hinzufügen"
@@ -4900,84 +5007,6 @@ msgstr "mit Info"
 
 #~ msgid "automatic-area-type"
 #~ msgstr "Quelle"
-
-#~ msgid "query-type-channels"
-#~ msgstr "Channel"
-
-#~ msgid "query-type-serie"
-#~ msgstr "Serie"
-
-#~ msgid "query-type-product"
-#~ msgstr "Quelle"
-
-#~ msgid "query-type-ressort"
-#~ msgstr "Ressort"
-
-#~ msgid "query-type-genre"
-#~ msgstr "Genre"
-
-#~ msgid "query-type-authorships"
-#~ msgstr "Autor"
-
-#~ msgid "query-type-access"
-#~ msgstr "Verfügbarkeit"
-
-#~ msgid "query-type-content-type"
-#~ msgstr "Content-Typ"
-
-#~ msgid "query-operator-equal"
-#~ msgstr "ist gleich"
-
-#~ msgid "query-operator-notequal"
-#~ msgstr "ist ungleich"
-
-#~ msgid "query-sort-order-last-published-semantic"
-#~ msgstr "Letzte Veröffentlichung nach letzter Änderung"
-
-#~ msgid "query-sort-order-last-semantic-change"
-#~ msgstr "Letzte Aktualisierung"
-
-#~ msgid "query-sort-order-first-released"
-#~ msgstr "Erstveröffentlichung"
-
-#~ msgid "Amount of teasers"
-#~ msgstr "Anzahl Teaser"
-
-#~ msgid "Get teasers from CenterPage"
-#~ msgstr "Teaser beziehen von..."
-
-#~ msgid "Hide duplicate teasers"
-#~ msgstr "Dubletten vermeiden"
-
-#~ msgid "Custom Query"
-#~ msgstr "UND-Bedingung"
-
-#~ msgid "Custom Query Type"
-#~ msgstr " "
-
-#~ msgid "Custom Query Operator"
-#~ msgstr " Operator"
-
-#~ msgid "Sort order"
-#~ msgstr "Sortierung"
-
-#~ msgid "Referenced Topicpage"
-#~ msgstr "ID"
-
-#~ msgid "Topicpage filter"
-#~ msgstr "Filter"
-
-#~ msgid "Elasticsearch raw query"
-#~ msgstr "ES-Query"
-
-#~ msgid "Take over complete query body"
-#~ msgstr "Query nicht nachverarbeiten (published:true nicht vergessen)"
-
-#~ msgid "Remember to add payload.workflow.published:true"
-#~ msgstr "payload.workflow.published:true nicht vergessen"
-
-#~ msgid "RSS-Feed"
-#~ msgstr "RSS-Feed"
 
 #~ msgid "Is instant article"
 #~ msgstr "Bei Facebook als Instant Article darstellen"

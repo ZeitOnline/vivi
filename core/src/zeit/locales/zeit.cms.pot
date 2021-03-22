@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Mar 17 14:26:44 2021\n"
+"POT-Creation-Date: Wed Mar 24 15:04:41 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -387,6 +387,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:694
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:37
+#: zeit/contentquery/interfaces.py:153
 msgid "Ressort"
 msgstr ""
 
@@ -675,6 +676,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:30
 #: zeit/cms/content/interfaces.py:122
 #: zeit/content/article/interfaces.py:174
+#: zeit/contentquery/interfaces.py:144
 msgid "Authors"
 msgstr ""
 
@@ -794,6 +796,7 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:89
 #: zeit/cms/content/interfaces.py:699
+#: zeit/contentquery/interfaces.py:156
 msgid "Sub ressort"
 msgstr ""
 
@@ -1297,6 +1300,7 @@ msgid "File"
 msgstr ""
 
 #: zeit/cms/repository/browser/file_details.pt:10
+#: zeit/contentquery/interfaces.py:166
 msgid "Content type"
 msgstr ""
 
@@ -4202,6 +4206,111 @@ msgstr ""
 
 #: zeit/content/volume/interfaces.py:51
 msgid "Date of digital publication"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:55
+msgid "query-sort-order-last-published-semantic"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:57
+msgid "query-sort-order-last-semantic-change"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:59
+msgid "query-sort-order-first-released"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:66
+msgid "query-type-channels"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:67
+msgid "query-type-serie"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:68
+msgid "query-type-product"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:69
+msgid "query-type-ressort"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:70
+msgid "query-type-genre"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:71
+msgid "query-type-authorships"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:72
+msgid "query-type-access"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:73
+msgid "query-type-content-type"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:80
+msgid "query-operator-equal"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:81
+msgid "query-operator-notequal"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:190
+msgid "Amount of teasers"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:198
+msgid "Hide duplicate teasers"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:202
+msgid "Custom Query"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:205
+msgid "Custom Query Type"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:209
+msgid "Custom Query Operator"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:216
+#: zeit/contentquery/interfaces.py:226
+msgid "Sort order"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:222
+msgid "Elasticsearch raw query"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:231
+msgid "Take over complete query body"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:232
+msgid "Remember to add payload.workflow.published:true"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:237
+msgid "Get teasers from CenterPage"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:244
+msgid "Referenced Topicpage"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:248
+msgid "Topicpage filter"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:253
+msgid "RSS-Feed"
 msgstr ""
 
 #: zeit/edit/browser/block.py:37
