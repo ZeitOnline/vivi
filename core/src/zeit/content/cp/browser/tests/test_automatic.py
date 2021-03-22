@@ -122,7 +122,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.click('css=.block.type-area .edit-link')
         sel.waitForElementPresent('css=.lightbox')
         sel.waitForElementPresent('id=form.automatic_type')
-        sel.select('id=form.automatic_type', 'Automatic type-centerpage')
+        sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
         sel.type('id=form.referenced_cp.url',
                  'http://xml.zeit.de/cp_with_teaser')
         sel.type('id=form.count', 1)
@@ -158,7 +158,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.waitForElementPresent('id=form.automatic_type')
 
         sel.assertNotVisible('css=.fieldname-referenced_cp')
-        sel.select('id=form.automatic_type', 'Automatic type-centerpage')
+        sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
         sel.assertVisible('css=.fieldname-referenced_cp')
 
     def test_clicking_on_image_toggles_checkbox(self):
