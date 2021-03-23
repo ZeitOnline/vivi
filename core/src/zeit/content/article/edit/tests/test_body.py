@@ -137,6 +137,10 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             [x.xml for x in body.values()],
             [body[x].xml for x in body.keys()])
 
+    def test_ignores_xml_comments(self):
+        body = self.get_body('<division><p>foo</p><!-- comment --></division>')
+        self.assertEqual(1, len(body.keys()))
+
 
 class TestCleaner(unittest.TestCase):
 

@@ -4,7 +4,7 @@ vivi.core changes
 4.50.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Ignore XML comments when parsing article modules
 
 
 4.50.2 (2021-03-22)
