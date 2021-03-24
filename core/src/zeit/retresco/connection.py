@@ -250,13 +250,13 @@ class TMS(object):
                 verb=verb, path=path, error=e, body=body)
             if status < 500:
                 raise zeit.retresco.interfaces.TMSError(message, status)
-            raise zeit.retresco.interfaces.TechnicalError(message)
+            raise zeit.retresco.interfaces.TechnicalError(message, status)
         try:
             return response.json()
         except ValueError:
             message = '{verb} {path} returned invalid json'.format(
                 verb=verb, path=path)
-            raise zeit.retresco.interfaces.TechnicalError(message)
+            raise zeit.retresco.interfaces.TechnicalError(message, 590)
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)

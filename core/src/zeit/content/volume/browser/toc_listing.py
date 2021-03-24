@@ -17,6 +17,10 @@ class CheckColumn(zeit.cms.browser.listing.GetterColumn):
         else:
             return ''
 
+    def getSortKey(self, item, formatter):
+        value = super().getSortKey(item, formatter)
+        return bool(value)
+
 
 class TocListing(zeit.cms.browser.listing.Listing):
 

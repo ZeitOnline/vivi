@@ -37,7 +37,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
             if didx > 1:
                 # Skip the first division as it isn't editable
                 result.append(key)
-            for child in division.iterchildren():
+            for child in division.iterchildren('*'):
                 result.append(self._set_default_key(child))
         return result
 
@@ -52,7 +52,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
                 self.xml.xpath('division[@type="page"]'), start=1):
             if didx > 1:
                 result.append(self._get_element_for_node(division))
-            for child in division.iterchildren():
+            for child in division.iterchildren('*'):
                 element = self._get_element_for_node(child)
                 if element is None:
                     element = self._get_element_for_node(

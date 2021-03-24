@@ -1,10 +1,52 @@
 vivi.core changes
 =================
 
-4.48.9 (unreleased)
+4.50.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Ignore XML comments when parsing article modules
+
+
+4.50.2 (2021-03-22)
+-------------------
+
+- ZON-6478: Follow up, refactor existing_teasers attribute for CP ContentQueries
+
+
+4.50.1 (2021-03-17)
+-------------------
+
+- ZON-6521: Support theme in liveblogs
+
+
+4.50.0 (2021-03-16)
+-------------------
+
+- ZON-6478: Move content query functionality to its own module
+
+- BUG-1250: Hide no more needed 'external' author checkbox
+
+
+4.49.2 (2021-03-10)
+-------------------
+
+- BUG-1366: Make sorting volume listings work again for py3
+
+
+4.49.1 (2021-03-10)
+-------------------
+
+- ZON-6346: Make tickaroo liveblog status required
+
+- BUG-1311: Show "steal lock" button only if user has the required permission
+
+- BUG-1366: Make sorting listings work again for py3
+
+
+4.49.0 (2021-02-24)
+-------------------
+
+- MAINT: Add status code to retresco TechnicalError
 
 
 4.48.8 (2021-02-10)

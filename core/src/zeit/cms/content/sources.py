@@ -272,6 +272,17 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
         return self.folder.get(id)
 
 
+class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    values = collections.OrderedDict()
+
+    def getValues(self):
+        return self.values.keys()
+
+    def getTitle(self, value):
+        return self.values.get(value, value)
+
+
 class RessortSource(XMLSource):
 
     config_url = 'source-ressorts'

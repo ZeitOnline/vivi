@@ -246,6 +246,7 @@ def print_payload_documentation():
 
     article = zeit.content.article.article.Article()
     article.uniqueId = 'http://xml.zeit.de/testartikel'
+    article.__name__ = 'testartikel'
     article.title = 'Titel des Testartikels'
     zope.component.provideAdapter(
         lambda x: {},

@@ -13,7 +13,9 @@ log = logging.getLogger(__name__)
 
 
 def _stealable(form, action):
-    return form.lockable.isLockedOut()
+    return (form.lockable.isLockedOut() and
+            form.request.interaction.checkPermission(
+                'zeit.ManageLocks', form.context))
 
 
 def _unlockable(form, action):
