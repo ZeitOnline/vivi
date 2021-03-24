@@ -4,6 +4,7 @@ from operator import itemgetter
 from os import environ, stat
 from os.path import join
 from time import time
+from zope.cachedescriptors.property import Lazy as cachedproperty
 from zope.component import getUtility
 from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.connector.interfaces import IConnector
@@ -15,9 +16,8 @@ log = getLogger(__name__)
 
 class ContentCache(object):
 
-    def __getattr__(self, name):
-        if name != 'cache':
-            raise AttributeError(name)
+    @cachedproperty
+    def cache(self):
         size = environ.get('CONTENT_CACHE_SIZE')
         check = environ.get('CONTENT_CACHE_CHECK')
         connector = getUtility(IConnector)

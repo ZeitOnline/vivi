@@ -29,14 +29,18 @@ class FilesystemCachingTest(ZeitCmsTestCase):
             return_value=('Icke', 'Er'))
         self.getproperty = self.getproperty_patch.start()
         self.path = Path(path)
+        self.reset_cache()
 
     def tearDown(self):
         self.getproperty_patch.stop()
         self.getcontent_patch.stop()
+        self.reset_cache()
+        super().tearDown()
+
+    def reset_cache(self):
         cache = vars(caching)['__cache']    # reset the cache by removing
         if hasattr(cache, 'cache'):         # the `cache` attribute
             delattr(cache, 'cache')
-        super().tearDown()
 
     def test_content_is_cached(self):
         assert self.getcontent.call_count == 0
