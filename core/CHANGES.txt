@@ -4,6 +4,8 @@ vivi.core changes
 4.50.3 (unreleased)
 -------------------
 
+- OPS-1684: Avoid zero division on image ratio calculations
+
 - FIX: Ignore XML comments when parsing article modules
 
 
