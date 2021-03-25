@@ -94,8 +94,7 @@ class ReferencedCenterpageHelper:
     """
     def __get__(self, context, class_):
         if hasattr(context, '_referenced_cp_get_helper_tasks'):
-            if context._referenced_cp_get_helper_tasks() is not None:
-                return context._referenced_cp_get_helper_tasks()
+            return context._referenced_cp_get_helper_tasks()
         return context._referenced_cp
 
     def __set__(self, context, value):

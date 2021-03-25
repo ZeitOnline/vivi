@@ -4,8 +4,8 @@ function display_elements(selected_automatic_type) {
     var cssClasses = [];
 
     var classes = [
-        'centerpage',
-        'topicpage',
+        'referenced_cp',
+        'referenced_topicpage',
         'topicpage_filter',
         'elasticsearch_raw_query',
         'elasticsearch_raw_order',
@@ -18,11 +18,11 @@ function display_elements(selected_automatic_type) {
         case 'klassisch':
             hide_references(false);
             break;
-        case 'referenzierte centerpage':
-            cssClasses.push('centerpage');
+        case 'centerpage':
+            cssClasses.push('referenced_cp');
             break;
-        case 'referenzierte themenseite':
-            cssClasses.push('topicpage');
+        case 'themenseite':
+            cssClasses.push('referenced_topicpage');
             cssClasses.push('topicpage_filter');
             break;
         case 'es-query':

@@ -119,6 +119,8 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def _referenced_cp_get_helper_tasks(self):
         if self.automatic_type == 'manual':
             return self.get_centerpage_from_first_reference()
+        elif self.automatic_type == 'centerpage':
+            return self._referenced_cp
 
     @property
     def _reference_properties(self):
