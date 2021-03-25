@@ -75,14 +75,29 @@ function eval_automatic_type(el) {
     }
 }
 
-document.addEventListener('change', (e) => {
-    if (e.target && e.target.id.indexOf('automatic_type') > -1) {
-        var val = document.getElementById(e.target.id);
-        if (val == undefined) {
-            return;
+(function ($) {
+    $(document).bind('fragment-ready', function(e) {
+        var current_automatic_type_value = document.querySelectorAll('[id$=automatic_type]');
+            if (current_automatic_type_value.length > 0) {
+                current_automatic_type_value.forEach((el) => {
+                    if(el.id.startsWith('topicbox.id') && el.id.endsWith('automatic_type')) {
+                        var val = el.selectedOptions[0].text;
+                    display_elements(val);
+                    return;
+                }
+            })
         }
-        val = val.selectedOptions[0].text;
+        return;
+    });
 
-        display_elements(val);
-    }
-});
+    $(document).bind('change', function(e) {
+        if (e.target && e.target.id.indexOf('automatic_type') > -1) {
+            var val = document.getElementById(e.target.id);
+            if (val == undefined) {
+                return;
+            }
+            val = val.selectedOptions[0].text;
+            display_elements(val);
+        }
+    });
+ }(jQuery));
