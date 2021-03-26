@@ -68,17 +68,16 @@ class Connector(object):
         result = []
         for name in sorted(names):
             child_id = six.text_type(
-                self._get_cannonical_id(self._make_id(path + (name, ))))
+                self._get_cannonical_id(os.path.join(id, name)))
             result.append((name, child_id))
         self.child_name_cache[id] = result
         return result
 
     def _get_collection_names(self, path):
-        absolute_path = self._absolute_path(path)
         names = set()
 
-        if os.path.isdir(absolute_path):
-            for name in os.listdir(absolute_path):
+        if os.path.isdir(path):
+            for name in os.listdir(path):
                 try:
                     if isinstance(name, six.binary_type):
                         name = name.decode('utf-8')
@@ -103,7 +102,7 @@ class Connector(object):
             if type:
                 return type
 
-        path = self._absolute_path(self._path(id))
+        path = self._path(id)
         if os.path.isdir(path):
             return 'collection'
 
@@ -122,7 +121,7 @@ class Connector(object):
         # XXX kludgy: writing here modifies our cached properties value, so
         # future accesses get this as well; some tests/fixtures rely on this.
         properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
-        path = self._path(id)
+        path = self._path(id).split('/')
         name = path[-1] if path else ''
         return self.resource_class(
             six.text_type(id), name, type,
@@ -206,11 +205,8 @@ class Connector(object):
         except KeyError:
             pass
 
-        if result.endswith('/'):
-            result = result[:-1]
-
         if self.canonicalize_directories:
-            path = self._absolute_path(self._path(result))
+            path = self._path(result)
             if os.path.isdir(path):
                 result = result + '/'
 
@@ -218,24 +214,14 @@ class Connector(object):
         self.canonical_id_cache[input] = result
         return result
 
-    def _absolute_path(self, path):
-        if not path:
-            return self.repository_path
-        return os.path.join(self.repository_path, os.path.join(*path))
-
     def _path(self, id):
         if not id.startswith(ID_NAMESPACE):
             raise ValueError("The id %r is invalid." % id)
-        id = id.replace(ID_NAMESPACE, '', 1)
-        if not id:
-            return ()
-        result = tuple(id.split('/'))
-        if result[-1] == '':
-            result = result[:-1]
-        return result
+        path = id.replace(ID_NAMESPACE, '', 1).rstrip('/')
+        return os.path.join(self.repository_path, path)
 
     def _get_file(self, id):
-        filename = self._absolute_path(self._path(id))
+        filename = self._path(id)
         __traceback_info__ = (id, filename)
         try:
             return open(filename, 'rb')
@@ -246,7 +232,7 @@ class Connector(object):
             raise KeyError("The resource '%s' does not exist." % id)
 
     def _get_metadata_file(self, id):
-        filename = self._absolute_path(self._path(id)) + '.meta'
+        filename = self._path(id) + '.meta'
         __traceback_info__ = (id, filename)
         try:
             return open(filename, 'rb')
@@ -254,10 +240,6 @@ class Connector(object):
             if not id.endswith('.meta'):
                 return self._get_file(id)
             return BytesIO(b'')
-
-    def _make_id(self, path):
-        return six.moves.urllib.parse.urljoin(ID_NAMESPACE, '/'.join(
-            element for element in path if element))
 
     def _get_properties(self, id):
         try:
@@ -313,12 +295,16 @@ class Connector(object):
         self.property_cache[id] = properties
         return properties
 
-    def _get_lastmodified(self, id):
-        filename = self._absolute_path(self._path(id))
+    def mtime(self, id, suffix=''):
+        filename = self._path(id) + suffix
         try:
             mtime = os.stat(filename).st_mtime
         except OSError:
             return None
+        return mtime
+
+    def _get_lastmodified(self, id):
+        mtime = self.mtime(id)
         return email.utils.formatdate(mtime, usegmt=True)
 
 

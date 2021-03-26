@@ -260,15 +260,10 @@ class Connector(zeit.connector.filesystem.Connector):
             return CannonicalId(id + '/')
         if self._properties.get(id) is not None:
             return CannonicalId(id)
-        path = self._absolute_path(self._path(id))
+        path = self._path(id)
         if os.path.isdir(path):
             return CannonicalId(id + '/')
         return CannonicalId(id)
-
-    def _absolute_path(self, path):
-        if not path:
-            return self.repository_path
-        return os.path.join(self.repository_path, os.path.join(*path))
 
     def _get_file(self, id):
         if id in self._data:
