@@ -8,23 +8,10 @@ import zeit.contentquery.interfaces
 import zope.component
 
 
-class AutomaticTypeHelper:
-    """Returns a type for a area/module that uses content queries."""
-    mapping = None
-
-    def __get__(self, context, class_):
-        """ Allows value mapping via dictionary."""
-        if context._automatic_type in self.mapping:
-            return self.mapping[context._automatic_type]
-        return context._automatic_type
-
-    def __set__(self, context, value):
-        context._automatic_type = value
-
-
 class QueryHelper:
     """Returns a query for a area/module that uses content queries."""
-    mapping = None
+    def __init__(self, mapping=None):
+        self.mapping = mapping
 
     def __get__(self, context, class_):
         """ Allows value mapping via dictionary."""

@@ -93,11 +93,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     type = 'area'
     doc_iface = zeit.content.cp.interfaces.ICenterPage
 
-    # Declare descriptor attributes
-    automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
-    automatic_type.mapping = {'channel': 'custom'}
-    query = zeit.contentquery.helper.QueryHelper()
-    query.mapping = {'Channel': 'channels'}
+    query = zeit.contentquery.helper.QueryHelper({'Channel': 'channels'})
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     kind = ObjectPathAttributeProperty(
@@ -294,6 +290,17 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self._automatic = value
         if value:
             self._create_auto_blocks()
+
+    @property
+    def automatic_type(self):
+        mapping = {'channel': 'custom'}
+        if self._automatic_type in mapping:
+            return mapping[self._automatic_type]
+        return self._automatic_type
+
+    @automatic_type.setter
+    def automatic_type(self, value):
+        self._automatic_type = value
 
     @property
     def count(self):

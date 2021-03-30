@@ -25,9 +25,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
     type = 'topicbox'
     doc_iface = IArticle
 
-    # Declare descriptor attributes
-    automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
-    automatic_type.mapping = {None: 'manual'}
     query = zeit.contentquery.helper.QueryHelper()
     referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
@@ -93,6 +90,17 @@ class Topicbox(zeit.content.article.edit.block.Block):
     _config_query = zeit.cms.content.property.ObjectPathProperty(
         '.config_query',
         zeit.content.article.edit.interfaces.ITopicbox['config_query'])
+
+    @property
+    def automatic_type(self):
+        mapping = {None: 'manual'}
+        if self._automatic_type in mapping:
+            return mapping[self._automatic_type]
+        return self._automatic_type
+
+    @automatic_type.setter
+    def automatic_type(self, value):
+        self._automatic_type = value
 
     @property
     def count(self):
