@@ -33,9 +33,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.ITopicbox['is_complete_query'],
         use_default=True)
 
-    _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', zeit.content.article.edit.interfaces.ITopicbox['count'])
-
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle',
         zeit.content.article.edit.interfaces.ITopicbox['supertitle'])
@@ -50,9 +47,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.', 'link_text',
         zeit.content.article.edit.interfaces.ITopicbox['link_text'])
 
-    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.content.article.edit.interfaces.ITopicbox[
-            'hide_dupes'], use_default=True)
+    hide_dupes = False
 
     _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic_type',
@@ -120,9 +115,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def _teaser_count(self):
         return 0
 
-    @property
-    def existing_teasers(self):
-        return set()
+    existing_teasers = frozenset()
 
     def _referenced_cp_get_helper_tasks(self):
         if self.automatic_type == 'manual':
@@ -148,13 +141,14 @@ class Topicbox(zeit.content.article.edit.block.Block):
         sets the centerpage. In that case automatic_type is always manual
         (default)"""
         if self.referenced_cp and self.automatic_type == 'manual':
-            parent_article = zeit.content.article.interfaces.IArticle(self,
-                                                                      None)
+            parent_article = zeit.content.article.interfaces.IArticle(
+                self, None)
             return itertools.islice(
                 filter(lambda x: x != parent_article,
                        zeit.edit.interfaces.IElementReferences(
                            self.referenced_cp)),
                 len(self._reference_properties))
+
         """Old style topicbox with 3 manual references"""
         if self.automatic_type == 'manual':
             return (
