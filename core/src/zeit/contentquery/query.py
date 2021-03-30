@@ -423,11 +423,7 @@ class ConfigQuery(ElasticsearchContentQuery):
         super().__init__(context)
         factory = zeit.content.article.edit.interfaces.ITopicbox[
             'config_query'].source.factory
-        self.query = factory.getQuery(context._config_query)
-        if self.query.get('query', {}) == {}:
-            self.query = {
-                'query': self.query
-            }
+        self.query = {'query': factory.getQuery(context._config_query)}
 
     def _build_query(self):
         return self.query

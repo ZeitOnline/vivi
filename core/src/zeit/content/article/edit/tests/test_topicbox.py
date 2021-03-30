@@ -132,7 +132,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             name=box.automatic_type)
         query = contentquery.query
         values = list(box.values())
-        self.assertEqual({'query': {'term': {'doc_type': 'TESTTYPE'}}}, query)
+        self.assertEqual({'query': {'query': {'term': {'doc_type': 'TESTTYPE'}}}}, query)
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
