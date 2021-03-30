@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.50.3 (unreleased)
+4.50.3 (2021-03-30)
 -------------------
 
 - OPS-1684: Avoid zero division on image ratio calculations
