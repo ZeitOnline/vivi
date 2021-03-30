@@ -568,52 +568,8 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
     )
 
 
-class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
-                            zeit.cms.content.sources.CachedXMLBase):
-
-    COMMENT = re.compile(r'\s*//')
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'topicpage-filter-source'
-    default_filename = 'topicpage-filters.json'
-
-    def json_data(self):
-        result = collections.OrderedDict()
-        for row in self._get_tree():
-            if len(row) != 1:
-                continue
-            key = list(row.keys())[0]
-            result[key] = row[key]
-        return result
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _get_tree_from_url(self, url):
-        try:
-            data = []
-            for line in six.moves.urllib.request.urlopen(url):
-                line = six.ensure_text(line)
-                if self.COMMENT.search(line):
-                    continue
-                data.append(line)
-            data = '\n'.join(data)
-            return json.loads(data)
-        except Exception:
-            clsname = self.__class__.__name__
-            log.warning(
-                '%s could not parse %s', clsname, url, exc_info=True)
-            return {}
-
-    def getValues(self):
-        return self.json_data().keys()
-
-    def getTitle(self, value):
-        return self.json_data()[value].get('title', value)
-
-    def getToken(self, value):
-        return value
-
-
-class ConfigQuerySource(TopicpageFilterSource):
+class PreconfiguredQuerySource(
+        zeit.contentquery.interfaces.TopicpageFilterSource):
 
     product_configuration = 'zeit.content.article'
     default_filename = 'topicpage-esqueries.json'
@@ -705,14 +661,13 @@ class ITopicbox(zeit.edit.interfaces.IBlock,
 
     config_query = zope.schema.Choice(
         title=_('Config-Query'),
-        source=ConfigQuerySource(),
+        source=PreconfiguredQuerySource(),
         required=False)
 
     def values():
         """
         Iterable of ICMSContent
         """
-
 
 class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
     pass
