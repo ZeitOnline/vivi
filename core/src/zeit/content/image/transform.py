@@ -111,12 +111,14 @@ class ImageTransform(object):
 
         target_ratio = variant.ratio
         if target_ratio is None:
-            target_ratio = float(source_width) / float(source_height)
+            sw = source_width
+            sh = source_height
+            target_ratio = (float(sw) / float(sh)) if sh != 0 else 0
         target_width, target_height = self._fit_ratio_to_image(
             zoomed_width, zoomed_height, target_ratio)
         if size:
             w, h = size
-            override_ratio = float(w) / float(h)
+            override_ratio = (float(w) / float(h)) if h != 0 else 0
             target_width, target_height = self._fit_ratio_to_image(
                 target_width, target_height, override_ratio)
 

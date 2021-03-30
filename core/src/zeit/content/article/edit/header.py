@@ -37,7 +37,7 @@ class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
 
     def _get_keys(self, xml_node):
         result = []
-        for child in xml_node.iterchildren():
+        for child in xml_node.iterchildren('*'):
             result.append(self._set_default_key(child))
         return result
 
@@ -45,7 +45,7 @@ class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
         # We re-implement values() so it works without keys(), since those are
         # not present in the repository.
         result = []
-        for child in self.xml.iterchildren():
+        for child in self.xml.iterchildren('*'):
             element = self._get_element_for_node(child)
             if element is None:
                 element = self._get_element_for_node(
