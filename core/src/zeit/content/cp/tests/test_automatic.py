@@ -737,16 +737,16 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         a3 = self.create_automatic_area(self.cp, count=2)
         a1.referenced_topicpage = 'tms-id'
         a3.referenced_topicpage = 'tms-id'
-        zeit.contentquery.query.TMSContentQuery(a1)
-        self.assertEqual(a1._teaser_count, 0)
+        tms_query = zeit.contentquery.query.CPTMSContentQuery(a1)
+        self.assertEqual(tms_query._teaser_count, 0)
         a2.count = 3
-        self.assertEqual(a1._teaser_count, 0)
+        self.assertEqual(tms_query._teaser_count, 0)
         a2.referenced_topicpage = 'tms-id'
-        self.assertEqual(a1._teaser_count, 3)
+        self.assertEqual(tms_query._teaser_count, 3)
         a3.automatic_type = 'topicpage'
-        self.assertEqual(a1._teaser_count, 5)
+        self.assertEqual(tms_query._teaser_count, 5)
         a1.count = 7
-        self.assertEqual(a1._teaser_count, 12)
+        self.assertEqual(tms_query._teaser_count, 12)
 
     def test_total_hits_can_be_called_first(self):
         area = self.create_automatic_area(self.cp)

@@ -3,7 +3,6 @@ from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import json
 import logging
-import grokcore.component as grok
 import re
 import six
 import zc.sourcefactory.basic

@@ -238,6 +238,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
 class TMSContentQuery(ContentQuery):
 
     grok.name('topicpage')
+    grok.baseclass()
 
     def __init__(self, context):
         super(TMSContentQuery, self).__init__(context)
@@ -248,11 +249,13 @@ class TMSContentQuery(ContentQuery):
         result, _ = self._fetch(self.start)
         return result
 
+    _teaser_count = NotImplemented
+
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
         cache = content_cache(self.context.__parent__, 'topic_queries')
-        rows = self.context._teaser_count + 5  # total teasers + some spares
+        rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
@@ -316,6 +319,28 @@ class TMSContentQuery(ContentQuery):
         else:
             _, hits = self._get_documents(start=self.start, rows=0)
         return hits
+
+
+class CPTMSContentQuery(TMSContentQuery):
+
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+    @property
+    def _teaser_count(self):
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        return sum(
+            a.count for a in cp.cached_areas
+            if a.automatic and a.count and a.automatic_type == 'topicpage' and
+            a.referenced_topicpage == self.topicpage)
+
+
+class ArticleTMSContentQuery(TMSContentQuery):
+
+    grok.context(zeit.content.article.edit.interfaces.ITopicbox)
+
+    @property
+    def _teaser_count(self):
+        return self.context.count
 
 
 class CenterpageContentQuery(ContentQuery):

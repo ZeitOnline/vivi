@@ -9,6 +9,7 @@ import zeit.content.cp.blocks.rss
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.contentquery.interfaces
+import zeit.contentquery.query
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zope.component
