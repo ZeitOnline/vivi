@@ -251,8 +251,7 @@ class TMSContentQuery(ContentQuery):
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        cache = content_cache(
-            self, self.context.doc_iface, 'tms_topic_queries')
+        cache = content_cache(self.context.__parent__, 'topic_queries')
         rows = self.context._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
@@ -310,7 +309,7 @@ class TMSContentQuery(ContentQuery):
     @property
     def total_hits(self):
         cache = content_cache(
-            self, self.context.doc_iface, 'tms_topic_queries')
+            self.context.__parent__, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]

@@ -1,11 +1,12 @@
 import zeit.cms.content.property
-from zeit.contentquery.interfaces import IConfiguration
 import lxml.etree
 import lxml.objectify
 import six
 import zeit.content.cp.interfaces
 import zeit.contentquery.interfaces
 import zope.component
+from zeit.cms.interfaces import ICMSContent
+from zeit.contentquery.interfaces import IConfiguration
 
 
 class QueryHelper:
@@ -69,22 +70,8 @@ class QueryHelper:
 
     def _converter(self, context, selector):
         field = IConfiguration['query'].value_type.type_interface[selector]
-        field = field.bind(context.doc_iface(context))
+        field = field.bind(ICMSContent(context))
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
         return zope.component.getMultiAdapter(
             (field, props),
             zeit.cms.content.interfaces.IDAVPropertyConverter)
-
-
-class ReferencedCenterpageHelper:
-    """Returns a referenced CP for a area/module that uses a CP content query.
-    """
-    def __get__(self, context, class_):
-        if hasattr(context, '_referenced_cp_get_helper_tasks'):
-            return context._referenced_cp_get_helper_tasks()
-        return context._referenced_cp
-
-    def __set__(self, context, value):
-        if hasattr(context, '_referenced_cp_set_helper_tasks'):
-            context._referenced_cp_set_helper_tasks(value)
-        context._referenced_cp = value

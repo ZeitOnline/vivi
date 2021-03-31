@@ -13,6 +13,7 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
 import zeit.contentquery.helper
+import zeit.contentquery.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
 import zope.component
@@ -91,10 +92,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
 
     type = 'area'
-    doc_iface = zeit.content.cp.interfaces.ICenterPage
 
     query = zeit.contentquery.helper.QueryHelper({'Channel': 'channels'})
-    referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     kind = ObjectPathAttributeProperty(
         '.', 'kind', zeit.content.cp.interfaces.IArea['kind'],
@@ -311,8 +310,14 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self._count = value
         self.adjust_auto_blocks_to_count()
 
-    def _referenced_cp_set_helper_tasks(self, value):
+    @property
+    def referenced_cp(self):
+        return self._referenced_cp
+
+    @referenced_cp.setter
+    def referenced_cp(self, value):
         self.check_for_self_reference(value)
+        self._referenced_cp = value
 
     def check_for_self_reference(self, value):
         # It is still possible to build larger circles (e.g A->C->A)
@@ -417,14 +422,14 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             and a.referenced_topicpage == self.referenced_topicpage)
 
     @property
-    @cached_on_content(ICenterPage, keyfunc=lambda x: x.__name__)
+    @cached_on_content(keyfunc=lambda x: x.__name__)
     def existing_teasers(self):
         current_area = self
         cp = ICenterPage(self)
         area_teasered_content = content_cache(
-            cp, ICenterPage, 'area_teasered_content')
+            cp, 'area_teasered_content')
         area_manual_content = content_cache(
-            cp, ICenterPage, 'area_manual_content')
+            cp, 'area_manual_content')
 
         seen = set()
         above = True

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import TopicReferenceSource
-from zeit.content.article.interfaces import IArticle
 from zeit.cms.content.cache import cached_on_content
 import grokcore.component as grok
 import itertools
@@ -23,10 +22,8 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     start = 0
     type = 'topicbox'
-    doc_iface = IArticle
 
     query = zeit.contentquery.helper.QueryHelper()
-    referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
 
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
@@ -117,11 +114,16 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     existing_teasers = frozenset()
 
-    def _referenced_cp_get_helper_tasks(self):
+    @property
+    def referenced_cp(self):
         if self.automatic_type == 'manual':
             return self.get_centerpage_from_first_reference()
         elif self.automatic_type == 'centerpage':
             return self._referenced_cp
+
+    @referenced_cp.setter
+    def referenced_cp(self, value):
+        self._referenced_cp = value
 
     @property
     def _reference_properties(self):
@@ -135,7 +137,7 @@ class Topicbox(zeit.content.article.edit.block.Block):
                 self.first_reference):
             return self.first_reference
 
-    @cached_on_content(IArticle, 'topicbox_values')
+    @cached_on_content('topicbox_values')
     def values(self):
         """This case returns the old centerpage topicbox with first_reference
         sets the centerpage. In that case automatic_type is always manual
