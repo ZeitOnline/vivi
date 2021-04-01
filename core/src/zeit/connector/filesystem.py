@@ -1,4 +1,5 @@
 from io import BytesIO
+from urllib.parse import urlparse
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
 import ast
@@ -121,10 +122,9 @@ class Connector(object):
         # XXX kludgy: writing here modifies our cached properties value, so
         # future accesses get this as well; some tests/fixtures rely on this.
         properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
-        path = self._path(id).split('/')
-        name = path[-1] if path else ''
+        path = urlparse(id).path.strip('/').split('/')
         return self.resource_class(
-            six.text_type(id), name, type,
+            six.text_type(id), path[-1], type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
             content_type=self._get_content_type(id))
