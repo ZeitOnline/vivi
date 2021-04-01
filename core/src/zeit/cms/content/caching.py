@@ -1,12 +1,10 @@
 from collections import defaultdict
 from logging import getLogger
 from operator import itemgetter
-from os import environ, stat
-from os.path import join
+from os import environ
 from time import time
 from zope.cachedescriptors.property import Lazy as cachedproperty
 from zope.component import getUtility
-from zeit.cms.interfaces import ID_NAMESPACE
 from zeit.connector.interfaces import IConnector
 from zeit.connector.filesystem import Connector
 
@@ -32,27 +30,17 @@ class ContentCache(object):
         else:
             return None
 
-    def path(self, unique_id):
-        if unique_id is not None and unique_id.startswith(ID_NAMESPACE):
-            return unique_id.replace(ID_NAMESPACE, '', 1).rstrip('/')
-
-    def mtime(self, path):
-        filename = join(self.connector.repository_path, path)
-        try:
-            mtime = stat(filename).st_mtime
-        except OSError:
-            return None
-        return int(mtime)
-
     def get(self, unique_id, key, factory, suffix=''):
         cache = self.cache
-        path = self.path(unique_id)
-        if not path or cache is None:
+        if cache is None:
             return factory()
-        mtime = self.mtime(path + suffix)
+        try:
+            mtime = int(self.connector.mtime(unique_id, suffix))
+        except ValueError:
+            mtime = None
         if mtime is None:
             return factory()
-        obj = cache[path]
+        obj = cache[unique_id]
         obj['used'] += 1
         obj['last'] = time()
         if mtime != obj['mtimes'].get(suffix):
