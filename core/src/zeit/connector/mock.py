@@ -135,9 +135,9 @@ class Connector(zeit.connector.filesystem.Connector):
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
         self._data[id] = resource.data.read()
-        path = self._path(id)[:-1]
-        name = self._path(id)[-1]
-        self._paths.setdefault(path, set()).add(name)
+        path = self._path(id)
+        self._paths.setdefault(os.path.dirname(path), set()).add(
+            os.path.basename(path))
 
         resource.properties[
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type

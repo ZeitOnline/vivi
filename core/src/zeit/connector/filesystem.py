@@ -221,7 +221,7 @@ class Connector(object):
         if not id.startswith(ID_NAMESPACE):
             raise ValueError("The id %r is invalid." % id)
         path = id.replace(ID_NAMESPACE, '', 1).rstrip('/')
-        return os.path.join(self.repository_path, path)
+        return os.path.join(self.repository_path, path).rstrip('/')
 
     def _get_file(self, id):
         filename = self._path(id)
