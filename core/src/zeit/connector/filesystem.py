@@ -205,6 +205,9 @@ class Connector(object):
         except KeyError:
             pass
 
+        if result.endswith('/'):
+            result = result[:-1]
+
         if self.canonicalize_directories:
             path = self._path(result)
             if os.path.isdir(path):
