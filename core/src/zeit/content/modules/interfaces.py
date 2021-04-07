@@ -88,7 +88,7 @@ class IJobTicker(zeit.edit.interfaces.IBlock):
 class Newsletter(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, image, abo_text, anon_text, redirect_link):
-        super(Newsletter, self).__init__(id, title, available=None)
+        super().__init__(id, title, available=None)
         self.image = image
         self.abo_text = abo_text
         self.anon_text = anon_text
