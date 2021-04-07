@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.50.4 (unreleased)
+4.50.4 (2021-04-07)
 -------------------
 
 - ZON-6573: Support legal_text attribute on newslettersignups
