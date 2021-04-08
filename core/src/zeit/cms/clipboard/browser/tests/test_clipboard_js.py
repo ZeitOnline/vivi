@@ -4,6 +4,7 @@ import zeit.cms.testing
 class TestClipboard(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
+    window_height = 800
 
     def test_adding_via_drag_and_drop(self):
         self.open('/repository')
