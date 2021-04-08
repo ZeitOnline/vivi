@@ -4,6 +4,7 @@ from operator import itemgetter
 from os import environ
 from time import time
 from zope.cachedescriptors.property import Lazy as cachedproperty
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zope.component import getUtility
 from zeit.connector.interfaces import IConnector
 from zeit.connector.filesystem import Connector
@@ -32,7 +33,7 @@ class ContentCache(object):
 
     def get(self, unique_id, key, factory, suffix=''):
         cache = self.cache
-        if cache is None:
+        if cache is None or not FEATURE_TOGGLES.find('content_caching'):
             return factory()
         try:
             mtime = int(self.connector.mtime(unique_id, suffix))
