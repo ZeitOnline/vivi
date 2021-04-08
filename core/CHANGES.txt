@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.50.5 (unreleased)
+4.50.5 (2021-04-08)
 -------------------
 
 - STO-185: Cache content & DAV properties based on file modification times
