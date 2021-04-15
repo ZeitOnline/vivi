@@ -160,19 +160,13 @@ class Topicbox(zeit.content.article.edit.block.Block):
         try:
             filtered_content = []
             content = iter(self._content_query())
-            if content is None:
-                return ()
-
             while(len(filtered_content)) < 3:
                 try:
                     item = next(content)
                     if item in filtered_content:
                         continue
-                    allow_cp = self.automatic_type == 'centerpage'
-                    if TopicReferenceSource(
-                            allow_cp).verify_interface(item):
-                        filtered_content.append(item)
-                except StopIteration:
+                    filtered_content.append(item)
+                except Exception:
                     break
             return iter(filtered_content)
 
