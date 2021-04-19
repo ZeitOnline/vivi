@@ -7,10 +7,11 @@ import json
 import logging
 import lxml
 import requests
-import zeit.cms.interfaces
 import zeit.cms.content.interfaces
-import zeit.content.cp.blocks.teaser
+import zeit.cms.interfaces
+import zeit.content.article.edit.interfaces
 import zeit.content.cp.blocks.rss
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
