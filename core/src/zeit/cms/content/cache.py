@@ -16,7 +16,7 @@ def cached_on_content(attr=None, keyfunc=lambda x: x, factory=writeabledict):
         `keyfunc`, which is called with `self` as a single argument. """
     def decorator(fn):
         def wrapper(self, *args, **kw):
-            cache = content_cache(self.__parent__, attr or fn.__name__)
+            cache = content_cache(self, attr or fn.__name__)
             key = keyfunc(self)
             if key not in cache:
                 cache[key] = fn(self, *args, **kw)
