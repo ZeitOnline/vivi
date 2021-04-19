@@ -27,7 +27,7 @@ class FormBase(object):
             'topiclink_label_2', 'topiclink_url_2',
             'topiclink_label_3', 'topiclink_url_3',
             'og_title', 'og_description', 'og_image',
-            'keywords'))
+            'keywords', 'caching_time'))
 
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
