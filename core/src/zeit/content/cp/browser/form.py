@@ -11,7 +11,7 @@ import zope.formlib.form
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = (
         zope.formlib.form.FormFields(
