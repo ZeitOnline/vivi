@@ -75,12 +75,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         source=zeit.content.cp.source.CPTypeSource(),
         default='centerpage')
 
-    caching_time = zope.schema.Int(
-        title=_('Caching time'),
-        required=False,
-        min=60,
-        max=3600)
-
     header_image = zope.schema.Choice(
         title=_('Header image'),
         required=False,

@@ -120,10 +120,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         '.head.og_meta.og_image',
         zeit.content.cp.interfaces.ICenterPage['og_image'])
 
-    caching_time = zeit.cms.content.property.ObjectPathProperty(
-        '.head.caching_time',
-        zeit.content.cp.interfaces.ICenterPage['caching_time'])
-
     def updateMetadata(self, content):
         # Note that this method is a shortcut using XPath to query instead of
         # instantiating all blocks and their content objects to find the
