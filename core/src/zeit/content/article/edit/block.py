@@ -6,7 +6,7 @@ import zeit.edit.block
 import zeit.edit.interfaces
 
 
-@grok.adapter(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.article.edit.interfaces.IElement)
 @grok.implementer(zeit.content.article.interfaces.IArticle)
 def article_for_element(context):
     return zeit.content.article.interfaces.IArticle(context.__parent__, None)

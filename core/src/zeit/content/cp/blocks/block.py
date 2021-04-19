@@ -8,9 +8,9 @@ import zope.component
 import zope.interface
 
 
+@zope.component.adapter(zeit.content.cp.interfaces.IElement)
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
-@zope.component.adapter(zeit.edit.interfaces.IElement)
-def cms_content_to_centerpage(context):
+def centerpage_for_element(context):
     return zeit.content.cp.interfaces.ICenterPage(context.__parent__, None)
 
 

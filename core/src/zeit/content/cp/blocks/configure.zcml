@@ -1,7 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".block.cms_content_to_centerpage" />
+  <adapter factory=".block.centerpage_for_element" />
   <adapter factory=".block.cms_content_iter" />
 
   <class class=".teaser.TeaserBlock">
