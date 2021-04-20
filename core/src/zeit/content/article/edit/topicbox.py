@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.article.edit.interfaces import TopicReferenceSource
 from zeit.cms.content.cache import cached_on_content
 import grokcore.component as grok
 import itertools
