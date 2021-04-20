@@ -44,6 +44,25 @@ class ContentQuery(grok.Adapter):
         return self.context.count
 
 
+class ManualLegacyResult(ContentQuery):
+    """This is not a automatic content query.
+    This returns old style topicboxes with 3 manual references.
+    If the  first reference is a centerpage, the ContentQuery object is passed
+    to CenterpageContentQuery"""
+
+    grok.name('manual')
+
+    def __call__(self):
+        if self.context.referenced_cp:
+            return CenterpageContentQuery(self.context)()
+        else:
+            references = (
+                self.context.first_reference,
+                self.context.second_reference,
+                self.context.third_reference)
+            return(ref for ref in references if ref)
+
+
 class ElasticsearchContentQuery(ContentQuery):
     """Search via Elasticsearch."""
 

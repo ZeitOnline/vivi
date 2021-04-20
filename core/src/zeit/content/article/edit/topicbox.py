@@ -124,12 +124,6 @@ class Topicbox(zeit.content.article.edit.block.Block):
     def referenced_cp(self, value):
         self._referenced_cp = value
 
-    @property
-    def _reference_properties(self):
-        return (self.first_reference,
-                self.second_reference,
-                self.third_reference)
-
     def get_centerpage_from_first_reference(self):
         import zeit.content.cp.interfaces
         if zeit.content.cp.interfaces.ICenterPage.providedBy(
@@ -138,31 +132,17 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     @cached_on_content('topicbox_values')
     def values(self):
-        """This case returns the old centerpage topicbox with first_reference
-        sets the centerpage. In that case automatic_type is always manual
-        (default)"""
-        if self.referenced_cp and self.automatic_type == 'manual':
-            parent_article = zeit.content.article.interfaces.IArticle(
-                self, None)
-            return itertools.islice(
-                filter(lambda x: x != parent_article,
-                       zeit.edit.interfaces.IElementReferences(
-                           self.referenced_cp)),
-                len(self._reference_properties))
+        """All content query driven topicboxes and old manual topicboxes"""
+        parent_article = zeit.content.article.interfaces.IArticle(
+            self, None)
 
-        """Old style topicbox with 3 manual references"""
-        if self.automatic_type == 'manual':
-            return (
-                content for content in self._reference_properties if content)
-
-        """All content query driven topicboxes"""
         try:
             filtered_content = []
             content = iter(self._content_query())
             while(len(filtered_content)) < 3:
                 try:
                     item = next(content)
-                    if item in filtered_content:
+                    if item in filtered_content or item is parent_article:
                         continue
                     filtered_content.append(item)
                 except Exception:
