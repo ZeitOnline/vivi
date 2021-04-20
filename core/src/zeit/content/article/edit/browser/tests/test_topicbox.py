@@ -127,7 +127,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Link').value = 'https://related.com'
         b.getControl('Linktext').value = 'Related-Baz'
         b.getControl('Automatic type').displayValue = ['related-api']
-        b.getControl('Config-Query').displayValue = ['(nothing selected)']
+        b.getControl('Preconfigured-Query').displayValue = ['(nothing selected)']
         b.getControl('Topicpage filter').value = 'videos'
         b.getControl('Apply').click()
         b.open('@@edit-%s?show_form=1' % self.block_type)
@@ -138,7 +138,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual('https://related.com', b.getControl('Link').value)
         self.assertEqual('Related-Baz', b.getControl('Linktext').value)
         self.assertEqual(
-            ['(nothing selected)'], b.getControl('Config-Query').displayValue)
+            ['(nothing selected)'], b.getControl('Preconfigured-Query').displayValue)
         self.assertEqual(['videos'], b.getControl('Topicpage filter').value)
 
     def test_topicbox_source_config_form_saves_values(self):
@@ -150,15 +150,15 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Supertitle').value = 'Config-Bar'
         b.getControl('Link').value = 'https://config.com'
         b.getControl('Linktext').value = 'Config-Baz'
-        b.getControl('Automatic type').displayValue = ['config-query']
-        b.getControl('Config-Query').displayValue = ['(nothing selected)']
+        b.getControl('Automatic type').displayValue = ['preconfigured-query']
+        b.getControl('Preconfigured-Query').displayValue = ['(nothing selected)']
         b.getControl('Apply').click()
         b.open('@@edit-%s?show_form=1' % self.block_type)
         self.assertEqual('Config-Foo', b.getControl('Title').value)
         self.assertEqual('Config-Bar', b.getControl('Supertitle').value)
         self.assertEqual([
-            'config-query'], b.getControl('Automatic type').displayValue)
+            'preconfigured-query'], b.getControl('Automatic type').displayValue)
         self.assertEqual('https://config.com', b.getControl('Link').value)
         self.assertEqual('Config-Baz', b.getControl('Linktext').value)
         self.assertEqual(
-            ['(nothing selected)'], b.getControl('Config-Query').displayValue)
+            ['(nothing selected)'], b.getControl('Preconfigured-Query').displayValue)

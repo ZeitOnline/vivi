@@ -594,7 +594,7 @@ class TopicboxTypeSource(zeit.cms.content.sources.SimpleDictSource):
         ('topicpage', _('topicpage')),
         ('elasticsearch-query', _('elasticsearch-query')),
         ('related-api', _('related-api')),
-        ('config-query', _('config-query'))
+        ('preconfigured-query', _('preconfigured-query'))
     ])
 
 
