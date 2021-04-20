@@ -57,7 +57,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.authorships = [co.authorships.create(shakespeare)]
             co.title = 'Title'
-            co.teaserText = 'asdf'
+            co.teaserText = 'Das ist ein Blindtext.'
         content = self.repository['testcontent']
         self.add_token(content)
 
@@ -80,13 +80,13 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.authorships = [co.authorships.create(author)]
             co.title = 'Title'
-            co.teaserText = 'x' * 2000
+            co.teaserText = 'Das ist ein Blindtext. ' * 2000
         content = self.repository['testcontent']
         self.add_token(content)
 
         self.service.new_document(content)
 
-    def test_author_without_vgwotid_works(self):
+    def test_author_without_vgwortid_works(self):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'
@@ -97,7 +97,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.authorships = [co.authorships.create(author)]
             co.title = 'Title'
-            co.teaserText = 'x' * 2000
+            co.teaserText = 'Das ist ein Blindtext. ' * 2000
         content = self.repository['testcontent']
         self.add_token(content)
 
@@ -122,7 +122,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             co.authorships = [co.authorships.create(author),
                               co.authorships.create(author2)]
             co.title = 'Title'
-            co.teaserText = 'x' * 2000
+            co.teaserText = 'Das ist ein Blindtext. ' * 2000
         content = self.repository['testcontent']
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
