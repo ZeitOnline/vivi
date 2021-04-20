@@ -737,9 +737,11 @@ class ICachingTime(zope.interface.Interface):
     browser = zope.schema.Int(
         title=_("Caching time browser"),
         min=0,
-        max=3600)
+        max=3600,
+        required=False)
 
     server = zope.schema.Int(
         title=_("Caching time server"),
         min=0,
-        max=3600)
+        max=3600,
+        required=False)
