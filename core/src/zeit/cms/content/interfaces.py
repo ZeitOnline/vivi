@@ -729,3 +729,12 @@ class IAddableContent(zope.interface.interfaces.IInterface):
 class ISkipDefaultChannel(zope.interface.Interface):
     """Marker interface to opt out of setting default
     ICommonMetadata.channels according to ressort/sub_ressort."""
+
+
+class ICachingTime(zope.interface.Interface):
+    """Cacheing time interface for """
+
+    caching_time = zope.schema.Int(
+        title=_("Caching Time"),
+        min=60,
+        max=3600)
