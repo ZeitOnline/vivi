@@ -732,7 +732,10 @@ class ISkipDefaultChannel(zope.interface.Interface):
 
 
 class ICachingTime(zope.interface.Interface):
-    """Cacheing time interface for """
+    """
+    Caching time interface for adjusting browser and server caching time in
+    zeit.web. For admins only.
+    """
 
     browser = zope.schema.Int(
         title=_("Caching time browser"),
