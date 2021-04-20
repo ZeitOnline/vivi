@@ -458,16 +458,16 @@ class TMSRelatedApiQuery(TMSContentQuery):
             return iter(response)
 
 
-class ConfigQuery(ElasticsearchContentQuery):
+class PreconfiguredQuery(ElasticsearchContentQuery):
     """Search via Elasticsearch."""
 
-    grok.name('config-query')
+    grok.name('preconfigured-query')
 
     def __init__(self, context):
         super().__init__(context)
         factory = zeit.content.article.edit.interfaces.ITopicbox[
-            'config_query'].source.factory
-        self.query = {'query': factory.getQuery(context._config_query)}
+            'preconfigured_query'].source.factory
+        self.query = {'query': factory.getQuery(context._preconfigured_query)}
 
     def _build_query(self):
         return self.query

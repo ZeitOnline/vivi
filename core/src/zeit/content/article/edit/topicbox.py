@@ -78,9 +78,9 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.topicpage_filter',
         zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
 
-    _config_query = zeit.cms.content.property.ObjectPathProperty(
-        '.config_query',
-        zeit.content.article.edit.interfaces.ITopicbox['config_query'])
+    _preconfigured_query = zeit.cms.content.property.ObjectPathProperty(
+        '.preconfigured_query',
+        zeit.content.article.edit.interfaces.ITopicbox['preconfigured_query'])
 
     @property
     def automatic_type(self):
@@ -100,12 +100,12 @@ class Topicbox(zeit.content.article.edit.block.Block):
         return int(config['topicbox-teaser-amount'])
 
     @property
-    def config_query(self):
-        return self._config_query
+    def preconfigured_query(self):
+        return self._preconfigured_query
 
-    @config_query.setter
-    def config_query(self, value):
-        self._config_query = value
+    @preconfigured_query.setter
+    def preconfigured_query(self, value):
+        self._preconfigured_query = value
 
     @property
     def _teaser_count(self):

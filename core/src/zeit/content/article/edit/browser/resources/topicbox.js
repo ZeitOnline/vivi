@@ -9,7 +9,7 @@ function display_elements(selected_automatic_type) {
         'topicpage_filter',
         'elasticsearch_raw_query',
         'elasticsearch_raw_order',
-        'config_query',
+        'preconfigured_query',
     ];
 
     var selected_automatic_type = selected_automatic_type.toLowerCase();
@@ -33,7 +33,7 @@ function display_elements(selected_automatic_type) {
             cssClasses.push('topicpage_filter');
             break;
         case 'konfigurationsdatei':
-            cssClasses.push('config_query')
+            cssClasses.push('preconfigured_query')
             break;
         default:
             break;

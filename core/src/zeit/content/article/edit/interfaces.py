@@ -664,8 +664,8 @@ class ITopicbox(IBlock,
         source=TopicReferenceSource(),
         required=False)
 
-    config_query = zope.schema.Choice(
-        title=_('Config-Query'),
+    preconfigured_query = zope.schema.Choice(
+        title=_('Preconfigured-Query'),
         source=PreconfiguredQuerySource(),
         required=False)
 
