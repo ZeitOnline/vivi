@@ -7,11 +7,11 @@ import zope.interface
     zeit.cms.content.interfaces.ICachingTime)
 class CachingTime(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    caching_time_browser = zeit.cms.content.dav.DAVProperty(
+    browser = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICachingTime['browser'],
         zeit.cms.interfaces.IR_NAMESPACE,
         'caching_time')
-    caching_time_server = zeit.cms.content.dav.DAVProperty(
+    server = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICachingTime['server'],
         zeit.cms.interfaces.IR_NAMESPACE,
         'caching_time')
