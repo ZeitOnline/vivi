@@ -734,7 +734,12 @@ class ISkipDefaultChannel(zope.interface.Interface):
 class ICachingTime(zope.interface.Interface):
     """Cacheing time interface for """
 
-    caching_time_fastly = zope.schema.Int(
-        title=_("Caching Time Fastly"),
-        min=60,
+    browser = zope.schema.Int(
+        title=_("Caching time browser"),
+        min=0,
+        max=3600)
+
+    server = zope.schema.Int(
+        title=_("Caching time server"),
+        min=0,
         max=3600)
