@@ -9,9 +9,9 @@ class CachingTime(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     browser = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICachingTime['browser'],
-        zeit.cms.interfaces.IR_NAMESPACE,
-        'caching_time')
+        'zeit.web',
+        'browser')
     server = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICachingTime['server'],
-        zeit.cms.interfaces.IR_NAMESPACE,
-        'caching_time')
+        'zeit.web',
+        'server')
