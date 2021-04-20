@@ -31,10 +31,13 @@ class EditFormCI(zeit.cms.browser.form.EditForm):
 
 class EditFormCO(zeit.cms.browser.form.EditForm):
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
-        'banner', 'banner_content', 'banner_outer',
-        'hide_adblocker_notification')
+    form_fields = (
+        zope.formlib.form.Fields(zeit.cms.content.interfaces.ICachingTime) +
+        zope.formlib.form.Fields(
+            zeit.cms.content.interfaces.ICommonMetadata).select(
+            'banner', 'banner_content', 'banner_outer',
+            'hide_adblocker_notification')
+    )
 
     # Without field group it will look weird when context is an Article.
     field_groups = (gocept.form.grouped.RemainingFields(
