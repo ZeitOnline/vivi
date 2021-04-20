@@ -1,10 +1,22 @@
 vivi.core changes
 =================
 
-4.50.4 (unreleased)
+4.50.6 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.50.5 (2021-04-08)
+-------------------
+
+- STO-185: Cache content & DAV properties based on file modification times
+
+
+4.50.4 (2021-04-07)
+-------------------
+
+- ZON-6573: Support legal_text attribute on newslettersignups
 
 
 4.50.3 (2021-03-30)

@@ -1,5 +1,4 @@
 import ast
-import six
 
 try:
     import fluent.handler
@@ -15,8 +14,7 @@ else:
         """
 
         def __init__(self, fmt=None, datefmt=None, style='%', **kw):
-            if (isinstance(fmt, six.string_types) and
-                    fmt.strip().startswith('{')):
+            if (isinstance(fmt, str) and fmt.strip().startswith('{')):
                 fmt = ast.literal_eval(fmt)
             super(FluentRecordFormatter, self).__init__(
                 fmt, datefmt, style, **kw)
