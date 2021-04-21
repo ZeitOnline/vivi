@@ -1116,12 +1116,12 @@ class JSLintTestCase(gocept.jslint.TestCase):
     )
 
     ignore = (
-        "Don't make functions within a loop",
+        "Functions declared within loops",
         "Expected an identifier and instead saw 'import'",
         "Use '===' to compare with",
         "Use '!==' to compare with",
         "Missing radix parameter",
-        "Bad line breaking",
+        "Misleading line break",
         "Expected an assignment or function call and instead"
         " saw an expression",
     )
