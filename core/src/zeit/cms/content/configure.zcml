@@ -253,7 +253,7 @@
   <class class="zeit.cms.content.cachingtime.CachingTime">
     <require
       interface="zeit.cms.content.interfaces.ICachingTime"
-      permission="zeit.EditContent" />
+      permission="zope.View" />
     <require
       set_schema="zeit.cms.content.interfaces.ICachingTime"
       permission="zeit.EditContent" />
