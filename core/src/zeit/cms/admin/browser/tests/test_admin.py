@@ -53,8 +53,7 @@ class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b.open('http://localhost/++skin++vivi'
                '/repository/testcontent')
         b.getLink('Checkout').click()
-        b.open('http://localhost/++skin++vivi'
-               '/repository/testcontent/@@admin-edit.html')
+        b.getLink('Admin').click()
         b.getControl('Caching time browser').value = 0
         b.getControl('Caching time server').value = 60
         b.getControl('Apply').click()
