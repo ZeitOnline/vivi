@@ -22,7 +22,7 @@ class EditFormCI(zeit.cms.browser.form.EditForm):
         _('admin-field-group'), 'column-left-small'),)
 
     def __init__(self, context, request):
-        super().__init__(context, request)
+        super(EditFormCI, self).__init__(context, request)
         for name, entry in zope.component.getAdapters(
                 (context,), zeit.cms.admin.interfaces.IAdditionalFields):
             iface, fields = entry
@@ -44,7 +44,7 @@ class EditFormCO(zeit.cms.browser.form.EditForm):
         _('admin-field-group'), 'column-left-small'),)
 
     def __init__(self, context, request):
-        super().__init__(context, request)
+        super(EditFormCO, self).__init__(context, request)
         for name, entry in zope.component.getAdapters(
                 (context,), zeit.cms.admin.interfaces.IAdditionalFieldsCO):
             iface, fields = entry

@@ -58,7 +58,7 @@ class ReferenceField(zope.schema.Choice):
         if self._init_field:
             return
         # skip immediate superclass, since that's what we want to change
-        super()._validate(value)
+        super(zope.schema.Choice, self)._validate(value)
         if value.target not in self.vocabulary:
             raise zope.schema.interfaces.ConstraintNotSatisfied(value)
 
@@ -114,7 +114,7 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Print ressort"),
         readonly=True,
         required=False,
-        default='n/a')
+        default=u'n/a')
 
     # not required since e.g. Agenturmeldungen don't have an author, only
     # a copyright notice
@@ -132,8 +132,8 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Authors (freetext)"),
         value_type=zope.schema.TextLine(),
         required=False,
-        default=('',),
-        description=_('overwritten if any non-freetext authors are set'))
+        default=(u'',),
+        description=_(u'overwritten if any non-freetext authors are set'))
 
     agencies = zope.schema.Tuple(
         title=_("Agencies"),
@@ -143,7 +143,7 @@ class ICommonMetadata(zope.interface.Interface):
 
     access = zope.schema.Choice(
         title=_('Access'),
-        default='free',
+        default=u'free',
         source=zeit.cms.content.sources.ACCESS_SOURCE)
 
     keywords = zeit.cms.tagging.interfaces.Keywords(
@@ -183,13 +183,13 @@ class ICommonMetadata(zope.interface.Interface):
 
     title = zope.schema.Text(
         title=_("Title"),
-        missing_value='')
+        missing_value=u'')
 
     title.setTaggedValue('zeit.cms.charlimit', 70)
 
     subtitle = zope.schema.Text(
         title=_("Subtitle"),
-        missing_value='',
+        missing_value=u'',
         required=False)
 
     subtitle.setTaggedValue('zeit.cms.charlimit', 170)
@@ -205,8 +205,8 @@ class ICommonMetadata(zope.interface.Interface):
         max_length=170)
 
     teaserSupertitle = zope.schema.TextLine(
-        title=_('Teaser kicker'),
-        description=_('Please take care of capitalisation.'),
+        title=_(u'Teaser kicker'),
+        description=_(u'Please take care of capitalisation.'),
         required=False,
         max_length=70)
 
@@ -265,7 +265,7 @@ class ICommonMetadata(zope.interface.Interface):
         # XXX kludgy, we expect a product with this ID to be present in the XML
         # file. We only need to set an ID here, since to read the product we'll
         # ask the source anyway.
-        default=zeit.cms.content.sources.Product('ZEDE'),
+        default=zeit.cms.content.sources.Product(u'ZEDE'),
         source=zeit.cms.content.sources.PRODUCT_SOURCE)
 
     overscrolling = zope.schema.Bool(
