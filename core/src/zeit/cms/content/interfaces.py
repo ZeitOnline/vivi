@@ -58,7 +58,7 @@ class ReferenceField(zope.schema.Choice):
         if self._init_field:
             return
         # skip immediate superclass, since that's what we want to change
-        super(zope.schema.Choice, self)._validate(value)
+        super()._validate(value)
         if value.target not in self.vocabulary:
             raise zope.schema.interfaces.ConstraintNotSatisfied(value)
 
