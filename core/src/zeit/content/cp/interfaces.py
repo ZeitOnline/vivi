@@ -73,7 +73,7 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     type = zope.schema.Choice(
         title=_('CP type'),
         source=zeit.content.cp.source.CPTypeSource(),
-        default=u'centerpage')
+        default='centerpage')
 
     header_image = zope.schema.Choice(
         title=_('Header image'),
@@ -288,7 +288,7 @@ class AreaColorThemesSource(zeit.cms.content.sources.XMLSource):
 
     def isAvailable(self, node, context):
         cp = zeit.content.cp.interfaces.ICenterPage(context, None)
-        return super(AreaColorThemesSource, self).isAvailable(node, cp)
+        return super().isAvailable(node, cp)
 
 
 AREA_COLOR_THEMES_SOURCE = AreaColorThemesSource()
@@ -311,7 +311,7 @@ class IReadArea(
     kind = zope.schema.TextLine(
         title=_("Kind"),
         description=_("Used internally for rendering on Friedbert"),
-        default=u'solo')
+        default='solo')
 
     kind_title = zope.interface.Attribute(
         "Translation of kind to a human friendly information")
@@ -505,7 +505,7 @@ class IntChoice(zope.schema.Choice):
             value = int(value)
         except Exception:
             pass
-        return super(IntChoice, self).fromUnicode(value)
+        return super().fromUnicode(value)
 
 
 class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
@@ -601,7 +601,7 @@ class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
     """A standalone teaser object which references the article."""
 
     original_content = zope.schema.Choice(
-        title=u'The referenced article.',
+        title='The referenced article.',
         source=zeit.cms.content.contentsource.cmsContentSource)
 
 
@@ -674,16 +674,16 @@ class CardstackColorSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict((
         (color, color) for color in [
-            u'#D8D8D8',
-            u'#5E534F',
-            u'#E4DED8',
-            u'#69696C',
-            u'#FF7783',
-            u'#7C0E14',
-            u'#6FA6B9',
-            u'#085064',
-            u'#57C494',
-            u'#1E6847']
+            '#D8D8D8',
+            '#5E534F',
+            '#E4DED8',
+            '#69696C',
+            '#FF7783',
+            '#7C0E14',
+            '#6FA6B9',
+            '#085064',
+            '#57C494',
+            '#1E6847']
     ))
 
 

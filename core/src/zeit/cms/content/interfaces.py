@@ -729,3 +729,22 @@ class IAddableContent(zope.interface.interfaces.IInterface):
 class ISkipDefaultChannel(zope.interface.Interface):
     """Marker interface to opt out of setting default
     ICommonMetadata.channels according to ressort/sub_ressort."""
+
+
+class ICachingTime(zope.interface.Interface):
+    """
+    Caching time interface for adjusting browser and server caching time in
+    zeit.web. For admins only.
+    """
+
+    browser = zope.schema.Int(
+        title=_("Caching time browser"),
+        min=0,
+        max=3600,
+        required=False)
+
+    server = zope.schema.Int(
+        title=_("Caching time server"),
+        min=0,
+        max=3600,
+        required=False)
