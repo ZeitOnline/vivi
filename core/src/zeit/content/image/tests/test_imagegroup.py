@@ -128,6 +128,14 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
             '/group/square__200x200__0000ff', self.group.variant_url(
                 'square', 200, 200, '0000ff'))
 
+        self.assertEqual(
+            '/group/square__300x300', self.group.variant_url(
+                'square', 300, 300, 'None'))
+
+        self.assertEqual(
+            '/group/square__400x400', self.group.variant_url(
+                'square', 400, 400, None))
+
     def test_dav_content_with_same_name_is_preferred(self):
         self.assertEqual((1536, 1536), self.traverse('square').getImageSize())
         self.group['square'] = zeit.content.image.testing.create_local_image(
@@ -255,6 +263,13 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         assert result['size'] == [300, 160]
         assert result['scale'] == 3.0
         assert result['fill'] == '000000'
+        assert result['viewport'] is None
+
+    def test_parse_fill_None_should_return_NoneType(self):
+        result = self.traverser.parse_url('cinema__200x80__scale_2.25__0000ff?scale=3.0&width=300&height=160&fill=None')
+        assert result['size'] == [300, 160]
+        assert result['scale'] == 3.0
+        assert result['fill'] == None
         assert result['viewport'] is None
 
     def test_parse_url_variant_params_only(self):
