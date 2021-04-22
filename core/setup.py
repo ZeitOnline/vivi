@@ -24,6 +24,7 @@ setup(
         'beautifulsoup4',
         'bugsnag',
         'collective.monkeypatcher',
+        'commentjson',
         'elasticsearch >=7.0.0, <8.0.0',
         'fb',
         'filemagic',

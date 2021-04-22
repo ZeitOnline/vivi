@@ -4,6 +4,8 @@ vivi.core changes
 4.50.7 (unreleased)
 -------------------
 
+- ZON-6637: Introduce JSON content object
+
 - ZON-6377: Fix rendering of teaser images with `fill_color=None` parameters
 
 
