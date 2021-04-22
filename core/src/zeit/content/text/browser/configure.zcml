@@ -65,6 +65,48 @@
 
   <adapter factory=".jinja.ListRepresentation" />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.text.json.Add"
+    permission="zeit.AddContent"
+    class=".json.Add"
+    menu="zeit-add-menu" title="JSON file"
+    />
+
+  <browser:page
+    for="zeit.content.text.interfaces.IJSON"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".json.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
+    />
+
+  <browser:page
+    for="zeit.content.text.interfaces.IJSON"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".json.Display"
+    permission="zope.View"
+    menu="zeit-context-views" title="View"
+    />
+
+  <adapter
+    for="zeit.content.text.interfaces.JSON
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.ITextBrowserWidget"
+    factory=".json.JSONInputWidget"
+    permission="zope.Public"
+    />
+  <adapter
+    for="zeit.content.text.interfaces.JSON
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.IDisplayWidget"
+    factory=".json.JSONDisplayWidget"
+    permission="zope.Public"
+    />
+
+
   <!-- XXX Fold back together once the feature toggle `add_content_permissions`
        is fully in production -->
   <browser:page

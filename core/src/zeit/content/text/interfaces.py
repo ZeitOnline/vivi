@@ -86,6 +86,18 @@ class IJinjaTemplate(IText):
         """
 
 
+class JSON(zope.schema.Text):
+    pass
+
+
+class IJSON(IText):
+
+    text = JSON(title=_('Content'))
+
+    mimeType = zeit.cms.repository.interfaces.IFile['mimeType'].bind(object())
+    mimeType.default = 'application/json'
+
+
 class IEmbed(IText):
 
     render_as_template = zope.schema.Bool(title=_("Render as template?"))
