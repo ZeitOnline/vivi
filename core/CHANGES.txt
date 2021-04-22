@@ -4,8 +4,7 @@ vivi.core changes
 4.50.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+ZON-6377: Fixes that fill_color=None
 
 4.50.6 (2021-04-21)
 -------------------
