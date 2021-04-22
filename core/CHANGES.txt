@@ -1,10 +1,16 @@
 vivi.core changes
 =================
 
-4.50.6 (unreleased)
+4.50.7 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.50.6 (2021-04-21)
+-------------------
+
+- ZON-6614: Support caching time attribute on centerpages
 
 
 4.50.5 (2021-04-08)

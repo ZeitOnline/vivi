@@ -131,10 +131,10 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         # Support renaming (see doc/implementation/move.txt).
         possible_ids = set((
             content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
-        unique_ids = u' or '.join(['@href=%s' % xml.sax.saxutils.quoteattr(x)
+        unique_ids = ' or '.join(['@href=%s' % xml.sax.saxutils.quoteattr(x)
                                   for x in possible_ids])
         # @uniqueId is for free teasers only, and those can't be renamed.
-        query = u'//block[@uniqueId={id} or {unique_ids}]'.format(
+        query = '//block[@uniqueId={id} or {unique_ids}]'.format(
             id=xml.sax.saxutils.quoteattr(content.uniqueId),
             unique_ids=unique_ids)
         for entry in self.xml.xpath(query):
@@ -233,7 +233,7 @@ class Body(zeit.edit.container.Base,
         if key in ['lead', 'informatives']:
             # backwards compatiblity for tests
             return self['feature'][key]
-        return super(Body, self).__getitem__(key)
+        return super().__getitem__(key)
 
 
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)

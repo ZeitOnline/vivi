@@ -40,7 +40,7 @@ zeit.edit._locked_makeJSONRequest = function(
         try {
             result_obj = MochiKit.Async.evalJSONRequest(result);
         } catch (e) {
-            if (! e instanceof SyntaxError) {
+            if (! (e instanceof SyntaxError)) {
                 throw e;
             }
         }
