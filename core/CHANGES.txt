@@ -4,7 +4,7 @@ vivi.core changes
 4.50.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6377: Fix rendering of teaser images with `fill_color=None` parameters
 
 
 4.50.6 (2021-04-21)

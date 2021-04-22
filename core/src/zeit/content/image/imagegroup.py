@@ -171,7 +171,7 @@ class ImageGroupBase(object):
         else:
             url = u'{path}/{name}__{width}x{height}'.format(
                 path=path, name=name, width=width, height=height)
-        if fill_color is not None:
+        if fill_color not in [None, 'None']:
             url += u'__{fill}'.format(fill=fill_color)
         return url
 
@@ -238,6 +238,8 @@ class VariantTraverser(object):
                 raise KeyError(path)
         if result['variant'] is None:
             raise KeyError(url)
+        if result['fill'] == 'None':
+            result['fill'] = None
         result['url'] = path
         return result
 
