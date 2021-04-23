@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.50.7 (unreleased)
+4.51.0 (2021-04-23)
 -------------------
 
 - ZON-6637: Introduce JSON content object
