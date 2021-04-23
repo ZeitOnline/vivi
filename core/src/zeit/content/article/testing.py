@@ -57,35 +57,32 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
 
 
+# This is a copy from z.c.cp ElasticsearchMockLayer with an
+# additional TMS mock.
+# A better solution would be a abstraction of these test mock layers
+# in zeit.cms so they could be used by z.c.article and z.c.cp
 class ElasticsearchMockLayer(plone.testing.Layer):
 
-    def setUp(self):
-        self['elasticsearch_mocker'] = mock.patch(
-            'elasticsearch.client.Elasticsearch.search')
-        self['elasticsearch'] = self['elasticsearch_mocker'].start()
-        self['tms'] = mock.Mock()
-        filename = pkg_resources.resource_filename(
-            'zeit.content.article.tests', 'elasticsearch_search_response.json')
-        with open(filename) as response:
-            result = zeit.cms.interfaces.Result(json.load(response))
-            result.hits = 4
-            self['elasticsearch'].search.return_value = result
-            self['tms'].get_topicpage_documents.return_value = result
+    def testSetUp(self):
+        self['elasticsearch'] = mock.Mock()
+        self['elasticsearch'].search.return_value = (
+            zeit.cms.interfaces.Result())
         zope.interface.alsoProvides(self['elasticsearch'],
                                     zeit.retresco.interfaces.IElasticsearch)
+        zope.component.getSiteManager().registerUtility(self['elasticsearch'])
+        self['tms'] = mock.Mock()
+        self['tms'].get_topicpage_documents.return_value = (
+            zeit.cms.interfaces.Result())
         zope.interface.alsoProvides(self['tms'],
                                     zeit.retresco.interfaces.ITMS)
-        zope.component.getSiteManager().registerUtility(self['elasticsearch'])
         zope.component.getSiteManager().registerUtility(self['tms'])
 
-    def tearDown(self):
+    def testTearDown(self):
         zope.component.getSiteManager().unregisterUtility(
             self['elasticsearch'])
+        del self['elasticsearch']
         zope.component.getSiteManager().unregisterUtility(
             self['tms'])
-        del self['elasticsearch']
-        self['elasticsearch_mocker'].stop()
-        del self['elasticsearch_mocker']
         del self['tms']
 
 

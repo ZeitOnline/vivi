@@ -1,3 +1,4 @@
+import mock
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
@@ -17,6 +18,17 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.repository['art2'] = zeit.content.article.article.Article()
         self.repository['art3'] = zeit.content.article.article.Article()
         self.repository['video'] = zeit.content.video.video.Video()
+        self.elastic = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
+        self.tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        result = zeit.cms.interfaces.Result([
+            {'url': '/art1'},
+            {'url': '/video'},
+            {'url': '/art2'},
+            {'url': '/art3'}])
+        result.hits = 4
+        self.elastic.search.return_value = result
+        self.tms.get_topicpage_documents.return_value = result
 
     def get_topicbox(self):
         from zeit.content.article.edit.topicbox import Topicbox
