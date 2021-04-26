@@ -37,7 +37,8 @@ $(document).ready(function() {
     var excluded = [
         'zeit.cms.repository.file.Add',
         'zeit.content.rawxml.Add',
-        'zeit.content.text.Add'
+        'zeit.content.text.Add',
+        'zeit.content.text.json.Add'
     ];
 
     $('form').each(function(index, form) {
