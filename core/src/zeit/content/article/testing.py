@@ -1,6 +1,5 @@
 from unittest import mock
 import gocept.selenium
-import json
 import pkg_resources
 import plone.testing
 import re
