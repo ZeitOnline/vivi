@@ -40,6 +40,18 @@
       />
   </class>
 
+  <class class=".json.JSON">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IJSON"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IJSON"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".embed.Embed">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require

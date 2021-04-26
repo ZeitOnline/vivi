@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.51.0',
+    version='4.51.2.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -24,6 +24,7 @@ setup(
         'beautifulsoup4',
         'bugsnag',
         'collective.monkeypatcher',
+        'commentjson',
         'elasticsearch >=7.0.0, <8.0.0',
         'fb',
         'filemagic',

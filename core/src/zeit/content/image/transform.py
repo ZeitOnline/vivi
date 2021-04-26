@@ -81,7 +81,7 @@ class ImageTransform(object):
                 variant.sharpness)
 
         # Optionally fill the background of transparent images
-        if fill_color is not None and self._color_mode == 'RGBA':
+        if fill_color not in [None, 'None'] and self._color_mode == 'RGBA':
             fill_color = PIL.ImageColor.getrgb('#' + fill_color)
             opaque = PIL.Image.new('RGB', image.size, fill_color)
             opaque.paste(image, (0, 0), image)

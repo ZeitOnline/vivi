@@ -1,10 +1,30 @@
 vivi.core changes
 =================
 
-4.50.6 (unreleased)
+4.51.2 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+4.51.1 (2021-04-26)
+-------------------
+
+- MAINT: Exclude JSON objects from SEO filename rules
+
+
+4.51.0 (2021-04-23)
+-------------------
+
+- ZON-6637: Introduce JSON content object
+
+- ZON-6377: Fix rendering of teaser images with `fill_color=None` parameters
+
+
+4.50.6 (2021-04-21)
+-------------------
+
+- ZON-6614: Support caching time attribute on centerpages
 
 
 4.50.5 (2021-04-08)

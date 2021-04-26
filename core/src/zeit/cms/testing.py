@@ -32,6 +32,7 @@ import re
 import selenium.webdriver
 import six
 import sys
+import tempfile
 import threading
 import transaction
 import unittest
@@ -1089,16 +1090,17 @@ class JSLintTestCase(gocept.jslint.TestCase):
 
     jshint_command = os.environ.get('JSHINT_COMMAND', '/bin/true')
 
-    options = (gocept.jslint.TestCase.options +
-               ('evil',
-                'eqnull',
-                'multistr',
-                'sub',
-                'undef',
-                'browser',
-                'jquery',
-                'devel'
-                ))
+    options = {
+        'esversion': '6',
+        'evil': True,
+        'eqnull': True,
+        'multistr': True,
+        'sub': True,
+        'undef': True,
+        'browser': True,
+        'jquery': True,
+        'devel': True,
+    }
     predefined = (
         'zeit', 'gocept',
         'application_url', 'context_url',
@@ -1114,15 +1116,29 @@ class JSLintTestCase(gocept.jslint.TestCase):
     )
 
     ignore = (
-        "Don't make functions within a loop",
+        "Functions declared within loops",
         "Expected an identifier and instead saw 'import'",
         "Use '===' to compare with",
         "Use '!==' to compare with",
         "Missing radix parameter",
-        "Bad line breaking",
+        "Misleading line break",
         "Expected an assignment or function call and instead"
         " saw an expression",
     )
+
+    def _write_config_file(self):
+        """Copy&paste from baseclass, so we can use non-boolean options."""
+        settings = self.options.copy()
+        predefined = settings['predef'] = []
+        for name in self.predefined:
+            predefined.append(name)
+
+        handle, filename = tempfile.mkstemp()
+        output = open(filename, 'w')
+        json.dump(settings, output)
+        output.close()
+
+        return filename
 
 
 original = datetime.datetime

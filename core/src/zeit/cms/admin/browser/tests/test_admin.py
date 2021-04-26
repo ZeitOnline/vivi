@@ -47,3 +47,19 @@ class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):
         self.assertEqual(
             datetime(2001, 1, 8, 10, 22, 33, tzinfo=pytz.UTC),
             publish.date_first_released)
+
+    def test_admin_menu_co_has_caching_time_field(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi'
+               '/repository/testcontent')
+        b.getLink('Checkout').click()
+        b.getLink('Admin').click()
+        b.getControl('Caching time browser').value = 0
+        b.getControl('Caching time server').value = 60
+        b.getControl('Apply').click()
+        b.getLink('Checkin').click()
+        zope.component.hooks.setSite(self.getRootFolder())
+        content = self.repository['testcontent']
+        caching_time = zeit.cms.content.interfaces.ICachingTime(content)
+        self.assertEqual(0, caching_time.browser)
+        self.assertEqual(60, caching_time.server)

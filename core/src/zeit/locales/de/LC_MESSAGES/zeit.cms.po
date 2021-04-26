@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Apr 21 11:00:49 2021\n"
+"POT-Creation-Date: Mon Apr 26 10:40:24 2021\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
+"Last-Translator: Tobias Kabbeck <tobias.kabbeck@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -160,7 +160,7 @@ msgstr "nein"
 msgid "unknown"
 msgstr "unbekannt"
 
-#: zeit/cms/admin/browser/admin.py:22 zeit/cms/admin/browser/admin.py:41
+#: zeit/cms/admin/browser/admin.py:22 zeit/cms/admin/browser/admin.py:44
 msgid "admin-field-group"
 msgstr "Admin"
 
@@ -263,7 +263,8 @@ msgstr "Abbrechen"
 #: zeit/content/rawxml/browser/configure.zcml:15
 #: zeit/content/text/browser/configure.zcml:14
 #: zeit/content/text/browser/configure.zcml:57
-#: zeit/content/text/browser/configure.zcml:85 zeit/edit/browser/editor.py:9
+#: zeit/content/text/browser/configure.zcml:76
+#: zeit/content/text/browser/configure.zcml:127 zeit/edit/browser/editor.py:9
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -286,7 +287,8 @@ msgstr "Speichern"
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:24
-#: zeit/content/text/browser/configure.zcml:103
+#: zeit/content/text/browser/configure.zcml:85
+#: zeit/content/text/browser/configure.zcml:145
 msgid "View"
 msgstr "Anzeigen"
 
@@ -996,6 +998,14 @@ msgstr "Typ"
 msgid "Month"
 msgstr "Monat"
 
+#: zeit/cms/content/interfaces.py:741
+msgid "Caching time browser"
+msgstr "Cachezeit Browser"
+
+#: zeit/cms/content/interfaces.py:747
+msgid "Caching time server"
+msgstr "Cachezeit Fastly"
+
 #: zeit/cms/content/metadata.py:148
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
@@ -1654,6 +1664,7 @@ msgstr "Veröffentlichungszustand"
 
 #: zeit/cms/workingcopy/browser/configure.zcml:19
 #: zeit/content/article/browser/form.py:101 zeit/content/text/interfaces.py:35
+#: zeit/content/text/interfaces.py:95
 msgid "Content"
 msgstr "Inhalt"
 
@@ -1918,7 +1929,7 @@ msgstr "Liveblog-Block bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.py:328
 msgid "edit tickaroo liveblog"
-msgstr ""
+msgstr "Liveblog-Block bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.py:340
 msgid "edit cardstack block"
@@ -2033,7 +2044,7 @@ msgstr "Verfügbarkeit bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:330
 msgid "edit audio_speechbert"
-msgstr ""
+msgstr "Speechbert bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:345
 msgid "edit teaser image"
@@ -2632,7 +2643,7 @@ msgstr "Genre"
 
 #: zeit/content/article/interfaces.py:54
 msgid "Speechbert Audio"
-msgstr ""
+msgstr "Speechbert-Audio"
 
 #: zeit/content/article/interfaces.py:79
 msgid "Header layout"
@@ -3646,7 +3657,7 @@ msgstr ""
 "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die "
 "Resource keinen gültigen Inhalt hat."
 
-#: zeit/content/image/imagegroup.py:376
+#: zeit/content/image/imagegroup.py:378
 msgid "Image Group"
 msgstr "Bildergruppe"
 
@@ -3897,7 +3908,7 @@ msgstr ""
 
 #: zeit/content/modules/interfaces.py:321
 msgid "Liveblog theme"
-msgstr ""
+msgstr "Liveblog-Theme"
 
 #: zeit/content/portraitbox/browser/form.py:23
 #: zeit/magazin/browser/portraitbox.py:27
@@ -3940,11 +3951,15 @@ msgstr "XML-Datei anzeigen"
 msgid "Plain text"
 msgstr "Textdatei"
 
-#: zeit/content/text/browser/configure.zcml:76 zeit/content/text/embed.py:76
+#: zeit/content/text/browser/configure.zcml:68 zeit/content/text/json.py:22
+msgid "JSON file"
+msgstr "JSON-Datei"
+
+#: zeit/content/text/browser/configure.zcml:118 zeit/content/text/embed.py:76
 msgid "Embed"
 msgstr "Embed"
 
-#: zeit/content/text/browser/configure.zcml:94
+#: zeit/content/text/browser/configure.zcml:136
 #: zeit/content/text/browser/embed.py:64
 msgid "Edit embed parameters"
 msgstr "Parameter"
@@ -3973,6 +3988,18 @@ msgstr "Text/HTML bearbeiten"
 msgid "View plain text"
 msgstr "Text/HTML anzeigen"
 
+#: zeit/content/text/browser/json.py:27
+msgid "Add JSON file"
+msgstr "JSON-Datei hinzufügen"
+
+#: zeit/content/text/browser/json.py:33
+msgid "Edit JSON file"
+msgstr "JSON-Datei bearbeiten"
+
+#: zeit/content/text/browser/json.py:38
+msgid "View JSON file"
+msgstr "JSON-Datei anzeigen"
+
 #: zeit/content/text/interfaces.py:14
 msgid ""
 "Could not encode charachters ${start}-${end} to ${encoding} (${characters}): "
@@ -3985,23 +4012,23 @@ msgstr ""
 msgid "Encoding"
 msgstr "Kodierung"
 
-#: zeit/content/text/interfaces.py:91
+#: zeit/content/text/interfaces.py:103
 msgid "Render as template?"
 msgstr "Als Friedbert-Template rendern"
 
-#: zeit/content/text/interfaces.py:94
+#: zeit/content/text/interfaces.py:106
 msgid "Parameter definition"
 msgstr "Parameter-Definition"
 
-#: zeit/content/text/interfaces.py:100
+#: zeit/content/text/interfaces.py:112
 msgid "Embed CSS"
 msgstr "vivi CSS"
 
-#: zeit/content/text/interfaces.py:104
+#: zeit/content/text/interfaces.py:116
 msgid "Embed AMP Code"
 msgstr "AMP-Code"
 
-#: zeit/content/text/interfaces.py:105
+#: zeit/content/text/interfaces.py:117
 msgid "Please use an AMP validator to check your code"
 msgstr "Code bitte in einem AMP Validator testen"
 
@@ -5005,14 +5032,14 @@ msgstr "Format"
 msgid "with info"
 msgstr "mit Info"
 
+#~ msgid "automatic-area-type"
+#~ msgstr "Quelle"
+
 #~ msgid "config-query"
 #~ msgstr "Konfigurationsdatei"
 
 #~ msgid "Config-Query"
 #~ msgstr "Konfigurationsdatei"
-
-#~ msgid "automatic-area-type"
-#~ msgstr "Quelle"
 
 #~ msgid "Is instant article"
 #~ msgstr "Bei Facebook als Instant Article darstellen"
