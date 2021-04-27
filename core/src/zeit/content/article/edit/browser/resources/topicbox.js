@@ -12,7 +12,7 @@ function display_elements(selected_automatic_type) {
         'preconfigured_query',
     ];
 
-    var selected_automatic_type = selected_automatic_type.toLowerCase();
+    selected_automatic_type = selected_automatic_type.toLowerCase();
 
     switch (selected_automatic_type) {
         case 'klassisch':
@@ -33,7 +33,7 @@ function display_elements(selected_automatic_type) {
             cssClasses.push('topicpage_filter');
             break;
         case 'konfigurationsdatei':
-            cssClasses.push('preconfigured_query')
+            cssClasses.push('preconfigured_query');
             break;
         default:
             break;
@@ -85,7 +85,7 @@ function eval_automatic_type(el) {
                     display_elements(val);
                     return;
                 }
-            })
+            });
         }
         return;
     });
