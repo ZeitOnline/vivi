@@ -1,3 +1,4 @@
+from unittest import mock
 import gocept.selenium
 import pkg_resources
 import plone.testing
@@ -27,9 +28,12 @@ product_config = """
   template-source file://{base}/edit/tests/templates.xml
   module-source file://{base}/edit/tests/modules.xml
   header-module-source file://{base}/edit/tests/header-modules.xml
+  topicbox-teaser-amount 5
   citation-layout-source file://{base}/edit/tests/citation-layouts.xml
   box-layout-source file://{base}/edit/tests/box-layouts.xml
   puzzleforms-source file://{base}/edit/tests/puzzleforms.xml
+  topicpage-filter-source file://{base}/tests/topicpage-esqueries.json
+  config-base-url file://{base}/tests/
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 
@@ -52,6 +56,38 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
     name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
 
 
+# This is a copy from z.c.cp ElasticsearchMockLayer with an
+# additional TMS mock.
+# A better solution would be a abstraction of these test mock layers
+# in zeit.cms so they could be used by z.c.article and z.c.cp
+class ElasticsearchMockLayer(plone.testing.Layer):
+
+    def testSetUp(self):
+        self['elasticsearch'] = mock.Mock()
+        self['elasticsearch'].search.return_value = (
+            zeit.cms.interfaces.Result())
+        zope.interface.alsoProvides(self['elasticsearch'],
+                                    zeit.retresco.interfaces.IElasticsearch)
+        zope.component.getSiteManager().registerUtility(self['elasticsearch'])
+        self['tms'] = mock.Mock()
+        self['tms'].get_topicpage_documents.return_value = (
+            zeit.cms.interfaces.Result())
+        zope.interface.alsoProvides(self['tms'],
+                                    zeit.retresco.interfaces.ITMS)
+        zope.component.getSiteManager().registerUtility(self['tms'])
+
+    def testTearDown(self):
+        zope.component.getSiteManager().unregisterUtility(
+            self['elasticsearch'])
+        del self['elasticsearch']
+        zope.component.getSiteManager().unregisterUtility(
+            self['tms'])
+        del self['tms']
+
+
+ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
+
+
 class ArticleLayer(plone.testing.Layer):
 
     defaultBases = (PUSH_LAYER,)
@@ -66,6 +102,9 @@ class ArticleLayer(plone.testing.Layer):
 
 
 LAYER = ArticleLayer()
+MOCK_LAYER = plone.testing.Layer(
+    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer',
+    module=__name__)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,

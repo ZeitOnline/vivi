@@ -4,6 +4,7 @@ import collections
 import datetime
 import six
 import zeit.cms.content.field
+import zeit.cms.content.sources
 import zeit.content.article.interfaces
 import zeit.content.article.source
 import zeit.content.gallery.interfaces
@@ -17,10 +18,19 @@ import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zope.schema
+import zeit.contentquery.interfaces
 import zope.security.proxy
+import zeit.content.cp.interfaces
+import logging
+
+log = logging.getLogger(__name__)
 
 
-class IArticleArea(zeit.edit.interfaces.IArea):
+class IElement(zeit.edit.interfaces.IElement):
+    pass
+
+
+class IArticleArea(zeit.edit.interfaces.IArea, IElement):
     pass
 
 
@@ -71,7 +81,11 @@ class ILayoutable(zope.interface.Interface):
         " interfaces")
 
 
-class IParagraph(zeit.edit.interfaces.IBlock):
+class IBlock(IElement, zeit.edit.interfaces.IBlock):
+    pass
+
+
+class IParagraph(IBlock):
     """<p/> element."""
 
     text = zope.schema.Text(title=_('Paragraph-Text'))
@@ -96,7 +110,7 @@ class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
         return super(BodyAwareXMLSource, self).isAvailable(node, context)
 
 
-class IDivision(zeit.edit.interfaces.IBlock):
+class IDivision(IBlock):
     """<division/> element"""
 
     teaser = zope.schema.Text(
@@ -116,7 +130,7 @@ class VideoLayoutSource(BodyAwareXMLSource):
     attribute = 'id'
 
 
-class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
+class IVideo(IBlock, ILayoutable):
 
     video = zope.schema.Choice(
         title=_('Video'),
@@ -138,7 +152,7 @@ class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
         default=True)
 
 
-class IReference(zeit.edit.interfaces.IBlock):
+class IReference(IBlock):
     """A block which references another object."""
 
     references = zope.schema.Field(
@@ -282,7 +296,7 @@ def validate_rawxml(xml):
     return True
 
 
-class IRawXML(zeit.edit.interfaces.IBlock):
+class IRawXML(IBlock):
 
     xml = zeit.cms.content.field.XMLTree(
         title=_('XML source'),
@@ -290,11 +304,11 @@ class IRawXML(zeit.edit.interfaces.IBlock):
         constraint=validate_rawxml)
 
 
-class IRawText(zeit.content.modules.interfaces.IRawText):
+class IRawText(IBlock, zeit.content.modules.interfaces.IRawText):
     pass
 
 
-class IEmbed(zeit.content.modules.interfaces.IEmbed):
+class IEmbed(IBlock, zeit.content.modules.interfaces.IEmbed):
     pass
 
 
@@ -337,7 +351,7 @@ class BoxLayoutSource(AvailableBlockLayoutSource):
 BOX_LAYOUT_SOURCE = BoxLayoutSource()
 
 
-class ICitation(zeit.edit.interfaces.IBlock):
+class ICitation(IBlock):
 
     text = zope.schema.Text(
         title=_('Citation'))
@@ -357,7 +371,7 @@ class ICitation(zeit.edit.interfaces.IBlock):
         required=False)
 
 
-class ICitationComment(zeit.edit.interfaces.IBlock):
+class ICitationComment(IBlock):
 
     text = zope.schema.Text(
         title=_('Citation Comment'))
@@ -380,7 +394,7 @@ class LiveblogVersions(zeit.cms.content.sources.SimpleFixedValueSource):
     ])
 
 
-class ILiveblog(zeit.edit.interfaces.IBlock):
+class ILiveblog(IBlock):
 
     blog_id = zope.schema.TextLine(
         title=_('Liveblog id'))
@@ -397,11 +411,12 @@ class ILiveblog(zeit.edit.interfaces.IBlock):
         required=False)
 
 
-class ITickarooLiveblog(zeit.content.modules.interfaces.ITickarooLiveblog):
+class ITickarooLiveblog(
+        IBlock, zeit.content.modules.interfaces.ITickarooLiveblog):
     pass
 
 
-class ICardstack(zeit.edit.interfaces.IBlock):
+class ICardstack(IBlock):
 
     card_id = zope.schema.TextLine(
         title=_('Cardstack id'))
@@ -410,18 +425,17 @@ class ICardstack(zeit.edit.interfaces.IBlock):
         default=False)
 
 
-class IQuiz(zeit.content.modules.interfaces.IQuiz):
-    # XXX Need to inerit our own interface, otherwise our UI bleeds into z.c.cp
+class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 
 
-class IPodcast(zeit.edit.interfaces.IBlock):
+class IPodcast(IBlock):
 
     episode_id = zope.schema.TextLine(
         title=_('Podcast id'))
 
 
-class IBox(zeit.edit.interfaces.IBlock):
+class IBox(IBlock):
     """
     This box is a first step to generalizing other boxes
     (infobox, portraitbox...). Another field, the body, should be added, which
@@ -455,7 +469,7 @@ JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(
     zeit.content.article.interfaces.IArticle)
 
 
-class IJobTicker(zeit.content.modules.interfaces.IJobTicker):
+class IJobTicker(IBlock, zeit.content.modules.interfaces.IJobTicker):
 
     feed = zope.schema.Choice(
         title=_('Jobbox ticker'),
@@ -463,7 +477,7 @@ class IJobTicker(zeit.content.modules.interfaces.IJobTicker):
         source=JOBTICKER_SOURCE)
 
 
-class IMail(zeit.content.modules.interfaces.IMail):
+class IMail(IBlock, zeit.content.modules.interfaces.IMail):
     pass
 
 
@@ -496,7 +510,7 @@ class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
     ])
 
 
-class IAdplace(zeit.edit.interfaces.IBlock):
+class IAdplace(IBlock):
 
     tile = zope.schema.Choice(
         title=_('Adplace Tile'),
@@ -545,7 +559,7 @@ class PuzzleSource(zeit.cms.content.sources.ObjectSource,
 PUZZLE_SOURCE = PuzzleSource()
 
 
-class IPuzzleForm(zeit.edit.interfaces.IBlock):
+class IPuzzleForm(IBlock):
 
     puzzle_type = zope.schema.Choice(
         title=_('Puzzle'),
@@ -559,6 +573,31 @@ class IPuzzleForm(zeit.edit.interfaces.IBlock):
     )
 
 
+class PreconfiguredQuerySource(
+        zeit.contentquery.interfaces.TopicpageFilterSource):
+
+    product_configuration = 'zeit.content.article'
+    default_filename = 'topicpage-esqueries.json'
+
+    def getQuery(self, value):
+        try:
+            return self.json_data()[value].get('query', value)
+        except Exception:
+            return None
+
+
+class TopicboxTypeSource(zeit.cms.content.sources.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('manual', _('manual')),
+        ('centerpage', _('centerpage')),
+        ('topicpage', _('topicpage')),
+        ('elasticsearch-query', _('elasticsearch-query')),
+        ('related-api', _('related-api')),
+        ('preconfigured-query', _('preconfigured-query'))
+    ])
+
+
 class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 
     def __init__(self, allow_cp=False):
@@ -566,6 +605,7 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
         self._allowed_interfaces = (
             zeit.content.article.interfaces.IArticle,
             zeit.content.gallery.interfaces.IGallery,
+            zeit.content.video.interfaces.IVideo,
             zeit.content.link.interfaces.ILink)
 
     @property
@@ -576,7 +616,8 @@ class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
             zeit.content.cp.interfaces.ICenterPage, )
 
 
-class ITopicbox(zeit.edit.interfaces.IBlock):
+class ITopicbox(IBlock,
+                zeit.contentquery.interfaces.IConfiguration):
     """
     Element which references other Articles
     """
@@ -590,10 +631,26 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         title=_("Title"),
         max_length=30)
 
+    link = zope.schema.TextLine(
+        title=_('Link'),
+        required=False)
+
+    link_text = zope.schema.TextLine(
+        title=_("Linktext"),
+        required=False,
+        max_length=30)
+
+    automatic_type = zope.schema.Choice(
+        title=_('Automatic type'),
+        source=TopicboxTypeSource(),
+        required=True,
+        default='manual')
+
     first_reference = zope.schema.Choice(
         title=_("Reference"),
         description=_("Drag article/cp/link here"),
-        source=TopicReferenceSource(allow_cp=True))
+        source=TopicReferenceSource(allow_cp=True),
+        required=False)
 
     second_reference = zope.schema.Choice(
         title=_("Reference"),
@@ -607,17 +664,10 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         source=TopicReferenceSource(),
         required=False)
 
-    link = zope.schema.TextLine(
-        title=_('Link'),
+    preconfigured_query = zope.schema.Choice(
+        title=_('Preconfigured-Query'),
+        source=PreconfiguredQuerySource(),
         required=False)
-
-    link_text = zope.schema.TextLine(
-        title=_("Linktext"),
-        required=False,
-        max_length=30)
-
-    referenced_cp = zope.interface.Attribute(
-        'Referenced CP or None')
 
     def values():
         """
@@ -625,15 +675,16 @@ class ITopicbox(zeit.edit.interfaces.IBlock):
         """
 
 
-class INewsletterSignup(zeit.content.modules.interfaces.INewsletterSignup):
+class INewsletterSignup(
+        IBlock, zeit.content.modules.interfaces.INewsletterSignup):
     pass
 
 
-class IRecipeList(zeit.content.modules.interfaces.IRecipeList):
+class IRecipeList(IBlock, zeit.content.modules.interfaces.IRecipeList):
     pass
 
 
-class IIngredientDice(zeit.edit.interfaces.IBlock):
+class IIngredientDice(IBlock):
     """A simple block without any customisation.
     If something like article-extras would exist this should be one.
     """

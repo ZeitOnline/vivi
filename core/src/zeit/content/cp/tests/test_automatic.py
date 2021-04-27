@@ -737,7 +737,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         a3 = self.create_automatic_area(self.cp, count=2)
         a1.referenced_topicpage = 'tms-id'
         a3.referenced_topicpage = 'tms-id'
-        tms_query = zeit.contentquery.query.TMSContentQuery(a1)
+        tms_query = zeit.contentquery.query.CPTMSContentQuery(a1)
         self.assertEqual(tms_query._teaser_count, 0)
         a2.count = 3
         self.assertEqual(tms_query._teaser_count, 0)

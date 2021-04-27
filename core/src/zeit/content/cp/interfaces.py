@@ -153,10 +153,6 @@ class ISearchpage(ICenterPage):
     """
 
 
-class IBody(zeit.edit.interfaces.IArea):
-    """Container of the CenterPage that actually contains the children."""
-
-
 class IElement(zeit.edit.interfaces.IElement):
     """generic element, but CP-specific"""
 
@@ -167,6 +163,10 @@ class IElement(zeit.edit.interfaces.IElement):
     visible_mobile = zope.schema.Bool(
         title=_('Visible on mobile'),
         default=True)
+
+
+class IBody(zeit.edit.interfaces.IArea, IElement):
+    """Container of the CenterPage that actually contains the children."""
 
 
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
@@ -377,7 +377,7 @@ class IReadArea(
     """
 
     automatic_type = zope.schema.Choice(
-        title=_('automatic-area-type'),
+        title=_('Automatic type'),
         source=AutomaticTypeSource(),
         required=True)
 

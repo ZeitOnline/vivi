@@ -8,6 +8,7 @@
 
   <grok:grok package="." exclude="browser" />
   <include package=".edit" />
+  <include package="zeit.contentquery" />
 
   <adapter factory=".article.articleFromTemplate" />
 

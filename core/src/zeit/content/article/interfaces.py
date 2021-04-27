@@ -113,6 +113,10 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
 
+    cache = zope.interface.Attribute("""\
+        Returns a (transaction bound) cache, which can be used for various
+        things like rendered areas, teaser contents, query objects etc.""")
+
     def updateDAVFromXML():
         """Update the DAV properties based on the information in the XML.
 

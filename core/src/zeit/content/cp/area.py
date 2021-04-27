@@ -13,6 +13,7 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
 import zeit.contentquery.helper
+import zeit.contentquery.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
 import zope.component
@@ -92,16 +93,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     type = 'area'
 
-    doc_iface = zeit.content.cp.interfaces.ICenterPage
-
-    automatic_type = zeit.contentquery.helper.AutomaticTypeHelper()
-    automatic_type.mapping = {'channel': 'custom'}
-
-    count = zeit.contentquery.helper.CountHelper()
-    query = zeit.contentquery.helper.QueryHelper()
-    query.mapping = {'Channel': 'channels'}
-
-    referenced_cp = zeit.contentquery.helper.ReferencedCenterpageHelper()
+    query = zeit.contentquery.helper.QueryHelper({'Channel': 'channels'})
 
     kind = ObjectPathAttributeProperty(
         '.', 'kind', zeit.content.cp.interfaces.IArea['kind'],
@@ -142,12 +134,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IArea['automatic_type'])
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', zeit.contentquery.interfaces.IConfiguration['count'])
+        '.', 'count', zeit.content.cp.interfaces.IArea['count'])
 
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.contentquery.interfaces.IConfiguration[
+        '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
             'hide_dupes'], use_default=True)
 
     require_lead_candidates = (
@@ -158,31 +150,31 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     referenced_topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.referenced_topicpage',
-        zeit.contentquery.interfaces.IConfiguration['referenced_topicpage'])
+        zeit.content.cp.interfaces.IArea['referenced_topicpage'])
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
-        zeit.contentquery.interfaces.IConfiguration['topicpage_filter'])
+        zeit.content.cp.interfaces.IArea['topicpage_filter'])
 
     query_order = zeit.cms.content.property.ObjectPathProperty(
         '.query_order',
-        zeit.contentquery.interfaces.IConfiguration['query_order'],
+        zeit.content.cp.interfaces.IArea['query_order'],
         use_default=True)
 
     elasticsearch_raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_query',
-        zeit.contentquery.interfaces.IConfiguration['elasticsearch_raw_query'])
+        zeit.content.cp.interfaces.IArea['elasticsearch_raw_query'])
     elasticsearch_raw_order = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_raw_order',
-        zeit.contentquery.interfaces.IConfiguration['elasticsearch_raw_order'],
+        zeit.content.cp.interfaces.IArea['elasticsearch_raw_order'],
         use_default=True)
     is_complete_query = zeit.cms.content.property.ObjectPathProperty(
         '.elasticsearch_complete_query',
-        zeit.contentquery.interfaces.IConfiguration['is_complete_query'],
+        zeit.content.cp.interfaces.IArea['is_complete_query'],
         use_default=True)
 
     rss_feed = zeit.cms.content.property.DAVConverterWrapper(
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
-        zeit.contentquery.interfaces.IConfiguration['rss_feed'])
+        zeit.content.cp.interfaces.IArea['rss_feed'])
 
     topiclink_label_1 = ReferencedCpFallbackProperty(
         '.topiclink_label_1',
@@ -298,8 +290,43 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if value:
             self._create_auto_blocks()
 
-    def count_helper_tasks(self):
+    @property
+    def automatic_type(self):
+        mapping = {'channel': 'custom'}
+        if self._automatic_type in mapping:
+            return mapping[self._automatic_type]
+        return self._automatic_type
+
+    @automatic_type.setter
+    def automatic_type(self, value):
+        self._automatic_type = value
+
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, value):
+        self._count = value
         self.adjust_auto_blocks_to_count()
+
+    @property
+    def referenced_cp(self):
+        return self._referenced_cp
+
+    @referenced_cp.setter
+    def referenced_cp(self, value):
+        self.check_for_self_reference(value)
+        self._referenced_cp = value
+
+    def check_for_self_reference(self, value):
+        # It is still possible to build larger circles (e.g A->C->A)
+        # but a sane user should not ignore the errormessage shown in the
+        # cp-editor and preview.
+        # Checking for larger circles is not reasonable here.
+        ref = zeit.content.cp.interfaces.ICenterPage
+        if value.uniqueId == ref(self).uniqueId:
+            raise ValueError("A centerpage can't reference itself!")
 
     def adjust_auto_blocks_to_count(self):
         """Does not touch any block that is not an IAutomaticTeaserBlock, so
@@ -387,14 +414,14 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 del self[block.__name__]
 
     @property
-    @cached_on_content(ICenterPage, keyfunc=lambda x: x.__name__)
+    @cached_on_content(keyfunc=lambda x: x.__name__)
     def existing_teasers(self):
         current_area = self
         cp = ICenterPage(self)
         area_teasered_content = content_cache(
-            cp, ICenterPage, 'area_teasered_content')
+            cp, 'area_teasered_content')
         area_manual_content = content_cache(
-            cp, ICenterPage, 'area_manual_content')
+            cp, 'area_manual_content')
 
         seen = set()
         above = True

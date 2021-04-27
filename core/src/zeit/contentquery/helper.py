@@ -1,48 +1,21 @@
 import zeit.cms.content.property
-from zeit.contentquery.interfaces import IConfiguration
 import lxml.etree
 import lxml.objectify
 import six
 import zeit.content.cp.interfaces
 import zeit.contentquery.interfaces
 import zope.component
-
-
-class AutomaticTypeHelper:
-    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
-    """
-    mapping = None
-
-    def __get__(self, context, class_):
-        if context._automatic_type in self.mapping:
-            return self.mapping[context._automatic_type]
-        return context._automatic_type
-
-    def __set__(self, context, value):
-        context._automatic_type = value
-
-
-class CountHelper:
-    """Returns a Count of teasers for the CP AutomaticArea
-       and article's topicbox
-    """
-    def __get__(self, context, class_):
-        return context._count
-
-    def __set__(self, context, value):
-        context._count = value
-        if context.count_helper_tasks:
-            context.count_helper_tasks()
+from zeit.cms.interfaces import ICMSContent
+from zeit.contentquery.interfaces import IConfiguration
 
 
 class QueryHelper:
-    """Returns a query for AutomaticArea's parent Area and Topicboxes.
-    """
-    mapping = None
+    """Returns a query for a area/module that uses content queries."""
+    def __init__(self, mapping=None):
+        self.mapping = mapping
 
     def __get__(self, context, class_):
-        """ Returns query
-        """
+        """ Allows value mapping via dictionary."""
         if not hasattr(context.xml, 'query'):
             return ()
         result = []
@@ -65,8 +38,6 @@ class QueryHelper:
         return tuple(result)
 
     def __set__(self, context, value):
-        """ Sets values for query
-        """
         try:
             context.xml.remove(context.xml.query)
         except AttributeError:
@@ -99,26 +70,8 @@ class QueryHelper:
 
     def _converter(self, context, selector):
         field = IConfiguration['query'].value_type.type_interface[selector]
-        field = field.bind(context.doc_iface(context))
+        field = field.bind(ICMSContent(context))
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
         return zope.component.getMultiAdapter(
             (field, props),
             zeit.cms.content.interfaces.IDAVPropertyConverter)
-
-
-class ReferencedCenterpageHelper:
-    """Returns a referenced CP for AutomaticArea's parent Area and Topicboxes.
-    """
-
-    def __get__(self, context, class_):
-        return context._referenced_cp
-
-    def __set__(self, context, value):
-        # It is still possible to build larger circles (e.g A->C->A)
-        # but a sane user should not ignore the errormessage shown in the
-        # cp-editor and preview.
-        # Checking for larger circles is not reasonable here.
-        ref = zeit.content.cp.interfaces.ICenterPage
-        if value.uniqueId == ref(context).uniqueId:
-            raise ValueError("A centerpage can't reference itself!")
-        context._referenced_cp = value

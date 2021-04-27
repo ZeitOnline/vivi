@@ -1,0 +1,24 @@
+[
+    {
+        "esquery1": {
+            "title": "ES-Query 1",
+            "query": {
+                "query": {
+                    "term": {
+                        "doc_type": "TESTTYPE"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "esquery2": {
+            "title": "ES-Query2",
+            "query": {
+                "term": {
+                    "doc_type": "TESTTYPE2"
+                }
+            }
+        }
+    }
+]

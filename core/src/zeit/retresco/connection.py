@@ -100,6 +100,16 @@ class TMS(object):
         result.hits = response['num_found']
         return result
 
+    def get_related_documents(self, uuid, rows=15, filtername=None):
+        params = {'rows': rows}
+        url = 'GET /content/{}/relateds'.format(uuid)
+        if filter:
+            url = url + '?filter={}'.format(filtername)
+        response = self._request(url, params=params)
+        result = zeit.cms.interfaces.Result(response['docs'])
+        result.hits = len(response['docs'])
+        return result
+
     def get_article_data(self, content):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         try:

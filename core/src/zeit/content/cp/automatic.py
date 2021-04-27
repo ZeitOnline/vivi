@@ -1,5 +1,5 @@
 from zeit.content.cp.area import cached_on_content
-from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage
+from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import logging
@@ -9,6 +9,7 @@ import zeit.content.cp.blocks.rss
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.contentquery.interfaces
+import zeit.contentquery.query
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zope.component
@@ -22,7 +23,6 @@ log = logging.getLogger(__name__)
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     start = 0  # Extension point for zeit.web to do pagination
-    doc_iface = ICenterPage
 
     def __init__(self, context):
         self.context = context
@@ -39,8 +39,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             return getattr(self.context, name)
         raise AttributeError(name)
 
-    @cached_on_content(
-        ICenterPage, 'area_values', lambda x: x.context.__name__)
+    @cached_on_content('area_values', lambda x: x.context.__name__)
     def values(self):
         if not self.automatic:
             return self.context.values()

@@ -1,18 +1,20 @@
 from zeit.cms.content.cache import content_cache
+from zeit.cms.content.contentuuid import ContentUUID
+from zeit.contentquery.helper import QueryHelper
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
 import logging
 import lxml
 import requests
-import zeit.cms.interfaces
 import zeit.cms.content.interfaces
-import zeit.content.cp.blocks.teaser
+import zeit.cms.interfaces
+import zeit.content.article.edit.interfaces
 import zeit.content.cp.blocks.rss
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
-from zeit.contentquery.helper import QueryHelper
 import zope.component
 import zope.interface
 
@@ -40,6 +42,25 @@ class ContentQuery(grok.Adapter):
     def rows(self):
         """Number of content objects per page"""
         return self.context.count
+
+
+class ManualLegacyResult(ContentQuery):
+    """This is not a automatic content query.
+    This returns old style topicboxes with 3 manual references.
+    If the  first reference is a centerpage, the ContentQuery object is passed
+    to CenterpageContentQuery"""
+
+    grok.name('manual')
+
+    def __call__(self):
+        if self.context.referenced_cp:
+            return CenterpageContentQuery(self.context)()
+        else:
+            references = [
+                self.context.first_reference,
+                self.context.second_reference,
+                self.context.third_reference]
+            return [ref for ref in references if ref]
 
 
 class ElasticsearchContentQuery(ContentQuery):
@@ -237,6 +258,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
 class TMSContentQuery(ContentQuery):
 
     grok.name('topicpage')
+    grok.baseclass()
 
     def __init__(self, context):
         super(TMSContentQuery, self).__init__(context)
@@ -247,11 +269,12 @@ class TMSContentQuery(ContentQuery):
         result, _ = self._fetch(self.start)
         return result
 
+    _teaser_count = NotImplemented
+
     def _fetch(self, start):
         """Extension point for zeit.web to do pagination and de-duping."""
 
-        cache = content_cache(
-            self, self.context.doc_iface, 'tms_topic_queries')
+        cache = content_cache(self.context.__parent__, 'topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
@@ -307,23 +330,37 @@ class TMSContentQuery(ContentQuery):
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
 
     @property
-    def _teaser_count(self):
-        doc = self.context.doc_iface(self.context)
-        return sum(
-            a.count for a in doc.cached_areas
-            if a.automatic and a.count and a.automatic_type == 'topicpage' and
-            a.referenced_topicpage == self.topicpage)
-
-    @property
     def total_hits(self):
         cache = content_cache(
-            self, self.context.doc_iface, 'tms_topic_queries')
+            self.context.__parent__, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]
         else:
             _, hits = self._get_documents(start=self.start, rows=0)
         return hits
+
+
+class CPTMSContentQuery(TMSContentQuery):
+
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+    @property
+    def _teaser_count(self):
+        cp = zeit.content.cp.interfaces.ICenterPage(self.context)
+        return sum(
+            a.count for a in cp.cached_areas
+            if a.automatic and a.count and a.automatic_type == 'topicpage' and
+            a.referenced_topicpage == self.topicpage)
+
+
+class ArticleTMSContentQuery(TMSContentQuery):
+
+    grok.context(zeit.content.article.edit.interfaces.ITopicbox)
+
+    @property
+    def _teaser_count(self):
+        return self.context.count
 
 
 class CenterpageContentQuery(ContentQuery):
@@ -383,3 +420,54 @@ class RSSFeedContentQuery(ContentQuery):
 
     def _get_feed(self, url, timeout):
         return requests.get(url, timeout=timeout).content
+
+
+class TMSRelatedApiQuery(TMSContentQuery):
+
+    grok.name('related-api')
+
+    def __init__(self, context):
+        super().__init__(context)
+        self.filter_id = None
+        try:
+            self.filter_id = self.context.topicpage_filter
+        except Exception:
+            pass
+
+    def _get_documents(self, **kw):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        try:
+            current_article = zeit.content.article.interfaces.IArticle(
+                self.context)
+            uuid = ContentUUID(current_article)
+            response = tms.get_related_documents(
+                uuid=uuid.id,
+                rows=self.context.teaser_amount,
+                filtername=self.filter_id)
+        except Exception as e:
+            if e.status == 404:
+                log.warning(
+                    'TMSRelatedAPI error. No document with id %s',
+                    uuid.id)
+            else:
+                log.warning(
+                    'Error during TMSRelatedAPI for %s',
+                    self.context.uniqueId, exc_info=True)
+            return iter([])
+        else:
+            return iter(response)
+
+
+class PreconfiguredQuery(ElasticsearchContentQuery):
+    """Search via Elasticsearch."""
+
+    grok.name('preconfigured-query')
+
+    def __init__(self, context):
+        super().__init__(context)
+        factory = zeit.content.article.edit.interfaces.ITopicbox[
+            'preconfigured_query'].source.factory
+        self.query = {'query': factory.getQuery(context._preconfigured_query)}
+
+    def _build_query(self):
+        return self.query
