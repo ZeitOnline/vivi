@@ -54,14 +54,14 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             "http://xml.zeit.de/online/2007/01/Somalia")
         box.first_reference = article
-        self.assertEqual([article, ], list(box.values()))
+        self.assertEqual([article, ], box.values())
 
     def test_empty_referenced_cp_has_no_values(self):
         box = self.get_topicbox()
         cp = self.get_cp()
         box.first_reference = cp
         self.assertEqual(cp, box.referenced_cp)
-        self.assertEqual([], list(box.values()))
+        self.assertEqual([], box.values())
 
     def test_topicbox_parent_is_excluded_if_in_cp(self):
         self.repository['foo'] = ExampleContentType()
@@ -69,7 +69,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         art = zeit.content.article.interfaces.IArticle(box)
         cp = self.get_cp(content=[self.repository['foo'], art])
         box.first_reference = cp
-        self.assertEqual([self.repository['foo'], ], list(box.values()))
+        self.assertEqual([self.repository['foo'], ], box.values())
 
     def test_box_uses_cp_content(self):
         box = self.get_topicbox()
@@ -77,7 +77,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             "http://xml.zeit.de/online/2007/01/Somalia")
         cp = self.get_cp(content=[article, ])
         box.first_reference = cp
-        self.assertEqual([article], list(box.values()))
+        self.assertEqual([article], box.values())
 
     def test_box_uses_first_three_cp_entries(self):
         content = []
@@ -89,7 +89,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         cp = self.get_cp(content=content)
         box.first_reference = cp
         self.assertEqual(cp, box.referenced_cp)
-        self.assertEqual(content[:3], list(box.values()))
+        self.assertEqual(content[:3], box.values())
 
     def test_box_if_cp_is_referenced_rest_is_ignored(self):
         self.repository['foo'] = ExampleContentType()
@@ -98,7 +98,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.first_reference = cp
         box.second_reference = zeit.cms.interfaces.ICMSContent(
             "http://xml.zeit.de/online/2007/01/Somalia")
-        self.assertEqual([self.repository['foo'], ], list(box.values()))
+        self.assertEqual([self.repository['foo'], ], box.values())
 
     def test_topicbox_defaults_to_automatic_type_manual(self):
         box = self.get_topicbox()
@@ -111,7 +111,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             self.repository['art1'],
             self.repository['art2'],
             self.repository['art3'], ])
-        values = list(box.values())
+        values = box.values()
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)
@@ -120,7 +120,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box = self.get_topicbox()
         box.automatic_type = 'elasticsearch-query'
         box.elasticsearch_raw_query = '{}'
-        values = list(box.values())
+        values = box.values()
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
@@ -129,7 +129,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box = self.get_topicbox()
         box.automatic_type = 'topicpage'
         box.referenced_topicpage = 'angela-merkel'
-        values = list(box.values())
+        values = box.values()
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
@@ -143,7 +143,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             zeit.contentquery.interfaces.IContentQuery,
             name=box.automatic_type)
         query = contentquery.query
-        values = list(box.values())
+        values = box.values()
         self.assertEqual(
             {'query': {'query': {'term': {'doc_type': 'TESTTYPE'}}}}, query)
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
@@ -159,7 +159,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             zeit.contentquery.interfaces.IContentQuery,
             name=box.automatic_type)
         query = contentquery.query
-        values = list(box.values())
+        values = box.values()
         self.assertEqual({'query': {'term': {'doc_type': 'TESTTYPE2'}}}, query)
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
@@ -173,7 +173,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
             self.repository['art2'],
             self.repository['art2'],
             self.repository['art3'], ])
-        values = list(box.values())
+        values = box.values()
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art3', values[2].uniqueId)

@@ -56,11 +56,11 @@ class ManualLegacyResult(ContentQuery):
         if self.context.referenced_cp:
             return CenterpageContentQuery(self.context)()
         else:
-            references = (
+            references = [
                 self.context.first_reference,
                 self.context.second_reference,
-                self.context.third_reference)
-            return(ref for ref in references if ref)
+                self.context.third_reference]
+            return [ref for ref in references if ref]
 
 
 class ElasticsearchContentQuery(ContentQuery):

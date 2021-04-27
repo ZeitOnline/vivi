@@ -131,27 +131,24 @@ class Topicbox(zeit.content.article.edit.block.Block):
 
     @cached_on_content('topicbox_values')
     def values(self):
-        """All content query driven topicboxes and old manual topicboxes"""
-        parent_article = zeit.content.article.interfaces.IArticle(
-            self, None)
-
         try:
-            filtered_content = []
-            content = iter(self._content_query())
-            while(len(filtered_content)) < 3:
-                try:
-                    item = next(content)
-                    if item in filtered_content or item is parent_article:
-                        continue
-                    filtered_content.append(item)
-                except Exception:
-                    break
-            return iter(filtered_content)
-
-        except (LookupError, ValueError):
-            log.warning('found no IContentQuery type %s',
-                        self.automatic_type)
+            content = self._content_query()
+        except LookupError:
+            log.warning('%s found no IContentQuery type %s',
+                        self, self.automatic_type)
             return ()
+
+        parent_article = zeit.content.article.interfaces.IArticle(self)
+        result = []
+        while len(result) < 3:
+            try:
+                item = content.pop(0)
+            except IndexError:
+                break
+            if item in result or item == parent_article:
+                continue
+            result.append(item)
+        return result
 
     @property
     def _content_query(self):
