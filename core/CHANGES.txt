@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.52.0 (unreleased)
+4.52.0 (2021-04-27)
 -------------------
 
 - ZON-5576: Add automatic sources to article topicbox modules
