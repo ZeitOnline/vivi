@@ -4,7 +4,7 @@ vivi.core changes
 4.52.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Add feature toggle 'show_automatic_type_in_topicbox'
 
 
 4.52.0 (2021-04-27)
