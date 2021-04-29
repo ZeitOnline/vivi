@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import json
 import zeit.cms.browser.manual
 import zeit.cms.browser.widget
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.interfaces
 import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
@@ -459,24 +460,34 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
                    zeit.cms.browser.form.CharlimitMixin):
 
     legend = None
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.article.edit.interfaces.ITopicbox).select(
-            'supertitle', 'title', 'link', 'link_text').omit(
-            *list(zeit.edit.interfaces.IBlock))
-    form_fields += zope.formlib.form.Fields(
-        zeit.content.image.interfaces.IImages).omit(
-            *list(zeit.edit.interfaces.IBlock))
-    form_fields += zope.formlib.form.Fields(
-        zeit.content.article.edit.interfaces.ITopicbox).select(
-            'first_reference', 'second_reference',
-            'third_reference', 'automatic_type', 'referenced_cp',
-            'elasticsearch_raw_query', 'elasticsearch_raw_order',
-            'referenced_topicpage', 'topicpage_filter',
-            'preconfigured_query').omit(
-            *list(zeit.edit.interfaces.IBlock))
+
+    @property
+    def form_fields(self):
+        form_fields = zope.formlib.form.Fields(
+            zeit.content.article.edit.interfaces.ITopicbox).select(
+                'supertitle', 'title', 'link', 'link_text').omit(
+                *list(zeit.edit.interfaces.IBlock))
+        form_fields += zope.formlib.form.Fields(
+            zeit.content.image.interfaces.IImages).omit(
+                *list(zeit.edit.interfaces.IBlock))
+        form_fields += zope.formlib.form.Fields(
+            zeit.content.article.edit.interfaces.ITopicbox).select(
+                'first_reference', 'second_reference',
+                'third_reference', 'automatic_type', 'referenced_cp',
+                'elasticsearch_raw_query', 'elasticsearch_raw_order',
+                'referenced_topicpage', 'topicpage_filter',
+                'preconfigured_query').omit(
+                *list(zeit.edit.interfaces.IBlock))
+
+        if not FEATURE_TOGGLES.find('show_automatic_type_in_topicbox'):
+            form_fields = form_fields.omit('automatic_type')
+
+        return form_fields
+
     undo_description = _('edit topic box')
 
     def setUpWidgets(self, *args, **kw):
+
         super(EditTopicbox, self).setUpWidgets(*args, **kw)
         self.set_charlimit('title')
         self.set_charlimit('supertitle')
