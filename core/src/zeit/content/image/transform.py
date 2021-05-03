@@ -129,6 +129,8 @@ class ImageTransform(object):
 
         if size:
             w, h = size
+            if (w == 0 or h == 0):
+                return image
             if w > self.MAXIMUM_IMAGE_SIZE:
                 w = self.MAXIMUM_IMAGE_SIZE
             if h > self.MAXIMUM_IMAGE_SIZE:
