@@ -847,6 +847,10 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
+  <class class="..topicbox.Topicbox">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
   <browser:page
     for="*"
     name="double-quote-characters"
