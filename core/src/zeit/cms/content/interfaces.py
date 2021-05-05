@@ -597,28 +597,6 @@ class ISynchronisingDAVPropertyToXMLEvent(zope.interface.Interface):
         """Called by subscribers to veto the property being added to xml."""
 
 
-class IAccessCounter(zope.interface.Interface):
-    """Give information about how many times an object was accessed."""
-
-    hits = zope.schema.Int(
-        title=_('Hits today'),
-        description=_('Indicates how many times a page viewed today.'),
-        required=False,
-        default=None)
-
-    total_hits = zope.schema.Int(
-        title=_('Total hits'),
-        description=_('Indicates how many times a page was viewed in total, '
-                      'i.e. during its entire life time.'),
-        required=False,
-        default=None)
-
-    detail_url = zope.schema.URI(
-        title=_('URI to the access counting details'),
-        required=False,
-        default=None)
-
-
 class IContentSortKey(zope.interface.Interface):
     """Content objects can be adapted to this interface to get a sort key.
 

@@ -293,33 +293,3 @@ class Delete(zeit.edit.browser.view.Action):
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.reload()
-
-
-class Countings(object):
-
-    @zope.cachedescriptors.property.Lazy
-    def countings(self):
-        try:
-            item = next(iter(self.context))
-        except StopIteration:
-            pass
-        else:
-            return zeit.cms.content.interfaces.IAccessCounter(item, None)
-
-    @property
-    def today(self):
-        if self.countings is not None:
-            return self.countings.hits or 0
-
-    @property
-    def lifetime(self):
-        if self.countings is not None:
-            return self.countings.total_hits or 0
-
-    @property
-    def url(self):
-        if self.countings is not None:
-            try:
-                return self.countings.detail_url
-            except AttributeError:
-                pass

@@ -91,17 +91,6 @@ class Details(zeit.cms.browser.view.Base):
         elif self.common_metadata.authors:
             return self.common_metadata.authors[0]
 
-    @zope.cachedescriptors.property.Lazy
-    def countings(self):
-        return zeit.cms.content.interfaces.IAccessCounter(self.context, None)
-
-    @property
-    def hits(self):
-        if self.countings is None:
-            return
-        return '%s/%s' % (
-            self.countings.hits or 0, self.countings.total_hits or 0)
-
     @property
     def volume(self):
         year = self.common_metadata.year
@@ -120,11 +109,9 @@ class Details(zeit.cms.browser.view.Base):
             ressort=self.common_metadata.ressort,
             author=self.author,
             volume=self.volume,
-            hits=self.hits,
         )
         sorted_entries = []
-        for key in ['teaser_title', 'created', 'ressort', 'author',
-                    'volume', 'hits']:
+        for key in ['teaser_title', 'created', 'ressort', 'author', 'volume']:
             if entries[key]:
                 sorted_entries.append([key, entries[key]])
         return sorted_entries
@@ -137,7 +124,6 @@ class Details(zeit.cms.browser.view.Base):
             self.common_metadata.ressort,
             self.author,
             self.volume,
-            self.hits,
         ] if x]
 
     @property

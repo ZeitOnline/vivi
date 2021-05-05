@@ -236,36 +236,6 @@ class FilenameColumn(GetterColumn):
         return u'<span class="filename">%s</span>' % formatted
 
 
-class HitColumn(GetterColumn):
-
-    def getter(self, item, formatter):
-        access_counter = zeit.cms.content.interfaces.IAccessCounter(
-            item.context, None)
-        if access_counter is None:
-            return None
-        return access_counter
-
-    def cell_formatter(self, value, item, formatter):
-        if value is None:
-            return u''
-
-        today, total = value.hits, value.total_hits
-
-        if not total and not today:
-            return u''
-
-        if not today:
-            today = u'\N{EMPTY SET}'
-        if not total:
-            total = today
-
-        return '<span class="hitCounter">%s / %s</span>' % (today, total)
-
-    def getSortKey(self, item, formatter):
-        counter = self.getter(item, formatter)
-        return counter.total_hits or 0, counter.hits or 0
-
-
 class DatetimeColumn(GetterColumn):
 
     def cell_formatter(self, value, item, formatter):
@@ -317,7 +287,6 @@ class Listing(object):
             _('Modified'),
             name='modified',
             getter=lambda t, c: t.modifiedOn),
-        HitColumn(_('Hits')),
         GetterColumn(
             _('Ressort'),
             name='ressort',
