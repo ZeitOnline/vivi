@@ -10,7 +10,7 @@ function getFieldClassNames() {
         'elasticsearch_raw_query': 'field fieldname-elasticsearch_raw_query fieldtype-text',
         'elasticsearch_raw_order': 'field fieldname-elasticsearch_raw_order fieldtype-text',
         'preconfigured_query': 'field fieldname-preconfigured_query fieldtype-text',
-    }
+    };
 }
 
 function getAllTopicboxIds() {
@@ -53,7 +53,7 @@ function getTopicboxFieldSetById(topicboxId) {
 }
 
 function hideShowElementsByAutomaticTypeValue(topicboxId) {
-    var topicboxFieldSet = getTopicboxFieldSetById(topicboxId)
+    var topicboxFieldSet = getTopicboxFieldSetById(topicboxId);
     var fieldClassNames = getFieldClassNames();
     var currentAutomaticTypeValue = getAutomaticTypeTextByTopicboxId(topicboxId);
 
