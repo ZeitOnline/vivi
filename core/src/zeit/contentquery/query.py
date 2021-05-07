@@ -275,7 +275,7 @@ class TMSContentQuery(ContentQuery):
         """Extension point for zeit.web to do pagination and de-duping."""
 
         cache = content_cache(self.context.__parent__, 'topic_queries')
-        rows = self._teaser_count + 5  # total teasers + some spares
+        rows = self.context.count
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
@@ -442,7 +442,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
             uuid = ContentUUID(current_article)
             response = tms.get_related_documents(
                 uuid=uuid.id,
-                rows=self.context.teaser_amount,
+                rows=self.context.count,
                 filtername=self.filter_id)
         except Exception as e:
             if e.status == 404:
@@ -453,9 +453,9 @@ class TMSRelatedApiQuery(TMSContentQuery):
                 log.warning(
                     'Error during TMSRelatedAPI for %s',
                     self.context.uniqueId, exc_info=True)
-            return iter([])
+            return iter([]), 0
         else:
-            return iter(response)
+            return iter(response), response.hits
 
 
 class PreconfiguredQuery(ElasticsearchContentQuery):

@@ -103,8 +103,9 @@ class TMS(object):
     def get_related_documents(self, uuid, rows=15, filtername=None):
         params = {'rows': rows}
         url = 'GET /content/{}/relateds'.format(uuid)
-        if filter:
+        if filtername:
             url = url + '?filter={}'.format(filtername)
+
         response = self._request(url, params=params)
         result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = len(response['docs'])
