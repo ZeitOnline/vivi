@@ -4,7 +4,7 @@ vivi.core changes
 4.52.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1392: Avoid PIL resize with 0 values
 
 
 4.52.1 (2021-04-29)
