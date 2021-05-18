@@ -6,6 +6,8 @@ vivi.core changes
 
 - BUG-1392: Avoid PIL resize with 0 values
 
+- OPS-1359: Conform to field naming scheme for tracing
+
 
 4.52.1 (2021-04-29)
 -------------------
