@@ -114,9 +114,10 @@ class HoneyTracer(FakeTracer):
         self.service_name = service_name
 
         self.context = {
-            'meta.local_hostname': hostname,
-            'meta.version': service_version,
             'meta.environment': environment,
+            'meta.local_hostname': hostname,
+            'meta.service': service_name,
+            'meta.version': service_version,
         }
         self._initialized = False
 
@@ -137,13 +138,14 @@ class HoneyTracer(FakeTracer):
         return beeline.start_trace(trace_id=trace_id, parent_span_id=parent_id)
 
     def end_trace(self, trace, **kw):
-        kw.setdefault('name', 'unknown')
-        kw.setdefault('status_code', 599)
+        kw.setdefault('meta.name', 'unknown')
+        kw.setdefault('resp.status_code', 599)
         beeline.add_context(kw)
         beeline.finish_trace(trace)
 
     def start_span(self, typ, name, **kw):
-        span = beeline.start_span(context={'type': typ, 'name': name})
+        span = beeline.start_span(
+            context={'meta.type': typ, 'meta.name': name})
         self.add_span_data(span, **kw)
         return span
 
