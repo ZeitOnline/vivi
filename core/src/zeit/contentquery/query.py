@@ -275,7 +275,7 @@ class TMSContentQuery(ContentQuery):
         """Extension point for zeit.web to do pagination and de-duping."""
 
         cache = content_cache(self.context.__parent__, 'topic_queries')
-        rows = self.context.count
+        rows = self._teaser_count + 5
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
@@ -456,6 +456,15 @@ class TMSRelatedApiQuery(TMSContentQuery):
             return iter([]), 0
         else:
             return iter(response), response.hits
+
+
+class ArticleTMSRelatedApiQuery(TMSRelatedApiQuery):
+
+    grok.context(zeit.content.article.edit.interfaces.ITopicbox)
+
+    @property
+    def _teaser_count(self):
+        return self.context.count
 
 
 class PreconfiguredQuery(ElasticsearchContentQuery):
