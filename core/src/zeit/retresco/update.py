@@ -96,9 +96,7 @@ def index_async(self, uniqueId, enrich=True):
     if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
         enrich = False
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
-    has_keywords = True
-    if meta is not None:
-        has_keywords = meta is not None and meta.keywords
+    has_keywords = meta is not None and meta.keywords
     try:
         index(
             context,
