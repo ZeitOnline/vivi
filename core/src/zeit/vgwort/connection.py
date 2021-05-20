@@ -1,5 +1,6 @@
 import logging
 import operator
+import random
 import requests
 import requests.auth
 import requests.exceptions
@@ -205,8 +206,10 @@ real_message_service = service_factory(MessageService)
 class MockPixelService(object):
 
     def order_pixels(self, amount):
+        offset = 100_000 + random.randint(1, 100) * 1000
         for i in range(amount):
-            yield ('public-%s' % i, 'private-%s' % i)
+            n = offset + i
+            yield ('public-%s' % n, 'private-%s' % n)
 
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
