@@ -286,6 +286,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'title': 'DSC00109_2.JPG',
                     'text': 'DSC00109_2.JPG',
                 },
+                'tagging': {},
                 'vivi': {
                     'cms_icon': ('/@@/zeit-content-image-interfaces'
                                  '-IImage-zmi_icon.png'),
@@ -348,6 +349,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'title': 'mytitle',
                     'text': 'mycaption',
                 },
+                'tagging': {},
                 'vivi': {
                     'cms_icon': ('/@@/zeit-content-image-interfaces'
                                  '-IImageGroup-zmi_icon.png'),
