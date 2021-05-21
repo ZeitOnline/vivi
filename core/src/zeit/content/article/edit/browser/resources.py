@@ -6,7 +6,6 @@ import zeit.edit.browser.resources
 lib = Library('zeit.content.article', 'resources')
 
 Resource('editor.css')
-Resource('topicbox.css')
 
 Resource('replace.js', depends=[
     zeit.cms.browser.resources.base,
