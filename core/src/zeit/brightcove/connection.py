@@ -207,9 +207,21 @@ class PlaybackAPI(object):
         try:
             data.update(self._request('GET /videos/%s' % id))
         except requests.exceptions.RequestException as e:
-            log.warning(
-                'Error while retrieving video %s: %s', id,
-                getattr(e.response, 'text', '<no message>'), exc_info=True)
+            """Error-Code: VIDEO_NOT_PLAYABLE
+
+            The policy key provided does not permit this account or video,
+            or the requested resource is inactive.
+            VIDEO_NOT_PLAYABLE can be returned by single video requests.
+            It indicates that the video does not pass the playable check
+            (ingested, active, in schedule).
+            * API-Error-Reference: <https://apis.support.brightcove.com
+                /playback/references/playback-api-error-reference.html>
+            """
+            if e.response.raw.headers[
+                    'Bcov-Error-Code'] != 'VIDEO_NOT_PLAYABLE':
+                log.warning(
+                    'Error while retrieving video %s: %s', id,
+                    getattr(e.response, 'text', '<no message>'), exc_info=True)
             return data
 
         data['video_still'] = data.get('poster')
