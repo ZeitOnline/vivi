@@ -275,7 +275,7 @@ class TMSContentQuery(ContentQuery):
         """Extension point for zeit.web to do pagination and de-duping."""
 
         cache = content_cache(self.context.__parent__, 'topic_queries')
-        rows = self._teaser_count + 5
+        rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start)
         if key in cache:
             response, start, _ = cache[key]
@@ -300,8 +300,7 @@ class TMSContentQuery(ContentQuery):
             content = self._resolve(item)
             if content is None:
                 continue
-            if (self.context.hide_dupes
-                    and content in self.context.existing_teasers):
+            if self.hide_dupes and content in self.context.existing_teasers:
                 dupes += 1
             else:
                 result.append(content)
@@ -327,6 +326,10 @@ class TMSContentQuery(ContentQuery):
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
+
+    @property
+    def hide_dupes(self):
+        return self.context.hide_dupes
 
     @property
     def total_hits(self):
@@ -425,6 +428,10 @@ class TMSRelatedApiQuery(TMSContentQuery):
 
     grok.name('related-api')
 
+    # The TMS related API does not support `start`, so we cannot fetch
+    # additional teasers to replace previously filtered-out duplicates.
+    hide_dupes = False
+
     def __init__(self, context):
         super().__init__(context)
         self.filter_id = None
@@ -440,9 +447,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
                 self.context)
             uuid = ContentUUID(current_article)
             response = tms.get_related_documents(
-                uuid=uuid.id,
-                rows=rows,  # TMS related API does not support `start`
-                filtername=self.filter_id)
+                uuid=uuid.id, filtername=self.filter_id, rows=rows)
         except Exception as e:
             if e.status == 404:
                 log.warning(
