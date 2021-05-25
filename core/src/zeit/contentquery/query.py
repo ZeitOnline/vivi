@@ -435,16 +435,13 @@ class TMSRelatedApiQuery(TMSContentQuery):
     def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
-            current_article = zeit.content.article.interfaces.IArticle(
-                self.context)
-            uuid = ContentUUID(current_article)
+            content = zeit.cms.interfaces.ICMSContent(self)
             response = tms.get_related_documents(
-                uuid=uuid.id, filtername=self.filter_id, rows=rows)
+                content, filter=self.filter_id, rows=rows)
         except Exception as e:
             if e.status == 404:
                 log.warning(
-                    'TMSRelatedAPI error. No document with id %s',
-                    uuid.id)
+                    'TMS related API did not find %s', self.context.uniqueId)
             else:
                 log.warning(
                     'Error during TMSRelatedAPI for %s',
