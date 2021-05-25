@@ -1,5 +1,4 @@
 from zeit.cms.content.cache import content_cache
-from zeit.cms.content.contentuuid import ContentUUID
 from zeit.contentquery.helper import QueryHelper
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
