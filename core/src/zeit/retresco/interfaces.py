@@ -116,7 +116,7 @@ class ITMS(zope.interface.Interface):
         already published content.
         """
 
-    def get_related_documents(uuid, rows=15, filtername=None):
+    def get_related_documents(content, rows=15, filter=None):
         """Returns a list of documents that relates to the given uuid
         and filtered by the filtername.
         """

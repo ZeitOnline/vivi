@@ -665,7 +665,7 @@ class ITopicbox(IBlock,
         required=False)
 
     preconfigured_query = zope.schema.Choice(
-        title=_('Preconfigured-Query'),
+        title=_('Filter'),
         source=PreconfiguredQuerySource(),
         required=False)
 

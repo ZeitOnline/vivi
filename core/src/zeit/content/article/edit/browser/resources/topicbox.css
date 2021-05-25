@@ -1,8 +1,0 @@
-.type-article #edit-form-article-content .fieldname-elasticsearch_raw_query,
-.type-article #edit-form-article-content .fieldname-elasticsearch_raw_order,
-.type-article #edit-form-article-content .fieldname-referenced_cp,
-.type-article #edit-form-article-content .fieldname-referenced_topicpage,
-.type-article #edit-form-article-content .fieldname-topicpage_filter,
-.type-article #edit-form-article-content .fieldname-preconfigured_query {
-    display: none;
-}

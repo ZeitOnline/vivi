@@ -290,7 +290,7 @@ class TMSContentQuery(ContentQuery):
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start=start, rows=rows)
+                response, hits = self._get_documents(start, rows)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -300,27 +300,25 @@ class TMSContentQuery(ContentQuery):
             content = self._resolve(item)
             if content is None:
                 continue
-            if (self.context.hide_dupes
-                    and content in self.context.existing_teasers):
+            if self.hide_dupes and content in self.context.existing_teasers:
                 dupes += 1
             else:
                 result.append(content)
 
         return result, dupes
 
-    def _get_documents(self, **kw):
+    def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             response = tms.get_topicpage_documents(
-                id=self.topicpage, filter=self.filter_id, **kw)
+                id=self.topicpage, filter=self.filter_id,
+                start=start, rows=rows)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
             if 'Result window is too large' in str(e):
                 # We have to determine the actually available number of hits.
-                kw['start'] = 0
-                kw['rows'] = 0
-                return self._get_documents(**kw)
+                return self._get_documents(start=0, rows=0)
             return iter([]), 0
         else:
             return iter(response), response.hits
@@ -328,6 +326,10 @@ class TMSContentQuery(ContentQuery):
     def _resolve(self, doc):
         return zeit.cms.interfaces.ICMSContent(
             zeit.cms.interfaces.ID_NAMESPACE[:-1] + doc['url'], None)
+
+    @property
+    def hide_dupes(self):
+        return self.context.hide_dupes
 
     @property
     def total_hits(self):
@@ -426,36 +428,36 @@ class TMSRelatedApiQuery(TMSContentQuery):
 
     grok.name('related-api')
 
-    def __init__(self, context):
-        super().__init__(context)
-        self.filter_id = None
-        try:
-            self.filter_id = self.context.topicpage_filter
-        except Exception:
-            pass
+    # The TMS related API does not support `start`, so we cannot fetch
+    # additional teasers to replace previously filtered-out duplicates.
+    hide_dupes = False
 
-    def _get_documents(self, **kw):
+    def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
-            current_article = zeit.content.article.interfaces.IArticle(
-                self.context)
-            uuid = ContentUUID(current_article)
+            content = zeit.cms.interfaces.ICMSContent(self)
             response = tms.get_related_documents(
-                uuid=uuid.id,
-                rows=self.context.teaser_amount,
-                filtername=self.filter_id)
+                content, filter=self.filter_id, rows=rows)
         except Exception as e:
             if e.status == 404:
                 log.warning(
-                    'TMSRelatedAPI error. No document with id %s',
-                    uuid.id)
+                    'TMS related API did not find %s', self.context.uniqueId)
             else:
                 log.warning(
                     'Error during TMSRelatedAPI for %s',
                     self.context.uniqueId, exc_info=True)
-            return iter([])
+            return iter([]), 0
         else:
-            return iter(response)
+            return iter(response), response.hits
+
+
+class ArticleTMSRelatedApiQuery(TMSRelatedApiQuery):
+
+    grok.context(zeit.content.article.edit.interfaces.ITopicbox)
+
+    @property
+    def _teaser_count(self):
+        return self.context.count
 
 
 class PreconfiguredQuery(ElasticsearchContentQuery):

@@ -4,7 +4,7 @@ vivi.core changes
 4.52.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6655: Fix related API, support multiple topicboxes per article
 
 
 4.52.2 (2021-05-18)
