@@ -432,14 +432,6 @@ class TMSRelatedApiQuery(TMSContentQuery):
     # additional teasers to replace previously filtered-out duplicates.
     hide_dupes = False
 
-    def __init__(self, context):
-        super().__init__(context)
-        self.filter_id = None
-        try:
-            self.filter_id = self.context.topicpage_filter
-        except Exception:
-            pass
-
     def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
