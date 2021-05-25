@@ -290,7 +290,7 @@ class TMSContentQuery(ContentQuery):
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start=start, rows=rows)
+                response, hits = self._get_documents(start, rows)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -308,19 +308,18 @@ class TMSContentQuery(ContentQuery):
 
         return result, dupes
 
-    def _get_documents(self, **kw):
+    def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             response = tms.get_topicpage_documents(
-                id=self.topicpage, filter=self.filter_id, **kw)
+                id=self.topicpage, filter=self.filter_id,
+                start=start, rows=rows)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
             if 'Result window is too large' in str(e):
                 # We have to determine the actually available number of hits.
-                kw['start'] = 0
-                kw['rows'] = 0
-                return self._get_documents(**kw)
+                return self._get_documents(start=0, rows=0)
             return iter([]), 0
         else:
             return iter(response), response.hits
@@ -434,7 +433,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
         except Exception:
             pass
 
-    def _get_documents(self, **kw):
+    def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             current_article = zeit.content.article.interfaces.IArticle(
@@ -442,7 +441,7 @@ class TMSRelatedApiQuery(TMSContentQuery):
             uuid = ContentUUID(current_article)
             response = tms.get_related_documents(
                 uuid=uuid.id,
-                rows=self.context.count,
+                rows=rows,  # TMS related API does not support `start`
                 filtername=self.filter_id)
         except Exception as e:
             if e.status == 404:
