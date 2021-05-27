@@ -1,10 +1,12 @@
 vivi.core changes
 =================
 
-4.52.3 (unreleased)
+4.53.0 (unreleased)
 -------------------
 
 - ZON-6655: Fix related API, support multiple topicboxes per article
+
+- OPS-1892: Add sample_rate parameter to honeycomb tracer
 
 
 4.52.2 (2021-05-18)

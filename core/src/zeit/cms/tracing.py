@@ -108,10 +108,11 @@ except ImportError:
 class HoneyTracer(FakeTracer):
 
     def __init__(self, service_name, service_version, environment, hostname,
-                 apikey, dataset):
+                 apikey, dataset, sample_rate=1):
         self.apikey = apikey
         self.dataset = dataset
         self.service_name = service_name
+        self.sample_rate = sample_rate
 
         self.context = {
             'meta.environment': environment,
@@ -126,7 +127,8 @@ class HoneyTracer(FakeTracer):
         gunicorn has forked its workers."""
         beeline.init(
             writekey=self.apikey, dataset=self.dataset,
-            service_name=self.service_name, presend_hook=self.prepare)
+            service_name=self.service_name, presend_hook=self.prepare,
+            sample_rate=self.sample_rate)
         self._initialized = True
 
     def prepare(self, fields):
