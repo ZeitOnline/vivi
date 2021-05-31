@@ -37,7 +37,7 @@ class ContentCache(object):
             return factory()
         try:
             mtime = int(self.connector.mtime(unique_id, suffix))
-        except ValueError:
+        except (ValueError, TypeError):
             mtime = None
         if mtime is None:
             return factory()
