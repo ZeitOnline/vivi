@@ -115,6 +115,73 @@ class CMSContent(Converter):
             'body': lxml.etree.tostring(body, encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
+        return result
+
+    DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
+    DEPRECATED = {
+        ('document', 'breaking_news'),
+        ('document', 'comments_api_v2'),
+        ('document', 'countings'),
+        ('document', 'export_cds'),
+        ('document', 'foldable'),
+        ('document', 'is_instant_article'),
+        ('document', 'minimal_header'),
+        ('document', 'rebrush_website_content'),
+    }
+
+    def collect_dav_properties(self):
+        result = {}
+        properties = zeit.cms.interfaces.IWebDAVReadProperties(self.context)
+        for (name, ns), value in properties.items():
+            if ns is None:
+                ns = ''
+            if not ns.startswith(DAV_NAMESPACE_BASE):
+                continue
+            if (ns.replace(DAV_NAMESPACE_BASE, ''), name) in self.DEPRECATED:
+                continue
+
+            field = None
+            prop = zeit.cms.content.dav.PROPERTY_REGISTRY.get((name, ns))
+            if prop is not None:
+                field = prop.field
+                field = field.bind(self.context)
+
+            converter = zope.component.queryMultiAdapter(
+                (field, self.DUMMY_ES_PROPERTIES),
+                zeit.cms.content.interfaces.IDAVPropertyConverter)
+            # Only perform type conversion if we have a json-specific one.
+            if converter.__class__.__module__ == 'zeit.retresco.content':
+                try:
+                    davconverter = zope.component.getMultiAdapter(
+                        (field, properties),
+                        zeit.cms.content.interfaces.IDAVPropertyConverter)
+                    pyval = davconverter.fromProperty(value)
+                    value = converter.toProperty(pyval)
+                except Exception as e:
+                    log.warning(
+                        'Could not parse DAV property value %r for '
+                        '%s.%s at %s [%s: %r]. Using default %r instead.' % (
+                            value, ns, name, self.context.uniqueId,
+                            e.__class__.__name__, e.args, field.default))
+                    value = field.default
+            if value is None or value is DeleteProperty or value == '':
+                # DAVProperty.__set__ has None -> DeleteProperty.
+                # Also, elasticsearch rejects '' in date fields.
+                continue
+            ns, name = zeit.retresco.content.davproperty_to_es(ns, name)
+            result.setdefault(ns, {})[name] = value
+        return result
+
+
+class RecipeArticle(Converter):
+
+    interface = zeit.content.article.interfaces.IArticle
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        body = zeit.retresco.interfaces.IBody(self.context)
+        result = {}
+        result['payload'] = {}
 
         categories = []
         category_labels = []
@@ -197,61 +264,6 @@ class CMSContent(Converter):
                     'complexities': list(dict.fromkeys(complexities)),
                     'servings': list(dict.fromkeys(servings)),
                     'times': list(dict.fromkeys(times))}})
-        return result
-
-    DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
-    DEPRECATED = {
-        ('document', 'breaking_news'),
-        ('document', 'comments_api_v2'),
-        ('document', 'countings'),
-        ('document', 'export_cds'),
-        ('document', 'foldable'),
-        ('document', 'is_instant_article'),
-        ('document', 'minimal_header'),
-        ('document', 'rebrush_website_content'),
-    }
-
-    def collect_dav_properties(self):
-        result = {}
-        properties = zeit.cms.interfaces.IWebDAVReadProperties(self.context)
-        for (name, ns), value in properties.items():
-            if ns is None:
-                ns = ''
-            if not ns.startswith(DAV_NAMESPACE_BASE):
-                continue
-            if (ns.replace(DAV_NAMESPACE_BASE, ''), name) in self.DEPRECATED:
-                continue
-
-            field = None
-            prop = zeit.cms.content.dav.PROPERTY_REGISTRY.get((name, ns))
-            if prop is not None:
-                field = prop.field
-                field = field.bind(self.context)
-
-            converter = zope.component.queryMultiAdapter(
-                (field, self.DUMMY_ES_PROPERTIES),
-                zeit.cms.content.interfaces.IDAVPropertyConverter)
-            # Only perform type conversion if we have a json-specific one.
-            if converter.__class__.__module__ == 'zeit.retresco.content':
-                try:
-                    davconverter = zope.component.getMultiAdapter(
-                        (field, properties),
-                        zeit.cms.content.interfaces.IDAVPropertyConverter)
-                    pyval = davconverter.fromProperty(value)
-                    value = converter.toProperty(pyval)
-                except Exception as e:
-                    log.warning(
-                        'Could not parse DAV property value %r for '
-                        '%s.%s at %s [%s: %r]. Using default %r instead.' % (
-                            value, ns, name, self.context.uniqueId,
-                            e.__class__.__name__, e.args, field.default))
-                    value = field.default
-            if value is None or value is DeleteProperty or value == '':
-                # DAVProperty.__set__ has None -> DeleteProperty.
-                # Also, elasticsearch rejects '' in date fields.
-                continue
-            ns, name = zeit.retresco.content.davproperty_to_es(ns, name)
-            result.setdefault(ns, {})[name] = value
         return result
 
 
