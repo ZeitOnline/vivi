@@ -179,9 +179,8 @@ class RecipeArticle(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        body = zeit.retresco.interfaces.IBody(self.context)
-        result = {}
-        result['payload'] = {}
+        body = self.context.xml.body
+        result = {'payload': {}}
 
         categories = []
         category_labels = []
