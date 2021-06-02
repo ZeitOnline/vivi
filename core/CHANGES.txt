@@ -4,7 +4,7 @@ vivi.core changes
 4.53.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Use own converter for RecipeArticles
 
 
 4.53.1 (2021-05-31)

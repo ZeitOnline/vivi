@@ -115,88 +115,6 @@ class CMSContent(Converter):
             'body': lxml.etree.tostring(body, encoding='unicode'),
         }
         result['payload'] = self.collect_dav_properties()
-
-        categories = []
-        category_labels = []
-        search_list = []
-
-        if body.xpath('//recipe_categories'):
-            categories = body.xpath('//recipe_categories/category/@code')
-            categories.sort() if len(categories) >= 1 else []
-            result['payload'].update({'recipe': {'categories': categories}})
-
-            for code in categories:
-                try:
-                    mod = IRecipeCategoriesWhitelist
-                    label = zope.component.getUtility(mod).get(code).name
-                    category_labels.append(label)
-                except AttributeError:
-                    continue
-            if len(category_labels) >= 1:
-                search_list = search_list + [
-                    x.strip() + ':category' for x in category_labels]
-
-        if body.xpath('//recipelist'):
-            ingredients = body.xpath('//recipelist/ingredient/@code')
-            ingredients.sort() if len(ingredients) >= 1 else []
-            for code in ingredients:
-                try:
-                    qwords = zope.component.getUtility(
-                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            code).qwords
-                    if qwords and len(qwords) >= 1:
-                        qwords = [x.strip() + ':ingredient' for x in qwords]
-                        search_list = search_list + qwords
-
-                    qwords_category = zope.component.getUtility(
-                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            code).qwords_category
-                    if qwords_category and len(qwords_category) >= 1:
-                        qwords_category = [
-                            x.strip() + ':ingredient' for x in qwords_category]
-                        search_list = search_list + qwords_category
-                except (AttributeError, zope.component.ComponentLookupError):
-                    continue
-
-            titles = body.xpath(
-                '//recipelist/title/text()')
-            if titles and len(titles) >= 1:
-                titles.sort()
-                search_list = search_list + [
-                    x.strip() + ':recipe_title' for x in titles]
-
-            subheadings = body.xpath(
-                '//recipelist/subheading[@searchable="True"]/text()')
-            if subheadings and len(subheadings) >= 1:
-                subheadings.sort()
-                search_list = search_list + [
-                    x.strip() + ':subheading' for x in subheadings]
-
-            complexities = body.xpath('//recipelist/complexity/text()')
-            complexities.sort() if len(complexities) >= 1 else []
-            servings = body.xpath('//recipelist/servings/text()')
-            servings.sort() if len(servings) >= 1 else []
-            times = body.xpath('//recipelist/time/text()')
-            times.sort() if len(times) >= 1 else []
-
-            doctitles = body.xpath('title/text()')
-            if doctitles and len(doctitles) == 1 and doctitles != '':
-                doctitles[0] = doctitles[0].strip() + ':title'
-                search_list = search_list + doctitles
-
-            if len(search_list) >= 1:
-                search_list.sort()
-
-            result['payload'].update({
-                'recipe': {
-                    'search': list(dict.fromkeys(search_list)),
-                    'ingredients': list(dict.fromkeys(ingredients)),
-                    'categories': list(dict.fromkeys(categories)),
-                    'titles': list(dict.fromkeys(titles)),
-                    'subheadings': list(dict.fromkeys(subheadings)),
-                    'complexities': list(dict.fromkeys(complexities)),
-                    'servings': list(dict.fromkeys(servings)),
-                    'times': list(dict.fromkeys(times))}})
         return result
 
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
@@ -524,6 +442,67 @@ class Portraitbox(Converter):
                 'text': self.context.text,
             }}
         }
+
+
+class Recipe(Converter):
+
+    interface = zeit.content.article.interfaces.IArticle
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        body = self.context.xml.body
+        result = {'payload': {}}
+        search_list = []
+
+        if body.xpath('//recipe_categories'):
+            categories = body.xpath('//recipe_categories/category/@code')
+            result['payload']['recipe'] = {
+                'categories': list(dict.fromkeys(sorted(categories)))}
+
+            whitelist = zope.component.getUtility(IRecipeCategoriesWhitelist)
+            for code in categories:
+                category = whitelist.get(code)
+                if category is not None:
+                    search_list.append(category.name.strip() + ':category')
+
+        if body.xpath('//recipelist'):
+            ingredients = sorted(body.xpath('//recipelist/ingredient/@code'))
+            whitelist = zope.component.getUtility(
+                zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
+            for code in ingredients:
+                ingredient = whitelist.get(code)
+                if ingredient is None:
+                    continue
+                search_list += [x.strip() + ':ingredient'
+                                for x in ingredient.qwords or ()]
+                search_list += [x.strip() + ':ingredient'
+                                for x in ingredient.qwords_category or ()]
+
+            titles = sorted(body.xpath('//recipelist/title/text()'))
+            search_list += [x.strip() + ':recipe_title' for x in titles]
+
+            subheadings = sorted(body.xpath(
+                '//recipelist/subheading[@searchable="True"]/text()'))
+            search_list += [x.strip() + ':subheading' for x in subheadings]
+
+            complexities = sorted(body.xpath('//recipelist/complexity/text()'))
+            servings = sorted(body.xpath('//recipelist/servings/text()'))
+            times = sorted(body.xpath('//recipelist/time/text()'))
+
+            doctitles = body.xpath('title/text()')
+            if len(doctitles) == 1 and doctitles[0] != '':
+                search_list.append(doctitles[0].strip() + ':title')
+
+            result['payload'].setdefault('recipe', {}).update({
+                'search': list(dict.fromkeys(sorted(search_list))),
+                'ingredients': list(dict.fromkeys(ingredients)),
+                'titles': list(dict.fromkeys(titles)),
+                'subheadings': list(dict.fromkeys(subheadings)),
+                'complexities': list(dict.fromkeys(complexities)),
+                'servings': list(dict.fromkeys(servings)),
+                'times': list(dict.fromkeys(times)),
+            })
+        return result
 
 
 class Text(Converter):
