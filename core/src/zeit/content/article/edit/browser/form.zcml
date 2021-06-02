@@ -294,17 +294,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MetadataForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.metadata-nl"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="40"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MetadataForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.metadata-comments"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
