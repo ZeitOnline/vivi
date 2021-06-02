@@ -470,40 +470,35 @@ class Recipe(Converter):
                 except AttributeError:
                     continue
             if len(category_labels) >= 1:
-                search_list = search_list + [
+                search_list += [
                     x.strip() + ':category' for x in category_labels]
 
         if body.xpath('//recipelist'):
             ingredients = sorted(body.xpath('//recipelist/ingredient/@code'))
+            whitelist = zope.component.getUtility(
+                zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
             for code in ingredients:
                 try:
-                    qwords = zope.component.getUtility(
-                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            code).qwords
+                    qwords = whitelist.get(code).qwords
                     if qwords and len(qwords) >= 1:
-                        qwords = [x.strip() + ':ingredient' for x in qwords]
-                        search_list = search_list + qwords
+                        search_list += [
+                            x.strip() + ':ingredient' for x in qwords]
 
-                    qwords_category = zope.component.getUtility(
-                        zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                            code).qwords_category
+                    qwords_category = whitelist.get(code).qwords_category
                     if qwords_category and len(qwords_category) >= 1:
-                        qwords_category = [
+                        search_list += [
                             x.strip() + ':ingredient' for x in qwords_category]
-                        search_list = search_list + qwords_category
-                except (AttributeError, zope.component.ComponentLookupError):
+                except AttributeError:
                     continue
 
             titles = sorted(body.xpath('//recipelist/title/text()'))
             if len(titles) >= 1:
-                search_list = search_list + [
-                    x.strip() + ':recipe_title' for x in titles]
+                search_list += [x.strip() + ':recipe_title' for x in titles]
 
             subheadings = sorted(body.xpath(
                 '//recipelist/subheading[@searchable="True"]/text()'))
             if len(subheadings) >= 1:
-                search_list = search_list + [
-                    x.strip() + ':subheading' for x in subheadings]
+                search_list += [x.strip() + ':subheading' for x in subheadings]
 
             complexities = sorted(body.xpath('//recipelist/complexity/text()'))
             servings = sorted(body.xpath('//recipelist/servings/text()'))
@@ -511,8 +506,7 @@ class Recipe(Converter):
 
             doctitles = body.xpath('title/text()')
             if len(doctitles) == 1 and doctitles[0] != '':
-                doctitles[0] = doctitles[0].strip() + ':title'
-                search_list = search_list + doctitles
+                search_list.append(doctitles[0].strip() + ':title')
 
             if len(search_list) >= 1:
                 search_list.sort()
