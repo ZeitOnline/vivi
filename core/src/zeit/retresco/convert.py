@@ -452,22 +452,18 @@ class Recipe(Converter):
     def __call__(self):
         body = self.context.xml.body
         result = {'payload': {}}
-
-        categories = []
-        category_labels = []
         search_list = []
 
         if body.xpath('//recipe_categories'):
-            categories = sorted(
-                body.xpath('//recipe_categories/category/@code'))
-            result['payload']['recipe'] = {'categories': categories}
+            categories = body.xpath('//recipe_categories/category/@code')
+            result['payload']['recipe'] = {
+                'categories': list(dict.fromkeys(sorted(categories)))}
 
             whitelist = zope.component.getUtility(IRecipeCategoriesWhitelist)
             for code in categories:
                 category = whitelist.get(code)
                 if category is not None:
-                    category_labels.append(category.name)
-            search_list += [x.strip() + ':category' for x in category_labels]
+                    search_list.append(category.name.strip() + ':category')
 
         if body.xpath('//recipelist'):
             ingredients = sorted(body.xpath('//recipelist/ingredient/@code'))
@@ -497,16 +493,15 @@ class Recipe(Converter):
             if len(doctitles) == 1 and doctitles[0] != '':
                 search_list.append(doctitles[0].strip() + ':title')
 
-            result['payload']['recipe'] = {
+            result['payload'].setdefault('recipe', {}).update({
                 'search': list(dict.fromkeys(sorted(search_list))),
                 'ingredients': list(dict.fromkeys(ingredients)),
-                'categories': list(dict.fromkeys(categories)),
                 'titles': list(dict.fromkeys(titles)),
                 'subheadings': list(dict.fromkeys(subheadings)),
                 'complexities': list(dict.fromkeys(complexities)),
                 'servings': list(dict.fromkeys(servings)),
                 'times': list(dict.fromkeys(times)),
-            }
+            })
         return result
 
 
