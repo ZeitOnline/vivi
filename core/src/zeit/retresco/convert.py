@@ -462,13 +462,11 @@ class Recipe(Converter):
                 body.xpath('//recipe_categories/category/@code'))
             result['payload']['recipe'] = {'categories': categories}
 
+            whitelist = zope.component.getUtility(IRecipeCategoriesWhitelist)
             for code in categories:
-                try:
-                    mod = IRecipeCategoriesWhitelist
-                    label = zope.component.getUtility(mod).get(code).name
-                    category_labels.append(label)
-                except AttributeError:
-                    continue
+                category = whitelist.get(code)
+                if category is not None:
+                    category_labels.append(category.name)
             search_list += [x.strip() + ':category' for x in category_labels]
 
         if body.xpath('//recipelist'):
