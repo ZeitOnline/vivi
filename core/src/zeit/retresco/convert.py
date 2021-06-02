@@ -518,14 +518,14 @@ class Recipe(Converter):
                 search_list.sort()
 
             result['payload']['recipe'] = {
-                    'search': list(dict.fromkeys(search_list)),
-                    'ingredients': list(dict.fromkeys(ingredients)),
-                    'categories': list(dict.fromkeys(categories)),
-                    'titles': list(dict.fromkeys(titles)),
-                    'subheadings': list(dict.fromkeys(subheadings)),
-                    'complexities': list(dict.fromkeys(complexities)),
-                    'servings': list(dict.fromkeys(servings)),
-                    'times': list(dict.fromkeys(times)),
+                'search': list(dict.fromkeys(search_list)),
+                'ingredients': list(dict.fromkeys(ingredients)),
+                'categories': list(dict.fromkeys(categories)),
+                'titles': list(dict.fromkeys(titles)),
+                'subheadings': list(dict.fromkeys(subheadings)),
+                'complexities': list(dict.fromkeys(complexities)),
+                'servings': list(dict.fromkeys(servings)),
+                'times': list(dict.fromkeys(times)),
             }
         return result
 
