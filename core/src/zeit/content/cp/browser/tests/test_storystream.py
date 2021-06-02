@@ -14,7 +14,6 @@ class StoryStreamAddTest(zeit.content.cp.testing.BrowserTestCase):
         b.getControl('File name').value = 'island'
         b.getControl('Title').value = 'Auf den Spuren der Elfen'
         b.getControl('Ressort').displayValue = ['Reisen']
-        b.getControl('Daily newsletter').selected = True
         b.getControl(name='form.authors.0.').value = 'Hans Sachs'
         b.getControl(name="form.actions.add").click()
 

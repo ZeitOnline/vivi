@@ -214,13 +214,6 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('VG Wort Id'),
         required=False)
 
-    dailyNewsletter = zope.schema.Bool(
-        title=_("Daily newsletter"),
-        description=_(
-            "Should this article be listed in the daily newsletter?"),
-        required=False,
-        default=True)
-
     commentsPremoderate = zope.schema.Bool(
         title=_("Comments premoderate"),
         required=False,

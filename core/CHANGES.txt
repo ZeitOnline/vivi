@@ -5,6 +5,7 @@ vivi.core changes
 -------------------
 
 - MAINT: Use own converter for RecipeArticles
+- ZON-6539: remove option for editors to include articles in daily newsletter
 
 
 4.53.1 (2021-05-31)
