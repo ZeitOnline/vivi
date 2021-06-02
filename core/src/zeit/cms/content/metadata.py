@@ -93,6 +93,9 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ICommonMetadata['commentSectionEnable'],
         DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
+    dailyNewsletter = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['dailyNewsletter'], DOCUMENT_SCHEMA_NS, 'DailyNL')
+
     product = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['product'], 'http://namespaces.zeit.de/CMS/workflow',
         'product-id')
