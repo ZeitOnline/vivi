@@ -451,7 +451,7 @@ class Recipe(Converter):
 
     def __call__(self):
         body = self.context.xml.body
-        result = {'payload': {'recipe': {}}}
+        result = {'payload': {}}
 
         categories = []
         category_labels = []
@@ -460,7 +460,7 @@ class Recipe(Converter):
         if body.xpath('//recipe_categories'):
             categories = sorted(
                 body.xpath('//recipe_categories/category/@code'))
-            result['payload']['recipe']['categories'] = categories
+            result['payload']['recipe'] = {'categories': categories}
 
             for code in categories:
                 try:
@@ -517,8 +517,7 @@ class Recipe(Converter):
             if len(search_list) >= 1:
                 search_list.sort()
 
-            result['payload'].update({
-                'recipe': {
+            result['payload']['recipe'] = {
                     'search': list(dict.fromkeys(search_list)),
                     'ingredients': list(dict.fromkeys(ingredients)),
                     'categories': list(dict.fromkeys(categories)),
@@ -526,7 +525,8 @@ class Recipe(Converter):
                     'subheadings': list(dict.fromkeys(subheadings)),
                     'complexities': list(dict.fromkeys(complexities)),
                     'servings': list(dict.fromkeys(servings)),
-                    'times': list(dict.fromkeys(times))}})
+                    'times': list(dict.fromkeys(times)),
+            }
         return result
 
 
