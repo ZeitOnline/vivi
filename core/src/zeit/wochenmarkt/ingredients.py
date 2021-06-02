@@ -81,8 +81,7 @@ class IngredientsWhitelist(
             if getattr(ingredient, 'category', None) == category]
 
     def get(self, code):
-        result = self.data.get(code)
-        return result if result else None
+        return self.data.get(code)
 
     @CONFIG_CACHE.cache_on_arguments()
     def _load(self):
