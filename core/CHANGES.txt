@@ -5,6 +5,7 @@ vivi.core changes
 -------------------
 
 - MAINT: Use own converter for RecipeArticles
+- OPS-1852: Markdown modules must not be empty
 
 
 4.53.1 (2021-05-31)

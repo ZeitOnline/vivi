@@ -661,7 +661,7 @@ class IMarkupBlock(IBlock):
     text = zope.schema.Text(
         title=_('Contents'),
         description=_('Use Markdown'),
-        required=False)
+        required=True)
     markdown = zope.interface.Attribute('Text in markdown format')
     alignment = zope.schema.Choice(
         title=_('Alignment'),
