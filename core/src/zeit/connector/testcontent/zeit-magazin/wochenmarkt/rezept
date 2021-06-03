@@ -25,7 +25,6 @@
       <category code="wurstiges" label="Wurstiges" />
       <category code="pastagerichte" label="Pastagerichte"/>
     </recipe_categories>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">yes</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="access">abo</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="author">Eva Biringer</attribute>
