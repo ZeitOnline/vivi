@@ -106,7 +106,6 @@ class Video(Converter):
             cmsobj.commentsPremoderate)
         custom['banner'] = cls.bc_bool(cmsobj.banner)
         custom['banner_id'] = cmsobj.banner_id
-        custom['newsletter'] = cls.bc_bool(cmsobj.dailyNewsletter)
         custom['recensions'] = cls.bc_bool(cmsobj.has_recensions)
         custom['produkt-id'] = cmsobj.product.id if cmsobj.product else None
         custom['cmskeywords'] = u';'.join(x.code for x in cmsobj.keywords)
@@ -165,8 +164,6 @@ class Video(Converter):
         cmsobj.banner = self._default_if_missing(
             custom, 'banner', IVideo['banner'], self.cms_bool)
         cmsobj.banner_id = custom.get('banner_id')
-        cmsobj.dailyNewsletter = self._default_if_missing(
-            custom, 'newsletter', IVideo['dailyNewsletter'], self.cms_bool)
         cmsobj.expires = self.cms_date(
             (data.get('schedule') or {}).get('ends_at'))
         cmsobj.has_recensions = self._default_if_missing(

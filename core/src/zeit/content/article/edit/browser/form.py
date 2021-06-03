@@ -300,14 +300,6 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-form', 'audio-speechbert')
 
 
-class MetadataNL(zeit.edit.browser.form.InlineForm):
-
-    legend = _('')
-    prefix = 'metadata-nl'
-    undo_description = _('edit metadata')
-    form_fields = FormFields(ICommonMetadata).select('dailyNewsletter')
-
-
 class MetadataComments(zeit.edit.browser.form.InlineForm):
 
     legend = _('')

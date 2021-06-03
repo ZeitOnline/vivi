@@ -44,13 +44,6 @@ Those forms are loaded via javascript:
         for="metadata-c.authorships">...
 
 
->>> browser.open('@@edit.form.metadata-nl')
->>> print(browser.contents)
-<...
-...<label cms:tooltip="Should this article be listed in the daily newsletter?"
-        for="metadata-nl.dailyNewsletter">...
-
-
 >>> browser.open('@@edit.form.keywords')
 >>> print(browser.contents)
 <...

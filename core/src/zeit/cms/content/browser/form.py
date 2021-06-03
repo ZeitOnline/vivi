@@ -23,7 +23,7 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         css_class='wide-widgets column-left')
     option_fields = gocept.form.grouped.Fields(
         _("Options"),
-        ('dailyNewsletter', 'commentsAllowed', 'commentSectionEnable',
+        ('commentsAllowed', 'commentSectionEnable',
          'banner_id', 'overscrolling'),
         css_class='column-right checkboxes')
     author_fields = gocept.form.grouped.Fields(

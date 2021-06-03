@@ -27,7 +27,7 @@ class Base(zeit.push.browser.form.SocialBase,
 
     option_group = gocept.form.grouped.Fields(
         _("Options"),
-        ('channels', 'lead_candidate', 'serie', 'access', 'dailyNewsletter',
+        ('channels', 'lead_candidate', 'serie', 'access',
          'keywords'),
         css_class='column-right')
 
