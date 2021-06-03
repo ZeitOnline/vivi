@@ -118,8 +118,8 @@ properties:
 >>> properties
 <zeit.cms.content.liveproperty.LiveProperties...>
 >>> pprint(dict(properties))
-{('DailyNL', 'http://namespaces.zeit.de/CMS/document'): 'no',
- ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
+{('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
+ ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
  ...
 
 
@@ -132,8 +132,8 @@ are still there:
 >>> resource.properties
 <zeit.connector.resource.WebDAVProperties...>
 >>> pprint(dict(resource.properties))
-{('DailyNL', 'http://namespaces.zeit.de/CMS/document'): 'no',
- ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
+{('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
+ ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
  ...
 
 Unique Ids
