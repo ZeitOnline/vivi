@@ -4,7 +4,7 @@ vivi.core changes
 4.53.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BEM-54: Improve Error-Logging for not playable videos
 
 
 4.53.2 (2021-06-03)
