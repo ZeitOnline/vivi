@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.53.4 (unreleased)
+4.54.0 (2021-06-16)
 -------------------
 
 - OPS-1984: Conform to real `Span` API in FakeTracer
