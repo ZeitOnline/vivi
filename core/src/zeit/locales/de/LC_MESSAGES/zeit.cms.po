@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
 #: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
@@ -2527,7 +2527,7 @@ msgstr "Related-API"
 
 #: zeit/content/article/edit/interfaces.py:597
 msgid "preconfigured-query"
-msgstr "Konfigurationsdatei"
+msgstr "Filter"
 
 #: zeit/content/article/edit/interfaces.py:635
 #: zeit/content/image/interfaces.py:81
@@ -2563,7 +2563,7 @@ msgstr "Ziehen Sie einen Artikel/Link hierher"
 
 #: zeit/content/article/edit/interfaces.py:668
 msgid "Preconfigured-Query"
-msgstr "Konfigurationsdatei"
+msgstr "Filter"
 
 #: zeit/content/article/edit/jobticker.py:21
 msgid "Jobbox ticker block"

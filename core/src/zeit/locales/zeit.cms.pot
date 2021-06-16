@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Apr 26 10:40:24 2021\n"
+"POT-Creation-Date: Wed Jun 16 16:15:55 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,24 +23,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:662
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225
@@ -51,55 +51,55 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr ""
 
-#: /Users/kabbeck/r/vivi-deployment/work/_/Users/kabbeck/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr ""
 
@@ -1920,100 +1920,100 @@ msgstr ""
 msgid "not published"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:27
+#: zeit/content/article/edit/browser/edit.py:28
 msgid "auto-save body text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:68
+#: zeit/content/article/edit/browser/edit.py:69
 msgid "edit body text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:102
+#: zeit/content/article/edit/browser/edit.py:103
 #: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:110
+#: zeit/content/article/edit/browser/edit.py:111
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:229
+#: zeit/content/article/edit/browser/edit.py:230
 msgid "edit XML block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:244
+#: zeit/content/article/edit/browser/edit.py:245
 msgid "edit raw text block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:259
+#: zeit/content/article/edit/browser/edit.py:260
 msgid "edit embed block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:272
+#: zeit/content/article/edit/browser/edit.py:273
 msgid "edit citation block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:285
+#: zeit/content/article/edit/browser/edit.py:286
 msgid "edit comment citation block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:305
+#: zeit/content/article/edit/browser/edit.py:306
 msgid "edit puzzle form block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:318
+#: zeit/content/article/edit/browser/edit.py:319
 msgid "edit liveblog block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:328
+#: zeit/content/article/edit/browser/edit.py:329
 msgid "edit tickaroo liveblog"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:340
+#: zeit/content/article/edit/browser/edit.py:341
 msgid "edit cardstack block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:353
+#: zeit/content/article/edit/browser/edit.py:354
 msgid "edit quiz block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:366
+#: zeit/content/article/edit/browser/edit.py:367
 msgid "edit podcast block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:376
+#: zeit/content/article/edit/browser/edit.py:377
 msgid "edit box block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:401
+#: zeit/content/article/edit/browser/edit.py:402
 msgid "edit adplace block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:414
+#: zeit/content/article/edit/browser/edit.py:415
 msgid "edit page break"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:435
+#: zeit/content/article/edit/browser/edit.py:436
 msgid "edit jobbox ticker"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:451
+#: zeit/content/article/edit/browser/edit.py:452
 msgid "edit mail block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:477
+#: zeit/content/article/edit/browser/edit.py:487
 msgid "edit topic box"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:493
+#: zeit/content/article/edit/browser/edit.py:504
 msgid "edit newsletter signup"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:506
+#: zeit/content/article/edit/browser/edit.py:517
 msgid "edit recipe list"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:528
+#: zeit/content/article/edit/browser/edit.py:539
 msgid "edit ingredientdice block"
 msgstr ""
 
@@ -2617,7 +2617,7 @@ msgid "Drag article/link here"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:668
-msgid "Preconfigured-Query"
+msgid "Filter"
 msgstr ""
 
 #: zeit/content/article/edit/jobticker.py:21
@@ -2668,7 +2668,7 @@ msgstr ""
 msgid "Recipe list block"
 msgstr ""
 
-#: zeit/content/article/edit/topicbox.py:178
+#: zeit/content/article/edit/topicbox.py:175
 msgid "Topicbox"
 msgstr ""
 
