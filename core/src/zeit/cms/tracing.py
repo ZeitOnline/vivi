@@ -17,6 +17,9 @@ class FakeTracer(object):
     def start_trace(self, trace_id=None, parent_id=None):
         result = mock.Mock()
         result.id = str(uuid.uuid4())
+        # XXX This API is beeline specific
+        result.trace_id = trace_id
+        result.parent_id = parent_id
         return result
 
     def end_trace(self, trace, **kw):
