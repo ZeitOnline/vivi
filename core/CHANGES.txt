@@ -4,7 +4,7 @@ vivi.core changes
 4.54.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+ZON-6655: Improve wording
 
 
 4.54.0 (2021-06-16)
