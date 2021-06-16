@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.54.1 (unreleased)
+4.54.1 (2021-06-16)
 -------------------
 
 - BEM-54: Be defensive about analyzing the BC response
