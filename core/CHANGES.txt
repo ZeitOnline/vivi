@@ -4,7 +4,7 @@ vivi.core changes
 4.54.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-2001: Restrict "change type" to producing+cvd
 
 
 4.54.1 (2021-06-16)

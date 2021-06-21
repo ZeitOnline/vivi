@@ -71,7 +71,7 @@
     name="typechange-box"
     class=".typechange.TypeChange"
     template="typechange.pt"
-    permission="zeit.RenameContent"
+    permission="zeit.ChangeType"
     />
 
   <browser:viewlet
@@ -80,7 +80,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".typechange.MenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
-    permission="zeit.RenameContent"
+    permission="zeit.ChangeType"
     lightbox="@@typechange-box"
     icon="/@@/zeit.cms/icons/workflow.png"
     weight="150"

@@ -121,6 +121,10 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.ChangeType"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.EditTemplates"
     />
   <grant
@@ -202,6 +206,10 @@
 
 
   <!-- CvD grants -->
+  <grant
+    role="zeit.CvD"
+    permission="zeit.ChangeType"
+    />
   <grant
     role="zeit.CvD"
     permission="zeit.ManageLocks"
