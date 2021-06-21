@@ -126,6 +126,17 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
         return value
 
 
+class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('date', _('tms-order-date')),
+        ('relevance', _('tms-order-relevance')),
+        ('kpi_visits', _('tms-order-kpi_visits')),
+        ('kpi_comments', _('tms-order-kpi_comments')),
+        ('kpi_subscriptions', _('tms-order-kpi_subscriptions')),
+    ])
+
+
 class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
 
     def _get_parent_value(self, context):
@@ -248,6 +259,12 @@ class IConfiguration(zope.interface.Interface):
         title=_('Topicpage filter'),
         source=TopicpageFilterSource(),
         required=False)
+
+    topicpage_order = zope.schema.Choice(
+        title=_('Topicpage order'),
+        source=TopicpageOrderSource(),
+        default='date'
+    )
 
     rss_feed = zope.schema.Choice(
         title=_('RSS-Feed'),

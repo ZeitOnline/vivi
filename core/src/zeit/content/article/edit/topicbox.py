@@ -77,6 +77,10 @@ class Topicbox(zeit.content.article.edit.block.Block):
         '.topicpage_filter',
         zeit.content.article.edit.interfaces.ITopicbox['topicpage_filter'])
 
+    topicpage_order = zeit.cms.content.property.ObjectPathProperty(
+        '.topicpage_order',
+        zeit.content.article.edit.interfaces.ITopicbox['topicpage_order'])
+
     _preconfigured_query = zeit.cms.content.property.ObjectPathProperty(
         '.preconfigured_query',
         zeit.content.article.edit.interfaces.ITopicbox['preconfigured_query'])

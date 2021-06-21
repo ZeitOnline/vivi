@@ -151,9 +151,14 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     referenced_topicpage = zeit.cms.content.property.ObjectPathProperty(
         '.referenced_topicpage',
         zeit.content.cp.interfaces.IArea['referenced_topicpage'])
+
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
         zeit.content.cp.interfaces.IArea['topicpage_filter'])
+
+    topicpage_order = zeit.cms.content.property.ObjectPathProperty(
+        '.topicpage_order',
+        zeit.content.cp.interfaces.IArea['topicpage_order'])
 
     query_order = zeit.cms.content.property.ObjectPathProperty(
         '.query_order',

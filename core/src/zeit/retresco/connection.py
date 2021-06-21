@@ -89,10 +89,13 @@ class TMS(object):
             result.append(row)
         return result
 
-    def get_topicpage_documents(self, id, start=0, rows=25, filter=None):
+    def get_topicpage_documents(
+            self, id, start=0, rows=25, filter=None, order=None):
         params = {'start': start, 'rows': rows}
         if filter is not None:
             params['filter'] = filter
+        if order is not None:
+            params['sort_by'] = order
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
             params=params)

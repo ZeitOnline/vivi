@@ -263,6 +263,7 @@ class TMSContentQuery(ContentQuery):
         super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
+        self.order = self.context.topicpage_order
 
     def __call__(self):
         result, _ = self._fetch(self.start)
@@ -311,7 +312,7 @@ class TMSContentQuery(ContentQuery):
         try:
             response = tms.get_topicpage_documents(
                 id=self.topicpage, filter=self.filter_id,
-                start=start, rows=rows)
+                start=start, rows=rows, order=self.order)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
