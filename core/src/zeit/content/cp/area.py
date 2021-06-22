@@ -152,6 +152,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.referenced_topicpage',
         zeit.content.cp.interfaces.IArea['referenced_topicpage'])
 
+    related_topicpage = (
+        zeit.cms.content.property.ObjectPathProperty(
+            '.related_topicpage',
+            zeit.content.cp.interfaces.IArea['related_topicpage']))
+
     topicpage_filter = zeit.cms.content.property.ObjectPathProperty(
         '.topicpage_filter',
         zeit.content.cp.interfaces.IArea['topicpage_filter'])

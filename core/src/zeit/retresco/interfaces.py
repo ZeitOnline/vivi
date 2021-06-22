@@ -124,6 +124,11 @@ class ITMS(zope.interface.Interface):
         and filtered by the filtername.
         """
 
+    def get_related_topics(topicpage_id, rows=10):
+        """Returns a list of namespaced ids that relate to the given
+        topicpage_id.
+        """
+
 
 class TMSError(Exception):
     """Service was unable to process a request because of semantic problems."""

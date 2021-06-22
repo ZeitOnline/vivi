@@ -262,6 +262,7 @@ class TMSContentQuery(ContentQuery):
     def __init__(self, context):
         super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
+        self.relateds_topicpage = self.context.related_topicpage
         self.filter_id = self.context.topicpage_filter
         self.order = self.context.topicpage_order
 
@@ -473,3 +474,15 @@ class PreconfiguredQuery(ElasticsearchContentQuery):
 
     def _build_query(self):
         return self.query
+
+
+class TMSRelatedTopicsApiQuery(ContentQuery):
+
+    grok.name('related-topics')
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+    def __call__(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        topics = tms.get_related_topics(
+            self.context.related_topicpage, rows=self.rows)
+        return [zeit.cms.interfaces.ICMSContent(topic) for topic in topics]
