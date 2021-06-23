@@ -187,6 +187,10 @@ class IContentQuery(zope.interface.Interface):
     total_hits = zope.interface.Attribute(
         'Total number of available results (only available after calling)')
 
+    start = zope.interface.Attribute(
+        'Offset the result by this many content objects')
+    rows = zope.interface.Attribute('Number of content objects per page')
+
     def __call__(self):
         """Returns list of content objects."""
 
@@ -198,6 +202,8 @@ class IConfiguration(zope.interface.Interface):
         Determines from where content objects will be retrieved.
         Will look up a utility of that name for IContentQuery."""
 
+    start = zope.interface.Attribute(
+        'Extension point for zeit.web to do pagination')
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
 
     existing_teasers = zope.interface.Attribute(

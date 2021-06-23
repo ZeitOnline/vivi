@@ -22,8 +22,6 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.content.cp.interfaces.IRenderedArea)
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
-    start = 0  # Extension point for zeit.web to do pagination
-
     def __init__(self, context):
         self.context = context
         self.xml = self.context.xml

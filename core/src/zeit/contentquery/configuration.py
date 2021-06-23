@@ -98,6 +98,7 @@ class Configuration:
 
     existing_teasers = NotImplemented
 
+    start = 0  # Extension point for zeit.web to do pagination
     count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', IConfiguration['count'])
 

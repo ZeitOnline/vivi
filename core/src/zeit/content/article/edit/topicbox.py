@@ -19,7 +19,6 @@ log = logging.getLogger(__name__)
 class Topicbox(zeit.content.article.edit.block.Block,
                zeit.contentquery.configuration.Configuration):
 
-    start = 0
     type = 'topicbox'
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(

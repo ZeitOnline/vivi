@@ -34,12 +34,10 @@ class ContentQuery(grok.Adapter):
 
     @property
     def start(self):
-        """Offset the result by this many content objects"""
         return self.context.start
 
     @property
     def rows(self):
-        """Number of content objects per page"""
         return self.context.count
 
 
