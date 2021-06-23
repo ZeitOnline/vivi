@@ -41,23 +41,10 @@ class ContentQuery(grok.Adapter):
         return self.context.count
 
 
-class ManualLegacyResult(ContentQuery):
-    """This is not a automatic content query.
-    This returns old style topicboxes with 3 manual references.
-    If the  first reference is a centerpage, the ContentQuery object is passed
-    to CenterpageContentQuery"""
-
-    grok.name('manual')
-
-    def __call__(self):
-        if self.context.referenced_cp:
-            return CenterpageContentQuery(self.context)()
-        else:
-            references = [
-                self.context.first_reference,
-                self.context.second_reference,
-                self.context.third_reference]
-            return [ref for ref in references if ref]
+@grok.adapter(zeit.contentquery.interfaces.IContentQuery)
+@grok.implementer(zeit.cms.interfaces.ICMSContent)
+def query_to_content(context):
+    return zeit.cms.interfaces.ICMSContent(context.context, None)
 
 
 class ElasticsearchContentQuery(ContentQuery):
@@ -421,6 +408,25 @@ class RSSFeedContentQuery(ContentQuery):
         return requests.get(url, timeout=timeout).content
 
 
+class ManualLegacyResult(ContentQuery):
+    """This is not a automatic content query.
+    This returns old style topicboxes with 3 manual references.
+    If the  first reference is a centerpage, the ContentQuery object is passed
+    to CenterpageContentQuery"""
+
+    grok.name('manual')
+
+    def __call__(self):
+        if self.context.referenced_cp:
+            return CenterpageContentQuery(self.context)()
+        else:
+            references = [
+                self.context.first_reference,
+                self.context.second_reference,
+                self.context.third_reference]
+            return [ref for ref in references if ref]
+
+
 class TMSRelatedApiQuery(TMSContentQuery):
 
     grok.name('related-api')
@@ -482,9 +488,3 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         topics = tms.get_related_topics(
             self.context.related_topicpage, rows=self.rows)
         return [zeit.cms.interfaces.ICMSContent(topic) for topic in topics]
-
-
-@grok.adapter(zeit.contentquery.interfaces.IContentQuery)
-@grok.implementer(zeit.cms.interfaces.ICMSContent)
-def query_to_content(context):
-    return zeit.cms.interfaces.ICMSContent(context.context, None)
