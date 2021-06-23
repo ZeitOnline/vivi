@@ -4,7 +4,10 @@ vivi.core changes
 4.54.3 (unreleased)
 -------------------
 
-ZON-6655: Improve wording
+- TOPIC-9: Add possibility to sort TMS entries
+- TOPIC-9: Add related topics as automatic source
+
+- ZON-6655: Improve wording
 
 
 4.54.2 (2021-06-21)

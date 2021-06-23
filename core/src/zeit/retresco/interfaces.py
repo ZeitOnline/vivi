@@ -84,7 +84,8 @@ class ITMS(zope.interface.Interface):
         almost all cases.
         """
 
-    def get_topicpage_documents(id, start=0, rows=25):
+    def get_topicpage_documents(
+            id, start=0, rows=25, filter=None, sort_by=None):
         """Returns an zeit.cms.interfaces.IResult that contains dicts
         with metadata of the content contained in the given TMS topic page.
         The dicts have the following keys:
@@ -95,9 +96,11 @@ class ITMS(zope.interface.Interface):
         rtr_keywords, rtr_locations etc.
         payload: see ITMSRepresentation
 
-        Parameters for pagination are:
+        Parameters are:
         `start`: offset the result by this many entries
         `rows`: return this many entries (i.e. items per page)
+        `filter`: return filtered entries (i.e. only videos)
+        `order`: sort entries by given field (i.e. kpi_comments, ...)
         """
 
     def get_article_body(content, timeout=None):
@@ -119,6 +122,11 @@ class ITMS(zope.interface.Interface):
     def get_related_documents(content, rows=15, filter=None):
         """Returns a list of documents that relates to the given uuid
         and filtered by the filtername.
+        """
+
+    def get_related_topics(topicpage_id, rows=10):
+        """Returns a list of namespaced ids that relate to the given
+        topicpage_id.
         """
 
 
