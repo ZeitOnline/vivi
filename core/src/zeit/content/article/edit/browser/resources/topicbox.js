@@ -111,7 +111,7 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
                 showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
             });
             break;
-        case 'konfigurationsdatei':
+        case 'filter':
             Object.keys(fieldClassNames).filter((element) => {
                 return ['preconfigured_query'].includes(element);
             }).forEach((element) => {
