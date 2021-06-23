@@ -125,7 +125,6 @@ class TMS(object):
         result.hits = len(response['docs'])
         return result
 
-
     def get_article_data(self, content):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         try:
