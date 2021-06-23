@@ -488,9 +488,3 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def query_to_content(context):
     return zeit.cms.interfaces.ICMSContent(context.context, None)
-
-
-@grok.adapter(TMSContentQuery)
-@grok.implementer(zeit.cms.interfaces.ICMSContent)
-def tms_query_to_content(context):
-    return zeit.cms.interfaces.ICMSContent(context.context, None)

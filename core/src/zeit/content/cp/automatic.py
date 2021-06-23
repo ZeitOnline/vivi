@@ -1,7 +1,6 @@
 from zeit.content.cp.area import cached_on_content
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import grokcore.component as grok
 import logging
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -99,9 +98,3 @@ def is_lead_candidate(content):
     if metadata is None:
         return False
     return metadata.lead_candidate
-
-
-@grok.adapter(zeit.contentquery.interfaces.IContentQuery)
-@grok.implementer(zeit.content.cp.interfaces.ICenterPage)
-def query_to_centerpage(context):
-    return zeit.content.cp.interfaces.ICenterPage(context.context, None)
