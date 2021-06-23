@@ -1,10 +1,22 @@
 vivi.core changes
 =================
 
-4.54.1 (unreleased)
+4.54.3 (unreleased)
 -------------------
 
 ZON-6655: Improve wording
+
+
+4.54.2 (2021-06-21)
+-------------------
+
+- OPS-2001: Restrict "change type" to producing+cvd
+
+
+4.54.1 (2021-06-16)
+-------------------
+
+- BEM-54: Be defensive about analyzing the BC response
 
 
 4.54.0 (2021-06-16)

@@ -217,11 +217,12 @@ class PlaybackAPI(object):
             * API-Error-Reference: <https://apis.support.brightcove.com
                 /playback/references/playback-api-error-reference.html>
             """
-            if e.response.raw.headers[
-                    'Bcov-Error-Code'] != 'VIDEO_NOT_PLAYABLE':
+            r = e.response
+            headers = getattr(r, 'headers', {})
+            if headers.get('Bcov-Error-Code') != 'VIDEO_NOT_PLAYABLE':
                 log.warning(
                     'Error while retrieving video %s: %s', id,
-                    getattr(e.response, 'text', '<no message>'), exc_info=True)
+                    getattr(r, 'text', '<no message>'), exc_info=True)
             return data
 
         data['video_still'] = data.get('poster')

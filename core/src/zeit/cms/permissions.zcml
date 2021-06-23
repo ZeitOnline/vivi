@@ -16,6 +16,11 @@
     />
 
   <permission
+    id="zeit.ChangeType"
+    title="Change content type"
+    />
+
+  <permission
     id="zeit.CopyContent"
     title="Copy content"
     />

@@ -98,6 +98,10 @@
     />
   <grant
     principal="zope.Authenticated"
+    permission="zeit.ChangeType"
+    />
+  <grant
+    principal="zope.Authenticated"
     permission="zeit.CopyContent"
     />
   <grant
