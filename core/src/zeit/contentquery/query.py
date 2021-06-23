@@ -262,7 +262,6 @@ class TMSContentQuery(ContentQuery):
     def __init__(self, context):
         super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
-        self.relateds_topicpage = self.context.related_topicpage
         self.filter_id = self.context.topicpage_filter
         self.order = self.context.topicpage_order
 
