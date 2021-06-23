@@ -255,10 +255,6 @@ class IConfiguration(zope.interface.Interface):
         title=_('Referenced Topicpage'),
         required=False)
 
-    related_topicpage = zope.schema.TextLine(
-        title=_('Referenced Topicpage Id'),
-        required=True)
-
     topicpage_filter = zope.schema.Choice(
         title=_('Topicpage filter'),
         source=TopicpageFilterSource(),

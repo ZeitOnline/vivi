@@ -391,6 +391,12 @@ class IReadArea(
         source=AREA_COLOR_THEMES_SOURCE,
         required=False)
 
+    # since we do not allow related topics for articles we must only declare
+    # the field for CPs
+    related_topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage Id'),
+        required=True)
+
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
 
