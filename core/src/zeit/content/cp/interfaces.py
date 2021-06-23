@@ -395,7 +395,7 @@ class IReadArea(
     # the field for CPs
     related_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage Id'),
-        required=True)
+        required=False)
 
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
