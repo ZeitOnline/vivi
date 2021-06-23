@@ -13,7 +13,6 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
 import zeit.contentquery.configuration
-import zeit.contentquery.helper
 import zeit.contentquery.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
@@ -134,7 +133,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'automatic_type',
         zeit.content.cp.interfaces.IArea['automatic_type'])
 
-    query = zeit.contentquery.helper.QueryHelper({'Channel': 'channels'})
+    query = zeit.contentquery.configuration.CustomQueryProperty(
+        {'Channel': 'channels'})
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.content.cp.interfaces.IArea['count'])

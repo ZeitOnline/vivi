@@ -1,5 +1,5 @@
 from zeit.cms.content.cache import content_cache
-from zeit.contentquery.helper import QueryHelper
+from zeit.contentquery.configuration import CustomQueryProperty
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
@@ -180,10 +180,11 @@ class CustomContentQuery(ElasticsearchContentQuery):
         'content_type': 'doc_type',
     }
 
+    serialize = CustomQueryProperty()._serialize_query_item
+
     def __init__(self, context):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
-        self.queryhelper = QueryHelper()
         self.query = self._make_custom_query()
         self.order = self.context.query_order
         if self.order in self.SOLR_TO_ES_SORT:  # BBB
@@ -225,8 +226,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return self._make_condition(item)
 
     def _make_condition(self, item):
-        typ, operator, value = self.queryhelper._serialize_query_item(
-            self.context, item)
+        typ, operator, value = self.serialize(self.context, item)
         fieldname = self.ES_FIELD_NAMES.get(typ)
         if not fieldname:
             fieldname = self._fieldname_from_property(typ)
