@@ -192,12 +192,12 @@ class IContentQuery(zope.interface.Interface):
 
 
 class IConfiguration(zope.interface.Interface):
+
     automatic_type = zope.interface.Attribute("Automatic type")
     automatic_type.__doc__ = """
         Determines from where content objects will be retrieved.
         Will look up a utility of that name for IContentQuery."""
 
-    # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
 
     existing_teasers = zope.interface.Attribute(
@@ -249,8 +249,6 @@ class IConfiguration(zope.interface.Interface):
         source=zeit.content.cp.source.centerPageSource,
         required=False)
 
-    _teaser_count = zope.interface.Attribute("Topicpage teaser count")
-
     referenced_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage'),
         required=False)
@@ -265,6 +263,10 @@ class IConfiguration(zope.interface.Interface):
         source=TopicpageOrderSource(),
         default='date'
     )
+
+    related_topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage Id'),
+        required=False)
 
     rss_feed = zope.schema.Choice(
         title=_('RSS-Feed'),

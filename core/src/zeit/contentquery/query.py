@@ -469,7 +469,7 @@ class PreconfiguredQuery(ElasticsearchContentQuery):
         super().__init__(context)
         factory = zeit.content.article.edit.interfaces.ITopicbox[
             'preconfigured_query'].source.factory
-        self.query = {'query': factory.getQuery(context._preconfigured_query)}
+        self.query = {'query': factory.getQuery(context.preconfigured_query)}
 
     def _build_query(self):
         return self.query

@@ -380,6 +380,8 @@ class IReadArea(
     automatic.__doc__ = """If True, IRenderedArea.values() will populate
     any IAutomaticTeaserBlock with content, as specified by automatic_type.
     """
+    # XXX really ugly styling hack
+    automatic.setTaggedValue('placeholder', ' ')
 
     automatic_type = zope.schema.Choice(
         title=_('Automatic type'),
@@ -390,15 +392,6 @@ class IReadArea(
         title=_("Area color theme (ze.tt only)"),
         source=AREA_COLOR_THEMES_SOURCE,
         required=False)
-
-    # since we do not allow related topics for articles we must only declare
-    # the field for CPs
-    related_topicpage = zope.schema.TextLine(
-        title=_('Referenced Topicpage Id'),
-        required=False)
-
-    # XXX really ugly styling hack
-    automatic.setTaggedValue('placeholder', ' ')
 
     @zope.interface.invariant
     def automatic_type_required_arguments(data):
