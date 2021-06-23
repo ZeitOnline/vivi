@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.54.3 (unreleased)
+4.55.0 (2021-06-23)
 -------------------
 
 - TOPIC-9: Add possibility to sort TMS entries
