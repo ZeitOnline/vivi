@@ -126,6 +126,17 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
         return value
 
 
+class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('date', _('tms-order-date')),
+        ('relevance', _('tms-order-relevance')),
+        ('kpi_visits', _('tms-order-kpi_visits')),
+        ('kpi_comments', _('tms-order-kpi_comments')),
+        ('kpi_subscriptions', _('tms-order-kpi_subscriptions')),
+    ])
+
+
 class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
 
     def _get_parent_value(self, context):
@@ -176,17 +187,23 @@ class IContentQuery(zope.interface.Interface):
     total_hits = zope.interface.Attribute(
         'Total number of available results (only available after calling)')
 
+    start = zope.interface.Attribute(
+        'Offset the result by this many content objects')
+    rows = zope.interface.Attribute('Number of content objects per page')
+
     def __call__(self):
         """Returns list of content objects."""
 
 
 class IConfiguration(zope.interface.Interface):
+
     automatic_type = zope.interface.Attribute("Automatic type")
     automatic_type.__doc__ = """
         Determines from where content objects will be retrieved.
         Will look up a utility of that name for IContentQuery."""
 
-    # XXX Rename to make clear that this setting only applies to AutoPilot.
+    start = zope.interface.Attribute(
+        'Extension point for zeit.web to do pagination')
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
 
     existing_teasers = zope.interface.Attribute(
@@ -238,8 +255,6 @@ class IConfiguration(zope.interface.Interface):
         source=zeit.content.cp.source.centerPageSource,
         required=False)
 
-    _teaser_count = zope.interface.Attribute("Topicpage teaser count")
-
     referenced_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage'),
         required=False)
@@ -247,6 +262,16 @@ class IConfiguration(zope.interface.Interface):
     topicpage_filter = zope.schema.Choice(
         title=_('Topicpage filter'),
         source=TopicpageFilterSource(),
+        required=False)
+
+    topicpage_order = zope.schema.Choice(
+        title=_('Topicpage order'),
+        source=TopicpageOrderSource(),
+        default='date'
+    )
+
+    related_topicpage = zope.schema.TextLine(
+        title=_('Referenced Topicpage Id'),
         required=False)
 
     rss_feed = zope.schema.Choice(

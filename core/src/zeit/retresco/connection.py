@@ -89,10 +89,13 @@ class TMS(object):
             result.append(row)
         return result
 
-    def get_topicpage_documents(self, id, start=0, rows=25, filter=None):
+    def get_topicpage_documents(
+            self, id, start=0, rows=25, filter=None, order=None):
         params = {'start': start, 'rows': rows}
         if filter is not None:
             params['filter'] = filter
+        if order is not None:
+            params['sort_by'] = order
         response = self._request(
             'GET /topic-pages/{}/documents'.format(id),
             params=params)
@@ -109,6 +112,16 @@ class TMS(object):
         response = self._request(
             'GET /content/{}/relateds'.format(uuid), params=params)
         result = zeit.cms.interfaces.Result(response['docs'])
+        result.hits = len(response['docs'])
+        return result
+
+    def get_related_topics(self, topicpage_id, rows=10):
+        params = {'rows': rows}
+        response = self._request(
+            'GET /topic-pages/{}/relateds'.format(topicpage_id), params=params)
+        id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
+        result = zeit.cms.interfaces.Result(
+            [id_namespace + x['url'] for x in response['docs']])
         result.hits = len(response['docs'])
         return result
 

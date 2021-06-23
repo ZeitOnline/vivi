@@ -246,6 +246,7 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
         ('centerpage', _('automatic-area-type-centerpage')),
         ('custom', _('automatic-area-type-custom')),
         ('topicpage', _('automatic-area-type-topicpage')),
+        ('related-topics', _('automatic-area-type-related-topics')),
         ('query', _('automatic-area-type-query')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
         ('rss-feed', _('automatic-area-type-rss-feed'))
@@ -266,12 +267,16 @@ def automatic_area_can_read_teasers_automatically(data):
     if data.automatic_type == 'topicpage' and data.referenced_topicpage:
         return True
 
+    if data.automatic_type == 'related-topics' and data.related_topicpage:
+        return True
+
     if data.automatic_type == 'query' and data.raw_query:
         return True
 
     if (data.automatic_type == 'elasticsearch-query' and
             data.elasticsearch_raw_query):
         return True
+
     if (data.automatic_type == 'rss-feed' and
             data.rss_feed):
         return True
@@ -375,6 +380,8 @@ class IReadArea(
     automatic.__doc__ = """If True, IRenderedArea.values() will populate
     any IAutomaticTeaserBlock with content, as specified by automatic_type.
     """
+    # XXX really ugly styling hack
+    automatic.setTaggedValue('placeholder', ' ')
 
     automatic_type = zope.schema.Choice(
         title=_('Automatic type'),
@@ -385,9 +392,6 @@ class IReadArea(
         title=_("Area color theme (ze.tt only)"),
         source=AREA_COLOR_THEMES_SOURCE,
         required=False)
-
-    # XXX really ugly styling hack
-    automatic.setTaggedValue('placeholder', ' ')
 
     @zope.interface.invariant
     def automatic_type_required_arguments(data):
@@ -412,6 +416,10 @@ class IReadArea(
             if data.automatic_type == 'rss-feed':
                 error_message = _(
                     'Automatic area with rss-feed requires a given feed')
+            if data.automatic_type == 'related-topics':
+                error_message = _(
+                    'Automatic area with related-topics requires a given'
+                    ' topicpage')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 

@@ -4,7 +4,8 @@ vivi.core changes
 4.54.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TOPIC-9: Add possibility to sort TMS entries
+- TOPIC-9: Add related topics as automatic source
 
 
 4.54.2 (2021-06-21)

@@ -1,5 +1,5 @@
 from zeit.cms.content.cache import content_cache
-from zeit.contentquery.helper import QueryHelper
+from zeit.contentquery.configuration import CustomQueryProperty
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import json
@@ -34,12 +34,10 @@ class ContentQuery(grok.Adapter):
 
     @property
     def start(self):
-        """Offset the result by this many content objects"""
         return self.context.start
 
     @property
     def rows(self):
-        """Number of content objects per page"""
         return self.context.count
 
 
@@ -180,10 +178,11 @@ class CustomContentQuery(ElasticsearchContentQuery):
         'content_type': 'doc_type',
     }
 
+    serialize = CustomQueryProperty()._serialize_query_item
+
     def __init__(self, context):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
-        self.queryhelper = QueryHelper()
         self.query = self._make_custom_query()
         self.order = self.context.query_order
         if self.order in self.SOLR_TO_ES_SORT:  # BBB
@@ -225,8 +224,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
             return self._make_condition(item)
 
     def _make_condition(self, item):
-        typ, operator, value = self.queryhelper._serialize_query_item(
-            self.context, item)
+        typ, operator, value = self.serialize(self.context, item)
         fieldname = self.ES_FIELD_NAMES.get(typ)
         if not fieldname:
             fieldname = self._fieldname_from_property(typ)
@@ -263,6 +261,7 @@ class TMSContentQuery(ContentQuery):
         super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
+        self.order = self.context.topicpage_order
 
     def __call__(self):
         result, _ = self._fetch(self.start)
@@ -311,7 +310,7 @@ class TMSContentQuery(ContentQuery):
         try:
             response = tms.get_topicpage_documents(
                 id=self.topicpage, filter=self.filter_id,
-                start=start, rows=rows)
+                start=start, rows=rows, order=self.order)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
@@ -468,7 +467,19 @@ class PreconfiguredQuery(ElasticsearchContentQuery):
         super().__init__(context)
         factory = zeit.content.article.edit.interfaces.ITopicbox[
             'preconfigured_query'].source.factory
-        self.query = {'query': factory.getQuery(context._preconfigured_query)}
+        self.query = {'query': factory.getQuery(context.preconfigured_query)}
 
     def _build_query(self):
         return self.query
+
+
+class TMSRelatedTopicsApiQuery(ContentQuery):
+
+    grok.name('related-topics')
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+    def __call__(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        topics = tms.get_related_topics(
+            self.context.related_topicpage, rows=self.rows)
+        return [zeit.cms.interfaces.ICMSContent(topic) for topic in topics]

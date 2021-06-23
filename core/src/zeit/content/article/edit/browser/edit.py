@@ -476,7 +476,7 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
                 'third_reference', 'automatic_type', 'referenced_cp',
                 'elasticsearch_raw_query', 'elasticsearch_raw_order',
                 'referenced_topicpage', 'topicpage_filter',
-                'preconfigured_query').omit(
+                'topicpage_order', 'preconfigured_query').omit(
                 *list(zeit.edit.interfaces.IBlock))
 
         if not FEATURE_TOGGLES.find('show_automatic_type_in_topicbox'):
