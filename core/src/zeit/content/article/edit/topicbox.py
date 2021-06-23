@@ -173,9 +173,3 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = Topicbox
     title = _('Topicbox')
-
-
-@grok.adapter(zeit.contentquery.interfaces.IContentQuery)
-@grok.implementer(zeit.content.article.interfaces.IArticle)
-def query_to_article(context):
-    return zeit.content.article.interfaces.IArticle(context.context, None)
