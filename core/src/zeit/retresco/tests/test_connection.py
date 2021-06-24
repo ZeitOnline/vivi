@@ -24,7 +24,7 @@ import zope.component
 class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TMSTest, self).setUp()
+        super().setUp()
         patcher = mock.patch(
             'zeit.retresco.convert.TMSRepresentation._validate')
         validate = patcher.start()
@@ -62,7 +62,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         result = list(tms.get_keywords('Sch'))
         self.assertEqual(2, len(result))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
-        self.assertEqual([u'Schmerz', u'Walter Schmögner'],
+        self.assertEqual(['Schmerz', 'Walter Schmögner'],
                          [x.label for x in result])
 
     def test_get_locations_returns_a_list_of_tag_objects(self):
@@ -76,7 +76,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = list(tms.get_locations('Kro'))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
-        self.assertEqual([u'Kroatien'], [x.label for x in result])
+        self.assertEqual(['Kroatien'], [x.label for x in result])
 
     def test_get_locations_filters_by_entity_type_location(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -254,7 +254,7 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
     # so if this fails, just run it again, chances are it will work then.
 
     def setUp(self):
-        super(IntegrationTest, self).setUp()
+        super().setUp()
         self.tms = zeit.retresco.connection.TMS(
             primary=dict(url=os.environ['ZEIT_RETRESCO_URL']))
         self.article = zeit.cms.interfaces.ICMSContent(
@@ -271,7 +271,7 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
                 zeit.cms.content.interfaces.IUUID(self.article).id)
         except Exception as e:
             print(e)
-        super(IntegrationTest, self).tearDown()
+        super().tearDown()
 
     def test_enrich_returns_keywords(self):
         keywords = self.tms.extract_keywords(self.article)
@@ -373,7 +373,7 @@ class SlowAdapter(requests.adapters.BaseAdapter):
 class SignalTimeoutTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(SignalTimeoutTest, self).setUp()
+        super().setUp()
         self.session = requests.Session()
         self.session.mount('slow://', SlowAdapter())
 

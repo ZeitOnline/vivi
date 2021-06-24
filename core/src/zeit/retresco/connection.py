@@ -1,4 +1,4 @@
-from six import StringIO
+from io import StringIO
 from zeit.cms.checkout.helper import checked_out
 import collections
 import gocept.runner
@@ -23,7 +23,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
-class TMS(object):
+class TMS:
 
     def __init__(self, primary, secondary=None):
         self.primary = dict(primary)
@@ -383,10 +383,10 @@ def _build_topic_redirects(topicpages):
             continue
         if not target.startswith('http'):
             if not target.startswith('/'):
-                target = u'/' + target
+                target = '/' + target
             target = url_prefix + target
         # XXX hard-coded path
-        source = u'/thema/' + row['id']
+        source = '/thema/' + row['id']
         output.write('%s = %s\n' % (source, target))
 
     return output.getvalue()
