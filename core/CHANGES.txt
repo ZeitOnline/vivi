@@ -4,7 +4,7 @@ vivi.core changes
 4.57.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TOPIC-16: Add tms content-topic-api endpoint
 
 
 4.57.0 (2021-06-29)
