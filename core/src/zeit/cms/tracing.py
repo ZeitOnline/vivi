@@ -3,6 +3,7 @@ import contextlib
 import logging
 import random
 import sys
+import traceback
 import uuid
 import zeit.cms.interfaces
 import zope.interface
@@ -170,3 +171,95 @@ try:
     import beeline
 except ImportError:
     HoneyTracer = FakeTracer  # noqa
+
+
+@zope.interface.implementer(zeit.cms.interfaces.ITracer)
+class OpenTelemetryTracer(FakeTracer):
+
+    def __init__(self, service_name, service_version, environment, hostname,
+                 otlp_url):
+        self.provider = opentelemetry.sdk.trace.TracerProvider(
+            # see <specification/resource/semantic_conventions/README.md>
+            resource=opentelemetry.sdk.resources.Resource.create({
+                'service.name': service_name,
+                'service.version': service_version,
+                'service.namespace': environment,
+                'service.instance.id': hostname,
+            }))
+        opentelemetry.trace.set_tracer_provider(self.provider)
+        self.tracer = self.provider.get_tracer('zeit.cms.tracing')
+
+        self.otlp_url = otlp_url
+        self._initialized = False
+
+    def _initialize(self):
+        """Start sending thread *after* gunicorn has forked its workers."""
+        self.provider.add_span_processor(
+            BatchSpanProcessor(otlp.OTLPSpanExporter(
+                endpoint=self.otlp_url,
+                insecure=not self.otlp_url.startswith('https'))))
+        self._initialized = True
+
+    def start_trace(self, trace_id=None, parent_id=None):
+        if not self._initialized:
+            self._initialize()
+
+        try:  # The opentelemetry libraries insist on IDs being ints.
+            int_trace_id = int(trace_id, 16)
+            int_parent_id = int(parent_id, 16)
+        except ValueError:
+            pass
+        else:
+            # Like opentelemetry.trace.propagation.tracecontext:extract()
+            parent = opentelemetry.trace.NonRecordingSpan(SpanContext(
+                int_trace_id, int_parent_id, is_remote=True,
+                trace_flags=TraceFlags(TraceFlags.SAMPLED)))
+            opentelemetry.context.attach(
+                opentelemetry.trace.set_span_in_context(parent))
+
+        span = self.tracer.start_span('unknown')
+        # Like opentelemetry.trace.use_span(span)
+        span.context_token = opentelemetry.context.attach(
+            opentelemetry.trace.set_span_in_context(span))
+        # XXX Emulate beeline API
+        span.id = opentelemetry.trace.format_span_id(
+            span.get_span_context().span_id)
+        span.trace_id = trace_id
+        span.parent_id = parent_id
+        return span
+
+    def end_trace(self, span, **kw):
+        name = kw.pop('name')
+        if name is not None:
+            span.update_name(name)
+        span.set_attributes(kw)
+        opentelemetry.context.detach(span.context_token)
+        span.end()
+
+    def start_span(self, typ, name, **kw):
+        return self.tracer.start_span(name, attributes=kw)
+
+    def add_span_data(self, span, **kw):
+        span.set_attributes(kw)
+
+    def end_span(self, span, exc_info=()):
+        if exc_info and exc_info[0]:
+            # see <specification/trace/semantic_conventions/exceptions.md>
+            span.set_attributes({
+                'exception.type': str(exc_info[0]),
+                'exception.message': str(exc_info[1]),
+                'exception.stacktrace': traceback.format_tb(exc_info[2]),
+            })
+        span.end()
+
+
+try:
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor
+    from opentelemetry.trace import SpanContext, TraceFlags
+    import opentelemetry.context
+    import opentelemetry.trace
+    import opentelemetry.exporter.otlp.proto.grpc.trace_exporter as otlp
+    import opentelemetry.sdk.trace
+    import opentelemetry.sdk.resources
+except ImportError:
+    OpenTelemetryTracer = FakeTracer  # noqa
