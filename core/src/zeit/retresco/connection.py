@@ -125,12 +125,24 @@ class TMS:
         result.hits = len(response['docs'])
         return result
 
-    def get_content_topics(self, content):
+    def _get_content_topics(self, content):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         response = self._request(
             'GET /content/{}/topic-pages'.format(uuid))
         result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = len(response['docs'])
+        return result
+
+    def get_content_topiclinks(self, content):
+        response = self._get_content_topics(content)
+        result = []
+        for value in response:
+            keyword = zeit.retresco.tag.Tag(
+                value['name'],
+                value['topic_type']
+                )
+            keyword.link = value['url'].lstrip('/')
+            result.append(keyword)
         return result
 
     def get_article_data(self, content):
