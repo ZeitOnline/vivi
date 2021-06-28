@@ -6,11 +6,11 @@ import zope.interface
 
 
 @zope.interface.implementer(zeit.cms.tagging.interfaces.ITag)
-class Tag(object):
+class Tag:
     """Representation of a keyword."""
 
     # This is stored in DAV properties, changing it requires a mass-migration.
-    SEPARATOR = u'☃'
+    SEPARATOR = '☃'
 
     # For zeit.web, populated by ITMS.get_article_keywords() with the
     # TMS-provided path to the corresponding topicpage; without a leading
@@ -28,7 +28,7 @@ class Tag(object):
         # `code` is only used for internal purposes. It is used as key in
         # `Tagger` and `Tags`, in DAV-Properties to mark a `Tag` pinned and as
         # `part of the `AbsoluteURL` and `Traverser` functionality.
-        return u''.join((self.entity_type, self.SEPARATOR, self.label))
+        return ''.join((self.entity_type, self.SEPARATOR, self.label))
 
     @zope.cachedescriptors.property.Lazy
     def url_value(self):

@@ -1,7 +1,6 @@
 import collections
 import copy
 import grokcore.component as grok
-import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -12,7 +11,7 @@ import zope.lifecycleevent
 import zope.security.proxy
 
 
-class Tags(object):
+class Tags:
     """Property which stores tag data in DAV."""
 
     def __get__(self, instance, class_):
@@ -85,7 +84,7 @@ def update_tags_on_modify(content, event):
 
 
 @grok.adapter(
-    six.string_types[0], name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
+    str, name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_tag(unique_id):
     assert unique_id.startswith(
@@ -93,7 +92,7 @@ def unique_id_to_tag(unique_id):
     token = unique_id.replace(
         zeit.cms.tagging.interfaces.ID_NAMESPACE, '', 1)
     # `zeit.retresco` generates unicode escaped uniqueIds, so we decode them.
-    if isinstance(token, six.text_type):
+    if isinstance(token, str):
         token = token.encode('utf-8')
     token = token.decode('unicode_escape')
     whitelist = zope.component.getUtility(
