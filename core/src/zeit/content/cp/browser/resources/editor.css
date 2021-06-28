@@ -95,12 +95,6 @@
 }
 
 
-.edit-bar > .countings-link {
-  float: right;
-  font-size: 80%;
-  width: auto;
-}
-
 .edit-bar > .title,
 .edit-bar > .kind {
   float: left;

@@ -152,7 +152,6 @@ class FeedView(object):
                 _('Title'),
                 lambda t, c: t.title,
                 cell_formatter=_url_formatter),
-            zeit.cms.browser.listing.HitColumn(_('Hits')),
         )
 
     @zope.cachedescriptors.property.Lazy

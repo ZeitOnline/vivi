@@ -400,9 +400,6 @@ Politik – Feed contents
       <th>
         Title
       </th>
-      <th>
-        Hits
-      </th>
     </tr>
   </thead>
   ...
@@ -449,9 +446,6 @@ Politik – Edit feed contents
       <th>
         Title
       </th>
-      <th>
-        Hits
-      </th>
     </tr>
   </thead>
   <tbody>
@@ -468,8 +462,6 @@ Politik – Edit feed contents
     </td>
     <td>
       <a href="http://localhost/++skin++cms/repository/online/2007/01/rauchen-verbessert-die-welt">rauchen-verbessert-die-welt</a>
-    </td>
-    <td>
     </td>
   </tr>
   </tbody>
