@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.56.0 (unreleased)
+4.56.0 (2021-06-28)
 -------------------
 
 - TOPIC-9: Provide access to TMS kpi data with `IKPI` adapter
