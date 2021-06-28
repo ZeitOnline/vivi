@@ -187,3 +187,18 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertIsInstance(content, zeit.content.link.link.Link)
         self.compare(
             zeit.content.link.interfaces.ILink, link, content, ['xml'])
+
+    def test_kpi_data_can_be_accessed_via_adapter(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article):
+            pass
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        data['kpi_visits'] = 1
+        data['kpi_comments'] = 2
+        data['kpi_subscriptions'] = 3
+        content = zeit.retresco.interfaces.ITMSContent(data)
+        kpi = zeit.retresco.interfaces.IKPI(content)
+        self.assertEqual(1, kpi.visits)
+        self.assertEqual(2, kpi.comments)
+        self.assertEqual(3, kpi.subscriptions)

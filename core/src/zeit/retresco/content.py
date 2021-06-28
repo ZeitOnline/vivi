@@ -21,6 +21,7 @@ class Content(object):
     __name__ = None
 
     def __init__(self, data):
+        self._tms_data = data
         self._tms_payload = data.get('payload', {})
         self._tms_payload_head = self._tms_payload.get('head', {})
         if 'url' in data:
@@ -121,6 +122,23 @@ class TMSGallery(Content, zeit.content.gallery.gallery.Gallery):
 @grok.implementer(zeit.content.gallery.interfaces.IVisibleEntryCount)
 def gallery_entry_count(context):
     return context._tms_payload_head.get('visible_entry_count', 0)
+
+
+@grok.implementer(zeit.retresco.interfaces.IKPI)
+class KPI(grok.Adapter):
+
+    grok.context(zeit.retresco.interfaces.ITMSContent)
+
+    FIELDS = {
+        'visits': 'kpi_visits',
+        'comments': 'kpi_comments',
+        'subscriptions': 'kpi_subscriptions',
+    }
+
+    def __init__(self, context):
+        super().__init__(context)
+        for prop, tms in self.FIELDS.items():
+            setattr(self, prop, self.context._tms_data.get(tms, 0))
 
 
 @grok.adapter(dict)

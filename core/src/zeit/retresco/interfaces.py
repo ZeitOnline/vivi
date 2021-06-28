@@ -192,6 +192,15 @@ class ITMSContent(zeit.cms.interfaces.ICMSContent):
     """
 
 
+class IKPI(zope.interface.Interface):
+    """Provides access to kpi fields (visits, comments, etc.) on ITMSContent.
+    """
+
+    visits = zope.schema.Int(default=0, readonly=True)
+    comments = zope.schema.Int(default=0, readonly=True)
+    subscriptions = zope.schema.Int(default=0, readonly=True)
+
+
 class IElasticDAVProperties(zeit.connector.interfaces.IWebDAVProperties):
     """Marker interface so we can register special IDAVPropertyConverter
     variants for ITMSContent objects.
