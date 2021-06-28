@@ -10,10 +10,10 @@ import requests.sessions
 import signal
 import transaction
 import zeit.cms.interfaces
+import zeit.cms.tagging.tag
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.retresco.interfaces
-import zeit.retresco.tag
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -46,7 +46,7 @@ class TMS:
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
-                result.append(zeit.retresco.tag.Tag(
+                result.append(zeit.cms.tagging.tag.Tag(
                     label=keyword, entity_type=entity_type))
         return result
 
@@ -57,7 +57,7 @@ class TMS:
             params['item_type'] = entity_type
         response = self._request('GET /entities', params=params)
         for entity in response['entities']:
-            yield zeit.retresco.tag.Tag(
+            yield zeit.cms.tagging.tag.Tag(
                 entity['entity_name'], entity['entity_type'])
 
     def get_locations(self, search_string):
@@ -137,7 +137,7 @@ class TMS:
         response = self._get_content_topics(content)
         result = []
         for value in response:
-            keyword = zeit.retresco.tag.Tag(
+            keyword = zeit.cms.tagging.tag.Tag(
                 value['name'],
                 value['topic_type']
                 )
@@ -206,7 +206,7 @@ class TMS:
         # Keywords pinned in vivi come first.
         result = []
         content = zeit.retresco.interfaces.ITMSContent(response)
-        for keyword in zeit.retresco.tagger.Tagger(content).values():
+        for keyword in zeit.cms.tagging.tagger.Tagger(content).values():
             if not keyword.pinned:
                 continue
             tms = entity_links.pop((keyword.label, keyword.entity_type), None)
@@ -216,7 +216,7 @@ class TMS:
             result.append(keyword)
         # Then we add the rest, TMS returns those sorted by descending score.
         for tms in entity_links.values():
-            keyword = zeit.retresco.tag.Tag(tms['key'], tms['key_type'])
+            keyword = zeit.cms.tagging.tag.Tag(tms['key'], tms['key_type'])
             keyword.link = tms['link']
             result.append(keyword)
 

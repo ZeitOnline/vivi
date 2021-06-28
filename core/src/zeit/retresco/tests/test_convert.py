@@ -6,6 +6,7 @@ import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
+import zeit.cms.tagging.tag
 import zeit.content.advertisement.advertisement
 import zeit.content.author.author
 import zeit.content.gallery.gallery
@@ -15,7 +16,6 @@ import zeit.content.infobox.infobox
 import zeit.content.portraitbox.portraitbox
 import zeit.content.volume.volume
 import zeit.retresco.interfaces
-import zeit.retresco.tag
 import zeit.retresco.testing
 import zeit.seo.interfaces
 
@@ -31,8 +31,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             co.breaking_news = True
             co.product = zeit.cms.content.sources.Product(u'KINZ')
             co.keywords = (
-                zeit.retresco.tag.Tag('Code1', 'keyword'),
-                zeit.retresco.tag.Tag('Code2', 'keyword'))
+                zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
+                zeit.cms.tagging.tag.Tag('Code2', 'keyword'))
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
 

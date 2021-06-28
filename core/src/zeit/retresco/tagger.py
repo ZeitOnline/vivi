@@ -1,5 +1,5 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-from zeit.retresco.tag import Tag
+from zeit.cms.tagging.tag import Tag
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import logging

@@ -11,6 +11,7 @@ import requests.exceptions
 import time
 import urllib.parse
 import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.tag
 import zeit.connector.interfaces
 import zeit.content.rawxml.rawxml
 import zeit.content.text.text
@@ -32,7 +33,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.addCleanup(patcher.stop)
 
     def add_tag(self, tagger, label, typ, pinned):
-        tag = zeit.retresco.tag.Tag(label, typ)
+        tag = zeit.cms.tagging.tag.Tag(label, typ)
         tagger[tag.code] = tag
         if pinned:
             tagger.set_pinned(tagger.pinned + (tag.code,))
@@ -275,7 +276,8 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_enrich_returns_keywords(self):
         keywords = self.tms.extract_keywords(self.article)
-        self.assertIn(zeit.retresco.tag.Tag('Somalia', 'location'), keywords)
+        self.assertIn(
+            zeit.cms.tagging.tag.Tag('Somalia', 'location'), keywords)
 
     def test_get_topicpages_has_expected_fields(self):
         pages = self.tms.get_topicpages()
