@@ -2,10 +2,10 @@
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree
-import six
 import unittest
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.retresco.testing
@@ -18,7 +18,7 @@ class TestTags(unittest.TestCase,
     def get_content(self):
         from zeit.cms.tagging.tag import Tags
 
-        class Content(object):
+        class Content:
             tags = Tags()
         return Content()
 
@@ -89,11 +89,11 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
 
     def test_redirecting_to_tag_with_unicode_escaped_url_yields_tag(self):
         # Redirect tests IAbsoluteURL and Traverser, so we know it's symmetric.
-        self.setup_tags(u'Bärlin')
-        code = u'Bärlin'.encode('unicode_escape').decode('ascii')
+        self.setup_tags('Bärlin')
+        code = 'Bärlin'.encode('unicode_escape').decode('ascii')
         base = 'http://localhost/++skin++vivi/'
         b = self.browser
-        b.open(base + u'@@redirect_to?unique_id=tag://{}&view=@@object-details'
+        b.open(base + '@@redirect_to?unique_id=tag://{}&view=@@object-details'
                       .format(code))
         self.assertEqual('<h3>Bärlin</h3>', b.contents)
 
@@ -107,18 +107,18 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
 
     def test_adapting_tag_url_with_escaped_unicode_yields_tag(self):
         from zeit.cms.interfaces import ICMSContent
-        self.setup_tags(u'Bärlin')
+        self.setup_tags('Bärlin')
         tag = ICMSContent(
-            u'tag://%s' % u'Bärlin'.encode('unicode_escape').decode('ascii'))
-        self.assertEqual(u'Bärlin', tag.label)
+            'tag://%s' % 'Bärlin'.encode('unicode_escape').decode('ascii'))
+        self.assertEqual('Bärlin', tag.label)
 
     def test_adapting_unicode_escaped_uniqueId_of_tag_yields_tag(self):
         from zeit.cms.interfaces import ICMSContent
-        self.setup_tags(u'Bärlin')
+        self.setup_tags('Bärlin')
         whitelist = zope.component.queryUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
-        tag = ICMSContent(whitelist.get(u'Bärlin').uniqueId)
-        self.assertEqual(u'Bärlin', tag.label)
+        tag = ICMSContent(whitelist.get('Bärlin').uniqueId)
+        self.assertEqual('Bärlin', tag.label)
 
 
 class TestSyncToXML(zeit.cms.testing.ZeitCmsBrowserTestCase,
@@ -132,7 +132,7 @@ class TestSyncToXML(zeit.cms.testing.ZeitCmsBrowserTestCase,
             '...<tag...>foo</tag>...',
             lxml.etree.tostring(
                 self.repository['testcontent'].xml.head,
-                encoding=six.text_type))
+                encoding=str))
 
     def test_leaves_xml_without_head_alone(self):
         content = self.repository['testcontent']
@@ -147,29 +147,26 @@ class TagTest(zeit.retresco.testing.FunctionalTestCase):
     """Testing ..tag.Tag."""
 
     def test_from_code_generates_a_tag_object_equal_to_its_source(self):
-        from ..tag import Tag
-        tag = Tag(u'Vipraschül', 'Person')
-        self.assertEqual(tag, Tag.from_code(tag.code))
+        tag = zeit.cms.tagging.tag.Tag('Vipraschül', 'Person')
+        self.assertEqual(tag, zeit.cms.tagging.tag.Tag.from_code(tag.code))
 
     def test_uniqueId_from_tag_can_be_adapted_to_tag(self):
-        from ..tag import Tag
-        tag = Tag(u'Vipraschül', 'Person')
+        tag = zeit.cms.tagging.tag.Tag('Vipraschül', 'Person')
         self.assertEqual(tag, zeit.cms.interfaces.ICMSContent(tag.uniqueId))
 
     def test_comparison_to_object_that_is_no_tag_returns_False(self):
-        from ..tag import Tag
-        tag = Tag(u'Vipraschül', 'Person')
+        tag = zeit.cms.tagging.tag.Tag('Vipraschül', 'Person')
         self.assertEqual(False, tag == {})
 
     def test_not_equal_comparison_is_supported(self):
-        from ..tag import Tag
-        tag = Tag(u'Vipraschül', 'Person')
-        self.assertEqual(False, tag != Tag(u'Vipraschül', 'Person'))
+        tag = zeit.cms.tagging.tag.Tag('Vipraschül', 'Person')
+        self.assertEqual(False, tag != zeit.cms.tagging.tag.Tag(
+            'Vipraschül', 'Person'))
         self.assertEqual(True, tag != {})
 
     def test_from_code_returns_None_if_invalid_code_given(self):
-        from ..tag import Tag
-        self.assertEqual(None, Tag.from_code(u'invalid-code'))
+        self.assertEqual(None, zeit.cms.tagging.tag.Tag.from_code(
+            'invalid-code'))
 
 
 class TestTagIntegration(zeit.cms.testing.ZeitCmsBrowserTestCase):
@@ -177,10 +174,9 @@ class TestTagIntegration(zeit.cms.testing.ZeitCmsBrowserTestCase):
     layer = zeit.retresco.testing.WSGI_LAYER
 
     def test_absolute_url_works_with_traverser(self):
-        from ..tag import Tag
-        tag = Tag(u'Snowman Tag', u'Snowman')
+        tag = zeit.cms.tagging.tag.Tag('Snowman Tag', 'Snowman')
         base = 'http://localhost/++skin++vivi/'
         b = self.browser
-        b.open(base + u'@@redirect_to?unique_id=tag://%s&view=@@object-details'
+        b.open(base + '@@redirect_to?unique_id=tag://%s&view=@@object-details'
                % tag.code.encode('unicode_escape').decode('ascii'))
-        self.assertEqual(u'<h3>Snowman Tag</h3>', b.contents)
+        self.assertEqual('<h3>Snowman Tag</h3>', b.contents)
