@@ -82,20 +82,23 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
     def test_object_details(self):
         self.setup_tags('foo')
         base = 'http://localhost/++skin++vivi/'
-        b = self.browser
-        b.open(
-            base + '@@redirect_to?unique_id=tag://foo&view=@@object-details')
-        self.assertEqual('<h3>foo</h3>', b.contents)
+        browser = self.browser
+        browser.open(
+            '{}@@redirect_to?unique_id=tag://foo&view=@@object-details'.format(
+                base))
+
+        self.assertEqual('<h3>foo</h3>', browser.contents)
 
     def test_redirecting_to_tag_with_unicode_escaped_url_yields_tag(self):
         # Redirect tests IAbsoluteURL and Traverser, so we know it's symmetric.
         self.setup_tags('Bärlin')
         code = 'Bärlin'.encode('unicode_escape').decode('ascii')
         base = 'http://localhost/++skin++vivi/'
-        b = self.browser
-        b.open(base + '@@redirect_to?unique_id=tag://{}&view=@@object-details'
-                      .format(code))
-        self.assertEqual('<h3>Bärlin</h3>', b.contents)
+        browser = self.browser
+        browser.open(
+            '{}@@redirect_to?unique_id=tag://{}&view=@@object-details'
+            .format(base, code))
+        self.assertEqual('<h3>Bärlin</h3>', browser.contents)
 
     def test_adapting_tag_url_to_cmscontent_yields_a_copy(self):
         from zeit.cms.interfaces import ICMSContent
@@ -177,6 +180,7 @@ class TestTagIntegration(zeit.cms.testing.ZeitCmsBrowserTestCase):
         tag = zeit.cms.tagging.tag.Tag('Snowman Tag', 'Snowman')
         base = 'http://localhost/++skin++vivi/'
         b = self.browser
-        b.open(base + '@@redirect_to?unique_id=tag://%s&view=@@object-details'
-               % tag.code.encode('unicode_escape').decode('ascii'))
+        b.open(
+            '{}@@redirect_to?unique_id=tag://{}&view=@@object-details'.format(
+                base, tag.code.encode('unicode_escape').decode('ascii')))
         self.assertEqual('<h3>Snowman Tag</h3>', b.contents)

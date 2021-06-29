@@ -96,18 +96,18 @@ class DummyWhitelist:
 
     def search(self, term):
         term = term.lower()
-        return [FakeTag(code=k, label=v)
-                for k, v in self.tags.items() if term in v.lower()]
+        return [FakeTag(label, code=code)
+                for code, label in self.tags.items() if term in label.lower()]
 
     def locations(self, term):
         term = term.lower()
-        return [FakeTag(code=key, label=label)
-                for key, label in self.location_tags.items()
+        return [FakeTag(label, code=code)
+                for code, label in self.location_tags.items()
                 if term in label.lower()]
 
-    def get(self, id):
-        if id in self.tags:
-            return FakeTag(code=id, label=self.tags[id])
+    def get(self, tag_id):
+        if tag_id in self.tags:
+            return FakeTag(self.tags[tag_id], code=tag_id)
         return None
 
 
@@ -142,39 +142,29 @@ class FakeTags(collections.OrderedDict):
         return node
 
 
-@zope.interface.implementer(zeit.cms.tagging.interfaces.ITag)
-class FakeTag:
+class FakeTag(zeit.cms.tagging.tag.Tag):
     """Fake implementation of ITag for tests."""
 
-    def __init__(self, code, label):
+    def __init__(self, label, code=None, entity_type=None):
         self.label = label
         self.code = code
+        self.entity_type = entity_type
         self.pinned = False
         self.__name__ = self.code  # needed to fulfill `ICMSContent`
         self.link = None
-
-    @property
-    def uniqueId(self):
-        return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
-                self.code.encode('unicode_escape').decode('ascii'))
-
-    def __eq__(self, other):
-        if not isinstance(other, type(self)):
-            return False
-        return self.code == other.code and self.pinned == other.pinned
 
 
 class TaggingHelper:
     """Mixin for tests which need some tagging infrastrucutre."""
 
-    def get_tag(self, code):
-        tag = FakeTag(code=code, label=code)
+    def get_tag(self, label):
+        tag = FakeTag(label, code=label)
         return tag
 
-    def setup_tags(self, *codes):
+    def setup_tags(self, *labels):
         tags = FakeTags()
-        for code in codes:
-            tags[code] = self.get_tag(code)
+        for label in labels:
+            tags[label] = self.get_tag(label)
         patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
         self.addCleanup(patcher.stop)
         self.tagger = patcher.start()
