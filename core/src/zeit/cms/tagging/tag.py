@@ -56,13 +56,13 @@ class Tag:
     # For zeit.web, populated by ITMS.get_article_keywords() with the
     # TMS-provided path to the corresponding topicpage; without a leading
     # slash, so it plays nice with route_url() which already has the slash.
-    link = None
 
-    def __init__(self, label, entity_type):
+    def __init__(self, label, entity_type, link=None):
         self.label = label
         self.entity_type = entity_type
         self.pinned = False  # pinned state is set from outside after init
         self.__name__ = self.code  # needed to fulfill `ICMSContent`
+        self.link = link  # for test pruposes
 
     @zope.cachedescriptors.property.Lazy
     def code(self):
@@ -92,8 +92,9 @@ class Tag:
 
     @property
     def uniqueId(self):
-        return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
-                self.code.encode('unicode_escape').decode('ascii'))
+        return ('{}{}'.format(
+            zeit.cms.tagging.interfaces.ID_NAMESPACE,
+            self.code.encode('unicode_escape').decode('ascii')))
 
     def __repr__(self):
         return '<%s.%s %s>' % (
