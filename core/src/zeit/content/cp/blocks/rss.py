@@ -85,12 +85,6 @@ class RSSLink(object):
 
 
 @grok.adapter(IRSSLink)
-@grok.implementer(zeit.cms.content.interfaces.IAccessCounter)
-def no_counter(context):
-    return None
-
-
-@grok.adapter(IRSSLink)
 @grok.implementer(zeit.cms.content.interfaces.IUUID)
 def no_uuid(context):
     return None

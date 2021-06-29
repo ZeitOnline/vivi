@@ -22,7 +22,7 @@ We expect a normal file listing:
 [<Element table...>]
 >>> columns = browser.xpath("//table/thead/tr/th")
 >>> len(columns)
-11
+10
 
 
 Breadcrums
@@ -38,120 +38,6 @@ the header bar:
 'repository'
 >>> bc[1].text
 '2007'
-
-
-Hit counter
-===========
-
-When there is an adapter to IAccessCounter the information provided by the
-adapter will be shown in listings. Right now there is no access counter, so
-we just get an empty column:
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ... 
-    <td>
-      <span class="filename">4schanzentournee-abgesang</span>
-    </td>
-    <td>
-      2008 3 7  12:47:16
-    </td>
-    <td>
-    </td>
-    ...
-  </tr>
-  ...
-
-
-Now create an access counter which alwasy returns 42 for today an 31415 for
-total hits:
-
->>> class AccessCounter(object):
-...     hits = 42
-...     total_hits = 31415
-...     def __init__(self, context):
-...         self.context = context
-...
->>> import zope.component
->>> import zeit.cms.interfaces
->>> import zeit.cms.content.interfaces
->>> gsm = zope.component.getGlobalSiteManager()
->>> gsm.registerAdapter(
-...     AccessCounter, (zeit.cms.interfaces.ICMSContent, ),
-...     zeit.cms.content.interfaces.IAccessCounter)
-
-
-Now we have 42 / 31415 accesses:
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ...
-    <td>
-      4schanzentournee-abgesang
-    </td>
-    <td>
-      <span class="filename">4schanzentournee-abgesang</span>
-    </td>
-    <td>
-      2008 3 7  12:47:16
-    </td>
-    <td>
-      <span class="hitCounter">42 / 31415</span>
-    </td>
-    ...
-  </tr>
-  ...
-
-When there are no hits today the rendering is different:
-
->>> AccessCounter.hits = None
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-    ...
-    <td>
-      <span class="filename">4schanzentournee-abgesang</span>
-    </td>
-    <td>
-      2008 3 7  12:47:16
-    </td>
-    <td>
-      <span class="hitCounter">∅ / 31415</span>
-    </td>
-    ...
-  </tr>
-  ...
-
-When we have only hits from today, those are also displayed as total hits:
-
->>> AccessCounter.hits = 543
->>> AccessCounter.total_hits = None
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> print(browser.contents)
-<?xml ...
-  <tbody>
-  <tr class="odd">
-   ...
-    <td>
-      <span class="filename">4schanzentournee-abgesang</span>
-    </td>
-    <td>
-      2008 3 7  12:47:16
-    </td>
-    <td>
-      <span class="hitCounter">543 / 543</span>
-    </td>
-    ...
-  </tr>
-  ...
 
 
 Workflow indicator
@@ -194,6 +80,7 @@ When we have local modifications the we get the third indicator. Let's try some
 >>> import datetime
 >>> import pytz
 >>> import zeit.connector.interfaces
+>>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> connector._properties[uid][('getlastmodified', 'DAV:')] = (
 ...     datetime.datetime(2007, 12, 6, 12, 00, tzinfo=pytz.UTC).isoformat())
@@ -299,10 +186,3 @@ The title of the listing is "Directory listing"
 <?xml...
     <title> 01 – Directory listing </title>
     ...
-
-Clean up:
-
->>> gsm.unregisterAdapter(
-...     AccessCounter, (zeit.cms.interfaces.ICMSContent, ),
-...     zeit.cms.content.interfaces.IAccessCounter)
-True
