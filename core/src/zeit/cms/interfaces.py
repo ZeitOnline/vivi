@@ -117,24 +117,13 @@ class Result(list):
 
 
 class ITracer(zope.interface.Interface):
+    """Wrapper around opentelemetry.trace.Tracer, see there for the full
+    method signatures and usage."""
 
-    def start_trace(trace_id=None, parent_id=None):
+    def start_span(name, attributes={}):
         pass
 
-    def end_trace(trace, name='unknown', status_code=599, **kw):
-        pass
-
-    def span(self, typ, name, **kw):
-        """context manager for start_span/end_span"""
-        pass
-
-    def start_span(typ, name, **kw):
-        pass
-
-    def add_span_data(span, **kw):
-        pass
-
-    def end_span(span, exc_info=()):
+    def start_as_current_span(name, attributes={}):
         pass
 
 
