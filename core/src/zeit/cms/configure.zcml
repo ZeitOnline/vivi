@@ -43,7 +43,7 @@
     component=".generation.manager"
     />
 
-  <utility factory=".tracing.FakeTracer" />
+  <utility factory=".tracing.default_tracer" />
 
   <!-- cleanup -->
   <subscriber handler=".cleanup.clean_exc_info" />
