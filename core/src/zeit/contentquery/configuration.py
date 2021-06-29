@@ -86,12 +86,6 @@ class Configuration:
 
     @property
     def automatic_type(self):
-        # Set automatic_type on 'centerpage' only at the new topicboxes.
-        if isinstance(self, zeit.content.article.edit.topicbox.Topicbox):
-            if self._automatic_type is None:
-                if (self.first_reference, self.second_reference,
-                        self.third_reference) == (None, None, None):
-                    self._automatic_type = 'centerpage'
         bbb = self._automatic_type_bbb.get(self._automatic_type)
         return bbb or self._automatic_type
 

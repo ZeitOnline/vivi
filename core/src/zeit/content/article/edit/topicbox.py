@@ -67,6 +67,21 @@ class Topicbox(zeit.content.article.edit.block.Block,
     existing_teasers = frozenset()
 
     @property
+    def automatic_type(self):
+        # Set automatic_type on 'centerpage' only at the new topicboxes.
+        if self._automatic_type is None:
+            if (self.first_reference, self.second_reference,
+                    self.third_reference) == (None, None, None):
+                self._automatic_type = 'centerpage'
+
+        bbb = self._automatic_type_bbb.get(self._automatic_type)
+        return bbb or self._automatic_type
+
+    @automatic_type.setter
+    def automatic_type(self, value):
+        self._automatic_type = value
+
+    @property
     def referenced_cp(self):
         if self.automatic_type == 'manual':
             return self.get_centerpage_from_first_reference()
