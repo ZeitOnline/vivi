@@ -14,7 +14,7 @@ KEYWORD_PROPERTY = ('testtags', NAMESPACE)
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
 @zope.interface.implementer(zeit.cms.tagging.interfaces.ITagger)
-class DummyTagger(object):
+class DummyTagger:
 
     def __init__(self, context):
         self.context = context
@@ -82,7 +82,7 @@ class DummyTagger(object):
 
 
 @zope.interface.implementer(zeit.cms.tagging.interfaces.IWhitelist)
-class DummyWhitelist(object):
+class DummyWhitelist:
 
     tags = {
         'testtag': 'Testtag',
@@ -90,8 +90,8 @@ class DummyWhitelist(object):
         'testtag3': 'Testtag3',
     }
     location_tags = {
-        'hannover': u'Hannover',
-        'paris': u'Paris'
+        'hannover': 'Hannover',
+        'paris': 'Paris'
     }
 
     def search(self, term):
@@ -114,7 +114,7 @@ class DummyWhitelist(object):
 class FakeTags(collections.OrderedDict):
 
     def __init__(self):
-        super(FakeTags, self).__init__()
+        super().__init__()
         self.updateOrder = mock.Mock()
         self.update = mock.Mock()
 
@@ -143,7 +143,7 @@ class FakeTags(collections.OrderedDict):
 
 
 @zope.interface.implementer(zeit.cms.tagging.interfaces.ITag)
-class FakeTag(object):
+class FakeTag:
     """Fake implementation of ITag for tests."""
 
     def __init__(self, code, label):
@@ -164,7 +164,7 @@ class FakeTag(object):
         return self.code == other.code and self.pinned == other.pinned
 
 
-class TaggingHelper(object):
+class TaggingHelper:
     """Mixin for tests which need some tagging infrastrucutre."""
 
     def get_tag(self, code):
