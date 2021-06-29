@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.57.0 (unreleased)
+4.57.0 (2021-06-29)
 -------------------
 
 - ZON-5970: Remove clickcounter integration
