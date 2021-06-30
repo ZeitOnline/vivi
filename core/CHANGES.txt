@@ -4,7 +4,7 @@ vivi.core changes
 4.57.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- FIX: Hide Topicpage sort option when anything else is selected
 
 
 4.57.1 (2021-06-30)
