@@ -1,3 +1,12 @@
+var AUTOMATIC_FIELDS = {
+    'manual': ['first_reference', 'second_reference', 'third_reference'],
+    'centerpage': ['referenced_cp'],
+    'topicpage': ['referenced_topicpage', 'topicpage_filter', 'topicpage_order'],
+    'elasticsearch-query': ['elasticsearch_raw_query', 'elasticsearch_raw_order'],
+    'preconfigured-query': ['preconfigured_query'],
+    'related-api': ['topicpage_filter']
+};
+
 function getAllTopicboxIds() {
     var topicbox_ids = [];
 
@@ -44,63 +53,14 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
         return;
     }
 
-    var allAutomaticFields = [
-        'first_reference', 'second_reference', 'third_reference',
-        'referenced_cp',
-        'referenced_topicpage', 'topicpage_filter', 'topicpage_order',
-        'elasticsearch_raw_query', 'elasticsearch_raw_order',
-        'preconfigured_query'
-    ];
-
-    // Hide all except automatic_type
-    allAutomaticFields.forEach((element) => {
-        hideElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${element}`);
+    Object.values(AUTOMATIC_FIELDS).forEach((fields) => {
+        fields.forEach((field) => {
+            hideElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${field}`);
+        });
     });
 
-    var automaticFields = [];
-    switch(currentAutomaticTypeValue.toLowerCase()) {
-        case 'manual':
-            automaticFields = [
-                'first_reference',
-                'second_reference',
-                'third_reference'];
-            break;
-        case 'centerpage':
-            automaticFields = [
-                'referenced_cp'
-            ];
-            break;
-        case 'topicpage':
-            automaticFields = [
-                'referenced_topicpage',
-                'topicpage_filter',
-                'topicpage_order'
-            ];
-            break;
-        case 'elasticsearch-query':
-            automaticFields = [
-                'elasticsearch_raw_query',
-                'elasticsearch_raw_order'
-            ];
-            break;
-        case 'related-api':
-            automaticFields = [
-                'topicpage_filter'
-            ];
-            break;
-        case 'preconfigured-query':
-            automaticFields = [
-                'preconfigured_query'
-            ];
-            break;
-        default:
-            break;
-    }
-
-    allAutomaticFields.filter((element) => {
-        return automaticFields.includes(element);
-    }).forEach((element) => {
-        showElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${element}`);
+    AUTOMATIC_FIELDS[currentAutomaticTypeValue].forEach((field) => {
+        showElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${field}`);
     });
 }
 
