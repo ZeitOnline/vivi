@@ -41,7 +41,7 @@ class Topicbox(zeit.content.article.edit.block.Block,
         '.', 'automatic_type',
         zeit.content.article.edit.interfaces.ITopicbox['automatic_type'])
 
-    _automatic_type_bbb = {None: 'manual'}
+    _automatic_type_bbb = {None: 'centerpage'}
 
     hide_dupes = False
 
