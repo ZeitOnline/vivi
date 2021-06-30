@@ -45,7 +45,6 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
     }
 
     var allAutomaticFields = [
-        'automatic_type',
         'first_reference', 'second_reference', 'third_reference',
         'referenced_cp',
         'referenced_topicpage', 'topicpage_filter', 'topicpage_order',
@@ -54,9 +53,7 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
     ];
 
     // Hide all except automatic_type
-    allAutomaticFields.filter((element) => {
-        return element != 'automatic_type';
-    }).forEach((element) => {
+    allAutomaticFields.forEach((element) => {
         hideElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${element}`);
     });
 
