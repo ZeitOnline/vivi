@@ -1,19 +1,3 @@
-function getFieldClassNames() {
-    return {
-        'automatic_type': 'field fieldname-automatic_type fieldtype-text',
-        'first_reference': 'field fieldname-first_reference fieldtype-text',
-        'second_reference': 'field fieldname-second_reference fieldtype-text',
-        'third_reference': 'field fieldname-third_reference fieldtype-text',
-        'referenced_cp': 'field fieldname-referenced_cp fieldtype-text',
-        'referenced_topicpage': 'field fieldname-referenced_topicpage fieldtype-text',
-        'topicpage_filter': 'field fieldname-topicpage_filter fieldtype-text',
-        'topicpage_order': 'field fieldname-topicpage_order required fieldtype-text',
-        'elasticsearch_raw_query': 'field fieldname-elasticsearch_raw_query fieldtype-text',
-        'elasticsearch_raw_order': 'field fieldname-elasticsearch_raw_order fieldtype-text',
-        'preconfigured_query': 'field fieldname-preconfigured_query fieldtype-text'
-    };
-}
-
 function getAllTopicboxIds() {
     var topicbox_ids = [];
 
@@ -55,18 +39,25 @@ function getTopicboxFieldSetById(topicboxId) {
 
 function hideShowElementsByAutomaticTypeValue(topicboxId) {
     var topicboxFieldSet = getTopicboxFieldSetById(topicboxId);
-    var fieldClassNames = getFieldClassNames();
     var currentAutomaticTypeValue = getAutomaticTypeTextByTopicboxId(topicboxId);
-
     if (currentAutomaticTypeValue === null) {
         return;
     }
 
+    var allAutomaticFields = [
+        'automatic_type',
+        'first_reference', 'second_reference', 'third_reference',
+        'referenced_cp',
+        'referenced_topicpage', 'topicpage_filter', 'topicpage_order',
+        'elasticsearch_raw_query', 'elasticsearch_raw_order',
+        'preconfigured_query'
+    ];
+
     // Hide all except automatic_type
-    Object.keys(fieldClassNames).filter((element) => {
-        return element.indexOf('automatic_type') == -1;
+    allAutomaticFields.filter((element) => {
+        return element != 'automatic_type';
     }).forEach((element) => {
-        hideElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
+        hideElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${element}`);
     });
 
     var automaticFields = [];
@@ -109,19 +100,19 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
             break;
     }
 
-    Object.keys(fieldClassNames).filter((element) => {
+    allAutomaticFields.filter((element) => {
         return automaticFields.includes(element);
     }).forEach((element) => {
-        showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
+        showElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${element}`);
     });
 }
 
 function hideElementByTopicboxFieldSet(fieldset, className) {
-    fieldset.querySelectorAll(`[class="${className}"]`)[0].style.display = 'none';
+    fieldset.querySelectorAll(`.${className}`)[0].style.display = 'none';
 }
 
 function showElementByTopicboxFieldSet(fieldset, className) {
-    fieldset.querySelectorAll(`[class="${className}"]`)[0].style.display = 'block';
+    fieldset.querySelectorAll(`.${className}`)[0].style.display = 'block';
 }
 
 (function ($) {
