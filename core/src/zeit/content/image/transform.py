@@ -59,6 +59,8 @@ class ImageTransform(object):
         enhancements, so it can be used as a high quality preview of image
         enhancements in the frontend.
         """
+        size = None if type(size) == tuple and 0 in size else size
+
         if not variant.is_default:
             image = self._crop_variant_image(variant, size=size)
         else:
