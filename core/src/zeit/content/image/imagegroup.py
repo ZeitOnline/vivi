@@ -137,12 +137,12 @@ class ImageGroupBase(object):
             size = [variant.max_width, variant.max_height]
 
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-        with tracer.span(
-                'code', 'zeit.content.image.imagegroup.create_variant',
-                content=str(self), variant=variant.name,
-                viewport=viewport) as span:
+        with tracer.start_as_current_span(
+                'zeit.content.image.imagegroup.create_variant',
+                attributes={'content': str(self), 'variant': variant.name,
+                            'viewport': viewport}) as span:
             if size is not None:
-                tracer.add_span_data(span, width=size[0], height=size[1])
+                span.set_attributes({'width': size[0], 'height': size[1]})
 
             # Be defensive about missing meta files, so source could not be
             # recognized as an image (for zeit.web)

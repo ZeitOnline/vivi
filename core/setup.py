@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.56.1.dev0',
+    version='4.57.1.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -39,6 +39,7 @@ setup(
         'martian',
         'markdown',
         'markdownify',
+        'opentelemetry-api',
         'pendulum>=2.0.0.dev0',
         'persistent',
         'pyramid_dogpile_cache2',
