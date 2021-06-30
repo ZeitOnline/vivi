@@ -170,17 +170,3 @@ class TagTest(zeit.retresco.testing.FunctionalTestCase):
     def test_from_code_returns_None_if_invalid_code_given(self):
         self.assertEqual(None, zeit.cms.tagging.tag.Tag.from_code(
             'invalid-code'))
-
-
-class TestTagIntegration(zeit.cms.testing.ZeitCmsBrowserTestCase):
-
-    layer = zeit.retresco.testing.WSGI_LAYER
-
-    def test_absolute_url_works_with_traverser(self):
-        tag = zeit.cms.tagging.tag.Tag('Snowman Tag', 'Snowman')
-        base = 'http://localhost/++skin++vivi/'
-        b = self.browser
-        b.open(
-            '{}@@redirect_to?unique_id=tag://{}&view=@@object-details'.format(
-                base, tag.code.encode('unicode_escape').decode('ascii')))
-        self.assertEqual('<h3>Snowman Tag</h3>', b.contents)
