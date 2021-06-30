@@ -7,10 +7,10 @@ function getFieldClassNames() {
         'referenced_cp': 'field fieldname-referenced_cp fieldtype-text',
         'referenced_topicpage': 'field fieldname-referenced_topicpage fieldtype-text',
         'topicpage_filter': 'field fieldname-topicpage_filter fieldtype-text',
+        'topicpage_order': 'field fieldname-topicpage_order required fieldtype-text',
         'elasticsearch_raw_query': 'field fieldname-elasticsearch_raw_query fieldtype-text',
         'elasticsearch_raw_order': 'field fieldname-elasticsearch_raw_order fieldtype-text',
-        'preconfigured_query': 'field fieldname-preconfigured_query fieldtype-text',
-        'topicpage_order': 'field fieldname-topicpage_order required fieldtype-text',
+        'preconfigured_query': 'field fieldname-preconfigured_query fieldtype-text'
     };
 }
 
