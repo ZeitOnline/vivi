@@ -644,7 +644,7 @@ class ITopicbox(IBlock,
         title=_('Automatic type'),
         source=TopicboxTypeSource(),
         required=True,
-        default='manual')
+        default='centerpage')
 
     first_reference = zope.schema.Choice(
         title=_("Reference"),
