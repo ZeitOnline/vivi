@@ -10,6 +10,7 @@ vivi.core changes
 4.57.0 (2021-06-29)
 -------------------
 
+- ZON-6710: Changes topicbox default automatic_type value
 - ZON-5970: Remove clickcounter integration
 
 - OPS-1985: Use opentelemetry for tracing
