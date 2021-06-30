@@ -597,6 +597,10 @@ class TopicboxTypeSource(zeit.cms.content.sources.SimpleDictSource):
         ('preconfigured-query', _('preconfigured-query'))
     ])
 
+    def getToken(self, value):
+        # JS needs to use these values, don't MD5 them.
+        return value
+
 
 class TopicReferenceSource(zeit.cms.content.contentsource.CMSContentSource):
 

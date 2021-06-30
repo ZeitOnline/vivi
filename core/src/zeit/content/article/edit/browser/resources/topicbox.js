@@ -8,11 +8,11 @@ function getAllTopicboxIds() {
     return topicbox_ids;
 }
 
-function getAutomaticTypeTextByTopicboxId(topicboxId) {
+function getAutomaticTypeByTopicboxId(topicboxId) {
     var automaticTypeElement = document.getElementById(`topicbox.${topicboxId}.automatic_type`);
 
     if (automaticTypeElement !== null) {
-        return automaticTypeElement.selectedOptions[0].text;
+        return automaticTypeElement.selectedOptions[0].value;
     }
     return null;
 }
@@ -39,7 +39,7 @@ function getTopicboxFieldSetById(topicboxId) {
 
 function hideShowElementsByAutomaticTypeValue(topicboxId) {
     var topicboxFieldSet = getTopicboxFieldSetById(topicboxId);
-    var currentAutomaticTypeValue = getAutomaticTypeTextByTopicboxId(topicboxId);
+    var currentAutomaticTypeValue = getAutomaticTypeByTopicboxId(topicboxId);
     if (currentAutomaticTypeValue === null) {
         return;
     }
@@ -59,7 +59,7 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
 
     var automaticFields = [];
     switch(currentAutomaticTypeValue.toLowerCase()) {
-        case 'klassisch':
+        case 'manual':
             automaticFields = [
                 'first_reference',
                 'second_reference',
@@ -70,14 +70,14 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
                 'referenced_cp'
             ];
             break;
-        case 'themenseite':
+        case 'topicpage':
             automaticFields = [
                 'referenced_topicpage',
                 'topicpage_filter',
                 'topicpage_order'
             ];
             break;
-        case 'es-query':
+        case 'elasticsearch-query':
             automaticFields = [
                 'elasticsearch_raw_query',
                 'elasticsearch_raw_order'
@@ -88,7 +88,7 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
                 'topicpage_filter'
             ];
             break;
-        case 'filter':
+        case 'preconfigured-query':
             automaticFields = [
                 'preconfigured_query'
             ];
