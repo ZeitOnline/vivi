@@ -10,6 +10,7 @@ function getFieldClassNames() {
         'elasticsearch_raw_query': 'field fieldname-elasticsearch_raw_query fieldtype-text',
         'elasticsearch_raw_order': 'field fieldname-elasticsearch_raw_order fieldtype-text',
         'preconfigured_query': 'field fieldname-preconfigured_query fieldtype-text',
+        'topicpage_order': 'field fieldname-topicpage_order required fieldtype-text',
     };
 }
 
@@ -90,7 +91,9 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
             Object.keys(fieldClassNames).filter((element) => {
                 return [
                     'referenced_topicpage',
-                    'topicpage_filter'].includes(element);
+                    'topicpage_filter',
+                    'topicpage_order'
+                ].includes(element);
             }).forEach((element) => {
                 showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
             });
