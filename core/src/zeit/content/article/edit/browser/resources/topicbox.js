@@ -69,61 +69,51 @@ function hideShowElementsByAutomaticTypeValue(topicboxId) {
         hideElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
     });
 
+    var automaticFields = [];
     switch(currentAutomaticTypeValue.toLowerCase()) {
         case 'klassisch':
-            Object.keys(fieldClassNames).filter((element) => {
-                return [
-                    'first_reference',
-                    'second_reference',
-                    'third_reference'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
+            automaticFields = [
+                'first_reference',
+                'second_reference',
+                'third_reference'];
             break;
         case 'centerpage':
-            Object.keys(fieldClassNames).filter((element) => {
-                return ['referenced_cp'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
+            automaticFields = [
+                'referenced_cp'
+            ];
             break;
         case 'themenseite':
-            Object.keys(fieldClassNames).filter((element) => {
-                return [
-                    'referenced_topicpage',
-                    'topicpage_filter',
-                    'topicpage_order'
-                ].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
+            automaticFields = [
+                'referenced_topicpage',
+                'topicpage_filter',
+                'topicpage_order'
+            ];
             break;
         case 'es-query':
-            Object.keys(fieldClassNames).filter((element) => {
-                return [
-                    'elasticsearch_raw_query',
-                    'elasticsearch_raw_order'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
+            automaticFields = [
+                'elasticsearch_raw_query',
+                'elasticsearch_raw_order'
+            ];
             break;
         case 'related-api':
-            Object.keys(fieldClassNames).filter((element) => {
-                return ['topicpage_filter'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
+            automaticFields = [
+                'topicpage_filter'
+            ];
             break;
         case 'filter':
-            Object.keys(fieldClassNames).filter((element) => {
-                return ['preconfigured_query'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
+            automaticFields = [
+                'preconfigured_query'
+            ];
             break;
         default:
             break;
     }
+
+    Object.keys(fieldClassNames).filter((element) => {
+        return automaticFields.includes(element);
+    }).forEach((element) => {
+        showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
+    });
 }
 
 function hideElementByTopicboxFieldSet(fieldset, className) {
