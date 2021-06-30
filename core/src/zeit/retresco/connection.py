@@ -139,8 +139,7 @@ class TMS:
         for value in response:
             keyword = zeit.cms.tagging.tag.Tag(
                 value['name'],
-                value['topic_type']
-                )
+                value['topic_type'])
             keyword.link = value['url'].lstrip('/')
             result.append(keyword)
         return result
