@@ -663,6 +663,36 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             self.assertUniqueIds(a2, '/teaser-2', '/teaser-3', '/teaser-4')
             self.assertUniqueIds(a3, '/teaser-5', '/teaser-6')
 
+    def test_tms_content_query_caches_tms_results(self):
+        a1 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a2 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a3 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a4 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a1.referenced_topicpage = 'tms-id'
+        a2.referenced_topicpage = 'tms-id'
+        a3.referenced_topicpage = 'tms-id'
+        a3.topicpage_filter = 'videos'
+        a4.referenced_topicpage = 'tms-id'
+        a4.topicpage_filter = 'videos'
+        a4.topicpage_order = 'relevance'
+
+        a1.hide_dupes = False  # Simplify fixture
+        a2.hide_dupes = False
+        a3.hide_dupes = False
+        a4.hide_dupes = False
+
+        TMSContentQuery = 'zeit.contentquery.query.TMSContentQuery'
+        with mock.patch(TMSContentQuery + '._get_documents') as get:
+            with mock.patch(TMSContentQuery + '._resolve') as resolve:
+                resolve.return_value = self.repository['testcontent']
+                get.return_value = iter(['fake'] * 4), 0
+                IRenderedArea(a1).values()
+                IRenderedArea(a2).values()
+                IRenderedArea(a3).values()
+                IRenderedArea(a4).values()
+                # a1 and a2 have the same parameters, so can reuse the cache.
+                self.assertEqual(3, get.call_count)
+
     def test_elasticsearch_content_query_filters_duplicates(self):
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = (
