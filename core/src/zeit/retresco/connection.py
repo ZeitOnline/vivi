@@ -115,15 +115,23 @@ class TMS:
         result.hits = len(response['docs'])
         return result
 
-    def get_related_topics(self, topicpage_id, rows=10):
-        params = {'rows': rows}
-        response = self._request(
-            'GET /topic-pages/{}/relateds'.format(topicpage_id), params=params)
-        id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
-        result = zeit.cms.interfaces.Result(
-            [id_namespace + x['url'] for x in response['docs']])
-        result.hits = len(response['docs'])
-        return result
+    def get_related_topics(self, topicpage_id, rows=10, suppress_errors=False):
+        try:
+            params = {'rows': rows}
+            response = self._request(
+                'GET /topic-pages/{}/relateds'.format(topicpage_id),
+                params=params)
+            id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
+            result = zeit.cms.interfaces.Result(
+                [id_namespace + x['url'] for x in response['docs']])
+            result.hits = len(response['docs'])
+            return result
+        except Exception:
+            if not suppress_errors:
+                log.warning(
+                    'Retresco topiclinks failed for {}'.format(
+                        topicpage_id), exc_info=True)
+            return ()
 
     def _get_content_topics(self, content):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
@@ -133,16 +141,23 @@ class TMS:
         result.hits = len(response['docs'])
         return result
 
-    def get_content_topicpages(self, content):
-        response = self._get_content_topics(content)
-        result = []
-        for value in response:
-            keyword = zeit.cms.tagging.tag.Tag(
-                value['name'],
-                value['topic_type'])
-            keyword.link = value['url'].lstrip('/')
-            result.append(keyword)
-        return result
+    def get_content_topicpages(self, content, suppress_errors=False):
+        try:
+            response = self._get_content_topics(content)
+            result = []
+            for value in response:
+                keyword = zeit.cms.tagging.tag.Tag(
+                    value['name'],
+                    value['topic_type'])
+                keyword.link = value['url'].lstrip('/')
+                result.append(keyword)
+            return result
+        except Exception:
+            if not suppress_errors:
+                log.warning(
+                    'Retresco topiclinks failed for {}'.format(
+                        content.uniqueId), exc_info=True)
+            return ()
 
     def get_article_data(self, content):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
@@ -188,38 +203,51 @@ class TMS:
                 content.uniqueId)
             return {}
 
-    def get_article_topiclinks(self, content, timeout=None, published=True):
-        if published:
-            response = self._get_intextlink_data(content, timeout)
-        else:
-            response = self._get_intextlink_data_preview(content, timeout)
-        data = response.get('entity_links', ())
-        entity_links = collections.OrderedDict()
-        for item in data:
-            if not item['link']:
-                continue
-            # zeit.web expects the path without a leading slash
-            item['link'] = item['link'].lstrip('/')
-            entity_links[(item['key'], item['key_type'])] = item
+    def get_article_topiclinks(
+            self,
+            content,
+            timeout=None,
+            published=True,
+            suppress_errors=False):
+        try:
+            if published:
+                response = self._get_intextlink_data(content, timeout)
+            else:
+                response = self._get_intextlink_data_preview(content, timeout)
+            data = response.get('entity_links', ())
+            entity_links = collections.OrderedDict()
+            for item in data:
+                if not item['link']:
+                    continue
+                # zeit.web expects the path without a leading slash
+                item['link'] = item['link'].lstrip('/')
+                entity_links[(item['key'], item['key_type'])] = item
 
-        # Keywords pinned in vivi come first.
-        result = []
-        content = zeit.retresco.interfaces.ITMSContent(response)
-        for keyword in zeit.retresco.tagger.Tagger(content).values():
-            if not keyword.pinned:
-                continue
-            tms = entity_links.pop((keyword.label, keyword.entity_type), None)
-            if not tms:
-                continue
-            keyword.link = tms['link']
-            result.append(keyword)
-        # Then we add the rest, TMS returns those sorted by descending score.
-        for tms in entity_links.values():
-            keyword = zeit.cms.tagging.tag.Tag(tms['key'], tms['key_type'])
-            keyword.link = tms['link']
-            result.append(keyword)
-
-        return result
+            # Keywords pinned in vivi come first.
+            result = []
+            content = zeit.retresco.interfaces.ITMSContent(response)
+            for keyword in zeit.retresco.tagger.Tagger(content).values():
+                if not keyword.pinned:
+                    continue
+                tms = entity_links.pop(
+                    (keyword.label, keyword.entity_type), None)
+                if not tms:
+                    continue
+                keyword.link = tms['link']
+                result.append(keyword)
+            # Then we add the rest, TMS returns those sorted by descending
+            # score.
+            for tms in entity_links.values():
+                keyword = zeit.cms.tagging.tag.Tag(tms['key'], tms['key_type'])
+                keyword.link = tms['link']
+                result.append(keyword)
+            return result
+        except Exception:
+            if not suppress_errors:
+                log.warning(
+                    'Retresco topiclinks failed for {}'.format(
+                        content.uniqueId), exc_info=True)
+            return ()
 
     def index(self, content, override_body=None):
         __traceback_info__ = (content.uniqueId,)
