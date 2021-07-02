@@ -12,6 +12,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.image.testing
 import zeit.content.video.video
+import zope.security.management
 
 
 class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
@@ -90,6 +91,21 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         with mock.patch('zeit.workflow.publish.Publish.publish') as publish:
             import_video(bc)
             self.assertEqual(1, publish.call_count)
+
+    def test_should_ignore_publish_for_already_locked_object(self):
+        bc = self.create_video()
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        last_published = info.date_last_published
+
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.producer'):
+            zeit.cms.checkout.interfaces.ICheckoutManager(video).checkout()
+        zeit.cms.testing.create_interaction('zope.user')
+
+        import_video(bc)
+        self.assertEqual(info.date_last_published, last_published)
 
     def test_ignored_video_should_not_be_added_to_cms(self):
         self.assertEqual(
