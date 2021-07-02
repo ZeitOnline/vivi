@@ -4,6 +4,7 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.video.interfaces import IVideo
 import gocept.runner
 import logging
+import z3c.celery.celery
 import zeit.brightcove.convert
 import zeit.brightcove.session
 import zeit.cms.celery
@@ -136,7 +137,18 @@ class import_video(import_base):
         self._update()
         self._handle_images()
         if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(background=False)
+            try:
+                IPublish(self.cmsobj).publish(background=False)
+            except z3c.celery.celery.HandleAfterAbort as e:
+                try:
+                    error = e.c_args[0][1]  # Our API is a bit clumsy.
+                except IndexError:
+                    pass
+                else:
+                    if error.startswith('LockingError'):
+                        pass
+                    else:
+                        raise
         else:
             log.info('Deactivating %s', self.bcobj)
             if IPublishInfo(self.cmsobj).published:
