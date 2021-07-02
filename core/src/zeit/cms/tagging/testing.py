@@ -146,6 +146,10 @@ class FakeTag(zeit.cms.tagging.tag.Tag):
     """Fake implementation of ITag for tests."""
 
     def __init__(self, label, code=None, entity_type=None):
+        """Code and entity_type are None strictly for test purposes.
+        Otherwise code (depends on entity_type) is necessary for
+        uniqueId/traversal usage.
+        """
         self.label = label
         self.code = code
         self.entity_type = entity_type
