@@ -1164,7 +1164,8 @@
   margin-top:0px;
 }
 
-.type-article #form-misc-product-management-b {
+.type-article #form-misc-product-management-b,
+.type-article #form-options-audio-speechbert {
   margin-left: 7px;
 }
 

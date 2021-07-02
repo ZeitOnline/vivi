@@ -315,10 +315,10 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
         return FormFields(ICommonMetadata).select(*fields)
 
 
-class MetadataAudioSpeechbert(zeit.edit.browser.form.InlineForm):
+class OptionsAudioSpeechbert(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
-    prefix = 'audio-speechbert'
+    prefix = 'options-audio-speechbert'
     undo_description = _('edit audio_speechbert')
     form_fields = FormFields(IArticle).select('audio_speechbert')
     css_class = 'audio-speechbert'

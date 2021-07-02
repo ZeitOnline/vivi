@@ -2713,8 +2713,8 @@ msgid "Genre"
 msgstr "Genre"
 
 #: zeit/content/article/interfaces.py:54
-msgid "Speechbert Audio"
-msgstr "Speechbert-Audio"
+msgid "Text-to-Speech-Player"
+msgstr "Text-to-Speech-Player"
 
 #: zeit/content/article/interfaces.py:79
 msgid "Header layout"
