@@ -131,9 +131,9 @@ class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
     values = collections.OrderedDict([
         ('date', _('tms-order-date')),
         ('relevance', _('tms-order-relevance')),
-        ('kpi_visits', _('tms-order-kpi_visits')),
-        ('kpi_comments', _('tms-order-kpi_comments')),
-        ('kpi_subscriptions', _('tms-order-kpi_subscriptions')),
+        ('visits', _('tms-order-kpi_visits')),
+        ('comments', _('tms-order-kpi_comments')),
+        ('subscriptions', _('tms-order-kpi_subscriptions')),
     ])
 
 

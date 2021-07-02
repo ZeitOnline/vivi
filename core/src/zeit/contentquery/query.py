@@ -248,7 +248,8 @@ class TMSContentQuery(ContentQuery):
         super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
-        self.order = self.context.topicpage_order
+        self.order = zeit.retresco.content.KPI.FIELDS.get(
+            self.context.topicpage_order, self.context.topicpage_order)
 
     def __call__(self):
         result, _ = self._fetch(self.start)
@@ -323,7 +324,8 @@ class TMSContentQuery(ContentQuery):
         if key in cache:
             _, _, hits = cache[key]
         else:
-            _, hits = self._get_documents(start=self.start, rows=0)
+            _, hits = self._get_documents(
+                start=self.start, rows=0, order='date')
         return hits
 
 
