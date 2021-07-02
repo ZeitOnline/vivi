@@ -154,6 +154,15 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
             import_video(deleted)
             self.assertEqual(True, retract.called)
 
+    def test_vanished_video_should_be_ignored(self):
+        bc = self.create_video()
+        import_video(bc)
+        video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
+        del video.__parent__[video.__name__]
+        deleted = zeit.brightcove.convert.DeletedVideo(bc.id, None)
+        with self.assertNothingRaised():
+            import_video(deleted)
+
     def test_new_video_should_bbb_copy_authors(self):
         author = zeit.content.author.author.Author()
         author.firstname = u'William'
