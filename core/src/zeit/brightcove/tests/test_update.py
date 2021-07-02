@@ -15,56 +15,57 @@ import zeit.content.video.video
 import zope.security.management
 
 
-class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
-
-    def create_video(self):
-        bc = zeit.brightcove.convert.Video()
-        bc.data = {
-            'id': 'myvid',
-            'name': 'title',
-            'created_at': '2017-05-15T08:24:55.916Z',
-            'updated_at': '2017-05-16T08:24:55.916Z',
-            'state': 'ACTIVE',
-            'custom_fields': {},
-            "images": {
-                "poster": {
-                    "src": "nosuchhost"
-                },
-                "thumbnail": {
-                    "src": "nosuchhost"
-                }
+def create_video():
+    bc = zeit.brightcove.convert.Video()
+    bc.data = {
+        'id': 'myvid',
+        'name': 'title',
+        'created_at': '2017-05-15T08:24:55.916Z',
+        'updated_at': '2017-05-16T08:24:55.916Z',
+        'state': 'ACTIVE',
+        'custom_fields': {},
+        "images": {
+            "poster": {
+                "src": "nosuchhost"
             },
-        }
-        return bc
+            "thumbnail": {
+                "src": "nosuchhost"
+            }
+        },
+    }
+    return bc
+
+
+class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_new_video_should_be_added_to_cms(self):
         self.assertEqual(
             None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
-        import_video(self.create_video())
+        import_video(create_video())
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual('title', video.title)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertEqual(True, info.published)
 
     def test_new_video_should_create_empty_still_image_group(self):
-        import_video(self.create_video())
+        import_video(create_video())
         assert self.repository['video']['2017-05']['myvid'].video_still is None
         assert self.repository['video']['2017-05']['myvid-still'] is not None
 
     def test_new_video_should_create_empty_still_image_group_for_missing_src(self):
-        video = self.create_video()
+        video = create_video()
         del video.data['images']
         import_video(video)
         assert self.repository['video']['2017-05']['myvid'].video_still is None
         assert self.repository['video']['2017-05']['myvid-still'] is not None
 
     def test_new_video_should_create_empty_thumbnail_image_group(self):
-        import_video(self.create_video())
+        import_video(create_video())
         assert self.repository['video']['2017-05']['myvid'].thumbnail is None
         assert self.repository['video']['2017-05']['myvid-thumbnail'] is not None
 
     def test_changed_video_should_be_written_to_cms(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         bc.data['name'] = 'changed'
         import_video(bc)
@@ -76,7 +77,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
             lsc.last_semantic_change)
 
     def test_should_publish_after_update(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
@@ -86,14 +87,14 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_should_publish_only_once(self):
         # Safetybelt against the "publish videos after checkin" feature
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)  # Create CMS object
         with mock.patch('zeit.workflow.publish.Publish.publish') as publish:
             import_video(bc)
             self.assertEqual(1, publish.call_count)
 
     def test_should_ignore_publish_for_already_locked_object(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
@@ -110,14 +111,14 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
     def test_ignored_video_should_not_be_added_to_cms(self):
         self.assertEqual(
             None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
-        bc = self.create_video()
+        bc = create_video()
         bc.data['custom_fields']['ignore_for_update'] = '1'
         import_video(bc)
         self.assertEqual(
             None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
 
     def test_ignored_video_should_not_be_updated_in_cms(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         bc.data['name'] = 'changed'
         bc.data['custom_fields']['ignore_for_update'] = '1'
@@ -126,7 +127,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual('title', video.title)
 
     def test_inactive_video_should_be_retracted(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         bc.data['state'] = 'INACTIVE'
         with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
@@ -134,7 +135,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
             self.assertEqual(True, retract.called)
 
     def test_inactive_video_should_be_imported_but_not_published(self):
-        bc = self.create_video()
+        bc = create_video()
         bc.data['state'] = 'INACTIVE'
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
@@ -142,7 +143,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual(False, info.published)
 
     def test_changes_to_inactive_video_should_be_imported(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         bc.data['name'] = 'changed'
         bc.data['state'] = 'INACTIVE'
@@ -153,7 +154,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual(False, info.published)
 
     def test_deleted_video_should_be_deleted_from_cms(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
@@ -162,7 +163,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
             None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
 
     def test_deleted_video_should_be_retracted(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
@@ -171,7 +172,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
             self.assertEqual(True, retract.called)
 
     def test_vanished_video_should_be_ignored(self):
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         del video.__parent__[video.__name__]
@@ -184,7 +185,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         author.firstname = u'William'
         author.lastname = u'Shakespeare'
         self.repository['author'] = author
-        bc = self.create_video()
+        bc = create_video()
         bc.data['custom_fields']['authors'] = 'http://xml.zeit.de/author'
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
@@ -195,7 +196,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         author.firstname = u'William'
         author.lastname = u'Shakespeare'
         self.repository['author'] = author
-        bc = self.create_video()
+        bc = create_video()
         import_video(bc)
         bc.data['custom_fields']['authors'] = 'http://xml.zeit.de/author'
         import_video(bc)
@@ -203,7 +204,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual(('William Shakespeare',), video.authors)
 
 
-class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportVideoTest):
+class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
+
     def setUp(self):
         super(TestDownloadTeasers, self).setUp()
         image_dir = pkg_resources.resource_filename(
@@ -213,7 +215,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
 
     def test_download_teaser_image__thumbnail_success(self):
         src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
-        bc = self.create_video()
+        bc = create_video()
         bc.data['images']['thumbnail']['src'] = src
         import_video(bc)
         # importing the video has created an image group "next to it" for its thumbnail
@@ -232,7 +234,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
 
     def test_download_teaser_image__still_success(self):
         src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
-        bc = self.create_video()
+        bc = create_video()
         bc.data['images']['poster']['src'] = src
         import_video(bc)
         # importing the video has created an image group "next to it" for its still image
@@ -269,7 +271,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
 
     def test_update_teaser_image_still_success(self):
         src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
-        bc = self.create_video()
+        bc = create_video()
         bc.data['images']['poster']['src'] = src
         imported = import_video(bc)
         assert imported.cmsobj.cms_video_still.master_image == 'opernball.jpg'
@@ -283,7 +285,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase, ImportV
         from zeit.content.image.testing import create_image_group_with_master_image
         src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
         # video is created via BC import
-        bc = self.create_video()
+        bc = create_video()
         bc.data['images']['poster']['src'] = src
         import_video(bc)
         # editor replaces automatically created video still with custom imagegroup
