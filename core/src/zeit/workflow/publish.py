@@ -127,8 +127,12 @@ class PublishRetractTask(object):
         timer.start(u'Job %s started: %s (%s)' % info)
         logger.info("Running job %s for %s", self.jobid, ids_str)
 
-        objs = [self.repository.getContent(uniqueId)
-                for uniqueId in ids]
+        objs = []
+        for uniqueId in ids:
+            try:
+                objs.append(self.repository.getContent(uniqueId))
+            except KeyError:
+                logger.warning('Not found %s, ignoring', uniqueId)
         timer.mark('Looked up object')
 
         try:

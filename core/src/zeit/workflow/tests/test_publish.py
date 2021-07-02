@@ -162,6 +162,14 @@ class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
             [article.uniqueId], background=False)
         self.assertTrue(info.published)
 
+    def test_ignores_invalid_unique_ids(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        info = IPublishInfo(article)
+        info.urgent = True
+        zeit.workflow.publish.MULTI_PUBLISH_TASK(
+            ['http://xml.zeit.de/nonexistent', article.uniqueId])
+        self.assertTrue(info.published)
+
 
 class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
 

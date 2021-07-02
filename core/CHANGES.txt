@@ -1,10 +1,24 @@
 vivi.core changes
 =================
 
-4.57.1 (unreleased)
+4.57.3 (unreleased)
 -------------------
 
 - TOPIC-16: Add tms content-topic-api endpoint
+- BUG-1415: Be more defensive during BC video import
+
+
+4.57.2 (2021-06-30)
+-------------------
+
+- FIX: Hide Topicpage sort option when anything else is selected
+
+
+4.57.1 (2021-06-30)
+-------------------
+
+- ZON-6710: Changes topicbox default automatic_type value
+
 
 
 4.57.0 (2021-06-29)
