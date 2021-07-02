@@ -505,7 +505,7 @@ class TaggerUpdateTest(
     def test_links_to_topicpages_are_retrieved_from_tms(self):
         content = create_testcontent()
         tagger = Tagger(content)
-        article_keywords = 'zeit.retresco.connection.TMS.get_article_keywords'
+        article_keywords = 'zeit.retresco.connection.TMS.get_article_topiclinks'
         with mock.patch(article_keywords) as article_keywords:
             tag1 = Tag('Foo', '')
             tag1.link = 'thema/foo'

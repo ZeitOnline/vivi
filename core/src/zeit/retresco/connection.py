@@ -133,7 +133,7 @@ class TMS:
         result.hits = len(response['docs'])
         return result
 
-    def get_content_topiclinks(self, content):
+    def get_content_topicpages(self, content):
         response = self._get_content_topics(content)
         result = []
         for value in response:
@@ -188,7 +188,7 @@ class TMS:
                 content.uniqueId)
             return {}
 
-    def get_article_keywords(self, content, timeout=None, published=True):
+    def get_article_topiclinks(self, content, timeout=None, published=True):
         if published:
             response = self._get_intextlink_data(content, timeout)
         else:

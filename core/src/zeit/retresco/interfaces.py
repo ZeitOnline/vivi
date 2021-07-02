@@ -106,7 +106,7 @@ class ITMS(zope.interface.Interface):
     def get_article_body(content, timeout=None):
         """Returns the (in-text-link annotated) article body XML."""
 
-    def get_article_keywords(content, published=False, timeout=None):
+    def get_article_topiclinks(content, published=False, timeout=None):
         """Returns a list of ITag objects with an additional property `link`,
         containing a path (without leading slash) to the corresponding
         topicpage. Only keywords that have not already been in-text-linked in
@@ -127,6 +127,11 @@ class ITMS(zope.interface.Interface):
     def get_related_topics(topicpage_id, rows=10):
         """Returns a list of namespaced ids that relate to the given
         topicpage_id.
+        """
+
+    def get_content_topicpages(content, supress_errors=False):
+        """Returns a list of ITag objects corresponding to the topicpages
+        on which the content has been published
         """
 
 

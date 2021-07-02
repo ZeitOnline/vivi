@@ -235,7 +235,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         live_prefix = config['live-prefix']
         result = {}
-        for tag in tms.get_article_keywords(self.context, published=False):
+        for tag in tms.get_article_topiclinks(self.context, published=False):
             if tag.link:
                 result[tag.uniqueId] = live_prefix + tag.link
             else:

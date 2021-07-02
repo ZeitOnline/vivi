@@ -75,7 +75,7 @@ class TMSMockLayer(plone.testing.Layer):
         self['old_tms'] = registry.queryUtility(zeit.retresco.interfaces.ITMS)
         self['tms_mock'] = mock.Mock()
         self['tms_mock'].primary = dict(url='http://tms.example.com')
-        self['tms_mock'].get_article_keywords.return_value = []
+        self['tms_mock'].get_article_topiclinks.return_value = []
         registry.registerUtility(
             self['tms_mock'], zeit.retresco.interfaces.ITMS)
 

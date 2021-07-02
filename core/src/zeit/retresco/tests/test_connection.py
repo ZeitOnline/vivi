@@ -173,7 +173,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             self.assertEqual('mytopic', result[0]['id'])
             self.assertEqual('Mytopic', result[0]['title'])
 
-    def test_get_article_keywords_order_is_given_by_cms_payload(self):
+    def test_get_article_topiclinks_order_is_given_by_cms_payload(self):
         with checked_out(self.repository['testcontent']):
             pass  # Trigger mock connector uuid creation
 
@@ -214,18 +214,18 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             },
         })
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_article_keywords(self.repository['testcontent'])
+        result = tms.get_article_topiclinks(self.repository['testcontent'])
         self.assertEqual(
             ['New York', 'Obama', 'Merkel', 'Clinton', 'Berlin'],
             [x.label for x in result])
         self.assertEqual('thema/newyork', result[0].link)
 
-    def test_get_article_keywords_uses_published_content_endpoint_as_default(
+    def test_get_article_topiclinks_uses_published_content_endpoint_as_default(
             self):
         with checked_out(self.repository['testcontent']):
             pass  # Trigger mock connector uuid creation
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.get_article_keywords(self.repository['testcontent'])
+        tms.get_article_topiclinks(self.repository['testcontent'])
         # First requests will be enrich and index
         content = self.repository['testcontent']
         uuid = zeit.cms.content.interfaces.IUUID(content).id
@@ -238,14 +238,14 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             'GET /in-text-linked-documents/{}'.format(uuid),
         ])
 
-    def test_get_article_keywords_uses_preview_endpoint_if_param_set(self):
+    def test_get_article_topiclinks_uses_preview_endpoint_if_param_set(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.get_article_keywords(self.repository['testcontent'],
-                                 published=False)
+        tms.get_article_topiclinks(self.repository['testcontent'],
+                                   published=False)
         self.assertEqual('/in-text-linked-documents-preview',
                          self.layer['request_handler'].requests[0].get('path'))
 
-    def test_get_content_topiclinks_returns_list_of_tags(self):
+    def test_get_content_topicpages_returns_list_of_tags(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         self.layer['request_handler'].response_body = json.dumps({
             'num_found': 1,
@@ -260,7 +260,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         })
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
-        result = tms.get_content_topiclinks(article)
+        result = tms.get_content_topicpages(article)
         self.assertEqual('Arbeit', result[0].label)
         self.assertEqual('keyword', result[0].entity_type)
 

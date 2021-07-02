@@ -53,7 +53,7 @@ class Tag:
     # This is stored in DAV properties, changing it requires a mass-migration.
     SEPARATOR = '☃'
 
-    # For zeit.web, populated by ITMS.get_article_keywords() with the
+    # For zeit.web, populated by ITMS.get_article_topiclinks() with the
     # TMS-provided path to the corresponding topicpage; without a leading
     # slash, so it plays nice with route_url() which already has the slash.
 
