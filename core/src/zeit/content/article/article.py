@@ -235,7 +235,8 @@ def modify_speechbert_audio_depeding_on_genre(article, event):
     for desc in event.descriptions:
         if (desc.interface is zeit.content.article.interfaces.IArticle and
                 'genre' in desc.attributes):
-            if genres.audio(article.genre) == 'speechbert':
+            if (genres.audio(article.genre) == 'speechbert' or
+                    not article.genre):
                 article.audio_speechbert = True
             else:
                 article.audio_speechbert = False
