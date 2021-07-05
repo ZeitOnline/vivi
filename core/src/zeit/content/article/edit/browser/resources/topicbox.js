@@ -1,17 +1,11 @@
-function getFieldClassNames() {
-    return {
-        'automatic_type': 'field fieldname-automatic_type fieldtype-text',
-        'first_reference': 'field fieldname-first_reference fieldtype-text',
-        'second_reference': 'field fieldname-second_reference fieldtype-text',
-        'third_reference': 'field fieldname-third_reference fieldtype-text',
-        'referenced_cp': 'field fieldname-referenced_cp fieldtype-text',
-        'referenced_topicpage': 'field fieldname-referenced_topicpage fieldtype-text',
-        'topicpage_filter': 'field fieldname-topicpage_filter fieldtype-text',
-        'elasticsearch_raw_query': 'field fieldname-elasticsearch_raw_query fieldtype-text',
-        'elasticsearch_raw_order': 'field fieldname-elasticsearch_raw_order fieldtype-text',
-        'preconfigured_query': 'field fieldname-preconfigured_query fieldtype-text',
-    };
-}
+var AUTOMATIC_FIELDS = {
+    'manual': ['first_reference', 'second_reference', 'third_reference'],
+    'centerpage': ['referenced_cp'],
+    'topicpage': ['referenced_topicpage', 'topicpage_filter', 'topicpage_order'],
+    'elasticsearch-query': ['elasticsearch_raw_query', 'elasticsearch_raw_order'],
+    'preconfigured-query': ['preconfigured_query'],
+    'related-api': ['topicpage_filter']
+};
 
 function getAllTopicboxIds() {
     var topicbox_ids = [];
@@ -23,11 +17,11 @@ function getAllTopicboxIds() {
     return topicbox_ids;
 }
 
-function getAutomaticTypeTextByTopicboxId(topicboxId) {
+function getAutomaticTypeByTopicboxId(topicboxId) {
     var automaticTypeElement = document.getElementById(`topicbox.${topicboxId}.automatic_type`);
 
     if (automaticTypeElement !== null) {
-        return automaticTypeElement.selectedOptions[0].text;
+        return automaticTypeElement.selectedOptions[0].value;
     }
     return null;
 }
@@ -54,81 +48,28 @@ function getTopicboxFieldSetById(topicboxId) {
 
 function hideShowElementsByAutomaticTypeValue(topicboxId) {
     var topicboxFieldSet = getTopicboxFieldSetById(topicboxId);
-    var fieldClassNames = getFieldClassNames();
-    var currentAutomaticTypeValue = getAutomaticTypeTextByTopicboxId(topicboxId);
-
+    var currentAutomaticTypeValue = getAutomaticTypeByTopicboxId(topicboxId);
     if (currentAutomaticTypeValue === null) {
         return;
     }
 
-    // Hide all except automatic_type
-    Object.keys(fieldClassNames).filter((element) => {
-        return element.indexOf('automatic_type') == -1;
-    }).forEach((element) => {
-        hideElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
+    Object.values(AUTOMATIC_FIELDS).forEach((fields) => {
+        fields.forEach((field) => {
+            hideElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${field}`);
+        });
     });
 
-    switch(currentAutomaticTypeValue.toLowerCase()) {
-        case 'klassisch':
-            Object.keys(fieldClassNames).filter((element) => {
-                return [
-                    'first_reference',
-                    'second_reference',
-                    'third_reference'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
-            break;
-        case 'centerpage':
-            Object.keys(fieldClassNames).filter((element) => {
-                return ['referenced_cp'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
-            break;
-        case 'themenseite':
-            Object.keys(fieldClassNames).filter((element) => {
-                return [
-                    'referenced_topicpage',
-                    'topicpage_filter'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
-            break;
-        case 'es-query':
-            Object.keys(fieldClassNames).filter((element) => {
-                return [
-                    'elasticsearch_raw_query',
-                    'elasticsearch_raw_order'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
-            break;
-        case 'related-api':
-            Object.keys(fieldClassNames).filter((element) => {
-                return ['topicpage_filter'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
-            break;
-        case 'filter':
-            Object.keys(fieldClassNames).filter((element) => {
-                return ['preconfigured_query'].includes(element);
-            }).forEach((element) => {
-                showElementByTopicboxFieldSet(topicboxFieldSet, fieldClassNames[element]);
-            });
-            break;
-        default:
-            break;
-    }
+    AUTOMATIC_FIELDS[currentAutomaticTypeValue].forEach((field) => {
+        showElementByTopicboxFieldSet(topicboxFieldSet, `fieldname-${field}`);
+    });
 }
 
 function hideElementByTopicboxFieldSet(fieldset, className) {
-    fieldset.querySelectorAll(`[class="${className}"]`)[0].style.display = 'none';
+    fieldset.querySelectorAll(`.${className}`)[0].style.display = 'none';
 }
 
 function showElementByTopicboxFieldSet(fieldset, className) {
-    fieldset.querySelectorAll(`[class="${className}"]`)[0].style.display = 'block';
+    fieldset.querySelectorAll(`.${className}`)[0].style.display = 'block';
 }
 
 (function ($) {
