@@ -12,8 +12,4 @@
       />
   </class>
 
-  <class class=".testing.FakeTag">
-    <require like_class=".tag.Tag" />
-  </class>
-
 </configure>

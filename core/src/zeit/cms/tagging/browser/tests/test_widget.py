@@ -3,8 +3,11 @@ from unittest import mock
 import gocept.testing.mock
 import json
 import unittest
+import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zope.component
 
 
 class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
@@ -19,7 +22,7 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
 
     def test_highlights_keywords_with_topicpage(self):
         tags = self.setup_tags('t1', 't2', 't3')
-        self.add_topicpage_link(tags.get('t1'))
+        self.add_topicpage_link(tags['t1'])
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
         self.assertEllipsis('...<li>...<a...class="with-topic-page"...t1...',
@@ -29,7 +32,7 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
 
     def test_keyword_links_to_topicpage(self):
         tags = self.setup_tags('t1', 't2', 't3')
-        self.add_topicpage_link(tags.get('t1'))
+        self.add_topicpage_link(tags['t1'])
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent')
         self.assertEllipsis(
@@ -45,7 +48,8 @@ class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
         self.setup_tags(u'Bärlin')
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
-        self.assertEllipsis(r'...tag://B\\xe4rlin...', self.browser.contents)
+        self.assertEllipsis(
+            r'...tag://...B\\xe4rlin...', self.browser.contents)
 
 
 class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase,
@@ -58,7 +62,7 @@ class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase,
             'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
         b.open('@@update_tags')
         self.assertEqual([{
-            'code': 'tag://B\\xe4rlin',
+            'code': 'tag://test\\u2603B\\xe4rlin',
             'label': u'Bärlin',
             'pinned': False,
         }], json.loads(b.contents)['tags'])
@@ -135,7 +139,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         tags = self.setup_tags()
         self.open_content()
         s = self.selenium
-        tags['t1'] = self.get_tag('t1')
+        tags['t1'] = zeit.cms.tagging.tag.Tag('t1', entity_type='test')
         s.click('name=update_tags')
         s.waitForTextPresent('t1')
         self.assertTrue(self.tagger().update.called)
@@ -162,7 +166,9 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
 
     def test_can_add_tags_via_autocomplete_field(self):
         self.setup_tags()
-        self.whitelist_tags['Kohle'] = 'Kohle'
+        whitelist = zope.component.queryUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        whitelist.tags.append('Kohle')
         self.open_content()
         s = self.selenium
         self.add_keyword_by_autocomplete('Kohle')
@@ -181,7 +187,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
 
     def test_tags_with_topicpages_are_highlighted(self):
         tags = self.setup_tags('t1', 't2', 't3', 't4')
-        self.add_topicpage_link(tags.get('t1'))
+        self.add_topicpage_link(tags['t1'])
         self.open_content()
         sel = self.selenium
         sel.assertXpathCount(

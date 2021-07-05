@@ -48,13 +48,13 @@ class TestTags(unittest.TestCase,
         del tags['t2']
         self.get_content().tags = [t1, t2]
         result = self.get_content().tags
-        self.assertEqual(['t1', 't2'], [x.code for x in result])
+        self.assertEqual(['t1', 't2'], [x.label for x in result])
 
     def test_set_should_remove_remaining_values_from_tagger(self):
         tags = self.setup_tags('t1', 't2')
         self.get_content().tags = [tags['t1']]
         result = self.get_content().tags
-        self.assertEqual(['t1'], [x.code for x in result])
+        self.assertEqual(['t1'], [x.label for x in result])
 
     def test_set_should_update_pinned_tags(self):
         tags = self.setup_tags('t1', 't2')
@@ -62,14 +62,14 @@ class TestTags(unittest.TestCase,
         t1.pinned = True
         with mock.patch.object(tags, 'set_pinned') as set_pinned:
             self.get_content().tags = [t1, tags['t2']]
-            set_pinned.assert_called_with(['t1'])
+            set_pinned.assert_called_with([t1.code])
 
     def test_set_should_add_duplicate_values_only_once(self):
         tags = self.setup_tags('t1', 't2')
         t1 = tags['t1']
         self.get_content().tags = [t1, t1]
         result = self.get_content().tags
-        self.assertEqual(['t1'], [x.code for x in result])
+        self.assertEqual(['t1'], [x.label for x in result])
 
 
 class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
