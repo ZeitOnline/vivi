@@ -115,23 +115,35 @@ class TMS:
         result.hits = len(response['docs'])
         return result
 
-    def get_related_topics(self, topicpage_id, rows=10, suppress_errors=False):
+    def _get_related_topicpages(
+            self, topicpage_id, rows=10, suppress_errors=False):
         try:
             params = {'rows': rows}
             response = self._request(
                 'GET /topic-pages/{}/relateds'.format(topicpage_id),
                 params=params)
-            id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
-            result = zeit.cms.interfaces.Result(
-                [id_namespace + x['url'] for x in response['docs']])
-            result.hits = len(response['docs'])
-            return result
+            return response['docs']
         except Exception:
             if not suppress_errors:
                 log.warning(
                     'Retresco topiclinks failed for {}'.format(
                         topicpage_id), exc_info=True)
             return ()
+
+    def get_related_topics(self, topicpage_id, rows=10, suppress_errors=False):
+        response = self._get_related_topicpages(
+            topicpage_id, rows, suppress_errors)
+        id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
+        result = zeit.cms.interfaces.Result(
+            [id_namespace + x['url'] for x in response])
+        result.hits = len(response['docs'])
+        return result
+
+    def get_related_topicpage_taglist(
+            self, topicpage_id, rows=10, suppress_errors=False):
+        response = self._get_related_topicpages(
+            topicpage_id, rows, suppress_errors)
+        return get_tagslist(response)
 
     def _get_content_topics(self, content):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
@@ -144,14 +156,7 @@ class TMS:
     def get_content_topicpages(self, content, suppress_errors=False):
         try:
             response = self._get_content_topics(content)
-            result = []
-            for value in response:
-                keyword = zeit.cms.tagging.tag.Tag(
-                    value['name'],
-                    value['topic_type'],
-                    value['url'].lstrip('/'))
-                result.append(keyword)
-            return result
+            return get_tagslist(response)
         except Exception:
             if not suppress_errors:
                 log.warning(
@@ -431,6 +436,17 @@ def _build_topic_redirects(topicpages):
         output.write('%s = %s\n' % (source, target))
 
     return output.getvalue()
+
+
+def get_tagslist(response):
+    result = []
+    for value in response:
+        keyword = zeit.cms.tagging.tag.Tag(
+            value['name'],
+            value['topic_type'],
+            value['url'].lstrip('/'))
+        result.append(keyword)
+    return result
 
 
 def signal_timeout_request(self, method, url, **kw):
