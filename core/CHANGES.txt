@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.57.3 (unreleased)
+4.57.3 (2021-07-05)
 -------------------
 
 - BUG-1415: Be more defensive during BC video import
