@@ -248,7 +248,6 @@ class TMSContentQuery(ContentQuery):
         super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
-        self.order = self.context.topicpage_order
 
     def __call__(self):
         result, _ = self._fetch(self.start)
@@ -261,11 +260,13 @@ class TMSContentQuery(ContentQuery):
 
         cache = content_cache(self, 'topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
-        key = (self.topicpage, self.filter_id, start)
+        order = zeit.retresco.content.KPI.FIELDS.get(
+            self.context.topicpage_order, self.context.topicpage_order)
+        key = (self.topicpage, self.filter_id, start, order)
         if key in cache:
             response, start, _ = cache[key]
         else:
-            response, hits = self._get_documents(start=start, rows=rows)
+            response, hits = self._get_documents(start, rows, order)
             cache[key] = response, start, hits
 
         result = []
@@ -275,7 +276,7 @@ class TMSContentQuery(ContentQuery):
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start, rows)
+                response, hits = self._get_documents(start, rows, order)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -292,12 +293,12 @@ class TMSContentQuery(ContentQuery):
 
         return result, dupes
 
-    def _get_documents(self, start, rows):
+    def _get_documents(self, start, rows, order):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             response = tms.get_topicpage_documents(
                 id=self.topicpage, filter=self.filter_id,
-                start=start, rows=rows, order=self.order)
+                start=start, rows=rows, order=order)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
@@ -323,7 +324,8 @@ class TMSContentQuery(ContentQuery):
         if key in cache:
             _, _, hits = cache[key]
         else:
-            _, hits = self._get_documents(start=self.start, rows=0)
+            _, hits = self._get_documents(
+                start=self.start, rows=0, order='date')
         return hits
 
 
