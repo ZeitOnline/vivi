@@ -98,7 +98,7 @@ class ArticleLayer(plone.testing.Layer):
         prop = connector._get_properties(
             'http://xml.zeit.de/online/2007/01/Somalia')
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = (
-            'testtag|testtag2|testtag3')
+            'Testtag|Testtag2|Testtag3')
 
 
 LAYER = ArticleLayer()
@@ -112,17 +112,10 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,
 
     layer = LAYER
 
-    def setUp(self):
-        super(FunctionalTestCase, self).setUp()
-        self.setup_tags('testtag', 'testtag2', 'testtag3')
-
     def get_article(self):
-
-        wl = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
         article = create_article()
-        article.keywords = [
-            wl.get(tag) for tag in ('testtag', 'testtag2', 'testtag3')]
+        article.keywords = [wl.get(tag) for tag in wl.tags]
         return article
 
     def get_factory(self, article, factory_name):
