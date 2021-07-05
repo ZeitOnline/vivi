@@ -53,16 +53,16 @@ class Tag:
     # This is stored in DAV properties, changing it requires a mass-migration.
     SEPARATOR = '☃'
 
-    # For zeit.web, populated by ITMS.get_article_topiclinks() with the
-    # TMS-provided path to the corresponding topicpage; without a leading
-    # slash, so it plays nice with route_url() which already has the slash.
-
     def __init__(self, label, entity_type, link=None):
         self.label = label
         self.entity_type = entity_type
         self.pinned = False  # pinned state is set from outside after init
         self.__name__ = self.code  # needed to fulfill `ICMSContent`
-        self.link = link  # for test pruposes
+        self.link = link
+        # For zeit.web, link is populated by ITMS.get_article_topiclinks() with
+        # the TMS-provided path to the corresponding topicpage; without a
+        # leading slash, so it plays nice with route_url() which already has
+        # the slash.
 
     @zope.cachedescriptors.property.Lazy
     def code(self):

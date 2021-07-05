@@ -148,8 +148,8 @@ class TMS:
             for value in response:
                 keyword = zeit.cms.tagging.tag.Tag(
                     value['name'],
-                    value['topic_type'])
-                keyword.link = value['url'].lstrip('/')
+                    value['topic_type'],
+                    value['url'].lstrip('/'))
                 result.append(keyword)
             return result
         except Exception:
@@ -238,8 +238,10 @@ class TMS:
             # Then we add the rest, TMS returns those sorted by descending
             # score.
             for tms in entity_links.values():
-                keyword = zeit.cms.tagging.tag.Tag(tms['key'], tms['key_type'])
-                keyword.link = tms['link']
+                keyword = zeit.cms.tagging.tag.Tag(
+                    tms['key'],
+                    tms['key_type'],
+                    tms['link'])
                 result.append(keyword)
             return result
         except Exception:
