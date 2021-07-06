@@ -4,7 +4,7 @@ vivi.core changes
 4.57.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-2024: Handles invalid variant size
 
 
 4.57.3 (2021-07-05)
