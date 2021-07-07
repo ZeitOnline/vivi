@@ -273,13 +273,11 @@ class TMSContentQuery(ContentQuery):
         """
         cache = content_cache(self, 'topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
-        order = zeit.retresco.content.KPI.FIELDS.get(
-            self.context.topicpage_order, self.context.topicpage_order)
-        key = (self.topicpage, self.filter_id, start, order)
+        key = (self.topicpage, self.filter_id, start, self.order)
         if key in cache:
             response, start, _ = cache[key]
         else:
-            response, hits = self._get_documents(start, rows, order)
+            response, hits = self._get_documents(start, rows, self.order)
             cache[key] = response, start, hits
 
         result = []
@@ -289,7 +287,7 @@ class TMSContentQuery(ContentQuery):
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start, rows, order)
+                response, hits = self._get_documents(start, rows, self.order)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -340,6 +338,11 @@ class TMSContentQuery(ContentQuery):
             _, hits = self._get_documents(
                 start=self.start, rows=0, order='date')
         return hits
+
+    @property
+    def order(self):
+        return zeit.retresco.content.KPI.FIELDS.get(
+            self.context.topicpage_order, self.context.topicpage_order)
 
 
 class CPTMSContentQuery(TMSContentQuery):
@@ -457,7 +460,9 @@ class TMSRelatedApiQuery(TMSContentQuery):
     # additional teasers to replace previously filtered-out duplicates.
     hide_dupes = False
 
-    def _get_documents(self, start, rows):
+    order = None
+
+    def _get_documents(self, start, rows, order=None):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             content = zeit.cms.interfaces.ICMSContent(self)
