@@ -170,6 +170,20 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
 
+    def test_topicbox_source_related_api_should_return_result(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'related-api'
+        contentquery = zope.component.getAdapter(
+            box,
+            zeit.contentquery.interfaces.IContentQuery,
+            name=box.automatic_type)
+
+        result, hits = contentquery._get_documents(0, 3)
+
+        self.assertEqual(
+            list(result), [{'article1'}, {'article2'}, {'article3'}])
+        self.assertEqual(hits, 3)
+
     def test_topicbox_values_deduplication(self):
         box = self.get_topicbox()
         box.referenced_cp = self.get_cp(content=[
