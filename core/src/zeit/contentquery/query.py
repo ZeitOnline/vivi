@@ -157,6 +157,8 @@ class CustomContentQuery(ElasticsearchContentQuery):
             'payload.document.last-semantic-change:desc'),
         'date-first-released desc': (
             'payload.document.date_first_released:desc'),
+        'date-last-published desc': (
+            'payload.workflow.date_last_published:desc'),
     }
 
     ES_FIELD_NAMES = {
