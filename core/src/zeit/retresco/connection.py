@@ -140,9 +140,9 @@ class TMS:
         return result
 
     def get_content_related_topicpages(
-            self, topicpage_id, rows=10, suppress_errors=False):
+            self, content, rows=10, suppress_errors=False):
         response = self._get_related_topicpages(
-            topicpage_id, rows, suppress_errors)
+            content.keywords[0].label.lower(), rows, suppress_errors)
         return get_tagslist(response)
 
     def _get_content_topics(self, content):
