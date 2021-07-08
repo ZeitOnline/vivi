@@ -277,7 +277,7 @@ class TMSContentQuery(ContentQuery):
         if key in cache:
             response, start, _ = cache[key]
         else:
-            response, hits = self._get_documents(start, rows, self.order)
+            response, hits = self._get_documents(start, rows)
             cache[key] = response, start, hits
 
         result = []
@@ -287,7 +287,7 @@ class TMSContentQuery(ContentQuery):
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start, rows, self.order)
+                response, hits = self._get_documents(start, rows)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -304,12 +304,12 @@ class TMSContentQuery(ContentQuery):
 
         return result, dupes
 
-    def _get_documents(self, start, rows, order):
+    def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             response = tms.get_topicpage_documents(
-                id=self.topicpage, filter=self.filter_id,
-                start=start, rows=rows, order=order)
+                id=self.topicpage, filter=self.filter_id, order=self.order,
+                start=start, rows=rows)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
@@ -329,20 +329,19 @@ class TMSContentQuery(ContentQuery):
         return self.context.hide_dupes
 
     @property
+    def order(self):
+        return zeit.retresco.content.KPI.FIELDS.get(
+            self.context.topicpage_order, self.context.topicpage_order)
+
+    @property
     def total_hits(self):
         cache = content_cache(self, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]
         else:
-            _, hits = self._get_documents(
-                start=self.start, rows=0, order='date')
+            _, hits = self._get_documents(start=self.start, rows=0)
         return hits
-
-    @property
-    def order(self):
-        return zeit.retresco.content.KPI.FIELDS.get(
-            self.context.topicpage_order, self.context.topicpage_order)
 
 
 class CPTMSContentQuery(TMSContentQuery):
@@ -459,10 +458,10 @@ class TMSRelatedApiQuery(TMSContentQuery):
     # The TMS related API does not support `start`, so we cannot fetch
     # additional teasers to replace previously filtered-out duplicates.
     hide_dupes = False
-
+    # The TMS related API currently does not support a custom order.
     order = None
 
-    def _get_documents(self, start, rows, order=None):
+    def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             content = zeit.cms.interfaces.ICMSContent(self)
