@@ -139,7 +139,7 @@ class TMS:
         result.hits = len(response['docs'])
         return result
 
-    def get_related_topicpage_taglist(
+    def get_content_related_topicpages(
             self, topicpage_id, rows=10, suppress_errors=False):
         response = self._get_related_topicpages(
             topicpage_id, rows, suppress_errors)
@@ -153,7 +153,8 @@ class TMS:
         result.hits = len(response['docs'])
         return result
 
-    def get_content_topicpages(self, content, suppress_errors=False):
+    def get_content_containing_topicpages(
+            self, content, suppress_errors=False):
         try:
             response = self._get_content_topics(content)
             return get_tagslist(response)

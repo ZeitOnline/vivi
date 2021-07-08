@@ -129,7 +129,7 @@ class ITMS(zope.interface.Interface):
         topicpage_id.
         """
 
-    def get_content_topicpages(content, supress_errors=False):
+    def get_content_containing_topicpages(content, supress_errors=False):
         """Returns a list of ITag objects corresponding to the topicpages
         on which the content has been published
         """

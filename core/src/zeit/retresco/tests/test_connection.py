@@ -245,7 +245,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('/in-text-linked-documents-preview',
                          self.layer['request_handler'].requests[0].get('path'))
 
-    def test_get_content_topicpages_returns_list_of_tags(self):
+    def test_get_content_containing_topicpages_returns_list_of_tags(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         self.layer['request_handler'].response_body = json.dumps({
             'num_found': 1,
@@ -260,7 +260,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         })
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
-        result = tms.get_content_topicpages(article)
+        result = tms.get_content_containing_topicpages(article)
         self.assertEqual('Arbeit', result[0].label)
         self.assertEqual('keyword', result[0].entity_type)
 
