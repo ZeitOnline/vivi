@@ -1,4 +1,3 @@
-import mock
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
@@ -29,6 +28,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         result.hits = 4
         self.elastic.search.return_value = result
         self.tms.get_topicpage_documents.return_value = result
+        self.tms.get_related_documents.return_value = result
 
     def get_topicbox(self):
         from zeit.content.article.edit.topicbox import Topicbox
@@ -139,6 +139,12 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
 
+    def test_topicbox_source_related_api(self):
+        box = self.get_topicbox()
+        box.automatic_type = 'related-api'
+        values = box.values()
+        self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
+
     def test_topicbox_source_preconfigured_query_complete_query(self):
         box = self.get_topicbox()
         box.automatic_type = 'preconfigured-query'
@@ -169,20 +175,6 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
-
-    def test_topicbox_source_related_api_should_return_result(self):
-        box = self.get_topicbox()
-        box.automatic_type = 'related-api'
-        contentquery = zope.component.getAdapter(
-            box,
-            zeit.contentquery.interfaces.IContentQuery,
-            name=box.automatic_type)
-
-        result, hits = contentquery._get_documents(0, 3)
-
-        self.assertEqual(
-            list(result), [{'article1'}, {'article2'}, {'article3'}])
-        self.assertEqual(hits, 3)
 
     def test_topicbox_values_deduplication(self):
         box = self.get_topicbox()

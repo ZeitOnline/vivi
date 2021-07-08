@@ -72,12 +72,9 @@ class ElasticsearchMockLayer(plone.testing.Layer):
         self['tms'] = mock.Mock()
         self['tms'].get_topicpage_documents.return_value = (
             zeit.cms.interfaces.Result())
+        self['tms'].get_related_documents.return_value = (
+            zeit.cms.interfaces.Result())
 
-        result = zeit.cms.interfaces.Result([
-            {'article1'}, {'article2'}, {'article3'}
-        ])
-        result.hits = 3
-        self['tms'].get_related_documents.return_value = result
         zope.interface.alsoProvides(self['tms'],
                                     zeit.retresco.interfaces.ITMS)
         zope.component.getSiteManager().registerUtility(self['tms'])
