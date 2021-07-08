@@ -507,6 +507,14 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             area.referenced_cp = cp_with_teaser
 
 
+def create_automatic_area(cp, count=3, type='centerpage'):
+    area = cp['feature'].create_item('area')
+    area.count = count
+    area.automatic_type = type
+    area.automatic = True
+    return area
+
+
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
@@ -520,15 +528,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.cp = self.create_and_checkout_centerpage()
-        self.area = self.create_automatic_area(self.cp)
+        self.area = create_automatic_area(self.cp)
         self.area.referenced_cp = self.repository['cp_with_teaser']
-
-    def create_automatic_area(self, cp, count=3, type='centerpage'):
-        area = cp['feature'].create_item('area')
-        area.count = count
-        area.automatic_type = type
-        area.automatic = True
-        return area
 
     def assertUniqueIds(self, area, *uniqueIds):
         self.assertEqual(
@@ -568,9 +569,9 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             list(IRenderedArea(self.area).values()[0])[0].uniqueId)
 
     def test_already_rendered_area_results_are_cached(self):
-        a2 = self.create_automatic_area(self.cp)
+        a2 = create_automatic_area(self.cp)
         a2.referenced_cp = self.repository['cp_with_teaser']
-        a3 = self.create_automatic_area(self.cp)
+        a3 = create_automatic_area(self.cp)
         a3.referenced_cp = self.repository['cp_with_teaser']
 
         self.call_count = {}
@@ -638,9 +639,9 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                 list(IRenderedArea(self.area).values()[0])[0].uniqueId)
 
     def test_tms_content_query_filters_duplicate_tmscontent_across_areas(self):
-        a1 = self.create_automatic_area(self.cp, count=2, type='topicpage')
-        a2 = self.create_automatic_area(self.cp, count=3, type='topicpage')
-        a3 = self.create_automatic_area(self.cp, count=2, type='topicpage')
+        a1 = create_automatic_area(self.cp, count=2, type='topicpage')
+        a2 = create_automatic_area(self.cp, count=3, type='topicpage')
+        a3 = create_automatic_area(self.cp, count=2, type='topicpage')
         a1.referenced_topicpage = 'tms-id'
         a2.referenced_topicpage = 'tms-id'
         a3.referenced_topicpage = 'tms-id'
@@ -662,6 +663,36 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             self.assertUniqueIds(a1, '/teaser-0', '/teaser-1')
             self.assertUniqueIds(a2, '/teaser-2', '/teaser-3', '/teaser-4')
             self.assertUniqueIds(a3, '/teaser-5', '/teaser-6')
+
+    def test_tms_content_query_caches_tms_results(self):
+        a1 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a2 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a3 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a4 = create_automatic_area(self.cp, count=1, type='topicpage')
+        a1.referenced_topicpage = 'tms-id'
+        a2.referenced_topicpage = 'tms-id'
+        a3.referenced_topicpage = 'tms-id'
+        a3.topicpage_filter = 'videos'
+        a4.referenced_topicpage = 'tms-id'
+        a4.topicpage_filter = 'videos'
+        a4.topicpage_order = 'relevance'
+
+        a1.hide_dupes = False  # Simplify fixture
+        a2.hide_dupes = False
+        a3.hide_dupes = False
+        a4.hide_dupes = False
+
+        TMSContentQuery = 'zeit.contentquery.query.TMSContentQuery'
+        with mock.patch(TMSContentQuery + '._get_documents') as get:
+            with mock.patch(TMSContentQuery + '._resolve') as resolve:
+                resolve.return_value = self.repository['testcontent']
+                get.return_value = iter(['fake'] * 4), 0
+                IRenderedArea(a1).values()
+                IRenderedArea(a2).values()
+                IRenderedArea(a3).values()
+                IRenderedArea(a4).values()
+                # a1 and a2 have the same parameters, so can reuse the cache.
+                self.assertEqual(3, get.call_count)
 
     def test_elasticsearch_content_query_filters_duplicates(self):
         self.area.automatic_type = 'elasticsearch-query'
@@ -732,9 +763,9 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         ]}}}, elasticsearch.search.call_args[0][0])
 
     def test_teaser_count(self):
-        a1 = self.create_automatic_area(self.cp, count=0, type='topicpage')
-        a2 = self.create_automatic_area(self.cp, count=0, type='topicpage')
-        a3 = self.create_automatic_area(self.cp, count=2)
+        a1 = create_automatic_area(self.cp, count=0, type='topicpage')
+        a2 = create_automatic_area(self.cp, count=0, type='topicpage')
+        a3 = create_automatic_area(self.cp, count=2)
         a1.referenced_topicpage = 'tms-id'
         a3.referenced_topicpage = 'tms-id'
         tms_query = zeit.contentquery.query.CPTMSContentQuery(a1)
@@ -749,7 +780,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(tms_query._teaser_count, 12)
 
     def test_total_hits_can_be_called_first(self):
-        area = self.create_automatic_area(self.cp)
+        area = create_automatic_area(self.cp)
         area.start = 0          # TODO: are we sure this is _always_ set?
         tms = mock.Mock()
         zope.component.getGlobalSiteManager().registerUtility(
@@ -761,7 +792,11 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(tms_query.total_hits, 42)
 
 
-class AutomaticRSSTest(HideDupesTest):
+class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.cp = self.create_and_checkout_centerpage()
 
     def feed_xml(self):
         url = pkg_resources.resource_filename(
@@ -826,7 +861,7 @@ class AutomaticRSSTest(HideDupesTest):
             item.foo
 
     def test_rss_content_query_creates_teasers_from_feed(self):
-        area = self.create_automatic_area(self.cp, count=3, type='rss-feed')
+        area = create_automatic_area(self.cp, count=3, type='rss-feed')
         m = self.mocked_rss_query(area)
         rss_query = zeit.contentquery.query.RSSFeedContentQuery(area)
         with m:
@@ -834,9 +869,9 @@ class AutomaticRSSTest(HideDupesTest):
         self.assertEqual(3, len(result))
 
     def test_hide_dupe_does_not_contain_rss_link(self):
-        area = self.create_automatic_area(self.cp, count=4, type='rss-feed')
+        area = create_automatic_area(self.cp, count=4, type='rss-feed')
         mocked_feed = self.mocked_rss_query(area)
-        elastic_area = self.create_automatic_area(self.cp)
+        elastic_area = create_automatic_area(self.cp)
         elastic_area.automatic_type = 'elasticsearch-query'
         elastic_area.elasticsearch_raw_query = (
             u'{"query": {"match": {"foo": "bar"}}}')
@@ -845,7 +880,4 @@ class AutomaticRSSTest(HideDupesTest):
         with mocked_feed:
             IRenderedArea(elastic_area).values()
         elastic_query = elasticsearch.search.call_args[0][0]
-        # the CP has another area with 3 teasers on it
-        self.assertEqual(3,
-                         len(elastic_query['query']['bool']['must_not']
-                             [1]['ids']['values']))
+        self.assertNotIn('ids', elastic_query['query']['bool']['must_not'])

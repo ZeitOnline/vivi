@@ -59,6 +59,7 @@ class ImageTransform(object):
         enhancements, so it can be used as a high quality preview of image
         enhancements in the frontend.
         """
+
         if not variant.is_default:
             image = self._crop_variant_image(variant, size=size)
         else:
@@ -118,9 +119,10 @@ class ImageTransform(object):
             zoomed_width, zoomed_height, target_ratio)
         if size:
             w, h = size
-            override_ratio = (float(w) / float(h)) if h != 0 else 0
-            target_width, target_height = self._fit_ratio_to_image(
-                target_width, target_height, override_ratio)
+            if w > 0 and h > 0:
+                override_ratio = (float(w) / float(h))
+                target_width, target_height = self._fit_ratio_to_image(
+                    target_width, target_height, override_ratio)
 
         x, y = self._determine_crop_position(
             variant, target_width, target_height)

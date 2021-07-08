@@ -1,10 +1,34 @@
 vivi.core changes
 =================
 
-4.57.1 (unreleased)
+4.57.4 (unreleased)
 -------------------
 
 - ZON-6316: Speechbert Checkbox: Moving to options and rename label
+
+- OPS-2024: Handles invalid variant size
+
+- TOPIC-9: Implement TMS order in a way that does not break the related API
+
+
+4.57.3 (2021-07-05)
+-------------------
+
+- BUG-1415: Be more defensive during BC video import
+
+- TOPIC-9: Store topicpage_order abstracted from the concrete TMS fieldnames
+
+
+4.57.2 (2021-06-30)
+-------------------
+
+- FIX: Hide Topicpage sort option when anything else is selected
+
+
+4.57.1 (2021-06-30)
+-------------------
+
+- ZON-6710: Changes topicbox default automatic_type value
 
 
 4.57.0 (2021-06-29)

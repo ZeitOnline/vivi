@@ -224,3 +224,11 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
             ' rrrrrr ',
             '        ',
         ], transform.create_variant_image(variant, fill_color='ff0000'))
+
+    def test_invalid_variant_size_should_not_raise_pil_systemerror(self):
+        variant = Variant(
+            id='wide', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
+        image = self.transform.create_variant_image(
+            variant, size=(0, 0), fill_color='ffffff')
+        self.assertEqual((8, 8), image.getImageSize())
+

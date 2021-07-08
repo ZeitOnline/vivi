@@ -272,6 +272,7 @@ class DeletedVideo(Video):
             self.__dict__['__parent__'] = cmsobj.__parent__
             self.__dict__['uniqueId'] = cmsobj.uniqueId
         else:
+            self.__dict__['__parent__'] = None
             self.__dict__['uniqueId'] = (
                 'http://xml.zeit.de/__deleted_video__/' + id)
 
