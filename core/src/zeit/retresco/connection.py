@@ -9,6 +9,7 @@ import requests.exceptions
 import requests.sessions
 import signal
 import transaction
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.workflow.interfaces
@@ -141,6 +142,10 @@ class TMS:
 
     def get_content_related_topicpages(
             self, content, rows=10, suppress_errors=False, timeout=None):
+        if not (zeit.cms.content.interfaces.ICommonMetadata.providedBy(
+                    content) or not content.keywords):
+            return []
+
         response = self._get_related_topicpages(
             content.keywords[0].label.lower(), rows, suppress_errors, timeout)
         return get_tagslist(response)
