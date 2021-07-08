@@ -6,6 +6,8 @@ vivi.core changes
 
 - OPS-2024: Handles invalid variant size
 
+- TOPIC-9: Implement TMS order in a way that does not break the related API
+
 
 4.57.3 (2021-07-05)
 -------------------
