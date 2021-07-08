@@ -116,12 +116,12 @@ class TMS:
         return result
 
     def _get_related_topicpages(
-            self, topicpage_id, rows=10, suppress_errors=False):
+            self, topicpage_id, rows=10, suppress_errors=False, timeout=None):
         try:
             params = {'rows': rows}
             response = self._request(
                 'GET /topic-pages/{}/relateds'.format(topicpage_id),
-                params=params)
+                params=params, timeout=timeout)
             return response['docs']
         except Exception:
             if not suppress_errors:
@@ -140,23 +140,23 @@ class TMS:
         return result
 
     def get_content_related_topicpages(
-            self, content, rows=10, suppress_errors=False):
+            self, content, rows=10, suppress_errors=False, timeout=None):
         response = self._get_related_topicpages(
-            content.keywords[0].label.lower(), rows, suppress_errors)
+            content.keywords[0].label.lower(), rows, suppress_errors, timeout)
         return get_tagslist(response)
 
-    def _get_content_topics(self, content):
+    def _get_content_topics(self, content, timeout=None):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         response = self._request(
-            'GET /content/{}/topic-pages'.format(uuid))
+            'GET /content/{}/topic-pages'.format(uuid), timeout=timeout)
         result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = len(response['docs'])
         return result
 
     def get_content_containing_topicpages(
-            self, content, suppress_errors=False):
+            self, content, timeout=None, suppress_errors=False):
         try:
-            response = self._get_content_topics(content)
+            response = self._get_content_topics(content, timeout)
             return get_tagslist(response)
         except Exception:
             if not suppress_errors:
