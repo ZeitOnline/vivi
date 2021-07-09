@@ -2,6 +2,7 @@ from six.moves.urllib.error import HTTPError
 from unittest import mock
 import json
 import zeit.cms.interfaces
+import zeit.cms.tagging.tag
 import zeit.retresco.testing
 
 
@@ -50,7 +51,7 @@ class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         tagger = zeit.cms.tagging.interfaces.ITagger(article)
-        tag = zeit.retresco.tag.Tag('Berlin', 'location')
+        tag = zeit.cms.tagging.tag.Tag('Berlin', 'location')
         tagger[tag.code] = tag
         del tagger[tag.code]
         b = self.browser

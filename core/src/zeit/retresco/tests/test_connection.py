@@ -11,6 +11,7 @@ import requests.exceptions
 import time
 import urllib.parse
 import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.tag
 import zeit.connector.interfaces
 import zeit.content.rawxml.rawxml
 import zeit.content.text.text
@@ -24,7 +25,7 @@ import zope.component
 class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TMSTest, self).setUp()
+        super().setUp()
         patcher = mock.patch(
             'zeit.retresco.convert.TMSRepresentation._validate')
         validate = patcher.start()
@@ -32,7 +33,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.addCleanup(patcher.stop)
 
     def add_tag(self, tagger, label, typ, pinned):
-        tag = zeit.retresco.tag.Tag(label, typ)
+        tag = zeit.cms.tagging.tag.Tag(label, typ)
         tagger[tag.code] = tag
         if pinned:
             tagger.set_pinned(tagger.pinned + (tag.code,))
@@ -62,7 +63,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         result = list(tms.get_keywords('Sch'))
         self.assertEqual(2, len(result))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
-        self.assertEqual([u'Schmerz', u'Walter Schmögner'],
+        self.assertEqual(['Schmerz', 'Walter Schmögner'],
                          [x.label for x in result])
 
     def test_get_locations_returns_a_list_of_tag_objects(self):
@@ -76,7 +77,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = list(tms.get_locations('Kro'))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
-        self.assertEqual([u'Kroatien'], [x.label for x in result])
+        self.assertEqual(['Kroatien'], [x.label for x in result])
 
     def test_get_locations_filters_by_entity_type_location(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -172,7 +173,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             self.assertEqual('mytopic', result[0]['id'])
             self.assertEqual('Mytopic', result[0]['title'])
 
-    def test_get_article_keywords_order_is_given_by_cms_payload(self):
+    def test_get_article_topiclinks_order_is_given_by_cms_payload(self):
         with checked_out(self.repository['testcontent']):
             pass  # Trigger mock connector uuid creation
 
@@ -213,18 +214,18 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             },
         })
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = tms.get_article_keywords(self.repository['testcontent'])
+        result = tms.get_article_topiclinks(self.repository['testcontent'])
         self.assertEqual(
             ['New York', 'Obama', 'Merkel', 'Clinton', 'Berlin'],
             [x.label for x in result])
         self.assertEqual('thema/newyork', result[0].link)
 
-    def test_get_article_keywords_uses_published_content_endpoint_as_default(
+    def test_get_article_topiclinks_uses_published_content_endpoint_as_default(
             self):
         with checked_out(self.repository['testcontent']):
             pass  # Trigger mock connector uuid creation
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.get_article_keywords(self.repository['testcontent'])
+        tms.get_article_topiclinks(self.repository['testcontent'])
         # First requests will be enrich and index
         content = self.repository['testcontent']
         uuid = zeit.cms.content.interfaces.IUUID(content).id
@@ -237,12 +238,31 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             'GET /in-text-linked-documents/{}'.format(uuid),
         ])
 
-    def test_get_article_keywords_uses_preview_endpoint_if_param_set(self):
+    def test_get_article_topiclinks_uses_preview_endpoint_if_param_set(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.get_article_keywords(self.repository['testcontent'],
-                                 published=False)
+        tms.get_article_topiclinks(self.repository['testcontent'],
+                                   published=False)
         self.assertEqual('/in-text-linked-documents-preview',
                          self.layer['request_handler'].requests[0].get('path'))
+
+    def test_get_content_containing_topicpages_returns_list_of_tags(self):
+        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+        self.layer['request_handler'].response_body = json.dumps({
+            'num_found': 1,
+            'docs': [{
+                "doc_id": "arbeit",
+                "name": "Arbeit",
+                "title": "arbeit",
+                "topic_type": "keyword",
+                "url": "/thema/arbeit"
+                # lots of fields of the actual response omitted.
+            }],
+        })
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        result = tms.get_content_containing_topicpages(article)
+        self.assertEqual('Arbeit', result[0].label)
+        self.assertEqual('keyword', result[0].entity_type)
 
 
 @pytest.mark.slow
@@ -254,7 +274,7 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
     # so if this fails, just run it again, chances are it will work then.
 
     def setUp(self):
-        super(IntegrationTest, self).setUp()
+        super().setUp()
         self.tms = zeit.retresco.connection.TMS(
             primary=dict(url=os.environ['ZEIT_RETRESCO_URL']))
         self.article = zeit.cms.interfaces.ICMSContent(
@@ -271,11 +291,12 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
                 zeit.cms.content.interfaces.IUUID(self.article).id)
         except Exception as e:
             print(e)
-        super(IntegrationTest, self).tearDown()
+        super().tearDown()
 
     def test_enrich_returns_keywords(self):
         keywords = self.tms.extract_keywords(self.article)
-        self.assertIn(zeit.retresco.tag.Tag('Somalia', 'location'), keywords)
+        self.assertIn(
+            zeit.cms.tagging.tag.Tag('Somalia', 'location'), keywords)
 
     def test_get_topicpages_has_expected_fields(self):
         pages = self.tms.get_topicpages()
@@ -373,7 +394,7 @@ class SlowAdapter(requests.adapters.BaseAdapter):
 class SignalTimeoutTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(SignalTimeoutTest, self).setUp()
+        super().setUp()
         self.session = requests.Session()
         self.session.mount('slow://', SlowAdapter())
 

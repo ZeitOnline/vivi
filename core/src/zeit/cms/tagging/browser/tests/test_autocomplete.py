@@ -16,5 +16,6 @@ class LocationAutocompleteTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
         b = self.browser
         b.open(url + '?term=NNO')
         result = json.loads(b.contents)
-        self.assertEqual([{'label': 'Hannover', 'value': 'tag://hannover'}],
-                         result)
+        self.assertEqual(
+            [{'label': 'Hannover', 'value': 'tag://test\\u2603Hannover'}],
+            result)

@@ -1,4 +1,4 @@
-from six import StringIO
+from io import StringIO
 from zeit.cms.checkout.helper import checked_out
 import collections
 import gocept.runner
@@ -9,11 +9,12 @@ import requests.exceptions
 import requests.sessions
 import signal
 import transaction
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.tagging.tag
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.retresco.interfaces
-import zeit.retresco.tag
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -23,7 +24,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
-class TMS(object):
+class TMS:
 
     def __init__(self, primary, secondary=None):
         self.primary = dict(primary)
@@ -46,7 +47,7 @@ class TMS(object):
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
-                result.append(zeit.retresco.tag.Tag(
+                result.append(zeit.cms.tagging.tag.Tag(
                     label=keyword, entity_type=entity_type))
         return result
 
@@ -57,7 +58,7 @@ class TMS(object):
             params['item_type'] = entity_type
         response = self._request('GET /entities', params=params)
         for entity in response['entities']:
-            yield zeit.retresco.tag.Tag(
+            yield zeit.cms.tagging.tag.Tag(
                 entity['entity_name'], entity['entity_type'])
 
     def get_locations(self, search_string):
@@ -115,15 +116,59 @@ class TMS(object):
         result.hits = len(response['docs'])
         return result
 
-    def get_related_topics(self, topicpage_id, rows=10):
-        params = {'rows': rows}
-        response = self._request(
-            'GET /topic-pages/{}/relateds'.format(topicpage_id), params=params)
+    def _get_related_topicpages(
+            self, topicpage_id, rows=10, suppress_errors=False, timeout=None):
+        try:
+            params = {'rows': rows}
+            response = self._request(
+                'GET /topic-pages/{}/relateds'.format(topicpage_id),
+                params=params, timeout=timeout)
+            return response['docs']
+        except Exception:
+            if not suppress_errors:
+                log.warning(
+                    'Retresco topiclinks failed for {}'.format(
+                        topicpage_id), exc_info=True)
+            return ()
+
+    def get_related_topics(self, topicpage_id, rows=10, suppress_errors=False):
+        response = self._get_related_topicpages(
+            topicpage_id, rows, suppress_errors)
         id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
         result = zeit.cms.interfaces.Result(
-            [id_namespace + x['url'] for x in response['docs']])
+            [id_namespace + x['url'] for x in response])
         result.hits = len(response['docs'])
         return result
+
+    def get_content_related_topicpages(
+            self, content, rows=10, suppress_errors=False, timeout=None):
+        if not (zeit.cms.content.interfaces.ICommonMetadata.providedBy(
+                content) or not content.keywords):
+            return []
+
+        response = self._get_related_topicpages(
+            content.keywords[0].label.lower(), rows, suppress_errors, timeout)
+        return get_tagslist(response)
+
+    def _get_content_topics(self, content, timeout=None):
+        uuid = zeit.cms.content.interfaces.IUUID(content).id
+        response = self._request(
+            'GET /content/{}/topic-pages'.format(uuid), timeout=timeout)
+        result = zeit.cms.interfaces.Result(response['docs'])
+        result.hits = len(response['docs'])
+        return result
+
+    def get_content_containing_topicpages(
+            self, content, timeout=None, suppress_errors=False):
+        try:
+            response = self._get_content_topics(content, timeout)
+            return get_tagslist(response)
+        except Exception:
+            if not suppress_errors:
+                log.warning(
+                    'Retresco topiclinks failed for {}'.format(
+                        content.uniqueId), exc_info=True)
+            return ()
 
     def get_article_data(self, content):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
@@ -169,38 +214,53 @@ class TMS(object):
                 content.uniqueId)
             return {}
 
-    def get_article_keywords(self, content, timeout=None, published=True):
-        if published:
-            response = self._get_intextlink_data(content, timeout)
-        else:
-            response = self._get_intextlink_data_preview(content, timeout)
-        data = response.get('entity_links', ())
-        entity_links = collections.OrderedDict()
-        for item in data:
-            if not item['link']:
-                continue
-            # zeit.web expects the path without a leading slash
-            item['link'] = item['link'].lstrip('/')
-            entity_links[(item['key'], item['key_type'])] = item
+    def get_article_topiclinks(
+            self,
+            content,
+            timeout=None,
+            published=True,
+            suppress_errors=False):
+        try:
+            if published:
+                response = self._get_intextlink_data(content, timeout)
+            else:
+                response = self._get_intextlink_data_preview(content, timeout)
+            data = response.get('entity_links', ())
+            entity_links = collections.OrderedDict()
+            for item in data:
+                if not item['link']:
+                    continue
+                # zeit.web expects the path without a leading slash
+                item['link'] = item['link'].lstrip('/')
+                entity_links[(item['key'], item['key_type'])] = item
 
-        # Keywords pinned in vivi come first.
-        result = []
-        content = zeit.retresco.interfaces.ITMSContent(response)
-        for keyword in zeit.retresco.tagger.Tagger(content).values():
-            if not keyword.pinned:
-                continue
-            tms = entity_links.pop((keyword.label, keyword.entity_type), None)
-            if not tms:
-                continue
-            keyword.link = tms['link']
-            result.append(keyword)
-        # Then we add the rest, TMS returns those sorted by descending score.
-        for tms in entity_links.values():
-            keyword = zeit.retresco.tag.Tag(tms['key'], tms['key_type'])
-            keyword.link = tms['link']
-            result.append(keyword)
-
-        return result
+            # Keywords pinned in vivi come first.
+            result = []
+            content = zeit.retresco.interfaces.ITMSContent(response)
+            for keyword in zeit.retresco.tagger.Tagger(content).values():
+                if not keyword.pinned:
+                    continue
+                tms = entity_links.pop(
+                    (keyword.label, keyword.entity_type), None)
+                if not tms:
+                    continue
+                keyword.link = tms['link']
+                result.append(keyword)
+            # Then we add the rest, TMS returns those sorted by descending
+            # score.
+            for tms in entity_links.values():
+                keyword = zeit.cms.tagging.tag.Tag(
+                    tms['key'],
+                    tms['key_type'],
+                    tms['link'])
+                result.append(keyword)
+            return result
+        except Exception:
+            if not suppress_errors:
+                log.warning(
+                    'Retresco topiclinks failed for {}'.format(
+                        content.uniqueId), exc_info=True)
+            return ()
 
     def index(self, content, override_body=None):
         __traceback_info__ = (content.uniqueId,)
@@ -375,13 +435,24 @@ def _build_topic_redirects(topicpages):
             continue
         if not target.startswith('http'):
             if not target.startswith('/'):
-                target = u'/' + target
+                target = '/' + target
             target = url_prefix + target
         # XXX hard-coded path
-        source = u'/thema/' + row['id']
+        source = '/thema/' + row['id']
         output.write('%s = %s\n' % (source, target))
 
     return output.getvalue()
+
+
+def get_tagslist(response):
+    result = []
+    for value in response:
+        keyword = zeit.cms.tagging.tag.Tag(
+            value['name'],
+            value['topic_type'],
+            value['url'].lstrip('/'))
+        result.append(keyword)
+    return result
 
 
 def signal_timeout_request(self, method, url, **kw):

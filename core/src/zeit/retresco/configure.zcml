@@ -37,13 +37,6 @@
         />
     </class>
 
-    <class class=".tag.Tag">
-      <require
-        interface="zeit.cms.tagging.interfaces.ITag"
-        permission="zope.View"
-        />
-    </class>
-
     <class class=".whitelist.Whitelist">
       <require
         interface="zeit.cms.tagging.interfaces.IWhitelist"

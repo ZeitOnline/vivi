@@ -1,7 +1,7 @@
 import grokcore.component as grok
 import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.tag
 import zeit.retresco.interfaces
-import zeit.retresco.tag
 import zope.component
 
 
@@ -16,7 +16,7 @@ class Whitelist(grok.GlobalUtility):
         return self._tms.get_locations(term)
 
     def get(self, id):
-        return zeit.retresco.tag.Tag.from_code(id)
+        return zeit.cms.tagging.tag.Tag.from_code(id)
 
     @property
     def _tms(self):

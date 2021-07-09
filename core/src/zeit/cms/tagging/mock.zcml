@@ -12,11 +12,4 @@
       />
   </class>
 
-  <class class=".testing.FakeTag">
-    <require
-      interface="zeit.cms.tagging.interfaces.ITag"
-      permission="zope.View"
-      />
-  </class>
-
 </configure>

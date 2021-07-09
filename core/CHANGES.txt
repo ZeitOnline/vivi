@@ -6,7 +6,11 @@ vivi.core changes
 
 - OPS-2024: Handles invalid variant size
 
+- TOPIC-16: Add ITMS methods get_content_containing_topicpages and get_content_related_topicpages
+
 - TOPIC-9: Implement TMS order in a way that does not break the related API
+
+- MAINT: Move zeit.retresco.tag to zeit.cms.tagging.tag
 
 
 4.57.3 (2021-07-05)
@@ -27,6 +31,7 @@ vivi.core changes
 -------------------
 
 - ZON-6710: Changes topicbox default automatic_type value
+
 
 
 4.57.0 (2021-06-29)

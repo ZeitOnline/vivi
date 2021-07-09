@@ -1,9 +1,9 @@
 from unittest import mock
+from zeit.cms.tagging.tag import Tag
 import collections
 import lxml.objectify
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.tagging.tag
 import zope.component
 import zope.interface
 
@@ -14,7 +14,7 @@ KEYWORD_PROPERTY = ('testtags', NAMESPACE)
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
 @zope.interface.implementer(zeit.cms.tagging.interfaces.ITagger)
-class DummyTagger(object):
+class DummyTagger:
 
     def __init__(self, context):
         self.context = context
@@ -82,44 +82,59 @@ class DummyTagger(object):
 
 
 @zope.interface.implementer(zeit.cms.tagging.interfaces.IWhitelist)
-class DummyWhitelist(object):
+class DummyWhitelist:
 
-    tags = {
-        'testtag': 'Testtag',
-        'testtag2': 'Testtag2',
-        'testtag3': 'Testtag3',
-    }
-    location_tags = {
-        'hannover': u'Hannover',
-        'paris': u'Paris'
-    }
+    tags = [
+        'Testtag',
+        'Testtag2',
+        'Testtag3',
+    ]
+    location_tags = [
+        'Hannover',
+        'Paris',
+    ]
+    entity_type = 'test'
 
     def search(self, term):
         term = term.lower()
-        return [FakeTag(code=k, label=v)
-                for k, v in self.tags.items() if term in v.lower()]
+        return [Tag(label, self.entity_type)
+                for label in self.tags if term in label.lower()]
 
     def locations(self, term):
         term = term.lower()
-        return [FakeTag(code=key, label=label)
-                for key, label in self.location_tags.items()
-                if term in label.lower()]
+        return [Tag(label, self.entity_type)
+                for label in self.location_tags if term in label.lower()]
 
-    def get(self, id):
-        if id in self.tags:
-            return FakeTag(code=id, label=self.tags[id])
+    def get(self, tag_id):
+        label = tag_id.replace('test%s' % Tag.SEPARATOR, '')
+        if label in self.tags:
+            return Tag(label, self.entity_type)
         return None
 
 
 class FakeTags(collections.OrderedDict):
 
     def __init__(self):
-        super(FakeTags, self).__init__()
+        super().__init__()
         self.updateOrder = mock.Mock()
         self.update = mock.Mock()
 
+    def _key(self, key):
+        if Tag.SEPARATOR not in key:
+            key = ''.join([DummyWhitelist.entity_type, Tag.SEPARATOR, key])
+        return key
+
+    def __getitem__(self, key):
+        return super().__getitem__(self._key(key))
+
+    def __setitem__(self, key, value):
+        return super().__setitem__(self._key(key), value)
+
+    def __delitem__(self, key):
+        return super().__delitem__(self._key(key))
+
     def __contains__(self, key):
-        return key in list(self)
+        return self._key(key) in list(self)
 
     def set_pinned(self, keys):
         for tag in self.values():
@@ -142,50 +157,23 @@ class FakeTags(collections.OrderedDict):
         return node
 
 
-@zope.interface.implementer(zeit.cms.tagging.interfaces.ITag)
-class FakeTag(object):
-    """Fake implementation of ITag for tests."""
-
-    def __init__(self, code, label):
-        self.label = label
-        self.code = code
-        self.pinned = False
-        self.__name__ = self.code  # needed to fulfill `ICMSContent`
-        self.link = None
-
-    @property
-    def uniqueId(self):
-        return (zeit.cms.tagging.interfaces.ID_NAMESPACE +
-                self.code.encode('unicode_escape').decode('ascii'))
-
-    def __eq__(self, other):
-        if not isinstance(other, type(self)):
-            return False
-        return self.code == other.code and self.pinned == other.pinned
-
-
-class TaggingHelper(object):
+class TaggingHelper:
     """Mixin for tests which need some tagging infrastrucutre."""
 
-    def get_tag(self, code):
-        tag = FakeTag(code=code, label=code)
-        return tag
-
-    def setup_tags(self, *codes):
+    def setup_tags(self, *labels):
         tags = FakeTags()
-        for code in codes:
-            tags[code] = self.get_tag(code)
+        for label in labels:
+            tags[label] = Tag(label, DummyWhitelist.entity_type)
         patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
         self.addCleanup(patcher.stop)
         self.tagger = patcher.start()
         self.tagger.return_value = tags
-        self.whitelist_tags = {tag.code: tag.label for tag in tags.values()}
 
         whitelist = zope.component.queryUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
         if whitelist is not None:  # only when ZCML is loaded
             original_tags = whitelist.tags
-            whitelist.tags = self.whitelist_tags
+            whitelist.tags = list(labels)
 
             def restore_original_tags_on_whitelist():
                 whitelist.tags = original_tags

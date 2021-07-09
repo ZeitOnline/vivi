@@ -1,16 +1,17 @@
 from datetime import datetime
 from unittest import mock
+from zeit.brightcove import convert
 from zeit.brightcove.convert import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
 import pytz
 import six
-import zope.component
 import zeit.brightcove.testing
-import zeit.cms.tagging.testing
-import zeit.content.video.playlist
 import zeit.cms.repository.interfaces
+import zeit.cms.tagging.tag
+import zeit.cms.tagging.testing
 import zeit.content.image.testing
-from zeit.brightcove import convert
+import zeit.content.video.playlist
+import zope.component
 
 
 class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
@@ -63,7 +64,8 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
         self.setup_tags('staatsanwaltschaft', 'parlament')
         bc = BCVideo.from_cms(cms)
         self.assertEqual(
-            'staatsanwaltschaft;parlament',
+            'test{sep}staatsanwaltschaft;test{sep}parlament'.format(
+                sep=zeit.cms.tagging.tag.Tag.SEPARATOR),
             bc.data['custom_fields']['cmskeywords'])
 
     def test_converts_product(self):
@@ -149,7 +151,8 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
                 'allow_comments': '1',
                 'authors': 'http://xml.zeit.de/a1',
                 'channels': 'Deutschland Meinung;International',
-                'cmskeywords': 'testtag;testtag2',
+                'cmskeywords': 'test{sep}Testtag;test{sep}Testtag2'.format(
+                    sep=zeit.cms.tagging.tag.Tag.SEPARATOR),
                 'produkt-id': 'TEST',
                 'ref_link1': 'http://xml.zeit.de/online/2007/01/eta-zapatero',
                 'serie': 'Chefsache',
@@ -171,8 +174,8 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
         self.assertEqual(True, cms.commentsAllowed)
         self.assertEqual(['http://xml.zeit.de/a1'],
                          [x.target.uniqueId for x in cms.authorships])
-        self.assertEqual(['testtag', 'testtag2'],
-                         [x.code for x in cms.keywords])
+        self.assertEqual(['Testtag', 'Testtag2'],
+                         [x.label for x in cms.keywords])
         self.assertEqual((('Deutschland', 'Meinung'), ('International', None)),
                          cms.channels)
         self.assertEqual('TEST', cms.product.id)
