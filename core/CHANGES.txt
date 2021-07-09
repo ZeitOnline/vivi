@@ -4,6 +4,8 @@ vivi.core changes
 4.57.4 (unreleased)
 -------------------
 
+- ZON-6316: Speechbert Checkbox: Moving to options and rename label
+
 - OPS-2024: Handles invalid variant size
 
 - TOPIC-16: Add ITMS methods get_content_containing_topicpages and get_content_related_topicpages
