@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.57.4 (unreleased)
+4.57.4 (2021-07-09)
 -------------------
 
 - ZON-6316: Speechbert Checkbox: Moving to options and rename label
