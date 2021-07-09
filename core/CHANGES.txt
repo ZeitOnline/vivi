@@ -1,11 +1,21 @@
 vivi.core changes
 =================
 
-4.57.3 (unreleased)
+4.57.4 (unreleased)
+-------------------
+
+- OPS-2024: Handles invalid variant size
+
+- TOPIC-9: Implement TMS order in a way that does not break the related API
+
+
+4.57.3 (2021-07-05)
 -------------------
 
 - TOPIC-16: Add tms content-topic-api endpoint
 - BUG-1415: Be more defensive during BC video import
+
+- TOPIC-9: Store topicpage_order abstracted from the concrete TMS fieldnames
 
 
 4.57.2 (2021-06-30)

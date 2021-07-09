@@ -27,14 +27,17 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         self.__parent__ = self.context
 
     # Convenience: Delegate IArea to our context, so we can be used like one.
-    def __getattr__(self, name):
-        # There's no interface for xmlsupport.Persistent which could tell us
-        # that this attribute needs special treatment.
-        if name == '__parent__':
-            return super(AutomaticArea, self).__getattr__(name)
-        if name in zeit.content.cp.interfaces.IArea:
-            return getattr(self.context, name)
-        raise AttributeError(name)
+    def __getattribute__(self, name):
+        try:
+            return object.__getattribute__(self, name)
+        except AttributeError:
+            # There's no interface for xmlsupport.Persistent which could tell
+            # us that this attribute needs special treatment.
+            if name == '__parent__':
+                return super(AutomaticArea, self).__parent__
+            if name in zeit.content.cp.interfaces.IArea:
+                return getattr(self.context, name)
+            raise
 
     @cached_on_content('area_values', lambda x: x.context.__name__)
     def values(self):

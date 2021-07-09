@@ -248,7 +248,6 @@ class TMSContentQuery(ContentQuery):
         super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
-        self.order = self.context.topicpage_order
 
     def __call__(self):
         result, _ = self._fetch(self.start)
@@ -257,15 +256,28 @@ class TMSContentQuery(ContentQuery):
     _teaser_count = NotImplemented
 
     def _fetch(self, start):
-        """Extension point for zeit.web to do pagination and de-duping."""
+        """How hide_dupes works for TMS: Since the TMS API does not support
+        passing dynamic ES query fragments (only statically configured
+        "filters"), we cannot remove dupes server-side (like ESContentQuery
+        does with its ``hide_dupes_clause``), but have to filter them here in
+        code. And if we don't get enough teasers as our area wants
+        (``self.context.count``) due to dropping some dupes, we have to fetch
+        more from TMS.
 
+        This is a separate method to ``__call__`` to provide an extension point
+        for zeit.web, so it can handle hide_dupes when paginating:
+        When rendering page>=2, we always have to also look at page 1, so that
+        any dupes that have been dropped do not repeat on the later page.
+        Thus zeit.web "peeks" with ``_fetch(start=0)``, and then adds the
+        returned amount of dupes to the offset, ``_fetch(self.start+dupes)``.
+        """
         cache = content_cache(self, 'topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
-        key = (self.topicpage, self.filter_id, start)
+        key = (self.topicpage, self.filter_id, start, self.order)
         if key in cache:
             response, start, _ = cache[key]
         else:
-            response, hits = self._get_documents(start=start, rows=rows)
+            response, hits = self._get_documents(start, rows)
             cache[key] = response, start, hits
 
         result = []
@@ -296,8 +308,8 @@ class TMSContentQuery(ContentQuery):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             response = tms.get_topicpage_documents(
-                id=self.topicpage, filter=self.filter_id,
-                start=start, rows=rows, order=self.order)
+                id=self.topicpage, filter=self.filter_id, order=self.order,
+                start=start, rows=rows)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
@@ -317,6 +329,11 @@ class TMSContentQuery(ContentQuery):
         return self.context.hide_dupes
 
     @property
+    def order(self):
+        return zeit.retresco.content.KPI.FIELDS.get(
+            self.context.topicpage_order, self.context.topicpage_order)
+
+    @property
     def total_hits(self):
         cache = content_cache(self, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
@@ -333,6 +350,13 @@ class CPTMSContentQuery(TMSContentQuery):
 
     @property
     def _teaser_count(self):
+        """We cache TMS responses on the CP (i.e. for the request), since for
+        curated CPs users sometimes use multiple (small) auto areas that refer
+        to the same ContentQuery. To hopefully prevent duplicate TMS requests,
+        we collect all areas that target the same topicpage, and immediately
+        request the summed amount of their counts (plus some spares, to
+        hopefully account for dropped dupes).
+        """
         cp = zeit.content.cp.interfaces.ICenterPage(self.context)
         return sum(
             a.count for a in cp.cached_areas
@@ -434,6 +458,8 @@ class TMSRelatedApiQuery(TMSContentQuery):
     # The TMS related API does not support `start`, so we cannot fetch
     # additional teasers to replace previously filtered-out duplicates.
     hide_dupes = False
+    # The TMS related API currently does not support a custom order.
+    order = None
 
     def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
