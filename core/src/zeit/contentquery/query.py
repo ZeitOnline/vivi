@@ -150,17 +150,6 @@ class CustomContentQuery(ElasticsearchContentQuery):
 
     grok.name('custom')
 
-    SOLR_TO_ES_SORT = {
-        'date-last-published-semantic desc': (
-            'payload.workflow.date_last_published_semantic:desc'),
-        'last-semantic-change desc': (
-            'payload.document.last-semantic-change:desc'),
-        'date-first-released desc': (
-            'payload.document.date_first_released:desc'),
-        'date-last-published desc': (
-            'payload.workflow.date_last_published:desc'),
-    }
-
     ES_FIELD_NAMES = {
         'authorships': 'payload.head.authors',
         'channels': 'payload.document.channels.hierarchy',
@@ -174,8 +163,6 @@ class CustomContentQuery(ElasticsearchContentQuery):
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_custom_query()
         self.order = self.context.query_order
-        if self.order in self.SOLR_TO_ES_SORT:  # BBB
-            self.order = self.SOLR_TO_ES_SORT[self.order]
 
     def _make_custom_query(self):
         fields = {}
