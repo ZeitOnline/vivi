@@ -13,7 +13,7 @@ import zope.interface
 class Connection(elasticsearch.connection.RequestsHttpConnection):
 
     def __init__(self, *args, **kw):
-        super(Connection, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.session.headers['User-Agent'] = self._user_agent()
 
     def _user_agent(self):
@@ -30,7 +30,7 @@ def TransportWithConnection(connection_class):
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
-class Elasticsearch(object):
+class Elasticsearch:
     """Search via Elasticsearch."""
 
     def __init__(self, url, index, connection_class=Connection):

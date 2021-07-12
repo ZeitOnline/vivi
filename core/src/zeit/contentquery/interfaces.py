@@ -4,7 +4,7 @@ import collections
 import json
 import logging
 import re
-import six
+import urllib.request
 import zc.sourcefactory.basic
 import zeit.cms.content.property
 import zeit.cms.content.sources
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, url, timeout):
-        super(AutomaticFeed, self).__init__(id, title, None)
+        super().__init__(id, title, None)
         self.url = url
         self.timeout = timeout
 
@@ -36,9 +36,9 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
             feed = AutomaticFeed(
-                six.text_type(node.get('id')),
-                six.text_type(node.text.strip()),
-                six.text_type(node.get('url')),
+                str(node.get('id')),
+                str(node.text.strip()),
+                str(node.get('url')),
                 int(node.get('timeout', 2))
             )
             result[feed.id] = feed
@@ -106,8 +106,8 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
     def _get_tree_from_url(self, url):
         try:
             data = []
-            for line in six.moves.urllib.request.urlopen(url):
-                line = six.ensure_text(line)
+            for line in urllib.request.urlopen(url):
+                line = line.decode('utf-8')
                 if self.COMMENT.search(line):
                     continue
                 data.append(line)
@@ -234,7 +234,7 @@ class IConfiguration(zope.interface.Interface):
     query_order = zope.schema.Choice(
         title=_('Sort order'),
         source=QuerySortOrderSource(),
-        default=u'payload.workflow.date_last_published_semantic:desc',
+        default='payload.workflow.date_last_published_semantic:desc',
         required=True)
 
     elasticsearch_raw_query = zope.schema.Text(
@@ -243,7 +243,7 @@ class IConfiguration(zope.interface.Interface):
 
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
-        default=u'payload.document.date_first_released:desc',
+        default='payload.document.date_first_released:desc',
         required=False)
 
     is_complete_query = zope.schema.Bool(
