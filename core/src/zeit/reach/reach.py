@@ -52,6 +52,8 @@ class Reach:
         except Exception:
             log.warning('Resolving %s failed', doc, exc_info=True)
             return None
+        zope.interface.alsoProvides(
+            content, zeit.reach.interfaces.IReachContent)
         return content
 
     def _get_metadata(self, path):
@@ -64,3 +66,16 @@ class Reach:
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.reach')
     return Reach(config['url'], config['freeze-now'] or None)
+
+
+@grok.implementer(zeit.reach.interfaces.IKPI)
+class KPI(grok.Adapter):
+
+    grok.context(zeit.reach.interfaces.IReachContent)
+    grok.provides(zeit.cms.content.interfaces.IKPI)
+
+    def __init__(self, context):
+        super().__init__(context)
+        self.score = self.context._reach_data.get('score', 0)
+        for name in list(zeit.cms.content.interfaces.IKPI):
+            setattr(self, name, 0)
