@@ -297,7 +297,7 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
 
     def _success_handler(self):
         self.signal('reload-inline-form', 'recipe-categories')
-        self.signal('reload-inline-form', 'audio-speechbert')
+        self.signal('reload-inline-form', 'options-audio-speechbert')
 
 
 class MetadataComments(zeit.edit.browser.form.InlineForm):
