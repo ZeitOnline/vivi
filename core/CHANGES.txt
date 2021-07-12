@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.57.5 (unreleased)
+4.57.5 (2021-07-12)
 -------------------
 
 - TOPIC-11: Sort automatic areas by date_last_published
