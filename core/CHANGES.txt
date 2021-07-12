@@ -4,7 +4,7 @@ vivi.core changes
 4.57.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TOPIC-11: Sort automatic areas by date_last_published
 
 
 4.57.4 (2021-07-09)

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Jul  8 17:23:25 2021\n"
+"POT-Creation-Date: Fri Jul  9 16:49:40 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,24 +23,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:670
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225
@@ -51,55 +51,55 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr ""
 
-#: /Users/tbaumann/projekte/repos/vivi-deployment/work/_/Users/tbaumann/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr ""
 
@@ -383,7 +383,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:672
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:37
-#: zeit/contentquery/interfaces.py:164
+#: zeit/contentquery/interfaces.py:166
 msgid "Ressort"
 msgstr ""
 
@@ -672,7 +672,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:30
 #: zeit/cms/content/interfaces.py:122
 #: zeit/content/article/interfaces.py:174
-#: zeit/contentquery/interfaces.py:155
+#: zeit/contentquery/interfaces.py:157
 msgid "Authors"
 msgstr ""
 
@@ -792,7 +792,7 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:89
 #: zeit/cms/content/interfaces.py:677
-#: zeit/contentquery/interfaces.py:167
+#: zeit/contentquery/interfaces.py:169
 msgid "Sub ressort"
 msgstr ""
 
@@ -1288,7 +1288,7 @@ msgid "File"
 msgstr ""
 
 #: zeit/cms/repository/browser/file_details.pt:10
-#: zeit/contentquery/interfaces.py:177
+#: zeit/contentquery/interfaces.py:179
 msgid "Content type"
 msgstr ""
 
@@ -4230,124 +4230,128 @@ msgstr ""
 msgid "query-sort-order-first-released"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:66
-msgid "query-type-channels"
-msgstr ""
-
-#: zeit/contentquery/interfaces.py:67
-msgid "query-type-serie"
+#: zeit/contentquery/interfaces.py:61
+msgid "query-sort-order-last-published"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:68
-msgid "query-type-product"
+msgid "query-type-channels"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:69
-msgid "query-type-ressort"
+msgid "query-type-serie"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:70
-msgid "query-type-genre"
+msgid "query-type-product"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:71
-msgid "query-type-authorships"
+msgid "query-type-ressort"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:72
-msgid "query-type-access"
+msgid "query-type-genre"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:73
+msgid "query-type-authorships"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:74
+msgid "query-type-access"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:75
 msgid "query-type-content-type"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:80
+#: zeit/contentquery/interfaces.py:82
 msgid "query-operator-equal"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:81
+#: zeit/contentquery/interfaces.py:83
 msgid "query-operator-notequal"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:132
+#: zeit/contentquery/interfaces.py:134
 msgid "tms-order-date"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:133
+#: zeit/contentquery/interfaces.py:135
 msgid "tms-order-relevance"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:134
+#: zeit/contentquery/interfaces.py:136
 msgid "tms-order-kpi_visits"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:135
+#: zeit/contentquery/interfaces.py:137
 msgid "tms-order-kpi_comments"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:136
+#: zeit/contentquery/interfaces.py:138
 msgid "tms-order-kpi_subscriptions"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:207
+#: zeit/contentquery/interfaces.py:209
 msgid "Amount of teasers"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:215
+#: zeit/contentquery/interfaces.py:217
 msgid "Hide duplicate teasers"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:219
+#: zeit/contentquery/interfaces.py:221
 msgid "Custom Query"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:222
+#: zeit/contentquery/interfaces.py:224
 msgid "Custom Query Type"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:226
+#: zeit/contentquery/interfaces.py:228
 msgid "Custom Query Operator"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:233
-#: zeit/contentquery/interfaces.py:243
+#: zeit/contentquery/interfaces.py:235
+#: zeit/contentquery/interfaces.py:245
 msgid "Sort order"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:239
+#: zeit/contentquery/interfaces.py:241
 msgid "Elasticsearch raw query"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:248
+#: zeit/contentquery/interfaces.py:250
 msgid "Take over complete query body"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:249
+#: zeit/contentquery/interfaces.py:251
 msgid "Remember to add payload.workflow.published:true"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:254
+#: zeit/contentquery/interfaces.py:256
 msgid "Get teasers from CenterPage"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:259
+#: zeit/contentquery/interfaces.py:261
 msgid "Referenced Topicpage"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:263
+#: zeit/contentquery/interfaces.py:265
 msgid "Topicpage filter"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:268
+#: zeit/contentquery/interfaces.py:270
 msgid "Topicpage order"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:274
+#: zeit/contentquery/interfaces.py:276
 msgid "Referenced Topicpage Id"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:278
+#: zeit/contentquery/interfaces.py:280
 msgid "RSS-Feed"
 msgstr ""
 
@@ -4749,11 +4753,11 @@ msgstr ""
 msgid "Error while sending ${type}: ${reason}"
 msgstr ""
 
-#: zeit/retresco/configure.zcml:61
+#: zeit/retresco/configure.zcml:54
 msgid "Update TMS index"
 msgstr ""
 
-#: zeit/retresco/configure.zcml:66
+#: zeit/retresco/configure.zcml:59
 msgid "Use TMS GUI"
 msgstr ""
 
