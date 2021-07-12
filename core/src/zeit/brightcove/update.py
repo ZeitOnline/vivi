@@ -58,7 +58,10 @@ class import_video(import_base):
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
         log.debug('CMS object resolved: %r', self.cmsobj)
-        success = (self.delete() or self.add() or self.update())
+        try:
+            success = (self.delete() or self.add() or self.update())
+        except zeit.connector.interfaces.LockingError:
+            success = False
         if not success:
             log.warning('Not processed: %s', self.bcobj.uniqueId)
 

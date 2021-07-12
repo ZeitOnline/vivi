@@ -6,6 +6,8 @@ vivi.core changes
 
 - OPS-2024: Handles invalid variant size
 
+- BUG-1430: gracefully handle locks during brightcove import
+
 
 4.57.3 (2021-07-05)
 -------------------
