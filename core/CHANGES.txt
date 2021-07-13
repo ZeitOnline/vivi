@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.57.8 (unreleased)
+4.58.0 (2021-07-13)
 -------------------
 
 - TOPIC-31: Move zeit.web.core.reach to zeit.reach
