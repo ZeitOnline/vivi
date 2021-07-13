@@ -33,8 +33,12 @@ product_config = """
 
 class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
+    def __init__(self, config, **kw):
+        self.raw_config = config
+        super().__init__({}, **kw)
+
     def setUp(self):
-        config = product_config.format(port=self['http_port'])
+        config = self.raw_config.format(port=self['http_port'])
         self.config = zope.app.appsetup.product.loadConfiguration(
             StringIO(config))[self.package]
         super(ProductConfigLayer, self).setUp()

@@ -726,3 +726,12 @@ class ICachingTime(zope.interface.Interface):
         min=0,
         max=3600,
         required=False)
+
+
+class IKPI(zope.interface.Interface):
+    """Provides access to kpi fields (visits, comments, etc.) on ITMSContent.
+    """
+
+    visits = zope.schema.Int(default=0, readonly=True)
+    comments = zope.schema.Int(default=0, readonly=True)
+    subscriptions = zope.schema.Int(default=0, readonly=True)
