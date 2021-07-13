@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.57.6 (unreleased)
+4.57.6 (2021-07-13)
 -------------------
 
 - FIX: Use correct form name for autoreload with genre
