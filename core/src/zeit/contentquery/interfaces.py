@@ -139,6 +139,24 @@ class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
     ])
 
 
+class ReachServiceSource(zeit.cms.content.sources.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('comments', _('reach-comments')),
+        ('social', _('reach-social')),
+        ('social.facebook', _('reach-social-facebook')),
+        ('subscriptions', _('reach-subscriptions')),
+        ('trend', _('reach-trend')),
+        ('views', _('reach-views'))
+    ])
+
+class ReachAccessSource(zeit.cms.content.sources.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('abo', _('reach-access-abo'))
+    ])
+
+
 class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
 
     def _get_parent_value(self, context):
@@ -269,8 +287,7 @@ class IConfiguration(zope.interface.Interface):
     topicpage_order = zope.schema.Choice(
         title=_('Topicpage order'),
         source=TopicpageOrderSource(),
-        default='date'
-    )
+        default='date')
 
     related_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage Id'),
@@ -279,4 +296,23 @@ class IConfiguration(zope.interface.Interface):
     rss_feed = zope.schema.Choice(
         title=_('RSS-Feed'),
         source=AUTOMATIC_FEED_SOURCE,
+        required=False)
+
+    reach_service = zope.schema.Choice(
+        title=_('Reach Metric'),
+        source=ReachServiceSource(),
+        default='views',
+        required=True)
+
+    reach_section = zope.schema.TextLine(
+        title=_('Reach Section'),
+        required=False)
+
+    reach_access = zope.schema.Choice(
+        title=_('Reach Access'),
+        source=ReachAccessSource(),
+        required=False)
+
+    reach_age = zope.schema.Int(
+        title=_('Reach Age (days)'),
         required=False)

@@ -26,9 +26,9 @@ class Reach:
         url = '%s/%s' % (self.url, location)
         return self.http.get(url, params=kw, timeout=self.timeout)
 
-    def get_ranking(self, service, facet=None, **kw):
+    def get_ranking(self, service, facet=None, limit=3, **kw):
         location = '.'.join(filter(bool, (service, facet)))
-        kw.setdefault('limit', 3)
+        kw.setdefault('limit', limit)
         if self.freeze_now:
             kw['now'] = self.freeze_now
 

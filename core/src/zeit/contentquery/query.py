@@ -503,3 +503,45 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         topics = tms.get_related_topics(
             self.context.related_topicpage, rows=self.rows)
         return [zeit.cms.interfaces.ICMSContent(topic) for topic in topics]
+
+
+class ReachContentQuery(ContentQuery):
+
+    grok.name('reach')
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+    def __init__(self, context):
+        super().__init__(context)
+        self.service = self.context.reach_service
+        self.section = self.context.get('reach_section', '')
+        self.access = self.context.get('reach_access', False)
+        self.age = self.context.get('reach_age', '')
+
+    @property
+    def ranking_params(self):
+        params = {}
+        if self.section:
+            params['section'] = self.section
+        if self.access:
+            params['access'] = 'abo'
+        if self.age:
+            params['maxAge'] = days_to_seconds(self.age)
+        return params
+
+    def convert_to_correct_contenttype(self, content):
+        """ This function only exists to override it in zeit.web.
+            Vivi expects ICMSContent, but zeit.web needs IReachContent
+        """
+        return zeit.cms.interfaces.ICMSContent(content.uniqueId)
+
+    def __call__(self):
+        reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
+        results = reach.get_ranking(self.service, limit=self.rows,
+            **self.ranking_params)
+
+        return [self.convert_to_correct_contenttype(
+            result) for result in results]
+
+
+def days_to_seconds(days):
+    return days * 24 * 3600
