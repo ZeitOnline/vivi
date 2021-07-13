@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.57.7 (unreleased)
+4.57.7 (2021-07-13)
 -------------------
 
 - MAINT: Display principal id if no principal was found
