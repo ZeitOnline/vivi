@@ -4,23 +4,15 @@ import zope.interface
 
 class IReach(zope.interface.Interface):
 
-    def get_comments():
-        """Retrieve a ranking of most commented articles"""
+    def get_ranking(service, facet=None, **kw):
+        """Retrieve ranked content from reach.zeit.de.
 
-    def get_score():
-        """Return a ranking of highest buzz-scoring articles"""
+        :service: views, comments, subscriptions, social
+        :facet: must be 'facebook' when service is 'social',
+        for historical reasons (there also used to be google plus and twitter)
 
-    def get_trend():
-        """Return a ranking of highest buzz-trending articles"""
-
-    def get_social():
-        """Get a ranking of articles trending on social platforms"""
-
-    def get_views():
-        """Output a ranking of articles with top view counts"""
-
-    def get_buzz():
-        """Collect a buzz summary for an article by uniqueId"""
+        See the reach documentation for further supported parameters.
+        """
 
 
 # XXX We probably should abstract ITMSContent into something like
