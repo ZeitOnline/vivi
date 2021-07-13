@@ -108,7 +108,6 @@ def workflowProperties(context):
 
 
 # XXX what's the proper place for this?
-# XXX return null object insted of None?
 def id_to_principal(principal_id):
     import zope.authentication.interfaces  # UI-only dependency
 
@@ -117,9 +116,9 @@ def id_to_principal(principal_id):
     auth = zope.component.getUtility(
         zope.authentication.interfaces.IAuthentication)
     try:
-        return auth.getPrincipal(principal_id)
+        return auth.getPrincipal(principal_id).title
     except zope.authentication.interfaces.PrincipalLookupError:
-        return None
+        return principal_id
 
 
 @zope.component.adapter(

@@ -209,8 +209,7 @@ class LastPublished(object):
 
     @property
     def last_published_by(self):
-        principal = id_to_principal(self.publishinfo.last_published_by)
-        return principal.title if principal else ''
+        return id_to_principal(self.publishinfo.last_published_by)
 
 
 class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
