@@ -10,6 +10,7 @@ import zeit.content.author.testing
 import zeit.content.gallery.testing
 import zeit.content.volume.testing
 import zeit.push.testing
+import zeit.retresco.testhelper
 import zeit.wochenmarkt.testing
 import zope.component
 
@@ -105,9 +106,10 @@ class ArticleLayer(plone.testing.Layer):
 
 
 LAYER = ArticleLayer()
-MOCK_LAYER = plone.testing.Layer(
-    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer',
-    module=__name__)
+MOCK_LAYER = plone.testing.Layer(name='MockLayer', bases=(
+    ZOPE_LAYER,
+    zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER,
+    zeit.retresco.testhelper.TMS_MOCK_LAYER))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,
