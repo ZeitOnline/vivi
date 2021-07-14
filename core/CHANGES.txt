@@ -4,7 +4,7 @@ vivi.core changes
 4.58.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-2058: Move logout redirect to zeit.ldap
 
 
 4.58.0 (2021-07-13)

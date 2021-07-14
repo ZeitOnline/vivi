@@ -59,9 +59,6 @@ class Logout(object):
             zope.authentication.interfaces.ILogout(auth).logout(self.request)
             self._delete_sso_cookies()
 
-        return self.request.response.redirect(
-            zope.traversing.browser.absoluteURL(self.context, self.request))
-
     def _delete_sso_cookies(self):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
