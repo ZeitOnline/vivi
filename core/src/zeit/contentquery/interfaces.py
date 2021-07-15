@@ -59,8 +59,6 @@ class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
          _('query-sort-order-first-released')),
         ('payload.workflow.date_last_published:desc',
          _('query-sort-order-last-published')),
-        ('random_score',
-         _('query-sort-order-random-score')),
     ))
 
 
