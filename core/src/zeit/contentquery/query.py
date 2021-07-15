@@ -55,7 +55,7 @@ class ElasticsearchContentQuery(ContentQuery):
     include_payload = False  # Extension point for zeit.web and its LazyProxy.
 
     def __init__(self, context):
-        super().__init__(context)
+        super(ElasticsearchContentQuery, self).__init__(context)
         self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
         self.order = self.context.elasticsearch_raw_order
 
@@ -234,7 +234,7 @@ class TMSContentQuery(ContentQuery):
     grok.baseclass()
 
     def __init__(self, context):
-        super().__init__(context)
+        super(TMSContentQuery, self).__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
 
