@@ -538,8 +538,8 @@ class ReachContentQuery(ContentQuery):
 
     def __call__(self):
         reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
-        results = reach.get_ranking(self.service, limit=self.rows,
-            **self.ranking_params)
+        results = reach.get_ranking(
+            self.service, limit=self.rows, **self.ranking_params)
 
         return [self.convert_to_correct_contenttype(
             result) for result in results]

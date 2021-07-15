@@ -207,8 +207,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         gocept.form.grouped.Fields(
             _('automatic-area-type-related-topics'), ('related_topicpage', )),
         gocept.form.grouped.Fields(
-            _('automatic-area-type-reach'), ('reach_service', 'reach_section',
-            'reach_access', 'reach_age')),
+            _('automatic-area-type-reach'),
+             ('reach_service', 'reach_section', 'reach_access', 'reach_age')),
     )
 
     template = zope.browserpage.ViewPageTemplateFile(
