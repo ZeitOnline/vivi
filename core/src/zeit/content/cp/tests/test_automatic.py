@@ -412,6 +412,25 @@ class AutomaticAreaElasticsearchTest(
                       'inline'}}
         ]}}}, self.elasticsearch.search.call_args[0][0])
 
+    def test_custom_query_should_have_random_order(self):
+        lead = self.repository['cp']['lead']
+        lead.automatic = True
+        lead.automatic_type = 'custom'
+        lead.count = 1
+        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
+        lead.query_order = 'random:desc'
+
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+
+        query = self.elasticsearch.search.call_args[0][0]
+        self.assertEqual(
+            {'_script': {
+                'type': 'number',
+                'script': {'lang': 'painless', 'source': 'Math.random()'},
+                'order': 'desc'}},
+            query['sort'])
+
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
