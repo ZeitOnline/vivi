@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Jul 15 11:19:33 2021\n"
+"POT-Creation-Date: Thu Jul 15 11:40:26 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -4404,7 +4404,11 @@ msgstr ""
 msgid "Reach Access"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:317
+#: zeit/contentquery/interfaces.py:313
+msgid "Reach access ignores section if set"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:318
 msgid "Reach Age (days)"
 msgstr ""
 

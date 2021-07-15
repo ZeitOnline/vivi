@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Jul 15 11:19:33 2021\n"
+"POT-Creation-Date: Thu Jul 15 11:40:26 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -4341,9 +4341,13 @@ msgstr "Ressort (bei der HP bitte weglassen)"
 
 #: zeit/contentquery/interfaces.py:312
 msgid "Reach Access"
-msgstr "Filter"
+msgstr "Filter (Ressort wird ignoriert, wenn der Filter gesetzt ist)"
 
-#: zeit/contentquery/interfaces.py:317
+#: zeit/contentquery/interfaces.py:313
+msgid "Reach access ignores section if set"
+msgstr "Das Ressort wird ignoriert, wenn der Filter gesetzt ist."
+
+#: zeit/contentquery/interfaces.py:318
 msgid "Reach Age (days)"
 msgstr "Alter (in Tagen)"
 

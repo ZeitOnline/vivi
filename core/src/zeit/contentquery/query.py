@@ -523,6 +523,8 @@ class ReachContentQuery(ContentQuery):
         if self.section:
             params['section'] = self.section
         if self.access:
+            # reach does not support section if access is set (see reach docs)
+            del params['section']
             params['access'] = 'abo'
         if self.age:
             params['maxAge'] = days_to_seconds(self.age)

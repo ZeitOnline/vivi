@@ -310,6 +310,7 @@ class IConfiguration(zope.interface.Interface):
 
     reach_access = zope.schema.Choice(
         title=_('Reach Access'),
+        description=_('Reach access ignores section if set'),
         source=ReachAccessSource(),
         required=False)
 
