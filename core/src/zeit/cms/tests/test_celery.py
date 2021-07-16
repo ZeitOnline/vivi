@@ -14,6 +14,11 @@ def no_default_queue():
     """Task without a default queue."""
 
 
+@zeit.cms.celery.task
+def task_that_fails():
+    raise RuntimeError()
+
+
 class RouteTaskTests(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
@@ -40,3 +45,21 @@ class RouteTaskTests(zeit.cms.testing.FunctionalTestCase):
     def test_route_task__priorizes_call_over_task_setting(self):
         assert 'publish_lowprio' == self.get_queue_name(
             hp_task, queuename='publish_lowprio')
+
+
+class CELERY_SIGNAL_TESTS(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
+
+    def run_task(self):
+        with self.assertRaises(RuntimeError):
+            result = task_that_fails.delay()
+            transaction.commit()
+            result.get()
+
+    def test_failing_tasks_will_be_logged(self):
+        with self.assertLogs() as captured:
+            self.run_task()
+        assert 'ERROR' in captured[1][0]
+        assert 'task_that_fails' in captured[1][0]
+        assert 'RuntimeError' in captured[1][0]
