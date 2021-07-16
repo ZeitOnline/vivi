@@ -23,6 +23,7 @@ import zeit.content.cp.interfaces
 import zeit.edit.body
 import zeit.edit.container
 import zeit.edit.interfaces
+import zeit.seo.seo
 import zope.interface
 import zope.lifecycleevent
 import zope.security.proxy
@@ -331,3 +332,16 @@ def rendered_xml(context):
     for region in context.body.values():
         body.append(zeit.content.cp.interfaces.IRenderedXML(region))
     return root
+
+
+class CpSEO(zeit.seo.seo.SEO):
+    enable_rss_tracking_parameter = zeit.cms.content.dav.DAVProperty(
+        zeit.content.cp.interfaces.ICpSEO['enable_rss_tracking_parameter'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'seo-enable-rss-tracking-parameter')
+
+
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
+@grok.implementer(zeit.content.cp.interfaces.ICpSEO)
+def cp_to_cpseo(context):
+    return CpSEO(context)

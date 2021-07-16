@@ -7,6 +7,7 @@ import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.formlib.form
+import zeit.seo.browser.form
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
@@ -74,3 +75,33 @@ class DisplayForm(FormBase,
                   zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _("View centerpage metadata")
+
+
+class SEOView( zeit.seo.browser.form.SEODisplay):
+
+    title = _("View SEO Data")
+
+    form_fields = (
+        zope.formlib.form.FormFields(zeit.content.cp.interfaces.ICpSEO) +
+        zope.formlib.form.FormFields(
+            zeit.cms.content.interfaces.ICommonMetadata).select(
+                'keywords', 'ressort', 'sub_ressort', 'serie'))
+
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('SEO data'),
+            'column-left wide-widgets'),
+        gocept.form.grouped.Fields(
+            _('Standard metadata'),
+            ('keywords', 'keyword_entity_type',
+             'ressort', 'sub_ressort', 'serie'),
+            'column-right'))
+
+
+class SEOEdit(zeit.seo.browser.form.SEOEdit):
+
+    title = _("Edit SEO Data")
+
+    form_fields = (
+        zope.formlib.form.FormFields(zeit.content.cp.interfaces.ICpSEO)
+    )

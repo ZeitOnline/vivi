@@ -22,6 +22,7 @@ import zeit.content.modules.jobticker
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
+import zeit.seo.interfaces
 import zope.i18n
 import zope.interface
 
@@ -743,3 +744,9 @@ class INewsletterSignupBlock(
 # BBB We don't need this anymore, but existing content still has it.
 class ICP2015(ICenterPage):
     """Marker interfaces for CPs edited by the current CP-Editor (master)."""
+
+
+class ICpSEO(zeit.seo.interfaces.ISEO):
+    enable_rss_tracking_parameter = zope.schema.Bool(
+        title=_('Enable RSS Tracking-Parameter'),
+        required=False)
