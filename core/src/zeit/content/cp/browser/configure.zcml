@@ -60,6 +60,24 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
+  <browser:menuItem
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="@@seo-view.html"
+    menu="zeit-context-views"
+    title="View SEO"
+    permission="zeit.seo.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:page
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="seo-view.html"
+    permission="zeit.seo.View"
+    class=".form.SEOView"
+    />
+
   <browser:defaultView
     for="..interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -73,6 +91,15 @@
     class=".form.EditForm"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="seo-edit.html"
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.SEOEdit"
+    permission="zeit.seo.Edit"
+    menu="zeit-context-views" title="Edit SEO"
     />
 
   <!-- Landing Zones -->
