@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.58.2 (unreleased)
+4.59.0 (2021-07-19)
 -------------------
 
 - TOPIC-36: Add reach as automatic area source
