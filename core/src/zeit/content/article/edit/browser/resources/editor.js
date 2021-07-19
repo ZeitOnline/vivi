@@ -950,7 +950,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (service === 'web') {
             var uri = new Uri($(self.href_input).val());
             if (invalidHosts.includes(uri.host())) {
-                self.error_msg.innerHTML = '<span style="color:red;display:block;">Invalider Host ' + uri.host() + '. Bitte korrekten Host wählen!</span>';
+                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel</span>';
                 return;
             }
             if (!uri.protocol() && uri.host())
