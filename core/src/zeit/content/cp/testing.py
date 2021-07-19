@@ -31,6 +31,7 @@ product_config = """
     header-image-variant cinema
     cp-automatic-feed-source file://{fixtures}/feeds.xml
     area-color-themes-source file://{fixtures}/area-color-themes.xml
+    reach-service-source file://{fixtures}/reach-services.xml
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))

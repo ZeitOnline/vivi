@@ -139,16 +139,12 @@ class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
     ])
 
 
-class ReachServiceSource(zeit.cms.content.sources.SimpleDictSource):
+class ReachServiceSource(zeit.cms.content.sources.XMLSource):
 
-    values = collections.OrderedDict([
-        ('comments', _('reach-comments')),
-        ('social', _('reach-social')),
-        ('social.facebook', _('reach-social-facebook')),
-        ('subscriptions', _('reach-subscriptions')),
-        ('trend', _('reach-trend')),
-        ('views', _('reach-views'))
-    ])
+    product_configuration = 'zeit.content.cp'
+    config_url = 'reach-service-source'
+    default_filename = 'reach-services.xml'
+    attribute = 'id'
 
 
 class ReachAccessSource(zeit.cms.content.sources.SimpleDictSource):
