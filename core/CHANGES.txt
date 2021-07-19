@@ -4,6 +4,8 @@ vivi.core changes
 4.58.2 (unreleased)
 -------------------
 
+- TOPIC-36: Add reach as automatic area source
+
 - OPS-2077: Log failed celery tasks, so we can debug them
 
 - FIX: Return correct result count for related topicpages
