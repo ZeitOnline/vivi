@@ -45,21 +45,14 @@ class Reach:
         return result
 
     def _resolve(self, doc):
-        try:
-            result = self._get_metadata(doc['location'])
-            content = zeit.retresco.interfaces.ITMSContent(result[0])
-            content._reach_data = doc
-        except Exception:
-            log.warning('Resolving %s failed', doc, exc_info=True)
+        content = zeit.cms.interfaces.ICMSContent(doc['uniqueId'], None)
+        if content is None:
+            log.warning('Not found %s', doc['uniqueId'])
             return None
+        content._reach_data = doc
         zope.interface.alsoProvides(
             content, zeit.reach.interfaces.IReachContent)
         return content
-
-    def _get_metadata(self, path):
-        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
-        return es.search(
-            {'query': {'term': {'url': path}}}, rows=1, include_payload=True)
 
 
 @zope.interface.implementer(zeit.reach.interfaces.IReach)

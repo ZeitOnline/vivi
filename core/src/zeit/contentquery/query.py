@@ -530,19 +530,10 @@ class ReachContentQuery(ContentQuery):
             params['maxAge'] = days_to_seconds(self.age)
         return params
 
-    def convert_to_correct_contenttype(self, content):
-        """ This function only exists to override it in zeit.web.
-            Vivi expects ICMSContent, but zeit.web needs IReachContent
-        """
-        return zeit.cms.interfaces.ICMSContent(content.uniqueId)
-
     def __call__(self):
         reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
-        results = reach.get_ranking(
+        return reach.get_ranking(
             self.service, limit=self.rows, **self.ranking_params)
-
-        return [self.convert_to_correct_contenttype(
-            result) for result in results]
 
 
 def days_to_seconds(days):
