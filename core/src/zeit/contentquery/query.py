@@ -512,6 +512,9 @@ class ReachContentQuery(ContentQuery):
 
     def __call__(self):
         reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
+        # XXX Converting to the format reach wants should probably be done by
+        # IReach, but as that currently still needs bw-compat for z.w.site.
+        # modules.buzzbox, and IReach is not used elsewhere, leave it for now.
         params = {}
         if self.context.reach_section:
             params['section'] = self.context.reach_section.lower()

@@ -148,6 +148,10 @@ class ReachServiceSource(zeit.cms.content.sources.XMLSource):
 
 
 class ReachAccessSource(zeit.cms.content.sources.SimpleDictSource):
+    """Technically we could use the normal ACCESS_SOURCE here,
+    but really only `abo` is used, and the access filter functionality in
+    reach is not totally reliable (BUG-1152), so we restrict the values here.
+    """
 
     values = collections.OrderedDict([
         ('abo', _('reach-access-abo'))
