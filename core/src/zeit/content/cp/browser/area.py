@@ -181,7 +181,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             'is_complete_query',
             'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
             'referenced_topicpage', 'topicpage_filter', 'topicpage_order',
-            'related_topicpage', 'rss_feed')
+            'related_topicpage', 'rss_feed', 'reach_service', 'reach_section',
+            'reach_access', 'reach_age')
 
     field_groups = (
         # XXX Kludgy: ``automatic`` must come after ``count``, since setting
@@ -204,8 +205,10 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
              ('elasticsearch_raw_query', 'is_complete_query',
               'elasticsearch_raw_order')),
         gocept.form.grouped.Fields(
-            _('automatic-area-type-related-topics'), (
-                'related_topicpage', )),
+            _('automatic-area-type-related-topics'), ('related_topicpage', )),
+        gocept.form.grouped.Fields(
+            _('automatic-area-type-reach'),
+             ('reach_service', 'reach_section', 'reach_access', 'reach_age')),
     )
 
     template = zope.browserpage.ViewPageTemplateFile(

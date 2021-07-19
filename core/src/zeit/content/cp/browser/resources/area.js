@@ -5,6 +5,7 @@ var FIELDS = {
     'custom': 'query',
     'topicpage': 'referenced_topicpage',
     'elasticsearch-query': 'elasticsearch_raw_query',
+    'reach': 'reach_service',
     'related-topics': 'related_topicpage',
     'rss-feed': 'rss_feed'
 };

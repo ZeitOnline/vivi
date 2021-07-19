@@ -139,6 +139,25 @@ class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
     ])
 
 
+class ReachServiceSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'reach-service-source'
+    default_filename = 'reach-services.xml'
+    attribute = 'id'
+
+
+class ReachAccessSource(zeit.cms.content.sources.SimpleDictSource):
+    """Technically we could use the normal ACCESS_SOURCE here,
+    but really only `abo` is used, and the access filter functionality in
+    reach is not totally reliable (BUG-1152), so we restrict the values here.
+    """
+
+    values = collections.OrderedDict([
+        ('abo', _('reach-access-abo'))
+    ])
+
+
 class QuerySubRessortSource(zeit.cms.content.sources.SubRessortSource):
 
     def _get_parent_value(self, context):
@@ -269,8 +288,7 @@ class IConfiguration(zope.interface.Interface):
     topicpage_order = zope.schema.Choice(
         title=_('Topicpage order'),
         source=TopicpageOrderSource(),
-        default='date'
-    )
+        default='date')
 
     related_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage Id'),
@@ -279,4 +297,25 @@ class IConfiguration(zope.interface.Interface):
     rss_feed = zope.schema.Choice(
         title=_('RSS-Feed'),
         source=AUTOMATIC_FEED_SOURCE,
+        required=False)
+
+    reach_service = zope.schema.Choice(
+        title=_('Reach Metric'),
+        source=ReachServiceSource(),
+        default='views',
+        required=True)
+
+    reach_section = zope.schema.Choice(
+        title=_('Reach Section'),
+        source=zeit.cms.content.sources.RessortSource(),
+        required=False)
+
+    reach_access = zope.schema.Choice(
+        title=_('Reach Access'),
+        description=_('Reach access ignores section if set'),
+        source=ReachAccessSource(),
+        required=False)
+
+    reach_age = zope.schema.Int(
+        title=_('Reach Age (days)'),
         required=False)

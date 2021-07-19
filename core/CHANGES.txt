@@ -13,6 +13,7 @@ vivi.core changes
 -------------------
 
 - OPS-2058: Move logout redirect to zeit.ldap
+- TOPIC-36: Add Reach as automatic area source
 
 
 4.58.0 (2021-07-13)
@@ -337,7 +338,7 @@ vivi.core changes
 4.45.5 (2020-12-16)
 -------------------
 
-- ZON-6319: Fix behavior for select the 'no genre' option 
+- ZON-6319: Fix behavior for select the 'no genre' option
 
 - BEM-70: mock is included in the stdlib in py3
 
@@ -428,7 +429,7 @@ vivi.core changes
 4.43.1 (2020-10-22)
 -------------------
 
-- ZON-5577: Set default for `force_mobile_images` to true 
+- ZON-5577: Set default for `force_mobile_images` to true
 
 
 4.43.0 (2020-10-13)
