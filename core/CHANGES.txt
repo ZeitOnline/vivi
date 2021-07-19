@@ -4,7 +4,7 @@ vivi.core changes
 4.58.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- OPS-2077: Log failed celery tasks, so we can debug them
 
 
 4.58.1 (2021-07-16)
