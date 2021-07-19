@@ -44,13 +44,11 @@ else:
             celery_longterm_scheduler.backend.serialize(args)
             celery_longterm_scheduler.backend.serialize(kw)
 
-
     @celery.signals.task_failure.connect
     def on_task_failure(**kwargs):
         log.error("Task %s failed",
                   kwargs.get('task_id', ''),
                   exc_info=kwargs.get('exception'))
-
 
     CELERY = celery.Celery(
         __name__, task_cls=Task, loader=z3c.celery.loader.ZopeLoader,

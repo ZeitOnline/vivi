@@ -47,7 +47,7 @@ class RouteTaskTests(zeit.cms.testing.FunctionalTestCase):
             hp_task, queuename='publish_lowprio')
 
 
-class CELERY_SIGNAL_TESTS(zeit.cms.testing.FunctionalTestCase):
+class CelerySignalTests(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
 
