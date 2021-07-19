@@ -6,6 +6,8 @@ vivi.core changes
 
 - OPS-2077: Log failed celery tasks, so we can debug them
 
+- FIX: Return correct result count for related topicpages
+
 
 4.58.1 (2021-07-16)
 -------------------
