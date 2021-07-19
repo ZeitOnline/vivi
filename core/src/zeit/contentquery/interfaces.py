@@ -305,8 +305,9 @@ class IConfiguration(zope.interface.Interface):
         default='views',
         required=True)
 
-    reach_section = zope.schema.TextLine(
+    reach_section = zope.schema.Choice(
         title=_('Reach Section'),
+        source=zeit.cms.content.sources.RessortSource(),
         required=False)
 
     reach_access = zope.schema.Choice(

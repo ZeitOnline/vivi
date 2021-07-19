@@ -514,7 +514,7 @@ class ReachContentQuery(ContentQuery):
         reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
         params = {}
         if self.context.reach_section:
-            params['section'] = self.context.reach_section
+            params['section'] = self.context.reach_section.lower()
         if self.context.reach_access:
             # reach does not support section if access is set (see reach docs)
             params.pop('section', None)
