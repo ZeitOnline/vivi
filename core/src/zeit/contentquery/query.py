@@ -510,31 +510,16 @@ class ReachContentQuery(ContentQuery):
     grok.name('reach')
     grok.context(zeit.content.cp.interfaces.IArea)
 
-    def __init__(self, context):
-        super().__init__(context)
-        self.service = self.context.reach_service
-        self.section = self.context.get('reach_section', '')
-        self.access = self.context.get('reach_access', False)
-        self.age = self.context.get('reach_age', '')
-
-    @property
-    def ranking_params(self):
-        params = {}
-        if self.section:
-            params['section'] = self.section
-        if self.access:
-            # reach does not support section if access is set (see reach docs)
-            del params['section']
-            params['access'] = 'abo'
-        if self.age:
-            params['maxAge'] = days_to_seconds(self.age)
-        return params
-
     def __call__(self):
         reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
+        params = {}
+        if self.context.reach_section:
+            params['section'] = self.context.reach_section
+        if self.context.reach_access:
+            # reach does not support section if access is set (see reach docs)
+            params.pop('section', None)
+            params['access'] = self.context.reach_access
+        if self.context.reach_age:
+            params['maxAge'] = self.context.reach_age * 3600 * 24
         return reach.get_ranking(
-            self.service, limit=self.rows, **self.ranking_params)
-
-
-def days_to_seconds(days):
-    return days * 24 * 3600
+            self.context.reach_service, limit=self.rows, **params)
