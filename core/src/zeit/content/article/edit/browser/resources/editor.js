@@ -6,7 +6,7 @@ zeit.cms.in_article_editor = function() {
     return Boolean(jQuery('.article-editor-inner').length);
 };
 
-invalidHosts = [
+var invalidHosts = [
     'vivi.zeit.de', 'friedbert-preview.zeit.de', 'xml.zeit.de',
     'vivi.staging.zeit.de', 'friedbert-preview.staging.zeit.de',
     'xml.staging.zeit.de' ];
