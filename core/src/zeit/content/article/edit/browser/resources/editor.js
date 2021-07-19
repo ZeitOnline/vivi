@@ -950,7 +950,11 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (service === 'web') {
             var uri = new Uri($(self.href_input).val());
             if (invalidHosts.includes(uri.host())) {
-                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel</span>';
+                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel! ' + uri.host() + ' darf nicht in der URL enthalten sein.</span>';
+                return;
+            }
+            if (uri.host() == uri.toString() && !uri.host().includes('.')) {
+                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel! Wurde Fließtext als Verlinkungsziel eingegeben?</span>';
                 return;
             }
             if (!uri.protocol() && uri.host())
