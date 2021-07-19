@@ -52,9 +52,9 @@ class CelerySignalTests(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.CELERY_LAYER
 
     def run_task(self):
+        result = task_that_fails.delay()
+        transaction.commit()
         with self.assertRaises(RuntimeError):
-            result = task_that_fails.delay()
-            transaction.commit()
             result.get()
 
     def test_failing_tasks_will_be_logged(self):
