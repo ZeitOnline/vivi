@@ -4,7 +4,7 @@ vivi.core changes
 4.59.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6482: Enable speechbert by default for articles with no genre
 
 
 4.59.0 (2021-07-19)
