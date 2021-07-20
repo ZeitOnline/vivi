@@ -6,19 +6,16 @@ import zeit.reach.testing
 
 class ReachTest(zeit.reach.testing.FunctionalTestCase):
 
-    def test_parses_response_and_retrieves_metada_from_es(self):
+    def test_parses_response_and_resolves_content(self):
         self.layer['request_handler'].response_body = json.dumps([{
-            'location': '/my-article',
+            'uniqueId': 'http://xml.zeit.de/testcontent',
             'score': 42,
         }])
-        self.layer['elasticsearch'].search.return_value = (
-            zeit.cms.interfaces.Result([{
-                'doc_type': 'testcontenttype', 'url': '/my-article'}]))
 
         reach = Reach('http://localhost:%s' % self.layer['http_port'])
         (content,) = reach.get_ranking('views')
 
-        self.assertEqual('http://xml.zeit.de/my-article', content.uniqueId)
+        self.assertEqual('http://xml.zeit.de/testcontent', content.uniqueId)
         self.assertTrue(
             zeit.reach.interfaces.IReachContent.providedBy(content))
         kpi = zeit.cms.content.interfaces.IKPI(content)
