@@ -4,7 +4,7 @@ vivi.core changes
 4.59.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6371: Do not set links with internal hosts like vivi.zeit.de.
 
 
 4.59.1 (2021-07-20)
