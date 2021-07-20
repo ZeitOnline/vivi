@@ -71,7 +71,7 @@ class Elasticsearch:
         __traceback_info__ = (self.index, query)
         response = self.client.search(
             index=self.index, body=json.dumps(query),
-            sort=sort_order, from_=start, size=rows)
+            from_=start, size=rows)
         result = zeit.cms.interfaces.Result(
             [x['_source'] for x in response['hits']['hits']])
         if isinstance(response['hits']['total'], int):  # BBB ES-2.x

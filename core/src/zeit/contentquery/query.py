@@ -113,6 +113,7 @@ class ElasticsearchContentQuery(ContentQuery):
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'].append(
                     self.hide_dupes_clause)
+        query['sort'] = self.order
         return query
 
     _additional_clauses = [
