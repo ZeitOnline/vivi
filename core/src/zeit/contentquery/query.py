@@ -163,7 +163,23 @@ class CustomContentQuery(ElasticsearchContentQuery):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_custom_query()
-        self.order = self.context.query_order
+
+    @property
+    def order(self):
+        (field, order) = self.context.query_order.split(':')
+        if 'random' not in field:
+            return [{field: order}]
+
+        random_order = {
+            '_script': {
+                'type': 'number',
+                'script': {
+                    'lang': 'painless',
+                    'source': 'Math.random()'
+                },
+                'order': order
+            }}
+        return random_order
 
     def _make_custom_query(self):
         fields = {}
