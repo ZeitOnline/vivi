@@ -45,6 +45,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         images.image = zeit.cms.interfaces.ICMSContent(image.uniqueId)
 
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        # hint: attributes defined with use_default=True don't occur in data
 
         # Extract fields for which we cannot easily/sensibly use assertEqual().
         self.assert_editing_fields(data)
@@ -67,7 +68,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'document': {
                     'DailyNL': False,
                     'artbox_thema': False,
-                    'audio_speechbert': False,
                     'author': ['Hans Meiser'],
                     'banner': True,
                     'banner_content': True,
