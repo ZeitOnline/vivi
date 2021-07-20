@@ -77,7 +77,7 @@ class DisplayForm(FormBase,
     title = _("View centerpage metadata")
 
 
-class SEOView( zeit.seo.browser.form.SEODisplay):
+class SEOView(zeit.seo.browser.form.SEODisplay):
 
     title = _("View SEO Data")
 
@@ -85,7 +85,8 @@ class SEOView( zeit.seo.browser.form.SEODisplay):
         zope.formlib.form.FormFields(zeit.content.cp.interfaces.ICpSEO) +
         zope.formlib.form.FormFields(
             zeit.cms.content.interfaces.ICommonMetadata).select(
-                'keywords', 'ressort', 'sub_ressort', 'serie'))
+                'keywords', 'ressort', 'sub_ressort', 'serie')
+    )
 
     field_groups = (
         gocept.form.grouped.RemainingFields(
@@ -95,7 +96,8 @@ class SEOView( zeit.seo.browser.form.SEODisplay):
             _('Standard metadata'),
             ('keywords', 'keyword_entity_type',
              'ressort', 'sub_ressort', 'serie'),
-            'column-right'))
+            'column-right')
+    )
 
 
 class SEOEdit(zeit.seo.browser.form.SEOEdit):
