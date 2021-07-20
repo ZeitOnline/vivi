@@ -184,16 +184,15 @@ class AutomaticAreaElasticsearchTest(
         auto = IRenderedArea(lead)
         self.assertEqual(1, len(auto.values()))
         self.assertEqual(4711, auto._content_query.total_hits)
-
         self.assertEqual(
             (({'query': {'bool': {'filter': [
-                {u'match': {u'title': u'üüü'}},
+                {'match': {'title': 'üüü'}},
                 {'term': {'payload.workflow.published': True}}
             ], 'must_not': [
                 {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                           'inline'}}
-            ]}}},
-                u'payload.document.date_first_released:desc'),
+            ]}}, 'sort': 'payload.document.date_first_released:desc'},
+                'payload.document.date_first_released:desc'),
                 dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
 
@@ -216,7 +215,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, "sort": [{
+            "payload.workflow.date_last_published_semantic": "desc"}]
+        }, self.elasticsearch.search.call_args[0][0])
 
     def test_builds_query_with_elasticsearch_fieldname_exceptions(self):
         lead = self.repository['cp']['lead']
@@ -241,7 +242,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{
+            'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_builds_query_with_condition_exception(self):
         lead = self.repository['cp']['lead']
@@ -269,7 +272,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{
+            'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
         lead = self.repository['cp']['lead']
@@ -301,7 +306,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [
+            {'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_puts_fields_into_bool_according_to_operator(self):
         lead = self.repository['cp']['lead']
@@ -334,14 +341,18 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{
+            'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_can_take_over_whole_query_body(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
         lead.elasticsearch_raw_query = (
-            '{"query": {"match": {"title": "foo"}}}')
+            '{"query": {"match": {"title": "foo"}},'
+            '"sort": "payload.document.date_first_released:desc"}'
+              )
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
@@ -365,7 +376,8 @@ class AutomaticAreaElasticsearchTest(
         self.assertEqual(
             {"query": {"bool": {
                 "must": {"query": {"match": {"title": "foo"}}},
-                "must_not": {"ids": {"values": ["id1"]}}}}},
+                "must_not": {"ids": {"values": ["id1"]}}}},
+             "sort": "payload.document.date_first_released:desc"},
             self.elasticsearch.search.call_args[0][0])
 
     def test_query_order_defaults_to_semantic_publish(self):
@@ -377,19 +389,20 @@ class AutomaticAreaElasticsearchTest(
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
-            'payload.workflow.date_last_published_semantic:desc',
-            self.elasticsearch.search.call_args[0][1])
+            [{'payload.workflow.date_last_published_semantic': 'desc'}],
+            self.elasticsearch.search.call_args[0][0]['sort'])
 
     def test_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.query = (('channels', 'eq', 'International', 'Nahost'),)
-        lead.query_order = 'order'
+        lead.query_order = 'order:desc'
         lead.automatic = True
         lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
-        self.assertEqual('order', self.elasticsearch.search.call_args[0][1])
+        query = self.elasticsearch.search.call_args[0][0]
+        self.assertEqual([{'order': 'desc'}], query['sort'])
 
     def test_bbb_converts_automatic_type_channel_to_custom(self):
         lead = self.repository['cp']['lead']
@@ -402,15 +415,18 @@ class AutomaticAreaElasticsearchTest(
         lead.xml.set('automatic_type', 'channel')
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
-        self.assertEqual({'query': {'bool': {'filter': [
-            {'bool': {'filter': [
-                {'term': {'payload.document.serie': 'Autotest'}},
-            ]}},
-            {'term': {'payload.workflow.published': True}}
-        ], 'must_not': [
-            {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
-                      'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        self.assertEqual({
+            'query': {'bool': {'filter': [
+                {'bool': {'filter': [
+                    {'term': {'payload.document.serie': 'Autotest'}},
+                ]}},
+                {'term': {'payload.workflow.published': True}}
+            ], 'must_not': [
+                {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
+                          'inline'}}]
+                }}, 'sort': [{
+                    'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_custom_query_should_have_random_order(self):
         lead = self.repository['cp']['lead']
@@ -716,7 +732,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_elasticsearch_content_query_filters_duplicates(self):
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = (
-            u'{"query": {"match": {"foo": "äää"}}}')
+            '{"query": {"match": {"foo": "äää"}}}')
         elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
 
@@ -732,15 +748,15 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         call_args['query']['bool']['must_not'][1]['ids']['values'].sort()
         sorted_ids = [id1, id2]
         sorted_ids.sort()
-
         self.assertEqual({'query': {'bool': {'filter': [
-            {'match': {'foo': u'äää'}},
+            {'match': {'foo': 'äää'}},
             {'term': {'payload.workflow.published': True}}
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
             {'ids': {'values': sorted_ids}},
-        ]}}}, elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': 'payload.document.date_first_released:desc'},
+            elasticsearch.search.call_args[0][0])
 
         # since `AutomaticArea.values()` is cached on the transaction boundary
         # now, we'll only see the change with the next request/transaction...
@@ -750,12 +766,13 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.hide_dupes = False
         IRenderedArea(self.area).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'match': {'foo': u'äää'}},
+            {'match': {'foo': 'äää'}},
             {'term': {'payload.workflow.published': True}}
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-        ]}}}, elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': 'payload.document.date_first_released:desc'},
+            elasticsearch.search.call_args[0][0])
 
     def test_elasticsearch_removes_none_uuids(self):
         # Otherwise this causes a 400 Bad Request "Illegal value for id,
@@ -772,14 +789,14 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         with mock.patch('zeit.cms.content.interfaces.IUUID') as uuid:
             uuid().id = None
             IRenderedArea(self.area).values()
-
         self.assertEqual({'query': {'bool': {'filter': [
-            {u'match': {u'foo': u'bar'}},
+            {'match': {'foo': 'bar'}},
             {'term': {'payload.workflow.published': True}}
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-        ]}}}, elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': 'payload.document.date_first_released:desc'},
+            elasticsearch.search.call_args[0][0])
 
     def test_teaser_count(self):
         a1 = create_automatic_area(self.cp, count=0, type='topicpage')
