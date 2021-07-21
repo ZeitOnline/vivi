@@ -23,7 +23,7 @@ class AutomaticAreaElasticsearchTest(
         zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaElasticsearchTest, self).setUp()
+        super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.area = self.cp['feature'].create_item('area')
         self.area.count = 3
@@ -73,9 +73,9 @@ class AutomaticAreaElasticsearchTest(
             'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
 
     def test_no_marked_articles_leader_block_layout_is_changed_virtually(self):
-        self.area.kind = u'major'
+        self.area.kind = 'major'
         self.area.apply_teaser_layouts_automatically = True
-        self.area._first_teaser_layout = u'leader'
+        self.area._first_teaser_layout = 'leader'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
             [{'url': '/testcontent'}])
         self.elasticsearch.search.return_value.hits = 1
@@ -449,7 +449,7 @@ class AutomaticAreaElasticsearchTest(
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaTopicpageTest, self).setUp()
+        super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.tms = mock.Mock()
         zope.component.getGlobalSiteManager().registerUtility(
@@ -496,7 +496,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaCenterPageTest, self).setUp()
+        super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.area = self.cp['feature'].create_item('area')
         self.repository['cp'] = self.cp
@@ -523,10 +523,10 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_yields_centerpage_in_addition_to_teaser_when_iterating(self):
         content = zeit.edit.interfaces.IElementReferences(self.cp)
         self.assertEqual([
-            u'http://xml.zeit.de/cp_with_teaser',
-            u'http://xml.zeit.de/t1',
-            u'http://xml.zeit.de/t2',
-            u'http://xml.zeit.de/t3'],
+            'http://xml.zeit.de/cp_with_teaser',
+            'http://xml.zeit.de/t1',
+            'http://xml.zeit.de/t2',
+            'http://xml.zeit.de/t3'],
             [x.uniqueId for x in content])
 
     def test_recursivly_referenced_cps_raise_value_error(self):
@@ -551,7 +551,7 @@ def create_automatic_area(cp, count=3, type='centerpage'):
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(HideDupesTest, self).setUp()
+        super().setUp()
 
         t1 = self.create_content('t1', 't1')
         t2 = self.create_content('t2', 't2')
@@ -776,7 +776,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         # expecting string or number, got: VALUE_NULL"
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = (
-            u'{"query": {"match": {"foo": "bar"}}}')
+            '{"query": {"match": {"foo": "bar"}}}')
         elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
 
@@ -857,8 +857,8 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
             item.teaserTitle)
         self.assertEqual('Qijianglong', item.teaserSupertitle)
         self.assertEqual(
-            u'Forscher entdecken ein China die \xc3\x9cberreste eines bisher '
-            u'unbekannten, langhalsigen Dinosauriers.', item.teaserText)
+            'Forscher entdecken ein China die \xc3\x9cberreste eines bisher '
+            'unbekannten, langhalsigen Dinosauriers.', item.teaserText)
         self.assertTrue(item.image_url.endswith('spektrum/images/img1.jpg'))
 
     def test_rss_link_object_with_empty_values_should_not_break(self):
@@ -909,7 +909,7 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         elastic_area = create_automatic_area(self.cp)
         elastic_area.automatic_type = 'elasticsearch-query'
         elastic_area.elasticsearch_raw_query = (
-            u'{"query": {"match": {"foo": "bar"}}}')
+            '{"query": {"match": {"foo": "bar"}}}')
         elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
         with mocked_feed:
