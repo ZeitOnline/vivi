@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Jul  9 16:49:40 2021\n"
+"POT-Creation-Date: Wed Jul 21 16:15:20 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -288,8 +288,8 @@ msgstr ""
 
 #: zeit/cms/browser/form.py:301
 #: zeit/cms/repository/browser/file.py:105
-#: zeit/content/article/edit/browser/form.py:522
-#: zeit/content/article/edit/browser/form.py:556
+#: zeit/content/article/edit/browser/form.py:521
+#: zeit/content/article/edit/browser/form.py:555
 #: zeit/content/article/edit/browser/push.py:65
 #: zeit/content/article/edit/browser/reference.py:56
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
@@ -383,7 +383,7 @@ msgstr ""
 #: zeit/cms/content/interfaces.py:672
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:37
-#: zeit/contentquery/interfaces.py:166
+#: zeit/contentquery/interfaces.py:168
 msgid "Ressort"
 msgstr ""
 
@@ -663,7 +663,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:25
 #: zeit/content/article/browser/form.py:36
-#: zeit/content/article/edit/browser/form.py:412
+#: zeit/content/article/edit/browser/form.py:411
 #: zeit/content/link/browser/form.py:29
 #: zeit/content/video/browser/video.py:43
 msgid "Options"
@@ -672,12 +672,12 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:30
 #: zeit/cms/content/interfaces.py:122
 #: zeit/content/article/interfaces.py:174
-#: zeit/contentquery/interfaces.py:157
+#: zeit/contentquery/interfaces.py:159
 msgid "Authors"
 msgstr ""
 
 #: zeit/cms/content/browser/form.py:34
-#: zeit/content/article/edit/browser/form.py:487
+#: zeit/content/article/edit/browser/form.py:486
 msgid "Run in channel"
 msgstr ""
 
@@ -786,13 +786,13 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:286
 #: zeit/content/volume/browser/form.py:33
 #: zeit/content/volume/interfaces.py:41
-#: zeit/content/volume/volume.py:311
+#: zeit/content/volume/volume.py:309
 msgid "Volume"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:89
 #: zeit/cms/content/interfaces.py:677
-#: zeit/contentquery/interfaces.py:169
+#: zeit/contentquery/interfaces.py:171
 msgid "Sub ressort"
 msgstr ""
 
@@ -1288,7 +1288,7 @@ msgid "File"
 msgstr ""
 
 #: zeit/cms/repository/browser/file_details.pt:10
-#: zeit/contentquery/interfaces.py:179
+#: zeit/contentquery/interfaces.py:181
 msgid "Content type"
 msgstr ""
 
@@ -1401,7 +1401,7 @@ msgid "Default volume"
 msgstr ""
 
 #: zeit/cms/syndication/browser/configure.zcml:42
-#: zeit/content/article/edit/browser/form.py:219
+#: zeit/content/article/edit/browser/form.py:218
 #: zeit/content/image/browser/configure.zcml:241
 #: zeit/content/image/browser/configure.zcml:257
 #: zeit/content/link/browser/form.py:18
@@ -1799,7 +1799,7 @@ msgid "Article"
 msgstr ""
 
 #: zeit/content/animation/browser/form.py:19
-#: zeit/content/article/edit/browser/form.py:330
+#: zeit/content/article/edit/browser/form.py:329
 #: zeit/content/link/browser/form.py:24
 #: zeit/newsletter/newsletter.py:168
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
@@ -2045,71 +2045,71 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:226
-#: zeit/content/article/edit/browser/form.py:247
-#: zeit/content/article/edit/browser/form.py:255
-#: zeit/content/article/edit/browser/form.py:271
-#: zeit/content/article/edit/browser/form.py:295
-#: zeit/content/article/edit/browser/form.py:307
+#: zeit/content/article/edit/browser/form.py:225
+#: zeit/content/article/edit/browser/form.py:246
+#: zeit/content/article/edit/browser/form.py:254
+#: zeit/content/article/edit/browser/form.py:270
+#: zeit/content/article/edit/browser/form.py:294
+#: zeit/content/article/edit/browser/form.py:306
 #: zeit/newsletter/browser/form.py:17
 msgid "edit metadata"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:284
+#: zeit/content/article/edit/browser/form.py:283
 msgid "edit access"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:322
+#: zeit/content/article/edit/browser/form.py:321
 msgid "edit audio_speechbert"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:337
+#: zeit/content/article/edit/browser/form.py:336
 msgid "edit teaser image"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:376
+#: zeit/content/article/edit/browser/form.py:375
 msgid "edit teaser supertitle"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:389
+#: zeit/content/article/edit/browser/form.py:388
 msgid "edit teaser title"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:402
+#: zeit/content/article/edit/browser/form.py:401
 msgid "edit teaser text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:419
-#: zeit/content/article/edit/browser/form.py:428
-#: zeit/content/article/edit/browser/form.py:446
-#: zeit/content/article/edit/browser/form.py:454
+#: zeit/content/article/edit/browser/form.py:418
+#: zeit/content/article/edit/browser/form.py:427
+#: zeit/content/article/edit/browser/form.py:445
+#: zeit/content/article/edit/browser/form.py:453
 #: zeit/content/article/edit/browser/template.py:12
 msgid "edit options"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:452
+#: zeit/content/article/edit/browser/form.py:451
 msgid "Product management"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:464
+#: zeit/content/article/edit/browser/form.py:463
 msgid "edit misc product management"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:472
+#: zeit/content/article/edit/browser/form.py:471
 msgid "edit recipe categories"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:494
-#: zeit/content/article/edit/browser/form.py:502
+#: zeit/content/article/edit/browser/form.py:493
+#: zeit/content/article/edit/browser/form.py:501
 msgid "select channel"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:530
+#: zeit/content/article/edit/browser/form.py:529
 #: zeit/content/link/browser/form.py:40
 msgid "Storystream"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:538
+#: zeit/content/article/edit/browser/form.py:537
 msgid "edit storystream"
 msgstr ""
 
@@ -4234,124 +4234,128 @@ msgstr ""
 msgid "query-sort-order-last-published"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:68
-msgid "query-type-channels"
-msgstr ""
-
-#: zeit/contentquery/interfaces.py:69
-msgid "query-type-serie"
+#: zeit/contentquery/interfaces.py:63
+msgid "query-sort-order-random"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:70
-msgid "query-type-product"
+msgid "query-type-channels"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:71
-msgid "query-type-ressort"
+msgid "query-type-serie"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:72
-msgid "query-type-genre"
+msgid "query-type-product"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:73
-msgid "query-type-authorships"
+msgid "query-type-ressort"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:74
-msgid "query-type-access"
+msgid "query-type-genre"
 msgstr ""
 
 #: zeit/contentquery/interfaces.py:75
+msgid "query-type-authorships"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:76
+msgid "query-type-access"
+msgstr ""
+
+#: zeit/contentquery/interfaces.py:77
 msgid "query-type-content-type"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:82
+#: zeit/contentquery/interfaces.py:84
 msgid "query-operator-equal"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:83
+#: zeit/contentquery/interfaces.py:85
 msgid "query-operator-notequal"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:134
+#: zeit/contentquery/interfaces.py:136
 msgid "tms-order-date"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:135
+#: zeit/contentquery/interfaces.py:137
 msgid "tms-order-relevance"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:136
+#: zeit/contentquery/interfaces.py:138
 msgid "tms-order-kpi_visits"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:137
+#: zeit/contentquery/interfaces.py:139
 msgid "tms-order-kpi_comments"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:138
+#: zeit/contentquery/interfaces.py:140
 msgid "tms-order-kpi_subscriptions"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:209
+#: zeit/contentquery/interfaces.py:211
 msgid "Amount of teasers"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:217
+#: zeit/contentquery/interfaces.py:219
 msgid "Hide duplicate teasers"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:221
+#: zeit/contentquery/interfaces.py:223
 msgid "Custom Query"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:224
+#: zeit/contentquery/interfaces.py:226
 msgid "Custom Query Type"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:228
+#: zeit/contentquery/interfaces.py:230
 msgid "Custom Query Operator"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:235
-#: zeit/contentquery/interfaces.py:245
+#: zeit/contentquery/interfaces.py:237
+#: zeit/contentquery/interfaces.py:247
 msgid "Sort order"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:241
+#: zeit/contentquery/interfaces.py:243
 msgid "Elasticsearch raw query"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:250
+#: zeit/contentquery/interfaces.py:252
 msgid "Take over complete query body"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:251
+#: zeit/contentquery/interfaces.py:253
 msgid "Remember to add payload.workflow.published:true"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:256
+#: zeit/contentquery/interfaces.py:258
 msgid "Get teasers from CenterPage"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:261
+#: zeit/contentquery/interfaces.py:263
 msgid "Referenced Topicpage"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:265
+#: zeit/contentquery/interfaces.py:267
 msgid "Topicpage filter"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:270
+#: zeit/contentquery/interfaces.py:272
 msgid "Topicpage order"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:276
+#: zeit/contentquery/interfaces.py:278
 msgid "Referenced Topicpage Id"
 msgstr ""
 
-#: zeit/contentquery/interfaces.py:280
+#: zeit/contentquery/interfaces.py:282
 msgid "RSS-Feed"
 msgstr ""
 
@@ -4997,7 +5001,7 @@ msgstr ""
 msgid "publish-preconditions-locked"
 msgstr ""
 
-#: zeit/workflow/publishinfo.py:131
+#: zeit/workflow/publishinfo.py:130
 #: zeit/workflow/workflow.py:56
 msgid "${name}: ${new_value}"
 msgstr ""
