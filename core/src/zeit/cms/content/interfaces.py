@@ -1,18 +1,20 @@
-from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zc.form.field
 import zc.form.interfaces
-import zeit.cms.content.field
-import zeit.cms.content.sources
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.tagging.interfaces
-import zeit.wochenmarkt.sources
 import zope.container.interfaces
 import zope.interface
 import zope.interface.common.sequence
 import zope.interface.interfaces
 import zope.schema
 import zope.schema.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.field
+import zeit.cms.content.sources
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.tagging.interfaces
+import zeit.wochenmarkt.sources
 
 
 # XXX There is too much, too unordered in here, clean this up.
@@ -735,3 +737,14 @@ class IKPI(zope.interface.Interface):
     visits = zope.schema.Int(default=0, readonly=True)
     comments = zope.schema.Int(default=0, readonly=True)
     subscriptions = zope.schema.Int(default=0, readonly=True)
+
+
+@grok.implementer(IKPI)
+class KPI(grok.Adapter):
+
+    grok.context(zeit.cms.interfaces.ICMSContent)
+
+    def __init__(self, context):
+        super().__init__(context)
+        for name in list(IKPI):
+            setattr(self, name, None)
