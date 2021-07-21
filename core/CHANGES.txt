@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.59.3 (unreleased)
+4.59.3 (2021-07-21)
 -------------------
 
 - ZON-6371: Fix invalid host matching for @ containig urls.
