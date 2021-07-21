@@ -949,8 +949,8 @@ zeit.content.article.Editable = gocept.Class.extend({
         var nofollow = false;
         if (service === 'web') {
             var uri = new Uri($(self.href_input).val());
-            if (invalidHosts.includes(uri.host())) {
-                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel! ' + uri.host() + ' darf nicht in der URL enthalten sein.</span>';
+            if (invalidHosts.some(v => uri.toString().includes(v))) {
+                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel! ZEIT Inhalte müssen nach www.zeit.de verlinken.</span>';
                 return;
             }
             if (uri.host() == uri.toString() && !uri.host().includes('.')) {
