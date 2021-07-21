@@ -57,7 +57,12 @@ class ElasticsearchContentQuery(ContentQuery):
     def __init__(self, context):
         super().__init__(context)
         self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
-        self.order = self.context.elasticsearch_raw_order
+
+    @property
+    def order(self):
+        (field, order) = self.context.elasticsearch_raw_order.split(':')
+        if 'random' not in field:
+            return [{field: order}]
 
     def __call__(self):
         self.total_hits = 0
