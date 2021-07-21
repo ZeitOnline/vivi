@@ -38,10 +38,8 @@ class Elasticsearch:
             [url], transport_class=TransportWithConnection(connection_class))
         self.index = index
 
-    def search(
-            self, query, sort_order='',
-            start=0, rows=25, include_payload=False):
-        """Search using `query` and sort by `sort_order`. Pagination is
+    def search(self, query, start=0, rows=25, include_payload=False):
+        """Search using `query`. Pagination is
         available through the `start` and `rows` parameter.
 
         The search results include the entire payload node (as specified by

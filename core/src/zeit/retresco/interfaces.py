@@ -215,8 +215,8 @@ class IElasticDAVProperties(zeit.connector.interfaces.IWebDAVProperties):
 class IElasticsearch(zope.interface.Interface):
     """Search using the Elasticsearch service."""
 
-    def search(query, sort_order, start=0, rows=25, include_payload=False):
-        """Search using `query` and sort by `sort_order`.
+    def search(query, start=0, rows=25, include_payload=False):
+        """Search using `query`.
 
         query ... dictionary according to Elasticsearch Query DSL
         start ... offset in the search result.

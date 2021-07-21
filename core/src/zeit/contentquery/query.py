@@ -79,8 +79,7 @@ class ElasticsearchContentQuery(ContentQuery):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         try:
             response = es.search(
-                query, self.order,
-                start=self.start, rows=self.rows,
+                query, start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
         except Exception as e:
             log.warning(
@@ -89,7 +88,7 @@ class ElasticsearchContentQuery(ContentQuery):
             if 'Result window is too large' in str(e):
                 # We have to determine the actually available number of hits.
                 response = es.search(
-                    query, self.order, start=0, rows=0,
+                    query, start=0, rows=0,
                     include_payload=self.include_payload)
             else:
                 response = zeit.cms.interfaces.Result()

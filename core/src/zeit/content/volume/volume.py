@@ -122,9 +122,8 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                        zeit.retresco.search.date_range(start, end)}},
         ], 'must_not': [
             {'term': {'url': self.uniqueId.replace(UNIQUEID_PREFIX, '')}}
-        ]}}}
-        return Volume._find_via_elastic(
-            query, 'payload.document.date_digital_published:' + sort)
+        ]}}, 'sort': [{'payload.document.date_digital_published': sort}]}
+        return Volume._find_via_elastic(query)
 
     @staticmethod
     def published_days_ago(days_ago):
@@ -135,14 +134,13 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                 'gte': 'now-%dd/d' % (days_ago + 1),
                 'lt': 'now-%dd/d' % days_ago,
             }}}
-        ]}}}
-        return Volume._find_via_elastic(
-            query, 'payload.workflow.date_last_published:desc')
+        ]}}, 'sort': [{'payload.workflow.date_last_published': 'desc'}]}
+        return Volume._find_via_elastic(query)
 
     @staticmethod
-    def _find_via_elastic(query, sort_order):
+    def _find_via_elastic(query):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
-        result = es.search(query, sort_order, rows=1)
+        result = es.search(query, rows=1)
         if not result:
             return None
         return zeit.cms.interfaces.ICMSContent(

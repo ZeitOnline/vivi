@@ -191,8 +191,7 @@ class AutomaticAreaElasticsearchTest(
             ], 'must_not': [
                 {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                           'inline'}}
-            ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},
-                [{'payload.document.date_first_released': 'desc'}]),
+            ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},),
                 dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
 
@@ -747,15 +746,14 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         call_args['query']['bool']['must_not'][1]['ids']['values'].sort()
         sorted_ids = [id1, id2]
         sorted_ids.sort()
-        self.assertEqual({'query': {'bool': {'filter': [
+        self.assertEqual({'bool': {'filter': [
             {'match': {'foo': 'äää'}},
             {'term': {'payload.workflow.published': True}}
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-            {'ids': {'values': sorted_ids}},
-        ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},
-            elasticsearch.search.call_args[0][0])
+            {'ids': {'values': sorted_ids}}]}},
+            self.elasticsearch.search.call_args[0][0]['query'])
 
         # since `AutomaticArea.values()` is cached on the transaction boundary
         # now, we'll only see the change with the next request/transaction...
@@ -770,8 +768,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-        ]}}, 'sort': 'payload.document.date_first_released:desc'},
-            elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_elasticsearch_removes_none_uuids(self):
         # Otherwise this causes a 400 Bad Request "Illegal value for id,
