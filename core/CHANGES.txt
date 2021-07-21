@@ -5,6 +5,7 @@ vivi.core changes
 -------------------
 
 - OPS-2077: Log failed celery tasks, so we can debug them
+- TOPIC-19: Randomly sorted content for automatic areas
 
 
 4.58.1 (2021-07-16)
