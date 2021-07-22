@@ -13,7 +13,7 @@ import zope.interface
 class Connection(elasticsearch.connection.RequestsHttpConnection):
 
     def __init__(self, *args, **kw):
-        super(Connection, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.session.headers['User-Agent'] = self._user_agent()
 
     def _user_agent(self):
@@ -30,7 +30,7 @@ def TransportWithConnection(connection_class):
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.IElasticsearch)
-class Elasticsearch(object):
+class Elasticsearch:
     """Search via Elasticsearch."""
 
     def __init__(self, url, index, connection_class=Connection):
@@ -38,10 +38,8 @@ class Elasticsearch(object):
             [url], transport_class=TransportWithConnection(connection_class))
         self.index = index
 
-    def search(
-            self, query, sort_order='',
-            start=0, rows=25, include_payload=False):
-        """Search using `query` and sort by `sort_order`. Pagination is
+    def search(self, query, start=0, rows=25, include_payload=False):
+        """Search using `query`. Pagination is
         available through the `start` and `rows` parameter.
 
         The search results include the entire payload node (as specified by
@@ -71,7 +69,7 @@ class Elasticsearch(object):
         __traceback_info__ = (self.index, query)
         response = self.client.search(
             index=self.index, body=json.dumps(query),
-            sort=sort_order, from_=start, size=rows)
+            from_=start, size=rows)
         result = zeit.cms.interfaces.Result(
             [x['_source'] for x in response['hits']['hits']])
         if isinstance(response['hits']['total'], int):  # BBB ES-2.x

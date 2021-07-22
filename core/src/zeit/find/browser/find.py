@@ -177,6 +177,7 @@ class SearchResult(JSONView):
     def json(self):
         try:
             q = form_query(self.request)
+            q['sort'] = self.sort_order()
         except InputError as e:
             error = six.text_type(e)
             return {'template': 'no_search_result.jsont', "error": error}
@@ -185,15 +186,15 @@ class SearchResult(JSONView):
         self.store_session()
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         try:
-            results = elastic.search(q, sort_order=self.sort_order())
+            results = elastic.search(q)
             return self.results(results)
         except Exception as e:
             return {'template': 'no_search_result.jsont',
                     'error': e.args[0]}
 
     SORT_ORDERS = {
-        'date': 'payload.document.last-semantic-change:desc',
-        'relevance': '_score',
+        'date': [{'payload.document.last-semantic-change': 'desc'}],
+        'relevance': ['_score'],
     }
 
     def sort_order(self):

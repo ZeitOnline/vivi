@@ -31,6 +31,7 @@ vivi.core changes
 - TOPIC-36: Add reach as automatic area source
 
 - OPS-2077: Log failed celery tasks, so we can debug them
+- TOPIC-19: Randomly sorted content for automatic areas
 
 - FIX: Return correct result count for related topicpages
 
