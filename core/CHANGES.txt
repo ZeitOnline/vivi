@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.59.4 (unreleased)
+4.59.4 (2021-07-22)
 -------------------
 
 - MAINT: Add base KPI Implementation to ensure adapting it never fails
