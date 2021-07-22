@@ -1,17 +1,46 @@
 vivi.core changes
 =================
 
-4.58.2 (unreleased)
+4.59.4 (unreleased)
 -------------------
+
+- Nothing changed yet.
+
+
+4.59.3 (2021-07-21)
+-------------------
+
+- ZON-6371: Fix invalid host matching for @ containig urls.
+
+
+4.59.2 (2021-07-20)
+-------------------
+
+- ZON-6371: Do not set links with internal hosts like vivi.zeit.de.
+
+
+4.59.1 (2021-07-20)
+-------------------
+
+- ZON-6482: Enable speechbert by default for articles with no genre
+
+
+4.59.0 (2021-07-19)
+-------------------
+
+- TOPIC-36: Add reach as automatic area source
 
 - OPS-2077: Log failed celery tasks, so we can debug them
 - TOPIC-19: Randomly sorted content for automatic areas
+
+- FIX: Return correct result count for related topicpages
 
 
 4.58.1 (2021-07-16)
 -------------------
 
 - OPS-2058: Move logout redirect to zeit.ldap
+- TOPIC-36: Add Reach as automatic area source
 
 
 4.58.0 (2021-07-13)
@@ -336,7 +365,7 @@ vivi.core changes
 4.45.5 (2020-12-16)
 -------------------
 
-- ZON-6319: Fix behavior for select the 'no genre' option 
+- ZON-6319: Fix behavior for select the 'no genre' option
 
 - BEM-70: mock is included in the stdlib in py3
 
@@ -427,7 +456,7 @@ vivi.core changes
 4.43.1 (2020-10-22)
 -------------------
 
-- ZON-5577: Set default for `force_mobile_images` to true 
+- ZON-5577: Set default for `force_mobile_images` to true
 
 
 4.43.0 (2020-10-13)

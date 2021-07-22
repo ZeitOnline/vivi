@@ -9,11 +9,12 @@ import requests_mock
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.contentquery.query
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.contentquery.interfaces
+import zeit.contentquery.query
 import zeit.edit.interfaces
+import zeit.reach.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zope.component
@@ -538,6 +539,28 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         area.automatic_type = 'centerpage'
         with self.assertRaises(ValueError):
             area.referenced_cp = cp_with_teaser
+
+
+class AutomaticAreaReachTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        self.reach = mock.Mock()
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.reach, zeit.reach.interfaces.IReach)
+
+    def test_passes_parameters_to_reach(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.reach_service = 'comments'
+        lead.automatic_type = 'reach'
+        self.reach.get_ranking.return_value = []
+        IRenderedArea(lead).values()
+        args, kw = self.reach.get_ranking.call_args
+        self.assertEqual('comments', args[0])
+        self.assertEqual({'limit': 1}, kw)
 
 
 def create_automatic_area(cp, count=3, type='centerpage'):

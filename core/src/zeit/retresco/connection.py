@@ -137,7 +137,7 @@ class TMS:
         id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
         result = zeit.cms.interfaces.Result(
             [id_namespace + x['url'] for x in response])
-        result.hits = len(response['docs'])
+        result.hits = len(response)
         return result
 
     def get_content_related_topicpages(

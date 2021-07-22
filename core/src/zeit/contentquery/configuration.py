@@ -126,6 +126,10 @@ class Configuration:
             'elasticsearch_raw_query': False,
             'elasticsearch_raw_order': True,
             'is_complete_query': True,
+            'reach_service': True,
+            'reach_section': False,
+            'reach_access': False,
+            'reach_age': False,
     }.items():
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
             '.%s' % name, IConfiguration[name], use_default=default)

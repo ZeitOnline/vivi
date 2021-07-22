@@ -524,3 +524,26 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         topics = tms.get_related_topics(
             self.context.related_topicpage, rows=self.rows)
         return [zeit.cms.interfaces.ICMSContent(topic) for topic in topics]
+
+
+class ReachContentQuery(ContentQuery):
+
+    grok.name('reach')
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+    def __call__(self):
+        reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
+        # XXX Converting to the format reach wants should probably be done by
+        # IReach, but as that currently still needs bw-compat for z.w.site.
+        # modules.buzzbox, and IReach is not used elsewhere, leave it for now.
+        params = {}
+        if self.context.reach_section:
+            params['section'] = self.context.reach_section.lower()
+        if self.context.reach_access:
+            # reach does not support section if access is set (see reach docs)
+            params.pop('section', None)
+            params['access'] = self.context.reach_access
+        if self.context.reach_age:
+            params['maxAge'] = self.context.reach_age * 3600 * 24
+        return reach.get_ranking(
+            self.context.reach_service, limit=self.rows, **params)

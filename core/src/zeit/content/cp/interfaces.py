@@ -249,6 +249,7 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
         ('related-topics', _('automatic-area-type-related-topics')),
         ('query', _('automatic-area-type-query')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+        ('reach', _('automatic-area-type-reach')),
         ('rss-feed', _('automatic-area-type-rss-feed'))
     ])
 
@@ -279,6 +280,9 @@ def automatic_area_can_read_teasers_automatically(data):
 
     if (data.automatic_type == 'rss-feed' and
             data.rss_feed):
+        return True
+
+    if (data.automatic_type == 'reach' and data.reach_service):
         return True
     return False
 
@@ -420,6 +424,10 @@ class IReadArea(
                 error_message = _(
                     'Automatic area with related-topics requires a given'
                     ' topicpage')
+            if data.automatic_type == 'reach':
+                error_message = _(
+                    'Automatic area with teasers from reach require a given'
+                    ' kind')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 
