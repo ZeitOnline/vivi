@@ -4,7 +4,7 @@ vivi.core changes
 4.59.3 (unreleased)
 -------------------
 
-- FIX: Ensure TMSArticle and ReachContent can be adapted by z.cms.content.interfaces.IKPI
+- MAINT: Add base KPI Implementation to ensure adapting it never fails
 
 
 4.59.2 (2021-07-20)
