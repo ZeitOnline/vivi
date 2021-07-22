@@ -4,7 +4,7 @@ vivi.core changes
 4.59.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- MAINT: Add base KPI Implementation to ensure adapting it never fails
 
 
 4.59.3 (2021-07-21)
