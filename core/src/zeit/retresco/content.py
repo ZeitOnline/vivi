@@ -128,7 +128,6 @@ def gallery_entry_count(context):
 class KPI(grok.Adapter):
 
     grok.context(zeit.retresco.interfaces.ITMSContent)
-    grok.provides(zeit.cms.content.interfaces.IKPI)
 
     FIELDS = {
         'visits': 'kpi_visits',
