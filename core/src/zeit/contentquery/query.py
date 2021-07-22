@@ -57,12 +57,24 @@ class ElasticsearchContentQuery(ContentQuery):
     def __init__(self, context):
         super().__init__(context)
         self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
+        self.order_default = self.context.elasticsearch_raw_order
 
     @property
     def order(self):
-        (field, order) = self.context.elasticsearch_raw_order.split(':')
+        (field, order) = self.order_default.split(':')
         if 'random' not in field:
             return [{field: order}]
+
+        random_order = {
+            '_script': {
+                'type': 'number',
+                'script': {
+                    'lang': 'painless',
+                    'source': 'Math.random()'
+                },
+                'order': order
+            }}
+        return random_order
 
     def __call__(self):
         self.total_hits = 0
@@ -167,23 +179,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_custom_query()
-
-    @property
-    def order(self):
-        (field, order) = self.context.query_order.split(':')
-        if 'random' not in field:
-            return [{field: order}]
-
-        random_order = {
-            '_script': {
-                'type': 'number',
-                'script': {
-                    'lang': 'painless',
-                    'source': 'Math.random()'
-                },
-                'order': order
-            }}
-        return random_order
+        self.order_default = self.context.query_order
 
     def _make_custom_query(self):
         fields = {}
