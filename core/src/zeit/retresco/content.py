@@ -124,7 +124,7 @@ def gallery_entry_count(context):
     return context._tms_payload_head.get('visible_entry_count', 0)
 
 
-@grok.implementer(zeit.retresco.interfaces.IKPI)
+@grok.implementer(zeit.cms.content.interfaces.IKPI)
 class KPI(grok.Adapter):
 
     grok.context(zeit.retresco.interfaces.ITMSContent)

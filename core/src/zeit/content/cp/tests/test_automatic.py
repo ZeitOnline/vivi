@@ -24,7 +24,7 @@ class AutomaticAreaElasticsearchTest(
         zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaElasticsearchTest, self).setUp()
+        super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.area = self.cp['feature'].create_item('area')
         self.area.count = 3
@@ -74,9 +74,9 @@ class AutomaticAreaElasticsearchTest(
             'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
 
     def test_no_marked_articles_leader_block_layout_is_changed_virtually(self):
-        self.area.kind = u'major'
+        self.area.kind = 'major'
         self.area.apply_teaser_layouts_automatically = True
-        self.area._first_teaser_layout = u'leader'
+        self.area._first_teaser_layout = 'leader'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
             [{'url': '/testcontent'}])
         self.elasticsearch.search.return_value.hits = 1
@@ -175,7 +175,7 @@ class AutomaticAreaElasticsearchTest(
         lead.count = 1
         lead.automatic = True
         lead.elasticsearch_raw_query = (
-            u'{"query": {"match": {"title": "üüü"}}}')
+            '{"query": {"match": {"title": "üüü"}}}')
         lead.automatic_type = 'elasticsearch-query'
         result = zeit.cms.interfaces.Result(
             [{'url': '/cp'},
@@ -185,16 +185,14 @@ class AutomaticAreaElasticsearchTest(
         auto = IRenderedArea(lead)
         self.assertEqual(1, len(auto.values()))
         self.assertEqual(4711, auto._content_query.total_hits)
-
         self.assertEqual(
             (({'query': {'bool': {'filter': [
-                {u'match': {u'title': u'üüü'}},
+                {'match': {'title': 'üüü'}},
                 {'term': {'payload.workflow.published': True}}
             ], 'must_not': [
                 {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                           'inline'}}
-            ]}}},
-                u'payload.document.date_first_released:desc'),
+            ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},),
                 dict(start=0, rows=1, include_payload=False)),
             self.elasticsearch.search.call_args)
 
@@ -217,7 +215,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, "sort": [{
+            "payload.workflow.date_last_published_semantic": "desc"}]
+        }, self.elasticsearch.search.call_args[0][0])
 
     def test_builds_query_with_elasticsearch_fieldname_exceptions(self):
         lead = self.repository['cp']['lead']
@@ -242,7 +242,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{
+            'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_builds_query_with_condition_exception(self):
         lead = self.repository['cp']['lead']
@@ -270,7 +272,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{
+            'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
         lead = self.repository['cp']['lead']
@@ -302,7 +306,9 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [
+            {'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_puts_fields_into_bool_according_to_operator(self):
         lead = self.repository['cp']['lead']
@@ -335,14 +341,18 @@ class AutomaticAreaElasticsearchTest(
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{
+            'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_can_take_over_whole_query_body(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.automatic = True
         lead.elasticsearch_raw_query = (
-            '{"query": {"match": {"title": "foo"}}}')
+            '{"query": {"match": {"title": "foo"}},'
+            '"sort": [{"payload.document.date_first_released": "desc"}]}'
+              )
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
@@ -364,10 +374,10 @@ class AutomaticAreaElasticsearchTest(
         auto._content_query.hide_dupes_clause = {'ids': {'values': ['id1']}}
         auto.values()
         self.assertEqual(
-            {"query": {"bool": {
+            {"bool": {
                 "must": {"query": {"match": {"title": "foo"}}},
-                "must_not": {"ids": {"values": ["id1"]}}}}},
-            self.elasticsearch.search.call_args[0][0])
+                "must_not": {"ids": {"values": ["id1"]}}}},
+            self.elasticsearch.search.call_args[0][0]['query'])
 
     def test_query_order_defaults_to_semantic_publish(self):
         lead = self.repository['cp']['lead']
@@ -378,19 +388,20 @@ class AutomaticAreaElasticsearchTest(
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
         self.assertEqual(
-            'payload.workflow.date_last_published_semantic:desc',
-            self.elasticsearch.search.call_args[0][1])
+            [{'payload.workflow.date_last_published_semantic': 'desc'}],
+            self.elasticsearch.search.call_args[0][0]['sort'])
 
     def test_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.query = (('channels', 'eq', 'International', 'Nahost'),)
-        lead.query_order = 'order'
+        lead.query_order = 'order:desc'
         lead.automatic = True
         lead.automatic_type = 'custom'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
-        self.assertEqual('order', self.elasticsearch.search.call_args[0][1])
+        query = self.elasticsearch.search.call_args[0][0]
+        self.assertEqual([{'order': 'desc'}], query['sort'])
 
     def test_bbb_converts_automatic_type_channel_to_custom(self):
         lead = self.repository['cp']['lead']
@@ -403,21 +414,43 @@ class AutomaticAreaElasticsearchTest(
         lead.xml.set('automatic_type', 'channel')
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         IRenderedArea(lead).values()
-        self.assertEqual({'query': {'bool': {'filter': [
-            {'bool': {'filter': [
-                {'term': {'payload.document.serie': 'Autotest'}},
-            ]}},
-            {'term': {'payload.workflow.published': True}}
-        ], 'must_not': [
-            {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
-                      'inline'}}
-        ]}}}, self.elasticsearch.search.call_args[0][0])
+        self.assertEqual({
+            'query': {'bool': {'filter': [
+                {'bool': {'filter': [
+                    {'term': {'payload.document.serie': 'Autotest'}},
+                ]}},
+                {'term': {'payload.workflow.published': True}}
+            ], 'must_not': [
+                {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
+                          'inline'}}]
+                }}, 'sort': [{
+                    'payload.workflow.date_last_published_semantic': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
+
+    def test_custom_query_should_have_random_order(self):
+        lead = self.repository['cp']['lead']
+        lead.automatic = True
+        lead.automatic_type = 'custom'
+        lead.count = 1
+        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
+        lead.query_order = 'random:desc'
+
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        IRenderedArea(lead).values()
+
+        query = self.elasticsearch.search.call_args[0][0]
+        self.assertEqual(
+            {'_script': {
+                'type': 'number',
+                'script': {'lang': 'painless', 'source': 'Math.random()'},
+                'order': 'desc'}},
+            query['sort'])
 
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaTopicpageTest, self).setUp()
+        super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.tms = mock.Mock()
         zope.component.getGlobalSiteManager().registerUtility(
@@ -464,7 +497,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaCenterPageTest, self).setUp()
+        super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.area = self.cp['feature'].create_item('area')
         self.repository['cp'] = self.cp
@@ -491,10 +524,10 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_yields_centerpage_in_addition_to_teaser_when_iterating(self):
         content = zeit.edit.interfaces.IElementReferences(self.cp)
         self.assertEqual([
-            u'http://xml.zeit.de/cp_with_teaser',
-            u'http://xml.zeit.de/t1',
-            u'http://xml.zeit.de/t2',
-            u'http://xml.zeit.de/t3'],
+            'http://xml.zeit.de/cp_with_teaser',
+            'http://xml.zeit.de/t1',
+            'http://xml.zeit.de/t2',
+            'http://xml.zeit.de/t3'],
             [x.uniqueId for x in content])
 
     def test_recursivly_referenced_cps_raise_value_error(self):
@@ -541,7 +574,7 @@ def create_automatic_area(cp, count=3, type='centerpage'):
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(HideDupesTest, self).setUp()
+        super().setUp()
 
         t1 = self.create_content('t1', 't1')
         t2 = self.create_content('t2', 't2')
@@ -549,6 +582,8 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         cp_with_teaser = self.create_and_checkout_centerpage(
             name='cp_with_teaser', contents=[t1, t2, t3])
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
+        self.elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
 
         self.cp = self.create_and_checkout_centerpage()
         self.area = create_automatic_area(self.cp)
@@ -720,9 +755,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_elasticsearch_content_query_filters_duplicates(self):
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = (
-            u'{"query": {"match": {"foo": "äää"}}}')
-        elasticsearch = zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch)
+            '{"query": {"match": {"foo": "äää"}}}')
 
         lead = self.cp['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
@@ -732,19 +765,18 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
 
         id1 = zeit.cms.content.interfaces.IUUID(self.repository['t1']).id
         id2 = zeit.cms.content.interfaces.IUUID(self.repository['t2']).id
-        call_args = elasticsearch.search.call_args[0][0]
+        call_args = self.elasticsearch.search.call_args[0][0]
         call_args['query']['bool']['must_not'][1]['ids']['values'].sort()
         sorted_ids = [id1, id2]
         sorted_ids.sort()
-
-        self.assertEqual({'query': {'bool': {'filter': [
-            {'match': {'foo': u'äää'}},
+        self.assertEqual({'bool': {'filter': [
+            {'match': {'foo': 'äää'}},
             {'term': {'payload.workflow.published': True}}
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-            {'ids': {'values': sorted_ids}},
-        ]}}}, elasticsearch.search.call_args[0][0])
+            {'ids': {'values': sorted_ids}}]}},
+            self.elasticsearch.search.call_args[0][0]['query'])
 
         # since `AutomaticArea.values()` is cached on the transaction boundary
         # now, we'll only see the change with the next request/transaction...
@@ -754,19 +786,20 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.hide_dupes = False
         IRenderedArea(self.area).values()
         self.assertEqual({'query': {'bool': {'filter': [
-            {'match': {'foo': u'äää'}},
+            {'match': {'foo': 'äää'}},
             {'term': {'payload.workflow.published': True}}
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-        ]}}}, elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_elasticsearch_removes_none_uuids(self):
         # Otherwise this causes a 400 Bad Request "Illegal value for id,
         # expecting string or number, got: VALUE_NULL"
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = (
-            u'{"query": {"match": {"foo": "bar"}}}')
+            '{"query": {"match": {"foo": "bar"}}}')
         elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
 
@@ -776,14 +809,14 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         with mock.patch('zeit.cms.content.interfaces.IUUID') as uuid:
             uuid().id = None
             IRenderedArea(self.area).values()
-
         self.assertEqual({'query': {'bool': {'filter': [
-            {u'match': {u'foo': u'bar'}},
+            {'match': {'foo': 'bar'}},
             {'term': {'payload.workflow.published': True}}
         ], 'must_not': [
             {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                       'inline'}},
-        ]}}}, elasticsearch.search.call_args[0][0])
+        ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},
+            self.elasticsearch.search.call_args[0][0])
 
     def test_teaser_count(self):
         a1 = create_automatic_area(self.cp, count=0, type='topicpage')
@@ -820,6 +853,8 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.cp = self.create_and_checkout_centerpage()
+        self.elasticsearch = zope.component.getUtility(
+            zeit.retresco.interfaces.IElasticsearch)
 
     def feed_xml(self):
         url = pkg_resources.resource_filename(
@@ -845,8 +880,8 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
             item.teaserTitle)
         self.assertEqual('Qijianglong', item.teaserSupertitle)
         self.assertEqual(
-            u'Forscher entdecken ein China die \xc3\x9cberreste eines bisher '
-            u'unbekannten, langhalsigen Dinosauriers.', item.teaserText)
+            'Forscher entdecken ein China die \xc3\x9cberreste eines bisher '
+            'unbekannten, langhalsigen Dinosauriers.', item.teaserText)
         self.assertTrue(item.image_url.endswith('spektrum/images/img1.jpg'))
 
     def test_rss_link_object_with_empty_values_should_not_break(self):
@@ -897,10 +932,10 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         elastic_area = create_automatic_area(self.cp)
         elastic_area.automatic_type = 'elasticsearch-query'
         elastic_area.elasticsearch_raw_query = (
-            u'{"query": {"match": {"foo": "bar"}}}')
+            '{"query": {"match": {"foo": "bar"}}}')
         elasticsearch = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)
         with mocked_feed:
             IRenderedArea(elastic_area).values()
-        elastic_query = elasticsearch.search.call_args[0][0]
+        elastic_query = self.elasticsearch.search.call_args[0][0]
         self.assertNotIn('ids', elastic_query['query']['bool']['must_not'])

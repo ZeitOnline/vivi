@@ -2,6 +2,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.content.sources
 import zeit.cms.tagging.tag
+import zeit.cms.content.interfaces
 import zeit.content.article.article
 import zeit.content.author.author
 import zeit.content.image.interfaces
@@ -199,7 +200,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         data['kpi_comments'] = 2
         data['kpi_subscriptions'] = 3
         content = zeit.retresco.interfaces.ITMSContent(data)
-        kpi = zeit.retresco.interfaces.IKPI(content)
+        kpi = zeit.cms.content.interfaces.IKPI(content)
         self.assertEqual(1, kpi.visits)
         self.assertEqual(2, kpi.comments)
         self.assertEqual(3, kpi.subscriptions)

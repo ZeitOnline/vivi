@@ -1,10 +1,28 @@
 vivi.core changes
 =================
 
-4.59.2 (unreleased)
+4.59.5 (unreleased)
 -------------------
 
 - ZON-6301: Adds checkbox on CPs in SEO tab, to enable RSS-Feed single tracking
+
+
+4.59.4 (2021-07-22)
+-------------------
+
+- MAINT: Add base KPI Implementation to ensure adapting it never fails
+
+
+4.59.3 (2021-07-21)
+-------------------
+
+- ZON-6371: Fix invalid host matching for @ containig urls.
+
+
+4.59.2 (2021-07-20)
+-------------------
+
+- ZON-6371: Do not set links with internal hosts like vivi.zeit.de.
 
 
 4.59.1 (2021-07-20)
@@ -19,6 +37,7 @@ vivi.core changes
 - TOPIC-36: Add reach as automatic area source
 
 - OPS-2077: Log failed celery tasks, so we can debug them
+- TOPIC-19: Randomly sorted content for automatic areas
 
 - FIX: Return correct result count for related topicpages
 

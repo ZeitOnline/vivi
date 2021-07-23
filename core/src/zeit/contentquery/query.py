@@ -55,9 +55,26 @@ class ElasticsearchContentQuery(ContentQuery):
     include_payload = False  # Extension point for zeit.web and its LazyProxy.
 
     def __init__(self, context):
-        super(ElasticsearchContentQuery, self).__init__(context)
+        super().__init__(context)
         self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
-        self.order = self.context.elasticsearch_raw_order
+        self.order_default = self.context.elasticsearch_raw_order
+
+    @property
+    def order(self):
+        (field, order) = self.order_default.split(':')
+        if 'random' not in field:
+            return [{field: order}]
+
+        random_order = {
+            '_script': {
+                'type': 'number',
+                'script': {
+                    'lang': 'painless',
+                    'source': 'Math.random()'
+                },
+                'order': order
+            }}
+        return random_order
 
     def __call__(self):
         self.total_hits = 0
@@ -74,8 +91,7 @@ class ElasticsearchContentQuery(ContentQuery):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         try:
             response = es.search(
-                query, self.order,
-                start=self.start, rows=self.rows,
+                query, start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
         except Exception as e:
             log.warning(
@@ -84,7 +100,7 @@ class ElasticsearchContentQuery(ContentQuery):
             if 'Result window is too large' in str(e):
                 # We have to determine the actually available number of hits.
                 response = es.search(
-                    query, self.order, start=0, rows=0,
+                    query, start=0, rows=0,
                     include_payload=self.include_payload)
             else:
                 response = zeit.cms.interfaces.Result()
@@ -113,6 +129,7 @@ class ElasticsearchContentQuery(ContentQuery):
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'].append(
                     self.hide_dupes_clause)
+        query['sort'] = self.order
         return query
 
     _additional_clauses = [
@@ -162,7 +179,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_custom_query()
-        self.order = self.context.query_order
+        self.order_default = self.context.query_order
 
     def _make_custom_query(self):
         fields = {}
@@ -234,7 +251,7 @@ class TMSContentQuery(ContentQuery):
     grok.baseclass()
 
     def __init__(self, context):
-        super(TMSContentQuery, self).__init__(context)
+        super().__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
 
