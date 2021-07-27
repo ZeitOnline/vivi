@@ -5,6 +5,7 @@ vivi.core changes
 -------------------
 
 - ZON-6301: Adds checkbox on CPs in SEO tab, to enable RSS-Feed single tracking
+- BUG-1437: Skip tests with non expected TechnicalErrors
 
 
 4.59.4 (2021-07-22)
