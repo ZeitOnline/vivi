@@ -11,9 +11,5 @@
     id="zeit.seo.Edit"
     title="Edit SEO data"
     />
-
-  <adapter factory=".seo.SEO" />
-  <adapter factory=".seo.seo_dav_properties" />
-
 </configure>
 

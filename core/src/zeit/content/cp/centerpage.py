@@ -335,13 +335,9 @@ def rendered_xml(context):
 
 
 class CpSEO(zeit.seo.seo.SEO):
+    grok.provides(zeit.content.cp.interfaces.ICpSEO)
+
     enable_rss_tracking_parameter = zeit.cms.content.dav.DAVProperty(
         zeit.content.cp.interfaces.ICpSEO['enable_rss_tracking_parameter'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'seo-enable-rss-tracking-parameter')
-
-
-@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
-@grok.implementer(zeit.content.cp.interfaces.ICpSEO)
-def cp_to_cpseo(context):
-    return CpSEO(context)
