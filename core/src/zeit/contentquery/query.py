@@ -61,7 +61,11 @@ class ElasticsearchContentQuery(ContentQuery):
 
     @property
     def order(self):
-        (field, order) = self.order_default.split(':')
+        if isinstance(self.order_default, str):
+            (field, order) = self.order_default.split(':')
+        else:
+            (field, order) = self.order_default
+
         if 'random' not in field:
             return [{field: order}]
 
