@@ -61,6 +61,8 @@ class ElasticsearchContentQuery(ContentQuery):
 
     @property
     def order(self):
+        if not self.order_default:
+            return None
         if isinstance(self.order_default, str):
             (field, order) = self.order_default.split(':')
         else:
@@ -133,7 +135,8 @@ class ElasticsearchContentQuery(ContentQuery):
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'].append(
                     self.hide_dupes_clause)
-        query['sort'] = self.order
+        if self.order:
+            query['sort'] = self.order
         return query
 
     _additional_clauses = [
