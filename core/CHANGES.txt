@@ -4,6 +4,8 @@ vivi.core changes
 4.59.5 (unreleased)
 -------------------
 
+- TOPIC-39: Hide hide_dupes checkbox for reach as automatic area source
+- TOPIC-39: Enable autopilot checkbox when automatic area source is changed
 - BUG-1437: Skip tests with non expected TechnicalErrors
 
 

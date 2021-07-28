@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 class Reach:
 
     http = requests.Session()
-    timeout = 0.2
+    timeout = 1
 
     def __init__(self, url, freeze_now=None):
         self.url = url
