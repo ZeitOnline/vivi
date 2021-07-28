@@ -21,6 +21,9 @@ var show_matching_field = function(container, current_type) {
     });
 };
 
+var enable_autopilot = function(container) {
+    $('.fieldname-automatic .checkboxType', container).prop('checked', true);
+};
 
 $(document).bind('fragment-ready', function(event) {
     var type_select = $('.fieldname-automatic_type select', event.__target);
@@ -42,6 +45,7 @@ $(document).bind('fragment-ready', function(event) {
     type_select.on(
         'change', function() {
             show_matching_field(event.__target, $(this).val());
+            enable_autopilot(event.__target);
     });
 });
 
