@@ -380,25 +380,14 @@ class AutomaticAreaElasticsearchTest(
             self.elasticsearch.search.call_args[0][0]['query'])
 
     def test_query_order_defaults_to_semantic_publish(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        lead = self.create_lead_teaser()
         IRenderedArea(lead).values()
         self.assertEqual(
             [{'payload.workflow.date_last_published_semantic': 'desc'}],
             self.elasticsearch.search.call_args[0][0]['sort'])
 
     def test_query_order_can_be_set(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 1
-        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
-        lead.query_order = 'order:desc'
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        lead = self.create_lead_teaser('order:desc')
         IRenderedArea(lead).values()
         query = self.elasticsearch.search.call_args[0][0]
         self.assertEqual([{'order': 'desc'}], query['sort'])
@@ -428,14 +417,7 @@ class AutomaticAreaElasticsearchTest(
             self.elasticsearch.search.call_args[0][0])
 
     def test_custom_query_should_have_random_order(self):
-        lead = self.repository['cp']['lead']
-        lead.automatic = True
-        lead.automatic_type = 'custom'
-        lead.count = 1
-        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
-        lead.query_order = 'random:desc'
-
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        lead = self.create_lead_teaser('random:desc')
         IRenderedArea(lead).values()
 
         query = self.elasticsearch.search.call_args[0][0]
@@ -445,6 +427,25 @@ class AutomaticAreaElasticsearchTest(
                 'script': {'lang': 'painless', 'source': 'Math.random()'},
                 'order': 'desc'}},
             query['sort'])
+
+    def test_valid_query_despite_missing_order(self):
+        lead = self.create_lead_teaser()
+        lead.query_order = ''
+        IRenderedArea(lead).values()
+
+        self.assertEqual(
+            {'query': {'bool': {'filter': [
+                {'bool': {'filter': [
+                    {'term': {
+                        'payload.document.channels.hierarchy':
+                        'International Nahost'}}
+                ]}},
+                {'term': {'payload.workflow.published': True}}], 'must_not': [
+                {'term': {
+                    'payload.zeit__DOT__content__DOT__gallery.type': 'inline'
+                    }}]
+            }}},
+            self.elasticsearch.search.call_args[0][0])
 
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
