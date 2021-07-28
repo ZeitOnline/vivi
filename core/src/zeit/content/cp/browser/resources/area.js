@@ -25,6 +25,14 @@ var enable_autopilot = function(container) {
     $('.fieldname-automatic .checkboxType', container).prop('checked', true);
 };
 
+var hide_hide_dupes_checkbox_for_reach = function(container, current_type) {
+    if (current_type === 'reach') {
+        $('.fieldname-hide_dupes', container).hide();
+    } else {
+        $('.fieldname-hide_dupes', container).show();
+    }
+};
+
 $(document).bind('fragment-ready', function(event) {
     var type_select = $('.fieldname-automatic_type select', event.__target);
     if (! type_select.length) {
@@ -42,10 +50,13 @@ $(document).bind('fragment-ready', function(event) {
     }
 
     show_matching_field(event.__target, type_select.val());
+    hide_hide_dupes_checkbox_for_reach(event.__target, type_select.val());
     type_select.on(
         'change', function() {
-            show_matching_field(event.__target, $(this).val());
+            var value = $(this).val();
+            show_matching_field(event.__target, value);
             enable_autopilot(event.__target);
+            hide_hide_dupes_checkbox_for_reach(event.__target, value);
     });
 });
 
