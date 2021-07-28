@@ -64,12 +64,14 @@ class ElasticsearchContentQuery(ContentQuery):
         if not self.order_default:
             return None
         if isinstance(self.order_default, str):
-            (field, order) = self.order_default.split(':')
-        else:
-            (field, order) = self.order_default
+            order_list = self.order_default.split(',')
+            sort_orders = []
+            for item in order_list:
+                (field, order) = item.split(':')
+                sort_orders.append({field: order})
 
-        if 'random' not in field:
-            return [{field: order}]
+        if not any(['random' in order for order in order_list]):
+            return sort_orders
 
         random_order = {
             '_script': {

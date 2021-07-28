@@ -447,6 +447,17 @@ class AutomaticAreaElasticsearchTest(
             }}},
             self.elasticsearch.search.call_args[0][0])
 
+    def test_should_accept_multiple_orders(self):
+        lead = self.create_lead_teaser(
+            'payload.xml.lastname:asc,payload.xml.firstname:asc')
+        IRenderedArea(lead).values()
+
+        query = self.elasticsearch.search.call_args[0][0]
+        self.assertEqual(
+            [{'payload.xml.lastname': 'asc'},
+             {'payload.xml.firstname': 'asc'}],
+            query['sort'])
+
 
 class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
