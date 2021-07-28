@@ -130,14 +130,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.click('css=a.CloseButton')
 
         # One area is unconfigured, the other could load content automatically
-        sel.waitForCssCount('css=.block-automatic-off', 1)
-        sel.assertCssCount('css=.block-automatic-on', 0)
-        sel.assertCssCount('css=.block-automatic-not-possible', 1)
-        sel.assertCssCount('css=.type-teaser', 0)
-        sel.assertCssCount('css=.type-auto-teaser', 0)
-
-        # Enable automatic mode, creates automatic teaser block
-        sel.click('css=.toggle-automatic-link')
+        # automatic mode is enabled per default, creates automatic teaser block
         sel.waitForCssCount('css=.block-automatic-off', 0)
         sel.assertCssCount('css=.block-automatic-on', 1)
         sel.assertCssCount('css=.block-automatic-not-possible', 1)
