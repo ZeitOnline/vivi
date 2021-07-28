@@ -69,8 +69,7 @@ class ElasticsearchContentQuery(ContentQuery):
             for item in order_list:
                 (field, order) = item.split(':')
                 sort_orders.append({field: order})
-
-        if not any(['random' in order for order in order_list]):
+        if not 'random' in self.order_default:
             return sort_orders
 
         random_order = {
@@ -80,7 +79,7 @@ class ElasticsearchContentQuery(ContentQuery):
                     'lang': 'painless',
                     'source': 'Math.random()'
                 },
-                'order': order
+                'order': 'desc'  # descending into chaos, randomly
             }}
         return random_order
 
