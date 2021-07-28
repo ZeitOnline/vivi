@@ -7,6 +7,7 @@ vivi.core changes
 - TOPIC-39: Hide hide_dupes checkbox for reach as automatic area source
 - TOPIC-39: Enable autopilot checkbox when automatic area source is changed
 - BUG-1437: Skip tests with non expected TechnicalErrors
+- TOPIC-19: Fix multiple sort order possibilities and be more defensive
 
 
 4.59.4 (2021-07-22)

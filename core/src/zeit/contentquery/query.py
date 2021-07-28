@@ -61,20 +61,29 @@ class ElasticsearchContentQuery(ContentQuery):
 
     @property
     def order(self):
-        (field, order) = self.order_default.split(':')
-        if 'random' not in field:
-            return [{field: order}]
+        if not self.order_default:
+            return None
 
-        random_order = {
-            '_script': {
-                'type': 'number',
-                'script': {
-                    'lang': 'painless',
-                    'source': 'Math.random()'
-                },
-                'order': order
-            }}
-        return random_order
+        if isinstance(self.order_default, str):
+            if 'random' in self.order_default:
+                random_order = {
+                    '_script': {
+                        'type': 'number',
+                        'script': {
+                            'lang': 'painless',
+                            'source': 'Math.random()'
+                        },
+                        'order': 'desc'  # descending into chaos, randomly
+                    }}
+                return random_order
+
+            order_list = self.order_default.split(',')
+            sort_orders = []
+            for item in order_list:
+                (field, order) = item.split(':')
+                sort_orders.append({field: order})
+
+            return sort_orders
 
     def __call__(self):
         self.total_hits = 0
@@ -129,7 +138,8 @@ class ElasticsearchContentQuery(ContentQuery):
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'].append(
                     self.hide_dupes_clause)
-        query['sort'] = self.order
+        if self.order:
+            query['sort'] = self.order
         return query
 
     _additional_clauses = [
