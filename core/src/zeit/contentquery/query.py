@@ -63,25 +63,27 @@ class ElasticsearchContentQuery(ContentQuery):
     def order(self):
         if not self.order_default:
             return None
+
         if isinstance(self.order_default, str):
+            if 'random' in self.order_default:
+                random_order = {
+                    '_script': {
+                        'type': 'number',
+                        'script': {
+                            'lang': 'painless',
+                            'source': 'Math.random()'
+                        },
+                        'order': 'desc'  # descending into chaos, randomly
+                    }}
+                return random_order
+
             order_list = self.order_default.split(',')
             sort_orders = []
             for item in order_list:
                 (field, order) = item.split(':')
                 sort_orders.append({field: order})
-        if not 'random' in self.order_default:
-            return sort_orders
 
-        random_order = {
-            '_script': {
-                'type': 'number',
-                'script': {
-                    'lang': 'painless',
-                    'source': 'Math.random()'
-                },
-                'order': 'desc'  # descending into chaos, randomly
-            }}
-        return random_order
+            return sort_orders
 
     def __call__(self):
         self.total_hits = 0
