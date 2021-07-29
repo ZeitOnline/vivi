@@ -1,18 +1,17 @@
 """Search engine optimisation."""
 
-import zope.component
-import zope.interface
+import grokcore.component as grok
 
 import zeit.connector.interfaces
 import zeit.cms.interfaces
 import zeit.cms.content.dav
-
 import zeit.seo.interfaces
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.seo.interfaces.ISEO)
-class SEO(object):
+@grok.implementer(zeit.seo.interfaces.ISEO)
+class SEO(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    grok.adapts(zeit.cms.interfaces.ICMSContent)
 
     html_title = zeit.cms.content.dav.DAVProperty(
         zeit.seo.interfaces.ISEO['html_title'],
@@ -44,9 +43,3 @@ class SEO(object):
 
     def __init__(self, context):
         self.context = context
-
-
-@zope.component.adapter(SEO)
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
-def seo_dav_properties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
