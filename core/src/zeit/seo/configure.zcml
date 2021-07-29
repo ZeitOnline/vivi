@@ -11,5 +11,17 @@
     id="zeit.seo.Edit"
     title="Edit SEO data"
     />
+
+  <adapter factory=".seo.SEO" />
+  <class class=".seo.SEO">
+    <require
+      permission="zope.View"
+      interface=".interfaces.ISEO"
+      />
+    <require
+      permission="zeit.EditContent"
+      set_schema=".interfaces.ISEO"
+      />
+  </class>
 </configure>
 
