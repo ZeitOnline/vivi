@@ -529,7 +529,17 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         topics = tms.get_related_topics(
             self.context.related_topicpage, rows=self.rows)
-        return [zeit.cms.interfaces.ICMSContent(topic) for topic in topics]
+        related_topics = []
+        # TMS seems to return non existent/ redirecting topicpages
+        for topic in topics:
+            try:
+                related_topics.append(zeit.cms.interfaces.ICMSContent(topic))
+            except TypeError:
+                log.warning(
+                    '%s: Could not adapt %s to ICMSContent',
+                    self.__class__.__name__, topic)
+                continue
+        return related_topics
 
 
 class ReachContentQuery(ContentQuery):
