@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.60.1 (unreleased)
+4.60.1 (2021-08-02)
 -------------------
 
 - ZON-6301: Adds checkbox on CPs in SEO tab, to enable RSS-Feed single tracking
