@@ -255,6 +255,19 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         group = self.repository['foo-thumbnail']
         assert group.master_image is None
 
+    def test_download_teaser_for_locked_image_ignored(self):
+        with mock.patch(
+            'zeit.brightcove.convert.image_group_from_image'
+        ) as patched:
+            patched.side_effect = zope.app.locking.interfaces.LockingError()
+            assert zeit.brightcove.update.download_teaser_image(
+                self.repository,
+                dict(
+                    id="foo",
+                    images=dict(
+                        thumbnail=dict(src="foo"))),
+                "thumbnail") is None
+
     def test_download_teaser_image_error_uses_existing(self):
         from zeit.content.image.testing import create_image_group_with_master_image
         self.repository['foo-thumbnail'] = create_image_group_with_master_image()

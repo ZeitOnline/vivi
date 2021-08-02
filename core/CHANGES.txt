@@ -4,7 +4,7 @@ vivi.core changes
 4.60.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- BUG-1430: gracefully handle locked images during brightcove import
 
 
 4.60.1 (2021-08-02)
