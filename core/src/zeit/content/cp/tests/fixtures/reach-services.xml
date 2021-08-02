@@ -1,0 +1,6 @@
+<reach>
+  <service id="views">Meistgelesene Artikel</service>
+  <service id="comments">Meistkommentiert</service>
+  <service id="subscriptions">Beliebt bei Abonnenten</service>
+  <service id="social.facebook">Meistgeliked</service>
+</reach>

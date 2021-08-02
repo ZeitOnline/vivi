@@ -1,12 +1,106 @@
 vivi.core changes
 =================
 
-4.57.4 (unreleased)
+4.60.2 (unreleased)
 -------------------
+
+- BUG-1430: gracefully handle locks during brightcove import
+
+
+4.60.1 (2021-08-02)
+-------------------
+
+- ZON-6301: Adds checkbox on CPs in SEO tab, to enable RSS-Feed single tracking
+- FIX: Do not fail to rerurn related topics if we receive a nonexisting one
+
+
+4.60.0 (2021-07-28)
+-------------------
+
+- TOPIC-39: Hide hide_dupes checkbox for reach as automatic area source
+- TOPIC-39: Enable autopilot checkbox when automatic area source is changed
+- BUG-1437: Skip tests with non expected TechnicalErrors
+- TOPIC-19: Fix multiple sort order possibilities and be more defensive
+
+
+4.59.4 (2021-07-22)
+-------------------
+
+- MAINT: Add base KPI Implementation to ensure adapting it never fails
+
+
+4.59.3 (2021-07-21)
+-------------------
+
+- ZON-6371: Fix invalid host matching for @ containig urls.
+
+
+4.59.2 (2021-07-20)
+-------------------
+
+- ZON-6371: Do not set links with internal hosts like vivi.zeit.de.
+
+
+4.59.1 (2021-07-20)
+-------------------
+
+- ZON-6482: Enable speechbert by default for articles with no genre
+
+
+4.59.0 (2021-07-19)
+-------------------
+
+- TOPIC-36: Add reach as automatic area source
+
+- OPS-2077: Log failed celery tasks, so we can debug them
+- TOPIC-19: Randomly sorted content for automatic areas
+
+- FIX: Return correct result count for related topicpages
+
+
+4.58.1 (2021-07-16)
+-------------------
+
+- OPS-2058: Move logout redirect to zeit.ldap
+- TOPIC-36: Add Reach as automatic area source
+
+
+4.58.0 (2021-07-13)
+-------------------
+
+- TOPIC-31: Move zeit.web.core.reach to zeit.reach
+
+
+4.57.7 (2021-07-13)
+-------------------
+
+- MAINT: Display principal id if no principal was found
+
+
+4.57.6 (2021-07-13)
+-------------------
+
+- FIX: Use correct form name for autoreload with genre
+
+
+4.57.5 (2021-07-12)
+-------------------
+
+- TOPIC-11: Sort automatic areas by date_last_published
+
+
+4.57.4 (2021-07-09)
+-------------------
+
+- ZON-6316: Speechbert Checkbox: Moving to options and rename label
 
 - OPS-2024: Handles invalid variant size
 
-- BUG-1430: gracefully handle locks during brightcove import
+- TOPIC-16: Add ITMS methods get_content_containing_topicpages and get_content_related_topicpages
+
+- TOPIC-9: Implement TMS order in a way that does not break the related API
+
+- MAINT: Move zeit.retresco.tag to zeit.cms.tagging.tag
 
 
 4.57.3 (2021-07-05)
@@ -27,6 +121,7 @@ vivi.core changes
 -------------------
 
 - ZON-6710: Changes topicbox default automatic_type value
+
 
 
 4.57.0 (2021-06-29)
@@ -292,7 +387,7 @@ vivi.core changes
 4.45.5 (2020-12-16)
 -------------------
 
-- ZON-6319: Fix behavior for select the 'no genre' option 
+- ZON-6319: Fix behavior for select the 'no genre' option
 
 - BEM-70: mock is included in the stdlib in py3
 
@@ -383,7 +478,7 @@ vivi.core changes
 4.43.1 (2020-10-22)
 -------------------
 
-- ZON-5577: Set default for `force_mobile_images` to true 
+- ZON-5577: Set default for `force_mobile_images` to true
 
 
 4.43.0 (2020-10-13)

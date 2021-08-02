@@ -51,9 +51,9 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         required=False)
 
     audio_speechbert = zope.schema.Bool(
-        title=_("Speechbert Audio"),
+        title=_("Show in-article player"),
         required=False,
-        default=False)
+        default=True)
 
     main_image = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),

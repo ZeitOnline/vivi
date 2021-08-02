@@ -51,7 +51,7 @@ Set the most important values:
 ...     'http://xml.zeit.de/online/2007/01/gallery')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.keywords').value = (
-...     '[{"code": "tag://testtag", "pinned": false}]')
+...     '[{"code": "tag://test\\\\u2603Testtag", "pinned": false}]')
 >>> browser.getControl(name="form.actions.add").click()
 
 After adding the gallery we're at the overview page.  The overview page shows

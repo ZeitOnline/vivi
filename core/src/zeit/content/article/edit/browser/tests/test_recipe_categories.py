@@ -8,30 +8,46 @@ class RecipeCategoriesTest(
     def test_genre_should_toggle_speechbert_value_at_some_values(self):
         b = self.browser
         genre = b.getControl(name='metadata-genre.genre')
+        # Starting with article with 'no genre' option
+        genre.value = ''
+        b.getControl(name='metadata-genre.actions.apply').click()
+        b.open('@@contents')
+        sb_cb = b.xpath(
+            '//input[@id="options-audio-speechbert.audio_speechbert"]')[0]
+        self.assertTrue(sb_cb.checked)
+        genre = b.getControl(name='metadata-genre.genre')
         # Select Leserartikel, which has no audio=speechbert attribute
         genre.value = 'dfb855684dc34acd36a91fa51bdce6ca'
         b.getControl(name='metadata-genre.actions.apply').click()
         b.open('@@contents')
-        sb_cb = b.xpath('//input[@id="audio-speechbert.audio_speechbert"]')[0]
+        sb_cb = b.xpath(
+            '//input[@id="options-audio-speechbert.audio_speechbert"]')[0]
         self.assertFalse(sb_cb.checked)
         # Select Nachrichten, which has audio=speechbert attribute
+        genre = b.getControl(name='metadata-genre.genre')
         genre.value = '65199f22690d5ad5313ff54f56c1d8cb'
         b.getControl(name='metadata-genre.actions.apply').click()
         b.open('@@contents')
-        sb_cb = b.xpath('//input[@id="audio-speechbert.audio_speechbert"]')[0]
-        self.assertFalse(sb_cb.checked)
+        sb_cb = b.xpath(
+            '//input[@id="options-audio-speechbert.audio_speechbert"]')[0]
+        self.assertTrue(sb_cb.checked)
         # Again: Select Nachrichten, which has audio=speechbert attribute
+        genre = b.getControl(name='metadata-genre.genre')
         genre.value = '65199f22690d5ad5313ff54f56c1d8cb'
         b.getControl(name='metadata-genre.actions.apply').click()
         b.open('@@contents')
-        sb_cb = b.xpath('//input[@id="audio-speechbert.audio_speechbert"]')[0]
-        self.assertFalse(sb_cb.checked)
+        sb_cb = b.xpath(
+            '//input[@id="options-audio-speechbert.audio_speechbert"]')[0]
+        self.assertTrue(sb_cb.checked)
         # Finally: Select 'no genre' option
+        genre = b.getControl(name='metadata-genre.genre')
         genre.value = ''
         b.getControl(name='metadata-genre.actions.apply').click()
         b.open('@@contents')
-        sb_cb = b.xpath('//input[@id="audio-speechbert.audio_speechbert"]')[0]
-        self.assertFalse(sb_cb.checked)
+        sb_cb = b.xpath(
+            '//input[@id="options-audio-speechbert.audio_speechbert"]')[0]
+        self.assertTrue(sb_cb.checked)
+
 
     def test_genre_should_toggle_recipe_categories(self):
         b = self.browser

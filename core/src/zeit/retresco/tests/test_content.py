@@ -1,12 +1,13 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.content.sources
+import zeit.cms.tagging.tag
+import zeit.cms.content.interfaces
 import zeit.content.article.article
 import zeit.content.author.author
 import zeit.content.image.interfaces
 import zeit.content.link.interfaces
 import zeit.content.volume.volume
-import zeit.retresco.tag
 import zeit.retresco.testing
 import zope.schema
 
@@ -40,7 +41,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         author.lastname = u'Shakespeare'
         self.repository['shake'] = author
         with checked_out(article) as co:
-            co.keywords = (zeit.retresco.tag.Tag('Berlin', 'location'),)
+            co.keywords = (zeit.cms.tagging.tag.Tag('Berlin', 'location'),)
             co.authorships = (co.authorships.create(self.repository['shake']),)
             co.agencies = (self.repository['shake'],)
         article = zeit.cms.interfaces.ICMSContent(
@@ -58,7 +59,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(article).publish(background=False)
+        zeit.cms.workflow.interfaces.IPublish(article).publish(
+            background=False)
         self.assertIs(True, zeit.cms.workflow.interfaces.IPublishInfo(
             article).published)
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
@@ -198,7 +200,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         data['kpi_comments'] = 2
         data['kpi_subscriptions'] = 3
         content = zeit.retresco.interfaces.ITMSContent(data)
-        kpi = zeit.retresco.interfaces.IKPI(content)
+        kpi = zeit.cms.content.interfaces.IKPI(content)
         self.assertEqual(1, kpi.visits)
         self.assertEqual(2, kpi.comments)
         self.assertEqual(3, kpi.subscriptions)

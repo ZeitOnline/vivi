@@ -10,6 +10,7 @@ import zeit.content.author.testing
 import zeit.content.gallery.testing
 import zeit.content.volume.testing
 import zeit.push.testing
+import zeit.retresco.testhelper
 import zeit.wochenmarkt.testing
 import zope.component
 
@@ -72,6 +73,9 @@ class ElasticsearchMockLayer(plone.testing.Layer):
         self['tms'] = mock.Mock()
         self['tms'].get_topicpage_documents.return_value = (
             zeit.cms.interfaces.Result())
+        self['tms'].get_related_documents.return_value = (
+            zeit.cms.interfaces.Result())
+
         zope.interface.alsoProvides(self['tms'],
                                     zeit.retresco.interfaces.ITMS)
         zope.component.getSiteManager().registerUtility(self['tms'])
@@ -98,13 +102,14 @@ class ArticleLayer(plone.testing.Layer):
         prop = connector._get_properties(
             'http://xml.zeit.de/online/2007/01/Somalia')
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = (
-            'testtag|testtag2|testtag3')
+            'Testtag|Testtag2|Testtag3')
 
 
 LAYER = ArticleLayer()
-MOCK_LAYER = plone.testing.Layer(
-    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer',
-    module=__name__)
+MOCK_LAYER = plone.testing.Layer(name='MockLayer', bases=(
+    ZOPE_LAYER,
+    zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER,
+    zeit.retresco.testhelper.TMS_MOCK_LAYER))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,
@@ -112,17 +117,10 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase,
 
     layer = LAYER
 
-    def setUp(self):
-        super(FunctionalTestCase, self).setUp()
-        self.setup_tags('testtag', 'testtag2', 'testtag3')
-
     def get_article(self):
-
-        wl = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
         article = create_article()
-        article.keywords = [
-            wl.get(tag) for tag in ('testtag', 'testtag2', 'testtag3')]
+        article.keywords = [wl.get(tag) for tag in wl.tags]
         return article
 
     def get_factory(self, article, factory_name):

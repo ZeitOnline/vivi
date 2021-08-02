@@ -7,6 +7,7 @@ import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.formlib.form
+import zeit.seo.browser.form
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
@@ -74,3 +75,20 @@ class DisplayForm(FormBase,
                   zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _("View centerpage metadata")
+
+
+class SEOCpForm(object):
+    form_fields = (
+        zeit.seo.browser.form.SEOBaseForm.form_fields +
+        zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ICpSEO).select(
+                'enable_rss_tracking_parameter')
+    )
+
+
+class SEOView(SEOCpForm, zeit.seo.browser.form.SEODisplay):
+    pass
+
+
+class SEOEdit(SEOCpForm, zeit.seo.browser.form.SEOEdit):
+    pass

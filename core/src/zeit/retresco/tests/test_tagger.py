@@ -2,7 +2,7 @@
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.retresco.tag import Tag
+from zeit.cms.tagging.tag import Tag
 from zeit.retresco.tagger import Tagger
 from zeit.retresco.testing import create_testcontent
 import lxml.objectify
@@ -84,20 +84,12 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         tagger = Tagger(content)
         self.assertEqual('Location', tagger[u'Location☃Berlin'].entity_type)
 
-    def test_tag_should_have_url_value(self):
-        content = create_testcontent()
-        self.set_tags(content, """
-<tag uuid="uid-karenduve">Karen Duve</tag>
-<tag uuid="uid-berlin" url_value="dickesb">Berlin</tag>
-""")
-        tagger = Tagger(content)
-        self.assertEqual('berlin', tagger[u'☃Berlin'].url_value)
-
     def test_tag_should_convert_unicode_symbols_to_nice_ascii_urls(self):
         content = create_testcontent()
         self.set_tags(content, """<tag>Bärlön</tag>""")
         tagger = Tagger(content)
-        self.assertEqual('baerloen', tagger[u'☃Bärlön'].url_value)
+        self.assertEqual(
+            'tag://\\u2603B\\xe4rl\\xf6n', tagger[u'☃Bärlön'].uniqueId)
 
     def test_getitem_should_raise_keyerror_if_tag_does_not_exist(self):
         tagger = Tagger(ExampleContentType())
@@ -426,8 +418,8 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         tagger = Tagger(content)
         snowman = tagger[u'Snowpeople☃Snowman Tag']
         self.assertEqual(
-            [u'Snowman Tag', u'Snowpeople', u'snowman-tag'],
-            [snowman.label, snowman.entity_type, snowman.url_value])
+            [u'Snowman Tag', u'Snowpeople'],
+            [snowman.label, snowman.entity_type])
 
 
 class TaggerUpdateTest(
@@ -513,7 +505,7 @@ class TaggerUpdateTest(
     def test_links_to_topicpages_are_retrieved_from_tms(self):
         content = create_testcontent()
         tagger = Tagger(content)
-        article_keywords = 'zeit.retresco.connection.TMS.get_article_keywords'
+        article_keywords = 'zeit.retresco.connection.TMS.get_article_topiclinks'
         with mock.patch(article_keywords) as article_keywords:
             tag1 = Tag('Foo', '')
             tag1.link = 'thema/foo'

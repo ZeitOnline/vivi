@@ -70,26 +70,14 @@ def test_combined_queries():
                 {'match': {'payload.workflow.product-id': 'dpa-hamburg'}},
             ]}}}
 
-    # XXX This is terrifying, but between py2 and py3, the resulting items are
-    # switched, so we split it up in a way that works for both versions, to
-    # access the list in a dictionary like fashion:
-    result = {list(r.keys())[0]: list(r.items())[0] for r in (
-        query(year=2017, types=['Foo', 'Bar'])['query']['bool']['filter'])}
-    assert result.get('bool') == (
-        ('bool', {'should': [
-            {'match': {'doc_type': 'Foo'}},
-            {'match': {'doc_type': 'Bar'}}]}))
-    assert result.get('match') == ('match', {'payload.document.year': 2017})
-
-    # XXX Once we switched to py3 completely, we can use this test instead:
-    # assert query(year=2017, types=['Foo', 'Bar']) == {
-    #     'query': {'bool': {'filter': [
-    #         {'match': {'payload.document.year': 2017}},
-    #         {'bool': {'should': [
-    #             {'match': {'doc_type': 'Foo'}},
-    #             {'match': {'doc_type': 'Bar'}},
-    #         ]}},
-    #     ]}}}
+    assert query(year=2017, types=['Foo', 'Bar']) == {
+        'query': {'bool': {'filter': [
+            {'match': {'payload.document.year': 2017}},
+            {'bool': {'should': [
+                {'match': {'doc_type': 'Foo'}},
+                {'match': {'doc_type': 'Bar'}},
+            ]}},
+        ]}}}
 
 
 def test_erroneous_queries():

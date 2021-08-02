@@ -11,6 +11,7 @@ import zeit.content.image.testing
 import zeit.content.modules.testing
 import zeit.content.text.testing
 import zeit.retresco.interfaces
+import zeit.retresco.testhelper
 import zope.component
 import zope.interface
 import zope.security.management
@@ -30,6 +31,7 @@ product_config = """
     header-image-variant cinema
     cp-automatic-feed-source file://{fixtures}/feeds.xml
     area-color-themes-source file://{fixtures}/area-color-themes.xml
+    reach-service-source file://{fixtures}/reach-services.xml
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))
@@ -46,27 +48,6 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         zeit.content.text.testing.CONFIG_LAYER))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-
-
-# We do not want to use a layer from zeit.retresco.testing because we want to
-# mock the whole utility and not only the connection to Elasticsearch.
-class ElasticsearchMockLayer(plone.testing.Layer):
-
-    def testSetUp(self):
-        self['elasticsearch'] = mock.Mock()
-        self['elasticsearch'].search.return_value = (
-            zeit.cms.interfaces.Result())
-        zope.interface.alsoProvides(self['elasticsearch'],
-                                    zeit.retresco.interfaces.IElasticsearch)
-        zope.component.getSiteManager().registerUtility(self['elasticsearch'])
-
-    def testTearDown(self):
-        zope.component.getSiteManager().unregisterUtility(
-            self['elasticsearch'])
-        del self['elasticsearch']
-
-
-ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
 class CPTemplateLayer(plone.testing.Layer):
@@ -90,8 +71,8 @@ class CPTemplateLayer(plone.testing.Layer):
 CP_TEMPLATE_LAYER = CPTemplateLayer()
 
 
-LAYER = plone.testing.Layer(
-    name='Layer', bases=(CP_TEMPLATE_LAYER, ELASTICSEARCH_MOCK_LAYER))
+LAYER = plone.testing.Layer(name='Layer', bases=(
+    CP_TEMPLATE_LAYER, zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER))
 
 
 checker = zeit.cms.testing.OutputChecker([
@@ -135,6 +116,17 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
             cp['lead'].create_item('teaser').append(content)
         transaction.commit()
         return cp
+
+    def create_lead_teaser(self, order=None):
+        lead = self.repository['cp']['lead']
+        lead.automatic = True
+        lead.automatic_type = 'custom'
+        lead.count = 1
+        lead.query = (('channels', 'eq', 'International', 'Nahost'),)
+        if order:
+            lead.query_order = order
+        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
+        return lead
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(

@@ -209,8 +209,7 @@ class LastPublished(object):
 
     @property
     def last_published_by(self):
-        principal = id_to_principal(self.publishinfo.last_published_by)
-        return principal.title if principal else ''
+        return id_to_principal(self.publishinfo.last_published_by)
 
 
 class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -297,7 +296,7 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
 
     def _success_handler(self):
         self.signal('reload-inline-form', 'recipe-categories')
-        self.signal('reload-inline-form', 'audio-speechbert')
+        self.signal('reload-inline-form', 'options-audio-speechbert')
 
 
 class MetadataComments(zeit.edit.browser.form.InlineForm):
@@ -315,10 +314,10 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
         return FormFields(ICommonMetadata).select(*fields)
 
 
-class MetadataAudioSpeechbert(zeit.edit.browser.form.InlineForm):
+class OptionsAudioSpeechbert(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
-    prefix = 'audio-speechbert'
+    prefix = 'options-audio-speechbert'
     undo_description = _('edit audio_speechbert')
     form_fields = FormFields(IArticle).select('audio_speechbert')
     css_class = 'audio-speechbert'

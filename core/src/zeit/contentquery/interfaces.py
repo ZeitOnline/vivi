@@ -4,7 +4,7 @@ import collections
 import json
 import logging
 import re
-import six
+import urllib.request
 import zc.sourcefactory.basic
 import zeit.cms.content.property
 import zeit.cms.content.sources
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 class AutomaticFeed(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, url, timeout):
-        super(AutomaticFeed, self).__init__(id, title, None)
+        super().__init__(id, title, None)
         self.url = url
         self.timeout = timeout
 
@@ -36,9 +36,9 @@ class AutomaticFeedSource(zeit.cms.content.sources.ObjectSource,
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
             feed = AutomaticFeed(
-                six.text_type(node.get('id')),
-                six.text_type(node.text.strip()),
-                six.text_type(node.get('url')),
+                str(node.get('id')),
+                str(node.text.strip()),
+                str(node.get('url')),
                 int(node.get('timeout', 2))
             )
             result[feed.id] = feed
@@ -57,6 +57,10 @@ class QuerySortOrderSource(zeit.cms.content.sources.SimpleDictSource):
          _('query-sort-order-last-semantic-change')),
         ('payload.document.date_first_released:desc',
          _('query-sort-order-first-released')),
+        ('payload.workflow.date_last_published:desc',
+         _('query-sort-order-last-published')),
+        ('random:desc',
+         _('query-sort-order-random')),
     ))
 
 
@@ -104,8 +108,8 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
     def _get_tree_from_url(self, url):
         try:
             data = []
-            for line in six.moves.urllib.request.urlopen(url):
-                line = six.ensure_text(line)
+            for line in urllib.request.urlopen(url):
+                line = line.decode('utf-8')
                 if self.COMMENT.search(line):
                     continue
                 data.append(line)
@@ -134,6 +138,25 @@ class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
         ('visits', _('tms-order-kpi_visits')),
         ('comments', _('tms-order-kpi_comments')),
         ('subscriptions', _('tms-order-kpi_subscriptions')),
+    ])
+
+
+class ReachServiceSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'reach-service-source'
+    default_filename = 'reach-services.xml'
+    attribute = 'id'
+
+
+class ReachAccessSource(zeit.cms.content.sources.SimpleDictSource):
+    """Technically we could use the normal ACCESS_SOURCE here,
+    but really only `abo` is used, and the access filter functionality in
+    reach is not totally reliable (BUG-1152), so we restrict the values here.
+    """
+
+    values = collections.OrderedDict([
+        ('abo', _('reach-access-abo'))
     ])
 
 
@@ -232,7 +255,7 @@ class IConfiguration(zope.interface.Interface):
     query_order = zope.schema.Choice(
         title=_('Sort order'),
         source=QuerySortOrderSource(),
-        default=u'payload.workflow.date_last_published_semantic:desc',
+        default='payload.workflow.date_last_published_semantic:desc',
         required=True)
 
     elasticsearch_raw_query = zope.schema.Text(
@@ -241,7 +264,7 @@ class IConfiguration(zope.interface.Interface):
 
     elasticsearch_raw_order = zope.schema.TextLine(
         title=_('Sort order'),
-        default=u'payload.document.date_first_released:desc',
+        default='payload.document.date_first_released:desc',
         required=False)
 
     is_complete_query = zope.schema.Bool(
@@ -267,8 +290,7 @@ class IConfiguration(zope.interface.Interface):
     topicpage_order = zope.schema.Choice(
         title=_('Topicpage order'),
         source=TopicpageOrderSource(),
-        default='date'
-    )
+        default='date')
 
     related_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage Id'),
@@ -277,4 +299,25 @@ class IConfiguration(zope.interface.Interface):
     rss_feed = zope.schema.Choice(
         title=_('RSS-Feed'),
         source=AUTOMATIC_FEED_SOURCE,
+        required=False)
+
+    reach_service = zope.schema.Choice(
+        title=_('Reach Metric'),
+        source=ReachServiceSource(),
+        default='views',
+        required=True)
+
+    reach_section = zope.schema.Choice(
+        title=_('Reach Section'),
+        source=zeit.cms.content.sources.RessortSource(),
+        required=False)
+
+    reach_access = zope.schema.Choice(
+        title=_('Reach Access'),
+        description=_('Reach access ignores section if set'),
+        source=ReachAccessSource(),
+        required=False)
+
+    reach_age = zope.schema.Int(
+        title=_('Reach Age (days)'),
         required=False)

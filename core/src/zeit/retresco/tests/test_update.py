@@ -1,7 +1,7 @@
 from unittest import mock
+from zeit.cms.tagging.tag import Tag
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.retresco.interfaces import TechnicalError
-from zeit.retresco.tag import Tag
 import transaction
 import zeit.cms.checkout.helper
 import zeit.cms.workflow.interfaces

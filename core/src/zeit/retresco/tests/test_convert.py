@@ -6,6 +6,7 @@ import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
+import zeit.cms.tagging.tag
 import zeit.content.advertisement.advertisement
 import zeit.content.author.author
 import zeit.content.gallery.gallery
@@ -15,7 +16,6 @@ import zeit.content.infobox.infobox
 import zeit.content.portraitbox.portraitbox
 import zeit.content.volume.volume
 import zeit.retresco.interfaces
-import zeit.retresco.tag
 import zeit.retresco.testing
 import zeit.seo.interfaces
 
@@ -31,8 +31,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             co.breaking_news = True
             co.product = zeit.cms.content.sources.Product(u'KINZ')
             co.keywords = (
-                zeit.retresco.tag.Tag('Code1', 'keyword'),
-                zeit.retresco.tag.Tag('Code2', 'keyword'))
+                zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
+                zeit.cms.tagging.tag.Tag('Code2', 'keyword'))
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
 
@@ -45,6 +45,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         images.image = zeit.cms.interfaces.ICMSContent(image.uniqueId)
 
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        # hint: attributes defined with use_default=True don't occur in data
 
         # Extract fields for which we cannot easily/sensibly use assertEqual().
         self.assert_editing_fields(data)
@@ -67,7 +68,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'document': {
                     'DailyNL': False,
                     'artbox_thema': False,
-                    'audio_speechbert': False,
                     'author': ['Hans Meiser'],
                     'banner': True,
                     'banner_content': True,
@@ -320,10 +320,10 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             'titles': ['Tomaten-Grieß', 'Wurst-Hähnchen'],
             'categories': ['pastagerichte', 'wurstiges'],
             'complexities': ['ambitioniert', 'einfach'],
-            'servings': [ '2', '6'],
+            'servings': ['2', '6'],
             'times': ['unter 30 Minuten', 'über 60 Minuten'],
             'ingredients': ['brathaehnchen', 'bratwurst', 'chicken-nuggets',
-                'gries',  'gurke', 'tomate']}
+                            'gries',  'gurke', 'tomate']}
         self.assertEqual(payload, data['payload']['recipe'])
 
     def test_converts_imagegroup(self):

@@ -34,7 +34,7 @@ class ObjectLog(object):
                     display_time=entry.time.astimezone(
                         request_timezone).strftime('%H:%M'),
                     entry=entry,
-                    principal=principal.title if principal else ''))
+                    principal=principal))
             yield dict(entries=items, display_date=date.strftime('%d.%m.%Y'))
 
     def __call__(self):

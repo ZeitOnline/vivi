@@ -55,9 +55,35 @@ class ElasticsearchContentQuery(ContentQuery):
     include_payload = False  # Extension point for zeit.web and its LazyProxy.
 
     def __init__(self, context):
-        super(ElasticsearchContentQuery, self).__init__(context)
+        super().__init__(context)
         self.query = json.loads(self.context.elasticsearch_raw_query or '{}')
-        self.order = self.context.elasticsearch_raw_order
+        self.order_default = self.context.elasticsearch_raw_order
+
+    @property
+    def order(self):
+        if not self.order_default:
+            return None
+
+        if isinstance(self.order_default, str):
+            if 'random' in self.order_default:
+                random_order = {
+                    '_script': {
+                        'type': 'number',
+                        'script': {
+                            'lang': 'painless',
+                            'source': 'Math.random()'
+                        },
+                        'order': 'desc'  # descending into chaos, randomly
+                    }}
+                return random_order
+
+            order_list = self.order_default.split(',')
+            sort_orders = []
+            for item in order_list:
+                (field, order) = item.split(':')
+                sort_orders.append({field: order})
+
+            return sort_orders
 
     def __call__(self):
         self.total_hits = 0
@@ -74,8 +100,7 @@ class ElasticsearchContentQuery(ContentQuery):
         es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         try:
             response = es.search(
-                query, self.order,
-                start=self.start, rows=self.rows,
+                query, start=self.start, rows=self.rows,
                 include_payload=self.include_payload)
         except Exception as e:
             log.warning(
@@ -84,7 +109,7 @@ class ElasticsearchContentQuery(ContentQuery):
             if 'Result window is too large' in str(e):
                 # We have to determine the actually available number of hits.
                 response = es.search(
-                    query, self.order, start=0, rows=0,
+                    query, start=0, rows=0,
                     include_payload=self.include_payload)
             else:
                 response = zeit.cms.interfaces.Result()
@@ -113,6 +138,8 @@ class ElasticsearchContentQuery(ContentQuery):
             if self.hide_dupes_clause:
                 query['query']['bool']['must_not'].append(
                     self.hide_dupes_clause)
+        if self.order:
+            query['sort'] = self.order
         return query
 
     _additional_clauses = [
@@ -150,15 +177,6 @@ class CustomContentQuery(ElasticsearchContentQuery):
 
     grok.name('custom')
 
-    SOLR_TO_ES_SORT = {
-        'date-last-published-semantic desc': (
-            'payload.workflow.date_last_published_semantic:desc'),
-        'last-semantic-change desc': (
-            'payload.document.last-semantic-change:desc'),
-        'date-first-released desc': (
-            'payload.document.date_first_released:desc'),
-    }
-
     ES_FIELD_NAMES = {
         'authorships': 'payload.head.authors',
         'channels': 'payload.document.channels.hierarchy',
@@ -171,9 +189,7 @@ class CustomContentQuery(ElasticsearchContentQuery):
         # Skip direct superclass, as we set `query` and `order` differently.
         super(ElasticsearchContentQuery, self).__init__(context)
         self.query = self._make_custom_query()
-        self.order = self.context.query_order
-        if self.order in self.SOLR_TO_ES_SORT:  # BBB
-            self.order = self.SOLR_TO_ES_SORT[self.order]
+        self.order_default = self.context.query_order
 
     def _make_custom_query(self):
         fields = {}
@@ -245,7 +261,7 @@ class TMSContentQuery(ContentQuery):
     grok.baseclass()
 
     def __init__(self, context):
-        super(TMSContentQuery, self).__init__(context)
+        super().__init__(context)
         self.topicpage = self.context.referenced_topicpage
         self.filter_id = self.context.topicpage_filter
 
@@ -273,13 +289,11 @@ class TMSContentQuery(ContentQuery):
         """
         cache = content_cache(self, 'topic_queries')
         rows = self._teaser_count + 5  # total teasers + some spares
-        order = zeit.retresco.content.KPI.FIELDS.get(
-            self.context.topicpage_order, self.context.topicpage_order)
-        key = (self.topicpage, self.filter_id, start, order)
+        key = (self.topicpage, self.filter_id, start, self.order)
         if key in cache:
             response, start, _ = cache[key]
         else:
-            response, hits = self._get_documents(start, rows, order)
+            response, hits = self._get_documents(start, rows)
             cache[key] = response, start, hits
 
         result = []
@@ -289,7 +303,7 @@ class TMSContentQuery(ContentQuery):
                 item = next(response)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start, rows, order)
+                response, hits = self._get_documents(start, rows)
                 cache[key] = response, start, hits
                 try:
                     item = next(response)
@@ -306,12 +320,12 @@ class TMSContentQuery(ContentQuery):
 
         return result, dupes
 
-    def _get_documents(self, start, rows, order):
+    def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
             response = tms.get_topicpage_documents(
-                id=self.topicpage, filter=self.filter_id,
-                start=start, rows=rows, order=order)
+                id=self.topicpage, filter=self.filter_id, order=self.order,
+                start=start, rows=rows)
         except Exception as e:
             log.warning('Error during TMS query %r for %s',
                         self.topicpage, self.context.uniqueId, exc_info=True)
@@ -331,14 +345,18 @@ class TMSContentQuery(ContentQuery):
         return self.context.hide_dupes
 
     @property
+    def order(self):
+        return zeit.retresco.content.KPI.FIELDS.get(
+            self.context.topicpage_order, self.context.topicpage_order)
+
+    @property
     def total_hits(self):
         cache = content_cache(self, 'tms_topic_queries')
         key = (self.topicpage, self.filter_id, self.start)
         if key in cache:
             _, _, hits = cache[key]
         else:
-            _, hits = self._get_documents(
-                start=self.start, rows=0, order='date')
+            _, hits = self._get_documents(start=self.start, rows=0)
         return hits
 
 
@@ -456,6 +474,8 @@ class TMSRelatedApiQuery(TMSContentQuery):
     # The TMS related API does not support `start`, so we cannot fetch
     # additional teasers to replace previously filtered-out duplicates.
     hide_dupes = False
+    # The TMS related API currently does not support a custom order.
+    order = None
 
     def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -509,4 +529,37 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         topics = tms.get_related_topics(
             self.context.related_topicpage, rows=self.rows)
-        return [zeit.cms.interfaces.ICMSContent(topic) for topic in topics]
+        related_topics = []
+        # TMS seems to return non existent/ redirecting topicpages
+        for topic in topics:
+            try:
+                related_topics.append(zeit.cms.interfaces.ICMSContent(topic))
+            except TypeError:
+                log.warning(
+                    '%s: Could not adapt %s to ICMSContent',
+                    self.__class__.__name__, topic)
+                continue
+        return related_topics
+
+
+class ReachContentQuery(ContentQuery):
+
+    grok.name('reach')
+    grok.context(zeit.content.cp.interfaces.IArea)
+
+    def __call__(self):
+        reach = zope.component.getUtility(zeit.reach.interfaces.IReach)
+        # XXX Converting to the format reach wants should probably be done by
+        # IReach, but as that currently still needs bw-compat for z.w.site.
+        # modules.buzzbox, and IReach is not used elsewhere, leave it for now.
+        params = {}
+        if self.context.reach_section:
+            params['section'] = self.context.reach_section.lower()
+        if self.context.reach_access:
+            # reach does not support section if access is set (see reach docs)
+            params.pop('section', None)
+            params['access'] = self.context.reach_access
+        if self.context.reach_age:
+            params['maxAge'] = self.context.reach_age * 3600 * 24
+        return reach.get_ranking(
+            self.context.reach_service, limit=self.rows, **params)

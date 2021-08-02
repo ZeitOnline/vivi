@@ -1,18 +1,18 @@
 import collections
 import copy
 import grokcore.component as grok
-import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
+import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.security.proxy
 
 
-class Tags(object):
+class Tags:
     """Property which stores tag data in DAV."""
 
     def __get__(self, instance, class_):
@@ -44,6 +44,61 @@ class Tags(object):
             if tag.code not in result:
                 result[tag.code] = tag
         return result.values()
+
+
+@zope.interface.implementer(zeit.cms.tagging.interfaces.ITag)
+class Tag:
+    """Representation of a keyword."""
+
+    # This is stored in DAV properties, changing it requires a mass-migration.
+    SEPARATOR = '☃'
+
+    def __init__(self, label, entity_type, link=None):
+        self.label = label
+        self.entity_type = entity_type
+        self.pinned = False  # pinned state is set from outside after init
+        self.__name__ = self.code  # needed to fulfill `ICMSContent`
+        self.link = link
+        # For zeit.web, link is populated by ITMS.get_article_topiclinks() with
+        # the TMS-provided path to the corresponding topicpage; without a
+        # leading slash, so it plays nice with route_url() which already has
+        # the slash.
+
+    @zope.cachedescriptors.property.Lazy
+    def code(self):
+        # `code` is only used for internal purposes. It is used as key in
+        # `Tagger` and `Tags`, in DAV-Properties to mark a `Tag` pinned and as
+        # `part of the `AbsoluteURL` and `Traverser` functionality.
+        return ''.join((self.entity_type, self.SEPARATOR, self.label))
+
+    @classmethod
+    def from_code(cls, code):
+        if cls.SEPARATOR not in code:
+            return None
+        entity_type, sep, label = code.partition(cls.SEPARATOR)
+        return cls(label, entity_type)
+
+    def __eq__(self, other):
+        # XXX this is not a generic equality check. From a domain perspective,
+        # two tags are the same when their codes are the same. However, since
+        # we want to edit ``pinned``, and formlib compares the *list* of
+        # keywords, which uses == on the items, we need to include pinned here.
+        if not zeit.cms.tagging.interfaces.ITag.providedBy(other):
+            return False
+        return self.code == other.code and self.pinned == other.pinned
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    @property
+    def uniqueId(self):
+        return ('{}{}'.format(
+            zeit.cms.tagging.interfaces.ID_NAMESPACE,
+            self.code.encode('unicode_escape').decode('ascii')))
+
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
 @grok.subscribe(
@@ -85,7 +140,7 @@ def update_tags_on_modify(content, event):
 
 
 @grok.adapter(
-    six.string_types[0], name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
+    str, name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_tag(unique_id):
     assert unique_id.startswith(
@@ -93,7 +148,7 @@ def unique_id_to_tag(unique_id):
     token = unique_id.replace(
         zeit.cms.tagging.interfaces.ID_NAMESPACE, '', 1)
     # `zeit.retresco` generates unicode escaped uniqueIds, so we decode them.
-    if isinstance(token, six.text_type):
+    if isinstance(token, str):
         token = token.encode('utf-8')
     token = token.decode('unicode_escape')
     whitelist = zope.component.getUtility(

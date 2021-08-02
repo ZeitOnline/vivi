@@ -1,6 +1,6 @@
 # coding: utf-8
 from unittest import mock
-from zeit.retresco.tag import Tag
+from zeit.cms.tagging.tag import Tag
 import json
 import zeit.cms.browser.interfaces
 import zeit.cms.tagging.source

@@ -312,8 +312,7 @@ class FindReplaceTest(
     def test_saves_if_replacing_ends_in_subsequent_editable(self):
         from zeit.content.article.article import Article
         from zeit.content.article.interfaces import IArticle
-        wl = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
         self.repository['article'] = Article()
         with checked_out(self.repository['article']) as co:
             zeit.cms.content.field.apply_default_values(
@@ -322,7 +321,7 @@ class FindReplaceTest(
             co.ressort = u'International'
             co.title = 'foo'
             co.keywords = (
-                wl.get('testtag'), wl.get('testtag2'), wl.get('testtag3'),)
+                wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)
             paragraph = co.body.create_item('p')
             paragraph.text = 'foobar'
             paragraph = co.body.create_item('image')

@@ -6,6 +6,11 @@ zeit.cms.in_article_editor = function() {
     return Boolean(jQuery('.article-editor-inner').length);
 };
 
+var invalidHosts = [
+    'vivi.zeit.de', 'friedbert-preview.zeit.de', 'xml.zeit.de',
+    'vivi.staging.zeit.de', 'friedbert-preview.staging.zeit.de',
+    'xml.staging.zeit.de' ];
+
 
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     if (! zeit.cms.in_article_editor()) {
@@ -351,6 +356,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     init_linkbar: function() {
         var self = this;
+        self.error_msg = SPAN({'class': 'link_input_errors', 'style': 'diplay: none;'});
         self.href_input = INPUT(
             {type: 'text', name: 'href', value: '',
              placeholder: 'Verweisziel'});
@@ -373,6 +379,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             {type: 'checkbox', name: 'nofollow', value: 'nofollow'});
         self.link_input = self.editable.parentNode.insertBefore(
             DIV({'class': 'link_input hidden'},
+                self.error_msg,
                 self.href_input,
                 self.mailto_input,
                 self.subject_input,
@@ -559,6 +566,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     handle_click: function(event) {
         var self = this;
+        self.error_msg.innerHTML = '';
         var mode, argument;
         self.update_toolbar();
         self.relocate_toolbar();
@@ -941,6 +949,14 @@ zeit.content.article.Editable = gocept.Class.extend({
         var nofollow = false;
         if (service === 'web') {
             var uri = new Uri($(self.href_input).val());
+            if (invalidHosts.some(v => uri.toString().includes(v))) {
+                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel! ZEIT Inhalte müssen nach www.zeit.de verlinken.</span>';
+                return;
+            }
+            if (uri.host() == uri.toString() && !uri.host().includes('.')) {
+                self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel! Wurde Fließtext als Verlinkungsziel eingegeben?</span>';
+                return;
+            }
             if (!uri.protocol() && uri.host())
                 uri.protocol('http');
             href = uri.toString();

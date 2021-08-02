@@ -13,7 +13,15 @@
     />
 
   <adapter factory=".seo.SEO" />
-  <adapter factory=".seo.seo_dav_properties" />
-
+  <class class=".seo.SEO">
+    <require
+      permission="zope.View"
+      interface=".interfaces.ISEO"
+      />
+    <require
+      permission="zeit.EditContent"
+      set_schema=".interfaces.ISEO"
+      />
+  </class>
 </configure>
 

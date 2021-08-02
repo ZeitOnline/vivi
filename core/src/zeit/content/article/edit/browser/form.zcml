@@ -234,19 +234,19 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MetadataForms"
+    view=".form.OptionFormGroup"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.metadata-audio-speechbert"
+    name="edit.form.options-audio-speechbert"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="25"
+    weight="75"
     />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.metadata-audio-speechbert"
-    class=".form.MetadataAudioSpeechbert"
+    name="edit.form.options-audio-speechbert"
+    class=".form.OptionsAudioSpeechbert"
     permission="zope.View"
     />
 

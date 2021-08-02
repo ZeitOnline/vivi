@@ -177,4 +177,12 @@
     type="zeit.cms.content.interfaces.IAddableContent"
     />
 
+  <class class=".centerpage.CpSEO">
+    <require
+      interface=".interfaces.ICpSEO"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ICpSEO"
+      permission="zeit.EditContent" />
+  </class>
 </configure>

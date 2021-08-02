@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zc.form.field
 import zc.form.interfaces
 import zeit.cms.content.field
@@ -726,3 +727,23 @@ class ICachingTime(zope.interface.Interface):
         min=0,
         max=3600,
         required=False)
+
+
+class IKPI(zope.interface.Interface):
+    """Provides access to kpi fields (visits, comments, etc.) on ITMSContent.
+    """
+
+    visits = zope.schema.Int(default=0, readonly=True)
+    comments = zope.schema.Int(default=0, readonly=True)
+    subscriptions = zope.schema.Int(default=0, readonly=True)
+
+
+@grok.implementer(IKPI)
+class KPI(grok.Adapter):
+
+    grok.context(zeit.cms.interfaces.ICMSContent)
+
+    def __init__(self, context):
+        super().__init__(context)
+        for name in list(IKPI):
+            setattr(self, name, None)
