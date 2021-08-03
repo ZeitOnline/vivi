@@ -4,7 +4,7 @@ vivi.core changes
 4.60.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TOPIC-42: Fix IndexError when trying to request related topicpages
 
 
 4.60.1 (2021-08-02)
