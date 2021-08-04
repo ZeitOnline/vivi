@@ -142,8 +142,9 @@ class TMS:
 
     def get_content_related_topicpages(
             self, content, rows=10, suppress_errors=False, timeout=None):
-        if not (zeit.cms.content.interfaces.ICommonMetadata.providedBy(
-                content) or not content.keywords):
+        is_metadata = zeit.cms.content.interfaces.ICommonMetadata.providedBy(
+            content)
+        if not is_metadata or not content.keywords:
             return []
 
         response = self._get_related_topicpages(

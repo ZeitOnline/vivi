@@ -318,6 +318,10 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
         body = self.tms.get_article_body(self.article)
         self.assertStartsWith('<body', body)
 
+    def test_get_content_related_topicpages_works_without_keywords(self):
+        assert self.article.keywords == ()
+        assert self.tms.get_content_related_topicpages(self.article) == []
+
 
 class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
