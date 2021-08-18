@@ -4,7 +4,7 @@ vivi.core changes
 4.60.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TOPIC-15: Preserve externally populated `kpi` fields during TMS indexing
 
 
 4.60.2 (2021-08-05)

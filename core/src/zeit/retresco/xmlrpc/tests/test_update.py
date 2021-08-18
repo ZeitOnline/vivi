@@ -18,6 +18,7 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
         self.update = getattr(server, '@@update_tms')
 
         self.tms = mock.Mock()
+        self.tms.get_article_data.return_value = {}
         self.tms.enrich.return_value = {}
         self.tms.generate_keyword_list.return_value = []
         zope.component.getGlobalSiteManager().registerUtility(
@@ -38,7 +39,7 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
         id = 'http://xml.zeit.de/online/2007/01/Somalia'
         self.update(id)
         self.tms.index.assert_called_with(
-            zeit.cms.interfaces.ICMSContent(id), None)
+            zeit.cms.interfaces.ICMSContent(id), {'body': None})
         self.tms.enrich.assert_called_with(zeit.cms.interfaces.ICMSContent(id))
         self.assertIn(
             "zope.index triggered TMS index update for "
@@ -56,4 +57,4 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
         id = u'http://xml.zeit.de/föö'
         self.update(id)
         self.tms.index.assert_called_with(
-            zeit.cms.interfaces.ICMSContent(id), None)
+            zeit.cms.interfaces.ICMSContent(id), {'body': None})

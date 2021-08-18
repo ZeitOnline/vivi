@@ -6,6 +6,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest
 import zeit.content.author.testing
+import zeit.retresco.testhelper
 import zeit.retresco.testing
 import zeit.vgwort.interfaces
 import zope.component
@@ -34,7 +35,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting-mock.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(
-    ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
+    ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
