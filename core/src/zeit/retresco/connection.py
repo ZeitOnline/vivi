@@ -263,7 +263,7 @@ class TMS:
                         content.uniqueId), exc_info=True)
             return ()
 
-    def index(self, content, override_body=None):
+    def index(self, content, overrides=None):
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
 
@@ -271,8 +271,9 @@ class TMS:
             log.info('Skip index for %s, it is missing required fields',
                      content.uniqueId)
             return {}
-        if override_body is not None:
-            data['body'] = override_body
+        if overrides:
+            for key, value in overrides.items():
+                data[key] = value
 
         return self._request('PUT /content/%s' % data['doc_id'], json=data)
 

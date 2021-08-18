@@ -106,6 +106,13 @@ def index_async(self, uniqueId, enrich=True):
         self.retry()
 
 
+# Preserve previously stored fields during re-index.
+# body: Keep previously enriched version (in case this run has enrich=False)
+# kpi_*: These are set by other systems, but the TMS API has "total override"
+#   semantics, so we must preserve them explicitly.
+PRESERVE_FIELDS = set(['body'] + ['kpi_%s' % i for i in range(1, 31)])
+
+
 def index(content, enrich=False, update_keywords=False, publish=False):
     if update_keywords and not enrich:
         raise ValueError('enrich is required for update_keywords')
@@ -124,19 +131,23 @@ def index(content, enrich=False, update_keywords=False, publish=False):
         log.info('Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
                  content.uniqueId, uuid, enrich, update_keywords, publish)
         try:
+            data = {}
+            previous = conn.get_article_data(content)
+            if previous:
+                for key in PRESERVE_FIELDS:
+                    if key in previous:
+                        data[key] = previous[key]
+
             if enrich and not ISkipEnrich.providedBy(content):
                 log.debug('Enriching: %s', content.uniqueId)
                 response = conn.enrich(content)
-                body = response.get('body')
+                data['body'] = response.get('body')
                 if update_keywords:
                     tagger = zeit.retresco.tagger.Tagger(content)
                     tagger.update(conn.generate_keyword_list(response),
                                   clear_disabled=False)
-            else:
-                # For reindex-only, preserve the previously enriched body.
-                body = conn.get_article_data(content).get('body')
 
-            conn.index(content, body)
+            conn.index(content, data)
 
             if publish:
                 pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)

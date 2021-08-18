@@ -34,10 +34,11 @@ class ITMS(zope.interface.Interface):
         """Analyzes the given ICMSContent and returns a list of
         zeit.cms.tagging.interfaces.ITag objects."""
 
-    def index(content, override_body=None):
+    def index(content, overrides=None):
         """Stores the given ICMSContent.
 
-        Pass override_body to store the result of an enrich-intextlink call.
+        Pass an `overrides` dict to preserve data previously indexed by other
+        systems, or to inject the result of an enrich-intextlink call.
         """
 
     def enrich(content, intextlinks=True):

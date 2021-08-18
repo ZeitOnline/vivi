@@ -18,6 +18,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):
         super(UpdateTest, self).setUp()
         self.tms = mock.Mock()
+        self.tms.get_article_data.return_value = {}
         self.tms.enrich.return_value = {}
         self.tms.generate_keyword_list.return_value = []
         zope.component.getGlobalSiteManager().registerUtility(
@@ -26,7 +27,8 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
     def test_creating_content_should_index(self):
         self.repository['t1'] = ExampleContentType()
         self.tms.enrich.assert_called_with(self.repository['t1'])
-        self.tms.index.assert_called_with(self.repository['t1'], None)
+        self.tms.index.assert_called_with(
+            self.repository['t1'], {'body': None})
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
         # XXX: I'm not quite sure which use cases actually create this kind of
@@ -46,7 +48,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         with zeit.cms.checkout.helper.checked_out(content):
             pass
         self.tms.enrich.assert_called_with(content)
-        self.tms.index.assert_called_with(content, None)
+        self.tms.index.assert_called_with(content, {'body': None})
 
     def test_checkin_should_update_keywords_if_none_exist(self):
         content = self.repository['testcontent']
@@ -135,7 +137,13 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         self.tms.enrich.return_value = {'body': 'mybody'}
         zeit.retresco.update.index(content, enrich=True)
-        self.tms.index.assert_called_with(content, 'mybody')
+        self.tms.index.assert_called_with(content, {'body': 'mybody'})
+
+    def test_index_should_preserve_kpi_fields(self):
+        content = self.repository['testcontent']
+        self.tms.get_article_data.return_value = {'kpi_1': 'kpi1'}
+        zeit.retresco.update.index(content)
+        self.tms.index.assert_called_with(content, {'kpi_1': 'kpi1'})
 
     def test_removed_event_should_unindex(self):
         content = self.repository['testcontent']
@@ -162,13 +170,14 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):
         super(UpdatePublishTest, self).setUp()
         self.tms = mock.Mock()
+        self.tms.get_article_data.return_value = {}
         zope.component.getGlobalSiteManager().registerUtility(
             self.tms, zeit.retresco.interfaces.ITMS)
 
     def test_publish_should_index_with_published_true(self):
         published = []
 
-        def index(content, override_body=None):
+        def index(content, overrides=None):
             published.append(zeit.cms.workflow.interfaces.IPublishInfo(
                 content).published)
         self.tms.index = index
@@ -187,7 +196,7 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
     def test_retract_should_index_with_published_false(self):
         published = []
 
-        def index(content, override_body=None):
+        def index(content, overrides=None):
             published.append(zeit.cms.workflow.interfaces.IPublishInfo(
                 content).published)
         self.tms.index = index
@@ -249,6 +258,7 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
         super(RetryTest, self).setUp()
 
         self.tms = mock.Mock()
+        self.tms.get_article_data.return_value = {}
         self.tms.enrich.return_value = {}
         zope.component.getGlobalSiteManager().registerUtility(
             self.tms, zeit.retresco.interfaces.ITMS)

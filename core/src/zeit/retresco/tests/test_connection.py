@@ -231,6 +231,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
         self.assertEqual(['{} {}'.format(r['verb'], urllib.parse.unquote(
             r['path'])) for r in self.layer['request_handler'].requests], [
+            'GET /content/{}'.format(uuid),
             'POST /enrich?in-text-linked',
             'POST /another-tms/enrich?in-text-linked',
             'PUT /content/{}'.format(uuid),
@@ -313,7 +314,8 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_can_retrieve_body_after_publish(self):
         response = self.tms.enrich(self.article)
-        self.assertIn('doc_id', self.tms.index(self.article, response['body']))
+        data = self.tms.index(self.article, {'body': response['body']})
+        self.assertIn('doc_id', data)
         self.tms.publish(self.article)
         body = self.tms.get_article_body(self.article)
         self.assertStartsWith('<body', body)
