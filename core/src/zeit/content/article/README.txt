@@ -42,6 +42,7 @@ XML:
 
 >>> article.title = u'Jahr ohne \xdcberraschungen'
 >>> article.year = 2007
+>>> article.audio_speechbert = True
 >>> article.volume = 1
 >>> article.textLength = 4711
 >>> print(zeit.cms.testing.xmltotext(article.xml))
@@ -56,6 +57,7 @@ XML:
   </body>
   <head>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="audio_speechbert">yes</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="text-length">4711</attribute>
   </head>
@@ -80,6 +82,8 @@ When we set an attribute multiple times it's just changed:
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="year">2007</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    name="audio_speechbert">yes</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
@@ -103,6 +107,8 @@ the authors in the xml:
   <head>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="year">2007</attribute>
+    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    name="audio_speechbert">yes</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
@@ -180,6 +186,8 @@ reflected in the WebDAV properties:
 ...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
 ...      name="year">2007</attribute>
 ...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...      name="audio_speechbert">yes</attribute>
+...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
 ...      name="volume">2</attribute>
 ...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
 ...      name="text-length">2000</attribute>
@@ -211,7 +219,8 @@ We can import the data from the article:
 Now the WebDAV properties are there, besides the empty one:
 
 >>> sorted(properties.keys())
-[('author', 'http://namespaces.zeit.de/CMS/document'),
+[('audio_speechbert', 'http://namespaces.zeit.de/CMS/document'),
+ ('author', 'http://namespaces.zeit.de/CMS/document'),
  ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'),
  ('text-length', 'http://namespaces.zeit.de/CMS/document'),
  ('volume', 'http://namespaces.zeit.de/CMS/document'),

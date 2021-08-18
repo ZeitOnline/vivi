@@ -66,15 +66,10 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'artbox_thema', 'genre',
+        ('has_recensions', 'artbox_thema', 'audio_speechbert', 'genre',
          'template', 'header_layout', 'header_color', 'is_amp',
          'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
          'recent_comments_first'))
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.article.interfaces.IArticle,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('audio_speechbert',), use_default=True)
 
     has_audio = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['has_audio'],

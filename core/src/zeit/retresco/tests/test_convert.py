@@ -68,6 +68,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'document': {
                     'DailyNL': False,
                     'artbox_thema': False,
+                    'audio_speechbert': True,
                     'author': ['Hans Meiser'],
                     'banner': True,
                     'banner_content': True,
