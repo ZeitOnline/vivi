@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.60.4 (unreleased)
+4.61.0 (2021-08-19)
 -------------------
 
 - FIX: Make z.c.cp.BlockLayout default constructor conform to its interface
