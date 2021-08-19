@@ -63,7 +63,7 @@ class ITeaserBlockLayout(zope.interface.Interface):
 class BlockLayout(AllowedMixin):
 
     def __init__(self, id, title, image_pattern=None,
-                 areas=None, default=False, available=None,
+                 areas=None, default=(), available=None,
                  types=None, is_leader=False):
         super(BlockLayout, self).__init__(id, title, available, types)
         self.image_pattern = image_pattern
