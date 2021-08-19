@@ -4,7 +4,7 @@ vivi.core changes
 4.61.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- TOPIC-15: Make TMS kpi field names configurable
 
 
 4.61.0 (2021-08-19)

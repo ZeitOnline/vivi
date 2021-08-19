@@ -11,6 +11,8 @@
 * Converting ``ICMSContent`` objects to a nested dict structure and back again
   with ``ITMSRepresentation`` and ``ITMSContent``
 """
+from zeit.cms.interfaces import CONFIG_CACHE
+import collections
 import zeit.cms.interfaces
 import zope.interface
 
@@ -219,3 +221,25 @@ class IElasticsearch(zope.interface.Interface):
         Returns a `zeit.cms.interfaces.IResult` object, containing dictionaries
         with the keys `url`, `doc_id` and `doc_type`.
         """
+
+
+class KPIFieldSource(zeit.cms.content.sources.CachedXMLBase,
+                     collections.UserDict):
+
+    product_configuration = 'zeit.retresco'
+    config_url = 'kpi-fields'
+    default_filename = 'topicpage-kpi.xml'
+
+    @property
+    def data(self):
+        return self._data()
+
+    @data.setter
+    def data(self, value):
+        pass
+
+    @CONFIG_CACHE.cache_on_arguments()
+    def _data(self):
+        tree = self._get_tree()
+        return {node.get('id'): node.get('tms_id')
+                for node in tree.iterchildren('*')}
