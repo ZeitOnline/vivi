@@ -1,0 +1,5 @@
+<kpi_fields>
+  <kpi id="visits" tms_id="kpi_visits">Visits</kpi>
+  <kpi id="comments" tms_id="kpi_comments">Kommentare</kpi>
+  <kpi id="subscriptions" tms_id="kpi_subscriptions">Abos</kpi>
+</kpi_fields>

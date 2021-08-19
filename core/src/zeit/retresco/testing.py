@@ -27,8 +27,9 @@ product_config = """
     elasticsearch-connection-class zeit.retresco.search.Connection
     topic-redirect-prefix http://www.zeit.de
     index-principal zope.user
+    kpi-fields file://%(base)s/tests/kpi.xml
 </product-config>
-"""
+""" % {'base': pkg_resources.resource_filename(__name__, '')}
 
 
 class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
