@@ -34,6 +34,7 @@ vivi.core changes
 4.60.2 (2021-08-05)
 -------------------
 
+- BUG-1430: gracefully handle locked images during brightcove import
 - TOPIC-42: Fix IndexError when trying to request related topicpages
 
 

@@ -169,10 +169,15 @@ def download_teaser_image(folder, bcdata, ttype='still'):
     except Exception as exc:
         log.error(exc)
         image = None
-    return zeit.brightcove.convert.image_group_from_image(
-        folder,
-        name,
-        image)
+    try:
+        return zeit.brightcove.convert.image_group_from_image(
+            folder,
+            name,
+            image)
+    except zope.app.locking.interfaces.LockingError:
+        # don't bother to try to overwrite an image, that's
+        # obviously being edited.
+        pass
 
 
 # Triggered by BC notification webhook, which we receive in
