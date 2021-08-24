@@ -4,12 +4,14 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
 import grokcore.component as grok
+import hashlib
 import jinja2
 import lxml.etree
 import lxml.objectify
 import persistent
 import six
 import six.moves.urllib.parse
+import uuid
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -290,8 +292,18 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
         # See zeit.connector.filesystem.Connector._get_properties
         attributes = body.xpath('//head/attribute')
         for attr in attributes:
+            # modify uuid because we cannot be sure that the uuid is unique
+            if attr.get('name') == 'uuid':
+                try:
+                    title = body.xpath('//title')[0].text
+                except IndexError:
+                    title = ''
+                title_and_uuid_as_md5 = hashlib.md5(bytes(
+                        title + attr.text, encoding='utf8')).hexdigest()
+                properties[attr.get('name'), attr.get('ns')] = (
+                    f'{{{uuid.UUID(title_and_uuid_as_md5).urn}}}')
+                continue
             properties[attr.get('name'), attr.get('ns')] = attr.text or ''
-        properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         return properties
 
 

@@ -4,7 +4,7 @@ vivi.core changes
 4.61.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZON-6764: Add random (based on set title and uuid) uuid to dynamic pages
 
 
 4.61.3 (2021-08-20)
