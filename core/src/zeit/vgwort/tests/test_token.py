@@ -8,15 +8,22 @@ import zope.component
 
 class TokenStorageTest(zeit.vgwort.testing.EndToEndTestCase):
 
+    def order(self, amount):
+        ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
+        try:
+            ts.order(amount)
+        except zeit.vgwort.interfaces.TechnicalError:
+            pass
+
     def test_order_tokens(self):
         ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
         self.assertEqual(0, len(ts))
-        ts.order(2)
+        self.order(2)
         self.assertEqual(2, len(ts))
 
     def test_order_should_add_str(self):
         ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
-        ts.order(1)
+        self.order(1)
         self.assertTrue(isinstance(ts._data[0][0], str))
         self.assertTrue(isinstance(ts._data[0][0], str))
 
