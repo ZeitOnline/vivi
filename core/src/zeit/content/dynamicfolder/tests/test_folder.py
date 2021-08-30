@@ -1,6 +1,7 @@
 # coding: utf-8
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.interfaces import IUUID
 from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.content.rawxml.rawxml import RawXML
 import jinja2
@@ -183,7 +184,15 @@ class TestDynamicFolder(
     def test_does_not_copy_uuid_of_template_into_content(self):
         self.assertNotEqual(
             '{urn:uuid:6a5bcb2a-bd80-499b-ad79-72eb0a07e65e}',
-            zeit.cms.content.interfaces.IUUID(self.folder['xanten']).id)
+            IUUID(self.folder['xanten']).id)
+
+    def test_calculates_uuid_from_uniqueid(self):
+        second = zeit.content.dynamicfolder.folder.RepositoryDynamicFolder()
+        second.config_file = self.repository['data']['config.xml']
+        self.repository['secondfolder'] = second
+        transaction.commit()
+        self.assertNotEqual(
+            IUUID(self.folder['xanten']).id, IUUID(second['xanten']).id)
 
     def test_checkout_preserves_dav_properties_from_xml(self):
         # We need a DAV property that is handled by a separate adapter to see

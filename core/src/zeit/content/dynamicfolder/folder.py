@@ -1,15 +1,18 @@
 # coding: utf8
 from io import BytesIO
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.content.contentuuid import ContentUUID
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
 import grokcore.component as grok
+import hashlib
 import jinja2
 import lxml.etree
 import lxml.objectify
 import persistent
 import six
 import six.moves.urllib.parse
+import uuid
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -268,10 +271,14 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
     grok.context(zeit.content.dynamicfolder.interfaces.IVirtualContent)
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
 
+    ID_PROPERTY = (ContentUUID.id.name, ContentUUID.id.namespace)
+
     def __init__(self, context):
         super(VirtualProperties, self).__init__()
         self.context = context
         self.update(self.parse(context.xml))
+        self[self.ID_PROPERTY] = '{%s}' % uuid.UUID(
+            hashlib.md5(context.uniqueId.encode('utf-8')).hexdigest()).urn
 
     # XXX zeit.cms.content.xmlsupport.PropertyToXMLAttribute violates
     # the contract by assuming that IWebDAVProperties of IRepositoryContent
@@ -291,7 +298,6 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
         attributes = body.xpath('//head/attribute')
         for attr in attributes:
             properties[attr.get('name'), attr.get('ns')] = attr.text or ''
-        properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         return properties
 
 
