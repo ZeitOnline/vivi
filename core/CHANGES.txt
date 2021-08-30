@@ -4,7 +4,7 @@ vivi.core changes
 4.61.4 (unreleased)
 -------------------
 
-- ZON-6764: Add random (based on set title and uuid) uuid to dynamic pages
+- ZON-6764: Calculate uuid of dynamic folder content from uniqueId
 
 
 4.61.3 (2021-08-20)
