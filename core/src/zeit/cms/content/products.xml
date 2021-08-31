@@ -19,6 +19,7 @@
     <product id="Dev"
              volume="True">
              DEV</product>
+    <product id="dpaBY" show="source" is_news="true">DPA Bayern</product>
     <product id="TEST">Test/Development</product>
     <product id="ZTCS">Zeit Campus</product>
     <product id="ZTWI">Zeit Wissen</product>

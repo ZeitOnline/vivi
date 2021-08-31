@@ -536,7 +536,7 @@ class Product(AllowedBase):
     def __init__(self, id=None, title=None, vgwortcode=None,
                  href=None, target=None, label=None, show=None,
                  volume=None, location=None, centerpage=None, cp_template=None,
-                 autochannel=True, relates_to=None):
+                 autochannel=True, relates_to=None, is_news=False):
         super(Product, self).__init__(id, title, None)
         self.vgwortcode = vgwortcode
         self.href = href
@@ -549,6 +549,7 @@ class Product(AllowedBase):
         self.cp_template = cp_template
         self.autochannel = autochannel
         self.relates_to = relates_to
+        self.is_news = is_news
         self.dependent_products = []
 
 
@@ -575,7 +576,8 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('centerpage')),
                 unicode_or_none(node.get('cp_template')),
                 node.get('autochannel', '').lower() != 'false',
-                unicode_or_none(node.get('relates_to'))
+                unicode_or_none(node.get('relates_to')),
+                node.get('is_news', '').lower() == 'true',
             )
             result[product.id] = product
         self._add_dependent_products(result)
