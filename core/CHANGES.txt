@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.61.4 (unreleased)
+4.62.0 (2021-08-31)
 -------------------
 
 - ZON-6764: Calculate uuid of dynamic folder content from uniqueId
