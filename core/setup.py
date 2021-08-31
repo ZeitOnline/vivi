@@ -200,7 +200,7 @@ setup(
             'vgwort-order-tokens = zeit.vgwort.token:order_tokens',
             'vgwort-report = zeit.vgwort.report:report_new_documents',
 
-            'zopeshell = zeit.cms.application:zope_shell',
+            'zopeshell = zeit.cms.cli:zope_shell',
         ],
         'paste.app_factory': [
             'main=zeit.cms.application:APPLICATION',

@@ -1,9 +1,9 @@
 from argparse import ArgumentParser
 from datetime import datetime
-from gocept.runner import once
 from logging import getLogger
 from pprint import pformat
 from zeit.cms.interfaces import ICMSContent
+import zeit.cms.cli
 import zeit.find.search
 
 
@@ -29,7 +29,7 @@ def parse():
     return args, dict(convert(args.conditions))
 
 
-@once(principal='zope.manager')
+@zeit.cms.cli.runner(principal='zope.manager')
 def search_elastic():
     args, conditions = parse()
     query = zeit.find.search.query(**conditions)

@@ -1,18 +1,13 @@
-from six.moves.configparser import ConfigParser
-import ZConfig
 import bugsnag
 import bugsnag.wsgi
 import bugsnag.wsgi.middleware
 import fanstatic
 import grokcore.component as grok
-import logging.config
 import os
 import pendulum
 import pkg_resources
 import pyramid_dogpile_cache2
 import re
-import six
-import sys
 import webob
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
@@ -37,7 +32,7 @@ for cls in ['DateTime', 'Date', 'Time']:
         zope.security.checker.NoProxy)
 
 
-class Application(object):
+class Application:
 
     def __init__(self):
         self.pipeline = [
@@ -82,7 +77,7 @@ class Application(object):
 APPLICATION = Application()
 
 
-class ClearFanstaticOnError(object):
+class ClearFanstaticOnError:
     """In debug mode, removes any application CSS on error, so as not to clash
     with the CSS of werkzeug debugger.
     """
@@ -98,47 +93,6 @@ class ClearFanstaticOnError(object):
             raise
 
 
-def zope_shell():
-    if len(sys.argv) < 2:
-        sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
-        sys.exit(1)
-    paste_ini = sys.argv[1]
-    logging.config.fileConfig(
-        paste_ini, {'__file__': paste_ini, 'here': os.path.abspath(
-            os.path.dirname(paste_ini))})
-    config = ConfigParser()
-    config.read(paste_ini)
-    # XXX How to get to zope.conf is the only-application specific part.
-    db = zope.app.wsgi.config(config.get('application:cms', 'zope_conf'))
-    # Adapted from zc.zope3recipes.debugzope.debug()
-    globs = {
-        '__name__': '__main__',
-        # Not really worth using zope.app.publication.ZopePublication.root_name
-        'root': db.open().root()['Application'],
-        'zeit': sys.modules['zeit'],
-        'zope': sys.modules['zope'],
-        'transaction': sys.modules['transaction'],
-    }
-    if len(sys.argv) > 2:
-        sys.argv[:] = sys.argv[2:]
-        globs['__file__'] = sys.argv[0]
-        exec(compile(open(sys.argv[0], "rb").read(), sys.argv[0], 'exec'),
-             globs)
-        sys.exit()
-    else:
-        zope.component.hooks.setSite(globs['root'])
-        import code
-        # Modeled after pyramid.scripts.pshell
-        code.interact(local=globs, banner="""\
-Python %s on %s
-Type "help" for more information.
-
-Environment:
-  root         ZODB application root folder (already set as ZCA site)
-Modules that were pre-imported for convenience: zope, zeit, transaction
-""" % (sys.version, sys.platform))
-
-
 @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
 def configure_dogpile_cache(event):
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
@@ -152,7 +106,7 @@ def configure_dogpile_cache(event):
     pyramid_dogpile_cache2.configure_dogpile_cache(settings)
 
 
-class BugsnagMiddleware(object):
+class BugsnagMiddleware:
 
     def __init__(self, application):
         bugsnag.before_notify(add_wsgi_request_data_to_notification)
@@ -192,17 +146,6 @@ def bugsnag_filter(global_conf, **local_conf):
     def bugsnag_filter(app):
         return BugsnagMiddleware(app)
     return bugsnag_filter
-
-
-# Backport ZConfig-2.x behaviour of assuming UTF-8, not ASCII.
-# (Actually the old behaviour probably was to rely on the py2 str laxness, but
-# all we really want is utf-8, so that's alright.)
-ZConfig.datatypes.stock_datatypes["string"] = six.ensure_text
-
-
-if sys.version_info < (3,):
-    # Upstream has `lambda x: x` which is not _quite_ correct.
-    fanstatic.compat.as_bytestring = six.ensure_binary
 
 
 class BrowserRequest(zope.publisher.browser.BrowserRequest):

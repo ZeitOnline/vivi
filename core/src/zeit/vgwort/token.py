@@ -8,6 +8,7 @@ import persistent
 import random
 import six.moves.xmlrpc_client
 import zc.queue
+import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
@@ -156,7 +157,7 @@ def remove_vgwort_properties_after_copy(context, event):
     info.reported_error = None
 
 
-@gocept.runner.once(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=gocept.runner.from_config(
     'zeit.vgwort', 'token-principal'))
 def order_tokens():
     _order_tokens()
