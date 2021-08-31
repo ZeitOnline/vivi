@@ -96,6 +96,27 @@
     permission="zeit.RenameFolder"
     />
 
+  <!-- move -->
+  <browser:viewlet
+    name="Move"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".move.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.MoveContent"
+    icon="/@@/zeit.cms/icons/move.png"
+    lightbox="@@move-box"
+    weight="100"
+    />
+
+  <browser:page
+    name="move-box"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".move.Move"
+    permission="zeit.MoveContent"
+    />
+
   <!-- Delete view -->
 
   <browser:viewlet

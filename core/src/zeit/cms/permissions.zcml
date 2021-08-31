@@ -16,6 +16,11 @@
     />
 
   <permission
+    id="zeit.MoveContent"
+    title="Move content"
+    />
+
+  <permission
     id="zeit.ChangeType"
     title="Change content type"
     />
