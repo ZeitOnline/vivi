@@ -1,24 +1,16 @@
 from configparser import ConfigParser
 import logging.config
 import os.path
+import signal
 import sys
 
 
 def zope_shell():
     import zope.app.wsgi
     import zope.component.hooks
-
-    if len(sys.argv) < 2:
-        sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
-        sys.exit(1)
-    paste_ini = sys.argv[1]
-    logging.config.fileConfig(
-        paste_ini, {'__file__': paste_ini, 'here': os.path.abspath(
-            os.path.dirname(paste_ini))})
-    config = ConfigParser()
-    config.read(paste_ini)
     # XXX How to get to zope.conf is the only-application specific part.
-    db = zope.app.wsgi.config(config.get('application:cms', 'zope_conf'))
+    zope_conf = parse_paste_ini()
+    db = zope.app.wsgi.config(zope_conf)
     # Adapted from zc.zope3recipes.debugzope.debug()
     globs = {
         '__name__': '__main__',
@@ -46,3 +38,43 @@ Environment:
   root         ZODB application root folder (already set as ZCA site)
 Modules that were pre-imported for convenience: zope, zeit, transaction
 """ % (sys.version, sys.platform))
+
+
+def parse_paste_ini():
+    if len(sys.argv) < 2:
+        sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
+        sys.exit(1)
+    paste_ini = sys.argv.pop(1)
+    logging.config.fileConfig(
+        paste_ini, {'__file__': paste_ini, 'here': os.path.abspath(
+            os.path.dirname(paste_ini))})
+    config = ConfigParser()
+    config.read(paste_ini)
+    return config.get('application:cms', 'zope_conf')
+
+
+try:
+    import gocept.runner
+except ImportError:
+    # Provide fake decorator so zeit.web can avoid importing the zope machinery
+    def runner(*args, **kw):
+        return lambda x: x
+else:
+    class runner(gocept.runner.appmain):
+
+        def __init__(self, ticks=1, principal=None, once=True):
+            super().__init__(ticks=ticks, principal=principal)
+            self.once = once
+
+        def __call__(self, worker_method):
+            # copy&paste to retrieve config file from argv instead of buildout
+            def run():
+                zope_conf = parse_paste_ini()
+                with gocept.runner.runner.init(None, zope_conf) as app:
+                    mloop = gocept.runner.runner.MainLoop(
+                        app, self.ticks, worker_method,
+                        principal=self.get_principal(), once=self.once)
+                    signal.signal(signal.SIGHUP, mloop.stopMainLoop)
+                    signal.signal(signal.SIGTERM, mloop.stopMainLoop)
+                    mloop()
+            return run

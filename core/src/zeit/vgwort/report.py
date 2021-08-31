@@ -89,7 +89,7 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
         writeable=WRITEABLE_LIVE)
 
 
-@gocept.runner.once(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=gocept.runner.from_config(
     'zeit.vgwort', 'token-principal'))
 def report_new_documents():
     lock_file_name = os.path.join(tempfile.gettempdir(), 'vgwort-run-lock')

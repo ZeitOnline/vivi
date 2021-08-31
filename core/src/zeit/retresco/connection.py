@@ -9,6 +9,7 @@ import requests.exceptions
 import requests.sessions
 import signal
 import transaction
+import zeit.cms.cli
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag
@@ -361,7 +362,7 @@ def from_product_config():
             password=config.get('secondary-password')))
 
 
-@gocept.runner.once(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=gocept.runner.from_config(
     'zeit.retresco', 'topiclist-principal'))
 def update_topiclist():
     _update_topiclist()

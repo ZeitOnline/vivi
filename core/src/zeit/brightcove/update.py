@@ -8,6 +8,7 @@ import z3c.celery.celery
 import zeit.brightcove.convert
 import zeit.brightcove.session
 import zeit.cms.celery
+import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.content.video.playlist
 import zeit.content.video.video
@@ -270,8 +271,8 @@ class import_playlist(import_base):
             del folder[name]
 
 
-@gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
-    'zeit.brightcove', 'index-principal'))
+@zeit.cms.cli.runner(ticks=120, principal=gocept.runner.from_config(
+    'zeit.brightcove', 'index-principal'), once=False)
 def import_playlists():
     log.info('Update run started')
     _import_playlists()

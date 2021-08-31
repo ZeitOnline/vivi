@@ -6,6 +6,9 @@ vivi.core changes
 
 - ZON-6764: Calculate uuid of dynamic folder content from uniqueId
 
+- ZO-142: Provide `@zeit.cms.cli.runner` that wraps `@gocept.runner`
+  and retrieves the config file from argv instead of buildout injection
+
 
 4.61.3 (2021-08-20)
 -------------------
