@@ -288,17 +288,13 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
 
     @classmethod
     def parse(cls, body):
-        properties = {}
         if isinstance(body, (six.binary_type, six.text_type)):
             try:
                 body = lxml.etree.fromstring(body)
             except lxml.etree.LxmlError:
-                return properties
-        # See zeit.connector.filesystem.Connector._get_properties
-        attributes = body.xpath('//head/attribute')
-        for attr in attributes:
-            properties[attr.get('name'), attr.get('ns')] = attr.text or ''
-        return properties
+                return {}
+        return zeit.connector.filesystem.parse_properties(
+            zope.security.proxy.getObject(body))
 
 
 class ConfigDependency(zeit.workflow.dependency.DependencyBase):

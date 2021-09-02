@@ -16,6 +16,7 @@ import zeit.cms.content.metadata
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
+import zeit.connector.filesystem
 import zeit.connector.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -90,16 +91,15 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     def updateDAVFromXML(self):
         properties = zeit.connector.interfaces.IWebDAVProperties(self)
         modified = []
-        for el in self.xml.head.attribute:
-            name = el.get('name')
-            ns = el.get('ns')
-            value = el.text
-            if value:
-                properties[(name, ns)] = value
-                prop = zeit.cms.content.dav.findProperty(
-                    zeit.cms.content.metadata.CommonMetadata, name, ns)
-                if prop:
-                    modified.append(prop.field.__name__)
+        for (name, ns), value in zeit.connector.filesystem.parse_properties(
+                self.xml).items():
+            if not value:
+                continue
+            properties[(name, ns)] = value
+            prop = zeit.cms.content.dav.findProperty(
+                zeit.cms.content.metadata.CommonMetadata, name, ns)
+            if prop:
+                modified.append(prop.field.__name__)
         zope.lifecycleevent.modified(
             self, zope.lifecycleevent.Attributes(
                 zeit.cms.content.interfaces.ICommonMetadata, *modified))
