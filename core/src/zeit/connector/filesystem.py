@@ -273,28 +273,7 @@ class Connector(object):
             self.property_cache[id] = properties
             return properties
 
-        nodes = xml.xpath('//head/attribute')
-        for node in nodes:
-            properties[node.get('name'), node.get('ns')] = node.text or ''
-
-        # rankedTags are serialized like all other attributes in .meta files,
-        # but in the "fallback to content file" case we need to recognize a
-        # different format:
-        tags = xml.xpath('//head/rankedTags')
-        if tags:
-            value = (
-                u'<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
-                u'/CMS/tagging">')
-            value += lxml.etree.tostring(tags[0], encoding='unicode')
-            value += u'</tag:rankedTags>'
-            properties[(
-                'keywords',
-                'http://namespaces.zeit.de/CMS/tagging')] = value
-            # BBB remove when zeit.intrafind is retired
-            properties[(
-                'rankedTags',
-                'http://namespaces.zeit.de/CMS/tagging')] = value
-
+        properties.update(parse_properties(xml))
         self.property_cache[id] = properties
         return properties
 
@@ -324,3 +303,25 @@ def connector_factory():
     if canonicalize is not None:
         connector.canonicalize_directories = ast.literal_eval(canonicalize)
     return connector
+
+
+def parse_properties(xml):
+    properties = {}
+    nodes = xml.xpath('//head/attribute')
+    for node in nodes:
+        properties[node.get('name'), node.get('ns')] = node.text or ''
+
+    # rankedTags are serialized like all other attributes in .meta files,
+    # but in the "fallback to content file" case we need to recognize a
+    # different format:
+    tags = xml.xpath('//head/rankedTags')
+    if tags:
+        value = (
+            u'<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
+            u'/CMS/tagging">')
+        value += lxml.etree.tostring(tags[0], encoding='unicode')
+        value += u'</tag:rankedTags>'
+        properties[(
+            'keywords',
+            'http://namespaces.zeit.de/CMS/tagging')] = value
+    return properties
