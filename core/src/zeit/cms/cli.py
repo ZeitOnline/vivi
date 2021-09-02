@@ -20,8 +20,8 @@ def zope_shell():
         'zope': sys.modules['zope'],
         'transaction': sys.modules['transaction'],
     }
-    if len(sys.argv) > 2:
-        sys.argv[:] = sys.argv[2:]
+    if len(sys.argv) > 1:
+        sys.argv[:] = sys.argv[1:]
         globs['__file__'] = sys.argv[0]
         exec(compile(open(sys.argv[0], "rb").read(), sys.argv[0], 'exec'),
              globs)

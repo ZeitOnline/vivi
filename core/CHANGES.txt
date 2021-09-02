@@ -6,6 +6,8 @@ vivi.core changes
 
 - ZO-200: Support <rankedTags> in dynamicfolder templates
 
+- ZO-142: Fix `zopeshell myscript.py` handling
+
 
 4.63.0 (2021-09-02)
 -------------------
