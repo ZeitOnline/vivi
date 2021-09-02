@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.62.1 (unreleased)
+4.63.0 (2021-09-02)
 -------------------
 
 - ZO-51: Implement "move object" UI action
