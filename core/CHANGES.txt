@@ -8,6 +8,8 @@ vivi.core changes
 
 - ZO-51: Implement "create linkobject" action
 
+- ZO-169: Support `is_news` attribute in products.xml
+
 
 4.62.0 (2021-08-31)
 -------------------

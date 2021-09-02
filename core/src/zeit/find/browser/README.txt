@@ -62,9 +62,8 @@ data for dropdowns/selects:
 >>> browser.open('http://localhost:8080/++skin++cms/search_form')
 >>> print(browser.headers)
 Status: 200 Ok
-Content-Length: 4025
+Content-Length: ...
 Content-Type: text/json...
-X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 
 >>> import json
 >>> import pprint
