@@ -39,6 +39,10 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
     def title(self):
         return self.teaserTitle
 
+    @title.setter
+    def title(self, value):
+        self.teaserTitle = value
+
 
 class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 

@@ -6,6 +6,8 @@ vivi.core changes
 
 - ZO-51: Implement "move object" UI action
 
+- ZO-51: Implement "create linkobject" action
+
 - ZO-169: Support `is_news` attribute in products.xml
 
 

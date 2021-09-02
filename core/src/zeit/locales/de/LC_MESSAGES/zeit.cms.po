@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Aug 31 16:22:26 2021\n"
+"POT-Creation-Date: Thu Sep  2 10:43:55 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -1056,9 +1056,8 @@ msgid "Move content"
 msgstr "Inhalt verschieben"
 
 #: zeit/cms/permissions.zcml:23
-#, fuzzy
 msgid "Change content type"
-msgstr "Content-Type"
+msgstr "Content-Type ändern"
 
 #: zeit/cms/permissions.zcml:28
 msgid "Copy content"
@@ -1288,24 +1287,24 @@ msgstr "${object-unique-id} verschieben"
 msgid "Folders with content cannot be renamed."
 msgstr "Der Ordner kann nicht umbenannt werden, da er bereits Inhalte enthält."
 
-#: zeit/cms/repository/browser/move.py:28
+#: zeit/cms/repository/browser/move.py:29
 msgid "\"${name}\" not found."
 msgstr "»${name}« nicht gefunden."
 
-#: zeit/cms/repository/browser/move.py:31 zeit/cms/repository/interfaces.py:194
+#: zeit/cms/repository/browser/move.py:32 zeit/cms/repository/interfaces.py:194
 msgid "\"${name}\" already exists."
 msgstr "\"${name}\" ist bereits vorhanden."
 
-#: zeit/cms/repository/browser/move.py:38
+#: zeit/cms/repository/browser/move.py:42
 msgid "New path"
 msgstr "Zielpfad"
 
-#: zeit/cms/repository/browser/move.py:53
-#: zeit/cms/repository/browser/move.py:73
+#: zeit/cms/repository/browser/move.py:57
+#: zeit/cms/repository/browser/move.py:77
 msgid "Move"
 msgstr "Verschieben"
 
-#: zeit/cms/repository/browser/move.py:65
+#: zeit/cms/repository/browser/move.py:69
 #: zeit/cms/repository/browser/rename.py:59
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
@@ -2532,7 +2531,7 @@ msgstr "Filter"
 #: zeit/content/article/edit/interfaces.py:639
 #: zeit/content/image/interfaces.py:81
 #: zeit/content/link/browser/configure.zcml:8
-#: zeit/content/link/browser/form.py:46 zeit/content/link/link.py:47
+#: zeit/content/link/browser/form.py:46 zeit/content/link/link.py:51
 #: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
 msgstr "Link"
@@ -3811,6 +3810,19 @@ msgstr "Link bearbeiten"
 #: zeit/content/link/browser/form.py:104
 msgid "View link metadata"
 msgstr "Metadaten"
+
+#: zeit/content/link/browser/redirect.pt:5
+msgid "Create redirect for ${object-unique-id}"
+msgstr "Weiterleitung für »${object-unique-id}«"
+
+#: zeit/content/link/browser/redirect.py:19
+msgid "Redirect path"
+msgstr "Pfad für Linkobjekt"
+
+#: zeit/content/link/browser/redirect.py:40
+#: zeit/content/link/browser/redirect.py:74
+msgid "Create redirect"
+msgstr "Weiterleitung einrichten"
 
 #: zeit/content/link/interfaces.py:11
 msgid "New window"

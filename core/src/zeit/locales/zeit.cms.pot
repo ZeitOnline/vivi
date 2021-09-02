@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Aug 31 16:22:26 2021\n"
+"POT-Creation-Date: Thu Sep  2 10:43:55 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1327,25 +1327,25 @@ msgstr ""
 msgid "Folders with content cannot be renamed."
 msgstr ""
 
-#: zeit/cms/repository/browser/move.py:28
+#: zeit/cms/repository/browser/move.py:29
 msgid "\"${name}\" not found."
 msgstr ""
 
-#: zeit/cms/repository/browser/move.py:31
+#: zeit/cms/repository/browser/move.py:32
 #: zeit/cms/repository/interfaces.py:194
 msgid "\"${name}\" already exists."
 msgstr ""
 
-#: zeit/cms/repository/browser/move.py:38
+#: zeit/cms/repository/browser/move.py:42
 msgid "New path"
 msgstr ""
 
-#: zeit/cms/repository/browser/move.py:53
-#: zeit/cms/repository/browser/move.py:73
+#: zeit/cms/repository/browser/move.py:57
+#: zeit/cms/repository/browser/move.py:77
 msgid "Move"
 msgstr ""
 
-#: zeit/cms/repository/browser/move.py:65
+#: zeit/cms/repository/browser/move.py:69
 #: zeit/cms/repository/browser/rename.py:59
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
@@ -2588,7 +2588,7 @@ msgstr ""
 #: zeit/content/image/interfaces.py:81
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/content/link/browser/form.py:46
-#: zeit/content/link/link.py:47
+#: zeit/content/link/link.py:51
 #: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
 msgstr ""
@@ -3874,6 +3874,19 @@ msgstr ""
 
 #: zeit/content/link/browser/form.py:104
 msgid "View link metadata"
+msgstr ""
+
+#: zeit/content/link/browser/redirect.pt:5
+msgid "Create redirect for ${object-unique-id}"
+msgstr ""
+
+#: zeit/content/link/browser/redirect.py:19
+msgid "Redirect path"
+msgstr ""
+
+#: zeit/content/link/browser/redirect.py:40
+#: zeit/content/link/browser/redirect.py:74
+msgid "Create redirect"
 msgstr ""
 
 #: zeit/content/link/interfaces.py:11
