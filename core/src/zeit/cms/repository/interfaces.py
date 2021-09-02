@@ -174,6 +174,12 @@ class AlreadyExists(zope.schema.ValidationError):
         return self.args[0]
 
 
+class NotFound(zope.schema.ValidationError):
+
+    def doc(self):
+        return self.args[0]
+
+
 def valid_name(value):
     # XXX this makes quite a few assumptions, e.g. that the field's context as
     # an attribute uniqueId, so it's probably not generally applicable.
