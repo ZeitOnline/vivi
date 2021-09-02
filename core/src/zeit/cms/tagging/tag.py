@@ -122,7 +122,7 @@ def add_ranked_tags_to_head(content):
 
 
 @grok.subscribe(
-    zeit.cms.content.interfaces.IXMLRepresentation,
+    zeit.cms.content.interfaces.IDAVPropertiesInXML,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_tags_on_checkin(content, event):
     # ICMSContent.providedBy(content) is True implicitly, since otherwise one
@@ -134,7 +134,7 @@ def update_tags_on_checkin(content, event):
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.ObjectModifiedEvent)
 def update_tags_on_modify(content, event):
-    if not zeit.cms.content.interfaces.IXMLRepresentation.providedBy(content):
+    if not zeit.cms.content.interfaces.IDAVPropertiesInXML.providedBy(content):
         return
     add_ranked_tags_to_head(content)
 

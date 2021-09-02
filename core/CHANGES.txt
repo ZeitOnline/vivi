@@ -4,7 +4,7 @@ vivi.core changes
 4.63.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZO-200: Do not modify rawxml body with DAV properties
 
 
 4.63.1 (2021-09-02)
