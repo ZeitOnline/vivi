@@ -68,5 +68,25 @@
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
+  <browser:viewlet
+    name="Redirect"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".redirect.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.MoveContent"
+    icon="/@@/zeit.cms/icons/link.png"
+    lightbox="@@redirect-box"
+    weight="100"
+    />
+
+  <browser:page
+    name="redirect-box"
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".redirect.Redirect"
+    permission="zeit.MoveContent"
+    />
+
 </configure>
 

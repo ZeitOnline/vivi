@@ -1,0 +1,15 @@
+<div id="rename-box" class="floating" i18n:domain="zeit.cms">
+
+    <h1 i18n:translate="">
+        Create redirect for
+        <span tal:replace="python:context.uniqueId"
+              i18n:name="object-unique-id"/>
+    </h1>
+
+    <span class="nextURL" tal:content="view/nextURL" />
+
+    <form id="lightbox.form" action="#"
+          tal:attributes="action request/URL"
+          tal:content="structure view/form">
+    </form>
+</div>
