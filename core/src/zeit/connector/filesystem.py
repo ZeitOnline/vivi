@@ -324,8 +324,4 @@ def parse_properties(xml):
         properties[(
             'keywords',
             'http://namespaces.zeit.de/CMS/tagging')] = value
-        # BBB remove when zeit.intrafind is retired
-        properties[(
-            'rankedTags',
-            'http://namespaces.zeit.de/CMS/tagging')] = value
     return properties
