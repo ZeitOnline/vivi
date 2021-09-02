@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Jul 23 09:03:47 2021\n"
+"POT-Creation-Date: Tue Aug 31 16:22:26 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,24 +23,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:679
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225
@@ -51,55 +51,55 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr ""
 
-#: /home/andreas/work/vivi-deployment/work/_/home/andreas/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/schnerring/zeit/vivi/work/_/Users/schnerring/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr ""
 
@@ -1094,114 +1094,118 @@ msgid "Rename folders"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:18
-msgid "Change content type"
+msgid "Move content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:23
-msgid "Copy content"
+msgid "Change content type"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:28
-msgid "Edit ZEIT content"
+msgid "Copy content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:33
-msgid "Change objects in the repository"
+msgid "Edit ZEIT content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:38
-msgid "Add ZEIT content"
+msgid "Change objects in the repository"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:43
-msgid "Delete ZEIT content"
+msgid "Add ZEIT content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:48
-msgid "Delete folders"
+msgid "Delete ZEIT content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:53
-msgid "Checkout content"
+msgid "Delete folders"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:58
-msgid "Checkin content"
+msgid "Checkout content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:63
-msgid "View repository navigation tree"
+msgid "Checkin content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:68
-msgid "View DAV properties"
+msgid "View repository navigation tree"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:73
-msgid "Syndicate content"
+msgid "View DAV properties"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:78
-msgid "Publish objects"
+msgid "Syndicate content"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:83
-msgid "Lock and unlock objects"
+msgid "Publish objects"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:88
+msgid "Lock and unlock objects"
+msgstr ""
+
+#: zeit/cms/permissions.zcml:93
 msgid "Manage WebDAV locks"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:94
+#: zeit/cms/permissions.zcml:99
 msgid "View global settings"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:99
+#: zeit/cms/permissions.zcml:104
 msgid "Change global settings"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:104
+#: zeit/cms/permissions.zcml:109
 msgid "Edit templates"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:109
+#: zeit/cms/permissions.zcml:114
 msgid "View Preview"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:114
+#: zeit/cms/permissions.zcml:119
 msgid "Retract centerpages"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:119
+#: zeit/cms/permissions.zcml:124
 msgid "Edit retract log"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:124
+#: zeit/cms/permissions.zcml:129
 msgid "Delete centerpages"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:129
+#: zeit/cms/permissions.zcml:134
 msgid "View admin tab"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:134
+#: zeit/cms/permissions.zcml:139
 msgid "Edit semantic change and date of last semantic publish"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:139
+#: zeit/cms/permissions.zcml:144
 msgid "Add Author objects"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:144
+#: zeit/cms/permissions.zcml:149
 msgid "Retract Author objects"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:149
+#: zeit/cms/permissions.zcml:154
 msgid "Delete Author objects"
 msgstr ""
 
-#: zeit/cms/permissions.zcml:154
+#: zeit/cms/permissions.zcml:159
 msgid "Add Embed objects"
 msgstr ""
 
@@ -1233,7 +1237,7 @@ msgstr ""
 msgid "Menu for adding content."
 msgstr ""
 
-#: zeit/cms/repository/browser/configure.zcml:202
+#: zeit/cms/repository/browser/configure.zcml:223
 #: zeit/cms/repository/browser/property.py:26
 msgid "DAV Properties"
 msgstr ""
@@ -1314,6 +1318,38 @@ msgstr ""
 msgid "Edit folder"
 msgstr ""
 
+#: zeit/cms/repository/browser/move.pt:5
+msgid "Move ${object-unique-id}"
+msgstr ""
+
+#: zeit/cms/repository/browser/move.pt:20
+#: zeit/cms/repository/browser/rename-box.pt:30
+msgid "Folders with content cannot be renamed."
+msgstr ""
+
+#: zeit/cms/repository/browser/move.py:28
+msgid "\"${name}\" not found."
+msgstr ""
+
+#: zeit/cms/repository/browser/move.py:31
+#: zeit/cms/repository/interfaces.py:194
+msgid "\"${name}\" already exists."
+msgstr ""
+
+#: zeit/cms/repository/browser/move.py:38
+msgid "New path"
+msgstr ""
+
+#: zeit/cms/repository/browser/move.py:53
+#: zeit/cms/repository/browser/move.py:73
+msgid "Move"
+msgstr ""
+
+#: zeit/cms/repository/browser/move.py:65
+#: zeit/cms/repository/browser/rename.py:59
+msgid "Renamed \"${old_name}\" to \"${new_name}\""
+msgstr ""
+
 #: zeit/cms/repository/browser/objectbrowser.pt:22
 msgid "There are no selectable objects in this folder."
 msgstr ""
@@ -1330,17 +1366,9 @@ msgstr ""
 msgid "Only unpublished objects can be renamed."
 msgstr ""
 
-#: zeit/cms/repository/browser/rename-box.pt:30
-msgid "Folders with content cannot be renamed."
-msgstr ""
-
 #: zeit/cms/repository/browser/rename.py:18
-#: zeit/cms/repository/interfaces.py:208
+#: zeit/cms/repository/interfaces.py:214
 msgid "New file name"
-msgstr ""
-
-#: zeit/cms/repository/browser/rename.py:59
-msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
 
 #: zeit/cms/repository/browser/repository.py:134
@@ -1349,10 +1377,6 @@ msgstr ""
 
 #: zeit/cms/repository/browser/repository.py:141
 msgid "\"${name}\" is now shown in the navigation tree."
-msgstr ""
-
-#: zeit/cms/repository/interfaces.py:188
-msgid "\"${name}\" already exists."
 msgstr ""
 
 #: zeit/cms/repository/unknown.py:44
@@ -1792,7 +1816,7 @@ msgstr ""
 
 #: zeit/content/animation/browser/form.py:17
 #: zeit/content/animation/interfaces.py:25
-#: zeit/content/article/article.py:182
+#: zeit/content/article/article.py:177
 #: zeit/content/article/browser/configure.zcml:80
 #: zeit/content/article/edit/browser/form.py:60
 msgid "Article"
@@ -3132,25 +3156,6 @@ msgstr ""
 msgid "View centerpage metadata"
 msgstr ""
 
-#: zeit/content/cp/browser/form.py:82
-msgid "View SEO Data"
-msgstr ""
-
-#: zeit/content/cp/browser/form.py:93
-#: zeit/seo/browser/form.py:19
-#: zeit/seo/browser/form.py:56
-msgid "SEO data"
-msgstr ""
-
-#: zeit/content/cp/browser/form.py:96
-#: zeit/seo/browser/form.py:22
-msgid "Standard metadata"
-msgstr ""
-
-#: zeit/content/cp/browser/form.py:105
-msgid "Edit SEO Data"
-msgstr ""
-
 #: zeit/content/cp/browser/landing.py:59
 msgid "Gallery \"${name}\" with type inline is not allowed here."
 msgstr ""
@@ -3492,7 +3497,7 @@ msgstr ""
 msgid "Enable RSS Tracking-Parameter"
 msgstr ""
 
-#: zeit/content/dynamicfolder/folder.py:216
+#: zeit/content/dynamicfolder/folder.py:219
 msgid "Dynamic Folder"
 msgstr ""
 
@@ -4867,6 +4872,15 @@ msgstr ""
 
 #: zeit/securitypolicy/security.zcml:20
 msgid "Beta tester"
+msgstr ""
+
+#: zeit/seo/browser/form.py:19
+#: zeit/seo/browser/form.py:56
+msgid "SEO data"
+msgstr ""
+
+#: zeit/seo/browser/form.py:22
+msgid "Standard metadata"
 msgstr ""
 
 #: zeit/seo/browser/form.py:30

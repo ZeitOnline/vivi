@@ -1,0 +1,23 @@
+<div id="rename-box" class="floating" i18n:domain="zeit.cms">
+
+  <h1 i18n:translate="">
+    Move
+    <span tal:replace="python:context.uniqueId"
+          i18n:name="object-unique-id"/>
+  </h1>
+
+  <span class="nextURL" tal:content="view/nextURL" />
+
+  <tal:block
+    condition="python: not view.is_folder_with_content">
+    <form id="lightbox.form" action="#"
+          tal:attributes="action request/URL"
+          tal:content="structure view/form">
+
+    </form>
+  </tal:block>
+
+  <p tal:condition="view/is_folder_with_content" class="warning" i18n:translate="">
+      Folders with content cannot be renamed.
+  </p>
+</div>

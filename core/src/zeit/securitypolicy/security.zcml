@@ -121,6 +121,10 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.MoveContent"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.ChangeType"
     />
   <grant
@@ -247,6 +251,10 @@
   <grant
     role="zeit.SEO"
     permission="zeit.EditRetractLog"
+    />
+  <grant
+    role="zeit.SEO"
+    permission="zeit.MoveContent"
     />
 
 </configure>

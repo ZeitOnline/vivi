@@ -3,6 +3,7 @@ import gocept.runner
 import logging
 import persistent
 import six
+import zeit.cms.cli
 import zeit.connector.interfaces
 import zope.component
 import zope.event
@@ -98,7 +99,7 @@ class Invalidator(persistent.Persistent):
             zeit.connector.interfaces.IPropertyCache)
 
 
-@gocept.runner.appmain(ticks=0.05)
+@zeit.cms.cli.runner(ticks=0.05, once=False)
 def invalidate_whole_cache():
     invalidator = zope.component.getUtility(IInvalidator)
     finished = invalidator()

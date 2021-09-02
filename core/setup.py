@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='4.61.4.dev0',
+    version='4.62.1.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -200,7 +200,7 @@ setup(
             'vgwort-order-tokens = zeit.vgwort.token:order_tokens',
             'vgwort-report = zeit.vgwort.report:report_new_documents',
 
-            'zopeshell = zeit.cms.application:zope_shell',
+            'zopeshell = zeit.cms.cli:zope_shell',
         ],
         'paste.app_factory': [
             'main=zeit.cms.application:APPLICATION',
