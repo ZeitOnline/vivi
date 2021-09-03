@@ -358,14 +358,13 @@ class Toc(zeit.cms.browser.view.Base):
         :return: [CSV Row]
         """
         for product_name, ressort_dict in toc_entries.items():
-            yield [product_name]
             for ressort_name, toc_entries in ressort_dict.items():
-                yield ['', ressort_name]
                 for toc_entry in toc_entries:
-                    yield self._format_toc_element(toc_entry)
+                    yield self._format_toc_element(
+                        toc_entry, product_name, ressort_name)
         return
 
-    def _format_toc_element(self, toc_entry):
+    def _format_toc_element(self, toc_entry, product_name, ressort_name):
         title_teaser = " ".join(
             [toc_entry.get("title"),
              toc_entry.get("teaser")])
@@ -375,7 +374,9 @@ class Toc(zeit.cms.browser.view.Base):
         return (
             [str(page), title_teaser, '', '', toc_entry.get('access')] +
             [''] * 8 + [toc_entry.get('image_url', '')] +
-            [''] * 5 + [toc_entry.get('preview_url', '')])
+            [''] * 5 + [toc_entry.get('preview_url', '')] +
+            [ressort_name, str(self._context_year), str(self._context_volume),
+                product_name])
 
 
 PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)

@@ -25,6 +25,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                           'title': 'title',
                           'teaser': 'tease',
                           'access': u'frei verfügbar',
+                          'volume': u'1',
+                          'year': u'2015',
                           'supertitle': 'Super'}]
              }
         )
@@ -34,12 +36,16 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                  'access': u'frei verfügbar',
                  'title': 'title',
                  'teaser': 'tease',
-                 'supertitle': 'Super'
+                 'supertitle': 'Super',
+                 'volume': '1',
+                 'year': '2015',
                  },
                 {'page': '3',
                  'access': u'frei verfügbar',
                  'title': 'title2',
                  'teaser': 'tease',
+                 'volume': '1',
+                 'year': '2015',
                  'supertitle': 'Super'}
             ]}
         )
@@ -93,15 +99,14 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(expected, result)
 
     def test_csv_is_created_from_toc_data(self):
-        expected = """Die Zeit\r
-\tPolitik\r
-1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
-Anderer\r
-\tDossier\r
-1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
-3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r
+        expected = """1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPolitik\t2015\t1\tDie Zeit\r
+1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\r
+3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\r
 """
-        toc = Toc(mock.Mock(), mock.Mock())
+        context = mock.Mock()
+        context.year = 2015
+        context.volume = 1
+        toc = Toc(context, mock.Mock())
         res = toc._create_csv(self.toc_data)
         self.assertEqual(expected, res)
 
@@ -199,6 +204,13 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
                 article.page = self.article_page
                 self.repository['ZEI']['2015']['01']['politik'][
                     'test_artikel'] = article
+                article = create_article()
+                article.year = 2015
+                article.volume = 1
+                article.title = self.article_title
+                article.page = self.article_page
+                self.repository['ZEI']['2015']['01']['dossier'][
+                    'test_artikel_dossier'] = article
         sm.registerUtility(
             zope.component.getGlobalSiteManager().getUtility(
                 zeit.connector.interfaces.IConnector),
