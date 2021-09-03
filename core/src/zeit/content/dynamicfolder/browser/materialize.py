@@ -9,7 +9,7 @@ class Materialize(zeit.cms.browser.view.Base):
 
     def __call__(self):
         # zope.event to materialize the folder?
-        zeit.content.dynamicfolder.materialize.materialize_content(
+        zeit.content.dynamicfolder.materialize.materialize_content.delay(
             self.context)
         self.redirect(self.url(self.context, '@@view.html'))
         return ''
