@@ -11,6 +11,8 @@ import six
 import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
+import zeit.content.dynamicfolder.interfaces as DFinterfaces
+import zeit.content.dynamicfolder.materialize
 import zeit.content.dynamicfolder.testing
 
 
@@ -237,3 +239,29 @@ class TestDynamicFolder(
         transaction.commit()
         with self.assertNothingRaised():
             self.repository['brokenfolder'].values()
+
+
+class MaterializeDynamicFolder(
+        zeit.content.dynamicfolder.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.folder = self.repository['dynamicfolder']
+
+    def test_materializing_virtual_content(self):
+        result = (
+            zeit.content.dynamicfolder.materialize.materialize_content.delay(
+                self.folder))
+        transaction.commit()
+        assert DFinterfaces.IMaterializedContent.providedBy(
+            self.folder['art-déco'])
+
+    def test_materialized_content_is_virtual_content_again(self):
+        result = (
+            zeit.content.dynamicfolder.materialize.materialize_content.delay(
+                self.folder))
+        transaction.commit()
+        del self.folder['art-déco']
+        self.assertIn('art-déco', self.folder)
+        assert DFinterfaces.IVirtualContent.providedBy(
+            self.folder['art-déco'])
