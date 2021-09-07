@@ -43,7 +43,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.MenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
-    permission="zope.View"
+    permission="zeit.MaterializeContent"
     action="@@materialize-content"
     icon="/@@/zeit.cms/icons/reload.png"
     />
@@ -53,7 +53,7 @@
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.Materialize"
-    permission="zope.View"
+    permission="zeit.MaterializeContent"
     />
 
 </configure>
