@@ -251,8 +251,10 @@ class MaterializeDynamicFolder(
     def test_materializing_virtual_content(self):
         result = (
             zeit.content.dynamicfolder.materialize.materialize_content.delay(
-                self.folder))
+                self.folder.uniqueId))
         transaction.commit()
+        assert not DFinterfaces.IVirtualContent.providedBy(
+            self.folder['art-déco'])
         assert DFinterfaces.IMaterializedContent.providedBy(
             self.folder['art-déco'])
 
