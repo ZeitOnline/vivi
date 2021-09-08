@@ -1,6 +1,5 @@
 import copy
 import logging
-import pdb
 import transaction
 
 import zope.interface
