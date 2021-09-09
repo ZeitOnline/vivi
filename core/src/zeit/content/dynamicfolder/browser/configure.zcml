@@ -37,4 +37,23 @@
     factory="zeit.workflow.browser.form.AssetWorkflow"
     />
 
+  <browser:viewlet
+    name="Materialize"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.content.dynamicfolder.browser.materialize.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.MaterializeContent"
+    action="@@materialize-content"
+    icon="/@@/zeit.cms/icons/reload.png"
+    />
+
+  <browser:page
+    name="materialize-content"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.content.dynamicfolder.browser.materialize.Materialize"
+    permission="zeit.MaterializeContent"
+    />
+
 </configure>

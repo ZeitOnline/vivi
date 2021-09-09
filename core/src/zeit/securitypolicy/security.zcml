@@ -208,6 +208,11 @@
     permission="zeit.content.text.AddEmbed"
     />
 
+  <grant
+    role="zeit.Producer"
+    permission="zeit.MaterializeContent"
+    /> 
+
 
   <!-- CvD grants -->
   <grant

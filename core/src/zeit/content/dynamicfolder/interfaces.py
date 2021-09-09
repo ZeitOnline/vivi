@@ -15,6 +15,13 @@ class IVirtualContent(zope.interface.Interface):
     """Marker interface for virtual content objects not present in DAV."""
 
 
+class IMaterializedContent(zope.interface.Interface):
+    """
+    Marker interface for materialized content, which is former virtual content
+    converted to real content.
+    """
+
+
 class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
     """Interface for the Content-Type DynamicFolder.
 
