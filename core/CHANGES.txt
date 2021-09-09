@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.63.3 (unreleased)
+4.63.3 (2021-09-09)
 -------------------
 
 - ZO-156: Implement "materialize dynamic folder" UI action
