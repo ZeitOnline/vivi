@@ -8,7 +8,7 @@ class PublishMaterializedContent(zeit.cms.browser.view.Base):
     """Materialize contents of dynamic folder"""
 
     def __call__(self):
-        zeit.content.dynamicfolder.publish.publish_content(
+        zeit.content.dynamicfolder.publish.publish_content.delay(
             self.context.uniqueId)
         self.redirect(self.url(self.context, '@@view.html'))
         return ''

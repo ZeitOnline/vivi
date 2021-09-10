@@ -1,13 +1,17 @@
+import transaction
+
+import zeit.cms.celery
+import zeit.cms.interfaces
+import zeit.content.dynamicfolder.interfaces as DFinterfaces
 
 
-# Todo
-# - identify materialized content
-# - publish button gängig machen?
-# - eigene berechtigung
-# - sammelveröffentlichung publish multipe oder so
-# - was ist dieser komische xml error
-
-
+@zeit.cms.celery.task
 def publish_content(unique_id):
-    import pdb; pdb.set_trace()
-    pass
+    folder = zeit.cms.interfaces.ICMSContent(unique_id)
+    objects = []
+    for key in folder.keys():
+        if DFinterfaces.IMaterializedContent.providedBy(folder[key]):
+            objects.append(folder[key])
+    zeit.cms.workflow.interfaces.IPublish(
+            folder).publish_multiple(objects)
+    transaction.commit()
