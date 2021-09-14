@@ -3,6 +3,7 @@
      <attribute name="ressort" ns="http://namespaces.zeit.de/CMS/document">Deutschland</attribute>
      <attribute name="html-meta-title" ns="http://namespaces.zeit.de/CMS/document">seo-title</attribute>
      <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:6a5bcb2a-bd80-499b-ad79-72eb0a07e65e}</attribute>
+     <attribute ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">d80bf3779e754f8baf528b51b21916acxxx</attribute>
      <attribute name="provides" ns="http://namespaces.zeit.de/CMS/meta">&lt;pickle&gt;
  &lt;initialized_object&gt;
  &lt;klass&gt;
@@ -23,12 +24,22 @@
     <title>{{lexical_value}}</title>
     <cluster area="feature" kind="solo" visible="True">
       <region area="lead" kind="single"
-              count="2" automatic="True" automatic_type="query"
+              count="7" automatic="True" automatic_type="query"
               visible="True" hide-dupes="True">
         <container cp:type="auto-teaser" module="buttons"
                    visible="True" cp:__name__="id-1"/>
         <container cp:type="auto-teaser" module="buttons"
                    visible="True" cp:__name__="id-2"/>
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-3"/>
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-4"/>
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-5"/>
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-6"/>
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-7"/>
         <raw_query>
           published:"published" AND keywords: {{url_value}}
         </raw_query>
