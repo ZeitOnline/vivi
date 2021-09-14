@@ -35,7 +35,7 @@ class DynamicLayer(plone.testing.Layer):
                     data=pkg_resources.resource_string(
                         __name__, '{}{}'.format(
                             self.path, name)).decode(
-                            'latin-1'))
+                        'latin-1'))
 
             dynamic = RepositoryDynamicFolder()
             dynamic.config_file = folder['config.xml']

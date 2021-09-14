@@ -13,5 +13,5 @@ def publish_content(unique_id):
         if DFinterfaces.IMaterializedContent.providedBy(folder[key]):
             objects.append(folder[key])
     zeit.cms.workflow.interfaces.IPublish(
-            folder).publish_multiple(objects)
+        folder).publish_multiple(objects)
     transaction.commit()
