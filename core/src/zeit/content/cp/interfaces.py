@@ -733,11 +733,19 @@ class IJobTickerBlock(zeit.content.modules.interfaces.IJobTicker, IBlock):
         source=JOBTICKER_SOURCE)
 
 
+PODIGEE_PROVIDERS_SOURCE = (
+    zeit.content.modules.interfaces.PodigeeProvidersSource)
+
+
 class IPodcastBlock(IBlock):
     """The Podcast block with a reference to a podcast."""
 
     episode_id = zope.schema.TextLine(
         title=_("Podcast id"))
+    provider = zope.schema.Choice(
+        title=_('Provider'),
+        source=PODIGEE_PROVIDERS_SOURCE('*//provider'),
+        default='default')
 
 
 class IMailBlock(zeit.content.modules.interfaces.IMail, IBlock):

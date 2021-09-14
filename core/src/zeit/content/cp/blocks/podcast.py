@@ -12,6 +12,8 @@ class PodcastBlock(zeit.content.cp.blocks.block.Block):
 
     episode_id = zeit.cms.content.property.ObjectPathProperty(
         '.id', zeit.content.cp.interfaces.IPodcastBlock['episode_id'])
+    provider = zeit.cms.content.property.ObjectPathProperty(
+        '.provider', zeit.content.cp.interfaces.IPodcastBlock['provider'])
 
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):
