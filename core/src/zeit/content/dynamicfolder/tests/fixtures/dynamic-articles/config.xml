@@ -1,0 +1,12 @@
+<dynamic-cp-config>
+  <head>
+    <cp_template>http://xml.zeit.de/data/template.xml</cp_template>
+  </head>
+  <body key="@id">
+    <article uuid="{urn:uuid:0c261cc6-7759-460a-8536-4f68f2724785}" id="wahlergebnis-kiel-wahlkreis-5-live" wahlkreis_id="5" name="Kiel" tags="event:Bundestagswahl">Kiel</article>
+    <article uuid="{urn:uuid:a832143f-3c08-47a1-a769-4afe0988a928}" id="wahlergebnis-rendsburg-eckernfoerde-wahlkreis-4-live" wahlkreis_id="4" name="Rendsburg-Eckernförde" tags="event:Bundestagswahl">Rendsburg-Eckernförde</article>
+    <article uuid="{urn:uuid:2d37fe8c-3f24-4cf3-8ab5-5da66739a1c0}" id="wahlergebnis-steinburg-dithmarschen-sued-wahlkreis-3-live" wahlkreis_id="3" name="Steinburg – Dithmarschen Süd" tags="event:Bundestagswahl">Steinburg – Dithmarschen Süd</article>
+    <article uuid="{urn:uuid:e784a9fe-1968-442e-89d9-c361acbd5d69}" id="wahlergebnis-nordfriesland-dithmarschen-nord-wahlkreis-2-live" wahlkreis_id="2" name="Nordfriesland – Dithmarschen Nord" tags="event:Bundestagswahl">Nordfriesland – Dithmarschen Nord</article>
+    <article uuid="{urn:uuid:7d677914-3917-499a-a07a-ec696e3d6a00}" id="wahlergebnis-flensburg-schleswig-wahlkreis-1-live" wahlkreis_id="1" name="Flensburg – Schleswig" tags="event:Bundestagswahl">Flensburg – Schleswig</article>
+  </body>
+</dynamic-cp-config>

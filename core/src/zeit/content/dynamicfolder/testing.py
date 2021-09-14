@@ -19,6 +19,9 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 class DynamicLayer(plone.testing.Layer):
 
     defaultBases = (ZOPE_LAYER,)
+    path = 'tests/fixtures/dynamic-centerpages/'
+    files = [
+        'config.xml', 'tags.xml', 'template.xml']
 
     def testSetUp(self):
         with zeit.cms.testing.site(self['zodbApp']):
@@ -27,16 +30,23 @@ class DynamicLayer(plone.testing.Layer):
 
             folder = zeit.cms.repository.folder.Folder()
             repository['data'] = folder
-            for name in ['config.xml', 'tags.xml', 'template.xml']:
+            for name in self.files:
                 folder[name] = PersistentUnknownResource(
                     data=pkg_resources.resource_string(
-                        __name__, 'tests/fixtures/%s' % name).decode(
+                        __name__, '{}{}'.format(
+                            self.path, name)).decode(
                             'latin-1'))
 
             dynamic = RepositoryDynamicFolder()
             dynamic.config_file = folder['config.xml']
             repository['dynamicfolder'] = dynamic
             transaction.commit()
+
+
+class DynamicArticleLayer(DynamicLayer):
+
+    path = 'tests/fixtures/dynamic-articles/'
+    files = ['config.xml', 'template.xml']
 
 
 LAYER = DynamicLayer()

@@ -167,7 +167,8 @@ class TestDynamicFolder(
         # These get an xml declaration in their serialization, so we must not
         # process them as unicode, else lxml complains.
         self.repository['data']['template.xml'] = RawXML(
-            pkg_resources.resource_stream(__name__, 'fixtures/template.xml'))
+            pkg_resources.resource_stream(
+                __name__, 'fixtures/dynamic-centerpages/template.xml'))
         with self.assertNothingRaised():
             self.folder['xanten']
 
@@ -176,7 +177,8 @@ class TestDynamicFolder(
         # luckily(?) lxml doesn't care if we use unicode or utf-8 in that case.
         self.repository['data']['template.xml'] = PersistentUnknownResource(
             data=pkg_resources.resource_string(
-                __name__, 'fixtures/template.xml').decode('latin-1'))
+                __name__, 'fixtures/dynamic-centerpages/template.xml').decode(
+                'latin-1'))
         with self.assertNothingRaised():
             self.folder['xanten']
 
@@ -241,31 +243,43 @@ class TestDynamicFolder(
             self.repository['brokenfolder'].values()
 
 
-class MaterializeDynamicFolder(TestDynamicFolder):
+class MaterializeDynamicFolder(
+        zeit.content.dynamicfolder.testing.FunctionalTestCase):
+
+    layer = zeit.content.dynamicfolder.testing.DynamicArticleLayer()
 
     def setUp(self):
         super().setUp()
         self.folder = self.repository['dynamicfolder']
+
+    def test_checkin_virtual_content_materializes_content(self):
+        self.assertEqual(
+            'Wahlergebnis in Kiel', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
+        with checked_out(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
+            co.title = 'foo'
+        self.assertEqual(
+            'foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
 
     def test_materializing_virtual_content(self):
         result = (
             zeit.content.dynamicfolder.materialize.materialize_content.delay(
                 self.folder.uniqueId))
         transaction.commit()
-        assert not DFinterfaces.IVirtualContent.providedBy(
-            self.folder['art-déco'])
-        assert DFinterfaces.IMaterializedContent.providedBy(
-            self.folder['art-déco'])
+        self.assertFalse(DFinterfaces.IVirtualContent.providedBy(
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
+        self.assertTrue(DFinterfaces.IMaterializedContent.providedBy(
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
 
     def test_materialized_content_is_virtual_content_again(self):
         result = (
             zeit.content.dynamicfolder.materialize.materialize_content.delay(
                 self.folder.uniqueId))
         transaction.commit()
-        del self.folder['art-déco']
-        self.assertIn('art-déco', self.folder)
-        assert DFinterfaces.IVirtualContent.providedBy(
-            self.folder['art-déco'])
+        del self.folder['wahlergebnis-kiel-wahlkreis-5-live']
+        self.assertIn('wahlergebnis-kiel-wahlkreis-5-live', self.folder)
+        self.assertTrue(DFinterfaces.IVirtualContent.providedBy(
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
 
     def test_publish_materialized_content(self):
         materialize_content = (
@@ -275,4 +289,5 @@ class MaterializeDynamicFolder(TestDynamicFolder):
         zeit.content.dynamicfolder.publish.publish_content.delay(
             self.folder.uniqueId)
         transaction.commit()
-        self.assert_published(self.folder['art-déco'])
+        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live']).published)
