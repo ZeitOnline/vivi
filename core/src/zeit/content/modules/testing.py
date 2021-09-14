@@ -16,6 +16,7 @@ product_config = """\
   embed-provider-source file://{base}/tests/fixtures/embed-providers.xml
   newsletter-source file://{base}/tests/fixtures/newsletter.xml
   recipe-metadata-source file://{base}/tests/fixtures/recipe-metadata.xml
+  podigee-providers-source file://{base}/tests/fixtures/podigee-providers.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, '.'))
 

@@ -329,5 +329,6 @@ class PodigeeProvidersSource(zeit.cms.content.sources.SearchableXMLSource):
        in friedbert-deployment. """
 
     attribute = 'id'
+    config_url = 'podigee-providers-source'
     default_filename = 'podigee-providers.xml'
     product_configuration = 'zeit.content.modules'
