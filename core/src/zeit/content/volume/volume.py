@@ -418,7 +418,7 @@ def _find_performing_articles_via_webtrekk(volume):
     # XXX Unfortunately the webtrekk api doesn't allow filtering for custom
     # metrics, so we got filter our results here
     if FEATURE_TOGGLES.find('cp30_wall_status_new_format'):
-        object_title = 'Wall-Status'
+        object_title = 'cp30 - Wall-Status'
     else:
         object_title = 'Wall - Status'
     body = {'version': '1.1',
