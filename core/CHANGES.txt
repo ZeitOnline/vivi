@@ -22,6 +22,8 @@ vivi.core changes
 4.63.4 (2021-09-14)
 -------------------
 
+- ZO-118: Add provider field to podcast module (on cp and articles)
+
 - ZO-188: Toogle webtrekk cp30 value format for wall status.
 - ZO-163: Publish materialized content in dynamic folders
 
