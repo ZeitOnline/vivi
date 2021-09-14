@@ -322,3 +322,12 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         source=LiveblogSource('*//theme'),
         default='default',
         required=True)
+
+
+class PodigeeProvidersSource(zeit.cms.content.sources.SearchableXMLSource):
+    """A source for podigee providers config. API keys must be configured
+       in friedbert-deployment. """
+
+    attribute = 'id'
+    default_filename = 'podigee-providers.xml'
+    product_configuration = 'zeit.content.modules'
