@@ -5,7 +5,6 @@ import zeit.cms.browser.view
 
 
 class PublishMaterializedContent(zeit.cms.browser.view.Base):
-    """Materialize contents of dynamic folder"""
 
     def __call__(self):
         zeit.content.dynamicfolder.publish.publish_content.delay(

@@ -45,7 +45,7 @@
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.MaterializeContent"
     action="@@materialize-content"
-    icon="/@@/zeit.cms/icons/reload.png"
+    icon="/@@/zeit.cms/icons/show-original.png"
     />
 
   <browser:page
@@ -64,7 +64,7 @@
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.PublishDynamicFolderContent"
     action="@@publish-content"
-    icon="/@@/zeit.cms/icons/reload.png"
+    icon="/@@/zeit.cms/icons/wf_bb_veroeffentlichen.png"
     />
 
   <browser:page
