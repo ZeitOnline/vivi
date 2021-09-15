@@ -9,6 +9,7 @@ import lxml.etree
 import pkg_resources
 import six
 import transaction
+import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.interfaces as DFinterfaces
@@ -254,7 +255,8 @@ class MaterializeDynamicFolder(
 
     def test_checkin_virtual_content_materializes_content(self):
         self.assertEqual(
-            'Wahlergebnis in Kiel', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
+            'Wahlergebnis in Kiel',
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
         with checked_out(
                 self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
             co.title = 'foo'
@@ -291,3 +293,17 @@ class MaterializeDynamicFolder(
         transaction.commit()
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']).published)
+
+    def test_folder_should_not_be_materialized_content(self):
+        """
+        And therefore is never published, when
+        zeit.content.dynamicfolder.publish.publish_content is called
+        """
+        self.repository['dynamicfolder']['real-folder'] = (
+            zeit.cms.repository.folder.Folder())
+        materialize_content = (
+            zeit.content.dynamicfolder.materialize.materialize_content.delay(
+                self.repository['dynamicfolder']))
+        transaction.commit()
+        self.assertFalse(DFinterfaces.IVirtualContent.providedBy(
+            self.repository['dynamicfolder']['real-folder']))
