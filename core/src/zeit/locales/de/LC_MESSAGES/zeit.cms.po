@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep  6 19:04:39 2021\n"
+"POT-Creation-Date: Wed Sep 15 10:44:33 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -749,7 +749,7 @@ msgstr "Jahr"
 #: zeit/cms/content/interfaces.py:75
 #: zeit/content/article/edit/interfaces.py:286
 #: zeit/content/volume/browser/form.py:33 zeit/content/volume/interfaces.py:41
-#: zeit/content/volume/volume.py:309
+#: zeit/content/volume/volume.py:310
 msgid "Volume"
 msgstr "Ausgabe"
 
@@ -1166,6 +1166,14 @@ msgstr "Autor löschen"
 #: zeit/cms/permissions.zcml:159
 msgid "Add Embed objects"
 msgstr "Embed-Objekt hinzufügen"
+
+#: zeit/cms/permissions.zcml:164
+msgid "Materialize dynamic folder content"
+msgstr "Ordner materialisieren"
+
+#: zeit/cms/permissions.zcml:169
+msgid "Publish dynamic folder content"
+msgstr "Ordner veröffentlichen"
 
 #: zeit/cms/redirect/interfaces.py:22
 msgid "previous uniqueIds of this ICMSContent"
@@ -3424,9 +3432,13 @@ msgstr "Jobbox Ticker"
 msgid "Enable RSS Tracking-Parameter"
 msgstr "RSS Tracking-Parameter aktivieren"
 
-#: zeit/content/dynamicfolder/browser/materialize.py:20
+#: zeit/content/dynamicfolder/browser/materialize.py:19
 msgid "Materialize dynamic folder"
 msgstr "Ordner materialisieren"
+
+#: zeit/content/dynamicfolder/browser/publish.py:19
+msgid "Publish dynamic folder"
+msgstr "Ordner veröffentlichen"
 
 #: zeit/content/dynamicfolder/folder.py:219
 msgid "Dynamic Folder"

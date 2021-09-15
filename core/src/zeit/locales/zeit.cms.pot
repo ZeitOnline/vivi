@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep  6 19:04:39 2021\n"
+"POT-Creation-Date: Wed Sep 15 10:44:33 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -786,7 +786,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:286
 #: zeit/content/volume/browser/form.py:33
 #: zeit/content/volume/interfaces.py:41
-#: zeit/content/volume/volume.py:309
+#: zeit/content/volume/volume.py:310
 msgid "Volume"
 msgstr ""
 
@@ -1207,6 +1207,14 @@ msgstr ""
 
 #: zeit/cms/permissions.zcml:159
 msgid "Add Embed objects"
+msgstr ""
+
+#: zeit/cms/permissions.zcml:164
+msgid "Materialize dynamic folder content"
+msgstr ""
+
+#: zeit/cms/permissions.zcml:169
+msgid "Publish dynamic folder content"
 msgstr ""
 
 #: zeit/cms/redirect/interfaces.py:22
@@ -3497,8 +3505,12 @@ msgstr ""
 msgid "Enable RSS Tracking-Parameter"
 msgstr ""
 
-#: zeit/content/dynamicfolder/browser/materialize.py:20
+#: zeit/content/dynamicfolder/browser/materialize.py:19
 msgid "Materialize dynamic folder"
+msgstr ""
+
+#: zeit/content/dynamicfolder/browser/publish.py:19
+msgid "Publish dynamic folder"
 msgstr ""
 
 #: zeit/content/dynamicfolder/folder.py:219
