@@ -253,7 +253,11 @@ class MaterializeDynamicFolder(
         super().setUp()
         self.folder = self.repository['dynamicfolder']
 
-    def test_checkin_virtual_content_materializes_content(self):
+    def test_checkin_materialized_content_preserves_materialization(self):
+        result = (
+            zeit.content.dynamicfolder.materialize.materialize_content.delay(
+                self.folder.uniqueId))
+        transaction.commit()
         self.assertEqual(
             'Wahlergebnis in Kiel',
             self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
@@ -262,6 +266,8 @@ class MaterializeDynamicFolder(
             co.title = 'foo'
         self.assertEqual(
             'foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
+        self.assertTrue(DFinterfaces.IMaterializedContent.providedBy(
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
 
     def test_materializing_virtual_content(self):
         result = (
