@@ -19,9 +19,11 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 class DynamicLayer(plone.testing.Layer):
 
     defaultBases = (ZOPE_LAYER,)
-    path = 'tests/fixtures/dynamic-centerpages/'
-    files = [
-        'config.xml', 'tags.xml', 'template.xml']
+
+    def __init__(self, path, files):
+        super().__init__()
+        self.path = path
+        self.files = files
 
     def testSetUp(self):
         with zeit.cms.testing.site(self['zodbApp']):
@@ -43,13 +45,8 @@ class DynamicLayer(plone.testing.Layer):
             transaction.commit()
 
 
-class DynamicArticleLayer(DynamicLayer):
-
-    path = 'tests/fixtures/dynamic-articles/'
-    files = ['config.xml', 'template.xml']
-
-
-LAYER = DynamicLayer()
+LAYER = DynamicLayer(path='tests/fixtures/dynamic-centerpages/', files=[
+    'config.xml', 'tags.xml', 'template.xml'])
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 

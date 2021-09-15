@@ -247,7 +247,9 @@ class TestDynamicFolder(
 class MaterializeDynamicFolder(
         zeit.content.dynamicfolder.testing.FunctionalTestCase):
 
-    layer = zeit.content.dynamicfolder.testing.DynamicArticleLayer()
+    layer = zeit.content.dynamicfolder.testing.DynamicLayer(
+        path='tests/fixtures/dynamic-articles/',
+        files=['config.xml', 'template.xml'])
 
     def setUp(self):
         super().setUp()
