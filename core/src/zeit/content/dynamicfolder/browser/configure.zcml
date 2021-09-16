@@ -45,7 +45,7 @@
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.MaterializeContent"
     action="@@materialize-content"
-    icon="/@@/zeit.cms/icons/reload.png"
+    icon="/@@/zeit.cms/icons/show-original.png"
     />
 
   <browser:page
@@ -54,6 +54,25 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.Materialize"
     permission="zeit.MaterializeContent"
+    />
+
+  <browser:viewlet
+    name="Publish"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.content.dynamicfolder.browser.publish.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.PublishDynamicFolderContent"
+    action="@@publish-content"
+    icon="/@@/zeit.cms/icons/wf_bb_veroeffentlichen.png"
+    />
+
+  <browser:page
+    name="publish-content"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.content.dynamicfolder.browser.publish.PublishMaterializedContent"
+    permission="zeit.PublishDynamicFolderContent"
     />
 
 </configure>

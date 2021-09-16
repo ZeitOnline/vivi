@@ -166,5 +166,10 @@
    title="Materialize dynamic folder content"
    />
 
+  <permission
+   id="zeit.PublishDynamicFolderContent"
+   title="Publish dynamic folder content"
+   />
+
 </configure>
 

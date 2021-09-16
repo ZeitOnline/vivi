@@ -11,6 +11,7 @@ vivi.core changes
 -------------------
 
 - ZO-188: Toogle webtrekk cp30 value format for wall status.
+- ZO-163: Publish materialized content in dynamic folders
 
 
 4.63.3 (2021-09-09)
