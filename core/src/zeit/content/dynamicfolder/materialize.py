@@ -29,18 +29,33 @@ def materialize_content(unique_id):
         parent.content_template_file.__name__
     ]]
 
+    regenerate = []
+    objects_to_retract = []
+    materialize = []
+
     for key in virtual_content_keys:
         content = copy.copy(zope.security.proxy.getObject(parent[key]))
 
         if DFinterfaces.IMaterializedContent.providedBy(content):
+            regenerate.append(key)
+            objects_to_retract.append(content)
             log.info('{} is going to be regenerated'.format(content.uniqueId))
-            zeit.cms.workflow.interfaces.IPublish(content).retract()
-            del parent[content.__name__]
-            content = copy.copy(zope.security.proxy.getObject(
-                parent[key]))
 
         if DFinterfaces.IVirtualContent.providedBy(content):
-            log.info('Materialize {}'.format(content.uniqueId))
+            materialize.append(key)
+
+    if regenerate:
+        for key in regenerate:
+            materialize.append(key)
+            del parent[key]
+            transaction.commit()
+
+    parent = zeit.cms.interfaces.ICMSContent(unique_id)
+    if materialize:
+        for key in materialize:
+            content = copy.copy(zope.security.proxy.getObject(parent[key]))
+            repository_properties = Cinterfaces.IWebDAVReadProperties(
+                parent[key])
 
             zope.interface.alsoProvides(
                 content, DFinterfaces.IMaterializedContent)
@@ -51,12 +66,11 @@ def materialize_content(unique_id):
             zope.interface.noLongerProvides(
                 content, zeit.cms.repository.interfaces.IRepositoryContent)
 
-            repository_properties = Cinterfaces.IWebDAVReadProperties(content)
-
             new_properties = Cinterfaces.IWebDAVWriteProperties(content)
             new_properties.update(repository_properties)
             parent[key] = content
 
+            log.info('Materialize {}'.format(content.uniqueId))
             zeit.objectlog.interfaces.ILog(content).log(msg)
 
     zeit.objectlog.interfaces.ILog(parent).log(msg)
