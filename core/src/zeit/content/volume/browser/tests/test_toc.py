@@ -25,6 +25,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                           'title': 'title',
                           'teaser': 'tease',
                           'access': u'frei verfügbar',
+                          'authors': 'Helmut Schmidt',
                           'volume': u'1',
                           'year': u'2015',
                           'supertitle': 'Super'}]
@@ -34,6 +35,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             {'Dossier': [
                 {'page': '1',
                  'access': u'frei verfügbar',
+                 'authors': 'Helmut Kohl',
                  'title': 'title',
                  'teaser': 'tease',
                  'supertitle': 'Super',
@@ -42,6 +44,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                  },
                 {'page': '3',
                  'access': u'frei verfügbar',
+                 'authors': 'Helmut Schmidt, Helmut Kohl',
                  'title': 'title2',
                  'teaser': 'tease',
                  'volume': '1',
@@ -56,6 +59,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     name="page">{page}</attribute>
                     <attribute ns="http://namespaces.zeit.de/CMS/document"
                     name="access">free</attribute>
+                    <attribute ns="http://namespaces.zeit.de/CMS/document"
+                    name="author">Helmut Schmidt</attribute>
                 </head>
                 <body>
                      <title>Titel</title>
@@ -91,7 +96,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     'title': 'Titel',
                     'teaser': 'Das soll der Teaser sein',
                     'supertitle': '',
-                    'access': u'frei verfügbar'
+                    'access': u'frei verfügbar',
+                    'authors': 'Helmut Schmidt'
                     }
         article_element = lxml.etree.fromstring(article_xml)
         toc = Toc(mock.Mock(), mock.Mock())
@@ -99,9 +105,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(expected, result)
 
     def test_csv_is_created_from_toc_data(self):
-        expected = """1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPolitik\t2015\t1\tDie Zeit\r
-1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\r
-3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\r
+        expected = """1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPolitik\t2015\t1\tDie Zeit\tHelmut Schmidt\r
+1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Kohl\r
+3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Schmidt, Helmut Kohl\r
 """
         context = mock.Mock()
         context.year = 2015

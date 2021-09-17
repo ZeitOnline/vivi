@@ -213,7 +213,7 @@ class Toc(zeit.cms.browser.view.Base):
         """
         :param article_element: lxml.etree Article element
         :return: {'page': int, 'title': str, 'teaser': str, 'supertitle':
-        str, 'access': bool}
+        str, 'access': bool, 'authors': str}
         """
         toc_entry = self._get_metadata_from_article_xml(article_element)
         if self._is_sane(toc_entry) and self.excluder.is_relevant(
@@ -227,14 +227,15 @@ class Toc(zeit.cms.browser.view.Base):
         Get all relevant normalized metadata from article xml tree.
         :param atricle_tree: lxml.etree Element
         :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str,
-        'access': bool}
+        'access': bool, 'authors': str}
         """
         xpaths = {
             'title': "body/title/text()",
             'page': "//attribute[@name='page']/text()",
             'teaser': "body/subtitle/text()",
             'supertitle': "body/supertitle/text()",
-            'access': "//attribute[@name='access']/text()"
+            'access': "//attribute[@name='access']/text()",
+            'authors': "//attribute[@name='author']/text()"
         }
         res = {}
         for key, xpath in xpaths.items():
@@ -376,7 +377,7 @@ class Toc(zeit.cms.browser.view.Base):
             [''] * 8 + [toc_entry.get('image_url', '')] +
             [''] * 5 + [toc_entry.get('preview_url', '')] +
             [ressort_name, str(self._context_year), str(self._context_volume),
-                product_name])
+                product_name, toc_entry.get('authors', '')])
 
 
 PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)
