@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 15 10:44:33 2021\n"
+"POT-Creation-Date: Sat Sep 18 22:39:05 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1641,6 +1641,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:49
+#: zeit/content/dynamicfolder/publish.py:20
 #: zeit/workflow/publish.py:421
 #: zeit/workflow/publishinfo.py:50
 msgid "Published"
@@ -3509,7 +3510,7 @@ msgstr ""
 msgid "Materialize dynamic folder"
 msgstr ""
 
-#: zeit/content/dynamicfolder/browser/publish.py:19
+#: zeit/content/dynamicfolder/browser/publish.py:18
 msgid "Publish dynamic folder"
 msgstr ""
 
@@ -3520,6 +3521,10 @@ msgstr ""
 #: zeit/content/dynamicfolder/interfaces.py:34
 #: zeit/push/browser/facebook-token.pt:11
 msgid "Configuration file"
+msgstr ""
+
+#: zeit/content/dynamicfolder/materialize.py:25
+msgid "Materialized"
 msgstr ""
 
 #: zeit/content/gallery/browser/configure.zcml:172

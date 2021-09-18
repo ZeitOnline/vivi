@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 15 10:44:33 2021\n"
+"POT-Creation-Date: Sat Sep 18 22:39:05 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -1609,7 +1609,8 @@ msgid "Menu of addable configuration objects"
 msgstr "Menu of addable configuration objects"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:421 zeit/workflow/publishinfo.py:50
+#: zeit/content/dynamicfolder/publish.py:20 zeit/workflow/publish.py:421
+#: zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -3436,7 +3437,7 @@ msgstr "RSS Tracking-Parameter aktivieren"
 msgid "Materialize dynamic folder"
 msgstr "Ordner materialisieren"
 
-#: zeit/content/dynamicfolder/browser/publish.py:19
+#: zeit/content/dynamicfolder/browser/publish.py:18
 msgid "Publish dynamic folder"
 msgstr "Ordner veröffentlichen"
 
@@ -3448,6 +3449,10 @@ msgstr "Dynamischer Ordner"
 #: zeit/push/browser/facebook-token.pt:11
 msgid "Configuration file"
 msgstr "Konfigurationsdatei"
+
+#: zeit/content/dynamicfolder/materialize.py:25
+msgid "Materialized"
+msgstr "Materialisiert"
 
 #: zeit/content/gallery/browser/configure.zcml:172
 msgid "Transform"
