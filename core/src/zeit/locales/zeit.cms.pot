@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Sat Sep 18 22:39:05 2021\n"
+"POT-Creation-Date: Mon Sep 20 11:22:27 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -3507,7 +3507,7 @@ msgid "Enable RSS Tracking-Parameter"
 msgstr ""
 
 #: zeit/content/dynamicfolder/browser/materialize.py:19
-msgid "Materialize dynamic folder"
+msgid "Materialize dynamic folder and update content"
 msgstr ""
 
 #: zeit/content/dynamicfolder/browser/publish.py:18

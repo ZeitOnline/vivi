@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Sat Sep 18 22:39:05 2021\n"
+"POT-Creation-Date: Mon Sep 20 11:22:27 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -3434,8 +3434,8 @@ msgid "Enable RSS Tracking-Parameter"
 msgstr "RSS Tracking-Parameter aktivieren"
 
 #: zeit/content/dynamicfolder/browser/materialize.py:19
-msgid "Materialize dynamic folder"
-msgstr "Ordner materialisieren"
+msgid "Materialize dynamic folder and update content"
+msgstr "Inhalte löschen und erneut materialisieren"
 
 #: zeit/content/dynamicfolder/browser/publish.py:18
 msgid "Publish dynamic folder"
@@ -5142,6 +5142,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Materialize dynamic folder"
+#~ msgstr "Ordner materialisieren"
 
 #, fuzzy
 #~ msgid "View SEO Data"

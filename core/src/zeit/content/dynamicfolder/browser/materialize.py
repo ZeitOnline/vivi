@@ -16,4 +16,4 @@ class Materialize(zeit.cms.browser.view.Base):
 
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
-    title = _('Materialize dynamic folder')
+    title = _('Materialize dynamic folder and update content')
