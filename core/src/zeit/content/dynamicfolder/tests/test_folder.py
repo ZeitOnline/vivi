@@ -9,8 +9,10 @@ import lxml.etree
 import pkg_resources
 import six
 import transaction
+import zope.interface
 import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
+import zeit.cms.testing
 import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.interfaces as DFinterfaces
 import zeit.content.dynamicfolder.materialize
@@ -245,7 +247,7 @@ class TestDynamicFolder(
 
 
 class MaterializeDynamicFolder(
-        zeit.content.dynamicfolder.testing.FunctionalTestCase):
+        zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.dynamicfolder.testing.DynamicLayer(
         path='tests/fixtures/dynamic-articles/',
@@ -294,7 +296,7 @@ class MaterializeDynamicFolder(
     def test_publish_materialized_content(self):
         materialize_content = (
             zeit.content.dynamicfolder.materialize.materialize_content.delay(
-                self.folder))
+                self.folder.uniqueId))
         transaction.commit()
         zeit.content.dynamicfolder.publish.publish_content.delay(
             self.folder.uniqueId)
@@ -311,7 +313,27 @@ class MaterializeDynamicFolder(
             zeit.cms.repository.folder.Folder())
         materialize_content = (
             zeit.content.dynamicfolder.materialize.materialize_content.delay(
-                self.repository['dynamicfolder']))
+                self.repository['dynamicfolder'].uniqueId))
         transaction.commit()
         self.assertFalse(DFinterfaces.IVirtualContent.providedBy(
             self.repository['dynamicfolder']['real-folder']))
+
+    def test_materialized_content_is_updated_when_materialized_again(self):
+        materialize_content = (
+            zeit.content.dynamicfolder.materialize.materialize_content.delay(
+                self.folder.uniqueId))
+        transaction.commit()
+        with checked_out(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
+            co.title = 'foo'
+        self.assertEqual(
+            'foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
+        materialize_content = (
+            zeit.content.dynamicfolder.materialize.materialize_content.delay(
+                self.folder.uniqueId))
+        transaction.commit()
+        self.assertEqual(
+            'Wahlergebnis in Kiel',
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
+        self.assertTrue(DFinterfaces.IMaterializedContent.providedBy(
+            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))

@@ -4,7 +4,7 @@ vivi.core changes
 4.63.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZO-156: Update previously materialized content
 
 
 4.63.4 (2021-09-14)
