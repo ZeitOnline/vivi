@@ -4,7 +4,7 @@ vivi.core changes
 4.63.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZO-62: New entries for volume toc export
 
 
 4.63.5 (2021-09-20)
