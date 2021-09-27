@@ -1,5 +1,6 @@
 import zeit.content.cp
 import zeit.content.cp.centerpage
+import zeit.content.cp.testing
 
 
 class TestPodcast(zeit.content.cp.testing.BrowserTestCase):
@@ -35,3 +36,5 @@ class TestPodcast(zeit.content.cp.testing.BrowserTestCase):
         self.assertEllipsis('...ID:...12345...', b.contents)
         b.getLink('Edit block properties', index=0).click()
         self.assertEqual('12345', b.getControl('Podcast id').value.strip())
+        self.assertEqual(
+            ['ZEIT ONLINE'], b.getControl('Provider').displayValue)
