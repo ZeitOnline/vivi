@@ -429,18 +429,8 @@ class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 
 
-PODIGEE_PROVIDERS_SOURCE = (
-    zeit.content.modules.interfaces.PodigeeProvidersSource)
-
-
-class IPodcast(IBlock):
-
-    episode_id = zope.schema.TextLine(
-        title=_('Podcast id'))
-    provider = zope.schema.Choice(
-        title=_('Provider'),
-        source=PODIGEE_PROVIDERS_SOURCE('*//provider'),
-        default='default')
+class IPodcast(IBlock, zeit.content.modules.interfaces.PodcastBase):
+    pass
 
 
 class IBox(IBlock):
