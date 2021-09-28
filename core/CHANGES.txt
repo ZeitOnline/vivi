@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.63.7 (unreleased)
+4.64.0 (2021-09-28)
 -------------------
 
 - ZO-142: Support setting celery config file via paste.ini
