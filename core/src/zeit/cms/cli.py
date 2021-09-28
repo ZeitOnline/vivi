@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 import logging.config
+import os
 import os.path
 import signal
 import sys
@@ -50,6 +51,11 @@ def parse_paste_ini():
             os.path.dirname(paste_ini))})
     config = ConfigParser()
     config.read(paste_ini)
+    if 'CELERY_CONFIG_FILE' not in os.environ:
+        # See z3c.celery.loader. Depending on our deployment setup it may be
+        # more sensible to centralize this in paste.ini than to use env vars.
+        os.environ['CELERY_CONFIG_FILE'] = config.get(
+            'application:cms', 'celery_conf')
     return config.get('application:cms', 'zope_conf')
 
 
