@@ -322,3 +322,26 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         source=LiveblogSource('*//theme'),
         default='default',
         required=True)
+
+
+class PodigeeProvidersSource(zeit.cms.content.sources.SearchableXMLSource):
+    """A source for podigee providers config. API keys must be configured
+       in friedbert-deployment. """
+
+    attribute = 'id'
+    config_url = 'podigee-providers-source'
+    default_filename = 'podigee-providers.xml'
+    product_configuration = 'zeit.content.modules'
+
+
+PODIGEE_PROVIDERS_SOURCE = PodigeeProvidersSource
+
+
+class PodcastBase(zope.interface.Interface):
+
+    episode_id = zope.schema.TextLine(
+        title=_('Podcast id'))
+    provider = zope.schema.Choice(
+        title=_('Provider'),
+        source=PODIGEE_PROVIDERS_SOURCE('*//provider'),
+        default='default')

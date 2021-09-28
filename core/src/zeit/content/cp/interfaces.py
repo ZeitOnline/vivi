@@ -733,11 +733,9 @@ class IJobTickerBlock(zeit.content.modules.interfaces.IJobTicker, IBlock):
         source=JOBTICKER_SOURCE)
 
 
-class IPodcastBlock(IBlock):
+class IPodcastBlock(IBlock, zeit.content.modules.interfaces.PodcastBase):
     """The Podcast block with a reference to a podcast."""
-
-    episode_id = zope.schema.TextLine(
-        title=_("Podcast id"))
+    pass
 
 
 class IMailBlock(zeit.content.modules.interfaces.IMail, IBlock):

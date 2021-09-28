@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Sep 20 11:22:27 2021\n"
+"POT-Creation-Date: Thu Sep 23 16:13:03 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -24,23 +24,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:15
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr "Registration"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr "Site-Management Folder"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:48
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:679 zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr "Inhalt"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/ui.zcml:29 zeit/cms/ui.zcml:36
 #: zeit/content/article/edit/browser/recension-list.pt:93
@@ -48,55 +48,55 @@ msgstr "Inhalt"
 msgid "Add"
 msgstr "Inhalte hinzufügen…"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr "Make a site"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr "Manage Site"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr "Add Site Management Folder"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.component-4.1.0-py3.7.egg/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr "Registrations"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.container-4.0.0-py3.7.egg/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr "Find"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.generations-4.0.0-py3.7.egg/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr "Database Schemas"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr "Translate"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr "Import/Export"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr "Synchronize"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr "A Persistent Translation Domain"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.i18n-4.0.0-py3.7.egg/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr "Translation Domain"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr "Principal Annotation Utility"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/_/Users/huelsen/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
+#: /Users/roemmer/work/vivi-deployment/work/_/Users/roemmer/.batou-shared-eggs/zope.app.principalannotation-4.0.0-py3.7.egg/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr "Stores Annotations for Principals"
 
@@ -318,8 +318,8 @@ msgstr "Autor"
 #: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:46
 #: zeit/content/advertisement/interfaces.py:26
-#: zeit/content/article/edit/interfaces.py:452
-#: zeit/content/article/edit/interfaces.py:635
+#: zeit/content/article/edit/interfaces.py:460
+#: zeit/content/article/edit/interfaces.py:643
 #: zeit/content/article/interfaces.py:180
 #: zeit/content/article/interfaces.py:246 zeit/content/author/interfaces.py:36
 #: zeit/content/cp/interfaces.py:180 zeit/content/cp/interfaces.py:334
@@ -741,7 +741,7 @@ msgid "Type changed. Loading ..."
 msgstr "Typ geändert. Lade …"
 
 #: zeit/cms/content/interfaces.py:70 zeit/cms/content/interfaces.py:683
-#: zeit/content/article/edit/interfaces.py:570
+#: zeit/content/article/edit/interfaces.py:578
 #: zeit/content/article/interfaces.py:215 zeit/content/volume/interfaces.py:36
 msgid "Year"
 msgstr "Jahr"
@@ -817,8 +817,8 @@ msgid "Kicker"
 msgstr "Spitzmarke"
 
 #: zeit/cms/content/interfaces.py:173 zeit/cms/content/interfaces.py:210
-#: zeit/content/article/edit/interfaces.py:447
-#: zeit/content/article/edit/interfaces.py:631
+#: zeit/content/article/edit/interfaces.py:455
+#: zeit/content/article/edit/interfaces.py:639
 msgid "Please take care of capitalisation."
 msgstr "Bitte auf Groß- und Kleinschreibung achten."
 
@@ -827,7 +827,7 @@ msgid "By line"
 msgstr "„Von“-Zeile"
 
 #: zeit/cms/content/interfaces.py:192
-#: zeit/content/article/edit/interfaces.py:457
+#: zeit/content/article/edit/interfaces.py:465
 #: zeit/content/modules/interfaces.py:187
 msgid "Subtitle"
 msgstr "Teaser/Vorspann (Unterzeile)"
@@ -2334,7 +2334,7 @@ msgstr "Ziehen Sie ein Video hierher, um es zu verknüpfen"
 #: zeit/content/article/edit/interfaces.py:260
 #: zeit/content/article/edit/interfaces.py:368
 #: zeit/content/article/edit/interfaces.py:384
-#: zeit/content/article/edit/interfaces.py:462
+#: zeit/content/article/edit/interfaces.py:470
 #: zeit/content/cp/interfaces.py:531 zeit/content/gallery/interfaces.py:101
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
@@ -2479,13 +2479,18 @@ msgstr "ID"
 msgid "Advertorial?"
 msgstr "Advertorial?"
 
-#: zeit/content/article/edit/interfaces.py:435
-#: zeit/content/cp/interfaces.py:740
+#: zeit/content/article/edit/interfaces.py:439
+#: zeit/content/cp/interfaces.py:744
 msgid "Podcast id"
 msgstr "Episoden-ID"
 
-#: zeit/content/article/edit/interfaces.py:446
-#: zeit/content/article/edit/interfaces.py:630
+#: zeit/content/article/edit/interfaces.py:441
+#: zeit/content/cp/interfaces.py:746
+msgid "Provider"
+msgstr "Quelle"
+
+#: zeit/content/article/edit/interfaces.py:454
+#: zeit/content/article/edit/interfaces.py:638
 #: zeit/content/cp/interfaces.py:330 zeit/content/cp/interfaces.py:482
 #: zeit/content/infobox/interfaces.py:13
 #: zeit/content/video/browser/object-details-body.pt:20
@@ -2493,51 +2498,51 @@ msgstr "Episoden-ID"
 msgid "Supertitle"
 msgstr "Spitzmarke"
 
-#: zeit/content/article/edit/interfaces.py:475
+#: zeit/content/article/edit/interfaces.py:483
 msgid "Jobbox ticker"
 msgstr "Jobticker"
 
-#: zeit/content/article/edit/interfaces.py:487
+#: zeit/content/article/edit/interfaces.py:495
 msgid "Article body"
 msgstr "Artikeltext"
 
-#: zeit/content/article/edit/interfaces.py:488
+#: zeit/content/article/edit/interfaces.py:496
 msgid "breaking-news-more-shortly"
 msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
 
-#: zeit/content/article/edit/interfaces.py:516
+#: zeit/content/article/edit/interfaces.py:524
 msgid "Adplace Tile"
 msgstr "Tile"
 
-#: zeit/content/article/edit/interfaces.py:565
+#: zeit/content/article/edit/interfaces.py:573
 msgid "Puzzle"
 msgstr "Rätsel"
 
-#: zeit/content/article/edit/interfaces.py:592
+#: zeit/content/article/edit/interfaces.py:600
 msgid "manual"
 msgstr "Klassisch"
 
-#: zeit/content/article/edit/interfaces.py:593
+#: zeit/content/article/edit/interfaces.py:601
 msgid "centerpage"
 msgstr "Centerpage"
 
-#: zeit/content/article/edit/interfaces.py:594
+#: zeit/content/article/edit/interfaces.py:602
 msgid "topicpage"
 msgstr "Themenseite"
 
-#: zeit/content/article/edit/interfaces.py:595
+#: zeit/content/article/edit/interfaces.py:603
 msgid "elasticsearch-query"
 msgstr "ES-Query"
 
-#: zeit/content/article/edit/interfaces.py:596
+#: zeit/content/article/edit/interfaces.py:604
 msgid "related-api"
 msgstr "Related-API"
 
-#: zeit/content/article/edit/interfaces.py:597
+#: zeit/content/article/edit/interfaces.py:605
 msgid "preconfigured-query"
 msgstr "Filter"
 
-#: zeit/content/article/edit/interfaces.py:639
+#: zeit/content/article/edit/interfaces.py:647
 #: zeit/content/image/interfaces.py:81
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/content/link/browser/form.py:46 zeit/content/link/link.py:51
@@ -2545,31 +2550,31 @@ msgstr "Filter"
 msgid "Link"
 msgstr "Link"
 
-#: zeit/content/article/edit/interfaces.py:643
+#: zeit/content/article/edit/interfaces.py:651
 msgid "Linktext"
 msgstr "LInktext"
 
-#: zeit/content/article/edit/interfaces.py:648
+#: zeit/content/article/edit/interfaces.py:656
 #: zeit/content/cp/interfaces.py:392
 msgid "Automatic type"
 msgstr "Quelle"
 
-#: zeit/content/article/edit/interfaces.py:654
-#: zeit/content/article/edit/interfaces.py:660
-#: zeit/content/article/edit/interfaces.py:666
+#: zeit/content/article/edit/interfaces.py:662
+#: zeit/content/article/edit/interfaces.py:668
+#: zeit/content/article/edit/interfaces.py:674
 msgid "Reference"
 msgstr "Referenz"
 
-#: zeit/content/article/edit/interfaces.py:655
+#: zeit/content/article/edit/interfaces.py:663
 msgid "Drag article/cp/link here"
 msgstr "Ziehen Sie einen Artikel/CP/Link hierher"
 
-#: zeit/content/article/edit/interfaces.py:661
-#: zeit/content/article/edit/interfaces.py:667
+#: zeit/content/article/edit/interfaces.py:669
+#: zeit/content/article/edit/interfaces.py:675
 msgid "Drag article/link here"
 msgstr "Ziehen Sie einen Artikel/Link hierher"
 
-#: zeit/content/article/edit/interfaces.py:672
+#: zeit/content/article/edit/interfaces.py:680
 msgid "Filter"
 msgstr ""
 
@@ -2593,7 +2598,7 @@ msgstr "Mail-Formular"
 msgid "Newsletter Signup block"
 msgstr "Newsletter-Anmeldung"
 
-#: zeit/content/article/edit/podcast.py:21 zeit/content/cp/blocks/podcast.py:20
+#: zeit/content/article/edit/podcast.py:23 zeit/content/cp/blocks/podcast.py:22
 msgid "Podcast block"
 msgstr "Podcast-Block"
 
@@ -3429,7 +3434,7 @@ msgstr "Hintergrundfarbe auswählen"
 msgid "Jobbox Ticker"
 msgstr "Jobbox Ticker"
 
-#: zeit/content/cp/interfaces.py:759
+#: zeit/content/cp/interfaces.py:767
 msgid "Enable RSS Tracking-Parameter"
 msgstr "RSS Tracking-Parameter aktivieren"
 

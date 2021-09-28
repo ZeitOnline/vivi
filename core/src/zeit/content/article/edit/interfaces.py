@@ -429,10 +429,8 @@ class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 
 
-class IPodcast(IBlock):
-
-    episode_id = zope.schema.TextLine(
-        title=_('Podcast id'))
+class IPodcast(IBlock, zeit.content.modules.interfaces.PodcastBase):
+    pass
 
 
 class IBox(IBlock):

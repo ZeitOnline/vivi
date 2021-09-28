@@ -13,6 +13,8 @@ class Podcast(zeit.content.article.edit.block.Block):
 
     episode_id = ObjectPathAttributeProperty(
         '.', 'id', IPodcast['episode_id'])
+    provider = ObjectPathAttributeProperty(
+        '.', 'provider', IPodcast['provider'])
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):

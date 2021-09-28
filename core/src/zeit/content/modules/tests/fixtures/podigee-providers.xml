@@ -1,0 +1,6 @@
+<podigee>
+	<providers>
+		<provider id="default">ZEIT ONLINE</provider>
+		<provider id="tempus_corporate">Tempus Corporate</provider>
+	</providers>
+</podigee>
