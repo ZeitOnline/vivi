@@ -46,13 +46,15 @@
     permission="zeit.MaterializeContent"
     action="@@materialize-content"
     icon="/@@/zeit.cms/icons/show-original.png"
+    lightbox="@@materialize.html"
     />
 
   <browser:page
-    name="materialize-content"
+    name="materialize"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.Materialize"
+    template="materialize.pt"
     permission="zeit.MaterializeContent"
     />
 
