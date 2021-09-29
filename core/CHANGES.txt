@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.64.1 (unreleased)
+4.64.1 (2021-09-29)
 -------------------
 
 - ZO-118: Add provider field to podcast module (on cp and articles)
