@@ -175,6 +175,10 @@
     principal="zope.producer"
     permission="zeit.content.text.AddEmbed"
     />
+  <grant
+    principal="zope.producer"
+    permission="zeit.MaterializeContent"
+    /> 
 
   <!-- SEO grants -->
 
