@@ -13,6 +13,7 @@
 """
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zope.interface
 
