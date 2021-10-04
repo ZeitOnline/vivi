@@ -171,7 +171,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         ], self.transform.create_variant_image(self.variants['default']))
 
     def test_all_image_enhancements_are_applied_to_variant_image(self):
-        from mock import patch
+        from unittest.mock import patch
         import PIL.Image
 
         variant = Variant(
