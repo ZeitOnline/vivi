@@ -8,6 +8,7 @@ import zope.security.proxy
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.cms.celery
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -17,6 +18,16 @@ import zeit.objectlog.interfaces
 
 
 log = logging.getLogger(__name__)
+
+
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.ICloneArmy)
+class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    activate = zeit.cms.content.dav.DAVProperty(
+        DFinterfaces.ICloneArmy['activate'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'materializeable'
+        )
 
 
 @zeit.cms.celery.task
