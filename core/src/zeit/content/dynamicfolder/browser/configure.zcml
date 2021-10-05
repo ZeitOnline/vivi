@@ -50,7 +50,7 @@
     />
 
   <browser:page
-    name="materialize"
+    name="materialize.html"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.Materialize"
