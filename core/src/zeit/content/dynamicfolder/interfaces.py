@@ -42,7 +42,7 @@ class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
     """
 
     config_file = zope.schema.Choice(
-        title=_(u'Configuration file'),
+        title=_('Configuration file'),
         source=zeit.cms.content.contentsource.cmsContentSource)
 
     content_template_file = zope.interface.Attribute(
