@@ -5,6 +5,7 @@ import transaction
 import zope.interface
 import zope.security.proxy
 
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.cms.celery
@@ -26,7 +27,8 @@ class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     activate = zeit.cms.content.dav.DAVProperty(
         DFinterfaces.ICloneArmy['activate'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'materializeable'
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'materializeable',
+        writeable=WRITEABLE_ALWAYS
         )
 
 
