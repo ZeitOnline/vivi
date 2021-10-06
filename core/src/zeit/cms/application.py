@@ -47,25 +47,29 @@ class Application:
     ]
 
     def __call__(self, global_conf, **local_conf):
-        zeit.cms.cli.confiure(local_conf)
-        debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
+        settings = os.environ.copy()
+        settings.update(local_conf)
+        zeit.cms.cli.configure(settings)
+
+        debug = zope.app.wsgi.paste.asbool(settings.get('debug'))
         app = zope.app.wsgi.getWSGIApplication(
-            local_conf['zope_conf'], handle_errors=not debug)
+            settings['zope_conf'], handle_errors=not debug)
+
         for key, value in FANSTATIC_SETTINGS.items():
-            local_conf['fanstatic.' + key] = value
+            settings['fanstatic.' + key] = value
 
         pipeline = self.pipeline
         if debug:
-            local_conf['debugger.evalex'] = True
+            settings['debugger.evalex'] = True
             pipeline = [
                 ('dbfanstatic', 'call:zeit.cms.application:clear_fanstatic'),
                 ('debugger', 'call:zeit.cms.application:werkzeug_debugger'),
             ] + pipeline
-        if local_conf.get('use_linesman'):
+        if settings.get('use_linesman'):
             pipeline = [
                 ('linesman', 'egg:linesman#profiler'),
             ] + pipeline
-        return zeit.cms.wsgi.wsgi_pipeline(app, pipeline, local_conf)
+        return zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
 
 
 APPLICATION = Application()
