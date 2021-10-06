@@ -61,6 +61,10 @@ class Application:
                 ('dbfanstatic', 'call:zeit.cms.application:clear_fanstatic'),
                 ('debugger', 'call:zeit.cms.application:werkzeug_debugger'),
             ] + pipeline
+        if local_conf.get('use_linesman'):
+            pipeline = [
+                ('linesman', 'egg:linesman#profiler'),
+            ] + pipeline
         return zeit.cms.wsgi.wsgi_pipeline(app, pipeline, local_conf)
 
 
