@@ -42,6 +42,7 @@ import xml.sax.saxutils
 import zeit.cms.application
 import zeit.cms.celery
 import zeit.cms.workflow.mock
+import zeit.cms.wsgi
 import zeit.connector.interfaces
 import zeit.connector.mock
 import zope.app.appsetup
@@ -343,8 +344,10 @@ class WSGILayer(plone.testing.Layer):
     def setUp(self):
         self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(
             self['zodbDB-layer'])
-        self['wsgi_app'] = zeit.cms.application.APPLICATION.setup_pipeline(
-            self['zope_app'])
+        self['wsgi_app'] = zeit.cms.wsgi.wsgi_pipeline(
+            self['zope_app'], [('fanstatic', 'egg:fanstatic#fanstatic')],
+            {'fanstatic.' + key: value for key, value
+             in zeit.cms.application.FANSTATIC_SETTINGS.items()})
 
     def testSetUp(self):
         # Switch database to the currently active DemoStorage.

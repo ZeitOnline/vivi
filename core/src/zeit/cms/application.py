@@ -2,10 +2,10 @@ import fanstatic
 import grokcore.component as grok
 import os
 import pendulum
-import pkg_resources
 import pyramid_dogpile_cache2
 import re
 import webob.cookies
+import zeit.cms.wsgi
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
@@ -16,12 +16,17 @@ import zope.publisher.browser
 import zope.security.checker
 
 
-FANSTATIC_PATH = fanstatic.DEFAULT_SIGNATURE
-FANSTATIC_DEBUG = os.environ.get('FANSTATIC_DEBUG', False)
-FANSTATIC_VERSIONING = os.environ.get('FANSTATIC_VERSIONING', True)
-BUNDLE = not FANSTATIC_DEBUG
-MINIFIED = False  # XXX
-
+FANSTATIC_SETTINGS = {
+    'bottom': True,
+    'bundle': not os.environ.get('FANSTATIC_DEBUG', False),
+    'minified': False,  # XXX
+    'compile': True,
+    'versioning': os.environ.get('FANSTATIC_VERSIONING', True),
+    'versioning_use_md5': True,
+    # Once on startup, not every request
+    'recompute_hashes': False,
+    'publisher_signature': fanstatic.DEFAULT_SIGNATURE,
+}
 
 # Make pendulum a rock, just like datetime.datetime.
 for cls in ['DateTime', 'Date', 'Time']:
@@ -31,23 +36,14 @@ for cls in ['DateTime', 'Date', 'Time']:
 
 class Application:
 
-    def __init__(self):
-        self.pipeline = [
-            # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
-            # repoze.vhm needs to come before fanstatic to keep them apart.
-            ('repoze.vhm', 'paste.filter_app_factory', 'vhm_xheaders', {}),
-            ('fanstatic', 'paste.filter_app_factory', 'fanstatic', {
-                'bottom': True,
-                'bundle': BUNDLE,
-                'minified': MINIFIED,
-                'compile': True,
-                'versioning': FANSTATIC_VERSIONING,
-                'versioning_use_md5': True,
-                # Once on startup, not every request
-                'recompute_hashes': False,
-                'publisher_signature': FANSTATIC_PATH,
-            }),
-        ]
+    pipeline = [
+        ('slowlog', 'egg:slowlog#slowlog'),
+        ('bugsnag', 'egg:vivi.core#bugsnag'),
+        # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
+        # repoze.vhm needs to come before fanstatic to keep them apart.
+        ('vhm', 'egg:repoze.vhm#vhm_xheaders'),
+        ('fanstatic', 'egg:fanstatic#fanstatic'),
+    ]
 
     def __call__(self, global_conf, **local_conf):
         if 'CELERY_CONFIG_FILE' not in os.environ:  # See zeit.cms.cli
@@ -55,25 +51,25 @@ class Application:
         debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
         app = zope.app.wsgi.getWSGIApplication(
             local_conf['zope_conf'], handle_errors=not debug)
-        if debug:
-            import werkzeug.debug
-            self.pipeline.insert(
-                0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
-                    'evalex': True}))
-            self.pipeline.insert(0, (ClearFanstaticOnError, 'factory', '', {}))
-        return self.setup_pipeline(app, global_conf)
+        for key, value in FANSTATIC_SETTINGS.items():
+            local_conf['fanstatic.' + key] = value
 
-    def setup_pipeline(self, app, global_conf=None):
-        for spec, protocol, name, extra in self.pipeline:
-            if protocol == 'factory':
-                app = spec(app, **extra)
-                continue
-            entrypoint = pkg_resources.get_entry_info(spec, protocol, name)
-            app = entrypoint.load()(app, global_conf, **extra)
-        return app
+        pipeline = self.pipeline
+        if debug:
+            local_conf['debugger.evalex'] = True
+            pipeline = [
+                ('dbfanstatic', 'call:zeit.cms.application:clear_fanstatic'),
+                ('debugger', 'call:zeit.cms.application:werkzeug_debugger'),
+            ] + pipeline
+        return zeit.cms.wsgi.wsgi_pipeline(app, pipeline, local_conf)
 
 
 APPLICATION = Application()
+
+
+def werkzeug_debugger(app, global_conf, **local_conf):
+    import werkzeug.debug
+    return werkzeug.debug.DebuggedApplication(app, **local_conf)
 
 
 class ClearFanstaticOnError:
@@ -90,6 +86,10 @@ class ClearFanstaticOnError:
         except Exception:
             fanstatic.clear_needed()
             raise
+
+
+def clear_fanstatic(app, global_conf, **local_conf):
+    return ClearFanstaticOnError(app)
 
 
 @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
