@@ -1,6 +1,3 @@
-import bugsnag
-import bugsnag.wsgi
-import bugsnag.wsgi.middleware
 import fanstatic
 import grokcore.component as grok
 import os
@@ -8,7 +5,7 @@ import pendulum
 import pkg_resources
 import pyramid_dogpile_cache2
 import re
-import webob
+import webob.cookies
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
@@ -106,48 +103,6 @@ def configure_dogpile_cache(event):
         settings['dogpile_cache.%s.expiration_time' % region] = config[
             'cache-expiration-%s' % region]
     pyramid_dogpile_cache2.configure_dogpile_cache(settings)
-
-
-class BugsnagMiddleware:
-
-    def __init__(self, application):
-        bugsnag.before_notify(add_wsgi_request_data_to_notification)
-        self.application = application
-
-    def __call__(self, environ, start_response):
-        return bugsnag.wsgi.middleware.WrappedWSGIApp(
-            self.application, environ, start_response)
-
-
-# XXX copy&paste to remove overwriting the user id with the IP address
-def add_wsgi_request_data_to_notification(notification):
-    if not hasattr(notification.request_config, "wsgi_environ"):
-        return
-
-    environ = notification.request_config.wsgi_environ
-    request = webob.Request(environ)
-
-    notification.context = "%s %s" % (
-        request.method, bugsnag.wsgi.request_path(environ))
-    notification.add_tab("request", {
-        "url": request.path_url,
-        "headers": dict(request.headers),
-        "cookies": dict(request.cookies),
-        "params": dict(request.params),
-    })
-    notification.add_tab("environment", dict(request.environ))
-
-
-# XXX bugsnag itself does not provide a paste filter factory
-def bugsnag_filter(global_conf, **local_conf):
-    if 'notify_release_stages' in local_conf:
-        local_conf['notify_release_stages'] = local_conf[
-            'notify_release_stages'].split(',')
-    bugsnag.configure(**local_conf)
-
-    def bugsnag_filter(app):
-        return BugsnagMiddleware(app)
-    return bugsnag_filter
 
 
 class BrowserRequest(zope.publisher.browser.BrowserRequest):
