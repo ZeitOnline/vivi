@@ -98,5 +98,15 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
+  <!-- Healthcheck -->
+
+  <browser:page
+    for="zope.traversing.interfaces.IContainmentRoot"
+    class=".healthcheck.HealthCheck"
+    permission="zope.Public"
+    name="health-check"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
 </configure>
 
