@@ -51,7 +51,7 @@ def parse_paste_ini():
             os.path.dirname(paste_ini))})
     paste = ConfigParser()
     paste.read(paste_ini)
-    settings = dict(paste.items('application:cms'))
+    settings = dict(paste.items('application:main'))
     configure(settings)
     return settings['zope_conf']
 
