@@ -5,6 +5,7 @@ import pendulum
 import pyramid_dogpile_cache2
 import re
 import webob.cookies
+import zeit.cms.cli
 import zeit.cms.wsgi
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
@@ -46,8 +47,7 @@ class Application:
     ]
 
     def __call__(self, global_conf, **local_conf):
-        if 'CELERY_CONFIG_FILE' not in os.environ:  # See zeit.cms.cli
-            os.environ['CELERY_CONFIG_FILE'] = local_conf.get('celery_conf')
+        zeit.cms.cli.confiure(local_conf)
         debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
         app = zope.app.wsgi.getWSGIApplication(
             local_conf['zope_conf'], handle_errors=not debug)

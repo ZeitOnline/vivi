@@ -49,14 +49,22 @@ def parse_paste_ini():
     logging.config.fileConfig(
         paste_ini, {'__file__': paste_ini, 'here': os.path.abspath(
             os.path.dirname(paste_ini))})
-    config = ConfigParser()
-    config.read(paste_ini)
+    paste = ConfigParser()
+    paste.read(paste_ini)
+    settings = dict(paste.items('application:cms'))
+    configure(settings)
+    return settings['zope_conf']
+
+
+def configure(settings):
+    _configure_celery(settings)
+
+
+def _configure_celery(settings):
     if 'CELERY_CONFIG_FILE' not in os.environ:
         # See z3c.celery.loader. Depending on our deployment setup it may be
         # more sensible to centralize this in paste.ini than to use env vars.
-        os.environ['CELERY_CONFIG_FILE'] = config.get(
-            'application:cms', 'celery_conf')
-    return config.get('application:cms', 'zope_conf')
+        os.environ['CELERY_CONFIG_FILE'] = settings.get('celery_conf')
 
 
 try:
