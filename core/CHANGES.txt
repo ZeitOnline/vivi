@@ -1,7 +1,7 @@
 vivi.core changes
 =================
 
-4.64.2 (unreleased)
+4.65.0 (2021-10-07)
 -------------------
 
 - ZO-142: Implement health check that respects a stopfile
