@@ -2,11 +2,12 @@ import zope.cachedescriptors.property
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IRepositoryContent
-from zeit.content.dynamicfolder.interfaces import IMaterializedContent
+from zeit.content.dynamicfolder.interfaces import (
+    IMaterializedContent, ICloneArmy)
 
-import zeit.content.dynamicfolder.materialize
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
+import zeit.content.dynamicfolder.materialize
 
 
 class Materialize(zeit.cms.browser.view.Base):
@@ -59,7 +60,7 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
         return IRepositoryContent.providedBy(self.context)
 
     def render(self):
-        if self.visible:
+        if ICloneArmy(self.context).activate and self.visible:
             return super().render()
         else:
             return ''
