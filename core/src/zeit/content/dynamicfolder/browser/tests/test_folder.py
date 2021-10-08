@@ -23,21 +23,20 @@ class EditDynamicFolder(zeit.content.dynamicfolder.testing.BrowserTestCase):
         self.assertEqual(
             'http://xml.zeit.de/testcontent', folder.config_file.uniqueId)
 
-    def test_materialize_button_is_not_displayed_on_default(self):
-        browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
-        browser.login('producer', 'producerpw')
-        browser.open('http://localhost/++skin++vivi/repository/dynamicfolder')
+    def test_materialize_buttons_are_not_displayed_on_default(self):
+        """Both buttons belong to the materialize workflow"""
+        browser = self.wsgiBrowser()
         with self.assertRaises(LinkNotFoundError):
             browser.getLink(url='@@materialize.html')
+            browser.getLink(url="@@publish-content")
 
-    def test_materialize_button_is_displayed_for_clone_army(self):
-        folder = zeit.content.dynamicfolder.interfaces.ICloneArmy(
-            self.repository['dynamicfolder'])
-        folder.activate = True
-        browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
-        browser.login('producer', 'producerpw')
-        browser.open('http://localhost/++skin++vivi/repository/dynamicfolder')
+    def test_publish_all_content_is_diplayed_for_clone_army(self):
+        browser = self.cloneArmy()
+        browser.getLink(url="@@publish-content")
+
+    def test_materialize_button_are_displayed_for_clone_army(self):
+        browser = self.cloneArmy()
         link = browser.getLink(url='@@materialize.html')
         url = link.url.split("'")[1]
         browser.open(url)
-        browser.getControl('Delete and materialize')  # 'Materialize' button exists
+        browser.getControl('Delete and materialize')

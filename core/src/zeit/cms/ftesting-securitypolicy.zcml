@@ -180,6 +180,11 @@
     permission="zeit.MaterializeContent"
     /> 
 
+  <grant
+    principal="zope.producer"
+    permission="zeit.PublishDynamicFolderContent"
+  />
+
   <!-- SEO grants -->
 
   <grant

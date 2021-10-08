@@ -1,7 +1,10 @@
 from zeit.cms.i18n import MessageFactory as _
-import zeit.content.dynamicfolder.publish
+from zeit.cms.repository.interfaces import IRepositoryContent
+from zeit.content.dynamicfolder.interfaces import ICloneArmy
+
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
+import zeit.content.dynamicfolder.publish
 
 
 class PublishMaterializedContent(zeit.cms.browser.view.Base):
@@ -16,3 +19,13 @@ class PublishMaterializedContent(zeit.cms.browser.view.Base):
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
     title = _('Publish dynamic folder')
+
+    @property
+    def visible(self):
+        return IRepositoryContent.providedBy(self.context)
+
+    def render(self):
+        if ICloneArmy(self.context).activate and self.visible:
+            return super().render()
+        else:
+            return ''
