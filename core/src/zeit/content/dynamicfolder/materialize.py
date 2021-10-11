@@ -29,7 +29,7 @@ class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
         DFinterfaces.ICloneArmy['activate'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'materializeable',
         writeable=WRITEABLE_ALWAYS
-        )
+    )
 
 
 @zeit.cms.celery.task
