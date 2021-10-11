@@ -618,6 +618,25 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.OptionFormGroup"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.options-d"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="30"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.options-d"
+    class=".form.OptionsD"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.OptionFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.options-productmanagement"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"

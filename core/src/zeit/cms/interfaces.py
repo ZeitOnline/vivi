@@ -17,6 +17,7 @@ ID_NAMESPACE = u'http://xml.zeit.de/'
 TEASER_NAMESPACE = u'http://xml.zeit.de/CMS/Teaser'
 PRINT_NAMESPACE = u"http://namespaces.zeit.de/CMS/print"
 IR_NAMESPACE = u"http://namespaces.zeit.de/CMS/interred"
+ZEITWEB_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.web'
 
 # lovely.remotetask stores times as 32 bit leading to an overflow after 2030.
 MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
