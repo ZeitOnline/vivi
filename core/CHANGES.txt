@@ -4,7 +4,7 @@ vivi.core changes
 4.65.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZO-286: Remote metadata for articles
 
 
 4.65.0 (2021-10-07)
