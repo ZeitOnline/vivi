@@ -44,7 +44,7 @@
     name="Materialize"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.content.dynamicfolder.browser.materialize.MenuItem"
+    class="zeit.content.dynamicfolder.browser.materialize.MaterializeMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.MaterializeContent"
     action="@@materialize-content"
@@ -65,7 +65,7 @@
     name="Publish"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.content.dynamicfolder.browser.publish.MenuItem"
+    class="zeit.content.dynamicfolder.browser.materialize.PublishMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.PublishDynamicFolderContent"
     action="@@publish-content"
@@ -76,7 +76,7 @@
     name="publish-content"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.content.dynamicfolder.browser.publish.PublishMaterializedContent"
+    class="zeit.content.dynamicfolder.browser.materialize.PublishMaterializedContent"
     permission="zeit.PublishDynamicFolderContent"
     />
 

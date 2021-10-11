@@ -89,3 +89,17 @@ def materialize_content(unique_id):
     zeit.objectlog.interfaces.ILog(parent).log(msg)
 
     transaction.commit()
+
+
+@zeit.cms.celery.task
+def publish_content(unique_id):
+    folder = zeit.cms.interfaces.ICMSContent(unique_id)
+    objects = []
+    for key in folder.keys():
+        if DFinterfaces.IMaterializedContent.providedBy(folder[key]):
+            objects.append(folder[key])
+    zeit.cms.workflow.interfaces.IPublish(
+        folder).publish_multiple(objects)
+    msg = _('Published')
+    zeit.objectlog.interfaces.ILog(folder).log(msg)
+    transaction.commit()
