@@ -7,6 +7,8 @@ import datetime
 import pytz
 import unittest
 import zeit.cms.interfaces
+import zeit.cms.content.interfaces
+import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 
 
@@ -186,3 +188,33 @@ class ChannelSelector(
         s.waitForElementPresent(
             'css=input[@name="channel-selector.channels.add"]')
         s.assertElementNotPresent('css=#edit-form-channel select')
+
+
+class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
+
+    def test_remote_metadata_fields_are_displayed_for_article(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.options-d')
+        self.assertEllipsis('...Remote image...', b.contents)
+        self.assertEllipsis('...Remote timestamp...', b.contents)
+
+    def test_existing_remote_metadata_are_displayed(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            article = zeit.cms.content.interfaces.IRemoteMetadata(co)
+            article.remote_image = 'https://my-remote-image.de'
+            article.remote_timestamp = 'https://my-remote-timestamp.de'
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.options-d')
+        self.assertEllipsis(
+            '...Remote image...https://my-remote-image.de...', b.contents
+            )
+        self.assertEllipsis(
+            '...Remote timestamp...https://my-remote-timestamp.de...',
+            b.contents
+            )
