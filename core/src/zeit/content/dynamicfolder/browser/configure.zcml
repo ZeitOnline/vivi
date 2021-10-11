@@ -67,7 +67,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.PublishMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
-    permission="zeit.PublishDynamicFolderContent"
+    permission="zeit.MaterializeContent"
     action="@@publish-content"
     icon="/@@/zeit.cms/icons/wf_bb_veroeffentlichen.png"
     />
@@ -77,7 +77,7 @@
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.PublishMaterializedContent"
-    permission="zeit.PublishDynamicFolderContent"
+    permission="zeit.MaterializeContent"
     />
 
 </configure>

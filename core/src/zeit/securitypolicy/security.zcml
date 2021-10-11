@@ -212,10 +212,6 @@
     role="zeit.Producer"
     permission="zeit.MaterializeContent"
     /> 
-  <grant
-    role="zeit.Producer"
-    permission="zeit.PublishDynamicFolderContent"
-    /> 
 
 
   <!-- CvD grants -->
