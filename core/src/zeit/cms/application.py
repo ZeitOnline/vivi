@@ -1,3 +1,4 @@
+from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 import fanstatic
 import grokcore.component as grok
 import os
@@ -7,6 +8,7 @@ import re
 import webob.cookies
 import zeit.cms.cli
 import zeit.cms.wsgi
+import zeit.cms.zope
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
@@ -51,9 +53,12 @@ class Application:
         settings.update(local_conf)
         zeit.cms.cli.configure(settings)
 
+        zope.app.appsetup.config(settings['site_zcml'])
+        db = zeit.cms.zope.zodb_connection(settings['zodbconn.uri'])
+
         debug = zope.app.wsgi.paste.asbool(settings.get('debug'))
-        app = zope.app.wsgi.getWSGIApplication(
-            settings['zope_conf'], handle_errors=not debug)
+        app = zope.app.wsgi.WSGIPublisherApplication(
+            db, HTTPPublicationRequestFactory, handle_errors=not debug)
 
         for key, value in FANSTATIC_SETTINGS.items():
             settings['fanstatic.' + key] = value
