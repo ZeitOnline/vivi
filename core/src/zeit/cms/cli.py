@@ -60,6 +60,7 @@ def parse_paste_ini():
 
 def configure(settings):
     _configure_celery(settings)
+    _configure_logging(settings)
 
 
 def _configure_celery(settings):
@@ -67,6 +68,14 @@ def _configure_celery(settings):
         # See z3c.celery.loader. Depending on our deployment setup it may be
         # more sensible to centralize this in paste.ini than to use env vars.
         os.environ['CELERY_CONFIG_FILE'] = settings.get('celery_conf')
+
+
+def _configure_logging(settings):
+    config = {
+        key.replace('logging.', '', 1): value for key, value in
+        settings.items() if key.startswith('logging.')}
+    if config:
+        zeit.cms.logging.configure(config)
 
 
 try:
