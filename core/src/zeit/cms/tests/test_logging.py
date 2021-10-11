@@ -21,7 +21,8 @@ class LoggingConfigTest(unittest.TestCase):
     def test_logging_syntax_fixes(self):
         config = {
             'root': {'handlers': 'one, two'},
-            'loggers': {'zope_interface': {'level': 'DEBUG'}},
+            'loggers': {'zope_interface': {'level': 'DEBUG',
+                                           'handlers': 'three, four'}},
             'formatters': {'foo': {'class': 'myclass'}},
         }
         zeit.cms.logging.apply_logging_syntax_fixes(config)
@@ -29,6 +30,7 @@ class LoggingConfigTest(unittest.TestCase):
             'version': 1,
             'disable_existing_loggers': False,
             'root': {'handlers': ['one', 'two']},
-            'loggers': {'zope.interface': {'level': 'DEBUG'}},
+            'loggers': {'zope.interface': {'level': 'DEBUG',
+                                           'handlers': ['three', 'four']}},
             'formatters': {'foo': {'()': 'myclass'}},
         }, config)

@@ -61,6 +61,8 @@ def apply_logging_syntax_fixes(config):
 
     if 'loggers' in config:
         for key, value in list(config['loggers'].items()):
+            if value.get('handlers'):
+                value['handlers'] = re.split(', *', value['handlers'])
             dotted = key.replace('_', '.')
             if key != dotted:
                 config['loggers'][dotted] = value
