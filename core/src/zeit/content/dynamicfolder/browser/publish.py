@@ -18,7 +18,7 @@ class PublishMaterializedContent(zeit.cms.browser.view.Base):
 
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
-    title = _('Publish dynamic folder')
+    title = _('Publish content of dynamic folder')
 
     @property
     def visible(self):
