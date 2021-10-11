@@ -1,6 +1,8 @@
 from configparser import ConfigParser
+from urllib.parse import urlparse
 import os
 import os.path
+import pkg_resources
 import signal
 import sys
 import zeit.cms.logging
@@ -61,6 +63,7 @@ def _parse_paste_ini(paste_ini):
 def configure(settings):
     _configure_celery(settings)
     _configure_logging(settings)
+    _configure_product_config(settings)
 
 
 def _configure_celery(settings):
@@ -76,6 +79,29 @@ def _configure_logging(settings):
         settings.items() if key.startswith('logging.')}
     if config:
         zeit.cms.logging.configure(config)
+
+
+def _configure_product_config(settings):
+    import zope.app.appsetup.product
+
+    for key, value in settings.items():
+        if not key.startswith('vivi_'):
+            continue
+
+        ignored, package, setting = key.split('_')
+        if zope.app.appsetup.product.getProductConfiguration(package) is None:
+            zope.app.appsetup.product.setProductConfiguration(package, {})
+        config = zope.app.appsetup.product.getProductConfiguration(package)
+        value = maybe_convert_egg_url(value)
+        config[setting] = value
+
+
+def maybe_convert_egg_url(url):
+    if not url.startswith('egg://'):
+        return url
+    parts = urlparse(url)
+    return 'file://' + pkg_resources.resource_filename(
+        parts.netloc, parts.path[1:])
 
 
 try:

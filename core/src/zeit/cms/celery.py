@@ -43,11 +43,12 @@ else:
             paste_ini = self.app.conf.get('LOGGING_INI')
             if not paste_ini:
                 return
+            zeit.cms.cli._parse_paste_ini(paste_ini)
 
             @celery.signals.setup_logging.connect(weak=False)
             def setup_logging(*args, **kw):
-                """Make the loglevel finely configurable via a config file."""
-                zeit.cms.cli._parse_paste_ini(paste_ini)
+                # Logging was already set up by parse_paste_ini above.
+                pass
 
             if self.app.conf.get('DEBUG_WORKER'):
                 assert self.app.conf.get('worker_pool') == 'solo'
