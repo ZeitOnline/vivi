@@ -1,4 +1,5 @@
 import abc
+import pendulum
 import zope.security.checker
 import zope.security.proxy
 
@@ -41,3 +42,9 @@ zope.security.checker.BasicTypes[
     type(mydict.values())] = zope.security.checker.NoProxy
 zope.security.checker.BasicTypes[
     type(mydict.items())] = zope.security.checker.NoProxy
+
+
+# Treat pendulum like datetime.datetime.
+for cls in ['DateTime', 'Date', 'Time']:
+    zope.security.checker.BasicTypes[getattr(pendulum, cls)] = (
+        zope.security.checker.NoProxy)

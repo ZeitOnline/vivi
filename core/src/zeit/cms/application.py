@@ -2,7 +2,6 @@ from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 import fanstatic
 import grokcore.component as grok
 import os
-import pendulum
 import pyramid_dogpile_cache2
 import re
 import webob.cookies
@@ -16,7 +15,6 @@ import zope.app.wsgi
 import zope.app.wsgi.paste
 import zope.component.hooks
 import zope.publisher.browser
-import zope.security.checker
 
 
 FANSTATIC_SETTINGS = {
@@ -30,11 +28,6 @@ FANSTATIC_SETTINGS = {
     'recompute_hashes': False,
     'publisher_signature': fanstatic.DEFAULT_SIGNATURE,
 }
-
-# Make pendulum a rock, just like datetime.datetime.
-for cls in ['DateTime', 'Date', 'Time']:
-    zope.security.checker.BasicTypes[getattr(pendulum, cls)] = (
-        zope.security.checker.NoProxy)
 
 
 class Application:
