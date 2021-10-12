@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Oct 12 11:10:11 2021\n"
+"POT-Creation-Date: Tue Oct 12 11:55:21 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2125,8 +2125,12 @@ msgstr ""
 msgid "edit options"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:461
+#: zeit/content/article/edit/browser/form.py:451
 msgid "Product management"
+msgstr ""
+
+#: zeit/content/article/edit/browser/form.py:461
+msgid "Interactive"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:473

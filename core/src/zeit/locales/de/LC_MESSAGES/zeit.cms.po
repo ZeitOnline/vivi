@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Oct 12 11:10:11 2021\n"
+"POT-Creation-Date: Tue Oct 12 11:55:21 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -2083,9 +2083,13 @@ msgstr "Teaser-Text bearbeiten"
 msgid "edit options"
 msgstr "Optionen bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:461
+#: zeit/content/article/edit/browser/form.py:451
 msgid "Product management"
 msgstr "Produktmangement"
+
+#: zeit/content/article/edit/browser/form.py:461
+msgid "Interactive"
+msgstr "Interaktiv"
 
 #: zeit/content/article/edit/browser/form.py:473
 msgid "edit misc product management"

@@ -458,7 +458,7 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 
 class OptionsInteractive(zeit.edit.browser.form.InlineForm):
 
-    legend = 'Interactive'
+    legend = _('Interactive')
     prefix = 'options-interactive'
     undo_description = _('edit options')
     form_fields = FormFields(IRemoteMetadata).select(
