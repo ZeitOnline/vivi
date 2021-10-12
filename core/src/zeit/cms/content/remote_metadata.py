@@ -9,14 +9,8 @@ import zeit.cms.interfaces
     zeit.cms.content.interfaces.IRemoteMetadata)
 class RemoteMetadata(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    remote_image = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.IRemoteMetadata['remote_image'],
+    zeit.cms.content.dav.mapProperties(
+        zeit.cms.content.interfaces.IRemoteMetadata,
         zeit.cms.interfaces.ZEITWEB_NAMESPACE,
-        'remote_image'
-        )
-
-    remote_timestamp = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.IRemoteMetadata['remote_timestamp'],
-        zeit.cms.interfaces.ZEITWEB_NAMESPACE,
-        'remote_timestamp'
-        )
+        ('remote_image', 'remote_timestamp')
+    )

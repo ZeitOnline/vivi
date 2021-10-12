@@ -453,7 +453,7 @@ class OptionsD(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
     form_fields = FormFields(IRemoteMetadata).select(
         'remote_image', 'remote_timestamp'
-        )
+    )
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):

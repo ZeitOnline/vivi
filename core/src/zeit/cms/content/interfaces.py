@@ -754,9 +754,9 @@ class IRemoteMetadata(zope.interface.Interface):
     remote_image = zope.schema.URI(
         title=_('Remote image URL'),
         required=False
-        )
+    )
 
     remote_timestamp = zope.schema.URI(
         title=_('Remote timestamp URL'),
         required=False
-        )
+    )
