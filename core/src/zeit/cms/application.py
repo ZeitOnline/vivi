@@ -53,7 +53,7 @@ class Application:
         settings.update(local_conf)
         zeit.cms.cli.configure(settings)
 
-        zope.app.appsetup.config(settings['site_zcml'])
+        zeit.cms.zope.load_zcml(settings['site_zcml'])
         db = zeit.cms.zope.zodb_connection(settings['zodbconn.uri'])
 
         debug = zope.app.wsgi.paste.asbool(settings.get('debug'))

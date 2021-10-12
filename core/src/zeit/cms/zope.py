@@ -2,8 +2,21 @@ from ZODB.ActivityMonitor import ActivityMonitor
 import ZODB
 import zodburi
 import zope.component
+import zope.component.hooks
+import zope.configuration.config
+import zope.configuration.xmlconfig
 import zope.event
 import zope.processlifetime
+
+
+def load_zcml(filename):
+    # Modelled after zope.app.appsetup:config
+    zope.component.hooks.setHooks()
+    context = zope.configuration.config.ConfigurationMachine()
+    zope.configuration.xmlconfig.registerCommonDirectives(context)
+    zope.configuration.xmlconfig.include(context, file=filename)
+    context.execute_actions()
+    return context
 
 
 def zodb_connection(uri):
