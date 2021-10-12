@@ -196,7 +196,7 @@ class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.options-d')
+        b.open('@@edit.form.options-interactive')
         self.assertEllipsis('...Remote image...', b.contents)
         self.assertEllipsis('...Remote timestamp...', b.contents)
 
@@ -210,7 +210,7 @@ class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.options-d')
+        b.open('@@edit.form.options-interactive')
         self.assertEllipsis(
             '...Remote image...https://my-remote-image.de...', b.contents
             )
