@@ -1,0 +1,25 @@
+<div class="topcontent materializedContentScreen"
+  i18n:domain="zeit.cms">
+  <h1 i18n:translate="materialized_content_header">Materialize content</h1>
+
+  <span class="nextURL" tal:content="view/nextURL" />
+
+  <p>
+    <span i18n:translate="materialized_content_text">
+      Do you really want to delete "<span class="contentCount" tal:content="view/content_count"
+        i18n:name="content-count" />" objects from the folder
+      "<span class="containerName" tal:content="view/container_title"
+        i18n:name="container-title" />"?
+    </span>
+  </p>
+
+  <form action="" id="lightbox.form"
+    tal:attributes="action view/@@absolute_url">
+    <p>
+      <input type="submit" value="Delete and materialize" name="form.actions.delete"
+        i18n:attributes="value" />
+    </p>
+  </form>
+
+
+</div>

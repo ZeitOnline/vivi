@@ -1,7 +1,10 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zope">
+
+  <grok:grok package="." />
 
   <browser:page
     name="metadata.html"
@@ -41,18 +44,20 @@
     name="Materialize"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.content.dynamicfolder.browser.materialize.MenuItem"
+    class="zeit.content.dynamicfolder.browser.materialize.MaterializeMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.MaterializeContent"
     action="@@materialize-content"
     icon="/@@/zeit.cms/icons/show-original.png"
+    lightbox="@@materialize.html"
     />
 
   <browser:page
-    name="materialize-content"
+    name="materialize.html"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class="zeit.content.dynamicfolder.browser.materialize.Materialize"
+    template="materialize.pt"
     permission="zeit.MaterializeContent"
     />
 
@@ -60,9 +65,9 @@
     name="Publish"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.content.dynamicfolder.browser.publish.MenuItem"
+    class="zeit.content.dynamicfolder.browser.materialize.PublishMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
-    permission="zeit.PublishDynamicFolderContent"
+    permission="zeit.MaterializeContent"
     action="@@publish-content"
     icon="/@@/zeit.cms/icons/wf_bb_veroeffentlichen.png"
     />
@@ -71,8 +76,8 @@
     name="publish-content"
     for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.content.dynamicfolder.browser.publish.PublishMaterializedContent"
-    permission="zeit.PublishDynamicFolderContent"
+    class="zeit.content.dynamicfolder.browser.materialize.PublishMaterializedContent"
+    permission="zeit.MaterializeContent"
     />
 
 </configure>

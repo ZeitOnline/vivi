@@ -58,3 +58,15 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
     layer = WSGI_LAYER
+
+    def wsgiBrowser(self):
+        browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
+        browser.login('producer', 'producerpw')
+        browser.open('http://localhost/++skin++vivi/repository/dynamicfolder')
+        return browser
+
+    def cloneArmy(self):
+        folder = zeit.content.dynamicfolder.interfaces.ICloneArmy(
+            self.repository['dynamicfolder'])
+        folder.activate = True
+        return self.wsgiBrowser()

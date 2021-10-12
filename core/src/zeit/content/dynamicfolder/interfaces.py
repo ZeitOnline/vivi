@@ -22,6 +22,17 @@ class IMaterializedContent(zope.interface.Interface):
     """
 
 
+class ICloneArmy(zope.interface.Interface):
+    """
+    Interface for clone army case, individual changing of virtual content not
+    expeted. Activates the materialize and publish functionality
+    """
+
+    activate = zope.schema.Bool(
+        title=_('Activate content materialisation'),
+        default=False)
+
+
 class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
     """Interface for the Content-Type DynamicFolder.
 
@@ -31,7 +42,7 @@ class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
     """
 
     config_file = zope.schema.Choice(
-        title=_(u'Configuration file'),
+        title=_('Configuration file'),
         source=zeit.cms.content.contentsource.cmsContentSource)
 
     content_template_file = zope.interface.Attribute(
