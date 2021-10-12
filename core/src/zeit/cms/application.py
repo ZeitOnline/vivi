@@ -2,8 +2,6 @@ from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 import fanstatic
 import grokcore.component as grok
 import os
-import pyramid_dogpile_cache2
-import re
 import webob.cookies
 import zeit.cms.cli
 import zeit.cms.wsgi
@@ -94,19 +92,6 @@ class ClearFanstaticOnError:
 
 def clear_fanstatic(app, global_conf, **local_conf):
     return ClearFanstaticOnError(app)
-
-
-@grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
-def configure_dogpile_cache(event):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    settings = {
-        'dogpile_cache.regions': config['cache-regions']
-    }
-    for region in re.split(r'\s*,\s*', config['cache-regions']):
-        settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
-        settings['dogpile_cache.%s.expiration_time' % region] = config[
-            'cache-expiration-%s' % region]
-    pyramid_dogpile_cache2.configure_dogpile_cache(settings)
 
 
 class BrowserRequest(zope.publisher.browser.BrowserRequest):

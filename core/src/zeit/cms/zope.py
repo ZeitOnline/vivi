@@ -1,7 +1,9 @@
 from ZODB.ActivityMonitor import ActivityMonitor
 from urllib.parse import urlparse
 import ZODB
+import grokcore.component as grok
 import pkg_resources
+import re
 import zodburi
 import zope.app.appsetup.product
 import zope.component
@@ -59,3 +61,17 @@ def zodb_connection(uri):
     zope.component.provideUtility(db, ZODB.interfaces.IDatabase)
     zope.event.notify(zope.processlifetime.DatabaseOpened(db))
     return db
+
+
+@grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
+def configure_dogpile_cache(event):
+    import pyramid_dogpile_cache2
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    settings = {
+        'dogpile_cache.regions': config['cache-regions']
+    }
+    for region in re.split(r'\s*,\s*', config['cache-regions']):
+        settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
+        settings['dogpile_cache.%s.expiration_time' % region] = config[
+            'cache-expiration-%s' % region]
+    pyramid_dogpile_cache2.configure_dogpile_cache(settings)
