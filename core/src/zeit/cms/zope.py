@@ -1,12 +1,42 @@
 from ZODB.ActivityMonitor import ActivityMonitor
+from urllib.parse import urlparse
 import ZODB
+import pkg_resources
 import zodburi
+import zope.app.appsetup.product
 import zope.component
 import zope.component.hooks
 import zope.configuration.config
 import zope.configuration.xmlconfig
 import zope.event
 import zope.processlifetime
+
+
+def bootstrap(settings):
+    configure_product_config(settings)
+    load_zcml(settings['site_zcml'])
+    db = zodb_connection(settings['zodbconn.uri'])
+    return db
+
+
+def configure_product_config(settings):
+    for key, value in settings.items():
+        if not key.startswith('vivi_'):
+            continue
+
+        ignored, package, setting = key.split('_')
+        if zope.app.appsetup.product.getProductConfiguration(package) is None:
+            zope.app.appsetup.product.setProductConfiguration(package, {})
+        config = zope.app.appsetup.product.getProductConfiguration(package)
+        value = maybe_convert_egg_url(value)
+        config[setting] = value
+
+
+def maybe_convert_egg_url(url):
+    if not url.startswith('egg://'):
+        return url
+    u = urlparse(url)
+    return 'file://' + pkg_resources.resource_filename(u.netloc, u.path[1:])
 
 
 def load_zcml(filename):

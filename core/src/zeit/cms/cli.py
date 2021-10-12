@@ -1,23 +1,20 @@
 from configparser import ConfigParser
-from urllib.parse import urlparse
 import os
 import os.path
-import pkg_resources
 import signal
 import sys
 import zeit.cms.logging
 
 
 def zope_shell():
-    import zope.app.wsgi
+    import zeit.cms.zope
     import zope.component.hooks
-    # XXX How to get to zope.conf is the only-application specific part.
-    zope_conf = parse_paste_ini()
-    db = zope.app.wsgi.config(zope_conf)
+    settings = parse_paste_ini()
+    db = zeit.cms.zope.bootstrap(settings)
     # Adapted from zc.zope3recipes.debugzope.debug()
     globs = {
         '__name__': '__main__',
-        # Not really worth using zope.app.publication.ZopePublication.root_name
+        # zope.app.publication.ZopePublication.root_name
         'root': db.open().root()['Application'],
         'zeit': sys.modules['zeit'],
         'zope': sys.modules['zope'],
@@ -57,13 +54,12 @@ def _parse_paste_ini(paste_ini):
     for key, value in paste.items('application:main'):
         settings[key] = value
     configure(settings)
-    return settings['zope_conf']
+    return settings
 
 
 def configure(settings):
     _configure_celery(settings)
     _configure_logging(settings)
-    _configure_product_config(settings)
 
 
 def _configure_celery(settings):
@@ -81,29 +77,6 @@ def _configure_logging(settings):
         zeit.cms.logging.configure(config)
 
 
-def _configure_product_config(settings):
-    import zope.app.appsetup.product
-
-    for key, value in settings.items():
-        if not key.startswith('vivi_'):
-            continue
-
-        ignored, package, setting = key.split('_')
-        if zope.app.appsetup.product.getProductConfiguration(package) is None:
-            zope.app.appsetup.product.setProductConfiguration(package, {})
-        config = zope.app.appsetup.product.getProductConfiguration(package)
-        value = maybe_convert_egg_url(value)
-        config[setting] = value
-
-
-def maybe_convert_egg_url(url):
-    if not url.startswith('egg://'):
-        return url
-    parts = urlparse(url)
-    return 'file://' + pkg_resources.resource_filename(
-        parts.netloc, parts.path[1:])
-
-
 try:
     import gocept.runner
 except ImportError:
@@ -118,14 +91,21 @@ else:
             self.once = once
 
         def __call__(self, worker_method):
-            # copy&paste to retrieve config file from argv instead of buildout
+            # copy&paste to adjust configuration handling.
             def run():
-                zope_conf = parse_paste_ini()
-                with gocept.runner.runner.init(None, zope_conf) as app:
+                import zeit.cms.zope
+                settings = parse_paste_ini()
+                try:
+                    db = zeit.cms.zope.bootstrap(settings)
+                    root = db.open().root()
+                    # zope.app.publication.ZopePublication.root_name
+                    app = root['Application']
                     mloop = gocept.runner.runner.MainLoop(
                         app, self.ticks, worker_method,
                         principal=self.get_principal(), once=self.once)
                     signal.signal(signal.SIGHUP, mloop.stopMainLoop)
                     signal.signal(signal.SIGTERM, mloop.stopMainLoop)
                     mloop()
+                finally:
+                    db.close()
             return run
