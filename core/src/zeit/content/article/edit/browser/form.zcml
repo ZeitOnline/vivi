@@ -613,7 +613,6 @@
     permission="zope.View"
     />
 
-
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

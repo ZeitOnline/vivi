@@ -1,17 +1,16 @@
+import zope.interface
+
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
-import zope.interface
+import zeit.cms.interfaces
 
 
 @zope.interface.implementer(
     zeit.cms.content.interfaces.ICachingTime)
 class CachingTime(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    browser = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICachingTime['browser'],
-        'http://namespaces.zeit.de/CMS/zeit.web',
-        'browser')
-    server = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICachingTime['server'],
-        'http://namespaces.zeit.de/CMS/zeit.web',
-        'server')
+    zeit.cms.content.dav.mapProperties(
+        zeit.cms.content.interfaces.ICachingTime,
+        zeit.cms.interfaces.ZEITWEB_NAMESPACE,
+        ('browser', 'server')
+    )
