@@ -6,11 +6,11 @@ import zeit.cms.interfaces
 
 
 @zope.interface.implementer(
-    zeit.cms.content.interfaces.ICachingTime)
-class CachingTime(zeit.cms.content.dav.DAVPropertiesAdapter):
+    zeit.cms.content.interfaces.IRemoteMetadata)
+class RemoteMetadata(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     zeit.cms.content.dav.mapProperties(
-        zeit.cms.content.interfaces.ICachingTime,
+        zeit.cms.content.interfaces.IRemoteMetadata,
         zeit.cms.interfaces.ZEITWEB_NAMESPACE,
-        ('browser', 'server')
+        ('remote_image', 'remote_timestamp')
     )

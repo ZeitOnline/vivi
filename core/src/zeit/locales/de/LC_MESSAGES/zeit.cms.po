@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Oct 11 10:36:22 2021\n"
+"POT-Creation-Date: Tue Oct 12 11:55:21 2021\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -268,8 +268,8 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:301 zeit/cms/repository/browser/file.py:105
-#: zeit/content/article/edit/browser/form.py:521
-#: zeit/content/article/edit/browser/form.py:555
+#: zeit/content/article/edit/browser/form.py:531
+#: zeit/content/article/edit/browser/form.py:565
 #: zeit/content/article/edit/browser/push.py:65
 #: zeit/content/article/edit/browser/reference.py:56
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
@@ -331,7 +331,7 @@ msgstr "Autor"
 msgid "Title"
 msgstr "Titel"
 
-#: zeit/cms/browser/listing.py:283 zeit/cms/interfaces.py:65
+#: zeit/cms/browser/listing.py:283 zeit/cms/interfaces.py:66
 #: zeit/cms/repository/browser/file.py:35
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
@@ -643,7 +643,7 @@ msgid "Authors"
 msgstr "Autoren"
 
 #: zeit/cms/content/browser/form.py:34
-#: zeit/content/article/edit/browser/form.py:486
+#: zeit/content/article/edit/browser/form.py:496
 msgid "Run in channel"
 msgstr "Automatisch platzieren"
 
@@ -979,11 +979,19 @@ msgstr "Cachezeit Browser"
 msgid "Caching time server"
 msgstr "Cachezeit Fastly"
 
+#: zeit/cms/content/interfaces.py:755
+msgid "Remote image URL"
+msgstr "Remote Bild URL"
+
+#: zeit/cms/content/interfaces.py:760
+msgid "Remote timestamp URL"
+msgstr "Remote Zeitstempel URL"
+
 #: zeit/cms/content/metadata.py:148
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
-#: zeit/cms/interfaces.py:39
+#: zeit/cms/interfaces.py:40
 msgid "Name contains invalid characters"
 msgstr "Dateiname enthält ungültige Zeichen"
 
@@ -1170,10 +1178,6 @@ msgstr "Embed-Objekt hinzufügen"
 #: zeit/cms/permissions.zcml:164
 msgid "Materialize dynamic folder content"
 msgstr "Ordner materialisieren"
-
-#: zeit/cms/permissions.zcml:169
-msgid "Publish dynamic folder content"
-msgstr "Ordner veröffentlichen"
 
 #: zeit/cms/redirect/interfaces.py:22
 msgid "previous uniqueIds of this ICMSContent"
@@ -1609,7 +1613,7 @@ msgid "Menu of addable configuration objects"
 msgstr "Menu of addable configuration objects"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/content/dynamicfolder/publish.py:20 zeit/workflow/publish.py:421
+#: zeit/content/dynamicfolder/materialize.py:103 zeit/workflow/publish.py:421
 #: zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr "Veröffentlicht"
@@ -2074,6 +2078,7 @@ msgstr "Teaser-Text bearbeiten"
 #: zeit/content/article/edit/browser/form.py:427
 #: zeit/content/article/edit/browser/form.py:445
 #: zeit/content/article/edit/browser/form.py:453
+#: zeit/content/article/edit/browser/form.py:463
 #: zeit/content/article/edit/browser/template.py:12
 msgid "edit options"
 msgstr "Optionen bearbeiten"
@@ -2082,25 +2087,29 @@ msgstr "Optionen bearbeiten"
 msgid "Product management"
 msgstr "Produktmangement"
 
-#: zeit/content/article/edit/browser/form.py:463
+#: zeit/content/article/edit/browser/form.py:461
+msgid "Interactive"
+msgstr "Interaktiv"
+
+#: zeit/content/article/edit/browser/form.py:473
 msgid "edit misc product management"
 msgstr "Diverse Produktmanagement Angaben bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:471
+#: zeit/content/article/edit/browser/form.py:481
 msgid "edit recipe categories"
 msgstr "Rezeptkategorien bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:493
-#: zeit/content/article/edit/browser/form.py:501
+#: zeit/content/article/edit/browser/form.py:503
+#: zeit/content/article/edit/browser/form.py:511
 msgid "select channel"
 msgstr "Channel bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:529
+#: zeit/content/article/edit/browser/form.py:539
 #: zeit/content/link/browser/form.py:40
 msgid "Storystream"
 msgstr "Storystream"
 
-#: zeit/content/article/edit/browser/form.py:537
+#: zeit/content/article/edit/browser/form.py:547
 msgid "edit storystream"
 msgstr "Storystream bearbeiten"
 
@@ -3444,11 +3453,11 @@ msgstr ""
 msgid "Delete and materialize"
 msgstr "Löschen und erneut materialisieren"
 
-#: zeit/content/dynamicfolder/browser/materialize.py:56
+#: zeit/content/dynamicfolder/browser/materialize.py:57
 msgid "Materialize dynamic folder and update content"
 msgstr "Inhalte löschen und erneut materialisieren"
 
-#: zeit/content/dynamicfolder/browser/publish.py:21
+#: zeit/content/dynamicfolder/browser/materialize.py:71
 msgid "Publish content of dynamic folder"
 msgstr "Inhalte des Ordners veröffentlichen"
 
@@ -5165,6 +5174,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Publish dynamic folder content"
+#~ msgstr "Ordner veröffentlichen"
 
 #, fuzzy
 #~| msgid "Materialized"

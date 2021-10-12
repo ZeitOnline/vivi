@@ -1,6 +1,6 @@
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
-from zeit.cms.content.interfaces import ICommonMetadata
+from zeit.cms.content.interfaces import ICommonMetadata, IRemoteMetadata
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
@@ -454,6 +454,16 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select(
         'cap_title', 'banner_id', 'vg_wort_id',
         'advertisement_title', 'advertisement_text')
+
+
+class OptionsInteractive(zeit.edit.browser.form.InlineForm):
+
+    legend = _('Interactive')
+    prefix = 'options-interactive'
+    undo_description = _('edit options')
+    form_fields = FormFields(IRemoteMetadata).select(
+        'remote_image', 'remote_timestamp'
+    )
 
 
 class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):

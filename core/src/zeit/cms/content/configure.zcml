@@ -259,4 +259,15 @@
       permission="zeit.EditContent" />
   </class>
 
+<!-- Remote metadata -->
+  <class class="zeit.cms.content.remote_metadata.RemoteMetadata">
+    <require
+      interface="zeit.cms.content.interfaces.IRemoteMetadata"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IRemoteMetadata"
+      permission="zeit.EditContent" />
+  </class>
+
+
 </configure>
