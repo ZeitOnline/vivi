@@ -507,11 +507,6 @@ cms_product_config = """\
   live-prefix http://localhost/live-prefix/
   friebert-wc-preview-prefix /wcpreview
 
-  suggest-keyword-email-address none@testing
-  suggest-keyword-real-name Dr. No
-  whitelist-url file://{base}/tagging/tests/fixtures/whitelist.xml
-  trisolute-url file://{base}/tagging/tests/fixtures/googleNewsTopics.json
-  trisolute-ressort-url file://{base}/tagging/tests/fixtures/tris-ressorts.xml
   breadcrumbs-use-common-metadata true
 
   cache-regions config, feature, newsimport, dav
