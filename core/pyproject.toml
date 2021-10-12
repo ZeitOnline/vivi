@@ -1,0 +1,29 @@
+# -*- conf -*-
+
+# XXX copy&paste from zeit.web
+
+[tool.towncrier]
+directory = "docs/changelog/"
+filename = "CHANGES.txt"
+# Our changelog file already has a title
+title_format = ""
+# First underline is used for version/date header.
+# Second underline is used for the type names (like 'Bug fixes:').
+underlines = ["-", ""]
+
+template = "docs/towncrier-template"
+
+[[tool.towncrier.type]]
+directory = "change"
+name = "Issues"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "fix"
+name = "FIX:"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "maint"
+name = "MAINT:"
+showcontent = true

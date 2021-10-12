@@ -1,12 +1,7 @@
 vivi.core changes
 =================
 
-4.65.1 (unreleased)
--------------------
-
-- ZO-286: Materialize dialog and security updates for dynamic folders
-- ZO-286: Remote metadata for articles
-
+.. towncrier release notes start
 
 4.65.0 (2021-10-07)
 -------------------
