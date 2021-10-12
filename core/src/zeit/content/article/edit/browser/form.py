@@ -446,16 +446,6 @@ class OptionsC(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select('deeplink_url')
 
 
-class OptionsD(zeit.edit.browser.form.InlineForm):
-
-    legend = ''
-    prefix = 'options-d'
-    undo_description = _('edit options')
-    form_fields = FormFields(IRemoteMetadata).select(
-        'remote_image', 'remote_timestamp'
-    )
-
-
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 
     legend = _('Product management')
@@ -464,6 +454,16 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select(
         'cap_title', 'banner_id', 'vg_wort_id',
         'advertisement_title', 'advertisement_text')
+
+
+class OptionsInteractive(zeit.edit.browser.form.InlineForm):
+
+    legend = 'Interactive'
+    prefix = 'options-interactive'
+    undo_description = _('edit options')
+    form_fields = FormFields(IRemoteMetadata).select(
+        'remote_image', 'remote_timestamp'
+    )
 
 
 class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
