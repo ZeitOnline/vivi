@@ -5,9 +5,11 @@ import transaction
 import zope.interface
 import zope.security.proxy
 
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 
 import zeit.cms.celery
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
@@ -17,6 +19,17 @@ import zeit.objectlog.interfaces
 
 
 log = logging.getLogger(__name__)
+
+
+@zope.interface.implementer(
+    zeit.content.dynamicfolder.interfaces.ICloneArmy)
+class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    activate = zeit.cms.content.dav.DAVProperty(
+        DFinterfaces.ICloneArmy['activate'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'materializeable',
+        writeable=WRITEABLE_ALWAYS
+    )
 
 
 @zeit.cms.celery.task
@@ -75,4 +88,18 @@ def materialize_content(unique_id):
 
     zeit.objectlog.interfaces.ILog(parent).log(msg)
 
+    transaction.commit()
+
+
+@zeit.cms.celery.task
+def publish_content(unique_id):
+    folder = zeit.cms.interfaces.ICMSContent(unique_id)
+    objects = []
+    for key in folder.keys():
+        if DFinterfaces.IMaterializedContent.providedBy(folder[key]):
+            objects.append(folder[key])
+    zeit.cms.workflow.interfaces.IPublish(
+        folder).publish_multiple(objects)
+    msg = _('Published')
+    zeit.objectlog.interfaces.ILog(folder).log(msg)
     transaction.commit()

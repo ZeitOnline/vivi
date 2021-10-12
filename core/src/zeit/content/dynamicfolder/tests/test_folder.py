@@ -9,7 +9,6 @@ import lxml.etree
 import pkg_resources
 import six
 import transaction
-import zope.interface
 import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -298,7 +297,7 @@ class MaterializeDynamicFolder(
             zeit.content.dynamicfolder.materialize.materialize_content.delay(
                 self.folder.uniqueId))
         transaction.commit()
-        zeit.content.dynamicfolder.publish.publish_content.delay(
+        zeit.content.dynamicfolder.materialize.publish_content.delay(
             self.folder.uniqueId)
         transaction.commit()
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(

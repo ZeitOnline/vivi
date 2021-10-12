@@ -48,4 +48,13 @@
     trusted="yes"
     />
 
+  <class class="zeit.content.dynamicfolder.materialize.CloneArmy">
+    <require
+      interface="zeit.content.dynamicfolder.interfaces.ICloneArmy"
+      permission="zeit.MaterializeContent" />
+    <require
+      set_schema="zeit.content.dynamicfolder.interfaces.ICloneArmy"
+      permission="zeit.MaterializeContent" />
+  </class>
+
 </configure>

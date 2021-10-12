@@ -4,7 +4,7 @@ vivi.core changes
 4.65.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ZO-286: Materialize dialog and security updates for dynamic folders
 
 
 4.65.0 (2021-10-07)
