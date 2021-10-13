@@ -17,7 +17,7 @@ import zope.processlifetime
 def bootstrap(settings):
     configure_product_config(settings)
     load_zcml(settings['site_zcml'])
-    db = zodb_connection(settings['zodbconn.uri'])
+    db = create_zodb_database(settings['zodbconn.uri'])
     return db
 
 
@@ -51,7 +51,7 @@ def load_zcml(filename):
     return context
 
 
-def zodb_connection(uri):
+def create_zodb_database(uri):
     # Cobbled together from pyramid_zodbconn:includeme,
     # zope.app.appsetup:multi_database, zope.app.wsgi:config.
     dbmap = {}  # XXX We don't currently support multiple DBs.
