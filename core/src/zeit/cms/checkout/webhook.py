@@ -39,7 +39,7 @@ def notify_after_add(event):
         notify_webhook.delay(context.uniqueId, hook.url)
 
 
-@zeit.cms.celery.task(bind=True, queuename='webhook')
+@zeit.cms.celery.task(bind=True, queue='webhook')
 def notify_webhook(self, uniqueId, url):
     content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if content is None:

@@ -183,7 +183,7 @@ def download_teaser_image(folder, bcdata, ttype='still'):
 
 # Triggered by BC notification webhook, which we receive in
 # zeit.brightcove.json.update.Notification
-@zeit.cms.celery.task(queuename='brightcove')
+@zeit.cms.celery.task(queue='brightcove')
 def import_video_async(video_id):
     import_video(zeit.brightcove.convert.Video.find_by_id(video_id))
 

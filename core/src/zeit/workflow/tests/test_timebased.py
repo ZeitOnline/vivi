@@ -35,7 +35,7 @@ class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertEqual(True, apply_async.called)
             self.assertIn('eta', apply_async.call_args[1])
             self.assertEqual(
-                PRIORITY_TIMEBASED, apply_async.call_args[1]['queuename'])
+                PRIORITY_TIMEBASED, apply_async.call_args[1]['queue'])
 
     def test_should_schedule_job_for_renamed_uniqueId(self):
         with mock.patch('zeit.cms.celery.Task.apply_async') as apply_async, \

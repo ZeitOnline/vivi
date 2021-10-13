@@ -39,7 +39,7 @@ class UpdateKeywords(object):
         return 200, 'OK'
 
 
-@zeit.cms.celery.task(queuename='tms')
+@zeit.cms.celery.task(queue='tms')
 def update_async(uuid):
     try:
         content = zeit.cms.content.contentuuid.uuid_to_content(

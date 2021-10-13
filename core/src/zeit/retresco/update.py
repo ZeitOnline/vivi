@@ -87,7 +87,7 @@ def unindex_on_remove(context, event):
     unindex_async.delay(zeit.cms.content.interfaces.IUUID(context).id)
 
 
-@zeit.cms.celery.task(bind=True, queuename='search')
+@zeit.cms.celery.task(bind=True, queue='search')
 def index_async(self, uniqueId, enrich=True):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
@@ -172,7 +172,7 @@ def index(content, enrich=False, update_keywords=False, publish=False):
     return errors
 
 
-@zeit.cms.celery.task(bind=True, queuename='search')
+@zeit.cms.celery.task(bind=True, queue='search')
 def unindex_async(self, uuid):
     conn = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     try:
@@ -202,7 +202,7 @@ def should_skip(content):
     return False
 
 
-@zeit.cms.celery.task(bind=True, queuename='manual')
+@zeit.cms.celery.task(bind=True, queue='manual')
 def index_parallel(self, unique_id, enrich=False, publish=False):
     try:
         content = zeit.cms.interfaces.ICMSContent(unique_id)

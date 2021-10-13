@@ -186,7 +186,7 @@ class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(content).publish()
         apply_async.assert_called_with(
             ([u'http://xml.zeit.de/testcontent'],),
-            queuename='publish_lowprio')
+            queue='publish_lowprio')
 
 
 def get_object_log(obj):
