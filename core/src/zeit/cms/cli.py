@@ -1,9 +1,13 @@
 from configparser import ConfigParser
+import logging
 import os
 import os.path
 import signal
 import sys
 import zeit.cms.logging
+
+
+log = logging.getLogger(__name__)
 
 
 def zope_shell():
@@ -44,7 +48,9 @@ def parse_paste_ini():
     if len(sys.argv) < 2:
         sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
         sys.exit(1)
-    return _parse_paste_ini(sys.argv.pop(1))
+    settings = _parse_paste_ini(sys.argv.pop(1))
+    configure(settings)
+    return settings
 
 
 def _parse_paste_ini(paste_ini):
@@ -53,20 +59,18 @@ def _parse_paste_ini(paste_ini):
     settings = os.environ.copy()
     for key, value in paste.items('application:main'):
         settings[key] = value
-    configure(settings)
     return settings
 
 
+SETTINGS = {}
+
+
 def configure(settings):
-    _configure_celery(settings)
+    global SETTINGS
+    if SETTINGS:
+        log.warning('zeit.cms.cli.configure() called twice')
+    SETTINGS = settings
     _configure_logging(settings)
-
-
-def _configure_celery(settings):
-    if 'CELERY_CONFIG_FILE' not in os.environ:
-        # See z3c.celery.loader. Depending on our deployment setup it may be
-        # more sensible to centralize this in paste.ini than to use env vars.
-        os.environ['CELERY_CONFIG_FILE'] = settings.get('celery_conf')
 
 
 def _configure_logging(settings):
