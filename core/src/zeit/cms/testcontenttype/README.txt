@@ -111,7 +111,6 @@ which is invalid though:
 <?xml ...
     <div id="messages" class="haveMessages">
       <ul>
-        <li class="error">Year: Required input is missing.</li>
         <li class="error">Ressort: Required input is missing.</li>
         <li class="error">Title: Required input is missing.</li>
         <li class="error">Authors (freetext): Wrong contained type</li>
