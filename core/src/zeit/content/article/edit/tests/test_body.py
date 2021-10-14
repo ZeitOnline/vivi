@@ -213,3 +213,17 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         errors = dict(manager.last_validation_error)
         # the default for keywords is an empty tuple
         self.assertNotIn('keywords', errors)
+
+    def test_validation_errors_should_consider_teaser_image(self):
+        self.repository['article'] = zeit.content.article.article.Article()
+        manager = ICheckoutManager(self.repository['article'])
+        co = manager.checkout()
+        zeit.cms.content.field.apply_default_values(
+            co, zeit.content.article.interfaces.IArticle)
+        img = zeit.content.image.interfaces.IImages(co)
+        img.fill_color = '#xxxxxx'
+        manager = ICheckinManager(co)
+        self.assertFalse(manager.canCheckin)
+        errors = dict(manager.last_validation_error)
+        self.assertIsInstance(
+            errors['fill_color'], zope.schema.ValidationError)
