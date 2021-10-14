@@ -69,7 +69,8 @@ class ICommonMetadata(zope.interface.Interface):
     year = zope.schema.Int(
         title=_("Year"),
         min=1900,
-        max=2100)
+        max=2100,
+        required=False)
 
     volume = zope.schema.Int(
         title=_("Volume"),
@@ -451,7 +452,7 @@ class DAVPropertyChangedEvent(zope.interface.interfaces.ObjectEvent):
 class ITextContent(zope.interface.Interface):
     """Representing text content XXX"""
 
-    data = zope.schema.Text(title=u"Document content")
+    data = zope.schema.Text(title="Document content")
 
 
 class IXMLRepresentation(zope.interface.Interface):
@@ -590,7 +591,7 @@ class ISynchronisingDAVPropertyToXMLEvent(zope.interface.Interface):
     name = zope.interface.Attribute("DAV property name")
     value = zope.interface.Attribute("DAV property value")
     vetoed = zope.schema.Bool(
-        title=u"True if sync was vetoed.",
+        title="True if sync was vetoed.",
         readonly=True,
         default=False)
 
@@ -644,12 +645,12 @@ class IUUID(zope.interface.Interface):
     """Accessing the uuid of a content object."""
 
     id = zope.schema.ASCIILine(
-        title=u"The uuid of the content object.",
+        title="The uuid of the content object.",
         default=None,
         required=False)
 
     shortened = zope.schema.ASCIILine(
-        title=u"id without `{urn:uuid:}` prefix",
+        title="id without `{urn:uuid:}` prefix",
         readonly=True,
         required=False,
         default=None)
