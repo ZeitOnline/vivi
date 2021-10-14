@@ -69,7 +69,8 @@ class ICommonMetadata(zope.interface.Interface):
     year = zope.schema.Int(
         title=_("Year"),
         min=1900,
-        max=2100)
+        max=2100,
+        required=False)
 
     volume = zope.schema.Int(
         title=_("Volume"),
