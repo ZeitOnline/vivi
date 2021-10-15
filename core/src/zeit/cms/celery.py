@@ -39,6 +39,11 @@ else:
     import kombu
     import zeit.cms.zope
 
+    @celery.signals.setup_logging.connect(weak=False)
+    def setup_logging(*args, **kw):
+        # Logging is set up by ZopeLoader.on_worker_init().
+        pass
+
     class ZopeLoader(celery.loaders.app.AppLoader):
         """Sets up the Zope environment in the Worker processes."""
 
@@ -49,10 +54,7 @@ else:
             if 'TESTING' in self.app.conf:
                 return  # Setup is handled by the test layer
 
-            @celery.signals.setup_logging.connect(weak=False)
-            def setup_logging(*args, **kw):
-                zeit.cms.cli.configure(self.app.conf['SETTINGS'])
-
+            zeit.cms.cli.configure(self.app.conf['SETTINGS'])
             zeit.cms.zope.configure_product_config(self.app.conf['SETTINGS'])
             zeit.cms.zope.load_zcml(self.app.conf['SETTINGS']['site_zcml'])
 

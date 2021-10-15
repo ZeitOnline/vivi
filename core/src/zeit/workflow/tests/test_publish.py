@@ -228,7 +228,7 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         transaction.begin()
 
         self.assertEllipsis("""\
-Running job ...
+Received task...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...
 Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
@@ -251,14 +251,14 @@ Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
         transaction.begin()
 
         self.assertEllipsis("""\
-Running job ...
+Received task...
     for http://xml.zeit.de/online/2007/01/Flugsicherheit,
         http://xml.zeit.de/online/2007/01/Saarland
 Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit,
        http://xml.zeit.de/online/2007/01/Saarland
 ...
 Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
- http://xml.zeit.de/online/2007/01/Saarland (...s)""",
+ http://xml.zeit.de/online/2007/01/Saarland (...s)...""",
                             self.log.getvalue())
 
         self.assertIn('Published', get_object_log(c1))
