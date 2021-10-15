@@ -395,6 +395,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
 
             'longterm_scheduler_backend': 'memory://',
 
+            'TESTING': True,
             'ZODB': self['zodbDB-layer'],
         })
         self.reset_celery_app()

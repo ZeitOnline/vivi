@@ -36,24 +36,40 @@ except ImportError:
 
             return Callable
 else:
+    import kombu
+    import zeit.cms.zope
+
     class ZopeLoader(celery.loaders.app.AppLoader):
         """Sets up the Zope environment in the Worker processes."""
 
         def on_worker_init(self):
+            """Loads ZCML, which also causes grok to scan (thus import) our
+            code, so @task's are registered.
+            """
+            if 'TESTING' in self.app.conf:
+                return  # Setup is handled by the test layer
+
             @celery.signals.setup_logging.connect(weak=False)
             def setup_logging(*args, **kw):
                 zeit.cms.cli.configure(self.app.conf['SETTINGS'])
 
+            zeit.cms.zope.configure_product_config(self.app.conf['SETTINGS'])
+            zeit.cms.zope.load_zcml(self.app.conf['SETTINGS']['site_zcml'])
+
             if self.app.conf.get('worker_pool') == 'solo':
+                # When debugging there is no fork, so perform ZODB setup now.
                 self.on_worker_process_init()
 
         def on_worker_process_init(self):
-            import zeit.cms.zope
+            """Creates ZODB connection *after* forking, otherwise the ZEO
+            thread-global locks are copied to each worker, causing deadlock.
+            """
             conf = self.app.conf
-            db = zeit.cms.zope.bootstrap(conf['SETTINGS'])
-            conf['ZODB'] = db  # for z3c.celery.TransactionAwareTask
+            db = zeit.cms.zope.create_zodb_database(
+                conf['SETTINGS']['zodbconn.uri'])
+            conf['ZODB'] = db  # see z3c.celery.TransactionAwareTask
 
-        def on_worker_shutdown(self):
+        def on_worker_process_shutdown(self):
             if 'ZODB' in self.app.conf:
                 self.app.conf['ZODB'].close()
 
@@ -80,7 +96,6 @@ else:
             conf['SETTINGS'] = settings  # see on_worker_init()
 
             if 'task_queues' in conf:
-                import kombu
                 queues = []
                 for x in conf['task_queues']:
                     if isinstance(x, str):
