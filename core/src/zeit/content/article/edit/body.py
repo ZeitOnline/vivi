@@ -185,11 +185,17 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IValidateCheckinEvent)
 def validate_article(context, event):
+    errors = []
     # field validation (e.g. zope.schema.Tuple) does type comparisons, which
     # doesn't work with security proxies
     context = zope.security.proxy.removeSecurityProxy(context)
-    errors = zope.schema.getValidationErrors(
-        zeit.content.article.interfaces.IArticle, context) or []
+    interfaces = [
+        zeit.content.article.interfaces.IArticle,
+        zeit.content.image.interfaces.IImages,
+    ]
+    for iface in interfaces:
+        errors.extend(zope.schema.getValidationErrors(
+            iface, iface(context)) or [])
     # XXX using a separate event handler would be cleaner, but we only support
     # retrieving a single error (last_validation_error), so this doesn't work.
     if (IAutomaticallyRenameable(context).renameable and

@@ -1,9 +1,16 @@
 from unittest import mock
+from zeit.cms.checkout.interfaces import ICheckinManager
+from zeit.cms.checkout.interfaces import ICheckoutManager
+from zeit.content.article.edit.interfaces import IDivision
 import gocept.testing.mock
+import lxml.objectify
 import six
 import unittest
 import zeit.cms.testing
+import zeit.content.article.article
+import zeit.content.article.edit.body
 import zeit.content.article.testing
+import zeit.edit.interfaces
 import zope.schema
 
 
@@ -22,9 +29,6 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         super(EditableBodyTest, self).tearDown()
 
     def get_body(self, body=None):
-        import lxml.objectify
-        import zeit.content.article.article
-        import zeit.content.article.edit.body
         if not body:
             body = ("<division><p>Para1</p><p/></division>"
                     "<division><p>Para2</p><p/></division>")
@@ -52,7 +56,6 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(['id-2', 'id-3', 'id-5', 'id-6'], body.keys())
 
     def test_add_should_add_to_last_division(self):
-        import lxml.objectify
         body = self.get_body('<division/>')
         block = mock.Mock()
         block.xml = lxml.objectify.E.mockblock()
@@ -89,7 +92,6 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
              in body.xml.division.iterchildren()])
 
     def test_adding_to_articles_without_division_should_migrate(self):
-        import lxml.objectify
         body = self.get_body(
             '<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
         ob = mock.Mock()
@@ -105,8 +107,6 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual([u'id-2'], body.keys())
 
     def test_adding_division_should_add_on_toplevel(self):
-        from zeit.content.article.edit.interfaces import IDivision
-        import lxml.objectify
         body = self.get_body('<division/>')
         block = mock.Mock()
         zope.interface.alsoProvides(block, IDivision)
@@ -145,8 +145,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 class TestCleaner(unittest.TestCase):
 
     def get_article(self):
-        from zeit.content.article.article import Article
-        return Article()
+        return zeit.content.article.article.Article()
 
     def assert_key(self, node, expected):
         have = node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
@@ -181,11 +180,6 @@ class TestCleaner(unittest.TestCase):
 class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_children_should_return_elements(self):
-        import lxml.objectify
-        import zeit.content.article.article
-        import zeit.content.article.edit.body
-        import zeit.edit.interfaces
-
         body = '<division type="page"><p>Para1</p><p>Para2</p></division>'
         article = zeit.content.article.article.Article()
         article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
@@ -200,12 +194,7 @@ class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
 class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_validation_errors_should_veto_checkin(self):
-        from zeit.cms.checkout.interfaces import ICheckinManager
-        from zeit.cms.checkout.interfaces import ICheckoutManager
-        import zeit.content.article.article
-
         self.repository['article'] = zeit.content.article.article.Article()
-
         manager = ICheckoutManager(self.repository['article'])
         co = manager.checkout()
         manager = ICheckinManager(co)
@@ -215,12 +204,7 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
             errors['title'], zope.schema.ValidationError)
 
     def test_security_proxied_fields_should_be_validated_correctly(self):
-        from zeit.cms.checkout.interfaces import ICheckinManager
-        from zeit.cms.checkout.interfaces import ICheckoutManager
-        import zeit.content.article.article
-
         self.repository['article'] = zeit.content.article.article.Article()
-
         manager = ICheckoutManager(self.repository['article'])
         co = manager.checkout()
         co = zope.security.proxy.ProxyFactory(co)
@@ -229,3 +213,17 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         errors = dict(manager.last_validation_error)
         # the default for keywords is an empty tuple
         self.assertNotIn('keywords', errors)
+
+    def test_validation_errors_should_consider_teaser_image(self):
+        self.repository['article'] = zeit.content.article.article.Article()
+        manager = ICheckoutManager(self.repository['article'])
+        co = manager.checkout()
+        zeit.cms.content.field.apply_default_values(
+            co, zeit.content.article.interfaces.IArticle)
+        img = zeit.content.image.interfaces.IImages(co)
+        img.fill_color = '#xxxxxx'
+        manager = ICheckinManager(co)
+        self.assertFalse(manager.canCheckin)
+        errors = dict(manager.last_validation_error)
+        self.assertIsInstance(
+            errors['fill_color'], zope.schema.ValidationError)
