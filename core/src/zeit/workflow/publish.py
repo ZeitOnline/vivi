@@ -89,7 +89,7 @@ class Publish(object):
             if message:
                 self.log(self.context, message)
             return task.apply_async(
-                (ids,), queuename=self.get_priority(priority), **kw)
+                (ids,), queue=self.get_priority(priority), **kw)
         else:
             task(ids)
 

@@ -91,7 +91,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
         if when > datetime.datetime.now(pytz.UTC):
             job_id = task.apply_async(
-                ([uniqueId],), eta=when, queuename=PRIORITY_TIMEBASED).id
+                ([uniqueId],), eta=when, queue=PRIORITY_TIMEBASED).id
         else:
             job_id = task.delay([uniqueId]).id
         return job_id

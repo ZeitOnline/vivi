@@ -388,15 +388,14 @@ class CeleryWorkerLayer(plone.testing.Layer):
         self['celery_app'].conf.update({
             'task_always_eager': False,
 
+            'task_create_missing_queues': False,
             'task_default_queue': self.default_queue,
             'task_queues': [kombu.Queue(q) for q in self.queues],
-
-            'task_routes': ('zeit.cms.celery.route_task',),
-            'QUEUENAMES': {q: q for q in self.queues},
             'task_send_sent_event': True,  # So we can inspect routing in tests
 
             'longterm_scheduler_backend': 'memory://',
 
+            'TESTING': True,
             'ZODB': self['zodbDB-layer'],
         })
         self.reset_celery_app()
