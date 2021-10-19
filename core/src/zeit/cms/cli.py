@@ -1,9 +1,9 @@
 from configparser import ConfigParser
-import logging.config
 import os
 import os.path
 import signal
 import sys
+import zeit.cms.logging
 
 
 def zope_shell():
@@ -45,10 +45,10 @@ def parse_paste_ini():
     if len(sys.argv) < 2:
         sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
         sys.exit(1)
-    paste_ini = sys.argv.pop(1)
-    logging.config.fileConfig(
-        paste_ini, {'__file__': paste_ini, 'here': os.path.abspath(
-            os.path.dirname(paste_ini))})
+    return _parse_paste_ini(sys.argv.pop(1))
+
+
+def _parse_paste_ini(paste_ini):
     paste = ConfigParser()
     paste.read(paste_ini)
     settings = os.environ.copy()
@@ -60,6 +60,7 @@ def parse_paste_ini():
 
 def configure(settings):
     _configure_celery(settings)
+    _configure_logging(settings)
 
 
 def _configure_celery(settings):
@@ -67,6 +68,14 @@ def _configure_celery(settings):
         # See z3c.celery.loader. Depending on our deployment setup it may be
         # more sensible to centralize this in paste.ini than to use env vars.
         os.environ['CELERY_CONFIG_FILE'] = settings.get('celery_conf')
+
+
+def _configure_logging(settings):
+    config = {
+        key.replace('logging.', '', 1): value for key, value in
+        settings.items() if key.startswith('logging.')}
+    if config:
+        zeit.cms.logging.configure(config)
 
 
 try:
