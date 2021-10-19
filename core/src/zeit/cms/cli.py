@@ -7,15 +7,14 @@ import zeit.cms.logging
 
 
 def zope_shell():
-    import zope.app.wsgi
+    import zeit.cms.zope
     import zope.component.hooks
-    # XXX How to get to zope.conf is the only-application specific part.
-    zope_conf = parse_paste_ini()
-    db = zope.app.wsgi.config(zope_conf)
+    settings = parse_paste_ini()
+    db = zeit.cms.zope.bootstrap(settings)
     # Adapted from zc.zope3recipes.debugzope.debug()
     globs = {
         '__name__': '__main__',
-        # Not really worth using zope.app.publication.ZopePublication.root_name
+        # zope.app.publication.ZopePublication.root_name
         'root': db.open().root()['Application'],
         'zeit': sys.modules['zeit'],
         'zope': sys.modules['zope'],
@@ -55,7 +54,7 @@ def _parse_paste_ini(paste_ini):
     for key, value in paste.items('application:main'):
         settings[key] = value
     configure(settings)
-    return settings['zope_conf']
+    return settings
 
 
 def configure(settings):
@@ -92,14 +91,21 @@ else:
             self.once = once
 
         def __call__(self, worker_method):
-            # copy&paste to retrieve config file from argv instead of buildout
+            # copy&paste to adjust configuration handling.
             def run():
-                zope_conf = parse_paste_ini()
-                with gocept.runner.runner.init(None, zope_conf) as app:
+                import zeit.cms.zope
+                settings = parse_paste_ini()
+                try:
+                    db = zeit.cms.zope.bootstrap(settings)
+                    root = db.open().root()
+                    # zope.app.publication.ZopePublication.root_name
+                    app = root['Application']
                     mloop = gocept.runner.runner.MainLoop(
                         app, self.ticks, worker_method,
                         principal=self.get_principal(), once=self.once)
                     signal.signal(signal.SIGHUP, mloop.stopMainLoop)
                     signal.signal(signal.SIGTERM, mloop.stopMainLoop)
                     mloop()
+                finally:
+                    db.close()
             return run

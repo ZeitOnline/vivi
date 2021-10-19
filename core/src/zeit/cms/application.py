@@ -1,12 +1,11 @@
+from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 import fanstatic
 import grokcore.component as grok
 import os
-import pendulum
-import pyramid_dogpile_cache2
-import re
 import webob.cookies
 import zeit.cms.cli
 import zeit.cms.wsgi
+import zeit.cms.zope
 import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
@@ -14,7 +13,6 @@ import zope.app.wsgi
 import zope.app.wsgi.paste
 import zope.component.hooks
 import zope.publisher.browser
-import zope.security.checker
 
 
 FANSTATIC_SETTINGS = {
@@ -28,11 +26,6 @@ FANSTATIC_SETTINGS = {
     'recompute_hashes': False,
     'publisher_signature': fanstatic.DEFAULT_SIGNATURE,
 }
-
-# Make pendulum a rock, just like datetime.datetime.
-for cls in ['DateTime', 'Date', 'Time']:
-    zope.security.checker.BasicTypes[getattr(pendulum, cls)] = (
-        zope.security.checker.NoProxy)
 
 
 class Application:
@@ -50,10 +43,11 @@ class Application:
         settings = os.environ.copy()
         settings.update(local_conf)
         zeit.cms.cli.configure(settings)
+        db = zeit.cms.zope.bootstrap(settings)
 
         debug = zope.app.wsgi.paste.asbool(settings.get('debug'))
-        app = zope.app.wsgi.getWSGIApplication(
-            settings['zope_conf'], handle_errors=not debug)
+        app = zope.app.wsgi.WSGIPublisherApplication(
+            db, HTTPPublicationRequestFactory, handle_errors=not debug)
 
         for key, value in FANSTATIC_SETTINGS.items():
             settings['fanstatic.' + key] = value
@@ -98,19 +92,6 @@ class ClearFanstaticOnError:
 
 def clear_fanstatic(app, global_conf, **local_conf):
     return ClearFanstaticOnError(app)
-
-
-@grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
-def configure_dogpile_cache(event):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    settings = {
-        'dogpile_cache.regions': config['cache-regions']
-    }
-    for region in re.split(r'\s*,\s*', config['cache-regions']):
-        settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
-        settings['dogpile_cache.%s.expiration_time' % region] = config[
-            'cache-expiration-%s' % region]
-    pyramid_dogpile_cache2.configure_dogpile_cache(settings)
 
 
 class BrowserRequest(zope.publisher.browser.BrowserRequest):

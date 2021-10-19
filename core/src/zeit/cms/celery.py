@@ -43,26 +43,29 @@ else:
             paste_ini = self.app.conf.get('LOGGING_INI')
             if not paste_ini:
                 return
+            zeit.cms.cli._parse_paste_ini(paste_ini)
 
             @celery.signals.setup_logging.connect(weak=False)
             def setup_logging(*args, **kw):
-                """Make the loglevel finely configurable via a config file."""
-                zeit.cms.cli._parse_paste_ini(paste_ini)
+                # Logging was already set up by parse_paste_ini above.
+                pass
 
             if self.app.conf.get('DEBUG_WORKER'):
                 assert self.app.conf.get('worker_pool') == 'solo'
                 self.on_worker_process_init()
 
         def on_worker_process_init(self):
+            import zeit.cms.zope
+
             conf = self.app.conf
-            configfile = conf.get('ZOPE_CONF')
+            configfile = conf.get('LOGGING_INI')
             if not configfile:
                 raise ValueError(
-                    'Celery setting ZOPE_CONF not set, '
+                    'Celery setting LOGGING_INI not set, '
                     'check celery worker config.')
 
-            import zope.app.wsgi
-            db = zope.app.wsgi.config(configfile)
+            settings = zeit.cms.cli._parse_paste_ini(configfile)
+            db = zeit.cms.zope.bootstrap(settings)
             conf['ZODB'] = db
 
         def on_worker_shutdown(self):

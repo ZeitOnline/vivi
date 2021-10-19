@@ -59,6 +59,7 @@ setup(
         'zc.relation',
         'zc.set',
         'zc.sourcefactory',
+        'zodburi',
         'zope.annotation',
         'zope.app.appsetup',
         'zope.app.file',
