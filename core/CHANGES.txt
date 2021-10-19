@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.2.0 (2021-10-19)
+------------------
+
+- ZO-355: Support configuring product config and zodb via environment
+
+
 5.1.0 (2021-10-19)
 ------------------
 
