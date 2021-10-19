@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.0.1 (2021-10-19)
+------------------
+
+- ZO-353: Fix fanstatic wsgi pipeline order
+
+
 5.0.0 (2021-10-19)
 ------------------
 
