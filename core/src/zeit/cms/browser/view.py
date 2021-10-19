@@ -75,7 +75,7 @@ class JSON(Base):
 def resource_url(request, library, filename):
     return '/'.join([
         request.getApplicationURL(),
-        zeit.cms.application.FANSTATIC_PATH,
+        zeit.cms.application.FANSTATIC_SETTINGS['publisher_signature'],
         library,
         filename,
     ])

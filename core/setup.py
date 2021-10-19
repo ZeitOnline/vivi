@@ -206,7 +206,7 @@ setup(
             'main=zeit.cms.application:APPLICATION',
         ],
         'paste.filter_factory': [
-            'bugsnag=zeit.cms.application:bugsnag_filter',
+            'bugsnag=zeit.cms.bugsnag:bugsnag_filter',
         ],
         'fanstatic.libraries': [
             'zeit_addcentral=zeit.addcentral.resources:lib',

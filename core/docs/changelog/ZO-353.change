@@ -1,0 +1,2 @@
+ZO-353: Make bugsnag setup reusable
+ZO-353: Support configuring wsgi pipeline stages via combined settings
