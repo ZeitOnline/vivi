@@ -41,9 +41,9 @@ class Application:
         ('slowlog', 'egg:slowlog#slowlog'),
         ('bugsnag', 'egg:vivi.core#bugsnag'),
         # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
-        # repoze.vhm needs to come before fanstatic to keep them apart.
-        ('vhm', 'egg:repoze.vhm#vhm_xheaders'),
+        # have it run first, before vhm applies any wsgi environ changes.
         ('fanstatic', 'egg:fanstatic#fanstatic'),
+        ('vhm', 'egg:repoze.vhm#vhm_xheaders'),
     ]
 
     def __call__(self, global_conf, **local_conf):
