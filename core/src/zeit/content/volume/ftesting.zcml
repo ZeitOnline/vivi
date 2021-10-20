@@ -20,6 +20,5 @@
 
   <include package="zeit.content.volume" />
   <include package="zeit.content.volume.browser" />
-  <include package="zeit.content.volume" file="mock-toc-connector.zcml" />
 
 </configure>

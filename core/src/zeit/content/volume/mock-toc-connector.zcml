@@ -1,8 +1,0 @@
-<configure xmlns="http://namespaces.zope.org/zope">
-
-  <utility
-    provides="zeit.content.volume.interfaces.ITocConnector"
-    factory="zeit.connector.mock.connector_factory"
-    />
-
-</configure>

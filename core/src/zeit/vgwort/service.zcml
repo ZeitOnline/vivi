@@ -1,0 +1,10 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <include package="zeit.vgwort" file="real-webservice.zcml"
+    zcml:condition="have zeit.vgwort"/>
+  <include package="zeit.vgwort" file="mock-webservice.zcml"
+    zcml:condition="not-have zeit.vgwort"/>
+
+</configure>
