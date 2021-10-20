@@ -62,8 +62,11 @@ class Logout(object):
     def _delete_sso_cookies(self):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
+        prefix = config.get('sso-cookie-name-prefix')
+        if prefix is None:
+            return
         for cookie in self.request.cookies:
-            if cookie.startswith(config['sso-cookie-name-prefix']):
+            if cookie.startswith(prefix):
                 for key, value in set_cookie_headers(cookie, None):
                     self.request.response.setHeader(key, value)
 
