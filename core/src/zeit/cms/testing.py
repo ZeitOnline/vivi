@@ -43,9 +43,9 @@ import zeit.cms.application
 import zeit.cms.celery
 import zeit.cms.workflow.mock
 import zeit.cms.wsgi
+import zeit.cms.zope
 import zeit.connector.interfaces
 import zeit.connector.mock
-import zope.app.appsetup
 import zope.app.appsetup.product
 import zope.app.publication.zopepublication
 import zope.app.wsgi
@@ -174,7 +174,7 @@ class ZCMLLayer(plone.testing.Layer):
         # context.execute_actions()
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
         self.assert_non_browser_modules_have_no_browser_zcml()
-        zope.app.appsetup.config(self.config_file)
+        zeit.cms.zope.load_zcml(self.config_file)
 
     def assert_non_browser_modules_have_no_browser_zcml(self):
         # Caveat emptor: This whole method is a bunch of heuristics, but

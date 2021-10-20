@@ -5,6 +5,7 @@ import grokcore.component as grok
 import pkg_resources
 import re
 import zodburi
+import zope.app.appsetup.appsetup
 import zope.app.appsetup.product
 import zope.component
 import zope.component.hooks
@@ -48,6 +49,7 @@ def load_zcml(filename):
     zope.configuration.xmlconfig.registerCommonDirectives(context)
     zope.configuration.xmlconfig.include(context, file=filename)
     context.execute_actions()
+    setattr(zope.app.appsetup.appsetup, '__config_context', context)
     return context
 
 

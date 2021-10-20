@@ -1,0 +1,1 @@
+FIX: Provide ZCML context under well-known API, where e.g. CP checkin expects it
