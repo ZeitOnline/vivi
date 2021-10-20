@@ -17,7 +17,7 @@ import zope.processlifetime
 
 def bootstrap(settings):
     configure_product_config(settings)
-    load_zcml(settings['site_zcml'])
+    load_zcml(settings)
     db = create_zodb_database(settings['zodbconn.uri'])
     return db
 
@@ -42,11 +42,20 @@ def maybe_convert_egg_url(url):
     return 'file://' + pkg_resources.resource_filename(u.netloc, u.path[1:])
 
 
-def load_zcml(filename):
+def load_zcml(settings):
+    feature = 'zcml.feature.'
+    return _load_zcml(
+        settings['site_zcml'],
+        [x.replace(feature, '', 1) for x in settings if x.startswith(feature)])
+
+
+def _load_zcml(filename, features=()):
     # Modelled after zope.app.appsetup:config
     zope.component.hooks.setHooks()
     context = zope.configuration.config.ConfigurationMachine()
     setattr(zope.app.appsetup.appsetup, '__config_context', context)
+    for x in features:
+        context.provideFeature(x)
     zope.configuration.xmlconfig.registerCommonDirectives(context)
     zope.configuration.xmlconfig.include(context, file=filename)
     context.execute_actions()

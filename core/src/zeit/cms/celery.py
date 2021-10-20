@@ -56,7 +56,7 @@ else:
                 return  # Setup is handled by the test layer
 
             zeit.cms.zope.configure_product_config(self.app.conf['SETTINGS'])
-            zeit.cms.zope.load_zcml(self.app.conf['SETTINGS']['site_zcml'])
+            zeit.cms.zope.load_zcml(self.app.conf['SETTINGS'])
 
             if self.app.conf.get('worker_pool') == 'solo':
                 # When debugging there is no fork, so perform ZODB setup now.
