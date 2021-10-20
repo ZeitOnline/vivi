@@ -19,8 +19,8 @@ class CelerySignalTests(zeit.cms.testing.FunctionalTestCase):
             result.get()
 
     def test_failing_tasks_will_be_logged(self):
-        with self.assertLogs() as captured:
+        with self.assertLogs() as capture:
             self.run_task()
-        assert 'ERROR' in captured[1][0]
-        assert 'task_that_fails' in captured[1][0]
-        assert 'RuntimeError' in captured[1][0]
+        log = '\n'.join(capture.output)
+        self.assertEllipsis(
+            '...ERROR:...task_that_fails...RuntimeError...', log)
