@@ -1,2 +1,11 @@
-recursive-include src *
+recursive-include src *.pt
+recursive-include src *.zcml
+recursive-include src *.txt
+recursive-include **/resources *
+recursive-include **/js *
 prune src/zeit/connector/testcontent
+prune docs
+include CHANGES.txt
+exclude .gitignore
+exclude pyproject.toml
+exclude setup.cfg
