@@ -86,3 +86,20 @@ def configure_dogpile_cache(event):
         settings['dogpile_cache.%s.expiration_time' % region] = config[
             'cache-expiration-%s' % region]
     pyramid_dogpile_cache2.configure_dogpile_cache(settings)
+
+
+try:
+    import zope.principalregistry.principalregistry
+except ImportError:  # UI-only dependency
+    pass
+else:
+    @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
+    def set_passwords(event):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms.principals')
+        if not config:
+            return
+        registry = zope.principalregistry.principalregistry.principalRegistry
+        for id, password in config.items():
+            principal = registry.getPrincipal(id)
+            principal._Principal__pw = password.encode('utf-8')
