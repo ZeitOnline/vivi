@@ -46,10 +46,10 @@ def load_zcml(filename):
     # Modelled after zope.app.appsetup:config
     zope.component.hooks.setHooks()
     context = zope.configuration.config.ConfigurationMachine()
+    setattr(zope.app.appsetup.appsetup, '__config_context', context)
     zope.configuration.xmlconfig.registerCommonDirectives(context)
     zope.configuration.xmlconfig.include(context, file=filename)
     context.execute_actions()
-    setattr(zope.app.appsetup.appsetup, '__config_context', context)
     return context
 
 

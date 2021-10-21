@@ -38,10 +38,11 @@ except ImportError:
 else:
     import kombu
     import zeit.cms.zope
+    import zope.app.appsetup.appsetup
 
     @celery.signals.setup_logging.connect(weak=False)
     def setup_logging(*args, **kw):
-        # Logging is set up by ZopeLoader.on_worker_init().
+        # Logging is set up by ZopeLoader.read_configuration().
         pass
 
     class ZopeLoader(celery.loaders.app.AppLoader):
@@ -54,7 +55,6 @@ else:
             if 'TESTING' in self.app.conf:
                 return  # Setup is handled by the test layer
 
-            zeit.cms.cli.configure(self.app.conf['SETTINGS'])
             zeit.cms.zope.configure_product_config(self.app.conf['SETTINGS'])
             zeit.cms.zope.load_zcml(self.app.conf['SETTINGS']['site_zcml'])
 
@@ -83,12 +83,15 @@ else:
             """
             # In client mode, they are already initialized.
             settings = zeit.cms.cli.SETTINGS
-            if not settings:  # worker mode
+            if not settings:  # worker or other celery command
                 filename = os.environ.get('CELERY_CONFIG_MODULE')
                 if filename:
                     settings = zeit.cms.cli._parse_paste_ini(filename)
                 else:
                     settings = os.environ.copy()
+                zcml = zope.app.appsetup.appsetup.getConfigContext()
+                if zcml is None or not zcml.hasFeature('zeit.cms.testing'):
+                    zeit.cms.cli.configure(settings)
 
             conf = celery.utils.collections.AttributeDict()
             for key, value in settings.items():
