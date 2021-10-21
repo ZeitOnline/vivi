@@ -4,6 +4,7 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import logging
 import os.path
+import pkg_resources
 import pytz
 import six
 import subprocess
@@ -318,12 +319,30 @@ class PublishRetractTask(object):
         """Actually do the publication."""
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        script = config['%s-script' % action]
-        cls._call_script(script, '\n'.join(paths))
+        script = config.get('publish-script')
+        if not script:
+            script = pkg_resources.resource_filename(
+                'zeit.workflow', 'publish.sh')
+        cls._call_script(script, action, '\n'.join(paths))
         timer.mark('Called %s script' % action)
 
     @classmethod
-    def _call_script(cls, filename, input_data):
+    def _call_script(cls, filename, action, input_data):
+        prefix = 'zeit.workflow.publish.'
+        env = {k.replace(prefix, 'publish_', 1): v
+               for k, v in os.environ.items()
+               if k.startswith(prefix)}
+
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        prefix = 'publish-'
+        for k, v in config.items():
+            if not k.startswith(prefix):
+                continue
+            env[k.replace('-', '_')] = v
+
+        env['publish_action'] = action
+
         if isinstance(input_data, six.text_type):
             input_data = input_data.encode('UTF-8')
         with tempfile.NamedTemporaryFile() as f:
@@ -332,7 +351,8 @@ class PublishRetractTask(object):
 
             out = tempfile.NamedTemporaryFile()
             err = tempfile.NamedTemporaryFile()
-            proc = subprocess.Popen([filename, f.name], stdout=out, stderr=err)
+            proc = subprocess.Popen(
+                [filename, f.name], stdout=out, stderr=err, env=env)
             proc.communicate()
             out.seek(0)
             err.seek(0)

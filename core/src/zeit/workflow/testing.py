@@ -38,23 +38,21 @@ class WorkflowScriptsLayer(plone.testing.Layer):
     def setUp(self):
         self._tempfiles = []
         self['publish-script'] = self._make_copy('publish.sh')
-        self['retract-script'] = self._make_copy('retract.sh')
 
     def tearDown(self):
         for f in self._tempfiles:
             os.remove(f.name)
         del self._tempfiles
         del self['publish-script']
-        del self['retract-script']
 
     def testSetUp(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         product_config['publish-script'] = self['publish-script']
-        product_config['retract-script'] = self['retract-script']
 
     def _make_copy(self, script):
-        source = pkg_resources.resource_string(__name__, script)
+        source = pkg_resources.resource_string(
+            'zeit.workflow.tests', 'fixtures/%s' % script)
         destination = tempfile.NamedTemporaryFile(suffix=script, delete=False)
         destination.write(source)
         destination.close()

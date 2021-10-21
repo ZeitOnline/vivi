@@ -76,7 +76,7 @@ The publis script also got all the folders and files:
 Running job ...
 Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:
-Publishing test script
+publish test script
 work/online/gallery
 work/image-folder/
 work/image-folder/01.jpg
@@ -101,8 +101,8 @@ Note that the script gets the reverse order for removing:
 >>> print(logfile.getvalue())
 Running job ...
 Retracting http://xml.zeit.de/online/gallery
-...retract.sh:
-Retracting test script
+...publish.sh:
+retract test script
 work/image-folder/thumbnails/01.jpg
 work/image-folder/thumbnails/
 work/image-folder/01.jpg
@@ -134,7 +134,7 @@ True
 Running job ...
 Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:
-Publishing test script
+publish test script
 work/online/gallery
 done.
 Done http://xml.zeit.de/online/gallery (...s)

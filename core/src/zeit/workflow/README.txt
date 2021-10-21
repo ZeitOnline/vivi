@@ -364,7 +364,7 @@ Publish the folder again and verify the log:
 Running job ... for http://xml.zeit.de/online/2007/01/
 Publishing http://xml.zeit.de/online/2007/01/
 ...publish.sh:
-Publishing test script
+publish test script
 work/online/2007/01/
 work/online/2007/01/4schanzentournee-abgesang
 work/online/2007/01/Arbeitsmarktzahlen
@@ -435,8 +435,8 @@ of publish:
 >>> print(logfile.getvalue())
 Running job ...
 Retracting http://xml.zeit.de/online/2007/01/
-...retract.sh:
-Retracting test script
+...publish.sh:
+retract test script
 work/online/2007/01/weissrussland-russland-gas
 work/online/2007/01/thailand-anschlaege
 work/online/2007/01/terror-abschuss-schaeuble
@@ -588,8 +588,8 @@ Make sure the file would actually have been removed:
 >>> print(logfile.getvalue())
 Running job ...
 Retracting http://xml.zeit.de/online/2007/01/Somalia
-...retract.sh:
-Retracting test script
+...publish.sh:
+retract test script
 work/online/2007/01/Somalia
 done.
 ...
@@ -708,7 +708,7 @@ When somalia is published, the folder and its content is also published:
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...publish.sh:
-Publishing test script
+publish test script
 work/online/2007/01/Somalia
 work/2007/
 work/politik.feed
