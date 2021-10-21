@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.3.1 (2021-10-21)
+------------------
+
+- FIX: Provide ZCML context under well-known API, where e.g. CP checkin expects it
+
+
 5.3.0 (2021-10-19)
 ------------------
 
