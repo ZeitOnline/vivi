@@ -313,8 +313,17 @@ class PublishRetractTask(object):
         timer.mark('Unlocked %s' % obj.uniqueId)
         return obj
 
-    @staticmethod
-    def call_script(filename, input_data):
+    @classmethod
+    def call_script(cls, action, paths):
+        """Actually do the publication."""
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        script = config['%s-script' % action]
+        cls._call_script(script, '\n'.join(paths))
+        timer.mark('Called %s script' % action)
+
+    @classmethod
+    def _call_script(cls, filename, input_data):
         if isinstance(input_data, six.text_type):
             input_data = input_data.encode('UTF-8')
         with tempfile.NamedTemporaryFile() as f:
@@ -373,7 +382,7 @@ class PublishTask(PublishRetractTask):
             paths.extend(self.get_all_paths(obj))
 
         if paths:
-            self.call_publish_script(paths)
+            self.call_script('publish', paths)
 
         for obj in published:
             try:
@@ -408,14 +417,6 @@ class PublishTask(PublishRetractTask):
 
         new_obj = self.cycle(obj)
         return new_obj
-
-    def call_publish_script(self, paths):
-        """Actually do the publication."""
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        publish_script = config['publish-script']
-        self.call_script(publish_script, '\n'.join(paths))
-        timer.mark('Called publish script')
 
     def after_publish(self, obj, master):
         self.log(obj, _('Published'))
@@ -457,7 +458,7 @@ class RetractTask(PublishRetractTask):
             paths.extend(reversed(self.get_all_paths(obj)))
 
         if paths:
-            self.call_retract_script(paths)
+            self.call_script('retract', paths)
 
         for obj in retracted:
             try:
@@ -479,13 +480,6 @@ class RetractTask(PublishRetractTask):
         info.published = False
         self.log(obj, _('Retracted'))
         return obj
-
-    def call_retract_script(self, paths):
-        """Call the script. This does the actual retract."""
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        retract_script = config['retract-script']
-        self.call_script(retract_script, '\n'.join(paths))
 
     def after_retract(self, obj, master):
         """Do things after retract."""
