@@ -20,7 +20,7 @@ case $publish_action in
     ;;
 esac
 
-cat $1 | ssh -o BatchMode=yes $persist "${publish_user}@${publish_host}" $cmd
+cat $1 | ssh -o BatchMode=yes $publish_ssh_options $persist -p "${publish_port:-22}" "${publish_user}@${publish_host}" $cmd
 
 echo
 echo done.

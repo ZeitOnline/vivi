@@ -1,9 +1,13 @@
+from mockssh.streaming import Stream
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 import gocept.selenium
+import io
+import mockssh
 import os
 import pkg_resources
 import plone.testing
+import shutil
 import stat
 import tempfile
 import zeit.cms.testcontenttype.interfaces
@@ -62,10 +66,70 @@ class WorkflowScriptsLayer(plone.testing.Layer):
 
 
 SCRIPTS_LAYER = WorkflowScriptsLayer()
+
+
+class SSHServerLayer(plone.testing.Layer):
+
+    def setUp(self):
+        self['tmpdir'] = tempfile.mkdtemp()
+        self['ssh-user'] = 'mockpublisher'
+        self['ssh-key-path'] = self['tmpdir'] + '/mockssh.key'
+        shutil.copy(
+            pkg_resources.resource_filename('mockssh', 'sample-user-key'),
+            self['ssh-key-path'])
+        os.chmod(self['ssh-key-path'], 0o600)  # Pacify ssh client.
+        self['ssh-server'] = mockssh.Server(
+            {self['ssh-user']: self['ssh-key-path']})
+        self['ssh-server'].__enter__()
+
+    def testSetUp(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        config['publish-host'] = 'localhost'
+        config['publish-port'] = str(self['ssh-server'].port)
+        config['publish-user'] = self['ssh-user']
+        config['publish-command-publish'] = 'cat'
+        config['publish-command-retract'] = 'cat'
+        config['publish-ssh-options'] = (
+            '-i %s -o StrictHostKeyChecking=no' % self['ssh-key-path'])
+        del config['publish-script']
+
+    def tearDown(self):
+        self['ssh-server'].__exit__()
+        del self['ssh-server']
+        shutil.rmtree(self['tmpdir'])
+        del self['tmpdir']
+
+
+SSH_SERVER_LAYER = SSHServerLayer()
+
+
+# Work around https://github.com/carletes/mock-ssh-server/issues/24
+def transfer(self):
+    if self.eof:
+        return None
+    data = original_transfer(self)
+    out = self.write.__self__
+    # Kludgy way of recognizing that we're indeed handling the stdin stream
+    # with the least amount of monkey-patching:
+    if isinstance(out, io.BufferedWriter) and not data:
+        self.eof = True
+        out.close()
+    return data
+
+
+original_transfer = Stream.transfer
+Stream.transfer = transfer
+Stream.eof = False
+
+
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, SCRIPTS_LAYER))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(CELERY_LAYER,))
+
+SSH_LAYER = plone.testing.Layer(
+    bases=(ZOPE_LAYER, SSH_SERVER_LAYER), name='SSHLayer', module=__name__)
 
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
