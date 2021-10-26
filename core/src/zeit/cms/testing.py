@@ -174,7 +174,7 @@ class ZCMLLayer(plone.testing.Layer):
         # context.execute_actions()
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
         self.assert_non_browser_modules_have_no_browser_zcml()
-        zeit.cms.zope.load_zcml(self.config_file)
+        zeit.cms.zope._load_zcml(self.config_file)
 
     def assert_non_browser_modules_have_no_browser_zcml(self):
         # Caveat emptor: This whole method is a bunch of heuristics, but

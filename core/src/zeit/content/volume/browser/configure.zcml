@@ -1,11 +1,23 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:grok="http://namespaces.zope.org/grok"
-  xmlns:gocept="http://namespaces.gocept.com/zcml"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="zeit.cms">
 
   <grok:grok package="." />
+
+  <utility
+    zcml:condition="have zeit.content.volume.toc"
+    provides="zeit.content.volume.interfaces.ITocConnector"
+    factory=".toc.toc_connector_factory"
+    />
+  <utility
+    zcml:condition="not-have zeit.content.volume.toc"
+    provides="zeit.content.volume.interfaces.ITocConnector"
+    factory="zeit.connector.mock.connector_factory"
+    />
 
   <browser:page
      for="zeit.cms.repository.interfaces.IFolder"

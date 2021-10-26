@@ -1,0 +1,10 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <include package="zeit.connector" file="real-connector.zcml"
+    zcml:condition="have zeit.connector"/>
+  <include package="zeit.connector" file="tbcdav-connector.zcml"
+    zcml:condition="have zeit.connector.nocache"/>
+
+</configure>
