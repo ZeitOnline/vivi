@@ -340,22 +340,22 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(c1).urgent = True
         IPublishInfo(c2).urgent = True
         with mock.patch(
-                'zeit.workflow.publish.PublishTask'
-                '.call_publish_script') as script:
+                'zeit.workflow.publish.PublishTask.call_script') as script:
             IPublish(self.repository).publish_multiple(
                 [c1, c2], background=False)
-            script.assert_called_with(['work/online/2007/01/Somalia',
-                                       'work/online/2007/01/eta-zapatero'])
+            script.assert_called_with(
+                'publish', ['work/online/2007/01/Somalia',
+                            'work/online/2007/01/eta-zapatero'])
         self.assertTrue(IPublishInfo(c1).published)
         self.assertTrue(IPublishInfo(c2).published)
 
         with mock.patch(
-                'zeit.workflow.publish.RetractTask'
-                '.call_retract_script') as script:
+                'zeit.workflow.publish.RetractTask.call_script') as script:
             IPublish(self.repository).retract_multiple(
                 [c1, c2], background=False)
-            script.assert_called_with(['work/online/2007/01/Somalia',
-                                       'work/online/2007/01/eta-zapatero'])
+            script.assert_called_with(
+                'retract', ['work/online/2007/01/Somalia',
+                            'work/online/2007/01/eta-zapatero'])
         self.assertFalse(IPublishInfo(c1).published)
         self.assertFalse(IPublishInfo(c2).published)
 
@@ -371,8 +371,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch(
-                'zeit.workflow.publish.PublishTask'
-                '.call_publish_script') as script:
+                'zeit.workflow.publish.PublishTask.call_script') as script:
             IPublish(self.repository).publish_multiple([], background=False)
             self.assertFalse(script.called)
 

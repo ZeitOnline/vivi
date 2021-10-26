@@ -172,6 +172,7 @@ setup(
             'gocept.jslint>=0.2',
             'gocept.selenium>=2.4.0',
             'gocept.testing>=1.4.0.dev0',
+            'mock-ssh-server',
             'plone.testing[zca,zodb]',
             'pytest',
             'requests-mock',

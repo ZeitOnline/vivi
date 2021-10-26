@@ -1,18 +1,26 @@
 #!/bin/bash
-# This is a fake publish script which is used by the tests.
 
-tmpfile=$1
+set -e
+echo "${publish_action} script"
 
-echo Publishing test script
-cat $tmpfile
-echo
-
-grep JPG $tmpfile > /dev/null
-ret=$?
-
-if [ "$ret" -eq "0" ]; then
-    echo "error" >&2
-    exit 1
+if [[ -n "$publish_ssh_persist" ]]; then
+   persist="-o ControlMaster=auto -o ControlPath=/tmp/ssh_mux_%u_%h_%p_%r -o ControlPersist=4h"
 fi
 
-echo "done."
+case $publish_action in
+    publish)
+        cmd="$publish_command_publish"
+    ;;
+    retract)
+        cmd="$publish_command_retract"
+    ;;
+    *)
+        echo "Unrecognized action $publish_action"
+        exit 1
+    ;;
+esac
+
+cat $1 | ssh -o BatchMode=yes $publish_ssh_options $persist -p "${publish_port:-22}" "${publish_user}@${publish_host}" $cmd
+
+echo
+echo done.
