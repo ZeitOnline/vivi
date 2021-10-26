@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.4.0 (2021-10-26)
+------------------
+
+- ZO-441: Support configuring external utilities via settings instead of explicit ZCML includes
+
+- ZO-442: Support setting system principal passwords via settings
+
+
 5.3.2 (2021-10-21)
 ------------------
 
