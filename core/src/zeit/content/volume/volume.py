@@ -1,4 +1,3 @@
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component as grok
@@ -417,10 +416,6 @@ def _find_performing_articles_via_webtrekk(volume):
     stop = start + datetime.timedelta(weeks=3)
     # XXX Unfortunately the webtrekk api doesn't allow filtering for custom
     # metrics, so we got filter our results here
-    if FEATURE_TOGGLES.find('cp30_wall_status_new_format'):
-        object_title = 'cp30 - Wall-Status'
-    else:
-        object_title = 'Wall - Status'
     body = {'version': '1.1',
             'method': 'getAnalysisData',
             'params': {
@@ -429,11 +424,13 @@ def _find_performing_articles_via_webtrekk(volume):
                 'customerId': config['access-control-webtrekk-customerid'],
                 'language': 'de',
                 'analysisConfig': {
-                    "analysisFilter": {'filterRules': [
+                    "analysisFilter": {'filterRules': [{
                         # Only paid articles
-                        {'objectTitle': object_title, 'comparator': '=',
-                         'filter': 'paid', 'scope': 'page'},
-                    ]},
+                        'objectTitle': 'cp30 - Wall-Status',
+                        'comparator': '=',
+                        'filter': 'paid',
+                        'scope': 'page'
+                        } ]},
                     'metrics': [
                         {'sortOrder': 'desc', 'title': order_metric_name},
                         {'sortOrder': 'desc', 'title': cr_metric_name}
