@@ -424,13 +424,15 @@ def _find_performing_articles_via_webtrekk(volume):
                 'customerId': config['access-control-webtrekk-customerid'],
                 'language': 'de',
                 'analysisConfig': {
-                    "analysisFilter": {'filterRules': [{
+                    "analysisFilter": {'filterRules': [
                         # Only paid articles
-                        'objectTitle': 'cp30 - Wall-Status',
-                        'comparator': '=',
-                        'filter': 'paid',
-                        'scope': 'page'
-                        } ]},
+                        {
+                         'objectTitle': 'cp30 - Wall-Status',
+                         'comparator': '=',
+                         'filter': 'paid',
+                         'scope': 'page'
+                        },
+                    ]},
                     'metrics': [
                         {'sortOrder': 'desc', 'title': order_metric_name},
                         {'sortOrder': 'desc', 'title': cr_metric_name}
