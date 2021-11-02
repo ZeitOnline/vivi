@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.4.2 (2021-11-02)
+------------------
+
+MAINT:
+- ZO-188: Remove feature toggle
+
+
 5.4.1 (2021-10-27)
 ------------------
 
