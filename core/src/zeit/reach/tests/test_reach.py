@@ -24,3 +24,18 @@ class ReachTest(zeit.reach.testing.FunctionalTestCase):
 
         (request,) = self.layer['request_handler'].requests
         self.assertEqual('/ranking/views?limit=3', request['path'])
+
+
+class ReachCacheTest(zeit.reach.testing.FunctionalTestCase):
+
+    def test_content_is_not_IReach_after_resolve(self):
+        uniqueId = 'http://xml.zeit.de/testcontent'
+
+        reach = Reach('http://localhost:%s' % self.layer['http_port'])
+        resolved_content = reach._resolve({'uniqueId': uniqueId})
+        content = zeit.cms.interfaces.ICMSContent(uniqueId)
+
+        self.assertTrue(zeit.reach.interfaces.IReachContent.providedBy(
+            resolved_content))
+        self.assertFalse(zeit.reach.interfaces.IReachContent.providedBy(
+            content))
