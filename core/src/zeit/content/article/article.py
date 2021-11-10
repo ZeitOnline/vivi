@@ -143,6 +143,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     @main_image_variant_name.setter
     def main_image_variant_name(self, value):
         image_block = self.main_image_block
+        if image_block is None:
+            return
         image_block.variant_name = value
 
     def _create_image_block_in_front(self):
