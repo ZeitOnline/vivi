@@ -89,8 +89,6 @@ class import_video(import_base):
 
         if self.bcobj.state == 'ACTIVE':
             publish(self.cmsobj)
-            publish(self.cmsobj.cms_video_still)
-            publish(self.cmsobj.cms_thumbnail)
 
     def add(self):
         if self.cmsobj is not None or self.bcobj.skip_import:

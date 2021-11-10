@@ -140,8 +140,14 @@ class Dependencies(zeit.workflow.dependency.DependencyBase):
     def get_dependencies(self):
         relations = zope.component.getUtility(
             zeit.cms.relation.interfaces.IRelations)
-        return [x for x in relations.get_relations(self.context)
-                if zeit.content.video.interfaces.IPlaylist.providedBy(x)]
+        dependencies = [x for x in relations.get_relations(self.context)
+                        if zeit.content.video.interfaces.
+                        IPlaylist.providedBy(x)]
+        if self.context.cms_video_still is not None:
+            dependencies.append(self.context.cms_video_still)
+        if self.context.cms_thumbnail is not None:
+            dependencies.append(self.context.cms_thumbnail)
+        return dependencies
 
 
 @grok.adapter(zeit.content.video.interfaces.IVideo)
