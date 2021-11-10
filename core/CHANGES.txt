@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.4.5 (2021-11-10)
+------------------
+
+FIX:
+- Don't break when changing a template/header of article without an image
+
+
 5.4.4 (2021-11-05)
 ------------------
 
