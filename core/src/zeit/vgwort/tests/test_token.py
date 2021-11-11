@@ -13,7 +13,7 @@ class TokenStorageTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             ts.order(amount)
         except zeit.vgwort.interfaces.TechnicalError:
-            pass
+            self.skipTest('vgwort test system down')
 
     def test_order_tokens(self):
         ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
