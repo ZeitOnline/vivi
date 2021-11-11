@@ -45,13 +45,19 @@ class Reach:
         return result
 
     def _resolve(self, doc):
-        content = zeit.cms.interfaces.ICMSContent(doc['uniqueId'], None)
-        if content is None:
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        try:
+            content = repository.getCopyOf(doc['uniqueId'])
+        except KeyError:
             log.warning('Not found %s', doc['uniqueId'])
             return None
+
         content._reach_data = doc
         zope.interface.alsoProvides(
-            content, zeit.reach.interfaces.IReachContent)
+            content,
+            zeit.cms.repository.interfaces.IRepositoryContent,
+            zeit.reach.interfaces.IReachContent)
         return content
 
 
