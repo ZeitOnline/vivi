@@ -49,8 +49,8 @@ class Base(zeit.push.browser.form.SocialBase,
         zeit.push.browser.form.MobileBase.mobile_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
-            _('Teaser elements'),
-            ('related', 'cms_thumbnail', 'cms_video_still'),
+            _('Video-Thumbnail'),
+            ('cms_thumbnail', 'cms_video_still'),
             css_class='wide-widgets column-left'),
         gocept.form.grouped.RemainingFields(
             '', css_class='column-left'),
