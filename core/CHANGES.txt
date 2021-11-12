@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.4.7 (2021-11-12)
+------------------
+
+- ZO-303: Use built-in mechanics for publishing image with video
+
+
 5.4.6 (2021-11-11)
 ------------------
 
