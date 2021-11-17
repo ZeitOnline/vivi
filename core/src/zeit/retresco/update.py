@@ -2,7 +2,6 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ICollection, INonRecursiveCollection
 from zeit.retresco.interfaces import ISkipEnrich
 import argparse
-import gocept.runner
 import grokcore.component as grok
 import logging
 import six
@@ -233,7 +232,7 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
                 log.info('Processed %s in %s', content.uniqueId, stop - start)
 
 
-@zeit.cms.cli.runner(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
     'zeit.retresco', 'index-principal'))
 def reindex():
     parser = argparse.ArgumentParser(description='Reindex folder in TMS')

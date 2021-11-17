@@ -3,11 +3,11 @@ from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import datetime
-import gocept.runner
 import grokcore.component as grok
 import logging
 import pytz
 import zeit.cms.celery
+import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
@@ -166,7 +166,7 @@ def schedule_imported_retract_jobs(context, event):
     workflow.setup_job('retract', workflow.released_to)
 
 
-@zeit.cms.cli.runner(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
     'zeit.workflow', 'retract-timebased-principal'))
 def retract_overdue_objects():
     import zeit.find.interfaces

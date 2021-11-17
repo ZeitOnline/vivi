@@ -2,13 +2,13 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublish
 import argparse
 import datetime
-import gocept.runner
 import grokcore.component as grok
 import itertools
 import logging
 import lxml.objectify
 import requests
 import six
+import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -466,7 +466,7 @@ def _find_performing_articles_via_webtrekk(volume):
     return list(urls)
 
 
-@zeit.cms.cli.runner(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
     'zeit.content.volume', 'access-control-principal'))
 def change_access():
     parser = argparse.ArgumentParser()

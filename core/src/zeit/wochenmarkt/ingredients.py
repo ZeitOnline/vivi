@@ -3,11 +3,11 @@ from zeit.cms.cli import wait_for_commit
 from zeit.cms.interfaces import CONFIG_CACHE, ICMSContent
 from zeit.cms.workflow.interfaces import IPublish
 import collections
-import gocept.runner
 import grokcore.component as grok
 import logging
 import lxml.etree
 import six
+import zeit.cms.cli
 import zeit.retresco.interfaces
 import zeit.wochenmarkt.interfaces
 import zope.component
@@ -128,7 +128,7 @@ class IngredientsWhitelist(
         return xml
 
 
-@zeit.cms.cli.runner(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
     'zeit.wochenmarkt', 'used-ingredients-principal'))
 def collect_used():
     ingredients = zope.component.getUtility(

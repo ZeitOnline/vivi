@@ -80,10 +80,14 @@ def _configure_logging(settings):
 
 try:
     import gocept.runner
+    from gocept.runner import from_config  # noqa API
 except ImportError:
     # Provide fake decorator so zeit.web can avoid importing the zope machinery
     def runner(*args, **kw):
         return lambda x: x
+
+    def from_config(*args, **kw):
+        return None
 else:
     class runner(gocept.runner.appmain):
 

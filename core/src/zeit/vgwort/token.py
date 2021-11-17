@@ -1,7 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import BTrees.Length
 import csv
-import gocept.runner
 import grokcore.component as grok
 import logging
 import persistent
@@ -157,7 +156,7 @@ def remove_vgwort_properties_after_copy(context, event):
     info.reported_error = None
 
 
-@zeit.cms.cli.runner(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
     'zeit.vgwort', 'token-principal'))
 def order_tokens():
     _order_tokens()
