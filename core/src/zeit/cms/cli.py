@@ -46,7 +46,7 @@ Modules that were pre-imported for convenience: zope, zeit, transaction
 
 def parse_paste_ini():
     settings = os.environ.copy()
-    if len(sys.argv) >= 2:
+    if len(sys.argv) >= 2 and sys.argv[1].endswith('.ini'):
         settings.update(_parse_paste_ini(sys.argv.pop(1)))
     configure(settings)
     return settings
