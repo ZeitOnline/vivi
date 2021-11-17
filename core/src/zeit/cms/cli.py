@@ -4,6 +4,7 @@ import os
 import os.path
 import signal
 import sys
+import time
 import zeit.cms.logging
 
 
@@ -109,3 +110,17 @@ else:
                 finally:
                     db.close()
             return run
+
+
+def wait_for_commit(func):
+    from ZODB.POSException import ConflictError
+    import transaction
+    while True:
+        func()
+        try:
+            transaction.commit()
+            return
+        except ConflictError:
+            log.warning('ConflictError, retrying')
+            transaction.abort()
+            time.sleep(0.5)

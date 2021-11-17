@@ -1,10 +1,12 @@
 import BTrees
+import argparse
 import datetime
 import logging
 import persistent
 import pytz
 import time
 import transaction
+import zeit.cms.cli
 import zeit.objectlog.interfaces
 import zope.app.keyreference.interfaces
 import zope.component
@@ -118,3 +120,14 @@ class Log(object):
         if processor is not None:
             entries = processor(entries)
         return tuple(reversed(tuple(entries)))
+
+
+@zeit.cms.cli.runner()
+def clean():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--days', type=int, default=30)
+    options = parser.parse_args()
+    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+    logger.info('Cleaning objectlog, days=%s', options.days)
+    log.clean(datetime.timedelta(days=options.days))
+    logger.info('done')
