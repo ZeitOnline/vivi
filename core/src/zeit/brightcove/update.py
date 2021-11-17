@@ -269,7 +269,7 @@ class import_playlist(import_base):
             del folder[name]
 
 
-@zeit.cms.cli.runner(ticks=120, principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(ticks=120, principal=zeit.cms.cli.from_config(
     'zeit.brightcove', 'index-principal'), once=False)
 def import_playlists():
     log.info('Update run started')

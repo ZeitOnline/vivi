@@ -4,6 +4,7 @@ import os
 import os.path
 import signal
 import sys
+import time
 import zeit.cms.logging
 
 
@@ -79,10 +80,14 @@ def _configure_logging(settings):
 
 try:
     import gocept.runner
+    from gocept.runner import from_config  # noqa API
 except ImportError:
     # Provide fake decorator so zeit.web can avoid importing the zope machinery
     def runner(*args, **kw):
         return lambda x: x
+
+    def from_config(*args, **kw):
+        return None
 else:
     class runner(gocept.runner.appmain):
 
@@ -109,3 +114,17 @@ else:
                 finally:
                     db.close()
             return run
+
+
+def wait_for_commit(func):
+    from ZODB.POSException import ConflictError
+    import transaction
+    while True:
+        func()
+        try:
+            transaction.commit()
+            return
+        except ConflictError:
+            log.warning('ConflictError, retrying')
+            transaction.abort()
+            time.sleep(0.5)
