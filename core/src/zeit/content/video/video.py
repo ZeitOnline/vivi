@@ -143,6 +143,17 @@ class Dependencies(zeit.workflow.dependency.DependencyBase):
         dependencies = [x for x in relations.get_relations(self.context)
                         if zeit.content.video.interfaces.
                         IPlaylist.providedBy(x)]
+        return dependencies
+
+
+class DependenciesImages(zeit.workflow.dependency.DependencyBase):
+
+    grok.context(zeit.content.video.interfaces.IVideo)
+
+    retract_dependencies = True
+
+    def get_dependencies(self):
+        dependencies = list()
         if self.context.cms_video_still is not None:
             dependencies.append(self.context.cms_video_still)
         if self.context.cms_thumbnail is not None:
