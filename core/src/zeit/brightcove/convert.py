@@ -115,6 +115,7 @@ class Video(Converter):
                                         for channel in cmsobj.channels])
         custom['supertitle'] = cmsobj.supertitle
         custom['credit'] = cmsobj.video_still_copyright
+        custom['type'] = cmsobj.type
 
         related = zeit.cms.related.interfaces.IRelatedContent(cmsobj).related
         for i in range(1, 6):
@@ -173,6 +174,7 @@ class Video(Converter):
         cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
         cmsobj.supertitle = custom.get('supertitle')
         cmsobj.video_still_copyright = custom.get('credit')
+        cmsobj.type = custom.get('type')
 
         product_source = IVideo['product'].source(cmsobj)
         if not custom.get('produkt-id') and data.get('reference_id'):

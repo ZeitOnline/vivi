@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Nov 18 12:03:50 2021\n"
+"POT-Creation-Date: Thu Nov 18 13:27:12 2021\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2391,7 +2391,7 @@ msgstr ""
 #: zeit/content/article/edit/video.py:66
 #: zeit/content/video/browser/video.py:62
 #: zeit/content/video/browser/video.py:67
-#: zeit/content/video/video.py:128
+#: zeit/content/video/video.py:132
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
 msgstr ""
@@ -2715,7 +2715,7 @@ msgid "Textlength"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:38
-#: zeit/content/video/interfaces.py:42
+#: zeit/content/video/interfaces.py:47
 msgid "Has recension content"
 msgstr ""
 
@@ -4226,39 +4226,43 @@ msgstr ""
 msgid "Duration of the rendition"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:38
+#: zeit/content/video/interfaces.py:43
 msgid "External ID"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:46
+#: zeit/content/video/interfaces.py:51
 msgid "Video expires on"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:52
+#: zeit/content/video/interfaces.py:57
 msgid "URI of the thumbnail"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:61
+#: zeit/content/video/interfaces.py:66
 msgid "URI of the still image"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:70
+#: zeit/content/video/interfaces.py:75
 msgid "Renditions of the Video"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:84
+#: zeit/content/video/interfaces.py:89
 msgid "Video still copyright"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:90
+#: zeit/content/video/interfaces.py:95
 msgid "Has advertisement"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:103
+#: zeit/content/video/interfaces.py:99
+msgid "Video type"
+msgstr ""
+
+#: zeit/content/video/interfaces.py:113
 msgid "Video IDs"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:109
+#: zeit/content/video/interfaces.py:119
 msgid "Videos in the playlist"
 msgstr ""
 
