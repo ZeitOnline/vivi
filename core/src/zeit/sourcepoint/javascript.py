@@ -83,7 +83,8 @@ def from_product_config():
 
 
 @zeit.cms.cli.runner()
-def update():
+def update(principal=zeit.cms.cli.from_config(
+        'zeit.sourcepoint', 'update-principal')):
     log.info('Checking Sourcepoint JS')
     store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
     store.update()
