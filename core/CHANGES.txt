@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.4.9 (2021-11-18)
+------------------
+
+- ZO-146: Make paste.ini optional for CLI scripts
+
+- ZO-146: Provide entrypoints for various cronjobs
+
+
 5.4.8 (2021-11-15)
 ------------------
 
