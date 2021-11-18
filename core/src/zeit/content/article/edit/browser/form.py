@@ -443,7 +443,8 @@ class OptionsC(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-c'
     undo_description = _('edit options')
-    form_fields = FormFields(ICommonMetadata).select('deeplink_url')
+    form_fields = FormFields(ICommonMetadata).select(
+        'deeplink_url', 'color_scheme')
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
