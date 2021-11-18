@@ -97,7 +97,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertIn('politik', foldernames)
 
     def test_create_toc_element_should_flatten_linebreaks(self):
-        import pdb; pdb.set_trace()
         article_xml = self.article_xml_template.format(page='20-20')
         expected = {'page': 20,
                     'title': 'Titel',
