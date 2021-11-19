@@ -218,9 +218,21 @@ class ConsentInfo(zeit.cms.grok.TrustedAdapter,
     _has_thirdparty_local = DAVConverterWrapper(
         ObjectPathAttributeProperty('.', 'has_thirdparty'),
         zeit.cmp.interfaces.IConsentInfo['has_thirdparty'])
-    has_thirdparty = zeit.cms.content.reference.OverridableProperty(
+    _has_thirdparty = zeit.cms.content.reference.OverridableProperty(
         zeit.cmp.interfaces.IConsentInfo['has_thirdparty'],
         original='reference_consent')
+
+    @property
+    def has_thirdparty(self):
+        if (self._has_thirdparty_local is None and
+                self.context.text_reference is None and
+                self.context.text is None):
+            return False
+        return self._has_thirdparty
+
+    @has_thirdparty.setter
+    def has_thirdparty(self, value):
+        self._has_thirdparty = value
 
     _thirdparty_vendors_local = DAVConverterWrapper(
         ObjectPathAttributeProperty('.', 'thirdparty_vendors'),
