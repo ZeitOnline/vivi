@@ -28,7 +28,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                           'authors': 'Helmut Schmidt',
                           'volume': u'1',
                           'year': u'2015',
-                          'supertitle': 'Super'}]
+                          'supertitle': 'Super',
+                          'article_id': '1234567'
+                          }]
              }
         )
         self.toc_data['Anderer'] = OrderedDict(
@@ -41,6 +43,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                  'supertitle': 'Super',
                  'volume': '1',
                  'year': '2015',
+                 'article_id': '0123456'
                  },
                 {'page': '3',
                  'access': u'frei verfügbar',
@@ -49,7 +52,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                  'teaser': 'tease',
                  'volume': '1',
                  'year': '2015',
-                 'supertitle': 'Super'}
+                 'supertitle': 'Super',
+                 'article_id': '0123456'}
             ]}
         )
         self.article_xml_template = u"""
@@ -61,6 +65,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     name="access">free</attribute>
                     <attribute ns="http://namespaces.zeit.de/CMS/document"
                     name="author">Helmut Schmidt</attribute>
+                    <attribute ns="http://namespaces.zeit.de/CMS/interred"
+                    name="article_id">0123456</attribute>
                 </head>
                 <body>
                      <title>Titel</title>
@@ -97,7 +103,8 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     'teaser': 'Das soll der Teaser sein',
                     'supertitle': '',
                     'access': u'frei verfügbar',
-                    'authors': 'Helmut Schmidt'
+                    'authors': 'Helmut Schmidt',
+                    'article_id': '0123456'
                     }
         article_element = lxml.etree.fromstring(article_xml)
         toc = Toc(mock.Mock(), mock.Mock())
@@ -105,9 +112,9 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(expected, result)
 
     def test_csv_is_created_from_toc_data(self):
-        expected = """1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPolitik\t2015\t1\tDie Zeit\tHelmut Schmidt\r
-1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Kohl\r
-3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Schmidt, Helmut Kohl\r
+        expected = """1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPolitik\t2015\t1\tDie Zeit\tHelmut Schmidt\t1234567\r
+1\ttitle tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Kohl\t0123456\r
+3\ttitle2 tease\t\t\tfrei verfügbar\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tDossier\t2015\t1\tAnderer\tHelmut Schmidt, Helmut Kohl\t0123456\r
 """
         context = mock.Mock()
         context.year = 2015
@@ -204,6 +211,7 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
                     'ZEI', '2015', '01', ressort_name)
             with zeit.cms.testing.interaction():
                 article = create_article()
+                article.ir_article_id = '0123456'
                 article.year = 2015
                 article.volume = 1
                 article.title = self.article_title
