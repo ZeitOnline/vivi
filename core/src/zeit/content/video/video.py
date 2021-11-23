@@ -149,6 +149,7 @@ class Dependencies(zeit.workflow.dependency.DependencyBase):
 class DependenciesImages(zeit.workflow.dependency.DependencyBase):
 
     grok.context(zeit.content.video.interfaces.IVideo)
+    grok.name('zeit.content.video.a')
 
     retract_dependencies = True
 
