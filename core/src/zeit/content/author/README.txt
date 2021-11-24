@@ -21,7 +21,7 @@ Authors
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
-<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<author...>
   <title>Sir</title>
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
@@ -36,7 +36,7 @@ takes precedence:
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
-<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<author...>
   <title>Sir</title>
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
@@ -49,7 +49,7 @@ takes precedence:
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
-<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<author...>
   <title>Sir</title>
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
@@ -64,9 +64,9 @@ The author image group is stored using the IImages interface.
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
-<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<author...>
   ...
-  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
+  <image_group... base-id="http://xml.zeit.de/2007/03/group/" ...>
   ...
   </image_group>
 </author>
@@ -85,13 +85,13 @@ It takes precedence over the freetext authors:
 ...     zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(
 ...         ICommonMetadata, 'authorships', 'authors'))
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
-<testtype>
+<testtype...>
   <head>
     <author ... href="http://xml.zeit.de/shakespeare" ...>
       <image base-id="http://xml.zeit.de/2007/03/group/" ...>
       ...
       </image>
-      <display_name py:pytype="str">William Shakespeare</display_name>
+      <display_name>William Shakespeare</display_name>
     </author>
     <attribute ... name="author">William Shakespeare</attribute>
     ...
@@ -103,7 +103,7 @@ It takes precedence over the freetext authors:
 ...     co.authorships = []
 ...     co.authors = ['Charles Dickens']
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
-<testtype>
+<testtype...>
   <head>
     <attribute ... name="author">Charles Dickens</attribute>
     ...

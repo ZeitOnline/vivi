@@ -69,12 +69,10 @@ True
 The XML content will contain the unique id:
 
 >>> print(zeit.cms.testing.xmltotext(checked_in.xml))
-<testtype>
+<testtype...>
   <head>
     ...
     <attribute
-        xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        py:pytype="str"
         ns="http://namespaces.zeit.de/CMS/document"
         name="uuid">{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}</attribute>...
   </head>

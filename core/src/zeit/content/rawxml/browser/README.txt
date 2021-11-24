@@ -41,7 +41,7 @@ In the edited documents panel we see the title of the object and its icon:
 The xml is pretty printed:
 
 >>> print(browser.getControl('XML').value)
-<block>
+<block...>
   <feed/>
 </block>
 
@@ -58,7 +58,7 @@ After checking in we see the read/only view:
 <?xml ...
     <title>... View Raw XML </title>
     ...
-    <div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;block&gt;</span>
+    <div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;block...&gt;</span>
       <span class="nt">&lt;feed/&gt;</span>
         <span class="nt">&lt;/block&gt;</span>
 ...

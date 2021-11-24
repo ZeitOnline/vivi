@@ -215,17 +215,17 @@ Sadly the xml is not updated, yet:
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML Source').value.replace('\r\n', '\n'))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery...>
     ...
         <block name="03.jpg">
-        <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <image ... src="http://xml.zeit.de/online/2007/01/gallery/03.jpg"...>
+        <text xsi:nil="true"/>
+          <image src="http://xml.zeit.de/online/2007/01/gallery/03.jpg"...>
             <bu xsi:nil="true"/>
-            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
+            <copyright link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg"...>
+          <thumbnail src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg"...>
             <bu xsi:nil="true"/>
-            <copyright py:pytype="str" link="http://www.zeit.de/">ZEIT ONLINE</copyright>
+            <copyright link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>
         ...
@@ -264,7 +264,7 @@ the caption) of the image changes:
         <block layout="image-only" name="01.jpg">
           ...
           <caption...>Mann/Stein</caption>
-          <image ... src="http://xml.zeit.de/online/2007/01/gallery/01.jpg" ...
+          <image src="http://xml.zeit.de/online/2007/01/gallery/01.jpg" ...
             <bu ...>Bite my shiny metal ass</bu>...
           </image>
           <thumbnail ...
