@@ -193,6 +193,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         assert thmb is not None
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
         import_video(deleted)
+        # XXX manual transaction.commit() to avoid running into a vivi bug
+        transaction.commit()
         self.assertEqual(None,
                          ICMSContent('http://xml.zeit.de/video/2017-05/myvid',
                                      None))

@@ -4,7 +4,6 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.video.interfaces import IVideo
 import gocept.runner
 import logging
-import transaction
 import z3c.celery.celery
 import zeit.brightcove.convert
 import zeit.brightcove.session
@@ -77,14 +76,12 @@ class import_video(import_base):
         try:
             still = self.cmsobj.cms_video_still
             del still.__parent__[still.__name__]
-            transaction.commit()
         except Exception:
             log.info('vdieo still image for  %s not deleted', self.bcobj)
             pass
         try:
             thumb = self.cmsobj.cms_thumbnail
             del thumb.__parent__[thumb.__name__]
-            transaction.commit()
         except Exception:
             log.info('video thumbnail for  %s not deleted', self.bcobj)
             pass
