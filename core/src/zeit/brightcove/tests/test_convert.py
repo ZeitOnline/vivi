@@ -158,8 +158,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
                 'serie': 'Chefsache',
             },
             'images': {
-                'thumbnail': {'src': 'http://example.com/thumbnail'},
-                'poster': {'src': 'http://example.com/still'},
+                'poster': {'src': 'http://example.com/still'}
             },
             'sources': [{
                 'src': 'http://example.com/rendition',

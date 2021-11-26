@@ -76,13 +76,6 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         return getattr(high, 'url', '')
 
     @property
-    def thumbnail(self):
-        return self._player_data['thumbnail']
-
-    cms_thumbnail = zeit.cms.content.reference.SingleResource(
-        '.body.thumbnail', "image")
-
-    @property
     def video_still(self):
         return self._player_data['video_still']
 
@@ -157,8 +150,6 @@ class DependenciesImages(zeit.workflow.dependency.DependencyBase):
         dependencies = list()
         if self.context.cms_video_still is not None:
             dependencies.append(self.context.cms_video_still)
-        if self.context.cms_thumbnail is not None:
-            dependencies.append(self.context.cms_thumbnail)
         return dependencies
 
 

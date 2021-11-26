@@ -27,9 +27,6 @@ def create_video():
         "images": {
             "poster": {
                 "src": "nosuchhost"
-            },
-            "thumbnail": {
-                "src": "nosuchhost"
             }
         },
     }
@@ -58,11 +55,6 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         import_video(video)
         assert self.repository['video']['2017-05']['myvid'].video_still is None
         assert self.repository['video']['2017-05']['myvid-still'] is not None
-
-    def test_new_video_should_create_empty_thumbnail_image_group(self):
-        import_video(create_video())
-        assert self.repository['video']['2017-05']['myvid'].thumbnail is None
-        assert self.repository['video']['2017-05']['myvid-thumbnail'] is not None
 
     def test_changed_video_should_be_written_to_cms(self):
         bc = create_video()
@@ -166,19 +158,15 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         import_video(create_video())
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         still = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still')
-        thumb = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-thumbnail')
         info_video = zeit.cms.workflow.interfaces.IPublishInfo(video)
         info_still = zeit.cms.workflow.interfaces.IPublishInfo(still)
-        info_thumb = zeit.cms.workflow.interfaces.IPublishInfo(thumb)
         self.assertEqual(True, info_video.published)
         self.assertEqual(True, info_still.published)
-        self.assertEqual(True, info_thumb.published)
         zeit.cms.workflow.interfaces.IPublish(
             self.repository['video']['2017-05']['myvid']).retract(
             background=False)
         self.assertEqual(False, info_video.published)
         self.assertEqual(False, info_still.published)
-        self.assertEqual(False, info_thumb.published)
 
     def test_deleted_video_and_images_should_be_deleted_from_cms(self):
         bc = create_video()
@@ -186,11 +174,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None)
         still = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still/',
                             None)
-        thmb = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-thumbnail/',
-                           None)
         assert video is not None
         assert still is not None
-        assert thmb is not None
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
         import_video(deleted)
         # XXX manual transaction.commit() to avoid running into a vivi bug
@@ -201,22 +186,16 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual(
             None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still/',
                               None))
-        self.assertEqual(
-            None, ICMSContent(
-                  'http://xml.zeit.de/video/2017-05/myvid-thumbnail/', None))
 
     def test_images_of_deleted_video_should_be_retracted(self):
         bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         still = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still')
-        thumb = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-thumbnail')
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
         import_video(deleted)
         info_still = zeit.cms.workflow.interfaces.IPublishInfo(still)
-        info_thumb = zeit.cms.workflow.interfaces.IPublishInfo(thumb)
         self.assertEqual(False, info_still.published)
-        self.assertEqual(False, info_thumb.published)
 
     def test_vanished_video_should_be_ignored(self):
         bc = create_video()
@@ -259,25 +238,6 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
             "zeit.content.image.browser", "testdata"
         )
         shutil.copytree(image_dir, path.join(self.layer["documentroot"], "testdata"))
-
-    def test_download_teaser_image__thumbnail_success(self):
-        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
-        bc = create_video()
-        bc.data['images']['thumbnail']['src'] = src
-        import_video(bc)
-        # importing the video has created an image group "next to it" for its thumbnail
-        # and has assigned it as its thumbnail
-        assert self.repository['video']['2017-05']['myvid'].cms_thumbnail == self.repository['video']['2017-05']['myvid-thumbnail']
-        # the video has been published
-        self.assertEqual(
-            True,
-            zeit.cms.workflow.interfaces.IPublishInfo(
-                ICMSContent('http://xml.zeit.de/video/2017-05/myvid')).published)
-        # and so has the thumbnail
-        self.assertEqual(
-            True,
-            zeit.cms.workflow.interfaces.IPublishInfo(
-                ICMSContent('http://xml.zeit.de/video/2017-05/myvid-thumbnail')).published)
 
     def test_download_teaser_image__still_success(self):
         src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)

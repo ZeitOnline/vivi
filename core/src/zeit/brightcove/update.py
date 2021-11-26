@@ -79,12 +79,6 @@ class import_video(import_base):
         except Exception:
             log.info('vdieo still image for  %s not deleted', self.bcobj)
             pass
-        try:
-            thumb = self.cmsobj.cms_thumbnail
-            del thumb.__parent__[thumb.__name__]
-        except Exception:
-            log.info('video thumbnail for  %s not deleted', self.bcobj)
-            pass
         return True
 
     def _publish(self):
@@ -130,10 +124,6 @@ class import_video(import_base):
             self.folder, self.bcobj.data, 'still')
         if self.cmsobj.cms_video_still is None:
             self.cmsobj.cms_video_still = cms_video_still
-        cms_thumbnail = download_teaser_image(
-            self.folder, self.bcobj.data, 'thumbnail')
-        if self.cmsobj.cms_thumbnail is None:
-            self.cmsobj.cms_thumbnail = cms_thumbnail
 
     def _commit(self):
         self.folder[self.bcobj.id] = self.cmsobj
@@ -164,8 +154,7 @@ class import_video(import_base):
 
 
 BC_IMG_KEYS = {
-    'still': 'poster',
-    'thumbnail': 'thumbnail'
+    'still': 'poster'
 }
 
 
