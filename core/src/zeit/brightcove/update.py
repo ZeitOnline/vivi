@@ -93,11 +93,8 @@ class import_video(import_base):
             if obj is None:
                 log.info('Got None to publish')
                 return
-            if not IPublishInfo(obj).published:
-                log.info('Publishing %s' % obj)
-                IPublish(obj).publish(background=False)
-            else:
-                log.info('%s already published' % obj)
+            log.info('Publishing %s' % obj)
+            IPublish(obj).publish(background=False)
 
         if self.bcobj.state == 'ACTIVE':
             publish(self.cmsobj)
