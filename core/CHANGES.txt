@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.4.11 (2021-11-26)
+-------------------
+
+- ZO-585: Report "no thirdparty" for already retracted references
+
+
 5.4.10 (2021-11-22)
 -------------------
 
