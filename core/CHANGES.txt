@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.5.0 (2021-11-30)
+------------------
+
+- ZO-143: Allow zeit.web to reuse zeit.cms.zope
+
+
 5.4.11 (2021-11-26)
 -------------------
 
