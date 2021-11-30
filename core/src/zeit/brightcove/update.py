@@ -81,23 +81,13 @@ class import_video(import_base):
             pass
         return True
 
-    def _publish(self):
-
-        def publish(obj):
-            if obj is None:
-                log.info('Got None to publish')
-                return
-            log.info('Publishing %s' % obj)
-            IPublish(obj).publish(background=False)
-
-        if self.bcobj.state == 'ACTIVE':
-            publish(self.cmsobj)
-
     def add(self):
         if self.cmsobj is not None or self.bcobj.skip_import:
             return False
         self._add()
-        self._publish()
+        if self.bcobj.state == 'ACTIVE':
+            IPublish(self.cmsobj).publish(background=False)
+            log.info('Publishing %s' % self.bcobj.uniqueId)
         return True
 
     def _add(self):

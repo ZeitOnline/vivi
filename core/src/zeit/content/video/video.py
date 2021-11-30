@@ -142,15 +142,15 @@ class Dependencies(zeit.workflow.dependency.DependencyBase):
 class DependenciesImages(zeit.workflow.dependency.DependencyBase):
 
     grok.context(zeit.content.video.interfaces.IVideo)
-    grok.name('zeit.content.video.a')
+    grok.name('zeit.content.video.still')
 
     retract_dependencies = True
 
     def get_dependencies(self):
-        dependencies = list()
         if self.context.cms_video_still is not None:
-            dependencies.append(self.context.cms_video_still)
-        return dependencies
+            return [self.context.cms_video_still]
+        else:
+            return []
 
 
 @grok.adapter(zeit.content.video.interfaces.IVideo)
