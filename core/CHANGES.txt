@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.5.1 (2021-12-01)
+------------------
+
+- ZO-143: Add mock connector setup for zeit.web tests
+
+
+MAINT:
+- Clean up XML namespaces and objectify `pytype` on checkin
+
+
 5.5.0 (2021-11-30)
 ------------------
 
