@@ -27,7 +27,7 @@ appears on the image as well:
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
-<testtype>
+<testtype...>
   <head>
     <image ...src="http://xml.zeit.de/image-group/new-hampshire-450x....jpg"
         type="jpg"...expires="2008-01-06T00:00:00+00:00"...>

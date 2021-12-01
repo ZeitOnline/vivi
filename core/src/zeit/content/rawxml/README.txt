@@ -63,6 +63,7 @@ All the data is still there:
 u'Roh'
 >>> new_content.xml
 <Element a at ...>
+>>> lxml.etree.cleanup_namespaces(new_content.xml)
 >>> zeit.cms.testing.xmltotext(new_content.xml)
 '<a/>\n'
 
@@ -81,7 +82,7 @@ a channel:
   <title>Politik</title>
   <container>
     <block ...href="http://xml.zeit.de/raw"...>
-      <a xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true"/>
+      <a...xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true"/>
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype"...>50</object_limit>
@@ -98,7 +99,7 @@ Let's add some more  xml:
   <title>Politik</title>
   <container>
     <block ...href="http://xml.zeit.de/raw"...>
-      <a xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true">
+      <a...xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true">
         <foo bar="baz"/>
         <blubs py:pytype="str">oink</blubs>
       </a>

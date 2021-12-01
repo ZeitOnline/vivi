@@ -48,7 +48,7 @@ True
 The source has not changed:
 
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>...
    </head>
   <body/>
@@ -66,10 +66,10 @@ Add a related content:
 Let's have a look at the source:
 
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>...
     <references>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
@@ -98,10 +98,10 @@ Assigning the same content object again doesn't change the xml:
 
 >>> related.related = (related_content, )
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>...
     <references>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
@@ -122,16 +122,16 @@ Let's add another related content:
 >>> repository['related2'] = related_content2
 >>> related.related = (related_content, related_content2)
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>...
     <references>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related"...>
         ...
         <title xsi:nil="true"/>
         ...
       </reference>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related2"...>
         ...
         <title xsi:nil="true"/>
@@ -159,10 +159,10 @@ ICommonMetadata some information is included in the XML:
 So far nothing has changed:
 
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>...
     <references>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related"...>
         ...
         <title xsi:nil="true"/>
@@ -170,7 +170,7 @@ So far nothing has changed:
         <description xsi:nil="true"/>
         ...
       </reference>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related2"...>
         ...
         <title xsi:nil="true"/>
@@ -189,10 +189,10 @@ when we reassign the two objects the metadata will be reflected in the xml:
 
 >>> related.related = (related_content, related_content2)
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>...
     <references>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related"
         ...year="2006" issue="19"...>
         ...
@@ -201,7 +201,7 @@ when we reassign the two objects the metadata will be reflected in the xml:
         <description py:pytype="str">Dude.</description>
         ...
       </reference>
-      <reference ... type="intern" href="http://xml.zeit.de/related2"...>
+      <reference... type="intern" href="http://xml.zeit.de/related2"...>
         ...
         <title xsi:nil="true"/>
         ...
@@ -229,10 +229,10 @@ After sending the event the metadata is updated:
 ...     zeit.cms.checkout.interfaces.BeforeCheckinEvent(
 ...         content, None, zope.security.testing.Principal('hans.wurst')))
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>...
     <references>
-      <reference ...
+      <reference...
         type="intern" href="http://xml.zeit.de/related"
         ...year="2007" issue="19"...>
         ...
@@ -241,7 +241,7 @@ After sending the event the metadata is updated:
         <description py:pytype="str">Dude.</description>
         ...
       </reference>
-      <reference ...type="intern" href="http://xml.zeit.de/related2"...>
+      <reference...type="intern" href="http://xml.zeit.de/related2"...>
         ...
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
@@ -259,7 +259,7 @@ When we remove the relateds they're of course removed from the XML:
 
 >>> related.related = ()
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype...>
   <head>
     <references/>...
   </head>

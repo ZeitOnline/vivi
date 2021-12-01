@@ -87,7 +87,7 @@ want one):
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('Source').value.replace('\r\n', '\n'))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
   ...
   <body>
     ...

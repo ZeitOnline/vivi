@@ -67,12 +67,12 @@ u'Everything is fine now'
 Make sure the memo has no XML representation.
 
 >>> print(zeit.cms.testing.xmltotext(checked_in.xml))
-<testtype>
+<testtype...>
   <head>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="type">testcontenttype</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="uuid">...</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">testcontenttype</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">...</attribute>
   </head>
   <body/>
 </testtype>

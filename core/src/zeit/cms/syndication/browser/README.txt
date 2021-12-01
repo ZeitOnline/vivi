@@ -502,12 +502,12 @@ Let's have a look at the source now:
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
-<channel> 
+<channel...> 
   <title>Politik</title>
   <container>
     <block...hp_hide="true".../>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -528,12 +528,12 @@ Its also indicated in the source:
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
-<channel> 
+<channel...> 
   <title>Politik</title>
   <container>
     <block...layout="big".../>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 Hidden relateds
@@ -553,12 +553,12 @@ Its also indicated in the source:
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
-<channel> 
+<channel...> 
   <title>Politik</title>
   <container>
     <block...hidden_relateds="true".../>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 Removing items from channels
@@ -574,10 +574,10 @@ Let's have a look at the source now:
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML').value.replace('\r\n', '\n'))
-<channel> 
+<channel...> 
   <title>Politik</title>
   <container/>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -658,7 +658,7 @@ we can see it in the UI:
 ...         </related>
 ...     </block>
 ...   </container>
-...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
+...   <object_limit>50</object_limit>
 ... </channel>'''
 
 >>> browser.getControl('Apply').click()
@@ -716,7 +716,7 @@ is now way to remove the title w/o editing the source:
 >>> browser.getControl('XML').value = '''\
 ... <channel>
 ...   <container>
-...     <block xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/wirtschaft.feed">
+...     <block xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" href="http://xml.zeit.de/wirtschaft.feed">
 ...       <references/>
 ...     </block>
 ...     <block href="http://xml.zeit.de/online/2007/01/Querdax">
@@ -738,7 +738,7 @@ is now way to remove the title w/o editing the source:
 ...       </teaser>
 ...     </block>
 ...   </container>
-...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
+...   <object_limit>50</object_limit>
 ... </channel>'''
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()

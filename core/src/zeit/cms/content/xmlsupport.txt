@@ -46,12 +46,11 @@ change and contain the property:
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
-    ...<attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        py:pytype="str"
+    ...<attribute ...
         ns="http://namespaces.zeit.de/CMS/document"
         name="year">2004</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ...
+        ns="http://namespaces.zeit.de/CMS/document"
         name="ressort">Deutschland</attribute>...
   </head>
   <body/>
@@ -77,8 +76,8 @@ properties. Add some attributes to make sure they're removed:
 >>> content.xml = lxml.objectify.XML(u"""\
 ...     <testtype>
 ...      <head>
-...        <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
-...        <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
+...        <attribute ns="some-namespace" name="somename">somevalue</attribute>
+...        <attribute ns="some-namespace" name="some-other-name">someothervalue</attribute>
 ...      </head><body/>
 ...    </testtype>""")
 
@@ -99,8 +98,8 @@ INTERNAL namespace are *not* mapped:
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="somename">somevalue</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="some-namespace" name="some-other-name">someothervalue</attribute>
+    <attribute ns="some-namespace" name="somename">somevalue</attribute>
+    <attribute ns="some-namespace" name="some-other-name">someothervalue</attribute>
   </head>
   <body/>
 </testtype>
@@ -108,19 +107,17 @@ INTERNAL namespace are *not* mapped:
 
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(content).checkin()
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype>
+<testtype...>
   <head>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    py:pytype="str"
-    ns="under-the-hood" name="am-i">4711</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="under-the-hood" name="am-i">4711</attribute>
+    <attribute
+        ns="http://namespaces.zeit.de/CMS/document"
         name="date-last-modified">...-...-...T...+00:00</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute
+        ns="http://namespaces.zeit.de/CMS/document"
         name="last_modified_by">zope.user</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-        py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta"
+    <attribute
+        ns="http://namespaces.zeit.de/CMS/meta"
         name="type">testcontenttype</attribute>
     ...
   </head>
