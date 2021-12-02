@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict
 from unittest import mock
-from zeit.cms.repository.folder import Folder
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc, Excluder
 from zeit.content.volume.volume import Volume
@@ -12,7 +11,6 @@ import zeit.cms.content.sources
 import zeit.cms.testing
 import zeit.content.volume.interfaces
 import zeit.content.volume.testing
-import zope.component
 
 
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
@@ -75,26 +73,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                 </body>
             </article>
         """
-
-    def test_list_relevant_ressort_folders_excludes_leserbriefe_and_images(
-            self):
-        toc = Toc(mock.Mock(), mock.Mock())
-        toc_connector = zope.component.getUtility(
-            zeit.content.volume.interfaces.ITocConnector)
-        zope.component.getGlobalSiteManager().registerUtility(
-            toc_connector, zeit.connector.interfaces.IConnector)
-        folders = ['images', 'leserbriefe', 'politik']
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['ZEI'] = Folder()
-            self.repository['ZEI']['2015'] = Folder()
-            self.repository['ZEI']['2015']['01'] = Folder()
-            for foldername in folders:
-                self.repository['ZEI']['2015']['01'][foldername] = Folder()
-            relevant_ressorts = toc.list_relevant_ressort_folders(
-                'http://xml.zeit.de'
-                '/ZEI/2015/01')
-        foldernames = [folder.__name__ for folder in relevant_ressorts]
-        self.assertIn('politik', foldernames)
 
     def test_create_toc_element_should_flatten_linebreaks(self):
         article_xml = self.article_xml_template.format(page='20-20')
@@ -167,23 +145,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             self.assertEqual(False,
                              excluder.is_relevant(lxml.etree.fromstring(xml)))
 
-    def test_toc_connector_is_registered_as_connector(self):
-        old_connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
-        # register_archive_connector is called in __init__
-        # check for the correct side effects
-        t = Toc(mock.Mock(), mock.Mock())
-        with t._register_archive_connector():
-            new_connector = zope.component.getUtility(
-                zeit.connector.interfaces.IConnector)
-            # Check if a new IConnector was registered
-            assert old_connector is not new_connector
-            # Check if the toc.connector is the ITocConnector
-            assert t.connector is zope.component.getUtility(
-                zeit.content.volume.interfaces.ITocConnector)
-            assert t.connector is zope.component.getUtility(
-                zeit.connector.interfaces.IConnector)
-
 
 class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
@@ -199,36 +160,18 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.article_page = 1
         zeit.cms.content.add.find_or_create_folder('2015', '01')
         self.repository['2015']['01']['ausgabe'] = volume
-        # Now use the mock ITocConnector to mock the archive folders and the
-        # article
-        toc_connector = zope.component.getUtility(
-            zeit.content.volume.interfaces.ITocConnector)
-        sm = zope.component.getSiteManager()
-        sm.registerUtility(toc_connector, zeit.connector.interfaces.IConnector)
-        with zeit.cms.testing.site(self.getRootFolder()):
-            for ressort_name in self.ressort_names:
-                zeit.cms.content.add.find_or_create_folder(
-                    'ZEI', '2015', '01', ressort_name)
-            with zeit.cms.testing.interaction():
+        with zeit.cms.testing.interaction():
+            for i, ressort in enumerate(self.ressort_names):
                 article = create_article()
-                article.ir_article_id = '0123456'
+                article.ir_article_id = '012345%s' % i
+                article.ir_mediasync_id = '98765%s' % i
                 article.year = 2015
                 article.volume = 1
                 article.title = self.article_title
                 article.page = self.article_page
-                self.repository['ZEI']['2015']['01']['politik'][
-                    'test_artikel'] = article
-                article = create_article()
-                article.year = 2015
-                article.volume = 1
-                article.title = self.article_title
-                article.page = self.article_page
-                self.repository['ZEI']['2015']['01']['dossier'][
-                    'test_artikel_dossier'] = article
-        sm.registerUtility(
-            zope.component.getGlobalSiteManager().getUtility(
-                zeit.connector.interfaces.IConnector),
-            zeit.connector.interfaces.IConnector)
+                article.printRessort = 'ressort %s' % ressort
+                self.repository['2015']['01'][
+                    'test_artikel_%s' % ressort] = article
 
     def test_toc_view_is_csv_file_download(self):
         b = self.browser
@@ -251,5 +194,5 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.assertIn(self.article_title, b.contents)
         self.assertIn(str(self.article_page), b.contents)
         for ressort_name in self.ressort_names:
-            self.assertIn(ressort_name.title(), b.contents)
+            self.assertIn('ressort %s' % ressort_name, b.contents)
         self.assertIn('DIE ZEIT'.lower(), b.contents.lower())

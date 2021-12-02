@@ -8,17 +8,6 @@
 
   <grok:grok package="." />
 
-  <utility
-    zcml:condition="have zeit.content.volume.toc"
-    provides="zeit.content.volume.interfaces.ITocConnector"
-    factory=".toc.toc_connector_factory"
-    />
-  <utility
-    zcml:condition="not-have zeit.content.volume.toc"
-    provides="zeit.content.volume.interfaces.ITocConnector"
-    factory="zeit.connector.mock.connector_factory"
-    />
-
   <browser:page
      for="zeit.cms.repository.interfaces.IFolder"
      layer="zeit.cms.browser.interfaces.ICMSLayer"
