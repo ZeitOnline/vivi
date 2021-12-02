@@ -67,7 +67,7 @@ class Toc(zeit.cms.browser.view.Base):
                 props = zeit.connector.interfaces.IWebDAVProperties(article)
                 if self.MEDIASYNC_ID not in props:
                     continue
-                toc_entry = self._create_toc_element(article.xml)
+                toc_entry = self._create_toc_element(article)
                 if toc_entry:
                     if (article.main_image and
                             article.main_image.target is not None):
@@ -87,35 +87,33 @@ class Toc(zeit.cms.browser.view.Base):
         ids_as_string = config.get('toc-product-ids')
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
 
-    def _create_toc_element(self, article_element):
+    def _create_toc_element(self, article):
         """
-        :param article_element: lxml.etree Article element
+        :param article: IArticle
         :return: {'page': int, 'title': str, 'teaser': str, 'supertitle':
         str, 'access': bool, 'authors': str, 'article_id': str}
         """
-        toc_entry = self._get_metadata_from_article_xml(article_element)
+        toc_entry = self._get_metadata_from_article(article)
         return toc_entry if self._is_relevant(toc_entry) else None
 
-    def _get_metadata_from_article_xml(self, atricle_tree):
+    def _get_metadata_from_article(self, article):
         """
         Get all relevant normalized metadata from article xml tree.
-        :param atricle_tree: lxml.etree Element
+        :param article: IArticle
         :return: {'page': int, 'title': str, 'teaser': str, 'supertitle': str,
         'access': bool, 'authors': str, 'article_id': str}
         """
-        xpaths = {
-            'title': "body/title/text()",
-            'page': "//attribute[@name='page']/text()",
-            'teaser': "body/subtitle/text()",
-            'supertitle': "body/supertitle/text()",
-            'access': "//attribute[@name='access']/text()",
-            'authors': "//attribute[@name='author']/text()",
-            'article_id': "//attribute[@name='article_id']/text()"
+        result = {
+            'title': article.title,
+            'page': str(article.page),
+            'teaser': article.subtitle,
+            'supertitle': article.supertitle,
+            'access': article.access,
+            'authors': ', '.join([
+                x.target.display_name for x in article.authorships]),
+            'article_id': article.ir_article_id,
         }
-        res = {}
-        for key, xpath in xpaths.items():
-            res[key] = atricle_tree.xpath(xpath)
-        return self._normalize_toc_element(res)
+        return self._normalize_toc_element(result)
 
     REQUIRED = ['title', 'teaser']
     EXCLUDE = {
@@ -171,8 +169,8 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.items():
-            toc_entry[key] = value[0].replace(self.CSV_DELIMITER, '') \
-                if len(value) > 0 else u""
+            toc_entry[key] = value.replace(
+                self.CSV_DELIMITER, '') if value else ''
         self._normalize_teaser(toc_entry)
         self._normalize_page(toc_entry)
         self._normalize_access_element(toc_entry)

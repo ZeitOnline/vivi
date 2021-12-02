@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from io import StringIO
 from collections import OrderedDict
 from unittest import mock
+from zeit.content.author.author import Author
+from zeit.content.article.article import Article
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc
 from zeit.content.volume.volume import Volume
@@ -54,6 +57,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                  'article_id': '0123456'}
             ]}
         )
+        author = Author()
+        author.firstname = 'Helmut'
+        author.lastname = 'Schmidt'
+        self.repository['author'] = author
         self.article_xml_template = u"""
             <article>
                 <head>
@@ -61,32 +68,32 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                     name="page">{page}</attribute>
                     <attribute ns="http://namespaces.zeit.de/CMS/document"
                     name="access">free</attribute>
-                    <attribute ns="http://namespaces.zeit.de/CMS/document"
-                    name="author">Helmut Schmidt</attribute>
                     <attribute ns="http://namespaces.zeit.de/CMS/interred"
                     name="article_id">0123456</attribute>
+                    <author href="http://xml.zeit.de/author"/>
                 </head>
                 <body>
                      <title>Titel</title>
-                     <subtitle>Das soll der Teaser
-                     sein</subtitle>
+                     <subtitle>Das soll der Teaser sein</subtitle>
                 </body>
             </article>
         """
 
     def test_create_toc_element_should_flatten_linebreaks(self):
-        article_xml = self.article_xml_template.format(page='20-20')
+        article = Article(
+            StringIO(self.article_xml_template.format(page='20')))
+        self.repository['article'] = article
+        article.updateDAVFromXML()
         expected = {'page': 20,
                     'title': 'Titel',
                     'teaser': 'Das soll der Teaser sein',
                     'supertitle': '',
-                    'access': u'frei verfügbar',
+                    'access': 'frei verfügbar',
                     'authors': 'Helmut Schmidt',
                     'article_id': '0123456'
                     }
-        article_element = lxml.etree.fromstring(article_xml)
         toc = Toc(mock.Mock(), mock.Mock())
-        result = toc._create_toc_element(article_element)
+        result = toc._create_toc_element(article)
         self.assertEqual(expected, result)
 
     def test_csv_is_created_from_toc_data(self):
@@ -102,10 +109,12 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(expected, res)
 
     def test_empty_page_node_in_xml_results_in_max_int_page_in_toc_entry(self):
-        article_xml = self.article_xml_template.format(page='')
-        article_element = lxml.etree.fromstring(article_xml)
+        article = Article(
+            StringIO(self.article_xml_template.format(page='')))
+        self.repository['article'] = article
+        article.updateDAVFromXML()
         t = Toc(mock.Mock(), mock.Mock())
-        entry = t._create_toc_element(article_element)
+        entry = t._create_toc_element(article)
         assert sys.maxsize == entry.get('page')
 
     def test_sorts_entries_with_max_int_page_as_last_toc_element(self):
