@@ -128,10 +128,6 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         excluder = Excluder()
         xml_template = u"""
         <article>
-            <head>
-                <attribute ns="http://namespaces.zeit.de/CMS/document"
-                name="jobname">{d[jobname]}</attribute>
-            </head>
             <body>
                  <title>{d[title]}</title>
                  <supertitle>{d[supertitle]}</supertitle>
@@ -139,8 +135,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         </article>
         """
         for values in [{'title': u'Heute 20.02.2016'},
-                       {'supertitle': u'WIR RATEN AB'},
-                       {'jobname': u'AS-Zahl'}]:
+                       {'supertitle': u'WIR RATEN AB'}]:
             xml = xml_template.format(d=defaultdict(str, **values))
             self.assertEqual(False,
                              excluder.is_relevant(lxml.etree.fromstring(xml)))
