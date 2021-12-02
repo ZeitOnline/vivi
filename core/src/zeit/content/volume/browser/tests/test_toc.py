@@ -2,7 +2,7 @@
 from collections import OrderedDict
 from unittest import mock
 from zeit.content.article.testing import create_article
-from zeit.content.volume.browser.toc import Toc, Excluder
+from zeit.content.volume.browser.toc import Toc
 from zeit.content.volume.volume import Volume
 import lxml.etree
 import sys
@@ -124,21 +124,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         assert sys.maxsize == result.get('Die Zeit').get('Politik')[-1].get(
             'page')
 
-    def test_article_excluder_excludes_blacklisted_property_values(self):
-        excluder = Excluder()
-        xml_template = u"""
-        <article>
-            <body>
-                 <title>{d[title]}</title>
-                 <supertitle>{d[supertitle]}</supertitle>
-            </body>
-        </article>
-        """
-        for values in [{'title': u'Heute 20.02.2016'},
-                       {'supertitle': u'WIR RATEN AB'}]:
-            xml = xml_template.format(d=defaultdict(str, **values))
-            self.assertEqual(False,
-                             excluder.is_relevant(lxml.etree.fromstring(xml)))
+    def test_excludes_given_property_values(self):
+        for toc in [{'title': 'Heute 20.02.2016'},
+                    {'supertitle': 'WIR RATEN AB'}]:
+            self.assertFalse(Toc._is_relevant(toc))
 
 
 class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
@@ -163,6 +152,7 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
                 article.year = 2015
                 article.volume = 1
                 article.title = self.article_title
+                article.subtitle = 'required'
                 article.page = self.article_page
                 article.printRessort = 'ressort %s' % ressort
                 self.repository['2015']['01'][

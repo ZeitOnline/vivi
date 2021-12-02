@@ -24,7 +24,6 @@ class Toc(zeit.cms.browser.view.Base):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.excluder = Excluder()
 
     def __call__(self):
         filename = self._generate_file_name()
@@ -95,11 +94,7 @@ class Toc(zeit.cms.browser.view.Base):
         str, 'access': bool, 'authors': str, 'article_id': str}
         """
         toc_entry = self._get_metadata_from_article_xml(article_element)
-        if self._is_sane(toc_entry) and self.excluder.is_relevant(
-                article_element):
-            return toc_entry
-        else:
-            return None
+        return toc_entry if self._is_relevant(toc_entry) else None
 
     def _get_metadata_from_article_xml(self, atricle_tree):
         """
@@ -122,19 +117,57 @@ class Toc(zeit.cms.browser.view.Base):
             res[key] = atricle_tree.xpath(xpath)
         return self._normalize_toc_element(res)
 
-    def _is_sane(self, toc_entry):
+    REQUIRED = ['title', 'teaser']
+    EXCLUDE = {
+        'title': [re.compile(x, re.IGNORECASE) for x in [
+            'Heute \\d+.\\d+',
+            'Damals \\d+.\\d+',
+            'PROMINENT IGNORIERT',
+            'Du siehst aus, wie ich mich fühle',
+            'WAS MEIN LEBEN REICHER MACHT',
+            'UND WER BIST DU?'
+
+        ]],
+        'supertitle': [re.compile(x, re.IGNORECASE) for x in [
+            'NEIN. QUARTERLY',
+            'MAIL AUS:',
+            'MACHER UND MÄRKTE',
+            'AUTO WOFÜR IST DAS DA',
+            'HALBWISSEN',
+            'ZAHL DER WOCHE',
+            'WIR RATEN (AB|ZU)',
+            'DER UNNÜTZE VERGLEICH',
+            'MALEN NACH ZAHLEN',
+            'LEXIKON DER NEUROSEN',
+            'ZEITSPRUNG',
+            '(LESE|BASTEL)-TIPP'
+        ]],
+    }
+
+    @classmethod
+    def _is_relevant(cls, toc_entry):
         """
         Check, if toc_entry could be an relevant entry.
         :param toc_entry:  {'page': int, 'title': str, 'teaser': str,
         'supertitle': str,''access': bool}
         :return: bool
         """
-        required_entries = ['title', 'teaser']
-        for entry in required_entries:
-            value = toc_entry.get(entry)
+        have_required = False
+        for key in cls.REQUIRED:
+            value = toc_entry.get(key)
             if value and not value[0].isspace():
-                return True
-        return False
+                have_required = True
+                break
+        if not have_required:
+            return False
+
+        for key, matchers in cls.EXCLUDE.items():
+            value = toc_entry.get(key)
+            if not value:
+                continue
+            if any(re.match(x, value) for x in matchers):
+                return False
+        return True
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.items():
@@ -262,61 +295,3 @@ class Toc(zeit.cms.browser.view.Base):
 
 
 PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)
-
-
-class Excluder(object):
-    """
-    Checks if an article should be excluded from the table of contents.
-    """
-    # Rules should be as strict as possible,
-    # otherwise the wrong article might get excluded
-    TITLE_XPATH = "body/title/text()"
-    SUPERTITLE_XPATH = "body/supertitle/text()"
-    _title_exclude = [
-        u"Heute \\d+.\\d+",
-        u"Damals \\d+.\\d+",
-        u"PROMINENT IGNORIERT",
-        u"Du siehst aus, wie ich mich fühle",
-        u"WAS MEIN LEBEN REICHER MACHT",
-        u"UND WER BIST DU?"
-
-    ]
-    _supertitle_exclude = [
-        u"NEIN. QUARTERLY",
-        u"MAIL AUS:",
-        u"MACHER UND MÄRKTE",
-        u"AUTO WOFÜR IST DAS DA",
-        u"HALBWISSEN",
-        u"ZAHL DER WOCHE",
-        u"WIR RATEN (AB|ZU)",
-        u"DER UNNÜTZE VERGLEICH",
-        u"MALEN NACH ZAHLEN",
-        u"LEXIKON DER NEUROSEN",
-        u"ZEITSPRUNG",
-        u"(LESE|BASTEL)-TIPP"
-    ]
-
-    def __init__(self):
-        self._compiled_title_regexs = [re.compile(r, re.IGNORECASE)
-                                       for r in self._title_exclude]
-        self._compiled_supertitle_regexs = [re.compile(r, re.IGNORECASE)
-                                            for r in self._supertitle_exclude]
-
-    def is_relevant(self, article_lxml_tree):
-        title_values = article_lxml_tree.xpath(self.TITLE_XPATH)
-        supertitle_values = article_lxml_tree.xpath(self.SUPERTITLE_XPATH)
-
-        title_value = title_values[0] \
-            if len(title_values) > 0 else ''
-        supertitle_value = supertitle_values[0] \
-            if len(supertitle_values) > 0 else ''
-
-        title_exclude = any(
-            [re.match(title_pattern, title_value)
-             for title_pattern in self._compiled_title_regexs]
-        )
-        supertitle_exclude = any(
-            [re.match(supertitle_pattern, supertitle_value)
-             for supertitle_pattern in self._compiled_supertitle_regexs]
-        )
-        return not(title_exclude or supertitle_exclude)
