@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.5.2 (2021-12-06)
+------------------
+
+- ZO-582: Use vivi API for volume toc, this correctly includes author names
+
+
 5.5.1 (2021-12-01)
 ------------------
 
