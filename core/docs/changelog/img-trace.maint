@@ -1,0 +1,1 @@
+Don't send None to opentelemetry, it doesn't like it

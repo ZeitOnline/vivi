@@ -140,7 +140,7 @@ class ImageGroupBase(object):
         with tracer.start_as_current_span(
                 'zeit.content.image.imagegroup.create_variant',
                 attributes={'content': str(self), 'variant': variant.name,
-                            'viewport': viewport}) as span:
+                            'viewport': viewport or ''}) as span:
             if size is not None:
                 span.set_attributes({'width': size[0], 'height': size[1]})
 
