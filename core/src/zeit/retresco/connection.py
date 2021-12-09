@@ -331,7 +331,7 @@ class TMS:
             log.debug(dump_request(response))
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            status = getattr(e.response, 'status_code', 500)
+            status = getattr(e.response, 'status_code', 599)
             body = getattr(e.response, 'text', '(no error detail)')
             message = '{verb} {path} {error!r}\n{body}'.format(
                 verb=verb, path=path, error=e, body=body)
