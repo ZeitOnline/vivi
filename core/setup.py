@@ -47,6 +47,7 @@ setup(
         'pytz',
         'requests',
         'setuptools',
+        'sqlalchemy',
         'transaction',
         'tweepy',
         'urbanairship >= 3.1.0',
