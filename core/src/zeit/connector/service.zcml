@@ -6,13 +6,17 @@
     zcml:condition="have zeit.connector"/>
   <include package="zeit.connector" file="tbcdav-connector.zcml"
     zcml:condition="have zeit.connector.nocache"/>
-  <include package="zeit.connector" file="filesystem-connector.zcml"
-    zcml:condition="have zeit.connector.filesystem"/>
   <include package="zeit.connector" file="mock-connector.zcml"
     zcml:condition="have zeit.connector.mock"/>
+  <include package="zeit.connector" file="filesystem-connector.zcml"
+    zcml:condition="have zeit.connector.filesystem"/>
   <utility
     zcml:condition="have zeit.connector.sql"
     factory=".postgresql.factory"
+    />
+  <utility
+    zcml:condition="have zeit.connector.sql-pass"
+    factory=".postgresql.passthrough_factory"
     />
 
 </configure>
