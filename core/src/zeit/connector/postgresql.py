@@ -50,8 +50,8 @@ class Connector:
 
     def _get_properties(self, uniqueid):
         uniqueid = uniqueid.rstrip('/')
-        props = self.id_cache.get(uniqueid)
-        if props is None:
+        props = self.id_cache.get(uniqueid, self)
+        if props is self:
             path = urlparse(uniqueid).path
             props = self.session.execute(
                 select(Properties).filter_by(url=path)).scalars().first()
