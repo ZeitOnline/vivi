@@ -1,7 +1,7 @@
 from gocept.cache.property import TransactionBoundCache
 from io import BytesIO
 from sqlalchemy import Column, Unicode
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.dialects.postgresql import JSONB
 from urllib.parse import urlparse
 from uuid import uuid4
@@ -38,12 +38,25 @@ class Connector:
         return cls(config['dsn'], config['repository-path'])
 
     def __getitem__(self, id):
-        props = self._get_properties(id)
-        if props is None:
+        id = id.rstrip('/')
+        path = urlparse(id).path
+        props = self.id_cache.get(id, self)
+        if props is self:
+            unsorted = self.session().execute(
+                text('SELECT unsorted FROM properties WHERE url=:url'),
+                {'url': path}).scalars().first()
+            if unsorted is not None:
+                props = {}
+                for ns, d in unsorted.items():
+                    for k, v in d.items():
+                        props[(k, ns)] = v
+                self.id_cache[id] = props
+
+        if props is self:
             raise KeyError(id)
         return CachedResource(
-            id, id.rstrip('/').split('/')[-1], props.type,
-            props.to_dict, lambda: self._get_body(props.body),
+            id, id.rstrip('/').split('/')[-1], props[('type', NS + 'meta')],
+            lambda: props, lambda: self._get_body(path),
             'resource-type-is-irrelevant')
 
     id_cache = TransactionBoundCache('_v_id_cache', dict)
