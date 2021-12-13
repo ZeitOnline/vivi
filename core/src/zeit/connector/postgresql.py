@@ -50,15 +50,13 @@ class Connector:
 
     def _get_properties(self, uniqueid):
         uniqueid = uniqueid.rstrip('/')
-        id = self.id_cache.get(uniqueid)
-        s = self.session()
-        if id is None:
+        props = self.id_cache.get(uniqueid)
+        if props is None:
             path = urlparse(uniqueid).path
-            id = s.execute(select(Properties.id).filter_by(url=path)).first()
-            self.id_cache[uniqueid] = id
-        if id is None:
-            return None
-        return s.get(Properties, id)
+            props = self.session.execute(
+                select(Properties).filter_by(url=path)).scalars().first()
+            self.id_cache[uniqueid] = props
+        return props
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
