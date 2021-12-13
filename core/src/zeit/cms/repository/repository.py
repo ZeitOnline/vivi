@@ -277,6 +277,7 @@ class Repository(persistent.Persistent, Container):
             # container writes it on its children from the outside).
             content = self._getContent(unique_id)
         except KeyError:
+            raise
             # Some content cannot be resolved directly, the most prominent
             # example being zeit.content.dynamicfolder.
             path = unique_id.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1)
