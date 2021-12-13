@@ -1,8 +1,9 @@
 from gocept.cache.property import TransactionBoundCache
 from io import BytesIO
-from sqlalchemy import Column, Unicode
+from sqlalchemy import Column, ForeignKey, Unicode, Integer
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import relationship
 from urllib.parse import urlparse
 from uuid import uuid4
 from zeit.connector.resource import CachedResource
@@ -53,8 +54,9 @@ class Connector:
         props = self.id_cache.get(uniqueid, self)
         if props is self:
             path = urlparse(uniqueid).path
-            props = self.session.execute(
-                select(Properties).filter_by(url=path)).scalars().first()
+            content = self.session().execute(
+                select(Content).filter_by(published_url=path)).scalars().first()
+            props = content.published_properties if content else None
             self.id_cache[uniqueid] = props
         return props
 
@@ -87,13 +89,19 @@ class Connector:
     def add(self, resource, verify_etag=True):
         uniqueid = resource.id.rstrip('/')
         props = self._get_properties(uniqueid)
-        exists = props is not None
-        if not exists:
-            props = Properties()
-        props.from_dict(resource.properties)
-        props.url = urlparse(uniqueid).path
-        if not exists:
-            self.session().add(props)
+        if props is not None:
+            props.from_dict(resource.properties)
+        else:
+            content = Content(
+                published_url=urlparse(uniqueid).path,
+                published_version=1)
+            props = Properties(version=1)
+            props.from_dict(resource.properties)
+            props.url = content.published_url
+            content.id = props.id
+            s = self.session()
+            s.add(content)
+            s.add(props)
 
     def listCollection(self, id):
         import traceback
@@ -146,11 +154,26 @@ DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 NS = 'http://namespaces.zeit.de/CMS/'
 
 
+class Content(DBObject):
+
+    __tablename__ = 'content'
+
+    id = Column(Unicode, primary_key=True)
+    published_version = Column(Integer, nullable=False)
+    published_url = Column(Unicode, unique=True, nullable=False)
+
+    published_properties = relationship(
+        'Properties', uselist=False, lazy='joined',
+        primaryjoin='and_(Content.id==Properties.id, Content.published_version==Properties.version)',
+        backref='content')
+
+
 class Properties(DBObject):
 
     __tablename__ = 'properties'
 
-    id = Column(Unicode, primary_key=True)
+    id = Column(Unicode, ForeignKey('content.id'), primary_key=True)
+    version = Column(Integer, primary_key=True, index=True)
     url = Column(Unicode, unique=True, nullable=False)
     type = Column(Unicode, nullable=False, server_default='unknown')
 
