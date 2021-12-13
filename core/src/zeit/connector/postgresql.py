@@ -50,13 +50,13 @@ class Connector:
 
     def _get_properties(self, uniqueid):
         uniqueid = uniqueid.rstrip('/')
-        props = self.id_cache.get(uniqueid, self)
-        if props is self:
-            path = urlparse(uniqueid).path
-            props = self.session.execute(
-                select(Properties).filter_by(url=path)).scalars().first()
-            self.id_cache[uniqueid] = props
-        return props
+        if uniqueid in self.id_cache:
+            return self.id_cache[uniqueid]
+        else:
+            for props in self.session.execute(
+                    select(Properties)).scalars().fetchall():
+                self.id_cache['http://xml.zeit.de' + props.url] = props
+            return self.id_cache.get(uniqueid)
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
