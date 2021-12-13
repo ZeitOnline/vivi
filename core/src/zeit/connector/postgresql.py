@@ -40,17 +40,17 @@ class Connector:
     def __getitem__(self, id):
         id = id.rstrip('/')
         path = urlparse(id).path
-        props = self.id_cache.get(id, self)
-        if props is self:
-            unsorted = self.session().execute(
-                text('SELECT unsorted FROM properties WHERE url=:url'),
-                {'url': path}).scalars().first()
-            if unsorted is not None:
+        if id in self.id_cache:
+            props = self.id_cache[id]
+        else:
+            for row in self.session().execute(
+                text('SELECT url, unsorted FROM properties')).fetchall():
                 props = {}
-                for ns, d in unsorted.items():
+                for ns, d in row.unsorted.items():
                     for k, v in d.items():
                         props[(k, ns)] = v
-                self.id_cache[id] = props
+                self.id_cache['http://xml.zeit.de' + row.url] = props
+            props = self.id_cache[id]
 
         if props is self:
             raise KeyError(id)
