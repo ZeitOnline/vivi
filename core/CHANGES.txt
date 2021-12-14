@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.6.0 (2021-12-14)
+------------------
+
+- ZO-687: Allow zeit.web to cache content objects with their marker interface assignment included
+
+
 5.5.3 (2021-12-08)
 ------------------
 
