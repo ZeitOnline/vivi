@@ -31,7 +31,7 @@
   <adapter factory=".folder.folder_sort_key" />
 
   <adapter factory=".repository.cmscontentFactory" />
-  <subscriber handler=".repository.invalidate_uncontained_content" />
+  <subscriber handler=".repository.invalidate_content_cache" />
 
   <!-- content object creation
 

@@ -80,14 +80,6 @@ class IRepository(zope.interface.Interface):
     def getCopyOf(unique_id):
         """Return a copy of the object identified by `unique_id`."""
 
-    def getUncontainedConent(unique_id):
-        """Return content object identified by given unique_id.
-
-        Returns content like `getContent` but doesn't setup the containment
-        hierarchy.
-
-        """
-
     def addContent(object, ignore_conflicts=False):
         """Add content to the repository.
 

@@ -25,7 +25,7 @@ After accessing something it will be filled:
 {u'2005': u'http://xml.zeit.de/online/2005/',
  u'2006': u'http://xml.zeit.de/online/2006/',
  u'2007': u'http://xml.zeit.de/online/2007/'}
->>> pprint.pprint(repository.uncontained_content)
+>>> pprint.pprint(repository._content)
 {u'http://xml.zeit.de/online': <zeit.cms.repository.folder.Folder...>}
 
 
@@ -34,7 +34,7 @@ On transaction boundaries this cache is deleted:
 >>> import transaction
 >>> transaction.commit()
 
->>> repository.uncontained_content
+>>> repository._content
 {}
 
 >>> repository['online']._v_local_unique_map
@@ -50,12 +50,12 @@ Let's fill the cache again and try abort:
 {u'2005': u'http://xml.zeit.de/online/2005/',
  u'2006': u'http://xml.zeit.de/online/2006/',
  u'2007': u'http://xml.zeit.de/online/2007/'}
->>> pprint.pprint(repository.uncontained_content)
+>>> pprint.pprint(repository._content)
 {u'http://xml.zeit.de/online': <zeit.cms.repository.folder.Folder...>}
 
 >>> transaction.abort()
 
->>> repository.uncontained_content
+>>> repository._content
 {}
 
 >>> repository['online']._v_local_unique_map

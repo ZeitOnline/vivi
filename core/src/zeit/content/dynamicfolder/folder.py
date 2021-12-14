@@ -52,7 +52,7 @@ class RepositoryDynamicFolder(
     def __getitem__(self, key):
         """Overwrite to return VirtualContent object for virtual content.
 
-        Cannot use super, since we need to wrap getUncontainedContent with
+        Cannot use super, since we need to wrap getContent with
         try/except. If the item was not found, create a virtual content and
         write basic information on it.
 
@@ -60,14 +60,14 @@ class RepositoryDynamicFolder(
         unique_id = self._get_id_for_name(key)
         __traceback_info__ = (key, unique_id)
         try:
-            content = self.repository.getUncontainedContent(unique_id)
+            content = self.repository._getContent(unique_id)
         except KeyError as error:
             if key not in self.virtual_content:
                 raise error
             content = self._create_virtual_content(key)
-            self.repository.uncontained_content[unique_id] = content
-        zope.interface.alsoProvides(
-            content, zeit.cms.repository.interfaces.IRepositoryContent)
+            # XXX copy&paste from Repository._getContent().
+            self.repository._add_marker_interfaces(content)
+            self.repository._content[unique_id] = content
         return zope.container.contained.contained(
             content, self, content.__name__)
 
@@ -110,8 +110,7 @@ class RepositoryDynamicFolder(
             properties=properties,
         )
         content = zeit.cms.interfaces.ICMSContent(resource)
-        # Setting __name__ is normally done by
-        # zeit.cms.repository.Repository._get_uncontained_copy().
+        # Setting __name__ is normally done by Repository.getCopyOf().
         content.__name__ = resource.__name__
         zope.interface.alsoProvides(
             content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
