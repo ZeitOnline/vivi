@@ -323,6 +323,12 @@ class ITickarooLiveblog(zeit.edit.interfaces.IBlock):
         default='default',
         required=True)
 
+    intersection_type = zope.schema.Choice(
+        title=_('Intersections'),
+        source=LiveblogSource('*//intersection_type'),
+        default='chapter',
+        required=True)
+
 
 class PodigeeProvidersSource(zeit.cms.content.sources.SearchableXMLSource):
     """A source for podigee providers config. API keys must be configured
