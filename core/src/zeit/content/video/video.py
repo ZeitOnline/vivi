@@ -7,6 +7,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.reference
 import zeit.cms.interfaces
+import zeit.cms.related.related
 import zeit.cms.type
 import zeit.content.video.interfaces
 import zeit.push.interfaces
@@ -90,9 +91,6 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     def video_still(self):
         return self._player_data['video_still']
 
-    cms_video_still = zeit.cms.content.reference.SingleResource(
-        '.body.video_still', "image")
-
     @cachedproperty
     def _player_data(self):
         player = zope.component.getUtility(
@@ -117,6 +115,18 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     def seo_slug(self):
         titles = (t for t in (self.supertitle, self.title) if t)
         return zeit.cms.interfaces.normalize_filename(u' '.join(titles))
+
+
+@zope.component.adapter(zeit.content.video.interfaces.IVideo)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
+class VideoImage(zeit.cms.related.related.RelatedBase):
+
+    image = zeit.cms.content.reference.SingleResource(
+        '.body.video_still', 'image')
+
+    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.body.video_still', 'fill_color',
+        zeit.content.image.interfaces.IImages['fill_color'])
 
 
 @zope.interface.implementer(zeit.content.video.interfaces.IVideoRendition)
@@ -147,8 +157,9 @@ class Dependencies(zeit.workflow.dependency.DependencyBase):
         dependencies = [x for x in relations.get_relations(self.context)
                         if zeit.content.video.interfaces.
                         IPlaylist.providedBy(x)]
-        if self.context.cms_video_still is not None:
-            dependencies.append(self.context.cms_video_still)
+        img = zeit.content.image.interfaces.IImages(self.context)
+        if img.image is not None:
+            dependencies.append(img.image)
         if self.context.cms_thumbnail is not None:
             dependencies.append(self.context.cms_thumbnail)
         return dependencies

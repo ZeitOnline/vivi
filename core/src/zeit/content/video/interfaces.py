@@ -67,10 +67,6 @@ class IVideo(IVideoContent):
         required=False,
         readonly=True)
 
-    cms_video_still = zope.schema.Choice(
-        source=zeit.content.image.interfaces.imageSource,
-        required=False)
-
     renditions = zope.schema.Tuple(
         title=_("Renditions of the Video"),
         required=False,

@@ -238,7 +238,9 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         bc.data['images']['poster']['src'] = src
         import_video(bc)
         # importing the video has created an image group "next to it" for its still image
-        assert self.repository['video']['2017-05']['myvid'].cms_video_still == self.repository['video']['2017-05']['myvid-still']
+        video = self.repository['video']['2017-05']['myvid']
+        img = zeit.content.image.interfaces.IImages(video)
+        assert img.image == self.repository['video']['2017-05']['myvid-still']
         self.assertEqual(
             True,
             zeit.cms.workflow.interfaces.IPublishInfo(
@@ -287,12 +289,14 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         bc = create_video()
         bc.data['images']['poster']['src'] = src
         imported = import_video(bc)
-        assert imported.cmsobj.cms_video_still.master_image == 'opernball.jpg'
+        img = zeit.content.image.interfaces.IImages(imported.cmsobj)
+        assert img.image.master_image == 'opernball.jpg'
         new_src = "http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg".format(self)
         bc.data['images']['poster']['src'] = new_src
         # importing it again triggers update:
         reimported = import_video(bc)
-        assert reimported.cmsobj.cms_video_still.master_image == 'obama-clinton-120x120.jpg'
+        img = zeit.content.image.interfaces.IImages(reimported.cmsobj)
+        assert img.image.master_image == 'obama-clinton-120x120.jpg'
 
     def test_update_teaser_image_preserves_override(self):
         from zeit.content.image.testing import create_image_group_with_master_image
@@ -303,15 +307,19 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         import_video(bc)
         # editor replaces automatically created video still with custom imagegroup
         self.repository['foo-video_still'] = create_image_group_with_master_image()
-        self.repository['video']['2017-05']['myvid'].cms_video_still = self.repository['foo-video_still']
-        assert self.repository['video']['2017-05']['myvid'].cms_video_still.master_image == 'master-image.jpg'
+        video = self.repository['video']['2017-05']['myvid']
+        img = zeit.content.image.interfaces.IImages(video)
+        img.image = self.repository['foo-video_still']
+        img = zeit.content.image.interfaces.IImages(video)
+        assert img.image.master_image == 'master-image.jpg'
         # now an update from brightcove still updates the automatically created image group:
         new_src = "http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg".format(self)
         bc.data['images']['poster']['src'] = new_src
         reimported = import_video(bc)
         assert self.repository['video']['2017-05']['myvid-still'].master_image == 'obama-clinton-120x120.jpg'
         # but it does not change the reference of the video to the custom imagegroup
-        assert reimported.cmsobj.cms_video_still.master_image == 'master-image.jpg'
+        img = zeit.content.image.interfaces.IImages(reimported.cmsobj)
+        assert img.image.master_image == 'master-image.jpg'
 
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
