@@ -29,6 +29,11 @@
       provides=".interfaces.ITMSContent"
       name="blogpost"
       />
+    <utility
+      component=".content.TMSVideo"
+      provides=".interfaces.ITMSContent"
+      name="video"
+      />
 
     <class class=".tagger.Tagger">
       <require

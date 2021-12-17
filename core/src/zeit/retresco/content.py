@@ -9,6 +9,7 @@ import zeit.content.author.author
 import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
 import zeit.content.link.link
+import zeit.content.video.video
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
@@ -122,6 +123,16 @@ class TMSGallery(Content, zeit.content.gallery.gallery.Gallery):
 @grok.implementer(zeit.content.gallery.interfaces.IVisibleEntryCount)
 def gallery_entry_count(context):
     return context._tms_payload_head.get('visible_entry_count', 0)
+
+
+class TMSVideo(Content, zeit.content.video.video.Video):
+
+    def _build_xml_image(self):
+        image = self._get_teaser_image_xml()
+        if image is None:
+            return
+        image.tag = 'video_still'
+        self.xml.body.append(image)
 
 
 @grok.implementer(zeit.cms.content.interfaces.IKPI)

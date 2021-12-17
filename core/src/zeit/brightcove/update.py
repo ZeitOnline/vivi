@@ -117,10 +117,10 @@ class import_video(import_base):
         # subsequent updates.
         if not FEATURE_TOGGLES.find('video_import_images'):
             return
-        cms_video_still = download_teaser_image(
-            self.folder, self.bcobj.data, 'still')
-        if self.cmsobj.cms_video_still is None:
-            self.cmsobj.cms_video_still = cms_video_still
+        still = download_teaser_image(self.folder, self.bcobj.data, 'still')
+        img = zeit.content.image.interfaces.IImages(self.cmsobj)
+        if img.image is None:
+            img.image = still
         cms_thumbnail = download_teaser_image(
             self.folder, self.bcobj.data, 'thumbnail')
         if self.cmsobj.cms_thumbnail is None:
