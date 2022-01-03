@@ -95,9 +95,14 @@ class ImageGroupBase(object):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         for view, name in self.master_images:
             if viewport == view:
-                if name in repository:
-                    return repository[name]
+                image = repository.get(name)
+                if image is not None:
+                    return image
         return zeit.content.image.interfaces.IMasterImage(self, None)
+
+    def __bool__(self):
+        image = zeit.content.image.interfaces.IMasterImage(self, None)
+        return image is not None
 
     def create_variant_image(
             self, variant, url=None,
@@ -474,8 +479,10 @@ def XMLReference(context):
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.IMasterImage)
 def find_master_image(context):
-    if context.master_image in context:
-        return context[context.master_image]
+    if context.master_image:
+        master_image = context.get(context.master_image)
+        if master_image is not None:
+            return master_image
     master_image = None
     for image in context.values():
         if zeit.content.image.interfaces.IImage.providedBy(
