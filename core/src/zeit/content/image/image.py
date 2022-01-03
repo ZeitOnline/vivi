@@ -23,6 +23,19 @@ import zope.security.proxy
 
 class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
 
+    def __get__(self, inst, class_):
+        if inst is None:
+            return self
+
+        func, name = self.data
+        # Because we define __set__, we take precedence over the instance dict
+        if name in inst.__dict__:
+            return inst.__dict__[name]
+
+        value = func(inst)
+        inst.__dict__[name] = value
+        return value
+
     def __set__(self, inst, value):
         pass
 
