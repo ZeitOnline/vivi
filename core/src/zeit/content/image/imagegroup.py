@@ -113,15 +113,8 @@ class ImageGroupBase(object):
         if scale and size and (0.5 <= scale <= 3.0):
             size = [int(ceil(x * scale)) for x in size]
 
-        # Always prefer materialized images with matching name
-        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
-        if source is None and variant.name in repository:
-            source = repository[variant.name]
-            if size is None:
-                size = source.getImageSize()
-
         # Prefer a master image that was configured for given viewport.
-        elif source is None and viewport is not None:
+        if source is None and viewport is not None:
             source = self.master_image_for_viewport(viewport)
 
         # Our default transformation source should be the master image.
