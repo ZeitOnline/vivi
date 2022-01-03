@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.7.2 (2022-01-03)
+------------------
+
+MAINT:
+- Christmas is over
+
+
 5.7.1 (2021-12-20)
 ------------------
 
