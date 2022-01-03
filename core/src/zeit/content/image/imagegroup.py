@@ -113,13 +113,9 @@ class ImageGroupBase(object):
         if scale and size and (0.5 <= scale <= 3.0):
             size = [int(ceil(x * scale)) for x in size]
 
-        # Prefer a master image that was configured for given viewport.
-        if source is None and viewport is not None:
-            source = self.master_image_for_viewport(viewport)
-
         # Our default transformation source should be the master image.
         if source is None:
-            source = zeit.content.image.interfaces.IMasterImage(self, None)
+            source = self.master_image_for_viewport(viewport or '')
         if source is None:
             raise KeyError(variant.name)
 
