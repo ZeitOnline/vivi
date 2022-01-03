@@ -112,18 +112,16 @@ class ImageGroupBase(object):
         # pass in a larger size and be done with it ;).
         if scale and size and (0.5 <= scale <= 3.0):
             size = [int(ceil(x * scale)) for x in size]
+        # Use the configured variant maximum size as a sanity bound.
+        if (size is None and
+                variant.max_width < sys.maxsize > variant.max_height):
+            size = [variant.max_width, variant.max_height]
 
         # Our default transformation source should be the master image.
         if source is None:
             source = self.master_image_for_viewport(viewport or '')
         if source is None:
             raise KeyError(variant.name)
-
-        # Set size to max_size if Variant has max_size defined in XML and size
-        # was not given in URL.
-        if (size is None and
-                variant.max_width < sys.maxsize > variant.max_height):
-            size = [variant.max_width, variant.max_height]
 
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         with tracer.start_as_current_span(
