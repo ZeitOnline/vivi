@@ -2,6 +2,7 @@ from datetime import datetime
 from os import path
 from unittest import mock
 from zeit.brightcove.update import import_video, import_playlist
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 import pkg_resources
 import pytz
@@ -327,6 +328,24 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         # but it does not change the reference of the video to the custom imagegroup
         img = zeit.content.image.interfaces.IImages(reimported.cmsobj)
         assert img.image.master_image == 'master-image.jpg'
+
+    def test_update_teaser_image_sets_reference_if_vivi_has_none(self):
+        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        bc = create_video()
+        bc.data['images']['poster']['src'] = src
+        import_video(bc)
+        # importing the video has created an image group "next to it" for its still image
+        video = self.repository['video']['2017-05']['myvid']
+        img = zeit.content.image.interfaces.IImages(video)
+        assert img.image == self.repository['video']['2017-05']['myvid-still']
+
+        with checked_out(video) as co:
+            img = zeit.content.image.interfaces.IImages(co)
+            img.images = None
+
+        reimported = import_video(bc)
+        img = zeit.content.image.interfaces.IImages(reimported.cmsobj)
+        assert img.image == self.repository['video']['2017-05']['myvid-still']
 
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):

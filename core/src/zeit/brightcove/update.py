@@ -33,6 +33,8 @@ class import_base(object):
                 log.warning('Could not checkout %s', self.cmsobj)
             else:
                 self.bcobj.apply_to_cms(co)
+                if IVideo.providedBy(co):  # XXX This factoring is kludgy
+                    self._download_image(co)
                 # This is a bit coarse, but it would be quite fiddly to
                 # determine which attributes really have changed, and probably
                 # not worth the effort anyway.
@@ -95,10 +97,10 @@ class import_video(import_base):
         # preserved.
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
         self.cmsobj = cmsobj
-        self._handle_images()
+        self._download_image(cmsobj)
         self._commit()
 
-    def _handle_images(self):
+    def _download_image(self, cmsobj):
         # since we cannot readily distinguish whether the image has changed
         # on BC side we *always* update the (master) image of the image group
         # but we only set the reference *to* that imagegroup if there isn't
@@ -108,7 +110,7 @@ class import_video(import_base):
         if not FEATURE_TOGGLES.find('video_import_images'):
             return
         still = download_teaser_image(self.folder, self.bcobj.data, 'still')
-        img = zeit.content.image.interfaces.IImages(self.cmsobj)
+        img = zeit.content.image.interfaces.IImages(cmsobj)
         if img.image is None:
             img.image = still
 
@@ -120,7 +122,6 @@ class import_video(import_base):
         if self.bcobj.skip_import:
             return True
         self._update()
-        self._handle_images()
         if self.bcobj.state == 'ACTIVE':
             try:
                 IPublish(self.cmsobj).publish(background=False)
