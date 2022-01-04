@@ -479,8 +479,9 @@ def XMLReference(context):
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.IMasterImage)
 def find_master_image(context):
-    if context.master_image:
-        master_image = context.get(context.master_image)
+    master_name = context.master_image
+    if master_name:
+        master_image = context.get(master_name)
         if master_image is not None:
             return master_image
     master_image = None
