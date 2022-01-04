@@ -76,7 +76,7 @@ class ImageGroupBase(object):
             return self._master_images
 
         # read first viewport from source to use as default viewport
-        viewport = next(iter(VIEWPORT_SOURCE(self)))
+        viewport = next(iter(VIEWPORT_SOURCE))
         # try to read master_image from DAV properties for bw compat
         properties = zeit.connector.interfaces.IWebDAVReadProperties(self)
         master_image = properties.get(('master_image', IMAGE_NAMESPACE), None)
@@ -331,7 +331,7 @@ class VariantTraverser(object):
     def _parse_viewport(self, url):
         """If url contains `__mobile`, retrieve viewport `mobile` else None."""
         for segment in url.split('__')[1:]:
-            if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE(None):
+            if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE:
                 return segment
         return None
 

@@ -12,7 +12,6 @@ import zope.component
 
 product_config = """
 <product-config zeit.content.image>
-    viewport-source file://{here}/tests/fixtures/viewports.xml
     display-type-source file://{here}/tests/fixtures/display-types.xml
     variant-source file://{here}/tests/fixtures/variants.xml
     copyright-company-source file://{here}/tests/fixtures/copyright-company.xml

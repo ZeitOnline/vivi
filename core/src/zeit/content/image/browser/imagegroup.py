@@ -110,7 +110,7 @@ class AddForm(FormBase,
         # Viewports should be prefilled sequentially, i.e. primary master image
         # is configured with first viewport of source, secondary master image
         # with second viewport etc.
-        viewports = zeit.content.image.interfaces.VIEWPORT_SOURCE(group)
+        viewports = zeit.content.image.interfaces.VIEWPORT_SOURCE
         for image, viewport in zip(self.images, viewports):
             group.master_images += ((viewport, image.__name__),)
 

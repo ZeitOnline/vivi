@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Nov 18 13:27:12 2021\n"
+"POT-Creation-Date: Tue Jan  4 08:47:55 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -547,7 +547,7 @@ msgid "\"${name}\" has been checked in."
 msgstr ""
 
 #: zeit/cms/checkout/browser/manager.py:107
-#: zeit/cms/repository/repository.py:319
+#: zeit/cms/repository/repository.py:317
 msgid "There was a conflict while adding ${name}"
 msgstr ""
 
@@ -639,7 +639,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:12
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/animation/browser/form.py:33
-#: zeit/content/video/browser/video.py:39
+#: zeit/content/video/browser/video.py:40
 msgid "Navigation"
 msgstr ""
 
@@ -657,7 +657,7 @@ msgstr ""
 #: zeit/content/image/browser/form.py:21
 #: zeit/content/infobox/browser/form.py:26
 #: zeit/content/infobox/browser/form.py:81
-#: zeit/content/video/browser/video.py:35
+#: zeit/content/video/browser/video.py:36
 msgid "Texts"
 msgstr ""
 
@@ -665,7 +665,7 @@ msgstr ""
 #: zeit/content/article/browser/form.py:36
 #: zeit/content/article/edit/browser/form.py:411
 #: zeit/content/link/browser/form.py:29
-#: zeit/content/video/browser/video.py:43
+#: zeit/content/video/browser/video.py:44
 msgid "Options"
 msgstr ""
 
@@ -1356,7 +1356,7 @@ msgid "\"${name}\" not found."
 msgstr ""
 
 #: zeit/cms/repository/browser/move.py:32
-#: zeit/cms/repository/interfaces.py:194
+#: zeit/cms/repository/interfaces.py:186
 msgid "\"${name}\" already exists."
 msgstr ""
 
@@ -1391,7 +1391,7 @@ msgid "Only unpublished objects can be renamed."
 msgstr ""
 
 #: zeit/cms/repository/browser/rename.py:18
-#: zeit/cms/repository/interfaces.py:214
+#: zeit/cms/repository/interfaces.py:206
 msgid "New file name"
 msgstr ""
 
@@ -1787,7 +1787,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:658
 #: zeit/content/image/browser/configure.zcml:249
 #: zeit/content/image/browser/imagegroup.py:223
-#: zeit/content/image/image.py:132
+#: zeit/content/image/image.py:145
 #: zeit/content/portraitbox/interfaces.py:18
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1823,7 +1823,7 @@ msgstr ""
 #: zeit/content/dynamicfolder/browser/folder.py:20
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/link/browser/configure.zcml:17
-#: zeit/content/volume/browser/configure.zcml:30
+#: zeit/content/volume/browser/configure.zcml:19
 #: zeit/magazin/browser/configure.zcml:46
 #: zeit/magazin/browser/configure.zcml:74
 #: zeit/magazin/browser/configure.zcml:100
@@ -1835,7 +1835,7 @@ msgstr ""
 #: zeit/content/cp/browser/configure.zcml:53
 #: zeit/content/gallery/browser/configure.zcml:56
 #: zeit/content/link/browser/configure.zcml:32
-#: zeit/content/volume/browser/configure.zcml:85
+#: zeit/content/volume/browser/configure.zcml:74
 msgid "View metadata"
 msgstr ""
 
@@ -2389,9 +2389,9 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:136
 #: zeit/content/article/edit/video.py:66
-#: zeit/content/video/browser/video.py:62
-#: zeit/content/video/browser/video.py:67
-#: zeit/content/video/video.py:132
+#: zeit/content/video/browser/video.py:63
+#: zeit/content/video/browser/video.py:68
+#: zeit/content/video/video.py:142
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
 msgstr ""
@@ -3544,7 +3544,7 @@ msgstr ""
 msgid "Publish content of dynamic folder"
 msgstr ""
 
-#: zeit/content/dynamicfolder/folder.py:219
+#: zeit/content/dynamicfolder/folder.py:218
 msgid "Dynamic Folder"
 msgstr ""
 
@@ -3801,7 +3801,7 @@ msgstr ""
 msgid "The action you were trying to do could not be finished because the resource has no valid content."
 msgstr ""
 
-#: zeit/content/image/imagegroup.py:378
+#: zeit/content/image/imagegroup.py:370
 msgid "Image Group"
 msgstr ""
 
@@ -3865,6 +3865,14 @@ msgstr ""
 
 #: zeit/content/image/interfaces.py:112
 msgid "Enter a URL this image should link to."
+msgstr ""
+
+#: zeit/content/image/interfaces.py:205
+msgid "viewport-desktop"
+msgstr ""
+
+#: zeit/content/image/interfaces.py:206
+msgid "viewport-mobile"
 msgstr ""
 
 #: zeit/content/image/interfaces.py:214
@@ -4063,11 +4071,15 @@ msgstr ""
 msgid "Liveblog theme"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:343
+#: zeit/content/modules/interfaces.py:327
+msgid "Intersections"
+msgstr ""
+
+#: zeit/content/modules/interfaces.py:349
 msgid "Podcast id"
 msgstr ""
 
-#: zeit/content/modules/interfaces.py:345
+#: zeit/content/modules/interfaces.py:351
 msgid "Provider"
 msgstr ""
 
@@ -4202,11 +4214,11 @@ msgstr ""
 msgid "Python script"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:52
+#: zeit/content/video/browser/video.py:53
 msgid "Teaser elements"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:108
+#: zeit/content/video/browser/video.py:109
 msgid "View playlist"
 msgstr ""
 
@@ -4242,27 +4254,27 @@ msgstr ""
 msgid "URI of the still image"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:75
+#: zeit/content/video/interfaces.py:71
 msgid "Renditions of the Video"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:89
+#: zeit/content/video/interfaces.py:85
 msgid "Video still copyright"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:95
+#: zeit/content/video/interfaces.py:91
 msgid "Has advertisement"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:99
+#: zeit/content/video/interfaces.py:95
 msgid "Video type"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:113
+#: zeit/content/video/interfaces.py:109
 msgid "Video IDs"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:119
+#: zeit/content/video/interfaces.py:115
 msgid "Videos in the playlist"
 msgstr ""
 
@@ -4270,9 +4282,9 @@ msgstr ""
 msgid "Publish content of this volume"
 msgstr ""
 
-#: zeit/content/volume/browser/configure.zcml:76
-#: zeit/content/volume/browser/configure.zcml:131
-#: zeit/content/volume/browser/toc.py:90
+#: zeit/content/volume/browser/configure.zcml:65
+#: zeit/content/volume/browser/configure.zcml:120
+#: zeit/content/volume/browser/toc.py:42
 msgid "Table of Content"
 msgstr ""
 
@@ -4910,11 +4922,11 @@ msgstr ""
 msgid "Error while sending ${type}: ${reason}"
 msgstr ""
 
-#: zeit/retresco/configure.zcml:54
+#: zeit/retresco/configure.zcml:59
 msgid "Update TMS index"
 msgstr ""
 
-#: zeit/retresco/configure.zcml:59
+#: zeit/retresco/configure.zcml:64
 msgid "Use TMS GUI"
 msgstr ""
 

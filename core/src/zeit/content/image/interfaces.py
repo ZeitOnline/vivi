@@ -199,12 +199,12 @@ class DisplayTypeSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
 
 
-class ViewportSource(zeit.cms.content.sources.XMLSource):
+class ViewportSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
-    product_configuration = 'zeit.content.image'
-    config_url = 'viewport-source'
-    default_filename = 'image-viewports.xml'
-    attribute = 'id'
+    values = {
+        'desktop': _('viewport-desktop'),
+        'mobile': _('viewport-mobile'),
+    }
 
 
 VIEWPORT_SOURCE = ViewportSource()
