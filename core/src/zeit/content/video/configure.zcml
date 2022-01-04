@@ -19,6 +19,29 @@
       permission="zeit.EditContent" />
   </class>
 
+  <adapter
+    factory=".video.VideoImage"
+    provides="zeit.content.image.interfaces.IImages"
+    trusted="yes"
+    />
+  <class class=".video.VideoImage">
+    <require
+      interface="zeit.content.image.interfaces.IImages"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.content.image.interfaces.IImages"
+      permission="zeit.EditContent" />
+    <require
+      interface="zope.location.interfaces.ILocation"
+      permission="zope.View" />
+    <require
+      interface="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.cms.content.interfaces.IXMLRepresentation"
+      permission="zeit.EditContent" />
+  </class>
+
   <class class=".playlist.Playlist">
     <implements
        interface="zope.annotation.interfaces.IAttributeAnnotatable"

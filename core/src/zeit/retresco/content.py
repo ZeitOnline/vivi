@@ -1,7 +1,6 @@
 from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
 import collections.abc
 import grokcore.component as grok
-import logging
 import lxml.objectify
 import os.path
 import zeit.cms.interfaces
@@ -10,12 +9,10 @@ import zeit.content.author.author
 import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
 import zeit.content.link.link
+import zeit.content.video.video
 import zeit.retresco.interfaces
 import zope.component
 import zope.schema.interfaces
-
-
-log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMSContent)
@@ -128,6 +125,16 @@ def gallery_entry_count(context):
     return context._tms_payload_head.get('visible_entry_count', 0)
 
 
+class TMSVideo(Content, zeit.content.video.video.Video):
+
+    def _build_xml_image(self):
+        image = self._get_teaser_image_xml()
+        if image is None:
+            return
+        image.tag = 'video_still'
+        self.xml.body.append(image)
+
+
 @grok.implementer(zeit.cms.content.interfaces.IKPI)
 class KPI(grok.Adapter):
 
@@ -189,13 +196,7 @@ class WebDAVProperties(grok.Adapter, collections.abc.MutableMapping):
             zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
         name = quote_es_field_name(name)
         namespace = quote_es_field_name(namespace)
-        try:
-            return self.context._tms_payload[namespace][name]
-        except AttributeError:
-            log.warning(
-                'Error during context tms payload lookup for '
-                '{}, {}, {}'.format(self.context.uniqueId, namespace, name))
-            return None
+        return self.context._tms_payload[namespace][name]
 
     def keys(self):
         for ns, values in self.context._tms_payload.items():

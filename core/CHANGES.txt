@@ -3,6 +3,129 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.7.4 (2022-01-04)
+------------------
+
+- ZO-727: Don't use a configuration file for image viewports anymore
+
+
+5.7.3 (2022-01-03)
+------------------
+
+- ZO-727: Remove obsolete bw-compat support for "materialized variants"
+
+
+5.7.2 (2022-01-03)
+------------------
+
+MAINT:
+- Christmas is over
+
+
+5.7.1 (2021-12-20)
+------------------
+
+MAINT:
+- Add christmas logo
+
+
+5.7.0 (2021-12-17)
+------------------
+
+- ZO-697: Use IImages API for video still, make available in TMS
+
+
+5.6.1 (2021-12-17)
+------------------
+
+- ZO-680: Add z.c.article module ITickarooLiveblog.intersection
+
+
+5.6.0 (2021-12-14)
+------------------
+
+- ZO-687: Allow zeit.web to cache content objects with their marker interface assignment included
+
+
+5.5.3 (2021-12-08)
+------------------
+
+MAINT:
+- Don't send None to opentelemetry, it doesn't like it
+
+
+5.5.2 (2021-12-06)
+------------------
+
+- ZO-582: Use vivi API for volume toc, this correctly includes author names
+
+
+5.5.1 (2021-12-01)
+------------------
+
+- ZO-143: Add mock connector setup for zeit.web tests
+
+
+MAINT:
+- Clean up XML namespaces and objectify `pytype` on checkin
+
+
+5.5.0 (2021-11-30)
+------------------
+
+- ZO-143: Allow zeit.web to reuse zeit.cms.zope
+
+
+5.4.11 (2021-11-26)
+-------------------
+
+- ZO-585: Report "no thirdparty" for already retracted references
+
+
+5.4.10 (2021-11-22)
+-------------------
+
+- ZO-488: Include interred article-id in volume toc entries
+
+- ZO-555: Add ICommonMetadata.color_scheme
+
+- ZO-566: Add IVideo.type and import from BC custom field
+
+
+5.4.9 (2021-11-18)
+------------------
+
+- ZO-146: Make paste.ini optional for CLI scripts
+
+- ZO-146: Provide entrypoints for various cronjobs
+
+
+5.4.8 (2021-11-15)
+------------------
+
+- ZO-145: Consider zcml.feature settings value (not just exists->true)
+
+
+5.4.7 (2021-11-12)
+------------------
+
+- ZO-303: Use built-in mechanics for publishing image with video
+
+
+5.4.6 (2021-11-11)
+------------------
+
+FIX:
+- ZO-496: Prevent reach from cache poisoning vivi cp-editor
+
+
+5.4.5 (2021-11-10)
+------------------
+
+FIX:
+- Don't break when changing a template/header of article without an image
+
+
 5.4.4 (2021-11-05)
 ------------------
 

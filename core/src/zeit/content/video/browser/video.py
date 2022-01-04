@@ -15,18 +15,19 @@ class Base(zeit.push.browser.form.SocialBase,
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IVideo,
         zeit.cms.related.interfaces.IRelatedContent,
+        zeit.content.image.interfaces.IImages,
         zeit.cms.workflow.interfaces.IPublishInfo,
         zope.dublincore.interfaces.IDCTimes,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE
     ).select(
         'supertitle', 'title', 'subtitle', 'teaserText',
         'product', 'ressort', 'keywords', 'serie',
-        'banner', 'banner_id',
+        'banner', 'banner_id', 'type',
         'has_recensions', 'commentsAllowed',
         'commentsPremoderate', 'related', 'channels', 'lead_candidate',
         'video_still_copyright', 'has_advertisement',
         # remaining:
-        '__name__', 'cms_video_still',
+        '__name__', 'image',
         'created', 'date_first_released', 'modified', 'expires',
         'video_still', 'authorships')
 
@@ -43,14 +44,14 @@ class Base(zeit.push.browser.form.SocialBase,
             _("Options"),
             ('dailyNewsletter', 'banner', 'banner_id',
              'breaking_news', 'has_recensions', 'commentsAllowed',
-             'commentsPremoderate', 'has_advertisement'),
+             'commentsPremoderate', 'has_advertisement', 'type'),
             css_class='column-right checkboxes'),
         zeit.push.browser.form.SocialBase.social_fields,
         zeit.push.browser.form.MobileBase.mobile_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
             _('Video-Thumbnail'),
-            ('cms_video_still'),
+            ('image'),
             css_class='wide-widgets column-left'),
         gocept.form.grouped.RemainingFields(
             '', css_class='column-left'),

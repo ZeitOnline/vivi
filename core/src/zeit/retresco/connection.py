@@ -1,7 +1,6 @@
 from io import StringIO
 from zeit.cms.checkout.helper import checked_out
 import collections
-import gocept.runner
 import logging
 import lxml.builder
 import requests
@@ -332,7 +331,7 @@ class TMS:
             log.debug(dump_request(response))
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            status = getattr(e.response, 'status_code', 500)
+            status = getattr(e.response, 'status_code', 599)
             body = getattr(e.response, 'text', '(no error detail)')
             message = '{verb} {path} {error!r}\n{body}'.format(
                 verb=verb, path=path, error=e, body=body)
@@ -362,7 +361,7 @@ def from_product_config():
             password=config.get('secondary-password')))
 
 
-@zeit.cms.cli.runner(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
     'zeit.retresco', 'topiclist-principal'))
 def update_topiclist():
     _update_topiclist()

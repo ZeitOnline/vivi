@@ -1,8 +1,10 @@
 from zeit.cms.workflow.interfaces import IPublish
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import argparse
 import datetime
 import logging
 import requests
+import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.content.text.text
 import zeit.sourcepoint.interfaces
@@ -78,3 +80,22 @@ def from_product_config():
         'zeit.sourcepoint')
     return JavaScript(
         config['javascript-folder'], config['url'], config['api-token'])
+
+
+@zeit.cms.cli.runner()
+def update(principal=zeit.cms.cli.from_config(
+        'zeit.sourcepoint', 'update-principal')):
+    log.info('Checking Sourcepoint JS')
+    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
+    store.update()
+
+
+@zeit.cms.cli.runner()
+def sweep():
+    log.info('Sweep start')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--keep', type=int, default=10)
+    options = parser.parse_args()
+    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
+    store.sweep(keep=options.keep)
+    log.info('Sweep end')

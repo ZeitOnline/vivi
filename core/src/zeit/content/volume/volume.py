@@ -1,4 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublish
+import argparse
 import datetime
 import grokcore.component as grok
 import itertools
@@ -6,6 +8,7 @@ import logging
 import lxml.objectify
 import requests
 import six
+import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -461,3 +464,39 @@ def _find_performing_articles_via_webtrekk(volume):
                  int(order) >= access_control_config.min_orders):
             urls.add('/' + url)
     return list(urls)
+
+
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
+    'zeit.content.volume', 'access-control-principal'))
+def change_access():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--days-ago', type=int,
+                        help="Select volume that was published x days ago.")
+    parser.add_argument('--uniqueid', help="Select volume by uniqueId.")
+    parser.add_argument('--dry-run',
+                        help="Don't actually perform access change",
+                        action='store_true')
+    options = parser.parse_args()
+
+    if bool(options.days_ago) == bool(options.uniqueid):
+        parser.error('You have to specify either uniqueid or days-ago')
+
+    if not options.uniqueid:
+        try:
+            options.uniqueid = Volume.published_days_ago(options.days_ago)
+        except Exception:
+            log.error('Error while searching for volume', exc_info=True)
+
+    if not options.uniqueid:
+        log.info("Didn't find any volumes which need changes.")
+        return
+    volume = zeit.cms.interfaces.ICMSContent(options.uniqueid)
+    log.info('Processing %s', volume.uniqueId)
+    content = volume.change_contents_access(
+        'abo', 'registration', dry_run=options.dry_run)
+    content.extend(volume.change_contents_access(
+        'dynamic', 'registration', dry_run=options.dry_run))
+    if options.dry_run:
+        log.info("Access would be changed for %s" % content)
+        return
+    IPublish(volume).publish_multiple(content, background=False)

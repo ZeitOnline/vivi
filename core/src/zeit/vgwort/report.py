@@ -1,7 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import ZODB.POSException
 import datetime
-import gocept.runner
 import grokcore.component as grok
 import logging
 import os.path
@@ -10,6 +9,7 @@ import six
 import sys
 import tempfile
 import zc.lockfile
+import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.find.interfaces
@@ -89,7 +89,7 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
         writeable=WRITEABLE_LIVE)
 
 
-@zeit.cms.cli.runner(principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
     'zeit.vgwort', 'token-principal'))
 def report_new_documents():
     lock_file_name = os.path.join(tempfile.gettempdir(), 'vgwort-run-lock')

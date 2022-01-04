@@ -114,9 +114,7 @@ class Container(ContentBase):
         '''See interface `IReadContainer`'''
         unique_id = self._get_id_for_name(key)
         __traceback_info__ = (key, unique_id)
-        content = self.repository.getUncontainedContent(unique_id)
-        zope.interface.alsoProvides(
-            content, zeit.cms.repository.interfaces.IRepositoryContent)
+        content = self.repository._getContent(unique_id)
         return zope.container.contained.contained(
             content, self, content.__name__)
 
@@ -250,8 +248,7 @@ class Repository(persistent.Persistent, Container):
     __parent__ = None
     uniqueId = zeit.cms.interfaces.ID_NAMESPACE
 
-    uncontained_content = gocept.cache.property.TransactionBoundCache(
-        '_v_uncontained_content', dict)
+    _content = gocept.cache.property.TransactionBoundCache('_v_content', dict)
 
     def __init__(self):
         self._initalizied = False
@@ -278,11 +275,7 @@ class Repository(persistent.Persistent, Container):
             # location-aware and can resolve their __parent__ themselves
             # if it is needed (instead of the usual Zope paradigm that the
             # container writes it on its children from the outside).
-            content = self.getUncontainedContent(unique_id)
-            # During traversal, IRepositoryContent happens in
-            # Container.__getitem__.
-            zope.interface.alsoProvides(
-                content, zeit.cms.repository.interfaces.IRepositoryContent)
+            content = self._getContent(unique_id)
         except KeyError:
             # Some content cannot be resolved directly, the most prominent
             # example being zeit.content.dynamicfolder.
@@ -296,13 +289,18 @@ class Repository(persistent.Persistent, Container):
                 raise KeyError(unique_id)
         return content
 
-    def getUncontainedContent(self, unique_id):
+    def _getContent(self, unique_id):
         try:
-            content = self.uncontained_content[unique_id]
+            content = self._content[unique_id]
         except KeyError:
             content = self.getCopyOf(unique_id)
-            self.uncontained_content[unique_id] = content
+            self._add_marker_interfaces(content)
+            self._content[unique_id] = content
         return content
+
+    def _add_marker_interfaces(self, content):  # Extension point for zeit.web
+        zope.interface.alsoProvides(
+            content, zeit.cms.repository.interfaces.IRepositoryContent)
 
     def addContent(self, content, ignore_conflicts=False):
         zope.event.notify(
@@ -401,11 +399,11 @@ def cmscontentFactory(context):
 
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
-def invalidate_uncontained_content(event):
+def invalidate_content_cache(event):
     repository = zope.component.queryUtility(
         zeit.cms.repository.interfaces.IRepository)
     if repository is not None:
-        repository.uncontained_content.pop(event.id, None)
+        repository._content.pop(event.id, None)
 
 
 @grok.adapter(six.string_types[0], name=zeit.cms.interfaces.ID_NAMESPACE)

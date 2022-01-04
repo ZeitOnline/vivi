@@ -76,7 +76,7 @@ class ImageGroupBase(object):
             return self._master_images
 
         # read first viewport from source to use as default viewport
-        viewport = next(iter(VIEWPORT_SOURCE(self)))
+        viewport = next(iter(VIEWPORT_SOURCE))
         # try to read master_image from DAV properties for bw compat
         properties = zeit.connector.interfaces.IWebDAVReadProperties(self)
         master_image = properties.get(('master_image', IMAGE_NAMESPACE), None)
@@ -95,9 +95,14 @@ class ImageGroupBase(object):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         for view, name in self.master_images:
             if viewport == view:
-                if name in repository:
-                    return repository[name]
+                image = repository.get(name)
+                if image is not None:
+                    return image
         return zeit.content.image.interfaces.IMasterImage(self, None)
+
+    def __bool__(self):
+        image = zeit.content.image.interfaces.IMasterImage(self, None)
+        return image is not None
 
     def create_variant_image(
             self, variant, url=None,
@@ -112,35 +117,22 @@ class ImageGroupBase(object):
         # pass in a larger size and be done with it ;).
         if scale and size and (0.5 <= scale <= 3.0):
             size = [int(ceil(x * scale)) for x in size]
-
-        # Always prefer materialized images with matching name
-        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
-        if source is None and variant.name in repository:
-            source = repository[variant.name]
-            if size is None:
-                size = source.getImageSize()
-
-        # Prefer a master image that was configured for given viewport.
-        elif source is None and viewport is not None:
-            source = self.master_image_for_viewport(viewport)
-
-        # Our default transformation source should be the master image.
-        if source is None:
-            source = zeit.content.image.interfaces.IMasterImage(self, None)
-        if source is None:
-            raise KeyError(variant.name)
-
-        # Set size to max_size if Variant has max_size defined in XML and size
-        # was not given in URL.
+        # Use the configured variant maximum size as a sanity bound.
         if (size is None and
                 variant.max_width < sys.maxsize > variant.max_height):
             size = [variant.max_width, variant.max_height]
+
+        # Our default transformation source should be the master image.
+        if source is None:
+            source = self.master_image_for_viewport(viewport or '')
+        if source is None:
+            raise KeyError(variant.name)
 
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         with tracer.start_as_current_span(
                 'zeit.content.image.imagegroup.create_variant',
                 attributes={'content': str(self), 'variant': variant.name,
-                            'viewport': viewport}) as span:
+                            'viewport': viewport or ''}) as span:
             if size is not None:
                 span.set_attributes({'width': size[0], 'height': size[1]})
 
@@ -339,7 +331,7 @@ class VariantTraverser(object):
     def _parse_viewport(self, url):
         """If url contains `__mobile`, retrieve viewport `mobile` else None."""
         for segment in url.split('__')[1:]:
-            if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE(None):
+            if segment in zeit.content.image.interfaces.VIEWPORT_SOURCE:
                 return segment
         return None
 
@@ -487,8 +479,11 @@ def XMLReference(context):
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.IMasterImage)
 def find_master_image(context):
-    if context.master_image in context:
-        return context[context.master_image]
+    master_name = context.master_image
+    if master_name:
+        master_image = context.get(master_name)
+        if master_image is not None:
+            return master_image
     master_image = None
     for image in context.values():
         if zeit.content.image.interfaces.IImage.providedBy(

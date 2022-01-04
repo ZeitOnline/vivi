@@ -48,6 +48,14 @@ class AgencySource(AuthorSource):
 agencySource = AgencySource()
 
 
+class ColorSchemeSource(zeit.cms.content.sources.SimpleDictSource):
+
+    values = {
+        'light': _('color scheme light'),
+        'dark': _('color scheme dark'),
+    }
+
+
 class IChannelField(zc.form.interfaces.ICombinationField):
     """Marker interface so we can register a specialized widget
     for this field."""
@@ -283,6 +291,11 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Deeplink URL'),
         required=False,
         default=None)
+
+    color_scheme = zope.schema.Choice(
+        title=_('Color scheme'),
+        source=ColorSchemeSource(),
+        required=False)
 
     tldr_title = zope.schema.TextLine(
         title=_("tldr title"),

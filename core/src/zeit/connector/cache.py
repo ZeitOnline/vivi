@@ -1,9 +1,11 @@
 from functools import total_ordering
 from gocept.cache.method import Memoize as memoize
 from io import BytesIO
+from zope.dottedname.resolve import resolve
 import BTrees
 import ZODB.POSException
 import ZODB.blob
+import argparse
 import collections.abc
 import gocept.lxml.objectify
 import logging
@@ -18,6 +20,7 @@ import tempfile
 import time
 import transaction
 import zc.set
+import zeit.cms.cli
 import zeit.connector.interfaces
 import zope.interface
 import zope.security.proxy
@@ -548,3 +551,16 @@ class FeatureToggles(object):
 
 
 FEATURE_TOGGLES = FeatureToggles()
+
+
+@zeit.cms.cli.runner()
+def sweep():
+    log.info('Sweep start')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--days', type=int, default=14)
+    parser.add_argument('cache')
+    options = parser.parse_args()
+    iface = resolve('zeit.connector.interfaces.' + options.cache)
+    cache = zope.component.getUtility(iface)
+    cache.sweep(options.days * 24 * 3600)
+    log.info('Sweep end')

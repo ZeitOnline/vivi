@@ -4,6 +4,7 @@ import os
 import os.path
 import signal
 import sys
+import time
 import zeit.cms.logging
 
 
@@ -45,10 +46,9 @@ Modules that were pre-imported for convenience: zope, zeit, transaction
 
 
 def parse_paste_ini():
-    if len(sys.argv) < 2:
-        sys.stderr.write('Usage: %s paste.ini\n' % sys.argv[0])
-        sys.exit(1)
-    settings = _parse_paste_ini(sys.argv.pop(1))
+    settings = os.environ.copy()
+    if len(sys.argv) >= 2 and sys.argv[1].endswith('.ini'):
+        settings.update(_parse_paste_ini(sys.argv.pop(1)))
     configure(settings)
     return settings
 
@@ -56,10 +56,7 @@ def parse_paste_ini():
 def _parse_paste_ini(paste_ini):
     paste = ConfigParser()
     paste.read(paste_ini)
-    settings = os.environ.copy()
-    for key, value in paste.items('application:main'):
-        settings[key] = value
-    return settings
+    return dict(paste.items('application:main'))
 
 
 SETTINGS = {}
@@ -83,10 +80,14 @@ def _configure_logging(settings):
 
 try:
     import gocept.runner
+    from gocept.runner import from_config  # noqa API
 except ImportError:
     # Provide fake decorator so zeit.web can avoid importing the zope machinery
     def runner(*args, **kw):
         return lambda x: x
+
+    def from_config(*args, **kw):
+        return None
 else:
     class runner(gocept.runner.appmain):
 
@@ -113,3 +114,17 @@ else:
                 finally:
                     db.close()
             return run
+
+
+def wait_for_commit(func):
+    from ZODB.POSException import ConflictError
+    import transaction
+    while True:
+        func()
+        try:
+            transaction.commit()
+            return
+        except ConflictError:
+            log.warning('ConflictError, retrying')
+            transaction.abort()
+            time.sleep(0.5)

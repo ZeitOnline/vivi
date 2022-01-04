@@ -52,13 +52,13 @@ Verify the source:
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('Source').value)
-<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
+<container... layout="artbox" label="portrait">
   <block>
     <title...>Hans Wurst</title>
     <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
       <bu xsi:nil="true"/>
     </image>
-    <text py:pytype="str">
+    <text>
       <p><strong>HW</strong> is in da house</p>
     </text>
   </block>

@@ -7,6 +7,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.reference
 import zeit.cms.interfaces
+import zeit.cms.related.related
 import zeit.cms.type
 import zeit.content.video.interfaces
 import zeit.push.interfaces
@@ -57,6 +58,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_advertisement',), use_default=True)
 
+    type = zeit.cms.content.dav.DAVProperty(
+        zeit.content.video.interfaces.IVideo['type'],
+        'http://namespaces.zeit.de/CMS/video', 'type')
+
     id_prefix = 'vid'
 
     external_id = zeit.cms.content.dav.DAVProperty(
@@ -78,9 +83,6 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     @property
     def video_still(self):
         return self._player_data['video_still']
-
-    cms_video_still = zeit.cms.content.reference.SingleResource(
-        '.body.video_still', "image")
 
     @cachedproperty
     def _player_data(self):
@@ -106,6 +108,18 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     def seo_slug(self):
         titles = (t for t in (self.supertitle, self.title) if t)
         return zeit.cms.interfaces.normalize_filename(u' '.join(titles))
+
+
+@zope.component.adapter(zeit.content.video.interfaces.IVideo)
+@zope.interface.implementer(zeit.content.image.interfaces.IImages)
+class VideoImage(zeit.cms.related.related.RelatedBase):
+
+    image = zeit.cms.content.reference.SingleResource(
+        '.body.video_still', 'image')
+
+    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.body.video_still', 'fill_color',
+        zeit.content.image.interfaces.IImages['fill_color'])
 
 
 @zope.interface.implementer(zeit.content.video.interfaces.IVideoRendition)
@@ -147,8 +161,9 @@ class DependenciesImages(zeit.workflow.dependency.DependencyBase):
     retract_dependencies = True
 
     def get_dependencies(self):
-        if self.context.cms_video_still is not None:
-            return [self.context.cms_video_still]
+        img = zeit.content.image.interfaces.IImages(self.context)
+        if img.image is not None:
+            return [img.image]
         else:
             return []
 

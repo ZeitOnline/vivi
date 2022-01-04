@@ -1,10 +1,13 @@
+from zeit.cms.cli import wait_for_commit
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import datetime
 import grokcore.component as grok
+import logging
 import pytz
 import zeit.cms.celery
+import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.workflow.interfaces
@@ -15,6 +18,8 @@ import zope.interface
 
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
+
+log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.workflow.interfaces.ITimeBasedPublishing)
@@ -159,3 +164,28 @@ def schedule_imported_retract_jobs(context, event):
             workflow.released_to < datetime.datetime.now(pytz.UTC)):
         return
     workflow.setup_job('retract', workflow.released_to)
+
+
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
+    'zeit.workflow', 'retract-timebased-principal'))
+def retract_overdue_objects():
+    import zeit.find.interfaces
+    import zeit.retresco.interfaces
+
+    tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
+    es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+    unretracted = es.search({'query': {'bool': {'filter': [
+        {'term': {'payload.workflow.published': True}},
+        {'range': {'payload.workflow.released_to': {'lt': 'now-15m'}}}
+    ]}}, '_source': ['url', 'doc_id']}, rows=1000)
+
+    for item in unretracted:
+        uniqueId = 'http://xml.zeit.de' + item['url']
+        content = zeit.cms.interfaces.ICMSContent(uniqueId, None)
+        if content is None:
+            log.info('Not found: %s, deleting from TMS', uniqueId)
+            tms.delete_id(item['doc_id'])
+        else:
+            publish = zeit.cms.workflow.interfaces.IPublish(content)
+            log.info('Retracting %s', content)
+            wait_for_commit(lambda: publish.retract(background=False))

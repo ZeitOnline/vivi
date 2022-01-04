@@ -4,7 +4,7 @@
   xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
 
-    <grok:grok package="." exclude="json testhelper xmlrpc" />
+    <grok:grok package="." exclude="json metrics testhelper xmlrpc" />
 
     <utility factory=".connection.from_product_config" />
     <utility factory=".search.from_product_config" />
@@ -28,6 +28,11 @@
       component=".content.TMSLink"
       provides=".interfaces.ITMSContent"
       name="blogpost"
+      />
+    <utility
+      component=".content.TMSVideo"
+      provides=".interfaces.ITMSContent"
+      name="video"
       />
 
     <class class=".tagger.Tagger">

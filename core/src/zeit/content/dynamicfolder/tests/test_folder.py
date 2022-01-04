@@ -131,6 +131,8 @@ class TestDynamicFolder(
 
     def test_fills_in_template_placeholders_from_config_entries(self):
         cp = self.folder['xanten']
+        self.assertTrue(
+            zeit.cms.repository.interfaces.IRepositoryContent.providedBy(cp))
         self.assertTrue(zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
         self.assertTrue(zeit.content.cp.interfaces.ICP2015.providedBy(cp))
         self.assertEqual('Xanten', cp.title)
@@ -141,7 +143,7 @@ class TestDynamicFolder(
 
     def test_text_of_tags_can_be_used_in_template(self):
         # Remove all virtual childs that have been cached
-        self.repository.uncontained_content = {}
+        self.repository._content.clear()
 
         with mock.patch('jinja2.Template.render') as render:
             render.return_value = u''

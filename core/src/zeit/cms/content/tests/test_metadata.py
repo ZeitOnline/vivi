@@ -89,3 +89,14 @@ class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
                     zeit.cms.content.interfaces.ICommonMetadata,
                     'access'))
             self.assertEqual([], list(log.get_log()))
+
+
+class ColorScheme(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_ignores_invalid_values(self):
+        article = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.color_scheme = 'light'
+            self.assertEqual('light', co.color_scheme)
+            co.color_scheme = 'invalid'
+            self.assertEqual(None, co.color_scheme)

@@ -1,10 +1,16 @@
-from zeit.cms.interfaces import CONFIG_CACHE
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.cli import wait_for_commit
+from zeit.cms.interfaces import CONFIG_CACHE, ICMSContent
+from zeit.cms.workflow.interfaces import IPublish
 import collections
 import grokcore.component as grok
 import logging
 import lxml.etree
 import six
+import zeit.cms.cli
+import zeit.retresco.interfaces
 import zeit.wochenmarkt.interfaces
+import zope.component
 
 
 log = logging.getLogger(__name__)
@@ -104,3 +110,34 @@ class IngredientsWhitelist(
             ingredients[ingredient_node.get('id')] = ingredient
         log.info('Ingredients loaded.')
         return ingredients
+
+    def collect_used(self):
+        es = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+        result = es.aggregate({
+            'aggs': {'ingredients': {
+                'terms': {'field': 'payload.recipe.ingredients', 'size': 10000}
+            }}, 'size': 0})
+        used = set()
+        for item in result['ingredients']['buckets']:
+            used.add(item['key'])
+
+        xml = self._get_tree()
+        for item in xml.xpath('//ingredient'):
+            if item.get('id') not in used:
+                item.getparent().remove(item)
+        return xml
+
+
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
+    'zeit.wochenmarkt', 'used-ingredients-principal'))
+def collect_used():
+    ingredients = zope.component.getUtility(
+        zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
+    used = ingredients.collect_used()
+
+    source = ICMSContent('http://xml.zeit.de/data/ingredients_in_use.xml')
+    with checked_out(source) as co:
+        co.xml = used
+
+    publish = IPublish(source)
+    wait_for_commit(lambda: publish.publish(background=False))

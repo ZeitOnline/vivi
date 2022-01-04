@@ -38,9 +38,9 @@ You can edit the XML content by clicking the Edit button:
 >>> xml = browser.getControl(name="form.xml").value
 >>> print(xml)
 <container...  cp:type="xml"...>
- <raw>
+  <raw>
 <BLANKLINE>
- </raw>
+  </raw>
 </container>
 >>> print(update_xml('\r\n\r\n', '<foo/>'))
 <...

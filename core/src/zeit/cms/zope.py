@@ -1,6 +1,7 @@
 from ZODB.ActivityMonitor import ActivityMonitor
 from urllib.parse import urlparse
 import ZODB
+import ast
 import grokcore.component as grok
 import pkg_resources
 import re
@@ -46,10 +47,11 @@ def load_zcml(settings):
     feature = 'zcml.feature.'
     return _load_zcml(
         settings['site_zcml'],
-        [x.replace(feature, '', 1) for x in settings if x.startswith(feature)])
+        [x.replace(feature, '', 1) for x in settings
+         if x.startswith(feature) and ast.literal_eval(settings[x])])
 
 
-def _load_zcml(filename, features=()):
+def _load_zcml(filename, features=(), package=None):
     # Modelled after zope.app.appsetup:config
     zope.component.hooks.setHooks()
     context = zope.configuration.config.ConfigurationMachine()
@@ -57,7 +59,8 @@ def _load_zcml(filename, features=()):
     for x in features:
         context.provideFeature(x)
     zope.configuration.xmlconfig.registerCommonDirectives(context)
-    zope.configuration.xmlconfig.include(context, file=filename)
+    zope.configuration.xmlconfig.include(
+        context, file=filename, package=package)
     context.execute_actions()
     return context
 

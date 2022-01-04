@@ -110,10 +110,10 @@ class import_video(import_base):
         # subsequent updates.
         if not FEATURE_TOGGLES.find('video_import_images'):
             return
-        cms_video_still = download_teaser_image(
-            self.folder, self.bcobj.data, 'still')
-        if self.cmsobj.cms_video_still is None:
-            self.cmsobj.cms_video_still = cms_video_still
+        still = download_teaser_image(self.folder, self.bcobj.data, 'still')
+        img = zeit.content.image.interfaces.IImages(self.cmsobj)
+        if img.image is None:
+            img.image = still
 
     def _commit(self):
         self.folder[self.bcobj.id] = self.cmsobj
@@ -257,7 +257,7 @@ class import_playlist(import_base):
             del folder[name]
 
 
-@zeit.cms.cli.runner(ticks=120, principal=gocept.runner.from_config(
+@zeit.cms.cli.runner(ticks=120, principal=zeit.cms.cli.from_config(
     'zeit.brightcove', 'index-principal'), once=False)
 def import_playlists():
     log.info('Update run started')

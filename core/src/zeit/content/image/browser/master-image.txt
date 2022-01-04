@@ -97,7 +97,7 @@ It is possible to select the master image of an image group:
  'new-hampshire-artikel.jpg',
  'obama-clinton-120x120.jpg']
 >>> browser.getControl('Image file').displayValue = ['obama']
->>> browser.getControl('Viewport').displayValue = ['Desktop']
+>>> browser.getControl('Viewport').displayValue = ['viewport-desktop']
 >>> browser.getControl(name='form.copyright.combination_00').value = (
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyright.combination_01').displayValue = ['dpa']

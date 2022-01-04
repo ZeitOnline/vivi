@@ -107,6 +107,22 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ICommonMetadata['ir_article_id'], zeit.cms.interfaces.IR_NAMESPACE,
         'article_id')
 
+    _color_scheme = zeit.cms.content.dav.DAVProperty(
+        ICommonMetadata['color_scheme'], DOCUMENT_SCHEMA_NS, 'color_scheme')
+
+    @property
+    def color_scheme(self):
+        # BBB This field previously had a different meaning (for xslt/vertigo)
+        # but DAVProperty/Choice type conversion is intentionally not strict.
+        value = self._color_scheme
+        if value not in ICommonMetadata['color_scheme'].vocabulary:
+            return None
+        return value
+
+    @color_scheme.setter
+    def color_scheme(self, value):
+        self._color_scheme = value
+
 
 @grok.subscribe(ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent)
 def set_default_channel_to_ressort(context, event):

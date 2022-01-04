@@ -87,7 +87,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             self.service.new_document(content)
         except zeit.vgwort.interfaces.TechnicalError:
-            pass
+            self.skipTest('vgwort test system down')
 
     def test_author_without_vgwortid_works(self):
         author = zeit.content.author.author.Author()
@@ -107,7 +107,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             self.service.new_document(content)
         except zeit.vgwort.interfaces.TechnicalError:
-            pass
+            self.skipTest('vgwort test system down')
 
     def test_non_author_doc_as_author_should_be_ignored(self):
         import transaction
@@ -140,7 +140,8 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             self.service.new_document(content)
         except zeit.vgwort.interfaces.TechnicalError:
-            pass
+            self.skipTest('vgwort test system down')
+
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 

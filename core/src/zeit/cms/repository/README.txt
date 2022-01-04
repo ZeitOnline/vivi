@@ -194,7 +194,7 @@ u'http://xml.zeit.de/i_am_new'
 
 Since it does have an id we can get it back from the repository:
 
->>> new_content = repository.getUncontainedContent(content.uniqueId)
+>>> new_content = repository.getContent(content.uniqueId)
 >>> new_content
 <zeit.cms.repository.unknown.PersistentUnknownResource...>
 >>> new_content.data

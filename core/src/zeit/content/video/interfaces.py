@@ -32,6 +32,11 @@ class IVideoRendition(zope.interface.interfaces.IInterface):
         title=_('Duration of the rendition'))
 
 
+class VideoTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    values = ['livestream']
+
+
 class IVideo(IVideoContent):
 
     external_id = zope.schema.TextLine(
@@ -52,10 +57,6 @@ class IVideo(IVideoContent):
         title=_('URI of the still image'),
         required=False,
         readonly=True)
-
-    cms_video_still = zope.schema.Choice(
-        source=zeit.content.image.interfaces.imageSource,
-        required=False)
 
     renditions = zope.schema.Tuple(
         title=_("Renditions of the Video"),
@@ -80,6 +81,11 @@ class IVideo(IVideoContent):
     has_advertisement = zope.schema.Bool(
         title=_('Has advertisement'),
         default=True)
+
+    type = zope.schema.Choice(
+        title=_('Video type'),
+        source=VideoTypeSource(),
+        required=False)
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
