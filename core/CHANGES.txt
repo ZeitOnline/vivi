@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.7.4 (2022-01-04)
+------------------
+
+- ZO-727: Don't use a configuration file for image viewports anymore
+
+
 5.7.3 (2022-01-03)
 ------------------
 
