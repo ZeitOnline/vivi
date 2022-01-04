@@ -73,12 +73,9 @@ class import_video(import_base):
         if IPublishInfo(self.cmsobj).published:
             IPublish(self.cmsobj).retract(background=False)
         del self.bcobj.__parent__[self.bcobj.id]
-        try:
-            still = self.cmsobj.cms_video_still
+        still = zeit.content.image.interfaces.IImages(self.cmsobj).image
+        if still.__name__ == '%s-still' % self.bcobj.id:
             del still.__parent__[still.__name__]
-        except Exception:
-            log.info('vdieo still image for  %s not deleted', self.bcobj)
-            pass
         return True
 
     def add(self):
