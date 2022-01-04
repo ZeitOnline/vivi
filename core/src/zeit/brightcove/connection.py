@@ -201,8 +201,7 @@ class PlaybackAPI(object):
     def get_video(self, id):
         data = {
             'renditions': (),
-            'thumbnail': None,
-            'video_still': None,
+            'video_still': None
         }
         try:
             data.update(self._request('GET /videos/%s' % id))

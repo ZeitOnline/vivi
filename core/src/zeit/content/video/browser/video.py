@@ -27,9 +27,9 @@ class Base(zeit.push.browser.form.SocialBase,
         'commentsPremoderate', 'related', 'channels', 'lead_candidate',
         'video_still_copyright', 'has_advertisement',
         # remaining:
-        '__name__', 'cms_thumbnail', 'image',
+        '__name__', 'image',
         'created', 'date_first_released', 'modified', 'expires',
-        'thumbnail', 'video_still', 'authorships')
+        'video_still', 'authorships')
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -50,8 +50,8 @@ class Base(zeit.push.browser.form.SocialBase,
         zeit.push.browser.form.MobileBase.mobile_fields,
         CommonMetadataFormBase.auto_cp_fields,
         gocept.form.grouped.Fields(
-            _('Teaser elements'),
-            ('related', 'cms_thumbnail', 'image'),
+            _('Video-Thumbnail'),
+            ('image'),
             css_class='wide-widgets column-left'),
         gocept.form.grouped.RemainingFields(
             '', css_class='column-left'),
@@ -66,24 +66,6 @@ class Edit(Base, zeit.cms.browser.form.EditForm):
 class Display(Base, zeit.cms.browser.form.DisplayForm):
 
     title = _('Video')
-
-
-class Thumbnail(zeit.cms.browser.view.Base):
-
-    @property
-    def thumbnail_url(self):
-        return self.context.thumbnail
-
-    def __call__(self):
-        return self.redirect(self.thumbnail_url, trusted=True)
-
-
-class ThumbnailURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-
-    def __str__(self):
-        if self.context.thumbnail_url:
-            return self.context.thumbnail_url
-        raise TypeError("No Thumbnail")
 
 
 class Still(zeit.cms.browser.view.Base):

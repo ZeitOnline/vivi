@@ -8,47 +8,6 @@ import zope.component
 import zope.publisher.browser
 
 
-class TestThumbnail(zeit.content.video.testing.BrowserTestCase):
-
-    def test_view_on_video_should_redirect_to_video_thumbnail_url(self):
-        player = zope.component.getUtility(
-            zeit.content.video.interfaces.IPlayer)
-        player.get_video.return_value = {
-            'renditions': (),
-            'thumbnail': 'http://thumbnailurl',
-            'video_still': None,
-        }
-        factory = zeit.content.video.testing.video_factory(self)
-        next(factory)
-        next(factory)
-        self.browser.open('http://localhost/++skin++vivi/repository/video/')
-        self.browser.follow_redirects = False
-        self.browser.open('@@thumbnail')
-        self.assertEqual('http://thumbnailurl',
-                         self.browser.headers.get('location'))
-
-    def test_url_of_view_on_video_should_return_thumbnail_url(self):
-        player = zope.component.getUtility(
-            zeit.content.video.interfaces.IPlayer)
-        player.get_video.return_value = {
-            'renditions': (),
-            'thumbnail': 'http://thumbnailurl',
-            'video_still': None,
-        }
-        factory = zeit.content.video.testing.video_factory(self)
-        next(factory)
-        video = next(factory)
-
-        request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSLayer)
-        thumbnail_view = zope.component.getMultiAdapter(
-            (video, request), name='thumbnail')
-        url = zope.component.getMultiAdapter(
-            (thumbnail_view, request),
-            zope.traversing.browser.interfaces.IAbsoluteURL)()
-        self.assertEqual(url, 'http://thumbnailurl')
-
-
 class TestStill(zeit.content.video.testing.BrowserTestCase):
 
     def test_preview_view_on_video_should_redirect_to_still_url(self):
@@ -57,7 +16,6 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             zeit.content.video.interfaces.IPlayer)
         player.get_video.return_value = {
             'renditions': (),
-            'thumbnail': None,
             'video_still': 'http://stillurl',
         }
         next(factory)
@@ -73,7 +31,6 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
             zeit.content.video.interfaces.IPlayer)
         player.get_video.return_value = {
             'renditions': (),
-            'thumbnail': None,
             'video_still': 'http://stillurl',
         }
         factory = zeit.content.video.testing.video_factory(self)

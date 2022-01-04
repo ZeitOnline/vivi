@@ -76,21 +76,6 @@
 
   <!-- common views -->
 
- <browser:page
-   for="..interfaces.IVideoContent"
-   layer="zeit.cms.browser.interfaces.ICMSLayer"
-   name="thumbnail"
-   class=".video.Thumbnail"
-   permission="zope.View"
-   />
-
- <adapter
-   for=".video.Thumbnail
-   zeit.cms.browser.interfaces.ICMSLayer"
-   provides="zope.traversing.browser.interfaces.IAbsoluteURL"
-   factory=".video.ThumbnailURL"
-   />
-
   <browser:page
     for="..interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

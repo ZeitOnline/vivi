@@ -73,28 +73,18 @@ class import_video(import_base):
         if IPublishInfo(self.cmsobj).published:
             IPublish(self.cmsobj).retract(background=False)
         del self.bcobj.__parent__[self.bcobj.id]
+        still = zeit.content.image.interfaces.IImages(self.cmsobj).image
+        if still.__name__ == '%s-still' % self.bcobj.id:
+            del still.__parent__[still.__name__]
         return True
-
-    def _publish(self):
-
-        def publish(obj):
-            if obj is None:
-                log.info('Got None to publish')
-                return
-            if not IPublishInfo(obj).published:
-                log.info('Publishing %s' % obj)
-                IPublish(obj).publish(background=False)
-            else:
-                log.info('%s already published' % obj)
-
-        if self.bcobj.state == 'ACTIVE':
-            publish(self.cmsobj)
 
     def add(self):
         if self.cmsobj is not None or self.bcobj.skip_import:
             return False
         self._add()
-        self._publish()
+        if self.bcobj.state == 'ACTIVE':
+            IPublish(self.cmsobj).publish(background=False)
+            log.info('Publishing %s' % self.bcobj.uniqueId)
         return True
 
     def _add(self):
@@ -121,10 +111,6 @@ class import_video(import_base):
         img = zeit.content.image.interfaces.IImages(self.cmsobj)
         if img.image is None:
             img.image = still
-        cms_thumbnail = download_teaser_image(
-            self.folder, self.bcobj.data, 'thumbnail')
-        if self.cmsobj.cms_thumbnail is None:
-            self.cmsobj.cms_thumbnail = cms_thumbnail
 
     def _commit(self):
         self.folder[self.bcobj.id] = self.cmsobj
@@ -155,8 +141,7 @@ class import_video(import_base):
 
 
 BC_IMG_KEYS = {
-    'still': 'poster',
-    'thumbnail': 'thumbnail'
+    'still': 'poster'
 }
 
 

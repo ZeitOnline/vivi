@@ -81,13 +81,6 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         return getattr(high, 'url', '')
 
     @property
-    def thumbnail(self):
-        return self._player_data['thumbnail']
-
-    cms_thumbnail = zeit.cms.content.reference.SingleResource(
-        '.body.thumbnail', "image")
-
-    @property
     def video_still(self):
         return self._player_data['video_still']
 
@@ -157,12 +150,22 @@ class Dependencies(zeit.workflow.dependency.DependencyBase):
         dependencies = [x for x in relations.get_relations(self.context)
                         if zeit.content.video.interfaces.
                         IPlaylist.providedBy(x)]
+        return dependencies
+
+
+class DependenciesImages(zeit.workflow.dependency.DependencyBase):
+
+    grok.context(zeit.content.video.interfaces.IVideo)
+    grok.name('zeit.content.video.still')
+
+    retract_dependencies = True
+
+    def get_dependencies(self):
         img = zeit.content.image.interfaces.IImages(self.context)
         if img.image is not None:
-            dependencies.append(img.image)
-        if self.context.cms_thumbnail is not None:
-            dependencies.append(self.context.cms_thumbnail)
-        return dependencies
+            return [img.image]
+        else:
+            return []
 
 
 @grok.adapter(zeit.content.video.interfaces.IVideo)

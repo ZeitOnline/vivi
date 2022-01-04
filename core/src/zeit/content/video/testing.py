@@ -30,7 +30,6 @@ class PlayerMockLayer(plone.testing.Layer):
         self['player'].reset_mock()
         self['player'].get_video.return_value = {
             'renditions': (),
-            'thumbnail': None,
             'video_still': None,
         }
 
@@ -84,7 +83,6 @@ def video_factory(self):
             video = Video()
             img = zeit.content.image.interfaces.IImages(video)
             img.image = create_image_group_with_master_image()
-            video.cms_thumbnail = create_image_group_with_master_image()
             yield video
             self.repository['video'] = video
     yield self.repository['video']

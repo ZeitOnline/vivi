@@ -53,15 +53,6 @@ class IVideo(IVideoContent):
         readonly=True,
         default=None)
 
-    thumbnail = zope.schema.URI(
-        title=_('URI of the thumbnail'),
-        required=False,
-        readonly=True)
-
-    cms_thumbnail = zope.schema.Choice(
-        source=zeit.content.image.interfaces.imageSource,
-        required=False)
-
     video_still = zope.schema.URI(
         title=_('URI of the still image'),
         required=False,
@@ -138,7 +129,6 @@ class IPlayer(zope.interface.Interface):
 
     def get_video(id):
         """Must return a dict with at least the following keys:
-        * thumbnail: str
         * video_still: str
         * renditions: list of IVideoRendition
         """
