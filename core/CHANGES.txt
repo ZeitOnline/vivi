@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.7.5 (2022-01-04)
+------------------
+
+- ZO-303: Download image from BC on update if vivi has no image reference
+
+- ZO-614: Remove unused IVideo.thumbnail
+
+- ZO-616: Delete video still image when video is deleted
+
+
 5.7.4 (2022-01-04)
 ------------------
 
