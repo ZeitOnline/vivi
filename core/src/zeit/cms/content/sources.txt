@@ -44,7 +44,7 @@ Ressort
  u'Studium',
  u'Campus',
  u'Arbeit',
- u'Zeit f\xfcr die Schule',
+ u'Zeit für die Schule',
  u'Kultur',
  u'Feuilleton',
  u'Musik',
@@ -73,11 +73,12 @@ Ressort
  u'campus-knigge',
  u'e-balance',
  u'bundeskunsthalle',
- u'angebote']
+ u'angebote',
+ u'Wochenende']
 
 
 Titles and tokens are working, too:
- 
+
 >>> import zope.publisher.browser
 >>> import zope.browser.interfaces
 >>> request = zope.publisher.browser.TestRequest()
