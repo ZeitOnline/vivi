@@ -122,20 +122,28 @@ class PassthroughConnector(Connector):
 
     def __init__(self, dsn, body_path):
         super().__init__(dsn, body_path)
-        self.fs = zeit.connector.filesystem.Connector(body_path)
+        if body_path.startswith('http'):
+            self.upstream = zeit.connector.zopeconnector.ZopeConnector(
+                {'default': body_path})
+        else:
+            self.upstream = zeit.connector.filesystem.Connector(body_path)
 
     def listCollection(self, id):
-        return super().listCollection(id) or self.fs.listCollection(id)
+        return super().listCollection(id) or self.upstream.listCollection(id)
 
     def __getitem__(self, id):
         try:
             return super().__getitem__(id)
         except KeyError:
-            res = self.fs[id]
-            if res.properties[('type', NS + 'meta')] != 'folder':
-                self[id] = res
-                transaction.commit()
+            res = self.upstream[id]
+            self[id] = res
+            transaction.commit()
             return res
+
+    def _get_body(self, path):
+        if not self.body_path.startswith('http'):
+            return super()._get_body(path)
+        return self.upstream['http://xml.zeit.de' + path].data
 
 
 passthrough_factory = PassthroughConnector.factory
@@ -178,5 +186,7 @@ class Properties(DBObject):
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
+            if ns == 'INTERNAL':
+                continue
             unsorted[ns][k] = v
         self.unsorted = unsorted
