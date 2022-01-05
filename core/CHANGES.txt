@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.7.6 (2022-01-05)
+------------------
+
+- ZO-731: Add vertical code/ config for ZEIT am Wochenende
+
+
 5.7.5 (2022-01-04)
 ------------------
 
