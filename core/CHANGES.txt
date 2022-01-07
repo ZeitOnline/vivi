@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.7.7 (2022-01-07)
+------------------
+
+- ZO-742: Do not remove XML schema type annotations
+
+
 5.7.6 (2022-01-05)
 ------------------
 
