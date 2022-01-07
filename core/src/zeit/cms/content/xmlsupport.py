@@ -227,7 +227,8 @@ def cleanup_lxml(context, event):
     lxml.etree.cleanup_namespaces(
         unwrapped.xml, top_nsmap=COMMON_NAMESPACES,
         keep_ns_prefixes=COMMON_NAMESPACES.keys())
-    lxml.objectify.deannotate(unwrapped.xml)
+    lxml.objectify.deannotate(
+        unwrapped.xml, pytype=True, xsi_nil=True, xsi=False)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
