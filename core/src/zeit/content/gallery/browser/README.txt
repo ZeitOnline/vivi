@@ -218,13 +218,13 @@ Sadly the xml is not updated, yet:
 <gallery...>
     ...
         <block name="03.jpg">
-        <text xsi:nil="true"/>
+        <text/>
           <image src="http://xml.zeit.de/online/2007/01/gallery/03.jpg"...>
-            <bu xsi:nil="true"/>
+            <bu/>
             <copyright link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </image>
           <thumbnail src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg"...>
-            <bu xsi:nil="true"/>
+            <bu/>
             <copyright link="http://www.zeit.de/">ZEIT ONLINE</copyright>
           </thumbnail>
         </block>

@@ -56,7 +56,7 @@ Verify the source:
   <block>
     <title...>Hans Wurst</title>
     <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-      <bu xsi:nil="true"/>
+      <bu/>
     </image>
     <text>
       <p><strong>HW</strong> is in da house</p>

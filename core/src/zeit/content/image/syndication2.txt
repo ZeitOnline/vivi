@@ -31,7 +31,7 @@ appears on the image as well:
   <head>
     <image ...src="http://xml.zeit.de/image-group/new-hampshire-450x....jpg"
         type="jpg"...expires="2008-01-06T00:00:00+00:00"...>
-      <bu xsi:nil="true"/>
+      <bu/>
     </image>
     ...
   </head>
