@@ -41,9 +41,6 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
             return zeit.content.cp.interfaces.ITeaserBlock[name].default
         raise AttributeError(name)
 
-    def update_topiclinks(self):
-        pass
-
     # XXX copy&paste&tweak from TeaserBlock
     @property
     def layout(self):
