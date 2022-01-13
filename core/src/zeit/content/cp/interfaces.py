@@ -546,6 +546,10 @@ class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""
 
 
+class ILocalTeaserBlock(ITeaserBlock):
+    """Teaser module that allows overriding title/text/image"""
+
+
 class IReadAutomaticTeaserBlock(IReadTeaserBlock):
 
     force_mobile_image = zope.schema.Bool(
