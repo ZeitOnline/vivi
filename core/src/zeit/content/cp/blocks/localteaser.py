@@ -6,6 +6,7 @@ import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
+import zeit.cms.content.xmlsupport
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.interface
@@ -69,6 +70,9 @@ class LocalTeaserBlock(zeit.content.cp.blocks.block.Block):
     # and it doesn't make sense in combination with local overrides anyway,
     # so we're only supporting referencing one content object here.
     _reference = zeit.cms.content.reference.SingleResource('.block', 'teaser')
+
+    image = zeit.cms.content.reference.SingleResource('.local_image', 'image')
+    fill_color = ObjectPathAttributeProperty('.', 'fill_color')
 
     def __iter__(self):
         content = self._reference
@@ -142,16 +146,23 @@ def teaser_reference(context):
     return reference
 
 
+class ITeaserOverrides(zope.interface.Interface):
+    """Marker interface that gets applied directly, so that it is more
+    specific than any content interfaces."""
+
+
 class TeaserOverrides:
     """Wrapper around an ICommonMetadata object (that's referenced by a
     LocalTeaserBlock) that returns the block's values for locally overriden
     fields, and proxies everything else to the content object."""
 
-    OVERRIDES = zeit.content.cp.interfaces.IReadLocalTeaserBlock.names()
+    OVERRIDES = ['teaserSupertitle', 'teaserTitle', 'teaserText']
 
     def __init__(self, module, content):
         self.module = module
         self.content = content
+        zope.interface.directlyProvides(
+            self, ITeaserOverrides, zope.interface.providedBy(content))
 
     def __getattr__(self, name):
         if name not in self.OVERRIDES:
@@ -163,3 +174,22 @@ class TeaserOverrides:
 # Strictly readonly proxy. Bypass security, there's no good way to declare it.
 zope.security.checker.BasicTypes[
     TeaserOverrides] = zope.security.checker.NoProxy
+
+
+@grok.implementer(zeit.content.image.interfaces.IImages)
+class OverrideImages(grok.Adapter):
+
+    grok.context(ITeaserOverrides)
+
+    image = OverridableProperty(
+        zeit.content.image.interfaces.IImages['image'],
+        original='_content')
+    fill_color = OverridableProperty(
+        zeit.content.image.interfaces.IImages['fill_color'],
+        original='_content')
+
+    def __init__(self, context):
+        super().__init__(context)
+        self._image_local = context.module.image
+        self._fill_color_local = context.module.fill_color
+        self._content = zeit.content.image.interfaces.IImages(context.content)

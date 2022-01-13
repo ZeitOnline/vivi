@@ -28,6 +28,12 @@
       permission="zeit.EditContent"/>
   </class>
 
+  <class class=".localteaser.OverrideImages">
+    <require
+      interface="zeit.content.image.interfaces.IImages"
+      permission="zope.View" />
+  </class>
+
   <class class=".automatic.AutomaticTeaserBlock">
     <require
       interface="..interfaces.IReadAutomaticTeaserBlock"

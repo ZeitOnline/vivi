@@ -560,6 +560,14 @@ class IReadLocalTeaserBlock(IReadTeaserBlock):
         title=_("Teaser text"),
         required=False)
 
+    # Implementing a separate IImages adapter for ILocalTeaserBlock seems way
+    # more effort than it's worth, so we include the two fields here instead.
+    # But we don't inherit from IImages, since zeit.web would not be able to
+    # override that, and it needs to apply IImages to the teasered content
+    # object, instead of the module.
+    image = zeit.content.image.interfaces.IImages['image']
+    fill_color = zeit.content.image.interfaces.IImages['fill_color']
+
 
 class IWriteLocalTeaserBlock(IWriteTeaserBlock):
     pass
