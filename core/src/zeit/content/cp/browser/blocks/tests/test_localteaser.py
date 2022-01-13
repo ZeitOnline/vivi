@@ -38,3 +38,21 @@ class TestLocalTeaser(zeit.content.cp.testing.BrowserTestCase):
     <div class="teaserText"></div>
     <span class="uniqueId">http://xml.zeit.de/testcontent</span>
   </div>...""", b.contents)
+
+    def test_applies_overrides(self):
+        self.test_drag_content_to_module_adds_reference()
+        b = self.browser
+        form = b.cssselect('.type-local-teaser a.common-link')[0].get('href')
+        b.open(form)
+        b.getControl('Teaser kicker').value = 'mysuper'
+        b.getControl('Teaser title').value = 'mytitle'
+        b.getControl('Teaser text').value = 'mytext'
+        b.getControl('Apply').click()
+        b.open(self.content_url)
+        self.assertEllipsis("""...
+  <div class="teaser">...
+    <div class="supertitle">mysuper</div>
+    <div class="teaserTitle">mytitle</div>
+    <div class="teaserText">mytext</div>
+    <span class="uniqueId">http://xml.zeit.de/testcontent</span>
+  </div>...""", b.contents)

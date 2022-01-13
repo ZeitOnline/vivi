@@ -18,10 +18,10 @@
 
   <class class=".localteaser.LocalTeaserBlock">
     <require
-      interface="..interfaces.IReadTeaserBlock"
+      interface="..interfaces.IReadLocalTeaserBlock"
       permission="zope.View"/>
     <require
-      set_schema="..interfaces.IReadTeaserBlock"
+      set_schema="..interfaces.IReadLocalTeaserBlock"
       permission="zeit.EditContent"/>
     <require
       interface="..interfaces.IWriteTeaserBlock"

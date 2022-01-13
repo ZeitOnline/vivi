@@ -36,6 +36,14 @@
     />
 
   <browser:page
+    for="zeit.content.cp.interfaces.ILocalTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".localteaser.EditCommon"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="drop"

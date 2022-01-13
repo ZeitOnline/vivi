@@ -1,3 +1,6 @@
+from zeit.cms.content.property import ObjectPathAttributeProperty
+from zeit.cms.content.property import ObjectPathProperty
+from zeit.cms.content.reference import OverridableProperty
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
@@ -6,6 +9,7 @@ import zeit.cms.content.reference
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.interface
+import zope.security.checker
 
 
 @zope.interface.implementer(
@@ -46,6 +50,21 @@ class LocalTeaserBlock(zeit.content.cp.blocks.block.Block):
 
     # end copy&paste
 
+    teaserSupertitle = OverridableProperty(
+        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserSupertitle'],
+        original='_reference')
+    teaserTitle = OverridableProperty(
+        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserTitle'],
+        original='_reference')
+    teaserText = OverridableProperty(
+        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserText'],
+        original='_reference')
+
+    _teaserSupertitle_local = ObjectPathAttributeProperty(
+        '.', 'teaserSupertitle')
+    _teaserTitle_local = ObjectPathAttributeProperty('.', 'teaserTitle')
+    _teaserText_local = ObjectPathProperty('.local_teaserText')
+
     # We don't actually want teaser modules to be a list anymore (see ZO-215),
     # and it doesn't make sense in combination with local overrides anyway,
     # so we're only supporting referencing one content object here.
@@ -54,7 +73,7 @@ class LocalTeaserBlock(zeit.content.cp.blocks.block.Block):
     def __iter__(self):
         content = self._reference
         if content is not None:
-            yield content
+            yield TeaserOverrides(self, content)  # We could adapt if necessary
 
     def insert(self, position, content):
         self.append(content)
@@ -121,3 +140,26 @@ def teaser_reference(context):
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(reference, suppress_errors=True)
     return reference
+
+
+class TeaserOverrides:
+    """Wrapper around an ICommonMetadata object (that's referenced by a
+    LocalTeaserBlock) that returns the block's values for locally overriden
+    fields, and proxies everything else to the content object."""
+
+    OVERRIDES = zeit.content.cp.interfaces.IReadLocalTeaserBlock.names()
+
+    def __init__(self, module, content):
+        self.module = module
+        self.content = content
+
+    def __getattr__(self, name):
+        if name not in self.OVERRIDES:
+            return getattr(self.content, name)
+        value = getattr(self.module, name)
+        return value if value else getattr(self.content, name)
+
+
+# Strictly readonly proxy. Bypass security, there's no good way to declare it.
+zope.security.checker.BasicTypes[
+    TeaserOverrides] = zope.security.checker.NoProxy

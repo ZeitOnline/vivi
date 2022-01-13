@@ -546,7 +546,29 @@ class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""
 
 
-class ILocalTeaserBlock(ITeaserBlock):
+class IReadLocalTeaserBlock(IReadTeaserBlock):
+
+    teaserSupertitle = zope.schema.TextLine(
+        title=_('Teaser kicker'),
+        required=False)
+
+    teaserTitle = zope.schema.TextLine(
+        title=_("Teaser title"),
+        required=False)
+
+    teaserText = zope.schema.Text(
+        title=_("Teaser text"),
+        required=False)
+
+
+class IWriteLocalTeaserBlock(IWriteTeaserBlock):
+    pass
+
+
+class ILocalTeaserBlock(
+        IReadLocalTeaserBlock,
+        IWriteLocalTeaserBlock,
+        ITeaserBlock):
     """Teaser module that allows overriding title/text/image"""
 
 
