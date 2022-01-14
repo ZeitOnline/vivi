@@ -247,8 +247,15 @@
 }
 
 .block.type-teaser > .block-inner,
+.block.type-local-teaser > .block-inner,
 .block.type-auto-teaser > .block-inner {
   overflow: hidden;
+}
+
+.type-centerpage-2009 .type-local-teaser .edit-bar > a.common-link {
+    background-image: url('/fanstatic/zeit.edit/edit-in-new-window.png');
+    display: block;
+    padding-right: 0.5em;
 }
 
 .type-centerpage-2009 .block .teaser {

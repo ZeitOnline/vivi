@@ -538,15 +538,46 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
 class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
 
-    def update_topiclinks():
-        """Copy topiclinks of the referenced CP into our XML."""
-
     def update(other):
         """Copy content and properties from another ITeaserBlock."""
 
 
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""
+
+
+class IReadLocalTeaserBlock(IReadTeaserBlock):
+
+    teaserSupertitle = zope.schema.TextLine(
+        title=_('Teaser kicker'),
+        required=False)
+
+    teaserTitle = zope.schema.TextLine(
+        title=_("Teaser title"),
+        required=False)
+
+    teaserText = zope.schema.Text(
+        title=_("Teaser text"),
+        required=False)
+
+    # Implementing a separate IImages adapter for ILocalTeaserBlock seems way
+    # more effort than it's worth, so we include the two fields here instead.
+    # But we don't inherit from IImages, since zeit.web would not be able to
+    # override that, and it needs to apply IImages to the teasered content
+    # object, instead of the module.
+    image = zeit.content.image.interfaces.IImages['image']
+    fill_color = zeit.content.image.interfaces.IImages['fill_color']
+
+
+class IWriteLocalTeaserBlock(IWriteTeaserBlock):
+    pass
+
+
+class ILocalTeaserBlock(
+        IReadLocalTeaserBlock,
+        IWriteLocalTeaserBlock,
+        ITeaserBlock):
+    """Teaser module that allows overriding title/text/image"""
 
 
 class IReadAutomaticTeaserBlock(IReadTeaserBlock):

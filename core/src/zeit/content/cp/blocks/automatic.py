@@ -1,12 +1,15 @@
 import grokcore.component as grok
 import zeit.content.cp.blocks.block
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.edit.interfaces
 
 
 # XXX Should we inherit from TeaserBlock?
 @grok.implementer(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
-class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
+class AutomaticTeaserBlock(
+        zeit.content.cp.blocks.teaser.Layoutable,
+        zeit.content.cp.blocks.block.Block):
 
     type = 'auto-teaser'
 
@@ -18,13 +21,9 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     volatile = True  # Override to use default=True
 
     def __init__(self, context, xml):
-        super(AutomaticTeaserBlock, self).__init__(context, xml)
         self.entries = []
         self.temporary_layout = None
-        # XXX copy&paste from TeaserBlock
-        if self.xml.get('module') == 'auto-teaser':
-            self.layout = self.layout
-        assert self.xml.get('module') != 'auto-teaser'
+        super().__init__(context, xml)
 
     def __len__(self):
         return len(self.entries)
@@ -41,27 +40,15 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
             return zeit.content.cp.interfaces.ITeaserBlock[name].default
         raise AttributeError(name)
 
-    def update_topiclinks(self):
-        pass
-
-    # XXX copy&paste&tweak from TeaserBlock
     @property
     def layout(self):
         if self.temporary_layout:
             return self.temporary_layout
-        id = self.xml.get('module')
-        source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-            self)
-        layout = source.find(id)
-        if layout:
-            return layout
-        return zeit.content.cp.interfaces.IArea(self).default_teaser_layout \
-            or zeit.content.cp.layout.NoBlockLayout(self)
+        return super().layout
 
     @layout.setter
     def layout(self, layout):
-        self._p_changed = True
-        self.xml.set('module', layout.id)
+        zeit.content.cp.blocks.teaser.Layoutable.layout.__set__(self, layout)
 
     def change_layout(self, layout):
         self.temporary_layout = layout

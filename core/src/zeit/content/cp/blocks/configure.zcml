@@ -16,6 +16,24 @@
       permission="zeit.EditContent"/>
   </class>
 
+  <class class=".localteaser.LocalTeaserBlock">
+    <require
+      interface="..interfaces.IReadLocalTeaserBlock"
+      permission="zope.View"/>
+    <require
+      set_schema="..interfaces.IReadLocalTeaserBlock"
+      permission="zeit.EditContent"/>
+    <require
+      interface="..interfaces.IWriteTeaserBlock"
+      permission="zeit.EditContent"/>
+  </class>
+
+  <class class=".localteaser.OverrideImages">
+    <require
+      interface="zeit.content.image.interfaces.IImages"
+      permission="zope.View" />
+  </class>
+
   <class class=".automatic.AutomaticTeaserBlock">
     <require
       interface="..interfaces.IReadAutomaticTeaserBlock"

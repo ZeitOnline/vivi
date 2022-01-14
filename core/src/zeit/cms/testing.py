@@ -19,6 +19,7 @@ import inspect
 import json
 import kombu
 import logging
+import lxml.cssselect
 import lxml.etree
 import lxml.html
 import os
@@ -1049,6 +1050,9 @@ class Browser(zope.testbrowser.browser.Browser):
         """
         if self.document is not None:
             return self.document.xpath(selector, **kw)
+
+    def cssselect(self, selector, **kw):
+        return self.xpath(lxml.cssselect.CSSSelector(selector).path, **kw)
 
 
 # Allow webtest to handle file download result iterators
