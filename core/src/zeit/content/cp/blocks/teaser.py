@@ -16,33 +16,16 @@ import zope.interface
 import zope.schema
 
 
-@zope.interface.implementer_only(
-    zeit.content.cp.interfaces.ITeaserBlock,
-    zeit.cms.syndication.interfaces.IFeed,
-    zope.container.interfaces.IContained)
-class TeaserBlock(
-        zeit.content.cp.blocks.block.Block,
-        zeit.cms.syndication.feed.ContentList):
-
-    type = 'teaser'
-
-    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
-            'force_mobile_image'], use_default=True)
+class Layoutable:
 
     def __init__(self, context, xml):
-        super(TeaserBlock, self).__init__(context, xml)
-        if self.xml.get('module') == 'teaser':
+        super().__init__(context, xml)
+        if self.xml.get('module') == self.type:
             if isinstance(self.layout, zeit.content.cp.layout.NoBlockLayout):
                 raise ValueError(_(
                     'No default teaser layout defined for this area.'))
             self.layout = self.layout
-        assert self.xml.get('module') != 'teaser'
-
-    @property
-    def entries(self):
-        # overriden so that super.insert() and updateOrder() work
-        return self.xml
+        assert self.xml.get('module') != self.type
 
     @property
     def layout(self):
@@ -59,6 +42,27 @@ class TeaserBlock(
     def layout(self, layout):
         self._p_changed = True
         self.xml.set('module', layout.id)
+
+
+@zope.interface.implementer_only(
+    zeit.content.cp.interfaces.ITeaserBlock,
+    zeit.cms.syndication.interfaces.IFeed,
+    zope.container.interfaces.IContained)
+class TeaserBlock(
+        Layoutable,
+        zeit.content.cp.blocks.block.Block,
+        zeit.cms.syndication.feed.ContentList):
+
+    type = 'teaser'
+
+    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
+            'force_mobile_image'], use_default=True)
+
+    @property
+    def entries(self):
+        # overriden so that super.insert() and updateOrder() work
+        return self.xml
 
     TEASERBLOCK_FIELDS = (
         set(zope.schema.getFieldNames(

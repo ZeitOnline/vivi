@@ -8,6 +8,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.content.cp.blocks.block
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zope.interface
 import zope.security.checker
@@ -15,41 +16,11 @@ import zope.security.checker
 
 @zope.interface.implementer(
     zeit.content.cp.interfaces.ILocalTeaserBlock)
-class LocalTeaserBlock(zeit.content.cp.blocks.block.Block):
+class LocalTeaserBlock(
+        zeit.content.cp.blocks.teaser.Layoutable,
+        zeit.content.cp.blocks.block.Block):
 
     type = 'local-teaser'
-
-    # XXX copy&paste from TeaserBlock
-    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
-            'force_mobile_image'], use_default=True)
-
-    def __init__(self, context, xml):
-        super().__init__(context, xml)
-        if self.xml.get('module') == 'teaser':
-            if isinstance(self.layout, zeit.content.cp.layout.NoBlockLayout):
-                raise ValueError(_(
-                    'No default teaser layout defined for this area.'))
-            self.layout = self.layout
-        assert self.xml.get('module') != 'teaser'
-
-    @property
-    def layout(self):
-        id = self.xml.get('module')
-        source = zeit.content.cp.interfaces.ILocalTeaserBlock['layout'].source(
-            self)
-        layout = source.find(id)
-        if layout:
-            return layout
-        return zeit.content.cp.interfaces.IArea(self).default_teaser_layout \
-            or zeit.content.cp.layout.NoBlockLayout(self)
-
-    @layout.setter
-    def layout(self, layout):
-        self._p_changed = True
-        self.xml.set('module', layout.id)
-
-    # end copy&paste
 
     teaserSupertitle = OverridableProperty(
         zeit.content.cp.interfaces.ILocalTeaserBlock['teaserSupertitle'],
@@ -73,6 +44,11 @@ class LocalTeaserBlock(zeit.content.cp.blocks.block.Block):
 
     image = zeit.cms.content.reference.SingleResource('.local_image', 'image')
     fill_color = ObjectPathAttributeProperty('.', 'fill_color')
+
+    # XXX copy&paste from TeaserBlock
+    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
+            'force_mobile_image'], use_default=True)
 
     def __iter__(self):
         content = self._reference
