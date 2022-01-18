@@ -7,7 +7,6 @@ import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.edit.browser.form
 import zope.formlib.form
-from zope.publisher._compat import PYTHON2
 
 
 class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
@@ -59,9 +58,6 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
         name = data.pop('__name__')
         if not name:
             name = getattr(blob, 'filename', '')
-            if not PYTHON2:
-                # honor the PEP-3333 gods...
-                name = name.encode('latin-1').decode('utf-8')
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)
         self.applyChanges(image, data)
