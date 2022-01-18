@@ -26,7 +26,7 @@ class DAVServerLayer(plone.testing.Layer):
         query = self.get_random_port()
         client = docker.from_env()
         self['dav_container'] = client.containers.run(
-            "registry.zeit.de/dav-server:1.1.0", detach=True, remove=True,
+            "registry.zeit.de/dav-server:1.1.1", detach=True, remove=True,
             ports={9000: dav, 9999: query})
         self['dav_url'] = 'http://localhost:%s/cms/' % dav
         self['query_url'] = 'http://localhost:%s' % query
