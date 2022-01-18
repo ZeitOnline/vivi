@@ -1,1 +1,1 @@
-ZO-764: Fix icon for local teaser module
+ZO-764: Store local values uniformly in nodes, not attributes
