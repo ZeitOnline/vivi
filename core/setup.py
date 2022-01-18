@@ -86,7 +86,8 @@ setup(
         'zope.proxy',
         # XXX Should be [ui], but ZODB contains persistent objects
         'zope.principalannotation',
-        'zope.publisher',  # XXX Should move to [ui], but is entrenched
+        # XXX Should move to [ui], but is entrenched
+        'zope.publisher >= 6.0.0.dev0',
         'zope.schema',
         'zope.security',
         'zope.securitypolicy',
