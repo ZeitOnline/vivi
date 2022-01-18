@@ -32,7 +32,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def test_smoketest_successful_call_roundtrip(self):
         result = self.service.call('qualityControl')
-        self.assert_(len(result.qualityControlValues) > 0)
+        self.assertGreater(len(result.qualityControlValues), 0)
 
     def test_validation_error_should_raise_error_message(self):
         products = list(zeit.cms.content.sources.PRODUCT_SOURCE(None))
