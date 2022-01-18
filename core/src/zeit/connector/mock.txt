@@ -386,19 +386,6 @@ Existing collections also have a getlastmodified:
  ('type', 'http://namespaces.zeit.de/CMS/meta'): 'collection'}
 
 
-
-Internal Id to Path Mapper
-==========================
-
-There is an internal method mapping Ids to paths on the filesystem:
-
->>> connector._path('http://xml.zeit.de/')
-()
->>> connector._path('http://xml.zeit.de/foo')
-(u'foo',)
-
-
-
 Search
 ======
 
