@@ -1,5 +1,4 @@
 from io import BytesIO
-import ZODB.blob
 import contextlib
 import docker
 import pkg_resources
@@ -10,7 +9,6 @@ import six
 import socket
 import threading
 import transaction
-import zc.queue.tests
 import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.interfaces
@@ -168,12 +166,6 @@ def mark_doctest_suite(suite, mark):
         func = test.runTest.__func__
         mark(func)
         test.runTest = func.__get__(test)
-
-
-def get_storage(blob_dir):
-    storage = zc.queue.tests.ConflictResolvingMappingStorage('test')
-    blob_storage = ZODB.blob.BlobStorage(blob_dir, storage)
-    return blob_storage
 
 
 def print_tree(connector, base):
