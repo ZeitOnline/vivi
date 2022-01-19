@@ -24,7 +24,7 @@ An object was created in dav. An invalidation event reloads this object and
 inserts the id into the parent's child ids. That means that the connector will
 not see objects which are not invalidated:
 
->>> testing = 'http://xml.zeit.de/%s/' % TESTFOLDER()
+>>> testing = 'http://xml.zeit.de/testing/'
 >>> inv = testing + 'inv1'
 >>> inv2 = testing + 'inv2'
 >>> list(connector.listCollection(testing))

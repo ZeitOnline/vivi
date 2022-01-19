@@ -358,7 +358,7 @@ Collections
 Creating collections works like creating any other resource. Create a resource
 object first:
 
->>> collection_id = 'http://xml.zeit.de/%s/collection' % TESTFOLDER()
+>>> collection_id = 'http://xml.zeit.de/testing/collection'
 >>> coll = Resource(
 ...     collection_id, 'collection', 'collection', BytesIO(b''))
 

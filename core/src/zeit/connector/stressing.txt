@@ -8,7 +8,7 @@ Stress tests
 Let's change properties in a folder in parallel. The actual problem arises only
 on parallel delete on which the server just stops putting out XML.
 
->>> base_id = 'http://xml.zeit.de/%s/stresslock' % TESTFOLDER()
+>>> base_id = 'http://xml.zeit.de/testing/stresslock'
 >>> from io import BytesIO
 >>> import datetime
 >>> import pytz
