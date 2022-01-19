@@ -202,6 +202,9 @@ def list_tree(connector, base, level=0):
 
 
 def mkdir(connector, id):
+    # Use a made-up type `folder` to differentiate from "no meta:type", which
+    # would fall back to `collection`. (Even though the latter value is what we
+    # use "in reality" in zeit.cms.repository.folder.)
     res = zeit.connector.resource.Resource(
         id, None, 'folder', BytesIO(b''),
         contentType='httpd/unix-directory')
