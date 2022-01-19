@@ -154,13 +154,6 @@ class MockTest(TestCase):
 
     layer = MOCK_CONNECTOR_LAYER
 
-    def setUp(self):
-        super(MockTest, self).setUp()
-        # I don't really get what this is here for, but removing it breaks
-        # tests:
-        self.connector.add(self.get_resource(
-            '', '', contentType='httpd/x-unix-directory'))
-
 
 def FunctionalDocFileSuite(*paths, **kw):
     kw['package'] = 'zeit.connector'
