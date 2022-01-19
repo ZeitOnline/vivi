@@ -1,7 +1,9 @@
 # coding: utf8
+from datetime import datetime
 from io import BytesIO
 from unittest import mock
 from zeit.connector.testing import copy_inherited_functions
+import pytz
 import transaction
 import unittest
 import zeit.connector.connector
@@ -50,7 +52,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         self.assertEqual(b'Pop.', resource.data.read())
 
 
-class TestEscaping(zeit.connector.testing.ConnectorTest):
+class ConnectorTest(zeit.connector.testing.ConnectorTest):
 
     def test_hash(self):
         import zeit.connector.resource
@@ -61,6 +63,14 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
             contentType='text/plain')
         resource = self.connector[rid]
         self.assertEqual(b'Pop.', resource.data.read())
+
+    def test_dav_treats_lock_timeout_none_as_infinite(self):
+        res = self.get_resource('foo')
+        self.connector.add(res)
+        self.connector.lock(res.id, 'zope.user', None)
+        user, until, locked = self.connector.locked(res.id)
+        self.assertEqual(
+            datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC), until)
 
 
 class ConflictDetectionBase:
@@ -119,57 +129,6 @@ class TestConflictDetectionMock(
         ConflictDetectionBase, zeit.connector.testing.MockTest):
 
     copy_inherited_functions(ConflictDetectionBase, locals())
-
-
-class MoveConflictDetectionBase:
-
-    def test_move_with_same_body_should_remove_original(self):
-        source = self.get_resource('source', 'source-body')
-        self.connector.add(source)
-        target = self.get_resource('target', 'source-body')
-        self.connector.add(target)
-        self.connector.move(source.id, target.id)
-        self.assertEqual(
-            ['target'],
-            [name for name, unique_id in
-             self.connector.listCollection(
-                 'http://xml.zeit.de/testing') if name])
-
-    def test_move_with_different_data_should_fail(self):
-        source = self.get_resource('source', 'source-body')
-        self.connector.add(source)
-        target = self.get_resource('target', 'target-body')
-        self.connector.add(target)
-        with self.assertRaises(zeit.connector.interfaces.MoveError):
-            self.connector.move(source.id, target.id)
-        self.assertEqual(
-            ['source', 'target'],
-            sorted([name for name, unique_id in self.connector.listCollection(
-                'http://xml.zeit.de/testing') if name]))
-
-    def test_move_should_fail_if_target_is_existing_directory(self):
-        source = self.get_resource('source', '',
-                                   contentType='httpd/unix-directory')
-        self.connector.add(source)
-        target = self.get_resource('target', '',
-                                   contentType='httpd/unix-directory')
-        self.connector.add(target)
-        with self.assertRaises(zeit.connector.interfaces.MoveError):
-            self.connector.move(source.id, target.id)
-
-
-class TestMoveConflictDetectionReal(
-        MoveConflictDetectionBase, zeit.connector.testing.ConnectorTest):
-    """Test move conflict with real connector and real DAV."""
-
-    copy_inherited_functions(MoveConflictDetectionBase, locals())
-
-
-class TestMoveConflictDetectionMock(
-        MoveConflictDetectionBase, zeit.connector.testing.MockTest):
-    """Test move conflict with mock connector."""
-
-    copy_inherited_functions(MoveConflictDetectionBase, locals())
 
 
 class TestResource(zeit.connector.testing.ConnectorTest):

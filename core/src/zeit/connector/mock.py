@@ -1,6 +1,6 @@
 from io import BytesIO
 from zeit.connector.connector import CannonicalId
-from zeit.connector.interfaces import UUID_PROPERTY
+from zeit.connector.interfaces import UUID_PROPERTY, CopyError, MoveError
 import datetime
 import http.client
 import logging
@@ -176,6 +176,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self[resource.id] = resource
 
     def copy(self, old_id, new_id):
+        self._prevent_overwrite(old_id, new_id, CopyError)
         r = self[old_id]
         r.id = new_id
         r.properties.pop(UUID_PROPERTY, None)
@@ -186,16 +187,7 @@ class Connector(zeit.connector.filesystem.Connector):
             self.copy(uid, urllib.parse.urljoin(new_id, name))
 
     def move(self, old_id, new_id):
-        if new_id in self:
-            # The target already exists. It's possible that there was a
-            # conflict. Verify body.
-            if ('httpd/unix-directory' in (self[old_id].contentType,
-                                           self[new_id].contentType) or
-                    self[old_id].data.read() != self[new_id].data.read()):
-                raise zeit.connector.interfaces.MoveError(
-                    old_id,
-                    "Could not move %s to %s, because target alread exists." %
-                    (old_id, new_id))
+        self._prevent_overwrite(old_id, new_id, MoveError)
         self._ignore_uuid_checks = True
         r = self[old_id]
         r.id = new_id
@@ -208,6 +200,23 @@ class Connector(zeit.connector.filesystem.Connector):
         for name, uid in self.listCollection(old_id):
             self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
+
+    def _prevent_overwrite(self, old_id, new_id, exception):
+        if zeit.connector.connector.Connector._is_descendant(new_id, old_id):
+            raise exception(
+                old_id,
+                'Could not copy or move %s to a decendant of itself.' % old_id)
+
+        if new_id in self:
+            # The target already exists. It's possible that there was a
+            # conflict. Verify body.
+            if ('httpd/unix-directory' in (self[old_id].contentType,
+                                           self[new_id].contentType) or
+                    self[old_id].data.read() != self[new_id].data.read()):
+                raise exception(
+                    old_id,
+                    "Could not move %s to %s, because target alread exists." %
+                    (old_id, new_id))
 
     def changeProperties(self, id, properties):
         id = self._get_cannonical_id(id)

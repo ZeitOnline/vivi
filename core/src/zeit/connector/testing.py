@@ -118,7 +118,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    def get_resource(self, name, body, properties={},
+    def get_resource(self, name, body=b'', properties={},
                      contentType='text/plain'):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
