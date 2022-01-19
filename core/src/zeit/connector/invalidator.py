@@ -2,7 +2,6 @@ import BTrees
 import gocept.runner
 import logging
 import persistent
-import six
 import zeit.cms.cli
 import zeit.connector.interfaces
 import zope.component
@@ -45,7 +44,9 @@ class Invalidator(persistent.Persistent):
         log.info("Filling working set.")
         for id in self.property_cache.keys():
             # The inverse of .cache.get_storage_key()
-            self.working_set.add(six.ensure_text(id))
+            if isinstance(id, bytes):
+                id = id.decode('utf-8')
+            self.working_set.add(id)
         self.missed.clear()
         self.got.clear()
 

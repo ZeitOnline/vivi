@@ -5,7 +5,6 @@ import pkg_resources
 import plone.testing
 import pytest
 import requests
-import six
 import socket
 import threading
 import transaction
@@ -84,7 +83,7 @@ class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
             'document-store': self['dav_url'],
             'document-store-search': self['query_url'],
         }
-        super(ConfigLayer, self).setUp()
+        super().setUp()
 
 
 DAV_CONFIG_LAYER = ConfigLayer({})
@@ -126,7 +125,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
-        if not isinstance(body, six.binary_type):
+        if not isinstance(body, bytes):
             body = body.encode('utf-8')
         rid = 'http://xml.zeit.de/%s/%s' % (self.testfolder, name)
         return zeit.connector.resource.Resource(
@@ -200,10 +199,10 @@ def create_folder_structure(connector, testfolder):
     """Create a folder structure for copy/move"""
 
     def add_folder(id):
-        mkdir(connector, u'http://xml.zeit.de/%s/%s' % (testfolder, id))
+        mkdir(connector, 'http://xml.zeit.de/%s/%s' % (testfolder, id))
 
     def add_file(id):
-        id = u'http://xml.zeit.de/%s/%s' % (testfolder, id)
+        id = 'http://xml.zeit.de/%s/%s' % (testfolder, id)
         res = zeit.connector.resource.Resource(
             id, None, 'text', BytesIO(b'Pop.'),
             contentType='text/plain')

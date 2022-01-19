@@ -39,7 +39,7 @@ not see objects which are not invalidated:
 We really only see inv1 here:
 
 >>> list(connector.listCollection(testing))
-[(u'inv1', u'http://xml.zeit.de/testing.../inv1')]
+[('inv1', 'http://xml.zeit.de/testing.../inv1')]
 >>> print(connector[inv].data.read().decode('utf-8'))
 pop.
 >>> print(connector[inv2].data.read().decode('utf-8'))
@@ -65,14 +65,14 @@ invalidation event. The object id is removed from the parent's child ids:
 >>> result = conn.delete(connector._id2loc(inv))
 >>> result = conn.delete(connector._id2loc(inv2))
 >>> list(connector.listCollection(testing))
-[(u'inv1', u'http://xml.zeit.de/testing.../inv1')]
+[('inv1', 'http://xml.zeit.de/testing.../inv1')]
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(inv))
 >>> list(connector.listCollection(testing))
 []
 >>> connector[inv]
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/testing.../inv1' does not exist."
+KeyError: "The resource 'http://xml.zeit.de/testing.../inv1' does not exist."
 
 Events non existing resource do not harm:
 

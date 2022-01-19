@@ -13,7 +13,7 @@ class WebDAVProperties(persistent.mapping.PersistentMapping):
 class ReadOnlyWebDAVProperties(WebDAVProperties):
 
     def __init__(self, adict=None):
-        super(ReadOnlyWebDAVProperties, self).__init__()
+        super().__init__()
         if adict is not None:
             self.data.update(adict)
 
@@ -40,7 +40,7 @@ class ReadOnlyWebDAVProperties(WebDAVProperties):
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResource)
-class Resource(object):
+class Resource:
     """Represents a resource in the webdav."""
 
     def __init__(self, id, name, type, data, properties=None, contentType=''):
@@ -55,7 +55,7 @@ class Resource(object):
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResource)
-class CachedResource(object):
+class CachedResource:
     """Represents a resource in the webdav."""
 
     def __init__(self, id, name, type_name, property_getter, body_getter,
@@ -81,7 +81,7 @@ class WriteableCachedResource(CachedResource):
 
     def __init__(self, id, name, type_name, property_getter, body_getter,
                  content_type):
-        super(WriteableCachedResource, self).__init__(
+        super().__init__(
             id, name, type_name, property_getter, body_getter, content_type)
         self._properties = WebDAVProperties(self._property_getter())
 

@@ -30,22 +30,22 @@ The browsing interface basically allows listing collections:
 
 >>> from pprint import pprint
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
-[(u'2005', u'http://xml.zeit.de/online/2005/'),
- (u'2006', u'http://xml.zeit.de/online/2006/'),
- (u'2007', u'http://xml.zeit.de/online/2007/')]
+[('2005', 'http://xml.zeit.de/online/2005/'),
+ ('2006', 'http://xml.zeit.de/online/2006/'),
+ ('2007', 'http://xml.zeit.de/online/2007/')]
 
 >>> entry = list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/01'))[0]
 >>> print(entry)
-(u'4schanzentournee-abgesang',
- u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang')
+('4schanzentournee-abgesang',
+ 'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang')
 
 If the id is not valid a ValueError is raised:
 
->>> list(connector.listCollection(u'foobar'))
+>>> list(connector.listCollection('foobar'))
 Traceback (most recent call last):
 ...
-ValueError: The id u'foobar' is invalid.
+ValueError: The id 'foobar' is invalid.
 
 
 Getting Resources
@@ -57,9 +57,8 @@ above:
 >>> unique_id = entry[1]
 >>> resource = connector[unique_id]
 
->>> import six
->>> six.text_type(resource.id)
-u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
+>>> str(resource.id)
+'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
 >>> resource.type
 'article'
 >>> import zeit.connector.interfaces
@@ -72,7 +71,7 @@ u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
 ...     ('year', 'http://namespaces.zeit.de/CMS/document')]
 '2007'
 >>> resource.properties[('getlastmodified', 'DAV:')]
-u'Fri, 07 Mar 2008 12:47:16 GMT'
+'Fri, 07 Mar 2008 12:47:16 GMT'
 
 If a resource does not exist, a KeyError is raised:
 
@@ -84,7 +83,7 @@ KeyError: u"The resource 'http://xml.zeit.de/foobar' does not exist."
 It is also possible to get the root:
 
 >>> connector['http://xml.zeit.de/'].id
-u'http://xml.zeit.de/'
+'http://xml.zeit.de/'
 
 
 Locking and Unlocking
@@ -164,7 +163,7 @@ Seehofer schlaegt zurueck
 >>> pprint(dict(resource_2.properties))
 {('foo', 'foo-ns'): 'bar',
  ('getetag', 'DAV:'): '...',
- ('getlastmodified', 'DAV:'): u'... GMT',
+ ('getlastmodified', 'DAV:'): '... GMT',
  ('resourcetype', 'DAV:'): 'article',
  ('type', 'http://namespaces.zeit.de/CMS/meta'): 'article',
  ('uuid', 'http://namespaces.zeit.de/CMS/document'): '{urn:uuid:...}'}
@@ -187,8 +186,8 @@ True
 Also the collection contains the resource now:
 
 >>> list(connector.listCollection('http://xml.zeit.de/online/2007/02'))
-[(u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer'),
- (u'zon.css', u'http://xml.zeit.de/online/2007/02/zon.css')]
+[('Seehofer', 'http://xml.zeit.de/online/2007/02/Seehofer'),
+ ('zon.css', 'http://xml.zeit.de/online/2007/02/zon.css')]
 
 
 Add Method
@@ -206,9 +205,9 @@ resource and add id using the `add` method:
 
 >>> pprint(list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/02')))
-[(u'DaimlerChrysler', u'http://xml.zeit.de/online/2007/02/DaimlerChrysler'),
- (u'Seehofer', u'http://xml.zeit.de/online/2007/02/Seehofer'),
- (u'zon.css', u'http://xml.zeit.de/online/2007/02/zon.css')]
+[('DaimlerChrysler', 'http://xml.zeit.de/online/2007/02/DaimlerChrysler'),
+ ('Seehofer', 'http://xml.zeit.de/online/2007/02/Seehofer'),
+ ('zon.css', 'http://xml.zeit.de/online/2007/02/zon.css')]
 
 
 Adding Collections
@@ -245,7 +244,7 @@ We can also add new collections to the collection:
 ...     BytesIO(b''))
 >>> connector[collection_2_id] = resource
 >>> list(connector.listCollection(collection_id))
-[(u'foo', u'http://xml.zeit.de/online/2007/03/foo/')]
+[('foo', 'http://xml.zeit.de/online/2007/03/foo/')]
 >>> connector[collection_2_id].type
 'collection'
 
@@ -257,14 +256,14 @@ Removing works via the normal __delitem__ mechanismns. Let's look what we have
 first:
 
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
-[(u'2005', u'http://xml.zeit.de/online/2005/'),
- (u'2006', u'http://xml.zeit.de/online/2006/'),
- (u'2007', u'http://xml.zeit.de/online/2007/')]
+[('2005', 'http://xml.zeit.de/online/2005/'),
+ ('2006', 'http://xml.zeit.de/online/2006/'),
+ ('2007', 'http://xml.zeit.de/online/2007/')]
 
 >>> del connector['http://xml.zeit.de/online/2005']
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
-[(u'2006', u'http://xml.zeit.de/online/2006/'),
- (u'2007', u'http://xml.zeit.de/online/2007/')]
+[('2006', 'http://xml.zeit.de/online/2006/'),
+ ('2007', 'http://xml.zeit.de/online/2007/')]
 
 >>> connector['http://xml.zeit.de/online/2005']
 Traceback (most recent call last):
@@ -382,7 +381,7 @@ Remove the collection again:
 Existing collections also have a getlastmodified:
 
 >>> pprint(dict(connector['http://xml.zeit.de/online/2007'].properties))
-{('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
+{('getlastmodified', 'DAV:'): 'Fri, 07 Mar 2008 12:47:16 GMT',
  ('type', 'http://namespaces.zeit.de/CMS/meta'): 'collection'}
 
 
@@ -412,18 +411,18 @@ query:
 Searching:  (:and (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007") 
                   (:eq "http://namespaces.zeit.de/CMS/document" "volume" "07")
                   (:eq "http://namespaces.zeit.de/CMS/document" "author" "pm"))
-[(u'http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None),
- (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None),
- (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None)]
+[('http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None),
+ ('http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None),
+ ('http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None)]
 
 When we're searching for more attributes we'll get more None's in the metadata.
 For a real connector there would be real values of course:
 
 >>> list(connector.search([author, volume, ressort, year], (year == '2007')))
 Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007") 
-[(u'http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None, None),
- (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None, None),
- (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None, None)]
+[('http://xml.zeit.de/online/2007/01/Somalia', 'pm', '07', None, None),
+ ('http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None, None),
+ ('http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None, None)]
 
 >>> logging.root.removeHandler(handler)
 

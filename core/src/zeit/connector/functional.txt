@@ -40,10 +40,10 @@ There was a bug that the property changes where not visible when using
 ...     contentType='text/plain')
 >>> connector.add(res)
 >>> connector.changeProperties(
-...     id, {('colour', 'http://namespaces.zeit.de/test'): u'gr\xfcn'})
+...     id, {('colour', 'http://namespaces.zeit.de/test'): 'gr\xfcn'})
 >>> res_got = connector[id]
 >>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
-u'gr\xfcn'
+'gr\xfcn'
 >>> del connector[id]
 >>> list(connector.listCollection('http://xml.zeit.de/%s' % TESTFOLDER()))
 []
@@ -68,7 +68,7 @@ automatically unlocked.
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> connector.locked(res.id)
-(u'zope.user', datetime.datetime(...), True)
+('zope.user', datetime.datetime(...), True)
 
 Now rollback:
 
@@ -100,7 +100,7 @@ Make sure the resource stays locked on commit:
 >>> transaction.commit()
 >>> connector._invalidate_cache(res.id)
 >>> connector.locked(res.id)
-(u'zope.user', datetime.datetime(...), True)
+('zope.user', datetime.datetime(...), True)
 
 Remove the resource to clean up:
 

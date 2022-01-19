@@ -25,7 +25,7 @@ Traceback (most recent call last):
 LockingError: http://xml.zeit.de/testing.../lt1 is already locked.
 
 >>> connector.unlock(res.id)
-u'opaquelocktoken:...'
+'opaquelocktoken:...'
 >>> del connector[res.id]
 
 Timeout of locks
@@ -41,7 +41,7 @@ more:
 >>> connector.lock(res.id, 'zope.user', until)
 'opaquelocktoken:...'
 >>> connector.locked(res.id)
-(u'zope.user', datetime.datetime(..., tzinfo=<UTC>), True)
+('zope.user', datetime.datetime(..., tzinfo=<UTC>), True)
 >>> import time
 >>> time.sleep(3)
 >>> connector.locked(res.id)
@@ -99,7 +99,7 @@ Lock the resoruce under the hood; we get a useful error:
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
-zeit.connector.interfaces.LockedByOtherSystemError: (u'external', datetime.datetime(...))
+zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
 'opaquelocktoken:...'
 
@@ -114,7 +114,7 @@ Edge case 2.1: With existing resource:
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
-zeit.connector.interfaces.LockedByOtherSystemError: (u'external', datetime.datetime(...))
+zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
 >>> connector.unlock(res.id, token)
 'opaquelocktoken:...'
 >>> del connector[res.id]
@@ -147,7 +147,7 @@ Edge case 2.3: PROPATCH
 Traceback (most recent call last):
     ...
 zeit.connector.dav.interfaces.DAVLockedError: (423, 'Locked',
-    u'http://.../cms/testing.../edge2.3',
+    'http://.../cms/testing.../edge2.3',
     '<!DOCTYPE...
 
 >>> connector.unlock(res.id, token)
@@ -200,9 +200,9 @@ Edge case 4: We think the resource is locked but it is by somebody else
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
-zeit.connector.interfaces.LockedByOtherSystemError: (u'external', datetime.datetime(...))
+zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
 >>> connector.unlock(res.id)
-u'opaquelocktoken:...'
+'opaquelocktoken:...'
 >>> connector.add(res)
 >>> del connector[res.id]
 
@@ -215,7 +215,7 @@ Edge case 5: Null resouce locks
 >>> connector[res.id].data
 <...BytesIO object at 0x...>
 >>> connector.unlock(res.id)
-u'opaquelocktoken:...'
+'opaquelocktoken:...'
 
 
 Locking with timeout:
@@ -228,7 +228,7 @@ Locking with timeout:
 ...     datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=120))
 'opaquelocktoken:...'
 >>> connector.locked(res.id)
-(u'zope.user', datetime.datetime(..., tzinfo=<UTC>), True)
+('zope.user', datetime.datetime(..., tzinfo=<UTC>), True)
 
 We can still write and update:
 
@@ -272,7 +272,7 @@ a None content-type):
 True
 
 >>> connector.unlock(res.id)
-u'opaquelocktoken:...'
+'opaquelocktoken:...'
 
 
 Edge case 7: Getting the lock information when the lockinfo got lost
@@ -283,10 +283,10 @@ ours. To make this happen, we register an IAuthentication utility:
 
 
 >>> import zope.authentication.interfaces
->>> class Principal(object):
+>>> class Principal:
 ...     pass
 >>> @zope.interface.implementer(zope.authentication.interfaces.IAuthentication)
-... class Auth(object):
+... class Auth:
 ...     def getPrincipal(self, id):
 ...         if id == 'internal':
 ...             p = Principal()
@@ -305,12 +305,12 @@ When we don't know the principal, the resource will be "LockedByOtherSystem":
 >>> connector.add(res)
 >>> token = connector.lock(res.id, 'external', until=None)
 >>> connector.locked(res.id)
-(u'external', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+('external', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
  False)
 >>> del connector[res.id]
 Traceback (most recent call last):
     ...
-LockedByOtherSystemError: (u'external', datetime.datetime(...))
+LockedByOtherSystemError: ('external', datetime.datetime(...))
 >>> token = connector.unlock(res.id, token)
 >>> del connector[res.id]
 
@@ -320,7 +320,7 @@ When we know the principal, it is "our" lock:
 >>> connector.add(res)
 >>> token = connector.lock(res.id, 'internal', until=None)
 >>> connector.locked(res.id)
-(u'internal', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+('internal', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
  True)
 >>> del connector[res.id]
 >>> gsm.unregisterUtility(auth)

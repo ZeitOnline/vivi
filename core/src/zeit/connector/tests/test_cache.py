@@ -15,12 +15,12 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
 
     def setUp(self):
-        super(TestResourceCache, self).setUp()
+        super().setUp()
         self.cache = zeit.connector.cache.ResourceCache()
         self.getRootFolder()['cache'] = self.cache
         self.properties1 = {('getetag', 'DAV:'): 'etag1'}
         self.properties2 = {('getetag', 'DAV:'): 'etag2'}
-        self.uniqueId = u'föö'
+        self.uniqueId = 'föö'
         self.key = zeit.connector.cache.get_storage_key(self.uniqueId)
         self.BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
 

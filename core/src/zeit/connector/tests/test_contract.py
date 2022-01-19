@@ -5,7 +5,7 @@ import zeit.connector.testing
 
 # XXX most of connector.txt and mock.txt should be merged into here
 
-class ContractTest(object):
+class ContractTest:
 
     def test_listCollection_nonexistent_id_raises(self):
         with self.assertRaises(DAVNotFoundError):

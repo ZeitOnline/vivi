@@ -14,7 +14,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
     def test_overwrite(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/%s/ünicöde' % self.testfolder
+        rid = 'http://xml.zeit.de/%s/ünicöde' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             BytesIO(b'Pop.'),
@@ -27,8 +27,8 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
     def test_copy(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/%s/ünicöde' % self.testfolder
-        new_rid = rid + u'-copied'
+        rid = 'http://xml.zeit.de/%s/ünicöde' % self.testfolder
+        new_rid = rid + '-copied'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             BytesIO(b'Pop.'),
@@ -39,8 +39,8 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
     def test_move(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/%s/ünicöde' % self.testfolder
-        new_rid = rid + u'-renamed'
+        rid = 'http://xml.zeit.de/%s/ünicöde' % self.testfolder
+        new_rid = rid + '-renamed'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             BytesIO(b'Pop.'),
@@ -63,12 +63,12 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
         self.assertEqual(b'Pop.', resource.data.read())
 
 
-class ConflictDetectionBase(object):
+class ConflictDetectionBase:
 
     def setUp(self):
         from zeit.connector.interfaces import UUID_PROPERTY
-        super(ConflictDetectionBase, self).setUp()
-        rid = u'http://xml.zeit.de/%s/conflicting' % self.testfolder
+        super().setUp()
+        rid = 'http://xml.zeit.de/%s/conflicting' % self.testfolder
         self.connector[rid] = self.get_resource('conflicting', 'Pop.')
         r_a = self.connector[rid]
         self.r_a = self.get_resource(r_a.__name__, r_a.data.read(),
@@ -121,7 +121,7 @@ class TestConflictDetectionMock(
     copy_inherited_functions(ConflictDetectionBase, locals())
 
 
-class MoveConflictDetectionBase(object):
+class MoveConflictDetectionBase:
 
     def test_move_with_same_body_should_remove_original(self):
         source = self.get_resource('source', 'source-body')
@@ -176,7 +176,7 @@ class TestResource(zeit.connector.testing.ConnectorTest):
 
     def test_properties_should_be_current(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/%s/aresource' % self.testfolder
+        rid = 'http://xml.zeit.de/%s/aresource' % self.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             BytesIO(b'Pop.'),
@@ -193,7 +193,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
 
     def setUp(self):
         import zeit.connector.resource
-        super(TestConnectorCache, self).setUp()
+        super().setUp()
         self.rid = 'http://xml.zeit.de/%s/cache_test' % self.testfolder
         self.connector[self.rid] = zeit.connector.resource.Resource(
             self.rid, None, 'text',
@@ -375,7 +375,7 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
     def test_should_convert_unicode(self):
         from zeit.connector.search import SearchVar
         var = SearchVar('name', 'namespace')
-        result = self.connector.search([var], var == u'föö')
+        result = self.connector.search([var], var == 'föö')
         try:
             # This call renders the search var, sends it to the server and
             # gets one result. If there is no result (which is likely)
@@ -418,5 +418,5 @@ class TestTBCConnector(zeit.connector.testing.ConnectorTest):
         gsm.registerUtility(connector, zeit.connector.interfaces.IConnector)
 
     def test_smoke(self):
-        resource = self.connector[u'http://xml.zeit.de/testing']
+        resource = self.connector['http://xml.zeit.de/testing']
         resource.data

@@ -7,12 +7,12 @@ class FilesystemConnectorTest(zeit.connector.testing.FilesystemConnectorTest):
     def test_list_root(self):
         root = list(self.connector.listCollection('http://xml.zeit.de/'))
         for item in [
-                (u'2006', u'http://xml.zeit.de/2006/'),
-                (u'2007', u'http://xml.zeit.de/2007/'),
-                (u'2016', u'http://xml.zeit.de/2016/'),
-                (u'online', u'http://xml.zeit.de/online/'),
-                (u'testcontent', u'http://xml.zeit.de/testcontent'),
-                (u'testing', u'http://xml.zeit.de/testing/')]:
+                ('2006', 'http://xml.zeit.de/2006/'),
+                ('2007', 'http://xml.zeit.de/2007/'),
+                ('2016', 'http://xml.zeit.de/2016/'),
+                ('online', 'http://xml.zeit.de/online/'),
+                ('testcontent', 'http://xml.zeit.de/testcontent'),
+                ('testing', 'http://xml.zeit.de/testing/')]:
             self.assertIn(item, root)
 
 
@@ -32,10 +32,10 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
         image = self.connector['http://xml.zeit.de/2006/DSC00109_2.JPG']
         author = image.properties[
             ('author', 'http://namespaces.zeit.de/CMS/document')]
-        self.assertEqual(u'Jochen Stahnke', author)
+        self.assertEqual('Jochen Stahnke', author)
         banner = image.properties[
             ('banner', 'http://namespaces.zeit.de/CMS/document')]
-        self.assertEqual(u'yes', banner)
+        self.assertEqual('yes', banner)
 
     def test_metadata_read_from_content_file_as_fallback(self):
         self.assertFalse(os.path.exists(os.path.join(
@@ -45,10 +45,10 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
             'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang']
         author = article.properties[
             ('author', 'http://namespaces.zeit.de/CMS/document')]
-        self.assertEqual(u' Ulrich Dehne', author)  # space is from live data
+        self.assertEqual(' Ulrich Dehne', author)  # space is from live data
         banner = article.properties[
             ('banner', 'http://namespaces.zeit.de/CMS/document')]
-        self.assertEqual(u'yes', banner)
+        self.assertEqual('yes', banner)
 
     def test_metadata_for_metadata_file_itself_is_unknown(self):
         meta = self.connector['http://xml.zeit.de/2007/03/group.meta']
@@ -71,7 +71,7 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
         image = self.connector['http://xml.zeit.de/2006/DSC00109_2.JPG']
         copyrights = image.properties[
             ('copyrights', 'http://namespaces.zeit.de/CMS/document')]
-        self.assertEqual(u'', copyrights)
+        self.assertEqual('', copyrights)
 
     def test_raw_files_return_dav_contenttype(self):
         css = self.connector['http://xml.zeit.de/online/2007/02/zon.css']

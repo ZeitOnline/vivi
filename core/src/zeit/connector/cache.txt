@@ -428,7 +428,7 @@ which is equal but not the same:
 
 >>> dict(cache['id'])
 {<WebDAVPropertyKey ('ns', 'name')>: 'somevalue'}
->>> new_properties =  {('ns', 'name'): u'somevalue'}
+>>> new_properties =  {('ns', 'name'): 'somevalue'}
 
 Setting ``new_properties`` does not update the ``somevalue`` to unicode:
 
@@ -580,7 +580,7 @@ stores, the new value is not updated. We verify this by setting a new value
 which is equal but not the same:
 
 >>> cache['id'] = ['foo', 'bar', 'baz']
->>> new_children =  ['foo', 'bar', u'baz']
+>>> new_children =  ['foo', 'bar', 'baz']
 
 Setting ``new_children`` does not update ``baz`` to unicode:
 

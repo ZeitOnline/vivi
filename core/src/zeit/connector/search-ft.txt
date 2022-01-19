@@ -32,7 +32,7 @@ expressions:
 
 >>> [res for res in connector.search([volume, ressort],
 ...  (year == '2007') & (volume == '07'))]
-[(u'http://xml.zeit.de/testing/foo', '07', 'Inhaltsverzeichnis')]
+[('http://xml.zeit.de/testing/foo', '07', 'Inhaltsverzeichnis')]
 
 
 We expect nothing has changed in the future

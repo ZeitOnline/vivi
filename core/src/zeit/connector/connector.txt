@@ -36,7 +36,7 @@ If a resource does not exist, a KeyError is raised:
 >>> connector['http://xml.zeit.de/foobar']
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/foobar' does not exist."
+KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
 
 We can also get directory resources:
 
@@ -78,7 +78,7 @@ resource:
 We also find `conn1` in the collection now:
 
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'conn1', u'http://xml.zeit.de/testing.../conn1')]
+[('conn1', 'http://xml.zeit.de/testing.../conn1')]
 
 Resources may be locked:
 
@@ -90,13 +90,13 @@ Resources may be locked:
 ...                        'zope.user',
 ...                        datetime.now(pytz.UTC) + timedelta(hours=2))
 >>> connector.locked('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
-(u'zope.user', datetime.datetime(..., tzinfo=...), True)
+('zope.user', datetime.datetime(..., tzinfo=...), True)
 
 To unlock it, you would have to supply the locktoken. The library takes
 care of that, though:
 
 >>> connector.unlock('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
-u'opaquelocktoken:...'
+'opaquelocktoken:...'
 >>> connector.locked('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
 (None, None, False)
 
@@ -106,10 +106,10 @@ To specify an infinte lock, timeout can be None:
 ...     'http://xml.zeit.de/%s/conn1' % TESTFOLDER(),
 ...     'zope.user', until=None)
 >>> connector.locked('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
-(u'zope.user', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
+('zope.user', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
  True)
 >>> connector.unlock('http://xml.zeit.de/%s/conn1' % TESTFOLDER())
-u'opaquelocktoken:...'
+'opaquelocktoken:...'
 
 Remove the `conn1` after user:
 
@@ -122,12 +122,12 @@ The object can be also stored dictionary-style:
 >>> res.data = BytesIO(b"Round and round the cobbler's bench")
 >>> connector["http://xml.zeit.de/%s/conn2" % TESTFOLDER()] = res
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'conn2', u'http://xml.zeit.de/testing.../conn2')]
+[('conn2', 'http://xml.zeit.de/testing.../conn2')]
 
 The trailing slash is the usual decoration for collections, but should be optional
 
 >>> list(connector.listCollection('http://xml.zeit.de/%s' % TESTFOLDER()))
-[(u'conn2', u'http://xml.zeit.de/testing.../conn2')]
+[('conn2', 'http://xml.zeit.de/testing.../conn2')]
 
 But remove `conn2` again, as we have no further use:
 
@@ -163,15 +163,15 @@ We can change properties explicitly using `changeProperties`:
 
 >>> connector.changeProperties(
 ...     'http://xml.zeit.de/%s/conn3' % TESTFOLDER(),
-...     {('colour', 'http://namespaces.zeit.de/test'): u'gr\xfcn'})
+...     {('colour', 'http://namespaces.zeit.de/test'): 'gr\xfcn'})
 >>> res_got = connector["http://xml.zeit.de/%s/conn3" % TESTFOLDER()]
 >>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
-u'gr\xfcn'
+'gr\xfcn'
 
 Make sure we don't get None values:
 
 >>> res_got.properties[('resourcetype', 'DAV:')]
-u''
+''
 
 
 
@@ -189,7 +189,7 @@ Resources can be overwritten by just assigning them again:
 Unlock the resource again:
 
 >>> connector.unlock('http://xml.zeit.de/%s/conn3' % TESTFOLDER())
-u'opaquelocktoken:...'
+'opaquelocktoken:...'
 
 Delete the resource:
 
@@ -281,9 +281,9 @@ Now copy:
 >>> connector.copy('http://xml.zeit.de/%s/copy-test' % TESTFOLDER(),
 ...                'http://xml.zeit.de/%s/copy-target' % TESTFOLDER())
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'copy-target', u'http://xml.zeit.de/testing.../copy-target'),
- (u'copy-test', u'http://xml.zeit.de/testing.../copy-test')]
->>> connector[u'http://xml.zeit.de/%s/copy-target' % TESTFOLDER()].type
+[('copy-target', 'http://xml.zeit.de/testing.../copy-target'),
+ ('copy-test', 'http://xml.zeit.de/testing.../copy-test')]
+>>> connector['http://xml.zeit.de/%s/copy-target' % TESTFOLDER()].type
 'text'
 
 
@@ -302,24 +302,24 @@ Copying an non existing object raises a KeyError:
 ...                'http://xml.zeit.de/%s/bar' % TESTFOLDER())
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/testing.../foo' does not exist."
+KeyError: "The resource 'http://xml.zeit.de/testing.../foo' does not exist."
 
 Clean up:
 
->>> del connector[u'http://xml.zeit.de/%s/copy-target' % TESTFOLDER()]
->>> del connector[u'http://xml.zeit.de/%s/copy-test' % TESTFOLDER()]
+>>> del connector['http://xml.zeit.de/%s/copy-target' % TESTFOLDER()]
+>>> del connector['http://xml.zeit.de/%s/copy-test' % TESTFOLDER()]
 
 Now make sure we can copy folders:
 
 >>> import zeit.connector.testing
 >>> zeit.connector.testing.create_folder_structure(connector, TESTFOLDER())
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'testroot', u'http://xml.zeit.de/testing.../testroot/')]
+[('testroot', 'http://xml.zeit.de/testing.../testroot/')]
 >>> connector.copy('http://xml.zeit.de/%s/testroot' % TESTFOLDER(),
 ...                'http://xml.zeit.de/%s/copiedtree' % TESTFOLDER())
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'copiedtree', u'http://xml.zeit.de/testing.../copiedtree/'),
- (u'testroot', u'http://xml.zeit.de/testing.../testroot/')]
+[('copiedtree', 'http://xml.zeit.de/testing.../copiedtree/'),
+ ('testroot', 'http://xml.zeit.de/testing.../testroot/')]
 
 
 Verify the whole copied tree:
@@ -376,7 +376,7 @@ Lets create an object which we can move then:
 ...                contentType = 'text/plain')
 >>> connector.add(res)
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'move-test', u'http://xml.zeit.de/testing.../move-test')]
+[('move-test', 'http://xml.zeit.de/testing.../move-test')]
 
 
 Let's move `move-test` now:
@@ -384,7 +384,7 @@ Let's move `move-test` now:
 >>> connector.move('http://xml.zeit.de/%s/move-test' % TESTFOLDER(),
 ...                'http://xml.zeit.de/%s/move-test-moved' % TESTFOLDER())
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'move-test-moved', u'http://xml.zeit.de/testing.../move-test-moved')]
+[('move-test-moved', 'http://xml.zeit.de/testing.../move-test-moved')]
 
 Verify the content type:
 
@@ -417,11 +417,11 @@ Make sure we can also move collections:
 
 >>> zeit.connector.testing.create_folder_structure(connector, TESTFOLDER())
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'testroot', u'http://xml.zeit.de/testing.../testroot/')]
+[('testroot', 'http://xml.zeit.de/testing.../testroot/')]
 >>> connector.move('http://xml.zeit.de/%s/testroot' % TESTFOLDER(),
 ...                'http://xml.zeit.de/%s/movedtree' % TESTFOLDER())
 >>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'movedtree', u'http://xml.zeit.de/testing.../movedtree/')]
+[('movedtree', 'http://xml.zeit.de/testing.../movedtree/')]
 
 Verify the whole structure:
 
@@ -444,7 +444,7 @@ http://xml.zeit.de/testing.../movedtree/h text
 
 Clean up:
 
->>> del connector[u'http://xml.zeit.de/%s/movedtree' % TESTFOLDER()]
+>>> del connector['http://xml.zeit.de/%s/movedtree' % TESTFOLDER()]
 
 
 Internals

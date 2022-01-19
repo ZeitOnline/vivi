@@ -1,14 +1,13 @@
 import base64
+import http.client
 import logging
 import lxml.etree
 import mimetypes
 import pkg_resources
 import re
-import six
-import six.moves.http_client
-import six.moves.urllib.parse
 import socket
 import sys
+import urllib.parse
 
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
 DEBUG_REQUEST = False
@@ -35,7 +34,7 @@ class HTTPBasicAuthCon(object):
 
     """
 
-    connect_class = six.moves.http_client.HTTPConnection
+    connect_class = http.client.HTTPConnection
     rx = re.compile('[ \t]*([^ \t]+)[ \t]+realm="([^"]*)"')
     authhdr = 'WWW-Authenticate'
 
@@ -95,20 +94,20 @@ class HTTPBasicAuthCon(object):
         return
 
     def get_quoted_path(self, uri):
-        if sys.version_info < (3,) and isinstance(uri, six.text_type):
+        if sys.version_info < (3,) and isinstance(uri, str):
             uri = uri.encode('utf8')
-        path = six.moves.urllib.parse.urlunparse(
-            ('', '') + six.moves.urllib.parse.urlparse(uri)[2:])
+        path = urllib.parse.urlunparse(
+            ('', '') + urllib.parse.urlparse(uri)[2:])
         # NOTE: Everything after the netloc is considered a path and will be
         # quoted
-        quoted = six.moves.urllib.parse.quote(path)
+        quoted = urllib.parse.quote(path)
         return quoted
 
     def quote_uri(self, uri):
-        if sys.version_info < (3,) and isinstance(uri, six.text_type):
+        if sys.version_info < (3,) and isinstance(uri, str):
             uri = uri.encode('utf8')
-        parsed = six.moves.urllib.parse.urlparse(uri)
-        quoted = six.moves.urllib.parse.urlunparse(
+        parsed = urllib.parse.urlparse(uri)
+        quoted = urllib.parse.urlunparse(
             (parsed.scheme, parsed.netloc, self.get_quoted_path(uri),
              '', '', ''))
         return quoted
@@ -130,7 +129,7 @@ class HTTPBasicAuthCon(object):
             raw = "%s:%s" % self.get_auth(self._realm)
             auth = 'Basic %s' % base64.encodestring(raw).strip()
             headers['Authorization'] = auth
-        host = str(six.moves.urllib.parse.urlparse(uri).netloc)
+        host = str(urllib.parse.urlparse(uri).netloc)
         if host:
             headers['Host'] = host
         headers['Connection'] = 'keep-alive'
@@ -138,7 +137,7 @@ class HTTPBasicAuthCon(object):
         headers.update(self.additional_headers)
         try:
             self._con.request(method, path, body, headers)
-        except six.moves.http_client.CannotSendRequest:
+        except http.client.CannotSendRequest:
             # Yikes. The connection got into an inconsistent state! Reconnect.
             self.connect()
             # If that raises the error again, well let it raise.
@@ -176,10 +175,10 @@ class DAVBase(object):
                 if isinstance(value, list):
                     for item in value:
                         body = (body + '&' + key + '=' +
-                                six.moves.urllib.parse.quote(str(item)))
+                                urllib.parse.quote(str(item)))
                 else:
                     body = (body + '&' + key + '=' +
-                            six.moves.urllib.parse.quote(str(value)))
+                            urllib.parse.quote(str(value)))
             body = body[1:]
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
         return self._request('POST', url, body, headers)
@@ -307,7 +306,7 @@ class DAVBase(object):
         self.request(method, url, body, extra_hdrs)
         try:
             resp = self.getresponse()
-        except six.moves.http_client.BadStatusLine:
+        except http.client.BadStatusLine:
             # Gnah. We may have waited too long.  Try one more time.
             self.connect()
             self.request(method, url, body, extra_hdrs)
@@ -333,7 +332,7 @@ class DAVConnection (HTTPBasicAuthCon, DAVBase):
 if getattr(socket, 'ssl', None):
     # only include DAVS if SSL support is compiled in
     class HTTPSBasicAuthCon(HTTPBasicAuthCon):
-        connect_class = six.moves.http_client.HTTPSConnection
+        connect_class = http.client.HTTPSConnection
         pass
 
     class DAVSConnection(HTTPSBasicAuthCon, DAVBase):

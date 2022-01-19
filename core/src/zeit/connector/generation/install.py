@@ -7,7 +7,7 @@ import zope.component.hooks
 import zope.generations.utility
 
 
-def installLocalUtility(root, factory, name, interface, utility_name=u''):
+def installLocalUtility(root, factory, name, interface, utility_name=''):
     utility = factory()
     root[name] = utility
     site_manager = zope.component.getSiteManager()

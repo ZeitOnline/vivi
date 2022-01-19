@@ -4,20 +4,19 @@ DAVResource is the class to use; it points to a location (URL) and offers
 some methods to retrieve informations about the refered to resource.
 """
 
-from six.moves.urllib.parse import urlparse, urlunparse, unquote
+from urllib.parse import urlparse, urlunparse, unquote
 from zeit.connector.dav.interfaces import DAVNotFoundError, DAVNoFileError
 import lxml.etree
 import pprint
 import re
 import zeit.connector.dav.davxml
 import zeit.connector.dav.interfaces
-import six
 
 
-_DEFAULT_OWNER = u'<DAV:href>pydav-client</DAV:href>'
-_DEFAULT_OWNER2 = u'<DAV:href>pydav-client-2</DAV:href>'
+_DEFAULT_OWNER = '<DAV:href>pydav-client</DAV:href>'
+_DEFAULT_OWNER2 = '<DAV:href>pydav-client-2</DAV:href>'
 
-XML_PREFIX_MARKER = u'||ESCAPE||'
+XML_PREFIX_MARKER = '||ESCAPE||'
 
 xml = lxml.etree.Element('{DAV:}propfind')
 xml.append(lxml.etree.Element('{DAV:}allprop'))
@@ -121,7 +120,7 @@ class DAVPropstat:
             else:
                 pvalue = lxml.etree.tostring(prop, encoding='unicode')
             if pvalue is None:
-                pvalue = u''
+                pvalue = ''
             self.properties[pkey] = pvalue
 
         # "special" properties
@@ -193,7 +192,7 @@ class DAVResponse(object):
             raise zeit.connector.dav.interfaces.DAVNotFoundError(
                 'No href found in node %s!' % res_node.nodePath())
         url_node = href_nodes[0]
-        self.url = six.ensure_text(unquote(url_node.text.strip()))
+        self.url = unquote(url_node.text.strip())
         # self.url = url_node.text.strip()
         status_nodes = _find_child(res_node, 'status')
         if status_nodes:  # FIXME: What when more than one?
@@ -499,7 +498,7 @@ class DAVResource(object):
                     # the values should be unicode. If they are not the we at
                     # least try to make one. This is ok for ascii stirngs and
                     # breaks on every encoded string. Just like it should.
-                    value = six.text_type(value)
+                    value = str(value)
                     # Temporary fix to avoid webdav server confusion. When the
                     # value starts with a '<' the server does some magic. Avoid
                     # this by adding a magic marker before the actual value.
