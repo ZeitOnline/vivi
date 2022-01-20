@@ -32,7 +32,9 @@ def configure(config):
 
     config = convert_dotted_keys_to_nested_dicts(config)
     apply_logging_syntax_fixes(config)
+    capture = config.pop('capture_warnings', False)
     logging.config.dictConfig(config)
+    logging.captureWarnings(capture)
 
 
 def convert_dotted_keys_to_nested_dicts(mapping):
