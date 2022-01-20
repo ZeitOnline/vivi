@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.9.0 (2022-01-20)
+------------------
+
+MAINT:
+- Support logging.capture_warnings setting
+
+
 5.8.1 (2022-01-18)
 ------------------
 
