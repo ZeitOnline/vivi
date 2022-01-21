@@ -3,7 +3,7 @@ import zope.interface.common.mapping
 import zope.schema
 
 
-class _DeleteProperty(object):
+class _DeleteProperty:
     """Singleton to indicate a property should be deleted."""
 
     __slots__ = ()
@@ -206,7 +206,7 @@ class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
 
     Keys are in the form (name, namespace), for example:
 
-        {(u'resourcetype', u'DAV:'): u'article'}
+        {('resourcetype', 'DAV:'): 'article'}
 
     name, namespace and value should be unicode. If any is a str it must not
     contain non usascii characters.
@@ -251,7 +251,7 @@ class IResource(zope.interface.Interface):
 
     contentType = zope.schema.BytesLine(
         title=u"Content Type",
-        description=u'The mime content type identifies the type of data.',
+        description='The mime content type identifies the type of data.',
         default=b'',
         required=False)
 
@@ -344,7 +344,7 @@ class IResourceInvalidatedEvent(zope.interface.Interface):
 
 
 @zope.interface.implementer(IResourceInvalidatedEvent)
-class ResourceInvalidatedEvent(object):
+class ResourceInvalidatedEvent:
 
     def __init__(self, id):
         self.id = id

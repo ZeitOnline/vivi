@@ -9,7 +9,6 @@ def test_suite():
     suite = unittest.TestSuite()
 
     mock = zeit.connector.testing.FunctionalDocFileSuite(
-        'mock.txt',
         'uuid.txt',
         layer=zeit.connector.testing.MOCK_CONNECTOR_LAYER,
     )

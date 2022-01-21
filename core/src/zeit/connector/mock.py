@@ -1,18 +1,17 @@
 from io import BytesIO
 from zeit.connector.connector import CannonicalId
-from zeit.connector.interfaces import UUID_PROPERTY
+from zeit.connector.interfaces import UUID_PROPERTY, CopyError, MoveError
 import datetime
+import http.client
 import logging
+import magic
 import os
 import os.path
-import magic
 import pkg_resources
 import pytz
 import random
-import six
-import six.moves.http_client
-import six.moves.urllib.parse
 import time
+import urllib.parse
 import uuid
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
@@ -21,7 +20,7 @@ import zeit.connector.interfaces
 import zope.event
 
 
-ID_NAMESPACE = u'http://xml.zeit.de/'
+ID_NAMESPACE = 'http://xml.zeit.de/'
 
 log = logging.getLogger(__name__)
 
@@ -44,7 +43,7 @@ class Connector(zeit.connector.filesystem.Connector):
     canonical_id_cache = zeit.connector.cache.AlwaysEmptyDict()
 
     def __init__(self, repository_path, detect_mime_type=True):
-        super(Connector, self).__init__(repository_path)
+        super().__init__(repository_path)
         self.detect_mime_type = detect_mime_type
         self._reset()
 
@@ -59,11 +58,11 @@ class Connector(zeit.connector.filesystem.Connector):
         """List the filenames of a collection identified by path. """
         return (
             (name, _id)
-            for name, _id in super(Connector, self).listCollection(id)
-            if _id not in self._deleted and _id + u'/' not in self._deleted)
+            for name, _id in super().listCollection(id)
+            if _id not in self._deleted and _id + '/' not in self._deleted)
 
     def _get_collection_names(self, path):
-        names = super(Connector, self)._get_collection_names(path)
+        names = super()._get_collection_names(path)
         names |= self._paths.get(path, set())
         return names
 
@@ -71,16 +70,16 @@ class Connector(zeit.connector.filesystem.Connector):
         id = self._get_cannonical_id(id)
         if id in self._deleted:
             raise KeyError("The resource '%s' does not exist." % id)
-        return super(Connector, self).getResourceType(id)
+        return super().getResourceType(id)
 
     def __getitem__(self, id):
         id = self._get_cannonical_id(id)
         if id in self._deleted:
-            raise KeyError(six.text_type(id))
-        return super(Connector, self).__getitem__(id)
+            raise KeyError(str(id))
+        return super().__getitem__(id)
 
     def _get_content_type(self, id):
-        result = super(Connector, self)._get_content_type(id)
+        result = super()._get_content_type(id)
         if result or not self.detect_mime_type:
             return result
         body = self._get_body(id)
@@ -95,7 +94,7 @@ class Connector(zeit.connector.filesystem.Connector):
                   resource.contentType == 'httpd/unix-directory')
         if iscoll and not id.endswith('/'):
             id = CannonicalId(id + '/')
-        resource.id = six.text_type(id)  # override
+        resource.id = str(id)  # override
 
         if id in self:
             old_etag = self[id].properties.get(('getetag', 'DAV:'))
@@ -122,7 +121,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 resource.properties[UUID_PROPERTY] = new_uuid
             else:
                 if existing_uuid and existing_uuid != new_uuid:
-                    raise six.moves.http_client.HTTPException(409, 'Conflict')
+                    raise http.client.HTTPException(409, 'Conflict')
 
             for key in self._properties.keys():
                 if key == self._get_cannonical_id(resource.id):
@@ -130,7 +129,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 existing_uuid = self._properties[key].get(UUID_PROPERTY)
                 if (existing_uuid and existing_uuid ==
                         resource.properties[UUID_PROPERTY]):
-                    raise six.moves.http_client.HTTPException(409, 'Conflict')
+                    raise http.client.HTTPException(409, 'Conflict')
 
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
@@ -148,7 +147,7 @@ class Connector(zeit.connector.filesystem.Connector):
             # detetection e.g. for images takes over on the next read.
             resource.properties[
                 ('getcontenttype', 'DAV:')] = resource.contentType
-        resource.properties[('getlastmodified', 'DAV:')] = six.text_type(
+        resource.properties[('getlastmodified', 'DAV:')] = str(
             datetime.datetime.now(pytz.UTC).strftime(
                 '%a, %d %b %Y %H:%M:%S GMT'))
         resource.properties[('getetag', 'DAV:')] = repr(
@@ -177,6 +176,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self[resource.id] = resource
 
     def copy(self, old_id, new_id):
+        self._prevent_overwrite(old_id, new_id, CopyError)
         r = self[old_id]
         r.id = new_id
         r.properties.pop(UUID_PROPERTY, None)
@@ -184,19 +184,10 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
-            self.copy(uid, six.moves.urllib.parse.urljoin(new_id, name))
+            self.copy(uid, urllib.parse.urljoin(new_id, name))
 
     def move(self, old_id, new_id):
-        if new_id in self:
-            # The target already exists. It's possible that there was a
-            # conflict. Verify body.
-            if ('httpd/unix-directory' in (self[old_id].contentType,
-                                           self[new_id].contentType) or
-                    self[old_id].data.read() != self[new_id].data.read()):
-                raise zeit.connector.interfaces.MoveError(
-                    old_id,
-                    "Could not move %s to %s, because target alread exists." %
-                    (old_id, new_id))
+        self._prevent_overwrite(old_id, new_id, MoveError)
         self._ignore_uuid_checks = True
         r = self[old_id]
         r.id = new_id
@@ -207,8 +198,25 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
-            self.move(uid, six.moves.urllib.parse.urljoin(new_id, name))
+            self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
+
+    def _prevent_overwrite(self, old_id, new_id, exception):
+        if zeit.connector.connector.Connector._is_descendant(new_id, old_id):
+            raise exception(
+                old_id,
+                'Could not copy or move %s to a decendant of itself.' % old_id)
+
+        if new_id in self:
+            # The target already exists. It's possible that there was a
+            # conflict. Verify body.
+            if ('httpd/unix-directory' in (self[old_id].contentType,
+                                           self[new_id].contentType) or
+                    self[old_id].data.read() != self[new_id].data.read()):
+                raise exception(
+                    old_id,
+                    "Could not move %s to %s, because target alread exists." %
+                    (old_id, new_id))
 
     def changeProperties(self, id, properties):
         id = self._get_cannonical_id(id)
@@ -237,9 +245,9 @@ class Connector(zeit.connector.filesystem.Connector):
         log.debug("Searching: %s", expression._render())
 
         unique_ids = [
-            u'http://xml.zeit.de/online/2007/01/Somalia',
-            u'http://xml.zeit.de/online/2007/01/Saarland',
-            u'http://xml.zeit.de/2006/52/Stimmts']
+            'http://xml.zeit.de/online/2007/01/Somalia',
+            'http://xml.zeit.de/online/2007/01/Saarland',
+            'http://xml.zeit.de/2006/52/Stimmts']
 
         metadata = ('pm', '07') + len(attributes) * (None,)
         metadata = metadata[:len(attributes)]
@@ -268,19 +276,19 @@ class Connector(zeit.connector.filesystem.Connector):
     def _get_file(self, id):
         if id in self._data:
             value = self._data[id]
-            if isinstance(value, six.text_type):
+            if isinstance(value, str):
                 value = value.encode('utf-8')
             return BytesIO(value)
-        return super(Connector, self)._get_file(id)
+        return super()._get_file(id)
 
     def _get_lastmodified(self, id):
-        return u'Fri, 07 Mar 2008 12:47:16 GMT'
+        return 'Fri, 07 Mar 2008 12:47:16 GMT'
 
     def _get_properties(self, id):
         properties = self._properties.get(id)
         if properties is not None:
             return properties
-        properties = super(Connector, self)._get_properties(id)
+        properties = super()._get_properties(id)
         self._properties[id] = properties
         return properties
 

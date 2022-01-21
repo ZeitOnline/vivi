@@ -20,12 +20,12 @@ Get the connector:
 
 Get a folder:
 
->>> connector['http://xml.zeit.de/%s' % TESTFOLDER()]
+>>> connector['http://xml.zeit.de/testing']
 <zeit.connector.resource.CachedResource object at 0x...>
 
 The directory listing is empty:
 
->>> list(connector.listCollection('http://xml.zeit.de/%s' % TESTFOLDER()))
+>>> list(connector.listCollection('http://xml.zeit.de/testing'))
 []
 
 
@@ -33,19 +33,19 @@ There was a bug that the property changes where not visible when using
 ``changeProperties``. Now we get the properties back:
 
 >>> from io import BytesIO
->>> id = 'http://xml.zeit.de/%s/prop-change' % TESTFOLDER()
+>>> id = 'http://xml.zeit.de/testing/prop-change'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'propchange', 'text',
 ...     BytesIO(b'Pop goes the weasel!'),
 ...     contentType='text/plain')
 >>> connector.add(res)
 >>> connector.changeProperties(
-...     id, {('colour', 'http://namespaces.zeit.de/test'): u'gr\xfcn'})
+...     id, {('colour', 'http://namespaces.zeit.de/test'): 'gr\xfcn'})
 >>> res_got = connector[id]
 >>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
-u'gr\xfcn'
+'gr\xfcn'
 >>> del connector[id]
->>> list(connector.listCollection('http://xml.zeit.de/%s' % TESTFOLDER()))
+>>> list(connector.listCollection('http://xml.zeit.de/testing'))
 []
 
 
@@ -59,7 +59,7 @@ Locking
 When an object is locked and the transaction is rolled back, the object will be
 automatically unlocked.
 
->>> id = 'http://xml.zeit.de/%s/lockrollback' % TESTFOLDER()
+>>> id = 'http://xml.zeit.de/testing/lockrollback'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lockrollback', 'text',
 ...     BytesIO(b'Pop goes the weasel!'),
@@ -68,7 +68,7 @@ automatically unlocked.
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> connector.locked(res.id)
-(u'zope.user', datetime.datetime(...), True)
+('zope.user', datetime.datetime(...), True)
 
 Now rollback:
 
@@ -100,7 +100,7 @@ Make sure the resource stays locked on commit:
 >>> transaction.commit()
 >>> connector._invalidate_cache(res.id)
 >>> connector.locked(res.id)
-(u'zope.user', datetime.datetime(...), True)
+('zope.user', datetime.datetime(...), True)
 
 Remove the resource to clean up:
 
@@ -125,7 +125,7 @@ Enable debugging of the http data:
 >>> zeit.connector.dav.davbase.DEBUG_CONNECTION = True
 
 >>> print('x'); connector._invalidate_cache(
-...     'http://xml.zeit.de/%s/' % TESTFOLDER())
+...     'http://xml.zeit.de/testing/')
 x...Referer: http://127.0.0.1\r\n...
 
 Reset:

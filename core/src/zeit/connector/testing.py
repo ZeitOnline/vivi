@@ -1,16 +1,13 @@
 from io import BytesIO
-import ZODB.blob
 import contextlib
 import docker
 import pkg_resources
 import plone.testing
 import pytest
 import requests
-import six
 import socket
 import threading
 import transaction
-import zc.queue.tests
 import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.interfaces
@@ -26,7 +23,7 @@ class DAVServerLayer(plone.testing.Layer):
         query = self.get_random_port()
         client = docker.from_env()
         self['dav_container'] = client.containers.run(
-            "registry.zeit.de/dav-server:1.1.0", detach=True, remove=True,
+            "registry.zeit.de/dav-server:1.1.1", detach=True, remove=True,
             ports={9000: dav, 9999: query})
         self['dav_url'] = 'http://localhost:%s/cms/' % dav
         self['query_url'] = 'http://localhost:%s' % query
@@ -86,7 +83,7 @@ class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
             'document-store': self['dav_url'],
             'document-store-search': self['query_url'],
         }
-        super(ConfigLayer, self).setUp()
+        super().setUp()
 
 
 DAV_CONFIG_LAYER = ConfigLayer({})
@@ -121,16 +118,11 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    # XXX I'm not sure this is still useful now that we use a container
-    @property
-    def testfolder(self):
-        return self.layer.get('testfolder', 'testing')
-
-    def get_resource(self, name, body, properties={},
+    def get_resource(self, name, body=b'', properties={},
                      contentType='text/plain'):
-        if not isinstance(body, six.binary_type):
+        if not isinstance(body, bytes):
             body = body.encode('utf-8')
-        rid = 'http://xml.zeit.de/%s/%s' % (self.testfolder, name)
+        rid = 'http://xml.zeit.de/testing/%s' % name
         return zeit.connector.resource.Resource(
             rid, name, 'testing',
             BytesIO(body),
@@ -154,18 +146,9 @@ class MockTest(TestCase):
 
     layer = MOCK_CONNECTOR_LAYER
 
-    def setUp(self):
-        super(MockTest, self).setUp()
-        # I don't really get what this is here for, but removing it breaks
-        # tests:
-        self.connector.add(self.get_resource(
-            '', '', contentType='httpd/x-unix-directory'))
-
 
 def FunctionalDocFileSuite(*paths, **kw):
     kw['package'] = 'zeit.connector'
-    kw['globs'] = {
-        'TESTFOLDER': lambda: kw['layer'].get('testfolder', 'testing')}
     return zeit.cms.testing.FunctionalDocFileSuite(*paths, **kw)
 
 
@@ -175,12 +158,6 @@ def mark_doctest_suite(suite, mark):
         func = test.runTest.__func__
         mark(func)
         test.runTest = func.__get__(test)
-
-
-def get_storage(blob_dir):
-    storage = zc.queue.tests.ConflictResolvingMappingStorage('test')
-    blob_storage = ZODB.blob.BlobStorage(blob_dir, storage)
-    return blob_storage
 
 
 def print_tree(connector, base):
@@ -202,20 +179,23 @@ def list_tree(connector, base, level=0):
 
 
 def mkdir(connector, id):
+    # Use a made-up type `folder` to differentiate from "no meta:type", which
+    # would fall back to `collection`. (Even though the latter value is what we
+    # use "in reality" in zeit.cms.repository.folder.)
     res = zeit.connector.resource.Resource(
         id, None, 'folder', BytesIO(b''),
         contentType='httpd/unix-directory')
     connector.add(res)
 
 
-def create_folder_structure(connector, testfolder):
+def create_folder_structure(connector):
     """Create a folder structure for copy/move"""
 
     def add_folder(id):
-        mkdir(connector, u'http://xml.zeit.de/%s/%s' % (testfolder, id))
+        mkdir(connector, 'http://xml.zeit.de/testing/%s' % id)
 
     def add_file(id):
-        id = u'http://xml.zeit.de/%s/%s' % (testfolder, id)
+        id = 'http://xml.zeit.de/testing/%s' % id
         res = zeit.connector.resource.Resource(
             id, None, 'text', BytesIO(b'Pop.'),
             contentType='text/plain')
@@ -237,23 +217,23 @@ def create_folder_structure(connector, testfolder):
     add_file('testroot/a/b/c/foo')
     add_file('testroot/b/b/foo')
 
-    expected_structure = [x.format(testfolder=testfolder) for x in [
-        'http://xml.zeit.de/{testfolder}/testroot',
-        'http://xml.zeit.de/{testfolder}/testroot/a/ folder',
-        'http://xml.zeit.de/{testfolder}/testroot/a/a/ folder',
-        'http://xml.zeit.de/{testfolder}/testroot/a/b/ folder',
-        'http://xml.zeit.de/{testfolder}/testroot/a/b/c/ folder',
-        'http://xml.zeit.de/{testfolder}/testroot/a/b/c/foo text',
-        'http://xml.zeit.de/{testfolder}/testroot/a/f text',
-        'http://xml.zeit.de/{testfolder}/testroot/b/ folder',
-        'http://xml.zeit.de/{testfolder}/testroot/b/a/ folder',
-        'http://xml.zeit.de/{testfolder}/testroot/b/b/ folder',
-        'http://xml.zeit.de/{testfolder}/testroot/b/b/foo text',
-        'http://xml.zeit.de/{testfolder}/testroot/f text',
-        'http://xml.zeit.de/{testfolder}/testroot/g text',
-        'http://xml.zeit.de/{testfolder}/testroot/h text']]
+    expected_structure = [
+        'http://xml.zeit.de/testing/testroot',
+        'http://xml.zeit.de/testing/testroot/a/ folder',
+        'http://xml.zeit.de/testing/testroot/a/a/ folder',
+        'http://xml.zeit.de/testing/testroot/a/b/ folder',
+        'http://xml.zeit.de/testing/testroot/a/b/c/ folder',
+        'http://xml.zeit.de/testing/testroot/a/b/c/foo text',
+        'http://xml.zeit.de/testing/testroot/a/f text',
+        'http://xml.zeit.de/testing/testroot/b/ folder',
+        'http://xml.zeit.de/testing/testroot/b/a/ folder',
+        'http://xml.zeit.de/testing/testroot/b/b/ folder',
+        'http://xml.zeit.de/testing/testroot/b/b/foo text',
+        'http://xml.zeit.de/testing/testroot/f text',
+        'http://xml.zeit.de/testing/testroot/g text',
+        'http://xml.zeit.de/testing/testroot/h text']
     assert expected_structure == list_tree(
-        connector, 'http://xml.zeit.de/%s/testroot' % testfolder)
+        connector, 'http://xml.zeit.de/testing/testroot')
 
 
 def copy_inherited_functions(base, locals):

@@ -21,7 +21,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
     and transaction machinery."""
 
     def create_connection(self, root):
-        connection = super(self.__class__, self).create_connection(root)
+        connection = super().create_connection(root)
         dm = connection._connector_datamanager = DataManager(self)
         transaction.get().join(dm)
         url = self._get_calling_url()
@@ -44,23 +44,21 @@ class ZopeConnector(zeit.connector.connector.Connector):
         return conn._connector_datamanager
 
     def lock(self, id, principal, until):
-        locktoken = super(self.__class__, self).lock(id, principal, until)
+        locktoken = super().lock(id, principal, until)
         datamanager = self.get_datamanager()
         datamanager.add_cleanup(self.unlock, id, locktoken, False)
         return locktoken
 
     def unlock(self, id, locktoken=None, invalidate=True):
-        locktoken = super(self.__class__, self).unlock(
-            id, locktoken, invalidate)
+        locktoken = super().unlock(id, locktoken, invalidate)
         self.get_datamanager().remove_cleanup(
             self.unlock, id, locktoken, False)
         return locktoken
 
     def move(self, old_id, new_id):
-        super(ZopeConnector, self).move(old_id, new_id)
+        super().move(old_id, new_id)
         # Only register clean up if move didn't fail:
-        self.get_datamanager().add_cleanup(
-            super(ZopeConnector, self).move, new_id, old_id)
+        self.get_datamanager().add_cleanup(super().move, new_id, old_id)
 
     @property
     def body_cache(self):

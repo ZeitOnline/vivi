@@ -27,7 +27,7 @@ Set up a site and caching:
 >>> from zope.component.interfaces import ISite
 >>>
 >>> @zope.interface.implementer(ISite, IContainmentRoot, IAttributeAnnotatable)
-... class Site(object):
+... class Site:
 ...     def getSiteManager(self):
 ...         return zope.component.getGlobalSiteManager()
 >>> site = Site()

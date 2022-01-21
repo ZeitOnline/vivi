@@ -8,7 +8,6 @@ def test_suite():
     # Need to put this into a separate file, otherwise gocept.pytestlayers
     # does not tear down other layers before running this.
     suite = zeit.connector.testing.FunctionalDocFileSuite(
-        'connector.txt',
         'locking.txt',
         'resource.txt',
         'search-ft.txt',

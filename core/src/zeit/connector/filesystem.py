@@ -9,8 +9,6 @@ import logging
 import lxml.etree
 import os
 import os.path
-import six
-import six.moves.urllib.parse
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
@@ -18,13 +16,13 @@ import zope.app.file.image
 import zope.interface
 
 
-ID_NAMESPACE = u'http://xml.zeit.de/'
+ID_NAMESPACE = 'http://xml.zeit.de/'
 
 log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
-class Connector(object):
+class Connector:
     """Connect to the CMS backend in read-only mode.
 
     The current implementation does *not* talk to the CMS backend but to
@@ -68,8 +66,7 @@ class Connector(object):
 
         result = []
         for name in sorted(names):
-            child_id = six.text_type(
-                self._get_cannonical_id(os.path.join(id, name)))
+            child_id = str(self._get_cannonical_id(os.path.join(id, name)))
             result.append((name, child_id))
         self.child_name_cache[id] = result
         return result
@@ -80,15 +77,15 @@ class Connector(object):
         if os.path.isdir(path):
             for name in os.listdir(path):
                 try:
-                    if isinstance(name, six.binary_type):
+                    if isinstance(name, bytes):
                         name = name.decode('utf-8')
                 except Exception:
                     continue
                 names.add(name)
         for x in names.copy():
-            if x.startswith(u'.'):
+            if x.startswith('.'):
                 names.remove(x)
-            elif x.endswith(u'.meta') and x[:-5] in names:
+            elif x.endswith('.meta') and x[:-5] in names:
                 names.remove(x)
         return names
 
@@ -124,7 +121,7 @@ class Connector(object):
         properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
         path = urlparse(id).path.strip('/').split('/')
         return self.resource_class(
-            six.text_type(id), path[-1], type,
+            str(id), path[-1], type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
             content_type=self._get_content_type(id))
@@ -141,7 +138,7 @@ class Connector(object):
         except Exception:
             data = b''
         self.body_cache[id] = data
-        return BytesIO(six.ensure_binary(data))
+        return BytesIO(data)
 
     def _get_content_type(self, id):
         properties = self._get_properties(id)
@@ -317,10 +314,10 @@ def parse_properties(xml):
     tags = xml.xpath('//head/rankedTags')
     if tags:
         value = (
-            u'<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
-            u'/CMS/tagging">')
+            '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
+            '/CMS/tagging">')
         value += lxml.etree.tostring(tags[0], encoding='unicode')
-        value += u'</tag:rankedTags>'
+        value += '</tag:rankedTags>'
         properties[(
             'keywords',
             'http://namespaces.zeit.de/CMS/tagging')] = value

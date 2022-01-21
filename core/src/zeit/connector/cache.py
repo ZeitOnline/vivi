@@ -13,12 +13,11 @@ import lxml.objectify
 import os
 import persistent
 import persistent.mapping
-import six
-import six.moves.urllib.request
 import sys
 import tempfile
 import time
 import transaction
+import urllib.request
 import zc.set
 import zeit.cms.cli
 import zeit.connector.interfaces
@@ -29,7 +28,10 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
-get_storage_key = six.ensure_binary
+def get_storage_key(key):
+    if isinstance(key, str):
+        return key.encode('utf-8')
+    return key
 
 
 class StringRef(persistent.Persistent):
@@ -82,9 +84,9 @@ class Body(persistent.Persistent):
                 data_file = open(tmp.name, 'rb')
             else:
                 data_file = open(commited_name, 'rb')
-        elif isinstance(self.data, six.text_type):
+        elif isinstance(self.data, str):
             data_file = BytesIO(self.data.encode('utf-8'))
-        elif isinstance(self.data, six.binary_type):
+        elif isinstance(self.data, bytes):
             data_file = BytesIO(self.data)
         else:
             raise RuntimeError('self.data is of unsupported type %s' %
@@ -125,7 +127,7 @@ class Body(persistent.Persistent):
         return commited
 
 
-class AccessTimes(object):
+class AccessTimes:
 
     UPDATE_INTERVAL = NotImplemented
 
@@ -223,7 +225,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
     UPDATE_INTERVAL = 24 * 3600
 
     def __init__(self):
-        super(ResourceCache, self).__init__()
+        super().__init__()
         self._data = BTrees.family64.OO.BTree()
 
     def getData(self, unique_id, properties):
@@ -283,7 +285,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
     CACHE_VALUE_CLASS = None  # Set in subclass
 
     def __init__(self):
-        super(PersistentCache, self).__init__()
+        super().__init__()
         self._storage = BTrees.family32.OO.BTree()
 
     def __getitem__(self, key):
@@ -347,7 +349,7 @@ class PersistentCache(AccessTimes, persistent.Persistent):
 
 
 @total_ordering
-class WebDAVPropertyKey(object):
+class WebDAVPropertyKey:
 
     __slots__ = ('name',)
     _instances = {}  # class variable
@@ -430,7 +432,7 @@ class Properties(persistent.mapping.PersistentMapping):
         if (key is not zeit.connector.interfaces.DeleteProperty and
                 not isinstance(key, WebDAVPropertyKey)):
             key = WebDAVPropertyKey(key)
-        super(Properties, self).__setitem__(key, value)
+        super().__setitem__(key, value)
 
     def update(self, dict=None, **kwargs):
         if dict is None:
@@ -472,7 +474,7 @@ class ChildNames(zc.set.Set):
         return old
 
     def __iter__(self):
-        return iter(sorted(super(ChildNames, self).__iter__()))
+        return iter(sorted(super().__iter__()))
 
     def __repr__(self):
         return object.__repr__(self)
@@ -522,7 +524,7 @@ class AlwaysEmptyDict(collections.abc.MutableMapping):
 
 # Copy&paste from zeit.cms.content.sources to make it work in a ZEO environment
 # where we have no dogpile setup, no product config, etc.pp.
-class FeatureToggles(object):
+class FeatureToggles:
 
     config_url = 'ZEIT_VIVI_FEATURE_TOGGLE_SOURCE'
 
@@ -546,7 +548,7 @@ class FeatureToggles(object):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         log.debug('Getting %s' % url)
-        response = six.moves.urllib.request.urlopen(url)
+        response = urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(response)
 
 

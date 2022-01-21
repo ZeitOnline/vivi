@@ -22,7 +22,7 @@ Let's fill the cache by accessing the connector:
 >>> import zeit.connector.interfaces
 >>> connector = zope.component.getUtility(
 ...     zeit.connector.interfaces.IConnector)
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 
 There is one element in the cache now (/testing/). The invalidator requires two
@@ -40,14 +40,14 @@ the invalidator does not only invalidate the cache but reloads it at the same
 time:
 
 >>> dummy = connector._add_collection(
-...     'http://xml.zeit.de/%s/foo/' % TESTFOLDER())
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
+...     'http://xml.zeit.de/testing/foo/')
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 
 >>> while not invalidator():
 ...     pass
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'foo', u'http://xml.zeit.de/testing.../foo/')]
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[('foo', 'http://xml.zeit.de/testing.../foo/')]
 
 The updater works also for deleted resources. So delete w/o the connector
 knowing it:
@@ -55,29 +55,29 @@ knowing it:
 
 >>> conn = connector.get_connection()
 >>> result = conn.delete(connector._id2loc(
-...     'http://xml.zeit.de/%s/foo/' % TESTFOLDER()))
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'foo', u'http://xml.zeit.de/testing.../foo/')]
+...     'http://xml.zeit.de/testing/foo/'))
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[('foo', 'http://xml.zeit.de/testing.../foo/')]
 >>> while not invalidator():
 ...     pass
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 
 Let's see how this works with files:
 
 >>> from io import BytesIO
 >>> import zeit.connector.resource
->>> id = 'http://xml.zeit.de/%s/lt1' % TESTFOLDER()
+>>> id = 'http://xml.zeit.de/testing/lt1'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lt1', 'text',
 ...     BytesIO(b'Pop goes the weasel!'),
 ...     contentType='text/plain')
 >>> connector.add(res)
->>> res.id = 'http://xml.zeit.de/%s/lt2' % TESTFOLDER()
+>>> res.id = 'http://xml.zeit.de/testing/lt2'
 >>> connector.add(res)
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'lt1', u'http://xml.zeit.de/testing.../lt1'),
- (u'lt2', u'http://xml.zeit.de/testing.../lt2')]
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[('lt1', 'http://xml.zeit.de/testing.../lt1'),
+ ('lt2', 'http://xml.zeit.de/testing.../lt2')]
 >>> connector[id]
 <zeit.connector.resource.CachedResource object at 0x...>
 >>> connector[res.id]
@@ -86,13 +86,13 @@ Let's see how this works with files:
 The file is completely cached now. Delete it without the connector knowing it:
 
 >>> result = conn.delete(connector._id2loc(
-...     'http://xml.zeit.de/%s/lt1' % TESTFOLDER()))
+...     'http://xml.zeit.de/testing/lt1'))
 
 We can still list and retrieve it:
 
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'lt1', u'http://xml.zeit.de/testing.../lt1'),
- (u'lt2', u'http://xml.zeit.de/testing.../lt2')]
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[('lt1', 'http://xml.zeit.de/testing.../lt1'),
+ ('lt2', 'http://xml.zeit.de/testing.../lt2')]
 >>> connector[id]
 <zeit.connector.resource.CachedResource object at 0x...>
 
@@ -107,12 +107,12 @@ cache!):
 >>> dict(cache[res.id])
 {...}
 
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
-[(u'lt2', u'http://xml.zeit.de/testing.../lt2')]
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
+[('lt2', 'http://xml.zeit.de/testing.../lt2')]
 >>> connector[id]
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/testing.../lt1' does not exist."
+KeyError: "The resource 'http://xml.zeit.de/testing.../lt1' does not exist."
 >>> connector[res.id]
 <zeit.connector.resource.CachedResource object at 0x...>
 
@@ -126,29 +126,29 @@ invalidated the properties of the deleted object stay in the property cache
 even though the connector does not "adveritse" the object via listCollection:
 
 >>> result = conn.delete(connector._id2loc(
-...     'http://xml.zeit.de/%s/lt2' % TESTFOLDER()))
+...     'http://xml.zeit.de/testing/lt2'))
 >>> import zope.event
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(
-...     'http://xml.zeit.de/%s/' % TESTFOLDER()))
+...     'http://xml.zeit.de/testing/'))
 
 The collection is empty:
 
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 
 But we can still get the object:
 
->>> connector['http://xml.zeit.de/%s/lt2' % TESTFOLDER()]
+>>> connector['http://xml.zeit.de/testing/lt2']
 <zeit.connector.resource.CachedResource object at 0x...>
 
 The invalidator will find this stale property and remove it:
 
 >>> while not invalidator():
 ...     pass
->>> connector['http://xml.zeit.de/%s/lt2' % TESTFOLDER()]
+>>> connector['http://xml.zeit.de/testing/lt2']
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/testing.../lt2' does not exist."
+KeyError: "The resource 'http://xml.zeit.de/testing.../lt2' does not exist."
 
 
 Another, even worse thing happens when the same name is used for a collection
@@ -161,10 +161,10 @@ and a normal file. Let's create properties:
 We'll always get the container from the connector back:
 
 >>> connector[res.id].id
-u'http://xml.zeit.de/testing.../lt2/'
->>> connector['http://xml.zeit.de/%s/lt2/' % TESTFOLDER()].id
-u'http://xml.zeit.de/testing.../lt2/'
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
+'http://xml.zeit.de/testing.../lt2/'
+>>> connector['http://xml.zeit.de/testing/lt2/'].id
+'http://xml.zeit.de/testing.../lt2/'
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 
 The invalidor will clean it up:
@@ -174,12 +174,12 @@ The invalidor will clean it up:
 >>> connector[res.id]
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/testing.../lt2' does not exist."
->>> connector['http://xml.zeit.de/%s/lt2/' % TESTFOLDER()]
+KeyError: "The resource 'http://xml.zeit.de/testing.../lt2' does not exist."
+>>> connector['http://xml.zeit.de/testing/lt2/']
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/testing.../lt2' does not exist."
->>> list(connector.listCollection('http://xml.zeit.de/%s/' % TESTFOLDER()))
+KeyError: "The resource 'http://xml.zeit.de/testing.../lt2' does not exist."
+>>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 >>> list(cache.keys())
 ['http://xml.zeit.de/testing.../']

@@ -1,23 +1,268 @@
+from datetime import datetime, timedelta
+from io import BytesIO
 from zeit.connector.dav.interfaces import DAVNotFoundError
+from zeit.connector.interfaces import CopyError, MoveError
+from zeit.connector.resource import Resource
 from zeit.connector.testing import copy_inherited_functions
+import pytz
+import zeit.connector.interfaces
 import zeit.connector.testing
+import zope.interface.verify
 
 
-# XXX most of connector.txt and mock.txt should be merged into here
+class ContractReadWrite:
 
-class ContractTest(object):
+    def add_resource(self, name, **kw):
+        r = self.get_resource(name, **kw)
+        r = self.connector[r.id] = r
+        return r
+
+    def listCollection(self, id):  # XXX Why is this a generator?
+        return list(self.connector.listCollection(id))
+
+    def test_connector_provides_interface(self):
+        self.assertTrue(zope.interface.verify.verifyObject(
+            zeit.connector.interfaces.IConnector, self.connector))
+
+    def test_getitem_nonexistent_id_raises(self):
+        with self.assertRaises(KeyError):
+            self.connector['http://xml.zeit.de/nonexistent']
+
+    def test_contains_checks_resource_existence(self):
+        self.assertIn('http://xml.zeit.de/testing', self.connector)
+        self.assertNotIn('http://xml.zeit.de/nonexistent', self.connector)
+
+    def test_getitem_returns_resource(self):
+        self.add_resource(
+            'foo', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertTrue(zope.interface.verify.verifyObject(
+            zeit.connector.interfaces.IResource, res))
+        self.assertEqual('testing', res.type)
+        self.assertEqual('http://xml.zeit.de/testing/foo', res.id)
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+        self.assertEqual(b'mybody', res.data.read())
+
+    def test_listCollection_invalid_id_raises(self):
+        with self.assertRaises(ValueError):
+            self.listCollection('invalid')
 
     def test_listCollection_nonexistent_id_raises(self):
         with self.assertRaises(DAVNotFoundError):
-            list(self.connector.listCollection(
-                'http://xml.zeit.de/nonexistent'))
+            self.listCollection('http://xml.zeit.de/nonexistent')
+
+    def test_listCollection_returns_name_uniqueId_pairs(self):
+        self.assertEqual([], self.listCollection('http://xml.zeit.de/testing'))
+        self.add_resource('one')
+        self.add_resource('two')
+        self.assertEqual(
+            [('one', 'http://xml.zeit.de/testing/one'),
+             ('two', 'http://xml.zeit.de/testing/two')],
+            sorted(self.listCollection('http://xml.zeit.de/testing')))
+
+    def test_setitem_stores_ressource(self):
+        # Note: We're also testing this implicitly, due to self.add_resource().
+        res = self.get_resource('foo')
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual('testing', res.type)
+
+    def test_setitem_overwrites_ressource(self):
+        res = self.get_resource('foo', body=b'one')
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual(b'one', res.data.read())
+
+        res = self.get_resource('foo', body=b'two')
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual(b'two', res.data.read())
+
+    def test_add_is_convenience_for_setitem(self):
+        self.connector.add(self.get_resource('foo'))
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual('testing', res.type)
+
+    def test_delitem_removes_resource(self):
+        res = self.add_resource('foo')
+        self.assertIn(res.id, self.connector)
+        del self.connector[res.id]
+        self.assertNotIn(res.id, self.connector)
+
+    def test_changeProperties_updates_properties(self):
+        self.add_resource('foo', properties={('foo', 'foo-ns'): 'bar'})
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+        self.connector.changeProperties(
+            'http://xml.zeit.de/testing/foo', {('foo', 'foo-ns'): 'qux'})
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual('qux', res.properties[('foo', 'foo-ns')])
+
+    def test_collection_is_determined_by_mime_type(self):
+        # XXX This is the *only* place the mime type is still used, we should
+        # think about removing it.
+        collection = Resource(
+            None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        self.connector['http://xml.zeit.de/testing/folder/file'] = Resource(
+            None, None, 'text', BytesIO(b''))
+        self.assertEqual(['file'], [x[0] for x in self.listCollection(
+            'http://xml.zeit.de/testing/folder')])
+        # Re-adding a collection is a no-op
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        self.assertEqual(['file'], [x[0] for x in self.listCollection(
+            'http://xml.zeit.de/testing/folder')])
 
 
-class ContractReal(ContractTest, zeit.connector.testing.ConnectorTest):
+class ContractCopyMove:
 
-    copy_inherited_functions(ContractTest, locals())
+    def test_move_resource(self):
+        self.add_resource(
+            'source', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
+        self.connector.move(
+            'http://xml.zeit.de/testing/source',
+            'http://xml.zeit.de/testing/target')
+        self.assertEqual(['target'], [
+            x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
+        res = self.connector['http://xml.zeit.de/testing/target']
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+        self.assertEqual(b'mybody', res.data.read())
+
+    def test_move_to_existing_resource_overwrites(self):
+        self.add_resource('source', properties={('foo', 'foo-ns'): 'bar'})
+        self.add_resource('target')
+        self.connector.move(
+            'http://xml.zeit.de/testing/source',
+            'http://xml.zeit.de/testing/target')
+        self.assertEqual(['target'], [
+            x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
+        res = self.connector['http://xml.zeit.de/testing/target']
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+
+    def test_move_to_existing_differring_resource_raises(self):
+        # Note that this currently cannot "really" occur, because
+        # zeit.cms.repository.copypastemove uses INameChooser so the new name
+        # is guaranteed to be unique.
+        self.add_resource('source', body=b'one')
+        self.add_resource('target', body=b'two')
+        with self.assertRaises(MoveError):
+            self.connector.move(
+                'http://xml.zeit.de/testing/source',
+                'http://xml.zeit.de/testing/target')
+
+    def test_move_collection_to_existing_collection_raises(self):
+        # I'm not sure this is actually desired behaviour.
+        zeit.connector.testing.mkdir(
+            self.connector, 'http://xml.zeit.de/testing/source')
+        zeit.connector.testing.mkdir(
+            self.connector, 'http://xml.zeit.de/testing/target')
+        with self.assertRaises(MoveError):
+            self.connector.move(
+                'http://xml.zeit.de/testing/source',
+                'http://xml.zeit.de/testing/target')
+
+    def test_move_collection_applies_to_all_children(self):
+        zeit.connector.testing.mkdir(
+            self.connector, 'http://xml.zeit.de/testing/source')
+        self.connector['http://xml.zeit.de/testing/source/file'] = Resource(
+            None, None, 'text', BytesIO(b''))
+        self.connector.move(
+            'http://xml.zeit.de/testing/source',
+            'http://xml.zeit.de/testing/target')
+        self.assertNotIn(
+            'http://xml.zeit.de/testing/source/file', self.connector)
+        self.assertIn(
+            'http://xml.zeit.de/testing/target/file', self.connector)
+
+    def test_copy_nonexistent_raises(self):
+        with self.assertRaises(KeyError):
+            self.connector.copy(
+                'http://xml.zeit.de/nonexistent',
+                'http://xml.zeit.de/testing/target')
+
+    def test_copy_resource(self):
+        self.add_resource(
+            'source', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
+        self.connector.copy(
+            'http://xml.zeit.de/testing/source',
+            'http://xml.zeit.de/testing/target')
+        items = self.listCollection('http://xml.zeit.de/testing')
+        self.assertEqual(['source', 'target'], sorted([x[0] for x in items]))
+        for name, id in items:
+            res = self.connector[id]
+            self.assertEqual('testing', res.type)
+            self.assertEqual(id, res.id)
+            self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+            self.assertEqual(b'mybody', res.data.read())
+
+    def test_copy_to_already_existing_resource_raises(self):
+        self.add_resource('source', body=b'one')
+        self.add_resource('target', body=b'two')
+        with self.assertRaises(CopyError):
+            self.connector.copy(
+                'http://xml.zeit.de/testing/source',
+                'http://xml.zeit.de/testing/target')
+
+    def test_copy_collection_applies_to_all_children(self):
+        zeit.connector.testing.mkdir(
+            self.connector, 'http://xml.zeit.de/testing/source')
+        self.connector['http://xml.zeit.de/testing/source/file'] = Resource(
+            None, None, 'text', BytesIO(b''))
+        self.connector.copy(
+            'http://xml.zeit.de/testing/source',
+            'http://xml.zeit.de/testing/target')
+        self.assertIn(
+            'http://xml.zeit.de/testing/source/file', self.connector)
+        self.assertIn(
+            'http://xml.zeit.de/testing/target/file', self.connector)
+
+    def test_copy_collection_into_descendant_raises(self):
+        zeit.connector.testing.mkdir(
+            self.connector, 'http://xml.zeit.de/testing/target')
+        with self.assertRaises(CopyError):
+            self.connector.copy(
+                'http://xml.zeit.de/testing',
+                'http://xml.zeit.de/testing/target')
 
 
-class ContractMock(ContractTest, zeit.connector.testing.MockTest):
+class ContractLock:
 
-    copy_inherited_functions(ContractTest, locals())
+    def test_locked_shows_lock_status(self):
+        id = self.add_resource('foo').id
+        self.assertEqual((None, None, False), self.connector.locked(id))
+        self.connector.lock(
+            id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        user, until, mine = self.connector.locked(id)
+        self.assertTrue(mine)
+        self.assertEqual('zope.user', user)
+        self.assertTrue(isinstance(until, datetime))
+
+    def test_unlock_uses_locktoken_stored_in_connector(self):
+        id = self.add_resource('foo').id
+        lock = self.connector.lock(
+            id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        unlock = self.connector.unlock(id)
+        self.assertEqual((None, None, False), self.connector.locked(id))
+        self.assertEqual(unlock, lock)
+
+
+class ContractDAV(
+        ContractReadWrite,
+        ContractCopyMove,
+        ContractLock,
+        zeit.connector.testing.ConnectorTest):
+
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
+
+
+class ContractMock(
+        ContractReadWrite,
+        ContractCopyMove,
+        ContractLock,
+        zeit.connector.testing.MockTest):
+
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())

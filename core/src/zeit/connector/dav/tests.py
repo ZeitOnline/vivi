@@ -61,15 +61,15 @@ class TestURLEncode(unittest.TestCase):
                          'http://foo.testing/bar/baz')
 
     def test_unicode_hostname(self):
-        self.assertQuote(u'http://föö.testing/bar/baz',
+        self.assertQuote('http://föö.testing/bar/baz',
                          'http://föö.testing/bar/baz')
 
     def test_unicode_path(self):
-        self.assertQuote(u'http://foo.testing/bär/böz',
+        self.assertQuote('http://foo.testing/bär/böz',
                          'http://foo.testing/b%C3%A4r/b%C3%B6z')
 
     def test_query_and_fragment_quoted_to_path(self):
-        self.assertQuote(u'http://foo.testing/bar?a=b&c=d#fragment',
+        self.assertQuote('http://foo.testing/bar?a=b&c=d#fragment',
                          'http://foo.testing/bar%3Fa%3Db%26c%3Dd%23fragment')
 
 
@@ -101,16 +101,16 @@ class TestDAVResponse(unittest.TestCase):
         return DAVResponse(doc, doc.get_response_nodes()[0])
 
     def test_response_should_decode_urlencoded_urls(self):
-        self.assertEqual(u'/foo bar', self.get_response('/foo%20bar').url)
+        self.assertEqual('/foo bar', self.get_response('/foo%20bar').url)
 
     def test_response_should_decode_utf8_in_urlencode(self):
-        self.assertEqual(u'/foobär', self.get_response('/foob%C3%A4r').url)
+        self.assertEqual('/foobär', self.get_response('/foob%C3%A4r').url)
 
     def test_response_should_handle_unicode_urls(self):
-        self.assertEqual(u'/foobär', self.get_response('/foobär').url)
+        self.assertEqual('/foobär', self.get_response('/foobär').url)
 
     def test_response_should_handle_unicode_urls_with_quoting(self):
-        self.assertEqual(u'/foo bär', self.get_response('/foo%20bär').url)
+        self.assertEqual('/foo bär', self.get_response('/foo%20bär').url)
 
 
 class TestDAVResource(unittest.TestCase):

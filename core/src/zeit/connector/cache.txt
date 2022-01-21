@@ -255,11 +255,14 @@ is preserved.
 Note that we don't handle the case where the etags are equal but the bodies are
 different. We don't expect this to happen.
 
->>> import tempfile
->>> blob_dir = tempfile.mkdtemp()
->>> from zeit.connector.testing import get_storage
 >>> from ZODB import DB
->>> db = DB(get_storage(blob_dir))
+>>> import ZODB.blob
+>>> import tempfile
+>>> import zc.queue.tests
+>>> blob_dir = tempfile.mkdtemp()
+>>> storage = zc.queue.tests.ConflictResolvingMappingStorage('test')
+>>> storage = ZODB.blob.BlobStorage(blob_dir, storage)
+>>> db = DB(storage)
 >>> transactionmanager_1 = transaction.TransactionManager()
 >>> transactionmanager_2 = transaction.TransactionManager()
 >>> connection_1 = db.open(transaction_manager=transactionmanager_1)
@@ -425,7 +428,7 @@ which is equal but not the same:
 
 >>> dict(cache['id'])
 {<WebDAVPropertyKey ('ns', 'name')>: 'somevalue'}
->>> new_properties =  {('ns', 'name'): u'somevalue'}
+>>> new_properties =  {('ns', 'name'): 'somevalue'}
 
 Setting ``new_properties`` does not update the ``somevalue`` to unicode:
 
@@ -577,7 +580,7 @@ stores, the new value is not updated. We verify this by setting a new value
 which is equal but not the same:
 
 >>> cache['id'] = ['foo', 'bar', 'baz']
->>> new_children =  ['foo', 'bar', u'baz']
+>>> new_children =  ['foo', 'bar', 'baz']
 
 Setting ``new_children`` does not update ``baz`` to unicode:
 
