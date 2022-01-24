@@ -8,7 +8,6 @@ import logging
 import magic
 import os
 import os.path
-import pkg_resources
 import pytz
 import random
 import time
@@ -45,6 +44,16 @@ class Connector(zeit.connector.filesystem.Connector):
         super().__init__(repository_path)
         self.detect_mime_type = detect_mime_type
         self._reset()
+
+    @classmethod
+    @zope.interface.implementer(zeit.connector.interfaces.IConnector)
+    def factory(cls):
+        import zope.app.appsetup.product
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.connector') or {}
+        connector = super().factory()
+        connector.detect_mime_type = config.get('detect-mime-type', True)
+        return connector
 
     def _reset(self):
         self._locked = {}
@@ -306,12 +315,4 @@ class Connector(zeit.connector.filesystem.Connector):
         self._properties[id] = stored_properties
 
 
-def connector_factory():
-    import zope.app.appsetup.product
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.connector') or {}
-    repository_path = config.get('repository-path')
-    if not repository_path:
-        repository_path = pkg_resources.resource_filename(
-            __name__, 'testcontent')
-    return Connector(repository_path, config.get('detect-mime-type', True))
+factory = Connector.factory
