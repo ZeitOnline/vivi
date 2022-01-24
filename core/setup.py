@@ -47,6 +47,7 @@ setup(
         'pytz',
         'requests',
         'setuptools',
+        'sqlalchemy',
         'transaction',
         'tweepy',
         'urbanairship >= 3.1.0',
@@ -91,6 +92,7 @@ setup(
         'zope.schema',
         'zope.security',
         'zope.securitypolicy',
+        'zope.sqlalchemy',
         'zope.traversing',  # XXX Should move to [ui], but is entrenched
         'zope.xmlpickle',
     ],
