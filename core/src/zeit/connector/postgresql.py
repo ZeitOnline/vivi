@@ -1,8 +1,22 @@
+from gocept.cache.property import TransactionBoundCache
+from io import BytesIO
+from sqlalchemy import Column, ForeignKey, Boolean, LargeBinary, Unicode
+from sqlalchemy import select, delete
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import relationship
+from uuid import uuid4
+from zeit.connector.dav.interfaces import DAVNotFoundError
+from zeit.connector.resource import CachedResource
+import collections
+import os.path
 import sqlalchemy
 import sqlalchemy.orm
 import zeit.connector.interfaces
 import zope.interface
 import zope.sqlalchemy
+
+
+ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -23,9 +37,188 @@ class Connector:
             'zeit.connector') or {}
         return cls(config['dsn'])
 
+    def __getitem__(self, uniqueid):
+        uniqueid = self._normalize(uniqueid)
+        props = self._get_properties(uniqueid)
+        if props is None:
+            raise KeyError(uniqueid)
+        return CachedResource(
+            uniqueid, uniqueid.split('/')[-1], props.type,
+            props.to_dict, lambda: self._get_body(props.id),
+            'httpd/unix-directory' if props.is_collection else 'httpd/unknown')
+
+    property_cache = TransactionBoundCache('_v_property_cache', dict)
+
+    def _get_properties(self, uniqueid):
+        props = self.property_cache.get(uniqueid)
+        if props is not None:
+            return props
+        path = self._path(uniqueid)
+        props = self.session.execute(
+            select(Properties).filter_by(url=path)).scalars().first()
+        if props is not None:
+            self.property_cache[uniqueid] = props
+        return props
+
+    body_cache = TransactionBoundCache('_v_body_cache', dict)
+
+    def _get_body(self, id):  # XXX to be replaced by GCS (ZO-786)
+        body = self.body_cache.get(id)
+        if body is not None:
+            return body.open()
+        body = self.session.get(Body, id)
+        if body is not None:
+            self.body_cache[id] = body
+        return body.open()
+
+    def __contains__(self, uniqueid):
+        try:
+            self[uniqueid]
+            return True
+        except KeyError:
+            return False
+
+    def listCollection(self, uniqueid):
+        if uniqueid not in self:
+            # XXX mimic DAV behaviour (which likely should be KeyError instead)
+            raise DAVNotFoundError(404, 'Not Found', uniqueid, '')
+        uniqueid = self._normalize(uniqueid)
+        path = self._path(uniqueid)
+        for url in self.session.execute(
+                select(Properties.url).filter_by(parent_url=path)).scalars():
+            yield (url.replace(path + '/', '', 1), ID_NAMESPACE + url)
+
+    def __setitem__(self, uniqueid, resource):
+        resource.id = uniqueid
+        self.add(resource)
+
+    def add(self, resource, verify_etag=True):
+        uniqueid = self._normalize(resource.id)
+        props = self._get_properties(uniqueid)
+        exists = props is not None
+        if not exists:
+            props = Properties()
+            props.body = Body()
+
+        props.from_dict(resource.properties)
+        props.url = self._path(uniqueid)
+        props.parent_url = os.path.dirname(props.url)
+        props.type = resource.type
+        props.is_collection = resource.contentType == 'httpd/unix-directory'
+
+        resource.data.seek(0)
+        props.body.body = resource.data.read()
+
+        if not exists:
+            self.session.add(props)
+        if uniqueid in self.property_cache:
+            self.property_cache[uniqueid] = props
+            self.body_cache[uniqueid] = props.body
+
+    def changeProperties(self, uniqueid, properties):
+        uniqueid = self._normalize(uniqueid)
+        props = self._get_properties(uniqueid)
+        if props is None:
+            raise KeyError(uniqueid)
+        current = props.to_dict()
+        current.update(properties)
+        props.from_dict(current)
+        if uniqueid in self.property_cache:
+            self.property_cache[uniqueid] = props
+
+    def __delitem__(self, uniqueid):
+        uniqueid = self._normalize(uniqueid)
+        path = self._path(uniqueid)
+        self.session.execute(delete(Properties).filter_by(url=path))
+        self.property_cache.pop(uniqueid, None)
+        self.body_cache.pop(uniqueid, None)
+
+    @staticmethod
+    def _normalize(uniqueid):
+        if not uniqueid.startswith(ID_NAMESPACE):
+            raise ValueError('The id %r is invalid.' % uniqueid)
+        return uniqueid.rstrip('/')
+
+    @staticmethod
+    def _path(uniqueid):
+        return uniqueid.replace(ID_NAMESPACE, '', 1)
+
+    def copy(self, old_uniqueid, new_uniqueid):
+        pass
+
+    def move(self, old_uniqueid, new_uniqueid):
+        pass
+
+    def lock(self, uniqueid, principal, until):
+        pass
+
+    def unlock(self, uniqueid, locktoken=None):
+        pass
+
+    def locked(self, uniqueid):
+        pass
+
+    def search(self, attributes, expression):
+        pass
+
 
 factory = Connector.factory
 
 
 METADATA = sqlalchemy.MetaData()
 DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
+
+
+class Properties(DBObject):
+
+    __tablename__ = 'properties'
+
+    id = Column(Unicode, primary_key=True)
+    type = Column(Unicode, nullable=False, server_default='unknown')
+    url = Column(Unicode, unique=True, nullable=False)
+
+    parent_url = Column(Unicode, nullable=False)
+    is_collection = Column(Boolean, nullable=False, server_default='false')
+
+    unsorted = Column(JSONB)
+
+    body = relationship('Body', uselist=False, lazy='joined')
+
+    NS = 'http://namespaces.zeit.de/CMS/'
+
+    def to_dict(self):
+        props = {}
+        for ns, d in self.unsorted.items():
+            for k, v in d.items():
+                props[(k, self.NS + ns)] = v
+
+        props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
+        props[('type', self.NS + 'meta')] = self.type
+
+        return props
+
+    def from_dict(self, props):
+        if not self.id:
+            id = props.get(('uuid', self.NS + 'document'))
+            if id is None:
+                id = str(uuid4())
+            else:
+                id = id[10:-1]  # strip off `{urn:uuid:}`
+            self.id = id
+
+        unsorted = collections.defaultdict(dict)
+        for (k, ns), v in props.items():
+            unsorted[ns.replace(self.NS, '', 1)][k] = v
+        self.unsorted = unsorted
+
+
+class Body(DBObject):  # XXX to be replaced by GCS (ZO-786)
+
+    __tablename__ = 'bodies'
+
+    id = Column(Unicode, ForeignKey('properties.id', ondelete='cascade'),
+                primary_key=True)
+    body = Column(LargeBinary)
+
+    def open(self):
+        return BytesIO(self.body or b'')

@@ -158,6 +158,11 @@ class PostgresLayer(plone.testing.Layer):
         zeit.connector.postgresql.METADATA.drop_all(engine)
         zeit.connector.postgresql.METADATA.create_all(engine)
 
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        mkdir(connector, 'http://xml.zeit.de/testing')
+        transaction.commit()
+
     def tearDown(self):
         self['sql_connection'].close()
         del self['sql_connection']
