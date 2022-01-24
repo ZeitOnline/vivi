@@ -272,3 +272,14 @@ class ContractMock(
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
+
+
+class ContractSQL(
+        ContractReadWrite,
+        # ContractCopyMove,
+        # ContractLock,
+        zeit.connector.testing.SQLTest):
+
+    copy_inherited_functions(ContractReadWrite, locals())
+    # copy_inherited_functions(ContractCopyMove, locals())
+    # copy_inherited_functions(ContractLock, locals())
