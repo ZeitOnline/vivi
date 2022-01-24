@@ -1,7 +1,3 @@
 <configure xmlns="http://namespaces.zope.org/zope">
-
-  <utility provides="zeit.connector.interfaces.IConnector"
-           factory="zeit.connector.filesystem.connector_factory"
-           />
-
+  <utility factory="zeit.connector.filesystem.factory" />
 </configure>

@@ -1,7 +1,3 @@
 <configure xmlns="http://namespaces.zope.org/zope">
-
-  <utility provides="zeit.connector.interfaces.IConnector"
-           factory="zeit.connector.connector.transaction_bound_caching_connector_factory"
-           />
-
+  <utility factory=".connector.tbc_factory" />
 </configure>

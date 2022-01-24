@@ -45,6 +45,18 @@ class Connector:
     def __init__(self, repository_path):
         self.repository_path = repository_path
 
+    @classmethod
+    @zope.interface.implementer(zeit.connector.interfaces.IConnector)
+    def factory(cls):
+        import zope.app.appsetup.product
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.connector') or {}
+        connector = cls(config['repository-path'])
+        canonicalize = config.get('canonicalize-directories', None)
+        if canonicalize is not None:
+            connector.canonicalize_directories = ast.literal_eval(canonicalize)
+        return connector
+
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
         id = self._get_cannonical_id(id)
@@ -286,19 +298,7 @@ class Connector:
         return email.utils.formatdate(mtime, usegmt=True)
 
 
-def connector_factory():
-    import zope.app.appsetup.product
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.connector') or {}
-    repository_path = config.get('repository-path')
-    if not repository_path:
-        raise KeyError(
-            "Filesystem connector not configured properly.")
-    connector = Connector(repository_path)
-    canonicalize = config.get('canonicalize-directories', None)
-    if canonicalize is not None:
-        connector.canonicalize_directories = ast.literal_eval(canonicalize)
-    return connector
+factory = Connector.factory
 
 
 def parse_properties(xml):

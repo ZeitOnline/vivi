@@ -5,10 +5,7 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.connector" />
-  <utility 
-    provides="zeit.connector.interfaces.IConnector"
-    factory="zeit.connector.connector.transaction_bound_caching_connector_factory"
-    />
+  <include package="zeit.connector" file="tbcdav-connector.zcml" />
 
 </configure>
 
