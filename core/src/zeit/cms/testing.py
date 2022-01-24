@@ -154,20 +154,21 @@ class ZCMLLayer(plone.testing.Layer):
 
     defaultBases = (LOGGING_LAYER,)
 
-    def __init__(self, config_file='ftesting.zcml',
+    def __init__(self, config_file='ftesting.zcml', features=(),
                  name='ZCMLLayer', module=None, bases=()):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         if not config_file.startswith('/'):
             config_file = pkg_resources.resource_filename(module, config_file)
         self.config_file = config_file
+        self.features = features
         super(ZCMLLayer, self).__init__(
             name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
         self.assert_non_browser_modules_have_no_browser_zcml()
-        zeit.cms.zope._load_zcml(self.config_file)
+        zeit.cms.zope._load_zcml(self.config_file, self.features)
 
     def assert_non_browser_modules_have_no_browser_zcml(self):
         # Caveat emptor: This whole method is a bunch of heuristics, but
@@ -522,7 +523,11 @@ cms_product_config = """\
     base=pkg_resources.resource_filename(__name__, ''))
 
 
-CONFIG_LAYER = ProductConfigLayer(cms_product_config)
+CONFIG_LAYER = ProductConfigLayer(
+    cms_product_config, patches={'zeit.connector': {
+        'repository-path': pkg_resources.resource_filename(
+            'zeit.connector', 'testcontent')
+    }})
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))

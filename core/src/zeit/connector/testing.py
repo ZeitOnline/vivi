@@ -89,11 +89,12 @@ class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
 DAV_CONFIG_LAYER = ConfigLayer({})
 
 ZOPE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', bases=(DAV_CONFIG_LAYER, zeit.cms.testing.CONFIG_LAYER))
+    features=['zeit.connector'],
+    bases=(DAV_CONFIG_LAYER, zeit.cms.testing.CONFIG_LAYER))
 ZOPE_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_ZCML_LAYER,))
 
 REAL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-real.zcml',
+    features=['zeit.connector.nocache'],
     bases=(DAV_CONFIG_LAYER, zeit.cms.testing.CONFIG_LAYER))
 REAL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(REAL_ZCML_LAYER,))
 
@@ -102,7 +103,7 @@ FILESYSTEM_CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {'repository-path': pkg_resources.resource_filename(
         'zeit.connector', 'testcontent')})
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-filesystem.zcml',
+    features=['zeit.connector.filesystem'],
     bases=(FILESYSTEM_CONFIG_LAYER, zeit.cms.testing.CONFIG_LAYER))
 FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(
     bases=(FILESYSTEM_ZCML_LAYER,))
@@ -111,7 +112,7 @@ MOCK_CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     {'repository-path': pkg_resources.resource_filename(
         'zeit.connector', 'testcontent')})
 MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-mock.zcml',
+    features=['zeit.connector.mock'],
     bases=(MOCK_CONFIG_LAYER, zeit.cms.testing.CONFIG_LAYER,))
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 

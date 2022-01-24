@@ -1,3 +1,0 @@
-<configure xmlns="http://namespaces.zope.org/zope">
-  <utility factory=".connector.tbc_factory" />
-</configure>
