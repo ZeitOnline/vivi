@@ -10,6 +10,9 @@
   <utility factory=".connector.tbc_factory"
     zcml:condition="have zeit.connector.nocache"/>
 
+  <utility factory=".postgresql.factory"
+    zcml:condition="have zeit.connector.sql"/>
+
   <utility factory="zeit.connector.filesystem.factory"
     zcml:condition="have zeit.connector.filesystem"/>
 
