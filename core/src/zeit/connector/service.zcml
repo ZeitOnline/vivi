@@ -2,13 +2,18 @@
    xmlns="http://namespaces.zope.org/zope"
    xmlns:zcml="http://namespaces.zope.org/zcml">
 
-  <include package="zeit.connector" file="real-connector.zcml"
+  <utility factory=".zopeconnector.factory"
     zcml:condition="have zeit.connector"/>
-  <include package="zeit.connector" file="tbcdav-connector.zcml"
+  <subscriber handler=".zopeconnector.invalidate_cache"
+    zcml:condition="have zeit.connector"/>
+
+  <utility factory=".connector.tbc_factory"
     zcml:condition="have zeit.connector.nocache"/>
-  <include package="zeit.connector" file="filesystem-connector.zcml"
+
+  <utility factory="zeit.connector.filesystem.factory"
     zcml:condition="have zeit.connector.filesystem"/>
-  <include package="zeit.connector" file="mock-connector.zcml"
+
+  <utility factory=".mock.factory"
     zcml:condition="have zeit.connector.mock"/>
 
 </configure>
