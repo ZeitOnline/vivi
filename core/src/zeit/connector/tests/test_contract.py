@@ -12,6 +12,8 @@ import zope.interface.verify
 
 class ContractReadWrite:
 
+    NS = 'http://namespaces.zeit.de/CMS/testing'
+
     def add_resource(self, name, **kw):
         r = self.get_resource(name, **kw)
         r = self.connector[r.id] = r
@@ -34,13 +36,13 @@ class ContractReadWrite:
 
     def test_getitem_returns_resource(self):
         self.add_resource(
-            'foo', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
+            'foo', body='mybody', properties={('foo', self.NS): 'bar'})
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertTrue(zope.interface.verify.verifyObject(
             zeit.connector.interfaces.IResource, res))
         self.assertEqual('testing', res.type)
         self.assertEqual('http://xml.zeit.de/testing/foo', res.id)
-        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+        self.assertEqual('bar', res.properties[('foo', self.NS)])
         self.assertEqual(b'mybody', res.data.read())
 
     def test_listCollection_invalid_id_raises(self):
@@ -90,13 +92,13 @@ class ContractReadWrite:
         self.assertNotIn(res.id, self.connector)
 
     def test_changeProperties_updates_properties(self):
-        self.add_resource('foo', properties={('foo', 'foo-ns'): 'bar'})
+        self.add_resource('foo', properties={('foo', self.NS): 'bar'})
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+        self.assertEqual('bar', res.properties[('foo', self.NS)])
         self.connector.changeProperties(
-            'http://xml.zeit.de/testing/foo', {('foo', 'foo-ns'): 'qux'})
+            'http://xml.zeit.de/testing/foo', {('foo', self.NS): 'qux'})
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('qux', res.properties[('foo', 'foo-ns')])
+        self.assertEqual('qux', res.properties[('foo', self.NS)])
 
     def test_collection_is_determined_by_mime_type(self):
         # XXX This is the *only* place the mime type is still used, we should
@@ -118,18 +120,18 @@ class ContractCopyMove:
 
     def test_move_resource(self):
         self.add_resource(
-            'source', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
+            'source', body='mybody', properties={('foo', self.NS): 'bar'})
         self.connector.move(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
         self.assertEqual(['target'], [
             x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
         res = self.connector['http://xml.zeit.de/testing/target']
-        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+        self.assertEqual('bar', res.properties[('foo', self.NS)])
         self.assertEqual(b'mybody', res.data.read())
 
     def test_move_to_existing_resource_overwrites(self):
-        self.add_resource('source', properties={('foo', 'foo-ns'): 'bar'})
+        self.add_resource('source', properties={('foo', self.NS): 'bar'})
         self.add_resource('target')
         self.connector.move(
             'http://xml.zeit.de/testing/source',
@@ -137,7 +139,7 @@ class ContractCopyMove:
         self.assertEqual(['target'], [
             x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
         res = self.connector['http://xml.zeit.de/testing/target']
-        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+        self.assertEqual('bar', res.properties[('foo', self.NS)])
 
     def test_move_to_existing_differring_resource_raises(self):
         # Note that this currently cannot "really" occur, because
@@ -182,7 +184,7 @@ class ContractCopyMove:
 
     def test_copy_resource(self):
         self.add_resource(
-            'source', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
+            'source', body='mybody', properties={('foo', self.NS): 'bar'})
         self.connector.copy(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
@@ -192,7 +194,7 @@ class ContractCopyMove:
             res = self.connector[id]
             self.assertEqual('testing', res.type)
             self.assertEqual(id, res.id)
-            self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
+            self.assertEqual('bar', res.properties[('foo', self.NS)])
             self.assertEqual(b'mybody', res.data.read())
 
     def test_copy_to_already_existing_resource_raises(self):
