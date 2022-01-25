@@ -2,6 +2,7 @@ from io import BytesIO
 from urllib.parse import urlparse
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
+from zeit.connector.interfaces import ID_NAMESPACE
 import ast
 import email.utils
 import gocept.cache.property
@@ -15,8 +16,6 @@ import zeit.connector.resource
 import zope.app.file.image
 import zope.interface
 
-
-ID_NAMESPACE = 'http://xml.zeit.de/'
 
 log = logging.getLogger(__name__)
 

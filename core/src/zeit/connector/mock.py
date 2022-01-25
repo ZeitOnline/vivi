@@ -1,6 +1,7 @@
 from io import BytesIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import UUID_PROPERTY, CopyError, MoveError
+from zeit.connector.interfaces import ID_NAMESPACE
 import datetime
 import http.client
 import logging
@@ -19,8 +20,6 @@ import zeit.connector.filesystem
 import zeit.connector.interfaces
 import zope.event
 
-
-ID_NAMESPACE = 'http://xml.zeit.de/'
 
 log = logging.getLogger(__name__)
 
