@@ -92,13 +92,17 @@ class ContractReadWrite:
         self.assertNotIn(res.id, self.connector)
 
     def test_changeProperties_updates_properties(self):
-        self.add_resource('foo', properties={('foo', self.NS): 'bar'})
+        self.add_resource('foo', properties={
+            ('foo', self.NS): 'foo',
+            ('bar', self.NS): 'bar',
+        })
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('bar', res.properties[('foo', self.NS)])
+        self.assertEqual('foo', res.properties[('foo', self.NS)])
         self.connector.changeProperties(
             'http://xml.zeit.de/testing/foo', {('foo', self.NS): 'qux'})
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual('qux', res.properties[('foo', self.NS)])
+        self.assertEqual('bar', res.properties[('bar', self.NS)])
 
     def test_collection_is_determined_by_mime_type(self):
         # XXX This is the *only* place the mime type is still used, we should
