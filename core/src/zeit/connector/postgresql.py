@@ -11,6 +11,7 @@ import collections
 import os.path
 import sqlalchemy
 import sqlalchemy.orm
+import transaction
 import zeit.connector.interfaces
 import zope.interface
 import zope.sqlalchemy
@@ -222,3 +223,56 @@ class Body(DBObject):  # XXX to be replaced by GCS (ZO-786)
 
     def open(self):
         return BytesIO(self.body or b'')
+
+
+class PassthroughConnector(Connector):
+    """Development helper that transparently imports content objects (whenever
+    they are accessed) into SQL from another ("upstream") Connector.
+    This offers a quick way to getting started, without having to perform any
+    elaborate migration steps first, but it is meant for convenience only,
+    not any kind of production use.
+    """
+
+    def __init__(self, dsn, repository_path):
+        import zeit.connector.filesystem
+        import zeit.connector.zopeconnector
+
+        super().__init__(dsn)
+        METADATA.create_all(self.engine)  # convenience
+        if repository_path.startswith('http'):
+            self.upstream = zeit.connector.zopeconnector.ZopeConnector(
+                {'default': repository_path})
+        else:
+            self.upstream = zeit.connector.filesystem.Connector(
+                repository_path)
+
+    @classmethod
+    @zope.interface.implementer(zeit.connector.interfaces.IConnector)
+    def factory(cls):
+        import zope.app.appsetup.product
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.connector') or {}
+        return cls(config['dsn'], config['repository-path'])
+
+    def __getitem__(self, id):
+        try:
+            return super().__getitem__(id)
+        except KeyError:
+            return self._import(id)
+
+    def _import(self, id):
+        resource = self.upstream[id]
+        # Hacky. Remove this as it is not json-serializable, and also
+        # irrelevant except for DAV caches.
+        resource.properties.data.pop(('cached-time', 'INTERNAL'), None)
+        self[id] = resource
+        transaction.commit()
+        return resource
+
+    def listCollection(self, id):
+        if id not in self:
+            self._import(id)
+        return super().listCollection(id)
+
+
+passthrough_factory = PassthroughConnector.factory
