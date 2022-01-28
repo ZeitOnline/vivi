@@ -243,9 +243,9 @@ class Connector(zeit.connector.filesystem.Connector):
         return self._locked.get(id, (None, None, False))
 
     search_result_default = [
-            'http://xml.zeit.de/online/2007/01/Somalia',
-            'http://xml.zeit.de/online/2007/01/Saarland',
-            'http://xml.zeit.de/2006/52/Stimmts']
+        'http://xml.zeit.de/online/2007/01/Somalia',
+        'http://xml.zeit.de/online/2007/01/Saarland',
+        'http://xml.zeit.de/2006/52/Stimmts']
 
     def search(self, attributes, expression):
         log.debug("Searching: %s", expression._render())
