@@ -250,7 +250,7 @@ class Connector(zeit.connector.filesystem.Connector):
     def search(self, attributes, expression):
         log.debug("Searching: %s", expression._render())
 
-        unique_ids = self.search_result_default
+        unique_ids = self.search_result
 
         metadata = ('pm', '07') + len(attributes) * (None,)
         metadata = metadata[:len(attributes)]
