@@ -1,3 +1,5 @@
+from datetime import datetime
+import transaction
 import zeit.connector.testing
 
 
@@ -37,3 +39,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testing',
             ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
         }, davprops)
+
+    def test_provides_last_updated_column(self):
+        # Properly we would test that the value of the last_updated column
+        # increases on INSERT and UPDATE. But our test setup wraps everything
+        # in an outer transaction, which causes any SQL `NOW()` calls to return
+        # the start time of that transaction -- so we cannot detect an increase
+        res = self.get_resource('foo')
+        self.connector.add(res)
+        transaction.commit()
+        props = self.connector._get_properties(res.id)
+        self.assertIsInstance(props.last_updated, datetime)

@@ -1,7 +1,7 @@
 from gocept.cache.property import TransactionBoundCache
 from io import BytesIO
-from sqlalchemy import Column, ForeignKey, Boolean, LargeBinary, Unicode
-from sqlalchemy import select, delete
+from sqlalchemy import Boolean, LargeBinary, TIMESTAMP, Unicode
+from sqlalchemy import Column, ForeignKey, select, delete
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from uuid import uuid4
@@ -184,6 +184,10 @@ class Properties(DBObject):
     unsorted = Column(JSONB)
 
     body = relationship('Body', uselist=False, lazy='joined')
+
+    last_updated = Column(
+        TIMESTAMP(timezone=True),
+        server_default=sqlalchemy.func.now(), onupdate=sqlalchemy.func.now())
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
