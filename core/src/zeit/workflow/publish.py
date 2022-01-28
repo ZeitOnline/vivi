@@ -297,8 +297,10 @@ class PublishRetractTask(object):
         if lockable is not None and not lockable.ownLock():
             if lockable.locked():
                 raise zope.app.locking.interfaces.LockingError(
-                    _('The content object is locked by ${name}.',
-                      mapping=dict(name=lockable.locker())))
+                    _('The object ${name} is locked by ${user}.',
+                      mapping={
+                          'name': obj.uniqueId,
+                          'user': lockable.locker()}))
             else:
                 lockable.lock(timeout=240)
         timer.mark('Locked %s' % obj.uniqueId)

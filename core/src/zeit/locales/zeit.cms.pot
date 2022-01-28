@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Jan  4 08:47:55 2022\n"
+"POT-Creation-Date: Fri Jan 28 09:14:04 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:48
 #: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
-#: zeit/content/cp/interfaces.py:679
+#: zeit/content/cp/interfaces.py:710
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
@@ -294,7 +294,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/reference.py:56
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
 #: zeit/content/cp/browser/view.py:8
-#: zeit/content/image/browser/form.py:82
+#: zeit/content/image/browser/form.py:78
 #: zeit/edit/browser/form.py:66
 #: zeit/edit/browser/view.py:139
 msgid "Apply"
@@ -369,7 +369,7 @@ msgstr ""
 #: zeit/cms/repository/browser/file.py:35
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
-#: zeit/content/image/browser/imagegroup.py:215
+#: zeit/content/image/browser/imagegroup.py:211
 #: zeit/content/image/browser/interfaces.py:35
 msgid "File name"
 msgstr ""
@@ -568,7 +568,6 @@ msgid "not allowed"
 msgstr ""
 
 #: zeit/cms/checkout/manager.py:44
-#: zeit/workflow/publish.py:300
 msgid "The content object is locked by ${name}."
 msgstr ""
 
@@ -654,7 +653,7 @@ msgstr ""
 #: zeit/content/advertisement/browser/form.py:18
 #: zeit/content/cp/browser/form.py:34
 #: zeit/content/gallery/browser/form.py:27
-#: zeit/content/image/browser/form.py:21
+#: zeit/content/image/browser/form.py:20
 #: zeit/content/infobox/browser/form.py:26
 #: zeit/content/infobox/browser/form.py:81
 #: zeit/content/video/browser/video.py:36
@@ -881,15 +880,18 @@ msgid "Subtitle"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:208
+#: zeit/content/cp/interfaces.py:556
 msgid "Teaser title"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:213
+#: zeit/content/cp/interfaces.py:560
 #: zeit/content/video/browser/object-details-body.pt:28
 msgid "Teaser text"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:218
+#: zeit/content/cp/interfaces.py:552
 msgid "Teaser kicker"
 msgstr ""
 
@@ -999,7 +1001,7 @@ msgid "Invalid hex literal"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:475
-#: zeit/content/cp/interfaces.py:595
+#: zeit/content/cp/interfaces.py:626
 msgid "XML Source"
 msgstr ""
 
@@ -1658,7 +1660,7 @@ msgstr ""
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:49
 #: zeit/content/dynamicfolder/materialize.py:103
-#: zeit/workflow/publish.py:442
+#: zeit/workflow/publish.py:444
 #: zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr ""
@@ -1784,9 +1786,9 @@ msgstr ""
 #: zeit/content/article/interfaces.py:59
 #: zeit/content/cp/interfaces.py:97
 #: zeit/content/cp/interfaces.py:346
-#: zeit/content/cp/interfaces.py:658
+#: zeit/content/cp/interfaces.py:689
 #: zeit/content/image/browser/configure.zcml:249
-#: zeit/content/image/browser/imagegroup.py:223
+#: zeit/content/image/browser/imagegroup.py:219
 #: zeit/content/image/image.py:145
 #: zeit/content/portraitbox/interfaces.py:18
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -1797,7 +1799,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:179
 #: zeit/content/article/interfaces.py:60
 #: zeit/content/cp/interfaces.py:347
-#: zeit/content/cp/interfaces.py:659
+#: zeit/content/cp/interfaces.py:690
 #: zeit/content/image/interfaces.py:430
 #: zeit/push/interfaces.py:358
 msgid "Drag an image group here"
@@ -2391,7 +2393,7 @@ msgstr ""
 #: zeit/content/article/edit/video.py:66
 #: zeit/content/video/browser/video.py:63
 #: zeit/content/video/browser/video.py:68
-#: zeit/content/video/video.py:142
+#: zeit/content/video/video.py:135
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
 msgstr ""
@@ -2546,12 +2548,12 @@ msgid "Collapse preceding content"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:422
-#: zeit/content/cp/interfaces.py:710
+#: zeit/content/cp/interfaces.py:741
 msgid "Cardstack id"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:424
-#: zeit/content/cp/interfaces.py:713
+#: zeit/content/cp/interfaces.py:744
 msgid "Advertorial?"
 msgstr ""
 
@@ -3041,6 +3043,10 @@ msgstr ""
 msgid "Jobbox Ticker Block"
 msgstr ""
 
+#: zeit/content/cp/blocks/localteaser.py:96
+msgid "Overridable teaser"
+msgstr ""
+
 #: zeit/content/cp/blocks/markup.py:26
 msgid "Markup block"
 msgstr ""
@@ -3057,11 +3063,11 @@ msgstr ""
 msgid "raw text block"
 msgstr ""
 
-#: zeit/content/cp/blocks/teaser.py:37
+#: zeit/content/cp/blocks/teaser.py:25
 msgid "No default teaser layout defined for this area."
 msgstr ""
 
-#: zeit/content/cp/blocks/teaser.py:83
+#: zeit/content/cp/blocks/teaser.py:87
 msgid "List of teasers"
 msgstr ""
 
@@ -3229,7 +3235,7 @@ msgid "Add storystream"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:59
+#: zeit/content/image/browser/imagegroup.py:58
 #: zeit/newsletter/browser/workflow.py:25
 #: zeit/workflow/browser/form.py:129
 #: zeit/workflow/browser/form.py:161
@@ -3442,83 +3448,83 @@ msgid "Background color (ZMO only)"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:535
-#: zeit/content/cp/interfaces.py:555
+#: zeit/content/cp/interfaces.py:586
 msgid "Force image on mobile"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:581
+#: zeit/content/cp/interfaces.py:612
 msgid "The root element must be <container>."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:584
+#: zeit/content/cp/interfaces.py:615
 msgid "cp:type must be 'xml'."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:587
+#: zeit/content/cp/interfaces.py:618
 msgid "No or empty cp:__name__ attribute."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:604
+#: zeit/content/cp/interfaces.py:635
 #: zeit/content/video/playlist.py:29
 msgid "Playlist"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:612
+#: zeit/content/cp/interfaces.py:643
 msgid "CP Extra Id"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:631
+#: zeit/content/cp/interfaces.py:662
 #: zeit/workflow/interfaces.py:27
 msgid "From"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:632
+#: zeit/content/cp/interfaces.py:663
 #: zeit/workflow/interfaces.py:29
 msgid "To"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:663
+#: zeit/content/cp/interfaces.py:694
 msgid "Animate"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:670
+#: zeit/content/cp/interfaces.py:701
 msgid "left"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:671
+#: zeit/content/cp/interfaces.py:702
 msgid "center"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:672
+#: zeit/content/cp/interfaces.py:703
 msgid "right"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:680
+#: zeit/content/cp/interfaces.py:711
 msgid "Use Markdown"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:684
+#: zeit/content/cp/interfaces.py:715
 msgid "Alignment"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:685
+#: zeit/content/cp/interfaces.py:716
 msgid "Choose alignment"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:717
+#: zeit/content/cp/interfaces.py:748
 msgid "Background color"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:718
+#: zeit/content/cp/interfaces.py:749
 msgid "Choose a background color"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:731
+#: zeit/content/cp/interfaces.py:762
 #: zeit/content/modules/interfaces.py:81
 msgid "Jobbox Ticker"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:757
+#: zeit/content/cp/interfaces.py:788
 msgid "Enable RSS Tracking-Parameter"
 msgstr ""
 
@@ -3596,7 +3602,7 @@ msgid "Edit gallery entry"
 msgstr ""
 
 #: zeit/content/gallery/browser/overview.pt:17
-#: zeit/content/image/browser/form.py:73
+#: zeit/content/image/browser/form.py:69
 msgid "Edit image"
 msgstr ""
 
@@ -3673,7 +3679,7 @@ msgid "Image (single)"
 msgstr ""
 
 #: zeit/content/image/browser/configure.zcml:210
-#: zeit/content/image/browser/imagegroup.py:209
+#: zeit/content/image/browser/imagegroup.py:205
 #: zeit/content/image/interfaces.py:429
 msgid "Image group"
 msgstr ""
@@ -3698,20 +3704,20 @@ msgstr ""
 msgid "Copyright changed for: ${changes}"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:17
-#: zeit/content/image/browser/imagegroup.py:240
+#: zeit/content/image/browser/form.py:16
+#: zeit/content/image/browser/imagegroup.py:236
 msgid "Image data"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:24
+#: zeit/content/image/browser/form.py:23
 msgid "Image source"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:52
+#: zeit/content/image/browser/form.py:51
 msgid "Add image"
 msgstr ""
 
-#: zeit/content/image/browser/form.py:108
+#: zeit/content/image/browser/form.py:104
 msgid "edit image"
 msgstr ""
 
@@ -3720,7 +3726,7 @@ msgid "View image"
 msgstr ""
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:220
+#: zeit/content/image/browser/imagegroup.py:216
 msgid "Dimensions"
 msgstr ""
 
@@ -3740,27 +3746,27 @@ msgstr ""
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:39
+#: zeit/content/image/browser/imagegroup.py:38
 msgid "Add image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:161
+#: zeit/content/image/browser/imagegroup.py:157
 msgid "Add motif"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:169
+#: zeit/content/image/browser/imagegroup.py:165
 msgid "Edit image group"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:174
+#: zeit/content/image/browser/imagegroup.py:170
 msgid "Add viewport to master image mapping"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:182
+#: zeit/content/image/browser/imagegroup.py:178
 msgid "Image group metadata"
 msgstr ""
 
-#: zeit/content/image/browser/imagegroup.py:202
+#: zeit/content/image/browser/imagegroup.py:198
 msgid "Master image"
 msgstr ""
 
@@ -4215,10 +4221,10 @@ msgid "Python script"
 msgstr ""
 
 #: zeit/content/video/browser/video.py:53
-msgid "Teaser elements"
+msgid "Video-Thumbnail"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:109
+#: zeit/content/video/browser/video.py:91
 msgid "View playlist"
 msgstr ""
 
@@ -4247,34 +4253,30 @@ msgid "Video expires on"
 msgstr ""
 
 #: zeit/content/video/interfaces.py:57
-msgid "URI of the thumbnail"
-msgstr ""
-
-#: zeit/content/video/interfaces.py:66
 msgid "URI of the still image"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:71
+#: zeit/content/video/interfaces.py:62
 msgid "Renditions of the Video"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:85
+#: zeit/content/video/interfaces.py:76
 msgid "Video still copyright"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:91
+#: zeit/content/video/interfaces.py:82
 msgid "Has advertisement"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:95
+#: zeit/content/video/interfaces.py:86
 msgid "Video type"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:109
+#: zeit/content/video/interfaces.py:100
 msgid "Video IDs"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:115
+#: zeit/content/video/interfaces.py:106
 msgid "Videos in the playlist"
 msgstr ""
 
@@ -5136,11 +5138,15 @@ msgstr ""
 msgid "Collective Retraction"
 msgstr ""
 
-#: zeit/workflow/publish.py:390
+#: zeit/workflow/publish.py:300
+msgid "The object ${name} is locked by ${user}."
+msgstr ""
+
+#: zeit/workflow/publish.py:392
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:501
+#: zeit/workflow/publish.py:503
 msgid "Retracted"
 msgstr ""
 
