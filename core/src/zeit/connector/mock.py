@@ -53,7 +53,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._paths = {}
         self._deleted = set()
         self._properties = {}
-        self.search_result_default = self.search_result_default
+        self.search_result = self.search_result_default[:]
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
