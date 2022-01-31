@@ -111,10 +111,15 @@ class ProductConfigLayer(plone.testing.Layer):
             StringIO(text))[package]
 
     def setUp(self):
+        self.previous = {}
+
+        product = zope.app.appsetup.product.getProductConfiguration(
+            self.package)
+        if product:
+            self.previous[self.package] = copy.deepcopy(product)
         zope.app.appsetup.product.setProductConfiguration(
             self.package, copy.deepcopy(self.config))
 
-        self.previous = {}
         for package, config in self.patches.items():
             previous = self.previous[package] = {}
             product = zope.app.appsetup.product.getProductConfiguration(
