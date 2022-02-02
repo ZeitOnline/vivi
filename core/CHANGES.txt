@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.9.1 (2022-02-02)
+------------------
+
+MAINT:
+- Include the locked uniqueId in publish errormessage
+
+
 5.9.0 (2022-01-20)
 ------------------
 
