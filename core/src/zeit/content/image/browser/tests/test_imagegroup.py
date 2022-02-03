@@ -87,6 +87,22 @@ class ImageGroupBrowserTest(
         zeit.content.image.testing.BrowserTestCase,
         ImageGroupHelperMixin):
 
+    def test_resize_too_large_images_before_upload_width(self):
+        self.add_imagegroup()
+        self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
+        self.save_imagegroup()
+        img = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/imagegroup/shoppingmeile-4001x2251px.jpg')
+        assert(img.getImageSize()) == (4000, 2250)
+
+    def test_resize_too_large_images_before_upload_height(self):
+        self.add_imagegroup()
+        self.upload_primary_image('shoppingmeile_2251x4001px.jpg')
+        self.save_imagegroup()
+        img = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg')
+        assert(img.getImageSize()) == (2250, 4000)
+
     def test_traversing_thumbnail_yields_images(self):
         create_image_group_with_master_image()
         b = self.browser

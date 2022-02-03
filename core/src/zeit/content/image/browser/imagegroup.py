@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 from zeit.content.image.browser.mdb import MDBImportWidget
+from zeit.content.image.transform import ImageTransform
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
@@ -63,6 +64,7 @@ class AddForm(FormBase,
             'zeit.content.image')
         if not config.get('mdb-api-url'):
             self.form_fields = self.form_fields.omit('mdb_blob')
+        self.maxpx = config.get('max-border-px', 4000)
         super(AddForm, self).__init__(*args, **kw)
 
     def validate(self, action, data):
@@ -138,6 +140,12 @@ class AddForm(FormBase,
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
         self.update_file(image, blob)
+        wxh = image.getImageSize()
+        if max(wxh) > self.maxpx:
+            if wxh.index(max(wxh)) == 0:
+                image = ImageTransform(image).resize(width=4000)
+            else:
+                image = ImageTransform(image).resize(height=4000)
         name = getattr(blob, 'filename', '')
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)
