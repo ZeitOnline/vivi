@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.9.2 (2022-02-03)
+------------------
+
+- ZO-538: Dummy changelog to force container rebuild with current zeit.newsimport release
+
+
 5.9.1 (2022-02-02)
 ------------------
 
