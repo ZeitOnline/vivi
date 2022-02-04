@@ -155,7 +155,7 @@ def download_teaser_image(folder, bcdata, ttype='still'):
         log.error(exc)
         image = None
     try:
-        return zeit.brightcove.convert.image_group_from_image(
+        return zeit.content.image.imagegroup.ImageGroup.from_image(
             folder,
             name,
             image)
