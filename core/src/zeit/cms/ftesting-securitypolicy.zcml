@@ -5,11 +5,13 @@
   <!-- Security policy for tests -->
 
   <include package="zope.principalregistry" file="meta.zcml" />
+  <include package="zope.principalregistry" />
 
   <include package="zope.securitypolicy" />
   <securityPolicy
     component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
+  <include package="zope.dublincore" />
   <include package="zeit.cms" file="permissions.zcml" />
 
   <!-- Roles -->
