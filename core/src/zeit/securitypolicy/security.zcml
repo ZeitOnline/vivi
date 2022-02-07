@@ -235,6 +235,10 @@
     role="zeit.CvD"
     permission="zeit.cms.admin.View"
     />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.MoveContent"
+    />
 
   <!-- SEO grants -->
   <grant
