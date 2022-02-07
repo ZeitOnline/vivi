@@ -92,6 +92,7 @@ setup(
         'zope.schema',
         'zope.security',
         'zope.securitypolicy',
+        'zope.site',
         'zope.sqlalchemy',
         'zope.traversing',  # XXX Should move to [ui], but is entrenched
         'zope.xmlpickle',
@@ -163,7 +164,6 @@ setup(
             'zope.login',
             'zope.pluggableauth',
             'zope.session',
-            'zope.site',
             'zope.viewlet',
         ],
         'test': [
