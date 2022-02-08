@@ -43,6 +43,11 @@ def maybe_convert_egg_url(url):
     return 'file://' + pkg_resources.resource_filename(u.netloc, u.path[1:])
 
 
+class ZCMLLoaded:
+    """Event to run one-time setup code as part of ZCML execution,
+    for setup that doesn't have a (single) "utility"-type result."""
+
+
 def load_zcml(settings):
     feature = 'zcml.feature.'
     return _load_zcml(
@@ -62,6 +67,7 @@ def _load_zcml(filename, features=(), package=None):
     zope.configuration.xmlconfig.include(
         context, file=filename, package=package)
     context.execute_actions()
+    zope.event.notify(ZCMLLoaded())
     return context
 
 
@@ -77,7 +83,7 @@ def create_zodb_database(uri):
     return db
 
 
-@grok.subscribe(zope.processlifetime.IDatabaseOpenedWithRoot)
+@grok.subscribe(ZCMLLoaded)
 def configure_dogpile_cache(event):
     import pyramid_dogpile_cache2
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
@@ -96,7 +102,7 @@ try:
 except ImportError:  # UI-only dependency
     pass
 else:
-    @grok.subscribe(zope.processlifetime.IDatabaseOpenedWithRoot)
+    @grok.subscribe(ZCMLLoaded)
     def set_passwords(event):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms.principals')
