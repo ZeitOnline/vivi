@@ -198,7 +198,8 @@ class ZCMLLayer(plone.testing.Layer):
         if not os.path.exists(configure_zcml):
             return  # be defensive
 
-        zcml = open(configure_zcml).read().splitlines()
+        with open(configure_zcml) as f:
+            zcml = f.read().splitlines()
         for directive in ['namespaces.zope.org/browser', 'gocept:pagelet']:
             for i, line in enumerate(zcml):
                 if directive in line:
