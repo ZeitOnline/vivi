@@ -7,7 +7,7 @@
   <include package="grokcore.component" file="meta.zcml" />
   <include file="meta.zcml" />
 
-  <grok:grok package="." exclude="application browser celery generation testcontenttype testing webtest" />
+  <grok:grok package="." exclude="application browser celery generation testcontenttype testing webtest zope" />
 
   <!-- Include requirements -->
   <include package="zeit.cms" file="securitypolicy.zcml" />
