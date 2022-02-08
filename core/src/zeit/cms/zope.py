@@ -77,7 +77,7 @@ def create_zodb_database(uri):
     return db
 
 
-@grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
+@grok.subscribe(zope.processlifetime.IDatabaseOpenedWithRoot)
 def configure_dogpile_cache(event):
     import pyramid_dogpile_cache2
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
@@ -96,7 +96,7 @@ try:
 except ImportError:  # UI-only dependency
     pass
 else:
-    @grok.subscribe(zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
+    @grok.subscribe(zope.processlifetime.IDatabaseOpenedWithRoot)
     def set_passwords(event):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms.principals')
