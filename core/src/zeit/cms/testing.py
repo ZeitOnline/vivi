@@ -165,14 +165,6 @@ class ZCMLLayer(plone.testing.Layer):
             name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
-        # We'd be fine with calling zope.configuration directly here, but we
-        # need to make zope.app.appsetup.getConfigContext() work, which we
-        # cannot do from the outside due to name mangling, sigh.
-        #
-        # context = zope.configuration.config.ConfigurationMachine()
-        # zope.configuration.xmlconfig.registerCommonDirectives(context)
-        # zope.configuration.xmlconfig.file(self.config_file, context=context)
-        # context.execute_actions()
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
         self.assert_non_browser_modules_have_no_browser_zcml()
         zeit.cms.zope._load_zcml(self.config_file)
