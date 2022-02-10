@@ -267,7 +267,7 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
 
     def test_download_teaser_for_locked_image_ignored(self):
         with mock.patch(
-            'zeit.brightcove.convert.image_group_from_image'
+            'zeit.content.image.imagegroup.ImageGroup.from_image'
         ) as patched:
             patched.side_effect = zope.app.locking.interfaces.LockingError()
             assert zeit.brightcove.update.download_teaser_image(

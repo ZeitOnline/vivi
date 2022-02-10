@@ -167,6 +167,25 @@ class ImageGroupBase(object):
             url += u'__{fill}'.format(fill=fill_color)
         return url
 
+    @classmethod
+    def from_image(cls, where, name, image):
+        # takes a local image, creates an image group with that
+        # image as master
+        # it then adds the imagegroup the `where` folder and
+        # adds the image into the image group
+        # it then returns the imagegroup from the repository
+        group = cls()
+        if image is not None:
+            if image.__name__ is None:
+                image_name = 'master.' + image.format
+            else:
+                image_name = image.__name__
+            group.master_images = (('desktop', image_name),)
+        where[name] = group
+        if image is not None:
+            where[name][image_name] = image
+        return where[name]
+
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class VariantTraverser(object):
