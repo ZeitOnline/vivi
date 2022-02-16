@@ -1,4 +1,5 @@
 from functools import partial
+from gocept.cache.property import TransactionBoundCache
 from io import BytesIO
 from logging import getLogger
 from google.cloud import storage
@@ -113,12 +114,16 @@ class Connector:
         if path is not None:
             return path.properties
 
+    body_cache = TransactionBoundCache('_v_body_cache', dict)
+
     def _get_body(self, id):
+        body = self.body_cache.get(id)
+        if body is not None:
+            return BytesIO(body)
         blob = self.bucket.blob(self._blobpath(id))
-        body = BytesIO()
-        blob.download_to_file(body)
-        body.seek(0)
-        return body
+        body = blob.download_as_bytes()
+        self.body_cache[id] = body
+        return BytesIO(body)
 
     def __contains__(self, uniqueid):
         try:
@@ -159,6 +164,7 @@ class Connector:
         props.is_collection = resource.contentType == 'httpd/unix-directory'
 
         if not props.is_collection:
+            self.body_cache.pop(props.id, None)
             blob = self.bucket.blob(self._blobpath(props.id))
             resource.data.seek(0)
             blob.upload_from_file(resource.data)
