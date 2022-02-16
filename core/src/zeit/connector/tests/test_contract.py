@@ -91,6 +91,24 @@ class ContractReadWrite:
         del self.connector[res.id]
         self.assertNotIn(res.id, self.connector)
 
+    def test_delitem_of_collection_keeps_children(self):
+        collection = Resource(
+            None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        collection_id = collection.id + '/'
+        del collection
+        one_id = self.add_resource('folder/one').id
+        two_id = self.add_resource('folder/two').id
+        self.assertEqual(
+            [('one', 'http://xml.zeit.de/testing/folder/one'),
+             ('two', 'http://xml.zeit.de/testing/folder/two')],
+            sorted(self.listCollection(collection_id)))
+        del self.connector[collection_id]
+        self.assertNotIn(collection_id, self.connector)
+        # the children are still there, even though the collection was deleted
+        self.assertIn(one_id, self.connector)
+        self.assertIn(two_id, self.connector)
+
     def test_changeProperties_updates_properties(self):
         self.add_resource('foo', properties={
             ('foo', self.NS): 'foo',

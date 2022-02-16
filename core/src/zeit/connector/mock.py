@@ -170,8 +170,9 @@ class Connector(zeit.connector.filesystem.Connector):
     def __delitem__(self, id):
         id = self._get_cannonical_id(id)
         self[id]  # may raise KeyError
-        for name, uid in self.listCollection(id):
-            del self[uid]
+        # WebDAV doesn't delete children
+        # for name, uid in self.listCollection(id):
+        #     del self[uid]
         self._deleted.add(id)
         self._data.pop(id, None)
         self._properties.pop(id, None)

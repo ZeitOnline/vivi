@@ -148,6 +148,8 @@ class Connector:
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         (parent_path, name) = self._pathkey(uniqueid)
+        # delete collection, but keep children
+        # the WebDAV connector behaves the same way
         self.session.execute(
             delete(Paths)
             .filter_by(parent_path=parent_path, name=name))
