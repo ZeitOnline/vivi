@@ -2,8 +2,10 @@ from gocept.cache.property import TransactionBoundCache
 from io import BytesIO
 from sqlalchemy import Boolean, LargeBinary, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select, delete
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import backref
 from sqlalchemy.orm import relationship
 from uuid import uuid4
 from zeit.connector.dav.interfaces import DAVNotFoundError
@@ -55,10 +57,9 @@ class Connector:
         props = self.property_cache.get(uniqueid)
         if props is not None:
             return props
-        path = self._path(uniqueid)
-        props = self.session.execute(
-            select(Properties).filter_by(path=path)).scalars().one_or_none()
-        if props is not None:
+        path = self.session.get(Paths, self._pathkey(uniqueid))
+        if path is not None:
+            props = path.properties
             self.property_cache[uniqueid] = props
         return props
 
@@ -85,11 +86,11 @@ class Connector:
             # XXX mimic DAV behaviour (which likely should be KeyError instead)
             raise DAVNotFoundError(404, 'Not Found', uniqueid, '')
         uniqueid = self._normalize(uniqueid)
-        parent_path = self._path(uniqueid)
-        for path in self.session.execute(
-                select(Properties.path)
+        parent_path = '/'.join(self._pathkey(uniqueid))
+        for name in self.session.execute(
+                select(Paths.name)
                 .filter_by(parent_path=parent_path)).scalars():
-            yield (path.replace(parent_path + '/', '', 1), ID_NAMESPACE + path)
+            yield (name, f"{ID_NAMESPACE}{parent_path}/{name}")
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
@@ -100,20 +101,20 @@ class Connector:
         props = self._get_properties(uniqueid)
         exists = props is not None
         if not exists:
-            props = Properties()
-            props.body = Body()
+            props = Properties(body=Body())
+            path = Paths(properties=props)
+            self.session.add(path)
+        else:
+            path = props.path
 
+        (path.parent_path, path.name) = self._pathkey(uniqueid)
         props.from_webdav(resource.properties)
-        props.path = self._path(uniqueid)
-        props.parent_path = os.path.dirname(props.path)
         props.type = resource.type
         props.is_collection = resource.contentType == 'httpd/unix-directory'
 
         resource.data.seek(0)
         props.body.body = resource.data.read()
 
-        if not exists:
-            self.session.add(props)
         if uniqueid in self.property_cache:
             self.property_cache[uniqueid] = props
             self.body_cache[uniqueid] = props.body
@@ -131,8 +132,10 @@ class Connector:
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        path = self._path(uniqueid)
-        self.session.execute(delete(Properties).filter_by(path=path))
+        (parent_path, name) = self._pathkey(uniqueid)
+        self.session.execute(
+            delete(Paths)
+            .filter_by(parent_path=parent_path, name=name))
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
 
@@ -143,8 +146,11 @@ class Connector:
         return uniqueid.rstrip('/')
 
     @staticmethod
-    def _path(uniqueid):
-        return uniqueid.replace(ID_NAMESPACE, '', 1)
+    def _pathkey(uniqueid):
+        (parent_path, name) = os.path.split(
+            uniqueid.replace(ID_NAMESPACE, '', 1))
+        parent_path = parent_path.rstrip('/')
+        return (parent_path, name)
 
     def copy(self, old_uniqueid, new_uniqueid):
         pass
@@ -172,15 +178,28 @@ METADATA = sqlalchemy.MetaData()
 DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 
 
+class Paths(DBObject):
+
+    __tablename__ = 'paths'
+    __table_args__ = (
+        UniqueConstraint('parent_path', 'name', 'id'),
+    )
+
+    parent_path = Column(Unicode, primary_key=True, index=True)
+    name = Column(Unicode, primary_key=True)
+
+    id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'))
+    properties = relationship(
+        'Properties', uselist=False, lazy='joined',
+        backref=backref('path', uselist=False))
+
+
 class Properties(DBObject):
 
     __tablename__ = 'properties'
 
     id = Column(UUID, primary_key=True)
     type = Column(Unicode, nullable=False, server_default='unknown')
-    path = Column(Unicode, unique=True, nullable=False)
-
-    parent_path = Column(Unicode, nullable=False)
     is_collection = Column(Boolean, nullable=False, server_default='false')
 
     unsorted = Column(JSONB)
@@ -206,12 +225,14 @@ class Properties(DBObject):
 
     def from_webdav(self, props):
         if not self.id:
+            assert not self.path.id
             id = props.get(('uuid', self.NS + 'document'))
             if id is None:
                 id = str(uuid4())
             else:
                 id = id[10:-1]  # strip off `{urn:uuid:}`
             self.id = id
+            self.path.id = id
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
