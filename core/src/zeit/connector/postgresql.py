@@ -57,7 +57,7 @@ class Connector:
             return props
         path = self._path(uniqueid)
         props = self.session.execute(
-            select(Properties).filter_by(path=path)).scalars().first()
+            select(Properties).filter_by(path=path)).scalars().one_or_none()
         if props is not None:
             self.property_cache[uniqueid] = props
         return props
