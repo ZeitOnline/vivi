@@ -56,7 +56,7 @@ class Connector:
             return props
         path = self._path(uniqueid)
         props = self.session.execute(
-            select(Properties).filter_by(url=path)).scalars().first()
+            select(Properties).filter_by(path=path)).scalars().first()
         if props is not None:
             self.property_cache[uniqueid] = props
         return props
@@ -84,10 +84,11 @@ class Connector:
             # XXX mimic DAV behaviour (which likely should be KeyError instead)
             raise DAVNotFoundError(404, 'Not Found', uniqueid, '')
         uniqueid = self._normalize(uniqueid)
-        path = self._path(uniqueid)
-        for url in self.session.execute(
-                select(Properties.url).filter_by(parent_url=path)).scalars():
-            yield (url.replace(path + '/', '', 1), ID_NAMESPACE + url)
+        parent_path = self._path(uniqueid)
+        for path in self.session.execute(
+                select(Properties.path)
+                .filter_by(parent_path=parent_path)).scalars():
+            yield (path.replace(parent_path + '/', '', 1), ID_NAMESPACE + path)
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
@@ -102,8 +103,8 @@ class Connector:
             props.body = Body()
 
         props.from_webdav(resource.properties)
-        props.url = self._path(uniqueid)
-        props.parent_url = os.path.dirname(props.url)
+        props.path = self._path(uniqueid)
+        props.parent_path = os.path.dirname(props.path)
         props.type = resource.type
         props.is_collection = resource.contentType == 'httpd/unix-directory'
 
@@ -130,7 +131,7 @@ class Connector:
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         path = self._path(uniqueid)
-        self.session.execute(delete(Properties).filter_by(url=path))
+        self.session.execute(delete(Properties).filter_by(path=path))
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
 
@@ -176,9 +177,9 @@ class Properties(DBObject):
 
     id = Column(Unicode, primary_key=True)
     type = Column(Unicode, nullable=False, server_default='unknown')
-    url = Column(Unicode, unique=True, nullable=False)
+    path = Column(Unicode, unique=True, nullable=False)
 
-    parent_url = Column(Unicode, nullable=False)
+    parent_path = Column(Unicode, nullable=False)
     is_collection = Column(Boolean, nullable=False, server_default='false')
 
     unsorted = Column(JSONB)
