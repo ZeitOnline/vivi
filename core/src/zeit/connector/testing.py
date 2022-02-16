@@ -19,15 +19,24 @@ import zope.component.hooks
 import zope.testing.renormalizing
 
 
+class DockerSetupError(requests.exceptions.ConnectionError):
+    # for more informative error output
+    pass
+
+
 class DAVServerLayer(plone.testing.Layer):
 
     def setUp(self):
         dav = self.get_random_port()
         query = self.get_random_port()
         client = docker.from_env()
-        self['dav_container'] = client.containers.run(
-            "registry.zeit.de/dav-server:1.1.1", detach=True, remove=True,
-            ports={9000: dav, 9999: query})
+        try:
+            self['dav_container'] = client.containers.run(
+                "registry.zeit.de/dav-server:1.1.1", detach=True, remove=True,
+                ports={9000: dav, 9999: query})
+        except requests.exceptions.ConnectionError:
+            raise DockerSetupError(
+                "Couldn't start docker container, is docker running?")
         self['dav_url'] = 'http://localhost:%s/cms/' % dav
         self['query_url'] = 'http://localhost:%s' % query
         self.wait_for_http(self['dav_url'])
