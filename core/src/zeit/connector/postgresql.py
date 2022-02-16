@@ -1,6 +1,8 @@
+from functools import partial
 from io import BytesIO
 from logging import getLogger
-from sqlalchemy import Boolean, LargeBinary, TIMESTAMP, Unicode
+from google.cloud import storage
+from sqlalchemy import Boolean, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select, delete
 from sqlalchemy import UniqueConstraint
 from sqlalchemy import event
@@ -12,7 +14,9 @@ from sqlalchemy.orm import relationship
 from uuid import uuid4
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.resource import CachedResource
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections
+import os
 import os.path
 import sqlalchemy
 import sqlalchemy.orm
@@ -53,13 +57,26 @@ def after_attach(session, instance):
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
 class Connector:
 
-    def __init__(self, dsn):
+    def __init__(self, dsn, storage_project, storage_bucket):
         self.dsn = dsn
         self.engine = sqlalchemy.create_engine(dsn, future=True)
         self.session = sqlalchemy.orm.scoped_session(
             sqlalchemy.orm.sessionmaker(bind=self.engine, future=True))
         event.listens_for(after_attach, self.session, "after_attach")
         zope.sqlalchemy.register(self.session)
+        self.storage_project = storage_project
+        self.storage_bucket = storage_bucket
+
+    @cachedproperty
+    def bucket(self):
+        # a property, so STORAGE_EMULATOR_HOST is available during testing
+        if "STORAGE_EMULATOR_HOST" in os.environ:
+            # with the emulator we don't have/need authentication
+            client = storage.Client.create_anonymous_client()
+        else:
+            client = storage.Client()
+        client.project = self.storage_project
+        return client.bucket(self.storage_bucket)
 
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -67,16 +84,22 @@ class Connector:
         import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.connector') or {}
-        return cls(config['dsn'])
+        return cls(
+            config['dsn'],
+            config['storage-project'], config['storage-bucket'])
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         props = self._get_properties(uniqueid)
         if props is None:
             raise KeyError(uniqueid)
+        if props.is_collection:
+            _get_body = partial(BytesIO, b'')
+        else:
+            _get_body = partial(self._get_body, props.id)
         return CachedResource(
             uniqueid, uniqueid.split('/')[-1], props.type,
-            props.to_webdav, lambda: self._get_body(props.id),
+            props.to_webdav, _get_body,
             'httpd/unix-directory' if props.is_collection else 'httpd/unknown')
 
     def _get_properties(self, uniqueid):
@@ -90,10 +113,12 @@ class Connector:
         if path is not None:
             return path.properties
 
-    def _get_body(self, id):  # XXX to be replaced by GCS (ZO-786)
-        body = self.session.get(Body, id)
-        if body is not None:
-            return body.open()
+    def _get_body(self, id):
+        blob = self.bucket.blob(self._blobpath(id))
+        body = BytesIO()
+        blob.download_to_file(body)
+        body.seek(0)
+        return body
 
     def __contains__(self, uniqueid):
         try:
@@ -122,7 +147,7 @@ class Connector:
         props = self._get_properties(uniqueid)
         exists = props is not None
         if not exists:
-            props = Properties(body=Body())
+            props = Properties()
             path = Paths(properties=props)
             self.session.add(path)
         else:
@@ -133,8 +158,10 @@ class Connector:
         props.type = resource.type
         props.is_collection = resource.contentType == 'httpd/unix-directory'
 
-        resource.data.seek(0)
-        props.body.body = resource.data.read()
+        if not props.is_collection:
+            blob = self.bucket.blob(self._blobpath(props.id))
+            resource.data.seek(0)
+            blob.upload_from_file(resource.data)
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -166,6 +193,10 @@ class Connector:
             uniqueid.replace(ID_NAMESPACE, '', 1))
         parent_path = parent_path.rstrip('/')
         return (parent_path, name)
+
+    @staticmethod
+    def _blobpath(id):
+        return id.replace('-', '/')
 
     def copy(self, old_uniqueid, new_uniqueid):
         pass
@@ -219,8 +250,6 @@ class Properties(DBObject):
 
     unsorted = Column(JSONB)
 
-    body = relationship('Body', uselist=False, lazy='joined')
-
     last_updated = Column(
         TIMESTAMP(timezone=True),
         server_default=sqlalchemy.func.now(), onupdate=sqlalchemy.func.now())
@@ -255,18 +284,6 @@ class Properties(DBObject):
         self.unsorted = unsorted
 
 
-class Body(DBObject):  # XXX to be replaced by GCS (ZO-786)
-
-    __tablename__ = 'bodies'
-
-    id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'),
-                primary_key=True)
-    body = Column(LargeBinary)
-
-    def open(self):
-        return BytesIO(self.body or b'')
-
-
 class PassthroughConnector(Connector):
     """Development helper that transparently imports content objects (whenever
     they are accessed) into SQL from another ("upstream") Connector.
@@ -275,11 +292,11 @@ class PassthroughConnector(Connector):
     not any kind of production use.
     """
 
-    def __init__(self, dsn, repository_path):
+    def __init__(self, dsn, storage_project, storage_bucket, repository_path):
         import zeit.connector.filesystem
         import zeit.connector.zopeconnector
 
-        super().__init__(dsn)
+        super().__init__(dsn, storage_project, storage_bucket)
         METADATA.create_all(self.engine)  # convenience
         if repository_path.startswith('http'):
             self.upstream = zeit.connector.zopeconnector.ZopeConnector(
@@ -294,7 +311,10 @@ class PassthroughConnector(Connector):
         import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.connector') or {}
-        return cls(config['dsn'], config['repository-path'])
+        return cls(
+            config['dsn'],
+            config['storage-project'], config['storage-bucket'],
+            config['repository-path'])
 
     def __getitem__(self, id):
         try:

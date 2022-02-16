@@ -1,3 +1,4 @@
+from gcp_storage_emulator.server import create_server as create_gcp_server
 from io import BytesIO
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
@@ -130,7 +131,12 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
         super().setUp()
 
 
-SQL_CONFIG_LAYER = SQLConfigLayer({'dsn': 'postgresql://'})
+GCP_EMULATOR_HOST = "localhost"
+GCP_EMULATOR_BUCKET = "vivi-test-bucket"
+SQL_CONFIG_LAYER = SQLConfigLayer({
+    'dsn': 'postgresql://',
+    'storage-project': 'vivi-test',
+    'storage-bucket': GCP_EMULATOR_BUCKET})
 
 
 class PostgresLayer(plone.testing.Layer):
@@ -160,12 +166,26 @@ class PostgresLayer(plone.testing.Layer):
         zeit.connector.postgresql.METADATA.drop_all(engine)
         zeit.connector.postgresql.METADATA.create_all(engine)
 
+        # Set up GCP storage emulator
+        self.gcp_server = create_gcp_server(
+            GCP_EMULATOR_HOST,
+            0,
+            in_memory=True,
+            default_bucket=GCP_EMULATOR_BUCKET)
+        self.gcp_server.start()
+        # get automatically chosen port
+        (gcp_host, gcp_port) = self.gcp_server._api._httpd.socket.getsockname()
+        seh = f"http://{gcp_host}:{gcp_port}"
+        # this environment variable will be picked up by the gcp client
+        os.environ["STORAGE_EMULATOR_HOST"] = seh
+
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         mkdir(connector, 'http://xml.zeit.de/testing')
         transaction.commit()
 
     def tearDown(self):
+        self.gcp_server.stop()
         self['sql_connection'].close()
         del self['sql_connection']
 
