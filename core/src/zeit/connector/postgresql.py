@@ -3,6 +3,7 @@ from io import BytesIO
 from sqlalchemy import Boolean, LargeBinary, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select, delete
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from uuid import uuid4
 from zeit.connector.dav.interfaces import DAVNotFoundError
@@ -175,7 +176,7 @@ class Properties(DBObject):
 
     __tablename__ = 'properties'
 
-    id = Column(Unicode, primary_key=True)
+    id = Column(UUID, primary_key=True)
     type = Column(Unicode, nullable=False, server_default='unknown')
     path = Column(Unicode, unique=True, nullable=False)
 
@@ -222,7 +223,7 @@ class Body(DBObject):  # XXX to be replaced by GCS (ZO-786)
 
     __tablename__ = 'bodies'
 
-    id = Column(Unicode, ForeignKey('properties.id', ondelete='cascade'),
+    id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'),
                 primary_key=True)
     body = Column(LargeBinary)
 

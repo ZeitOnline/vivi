@@ -8,7 +8,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_serialization(self):
         res = self.get_resource('foo', b'mybody', {
             ('uuid', 'http://namespaces.zeit.de/CMS/document'):
-            '{urn:uuid:myid}',
+            '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}',
             ('foo', 'http://namespaces.zeit.de/CMS/one'): 'foo',
             ('bar', 'http://namespaces.zeit.de/CMS/two'): 'bar',
         })
@@ -18,10 +18,10 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual('/testing', props.parent_path)
         self.assertEqual('testing', props.type)
         self.assertEqual(False, props.is_collection)
-        self.assertEqual('myid', props.id)
+        self.assertEqual('deadbeaf-c5aa-4232-837a-ae6701270436', props.id)
         self.assertEqual(b'mybody', props.body.body)
         self.assertEqual({
-            'document': {'uuid': '{urn:uuid:myid}'},
+            'document': {'uuid': '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}'},
             'one': {'foo': 'foo'},
             'two': {'bar': 'bar'},
         }, props.unsorted)
