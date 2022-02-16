@@ -1,11 +1,12 @@
-from gocept.cache.property import TransactionBoundCache
 from io import BytesIO
 from logging import getLogger
 from sqlalchemy import Boolean, LargeBinary, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select, delete
 from sqlalchemy import UniqueConstraint
+from sqlalchemy import event
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import Mapper
 from sqlalchemy.orm import backref
 from sqlalchemy.orm import relationship
 from uuid import uuid4
@@ -27,6 +28,28 @@ log = getLogger(__name__)
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
 
+def _index_object(session, instance):
+    # store a "hard" reference to the object on the session,
+    # otherwise gc will remove the instances from the weak identity_map
+    # during the request, which would cause a re-fetch from the db
+    # see https://github.com/sqlalchemy/sqlalchemy/discussions/7246
+    set_ = session.info.get("strong_set", None)
+    if not set_:
+        session.info["strong_set"] = set_ = set()
+
+    set_.add(instance)
+
+
+@event.listens_for(Mapper, "load")
+def object_loaded(instance, ctx):
+    _index_object(ctx.session, instance)
+
+
+# after_attach event handler for the session added in Connector.__init__
+def after_attach(session, instance):
+    _index_object(session, instance)
+
+
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
 class Connector:
 
@@ -35,6 +58,7 @@ class Connector:
         self.engine = sqlalchemy.create_engine(dsn, future=True)
         self.session = sqlalchemy.orm.scoped_session(
             sqlalchemy.orm.sessionmaker(bind=self.engine, future=True))
+        event.listens_for(after_attach, self.session, "after_attach")
         zope.sqlalchemy.register(self.session)
 
     @classmethod
@@ -55,28 +79,21 @@ class Connector:
             props.to_webdav, lambda: self._get_body(props.id),
             'httpd/unix-directory' if props.is_collection else 'httpd/unknown')
 
-    property_cache = TransactionBoundCache('_v_property_cache', dict)
-
     def _get_properties(self, uniqueid):
-        props = self.property_cache.get(uniqueid)
-        if props is not None:
-            return props
-        path = self.session.get(Paths, self._pathkey(uniqueid))
+        key = self._pathkey(uniqueid)
+        is_cached = self.session.identity_key(
+            Paths, key) in self.session.identity_map
+        path = self.session.get(Paths, key)
+        log.debug(
+            "_get_properties %s key %s is_cached %s path %s",
+            uniqueid, key, is_cached, repr(path))
         if path is not None:
-            props = path.properties
-            self.property_cache[uniqueid] = props
-        return props
-
-    body_cache = TransactionBoundCache('_v_body_cache', dict)
+            return path.properties
 
     def _get_body(self, id):  # XXX to be replaced by GCS (ZO-786)
-        body = self.body_cache.get(id)
-        if body is not None:
-            return body.open()
         body = self.session.get(Body, id)
         if body is not None:
-            self.body_cache[id] = body
-        return body.open()
+            return body.open()
 
     def __contains__(self, uniqueid):
         try:
@@ -119,10 +136,6 @@ class Connector:
         resource.data.seek(0)
         props.body.body = resource.data.read()
 
-        if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = props
-            self.body_cache[uniqueid] = props.body
-
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
         props = self._get_properties(uniqueid)
@@ -131,8 +144,6 @@ class Connector:
         current = props.to_webdav()
         current.update(properties)
         props.from_webdav(current)
-        if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = props
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -140,8 +151,6 @@ class Connector:
         self.session.execute(
             delete(Paths)
             .filter_by(parent_path=parent_path, name=name))
-        self.property_cache.pop(uniqueid, None)
-        self.body_cache.pop(uniqueid, None)
 
     @staticmethod
     def _normalize(uniqueid):
