@@ -32,7 +32,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         })
         self.connector.add(res)
         props = self.connector._get_properties(res.id)
-        davprops = props.to_dict()
+        davprops = props.to_webdav()
         self.assertEqual({
             ('uuid', 'http://namespaces.zeit.de/CMS/document'):
             '{urn:uuid:%s}' % props.id,

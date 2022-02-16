@@ -45,7 +45,7 @@ class Connector:
             raise KeyError(uniqueid)
         return CachedResource(
             uniqueid, uniqueid.split('/')[-1], props.type,
-            props.to_dict, lambda: self._get_body(props.id),
+            props.to_webdav, lambda: self._get_body(props.id),
             'httpd/unix-directory' if props.is_collection else 'httpd/unknown')
 
     property_cache = TransactionBoundCache('_v_property_cache', dict)
@@ -101,7 +101,7 @@ class Connector:
             props = Properties()
             props.body = Body()
 
-        props.from_dict(resource.properties)
+        props.from_webdav(resource.properties)
         props.url = self._path(uniqueid)
         props.parent_url = os.path.dirname(props.url)
         props.type = resource.type
@@ -121,9 +121,9 @@ class Connector:
         props = self._get_properties(uniqueid)
         if props is None:
             raise KeyError(uniqueid)
-        current = props.to_dict()
+        current = props.to_webdav()
         current.update(properties)
-        props.from_dict(current)
+        props.from_webdav(current)
         if uniqueid in self.property_cache:
             self.property_cache[uniqueid] = props
 
@@ -191,7 +191,7 @@ class Properties(DBObject):
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
-    def to_dict(self):
+    def to_webdav(self):
         props = {}
         for ns, d in self.unsorted.items():
             for k, v in d.items():
@@ -202,7 +202,7 @@ class Properties(DBObject):
 
         return props
 
-    def from_dict(self, props):
+    def from_webdav(self, props):
         if not self.id:
             id = props.get(('uuid', self.NS + 'document'))
             if id is None:
