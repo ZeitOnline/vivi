@@ -19,9 +19,11 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual('testing', props.type)
         self.assertEqual(False, props.is_collection)
         self.assertEqual('deadbeaf-c5aa-4232-837a-ae6701270436', props.id)
-        self.assertEqual(b'mybody', props.body.body)
+        blob = self.connector.bucket.blob(props.id)
+        self.assertEqual(b'mybody', blob.download_as_bytes())
         self.assertEqual({
-            'document': {'uuid': '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}'},
+            'document': {
+                'uuid': '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}'},
             'one': {'foo': 'foo'},
             'two': {'bar': 'bar'},
         }, props.unsorted)

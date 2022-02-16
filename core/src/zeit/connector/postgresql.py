@@ -1,7 +1,9 @@
+from functools import partial
 from gocept.cache.property import TransactionBoundCache
+from google.cloud import storage
 from io import BytesIO
 from logging import getLogger
-from sqlalchemy import Boolean, LargeBinary, TIMESTAMP, Unicode
+from sqlalchemy import Boolean, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select, delete
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
@@ -12,6 +14,7 @@ from uuid import uuid4
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.resource import CachedResource
 import collections
+import os
 import os.path
 import sqlalchemy
 import sqlalchemy.orm
@@ -30,12 +33,14 @@ ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
 class Connector:
 
-    def __init__(self, dsn):
+    def __init__(self, dsn, storage_project, storage_bucket):
         self.dsn = dsn
         self.engine = sqlalchemy.create_engine(dsn, future=True)
         self.session = sqlalchemy.orm.scoped_session(
             sqlalchemy.orm.sessionmaker(bind=self.engine, future=True))
         zope.sqlalchemy.register(self.session)
+        self.gcs_client = storage.Client(project=storage_project)
+        self.bucket = self.gcs_client.bucket(storage_bucket)
 
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -43,16 +48,21 @@ class Connector:
         import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.connector') or {}
-        return cls(config['dsn'])
+        return cls(
+            config['dsn'], config['storage-project'], config['storage-bucket'])
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         props = self._get_properties(uniqueid)
         if props is None:
             raise KeyError(uniqueid)
+        if props.is_collection:
+            _get_body = partial(BytesIO, b'')
+        else:
+            _get_body = partial(self._get_body, props.id)
         return CachedResource(
             uniqueid, uniqueid.split('/')[-1], props.type,
-            props.to_webdav, lambda: self._get_body(props.id),
+            props.to_webdav, _get_body,
             'httpd/unix-directory' if props.is_collection else 'httpd/unknown')
 
     property_cache = TransactionBoundCache('_v_property_cache', dict)
@@ -69,14 +79,14 @@ class Connector:
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
-    def _get_body(self, id):  # XXX to be replaced by GCS (ZO-786)
+    def _get_body(self, id):
         body = self.body_cache.get(id)
         if body is not None:
-            return body.open()
-        body = self.session.get(Body, id)
-        if body is not None:
-            self.body_cache[id] = body
-        return body.open()
+            return BytesIO(body)
+        blob = self.bucket.blob(id)
+        body = blob.download_as_bytes()
+        self.body_cache[id] = body
+        return BytesIO(body)
 
     def __contains__(self, uniqueid):
         try:
@@ -105,7 +115,7 @@ class Connector:
         props = self._get_properties(uniqueid)
         exists = props is not None
         if not exists:
-            props = Properties(body=Body())
+            props = Properties()
             path = Paths(properties=props)
             self.session.add(path)
         else:
@@ -116,12 +126,16 @@ class Connector:
         props.type = resource.type
         props.is_collection = resource.contentType == 'httpd/unix-directory'
 
-        resource.data.seek(0)
-        props.body.body = resource.data.read()
+        if not props.is_collection:
+            self.body_cache.pop(props.id, None)
+            blob = self.bucket.blob(props.id)
+            resource.data.seek(0)
+            blob.upload_from_file(resource.data)
 
         if uniqueid in self.property_cache:
             self.property_cache[uniqueid] = props
-            self.body_cache[uniqueid] = props.body
+            resource.data.seek(0)
+            self.body_cache[uniqueid] = resource.data.read()
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -208,8 +222,6 @@ class Properties(DBObject):
 
     unsorted = Column(JSONB)
 
-    body = relationship('Body', uselist=False, lazy='joined')
-
     last_updated = Column(
         TIMESTAMP(timezone=True),
         server_default=sqlalchemy.func.now(), onupdate=sqlalchemy.func.now())
@@ -244,18 +256,6 @@ class Properties(DBObject):
         self.unsorted = unsorted
 
 
-class Body(DBObject):  # XXX to be replaced by GCS (ZO-786)
-
-    __tablename__ = 'bodies'
-
-    id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'),
-                primary_key=True)
-    body = Column(LargeBinary)
-
-    def open(self):
-        return BytesIO(self.body or b'')
-
-
 class PassthroughConnector(Connector):
     """Development helper that transparently imports content objects (whenever
     they are accessed) into SQL from another ("upstream") Connector.
@@ -264,11 +264,11 @@ class PassthroughConnector(Connector):
     not any kind of production use.
     """
 
-    def __init__(self, dsn, repository_path):
+    def __init__(self, dsn, storage_project, storage_bucket, repository_path):
         import zeit.connector.filesystem
         import zeit.connector.zopeconnector
 
-        super().__init__(dsn)
+        super().__init__(dsn, storage_project, storage_bucket)
         METADATA.create_all(self.engine)  # convenience
         if repository_path.startswith('http'):
             self.upstream = zeit.connector.zopeconnector.ZopeConnector(
@@ -283,7 +283,10 @@ class PassthroughConnector(Connector):
         import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.connector') or {}
-        return cls(config['dsn'], config['repository-path'])
+        return cls(
+            config['dsn'],
+            config['storage-project'], config['storage-bucket'],
+            config['repository-path'])
 
     def __getitem__(self, id):
         try:

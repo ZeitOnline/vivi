@@ -1,3 +1,4 @@
+from gcp_storage_emulator.server import create_server as create_gcp_server
 from io import BytesIO
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
@@ -123,14 +124,40 @@ MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
-class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
+class GCSLayer(plone.testing.Layer):
+
+    bucket = 'vivi-test'
 
     def setUp(self):
+        self['gcp_server'] = create_gcp_server(
+            'localhost', 0, in_memory=True, default_bucket=self.bucket)
+        self['gcp_server'].start()
+        _, port = self['gcp_server']._api._httpd.socket.getsockname()
+        # Evaluated automatically by google.cloud.storage.Client
+        os.environ["STORAGE_EMULATOR_HOST"] = 'http://localhost:%s' % port
+
+    def tearDown(self):
+        self['gcp_server'].stop()
+        del self['gcp_server']
+
+
+GCS_LAYER = GCSLayer()
+
+
+class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
+
+    defaultBases = (GCS_LAYER,)
+
+    def setUp(self):
+        self.config = {
+            'dsn': 'postgresql://',
+            'storage-project': 'ignored_by_emulator',
+            'storage-bucket': GCS_LAYER.bucket}
         os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()
 
 
-SQL_CONFIG_LAYER = SQLConfigLayer({'dsn': 'postgresql://'})
+SQL_CONFIG_LAYER = SQLConfigLayer({})
 
 
 class PostgresLayer(plone.testing.Layer):
