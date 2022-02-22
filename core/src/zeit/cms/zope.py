@@ -87,10 +87,13 @@ def create_zodb_database(uri):
 def configure_dogpile_cache(event):
     import pyramid_dogpile_cache2
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    regions = config['cache-regions']
+    if not regions:
+        return
     settings = {
-        'dogpile_cache.regions': config['cache-regions']
+        'dogpile_cache.regions': regions
     }
-    for region in re.split(r'\s*,\s*', config['cache-regions']):
+    for region in re.split(r'\s*,\s*', regions):
         settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
         settings['dogpile_cache.%s.expiration_time' % region] = config[
             'cache-expiration-%s' % region]
