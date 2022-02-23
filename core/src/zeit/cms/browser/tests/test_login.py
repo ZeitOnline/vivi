@@ -1,7 +1,5 @@
 from zope.pluggableauth.plugins.principalfolder import InternalPrincipal
 from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
-import base64
-import json
 import jwt
 import pkg_resources
 import plone.testing

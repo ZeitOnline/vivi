@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import lxml.objectify
 import pytest
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.content.video.interfaces
 import zeit.content.video.testing
 import zeit.content.video.video
-import zope.component
 
 
 class TestVideo(zeit.content.video.testing.TestCase):

@@ -351,8 +351,7 @@ class AutomaticAreaElasticsearchTest(
         lead.automatic = True
         lead.elasticsearch_raw_query = (
             '{"query": {"match": {"title": "foo"}},'
-            '"sort": [{"payload.document.date_first_released": "desc"}]}'
-              )
+            '"sort": [{"payload.document.date_first_released": "desc"}]}')
         lead.is_complete_query = True
         lead.automatic_type = 'elasticsearch-query'
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
@@ -412,9 +411,9 @@ class AutomaticAreaElasticsearchTest(
             ], 'must_not': [
                 {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                           'inline'}}]
-                }}, 'sort': [{
-                    'payload.workflow.date_last_published_semantic': 'desc'}]},
-            self.elasticsearch.search.call_args[0][0])
+            }},
+            'sort': [{'payload.workflow.date_last_published_semantic': 'desc'}]
+        }, self.elasticsearch.search.call_args[0][0])
 
     def test_custom_query_should_have_random_order(self):
         lead = self.create_lead_teaser('random:desc')
@@ -443,7 +442,7 @@ class AutomaticAreaElasticsearchTest(
                 {'term': {'payload.workflow.published': True}}], 'must_not': [
                 {'term': {
                     'payload.zeit__DOT__content__DOT__gallery.type': 'inline'
-                    }}]
+                }}]
             }}},
             self.elasticsearch.search.call_args[0][0])
 
@@ -812,8 +811,6 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = (
             '{"query": {"match": {"foo": "bar"}}}')
-        elasticsearch = zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch)
 
         lead = self.cp['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
@@ -945,8 +942,6 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
         elastic_area.automatic_type = 'elasticsearch-query'
         elastic_area.elasticsearch_raw_query = (
             '{"query": {"match": {"foo": "bar"}}}')
-        elasticsearch = zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch)
         with mocked_feed:
             IRenderedArea(elastic_area).values()
         elastic_query = self.elasticsearch.search.call_args[0][0]

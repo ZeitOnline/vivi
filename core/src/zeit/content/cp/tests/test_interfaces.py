@@ -41,7 +41,7 @@ class AreaValidationTest(
     def test_elasticsearch_raw_query_requires_valid_json(self):
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = 'this is no json'
-        with self.assertRaises(zeit.cms.interfaces.ValidationError) as err:
+        with self.assertRaises(zeit.cms.interfaces.ValidationError):
             self.interface.validateInvariants(self.area)
 
 

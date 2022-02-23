@@ -7,7 +7,6 @@ from zeit.content.article.article import Article
 from zeit.content.article.testing import create_article
 from zeit.content.volume.browser.toc import Toc
 from zeit.content.volume.volume import Volume
-import lxml.etree
 import sys
 import zeit.cms.content.add
 import zeit.cms.content.sources

@@ -212,9 +212,7 @@ class SetRemoteMetadata(zeit.content.article.testing.BrowserTestCase):
                '/online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.options-interactive')
         self.assertEllipsis(
-            '...Remote image...https://my-remote-image.de...', b.contents
-            )
+            '...Remote image...https://my-remote-image.de...', b.contents)
         self.assertEllipsis(
             '...Remote timestamp...https://my-remote-timestamp.de...',
-            b.contents
-            )
+            b.contents)
