@@ -1,4 +1,3 @@
-import markdownify
 import zeit.cms.content.property
 import zeit.cms.content.sources
 import zeit.content.modules.interfaces
@@ -18,7 +17,3 @@ class NewsletterSignup(zeit.edit.block.Element):
         zeit.cms.content.property.ObjectPathAttributeProperty(
             '.', 'prefix_text'),
         zeit.content.modules.interfaces.INewsletterSignup['prefix_text'])
-
-    @property
-    def prefix(self):
-        return markdownify.markdownify(self.prefix_text)
