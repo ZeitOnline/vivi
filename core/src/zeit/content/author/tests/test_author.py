@@ -224,4 +224,3 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
                     co, Attributes(ICommonMetadata, 'email')))
                 self.assertEqual(67890, co.ssoid)
                 self.assertEqual(12345, self.repository['author'].ssoid)
-

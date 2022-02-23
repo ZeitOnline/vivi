@@ -36,24 +36,24 @@ class TestTypeIdentifier(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_defaults_to_type(self):
         decl = zeit.cms.type.TypeDeclaration()
-        decl.type = u'foo'
-        self.assertEqual(u'foo', decl.type_identifier)
-        decl.type = u'bar'
-        self.assertEqual(u'bar', decl.type_identifier)
+        decl.type = 'foo'
+        self.assertEqual('foo', decl.type_identifier)
+        decl.type = 'bar'
+        self.assertEqual('bar', decl.type_identifier)
 
     def test_no_type_generates(self):
         decl = zeit.cms.type.TypeDeclaration()
         decl.interface = zeit.cms.interfaces.ICMSContent
-        self.assertEqual(u'zeit.cms.interfaces.ICMSContent',
-                          decl.type_identifier)
+        self.assertEqual('zeit.cms.interfaces.ICMSContent',
+                         decl.type_identifier)
         decl.interface = ITestInterface
-        self.assertEqual(u'zeit.cms.tests.test_typegrokker.ITestInterface',
-                          decl.type_identifier)
+        self.assertEqual('zeit.cms.tests.test_typegrokker.ITestInterface',
+                         decl.type_identifier)
 
     def test_type_annotation_uses_type_identifier(self):
         grokcore.component.testing.grok_component('Declaration', Declaration)
-        self.assertEqual(u'zeit.cms.tests.test_typegrokker.ITestInterface',
-                          ITestInterface.getTaggedValue('zeit.cms.type'))
+        self.assertEqual('zeit.cms.tests.test_typegrokker.ITestInterface',
+                         ITestInterface.getTaggedValue('zeit.cms.type'))
 
     def test_type_identifier_conflict(self):
         self.assertRaises(
