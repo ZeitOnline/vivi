@@ -61,6 +61,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._paths = {}
         self._deleted = set()
         self._properties = {}
+        self.search_result = self.search_result_default[:]
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
@@ -249,13 +250,15 @@ class Connector(zeit.connector.filesystem.Connector):
         id = self._get_cannonical_id(id)
         return self._locked.get(id, (None, None, False))
 
+    search_result_default = [
+        'http://xml.zeit.de/online/2007/01/Somalia',
+        'http://xml.zeit.de/online/2007/01/Saarland',
+        'http://xml.zeit.de/2006/52/Stimmts']
+
     def search(self, attributes, expression):
         log.debug("Searching: %s", expression._render())
 
-        unique_ids = [
-            'http://xml.zeit.de/online/2007/01/Somalia',
-            'http://xml.zeit.de/online/2007/01/Saarland',
-            'http://xml.zeit.de/2006/52/Stimmts']
+        unique_ids = self.search_result
 
         metadata = ('pm', '07') + len(attributes) * (None,)
         metadata = metadata[:len(attributes)]

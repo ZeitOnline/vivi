@@ -3,6 +3,32 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.9.4 (2022-02-10)
+------------------
+
+MAINT:
+- MAINT: Extract ImageGroup.from_image from zeit.brightcove
+
+
+5.9.3 (2022-02-07)
+------------------
+
+- ZO-889: Grant zeit.MoveContent to zeit.CvD
+
+
+5.9.2 (2022-02-03)
+------------------
+
+- ZO-538: Dummy changelog to force container rebuild with current zeit.newsimport release
+
+
+5.9.1 (2022-02-02)
+------------------
+
+MAINT:
+- Include the locked uniqueId in publish errormessage
+
+
 5.9.0 (2022-01-20)
 ------------------
 

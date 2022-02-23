@@ -11,6 +11,7 @@ import zeit.cms.repository.file
 import zeit.cms.type
 import zeit.cms.util
 import zeit.cms.workingcopy.interfaces
+import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
@@ -179,7 +180,6 @@ DOWNLOAD_CHUNK_SIZE = 2 * KiB
 
 
 def get_remote_image(url, timeout=2):
-
     try:
         response = requests.get(url, stream=True, timeout=timeout)
     except Exception:

@@ -1,5 +1,6 @@
 # coding: utf-8
 from unittest import mock
+from zeit.content.image import imagegroup
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
 from zope.publisher.interfaces import NotFound
@@ -302,6 +303,39 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
     def test_parse_viewport_from_params(self):
         result = self.traverser.parse_params('cinema?fill=0000ff&viewport=foo')
         assert result['viewport'] == 'foo'
+
+
+class ImageGroupFromImageTest(zeit.content.image.testing.FunctionalTestCase):
+
+    def repository(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+    def test_image_group_from_image(self):
+        repository = self.repository()
+        local_image = create_local_image('opernball.jpg')
+        group = zeit.content.image.imagegroup.ImageGroup.from_image(
+            repository, 'group', local_image)
+        assert group.master_image == 'opernball.jpg'
+
+    def test_image_group_from_none(self):
+        repository = self.repository()
+        group = zeit.content.image.imagegroup.ImageGroup.from_image(
+            repository, 'group', None)
+        assert group.master_image is None
+
+
+class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
+
+    def test_image_group_from_image(self):
+        local_image = zeit.content.image.testing.create_local_image(
+            'opernball.jpg')
+        imagegroup.ImageGroup.from_image(self.repository, 'group', local_image)
+        b = self.browser
+        b.handleErrors = False
+        b.open('http://localhost/++skin++vivi/repository'
+               '/group/@@metadata.html')
+
 
 class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
 
