@@ -21,4 +21,4 @@ class NewsletterSignup(zeit.edit.block.Element):
 
     @property
     def prefix(self):
-        return markdownify.markdownify(self.prefix)
+        return markdownify.markdownify(self.prefix_text)
