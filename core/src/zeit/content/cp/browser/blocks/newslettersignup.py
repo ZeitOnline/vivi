@@ -14,5 +14,5 @@ class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
         zeit.cms.browser.widget.MarkdownWidget)
 
     def setUpWidgets(self, *args, **kw):
-        super(EditProperties, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['prefix_text'].height = 50

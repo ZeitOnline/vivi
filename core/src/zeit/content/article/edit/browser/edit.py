@@ -509,7 +509,7 @@ class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
         zeit.cms.browser.widget.MarkdownWidget)
 
     def setUpWidgets(self, *args, **kw):
-        super(EditNewsletterSignup, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['prefix_text'].height = 50
 
     @property
