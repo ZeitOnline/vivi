@@ -64,7 +64,7 @@ class AddForm(FormBase,
             'zeit.content.image')
         if not config.get('mdb-api-url'):
             self.form_fields = self.form_fields.omit('mdb_blob')
-        self.maxpx = config.get('max-border-px', 4000)
+        self.max_size = config.get('max-image-size', 4000)
         super(AddForm, self).__init__(*args, **kw)
 
     def validate(self, action, data):
@@ -140,12 +140,14 @@ class AddForm(FormBase,
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
         self.update_file(image, blob)
-        wxh = image.getImageSize()
-        if max(wxh) > self.maxpx:
-            if wxh.index(max(wxh)) == 0:
-                image = ImageTransform(image).resize(width=4000)
+        size = image.getImageSize()
+        largest = max(size)
+        if largest > self.max_size:
+            if size.index(largest) == 0:
+                resize = {'width': self.max_size}
             else:
-                image = ImageTransform(image).resize(height=4000)
+                resize = {'height': self.max_size}
+            image = ImageTransform(image).resize(**resize)
         name = getattr(blob, 'filename', '')
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)
