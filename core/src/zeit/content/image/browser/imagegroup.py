@@ -143,6 +143,9 @@ class AddForm(FormBase,
         size = image.getImageSize()
         largest = max(size)
         if largest > self.max_size:
+            self.send_message(
+                _('Image was resized, ${size} exceeds ${max_size}',
+                  mapping={'size': largest, 'max_size': self.max_size}))
             if size.index(largest) == 0:
                 resize = {'width': self.max_size}
             else:
