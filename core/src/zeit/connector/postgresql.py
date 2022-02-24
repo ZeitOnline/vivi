@@ -1,5 +1,6 @@
 from gocept.cache.property import TransactionBoundCache
 from io import BytesIO
+from logging import getLogger
 from sqlalchemy import Boolean, LargeBinary, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select, delete
 from sqlalchemy import UniqueConstraint
@@ -18,6 +19,9 @@ import transaction
 import zeit.connector.interfaces
 import zope.interface
 import zope.sqlalchemy
+
+
+log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
@@ -288,12 +292,22 @@ class PassthroughConnector(Connector):
             return self._import(id)
 
     def _import(self, id):
+        log.debug("_import %s", id)
         resource = self.upstream[id]
         # Hacky. Remove this as it is not json-serializable, and also
         # irrelevant except for DAV caches.
         resource.properties.data.pop(('cached-time', 'INTERNAL'), None)
+        savepoint = self.session.begin_nested()
         self[id] = resource
-        transaction.commit()
+        try:
+            self.session.flush()
+        except sqlalchemy.exc.IntegrityError as e:
+            log.critical("Can't import %s: %s", id, e)
+            savepoint.rollback()
+            raise KeyError(id)
+        else:
+            savepoint.commit()
+            transaction.commit()
         return resource
 
     def listCollection(self, id):
