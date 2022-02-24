@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.10.0 (2022-02-24)
+-------------------
+
+- ZO-365: Resize too large images on upload
+
+- ZO-987: Add prefix field to newslettersignups
+
+
 5.9.4 (2022-02-10)
 ------------------
 
