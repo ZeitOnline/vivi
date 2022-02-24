@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Feb 23 14:25:36 2022\n"
+"POT-Creation-Date: Thu Feb 24 08:35:54 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -24,23 +24,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:15
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:132
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:15
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr "Registration"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:35
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr "Site-Management Folder"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:48
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:97
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:48
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:710 zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr "Inhalt"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:57
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/ui.zcml:29 zeit/cms/ui.zcml:36
 #: zeit/content/article/edit/browser/recension-list.pt:93
@@ -48,55 +48,55 @@ msgstr "Inhalt"
 msgid "Add"
 msgstr "Inhalte hinzufügen…"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:78
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr "Make a site"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:87
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr "Manage Site"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:105
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr "Add Site Management Folder"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:124
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr "Registrations"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/container/browser/configure.zcml:5
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr "Find"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/generations/browser/configure.zcml:6
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr "Database Schemas"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:10
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr "Translate"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:28
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr "Import/Export"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:41
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr "Synchronize"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr "A Persistent Translation Domain"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr "Translation Domain"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr "Principal Annotation Utility"
 
-#: /Users/roemmer/work/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr "Stores Annotations for Principals"
 
@@ -335,7 +335,7 @@ msgstr "Titel"
 #: zeit/cms/repository/browser/file.py:35
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
-#: zeit/content/image/browser/imagegroup.py:211
+#: zeit/content/image/browser/imagegroup.py:224
 #: zeit/content/image/browser/interfaces.py:35
 msgid "File name"
 msgstr "Dateiname"
@@ -1751,7 +1751,7 @@ msgstr "Farbe Button"
 #: zeit/content/article/interfaces.py:59 zeit/content/cp/interfaces.py:97
 #: zeit/content/cp/interfaces.py:346 zeit/content/cp/interfaces.py:689
 #: zeit/content/image/browser/configure.zcml:249
-#: zeit/content/image/browser/imagegroup.py:219 zeit/content/image/image.py:146
+#: zeit/content/image/browser/imagegroup.py:232 zeit/content/image/image.py:146
 #: zeit/content/portraitbox/interfaces.py:18
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1996,11 +1996,11 @@ msgstr "Themenbox bearbeiten"
 msgid "edit newsletter signup"
 msgstr "Newsletter-Anmeldung bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:517
+#: zeit/content/article/edit/browser/edit.py:523
 msgid "edit recipe list"
 msgstr "Rezeptliste bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:539
+#: zeit/content/article/edit/browser/edit.py:545
 msgid "edit ingredientdice block"
 msgstr "Zutatenwürfel bearbeiten"
 
@@ -3168,7 +3168,7 @@ msgid "Add storystream"
 msgstr "Storystream"
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:58
+#: zeit/content/image/browser/imagegroup.py:59
 #: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:129
 #: zeit/workflow/browser/form.py:161
 msgid "Settings"
@@ -3611,7 +3611,7 @@ msgid "Image (single)"
 msgstr "Einzelbild"
 
 #: zeit/content/image/browser/configure.zcml:210
-#: zeit/content/image/browser/imagegroup.py:205
+#: zeit/content/image/browser/imagegroup.py:218
 #: zeit/content/image/interfaces.py:429
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3637,7 +3637,7 @@ msgid "Copyright changed for: ${changes}"
 msgstr "Copyright geändert für: ${changes}."
 
 #: zeit/content/image/browser/form.py:16
-#: zeit/content/image/browser/imagegroup.py:236
+#: zeit/content/image/browser/imagegroup.py:249
 msgid "Image data"
 msgstr "Bilddaten"
 
@@ -3658,7 +3658,7 @@ msgid "View image"
 msgstr "Bild zeigen"
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:216
+#: zeit/content/image/browser/imagegroup.py:229
 msgid "Dimensions"
 msgstr "Ausmaße"
 
@@ -3678,27 +3678,31 @@ msgstr "Bildunterschrift: ${caption}"
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr "Verlinkt nach: ${link} (nofollow)"
 
-#: zeit/content/image/browser/imagegroup.py:38
+#: zeit/content/image/browser/imagegroup.py:39
 msgid "Add image group"
 msgstr "Bildergruppe hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:157
+#: zeit/content/image/browser/imagegroup.py:147
+msgid "Image was resized, ${size} exceeds ${max_size}"
+msgstr "Das Bild wurde von ${size} auf ${max_size} verkleinert."
+
+#: zeit/content/image/browser/imagegroup.py:170
 msgid "Add motif"
 msgstr "Datei für weiteres Motiv wählen"
 
-#: zeit/content/image/browser/imagegroup.py:165
+#: zeit/content/image/browser/imagegroup.py:178
 msgid "Edit image group"
 msgstr "Bildergruppe bearbeiten"
 
-#: zeit/content/image/browser/imagegroup.py:170
+#: zeit/content/image/browser/imagegroup.py:183
 msgid "Add viewport to master image mapping"
 msgstr "Bild hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:178
+#: zeit/content/image/browser/imagegroup.py:191
 msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
-#: zeit/content/image/browser/imagegroup.py:198
+#: zeit/content/image/browser/imagegroup.py:211
 msgid "Master image"
 msgstr "Hauptbild"
 
