@@ -103,7 +103,11 @@ class Connector:
             props.to_webdav, _get_body,
             'httpd/unix-directory' if props.is_collection else 'httpd/unknown')
 
+    property_not_found_cache = TransactionBoundCache('_v_property_cache', dict)
+
     def _get_properties(self, uniqueid):
+        if uniqueid in self.property_not_found_cache:
+            return None
         key = self._pathkey(uniqueid)
         is_cached = self.session.identity_key(
             Paths, key) in self.session.identity_map
@@ -113,6 +117,7 @@ class Connector:
             uniqueid, key, is_cached, repr(path))
         if path is not None:
             return path.properties
+        self.property_not_found_cache[uniqueid] = None
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
@@ -155,6 +160,7 @@ class Connector:
             props = Properties()
             path = Paths(properties=props)
             self.session.add(path)
+            self.property_not_found_cache.pop(uniqueid)
         else:
             path = props.path
 
