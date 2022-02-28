@@ -28,7 +28,7 @@ import zope.sqlalchemy
 
 
 log = getLogger(__name__)
-
+absent = object()
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
@@ -103,11 +103,12 @@ class Connector:
             props.to_webdav, _get_body,
             'httpd/unix-directory' if props.is_collection else 'httpd/unknown')
 
-    property_not_found_cache = TransactionBoundCache('_v_property_cache', dict)
+    property_cache = TransactionBoundCache('_v_property_cache', dict)
 
     def _get_properties(self, uniqueid):
-        if uniqueid in self.property_not_found_cache:
-            return None
+        props = self.property_cache.get(uniqueid, absent)
+        if props is not absent:
+            return props
         key = self._pathkey(uniqueid)
         is_cached = self.session.identity_key(
             Paths, key) in self.session.identity_map
@@ -115,9 +116,11 @@ class Connector:
         log.debug(
             "_get_properties %s key %s is_cached %s path %s",
             uniqueid, key, is_cached, repr(path))
+        props = None
         if path is not None:
-            return path.properties
-        self.property_not_found_cache[uniqueid] = None
+            props = path.properties
+        self.property_cache[uniqueid] = props
+        return props
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
@@ -160,7 +163,7 @@ class Connector:
             props = Properties()
             path = Paths(properties=props)
             self.session.add(path)
-            self.property_not_found_cache.pop(uniqueid)
+            self.property_cache[uniqueid] = props
         else:
             path = props.path
 
@@ -183,6 +186,8 @@ class Connector:
         current = props.to_webdav()
         current.update(properties)
         props.from_webdav(current)
+        if uniqueid in self.property_cache:
+            self.property_cache[uniqueid] = props
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -192,6 +197,7 @@ class Connector:
         self.session.execute(
             delete(Paths)
             .filter_by(parent_path=parent_path, name=name))
+        self.property_cache.pop(uniqueid, None)
 
     @staticmethod
     def _normalize(uniqueid):
