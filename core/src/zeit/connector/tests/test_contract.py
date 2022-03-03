@@ -91,6 +91,17 @@ class ContractReadWrite:
         del self.connector[res.id]
         self.assertNotIn(res.id, self.connector)
 
+    def test_delitem_collection_removes_children(self):
+        collection = Resource(
+            None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        self.add_resource('folder/file')
+        del self.connector[collection.id + '/']  # XXX trailing slash DAV-ism
+        with self.assertRaises(KeyError):
+            self.connector['http://xml.zeit.de/folder']
+        with self.assertRaises(KeyError):
+            self.connector['http://xml.zeit.de/folder/file']
+
     def test_changeProperties_updates_properties(self):
         self.add_resource('foo', properties={
             ('foo', self.NS): 'foo',
@@ -110,8 +121,7 @@ class ContractReadWrite:
         collection = Resource(
             None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
         self.connector['http://xml.zeit.de/testing/folder'] = collection
-        self.connector['http://xml.zeit.de/testing/folder/file'] = Resource(
-            None, None, 'text', BytesIO(b''))
+        self.add_resource('folder/file')
         self.assertEqual(['file'], [x[0] for x in self.listCollection(
             'http://xml.zeit.de/testing/folder')])
         # Re-adding a collection is a no-op
