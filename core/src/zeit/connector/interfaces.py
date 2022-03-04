@@ -32,6 +32,8 @@ except ImportError:
     pass  # soft dependency
 
 
+ID_NAMESPACE = 'http://xml.zeit.de/'
+
 RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
 UUID_PROPERTY = ('uuid', 'http://namespaces.zeit.de/CMS/document')
 
