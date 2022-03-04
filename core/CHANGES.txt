@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.11.1 (2022-03-04)
+-------------------
+
+- ZO-815: Trigger container image build to fix psycopyg dependency
+
+
 5.11.0 (2022-03-04)
 -------------------
 
