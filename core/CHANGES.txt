@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.11.0 (2022-03-04)
+-------------------
+
+- - ZO-815, ZO-786: First implementation of new storage IConnector
+
+
+FIX:
+- ZO-365: resize uploaded single images
+
+
 5.10.0 (2022-02-24)
 -------------------
 
