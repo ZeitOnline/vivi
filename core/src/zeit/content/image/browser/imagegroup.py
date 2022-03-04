@@ -32,8 +32,9 @@ class FormBase(object):
 
 
 class AddForm(FormBase,
-              zeit.content.image.browser.form.createImagePreprocess,
-              zeit.cms.repository.browser.file.FormBase):
+              zeit.cms.repository.browser.file.FormBase,
+              zeit.cms.browser.form.AddForm,
+              zeit.content.image.browser.form.Resize):
 
     title = _('Add image group')
     factory = zeit.content.image.imagegroup.ImageGroup
