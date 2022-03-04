@@ -43,7 +43,7 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
             ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
 
 
-class createImagePreprocess(zeit.cms.browser.form.AddForm):
+class Resize:
 
     def reduceToMaxImageSize(self, image):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -63,8 +63,7 @@ class createImagePreprocess(zeit.cms.browser.form.AddForm):
         return image
 
 
-class AddForm(ImageFormBase, createImagePreprocess,
-              zeit.cms.browser.form.AddForm):
+class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, Resize):
 
     form_fields = (zope.formlib.form.FormFields(
         zeit.content.image.browser.interfaces.IFileAddSchema) +
