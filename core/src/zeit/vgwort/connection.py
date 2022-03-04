@@ -157,9 +157,7 @@ class MessageService(VGWortWebService):
                     self.create('Involved', code__1=author.vgwortcode))
             except AttributeError:
                 log.warning('Ignoring agencies for %s', content, exc_info=True)
-        # BBB for articles created by zeit.newsimport before `agencies` existed
-        if (not content.agencies and content.product and
-                content.product.vgwortcode):
+        if content.product and content.product.vgwortcode:
             authors.append(self.create(
                 'Involved', code__1=content.product.vgwortcode))
 
