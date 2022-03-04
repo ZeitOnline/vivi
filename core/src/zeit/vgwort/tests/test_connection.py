@@ -236,23 +236,6 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.assertEqual(2, len(authors))
         self.assertEqual('1234abc', authors[-1].code__1)
 
-    def test_agencies_are_passed_as_additional_author_with_code(self):
-        author = zeit.content.author.author.Author()
-        author.firstname = 'dpa'
-        author.vgwortcode = 'dpaid'
-        self.repository['author'] = author
-        author = self.repository['author']
-        content = self.get_content([])
-        with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.agencies = [author]
-        content = self.repository['testcontent']
-        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
-            self.service.new_document(content)
-            parties = call.call_args[0][1]
-            authors = parties.authors.author
-        self.assertEqual(1, len(authors))
-        self.assertEqual('dpaid', authors[0].code__1)
-
     def test_author_code_should_be_passed_instead_of_name(self):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
