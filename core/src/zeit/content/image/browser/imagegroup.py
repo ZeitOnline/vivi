@@ -32,8 +32,8 @@ class FormBase(object):
 
 
 class AddForm(FormBase,
-              zeit.cms.repository.browser.file.FormBase,
-              zeit.cms.browser.form.AddForm):
+              zeit.content.image.browser.form.createImagePreprocess,
+              zeit.cms.repository.browser.file.FormBase):
 
     title = _('Add image group')
     factory = zeit.content.image.imagegroup.ImageGroup
@@ -139,7 +139,7 @@ class AddForm(FormBase,
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
         self.update_file(image, blob)
-        image = zeit.content.image.browser.form.AddForm.resize(self, image)
+        image = self.reduceToMaxImageSize(image)
         name = getattr(blob, 'filename', '')
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)

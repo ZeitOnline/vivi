@@ -33,9 +33,6 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
         'acquire_metadata', 'origin')
 
     def __init__(self, *args, **kw):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
-        self.max_size = config.get('max-image-size', 4000)
         self.form_fields['blob'].custom_widget = (
             zeit.cms.repository.browser.file.BlobWidget)
         super(ImageFormBase, self).__init__(*args, **kw)
@@ -46,16 +43,12 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
             ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
 
 
-class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
+class createImagePreprocess(zeit.cms.browser.form.AddForm):
 
-    form_fields = (zope.formlib.form.FormFields(
-        zeit.content.image.browser.interfaces.IFileAddSchema) +
-        ImageFormBase.form_fields.omit('references', 'external_id'))
-
-    title = _("Add image")
-    factory = zeit.content.image.image.LocalImage
-
-    def resize(self, image):
+    def reduceToMaxImageSize(self, image):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.image')
+        self.max_size = config.get('max-image-size', 4000)
         size = image.getImageSize()
         largest = max(size)
         if largest > self.max_size:
@@ -69,11 +62,22 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
             image = ImageTransform(image).resize(**resize)
         return image
 
+
+class AddForm(ImageFormBase, createImagePreprocess,
+              zeit.cms.browser.form.AddForm):
+
+    form_fields = (zope.formlib.form.FormFields(
+        zeit.content.image.browser.interfaces.IFileAddSchema) +
+        ImageFormBase.form_fields.omit('references', 'external_id'))
+
+    title = _("Add image")
+    factory = zeit.content.image.image.LocalImage
+
     def create(self, data):
         image = self.new_object
         blob = data.pop('blob')
         self.update_file(image, blob)
-        image = self.resize(image)
+        image = self.reduceToMaxImageSize(image)
         name = data.pop('__name__')
         if not name:
             name = getattr(blob, 'filename', '')
