@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 from zeit.content.image.browser.mdb import MDBImportWidget
+from zeit.content.image.transform import ImageTransform
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.formlib.widget import CustomWidgetFactory
 import gocept.form.grouped
@@ -33,8 +34,7 @@ class FormBase(object):
 
 class AddForm(FormBase,
               zeit.cms.repository.browser.file.FormBase,
-              zeit.cms.browser.form.AddForm,
-              zeit.content.image.browser.form.Resize):
+              zeit.cms.browser.form.AddForm):
 
     title = _('Add image group')
     factory = zeit.content.image.imagegroup.ImageGroup
@@ -140,7 +140,17 @@ class AddForm(FormBase,
     def create_image(self, blob, data):
         image = zeit.content.image.image.LocalImage()
         self.update_file(image, blob)
-        image = self.reduceToMaxImageSize(image)
+        size = image.getImageSize()
+        largest = max(size)
+        if largest > self.max_size:
+            self.send_message(
+                _('Image was resized, ${size} exceeds ${max_size}',
+                  mapping={'size': largest, 'max_size': self.max_size}))
+            if size.index(largest) == 0:
+                resize = {'width': self.max_size}
+            else:
+                resize = {'height': self.max_size}
+            image = ImageTransform(image).resize(**resize)
         name = getattr(blob, 'filename', '')
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)

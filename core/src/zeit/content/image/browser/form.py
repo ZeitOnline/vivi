@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.image.transform import ImageTransform
 import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.repository.browser.file
@@ -43,27 +42,7 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
             ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
 
 
-class Resize:
-
-    def reduceToMaxImageSize(self, image):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
-        self.max_size = config.get('max-image-size', 4000)
-        size = image.getImageSize()
-        largest = max(size)
-        if largest > self.max_size:
-            self.send_message(
-                _('Image was resized, ${size} exceeds ${max_size}',
-                  mapping={'size': largest, 'max_size': self.max_size}))
-            if size.index(largest) == 0:
-                resize = {'width': self.max_size}
-            else:
-                resize = {'height': self.max_size}
-            image = ImageTransform(image).resize(**resize)
-        return image
-
-
-class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, Resize):
+class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
 
     form_fields = (zope.formlib.form.FormFields(
         zeit.content.image.browser.interfaces.IFileAddSchema) +
@@ -76,7 +55,6 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, Resize):
         image = self.new_object
         blob = data.pop('blob')
         self.update_file(image, blob)
-        image = self.reduceToMaxImageSize(image)
         name = data.pop('__name__')
         if not name:
             name = getattr(blob, 'filename', '')
