@@ -144,7 +144,6 @@
 
   <include package="grokcore.component" file="meta.zcml" />
   <grok:grok package="zeit.cms.application" />
-  <grok:grok package="zeit.cms.zope" />
 
   <include package="zeit.connector" />
   <include package="zeit.objectlog" />

@@ -6,6 +6,11 @@ DEPLOYMENT=$WORKSPACE/../$(basename $WORKSPACE)-deployment
 
 COMMAND=${1:-test-app}
 case $COMMAND in
+    test-app)
+        bin/ci setup-batou
+        env PGPORT=$($DEPLOYMENT/bin/get_open_port) pg_virtualenv -v ${PGVENV:-13} \
+            $WORKSPACE/bin/ci test-app-run
+    ;;
     setup-batou)
         if [ ! -d $DEPLOYMENT ]; then
             git clone ssh://git@github.com/ZeitOnline/vivi-deployment $DEPLOYMENT
@@ -27,14 +32,12 @@ case $COMMAND in
           mkdir -p $DEPLOYMENT/work/source
         fi
         ln -sfT $WORKSPACE $DEPLOYMENT/work/source/vivi
-
-        ./batou deploy jenkins
     ;;
-    test-app)
+    test-app-run)
+        cd $DEPLOYMENT
+        ./batou deploy jenkins
+
         cd $WORKSPACE
-
-        bin/ci setup-batou
-
         rm -f report*.xml cobertura.xml
         cd $DEPLOYMENT/work/source
         rm -f report*.xml coverage.xml .coverage
