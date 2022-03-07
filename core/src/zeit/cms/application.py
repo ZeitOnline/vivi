@@ -6,6 +6,7 @@ import webob.cookies
 import zeit.cms.cli
 import zeit.cms.wsgi
 import zeit.cms.zope
+import zope.app.appsetup.interfaces
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.app.wsgi

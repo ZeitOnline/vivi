@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <utility 
+    provides="zeit.connector.interfaces.IConnector"
+    factory=".zopeconnector.connectorFactory"
+    />
+
+  <subscriber handler=".zopeconnector.invalidate_cache" />
+
+</configure>
+

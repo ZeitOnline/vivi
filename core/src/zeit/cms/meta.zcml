@@ -10,7 +10,6 @@
     handler=".zcml.edit_permission"
     />
 
-  <include package="grokcore.component" file="meta.zcml" />
   <grok:grok package=".typegrokker" />
 
 </configure>

@@ -1,0 +1,22 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope">
+
+   <meta:provides feature="zeit.cms.testing" />
+
+  <!-- This file is the equivalent of site.zcml and it is -->
+  <!-- used for functional testing setup -->
+
+  <include package="zeit.cms" />
+  <include package="zeit.connector" file="mock-connector.zcml" />
+  <include package="zeit.cms" file="securitypolicy.zcml" />
+  <include package="zeit.cms.browser" />
+
+  <include package="zeit.cms.testcontenttype" />
+
+  <include package="zeit.cms" file="principals-testing.zcml" />
+
+  <include package="zeit.cms.testcontenttype" />
+
+</configure>

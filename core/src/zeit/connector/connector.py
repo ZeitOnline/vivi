@@ -752,7 +752,6 @@ class Connector:
         return zeit.connector.cache.ChildNameCache()
 
     @classmethod
-    @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
         import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -762,7 +761,7 @@ class Connector:
             'search': config['document-store-search']})
 
 
-factory = Connector.factory  # zope.dottedname does not support classmethods
+connector_factory = Connector.factory
 
 
 class TransactionBoundCachingConnector(Connector):
@@ -779,4 +778,5 @@ class TransactionBoundCachingConnector(Connector):
         '_v_child_name_cache', zeit.connector.cache.ChildNameCache)
 
 
-tbc_factory = TransactionBoundCachingConnector.factory
+transaction_bound_caching_connector_factory = \
+    TransactionBoundCachingConnector.factory

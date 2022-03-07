@@ -20,7 +20,6 @@ import zope.component
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
-import zope.processlifetime
 import zope.securitypolicy.interfaces
 
 
@@ -348,7 +347,8 @@ def initializeRepository(repository, event):
     repository._initalizied = True
 
 
-@zope.component.adapter(zope.processlifetime.IDatabaseOpenedWithRoot)
+@zope.component.adapter(
+    zope.app.appsetup.interfaces.IDatabaseOpenedWithRootEvent)
 def deny_edit_permissions_in_repository_on_startup(event):
     root = event.database.open().root()
     root_folder = root[

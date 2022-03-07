@@ -1,6 +1,5 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-   xmlns:meta="http://namespaces.zope.org/meta"
   i18n_domain="zeit.cms">
 
   <include package="zeit.cms" file="ui.zcml" />
@@ -8,8 +7,7 @@
   <include package="zope.app.container.browser.tests" />
 
   <include package="zeit.cms" />
-  <meta:provides feature="zeit.connector.mock" />
-  <include package="zeit.connector" file="service.zcml" />
+  <include package="zeit.connector" file="mock-connector.zcml" />
   <include package="zeit.push" />
 
   <include package="zeit.securitypolicy" />

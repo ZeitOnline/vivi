@@ -5,7 +5,6 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.connector" />
-  <include package="zeit.connector" file="real-connector.zcml" />
+  <include package="zeit.connector" file="filesystem-connector.zcml" />
 
 </configure>
-

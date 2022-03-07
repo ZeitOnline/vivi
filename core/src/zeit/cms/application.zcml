@@ -9,6 +9,8 @@
     <include package="zope.security" file="permissions.zcml" />
     <include package="zope.securitypolicy" file="meta.zcml" />
 
+    <include package="zope.generations" file="subscriber.zcml" />
+
     <include package="zope.annotation" />
     <include package="zope.component" />
     <include package="zope.container" />
@@ -18,11 +20,5 @@
 
     <include package="gocept.lxml" />
     <include package="zc.sourcefactory" />
-
-    <include package="zope.app.appsetup" />
-    <include package="zope.site" />
-    <include package="zope.generations" file="subscriber.zcml" />
-    <include package="grokcore.component" file="meta.zcml" />
-    <grok:grok package="zeit.cms.zope" />
 
 </configure>

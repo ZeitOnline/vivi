@@ -12,8 +12,6 @@ import zope.interface.verify
 
 class ContractReadWrite:
 
-    NS = 'http://namespaces.zeit.de/CMS/testing'
-
     def add_resource(self, name, **kw):
         r = self.get_resource(name, **kw)
         r = self.connector[r.id] = r
@@ -36,13 +34,13 @@ class ContractReadWrite:
 
     def test_getitem_returns_resource(self):
         self.add_resource(
-            'foo', body='mybody', properties={('foo', self.NS): 'bar'})
+            'foo', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertTrue(zope.interface.verify.verifyObject(
             zeit.connector.interfaces.IResource, res))
         self.assertEqual('testing', res.type)
         self.assertEqual('http://xml.zeit.de/testing/foo', res.id)
-        self.assertEqual('bar', res.properties[('foo', self.NS)])
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
         self.assertEqual(b'mybody', res.data.read())
 
     def test_listCollection_invalid_id_raises(self):
@@ -91,29 +89,14 @@ class ContractReadWrite:
         del self.connector[res.id]
         self.assertNotIn(res.id, self.connector)
 
-    def test_delitem_collection_removes_children(self):
-        collection = Resource(
-            None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
-        self.connector['http://xml.zeit.de/testing/folder'] = collection
-        self.add_resource('folder/file')
-        del self.connector[collection.id + '/']  # XXX trailing slash DAV-ism
-        with self.assertRaises(KeyError):
-            self.connector['http://xml.zeit.de/folder']
-        with self.assertRaises(KeyError):
-            self.connector['http://xml.zeit.de/folder/file']
-
     def test_changeProperties_updates_properties(self):
-        self.add_resource('foo', properties={
-            ('foo', self.NS): 'foo',
-            ('bar', self.NS): 'bar',
-        })
+        self.add_resource('foo', properties={('foo', 'foo-ns'): 'bar'})
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('foo', res.properties[('foo', self.NS)])
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
         self.connector.changeProperties(
-            'http://xml.zeit.de/testing/foo', {('foo', self.NS): 'qux'})
+            'http://xml.zeit.de/testing/foo', {('foo', 'foo-ns'): 'qux'})
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('qux', res.properties[('foo', self.NS)])
-        self.assertEqual('bar', res.properties[('bar', self.NS)])
+        self.assertEqual('qux', res.properties[('foo', 'foo-ns')])
 
     def test_collection_is_determined_by_mime_type(self):
         # XXX This is the *only* place the mime type is still used, we should
@@ -121,7 +104,8 @@ class ContractReadWrite:
         collection = Resource(
             None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
         self.connector['http://xml.zeit.de/testing/folder'] = collection
-        self.add_resource('folder/file')
+        self.connector['http://xml.zeit.de/testing/folder/file'] = Resource(
+            None, None, 'text', BytesIO(b''))
         self.assertEqual(['file'], [x[0] for x in self.listCollection(
             'http://xml.zeit.de/testing/folder')])
         # Re-adding a collection is a no-op
@@ -134,18 +118,18 @@ class ContractCopyMove:
 
     def test_move_resource(self):
         self.add_resource(
-            'source', body='mybody', properties={('foo', self.NS): 'bar'})
+            'source', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
         self.connector.move(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
         self.assertEqual(['target'], [
             x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
         res = self.connector['http://xml.zeit.de/testing/target']
-        self.assertEqual('bar', res.properties[('foo', self.NS)])
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
         self.assertEqual(b'mybody', res.data.read())
 
     def test_move_to_existing_resource_overwrites(self):
-        self.add_resource('source', properties={('foo', self.NS): 'bar'})
+        self.add_resource('source', properties={('foo', 'foo-ns'): 'bar'})
         self.add_resource('target')
         self.connector.move(
             'http://xml.zeit.de/testing/source',
@@ -153,7 +137,7 @@ class ContractCopyMove:
         self.assertEqual(['target'], [
             x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
         res = self.connector['http://xml.zeit.de/testing/target']
-        self.assertEqual('bar', res.properties[('foo', self.NS)])
+        self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
 
     def test_move_to_existing_differring_resource_raises(self):
         # Note that this currently cannot "really" occur, because
@@ -198,7 +182,7 @@ class ContractCopyMove:
 
     def test_copy_resource(self):
         self.add_resource(
-            'source', body='mybody', properties={('foo', self.NS): 'bar'})
+            'source', body='mybody', properties={('foo', 'foo-ns'): 'bar'})
         self.connector.copy(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
@@ -208,7 +192,7 @@ class ContractCopyMove:
             res = self.connector[id]
             self.assertEqual('testing', res.type)
             self.assertEqual(id, res.id)
-            self.assertEqual('bar', res.properties[('foo', self.NS)])
+            self.assertEqual('bar', res.properties[('foo', 'foo-ns')])
             self.assertEqual(b'mybody', res.data.read())
 
     def test_copy_to_already_existing_resource_raises(self):
@@ -282,14 +266,3 @@ class ContractMock(
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
-
-
-class ContractSQL(
-        ContractReadWrite,
-        # ContractCopyMove,
-        # ContractLock,
-        zeit.connector.testing.SQLTest):
-
-    copy_inherited_functions(ContractReadWrite, locals())
-    # copy_inherited_functions(ContractCopyMove, locals())
-    # copy_inherited_functions(ContractLock, locals())

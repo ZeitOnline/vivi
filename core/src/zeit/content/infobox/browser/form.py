@@ -8,6 +8,7 @@ import zeit.cms.interfaces
 import zeit.content.infobox.infobox
 import zeit.content.infobox.interfaces
 import zeit.wysiwyg.browser.widget
+import zope.app.appsetup.interfaces
 import zope.app.form.browser
 import zope.cachedescriptors.property
 import zope.formlib.form

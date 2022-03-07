@@ -2,23 +2,13 @@
    xmlns="http://namespaces.zope.org/zope"
    xmlns:zcml="http://namespaces.zope.org/zcml">
 
-  <utility factory=".zopeconnector.factory"
+  <include package="zeit.connector" file="real-connector.zcml"
     zcml:condition="have zeit.connector"/>
-  <subscriber handler=".zopeconnector.invalidate_cache"
-    zcml:condition="have zeit.connector"/>
-
-  <utility factory=".connector.tbc_factory"
+  <include package="zeit.connector" file="tbcdav-connector.zcml"
     zcml:condition="have zeit.connector.nocache"/>
-
-  <utility factory=".postgresql.factory"
-    zcml:condition="have zeit.connector.sql"/>
-  <utility factory=".postgresql.passthrough_factory"
-    zcml:condition="have zeit.connector.sql-pass"/>
-
-  <utility factory="zeit.connector.filesystem.factory"
+  <include package="zeit.connector" file="filesystem-connector.zcml"
     zcml:condition="have zeit.connector.filesystem"/>
-
-  <utility factory=".mock.factory"
+  <include package="zeit.connector" file="mock-connector.zcml"
     zcml:condition="have zeit.connector.mock"/>
 
 </configure>

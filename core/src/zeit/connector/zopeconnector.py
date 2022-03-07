@@ -80,7 +80,14 @@ class ZopeConnector(zeit.connector.connector.Connector):
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
 
-factory = ZopeConnector.factory
+def connectorFactory():
+    """Factory for creating the connector with data from zope.conf."""
+    import zope.app.appsetup.product
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.connector')
+    return ZopeConnector({
+        'default': config['document-store'],
+        'search': config['document-store-search']})
 
 
 @zope.interface.implementer(transaction.interfaces.IDataManager)

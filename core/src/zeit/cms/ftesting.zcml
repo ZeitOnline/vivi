@@ -19,8 +19,7 @@
   <include package="zeit.cms.testcontenttype" />
   <include package="zeit.cms.testcontenttype.browser" />
 
-  <meta:provides feature="zeit.connector.mock" />
-  <include package="zeit.connector" file="service.zcml" />
+  <include package="zeit.connector" file="mock-connector.zcml" />
 
   <include package="zeit.cms.workflow" file="mock.zcml" />
   <include package="zeit.cms.tagging" file="mock.zcml" />
