@@ -505,6 +505,12 @@ class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.modules.interfaces.INewsletterSignup).omit(
             *list(zeit.edit.interfaces.IBlock))
+    form_fields['prefix_text'].custom_widget = (
+        zeit.cms.browser.widget.MarkdownWidget)
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        self.widgets['prefix_text'].height = 50
 
     @property
     def prefix(self):

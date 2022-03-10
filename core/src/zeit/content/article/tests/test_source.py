@@ -20,4 +20,4 @@ class GenreTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(None, source.feedback('nonexistent'))
         self.assertEqual(None, source.feedback('nachricht'))
         self.assertEqual(
-           'Hat Ihnen diese Glosse gefallen?', source.feedback('glosse'))
+            'Hat Ihnen diese Glosse gefallen?', source.feedback('glosse'))

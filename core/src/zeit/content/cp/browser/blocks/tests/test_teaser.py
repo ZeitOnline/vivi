@@ -37,12 +37,13 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
     def wait_for_order(self, order):
         s = self.selenium
         for i, teaser_id in enumerate(order):
-            s.waitForAttribute(self.teaser_selector.format(pos=i+1), teaser_id)
+            s.waitForAttribute(
+                self.teaser_selector.format(pos=i + 1), teaser_id)
 
     def assert_layout(self, layouts):
         s = self.selenium
         for index, layout in enumerate(layouts):
-            id_ = s.getAttribute(self.teaser_selector.format(pos=index+1))
+            id_ = s.getAttribute(self.teaser_selector.format(pos=index + 1))
             selector = 'css=#{} > .block-inner > .{}'.format(id_, layout)
             s.assertCssCount(selector, 1)
 

@@ -48,7 +48,6 @@ class RecipeCategoriesTest(
             '//input[@id="options-audio-speechbert.audio_speechbert"]')[0]
         self.assertTrue(sb_cb.checked)
 
-
     def test_genre_should_toggle_recipe_categories(self):
         b = self.browser
         genre = b.getControl(name='metadata-genre.genre')

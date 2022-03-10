@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='5.9.5.dev0',
+    version='5.11.3.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -33,6 +33,7 @@ setup(
         'gocept.form[formlib]>=0.7.5',
         'gocept.lxml>=0.2.1',
         'gocept.runner>0.5.3',
+        'google-cloud-storage>=2.1.0.dev0',
         'grokcore.component',
         'iso8601>=0.1.2',
         'lxml>=2.0.2',
@@ -47,6 +48,7 @@ setup(
         'pytz',
         'requests',
         'setuptools',
+        'sqlalchemy',
         'transaction',
         'tweepy',
         'urbanairship >= 3.1.0',
@@ -91,6 +93,8 @@ setup(
         'zope.schema',
         'zope.security',
         'zope.securitypolicy',
+        'zope.site',
+        'zope.sqlalchemy',
         'zope.traversing',  # XXX Should move to [ui], but is entrenched
         'zope.xmlpickle',
     ],
@@ -161,7 +165,6 @@ setup(
             'zope.login',
             'zope.pluggableauth',
             'zope.session',
-            'zope.site',
             'zope.viewlet',
         ],
         'test': [
@@ -169,6 +172,7 @@ setup(
             'celery_longterm_scheduler',
             'cssselect',
             'docker',
+            'gcp-storage-emulator',
             'gocept.httpserverlayer>=1.4.0.dev0',
             'gocept.jasmine',
             'gocept.jslint>=0.2',

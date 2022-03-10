@@ -270,7 +270,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         result = self.traverser.parse_url('cinema__200x80__scale_2.25__0000ff?scale=3.0&width=300&height=160&fill=None')
         assert result['size'] == [300, 160]
         assert result['scale'] == 3.0
-        assert result['fill'] == None
+        assert result['fill'] is None
         assert result['viewport'] is None
 
     def test_parse_url_variant_params_only(self):

@@ -403,7 +403,7 @@ class ArticleElementReferencesTest(
         body = EditableBody(self.article, self.article.xml.body)
         image_group = body.create_item('image', 3)
         image_group.references = image_group.references.create(
-             self.repository['image-group'])
+            self.repository['image-group'])
         image_group._validate = mock.Mock()
         self.repository['article_with_empty_ref'] = self.article
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(

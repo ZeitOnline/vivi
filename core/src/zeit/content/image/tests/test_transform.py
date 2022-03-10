@@ -231,4 +231,3 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         image = self.transform.create_variant_image(
             variant, size=(0, 0), fill_color='ffffff')
         self.assertEqual((8, 8), image.getImageSize())
-

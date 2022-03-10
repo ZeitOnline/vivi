@@ -3,6 +3,37 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.11.2 (2022-03-08)
+-------------------
+
+FIX:
+- Revert merge of ZO-365 (https://github.com/ZeitOnline/vivi/pull/29)6 to unblock master branch
+
+
+5.11.1 (2022-03-04)
+-------------------
+
+- ZO-815: Trigger container image build to fix psycopyg dependency
+
+
+5.11.0 (2022-03-04)
+-------------------
+
+- - ZO-815, ZO-786: First implementation of new storage IConnector
+
+
+FIX:
+- ZO-365: resize uploaded single images
+
+
+5.10.0 (2022-02-24)
+-------------------
+
+- ZO-365: Resize too large images on upload
+
+- ZO-987: Add prefix field to newslettersignups
+
+
 5.9.4 (2022-02-10)
 ------------------
 

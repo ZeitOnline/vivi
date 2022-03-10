@@ -147,6 +147,11 @@ class INewsletterSignup(zeit.edit.interfaces.IBlock):
         title=_('Newsletter Signup'),
         source=NewsletterSource())
 
+    prefix_text = zope.schema.Text(
+        title=_('Newslettersignup Prefix'),
+        description=_('Use Markdown'),
+        required=False)
+
 
 class IQuiz(zeit.edit.interfaces.IBlock):
 

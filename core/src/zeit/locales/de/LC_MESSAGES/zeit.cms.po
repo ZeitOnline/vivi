@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Jan 28 09:14:04 2022\n"
+"POT-Creation-Date: Thu Feb 24 08:35:54 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:15
 #: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:132
@@ -324,7 +324,7 @@ msgstr "Autor"
 #: zeit/content/article/interfaces.py:246 zeit/content/author/interfaces.py:36
 #: zeit/content/cp/interfaces.py:180 zeit/content/cp/interfaces.py:334
 #: zeit/content/cp/interfaces.py:485 zeit/content/gallery/interfaces.py:91
-#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:183
+#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:188
 #: zeit/content/rawxml/interfaces.py:16 zeit/content/text/interfaces.py:80
 #: zeit/content/video/browser/object-details-body.pt:24
 #: zeit/newsletter/interfaces.py:43 zeit/newsletter/interfaces.py:56
@@ -335,7 +335,7 @@ msgstr "Titel"
 #: zeit/cms/repository/browser/file.py:35
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
-#: zeit/content/image/browser/imagegroup.py:211
+#: zeit/content/image/browser/imagegroup.py:224
 #: zeit/content/image/browser/interfaces.py:35
 msgid "File name"
 msgstr "Dateiname"
@@ -836,7 +836,7 @@ msgstr "„Von“-Zeile"
 
 #: zeit/cms/content/interfaces.py:201
 #: zeit/content/article/edit/interfaces.py:455
-#: zeit/content/modules/interfaces.py:187
+#: zeit/content/modules/interfaces.py:192
 msgid "Subtitle"
 msgstr "Teaser/Vorspann (Unterzeile)"
 
@@ -1751,7 +1751,7 @@ msgstr "Farbe Button"
 #: zeit/content/article/interfaces.py:59 zeit/content/cp/interfaces.py:97
 #: zeit/content/cp/interfaces.py:346 zeit/content/cp/interfaces.py:689
 #: zeit/content/image/browser/configure.zcml:249
-#: zeit/content/image/browser/imagegroup.py:219 zeit/content/image/image.py:145
+#: zeit/content/image/browser/imagegroup.py:232 zeit/content/image/image.py:146
 #: zeit/content/portraitbox/interfaces.py:18
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1996,11 +1996,11 @@ msgstr "Themenbox bearbeiten"
 msgid "edit newsletter signup"
 msgstr "Newsletter-Anmeldung bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:517
+#: zeit/content/article/edit/browser/edit.py:523
 msgid "edit recipe list"
 msgstr "Rezeptliste bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:539
+#: zeit/content/article/edit/browser/edit.py:545
 msgid "edit ingredientdice block"
 msgstr "Zutatenwürfel bearbeiten"
 
@@ -2477,7 +2477,7 @@ msgid "URL"
 msgstr "URL"
 
 #: zeit/content/article/edit/interfaces.py:400
-#: zeit/content/modules/interfaces.py:308
+#: zeit/content/modules/interfaces.py:313
 msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
@@ -2486,7 +2486,7 @@ msgid "Liveblog version"
 msgstr "Liveblog Version"
 
 #: zeit/content/article/edit/interfaces.py:409
-#: zeit/content/modules/interfaces.py:311
+#: zeit/content/modules/interfaces.py:316
 msgid "Collapse preceding content"
 msgstr "Vorherigen Inhalt einklappen"
 
@@ -3168,7 +3168,7 @@ msgid "Add storystream"
 msgstr "Storystream"
 
 #: zeit/content/cp/browser/workflow.py:33
-#: zeit/content/image/browser/imagegroup.py:58
+#: zeit/content/image/browser/imagegroup.py:59
 #: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:129
 #: zeit/workflow/browser/form.py:161
 msgid "Settings"
@@ -3425,7 +3425,7 @@ msgstr "mittig"
 msgid "right"
 msgstr "rechts"
 
-#: zeit/content/cp/interfaces.py:711
+#: zeit/content/cp/interfaces.py:711 zeit/content/modules/interfaces.py:152
 msgid "Use Markdown"
 msgstr "verwendet Markdown"
 
@@ -3611,7 +3611,7 @@ msgid "Image (single)"
 msgstr "Einzelbild"
 
 #: zeit/content/image/browser/configure.zcml:210
-#: zeit/content/image/browser/imagegroup.py:205
+#: zeit/content/image/browser/imagegroup.py:218
 #: zeit/content/image/interfaces.py:429
 msgid "Image group"
 msgstr "Bildergruppe"
@@ -3637,7 +3637,7 @@ msgid "Copyright changed for: ${changes}"
 msgstr "Copyright geändert für: ${changes}."
 
 #: zeit/content/image/browser/form.py:16
-#: zeit/content/image/browser/imagegroup.py:236
+#: zeit/content/image/browser/imagegroup.py:249
 msgid "Image data"
 msgstr "Bilddaten"
 
@@ -3658,7 +3658,7 @@ msgid "View image"
 msgstr "Bild zeigen"
 
 #: zeit/content/image/browser/image_view.pt:10
-#: zeit/content/image/browser/imagegroup.py:216
+#: zeit/content/image/browser/imagegroup.py:229
 msgid "Dimensions"
 msgstr "Ausmaße"
 
@@ -3678,27 +3678,31 @@ msgstr "Bildunterschrift: ${caption}"
 msgid "Links to: ${link} rel=\"nofollow\""
 msgstr "Verlinkt nach: ${link} (nofollow)"
 
-#: zeit/content/image/browser/imagegroup.py:38
+#: zeit/content/image/browser/imagegroup.py:39
 msgid "Add image group"
 msgstr "Bildergruppe hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:157
+#: zeit/content/image/browser/imagegroup.py:147
+msgid "Image was resized, ${size} exceeds ${max_size}"
+msgstr "Das Bild wurde von ${size} auf ${max_size} verkleinert."
+
+#: zeit/content/image/browser/imagegroup.py:170
 msgid "Add motif"
 msgstr "Datei für weiteres Motiv wählen"
 
-#: zeit/content/image/browser/imagegroup.py:165
+#: zeit/content/image/browser/imagegroup.py:178
 msgid "Edit image group"
 msgstr "Bildergruppe bearbeiten"
 
-#: zeit/content/image/browser/imagegroup.py:170
+#: zeit/content/image/browser/imagegroup.py:183
 msgid "Add viewport to master image mapping"
 msgstr "Bild hinzufügen"
 
-#: zeit/content/image/browser/imagegroup.py:178
+#: zeit/content/image/browser/imagegroup.py:191
 msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
-#: zeit/content/image/browser/imagegroup.py:198
+#: zeit/content/image/browser/imagegroup.py:211
 msgid "Master image"
 msgstr "Hauptbild"
 
@@ -3743,7 +3747,7 @@ msgstr ""
 "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die "
 "Resource keinen gültigen Inhalt hat."
 
-#: zeit/content/image/imagegroup.py:370
+#: zeit/content/image/imagegroup.py:389
 msgid "Image Group"
 msgstr "Bildergruppe"
 
@@ -3931,73 +3935,77 @@ msgstr ""
 msgid "Newsletter Signup"
 msgstr "Newsletter"
 
-#: zeit/content/modules/interfaces.py:154
+#: zeit/content/modules/interfaces.py:151
+msgid "Newslettersignup Prefix"
+msgstr "Vorwort"
+
+#: zeit/content/modules/interfaces.py:159
 msgid "Quiz id"
 msgstr "ID"
 
-#: zeit/content/modules/interfaces.py:156
+#: zeit/content/modules/interfaces.py:161
 msgid "Enable adreload"
 msgstr "Adreload aktivieren"
 
-#: zeit/content/modules/interfaces.py:165
+#: zeit/content/modules/interfaces.py:170
 msgid "Email address must contain @."
 msgstr "E-Mail-Adresse muss @ enthalten"
 
-#: zeit/content/modules/interfaces.py:191
+#: zeit/content/modules/interfaces.py:196
 msgid "Recipient"
 msgstr "Empfänger"
 
-#: zeit/content/modules/interfaces.py:195
-#: zeit/content/modules/interfaces.py:200 zeit/newsletter/interfaces.py:25
+#: zeit/content/modules/interfaces.py:200
+#: zeit/content/modules/interfaces.py:205 zeit/newsletter/interfaces.py:25
 #: zeit/newsletter/interfaces.py:75
 msgid "Subject"
 msgstr "Betreff"
 
-#: zeit/content/modules/interfaces.py:204
+#: zeit/content/modules/interfaces.py:209
 msgid "Success message"
 msgstr "Text Erfolgsmeldung"
 
-#: zeit/content/modules/interfaces.py:207
+#: zeit/content/modules/interfaces.py:212
 msgid "Email required?"
 msgstr "Emailadresse als Pflichtfeld?"
 
-#: zeit/content/modules/interfaces.py:246
+#: zeit/content/modules/interfaces.py:251
 msgid "Value must be number or range."
 msgstr "Wert muss Zahl oder Umfang (3-4) sein."
 
-#: zeit/content/modules/interfaces.py:252
+#: zeit/content/modules/interfaces.py:257
 msgid "Merge with previous recipe list module"
 msgstr "Mit vorheriger Rezeptliste zusammenführen"
 
-#: zeit/content/modules/interfaces.py:256
+#: zeit/content/modules/interfaces.py:261
 msgid "Recipe name"
 msgstr "Rezeptname"
 
-#: zeit/content/modules/interfaces.py:260
+#: zeit/content/modules/interfaces.py:265
 msgid "Subheading"
 msgstr "Zwischenüberschrift"
 
-#: zeit/content/modules/interfaces.py:264
+#: zeit/content/modules/interfaces.py:269
 msgid "Appears in recipe search?"
 msgstr "Zwischenüberschrift in Suche anzeigen?"
 
-#: zeit/content/modules/interfaces.py:268
+#: zeit/content/modules/interfaces.py:273
 msgid "Complexity"
 msgstr "Komplexität"
 
-#: zeit/content/modules/interfaces.py:273
+#: zeit/content/modules/interfaces.py:278
 msgid "Time"
 msgstr "Dauer"
 
-#: zeit/content/modules/interfaces.py:278
+#: zeit/content/modules/interfaces.py:283
 msgid "Servings"
 msgstr "Portionen"
 
-#: zeit/content/modules/interfaces.py:283
+#: zeit/content/modules/interfaces.py:288
 msgid "Special ingredient"
 msgstr "Sonderzutat"
 
-#: zeit/content/modules/interfaces.py:284
+#: zeit/content/modules/interfaces.py:289
 msgid ""
 "A non-searchable free text ingredient without a cp (e.g. an extra portion of "
 "love)"
@@ -4005,27 +4013,27 @@ msgstr ""
 "Ein Freitextfeld für nicht durchsuchbare Sonderzutaten ohne Zutaten-CP (z.B. "
 "eine Extraportion Liebe)"
 
-#: zeit/content/modules/interfaces.py:290
+#: zeit/content/modules/interfaces.py:295
 msgid "Ingredients"
 msgstr "Zutaten"
 
-#: zeit/content/modules/interfaces.py:316
+#: zeit/content/modules/interfaces.py:321
 msgid "Liveblog status"
 msgstr "Liveblog-Status"
 
-#: zeit/content/modules/interfaces.py:321
+#: zeit/content/modules/interfaces.py:326
 msgid "Liveblog theme"
 msgstr "Liveblog-Theme"
 
-#: zeit/content/modules/interfaces.py:327
+#: zeit/content/modules/interfaces.py:332
 msgid "Intersections"
 msgstr "Zwischenüberschriften"
 
-#: zeit/content/modules/interfaces.py:349
+#: zeit/content/modules/interfaces.py:354
 msgid "Podcast id"
 msgstr "Episoden-ID"
 
-#: zeit/content/modules/interfaces.py:351
+#: zeit/content/modules/interfaces.py:356
 msgid "Provider"
 msgstr "Quelle"
 

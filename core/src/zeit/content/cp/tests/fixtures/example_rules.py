@@ -1,3 +1,4 @@
+# flake8: noqa
 applicable(is_area and area == 'teaser-mosaic' and position == 2)
 error_unless(layout == 'dmr', u'Die zweite Teaserleiste muss ein DMR sein')
 

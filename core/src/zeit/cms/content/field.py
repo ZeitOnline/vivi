@@ -6,7 +6,6 @@ import zope.location.location
 import zope.proxy
 import zope.schema
 import zope.schema.interfaces
-import zope.security._proxy
 import zope.security.checker
 import zope.security.proxy
 
@@ -65,7 +64,7 @@ def located(obj, parent, name):
     obj_ = zope.security.proxy.removeSecurityProxy(obj)
     obj_ = zope.location.location.LocationProxy(
         obj_, parent, name)
-    if type(obj) == zope.security._proxy._Proxy:
+    if type(obj) == zope.security.proxy.Proxy:
         return zope.security.checker.ProxyFactory(obj_)
     return obj_
 
