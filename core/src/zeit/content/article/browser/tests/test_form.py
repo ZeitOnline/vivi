@@ -48,11 +48,11 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         article = self.get_article()
         self.assertEqual((('Deutschland', None),), article.channels)
 
-    def test_channels_should_be_set_to_genre(self):
+    def test_genre_should_be_set_from_url(self):
         request = zope.publisher.browser.TestRequest()
         terms = zope.component.getMultiAdapter(
             (IArticle['genre'].source(object()), request), ITerms)
-        ressort_token = terms.getTerm('nachricht').token
+        genre_token = terms.getTerm('nachricht').token
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Article']
         url = menu.value[0]
