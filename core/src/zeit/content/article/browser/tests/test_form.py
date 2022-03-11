@@ -56,10 +56,47 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Article']
         url = menu.value[0]
-        url = '{0}?form.genre={1}'.format(url, ressort_token)
+        url = '{0}?form.genre={1}'.format(url, genre_token)
         self.browser.open(url)
         article = self.get_article()
         self.assertEqual('nachricht', article.genre)
+
+    def test_authorship_should_be_set_from_url(self):
+        repo = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        author = zeit.content.author.author.Author()
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
+        repo['author'] = author
+        principal = (
+            zope.security.management.getInteraction().
+            participations[0].principal)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+        clipboard.addClip("me")
+        me = clipboard['me']
+        entry = zeit.cms.clipboard.interfaces.IClipboardEntry(
+            repo['author'])
+        me['author'] = entry
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Article']
+        url = menu.value[0]
+        url = '{0}?form.authorships=me'.format(url)
+        self.browser.open(url)
+        article = self.get_article()
+        self.assertEqual('http://xml.zeit.de/author',
+                         article.authorships[0].target.uniqueId)
+        url = menu.value[0]
+        url = '{0}?form.authorships=you'.format(url)
+        self.browser.open(url)
+        article = self.get_article()
+        self.assertEqual((), article.authorships)
+        url = menu.value[0]
+        url = '{0}?form.authorships={1}'.format(
+            url, 'http%3A%2F%2Fxml.zeit.de%2Fauthor')
+        self.browser.open(url)
+        article = self.get_article()
+        self.assertEqual('http://xml.zeit.de/author',
+                         article.authorships[0].target.uniqueId)
 
     def test_default_year_and_volume_should_be_set(self):
         menu = self.browser.getControl(name='add_menu')
