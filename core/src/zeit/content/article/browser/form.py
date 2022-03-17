@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import uuid
 import zeit.cms.browser.form
+import zeit.cms.clipboard.interfaces
 import zeit.cms.content.browser.form
 import zeit.cms.interfaces
 import zeit.cms.settings.interfaces
@@ -57,11 +58,46 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         article.volume = settings.default_volume
         article.ressort = self._get_source_value(article, 'ressort')
         article.sub_ressort = self._get_source_value(article, 'sub_ressort')
+        article.genre = self._get_source_value(article, 'genre')
+        article.authorships = self._create_authorship(article)
         if article.ressort:
             article.channels = ((article.ressort, article.sub_ressort),)
         article.body.create_item('image')
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
         return article
+
+    def _create_authorship(self, article):
+        value = self.request.form.get('form.authorships')
+        author = None
+        if not value:
+            return ()
+        from_clipboard = self._author_from_clipboard(value)
+        if from_clipboard is not None:
+            author = from_clipboard
+        else:
+            author = self._author_adapted_from_value(value)
+        if author is None:
+            return ()
+        return [article.authorships.create(author)]
+
+    def _author_from_clipboard(self, value):
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
+            self.request.principal)
+        entry = clipboard.get(value)
+        if entry is None:
+            return
+        if len(entry.items()) != 1:
+            return
+        if not zeit.content.author.interfaces.IAuthor.providedBy(
+                entry.items()[0][1].references):
+            return
+        return entry.items()[0][1].references
+
+    def _author_adapted_from_value(self, value):
+        try:
+            return zeit.cms.interfaces.ICMSContent(value)
+        except TypeError:
+            return
 
     def _get_source_value(self, article, fieldname):
         token = self.request.form.get('form.%s' % fieldname)
