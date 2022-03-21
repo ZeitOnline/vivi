@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.11.3 (2022-03-21)
+-------------------
+
+- ZO-929: Add `genre` and `authorships` to articles via Add-URL
+
+
+MAINT:
+- ZO-541: Remove old newsimport fallbacks
+
+
 5.11.2 (2022-03-08)
 -------------------
 
