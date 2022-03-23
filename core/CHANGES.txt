@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.11.4 (2022-03-23)
+-------------------
+
+- ZO-1108: Support kicker in newslettersignup configuration, too
+
+- ZO-786: Delete GCS blob
+
+
 5.11.3 (2022-03-21)
 -------------------
 
