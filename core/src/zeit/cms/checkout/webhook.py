@@ -66,7 +66,7 @@ class Hook(object):
     def __call__(self, content):
         if self.should_exclude(content):
             return
-        log.debug('Notifying %s about %s', self.url, content)
+        log.info('Notifying %s about %s', self.url, content)
         try:
             self.deliver(content)
         except requests.exceptions.HTTPError as err:
