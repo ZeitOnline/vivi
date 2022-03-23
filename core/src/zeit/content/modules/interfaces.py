@@ -89,13 +89,14 @@ class Newsletter(zeit.cms.content.sources.AllowedBase):
 
     def __init__(
             self, id, title, image, abo_text, anon_text, redirect_link,
-            legal_text):
+            legal_text, kicker):
         super().__init__(id, title, available=None)
         self.image = image
         self.abo_text = abo_text
         self.anon_text = anon_text
         self.redirect_link = redirect_link
         self.legal_text = legal_text
+        self.kicker = kicker
 
 
 @grok.implementer(zeit.content.image.interfaces.IImages)
@@ -129,7 +130,8 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource,
                 self.child(node, 'text'),
                 self.child(node, 'text_anonymous'),
                 self.child(node, 'redirect_link'),
-                self.child(node, 'legal_text')
+                self.child(node, 'legal_text'),
+                self.child(node, 'kicker')
             )
             result[newsletter.id] = newsletter
         return result
