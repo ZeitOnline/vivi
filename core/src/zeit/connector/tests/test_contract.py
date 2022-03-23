@@ -5,6 +5,7 @@ from zeit.connector.interfaces import CopyError, MoveError
 from zeit.connector.resource import Resource
 from zeit.connector.testing import copy_inherited_functions
 import pytz
+import transaction
 import zeit.connector.interfaces
 import zeit.connector.testing
 import zope.interface.verify
@@ -17,6 +18,7 @@ class ContractReadWrite:
     def add_resource(self, name, **kw):
         r = self.get_resource(name, **kw)
         r = self.connector[r.id] = r
+        transaction.commit()
         return r
 
     def listCollection(self, id):  # XXX Why is this a generator?
@@ -66,17 +68,20 @@ class ContractReadWrite:
         # Note: We're also testing this implicitly, due to self.add_resource().
         res = self.get_resource('foo')
         self.connector['http://xml.zeit.de/testing/foo'] = res
+        transaction.commit()
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual('testing', res.type)
 
     def test_setitem_overwrites_ressource(self):
         res = self.get_resource('foo', body=b'one')
         self.connector['http://xml.zeit.de/testing/foo'] = res
+        transaction.commit()
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual(b'one', res.data.read())
 
         res = self.get_resource('foo', body=b'two')
         self.connector['http://xml.zeit.de/testing/foo'] = res
+        transaction.commit()
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual(b'two', res.data.read())
 
@@ -89,6 +94,7 @@ class ContractReadWrite:
         res = self.add_resource('foo')
         self.assertIn(res.id, self.connector)
         del self.connector[res.id]
+        transaction.commit()
         self.assertNotIn(res.id, self.connector)
 
     def test_delitem_collection_removes_children(self):
@@ -97,6 +103,7 @@ class ContractReadWrite:
         self.connector['http://xml.zeit.de/testing/folder'] = collection
         self.add_resource('folder/file')
         del self.connector[collection.id + '/']  # XXX trailing slash DAV-ism
+        transaction.commit()
         with self.assertRaises(KeyError):
             self.connector['http://xml.zeit.de/folder']
         with self.assertRaises(KeyError):
@@ -111,6 +118,7 @@ class ContractReadWrite:
         self.assertEqual('foo', res.properties[('foo', self.NS)])
         self.connector.changeProperties(
             'http://xml.zeit.de/testing/foo', {('foo', self.NS): 'qux'})
+        transaction.commit()
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual('qux', res.properties[('foo', self.NS)])
         self.assertEqual('bar', res.properties[('bar', self.NS)])
@@ -138,6 +146,7 @@ class ContractCopyMove:
         self.connector.move(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
+        transaction.commit()
         self.assertEqual(['target'], [
             x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
         res = self.connector['http://xml.zeit.de/testing/target']
@@ -150,6 +159,7 @@ class ContractCopyMove:
         self.connector.move(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
+        transaction.commit()
         self.assertEqual(['target'], [
             x[0] for x in self.listCollection('http://xml.zeit.de/testing')])
         res = self.connector['http://xml.zeit.de/testing/target']
@@ -202,6 +212,7 @@ class ContractCopyMove:
         self.connector.copy(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
+        transaction.commit()
         items = self.listCollection('http://xml.zeit.de/testing')
         self.assertEqual(['source', 'target'], sorted([x[0] for x in items]))
         for name, id in items:
@@ -227,6 +238,7 @@ class ContractCopyMove:
         self.connector.copy(
             'http://xml.zeit.de/testing/source',
             'http://xml.zeit.de/testing/target')
+        transaction.commit()
         self.assertIn(
             'http://xml.zeit.de/testing/source/file', self.connector)
         self.assertIn(
@@ -248,6 +260,7 @@ class ContractLock:
         self.assertEqual((None, None, False), self.connector.locked(id))
         self.connector.lock(
             id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
         user, until, mine = self.connector.locked(id)
         self.assertTrue(mine)
         self.assertEqual('zope.user', user)
@@ -257,6 +270,7 @@ class ContractLock:
         id = self.add_resource('foo').id
         lock = self.connector.lock(
             id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
         unlock = self.connector.unlock(id)
         self.assertEqual((None, None, False), self.connector.locked(id))
         self.assertEqual(unlock, lock)

@@ -327,6 +327,7 @@ def mkdir(connector, id):
         id, None, 'folder', BytesIO(b''),
         contentType='httpd/unix-directory')
     connector.add(res)
+    transaction.commit()
 
 
 def create_folder_structure(connector):
