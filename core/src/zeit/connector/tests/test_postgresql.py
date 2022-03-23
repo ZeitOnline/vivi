@@ -1,4 +1,5 @@
 from datetime import datetime
+import google.api_core.exceptions
 import transaction
 import zeit.connector.testing
 
@@ -52,3 +53,12 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         transaction.commit()
         props = self.connector._get_properties(res.id)
         self.assertIsInstance(props.last_updated, datetime)
+
+    def test_delete_removes_gcs_blob(self):
+        res = self.get_resource('foo', b'mybody')
+        self.connector.add(res)
+        props = self.connector._get_properties(res.id)
+        blob = self.connector.bucket.blob(props.id)
+        del self.connector[res.id]
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            blob.download_as_bytes()

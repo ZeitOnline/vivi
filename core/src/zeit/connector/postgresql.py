@@ -4,7 +4,7 @@ from google.cloud import storage
 from io import BytesIO
 from logging import getLogger
 from sqlalchemy import Boolean, TIMESTAMP, Unicode
-from sqlalchemy import Column, ForeignKey, select, delete
+from sqlalchemy import Column, ForeignKey, select
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID
@@ -150,10 +150,13 @@ class Connector:
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        (parent_path, name) = self._pathkey(uniqueid)
-        self.session.execute(
-            delete(Paths)
-            .filter_by(parent_path=parent_path, name=name))
+        props = self._get_properties(uniqueid)
+        if props is None:
+            raise KeyError(uniqueid)
+        if not props.is_collection:
+            blob = self.bucket.blob(props.id)
+            blob.delete()
+        self.session.delete(props)
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
 
