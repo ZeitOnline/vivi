@@ -36,6 +36,10 @@ class ContractReadWrite:
         self.assertIn('http://xml.zeit.de/testing', self.connector)
         self.assertNotIn('http://xml.zeit.de/nonexistent', self.connector)
 
+    def test_delitem_nonexistent_id_raises(self):
+        with self.assertRaises(KeyError):
+            del self.connector['http://xml.zeit.de/nonexistent']
+
     def test_getitem_returns_resource(self):
         self.add_resource(
             'foo', body='mybody', properties={('foo', self.NS): 'bar'})

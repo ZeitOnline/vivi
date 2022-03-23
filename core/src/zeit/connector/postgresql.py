@@ -151,6 +151,8 @@ class Connector:
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         props = self._get_properties(uniqueid)
+        if props is None:
+            raise KeyError(uniqueid)
         if not props.is_collection:
             blob = self.bucket.blob(props.id)
             blob.delete()

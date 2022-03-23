@@ -252,7 +252,10 @@ class Connector:
         # Invalidate the cache to make sure we have the real lock information
         self._invalidate_cache(id)
         token = self._get_my_locktoken(id)  # raises LockedByOtherSystemError
-        self.get_connection().delete(self._id2loc(id), token)
+        try:
+            self.get_connection().delete(self._id2loc(id), token)
+        except zeit.connector.dav.interfaces.DAVNotFoundError:
+            raise KeyError(id)
         self._invalidate_cache(id)
 
     def __contains__(self, id):
