@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.11.6 (2022-03-25)
+-------------------
+
+FIX:
+- ZO-365: resize uploaded single images
+
+
 5.11.5 (2022-03-24)
 -------------------
 
