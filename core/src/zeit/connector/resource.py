@@ -59,13 +59,13 @@ class CachedResource:
     """Represents a resource in the webdav."""
 
     def __init__(self, id, name, type_name, property_getter, body_getter,
-                 content_type):
+                 contentType):
         self.id = id
         self.__name__ = name
         self.type = type_name
         self._property_getter = property_getter
         self._body_getter = body_getter
-        self.contentType = content_type
+        self.contentType = contentType
 
     @property
     def data(self):
@@ -80,9 +80,9 @@ class WriteableCachedResource(CachedResource):
     """Used by mock connector"""
 
     def __init__(self, id, name, type_name, property_getter, body_getter,
-                 content_type):
+                 contentType):
         super().__init__(
-            id, name, type_name, property_getter, body_getter, content_type)
+            id, name, type_name, property_getter, body_getter, contentType)
         self._properties = WebDAVProperties(self._property_getter())
 
     @property

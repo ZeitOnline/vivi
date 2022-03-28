@@ -135,7 +135,7 @@ class Connector:
             str(id), path[-1], type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
-            content_type=self._get_content_type(id))
+            contentType=self._get_content_type(id))
 
     def _get_body(self, id):
         try:

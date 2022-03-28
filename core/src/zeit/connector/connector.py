@@ -235,7 +235,7 @@ class Connector:
             self._get_resource_type(id),
             lambda: self._get_resource_properties(id),
             lambda: self._get_resource_body(id),
-            content_type=content_type)
+            contentType=content_type)
 
     def __setitem__(self, id, object):
         """Add the given `object` to the document store under the given name.
