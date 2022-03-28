@@ -1,1 +1,0 @@
-ZO-786: Pass body size to GCS upload, this reduces runtime by 2/3
