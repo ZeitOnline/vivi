@@ -76,8 +76,11 @@ class DAVServerLayer(plone.testing.Layer):
         connector = self['connector']
         for name, uid in connector.listCollection(
                 'http://xml.zeit.de/testing'):
-            connector.unlock(uid)
-            del connector[uid]
+            try:
+                connector.unlock(uid)
+                del connector[uid]
+            except Exception:
+                pass
 
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
