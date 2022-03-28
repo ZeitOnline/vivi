@@ -209,10 +209,12 @@ class Paths(DBObject):
     parent_path = Column(Unicode, primary_key=True, index=True)
     name = Column(Unicode, primary_key=True)
 
-    id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'))
+    id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'),
+                nullable=False)
     properties = relationship(
-        'Properties', uselist=False, lazy='joined',
-        backref=backref('path', uselist=False))
+        'Properties', uselist=False, lazy='joined', backref=backref(
+            'path', uselist=False,
+            cascade='all, delete-orphan', passive_deletes=True))
 
 
 class Properties(DBObject):

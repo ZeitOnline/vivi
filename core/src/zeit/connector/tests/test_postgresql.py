@@ -62,3 +62,16 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         del self.connector[res.id]
         with self.assertRaises(google.api_core.exceptions.NotFound):
             blob.download_as_bytes()
+
+    def test_delete_removes_rows_from_all_tables(self):
+        from zeit.connector.postgresql import Paths, Properties
+        res = self.get_resource('foo', b'mybody')
+        self.connector.add(res)
+        props = self.connector._get_properties(res.id)
+        uuid = props.id
+        del self.connector[res.id]
+        transaction.commit()
+        self.assertEqual(
+            None,
+            self.connector.session.get(Paths, self.connector._pathkey(res.id)))
+        self.assertEqual(None, self.connector.session.get(Properties, uuid))
