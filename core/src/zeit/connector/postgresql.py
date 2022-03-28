@@ -129,8 +129,10 @@ class Connector:
         if not props.is_collection:
             self.body_cache.pop(props.id, None)
             blob = self.bucket.blob(props.id)
+            resource.data.seek(0, os.SEEK_END)
+            size = resource.data.tell()
             resource.data.seek(0)
-            blob.upload_from_file(resource.data)
+            blob.upload_from_file(resource.data, size=size)
 
         if uniqueid in self.property_cache:
             self.property_cache[uniqueid] = props
