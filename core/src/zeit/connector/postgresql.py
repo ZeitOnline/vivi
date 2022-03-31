@@ -212,7 +212,7 @@ class Paths(DBObject):
     name = Column(Unicode, primary_key=True)
 
     id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'),
-                nullable=False)
+                nullable=False, index=True)
     properties = relationship(
         'Properties', uselist=False, lazy='joined', backref=backref(
             'path', uselist=False,
