@@ -22,6 +22,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         b.getControl(name='form.teaserTitle').value = 'gocept homepage'
         b.getControl('Ressort', index=0).displayValue = ['Leben']
         b.getControl('Link address').value = 'http://gocept.com'
+        b.getControl('HTTP Status Code').displayValue = ['307']
         b.getControl(name="form.image").value = \
             'http://xml.zeit.de/2006/DSC00109_2.JPG'
         b.getControl(name='form.actions.add').click()
@@ -30,6 +31,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         xml = b.getControl(name='form.xml').value
         self.assertTrue('<title>gocept homepage' in xml)
         self.assertTrue('<url>http://gocept.com' in xml)
+        self.assertTrue('<status>307' in xml)
         self.assertEllipsis("""
         <link...
         <head>...
