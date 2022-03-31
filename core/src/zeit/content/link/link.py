@@ -24,6 +24,9 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
     url = zeit.cms.content.property.ObjectPathProperty('.body.url')
     target = zeit.cms.content.property.ObjectPathProperty('.body.target')
     nofollow = zeit.cms.content.property.ObjectPathProperty('.body.nofollow')
+    status_code = zeit.cms.content.property.ObjectPathProperty(
+        '.body.status', zeit.content.link.interfaces.ILink['status_code'],
+        use_default=True)
 
     @property
     def blog(self):

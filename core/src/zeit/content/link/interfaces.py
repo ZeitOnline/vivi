@@ -11,6 +11,11 @@ class TargetSource(zeit.cms.content.sources.SimpleDictSource):
     values = {'_blank': _('New window')}
 
 
+class StatusCodeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    values = ['301', '307']
+
+
 class ILink(zeit.cms.content.interfaces.ICommonMetadata,
             zeit.cms.content.interfaces.IXMLContent):
     """A type for managing links to non-local content."""
@@ -26,6 +31,11 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
         title=_('set nofollow'),
         required=False,
         default=False)
+
+    status_code = zope.schema.Choice(
+        title=_('HTTP Status Code'),
+        source=StatusCodeSource(),
+        default='301')
 
     keywords = zeit.cms.tagging.interfaces.Keywords(
         required=False,

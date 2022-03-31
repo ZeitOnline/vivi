@@ -44,7 +44,7 @@ class Base(zeit.push.browser.form.SocialBase,
 
     link_group = gocept.form.grouped.Fields(
         _("Link"),
-        ('target', 'nofollow'),
+        ('status_code', 'target', 'nofollow'),
         css_class='column-right')
 
     # Make link specific field groups for other views
