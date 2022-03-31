@@ -1,20 +1,14 @@
 from zeit.cms.i18n import MessageFactory as _
-import zc.sourcefactory.basic
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.content.link.sources
 import zope.schema
 
 
-class TargetSource(zc.sourcefactory.basic.BasicSourceFactory):
+class TargetSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = {'_blank': _('New window')}
-
-    def getValues(self):
-        return ('_blank',)
-
-    def getTitle(self, value):
-        return self.values.get(value, value)
 
 
 class ILink(zeit.cms.content.interfaces.ICommonMetadata,
