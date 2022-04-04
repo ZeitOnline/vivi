@@ -57,3 +57,16 @@ class TestWhitelistLocationAutocomplete(
                           {u'label': u'Frankreich',
                            u'value': u'tag://location\\u2603Frankreich'}],
                          result)
+
+
+class TestTopicpages(zeit.retresco.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.topics = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.ITopicpages)
+
+    def test_slice(self):
+        self.assertEqual(
+            ['berlin', 'pedelec'],
+            [x['id'] for x in self.topics.get_topics(start=2, rows=2)])

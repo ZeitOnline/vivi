@@ -148,19 +148,6 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('mytopic', result[0]['id'])
         self.assertEqual('Mytopic', result[0]['title'])
 
-    def test_topicpages_are_available_as_utility(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        topics = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.ITopicpages)
-        with mock.patch.object(tms, 'get_topicpages') as get:
-            result = Result([{'id': 'mytopic', 'title': 'Mytopic'}])
-            result.hits = 1
-            get.return_value = result
-            result = topics.get_topics()
-            self.assertEqual(1, result.hits)
-            self.assertEqual('mytopic', result[0]['id'])
-            self.assertEqual('Mytopic', result[0]['title'])
-
     def test_get_all_topicpages_delegates_to_get_topicpages(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with mock.patch.object(tms, 'get_topicpages') as get:
