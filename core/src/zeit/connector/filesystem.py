@@ -43,6 +43,8 @@ class Connector:
         '_v_canonical_id_cache', dict)
 
     def __init__(self, repository_path):
+        # Support `egg://` product config from zeit.cms.zope
+        repository_path = repository_path.replace('file://', '', 1)
         self.repository_path = repository_path
 
     @classmethod
