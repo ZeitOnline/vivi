@@ -35,14 +35,26 @@ class Topicpages(grok.GlobalUtility,
     config_url = 'topicpages-source'
     default_filename = 'topicpages.xml'
 
-    def get_topics(self, start=0, rows=25):
+    def get_topics(self, start=0, rows=25, sort_by='id', sort_order='asc'):
         result = []
         tree = self.load()
         for node in tree.iterchildren('*'):
             topic = {}
-            for name in TOPIC_PAGE_ATTRIBUTES:
-                topic[name] = node.get(name)
+            for attr in TOPIC_PAGE_ATTRIBUTES:
+                if len(attr) < 3:
+                    name = attr[0]
+                    typ = None
+                elif len(attr) == 3:
+                    name, _, typ = attr
+                value = node.get(name)
+                if value is None:
+                    continue
+                if typ is not None:
+                    value = typ(value)
+                topic[name] = value
             result.append(topic)
+        result.sort(key=lambda x: x.get(sort_by, -1),
+                    reverse=(sort_order != 'asc'))
         return result[start:start + rows]
 
     @CONFIG_CACHE.cache_on_arguments()

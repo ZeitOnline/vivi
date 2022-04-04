@@ -3,6 +3,6 @@
   <topic type="organisation" id="1-fc-kaiserslautern">1. FC Kaiserslautern</topic>
   <topic type="person" id="angela-merkel">Angela Merkel</topic>
   <topic type="location" id="berlin">Berlin</topic>
-  <topic type="product" id="pedelec">Pedelec</topic>
-  <topic type="keyword" id="zweirad">Zweirad</topic>
+  <topic type="product" kpi_1="50" id="pedelec">Pedelec</topic>
+  <topic type="keyword" kpi_1="100" id="zweirad">Zweirad</topic>
 </topics>

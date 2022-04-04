@@ -100,7 +100,7 @@ class Keywords(zope.schema.Tuple):
 class ITopicpages(zope.interface.Interface):
     """Utility to retrieve (paginated) information about topic pages."""
 
-    def get_topics(start=0, rows=25):
+    def get_topics(start=0, rows=25, sort_by='name', sort_order='asc'):
         """Returns an IResult containing dicts with keys ``id`` and ``title``.
 
         Our topic pages typically have URLs like www.zeit.de/thema/<id>.
