@@ -7,6 +7,7 @@ var FIELDS = {
     'elasticsearch-query': 'elasticsearch_raw_query',
     'reach': 'reach_service',
     'related-topics': 'related_topicpage',
+    'topicpagelist': 'topicpagelist_order',
     'rss-feed': 'rss_feed'
 };
 

@@ -66,7 +66,9 @@ class Topicpages(grok.GlobalUtility,
 
         result.sort(key=lambda x: x.get(sort_by, -1),
                     reverse=(sort_order != 'asc'))
-        return result[start:start + rows]
+        slice = zeit.cms.interfaces.Result(result[start:start + rows])
+        slice.hits = len(result)
+        return slice
 
     @CONFIG_CACHE.cache_on_arguments()
     def load(self):  # Allow zeit.web to override the cache region

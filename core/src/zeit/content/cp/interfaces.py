@@ -251,6 +251,7 @@ class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
         ('query', _('automatic-area-type-query')),
         ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
         ('reach', _('automatic-area-type-reach')),
+        ('topicpagelist', _('automatic-area-type-topicpagelist')),
         ('rss-feed', _('automatic-area-type-rss-feed'))
     ])
 
@@ -279,12 +280,15 @@ def automatic_area_can_read_teasers_automatically(data):
             data.elasticsearch_raw_query):
         return True
 
-    if (data.automatic_type == 'rss-feed' and
-            data.rss_feed):
+    if data.automatic_type == 'rss-feed' and data.rss_feed:
         return True
 
-    if (data.automatic_type == 'reach' and data.reach_service):
+    if data.automatic_type == 'reach' and data.reach_service:
         return True
+
+    if data.automatic_type == 'topicpagelist':
+        return True
+
     return False
 
 

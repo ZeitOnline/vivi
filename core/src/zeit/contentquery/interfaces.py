@@ -141,6 +141,16 @@ class TopicpageOrderSource(zeit.cms.content.sources.SimpleDictSource):
     ])
 
 
+class TopicpageListOrderSource(zeit.cms.content.sources.SimpleDictSource):
+
+    values = collections.OrderedDict([
+        ('id', _('tms-order-id')),
+        ('visits', _('tms-order-kpi_visits')),
+        ('comments', _('tms-order-kpi_comments')),
+        ('subscriptions', _('tms-order-kpi_subscriptions')),
+    ])
+
+
 class ReachServiceSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
@@ -291,6 +301,11 @@ class IConfiguration(zope.interface.Interface):
         title=_('Topicpage order'),
         source=TopicpageOrderSource(),
         default='date')
+
+    topicpagelist_order = zope.schema.Choice(
+        title=_('Topicpage order'),
+        source=TopicpageListOrderSource(),
+        default='id')
 
     related_topicpage = zope.schema.TextLine(
         title=_('Referenced Topicpage Id'),
