@@ -7,8 +7,7 @@ import logging
 import operator
 import os
 import pyramid_dogpile_cache2
-import six
-import six.moves.urllib.request
+import urllib.request
 import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
@@ -29,7 +28,7 @@ except ImportError:
     pass
 
 
-class CachedXMLBase(object):
+class CachedXMLBase:
 
     product_configuration = 'zeit.cms'
     config_url = NotImplemented
@@ -52,7 +51,7 @@ class CachedXMLBase(object):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
-        request = six.moves.urllib.request.urlopen(url)
+        request = urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(request)
 
 
@@ -63,7 +62,7 @@ class ShortCachedXMLBase(CachedXMLBase):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
-        request = six.moves.urllib.request.urlopen(url)
+        request = urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(request)
 
 
@@ -71,7 +70,7 @@ class SimpleXMLSourceBase(CachedXMLBase):
 
     def getValues(self):
         xml = self._get_tree()
-        return [six.text_type(x).strip() for x in xml.iterchildren('*')]
+        return [str(x).strip() for x in xml.iterchildren('*')]
 
 
 class XMLSource(
@@ -86,7 +85,7 @@ class XMLSource(
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [six.text_type(node.get(self.attribute))
+        return [str(node.get(self.attribute))
                 for node in tree.iterchildren('*')
                 if self.isAvailable(node, context)]
 
@@ -112,7 +111,7 @@ class XMLSource(
         return value
 
     def _get_title_for(self, node):
-        return six.text_type(node.text).strip()
+        return str(node.text).strip()
 
 
 class SearchableXMLSource(XMLSource):
@@ -125,11 +124,11 @@ class SearchableXMLSource(XMLSource):
         tree = self._get_tree()
         if self.attribute is NotImplemented:
             # Return text value of nodes
-            return [six.text_type(node)
+            return [str(node)
                     for node in tree.xpath(self.xpath)
                     if self.isAvailable(node, context)]
         # Return value of provided attribute for nodes
-        return [six.text_type(node.get(self.attribute))
+        return [str(node.get(self.attribute))
                 for node in tree.xpath(self.xpath)
                 if self.isAvailable(node, context)]
 
@@ -158,7 +157,7 @@ class SimpleContextualXMLSource(
     """A simple contextual xml source."""
 
     def getValues(self, context):
-        return super(SimpleContextualXMLSource, self).getValues()
+        return super().getValues()
 
 
 class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
@@ -216,7 +215,7 @@ class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
         return value
 
 
-class AllowedBase(object):
+class AllowedBase:
 
     def __init__(self, id, title, available):
         self.id = id
@@ -291,7 +290,7 @@ class RessortSource(XMLSource):
     title_xpath = '/ressorts/ressort'
 
     def _get_title_for(self, node):
-        return six.text_type(node['title'])
+        return str(node['title'])
 
 
 class ParentChildSource(XMLSource):
@@ -307,7 +306,7 @@ class ParentChildSource(XMLSource):
         child_nodes = reduce(
             operator.add, [
                 node.findall(self.child_tag) for node in parent_nodes])
-        result = set([six.text_type(node.get(self.attribute))
+        result = set([str(node.get(self.attribute))
                       for node in child_nodes
                       if self.isAvailable(node, context)])
         return result
@@ -331,7 +330,7 @@ class ParentChildSource(XMLSource):
                     master=xml.sax.saxutils.quoteattr(parent_value),
                     value=xml.sax.saxutils.quoteattr(value)))
         if nodes:
-            return six.text_type(self._get_title_for(nodes[0]))
+            return str(self._get_title_for(nodes[0]))
         return value
 
     def _get_parent_nodes(self, context):
@@ -356,7 +355,7 @@ class ParentChildSource(XMLSource):
         return nodes
 
     def _get_parent_value(self, context):
-        if isinstance(context, six.text_type):
+        if isinstance(context, str):
             return context
         if zeit.cms.interfaces.ICMSContent.providedBy(context):
             return None
@@ -382,7 +381,7 @@ class SubRessortSource(ParentChildSource):
         return zeit.cms.content.interfaces.ICommonMetadata
 
     def _get_title_for(self, node):
-        return six.text_type(node['title'])
+        return str(node['title'])
 
 
 class ChannelSource(XMLSource):
@@ -393,7 +392,7 @@ class ChannelSource(XMLSource):
     title_xpath = '/ressorts/ressort'
 
     def _get_title_for(self, node):
-        return six.text_type(node['title'])
+        return str(node['title'])
 
 
 class SubChannelSource(ParentChildSource):
@@ -414,7 +413,7 @@ class SubChannelSource(ParentChildSource):
     def _get_parent_nodes(self, context):
         if type(context).__name__ == 'Fake':
             # for .browser.ParentChildDropdownUpdater
-            return super(SubChannelSource, self)._get_parent_nodes(context)
+            return super()._get_parent_nodes(context)
         # The ``channels`` field is a list of combination values.
         # The formlib validation machinery does not give us enough context
         # to determine the master value, so we are forced to allow all values.
@@ -425,7 +424,7 @@ class SubChannelSource(ParentChildSource):
         return all_nodes
 
     def _get_title_for(self, node):
-        return six.text_type(node['title'])
+        return str(node['title'])
 
 
 class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
@@ -467,7 +466,7 @@ FEATURE_TOGGLES = FeatureToggleSource()(None)
 
 def unicode_or_none(value):
     if value:
-        return six.text_type(value)
+        return str(value)
 
 
 class Serie(AllowedBase):
@@ -475,7 +474,7 @@ class Serie(AllowedBase):
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
                  column=False, kind=None, video=False, fallback_image=False,
                  podigee_id=None, podigee_url=None, color=None):
-        super(Serie, self).__init__(serienname, title, None)
+        super().__init__(serienname, title, None)
         self.id = serienname
         self.serienname = serienname
         self.title = title
@@ -508,7 +507,7 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
             name = node.get('serienname') or node.text
             if not name:
                 continue
-            serienname = six.text_type(name).strip()
+            serienname = str(name).strip()
             result[serienname] = Serie(
                 serienname,
                 unicode_or_none(node.get('title')),
@@ -537,7 +536,7 @@ class Product(AllowedBase):
                  href=None, target=None, label=None, show=None,
                  volume=None, location=None, centerpage=None, cp_template=None,
                  autochannel=True, relates_to=None, is_news=False):
-        super(Product, self).__init__(id, title, None)
+        super().__init__(id, title, None)
         self.vgwortcode = vgwortcode
         self.href = href
         self.target = target
@@ -564,8 +563,8 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
         result = collections.OrderedDict()
         for node in tree.iterchildren('*'):
             product = Product(
-                six.text_type(node.get('id')),
-                six.text_type(node.text.strip()),
+                str(node.get('id')),
+                str(node.text.strip()),
                 unicode_or_none(node.get('vgwortcode')),
                 unicode_or_none(node.get('href')),
                 unicode_or_none(node.get('target')),
@@ -614,10 +613,10 @@ class CMSContentTypeSource(
         }
 
     def getTitle(self, context, value):
-        return value.queryTaggedValue('zeit.cms.title') or six.text_type(value)
+        return value.queryTaggedValue('zeit.cms.title') or str(value)
 
     def getToken(self, context, value):
-        return value.queryTaggedValue('zeit.cms.type') or six.text_type(value)
+        return value.queryTaggedValue('zeit.cms.type') or str(value)
 
     def isAvailable(self, value, context):
         return True
@@ -628,7 +627,7 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
     def getValues(self, context):
         import zeit.cms.content.interfaces  # break circular import
         types = (
-            list(super(AddableCMSContentTypeSource, self).getValues(context)) +
+            list(super().getValues(context)) +
             list(interface for name, interface in
                  zope.component.getUtilitiesFor(
                      zeit.cms.content.interfaces.IAddableContent)))
@@ -656,7 +655,7 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
 class StorystreamReference(AllowedBase):
 
     def __init__(self, id, title, available, centerpage_id):
-        super(StorystreamReference, self).__init__(id, title, available)
+        super().__init__(id, title, available)
         self.centerpage_id = centerpage_id
 
     @property
