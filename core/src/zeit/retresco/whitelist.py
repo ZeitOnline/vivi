@@ -35,10 +35,14 @@ class Topicpages(grok.GlobalUtility,
     config_url = 'topicpages-source'
     default_filename = 'topicpages.xml'
 
-    def get_topics(self, start=0, rows=25, sort_by='id', sort_order='asc'):
+    def get_topics(self, start=0, rows=25, sort_by='id', sort_order='asc',
+                   firstletter=None):
         result = []
         tree = self.load()
-        for node in tree.iterchildren('*'):
+        xpath = '//topic'
+        if firstletter:
+            xpath += f'[substring(@id, 1, 1) = "{firstletter.lower()}"]'
+        for node in tree.xpath(xpath):
             topic = {}
             for attr in TOPIC_PAGE_ATTRIBUTES:
                 if len(attr) < 3:

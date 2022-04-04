@@ -80,3 +80,8 @@ class TestTopicpages(zeit.retresco.testing.FunctionalTestCase):
             ['zweirad', 'pedelec'],
             [x['id'] for x in self.topics.get_topics(rows=2, sort_by='kpi_1',
                                                      sort_order='desc')])
+
+    def test_filter_by_first_letter(self):
+        self.assertEqual(
+            ['angela-merkel'],
+            [x['id'] for x in self.topics.get_topics(firstletter='a')])
