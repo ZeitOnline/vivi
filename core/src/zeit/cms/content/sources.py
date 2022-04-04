@@ -1,6 +1,7 @@
 from functools import reduce
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
+from zope.app.appsetup.product import getProductConfiguration
 import collections
 import gocept.lxml.objectify
 import logging
@@ -12,7 +13,6 @@ import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zeit.cms.interfaces
-import zope.app.appsetup.product
 import zope.component
 import zope.dottedname
 import zope.i18n
@@ -28,24 +28,28 @@ except ImportError:
     pass
 
 
-class CachedXMLBase:
+class OverridableURLConfiguration:
 
     product_configuration = 'zeit.cms'
     config_url = NotImplemented
     default_filename = NotImplemented
 
-    def _get_tree(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            self.product_configuration) or {}
+    @property
+    def url(self):
+        config = getProductConfiguration(self.product_configuration) or {}
         try:
-            url = config[self.config_url]
+            return config[self.config_url]
         except KeyError:
             if self.default_filename is NotImplemented:
                 raise
-            config = zope.app.appsetup.product.getProductConfiguration(
-                'zeit.cms')
-            url = '%s/%s' % (config['config-base-url'], self.default_filename)
-        return self._get_tree_from_url(url)
+            config = getProductConfiguration('zeit.cms')
+            return '%s/%s' % (config['config-base-url'], self.default_filename)
+
+
+class CachedXMLBase(OverridableURLConfiguration):
+
+    def _get_tree(self):
+        return self._get_tree_from_url(self.url)
 
     @CONFIG_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
@@ -248,8 +252,7 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     @property
     def folder(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            self.product_configuration)
+        config = getProductConfiguration(self.product_configuration)
         return zeit.cms.interfaces.ICMSContent(config[self.config_url])
 
     def getValues(self):
