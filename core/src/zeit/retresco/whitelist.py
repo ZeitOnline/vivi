@@ -40,8 +40,14 @@ class Topicpages(grok.GlobalUtility,
         result = []
         tree = self.load()
         xpath = '//topic'
-        if firstletter:
+        if not firstletter:
+            pass
+        elif len(firstletter) == 1:
             xpath += f'[substring(@id, 1, 1) = "{firstletter.lower()}"]'
+        else:
+            xpath += (
+                f'[contains("{firstletter.lower()}", substring(@id, 1, 1))]')
+
         for node in tree.xpath(xpath):
             topic = {}
             for attr in TOPIC_PAGE_ATTRIBUTES:
@@ -57,6 +63,7 @@ class Topicpages(grok.GlobalUtility,
                     value = typ(value)
                 topic[name] = value
             result.append(topic)
+
         result.sort(key=lambda x: x.get(sort_by, -1),
                     reverse=(sort_order != 'asc'))
         return result[start:start + rows]

@@ -85,3 +85,8 @@ class TestTopicpages(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             ['angela-merkel'],
             [x['id'] for x in self.topics.get_topics(firstletter='a')])
+
+    def test_filter_by_numbers(self):
+        self.assertEqual(
+            ['1-fc-kaiserslautern'],
+            [x['id'] for x in self.topics.get_topics(firstletter='123456789')])
