@@ -24,6 +24,14 @@ $(document).bind('fragment-ready', function(event) {
 
     $('#teaser-text\\.teaserText', event.__target).bind(
         'change', copy_to('#social\\.short_text'));
+    $('#social\\.short_text', event.__target).bind(
+        'change', text_color());
 });
+
+// NOTE: maybe sync.js is not the best place to manage text colors
+var text_color = function() {
+    var color = ($('#social\\.twitter_main_enabled').is( ":checked" )) ?  '#000' : '#9c9';
+    $('#social\\.short_text').css('color', color);
+};
 
 }(jQuery));
