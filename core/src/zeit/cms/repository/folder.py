@@ -1,9 +1,12 @@
+import grokcore.component as grok
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.cms.util
+import zeit.workflow.dependency
 import zope.interface
 
 
@@ -38,3 +41,14 @@ def folder_sort_key(context):
     weight = -5  # folders first
     key = context.__name__.lower()
     return (weight, key)
+
+
+class FolderDependencies(zeit.workflow.dependency.DependencyBase):
+
+    grok.context(zeit.cms.repository.interfaces.ICollection)
+    grok.name('zeit.cms.repository.folder')
+
+    retract_dependencies = True
+
+    def get_dependencies(self):
+        return self.context.values()
