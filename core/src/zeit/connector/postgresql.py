@@ -31,14 +31,15 @@ log = getLogger(__name__)
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
 
-def _build_query(base, expr):
+def _build_filter(expr):
     op = expr.operator
-    if op == 'eq':
+    if op == 'and':
+        return sqlalchemy.and_(*(_build_filter(e) for e in expr.operands))
+    elif op == 'eq':
         (var, value) = expr.operands
         name = var.name
         namespace = var.namespace.replace(Properties.NS, '', 1)
-        return base.filter(
-            Properties.unsorted[namespace][name].as_string() == value)
+        return Properties.unsorted[namespace][name].as_string() == value
     else:
         raise RuntimeError(f"Unknown operand {op!r} while building search query")
 
@@ -204,8 +205,7 @@ class Connector:
         pass
 
     def search(self, attrlist, expr):
-        query = _build_query(
-            select(Paths).join(Properties), expr)
+        query = select(Paths).join(Properties).filter(_build_filter(expr))
         result = self.session.execute(query)
         itemgetters = [
             (

@@ -300,6 +300,22 @@ class ContractSearch:
         result = list(self.connector.search([var], var == 'bar'))
         assert result == [('http://xml.zeit.de/testing/bar', 'bar')]
 
+    def test_search_and_operator(self):
+        from zeit.connector.search import SearchVar
+        self.add_resource(
+            'foo', body='mybody', properties={
+                ('foo', self.NS): 'foo'})
+        self.add_resource(
+            'bar', body='mybody', properties={
+                ('foo', self.NS): 'bar',
+                ('ham', self.NS): 'egg'})
+        foo = SearchVar('foo', self.NS)
+        ham = SearchVar('ham', self.NS)
+        result = list(self.connector.search([ham], (foo == 'foo') & (ham == 'egg')))
+        assert result == []
+        result = list(self.connector.search([ham], (foo == 'bar') & (ham == 'egg')))
+        assert result == [('http://xml.zeit.de/testing/bar', 'egg')]
+
 
 class ContractDAV(
         ContractReadWrite,
