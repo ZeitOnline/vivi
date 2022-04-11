@@ -270,6 +270,16 @@ class TestDynamicFolder(
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/xinjiang', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/überlingen', calls)
 
+    def test_folder_dependencies(self):
+        dependencies = list(zeit.workflow.interfaces.IPublicationDependencies(
+            self.folder).get_dependencies())
+        self.assertEqual(
+            'http://xml.zeit.de/data/config.xml',
+            dependencies[0].uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/data/template.xml',
+            dependencies[1].uniqueId)
+
 
 class MaterializeDynamicFolder(
         zeit.cms.testing.FunctionalTestCase):
