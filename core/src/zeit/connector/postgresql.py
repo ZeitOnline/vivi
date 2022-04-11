@@ -3,6 +3,7 @@ from gocept.cache.property import TransactionBoundCache
 from google.cloud import storage
 from io import BytesIO
 from logging import getLogger
+from operator import itemgetter
 from sqlalchemy import Boolean, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select
 from sqlalchemy import UniqueConstraint
@@ -28,6 +29,18 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
+
+
+def _build_query(base, expr):
+    op = expr.operator
+    if op == 'eq':
+        (var, value) = expr.operands
+        name = var.name
+        namespace = var.namespace.replace(Properties.NS, '', 1)
+        return base.filter(
+            Properties.unsorted[namespace][name].as_string() == value)
+    else:
+        raise RuntimeError(f"Unknown operand {op!r} while building search query")
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -190,8 +203,19 @@ class Connector:
     def locked(self, uniqueid):
         pass
 
-    def search(self, attributes, expression):
-        return []
+    def search(self, attrlist, expr):
+        query = _build_query(
+            select(Paths).join(Properties), expr)
+        result = self.session.execute(query)
+        itemgetters = [
+            (
+                itemgetter(a.namespace.replace(Properties.NS, '', 1)),
+                itemgetter(a.name))
+            for a in attrlist]
+        for item in result.scalars():
+            for (nsgetter, keygetter) in itemgetters:
+                value = keygetter(nsgetter(item.properties.unsorted))
+                yield (f"{ID_NAMESPACE}{item.parent_path}/{item.name}", value)
 
 
 factory = Connector.factory

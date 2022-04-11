@@ -288,6 +288,18 @@ class ContractSearch:
         result = list(self.connector.search([var], var == 'foo'))
         assert result == []
 
+    def test_search_known_metadata(self):
+        from zeit.connector.search import SearchVar
+        self.add_resource(
+            'foo', body='mybody', properties={('foo', self.NS): 'foo'})
+        self.add_resource(
+            'bar', body='mybody', properties={('foo', self.NS): 'bar'})
+        var = SearchVar('foo', self.NS)
+        result = list(self.connector.search([var], var == 'foo'))
+        assert result == [('http://xml.zeit.de/testing/foo', 'foo')]
+        result = list(self.connector.search([var], var == 'bar'))
+        assert result == [('http://xml.zeit.de/testing/bar', 'bar')]
+
 
 class ContractDAV(
         ContractReadWrite,
