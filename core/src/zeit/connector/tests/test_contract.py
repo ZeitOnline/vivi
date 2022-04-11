@@ -280,34 +280,49 @@ class ContractLock:
         self.assertEqual(unlock, lock)
 
 
+class ContractSearch:
+
+    def test_search_unknown_metadata(self):
+        from zeit.connector.search import SearchVar
+        var = SearchVar('name', 'namespace')
+        result = list(self.connector.search([var], var == 'foo'))
+        assert result == []
+
+
 class ContractDAV(
         ContractReadWrite,
         ContractCopyMove,
         ContractLock,
+        ContractSearch,
         zeit.connector.testing.ConnectorTest):
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
 
 
 class ContractMock(
         ContractReadWrite,
         ContractCopyMove,
         ContractLock,
+        # ContractSearch,
         zeit.connector.testing.MockTest):
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
+    # copy_inherited_functions(ContractSearch, locals())
 
 
 class ContractSQL(
         ContractReadWrite,
         # ContractCopyMove,
         # ContractLock,
+        ContractSearch,
         zeit.connector.testing.SQLTest):
 
     copy_inherited_functions(ContractReadWrite, locals())
     # copy_inherited_functions(ContractCopyMove, locals())
     # copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())

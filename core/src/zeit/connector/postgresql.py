@@ -191,7 +191,7 @@ class Connector:
         pass
 
     def search(self, attributes, expression):
-        pass
+        return []
 
 
 factory = Connector.factory
