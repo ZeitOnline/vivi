@@ -146,6 +146,10 @@ class ArticleHeaderSource(zeit.cms.content.sources.ParentChildSource):
     def _get_title_for(self, node):
         return six.text_type(node['title'])
 
+    def isAvailable(self, node, context):
+        article = zeit.content.article.interfaces.IArticle(context, None)
+        return super().isAvailable(node, article)
+
 
 class ArticleHeaderColorSource(ArticleHeaderSource):
 
