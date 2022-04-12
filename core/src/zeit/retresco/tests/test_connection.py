@@ -345,12 +345,14 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
             'id': 'berlin',
             'title': 'Berlin',
             'topic_type': 'location',
+            'kpi_1': 42,
         }]
         xml = zeit.retresco.connection._build_topic_xml(pages)
         self.assertEqual('topics', xml.tag)
         topics = xml.xpath('//topic')
         self.assertEqual(1, len(topics))
         self.assertEqual('Berlin', topics[0].text)
+        self.assertEqual('42', topics[0].get('kpi_1'))
 
     def test_topiclist_excludes_pages_with_redirect(self):
         pages = [{
