@@ -312,3 +312,14 @@ class ConfigDependency(zeit.workflow.dependency.DependencyBase):
             if config is not None:
                 result.append(config)
         return result
+
+
+class FolderDependencies(zeit.workflow.dependency.DependencyBase):
+
+    grok.context(zeit.content.dynamicfolder.interfaces.IDynamicFolder)
+    grok.name('zeit.cms.repository.folder')
+
+    retract_dependencies = True
+
+    def get_dependencies(self):
+        return []
