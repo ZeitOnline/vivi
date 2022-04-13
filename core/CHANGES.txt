@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.13.1 (2022-04-13)
+-------------------
+
+- ZO-786: Fix GCS upload body size determination
+
+
 5.13.0 (2022-04-13)
 -------------------
 
