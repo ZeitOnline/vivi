@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.13.0 (2022-04-13)
+-------------------
+
+- ZO-121: Implement automatic area query source "list of topicpages"
+
+
 5.12.0 (2022-03-31)
 -------------------
 
