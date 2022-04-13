@@ -148,19 +148,6 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('mytopic', result[0]['id'])
         self.assertEqual('Mytopic', result[0]['title'])
 
-    def test_topicpages_are_available_as_utility(self):
-        tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        topics = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.ITopicpages)
-        with mock.patch.object(tms, 'get_topicpages') as get:
-            result = Result([{'id': 'mytopic', 'title': 'Mytopic'}])
-            result.hits = 1
-            get.return_value = result
-            result = topics.get_topics()
-            self.assertEqual(1, result.hits)
-            self.assertEqual('mytopic', result[0]['id'])
-            self.assertEqual('Mytopic', result[0]['title'])
-
     def test_get_all_topicpages_delegates_to_get_topicpages(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with mock.patch.object(tms, 'get_topicpages') as get:
@@ -358,12 +345,14 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
             'id': 'berlin',
             'title': 'Berlin',
             'topic_type': 'location',
+            'kpi_1': 42,
         }]
         xml = zeit.retresco.connection._build_topic_xml(pages)
         self.assertEqual('topics', xml.tag)
         topics = xml.xpath('//topic')
         self.assertEqual(1, len(topics))
         self.assertEqual('Berlin', topics[0].text)
+        self.assertEqual('42', topics[0].get('kpi_1'))
 
     def test_topiclist_excludes_pages_with_redirect(self):
         pages = [{

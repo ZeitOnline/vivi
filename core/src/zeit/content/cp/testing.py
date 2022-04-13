@@ -41,8 +41,9 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
     patches={'zeit.edit': {
         'rules-url': 'file://%s/example_rules.py' %
-        pkg_resources.resource_filename(__name__, 'tests/fixtures')}},
-    bases=(
+        pkg_resources.resource_filename(__name__, 'tests/fixtures')},
+        'zeit.retresco': {'topicpage-prefix': '/2007'},
+    }, bases=(
         zeit.content.image.testing.CONFIG_LAYER,
         zeit.content.modules.testing.CONFIG_LAYER,
         zeit.content.text.testing.CONFIG_LAYER))

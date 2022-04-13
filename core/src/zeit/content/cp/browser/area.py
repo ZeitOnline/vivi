@@ -181,6 +181,7 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             'is_complete_query',
             'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
             'referenced_topicpage', 'topicpage_filter', 'topicpage_order',
+            'topicpagelist_order',
             'related_topicpage', 'rss_feed', 'reach_service', 'reach_section',
             'reach_access', 'reach_age')
 

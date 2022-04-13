@@ -126,6 +126,9 @@ class Configuration:
             'elasticsearch_raw_query': False,
             'elasticsearch_raw_order': True,
             'is_complete_query': True,
+            # automatic_type=topicpagelist
+            'topicpagelist_order': True,
+            # automatic_type=reach
             'reach_service': True,
             'reach_section': False,
             'reach_access': False,

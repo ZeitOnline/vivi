@@ -28,6 +28,8 @@ product_config = """
     topic-redirect-prefix http://www.zeit.de
     index-principal zope.user
     kpi-fields file://%(base)s/tests/kpi.xml
+    topicpages-source file://%(base)s/tests/topicpages.xml
+    topicpage-prefix /thema
 </product-config>
 """ % {'base': pkg_resources.resource_filename(__name__, '')}
 

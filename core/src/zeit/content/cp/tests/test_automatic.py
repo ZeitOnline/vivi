@@ -552,6 +552,27 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             area.referenced_cp = cp_with_teaser
 
 
+class AutomaticAreaTopicpageListTest(
+        zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.topics = mock.Mock()
+        zope.component.getGlobalSiteManager().registerUtility(
+            self.topics, zeit.cms.tagging.interfaces.ITopicpages)
+
+    def test_returns_teasers_to_ITopicpages_entries(self):
+        area = create_automatic_area(self.cp, 1, 'topicpagelist')
+        self.topics.get_topics.return_value = zeit.cms.interfaces.Result(
+            [{'id': 'test'}])
+        auto = IRenderedArea(area).values()
+        self.assertEqual(1, len(auto))
+        self.assertEqual(
+            'http://xml.zeit.de/2007/test',
+            list(auto[0])[0].uniqueId)
+
+
 class AutomaticAreaReachTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):

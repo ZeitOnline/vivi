@@ -401,10 +401,12 @@ def _update_topiclist():
     zeit.cms.workflow.interfaces.IPublish(redirects).publish(background=False)
 
 
-TOPIC_PAGE_ATTRIBUTES = {
-    'id': '',
-    'topic_type': 'type',
-}
+TOPIC_PAGE_ATTRIBUTES = [
+    ('id',),
+    ('topic_type', 'type'),
+]
+for i in range(1, 31):
+    TOPIC_PAGE_ATTRIBUTES.append(('kpi_%s' % i, None, int))
 
 
 def _build_topic_xml(topicpages):
@@ -414,10 +416,19 @@ def _build_topic_xml(topicpages):
         if row.get('redirect'):
             continue
         attributes = {}
-        for tms, vivi in TOPIC_PAGE_ATTRIBUTES.items():
-            if not vivi:
-                vivi = tms
-            attributes[vivi] = row[tms]
+        for attr in TOPIC_PAGE_ATTRIBUTES:
+            if len(attr) == 1:
+                vivi = tms = attr[0]
+            elif len(attr) == 2:
+                vivi, tms = attr
+            elif len(attr) == 3:
+                vivi, tms, _ = attr
+                if not tms:
+                    tms = vivi
+            value = row.get(tms)
+            if value is None:
+                continue
+            attributes[vivi] = str(value)
         root.append(E.topic(row['title'], **attributes))
     return root
 

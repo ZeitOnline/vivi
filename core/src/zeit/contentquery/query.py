@@ -542,6 +542,36 @@ class TMSRelatedTopicsApiQuery(ContentQuery):
         return related_topics
 
 
+class TopicpageQuery(ContentQuery):
+
+    grok.name('topicpagelist')
+
+    def __call__(self):
+        result = []
+        topics = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.ITopicpages)
+        direction = 'asc' if self.order == 'id' else 'desc'
+        response = topics.get_topics(
+            self.start, self.rows, sort_by=self.order, sort_order=direction)
+        self.total_hits = response.hits
+        for topic in response:
+            result.append(self._resolve(topic))
+        return result
+
+    @property
+    def order(self):
+        return zeit.retresco.content.KPI.FIELDS.get(
+            self.context.topicpage_order, self.context.topicpage_order)
+
+    def _resolve(self, doc):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.retresco')
+        return zeit.cms.interfaces.ICMSContent('%s/%s/%s' % (
+            zeit.cms.interfaces.ID_NAMESPACE[:-1],
+            config['topicpage-prefix'],
+            doc['id']), None)
+
+
 class ReachContentQuery(ContentQuery):
 
     grok.name('reach')
