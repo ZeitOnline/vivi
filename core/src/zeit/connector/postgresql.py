@@ -1,6 +1,7 @@
 from functools import partial
 from gocept.cache.property import TransactionBoundCache
 from google.cloud import storage
+from google.cloud.storage.retry import DEFAULT_RETRY
 from io import BytesIO
 from logging import getLogger
 from sqlalchemy import Boolean, TIMESTAMP, Unicode
@@ -132,7 +133,7 @@ class Connector:
             data = resource.data  # may not be a static property
             size = data.seek(0, os.SEEK_END)
             data.seek(0)
-            blob.upload_from_file(data, size=size)
+            blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
 
         if uniqueid in self.property_cache:
             self.property_cache[uniqueid] = props
