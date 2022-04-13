@@ -1,4 +1,6 @@
 from datetime import datetime
+from io import BytesIO
+from zeit.connector.resource import WriteableCachedResource
 import google.api_core.exceptions
 import transaction
 import zeit.connector.testing
@@ -53,6 +55,16 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         transaction.commit()
         props = self.connector._get_properties(res.id)
         self.assertIsInstance(props.last_updated, datetime)
+
+    def test_determines_size_for_gcs_upload(self):
+        body = b'mybody'
+        for res in [self.get_resource('foo', body), WriteableCachedResource(
+                'http://xml.zeit.de/testing/foo', 'foo', 'testing',
+                lambda: {}, lambda: BytesIO(body), 'teext/plain')]:
+            self.connector.add(res)
+            props = self.connector._get_properties(res.id)
+            blob = self.connector.bucket.blob(props.id)
+            self.assertEqual(body, blob.download_as_bytes())
 
     def test_delete_removes_gcs_blob(self):
         res = self.get_resource('foo', b'mybody')
