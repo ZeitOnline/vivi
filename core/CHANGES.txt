@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.13.3 (2022-04-14)
+-------------------
+
+- ZO-121: Support retrieving all available topicpages (for the register in zeit.web)
+
+- ZO-920: Copy teaserText to twitter push text for genre=nachrichten
+
+
 5.13.2 (2022-04-14)
 -------------------
 
