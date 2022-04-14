@@ -566,7 +566,7 @@ class TopicpageQuery(ContentQuery):
     def _resolve(self, doc):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.retresco')
-        return zeit.cms.interfaces.ICMSContent('%s/%s/%s' % (
+        return zeit.cms.interfaces.ICMSContent('%s%s/%s' % (
             zeit.cms.interfaces.ID_NAMESPACE[:-1],
             config['topicpage-prefix'],
             doc['id']), None)
