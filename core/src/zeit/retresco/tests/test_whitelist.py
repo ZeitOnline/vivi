@@ -70,6 +70,7 @@ class TestTopicpages(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             ['berlin', 'pedelec'],
             [x['id'] for x in self.topics.get_topics(start=2, rows=2)])
+        self.assertEqual(5, len(self.topics.get_topics(rows=None)))
 
     def test_sort_by_kpi(self):
         self.assertEqual(

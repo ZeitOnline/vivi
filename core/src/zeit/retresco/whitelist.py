@@ -70,8 +70,12 @@ class Topicpages(grok.GlobalUtility,
             result.sort(key=lambda x: x.get(sort_by, '').lower(), reverse=rev)
         else:
             result.sort(key=lambda x: x.get(sort_by, -1), reverse=rev)
-        slice = zeit.cms.interfaces.Result(result[start:start + rows])
-        slice.hits = len(result)
+
+        hits = len(result)
+        if rows is not None:
+            result = result[start:start + rows]
+        slice = zeit.cms.interfaces.Result(result)
+        slice.hits = hits
         return slice
 
     @CONFIG_CACHE.cache_on_arguments()
