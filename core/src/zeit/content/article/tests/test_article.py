@@ -1,8 +1,8 @@
 # coding: utf8
 from unittest import mock
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
@@ -90,7 +90,6 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
             1, len(self.repository['article'].xml.body.findall('division')))
 
     def test_article_should_not_mangle_divisions_on_checkin(self):
-        from zeit.cms.checkout.helper import checked_out
         article = self.get_article_with_paras()
         self.repository['article'] = article
         with checked_out(self.repository['article']):
@@ -99,7 +98,6 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
             1, len(self.repository['article'].xml.body.findall('division')))
 
     def test_article_without_division_should_get_them_on_checkin(self):
-        from zeit.cms.checkout.helper import checked_out
         article = self.get_article_with_paras()
         # mangle the xml
         for p in article.xml.body.division.getchildren():
@@ -162,8 +160,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
         p = self.get_factory(article, 'p')()
         p.text = u'“up” and „down‟ and «around»'
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['article']) as co:
+        with checked_out(self.repository['article']) as co:
             block = co.body.values()[0]
             self.assertEqual('"up" and "down" and "around"', block.text)
 
@@ -171,8 +168,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
         article = self.get_article()
         article.teaserTitle = u'“up” and „down‟ and «around»'
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['article']) as co:
+        with checked_out(self.repository['article']) as co:
             self.assertEqual('"up" and "down" and "around"', co.teaserTitle)
 
 
@@ -252,7 +248,7 @@ class DefaultTemplateByContentType(
     def test_article_should_have_default_template_on_checkout(self):
         article = self.get_article()
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+        with checked_out(self.repository['article']):
             pass
         self.assertEqual('article', self.repository['article'].template)
         self.assertEqual('default', self.repository['article'].header_layout)
@@ -262,7 +258,7 @@ class DefaultTemplateByContentType(
         article.template = u'column'
         article.header_layout = u'heiter'
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+        with checked_out(self.repository['article']):
             pass
         self.assertEqual('column', self.repository['article'].template)
         self.assertEqual('heiter', self.repository['article'].header_layout)
@@ -271,7 +267,7 @@ class DefaultTemplateByContentType(
         article = self.get_article()
         article.template = u'nonexistent'
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+        with checked_out(self.repository['article']):
             pass
         self.assertEqual('article', self.repository['article'].template)
 
@@ -279,7 +275,7 @@ class DefaultTemplateByContentType(
         article = self.get_article()
         article._create_image_block_in_front()
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+        with checked_out(self.repository['article']):
             pass
         self.assertEqual(
             'original', self.repository['article'].main_image_variant_name)
@@ -289,7 +285,7 @@ class DefaultTemplateByContentType(
         article._create_image_block_in_front()
         article.main_image_variant_name = 'wide'
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(self.repository['article']):
+        with checked_out(self.repository['article']):
             pass
         self.assertEqual(
             'wide', self.repository['article'].main_image_variant_name)
@@ -299,8 +295,7 @@ class DefaultTemplateByContentType(
         article._create_image_block_in_front()
         article.template = u'column'
         self.repository['article'] = article
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['article']) as article:
+        with checked_out(self.repository['article']) as article:
             self.assertEqual(None, article.header_layout)
             article.template = u'article'
             zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
@@ -322,7 +317,7 @@ class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
                 zeit.cms.content.interfaces.ICommonMetadata, field)))
 
     def test_setting_access_to_abo_or_registration_disables_amp(self):
-        with zeit.cms.checkout.helper.checked_out(self.article) as article:
+        with checked_out(self.article) as article:
             article.is_amp = True
             article.access = u'abo'
             self.notify_modified(article)
@@ -334,7 +329,7 @@ class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(False, article.is_amp)
 
     def test_setting_access_to_free_does_not_change_is_amp(self):
-        with zeit.cms.checkout.helper.checked_out(self.article) as article:
+        with checked_out(self.article) as article:
             article.is_amp = True
             article.access = u'free'
             self.notify_modified(article)
@@ -342,14 +337,14 @@ class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
 
     def test_do_not_change_is_amp_if_access_is_missing(self):
         """For bw-compat old articles without access are treated as free."""
-        with zeit.cms.checkout.helper.checked_out(self.article) as article:
+        with checked_out(self.article) as article:
             article.is_amp = True
             article.access = None
             self.notify_modified(article)
             self.assertEqual(True, article.is_amp)
 
     def test_only_change_is_amp_if_access_was_changed(self):
-        with zeit.cms.checkout.helper.checked_out(self.article) as article:
+        with checked_out(self.article) as article:
             article.access = u'abo'
             article.is_amp = True
             article.year = 2016
@@ -362,8 +357,7 @@ class ArticleXMLReferenceUpdate(
 
     def test_writes_genre_as_attribute(self):
         self.repository['article'] = self.get_article()
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['article']) as co:
+        with checked_out(self.repository['article']) as co:
             co.genre = u'nachricht'
 
         reference = zope.component.queryAdapter(
