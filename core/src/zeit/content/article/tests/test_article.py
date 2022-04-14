@@ -23,7 +23,7 @@ import zope.lifecycleevent
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(WorkflowTest, self).setUp()
+        super().setUp()
         self.article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         self.info = zeit.cms.workflow.interfaces.IPublishInfo(self.article)
@@ -47,7 +47,7 @@ class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
             self.orig_validator,
             adapts=(zeit.content.article.interfaces.IArticle,),
             provides=zeit.edit.interfaces.IValidator)
-        super(WorkflowTest, self).tearDown()
+        super().tearDown()
 
     def test_not_urgent_cannot_publish(self):
         self.assertFalse(self.info.urgent)
@@ -312,7 +312,7 @@ class DefaultTemplateByContentType(
 class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AccessRestrictsAMP, self).setUp()
+        super().setUp()
         self.repository['article'] = self.get_article()
         self.article = self.repository['article']
 
@@ -377,7 +377,7 @@ class ArticleElementReferencesTest(
         zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ArticleElementReferencesTest, self).setUp()
+        super().setUp()
         self.article = self.get_article()
 
     def create_empty_portraitbox_reference(self):
