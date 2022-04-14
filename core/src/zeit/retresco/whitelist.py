@@ -62,6 +62,7 @@ class Topicpages(grok.GlobalUtility,
                 if typ is not None:
                     value = typ(value)
                 topic[name] = value
+            topic['title'] = str(node)
             result.append(topic)
 
         result.sort(key=lambda x: x.get(sort_by, -1),
