@@ -405,6 +405,9 @@ class TeaserText(zeit.edit.browser.form.InlineForm,
         super(TeaserText, self).setUpWidgets(*args, **kw)
         self.set_charlimit('teaserText')
 
+    def _success_handler(self):
+        self.signal('reload-inline-form', 'social')
+
 
 class OptionFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 

@@ -244,6 +244,24 @@ def modify_speechbert_audio_depeding_on_genre(article, event):
                 article.audio_speechbert = False
 
 
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def copy_teaser_to_push(article, event):
+    if not article.genre or article.genre != 'nachricht':
+        return
+    for desc in event.descriptions:
+        if (desc.interface is zeit.cms.content.interfaces.ICommonMetadata and
+                'teaserText' in desc.attributes):
+            break
+    else:
+        return
+
+    push = zeit.push.interfaces.IPushMessages(article)
+    if not push.short_text:
+        push.short_text = article.teaserText
+
+
 @grok.adapter(zeit.content.article.interfaces.IArticle)
 @grok.implementer(zeit.edit.interfaces.IElementReferences)
 def iter_referenced_content(context):
