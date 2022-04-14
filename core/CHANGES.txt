@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.13.2 (2022-04-14)
+-------------------
+
+- ZO-121: Re-add `title` to ITopicpages results (mostly relevant for zeit.web)
+
+
 5.13.1 (2022-04-13)
 -------------------
 
