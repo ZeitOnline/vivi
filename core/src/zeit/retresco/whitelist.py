@@ -35,7 +35,7 @@ class Topicpages(grok.GlobalUtility,
     config_url = 'topicpages-source'
     default_filename = 'topicpages.xml'
 
-    def get_topics(self, start=0, rows=25, sort_by='id', sort_order='asc',
+    def get_topics(self, start=0, rows=25, sort_by='title', sort_order='asc',
                    firstletter=None):
         result = []
         tree = self.load()
@@ -65,8 +65,11 @@ class Topicpages(grok.GlobalUtility,
             topic['title'] = str(node)
             result.append(topic)
 
-        result.sort(key=lambda x: x.get(sort_by, -1),
-                    reverse=(sort_order != 'asc'))
+        rev = sort_order != 'asc'
+        if sort_by == 'title':
+            result.sort(key=lambda x: x.get(sort_by, '').lower(), reverse=rev)
+        else:
+            result.sort(key=lambda x: x.get(sort_by, -1), reverse=rev)
         slice = zeit.cms.interfaces.Result(result[start:start + rows])
         slice.hits = len(result)
         return slice

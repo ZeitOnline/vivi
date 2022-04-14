@@ -100,7 +100,7 @@ class Keywords(zope.schema.Tuple):
 class ITopicpages(zope.interface.Interface):
     """Utility to retrieve (paginated) information about topic pages."""
 
-    def get_topics(start=0, rows=25, sort_by='name', sort_order='asc',
+    def get_topics(start=0, rows=25, sort_by='title', sort_order='asc',
                    firstletter=None):
         """Returns an IResult containing dicts with keys ``id`` and ``title``.
 
