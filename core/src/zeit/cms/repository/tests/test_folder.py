@@ -1,7 +1,9 @@
+import zope.copypastemove.interfaces
+
 import zeit.cms.testing
 import zeit.cms.interfaces
 import zeit.workflow.interfaces
-import zope.copypastemove.interfaces
+import zeit.workflow.testing
 
 
 class RenameFolderTest(zeit.cms.testing.ZeitCmsTestCase):
@@ -15,6 +17,8 @@ class RenameFolderTest(zeit.cms.testing.ZeitCmsTestCase):
 
 
 class FolderDependenciesTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    layer = zeit.workflow.testing.CELERY_LAYER
 
     def test_folder_dependencies(self):
         folder = zeit.cms.interfaces.ICMSContent(
