@@ -243,7 +243,6 @@ class PublishRetractTask(object):
             deps = zeit.workflow.interfaces.IPublicationDependencies(new_obj)
             if self.mode == MODE_PUBLISH:
                 stack.extend(deps.get_dependencies())
-                timer.mark('Recursed into %s' % (new_obj.uniqueId,))
             elif self.mode == MODE_RETRACT:
                 stack.extend(deps.get_retract_dependencies())
             else:
