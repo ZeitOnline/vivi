@@ -205,13 +205,7 @@ class AreaBrowserTest(
 
     def test_area_color_themes_should_be_available_for_product(self):
         b = self.browser
-        zeit.content.cp.browser.testing.create_cp(b)
-        b.open('contents')
-        contents_url = b.url
-        b.open(
-            'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/'
-            'testcontent&order=top')
-        b.open(contents_url)
+        b.open(self.content_url)
         # Open area settings (index=1)
         b.getLink('Edit block common', index=1).click()
 
