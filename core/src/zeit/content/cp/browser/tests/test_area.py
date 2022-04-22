@@ -228,6 +228,18 @@ class AreaBrowserTest(
         with self.assertRaises(zope.testbrowser.browser.ItemNotFoundError):
             theme.displayValue = 'Beere'
 
+    def test_area_bg_color_is_set(self):
+        browser = self.browser
+        browser.open(self.content_url)
+        browser.getLink('Edit block common', index=1).click()
+        browser.getControl('Area background color').value = 'xyz'
+        browser.getControl('Apply').click()
+        self.assertEllipsis('...Invalid hex literal...', browser.contents)
+        browser.getControl('Area background color').value = '000000'
+        browser.getControl('Apply').click()
+        self.assertEqual(
+            '000000', browser.getControl('Area background color').value)
+
 
 class TooltipFixture(object):
 
