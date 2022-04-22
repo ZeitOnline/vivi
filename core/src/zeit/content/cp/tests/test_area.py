@@ -1,6 +1,5 @@
 import lxml.etree
 import lxml.objectify
-import six
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zope.lifecycleevent
@@ -9,7 +8,7 @@ import zope.lifecycleevent
 class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(OverflowBlocks, self).setUp()
+        super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.region = self.cp.create_item('region')
         self.area1 = self.region.create_item('area')
@@ -107,7 +106,7 @@ class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaTest, self).setUp()
+        super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
     def test_fills_with_placeholders_when_set_to_automatic(self):
@@ -300,7 +299,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AreaDelegateTest, self).setUp()
+        super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.area = self.repository['cp']['feature'].create_item('area')
         other = zeit.content.cp.centerpage.CenterPage()
@@ -360,7 +359,7 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
 class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(CustomQueryTest, self).setUp()
+        super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
     def test_serializes_via_dav_converter(self):
@@ -373,5 +372,5 @@ class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEllipsis(
             '<query...><condition...type="serie"...>Autotest'
             '</condition></query>',
-            lxml.etree.tostring(area.xml.query, encoding=six.text_type))
+            lxml.etree.tostring(area.xml.query, encoding=str))
         self.assertEqual((('serie', 'eq', autotest),), area.query)

@@ -8,14 +8,14 @@ import zeit.content.cp.testing
 import zope.testbrowser.browser
 
 
-class ElementTestHelper(object):
+class ElementTestHelper:
     """Helper class to test creation and deletion of IRegion and IArea"""
 
     name = NotImplemented
     starting_count = NotImplemented
 
     def setUp(self):
-        super(ElementTestHelper, self).setUp()
+        super().setUp()
         self.open_centerpage()
 
     def test_add_element_creates_new_element(self):
@@ -36,7 +36,7 @@ class ElementTestHelper(object):
         s.assertCssCount('css=.type-{}'.format(self.name), self.starting_count)
         s.click('css=.type-{} > .block-inner > .edit-bar > .delete-link'
                 .format(self.name))
-        s.waitForConfirmation(u'Wirklich löschen?')
+        s.waitForConfirmation('Wirklich löschen?')
         s.waitForCssCount('css=.type-{}'.format(self.name),
                           self.starting_count - 1)
 
@@ -64,8 +64,8 @@ class RegionTest(
     def make_one(self, kind='Empty'):
         selector = 'css=.action-cp-body-module-droppable'
         module = self.get_module('body', kind)
-        self.selenium.click(u'link=Struktur')
-        self.selenium.click(u'link=Regionen')
+        self.selenium.click('link=Struktur')
+        self.selenium.click('link=Regionen')
         self.selenium.waitForElementPresent(module)
         self.selenium.dragAndDropToObject(
             module, selector, '10,10')
@@ -83,19 +83,19 @@ class AreaTest(
             parent_selector)
 
         module = self.get_module('region', kind)
-        self.selenium.click(u'link=Struktur')
-        self.selenium.click(u'link=Flächen')
+        self.selenium.click('link=Struktur')
+        self.selenium.click('link=Flächen')
         self.selenium.waitForElementPresent(module)
         self.selenium.dragAndDropToObject(
             module, selector, '10,10')
 
 
-class ElementBrowserTestHelper(object):
+class ElementBrowserTestHelper:
 
     name = NotImplemented
 
     def setUp(self):
-        super(ElementBrowserTestHelper, self).setUp()
+        super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         self.browser.login('user', 'userpw')
         zeit.content.cp.browser.testing.create_cp(self.browser)
@@ -235,13 +235,13 @@ class AreaBrowserTest(
             '000000', browser.getControl('Area background color').value)
 
 
-class TooltipFixture(object):
+class TooltipFixture:
 
     def setUp(self):
-        super(TooltipFixture, self).setUp()
+        super().setUp()
         cp = zeit.content.cp.centerpage.CenterPage()
-        cp['lead'].kind = u'major'
-        cp['informatives'].kind = u'minor'
+        cp['lead'].kind = 'major'
+        cp['informatives'].kind = 'minor'
         self.repository['cp'] = cp
         self.repository['data'] = zeit.cms.repository.folder.Folder()
         self.repository['data']['cp-area-schemas'] = \
@@ -309,8 +309,8 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
 
     def make_one(self):
         s = self.selenium
-        s.click(u'link=Struktur')
-        s.click(u'link=Regionen')
+        s.click('link=Struktur')
+        s.click('link=Regionen')
         module = self.get_module('body', 'Duo')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
@@ -333,7 +333,7 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
 class AreaConfigurationTest(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(AreaConfigurationTest, self).setUp()
+        super().setUp()
         zeit.content.cp.browser.testing.create_cp(self.browser)
         self.browser.open('contents')
 

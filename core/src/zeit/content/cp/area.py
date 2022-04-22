@@ -75,8 +75,7 @@ class ReferencedCpFallbackProperty(
     """
 
     def __get__(self, instance, class_):
-        value = super(ReferencedCpFallbackProperty, self).__get__(
-            instance, class_)
+        value = super().__get__(instance, class_)
         if value == self.field.missing_value and instance.referenced_cp:
             value = getattr(instance.referenced_cp,
                             self.field.__name__,
@@ -299,7 +298,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             return
 
         # We want the configured blocks here, not the rendered ones.
-        filter_values = super(Area, self).filter_values
+        filter_values = super().filter_values
 
         to_adjust = len(list(filter_values(ITeaserBlock))) - (self.count or 0)
         if to_adjust == 0:
