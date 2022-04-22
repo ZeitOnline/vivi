@@ -173,6 +173,9 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.cms.content.property.ObjectPathAttributeProperty(
             '.', 'area_color_theme'))
 
+    background_color = ObjectPathAttributeProperty(
+        '.', 'background_color')
+
     @property
     def image(self):
         if self._image:
