@@ -352,6 +352,10 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('bar', self.area.topiclink_label_1)
         self.assertEqual('https://foo.bar', self.area.topiclink_url_1)
 
+    def test_set_area_background_color(self):
+        self.area.background_color = '#000000'
+        self.assertEqual('#000000', self.area.background_color)
+
 
 class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
 
