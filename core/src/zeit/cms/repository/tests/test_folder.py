@@ -16,9 +16,7 @@ class RenameFolderTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertIn('offline', self.repository)
 
 
-class FolderDependenciesTest(zeit.cms.testing.ZeitCmsTestCase):
-
-    layer = zeit.workflow.testing.CELERY_LAYER
+class FolderDependenciesTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_folder_dependencies(self):
         folder = zeit.cms.interfaces.ICMSContent(
