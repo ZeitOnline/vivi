@@ -402,6 +402,13 @@ class IReadArea(
         source=AREA_COLOR_THEMES_SOURCE,
         required=False)
 
+    background_color = zope.schema.TextLine(
+        title=_('Area background color'),
+        description=_('Hex value of background color for area'),
+        required=False,
+        max_length=6,
+        constraint=zeit.cms.content.interfaces.hex_literal)
+
     @zope.interface.invariant
     def automatic_type_required_arguments(data):
         if (data.automatic and
