@@ -1,6 +1,9 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:zcml="http://namespaces.zope.org/zcml">
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser tests" />
 
   <include file="file.zcml" />
 

@@ -239,11 +239,6 @@ class PublishRetractTask(object):
                 # should not count towards the limit
                 break
 
-            # Dive into folders
-            if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):
-                stack.extend(new_obj.values())
-                timer.mark('Recursed into %s' % (new_obj.uniqueId,))
-
             # Dive into dependent objects
             deps = zeit.workflow.interfaces.IPublicationDependencies(new_obj)
             if self.mode == MODE_PUBLISH:

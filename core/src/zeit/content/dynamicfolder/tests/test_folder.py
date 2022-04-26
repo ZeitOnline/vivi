@@ -9,6 +9,7 @@ import lxml.etree
 import pkg_resources
 import six
 import transaction
+import zope.component
 import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -245,6 +246,39 @@ class TestDynamicFolder(
         transaction.commit()
         with self.assertNothingRaised():
             self.repository['brokenfolder'].values()
+
+    def test_publish_dynamic_folder(self):
+        calls = []
+
+        def check_publish(context, event):
+            calls.append(context.uniqueId)
+
+        zope.component.getGlobalSiteManager().registerHandler(
+            check_publish, (
+                zeit.cms.repository.interfaces.IRepositoryContent,
+                zeit.cms.workflow.interfaces.IPublishedEvent
+            )
+        )
+        zeit.cms.workflow.interfaces.IPublish(
+            self.folder).publish(background=False)
+        self.assertIn('http://xml.zeit.de/dynamicfolder/', calls)
+        self.assertIn('http://xml.zeit.de/data/config.xml', calls)
+        self.assertIn('http://xml.zeit.de/data/template.xml', calls)
+        self.assertNotIn('http://xml.zeit.de/dynamicfolder/art-déco', calls)
+        self.assertNotIn('http://xml.zeit.de/dynamicfolder/xaernten', calls)
+        self.assertNotIn('http://xml.zeit.de/dynamicfolder/xanten', calls)
+        self.assertNotIn('http://xml.zeit.de/dynamicfolder/xinjiang', calls)
+        self.assertNotIn('http://xml.zeit.de/dynamicfolder/überlingen', calls)
+
+    def test_folder_dependencies(self):
+        dependencies = list(zeit.workflow.interfaces.IPublicationDependencies(
+            self.folder).get_dependencies())
+        self.assertEqual(
+            'http://xml.zeit.de/data/config.xml',
+            dependencies[0].uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/data/template.xml',
+            dependencies[1].uniqueId)
 
 
 class MaterializeDynamicFolder(
