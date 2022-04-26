@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.13.4 (2022-04-26)
+-------------------
+
+- ZO-1212: Background color for areas
+
+- ZO-165: Publish dynamic folders without virtual content
+
+
 5.13.3 (2022-04-14)
 -------------------
 
