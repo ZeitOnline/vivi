@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.14.0 (2022-04-27)
+-------------------
+
+- ZO-1249: Support loading config files given as `http://xml.zeit.de` via connector
+
+
 5.13.4 (2022-04-26)
 -------------------
 
