@@ -47,8 +47,8 @@ class EditCommon(zeit.content.cp.browser.view.EditBox):
         'supertitle', 'title', 'read_more', 'read_more_url', 'image',
         'topiclink_label_1', 'topiclink_url_1',
         'topiclink_label_2', 'topiclink_url_2',
-        'topiclink_label_3', 'topiclink_url_3',
-        'visible_mobile', 'area_color_theme', 'background_color')
+        'topiclink_label_3', 'topiclink_url_3', 'area_color_theme',
+        'background_color')
 
 
 class EditOverflow(zeit.content.cp.browser.view.EditBox):
