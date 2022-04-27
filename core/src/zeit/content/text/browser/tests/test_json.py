@@ -1,5 +1,6 @@
 import zeit.cms.testing
 import zeit.content.text.embed
+import zeit.content.text.json
 import zeit.content.text.testing
 
 
@@ -27,3 +28,15 @@ class JSONBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
         b.getLink('Checkin').click()
         self.assertEllipsis('...<pre>...changed...</pre>...', b.contents)
+
+    def test_validate_against_schema(self):
+        self.repository['foo'] = zeit.content.text.json.JSON()
+        b = self.browser
+        b.open('http://localhost/++skin++cms/repository/foo')
+        b.getLink('Checkout').click()
+        self.assertEllipsis('...Validate...', b.contents)
+        b.getLink('Validate').click()
+        b.getControl('url of schema').value = (
+            'http://testschema.zeit.de/schema.yaml')
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
