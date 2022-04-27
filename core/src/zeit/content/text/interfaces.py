@@ -98,6 +98,13 @@ class IJSON(IText):
     mimeType.default = 'application/json'
 
 
+class IValidationSchema(zope.interface.Interface):
+
+    schema_url = zope.schema.Text(
+        title=_('url of schema'),
+        required=False)
+
+
 class IEmbed(IText):
 
     render_as_template = zope.schema.Bool(title=_("Render as template?"))

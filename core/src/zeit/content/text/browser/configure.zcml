@@ -91,6 +91,16 @@
     menu="zeit-context-views" title="View"
     />
 
+  <browser:page
+    for="zeit.content.text.interfaces.IJSON"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="validate.html"
+    class=".json.EditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views"
+    title="Validate"
+    />
+
   <adapter
     for="zeit.content.text.interfaces.JSON
     zeit.cms.browser.interfaces.ICMSLayer"
@@ -98,6 +108,7 @@
     factory=".json.JSONInputWidget"
     permission="zope.Public"
     />
+
   <adapter
     for="zeit.content.text.interfaces.JSON
     zeit.cms.browser.interfaces.ICMSLayer"
