@@ -4,7 +4,6 @@ import collections
 import json
 import logging
 import re
-import urllib.request
 import zc.sourcefactory.basic
 import zeit.cms.content.property
 import zeit.cms.content.sources
@@ -108,7 +107,7 @@ class TopicpageFilterSource(zc.sourcefactory.basic.BasicSourceFactory,
     def _get_tree_from_url(self, url):
         try:
             data = []
-            for line in urllib.request.urlopen(url):
+            for line in zeit.cms.content.sources.load(url):
                 line = line.decode('utf-8')
                 if self.COMMENT.search(line):
                     continue

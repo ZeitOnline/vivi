@@ -2,7 +2,7 @@ from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.retresco.connection import TOPIC_PAGE_ATTRIBUTES
 import gocept.lxml.objectify
 import grokcore.component as grok
-import urllib.request
+import zeit.cms.content.sources
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zeit.retresco.interfaces
@@ -83,5 +83,5 @@ class Topicpages(grok.GlobalUtility,
         return self._load()
 
     def _load(self):
-        request = urllib.request.urlopen(self.url)
+        request = zeit.cms.content.sources.load(self.url)
         return gocept.lxml.objectify.fromfile(request)

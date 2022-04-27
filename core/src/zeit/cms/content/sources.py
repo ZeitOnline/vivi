@@ -13,6 +13,7 @@ import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zeit.cms.interfaces
+import zeit.connector.interfaces
 import zope.component
 import zope.dottedname
 import zope.i18n
@@ -26,6 +27,15 @@ try:
     zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
 except ImportError:
     pass
+
+
+def load(url):
+    if url.startswith(zeit.cms.interfaces.ID_NAMESPACE):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        return connector[url].data
+    else:
+        return urllib.request.urlopen(url)
 
 
 class OverridableURLConfiguration:
@@ -43,7 +53,8 @@ class OverridableURLConfiguration:
             if self.default_filename is NotImplemented:
                 raise
             config = getProductConfiguration('zeit.cms')
-            return '%s/%s' % (config['config-base-url'], self.default_filename)
+            base = config['config-base-url'].rstrip('/')
+            return '%s/%s' % (base, self.default_filename)
 
 
 class CachedXMLBase(OverridableURLConfiguration):
@@ -55,8 +66,7 @@ class CachedXMLBase(OverridableURLConfiguration):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
-        request = urllib.request.urlopen(url)
-        return gocept.lxml.objectify.fromfile(request)
+        return gocept.lxml.objectify.fromfile(load(url))
 
 
 class ShortCachedXMLBase(CachedXMLBase):
@@ -66,8 +76,7 @@ class ShortCachedXMLBase(CachedXMLBase):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url, )
         logger.debug('Getting %s' % url)
-        request = urllib.request.urlopen(url)
-        return gocept.lxml.objectify.fromfile(request)
+        return gocept.lxml.objectify.fromfile(load(url))
 
 
 class SimpleXMLSourceBase(CachedXMLBase):

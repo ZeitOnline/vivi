@@ -196,8 +196,8 @@ class RulesManagerTest(zeit.edit.testing.FunctionalTestCase):
         with mock.patch('zope.app.appsetup.product.getProductConfiguration') \
                 as gpc:
             gpc.return_value = {'rules-url': mock.sentinel.rulesurl}
-            with mock.patch('urllib.request.urlopen') as urlopen:
-                urlopen.return_value = StringIO(rules)
+            with mock.patch('zeit.cms.content.sources.load') as load:
+                load.return_value = StringIO(rules)
                 return rm.rules
 
     def test_valid_rules_file_should_be_loaded(self):

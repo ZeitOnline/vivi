@@ -11,7 +11,7 @@ import grokcore.component as grok
 import logging
 import pytz
 import sys
-import urllib.request
+import zeit.cms.content.sources
 import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
 import zeit.workflow.interfaces
@@ -139,7 +139,7 @@ class RulesManager(grok.GlobalUtility):
         url = config.get('rules-url')
         if not url:
             return []
-        file_rules = urllib.request.urlopen(url)
+        file_rules = zeit.cms.content.sources.load(url)
         log.info('Loading rules from %s' % url)
         noop = True
         rule = []
