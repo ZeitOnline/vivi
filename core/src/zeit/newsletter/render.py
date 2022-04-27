@@ -1,11 +1,11 @@
-import six.moves.urllib.parse
-import six.moves.urllib.request
+import urllib.parse
+import urllib.request
 import zeit.newsletter.interfaces
 import zope.interface
 
 
 @zope.interface.implementer(zeit.newsletter.interfaces.IRenderer)
-class Renderer(object):
+class Renderer:
 
     def __init__(self, host):
         self.host = host
@@ -21,7 +21,7 @@ class Renderer(object):
     def get_format(self, content, format):
         url = self.url(content, format=format)
         try:
-            return six.moves.urllib.request.urlopen(
+            return urllib.request.urlopen(
                 url, timeout=60).read().decode('utf-8')
         except Exception as e:
             raise RuntimeError('Failed to load %r: %s' % (url, e))
@@ -30,8 +30,8 @@ class Renderer(object):
         if not params:
             params = ''
         else:
-            params = '?' + six.moves.urllib.parse.urlencode(params)
-        path = six.moves.urllib.parse.urlparse(content.uniqueId).path
+            params = '?' + urllib.parse.urlencode(params)
+        path = urllib.parse.urlparse(content.uniqueId).path
         return self.host + path + params
 
 

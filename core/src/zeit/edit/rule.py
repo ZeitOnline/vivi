@@ -10,9 +10,8 @@ import ZODB.POSException
 import grokcore.component as grok
 import logging
 import pytz
-import six
-import six.moves.urllib.request
 import sys
+import urllib.request
 import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
 import zeit.workflow.interfaces
@@ -34,13 +33,13 @@ class Break(Exception):
     pass
 
 
-class Status(object):
+class Status:
 
     status = None
     message = None
 
 
-class Rule(object):
+class Rule:
 
     def __init__(self, code, line=None):
         self.source = code
@@ -140,13 +139,14 @@ class RulesManager(grok.GlobalUtility):
         url = config.get('rules-url')
         if not url:
             return []
-        file_rules = six.moves.urllib.request.urlopen(url)
+        file_rules = urllib.request.urlopen(url)
         log.info('Loading rules from %s' % url)
         noop = True
         rule = []
         start_line = 0
         for line_no, line in enumerate(file_rules):
-            line = six.ensure_text(line, 'utf-8')
+            if not isinstance(line, str):
+                line = line.decode('utf-8')
             if line.startswith('applicable') and noop:
                 # start a new rule
                 if rule:
@@ -199,7 +199,7 @@ class Validator(grok.Adapter):
 
 
 @zope.interface.implementer(zeit.edit.interfaces.IValidator)
-class RecursiveValidator(object):
+class RecursiveValidator:
     """A RecursiveValidator iterates through (some definition of) children of
     its context and generates its result from the validation of those."""
 
@@ -230,7 +230,7 @@ class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         return zeit.edit.interfaces.IValidator(self.context)
 
     def can_publish(self):
-        status = super(ValidatingWorkflow, self).can_publish()
+        status = super().can_publish()
         if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
             return status
         if self.validator.status == ERROR:
