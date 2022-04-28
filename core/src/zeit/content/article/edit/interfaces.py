@@ -521,7 +521,7 @@ class IPuzzle(zope.interface.Interface):
 class Puzzle(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, multiple):
-        super(Puzzle, self).__init__(id, title, None)
+        super().__init__(id, title, None)
         self.multiple = multiple
 
 
