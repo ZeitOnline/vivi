@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.14.1 (2022-04-28)
+-------------------
+
+- ZO-121: Make sort order in topicpagelist autoarea work
+
+
 5.14.0 (2022-04-27)
 -------------------
 
