@@ -406,6 +406,7 @@ class IReadArea(
         title=_('Area background color'),
         description=_('Hex value of background color for area'),
         required=False,
+        min_length=6,
         max_length=6,
         constraint=zeit.cms.content.interfaces.hex_literal)
 
