@@ -87,8 +87,8 @@ It takes precedence over the freetext authors:
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype...>
   <head>
-    <author ... href="http://xml.zeit.de/shakespeare" ...>
-      <image base-id="http://xml.zeit.de/2007/03/group/" ...>
+    <author...href="http://xml.zeit.de/shakespeare"...>
+      <image...base-id="http://xml.zeit.de/2007/03/group/"...>
       ...
       </image>
       <display_name>William Shakespeare</display_name>
