@@ -561,7 +561,7 @@ class TopicpageQuery(ContentQuery):
     @property
     def order(self):
         return zeit.retresco.content.KPI.FIELDS.get(
-            self.context.topicpage_order, self.context.topicpage_order)
+            self.context.topicpagelist_order, self.context.topicpagelist_order)
 
     def _resolve(self, doc):
         config = zope.app.appsetup.product.getProductConfiguration(
