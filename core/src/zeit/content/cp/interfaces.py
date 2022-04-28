@@ -403,7 +403,7 @@ class IReadArea(
         required=False)
 
     background_color = zope.schema.TextLine(
-        title=_('Area background color'),
+        title=_('Area background color (6 characters, no #)'),
         description=_('Hex value of background color for area'),
         required=False,
         min_length=6,
