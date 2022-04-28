@@ -5,6 +5,14 @@ import zeit.cms.content.sources
 import zope.dottedname.resolve
 
 
+class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
+
+    def isAvailable(self, node, context):
+        import zeit.content.article.interfaces  # break circular import
+        context = zeit.content.article.interfaces.IArticle(context, None)
+        return super().isAvailable(node, context)
+
+
 class BookRecensionCategories(zeit.cms.content.sources.SimpleXMLSource):
 
     product_configuration = 'zeit.content.article'
@@ -154,17 +162,13 @@ class ArticleHeaderColorSource(ArticleHeaderSource):
     parent_value_key = 'header'
 
 
-class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
+class ImageDisplayModeSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-display-mode-source'
     default_filename = 'article-image-display-modes.xml'
     attribute = 'id'
     title_xpath = '/display-modes/display-mode'
-
-    def isAvailable(self, node, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(ImageDisplayModeSource, self).isAvailable(node, article)
 
 
 IMAGE_DISPLAY_MODE_SOURCE = ImageDisplayModeSource()
@@ -186,17 +190,13 @@ class LegacyDisplayModeSource(zeit.cms.content.sources.XMLSource):
 LEGACY_DISPLAY_MODE_SOURCE = LegacyDisplayModeSource()
 
 
-class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
+class ImageVariantNameSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-variant-name-source'
     default_filename = 'article-image-variant-names.xml'
     attribute = 'id'
     title_xpath = '/variant-names/variant-name'
-
-    def isAvailable(self, node, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(ImageVariantNameSource, self).isAvailable(node, article)
 
 
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()

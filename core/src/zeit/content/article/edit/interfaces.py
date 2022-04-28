@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
+from zeit.content.article.source import BodyAwareXMLSource
 import collections
 import datetime
 import six
@@ -101,13 +102,6 @@ class IOrderedList(IParagraph):
 
 class IIntertitle(IParagraph):
     """<intertitle/> element."""
-
-
-class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
-
-    def isAvailable(self, node, context):
-        context = zeit.content.article.interfaces.IArticle(context, None)
-        return super(BodyAwareXMLSource, self).isAvailable(node, context)
 
 
 class IDivision(IBlock):
