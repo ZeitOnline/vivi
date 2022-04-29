@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.14.2 (2022-04-29)
+-------------------
+
+- ZO-1212: Improve label and restrict number of characters of area background color field
+
+
+MAINT:
+- Make `available` work for article template header and header color
+
+
 5.14.1 (2022-04-28)
 -------------------
 
