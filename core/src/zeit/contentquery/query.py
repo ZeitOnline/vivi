@@ -550,7 +550,7 @@ class TopicpageQuery(ContentQuery):
         result = []
         topics = zope.component.getUtility(
             zeit.cms.tagging.interfaces.ITopicpages)
-        direction = 'asc' if self.order == 'id' else 'desc'
+        direction = 'asc' if self.order == 'title' else 'desc'
         response = topics.get_topics(
             self.start, self.rows, sort_by=self.order, sort_order=direction)
         self.total_hits = response.hits
