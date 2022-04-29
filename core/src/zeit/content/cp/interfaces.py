@@ -161,10 +161,6 @@ class IElement(zeit.edit.interfaces.IElement):
         title=_('Visible in frontend'),
         default=True)
 
-    visible_mobile = zope.schema.Bool(
-        title=_('Visible on mobile'),
-        default=True)
-
 
 class IBody(zeit.edit.interfaces.IArea, IElement):
     """Container of the CenterPage that actually contains the children."""
@@ -187,9 +183,6 @@ class IReadRegion(zeit.edit.interfaces.IReadContainer):
     # XXX We need to repeat these from IElement for security declarations.
     visible = zope.schema.Bool(
         title=_('Visible in frontend'),
-        default=True)
-    visible_mobile = zope.schema.Bool(
-        title=_('Visible on mobile'),
         default=True)
 
     kind = zope.schema.TextLine(
@@ -351,11 +344,6 @@ class IReadArea(
         description=_("Drag an image group here"),
         required=False,
         source=zeit.content.image.interfaces.imageGroupSource)
-
-    # XXX We need to repeat this from IElement for security declarations.
-    visible_mobile = zope.schema.Bool(
-        title=_('Visible on mobile'),
-        default=True)
 
     block_max = zope.schema.Int(
         title=_("Maximum block count"),

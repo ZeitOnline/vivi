@@ -26,18 +26,11 @@ class VisibleMixin(object):
         '.', 'visible', zeit.content.cp.interfaces.IElement[
             'visible'])
 
-    visible_mobile = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'visible_mobile', zeit.content.cp.interfaces.IElement[
-            'visible_mobile'])
-
     def __init__(self, context, xml):
         super(VisibleMixin, self).__init__(context, xml)
         if 'visible' not in self.xml.attrib:
             self.visible = zeit.content.cp.interfaces.IElement[
                 'visible'].default
-        if 'visible_mobile' not in self.xml.attrib:
-            self.visible_mobile = zeit.content.cp.interfaces.IElement[
-                'visible_mobile'].default
 
 
 class Block(VisibleMixin, zeit.edit.block.SimpleElement):
