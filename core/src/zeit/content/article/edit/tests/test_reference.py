@@ -260,7 +260,7 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
                     pass
 
 
-class EmptyMarkerTest(object):
+class EmptyMarkerTest:
 
     block_type = NotImplemented
 

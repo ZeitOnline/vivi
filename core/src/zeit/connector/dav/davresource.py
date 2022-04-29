@@ -172,7 +172,7 @@ class DAVPropstat:
             "\n  Locking info: " + pprint.pformat(self.locking_info, 2)
 
 
-class DAVResponse(object):
+class DAVResponse:
     """FIXME: document
     """
 
@@ -240,7 +240,7 @@ class DAVResponse(object):
             "\n  ".join([p.__repr__() for p in self.propstats])
 
 
-class DAVResult(object):
+class DAVResult:
 
     def __init__(self, http_response=None):
         """Initialize a DAVResult instance.
@@ -319,7 +319,7 @@ class DAVResult(object):
         return etag
 
 
-class DAVResource(object):
+class DAVResource:
     """Basic class describing an arbitrary DAV resource (file or collection)
     """
 

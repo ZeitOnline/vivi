@@ -13,7 +13,7 @@ import zope.i18n
 import zope.viewlet.viewlet
 
 
-class Repository(object):
+class Repository:
 
     def __call__(self):
         return zope.component.getUtility(

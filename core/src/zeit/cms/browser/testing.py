@@ -2,7 +2,7 @@ import zope.component
 import zope.interface
 
 
-class FragmentHarness(object):
+class FragmentHarness:
 
     def render(self):
         view = zope.component.getMultiAdapter(

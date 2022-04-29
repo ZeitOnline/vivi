@@ -5,7 +5,7 @@ import zeit.content.dynamicfolder.interfaces
 import zope.formlib.form
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.dynamicfolder.interfaces.IDynamicFolder)
@@ -43,7 +43,7 @@ class View(zeit.cms.browser.listing.Listing,
         return result
 
 
-class ContentPlaceholder(object):
+class ContentPlaceholder:
 
     def __init__(self, name, parent, url):
         self.__name__ = name

@@ -5,7 +5,7 @@ import zope.i18n
 import zope.viewlet.viewlet
 
 
-class Published(object):
+class Published:
     """Indicate whether an object is published or not."""
 
     messages = {

@@ -7,7 +7,7 @@ import zope.exceptions.exceptionformatter
 import zope.i18n
 
 
-class ErrorView(object):
+class ErrorView:
 
     status = 500
 

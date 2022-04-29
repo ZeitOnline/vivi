@@ -19,7 +19,7 @@ import zope.lifecycleevent
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 
-class ArticleFormBase(object):
+class ArticleFormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata,

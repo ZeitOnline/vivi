@@ -29,7 +29,7 @@ class Traverser(grok.Adapter):
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class PublishTraverser(object):
+class PublishTraverser:
     """
     Register like this::
 

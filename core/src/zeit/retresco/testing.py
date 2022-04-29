@@ -123,7 +123,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
 
 
-class TagTestHelpers(object):
+class TagTestHelpers:
     """Helper to prefill DAV-Property used for keywords of a content object."""
 
     def set_tags(self, content, xml):

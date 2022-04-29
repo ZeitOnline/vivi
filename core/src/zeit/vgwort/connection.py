@@ -20,7 +20,7 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-class VGWortWebService(object):
+class VGWortWebService:
     """This class handles the configuration of URL and authentication
     information, and provides better error handling for errors returned by the
     web service.
@@ -201,7 +201,7 @@ real_message_service = service_factory(MessageService)
 
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IPixelService)
-class MockPixelService(object):
+class MockPixelService:
 
     def order_pixels(self, amount):
         offset = 100_000 + random.randint(1, 100) * 1000
@@ -211,7 +211,7 @@ class MockPixelService(object):
 
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
-class MockMessageService(object):
+class MockMessageService:
 
     def __init__(self):
         self.reset()

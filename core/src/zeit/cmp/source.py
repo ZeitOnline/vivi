@@ -12,7 +12,7 @@ import zope.security.checker
 # Copy&paste from zeit.workflow.source for the yes/no/other tri-state mechanics
 
 
-class UnknownType(object):
+class UnknownType:
 
     __slots__ = ()
     _instance = None

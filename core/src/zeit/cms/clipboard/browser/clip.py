@@ -26,7 +26,7 @@ class ClipListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
         return self.context.title
 
 
-class ClipDragPane(object):
+class ClipDragPane:
 
     @property
     def unique_id(self):
@@ -50,7 +50,7 @@ class DeleteClip(zeit.cms.browser.view.Base):
         return u''
 
 
-class NotOnClipboardMenuItem(object):
+class NotOnClipboardMenuItem:
 
     def render(self):
         if zeit.cms.clipboard.interfaces.IClipboard.providedBy(self.context):

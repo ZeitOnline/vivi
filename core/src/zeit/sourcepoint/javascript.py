@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.sourcepoint.interfaces.IJavaScript)
-class JavaScript(object):
+class JavaScript:
 
     FILENAME = 'msg_{now}.js'
 

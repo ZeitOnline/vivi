@@ -9,7 +9,7 @@ class Break(Exception):
     pass
 
 
-class EvalExecHelper(object):
+class EvalExecHelper:
 
     def _globals(self, globs):
         globs['__return'] = self._store_result

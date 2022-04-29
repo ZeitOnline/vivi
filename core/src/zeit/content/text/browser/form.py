@@ -6,7 +6,7 @@ import zope.app.form.browser.textwidgets
 import zope.formlib.form
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.text.interfaces.IText)

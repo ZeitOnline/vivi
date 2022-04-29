@@ -64,7 +64,7 @@ def make_xls_test(*args):
     return case(*args)
 
 
-class SecurityPolicyXLSSheetCase(object):
+class SecurityPolicyXLSSheetCase:
 
     layer = WSGI_LAYER
 

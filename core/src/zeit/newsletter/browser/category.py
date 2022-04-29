@@ -13,7 +13,7 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         self.redirect(self.url(newsletter, '@@checkout'))
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.newsletter.interfaces.INewsletterCategory)

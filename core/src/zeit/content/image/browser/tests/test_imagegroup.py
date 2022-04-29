@@ -7,7 +7,7 @@ import zeit.edit.interfaces
 import zeit.edit.rule
 
 
-class ImageGroupHelperMixin(object):
+class ImageGroupHelperMixin:
 
     def add_imagegroup(self, filename='imagegroup', fill_copyright=True):
         b = self.browser

@@ -11,7 +11,7 @@ import zeit.content.video.video
 import zope.component
 
 
-class Converter(object):
+class Converter:
 
     def __init__(self):
         self.data = {}

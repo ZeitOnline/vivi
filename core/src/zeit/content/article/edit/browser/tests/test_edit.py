@@ -22,7 +22,7 @@ def click(selenium, locator):
     selenium.mouseUp(locator)
 
 
-class TextViewHelper(object):
+class TextViewHelper:
 
     view_class = NotImplemented
 

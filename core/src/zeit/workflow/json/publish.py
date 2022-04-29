@@ -6,7 +6,7 @@ import zeit.cms.workflow.interfaces
 import zope.i18n
 
 
-class Publish(object):
+class Publish:
 
     def publish(self):
         return json.dumps(self._publish())

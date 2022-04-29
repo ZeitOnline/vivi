@@ -70,7 +70,7 @@ class CombinationWidget(
         'combinationwidget.pt')
 
 
-class ParentChildDropdownUpdater(object):
+class ParentChildDropdownUpdater:
 
     parent_source = NotImplemented
     child_source = NotImplemented
@@ -90,7 +90,7 @@ class ParentChildDropdownUpdater(object):
 
         @zope.interface.implementer(
             self.child_source.factory.parent_value_iface)
-        class Fake(object):
+        class Fake:
             pass
         fake = Fake()
         setattr(fake, self.child_source.factory.parent_value_key, parent_value)

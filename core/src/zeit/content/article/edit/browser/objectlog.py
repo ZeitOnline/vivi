@@ -1,7 +1,7 @@
 import zeit.cms.interfaces
 
 
-class ObjectLog(object):
+class ObjectLog:
 
     @property
     def repository_content(self):

@@ -39,7 +39,7 @@ class BrowserTestCase(zeit.cms.testing.ZeitCmsBrowserTestCase):
     layer = WSGI_LAYER
 
 
-class IngredientsHelper(object):
+class IngredientsHelper:
     """Mixin for tests which need some ingredients infrastrucutre."""
 
     def get_ingredient(self, code, **kwargs):

@@ -75,7 +75,7 @@ class Publish(zeit.edit.browser.form.InlineForm):
         return manager.canCheckout
 
 
-class CheckinErrors(object):
+class CheckinErrors:
 
     @cachedproperty
     def checkin_errors(self):
@@ -100,7 +100,7 @@ class CheckinErrors(object):
         return result
 
 
-class WorkflowButtons(object):
+class WorkflowButtons:
 
     @cachedproperty
     def can_checkout(self):
@@ -127,7 +127,7 @@ class WorkflowButtons(object):
             self.context).has_semantic_change
 
 
-class Timestamp(object):
+class Timestamp:
 
     def show_semantic_change(self):
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)

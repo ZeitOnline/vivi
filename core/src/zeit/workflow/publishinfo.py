@@ -14,7 +14,7 @@ import zope.interface
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
-class PublishInfo(object):
+class PublishInfo:
     """Workflow baseclass. No concrete content type should use this,
     but rather one of the subclasses like AssetWorkflow or ContentWorkflow.
     """

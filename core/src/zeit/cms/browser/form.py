@@ -72,7 +72,7 @@ class AttrDict(dict):
             raise zope.formlib.form.NoInputData()
 
 
-class WidgetCSSMixin(object):
+class WidgetCSSMixin:
     """Form mix-in to manage CSS classes on widgets.
 
     - Adds "error" and "required" classes automatically.
@@ -108,7 +108,7 @@ class WidgetCSSMixin(object):
         return ' '.join(css_class)
 
 
-class PlaceholderMixin(object):
+class PlaceholderMixin:
 
     def _is_textwidget(self, widget):
         if not zope.formlib.interfaces.ISimpleInputWidget.providedBy(widget):
@@ -136,7 +136,7 @@ class PlaceholderMixin(object):
                             'placeholder="%s"' % placeholder)
 
 
-class CharlimitMixin(object):
+class CharlimitMixin:
 
     def set_charlimit(self, field_name):
         widget = self.widgets[field_name]
@@ -181,7 +181,7 @@ class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
             self.send_message(self.status)
 
 
-class AddFormBase(object):
+class AddFormBase:
     """This class provides mechanics for adding that are independent of
     rendering the form as a whole page or subpage/lightbox form.
     """

@@ -12,7 +12,7 @@ import zope.formlib.source
 import zope.formlib.widget
 
 
-class Forms(object):
+class Forms:
     """View that collects all inline forms."""
 
 

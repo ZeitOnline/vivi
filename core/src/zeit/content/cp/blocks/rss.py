@@ -13,7 +13,7 @@ class IRSSLink(zeit.content.link.interfaces.ILink):
 
 
 @zope.interface.implementer(IRSSLink)
-class RSSLink(object):
+class RSSLink:
 
     def __init__(self, xml, feed=None):
         self.xml = xml

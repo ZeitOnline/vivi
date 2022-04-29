@@ -10,7 +10,7 @@ import zope.schema
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
-class ImageMetadata(object):
+class ImageMetadata:
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,

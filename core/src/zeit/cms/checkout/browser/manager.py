@@ -63,7 +63,7 @@ class Checkout(zeit.cms.browser.view.Base):
         return zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
 
 
-class CheckinAndRedirect(object):
+class CheckinAndRedirect:
 
     def perform_checkin(self, semantic_change=None, event=True,
                         ignore_conflicts=False):

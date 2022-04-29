@@ -7,7 +7,7 @@ import zope.interface
 
 @zope.component.adapter(zeit.content.image.interfaces.IRepositoryImageGroup)
 @zope.interface.implementer(zeit.imp.interfaces.IStorer)
-class ImageGroupStorer(object):
+class ImageGroupStorer:
 
     def __init__(self, context):
         self.context = self.__parent__ = context

@@ -137,7 +137,7 @@ adaptable to ICommonMetadata we'll get filtered results:
 >>> import zope.interface
 >>> import zeit.cms.content.interfaces
 >>> @zope.interface.implementer(zeit.cms.content.interfaces.ICommonMetadata)
-... class Meta(object):
+... class Meta:
 ...     pass
 >>> meta = Meta()
 >>> meta.ressort = u'Deutschland'

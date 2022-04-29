@@ -35,7 +35,7 @@ VIDEO3 = 'http://video.zeit.de/video/3'
 PLAYLIST = 'http://video.zeit.de/playlist/1'
 
 
-class Dummy(object):
+class Dummy:
     pass
 
 

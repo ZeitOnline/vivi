@@ -287,7 +287,7 @@ def galleryentry_factory(context):
 
 
 @zope.interface.implementer(zeit.content.gallery.interfaces.IGalleryEntry)
-class GalleryEntry(object):
+class GalleryEntry:
 
     @property
     def crops(self):
@@ -300,7 +300,7 @@ class GalleryEntry(object):
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
-class EntryXMLRepresentation(object):
+class EntryXMLRepresentation:
 
     def __init__(self, context):
         self.context = context
@@ -370,7 +370,7 @@ def get_visible_entry_count_for_gallery(context):
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 @zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
-class EntryMetadata(object):
+class EntryMetadata:
     """ImageMetadata composition from gallery entry and its image."""
 
     def __init__(self, context):

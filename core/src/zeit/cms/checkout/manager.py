@@ -20,7 +20,7 @@ import zope.security.proxy
 @zope.interface.implementer(
     zeit.cms.checkout.interfaces.ICheckoutManager,
     zeit.cms.checkout.interfaces.ICheckinManager)
-class CheckoutManager(object):
+class CheckoutManager:
 
     def __init__(self, context):
         self.context = context

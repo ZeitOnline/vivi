@@ -3,7 +3,7 @@ import zeit.push.interfaces
 import zope.component
 
 
-class Retract(object):
+class Retract:
 
     @property
     def banner(self):

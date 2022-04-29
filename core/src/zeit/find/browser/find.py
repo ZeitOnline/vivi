@@ -114,7 +114,7 @@ def get_favorited_css_class(favorited):
         'favorited' if favorited else 'not_favorited')
 
 
-class DottedNestedDict(object):
+class DottedNestedDict:
 
     def __init__(self, dict_):
         self.dict = dict_

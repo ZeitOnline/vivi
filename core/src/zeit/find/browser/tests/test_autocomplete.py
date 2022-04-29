@@ -84,7 +84,7 @@ class TestSimpleFind(unittest.TestCase,
     def test_query_view_should_render_input(self):
         @zope.interface.implementer(
             zeit.cms.content.interfaces.IAutocompleteSource)
-        class FakeSource(object):
+        class FakeSource:
             def get_check_types(self):
                 return ('t1', 't2', 't3')
 

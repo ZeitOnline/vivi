@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
-class ContentUUID(object):
+class ContentUUID:
 
     id = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.IUUID['id'],
@@ -45,7 +45,7 @@ def properties(context):
 
 @zope.component.adapter(six.string_types[0])
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
-class SimpleUUID(object):
+class SimpleUUID:
 
     def __init__(self, context):
         self.id = context

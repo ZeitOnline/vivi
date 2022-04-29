@@ -5,7 +5,7 @@ import zeit.cms.syndication.interfaces
 import zope.formlib.form
 
 
-class FeedFormBase(object):
+class FeedFormBase:
     pass
 
 

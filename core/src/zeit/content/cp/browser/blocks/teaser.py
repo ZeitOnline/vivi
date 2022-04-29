@@ -20,7 +20,7 @@ import zope.lifecycleevent
 import zope.interface
 
 
-class EditLayout(object):
+class EditLayout:
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
     layout_prefix = 'teaser'

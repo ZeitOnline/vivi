@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class PushNotifier(object):
+class PushNotifier:
 
     def __init__(self):
         self.reset()

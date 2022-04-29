@@ -81,7 +81,7 @@ class FeedListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     year = page = volume = ressort = workflowState = modifiedBy = author = None
 
 
-class FeedView(object):
+class FeedView:
     """Sorts, pins and hides from hp."""
 
     title = _('Feed contents')

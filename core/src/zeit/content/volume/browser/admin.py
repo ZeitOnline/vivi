@@ -48,7 +48,7 @@ def render_publish_action(action):
             url=context_url))
 
 
-class PublishAll(object):
+class PublishAll:
 
     # See zeit.workflow.json.publish.Publish.publish()
     def __call__(self):

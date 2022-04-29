@@ -211,7 +211,7 @@ Token adapter
 For content objects there is also a token adapter:
 
 >>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-... class Content(object):
+... class Content:
 ...     uniqueId = u'my-unique-id'
 >>> content = Content()
 >>> zeit.cms.content.interfaces.IDAVToken(content)
@@ -306,7 +306,7 @@ Object source
 Object sources are used mostly by configuration files (e.g. centerpage layouts)
 
 >>> import zc.sourcefactory.contextual
->>> class Thing(object):
+>>> class Thing:
 ...     def __init__(self, id, title):
 ...         self.id = id
 ...         self.title = title
@@ -605,7 +605,7 @@ Let's create a little content class:
 >>> import zeit.cms.interfaces
 >>> from zeit.cms.content.dav import DAVProperty
 >>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-... class Content(object):
+... class Content:
 ...     properties = zeit.connector.resource.WebDAVProperties()
 ...     title = DAVProperty(zope.schema.TextLine(), 'myns', 'title')
 >>> def contentDavProps(context):
@@ -675,7 +675,7 @@ object would not be notified about changes. Make sure the object is really
 notified. This is done by getting the object which actually defined the webdav
 properties, by adapting the properties to ICMSContent. Create a dummy object:
 
->>> class Foo(object):
+>>> class Foo:
 ...     changed = DAVProperty(zope.schema.TextLine(), 'myns', 'changed')
 
 Create an adapter from Foo to ICMSContent:
@@ -743,7 +743,7 @@ The DAVProperty has some support for marking properties as live properties:
 ...     zeit.cms.content.interfaces.ILivePropertyManager)
 >>> lp_manager.is_writeable_live('changed', 'myns')
 False
->>> class Foo(object):
+>>> class Foo:
 ...     changed = DAVProperty(zope.schema.TextLine(), 'myns', 'changed',
 ...                           writeable=WRITEABLE_LIVE)
 >>> lp_manager.is_writeable_live('changed', 'myns')

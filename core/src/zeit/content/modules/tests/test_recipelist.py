@@ -23,7 +23,7 @@ class RecipeListTest(
         from zeit.content.modules.recipelist import RecipeList
         from lxml import objectify
 
-        class Content(object):
+        class Content:
             xml = objectify.fromstring('<recipelist/>')
             recipe_list = RecipeList(self.context, xml)
         return Content().recipe_list

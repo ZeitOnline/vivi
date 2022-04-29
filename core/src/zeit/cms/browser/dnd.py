@@ -2,7 +2,7 @@ import zeit.cms.interfaces
 import zope.component
 
 
-class DragPane(object):
+class DragPane:
 
     def __call__(self, uniqueId):
         content = zeit.cms.interfaces.ICMSContent(uniqueId)

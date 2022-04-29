@@ -9,7 +9,7 @@ import zeit.wysiwyg.interfaces
 import zope.formlib.form
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.portraitbox.interfaces.IPortraitbox,

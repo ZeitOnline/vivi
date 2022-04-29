@@ -7,7 +7,7 @@ import zope.publisher.browser
 import zope.schema
 
 
-class DummyContext(object):
+class DummyContext:
     """Don't use a mock for this because getting a non-existing attribute from
     a mock yields a non-None value.
     """
@@ -111,7 +111,7 @@ class CharlimitTest(zeit.cms.testing.ZeitCmsTestCase):
             foo.setTaggedValue('zeit.cms.charlimit', 70)
 
         @zope.interface.implementer(Schema)
-        class Context(object):
+        class Context:
             foo = "bar"
 
         form = CharlimitForm(Context(), zope.publisher.browser.TestRequest())
@@ -126,7 +126,7 @@ class CharlimitTest(zeit.cms.testing.ZeitCmsTestCase):
             foo = zope.schema.TextLine(max_length=70)
 
         @zope.interface.implementer(Schema)
-        class Context(object):
+        class Context:
             foo = "bar"
 
         form = CharlimitForm(Context(), zope.publisher.browser.TestRequest())

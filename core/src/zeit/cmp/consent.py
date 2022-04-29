@@ -4,7 +4,7 @@ import zeit.cmp.interfaces
 import zeit.cms.content.dav
 
 
-class ConsentInfoBase(object):
+class ConsentInfoBase:
 
     @property
     def thirdparty_vendors_cmp_ids(self):

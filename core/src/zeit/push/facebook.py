@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection(object):
+class Connection:
 
     def send(self, text, link, **kw):
         account = kw['account']

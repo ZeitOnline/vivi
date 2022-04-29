@@ -240,7 +240,7 @@ that reduces the list of log entries to just the last two:
 
 >>> @zope.component.adapter(Content)
 ... @zope.interface.implementer(zeit.objectlog.interfaces.ILogProcessor)
-... class Processor(object):
+... class Processor:
 ...     def __init__(self, context):
 ...         pass
 ...     def __call__(self, entries):

@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection(object):
+class Connection:
 
     def __init__(self, api_key, api_secret):
         self.api_key = api_key

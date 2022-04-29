@@ -2,7 +2,7 @@ import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.browser.editor
 
 
-class Empty(object):
+class Empty:
 
     def render(self):
         return u''

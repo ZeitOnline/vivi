@@ -168,7 +168,7 @@ class TeaserFactory(zeit.edit.block.TypeOnAttributeElementFactory):
     title = _('Teaser')
 
 
-class AdvertisementBase(object):
+class AdvertisementBase:
 
     area = zeit.newsletter.interfaces.IBody
     type = NotImplemented

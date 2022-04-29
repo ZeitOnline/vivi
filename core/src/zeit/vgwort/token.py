@@ -123,7 +123,7 @@ def add_token(context, event):
     tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
     token.public_token, token.private_token = tokens.claim_immediately()
 
-    class Dummy(object):
+    class Dummy:
         tzinfo = 'none'
 
         def isoformat(self):

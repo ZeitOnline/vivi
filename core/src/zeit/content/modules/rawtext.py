@@ -154,7 +154,7 @@ class CSSInjector(grok.Adapter):
         return u'<style>\n%s\n</style>' % six.ensure_text(css.cssText)
 
 
-class EmbedParameterForm(object):
+class EmbedParameterForm:
 
     _form_fields = NotImplemented
     _omit_fields = ()
@@ -193,7 +193,7 @@ def embed_memo(context):
     return zeit.cms.content.interfaces.IMemo(embed)
 
 
-class EmptyMemo(object):
+class EmptyMemo:
 
     memo = u''
 

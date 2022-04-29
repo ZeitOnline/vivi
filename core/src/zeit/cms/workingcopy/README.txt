@@ -19,7 +19,7 @@ True
 
 We also need a principal permission manager:
 
->>> class PPM(object):
+>>> class PPM:
 ...
 ...     def __init__(self, context):
 ...         self.context = context
@@ -34,7 +34,7 @@ We also need a principal permission manager:
 
 And we need a principal role manager:
 
->>> class PRM(object):
+>>> class PRM:
 ...
 ...     def __init__(self, context):
 ...         self.context = context

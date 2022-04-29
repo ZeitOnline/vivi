@@ -10,7 +10,7 @@ except ImportError:
 
 
 # <https://github.com/zopefoundation/zope.security/issues/26>
-class ClassProxy(object):
+class ClassProxy:
     pass
 
 

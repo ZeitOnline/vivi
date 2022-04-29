@@ -10,7 +10,7 @@ processing instructions which are not inside the document tree are preserverd
 Create a dummy object:
 
 >>> import lxml.objectify
->>> class XML(object):
+>>> class XML:
 ...     xml = lxml.objectify.fromstring('<a/><?foo?>')
 
 

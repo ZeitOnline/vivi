@@ -27,7 +27,7 @@ class BadAuthTypeError(Exception):
     pass
 
 
-class HTTPBasicAuthCon(object):
+class HTTPBasicAuthCon:
     """Connection which authenticates.
 
     NOTE: currently doesn't authenticate.
@@ -155,7 +155,7 @@ class HTTPBasicAuthCon(object):
         return
 
 
-class DAVBase(object):
+class DAVBase:
 
     def get(self, url, extra_hdrs=None):
         return self._request('GET', url, extra_hdrs=extra_hdrs)

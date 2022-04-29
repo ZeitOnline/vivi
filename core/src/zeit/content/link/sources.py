@@ -2,7 +2,7 @@ import six
 import zeit.cms.content.sources
 
 
-class Blog(object):
+class Blog:
 
     def __init__(self, name=None, url=None):
         self.name = name

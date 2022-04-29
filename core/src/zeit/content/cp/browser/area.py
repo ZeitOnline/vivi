@@ -225,7 +225,7 @@ class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
     interface = zeit.content.cp.interfaces.IArea
 
 
-class SchematicPreview(object):
+class SchematicPreview:
 
     prefix = 'http://xml.zeit.de/data/cp-area-schemas/{}.svg'
 

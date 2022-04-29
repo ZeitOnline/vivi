@@ -8,7 +8,7 @@ import zeit.cms.content.interfaces
 from zeit.cms.i18n import MessageFactory as _
 
 
-class _NotNecessary(object):
+class _NotNecessary:
 
     __slots__ = ()
     _instance = None

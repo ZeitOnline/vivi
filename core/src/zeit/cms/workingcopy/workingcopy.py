@@ -134,7 +134,7 @@ def workingcopy_for_current_principal(ignored):
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class WorkingcopyTraverser(object):
+class WorkingcopyTraverser:
     """Traverses to working copies, creating them on the fly."""
 
     def __init__(self, context, request):

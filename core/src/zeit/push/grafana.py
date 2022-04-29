@@ -4,7 +4,7 @@ import zope.interface
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection(object):
+class Connection:
     """Writes an event to Grafana annotations."""
 
     def __init__(self, base_url, apikey):

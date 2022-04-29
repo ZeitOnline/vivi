@@ -23,7 +23,7 @@ _provides_dav_property = zeit.cms.content.dav.DAVProperty(
     'http://namespaces.zeit.de/CMS/meta', 'provides', 'provides')
 
 
-class TypeDeclaration(object):
+class TypeDeclaration:
 
     interface = None
     interface_type = zeit.cms.interfaces.ICMSContentType

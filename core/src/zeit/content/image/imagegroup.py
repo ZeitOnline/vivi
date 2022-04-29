@@ -36,7 +36,7 @@ INVALID_SIZE = collections.namedtuple('InvalidSize', [])()
 @zope.interface.implementer(
     zeit.content.image.interfaces.IImageGroup,
     zeit.cms.repository.interfaces.INonRecursiveCollection)
-class ImageGroupBase(object):
+class ImageGroupBase:
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
@@ -188,7 +188,7 @@ class ImageGroupBase(object):
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class VariantTraverser(object):
+class VariantTraverser:
     """The following URLs may render images:
 
     Image is present on disk:
@@ -536,7 +536,7 @@ def guess_external_id(context, event):
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class ThumbnailTraverser(object):
+class ThumbnailTraverser:
 
     def __init__(self, context, request):
         self.context = context

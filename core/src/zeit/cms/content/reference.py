@@ -29,7 +29,7 @@ import zope.security.proxy
 import zope.traversing.browser.absoluteurl
 
 
-class ReferenceProperty(object):
+class ReferenceProperty:
     """Property descriptor for tuples of IReference.
 
     The source object must provide ``IXMLRepresentation``, as the references
@@ -348,7 +348,7 @@ class References(tuple):
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IReference)
-class EmptyReference(object):
+class EmptyReference:
     """Helper so an empty SingleReferenceProperty still supports
     ``create()``.
     """
@@ -496,7 +496,7 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class Traverser(object):
+class Traverser:
 
     def __init__(self, context, request):
         self.context = context
@@ -509,11 +509,11 @@ class Traverser(object):
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
 
-class OverridableProperty(object):
+class OverridableProperty:
     """Descriptor that allows acessing an attribute either on the local
     instance or on an another object accessible from there.
 
-    class MyReference(object):
+    class MyReference:
 
         @property
         def target(self):

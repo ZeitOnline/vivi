@@ -16,7 +16,7 @@ import zope.schema.interfaces
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMSContent)
-class Content(object):
+class Content:
 
     uniqueId = None
     __name__ = None

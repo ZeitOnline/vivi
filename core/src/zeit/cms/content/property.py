@@ -10,7 +10,7 @@ import zope.component
 import zope.schema.interfaces
 
 
-class ObjectPathProperty(object):
+class ObjectPathProperty:
     """Property which is stored in an XML node."""
 
     def __init__(self, path, field=None, use_default=False):
@@ -175,7 +175,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
             node.set(self.attribute_name, value)
 
 
-class MultiPropertyBase(object):
+class MultiPropertyBase:
 
     def __init__(self, path, result_type=tuple, sorted=lambda x: x):
         self.path = lxml.objectify.ObjectPath(path)
@@ -283,7 +283,7 @@ def mapAttributes(*names):
         vars[name] = get_mapper(name)
 
 
-class DAVConverterWrapper(object):
+class DAVConverterWrapper:
     """Wraps a property and converts data using dav convert."""
 
     DUMMY_PROPERTIES = zeit.connector.resource.WebDAVProperties()

@@ -20,7 +20,7 @@ import zope.formlib.form
 import zope.publisher.interfaces
 
 
-class FormBase(object):
+class FormBase:
 
     field_groups = zeit.content.image.browser.form.ImageFormBase.field_groups
 
@@ -250,7 +250,7 @@ class AddImage(zeit.content.image.browser.form.AddForm):
         return url()
 
 
-class Metadata(object):
+class Metadata:
 
     @zope.cachedescriptors.property.Lazy
     def metadata(self):
@@ -266,7 +266,7 @@ class Metadata(object):
                 yield obj
 
 
-class Thumbnail(object):
+class Thumbnail:
 
     first_choice = re.compile(r'.*-\d+x\d+')
     view_name = 'thumbnail'

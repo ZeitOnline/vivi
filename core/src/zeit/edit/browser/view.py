@@ -17,7 +17,7 @@ import zope.viewlet.viewlet
 log = logging.getLogger(__name__)
 
 
-class Form(object):
+class Form:
     """Descriptor that extracts a variable's value from the request.
 
     The variable may or may not be JSON-encoded, and the request may use
@@ -51,7 +51,7 @@ class Form(object):
         return value
 
 
-class UndoableMixin(object):
+class UndoableMixin:
     """Provides support for marking transactions undoable.
 
     This is supposed to be mixed into view base classes, which should call

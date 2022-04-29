@@ -3,7 +3,7 @@ import PIL.Image
 import PIL.ImageDraw
 
 
-class Mask(object):
+class Mask:
     """A mask for cropping (PNG with alpha channel).
 
     The constructed image has a semi-transparent "border" and a transparent

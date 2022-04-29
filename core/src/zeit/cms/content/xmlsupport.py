@@ -19,7 +19,7 @@ import zope.security.proxy
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
-class XMLRepresentationBase(object):
+class XMLRepresentationBase:
 
     #: XML string with which to initalize new objects. Define in subclass.
     default_template = None
@@ -43,7 +43,7 @@ class XMLContentBase(zeit.cms.repository.repository.ContentBase,
 _default_marker = object()
 
 
-class Persistent(object):
+class Persistent:
     """Helper to indicate changes for object modified xml trees."""
 
     def __setattr__(self, key, value):
@@ -79,7 +79,7 @@ class Persistent(object):
 
 @zope.interface.implementer(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
-class SynchronisingDAVPropertyToXMLEvent(object):
+class SynchronisingDAVPropertyToXMLEvent:
 
     vetoed = False
 
@@ -107,7 +107,7 @@ def veto_internal(event):
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
 @zope.interface.implementer(
     zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser)
-class PropertyToXMLAttribute(object):
+class PropertyToXMLAttribute:
     """Attribute nodes reside in the head."""
 
     path = lxml.objectify.ObjectPath('.head.attribute')
@@ -233,7 +233,7 @@ def cleanup_lxml(context, event):
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
-class XMLReferenceUpdater(object):
+class XMLReferenceUpdater:
 
     target_iface = None
     suppress_errors = False

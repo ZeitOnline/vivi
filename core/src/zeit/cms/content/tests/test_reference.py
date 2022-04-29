@@ -19,7 +19,7 @@ class ExampleReference(zeit.cms.content.reference.Reference):
     foo = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'foo')
 
 
-class ReferenceFixture(object):
+class ReferenceFixture:
 
     def setUp(self):
         super(ReferenceFixture, self).setUp()
@@ -312,7 +312,7 @@ class SingleResourceTest(
             u'bar', body['references']['reference']['title'])
 
 
-class ReferenceTraversalBase(object):
+class ReferenceTraversalBase:
 
     def set_reference(self, obj, value):
         raise NotImplementedError()

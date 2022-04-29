@@ -76,7 +76,7 @@ class BlockLayout(AllowedMixin):
         return area.kind in self.default_in_areas
 
 
-class NoBlockLayout(object):
+class NoBlockLayout:
 
     def __init__(self, block):
         self.block = block

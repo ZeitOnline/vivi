@@ -134,7 +134,7 @@ def get_locking_indicator_for_listing(context, request):
         (context.context, request), name='get_locking_indicator')
 
 
-class API(object):
+class API:
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
@@ -175,7 +175,7 @@ class API(object):
 
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-class DummyContent(object):
+class DummyContent:
     """Helper so we don't have to resolve ICMSContent, since ILockStorage uses a
     ICMSContent-based API, even though it only uses the uniqueId (to pass it to
     IConnector).

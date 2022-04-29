@@ -115,7 +115,7 @@ class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class RecensionContainerTraverser(object):
+class RecensionContainerTraverser:
 
     def __init__(self, context, request):
         self.context = context
@@ -131,7 +131,7 @@ class RecensionContainerTraverser(object):
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class RecensionTraverser(object):
+class RecensionTraverser:
 
     def __init__(self, context, request):
         self.context = context

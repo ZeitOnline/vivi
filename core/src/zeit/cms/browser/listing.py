@@ -17,7 +17,7 @@ import zope.viewlet.interfaces
 logger = logging.getLogger('zeit.cms.browser.listing')
 
 
-class BaseListRepresentation(object):
+class BaseListRepresentation:
 
     def __init__(self, context, request):
         self.context = context
@@ -259,7 +259,7 @@ class DatetimeColumn(GetterColumn):
         return value
 
 
-class Listing(object):
+class Listing:
     """Object listing view"""
 
     title = _('Directory listing')

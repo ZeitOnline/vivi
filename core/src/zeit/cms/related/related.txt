@@ -269,7 +269,7 @@ When we remove the relateds they're of course removed from the XML:
 
 When we add an related which is not adaptable a useful error is raised:
 
->>> class Strange(object):
+>>> class Strange:
 ...     pass
 >>> strange_thing = Strange()
 >>> strange_thing.uniqueId = 'foo'

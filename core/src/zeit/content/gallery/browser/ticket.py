@@ -16,7 +16,7 @@ import zope.traversing.interfaces
     zope.interface.Interface,
     zope.publisher.interfaces.browser.IDefaultBrowserLayer)
 @zope.interface.implementer(zope.traversing.interfaces.ITraversable)
-class TicketTraverser(object):
+class TicketTraverser:
     """This traverser takes a ticket and authenticates the user.
 
     This is useful for uploading files with flash.
@@ -38,7 +38,7 @@ class TicketTraverser(object):
         return self.context
 
 
-class TicketIssuer(object):
+class TicketIssuer:
     """Issue ticket for currently logged in user.
 
     A ticket allows to authenticate.

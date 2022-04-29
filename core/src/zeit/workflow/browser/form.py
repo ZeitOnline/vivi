@@ -25,7 +25,7 @@ def workflow_form_factory(context, request):
         zeit.workflow.browser.interfaces.IWorkflowForm)
 
 
-class WorkflowActions(object):
+class WorkflowActions:
 
     def do_publish(self):
         if self.info.can_publish() == CAN_PUBLISH_SUCCESS:

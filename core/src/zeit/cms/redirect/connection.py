@@ -7,7 +7,7 @@ import zope.interface
 
 
 @zope.interface.implementer(zeit.cms.redirect.interfaces.ILookup)
-class Lookup(object):
+class Lookup:
 
     def __init__(self, url):
         self.url = url

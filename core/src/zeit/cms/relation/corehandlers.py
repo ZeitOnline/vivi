@@ -39,7 +39,7 @@ def update_index_on_add(context, event):
     relations.index(context)
 
 
-class Dummy(object):
+class Dummy:
 
     uniqueId = None
 

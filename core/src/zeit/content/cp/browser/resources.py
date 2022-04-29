@@ -43,7 +43,7 @@ Resource('area.js', depends=[
 ])
 
 
-class RawCSS(object):
+class RawCSS:
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'text/css')

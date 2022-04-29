@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.brightcove.interfaces.ICMSAPI)
-class CMSAPI(object):
+class CMSAPI:
     """Connection to the Brightcove "CMS API".
 
     * Overview: <https://support.brightcove.com/overview-cms-api>
@@ -185,7 +185,7 @@ def cms_from_product_config():
 
 
 @zope.interface.implementer(zeit.content.video.interfaces.IPlayer)
-class PlaybackAPI(object):
+class PlaybackAPI:
     """Connection to the Brightcove "Playback API".
 
     * Overview: <https://support.brightcove.com/overview-playback-api>

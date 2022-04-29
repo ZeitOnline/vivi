@@ -30,7 +30,7 @@ class FormFields(zope.formlib.form.FormFields):
         super(FormFields, self).__init__(*args, **kw)
 
 
-class Heading(object):
+class Heading:
 
     def render(self):
         # workaround until the title is synchronized to the heading (#11255)
@@ -188,7 +188,7 @@ class WorkflowStatusDisplay(zeit.edit.browser.form.InlineForm):
     form_fields['seo_optimized'].custom_widget = CheckboxDisplayWidget
 
 
-class LastPublished(object):
+class LastPublished:
 
     @property
     def publishinfo(self):

@@ -5,7 +5,7 @@ import zeit.cms.application
 import zope.component
 
 
-class Base(object):
+class Base:
 
     def __call__(self):
         self.request.response.setHeader('Cache-Control', 'no-cache')

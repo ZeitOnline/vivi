@@ -12,7 +12,7 @@ Create a mock repository:
 >>> import zope.interface
 >>> import zope.location.interfaces
 >>> @zope.interface.implementer(zope.location.interfaces.ILocation)
-... class Repository(object):
+... class Repository:
 ...     __parent__ = getRootFolder()
 ...     __name__ = 'repo'
 ...
@@ -35,7 +35,7 @@ Create a simple content object:
 ...     zeit.cms.interfaces.ICMSContent,
 ...     zope.location.interfaces.ILocation,
 ...     zope.annotation.interfaces.IAttributeAnnotatable)
-... class Content(object):
+... class Content:
 ...     __parent__ = repository
 ...     __name__ = u'content'
 ...     uniqueId = 'http://xml.zeit.de/content'

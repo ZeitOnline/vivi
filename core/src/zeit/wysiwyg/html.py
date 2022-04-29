@@ -28,7 +28,7 @@ import zope.traversing.interfaces
 
 @zope.component.adapter(zope.interface.Interface)
 @zope.interface.implementer(zeit.wysiwyg.interfaces.IHTMLConverter)
-class HTMLConverter(object):
+class HTMLConverter:
     """General XML to HTML converter.
 
     This html converter doesn't operate on `context` and is registered for all
@@ -170,7 +170,7 @@ SKIP = object()
 @zope.component.adapter(
     zope.interface.Interface, zeit.wysiwyg.interfaces.IHTMLConverter)
 @zope.interface.implementer(zeit.wysiwyg.interfaces.IConversionStep)
-class ConversionStep(object):
+class ConversionStep:
     """Encapsulates one step of XML<-->HTML conversion.
 
     to_html() is called with each XML node matching xpath_xml, while
@@ -826,7 +826,7 @@ class InlineElementAppendParagraph(ConversionStep):
 
 
 @zope.interface.implementer(zeit.wysiwyg.interfaces.IHTMLContent)
-class HTMLContentBase(object):
+class HTMLContentBase:
     """Base class for html content."""
 
     def __init__(self, context):

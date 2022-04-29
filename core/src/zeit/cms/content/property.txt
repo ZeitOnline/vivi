@@ -164,7 +164,7 @@ not in the document, yet:
 ...     def getValues(self, context):
 ...         return ['one', 'two', 'three']
 ...
->>> class Content(object):
+>>> class Content:
 ...     xml = xml_tree
 ...     url = ObjectPathAttributeProperty('.a', 'href')
 ...     words = ObjectPathAttributeProperty(
@@ -282,7 +282,7 @@ Referencing a single resource
 Create a content class which holds the reference and will also be used to be
 referenced:
 
->>> class Content(object):
+>>> class Content:
 ...     res = zeit.cms.content.property.SingleResource('.res')
 ...     def __init__(self):
 ...         self.xml = lxml.objectify.XML('<foo/>')
@@ -342,7 +342,7 @@ True
 Some types support a special xml structure, like relateds. Register an adapter
 which provides IXMLReference for our content object:
 
->>> class Content(object):
+>>> class Content:
 ...     res = zeit.cms.content.property.SingleResource(
 ...         '.ref', xml_reference_name='related',
 ...         attributes=('foo', 'href', ))
@@ -427,7 +427,7 @@ SimpleMultiProperty
 The `SimpleMultiProperty` is used for lists of simple values.
 
 
->>> class Content(object):
+>>> class Content:
 ...     authors = zeit.cms.content.property.SimpleMultiProperty(
 ...         '.authors.author')
 ...     def __init__(self):

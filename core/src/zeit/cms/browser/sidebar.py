@@ -25,7 +25,7 @@ class PanelState(persistent.mapping.PersistentMapping):
 panelStateFactory = zope.annotation.factory(PanelState)
 
 
-class Panel(object):
+class Panel:
 
     def __call__(self, toggle_folding=None):
         if toggle_folding is not None:
@@ -50,7 +50,7 @@ class Panel(object):
         return zeit.cms.browser.interfaces.IPanelState(self.request.principal)
 
 
-class Sidebar(object):
+class Sidebar:
 
     @property
     def css_class(self):

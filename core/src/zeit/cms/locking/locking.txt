@@ -12,7 +12,7 @@ Mock a connector:
 
 >>> import zeit.connector.interfaces
 >>> import zeit.connector.resource
->>> class Connector(object):
+>>> class Connector:
 ...     who = None
 ...     until = None
 ...     mylock = True
@@ -45,7 +45,7 @@ Create a fake content object:
 
 >>> import zeit.cms.interfaces
 >>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-... class Content(object):
+... class Content:
 ...     uniqueId = 'foo'
 
 LockStorage

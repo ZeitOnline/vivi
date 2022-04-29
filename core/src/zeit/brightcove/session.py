@@ -17,7 +17,7 @@ _holder = threading.local()
 
 
 @zope.interface.implementer(zeit.brightcove.interfaces.ISession)
-class Session(object):
+class Session:
 
     def __init__(self):
         self.items = []
@@ -52,7 +52,7 @@ class Session(object):
 
 
 @zope.interface.implementer(transaction.interfaces.ISavepointDataManager)
-class APIDataManager(object):
+class APIDataManager:
     """Data manager for a transaction-less store, we try to run as the last 2PC
     participant and persist our changes in commit() (because we have no other
     choice), thus when we have an error, the other participants then can roll
@@ -94,7 +94,7 @@ class APIDataManager(object):
 
 
 @zope.interface.implementer(transaction.interfaces.IDataManagerSavepoint)
-class NoOpSavepoint(object):
+class NoOpSavepoint:
 
     def rollback(self):
         raise RuntimeError('Cannot rollback BC-API savepoints.')

@@ -32,7 +32,7 @@ timer_logger = logging.getLogger('zeit.workflow.timer')
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublish)
-class Publish(object):
+class Publish:
 
     def __init__(self, context):
         self.context = context
@@ -113,7 +113,7 @@ MODE_PUBLISH = 'publish'
 MODE_RETRACT = 'retract'
 
 
-class PublishRetractTask(object):
+class PublishRetractTask:
 
     mode = NotImplemented  # MODE_PUBLISH or MODE_RETRACT
 

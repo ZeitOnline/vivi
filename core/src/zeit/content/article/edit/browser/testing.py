@@ -31,7 +31,7 @@ class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
         return article
 
 
-class EditorHelper(object):
+class EditorHelper:
 
     editable_locator = '.block.type-p .editable'
 
@@ -111,7 +111,7 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase,
     window_height = 1000
 
 
-class RecipeListHelper(object):
+class RecipeListHelper:
 
     editable_locator = '.block.type-p .editable'
 

@@ -140,7 +140,7 @@ but not the textLengh property. Create such an object:
 
 >>> import lxml.objectify
 >>> import zope.security.interfaces
->>> class NoChangeTextLength(object):
+>>> class NoChangeTextLength:
 ...
 ...     xml = lxml.objectify.fromstring('<article><body/></article>')
 ...

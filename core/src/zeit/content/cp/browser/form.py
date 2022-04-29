@@ -77,7 +77,7 @@ class DisplayForm(FormBase,
     title = _("View centerpage metadata")
 
 
-class SEOCpForm(object):
+class SEOCpForm:
     form_fields = (
         zeit.seo.browser.form.SEOBaseForm.form_fields +
         zope.formlib.form.FormFields(

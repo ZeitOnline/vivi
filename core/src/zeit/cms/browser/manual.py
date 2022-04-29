@@ -31,7 +31,7 @@ class ILink(zope.interface.Interface):
 
 
 @zope.interface.implementer(ILink)
-class DummyLink(object):
+class DummyLink:
 
     manual_link = None
 
@@ -56,7 +56,7 @@ class LinkWidget(zope.formlib.widget.BrowserWidget):
         return terms.getTerm(self.key).title
 
 
-class FormMixin(object):
+class FormMixin:
 
     def __init__(self, context, request):
         super(FormMixin, self).__init__(context, request)

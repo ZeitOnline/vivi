@@ -3,7 +3,7 @@ import zeit.cms.testcontenttype.interfaces
 import zope.formlib.form
 
 
-class Base(object):
+class Base:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.testcontenttype.interfaces.IExampleContentType).omit('xml')

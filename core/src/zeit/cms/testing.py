@@ -705,7 +705,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     return test
 
 
-class RepositoryHelper(object):
+class RepositoryHelper:
 
     @property
     def repository(self):
@@ -921,7 +921,7 @@ def site(root):
 
 
 @zope.interface.implementer(zope.i18n.interfaces.IGlobalMessageCatalog)
-class TestCatalog(object):
+class TestCatalog:
 
     language = 'tt'
     messages = {}

@@ -325,7 +325,7 @@ class BiographyQuestions(
 
 
 @zope.interface.implementer(zeit.content.author.interfaces.IQuestion)
-class Question(object):
+class Question:
 
     def __init__(self, id, title, answer):
         self.id = id

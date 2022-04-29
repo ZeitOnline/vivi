@@ -17,7 +17,7 @@ class FolderAdd(zeit.cms.browser.form.AddForm):
     checkout = False
 
 
-class FolderEdit(object):
+class FolderEdit:
 
     title = _("Edit folder")
 

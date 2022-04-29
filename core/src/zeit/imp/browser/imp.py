@@ -9,7 +9,7 @@ import zope.app.pagetemplate
 import zope.cachedescriptors.property
 
 
-class NoMasterImageErrorView(object):
+class NoMasterImageErrorView:
 
     def __call__(self):
         transaction.doom()

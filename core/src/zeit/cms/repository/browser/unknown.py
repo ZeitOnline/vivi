@@ -4,7 +4,7 @@ import zeit.cms.interfaces
 import zope.component
 
 
-class View(object):
+class View:
 
     def get_excerpt(self):
         data = self.context.data.strip()
@@ -18,7 +18,7 @@ class View(object):
         return pprint.pformat(dict(properties))
 
 
-class Edit(object):
+class Edit:
 
     def __call__(self):
         context_url = zope.component.getMultiAdapter(
@@ -29,7 +29,7 @@ class Edit(object):
         return ''
 
 
-class Metadata(object):
+class Metadata:
 
     @property
     def dav_resource_type(self):
@@ -37,7 +37,7 @@ class Metadata(object):
             ('type', 'http://namespaces.zeit.de/CMS/meta'))
 
 
-class DragPane(object):
+class DragPane:
 
     @property
     def uniqueId(self):

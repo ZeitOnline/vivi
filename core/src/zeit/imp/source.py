@@ -4,7 +4,7 @@ import zope.interface
 
 
 @zope.interface.implementer(zeit.imp.interfaces.IPossibleScale)
-class PossibleScale(object):
+class PossibleScale:
     pass
 
 
@@ -27,7 +27,7 @@ class ScaleSource(zeit.cms.content.sources.XMLSource):
 
 
 @zope.interface.implementer(zeit.imp.interfaces.IColor)
-class Color(object):
+class Color:
     pass
 
 

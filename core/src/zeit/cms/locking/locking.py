@@ -14,7 +14,7 @@ import zope.interface
 
 
 @zope.interface.implementer(zope.app.locking.interfaces.ILockStorage)
-class LockStorage(object):
+class LockStorage:
 
     def getLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):

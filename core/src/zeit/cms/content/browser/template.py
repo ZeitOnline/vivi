@@ -14,7 +14,7 @@ import zope.interface
 import zope.publisher.interfaces.browser
 
 
-class Manager(object):
+class Manager:
 
     title = _("Templates")
 
@@ -48,7 +48,7 @@ class Listing(zeit.cms.browser.listing.Listing):
         return self.context.values()
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ITemplate).select('title', 'xml')
@@ -69,7 +69,7 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
     title = _("Edit template")
 
 
-class Properties(object):
+class Properties:
 
     title = _("Edit webdav properties")
 
@@ -129,7 +129,7 @@ def TemplateChooserSchema(source_name):
 @zope.component.adapter(zope.publisher.interfaces.browser.IBrowserPage)
 @zope.interface.implementer(
     zeit.cms.content.browser.interfaces.ITemplateWidgetSetup)
-class TemplateWidgetSetup(object):
+class TemplateWidgetSetup:
 
     def __init__(self, context):
         self.context = context

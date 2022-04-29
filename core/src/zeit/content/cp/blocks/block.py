@@ -20,7 +20,7 @@ def cms_content_iter(context):
     return iter([])
 
 
-class VisibleMixin(object):
+class VisibleMixin:
 
     visible = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'visible', zeit.content.cp.interfaces.IElement[
