@@ -20,7 +20,7 @@ import zeit.contentquery.interfaces
 class Empty:
 
     def render(self):
-        return u''
+        return ''
 
 
 class AutoSaveText(zeit.edit.browser.view.Action):

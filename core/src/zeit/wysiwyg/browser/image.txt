@@ -15,7 +15,7 @@ Initially the testcontent doesn't have an image assigned:
 >>> import json
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents))
-{u'images': []}
+{'images': []}
 
 After assigning an image group it contained images are returned:
 
@@ -35,6 +35,6 @@ After assigning an image group it contained images are returned:
 >>> browser.handleErrors = False
 >>> browser.reload()
 >>> pprint.pprint(json.loads(browser.contents))
-{u'images': [u'http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
-             u'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
-             u'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}
+{'images': ['http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
+            'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
+            'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}

@@ -32,7 +32,7 @@ Let's see what properties we've got:
 [('getlastmodified', 'DAV:'), ('type', 'http://namespaces.zeit.de/CMS/meta')]
 >>> import pprint
 >>> pprint.pprint(dict(properties))
-{('getlastmodified', 'DAV:'): u'...',
+{('getlastmodified', 'DAV:'): '...',
  ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
 
 
@@ -61,7 +61,7 @@ True
 >>> properties[('foo', 'test')] = 'bar'
 >>> pprint.pprint(dict(properties))
 {('foo', 'test'): 'bar',
- ('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
+ ('getlastmodified', 'DAV:'): 'Fri, 07 Mar 2008 12:47:16 GMT',
  ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testcontenttype'}
 
 

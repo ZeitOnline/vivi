@@ -49,9 +49,9 @@ class EditorHelper:
         s.waitForCssCount('css=.block.type-p', existing + 1)
         if contents:
             code = (
-                u"window.jQuery(window.jQuery('.block.type-p')[{0}])"
-                u".find('.editable')[0].innerHTML = '{1}';"
-            ).format(existing, contents.replace(u"'", u'\\"'))
+                "window.jQuery(window.jQuery('.block.type-p')[{0}])"
+                ".find('.editable')[0].innerHTML = '{1}';"
+            ).format(existing, contents.replace("'", '\\"'))
             self.selenium.runScript(code)
             self.mark_dirty()
 

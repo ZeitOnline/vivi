@@ -168,7 +168,7 @@ class MessageService(VGWortWebService):
         searchable = zope.index.text.interfaces.ISearchableText(content)
         text = self.create(
             'MessageText', lyric=False, shorttext=content.title[:100],
-            text=self.create('Text', plainText=u'\n'.join(
+            text=self.create('Text', plainText='\n'.join(
                 searchable.getSearchableText()
             ).encode('utf-8')))
 

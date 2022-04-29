@@ -22,8 +22,8 @@ class IContent(zeit.cms.interfaces.ICMSContent):
     IContent, zope.annotation.interfaces.IAttributeAnnotatable)
 class Content:
 
-    uniqueId = u'testcontent://'
-    __name__ = u'karlheinz'
+    uniqueId = 'testcontent://'
+    __name__ = 'karlheinz'
 
 
 @zope.component.adapter(IContent)

@@ -40,8 +40,8 @@ The gallery is now noted in the webdav properties of `content`:
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
 >>> import pprint
 >>> pprint.pprint(dict(properties))
-{('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): u'http://xml.zeit.de/gallery',
- ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
+{('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): 'http://xml.zeit.de/gallery',
+ ('date-last-modified', 'http://namespaces.zeit.de/CMS/document'): '...'}
  
 
 The browse location of a gallery reference depends on the adapted object and
@@ -57,7 +57,7 @@ yields the container the object is in:
 >>> loc
 <zeit.cms.repository.folder.Folder...>
 >>> loc.uniqueId
-u'http://xml.zeit.de/online/'
+'http://xml.zeit.de/online/'
 
 
 The gallery source is a utility:

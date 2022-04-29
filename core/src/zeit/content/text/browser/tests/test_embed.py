@@ -38,7 +38,7 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
     def test_edit_cmp_fields(self):
         embed = zeit.content.text.embed.Embed()
-        embed.text = u''
+        embed.text = ''
         self.repository['embed'] = embed
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/embed/@@checkout')

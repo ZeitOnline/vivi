@@ -820,7 +820,7 @@ class InlineElementAppendParagraph(ConversionStep):
     def to_html(self, node):
         index = node.getparent().index(node)
         # Note: between the ' ' there is a non-breaking space.
-        p = lxml.builder.E.p(u' ')
+        p = lxml.builder.E.p(' ')
         node.getparent().insert(index + 1, p)
         return node
 

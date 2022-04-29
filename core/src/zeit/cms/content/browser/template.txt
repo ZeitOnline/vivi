@@ -283,7 +283,7 @@ The source lists the available templates:
 [<zeit.cms.content.template.Template object at 0x...>]
 >>> template = list(source)[0]
 >>> template.title
-u'Oink template'
+'Oink template'
 
 Make sure the interface is provided:
 
@@ -302,7 +302,7 @@ We can get the titles by adapting the source:
 ...     zope.app.form.browser.interfaces.ITerms)
 >>> term = terms.getTerm(template)
 >>> term.title
-u'Oink template'
+'Oink template'
 
 
 

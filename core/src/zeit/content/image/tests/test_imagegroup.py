@@ -110,8 +110,8 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('/group/square', self.group.variant_url('square'))
 
     def test_variant_url_handles_non_ascii(self):
-        group = self.repository[u'groüp'] = self.group
-        self.assertEqual(u'/groüp/square', group.variant_url('square'))
+        group = self.repository['groüp'] = self.group
+        self.assertEqual('/groüp/square', group.variant_url('square'))
 
     def test_returns_image_for_variant_with_size(self):
         self.assertEqual(
@@ -232,7 +232,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_does_not_change_external_id_when_already_set(self):
         meta = zeit.content.image.interfaces.IImageMetadata(self.group)
-        meta.external_id = u'12345'
+        meta.external_id = '12345'
         self.group['6789.jpg'] = create_local_image('opernball.jpg')
         zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(
             self.traverse('6789.jpg')))
@@ -363,7 +363,7 @@ class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
     def test_external_id_matches_reuters_filenames(self):
         self.assertEqual('rtsu6hm', self.search('rtsu6hm.jpg'))
         self.assertEqual('RTSU6HM', self.search('RTSU6HM.jpg'))
-        self.assertEqual(u'rtsü6hm', self.search(u'rtsü6hm.jpg'))
+        self.assertEqual('rtsü6hm', self.search('rtsü6hm.jpg'))
         self.assertEqual('6', self.search('Kopie von rtsu6hm.jpg'))
         self.assertEqual(None, self.search('wartsnurab.jpg'))
 

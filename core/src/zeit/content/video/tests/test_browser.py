@@ -76,8 +76,8 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
     def test_push_to_social_media_is_done_on_publish(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = next(factory)
-        video.title = u'My video'
-        video.ressort = u'Deutschland'
+        video.title = 'My video'
+        video.ressort = 'Deutschland'
         video = next(factory)
         browser = self.browser
         browser.open('http://localhost/++skin++vivi/repository/video')
@@ -92,9 +92,9 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
         twitter = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='twitter')
         self.assertEqual(
-            u'See this video!', twitter.calls[0][0])
+            'See this video!', twitter.calls[0][0])
         self.assertIn(
-            u'http://www.zeit.de/video/my-video', twitter.calls[0][1])
+            'http://www.zeit.de/video/my-video', twitter.calls[0][1])
         params = twitter.calls[0][2]
         del params['message']
         self.assertEqual(

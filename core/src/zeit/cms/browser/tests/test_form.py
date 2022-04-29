@@ -51,13 +51,13 @@ class ApplyDefaultValuesTests(unittest.TestCase):
 
 class ITestSchema(zope.interface.Interface):
 
-    line = zope.schema.TextLine(title=u'text line')
+    line = zope.schema.TextLine(title='text line')
 
-    text = zope.schema.Text(title=u'text')
+    text = zope.schema.Text(title='text')
 
-    check = zope.schema.Bool(title=u'check')
+    check = zope.schema.Bool(title='check')
 
-    special = zope.schema.Text(title=u'special')
+    special = zope.schema.Text(title='special')
     special.setTaggedValue('placeholder', 'customised')
 
 

@@ -73,8 +73,8 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_creates_author_in_hdok_if_no_external_id(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
@@ -83,9 +83,9 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
 
     def test_honorar_id_present_is_left_alone(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
-        author.honorar_id = u'manual-id'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
+        author.honorar_id = 'manual-id'
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
@@ -96,8 +96,8 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['author'] = author
         pub = zeit.cms.workflow.interfaces.IPublish(self.repository['author'])
         pub.publish(background=False)

@@ -152,7 +152,7 @@ class AdvertisementTest(zeit.newsletter.testing.SeleniumTestCase):
         from zeit.newsletter.category import NewsletterCategory
         super(AdvertisementTest, self).setUp()
         category = NewsletterCategory()
-        category.ad_middle_title = u'Some ad'
+        category.ad_middle_title = 'Some ad'
         category.ad_middle_groups_above = 0
         category.ad_middle_image = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')

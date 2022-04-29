@@ -89,7 +89,7 @@ Let's get it from the repository:
 The fake entries represent urls which do not point to the CMS:
 >>> fake_entry = contents[2]
 >>> fake_entry.title
-u'Informationen gegen H\xfcftgold'
+'Informationen gegen H\xfcftgold'
 
 Insert a new object into the channel:
 
@@ -109,7 +109,7 @@ Insert a new object into the channel:
 Make sure a can access to old channels generally is possible:
 
 >>> import zeit.cms.testing
->>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
+>>> principal = zeit.cms.testing.create_interaction('zope.globalmgr')
 >>> import zope.security
 >>> zope.security.canAccess(channel, 'uniqueId')
 True

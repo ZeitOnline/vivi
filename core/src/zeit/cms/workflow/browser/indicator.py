@@ -20,13 +20,13 @@ class Published:
 
     def render(self):
         if self.status is None:
-            return u''
+            return ''
         status = self.status.published
         if status is None:
-            return u''
+            return ''
         title = self.messages[status]
         title = zope.i18n.translate(title, context=self.request)
-        return (u'<span class="publish-state %s" title="%s"></span>' % (
+        return ('<span class="publish-state %s" title="%s"></span>' % (
             status, title))
 
 

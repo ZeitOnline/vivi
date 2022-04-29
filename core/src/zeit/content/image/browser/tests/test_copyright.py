@@ -49,6 +49,6 @@ class TestCopyrights(zeit.content.image.testing.BrowserTestCase,
             'http://xml.zeit.de/imagegroup/new-hampshire-artikel.jpg')
         metadata = zeit.content.image.interfaces.IImageMetadata(image)
         self.assertEqual(
-            (u'gocept', u'dpa', None, 'http://www.gocept.com/', False),
+            ('gocept', 'dpa', None, 'http://www.gocept.com/', False),
             metadata.copyright
         )

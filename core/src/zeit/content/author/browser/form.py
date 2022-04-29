@@ -118,16 +118,16 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
     def _validate_folder_name(self, folder_name):
         # Get rid of umlauts
-        folder_name = folder_name.replace(u'Ä', 'Ae')
-        folder_name = folder_name.replace(u'ä', 'ae')
-        folder_name = folder_name.replace(u'Ü', 'Ue')
-        folder_name = folder_name.replace(u'ü', 'ue')
-        folder_name = folder_name.replace(u'Ö', 'Oe')
-        folder_name = folder_name.replace(u'ö', 'oe')
+        folder_name = folder_name.replace('Ä', 'Ae')
+        folder_name = folder_name.replace('ä', 'ae')
+        folder_name = folder_name.replace('Ü', 'Ue')
+        folder_name = folder_name.replace('ü', 'ue')
+        folder_name = folder_name.replace('Ö', 'Oe')
+        folder_name = folder_name.replace('ö', 'oe')
 
         # Get rid of other annoying characters
-        folder_name = folder_name.replace(u'ß', 'ss')
-        folder_name = folder_name.replace(u' ', '-')
+        folder_name = folder_name.replace('ß', 'ss')
+        folder_name = folder_name.replace(' ', '-')
         r = re.compile('[^a-z-_]', re.IGNORECASE)
         folder_name = r.sub('', folder_name)
 
@@ -180,7 +180,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         folder = zeit.cms.content.add.find_or_create_folder(*path)
 
         author_folder = zeit.cms.repository.folder.Folder()
-        folder_name = u'%s_%s' % (object.firstname, object.lastname)
+        folder_name = '%s_%s' % (object.firstname, object.lastname)
         folder_name = self._validate_folder_name(folder_name)
         chooser = zope.container.interfaces.INameChooser(folder)
         name = chooser.chooseName(folder_name, author_folder)

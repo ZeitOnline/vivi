@@ -42,18 +42,18 @@ class AllowedMixin(zeit.cms.content.sources.AllowedBase):
 class ITeaserBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""
 
-    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
-    title = zope.schema.TextLine(title=u'Human readable title.')
+    id = zope.schema.ASCIILine(title='Id used in xml to identify layout')
+    title = zope.schema.TextLine(title='Human readable title.')
     image_pattern = zope.schema.ASCIILine(
-        title=u'A match for the image to use in this layout.')
+        title='A match for the image to use in this layout.')
     areas = zope.schema.Set(
-        title=u'Kinds of areas where this layout is allowed')
+        title='Kinds of areas where this layout is allowed')
     default_in_areas = zope.schema.Set(
-        title=u'Kinds of areas where this layout is the default')
+        title='Kinds of areas where this layout is the default')
     types = zope.schema.Set(
-        title=u'Types of CP where this layout is allowed')
+        title='Types of CP where this layout is allowed')
     is_leader = zope.schema.Bool(
-        title=u'When auto-filling with teasers, require lead_candiate?')
+        title='When auto-filling with teasers, require lead_candiate?')
 
     def is_default(block):
         """True if this layout is the default for the given block's area."""

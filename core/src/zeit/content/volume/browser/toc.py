@@ -179,7 +179,7 @@ class Toc(zeit.cms.browser.view.Base):
     def _normalize_page(self, toc_entry):
         """Transform page to correct integer"""
         page_entries = [x.lstrip("0") for x in re.findall(
-            r'\d+', toc_entry.get('page', u''))]
+            r'\d+', toc_entry.get('page', ''))]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
@@ -188,9 +188,9 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_teaser(self, toc_entry):
         """Delete linebreaks and a too much whitespace"""
-        teaser = toc_entry.get('teaser', u'')
-        toc_entry['teaser'] = teaser.replace('\n', u' ')
-        toc_entry['teaser'] = re.sub(r'\s\s+', u' ', teaser)
+        teaser = toc_entry.get('teaser', '')
+        toc_entry['teaser'] = teaser.replace('\n', ' ')
+        toc_entry['teaser'] = re.sub(r'\s\s+', ' ', teaser)
 
     def _normalize_access_element(self, toc_entry):
         if not toc_entry['access']:
@@ -248,7 +248,7 @@ class Toc(zeit.cms.browser.view.Base):
         :param toc_data: The Toc data as ordered dict.
         :return: unicode - csv content
         """
-        file_content = u''
+        file_content = ''
         out = StringIO()
         try:
             writer = csv.writer(out, delimiter=self.CSV_DELIMITER)

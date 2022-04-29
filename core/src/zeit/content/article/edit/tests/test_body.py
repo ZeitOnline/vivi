@@ -87,7 +87,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             ['p', 'p'],
             [child.tag for child in body.xml.division.iterchildren()])
         self.assertEqual(
-            [u'I have no division', u'Only paras'],
+            ['I have no division', 'Only paras'],
             [six.text_type(child) for child
              in body.xml.division.iterchildren()])
 
@@ -104,7 +104,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
     def test_nested_elements_should_be_ignored(self):
         body = self.get_body(
             '<division><p>I have <p>another para</p> in me</p></division>')
-        self.assertEqual([u'id-2'], body.keys())
+        self.assertEqual(['id-2'], body.keys())
 
     def test_adding_division_should_add_on_toplevel(self):
         body = self.get_body('<division/>')

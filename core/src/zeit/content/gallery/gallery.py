@@ -21,7 +21,7 @@ import zope.security.proxy
 
 # A gallery used to be a center page, that's why we initialize it with such a
 # template.
-GALLERY_TEMPLATE = u"""\
+GALLERY_TEMPLATE = """\
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     <head/>
     <body>
@@ -241,7 +241,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         image_sources = self._entries_container.xpath('block/image/@src')
         unique_id = None
         for path in image_sources:
-            if path.startswith(u'/cms/work/'):
+            if path.startswith('/cms/work/'):
                 unique_id = zeit.cms.interfaces.ID_NAMESPACE + path[10:]
             elif path.startswith(zeit.cms.interfaces.ID_NAMESPACE):
                 unique_id = path

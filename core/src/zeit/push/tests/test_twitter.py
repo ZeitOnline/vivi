@@ -34,14 +34,14 @@ class TwitterTest(zeit.push.testing.TestCase):
         twitter = zeit.push.twitter.Connection(
             self.api_key, self.api_secret)
         twitter.send(
-            u'zeit.push.tests.ümläut.twitter %s' % self.nugget,
+            'zeit.push.tests.ümläut.twitter %s' % self.nugget,
             'http://example.com',
             account='twitter-test')
 
         for status in self.api.home_timeline():
             if self.nugget in status.text:
                 self.assertStartsWith(
-                    u'zeit.push.tests.ümläut.twitter %s' % self.nugget,
+                    'zeit.push.tests.ümläut.twitter %s' % self.nugget,
                     status.text)
                 break
         else:

@@ -110,8 +110,8 @@ Checking in requires the article to be valid:
 ...     with zeit.cms.testing.interaction():
 ...         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
 ...         article = list(wc.values())[0]
-...         article.title = u'Title'
-...         article.ressort = u'Deutschland'
+...         article.title = 'Title'
+...         article.ressort = 'Deutschland'
 ...         article.keywords = (
 ...             wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)
 ...         IAutomaticallyRenameable(article).rename_to = 'asdf'

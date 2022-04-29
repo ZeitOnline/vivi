@@ -36,16 +36,16 @@ class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_liveblog_should_be_set(self):
         liveblog = self.get_liveblog()
-        liveblog.blog_id = u'290'
+        liveblog.blog_id = '290'
         liveblog.invalid_attribute = 'this should not be set'
-        self.assertEqual(u'290', liveblog.xml.xpath('.')[0].get('blogID'))
+        self.assertEqual('290', liveblog.xml.xpath('.')[0].get('blogID'))
         self.assertIsNone(liveblog.xml.xpath('.')[0].get('invalid_attribute'))
 
     def test_liveblog_version_should_be_set(self):
         liveblog = self.get_liveblog()
         self.assertIsNone(liveblog.xml.xpath('.')[0].get('version'))
-        liveblog.version = u'3'
-        self.assertEqual(u'3', liveblog.xml.xpath('.')[0].get('version'))
+        liveblog.version = '3'
+        self.assertEqual('3', liveblog.xml.xpath('.')[0].get('version'))
 
     def test_liveblog_collapse_preceding_content_should_be_set(self):
         liveblog = self.get_liveblog()

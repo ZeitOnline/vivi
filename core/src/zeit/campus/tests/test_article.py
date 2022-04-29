@@ -17,8 +17,8 @@ class TopicTest(zeit.campus.testing.FunctionalTestCase):
         refcp = self.repository['online']['2007']['01']['index']
         tplink = zeit.campus.interfaces.ITopic(content)
         tplink.page = refcp
-        tplink.label = u'Moep'
+        tplink.label = 'Moep'
         assert len(tplink.xml.xpath((
             '//head/topic['
             '@href="http://xml.zeit.de/online/2007/01/index"]'))) == 1
-        assert tplink.xml.xpath('//head/topic/label')[0] == u'Moep'
+        assert tplink.xml.xpath('//head/topic/label')[0] == 'Moep'

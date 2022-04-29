@@ -26,7 +26,7 @@ KeyError:
 >>> cache.getData('some-id', properties)
 Traceback (most recent call last):
     ...
-KeyError: u"Object 'some-id' is not cached."
+KeyError: "Object 'some-id' is not cached."
 
 
 Set some data. `setData` returns either a StringIO or an open file handle. What
@@ -291,11 +291,11 @@ Different ETAGS:
 >>> c_1.getData('id', {('getetag', 'DAV:'): 'etag1'})
 Traceback (most recent call last):
     ...
-KeyError: u"Object 'id' is not cached."
+KeyError: "Object 'id' is not cached."
 >>> c_2.getData('id', {('getetag', 'DAV:'): 'etag2'})
 Traceback (most recent call last):
     ...
-KeyError: u"Object 'id' is not cached."
+KeyError: "Object 'id' is not cached."
 
 The same ETAG also doesn't generate a conflict:
 

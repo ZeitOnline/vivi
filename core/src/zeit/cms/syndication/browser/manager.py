@@ -89,7 +89,7 @@ class Manager(zeit.cms.browser.view.Base):
 
         return (
             self.select_column,
-            zeit.cms.browser.listing.LockedColumn(u'', name='locked'),
+            zeit.cms.browser.listing.LockedColumn('', name='locked'),
             zc.table.column.GetterColumn(
                 _('Title'),
                 lambda t, c: t.title),

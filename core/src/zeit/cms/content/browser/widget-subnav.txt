@@ -16,9 +16,9 @@ Get the json view:
 ...     (getRootFolder(), request), name='subnavigationupdater.json')
 
 
->>> u'Deutschland' in updater.parent_source
+>>> 'Deutschland' in updater.parent_source
 True
->>> dt_term = updater.parent_terms.getTerm(u'Deutschland')
+>>> dt_term = updater.parent_terms.getTerm('Deutschland')
 >>> updater(parent_token=dt_term.token)
 '[["Datenschutz", "3da775df8d065507c482a20bf7a93427"],
   ["Integration", "1115b855bb2a508bc2ca0609cc2d0f65"],

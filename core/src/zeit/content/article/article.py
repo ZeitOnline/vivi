@@ -224,7 +224,7 @@ def disable_is_amp_if_access_is_restricted(article, event):
     else:
         return  # skip event handler if `access` was not changed
 
-    if article.access and article.access != u'free':
+    if article.access and article.access != 'free':
         article.is_amp = False
 
 
@@ -382,7 +382,7 @@ def ensure_block_ids(context, event):
     body.ensure_division()
 
 
-DOUBLE_QUOTE_CHARACTERS = re.compile(u'[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
+DOUBLE_QUOTE_CHARACTERS = re.compile('[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
 
 
 @grok.subscribe(
@@ -403,9 +403,9 @@ def normalize_quotation_marks(context, event):
 
 def normalize_quotes(node):
     if node.text:
-        node.text = DOUBLE_QUOTE_CHARACTERS.sub(u'"', node.text)
+        node.text = DOUBLE_QUOTE_CHARACTERS.sub('"', node.text)
     if node.tail:
-        node.tail = DOUBLE_QUOTE_CHARACTERS.sub(u'"', node.tail)
+        node.tail = DOUBLE_QUOTE_CHARACTERS.sub('"', node.tail)
     for child in node.iterchildren():
         normalize_quotes(child)
     return node

@@ -6,18 +6,18 @@ set of characters:
 
 >>> import zeit.cms.interfaces
 >>> field = zeit.cms.interfaces.ICMSContent['__name__']
->>> field.validate(u'ABC')
->>> field.validate(u'abc')
->>> field.validate(u'ab99')
->>> field.validate(u'bl:')
+>>> field.validate('ABC')
+>>> field.validate('abc')
+>>> field.validate('ab99')
+>>> field.validate('bl:')
 Traceback (most recent call last):
     ...
 InvalidName: bl:
->>> field.validate(u'bl\xfc')  #doctest: +IGNORE_EXCEPTION_DETAIL
+>>> field.validate('bl\xfc')  #doctest: +IGNORE_EXCEPTION_DETAIL
 Traceback (most recent call last):
     ...
 InvalidName: <unprintable instance object>
->>> field.validate(u'bl/')
+>>> field.validate('bl/')
 Traceback (most recent call last):
     ...
 InvalidName: bl/

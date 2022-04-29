@@ -191,9 +191,9 @@ class CommonMetadata(Converter):
     def __call__(self):
         section = None
         if self.context.ressort:
-            section = u'/' + self.context.ressort
+            section = '/' + self.context.ressort
             if self.context.sub_ressort:
-                section += u'/' + self.context.sub_ressort
+                section += '/' + self.context.sub_ressort
         result = {
             'title': self.context.title,
             'teaser': self.context.teaserText or self.context.title,
@@ -201,7 +201,7 @@ class CommonMetadata(Converter):
             # but are used by TMS UI (for display and filtering).
             'supertitle': self.context.supertitle,
             'section': section,
-            'author': u', '.join(
+            'author': ', '.join(
                 [x.target.display_name for x in self.context.authorships] or
                 [x for x in self.context.authors if x])
         }
@@ -390,7 +390,7 @@ class Image(Converter):
     grok.name(interface.__name__)
 
     def __new__(cls, context):
-        if u'/news/' in context.uniqueId:
+        if '/news/' in context.uniqueId:
             # skip zeit.newsimport images. Unfortunately, image(groups) have no
             # ressort or product-id with which we could filter this.
             return None

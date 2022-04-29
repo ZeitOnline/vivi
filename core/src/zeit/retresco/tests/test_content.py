@@ -37,8 +37,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['shake'] = author
         with checked_out(article) as co:
             co.keywords = (zeit.cms.tagging.tag.Tag('Berlin', 'location'),)
@@ -106,8 +106,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_IImages_work_with_TMSAuthor(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['shake'] = author
         author = self.repository['shake']
 
@@ -143,8 +143,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_author_finds_its_properties(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['shake'] = author
         author = self.repository['shake']
         data = zeit.retresco.interfaces.ITMSRepresentation(author)()
@@ -155,7 +155,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_link_finds_its_properties(self):
         link = zeit.content.link.link.Link()
-        link.url = u'http://example.com/'
+        link.url = 'http://example.com/'
         self.repository['link'] = link
         link = self.repository['link']
         data = zeit.retresco.interfaces.ITMSRepresentation(link)()
@@ -168,7 +168,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         volume = zeit.content.volume.volume.Volume()
         volume.year = 2018
         volume.volume = 2
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         volume.set_cover('portrait', 'ZEI', self.repository['testcontent'])
         self.repository['volume'] = volume
         volume = self.repository['volume']
@@ -180,7 +180,7 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_blogpost_is_treated_as_link(self):
         link = zeit.content.link.link.Link()
-        link.url = u'http://example.com/'
+        link.url = 'http://example.com/'
         self.repository['link'] = link
         link = self.repository['link']
         data = zeit.retresco.interfaces.ITMSRepresentation(link)()

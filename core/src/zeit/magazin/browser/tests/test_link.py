@@ -31,7 +31,7 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
     def setUp(self):
         super(ZMOFacebookFields, self).setUp()
         link = zeit.content.link.link.Link()
-        link.ressort = u'Leben'
+        link.ressort = 'Leben'
         link.teaserTitle = 'teaser'
         link.year = 2010
         link.url = 'http://example.com'

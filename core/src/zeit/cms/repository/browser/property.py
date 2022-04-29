@@ -14,10 +14,10 @@ class GetterColumn(zc.table.column.GetterColumn):
 class MetadataColumn(GetterColumn):
 
     def __init__(self):
-        super(MetadataColumn, self).__init__(title=u'')
+        super(MetadataColumn, self).__init__(title='')
 
     def cell_formatter(self, value, item, formatter):
-        return u'<span class="SearchableText">%s</span>' % u' '.join(
+        return '<span class="SearchableText">%s</span>' % ' '.join(
             map(six.text_type, [item[0][0], item[0][1], item[1]]))
 
 

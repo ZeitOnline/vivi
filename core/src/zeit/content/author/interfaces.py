@@ -13,7 +13,7 @@ import zope.schema
 
 class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
-    values = (u'Print', u'Online', u'Reader', u'Agentur')
+    values = ('Print', 'Online', 'Reader', 'Agentur')
 
 
 class InvalidCode(zope.schema.ValidationError):
@@ -61,14 +61,14 @@ class IAuthor(zope.interface.Interface,
         title=_('Honorar ID'), required=False)
 
     display_name = zope.schema.TextLine(
-        title=u'The computed display name. Default is "firstname lastname",'
-              u' a user entered value takes precedence.',
+        title='The computed display name. Default is "firstname lastname",'
+              ' a user entered value takes precedence.',
         required=False)
 
     entered_display_name = zope.schema.TextLine(
         title=_('Display name'),
         required=False,
-        description=_(u"Default: 'Firstname Lastname'"))
+        description=_("Default: 'Firstname Lastname'"))
 
     initials = zope.schema.TextLine(
         title=_('Initials'), required=False)
@@ -80,32 +80,32 @@ class IAuthor(zope.interface.Interface,
         title=_('SSO-Id'), required=False, min=10, max=9999999)
 
     sso_connect = zope.schema.Bool(
-        title=_(u'Connect with SSO-Account'),
+        title=_('Connect with SSO-Account'),
         default=True)
 
     status = zope.schema.Choice(
-        title=_(u'Redaktionszugehörigkeit'),
+        title=_('Redaktionszugehörigkeit'),
         source=StatusSource(),
         required=False)
 
     external = zope.schema.Bool(
-        title=_(u'External?'))
+        title=_('External?'))
 
     is_author = zope.schema.Bool(
-        title=_(u'is author'),
+        title=_('is author'),
         default=True)
 
     is_cook = zope.schema.Bool(
-        title=_(u'is cook'))
+        title=_('is cook'))
 
     enable_followpush = zope.schema.Bool(
-        title=_(u'Enable followpush?'))
+        title=_('Enable followpush?'))
 
     enable_feedback = zope.schema.Bool(
-        title=_(u'Enable feedback?'), default=False)
+        title=_('Enable feedback?'), default=False)
 
     show_letterbox_link = zope.schema.Bool(
-        title=_(u'Link letterbox'), default=False)
+        title=_('Link letterbox'), default=False)
 
     biography = zope.schema.Text(
         title=_('Short Biography'), required=False)

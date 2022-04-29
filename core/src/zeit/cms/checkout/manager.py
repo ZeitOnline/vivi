@@ -142,9 +142,9 @@ class CheckoutManager:
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
                     self.context, workingcopy, self.principal, publishing))
         if ignore_conflicts:
-            adapter_name = u'non-conflicting'
+            adapter_name = 'non-conflicting'
         else:
-            adapter_name = u''
+            adapter_name = ''
         added = zope.component.getAdapter(
             self.context,
             zeit.cms.checkout.interfaces.IRepositoryContent,

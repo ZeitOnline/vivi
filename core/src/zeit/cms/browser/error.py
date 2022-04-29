@@ -83,7 +83,7 @@ def getFormattedException(info):
         if not line.endswith('\n'):
             line += '\n'
         lines.append(line)
-    return u''.join(lines)
+    return ''.join(lines)
 
 
 class ExceptionFormatter(

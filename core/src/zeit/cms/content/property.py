@@ -91,7 +91,7 @@ class Structure(ObjectPathProperty):
     """Structure identified by object path."""
 
     remove_namespaces = lxml.etree.XSLT(lxml.etree.XML(
-        u"""\
+        """\
         <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
          <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -121,13 +121,13 @@ class Structure(ObjectPathProperty):
         for child in node.iterchildren():
             lxml.objectify.deannotate(child)
             result.append(lxml.etree.tostring(child, encoding=six.text_type))
-        return u''.join(result)
+        return ''.join(result)
 
     def __set__(self, instance, value):
         if self.field and value is self.field.missing_value:
             value = None
         else:
-            value = lxml.objectify.fromstring(u'<xml>%s</xml>' % value)
+            value = lxml.objectify.fromstring('<xml>%s</xml>' % value)
         self.path.setattr(instance.xml, value)
 
 

@@ -51,7 +51,7 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
         else:
             content = self.context.default
         if not content:
-            return u''
+            return ''
         return pygments.highlight(
             content, pygments.lexers.XmlLexer(),
             pygments.formatters.HtmlFormatter(cssclass='pygments'))

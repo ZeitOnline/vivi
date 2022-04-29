@@ -24,10 +24,10 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
             {'Politik': [{'page': '1',
                           'title': 'title',
                           'teaser': 'tease',
-                          'access': u'frei verfügbar',
+                          'access': 'frei verfügbar',
                           'authors': 'Helmut Schmidt',
-                          'volume': u'1',
-                          'year': u'2015',
+                          'volume': '1',
+                          'year': '2015',
                           'supertitle': 'Super',
                           'article_id': '1234567'
                           }]
@@ -36,7 +36,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         self.toc_data['Anderer'] = OrderedDict(
             {'Dossier': [
                 {'page': '1',
-                 'access': u'frei verfügbar',
+                 'access': 'frei verfügbar',
                  'authors': 'Helmut Kohl',
                  'title': 'title',
                  'teaser': 'tease',
@@ -46,7 +46,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
                  'article_id': '0123456'
                  },
                 {'page': '3',
-                 'access': u'frei verfügbar',
+                 'access': 'frei verfügbar',
                  'authors': 'Helmut Schmidt, Helmut Kohl',
                  'title': 'title2',
                  'teaser': 'tease',
@@ -60,7 +60,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
         author.firstname = 'Helmut'
         author.lastname = 'Schmidt'
         self.repository['author'] = author
-        self.article_xml_template = u"""
+        self.article_xml_template = """
             <article>
                 <head>
                     <attribute ns="http://namespaces.zeit.de/CMS/document"
@@ -146,7 +146,7 @@ class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         self.article_title = 'Ein Test Titel'
         self.ressort_names = ['dossier', 'politik']
         self.article_page = 1

@@ -17,7 +17,7 @@ class JSONLog(zeit.cms.browser.view.JSON):
     def json(self):
         decoded = json.loads(self.request.bodyStream.read(
             int(self.request['CONTENT_LENGTH'])))
-        message = u'\n'.join(str(x) for x in decoded['message'])
+        message = '\n'.join(str(x) for x in decoded['message'])
 
         # XXX Ignore errors triggered by Firefox bug where a
         # mousemove(target=#newtab-vertical-margin) event, which actually

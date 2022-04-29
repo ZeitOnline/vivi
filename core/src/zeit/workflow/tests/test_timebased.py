@@ -266,13 +266,13 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
             return TimeBasedWorkflow.format_datetime(dt)
 
         self.assertEqual([
-            u'Urgent: yes',
-            u'Published',
-            u'To retract on {} (job #{})'.format(
+            'Urgent: yes',
+            'Published',
+            'To retract on {} (job #{})'.format(
                 berlin(retract_on), cancel_retract_job_id),
-            u'Scheduled retract cancelled (job #{}).'.format(
+            'Scheduled retract cancelled (job #{}).'.format(
                 cancel_retract_job_id),
-            u'To retract on {} (job #{})'.format(
+            'To retract on {} (job #{})'.format(
                 berlin(new_retract_on), self.workflow.retract_job_id),
         ], log_entries)
 

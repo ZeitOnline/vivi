@@ -378,14 +378,14 @@ included. Setup an article with ICommonMetadata:
 
 >>> from zeit.cms.content.interfaces import ICommonMetadata
 >>> art2 = Article('art2')
->>> art2.supertitle = u'Frankreich'
->>> art2.teaserSupertitle = u'Frankreich'
->>> art2.teaserTitle = u'Keine Sieger'
->>> art2.teaserText = u'In Frankreich wird massiv gestreikt. Doch den'
->>> art2.byline = u'Von Alain-Xavier Wurst'
+>>> art2.supertitle = 'Frankreich'
+>>> art2.teaserSupertitle = 'Frankreich'
+>>> art2.teaserTitle = 'Keine Sieger'
+>>> art2.teaserText = 'In Frankreich wird massiv gestreikt. Doch den'
+>>> art2.byline = 'Von Alain-Xavier Wurst'
 >>> art2.year = 2007
 >>> art2.volume = 4
->>> art2.ressort = u'International'
+>>> art2.ressort = 'International'
 >>> art2.serie = ICommonMetadata['serie'].source(None).find('Autotest')
 
 Provide the interface:

@@ -145,7 +145,7 @@ class ImageGroupBase:
             image = transform.create_variant_image(variant, size, fill, format)
             image.__name__ = url or variant.name
             image.__parent__ = self
-            image.uniqueId = u'%s%s' % (self.uniqueId, image.__name__)
+            image.uniqueId = '%s%s' % (self.uniqueId, image.__name__)
             image.variant_source = source.__name__
 
         return image
@@ -154,17 +154,17 @@ class ImageGroupBase:
                     fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
         path = six.moves.urllib.parse.urlparse(self.uniqueId).path
-        if path.endswith(u'/'):
+        if path.endswith('/'):
             path = path[:-1]
         if thumbnail:
-            name = u'%s/%s' % (Thumbnails.NAME, name)
+            name = '%s/%s' % (Thumbnails.NAME, name)
         if width is None or height is None:
-            url = u'{path}/{name}'.format(path=path, name=name)
+            url = '{path}/{name}'.format(path=path, name=name)
         else:
-            url = u'{path}/{name}__{width}x{height}'.format(
+            url = '{path}/{name}__{width}x{height}'.format(
                 path=path, name=name, width=width, height=height)
         if fill_color not in [None, 'None']:
-            url += u'__{fill}'.format(fill=fill_color)
+            url += '__{fill}'.format(fill=fill_color)
         return url
 
     @classmethod
@@ -526,7 +526,7 @@ def guess_external_id(context, event):
     if meta.external_id:
         return
     filename = context.__name__
-    if filename.lower().startswith(u'rts'):  # Reuters
+    if filename.lower().startswith('rts'):  # Reuters
         meta.external_id = os.path.splitext(filename)[0]
     else:  # Getty, dpa
         match = EXTERNAL_ID_PATTERN.search(filename)

@@ -10,7 +10,7 @@ class TestLocationSource(unittest.TestCase,
 
     def test_it_validates_each_value(self):
         from ..source import locationSource
-        choice = zope.schema.Choice(title=u'title', source=locationSource)
+        choice = zope.schema.Choice(title='title', source=locationSource)
         choice = choice.bind(Mock())
         with self.assertNothingRaised():
-            choice.validate(u'Paris')
+            choice.validate('Paris')

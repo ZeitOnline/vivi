@@ -70,8 +70,8 @@ During adaptaion the Workingcopy object was automatically be added to the
 location:
 
 >>> print(list(location.keys()))
-[u'hans']
->>> location[u'hans'] is workingcopy
+['hans']
+>>> location['hans'] is workingcopy
 True
 
 
@@ -89,7 +89,7 @@ Getting the Workingcopy of the currently logged in user is done by the
 workingcopy:
 
 >>> import zeit.cms.testing
->>> principal = zeit.cms.testing.create_interaction(u'kurt')
+>>> principal = zeit.cms.testing.create_interaction('kurt')
 
 >>> workingcopy = location.getWorkingcopy()
 Granting zeit.EditContent to kurt
@@ -97,9 +97,9 @@ Assigning role zeit.Owner to kurt
 >>> workingcopy
 <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> workingcopy.__name__
-u'kurt'
+'kurt'
 >>> print(sorted(location.keys()))
-[u'hans', u'kurt']
+['hans', 'kurt']
 >>> zope.security.management.endInteraction()
 
 
@@ -110,10 +110,10 @@ Only content which provides ILocalContent can be added to the workingcopy:
 
 >>> from zeit.cms.workingcopy.interfaces import ILocalContent
 >>> from zeit.cms.repository.unknown import UnknownResource
->>> content = UnknownResource(u'oink')
+>>> content = UnknownResource('oink')
 >>> ILocalContent.providedBy(content)
 False
->>> workingcopy[u'mycontent'] = content
+>>> workingcopy['mycontent'] = content
 Traceback (most recent call last):
     ...
 ValueError: Must provide ILocalContent
@@ -121,7 +121,7 @@ ValueError: Must provide ILocalContent
 After marking as ILocalContent it can be added:
 
 >>> zope.interface.directlyProvides(content, ILocalContent)
->>> workingcopy[u'mycontent'] = content
+>>> workingcopy['mycontent'] = content
 >>> ILocalContent.providedBy(content)
 True
 
@@ -132,36 +132,36 @@ When things are added to the workingcopy they are returned in reverse order.
 Currently there is only one object in the database:
 
 >>> list(workingcopy)
-[u'mycontent']
+['mycontent']
 
 Let's add another content:
 
->>> content = UnknownResource(u'oink')
+>>> content = UnknownResource('oink')
 >>> zope.interface.directlyProvides(content, ILocalContent)
->>> workingcopy[u'other-content'] = content
+>>> workingcopy['other-content'] = content
 >>> list(workingcopy)
-[u'other-content', u'mycontent']
+['other-content', 'mycontent']
 >>> [v.__name__ for v in workingcopy.values()]
-[u'other-content', u'mycontent']
+['other-content', 'mycontent']
 
 Add another content:
 
->>> content = UnknownResource(u'oink')
+>>> content = UnknownResource('oink')
 >>> zope.interface.directlyProvides(content, ILocalContent)
->>> workingcopy[u'just-another-content'] = content
+>>> workingcopy['just-another-content'] = content
 >>> list(workingcopy)
-[u'just-another-content', u'other-content', u'mycontent']
+['just-another-content', 'other-content', 'mycontent']
 >>> [v.__name__ for v in workingcopy.values()]
-[u'just-another-content', u'other-content', u'mycontent']
+['just-another-content', 'other-content', 'mycontent']
 
 
 Remove `other-content`:
 
->>> del workingcopy[u'other-content']
+>>> del workingcopy['other-content']
 >>> list(workingcopy)
-[u'just-another-content', u'mycontent']
+['just-another-content', 'mycontent']
 >>> [v.__name__ for v in workingcopy.values()]
-[u'just-another-content', u'mycontent']
+['just-another-content', 'mycontent']
 
 
 Cleanup

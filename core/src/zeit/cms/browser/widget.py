@@ -36,7 +36,7 @@ import zope.traversing.browser.interfaces
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
     """DEPRECATED, superceeded by DropObjectWidget"""
 
-    _missing = u""
+    _missing = ''
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'object-reference-widget.pt')
 
@@ -502,7 +502,7 @@ DATETIME_WIDGET_ADDITIONAL = """\
             '%(field)s', 'onchange', {target: $('%(field)s')});
         " />
 """
-DATETIME_WIDGET_INFTY = u"""\
+DATETIME_WIDGET_INFTY = """\
 <input type="button" value="∞" class="infinity"
     onclick="javascript:$('%(field)s').value = '';
         $('%(field)s').focus();

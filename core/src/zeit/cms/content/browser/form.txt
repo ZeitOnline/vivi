@@ -13,6 +13,6 @@ The form automatically assigns year and volume from the global settings:
 >>> form.factory = object
 >>> form.setUpWidgets()
 >>> form.widgets['year']()
-u'<input ... id="form.year" ... value="2008" ... />'
+'<input ... id="form.year" ... value="2008" ... />'
 >>> form.widgets['volume']()
-u'<input ... id="form.volume" ... value="26" ... />'
+'<input ... id="form.volume" ... value="26" ... />'

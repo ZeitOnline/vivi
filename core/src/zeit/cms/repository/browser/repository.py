@@ -174,4 +174,4 @@ class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
         self.request.response.setHeader(
             'Cache-Control', 'no-cache')
         self.redirect(self.url(obj, view), status=301)
-        return u''
+        return ''

@@ -52,7 +52,7 @@ The generic title can be set:
 
 >>> mr.title is None
 True
->>> mr.title = u'a title'
+>>> mr.title = 'a title'
 >>> print(mr.title)
 a title
 
@@ -86,30 +86,30 @@ The source is contextual.
 >>> source = zeit.content.cp.source.CPExtraSource()
 >>> lead_items = source(cpextra)
 >>> pprint.pprint(list(lead_items))
-[u'mostread',
- u'mostcommented',
- u'weather',
- u'stocks',
- u'ressort_news',
- u'live_search',
- u'print_archive',
- u'blindblock',
- u'homepage_news',
- u'dpa-news',
- u'authors-register',
- u'linkatory',
- u'homepage_news_pics',
- u'recensionsearch',
- u'solr-month',
- u'dwds-ticker',
- u'sportextra']
+['mostread',
+ 'mostcommented',
+ 'weather',
+ 'stocks',
+ 'ressort_news',
+ 'live_search',
+ 'print_archive',
+ 'blindblock',
+ 'homepage_news',
+ 'dpa-news',
+ 'authors-register',
+ 'linkatory',
+ 'homepage_news_pics',
+ 'recensionsearch',
+ 'solr-month',
+ 'dwds-ticker',
+ 'sportextra']
 
 There are more possible extras in the informatives:
 
 >>> pprint.pprint(list(source(mc)))
-[u'mostread',
- u'mostcommented',
- u'weather',
+['mostread',
+ 'mostcommented',
+ 'weather',
  ...
 
 

@@ -47,16 +47,16 @@ Let's get a content object from the repository and add it:
 
 Just adding doesn't work:
 
->>> clipboard[u'myfeed'] = content
+>>> clipboard['myfeed'] = content
 Traceback (most recent call last):
     ...
 ValueError: Can only contain IClipboardEntry objects. Got <...> instead.
 
 But we can adapt to ``IClipboardEntry``:
 
->>> clipboard[u'myfeed'] = IClipboardEntry(content)
+>>> clipboard['myfeed'] = IClipboardEntry(content)
 >>> list(clipboard.keys())
-[u'myfeed']
+['myfeed']
 
 
 Clips
@@ -65,10 +65,10 @@ Clips
 Clips are folders in the clipboard. A clip is always appended at the root but
 can be moved later.
 
->>> ignore = clipboard.addClip(u'Politik')
->>> ignore = clipboard.addClip(u'Wirtschaft')
+>>> ignore = clipboard.addClip('Politik')
+>>> ignore = clipboard.addClip('Wirtschaft')
 >>> list(clipboard.keys())
-[u'myfeed', u'Politik', u'Wirtschaft']
+['myfeed', 'Politik', 'Wirtschaft']
 
 Also clips with strange titles can be added:
 
@@ -76,7 +76,7 @@ Also clips with strange titles can be added:
 >>> ignore = clipboard.addClip('@property@')
 >>> ignore = clipboard.addClip('++etc++site')
 >>> list(clipboard.keys())
-[u'myfeed', u'Politik', u'Wirtschaft', u'binbash', u'property@', u'etc++site']
+['myfeed', 'Politik', 'Wirtschaft', 'binbash', 'property@', 'etc++site']
 
 
 Clips can be removed by just deleting them from the container:
@@ -85,7 +85,7 @@ Clips can be removed by just deleting them from the container:
 >>> del clipboard['property@']
 >>> del clipboard['etc++site']
 >>> list(clipboard.keys())
-[u'myfeed', u'Politik', u'Wirtschaft']
+['myfeed', 'Politik', 'Wirtschaft']
 
 
 Adding Objects to The Clipboard via `addContent` method
@@ -111,37 +111,37 @@ because Politik is collapsed right now:
 >>> content = repository['2007']['02']['Traum-Umberto-Eco']
 >>> clipboard.addContent(reference_object, content, content.__name__)
 >>> list(clipboard.keys())
-[u'myfeed', u'Politik', u'Traum-Umberto-Eco', u'Wirtschaft']
+['myfeed', 'Politik', 'Traum-Umberto-Eco', 'Wirtschaft']
 
 When using `myfeed` as reference, content will be added after it:
 
 >>> content = repository['2007']['02']['Verfolgt']
 >>> clipboard.addContent(clipboard['myfeed'], content, content.__name__)
 >>> list(clipboard.keys())
-[u'myfeed', u'Verfolgt', u'Politik', u'Traum-Umberto-Eco', u'Wirtschaft']
+['myfeed', 'Verfolgt', 'Politik', 'Traum-Umberto-Eco', 'Wirtschaft']
 
 
 Adding the same object twice works as well:
 
 >>> clipboard.addContent(clipboard['myfeed'], content, content.__name__)
 >>> list(clipboard.keys())
-[u'myfeed', u'Verfolgt-2', u'Verfolgt', u'Politik', u'Traum-Umberto-Eco',
- u'Wirtschaft']
+['myfeed', 'Verfolgt-2', 'Verfolgt', 'Politik', 'Traum-Umberto-Eco',
+ 'Wirtschaft']
 
 To insert into a folder the ``insert`` argument must be True:
 
 >>> clipboard.addContent(
-...     reference_object, repository['testcontent'], u'test', insert=True)
+...     reference_object, repository['testcontent'], 'test', insert=True)
 >>> list(clipboard.keys())
-[u'myfeed', u'Verfolgt-2', u'Verfolgt', u'Politik', u'Traum-Umberto-Eco',
- u'Wirtschaft']
->>> list(clipboard[u'Politik'].keys())
-[u'test']
+['myfeed', 'Verfolgt-2', 'Verfolgt', 'Politik', 'Traum-Umberto-Eco',
+ 'Wirtschaft']
+>>> list(clipboard['Politik'].keys())
+['test']
 
 It is an error when insert is True but the reference object is not a clip:
 
 >>> clipboard.addContent(
-...     clipboard['myfeed'], repository['testcontent'], u'test', insert=True)
+...     clipboard['myfeed'], repository['testcontent'], 'test', insert=True)
 Traceback (most recent call last):
     ...
 ValueError: `reference_object` must be a Clip to insert.
@@ -155,13 +155,13 @@ It is possible to move objects around in the clipboard. We can for instance put
 documents into clips. Move the `Verfolgt` object to the `Politik` clip. Note
 that move has the same semantics as add:
 
->>> politik = clipboard[u'Politik']
->>> verfolgt = clipboard[u'Verfolgt']
+>>> politik = clipboard['Politik']
+>>> verfolgt = clipboard['Verfolgt']
 >>> clipboard.moveObject(verfolgt, politik, insert=True)
 >>> list(clipboard.keys())
-[u'myfeed', u'Verfolgt-2', u'Politik', u'Traum-Umberto-Eco', u'Wirtschaft']
+['myfeed', 'Verfolgt-2', 'Politik', 'Traum-Umberto-Eco', 'Wirtschaft']
 >>> list(politik.keys())
-[u'Verfolgt', u'test']
+['Verfolgt', 'test']
 
 
 It's also possible to re-order content. Move the `Politik` clip to the front,
@@ -169,31 +169,31 @@ i.e. "after" the clipboard:
 
 >>> clipboard.moveObject(politik, clipboard, insert=True)
 >>> list(clipboard.keys())
-[u'Politik',  u'myfeed', u'Verfolgt-2', u'Traum-Umberto-Eco', u'Wirtschaft']
+['Politik',  'myfeed', 'Verfolgt-2', 'Traum-Umberto-Eco', 'Wirtschaft']
 
 When insert==False the object is moved after the reference object:
 
->>> traum = clipboard[u'Traum-Umberto-Eco']
+>>> traum = clipboard['Traum-Umberto-Eco']
 >>> clipboard.moveObject(traum, politik)
 >>> list(clipboard.keys())
-[u'Politik', u'Traum-Umberto-Eco', u'myfeed', u'Verfolgt-2', u'Wirtschaft']
+['Politik', 'Traum-Umberto-Eco', 'myfeed', 'Verfolgt-2', 'Wirtschaft']
 
 
 It's also possible to move Clips into Clips to build a deeper hierarchy:
 
->>> wirtschaft = clipboard[u'Wirtschaft']
->>> clipboard.moveObject(wirtschaft, politik[u'Verfolgt'])
+>>> wirtschaft = clipboard['Wirtschaft']
+>>> clipboard.moveObject(wirtschaft, politik['Verfolgt'])
 >>> list(clipboard.keys())
-[u'Politik', u'Traum-Umberto-Eco', u'myfeed', u'Verfolgt-2']
+['Politik', 'Traum-Umberto-Eco', 'myfeed', 'Verfolgt-2']
 >>> list(politik.keys())
-[u'Verfolgt', u'Wirtschaft', u'test']
+['Verfolgt', 'Wirtschaft', 'test']
 
 
 You can drop objects onto themselves. Nothing will happen though:
 
->>> clipboard.moveObject(clipboard[u'Verfolgt-2'], clipboard[u'Verfolgt-2'])
+>>> clipboard.moveObject(clipboard['Verfolgt-2'], clipboard['Verfolgt-2'])
 >>> list(clipboard.keys())
-[u'Politik', u'Traum-Umberto-Eco', u'myfeed', u'Verfolgt-2']
+['Politik', 'Traum-Umberto-Eco', 'myfeed', 'Verfolgt-2']
 
 
 Erroneous Moving Attempts

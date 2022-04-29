@@ -22,7 +22,7 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
     def test_teaser_attribute_should_be_added_to_xml(self):
         from zeit.content.article.edit.division import Division
         div = Division(None, lxml.objectify.E.division())
-        teaser = u'My div teaser'
+        teaser = 'My div teaser'
         div.teaser = teaser
         self.assertEqual(teaser, div.teaser)
         self.assertEqual(teaser, div.xml.get('teaser'))

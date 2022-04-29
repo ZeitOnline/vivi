@@ -13,19 +13,19 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         tree = lxml.objectify.E.tree(
             lxml.objectify.E.image())
         image = Image(None, tree.image)
-        image.__name__ = u'myname'
-        image.display_mode = u'float'
-        image.variant_name = u'square'
-        image.animation = u'fade-in'
+        image.__name__ = 'myname'
+        image.display_mode = 'float'
+        image.variant_name = 'square'
+        image.animation = 'fade-in'
         image_uid = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         image.references = image.references.create(
             zeit.cms.interfaces.ICMSContent(image_uid))
         self.assertEqual(image_uid, image.references.target.uniqueId)
         self.assertEqual(image_uid, image.xml.get('src'))
-        self.assertEqual(u'myname', image.__name__)
-        self.assertEqual(u'float', image.display_mode)
-        self.assertEqual(u'square', image.variant_name)
-        self.assertEqual(u'fade-in', image.animation)
+        self.assertEqual('myname', image.__name__)
+        self.assertEqual('float', image.display_mode)
+        self.assertEqual('square', image.variant_name)
+        self.assertEqual('fade-in', image.animation)
         self.assertEllipsis("""\
 <image ... src="{image_uid}" ... is_empty="False">
   <bu xsi:nil="true"/>
@@ -114,13 +114,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zope.component
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
-        connector.move(u'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                       u'http://xml.zeit.de/2006/ÄÖÜ.JPG')
+        connector.move('http://xml.zeit.de/2006/DSC00109_2.JPG',
+                       'http://xml.zeit.de/2006/ÄÖÜ.JPG')
         article = self.get_image_article("""
                 <p>A leading para</p>
                 <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />""")
         self.assertEqual(
-            u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
+            'http://xml.zeit.de/2006/ÄÖÜ.JPG',
             article.xml.body.division.image.get('src'))
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(
@@ -133,22 +133,22 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zope.component
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
-        connector.move(u'http://xml.zeit.de/2006/DSC00109_2.JPG',
-                       u'http://xml.zeit.de/2006/ÄÖÜ.JPG')
+        connector.move('http://xml.zeit.de/2006/DSC00109_2.JPG',
+                       'http://xml.zeit.de/2006/ÄÖÜ.JPG')
         article = self.get_image_article("""
                 <p>A leading para</p>
                 <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />""")
         zeit.cms.content.field.apply_default_values(article, IArticle)
         article.year = 2011
-        article.title = u'title'
-        article.ressort = u'Deutschland'
+        article.title = 'title'
+        article.ressort = 'Deutschland'
         wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
         article.keywords = (
             wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)
         article = zeit.cms.checkout.interfaces.ICheckinManager(
             article).checkin()
         self.assertEqual(
-            u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
+            'http://xml.zeit.de/2006/ÄÖÜ.JPG',
             article.xml.body.division.image.get('src'))
 
     def test_image_referenced_via_IImages_is_copied_to_first_body_block(self):
@@ -302,8 +302,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         source = zeit.content.article.source.IMAGE_VARIANT_NAME_SOURCE
         with self.image() as image:
             self.assertEqual([
-                u'wide', u'original', u'square', u'templates_only',
-                u'header_vonanachb'], list(source(image)))
+                'wide', 'original', 'square', 'templates_only',
+                'header_vonanachb'], list(source(image)))
 
     def test_variant_name_should_depend_on_article_template(self):
         import zeit.content.article.source
@@ -313,16 +313,16 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 ['wide', 'original', 'square'], list(source(image)))
 
         article = self.get_article()
-        article.template = u'article'
+        article.template = 'article'
         self.assertEqual(['wide', 'original', 'square'], list(source(article)))
 
         article = self.get_article()
-        article.template = u'column'
+        article.template = 'column'
         self.assertEqual(['templates_only'], list(source(article)))
 
         article = self.get_article()
-        article.template = u'column'
-        article.header_layout = u'vonanachb'
+        article.template = 'column'
+        article.header_layout = 'vonanachb'
         self.assertEqual(
             ['templates_only', 'header_vonanachb'], list(source(article)))
 
@@ -332,21 +332,21 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             MAIN_IMAGE_VARIANT_NAME_SOURCE.factory
 
         article = self.get_article()
-        article.template = u'article'
+        article.template = 'article'
         self.assertEqual('wide', source.get_default(article))
 
         article = self.get_article()
-        article.template = u'article'
-        article.header_layout = u'inside'
+        article.template = 'article'
+        article.header_layout = 'inside'
         self.assertEqual('square', source.get_default(article))
 
         article = self.get_article()
-        article.template = u'column'
-        article.header_layout = u'vonanachb'
+        article.template = 'column'
+        article.header_layout = 'vonanachb'
         self.assertEqual('header_vonanachb', source.get_default(article))
 
         article = self.get_article()
-        article.template = u'column'
+        article.template = 'column'
         self.assertEqual('templates_only', source.get_default(article))
 
     def test_display_mode_available_walks_up_to_article(self):

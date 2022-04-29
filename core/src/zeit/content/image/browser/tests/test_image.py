@@ -47,7 +47,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             pkg_resources.resource_stream(
                 'zeit.content.image.browser',
                 'testdata/new-hampshire-artikel.jpg'),
-            'image/jpeg', u'föö.jpg'.encode('utf-8'))
+            'image/jpeg', 'föö.jpg'.encode('utf-8'))
         b.getControl(name='form.actions.add').click()
         self.assertIn('/foeoe.jpg/@@edit.html', b.url)
 
@@ -89,7 +89,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             pkg_resources.resource_stream(
                 'zeit.content.image.browser',
                 'testdata/shoppingmeile_2251x4001px.jpg'),
-            'image/jpeg', u'föö.jpg'.encode('utf-8'))
+            'image/jpeg', 'föö.jpg'.encode('utf-8'))
         b.getControl(name='form.actions.add').click()
         img = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/foeoe.jpg')
@@ -112,7 +112,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             pkg_resources.resource_stream(
                 'zeit.content.image.browser',
                 'testdata/shoppingmeile_4001x2251px.jpg'),
-            'image/jpeg', u'bär.jpg'.encode('utf-8'))
+            'image/jpeg', 'bär.jpg'.encode('utf-8'))
         b.getControl(name='form.actions.add').click()
         img = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/baer.jpg')

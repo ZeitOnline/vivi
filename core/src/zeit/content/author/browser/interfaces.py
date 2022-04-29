@@ -8,7 +8,7 @@ class DuplicateAuthorWarning(Exception):
 
     def doc(self):
         return _(
-            u'An author with the given name already exists. '
-            u'If you\'d like to create another author with the same '
-            u'name anyway, check "Add duplicate author" '
-            u'and save the form again.')
+            'An author with the given name already exists. '
+            'If you\'d like to create another author with the same '
+            'name anyway, check "Add duplicate author" '
+            'and save the form again.')

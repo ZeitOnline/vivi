@@ -36,7 +36,7 @@ class LookupForm(zeit.cms.browser.form.FormBase,
     def handle_lookup_action(self, action, data):
         if self.ask_before_adding_author_twice(data):
             return
-        query = u' '.join([data['firstname'], data['lastname']])
+        query = ' '.join([data['firstname'], data['lastname']])
         self.redirect(self.url(
             self.context, '@@zeit.content.author.do_lookup') + '?' + urlencode(
                 {'q': query.encode('utf-8')}))

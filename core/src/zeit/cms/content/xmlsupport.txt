@@ -42,7 +42,7 @@ change and contain the property:
 >>> import zeit.cms.checkout.interfaces
 >>> content = zeit.cms.checkout.interfaces.ICheckoutManager(content).checkout()
 >>> content.year = 2004
->>> content.ressort = u'Deutschland'
+>>> content.ressort = 'Deutschland'
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
@@ -73,7 +73,7 @@ is checked in. It removes all existing head.attribute nodes before adding the
 properties. Add some attributes to make sure they're removed:
 
 >>> import lxml.objectify
->>> content.xml = lxml.objectify.XML(u"""\
+>>> content.xml = lxml.objectify.XML("""\
 ...     <testtype>
 ...      <head>
 ...        <attribute ns="some-namespace" name="somename">somevalue</attribute>

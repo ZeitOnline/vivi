@@ -12,7 +12,7 @@ import zope.schema
 
 class IExample(zope.interface.Interface):
 
-    foo = zope.schema.TextLine(title=u'foo')
+    foo = zope.schema.TextLine(title='foo')
 
 
 class WidgetCSSMixin(zeit.cms.testing.ZeitCmsTestCase):

@@ -18,7 +18,7 @@ import zope.schema
 class DuplicateVolumeWarning(Exception):
 
     def doc(self):
-        return _(u'A volume with the given name already exists.')
+        return _('A volume with the given name already exists.')
 
 
 class Base:

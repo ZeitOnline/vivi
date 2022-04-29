@@ -150,7 +150,7 @@ class CMSAPI:
                 return self._request(
                     request, body=body, params=params, _retries=_retries + 1)
             message = getattr(err.response, 'text', '<no message>')
-            err.args = (u'%s: %s' % (err.args[0], message),) + err.args[1:]
+            err.args = ('%s: %s' % (err.args[0], message),) + err.args[1:]
             log.error('%s returned %s', request, status, exc_info=True)
             raise
 

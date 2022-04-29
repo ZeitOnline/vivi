@@ -209,7 +209,7 @@ class View(zeit.cms.browser.listing.Listing):
     filter_interface = zeit.content.image.interfaces.IImage
 
     columns = (
-        zeit.cms.browser.listing.LockedColumn(u'', name='locked'),
+        zeit.cms.browser.listing.LockedColumn('', name='locked'),
         zeit.cms.browser.listing.GetterColumn(
             title=_("File name"),
             # zc.table can't deal with spaces in colum names
@@ -220,7 +220,7 @@ class View(zeit.cms.browser.listing.Listing):
             getter=lambda i, f: i.context.getImageSize(),
             cell_formatter=lambda v, i, f: 'x'.join(str(i) for i in v)),
         ImageColumn(title=_('Image')),
-        zeit.cms.browser.listing.MetadataColumn(u'Metadaten', name='metadata'),
+        zeit.cms.browser.listing.MetadataColumn('Metadaten', name='metadata'),
     )
 
     def filter_content(self, obj):

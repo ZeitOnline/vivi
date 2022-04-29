@@ -29,7 +29,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(article) as co:
             co.breaking_news = True
-            co.product = zeit.cms.content.sources.Product(u'KINZ')
+            co.product = zeit.cms.content.sources.Product('KINZ')
             co.keywords = (
                 zeit.cms.tagging.tag.Tag('Code1', 'keyword'),
                 zeit.cms.tagging.tag.Tag('Code2', 'keyword'))
@@ -52,18 +52,18 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertStartsWith('<body', data.pop('body'))
 
         teaser = (
-            u'Im Zuge des äthiopischen Vormarsches auf Mogadischu kriechen '
-            u'in Somalia auch die alten Miliz-Chefs wieder hervor.')
+            'Im Zuge des äthiopischen Vormarsches auf Mogadischu kriechen '
+            'in Somalia auch die alten Miliz-Chefs wieder hervor.')
         self.assertEqual({
-            'author': u'Hans Meiser',
+            'author': 'Hans Meiser',
             'date': '1970-01-01T00:00:00Z',
             'doc_type': 'article',
             'payload': {
                 'body': {
-                    'byline': u'Von Jochen Stahnke',
+                    'byline': 'Von Jochen Stahnke',
                     'subtitle': teaser,
-                    'supertitle': u'Somalia',
-                    'title': u'Rückkehr der Warlords'
+                    'supertitle': 'Somalia',
+                    'title': 'Rückkehr der Warlords'
                 },
                 'document': {
                     'DailyNL': False,
@@ -72,19 +72,19 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'author': ['Hans Meiser'],
                     'banner': True,
                     'banner_content': True,
-                    'color_scheme': u'Redaktion',
+                    'color_scheme': 'Redaktion',
                     'comments': False,
                     'comments_premoderate': False,
                     'copyrights': 'ZEIT online',
                     'has_recensions': False,
-                    'header_layout': u'default',
+                    'header_layout': 'default',
                     'hide_adblocker_notification': False,
                     'hide_ligatus_recommendations': False,
                     'imagecount': '0',
                     'in_rankings': 'yes',
                     'is_amp': True,
                     'is_content': 'yes',
-                    'last_modified_by': u'zope.user',
+                    'last_modified_by': 'zope.user',
                     'lead_candidate': True,
                     'mostread': 'yes',
                     'new_comments': '1',
@@ -93,14 +93,14 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'paragraphsperpage': '6',
                     'prevent_ligatus_indexing': False,
                     'recent_comments_first': False,
-                    'ressort': u'International',
+                    'ressort': 'International',
                     'revision': '11',
-                    'serie': u'-',
+                    'serie': '-',
                     'show_commentthread': False,
                     'supertitle': 'Spitzmarke hierher',
-                    'template': u'article',
+                    'template': 'article',
                     'text-length': 1036,
-                    'title': u'R\xfcckkehr der Warlords',
+                    'title': 'R\xfcckkehr der Warlords',
                     'tldr_milestone': False,
                     'topic': 'Politik',
                     'volume': 1,
@@ -109,7 +109,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'head': {
                     'authors': [],
                     'agencies': [],
-                    'teaser_image': u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+                    'teaser_image': 'http://xml.zeit.de/2006/DSC00109_2.JPG',
                 },
                 'meta': {
                     'type': 'article',
@@ -117,7 +117,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 'tagging': {},
                 'teaser': {
                     'text': teaser,
-                    'title': u'Rückkehr der Warlords'
+                    'title': 'Rückkehr der Warlords'
                 },
                 'vivi': {
                     'cms_icon': '/@@/zeit-content-article-interfaces-IArticle'
@@ -126,8 +126,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                 },
                 'workflow': {
                     'last-modified-by': 'hegenscheidt',
-                    'product-id': u'KINZ',
-                    'status': u'OK'
+                    'product-id': 'KINZ',
+                    'status': 'OK'
                 }
             },
             'rtr_events': [],
@@ -136,12 +136,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             'rtr_organisations': [],
             'rtr_persons': [],
             'rtr_products': [],
-            'section': u'/International',
-            'supertitle': u'Somalia',
+            'section': '/International',
+            'supertitle': 'Somalia',
             'teaser': teaser,
-            'teaser_img_url': u'/2006/DSC00109_2.JPG',
-            'title': u'Rückkehr der Warlords',
-            'url': u'/online/2007/01/Somalia'
+            'teaser_img_url': '/2006/DSC00109_2.JPG',
+            'title': 'Rückkehr der Warlords',
+            'url': '/online/2007/01/Somalia'
         }, data)
 
     def assert_editing_fields(self, data):
@@ -181,8 +181,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_converts_authorships(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['author'] = author
         content = create_testcontent()
         content.authorships = [
@@ -193,8 +193,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_converts_agencies(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['author'] = author
         content = create_testcontent()
         content.agencies = [self.repository['author']]
@@ -214,13 +214,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         zeit.cms.content.interfaces.IUUID(volume).id = 'myid'
         volume.year = 2015
         volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         volume.set_cover('ipad', 'ZEI', self.repository['testcontent'])
         published = datetime.datetime(2015, 1, 1, 0, 0, tzinfo=pytz.UTC)
         volume.date_digital_published = published
         data = zeit.retresco.interfaces.ITMSRepresentation(volume)()
-        self.assertEqual(u'Teäser 01/2015', data['title'])
-        self.assertEqual(u'Teäser 01/2015', data['teaser'])
+        self.assertEqual('Teäser 01/2015', data['title'])
+        self.assertEqual('Teäser 01/2015', data['teaser'])
         self.assertEqual(
             published.isoformat(),
             data['payload']['document']['date_digital_published'])
@@ -235,12 +235,12 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         content.volume = 49
         content_teaser = 'content teaser'
         content.teaserText = content_teaser
-        content.product = zeit.cms.content.sources.Product(u'ZEI')
+        content.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['content'] = content
         volume = zeit.content.volume.volume.Volume()
         volume.year = content.year
         volume.volume = content.volume
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['2006']['49']['ausgabe'] = volume
 
         found = zeit.content.volume.interfaces.IVolume(content)
@@ -278,7 +278,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             'doc_type': 'image',
             'payload': {
                 'document': {
-                    'author': [u'Jochen Stahnke'],
+                    'author': ['Jochen Stahnke'],
                     'banner': True,
                     'last_modified_by': 'zope.user',
                 },
@@ -331,8 +331,8 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         group = zeit.content.image.testing.create_image_group()
         with checked_out(group) as co:
             meta = zeit.content.image.interfaces.IImageMetadata(co)
-            meta.title = u'mytitle'
-            meta.caption = u'mycaption'
+            meta.title = 'mytitle'
+            meta.caption = 'mycaption'
         data = zeit.retresco.interfaces.ITMSRepresentation(group)()
         self.assert_editing_fields(data)
         self.assertEqual({
@@ -405,9 +405,9 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
     def test_converts_author(self):
         self.repository['willy'] = zeit.content.author.author.Author()
         with checked_out(self.repository['willy']) as co:
-            co.firstname = u'William'
-            co.lastname = u'Shakespeare'
-            co.summary = u'To be...'
+            co.firstname = 'William'
+            co.lastname = 'Shakespeare'
+            co.summary = 'To be...'
             co.biography = '...or not to be!'
         data = zeit.retresco.interfaces.ITMSRepresentation(
             self.repository['willy'])()

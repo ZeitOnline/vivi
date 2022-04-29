@@ -57,7 +57,7 @@ class BannerPublisherTest(zeit.push.testing.TestCase):
         content = self.repository['testcontent']
         with checked_out(content) as co:
             push = zeit.push.interfaces.IPushMessages(co)
-            push.short_text = u'banner'
+            push.short_text = 'banner'
             push.set({'type': 'homepage'}, enabled=True)
         push = zeit.push.interfaces.IPushMessages(content)
         push.messages[0].send()

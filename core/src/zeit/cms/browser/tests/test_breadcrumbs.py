@@ -29,17 +29,17 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
     def test_icommonmetadata_lists_ressort_and_sub_ressort(self):
         content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
-        content.ressort = u'Kultur'
-        content.sub_ressort = u'Musik'
+        content.ressort = 'Kultur'
+        content.sub_ressort = 'Musik'
         self.assertEqual([
-            dict(title=u'Kultur',
+            dict(title='Kultur',
                  uniqueId=None,
                  url='http://127.0.0.1/repository/kultur'),
-            dict(title=u'Musik',
+            dict(title='Musik',
                  uniqueId=None,
                  url='http://127.0.0.1/repository/kultur/musik'),
             dict(title='foo',
-                 uniqueId=u'http://xml.zeit.de/foo',
+                 uniqueId='http://xml.zeit.de/foo',
                  url='http://127.0.0.1/repository/foo'),
         ], BreadcrumbsView(content).get_breadcrumbs)
 
@@ -48,44 +48,44 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         self.repository['foo'] = content
         self.assertEqual([
             dict(title='foo',
-                 uniqueId=u'http://xml.zeit.de/foo',
+                 uniqueId='http://xml.zeit.de/foo',
                  url='http://127.0.0.1/repository/foo'),
         ], BreadcrumbsView(content).get_breadcrumbs)
 
     def test_icommonmetadata_without_sub_ressort_omits_item(self):
         content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
-        content.ressort = u'Kultur'
+        content.ressort = 'Kultur'
         self.assertEqual([
-            dict(title=u'Kultur',
+            dict(title='Kultur',
                  uniqueId=None,
                  url='http://127.0.0.1/repository/kultur'),
             dict(title='foo',
-                 uniqueId=u'http://xml.zeit.de/foo',
+                 uniqueId='http://xml.zeit.de/foo',
                  url='http://127.0.0.1/repository/foo'),
         ], BreadcrumbsView(content).get_breadcrumbs)
 
     def test_icommonmetadata_with_invalid_ressort_omits_item(self):
         content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
-        content.ressort = u'Kültür'
+        content.ressort = 'Kültür'
         self.assertEqual([
             dict(title='foo',
-                 uniqueId=u'http://xml.zeit.de/foo',
+                 uniqueId='http://xml.zeit.de/foo',
                  url='http://127.0.0.1/repository/foo'),
         ], BreadcrumbsView(content).get_breadcrumbs)
 
     def test_no_icommonmetadata_lists_repo_path(self):
         content = self.repository['kultur']['musik']
         self.assertEqual([
-            dict(title=u'repository',
+            dict(title='repository',
                  uniqueId='http://xml.zeit.de/',
                  url='http://127.0.0.1/repository'),
-            dict(title=u'kultur',
+            dict(title='kultur',
                  uniqueId='http://xml.zeit.de/kultur/',
                  url='http://127.0.0.1/repository/kultur'),
-            dict(title=u'musik',
-                 uniqueId=u'http://xml.zeit.de/kultur/musik/',
+            dict(title='musik',
+                 uniqueId='http://xml.zeit.de/kultur/musik/',
                  url='http://127.0.0.1/repository/kultur/musik'),
         ], BreadcrumbsView(content).get_breadcrumbs)
 
@@ -94,24 +94,24 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = manager.checkout()
         self.assertEqual([
-            dict(title=u'repository',
+            dict(title='repository',
                  uniqueId='http://xml.zeit.de/',
                  url='http://127.0.0.1/repository'),
-            dict(title=u'2006',
+            dict(title='2006',
                  uniqueId='http://xml.zeit.de/2006/',
                  url='http://127.0.0.1/repository/2006'),
-            dict(title=u'DSC00109_2.JPG',
-                 uniqueId=u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+            dict(title='DSC00109_2.JPG',
+                 uniqueId='http://xml.zeit.de/2006/DSC00109_2.JPG',
                  url='http://127.0.0.1/repository/2006/DSC00109_2.JPG'),
         ], BreadcrumbsView(co).get_breadcrumbs)
 
     def test_breadcrumbs_work_for_non_content_object(self):
         obj = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
         self.assertEqual([
-            dict(title=u'workingcopy',
+            dict(title='workingcopy',
                  uniqueId=None,
                  url='http://127.0.0.1/workingcopy'),
-            dict(title=u'zope.user',
+            dict(title='zope.user',
                  uniqueId=None,
                  url='http://127.0.0.1/workingcopy/zope.user'),
         ], BreadcrumbsView(obj).get_breadcrumbs)
@@ -122,8 +122,8 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         co = manager.checkout()
         del self.repository['2006']['DSC00109_2.JPG']
         self.assertEqual([
-            dict(title=u'DSC00109_2.JPG',
-                 uniqueId=u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+            dict(title='DSC00109_2.JPG',
+                 uniqueId='http://xml.zeit.de/2006/DSC00109_2.JPG',
                  url='http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG'),
         ], BreadcrumbsView(co).get_breadcrumbs)
 
@@ -134,7 +134,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
             content).renameable = True
         self.assertEqual([
             dict(title='(new)',
-                 uniqueId=u'http://xml.zeit.de/foo',
+                 uniqueId='http://xml.zeit.de/foo',
                  url='http://127.0.0.1/repository/foo'),
         ], BreadcrumbsView(content).get_breadcrumbs)
 
@@ -179,13 +179,13 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
         co = manager.checkout()
         self.maxDiff = None
         self.assertEqual([
-            dict(title=u'workingcopy',
+            dict(title='workingcopy',
                  uniqueId=None,
                  url='http://127.0.0.1/workingcopy'),
-            dict(title=u'zope.user',
+            dict(title='zope.user',
                  uniqueId=None,
                  url='http://127.0.0.1/workingcopy/zope.user'),
-            dict(title=u'DSC00109_2.JPG',
-                 uniqueId=u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+            dict(title='DSC00109_2.JPG',
+                 uniqueId='http://xml.zeit.de/2006/DSC00109_2.JPG',
                  url='http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG'),
         ], BreadcrumbsView(co).get_breadcrumbs)

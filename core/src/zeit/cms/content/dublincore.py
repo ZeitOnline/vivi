@@ -13,11 +13,11 @@ class RepositoryDCTimes(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     created = zeit.cms.content.dav.DAVProperty(
         zope.dublincore.interfaces.IDCTimes['created'],
-        u'DAV:',
+        'DAV:',
         'creationdate')
     modified = zeit.cms.content.dav.DAVProperty(
         zope.dublincore.interfaces.IDCTimes['modified'],
-        u'DAV:',
+        'DAV:',
         'getlastmodified')
 
 

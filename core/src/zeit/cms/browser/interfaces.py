@@ -95,27 +95,27 @@ class IMetadataPreview(zope.viewlet.interfaces.IViewletManager):
 class IListRepresentation(zope.interface.Interface):
     """List representation of content objects"""
 
-    __name__ = zope.interface.Attribute("File name")
-    uniqueId = zope.interface.Attribute("Unique ID in repository.")
-    url = zope.schema.URI(title=u"URL to the object in the CMS.")
-    context = zope.interface.Attribute("Represended object.")
-    type = zope.interface.Attribute(u"Resource type (if known).")
+    __name__ = zope.interface.Attribute('File name')
+    uniqueId = zope.interface.Attribute('Unique ID in repository.')
+    url = zope.schema.URI(title='URL to the object in the CMS.')
+    context = zope.interface.Attribute('Represended object.')
+    type = zope.interface.Attribute('Resource type (if known).')
 
-    title = zope.interface.Attribute("Content title")
-    author = zope.interface.Attribute("Author")
-    ressort = zope.interface.Attribute("Ressort")
-    searchableText = zope.interface.Attribute("Index used to search the list")
-    page = zope.schema.Int(title=u"Page in paper")
-    volume = zope.schema.Int(title=u"Volume")
-    year = zope.schema.Int(title=u"Year")
+    title = zope.interface.Attribute('Content title')
+    author = zope.interface.Attribute('Author')
+    ressort = zope.interface.Attribute('Ressort')
+    searchableText = zope.interface.Attribute('Index used to search the list')
+    page = zope.schema.Int(title='Page in paper')
+    volume = zope.schema.Int(title='Volume')
+    year = zope.schema.Int(title='Year')
 
-    modifiedBy = zope.interface.Attribute("Datetime of last modification")
+    modifiedBy = zope.interface.Attribute('Datetime of last modification')
 
     modifiedOn = zope.interface.Attribute(
-        "datetime of last modification.")
+        'datetime of last modification.')
 
     createdOn = zope.interface.Attribute(
-        "datetime of creation date.")
+        'datetime of creation date.')
 
 
 class ITreeState(zope.interface.common.mapping.IMapping):
@@ -156,7 +156,7 @@ class IPanelState(zope.interface.Interface):
 class ICMSUserPreferences(zope.interface.Interface):
 
     sidebarFolded = zope.schema.Bool(
-        title=u"Sidebar folded?",
+        title='Sidebar folded?',
         default=False)
 
 

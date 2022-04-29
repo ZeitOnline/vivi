@@ -9,10 +9,10 @@ class EntityTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     # XXX Keep in sync with tagger-generated whitelist.xml
     values = collections.OrderedDict([
-        (u'free', _('entity-type-free')),
-        (u'Organization', _('entity-type-organization')),
-        (u'Location', _('entity-type-location')),
-        (u'Person', _('entity-type-person')),
+        ('free', _('entity-type-free')),
+        ('Organization', _('entity-type-organization')),
+        ('Location', _('entity-type-location')),
+        ('Person', _('entity-type-person')),
     ])
 
     def getValues(self):

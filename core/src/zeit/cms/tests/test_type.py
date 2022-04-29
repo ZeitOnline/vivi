@@ -20,7 +20,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
         super(StoreProvidedInterfacesTest, self).setUp()
         self.content = zeit.cms.repository.unknown.PersistentUnknownResource(
-            u'data')
+            'data')
         # avoid messing with interfaces (self.repository provides IZONSection,
         # so it would apply section marker interfaces to all content)
         self.section_patcher = mock.patch(
@@ -119,7 +119,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
 class StoreProvidedInterfacesIntegration(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_checkout_checkin_keeps_provides(self):
-        content = zeit.cms.repository.unknown.PersistentUnknownResource(u'x')
+        content = zeit.cms.repository.unknown.PersistentUnknownResource('x')
         zope.interface.alsoProvides(content, ITestInterface)
         self.repository['foo'] = content
         self.assertTrue(ITestInterface.providedBy(self.repository['foo']))

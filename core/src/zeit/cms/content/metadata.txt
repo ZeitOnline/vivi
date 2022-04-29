@@ -27,7 +27,7 @@ True
 
 Set a copyright:
 
->>> content.copyrights = u'ich'
+>>> content.copyrights = 'ich'
 
 Verify the data:
 
@@ -35,9 +35,9 @@ Verify the data:
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
 >>> import pprint
 >>> pprint.pprint(dict(properties))
-{('comments', u'http://namespaces.zeit.de/CMS/document'): 'yes',
- ('copyrights', u'http://namespaces.zeit.de/CMS/document'): u'ich',
- ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
+{('comments', 'http://namespaces.zeit.de/CMS/document'): 'yes',
+ ('copyrights', 'http://namespaces.zeit.de/CMS/document'): 'ich',
+ ('date-last-modified', 'http://namespaces.zeit.de/CMS/document'): '...'}
 
 Products
 ++++++++
@@ -52,23 +52,23 @@ that there is no title for "None":
 
 Setting normal values:
 
->>> product = zeit.cms.content.sources.Product(u'ZEDE', u'Zeit Online')
+>>> product = zeit.cms.content.sources.Product('ZEDE', 'Zeit Online')
 >>> content.product = product
 >>> content.product.id
-u'ZEDE'
+'ZEDE'
 >>> content.product.title
-u'Zeit Online'
+'Zeit Online'
 >>> properties[('product-id', 'http://namespaces.zeit.de/CMS/workflow')]
-u'ZEDE'
+'ZEDE'
 
 Channels
 ++++++++
 
 >>> content.channels = (('International', 'Nahost'), ('Wissen', None))
 >>> properties[('channels', 'http://namespaces.zeit.de/CMS/document')]
-u'International Nahost;Wissen'
+'International Nahost;Wissen'
 >>> content.channels
-((u'International', u'Nahost'), (u'Wissen', None))
+(('International', 'Nahost'), ('Wissen', None))
 
 None handling
 +++++++++++++

@@ -6,5 +6,5 @@ class ILockInfo(zope.app.locking.interfaces.ILockInfo):
     """Extended LockInfo interface."""
 
     locked_until = zope.schema.Datetime(
-        title=u"Locked Until",
+        title='Locked Until',
         required=False)

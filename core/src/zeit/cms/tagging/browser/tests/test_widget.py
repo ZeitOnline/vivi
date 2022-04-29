@@ -45,7 +45,7 @@ class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
     def test_serializes_tag_ids_with_unicode_escapes(self):
-        self.setup_tags(u'Bärlin')
+        self.setup_tags('Bärlin')
         self.browser.open(
             'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
         self.assertEllipsis(
@@ -56,14 +56,14 @@ class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase,
                  zeit.cms.tagging.testing.TaggingHelper):
 
     def test_serializes_tag_ids_with_unicode_escapes(self):
-        self.setup_tags(u'Bärlin')
+        self.setup_tags('Bärlin')
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
         b.open('@@update_tags')
         self.assertEqual([{
             'code': 'tag://test\\u2603B\\xe4rlin',
-            'label': u'Bärlin',
+            'label': 'Bärlin',
             'pinned': False,
         }], json.loads(b.contents)['tags'])
 

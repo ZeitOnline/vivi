@@ -23,7 +23,7 @@ True
 >>> c_2007
 <zeit.cms.repository.folder.Folder...>
 >>> c_2007.keys()
-[u'01', u'02']
+['01', '02']
 >>> from pprint import pprint
 >>> pprint(list(c_2007.values()))
 [<zeit.cms.repository.folder.Folder...>,
@@ -31,8 +31,8 @@ True
 >>> len(c_2007)
 2
 >>> pprint(list(c_2007.items()))
-[(u'01', <zeit.cms.repository.folder.Folder...>),
- (u'02', <zeit.cms.repository.folder.Folder...>)]
+[('01', <zeit.cms.repository.folder.Folder...>),
+ ('02', <zeit.cms.repository.folder.Folder...>)]
 
 >>> repository.get('2006')
 <zeit.cms.repository.folder.Folder...>
@@ -144,7 +144,7 @@ of `http://xml.zeit.de/(online)?/[Jahr]/[Ausgabe]/[Artikelname]` but that's
 actually a backend implementation detail:
 
 >>> content.uniqueId
-u'http://xml.zeit.de/online/2007/01/lebenslagen-01'
+'http://xml.zeit.de/online/2007/01/lebenslagen-01'
 
 
 Adding Content Objects
@@ -155,9 +155,9 @@ IResource. During adding also a unique id will be assigned if the object
 doesn't have one yet. Let's create a new `PersistentUnknownResource`:
 
 >>> from zeit.cms.repository.unknown import PersistentUnknownResource
->>> content = PersistentUnknownResource(u"I'm a shiny new object.")
+>>> content = PersistentUnknownResource("I'm a shiny new object.")
 >>> content.data
-u"I'm a shiny new object."
+"I'm a shiny new object."
 
 The content does not have a unique id yet:
 
@@ -190,7 +190,7 @@ ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Old: None None
     New: <zeit.cms.repository.repository.Repository...> i_am_new
 >>> content.uniqueId
-u'http://xml.zeit.de/i_am_new'
+'http://xml.zeit.de/i_am_new'
 
 Since it does have an id we can get it back from the repository:
 
@@ -198,7 +198,7 @@ Since it does have an id we can get it back from the repository:
 >>> new_content
 <zeit.cms.repository.unknown.PersistentUnknownResource...>
 >>> new_content.data
-u"I'm a shiny new object."
+"I'm a shiny new object."
 
 
 Adding it again will store it again on the DAV (i.e. overwrite). An
@@ -225,7 +225,7 @@ Objects can be renamed in a container using IContainerItemRenamer:
 ObjectMovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Old: <zeit.cms.repository.repository.Repository...> i_am_new
     New: <zeit.cms.repository.repository.Repository...> i_am_not_so_new_anymore
-u'i_am_not_so_new_anymore'
+'i_am_not_so_new_anymore'
 
 >>> 'i_am_new' in repository
 False
@@ -279,7 +279,7 @@ Getting the value of course doesn't work either:
 >>> repository['i_am_new']
 Traceback (most recent call last):
     ...
-KeyError: u'http://xml.zeit.de/i_am_new'
+KeyError: 'http://xml.zeit.de/i_am_new'
 
 
 When you try to delete a non existend object, a KeyError is raised:
@@ -287,7 +287,7 @@ When you try to delete a non existend object, a KeyError is raised:
 >>> del repository['i-dont-exist']
 Traceback (most recent call last):
     ...
-KeyError: u"The resource 'http://xml.zeit.de/i-dont-exist' does not exist."
+KeyError: "The resource 'http://xml.zeit.de/i-dont-exist' does not exist."
 
 
 Copying objects
@@ -308,14 +308,14 @@ True
 True
 >>> copier.copyableTo(repository)
 True
->>> copier.copyableTo(repository, name=u'foo')
+>>> copier.copyableTo(repository, name='foo')
 True
 
 Let's copy. `copyTo` returns the new name:
 
 >>> copier.copyTo(repository['online'])
 ObjectAddedEvent...
-u'01'
+'01'
 
 When copying againer, we'll get another name:
 
@@ -324,10 +324,10 @@ ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Old: None None
     New: <zeit.cms.repository.folder.Folder...> 01-2
 ...
-u'01-2'
+'01-2'
 
 >>> repository['online'].keys()
-[u'01', u'01-2', u'2005', u'2006', u'2007']
+['01', '01-2', '2005', '2006', '2007']
 >>> len(repository['online']['01'].keys())
 53
 
@@ -357,7 +357,7 @@ from the unique id:
 >>> content.__parent__
 <zeit.cms.repository.folder.Folder...>
 >>> content.__parent__.__name__
-u'01'
+'01'
 
 An even easier way is adapting to ICMSContent:
 
@@ -411,7 +411,7 @@ considered as valid.
 
 >>> content = repository.getContent('/cms/work/online/2007/01/Somalia')
 >>> content.uniqueId
-u'http://xml.zeit.de/online/2007/01/Somalia'
+'http://xml.zeit.de/online/2007/01/Somalia'
 >>> zeit.cms.interfaces.ICMSContent(
 ...     '/cms/work/online/2007/01/Somalia').uniqueId
-u'http://xml.zeit.de/online/2007/01/Somalia'
+'http://xml.zeit.de/online/2007/01/Somalia'

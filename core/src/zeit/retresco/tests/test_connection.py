@@ -56,7 +56,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
                           "entity_type": "keyword"},
                          {"entity_id": "bf87d9ce8457a96fe2de1eac6d9614aa462ba",
                           "doc_count": 1,
-                          "entity_name": u"Walter Schmögner",
+                          "entity_name": "Walter Schmögner",
                           "entity_type": "person"}],
             "num_found": 2})
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)

@@ -41,12 +41,12 @@ class Heading:
 
 class MemoFormGroup(zeit.edit.browser.form.FormGroup):
 
-    title = u''
+    title = ''
 
 
 class Memo(zeit.edit.browser.form.InlineForm):
 
-    legend = u''
+    legend = ''
     prefix = 'memo'
     undo_description = _('edit memo')
     form_fields = FormFields(zeit.cms.content.interfaces.IMemo).select('memo')

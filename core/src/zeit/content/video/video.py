@@ -107,7 +107,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     @property
     def seo_slug(self):
         titles = (t for t in (self.supertitle, self.title) if t)
-        return zeit.cms.interfaces.normalize_filename(u' '.join(titles))
+        return zeit.cms.interfaces.normalize_filename(' '.join(titles))
 
 
 @zope.component.adapter(zeit.content.video.interfaces.IVideo)

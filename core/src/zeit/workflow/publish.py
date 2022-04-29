@@ -125,7 +125,7 @@ class PublishRetractTask:
         ids_str = ', '.join(ids)
         info = (type(self).__name__, ids_str, self.jobid)
         __traceback_info__ = info
-        timer.start(u'Job %s started: %s (%s)' % info)
+        timer.start('Job %s started: %s (%s)' % info)
         logger.info("Running job %s for %s", self.jobid, ids_str)
 
         objs = []
@@ -159,7 +159,7 @@ class PublishRetractTask:
                         'exc': error.__class__.__name__,
                         'message': errormessage})
                     to_log.append((obj, submessage))
-                    all_errors.append((obj, u'%s: %s' % (
+                    all_errors.append((obj, '%s: %s' % (
                         error.__class__.__name__, errormessage)))
                 message = _(messageid, mapping={
                     'exc': '', 'message': str(all_errors)})
@@ -590,8 +590,8 @@ class Timer(threading.local):
     def __unicode__(self):
         result = []
         for diff, total, message in self.get_timings():
-            result.append(u'%2.4f %2.4f %s' % (diff, total, message))
-        return u'\n'.join(result)
+            result.append('%2.4f %2.4f %s' % (diff, total, message))
+        return '\n'.join(result)
 
     if six.PY3:
         __str__ = __unicode__

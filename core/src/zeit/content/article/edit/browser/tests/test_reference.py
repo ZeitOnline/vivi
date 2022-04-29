@@ -123,7 +123,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.pause(500)
         s.waitForElementPresent(variant_select)
         self.assertEqual(
-            ['(nothing selected)', u'Breit', u'Original', u'Square 1:1',
+            ['(nothing selected)', 'Breit', 'Original', 'Square 1:1',
              'Templates Only', 'Header: Von A nach B'],
             s.getSelectOptions(variant_select))
         s.select(variant_select, 'label=Original')
@@ -257,7 +257,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         clip = clipboard['Clip']
         for i in range(4):
             video = zeit.content.video.video.Video()
-            video.supertitle = u'MyVideo_%s' % i
+            video.supertitle = 'MyVideo_%s' % i
             name = 'my_video_%s' % i
             self.repository[name] = video
             clipboard.addContent(
@@ -331,7 +331,7 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         volume = zeit.content.volume.volume.Volume()
         volume.year = 2006
         volume.volume = 23
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         volume.set_cover('portrait', 'ZEI', self.repository['imagegroup'])
         self.repository['2006']['23'] = volume
         add_to_clipboard(
@@ -363,7 +363,7 @@ class PortraitboxForm(
 
     def test_setting_reference_clears_local_values(self):
         box = zeit.content.portraitbox.portraitbox.Portraitbox()
-        box.name = u'My Name'
+        box.name = 'My Name'
         self.repository['portrait'] = box
         self.get_article(with_empty_block=True)
         b = self.browser

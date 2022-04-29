@@ -12,7 +12,7 @@ class VolumeListRepresentation(
         zeit.content.volume.interfaces.IVolume,
         zope.publisher.interfaces.IPublicationRequest)
 
-    ressort = page = author = u''
+    ressort = page = author = ''
 
     @property
     def volume(self):

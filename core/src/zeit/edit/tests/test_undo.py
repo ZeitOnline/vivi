@@ -79,6 +79,6 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_history_should_decode_undo_message(self):
         self.content.year = 2012
-        zeit.edit.undo.mark_transaction_undoable(u'äöü')
+        zeit.edit.undo.mark_transaction_undoable('äöü')
         transaction.commit()
-        self.assertEqual(u'äöü', self.undo.history[0]['description'])
+        self.assertEqual('äöü', self.undo.history[0]['description'])

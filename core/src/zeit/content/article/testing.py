@@ -140,8 +140,8 @@ def create_article():
     article = Article()
     zeit.cms.content.field.apply_default_values(article, IArticle)
     article.year = 2011
-    article.title = u'title'
-    article.ressort = u'Deutschland'
+    article.title = 'title'
+    article.ressort = 'Deutschland'
     zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
     return article
 

@@ -89,4 +89,4 @@ class GroupTitle(zeit.edit.browser.form.InlineForm):
 class Empty:
 
     def render(self):
-        return u''
+        return ''

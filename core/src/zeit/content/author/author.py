@@ -30,8 +30,8 @@ import zope.security.proxy
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     default_template = (
-        u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        u'</author>')
+        '<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
+        '</author>')
 
     for name in [
         'biography',
@@ -133,7 +133,7 @@ def update_display_name(obj, event):
     if obj.entered_display_name:
         obj.display_name = obj.entered_display_name
     else:
-        obj.display_name = u'%s %s' % (obj.firstname, obj.lastname)
+        obj.display_name = '%s %s' % (obj.firstname, obj.lastname)
 
 
 @grok.subscribe(

@@ -65,8 +65,8 @@ class MockPublishInfo:
 
     error_messages = ()
     date_print_published = None
-    last_modified_by = u'testuser'
-    last_published_by = u'testuser'
+    last_modified_by = 'testuser'
+    last_published_by = 'testuser'
     locked = False
     lock_reason = None
 

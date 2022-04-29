@@ -6,7 +6,7 @@ YOUTUBE = """\
 frameborder="0" allowfullscreen></iframe>
 """
 
-TWITTER = u"""\
+TWITTER = """\
 <raw>
 <blockquote class="twitter-tweet" lang="de"><p>"I suffer from short-term memory
 loss. It runs in my family. At least I think it does.... Where are they...?"

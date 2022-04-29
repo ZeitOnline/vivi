@@ -209,8 +209,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_new_video_should_bbb_copy_authors(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['author'] = author
         bc = create_video()
         bc.data['custom_fields']['authors'] = 'http://xml.zeit.de/author'
@@ -220,8 +220,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_changed_video_should_bbb_copy_authors(self):
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['author'] = author
         bc = create_video()
         import_video(bc)
@@ -422,7 +422,7 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
     def test_video_changes_are_written_to_brightcove_on_checkin(self):
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['myvid'], semantic_change=True) as co:
-            co.title = u'local change'
+            co.title = 'local change'
         transaction.commit()
         self.assertEqual(1, self.request.call_count)
         self.assertEqual(

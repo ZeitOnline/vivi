@@ -9,7 +9,7 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_no_channels_copies_ressort_to_channel_on_change(self):
         with checked_out(self.repository['testcontent']) as co:
-            co.ressort = u'Deutschland'
+            co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.testcontenttype.interfaces.IExampleContentType,
@@ -19,7 +19,7 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
     def test_merges_with_existing_channels(self):
         with checked_out(self.repository['testcontent']) as co:
             co.channels = (('International', None),)
-            co.ressort = u'Deutschland'
+            co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.testcontenttype.interfaces.IExampleContentType,
@@ -30,7 +30,7 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
     def test_channels_already_set_does_not_change_anything(self):
         with checked_out(self.repository['testcontent']) as co:
             co.channels = (('Deutschland', None),)
-            co.ressort = u'Deutschland'
+            co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.testcontenttype.interfaces.IExampleContentType,
@@ -39,10 +39,10 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_channels_are_not_set_if_product_forbids_it(self):
         article = ExampleContentType()
-        article.product = zeit.cms.content.sources.Product(u'ZEI')
+        article.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['testcontent'] = article
         with checked_out(self.repository['testcontent']) as co:
-            co.ressort = u'Deutschland'
+            co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.testcontenttype.interfaces.IExampleContentType,
@@ -55,7 +55,7 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             article, zeit.cms.content.interfaces.ISkipDefaultChannel)
         self.repository['testcontent'] = article
         with checked_out(self.repository['testcontent']) as co:
-            co.ressort = u'Deutschland'
+            co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.testcontenttype.interfaces.IExampleContentType,
@@ -69,7 +69,7 @@ class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
         article = self.repository['testcontent']
         log = zeit.objectlog.interfaces.ILog(article)
         with zeit.cms.checkout.helper.checked_out(article) as co:
-            co.access = u'abo'
+            co.access = 'abo'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.content.interfaces.ICommonMetadata,
@@ -83,7 +83,7 @@ class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
         article = self.repository['testcontent']
         log = zeit.objectlog.interfaces.ILog(article)
         with zeit.cms.checkout.helper.checked_out(article) as co:
-            co.access = u'free'
+            co.access = 'free'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
                     zeit.cms.content.interfaces.ICommonMetadata,

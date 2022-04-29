@@ -79,4 +79,4 @@ Verify the type in the connector:
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> res = connector['http://xml.zeit.de/online/2007/01/Somalia']
 >>> res.type
-u'channel_cp'
+'channel_cp'

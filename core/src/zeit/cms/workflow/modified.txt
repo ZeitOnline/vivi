@@ -34,7 +34,7 @@ The last modifier is zope.user now:
 
 >>> content = repository['testcontent']
 >>> zeit.cms.workflow.interfaces.IModified(content).last_modified_by
-u'zope.user'
+'zope.user'
 >>> zeit.cms.workflow.interfaces.IModified(content).date_last_checkout
 DateTime(..., tzinfo=Timezone('UTC'))
 

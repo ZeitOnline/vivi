@@ -119,7 +119,7 @@ class TestSources(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('450x200', scale.name)
         self.assertEqual('450', scale.width)
         self.assertEqual('200', scale.height)
-        self.assertEqual(u'Aufmacher groß (450×200)', scale.title)
+        self.assertEqual('Aufmacher groß (450×200)', scale.title)
 
     def test_color_source(self):
         source = zeit.imp.source.ColorSource()(None)

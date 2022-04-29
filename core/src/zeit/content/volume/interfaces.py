@@ -29,7 +29,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         # XXX kludgy, we expect a product with this ID to be present in the XML
         # file. We only need to set an ID here, since to read the product we'll
         # ask the source anyway.
-        default=zeit.cms.content.sources.Product(u'ZEI'),
+        default=zeit.cms.content.sources.Product('ZEI'),
         source=PRODUCT_SOURCE)
 
     year = zope.schema.Int(

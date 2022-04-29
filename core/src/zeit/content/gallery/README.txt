@@ -37,7 +37,7 @@ There is one image in the image folder, so the gallery has a length of 1 now:
 >>> len(gallery)
 2
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
+['DSC00109_2.JPG', 'DSC00109_3.JPG']
 
 
 
@@ -80,13 +80,13 @@ Let's add an image to the image folder:
 The gallery obviously hasn't noted this change:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
+['DSC00109_2.JPG', 'DSC00109_3.JPG']
 
 We need to call `reload_image_folder`:
 
 >>> gallery.reload_image_folder()
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg']
+['DSC00109_2.JPG', 'DSC00109_3.JPG', '01.jpg']
 
 The change is reflected in the xml:
 
@@ -134,7 +134,7 @@ Get the entry for 01.jpg:
 The image is referenced correctly:
 
 >>> entry.image.uniqueId
-u'http://xml.zeit.de/2006/01.jpg'
+'http://xml.zeit.de/2006/01.jpg'
 
 We have not set any title or text for the entry, so they're empty:
 
@@ -146,15 +146,15 @@ None
 The caption is pre-filled with the caption of the image:
 
 >>> entry.caption
-u'Nice image'
+'Nice image'
 
 When we change the entry text, the change will **not** as such reflected in the
 xml:
 
 >>> import lxml.objectify
 >>> entry.text = lxml.objectify.E.text(
-...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
->>> entry.caption = u'Gallery & caption'
+...     lxml.objectify.E.p('Seit zwei Uhr in der Früh'))
+>>> entry.caption = 'Gallery & caption'
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
@@ -237,7 +237,7 @@ well:
 
 >>> import zope.event
 >>> import zope.lifecycleevent
->>> entry.title = u'Der Wecker klingelt'
+>>> entry.title = 'Der Wecker klingelt'
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(entry))
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -282,13 +282,13 @@ Let's make sure we actually can get the saved data:
 
 >>> entry = gallery['01.jpg']
 >>> entry.title
-u'Der Wecker klingelt'
+'Der Wecker klingelt'
 >>> entry.text
 <Element text at ...>
 >>> entry.text['p']
-u'Seit zwei Uhr in der Fr\xfch'
+'Seit zwei Uhr in der Fr\xfch'
 >>> entry.caption
-u'Gallery & caption'
+'Gallery & caption'
 
 
 Entry layout
@@ -298,14 +298,14 @@ Each entry can have a different layout. This is defined by a source:
 
 >>> field = zeit.content.gallery.interfaces.IGalleryEntry['layout']
 >>> sorted(list(field.vocabulary))
-[u'hidden', u'image-only']
+['hidden', 'image-only']
 
 Let's set a layout on 01.jpg:
 
 >>> entry = gallery['01.jpg']
 >>> entry.layout is None
 True
->>> entry.layout = u'image-only'
+>>> entry.layout = 'image-only'
 >>> gallery['01.jpg'] = entry
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -350,7 +350,7 @@ When we set the layout to None again, the layout attribute is removed:
 
 >>> entry = gallery['01.jpg']
 >>> entry.layout
-u'image-only'
+'image-only'
 >>> entry.layout = None
 >>> gallery['01.jpg'] = entry
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
@@ -410,7 +410,7 @@ a helper method to return images that are crops of its image:
 >>> gallery['01.jpg-10x10.jpg'] = entry
 >>> entry = gallery['01.jpg']
 >>> entry.crops[0].__name__
-u'01.jpg-10x10.jpg'
+'01.jpg-10x10.jpg'
 >>> del repository['2006']['01.jpg-10x10.jpg']
 >>> transaction.commit()
 >>> gallery.reload_image_folder()
@@ -441,13 +441,13 @@ Sorting
 The images in the gallery have a certain order. Currently it is:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg']
+['DSC00109_2.JPG', 'DSC00109_3.JPG', '01.jpg']
 
 Let's change the order:
 
->>> gallery.updateOrder([u'01.jpg', u'DSC00109_2.JPG', u'DSC00109_3.JPG'])
+>>> gallery.updateOrder(['01.jpg', 'DSC00109_2.JPG', 'DSC00109_3.JPG'])
 >>> list(gallery.keys())
-[u'01.jpg', u'DSC00109_2.JPG', u'DSC00109_3.JPG']
+['01.jpg', 'DSC00109_2.JPG', 'DSC00109_3.JPG']
 
 This is of course reflected int he XML:
 
@@ -495,16 +495,16 @@ This is of course reflected int he XML:
 When the list passed does not match exactly the entries of the gallery, a
 ValueError is raised:
 
->>> gallery.updateOrder([u'01.jpg'])
+>>> gallery.updateOrder(['01.jpg'])
 Traceback (most recent call last):
     ...
 ValueError: The order argument must contain the same keys as the container.
 
 Restore the orgiginal order again:
 
->>> gallery.updateOrder([u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg'])
+>>> gallery.updateOrder(['DSC00109_2.JPG', 'DSC00109_3.JPG', '01.jpg'])
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg']
+['DSC00109_2.JPG', 'DSC00109_3.JPG', '01.jpg']
 
 
 Container api
@@ -531,8 +531,8 @@ True
 
 `items`:
 >>> list(gallery.items())
-[(u'DSC00109_2.JPG', <zeit.content.gallery.gallery.GalleryEntry object at 0x...>),
- (u'01.jpg', <zeit.content.gallery.gallery.GalleryEntry object at 0x...>)]
+[('DSC00109_2.JPG', <zeit.content.gallery.gallery.GalleryEntry object at 0x...>),
+ ('01.jpg', <zeit.content.gallery.gallery.GalleryEntry object at 0x...>)]
 
 `values`:
 >>> list(gallery.values())
@@ -563,12 +563,12 @@ Remove the 01.jpg:
 It is now longer in the keys:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
+['DSC00109_2.JPG', 'DSC00109_3.JPG']
 
 >>> gallery['01.jpg']
 Traceback (most recent call last):
     ...
-KeyError: u'http://xml.zeit.de/2006/01.jpg'
+KeyError: 'http://xml.zeit.de/2006/01.jpg'
 
 Note that his has *not* changed the xml so far:
 
@@ -641,7 +641,7 @@ Reloading the image folder will also re-create all the thumbnails. The
 thumbnail of the removed image is also removed:
 
 >>> repository['2006']['thumbnails'].keys()
-[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
+['DSC00109_2.JPG', 'DSC00109_3.JPG']
 
 
 At one point we had galleries with an empty caption-tag which broke
@@ -660,7 +660,7 @@ The old xml format is a bit more lazy. Let's add the second image again:
 
 >>> zeit.content.gallery.testing.add_image('2006', '01.jpg')
 >>> transaction.commit()
->>> gallery.xml = lxml.objectify.XML(u"""\
+>>> gallery.xml = lxml.objectify.XML("""\
 ...     <gallery>
 ...       <head>
 ...       </head>
@@ -700,12 +700,12 @@ There are some major differences to the new xml:
 The image folder is /2006, decuced from /cms/work/2006/DSC00109_2.jpg:
 
 >>> gallery.image_folder.uniqueId
-u'http://xml.zeit.de/2006/'
+'http://xml.zeit.de/2006/'
 
 The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
+['DSC00109_2.JPG', '01.jpg', 'DSC00109_3.JPG']
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
@@ -763,7 +763,7 @@ The entries' text is wrapped in a <p> node:
 Let's make sure this also works, when the image urls are not starting wich
 /cms/work but are already convertet to http://xml.zeit.de urls:
 
->>> gallery.xml = lxml.objectify.XML(u"""\
+>>> gallery.xml = lxml.objectify.XML("""\
 ...     <gallery>
 ...       <head>
 ...       </head>
@@ -795,12 +795,12 @@ Let's make sure this also works, when the image urls are not starting wich
 The image folder is resolved correcty, too:
 
 >>> gallery.image_folder.uniqueId
-u'http://xml.zeit.de/2006/'
+'http://xml.zeit.de/2006/'
 
 The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
+['DSC00109_2.JPG', '01.jpg', 'DSC00109_3.JPG']
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
@@ -835,4 +835,4 @@ Searchable text
 
 >>> adapter = zope.index.text.interfaces.ISearchableText(gallery)
 >>> adapter.getSearchableText()
-[u'Im holl\xe4ndischen Kapit\xe4nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie\xdf aber...']
+['Im holl\xe4ndischen Kapit\xe4nsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hie\xdf aber...']

@@ -210,7 +210,7 @@ class ImageGroupBrowserTest(
             pkg_resources.resource_stream(
                 'zeit.content.image.browser',
                 'testdata/new-hampshire-artikel.jpg'),
-            'image/jpeg', u'föö.jpg'.encode('utf-8'))
+            'image/jpeg', 'föö.jpg'.encode('utf-8'))
         self.save_imagegroup()
         group = self.repository['imagegroup']
         self.assertEqual(['foeoe.jpg'], list(group.keys()))

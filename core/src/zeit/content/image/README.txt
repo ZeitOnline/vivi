@@ -41,7 +41,7 @@ When the image is adapted to ILocalContent we'll get a LocalImage:
 >>> local
 <zeit.content.image.image.LocalImage...>
 >>> local.__name__
-u'DSC00109_2.JPG'
+'DSC00109_2.JPG'
 >>> local.mimeType
 'image/jpeg'
 
@@ -61,7 +61,7 @@ The properties contain the title:
 
 >>> import pprint
 >>> resource.properties[('title', 'http://namespaces.zeit.de/CMS/document')]
-u'my title'
+'my title'
 
 Le's add the local image to the repository:
 
@@ -72,14 +72,14 @@ The metadata is still there:
 >>> image = repository['2006']['DSC00109_2.JPG']
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
 >>> metadata.title
-u'my title'
+'my title'
 
 The local image also has the title:
 
 >>> local = zeit.cms.workingcopy.interfaces.ILocalContent(image)
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(local)
 >>> metadata.title
-u'my title'
+'my title'
 
 There is also a view for the metadata:
 
@@ -117,7 +117,7 @@ Set metadata:
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(group)
 >>> metadata.copyright = (
 ...     ('Agentur XY', 'http://xyz.de'))
->>> metadata.caption = u'Caption'
+>>> metadata.caption = 'Caption'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
@@ -137,7 +137,7 @@ Make sure we don't die when there is an invalid XML snippet stored:
 
 >>> group = zeit.cms.checkout.interfaces.ICheckoutManager(group).checkout()
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(group)
->>> properties[('caption', 'http://namespaces.zeit.de/CMS/image')] = u'5 < 7'
+>>> properties[('caption', 'http://namespaces.zeit.de/CMS/image')] = '5 < 7'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,

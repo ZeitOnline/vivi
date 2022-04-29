@@ -41,9 +41,9 @@ def render_publish_action(action):
     context_url = zope.traversing.browser.absoluteURL(
         action.form.context, action.form.request)
     return (
-        u'<button id="{name}" type="button" class="button" onclick='
-        u'"zeit.cms.lightbox_form(\'{url}/@@do-publish-all\')">'
-        u'{label}</button>'.format(
+        '<button id="{name}" type="button" class="button" onclick='
+        '"zeit.cms.lightbox_form(\'{url}/@@do-publish-all\')">'
+        '{label}</button>'.format(
             name=action.__name__, label=html.escape(label, quote=True),
             url=context_url))
 

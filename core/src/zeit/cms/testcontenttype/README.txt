@@ -42,7 +42,7 @@ True
 
 Now that was pretty boring. Add a title and year (from common metadata):
 
->>> content.title = u'gocept'
+>>> content.title = 'gocept'
 >>> content.year = 2008
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -62,8 +62,8 @@ Make sure we can adapt to webdav properties:
 <zeit.connector.resource.WebDAVProperties object at 0x...>
 >>> import pprint
 >>> pprint.pprint(dict(properties))
-{('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...',
- ('year', u'http://namespaces.zeit.de/CMS/document'): u'2008'}
+{('date-last-modified', 'http://namespaces.zeit.de/CMS/document'): '...',
+ ('year', 'http://namespaces.zeit.de/CMS/document'): '2008'}
 
 
 

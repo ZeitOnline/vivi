@@ -31,7 +31,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         volume.year = 2015
         volume.volume = 1
         volume.teaserText = 'original'
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['2015'] = Folder()
         self.repository['2015']['01'] = Folder()
         self.repository['2015']['01']['ausgabe'] = volume
@@ -66,7 +66,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
             (source, node),
             zeit.cms.content.interfaces.IReference, name='related')
         self.assertEqual('original', reference.teaserText)
-        reference.teaserText = u'local'
+        reference.teaserText = 'local'
         self.assertEqual('local', reference.teaserText)
         reference.teaserText = None
         self.assertEqual('original', reference.teaserText)

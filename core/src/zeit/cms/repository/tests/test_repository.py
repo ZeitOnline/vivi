@@ -20,11 +20,11 @@ class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         self.repository['online']['conflicting'] = (
-            zeit.cms.repository.unknown.PersistentUnknownResource(u'Pop'))
+            zeit.cms.repository.unknown.PersistentUnknownResource('Pop'))
         self.res = zeit.cms.workingcopy.interfaces.ILocalContent(
             self.repository['online']['conflicting'])
         self.repository['online']['conflicting'] = (
-            zeit.cms.repository.unknown.PersistentUnknownResource(u'Bang'))
+            zeit.cms.repository.unknown.PersistentUnknownResource('Bang'))
 
     def test_conflict_on_setitem(self):
         self.assertRaises(
@@ -38,7 +38,7 @@ class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_conflict_override(self):
         self.repository.addContent(self.res, ignore_conflicts=True)
-        self.assertEqual(u'Pop',
+        self.assertEqual('Pop',
                          self.repository['online']['conflicting'].data)
 
 

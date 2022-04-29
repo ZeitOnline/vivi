@@ -100,7 +100,7 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
             self.repository['cp']
 
     def test_handles_unicode_uniqueIds(self):
-        content = self.repository[u'ümläut'] = (
+        content = self.repository['ümläut'] = (
             zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
         cp = zeit.content.cp.centerpage.CenterPage()
         cp['lead'].create_item('teaser').append(content)
@@ -109,7 +109,7 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_homepage_has_different_publish_priority(self):
         cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        cp.type = u'homepage'
+        cp.type = 'homepage'
         self.assertEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
             zeit.cms.workflow.interfaces.IPublishPriority(cp))

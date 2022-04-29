@@ -69,7 +69,7 @@ String. Note that strings are always unicode:
 
 >>> content.b = 'Foo'
 >>> content.b
-u'Foo'
+'Foo'
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
     <b>Foo</b>
@@ -83,10 +83,10 @@ objectify guesses the data wrong:
 >>> prop = ObjectPathProperty('.b', zope.schema.TextLine())
 >>> content.xml.b = 1234
 >>> prop.__get__(content, None)
-u'1234'
+'1234'
 >>> content.xml.b = '1.20'
 >>> prop.__get__(content, None)
-u'1.20'
+'1.20'
 
 Invalid values fall back to the default behaviour, i.e. don't use the field for
 validation:
@@ -100,10 +100,10 @@ We can also get the field's default value instead of the mssing value when the
 XML is empty:
 
 >>> prop = ObjectPathProperty(
-...     '.b', zope.schema.TextLine(default=u'foo'), use_default=True)
+...     '.b', zope.schema.TextLine(default='foo'), use_default=True)
 >>> content.xml.b = None
 >>> prop.__get__(content, None)
-u'foo'
+'foo'
 
 
 Arbitrary Element as `xml`
@@ -125,7 +125,7 @@ False
 Initially b is an empty string, since the node exist and is empty:
 
 >>> content.b
-u''
+''
 
 Let's assign some values to b. Integer:
 
@@ -185,7 +185,7 @@ not in the document, yet:
 Access the values:
 
 >>> content.url
-u'url'
+'url'
 >>> content.words
 5
 >>> content.chars
@@ -211,7 +211,7 @@ Setting new values:
   <count words="53" chars="20" sentences="2" choice="two"/>
 </doc>
 >>> content.choice
-u'two'
+'two'
 
 
 Setting bool to false works as well:
@@ -238,9 +238,9 @@ WrongType: (6.25, (<type 'int'>, <type 'long'>), '')
 
 Setting None will remove the attribute:
 
->>> content.text = u'some text'
+>>> content.text = 'some text'
 >>> content.text
-u'some text'
+'some text'
 >>> content.text = None
 >>> content.text is None
 True
@@ -294,7 +294,7 @@ Create our content object:
 Create an object which will be referenced:
 
 >>> referenced_obj = Content()
->>> referenced_obj.uniqueId = u'http://xml.zeit.de/refed'
+>>> referenced_obj.uniqueId = 'http://xml.zeit.de/refed'
 
 Add the referenced object to the repository:
 
@@ -362,7 +362,7 @@ Create a content object and an object which can be referenced:
 
 >>> content = Content()
 >>> referenced_obj = Content()
->>> referenced_obj.uniqueId = u'http://xml.zeit.de/related'
+>>> referenced_obj.uniqueId = 'http://xml.zeit.de/related'
 >>> repository_objects[referenced_obj.uniqueId] = referenced_obj
 
 Currently no object is referenced:
@@ -450,7 +450,7 @@ Set authors:
 
 
 >>> content.authors
-(u'Hans', u'Klaus', u'Siegfried')
+('Hans', 'Klaus', 'Siegfried')
 
 
 
@@ -466,11 +466,11 @@ Create a content class:
 >>>
 >>> class Content(zeit.cms.content.xmlsupport.XMLRepresentationBase):
 ...
-...     default_template = u'<foo xmlns:myns="namespace"/>'
+...     default_template = '<foo xmlns:myns="namespace"/>'
 ...     title = zeit.cms.content.property.Structure('.title')
 
 >>> content = Content()
->>> content.title = u'Foo <em>bar</em> baz'
+>>> content.title = 'Foo <em>bar</em> baz'
 
 >>> import lxml.etree
 >>> print(zeit.cms.testing.xmltotext(content.xml))
@@ -481,16 +481,16 @@ Create a content class:
 Get the value:
 
 >>> content.title
-u'Foo <em>bar</em> baz'
+'Foo <em>bar</em> baz'
 
 
 >>> content.title = 'Foo <em>Bar<a href="blaubs">click</a></em>'
 >>> content.title
-u'Foo <em>Bar<a href="blaubs">click</a></em>'
+'Foo <em>Bar<a href="blaubs">click</a></em>'
 
->>> content.title = u'<em>blah</em>'
+>>> content.title = '<em>blah</em>'
 >>> content.title
-u'<em>blah</em>'
+'<em>blah</em>'
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo xmlns:myns="namespace">
   <title>
@@ -501,6 +501,6 @@ u'<em>blah</em>'
 
 Make sure a single < in the first text node is escaped:
 
->>> content.title = u'Foo &lt;bar <em>blubs</em>'
+>>> content.title = 'Foo &lt;bar <em>blubs</em>'
 >>> content.title
-u'Foo &lt;bar <em>blubs</em>'
+'Foo &lt;bar <em>blubs</em>'

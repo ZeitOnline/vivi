@@ -70,13 +70,13 @@ We could ask for b's relations:
 >>> res
 [<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>]
 >>> res[0].uniqueId
-u'http://xml.zeit.de/a'
+'http://xml.zeit.de/a'
 
 The same accounts for c:
 
 >>> res = sorted(relations.get_relations(repository['c']))
 >>> res[0].uniqueId
-u'http://xml.zeit.de/a'
+'http://xml.zeit.de/a'
 
 
 Note that `get_relations` is not transitive. So if d references a, asking for
@@ -91,7 +91,7 @@ c's references will still just yield a:
 >>> len(res)
 1
 >>> res[0].uniqueId
-u'http://xml.zeit.de/a'
+'http://xml.zeit.de/a'
 
 When an object with a unique id of "None" is queried, nothing will be returned:
 
@@ -145,7 +145,7 @@ The relation can be queried now:
 >>> len(res)
 1
 >>> res[0].uniqueId
-u'http://xml.zeit.de/d'
+'http://xml.zeit.de/d'
 
 
 Adding
@@ -163,5 +163,5 @@ so we probably shouldn't rely on it here).
 >>> len(res)
 1
 >>> res[0].uniqueId
-u'http://xml.zeit.de/new'
+'http://xml.zeit.de/new'
 

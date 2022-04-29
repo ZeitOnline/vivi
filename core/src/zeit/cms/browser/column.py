@@ -31,7 +31,7 @@ class LinkColumn(zc.table.column.GetterColumn):
         # Get the target object and compute the URL
         target = self.getter(item, formatter)
         if target is None:
-            return u''
+            return ''
 
         # Get the same display as if a normal column.
         content = html.escape(
@@ -49,10 +49,10 @@ class LinkColumn(zc.table.column.GetterColumn):
             css_class = self.css_class(target, item, formatter) or ''
             if css_class:
                 css_class = 'class="%s" ' % css_class
-            target = u''
+            target = ''
             if self.target:
                 target = 'target="%s" ' % self.target
-            result = u'<a %s%shref="%s">%s</a>' % (
+            result = '<a %s%shref="%s">%s</a>' % (
                 target, css_class, url, content)
         return result
 
@@ -64,4 +64,4 @@ class LinkColumn(zc.table.column.GetterColumn):
             self.getter(item, formatter), item, formatter)
 
     def css_class(self, value, item, formatter):
-        return u''
+        return ''

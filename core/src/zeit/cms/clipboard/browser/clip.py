@@ -19,7 +19,7 @@ class ClipListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
 
     author = subtitle = byline = ressort = volume = page = year = None
     uniqueId = None
-    searchableText = u''
+    searchableText = ''
 
     @property
     def title(self):
@@ -47,7 +47,7 @@ class DeleteClip(zeit.cms.browser.view.Base):
         self.send_message(_('"${name}" was removed from the clipboard.',
                             mapping=dict(name=title)))
         self.redirect(self.url(parent))
-        return u''
+        return ''
 
 
 class NotOnClipboardMenuItem:
@@ -55,7 +55,7 @@ class NotOnClipboardMenuItem:
     def render(self):
         if zeit.cms.clipboard.interfaces.IClipboard.providedBy(self.context):
             # Do not render on clipboard
-            return u''
+            return ''
         return super(NotOnClipboardMenuItem, self).render()
 
 

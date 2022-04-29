@@ -18,8 +18,8 @@ import zope.interface
 class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
 
     default_template = (
-        u'<container layout="artbox" label="portrait" '
-        u'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
+        '<container layout="artbox" label="portrait" '
+        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
 
     name = zeit.cms.content.property.ObjectPathProperty('.block.title')
     text = zeit.cms.content.property.Structure('.block.text')

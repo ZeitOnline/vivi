@@ -21,12 +21,12 @@ class ArticleTemplateTest(
         s.pause(100)
 
         kolumne_layouts = [
-            u'(nothing selected)',
-            u'Heiter bis glücklich',
-            u'Ich habe einen Traum',
-            u'Martenstein',
-            u'Standard',
-            u'Von A nach B',
+            '(nothing selected)',
+            'Heiter bis glücklich',
+            'Ich habe einen Traum',
+            'Martenstein',
+            'Standard',
+            'Von A nach B',
         ]
 
         s.assertVisible('css=.fieldname-header_layout')

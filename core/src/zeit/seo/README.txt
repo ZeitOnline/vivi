@@ -78,7 +78,7 @@ Create an unknown resource and adapt it to ISEO:
 
 >>> import zeit.seo.interfaces
 >>> import zeit.cms.repository.unknown
->>> content = zeit.cms.repository.unknown.UnknownResource(u'')
+>>> content = zeit.cms.repository.unknown.UnknownResource('')
 >>> seo = zeit.seo.interfaces.ISEO(content)
 >>> seo
 <zeit.seo.seo.SEO object at 0x...>
@@ -86,17 +86,17 @@ Create an unknown resource and adapt it to ISEO:
 
 Let's set the title and description:
 
->>> seo.html_title = u'Special title'
->>> seo.html_description = u'Very special description'
->>> seo.cook_meta_robots = u'Cook meta robots value'
+>>> seo.html_title = 'Special title'
+>>> seo.html_description = 'Very special description'
+>>> seo.cook_meta_robots = 'Cook meta robots value'
 
 The properties are now set at `content`:
 
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(content)
->>> properties[(u'html-meta-title', u'http://namespaces.zeit.de/CMS/document')]
-u'Special title'
->>> properties[(u'html-meta-description',
-...             u'http://namespaces.zeit.de/CMS/document')]
-u'Very special description'
->>> properties[(u'html-cook-meta-robots', u'http://namespaces.zeit.de/CMS/document')]
-u'Cook meta robots value'
+>>> properties[('html-meta-title', 'http://namespaces.zeit.de/CMS/document')]
+'Special title'
+>>> properties[('html-meta-description',
+...             'http://namespaces.zeit.de/CMS/document')]
+'Very special description'
+>>> properties[('html-cook-meta-robots', 'http://namespaces.zeit.de/CMS/document')]
+'Cook meta robots value'

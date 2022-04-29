@@ -7,7 +7,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
 
     def create_link_object(self):
         link = zeit.content.link.link.Link()
-        link.ressort = u'Politik'
+        link.ressort = 'Politik'
         link.teaserTitle = 'gocept homepage'
         link.url = 'http://gocept.com'
         self.repository['online']['2007']['01']['gocept.link'] = link

@@ -311,7 +311,7 @@ class DatetimeProperty:
 
     def toProperty(self, value):
         if value is None:
-            return u''
+            return ''
         if value.tzinfo is None:
             raise ValueError('%r has no timezone information' % value)
         return value.isoformat()
@@ -333,7 +333,7 @@ class DateProperty:
 
     def toProperty(self, value):
         if value is None:
-            return u''
+            return ''
         return value.isoformat()
 
 

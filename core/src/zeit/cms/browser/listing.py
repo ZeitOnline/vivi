@@ -132,7 +132,7 @@ class CommonListRepresentation(BaseListRepresentation):
                 items.append(six.text_type(getattr(self, name)))
             except Exception:
                 continue
-        return u' '.join(items)
+        return ' '.join(items)
 
 
 @zope.component.adapter(
@@ -164,7 +164,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 
     def cell_formatter(self, value, item, formatter):
         if value is None:
-            return u''
+            return ''
         return six.text_type(value)
 
     def getSortKey(self, item, formatter):
@@ -176,7 +176,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 
 class MetadataColumn(GetterColumn):
 
-    def __init__(self, title=u'', searchable_text=True, **kwargs):
+    def __init__(self, title='', searchable_text=True, **kwargs):
         super(MetadataColumn, self).__init__(title=title, **kwargs)
         self.searchable_text = searchable_text
 
@@ -233,14 +233,14 @@ class FilenameColumn(GetterColumn):
     def cell_formatter(self, value, item, formatter):
         formatted = super(FilenameColumn, self).cell_formatter(
             value, item, formatter)
-        return u'<span class="filename">%s</span>' % formatted
+        return '<span class="filename">%s</span>' % formatted
 
 
 class DatetimeColumn(GetterColumn):
 
     def cell_formatter(self, value, item, formatter):
         if not value:
-            return u''
+            return ''
         tzinfo = zope.interface.common.idatetime.ITZInfo(formatter.request,
                                                          None)
         if tzinfo is not None:
@@ -268,9 +268,9 @@ class Listing:
     no_content_message = _('There are no objects in this folder.')
 
     columns = (
-        TypeColumn(u'', name='type'),
-        LockedColumn(u'', name='locked'),
-        PublishedColumn(u'', name='published'),
+        TypeColumn('', name='type'),
+        LockedColumn('', name='locked'),
+        PublishedColumn('', name='published'),
         GetterColumn(
             _('Author'),
             name='author',
@@ -296,7 +296,7 @@ class Listing:
             name='page',
             getter=lambda t, c: t.page,
             sort_default=-1),
-        MetadataColumn(u'Metadaten', name='metadata'),
+        MetadataColumn('Metadaten', name='metadata'),
     )
 
     @zope.cachedescriptors.property.Lazy

@@ -65,7 +65,7 @@ def default_repository_content_adapter(context):
 
 @grok.adapter(
     zeit.cms.repository.interfaces.IDAVContent,
-    name=u'non-conflicting')
+    name='non-conflicting')
 @grok.implementer(zeit.cms.checkout.interfaces.IRepositoryContent)
 def default_repository_content_adapter_non_conflicting(context):
     # Default adapter to adapt local content to repository content: add to

@@ -60,11 +60,11 @@ A module can be created:
 >>> import pprint
 >>> import json
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'editable-body',
-            u'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
-  u'name': u'reload',
-  u'when': None},
- {u'args': [u'id-15'], u'name': u'added', u'when': u'after-reload'}]
+[{'args': ['editable-body',
+            'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+  'name': 'reload',
+  'when': None},
+ {'args': ['id-15'], 'name': 'added', 'when': 'after-reload'}]
 >>> browser.open(contents_url)
 >>> print(browser.contents)
 <div id="editable-body"

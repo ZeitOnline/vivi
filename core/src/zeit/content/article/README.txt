@@ -11,7 +11,7 @@ Articles consist of an XMLdocument. Most properties map to XML-Elements:
 
 >>> from six import StringIO
 >>> from zeit.content.article.article import Article
->>> article_xml = StringIO(u"""\
+>>> article_xml = StringIO("""\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
@@ -30,7 +30,7 @@ Articles consist of an XMLdocument. Most properties map to XML-Elements:
 The article property is mapped to the XML:
 
 >>> article.title
-u'Jahr der \xdcberraschungen'
+'Jahr der \xdcberraschungen'
 
 
 Changes Are Reflected in The Properties And the XML
@@ -40,7 +40,7 @@ Changes Are Reflected in The Properties And the XML
 We change some attributes now and see that the changes are reflected in the
 XML:
 
->>> article.title = u'Jahr ohne \xdcberraschungen'
+>>> article.title = 'Jahr ohne \xdcberraschungen'
 >>> article.year = 2007
 >>> article.volume = 1
 >>> article.textLength = 4711
@@ -166,7 +166,7 @@ this.
 We first define some XML which contains some properties we want to be
 reflected in the WebDAV properties:
 
->>> article_xml = StringIO(u"""\
+>>> article_xml = StringIO("""\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
@@ -212,7 +212,7 @@ Now the WebDAV properties are there, besides the empty one:
 
 >>> sorted(properties.keys())
 [('author', 'http://namespaces.zeit.de/CMS/document'),
- ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'),
+ ('date-last-modified', 'http://namespaces.zeit.de/CMS/document'),
  ('text-length', 'http://namespaces.zeit.de/CMS/document'),
  ('volume', 'http://namespaces.zeit.de/CMS/document'),
  ('year', 'http://namespaces.zeit.de/CMS/document')]
@@ -233,7 +233,7 @@ article:
 >>> article
 <zeit.content.article.article.Article...>
 >>> article.title
-u'Jahr der \xdcberraschungen'
+'Jahr der \xdcberraschungen'
 >>> print(article.year)
 None
 
@@ -268,7 +268,7 @@ None
 Get an image from the repository and attach it:
 
 >>> import zeit.cms.testing
->>> _ = zeit.cms.testing.create_interaction(u'hans')
+>>> _ = zeit.cms.testing.create_interaction('hans')
 
 >>> import datetime
 >>> import zope.component
@@ -311,7 +311,7 @@ Searchable text
 
 All Text inside <p> elements is extracted (empty paragraphs are ignored):
 
->>> article_xml = StringIO(u"""\
+>>> article_xml = StringIO("""\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
@@ -325,4 +325,4 @@ All Text inside <p> elements is extracted (empty paragraphs are ignored):
 >>> article = Article(article_xml)
 >>> adapter = zope.index.text.interfaces.ISearchableText(article)
 >>> adapter.getSearchableText()
-[u'Link', u'und mehr Text', u'Normaler Absatz']
+['Link', 'und mehr Text', 'Normaler Absatz']

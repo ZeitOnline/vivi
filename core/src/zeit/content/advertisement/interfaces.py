@@ -23,11 +23,11 @@ class SupertitleSource(zc.sourcefactory.basic.BasicSourceFactory):
 class IAdvertisement(zeit.cms.content.interfaces.IXMLContent):
 
     title = zope.schema.Text(
-        title=_("Title"),
-        missing_value=u'')
+        title=_('Title'),
+        missing_value='')
 
     text = zope.schema.Text(
-        title=_("Advertisement teaser"),
+        title=_('Advertisement teaser'),
         required=False)
 
     button_text = zope.schema.TextLine(
@@ -49,4 +49,4 @@ class IAdvertisement(zeit.cms.content.interfaces.IXMLContent):
         required=False,
         source=SupertitleSource())
 
-    url = zope.schema.URI(title=_(u"Link address"))
+    url = zope.schema.URI(title=_('Link address'))

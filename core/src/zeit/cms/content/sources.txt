@@ -16,15 +16,15 @@ The serie source returns the possible "serie" values:
 >>> attr = ('serienname', 'title', 'url', 'encoded', 'column', 'video')
 >>> pprint(sorted([[getattr(x, a) for a in attr] for x in serie],
 ...               key=lambda x: x[0]))
-[[u'-', u'-', u'-', None, False, False],
- [u'Autotest', u'Autotest', u'zeitmagazin-autotest', None, False, False],
- [u'Bachelor Tagebuch',
-  u'Bachelor Tagebuch',
-  u'bachelor-tagebuch',
-  u'Bachelor%20Tagebuch',
+[['-', '-', '-', None, False, False],
+ ['Autotest', 'Autotest', 'zeitmagazin-autotest', None, False, False],
+ ['Bachelor Tagebuch',
+  'Bachelor Tagebuch',
+  'bachelor-tagebuch',
+  'Bachelor%20Tagebuch',
   False,
   False],
- [u'Chefsache', u'Chefsache', u'chefsache', None, True, False],
+ ['Chefsache', 'Chefsache', 'chefsache', None, True, False],
  ...]
 
 Ressort
@@ -33,48 +33,48 @@ Ressort
 >>> navi = zeit.cms.content.sources.RessortSource()
 >>> navi = navi(content)
 >>> pprint(list(navi))
-[u'Deutschland',
- u'International',
- u'Wirtschaft',
- u'Finanzen',
- u'Wissen',
- u'Gesundheit',
- u'Computer',
- u'Bildung & Beruf',
- u'Studium',
- u'Campus',
- u'Arbeit',
- u'Zeit für die Schule',
- u'Kultur',
- u'Feuilleton',
- u'Musik',
- u'Literatur',
- u'Leben',
- u'ZUENDER',
- u'Reisen',
- u'Reise',
- u'Sport',
- u'Spiele',
- u'Weblogs',
- u'Auto',
- u'Kunst',
- u'Multimedia',
- u'Video',
- u'------',
- u'ZEIT-Verlag',
- u'Akademie',
- u'Altersvorsorge',
- u'ranking',
- u'Hanser',
- u'visitfinland',
- u'chile-heute',
- u'baufritz',
- u'missionzukunft',
- u'campus-knigge',
- u'e-balance',
- u'bundeskunsthalle',
- u'angebote',
- u'Wochenende']
+['Deutschland',
+ 'International',
+ 'Wirtschaft',
+ 'Finanzen',
+ 'Wissen',
+ 'Gesundheit',
+ 'Computer',
+ 'Bildung & Beruf',
+ 'Studium',
+ 'Campus',
+ 'Arbeit',
+ 'Zeit für die Schule',
+ 'Kultur',
+ 'Feuilleton',
+ 'Musik',
+ 'Literatur',
+ 'Leben',
+ 'ZUENDER',
+ 'Reisen',
+ 'Reise',
+ 'Sport',
+ 'Spiele',
+ 'Weblogs',
+ 'Auto',
+ 'Kunst',
+ 'Multimedia',
+ 'Video',
+ '------',
+ 'ZEIT-Verlag',
+ 'Akademie',
+ 'Altersvorsorge',
+ 'ranking',
+ 'Hanser',
+ 'visitfinland',
+ 'chile-heute',
+ 'baufritz',
+ 'missionzukunft',
+ 'campus-knigge',
+ 'e-balance',
+ 'bundeskunsthalle',
+ 'angebote',
+ 'Wochenende']
 
 
 Titles and tokens are working, too:
@@ -86,7 +86,7 @@ Titles and tokens are working, too:
 ...     (navi, request),
 ...     zope.browser.interfaces.ITerms)
 >>> terms.getTerm('Kultur').title
-u'Kultur'
+'Kultur'
 >>> terms.getTerm('Kultur').token
 '0494f194cae00d8dc3e982b89b046aa4'
 >>> terms.getTerm('snafoo').title
@@ -111,25 +111,25 @@ Currently the content has *no* ressort element selected. This means
 that we get *all* sub ressort elements
 
 >>> pprint(sorted(list(bound)))
-[u'Datenschutz',
- u'Integration',
- u'Joschka Fisher',
- u'Meinung',
- u'Nahost',
- u'US-Wahl']
+['Datenschutz',
+ 'Integration',
+ 'Joschka Fisher',
+ 'Meinung',
+ 'Nahost',
+ 'US-Wahl']
 
 Select 'Deutschland'. Since IExampleContentType is an ICMSContent we still get
 everything. This is actually not desired but is the only way we can avoid
 saving the ressort first and then the subressort:
 
->>> content.ressort = u'Deutschland'
+>>> content.ressort = 'Deutschland'
 >>> pprint(sorted(list(bound)))
-[u'Datenschutz',
- u'Integration',
- u'Joschka Fisher',
- u'Meinung',
- u'Nahost',
- u'US-Wahl']
+['Datenschutz',
+ 'Integration',
+ 'Joschka Fisher',
+ 'Meinung',
+ 'Nahost',
+ 'US-Wahl']
 
 When we use an object as context which does not provide ICMSContent but is
 adaptable to ICommonMetadata we'll get filtered results:
@@ -140,10 +140,10 @@ adaptable to ICommonMetadata we'll get filtered results:
 ... class Meta:
 ...     pass
 >>> meta = Meta()
->>> meta.ressort = u'Deutschland'
+>>> meta.ressort = 'Deutschland'
 >>> bound = sub_ressort(meta)
 >>> pprint(sorted(list(bound)))
-[u'Datenschutz', u'Integration', u'Joschka Fisher', u'Meinung']
+['Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung']
 
 Verify terms/titles:
 
@@ -157,7 +157,7 @@ Currently we have selected "Detuschland":
 >>> term.token
 '58943ab3ce913fa50e3c4566e2f10f7b'
 >>> term.title
-u'Meinung'
+'Meinung'
 
 
 Terms for invalid values return the value as title:
@@ -178,7 +178,7 @@ avoide the memoize:
 >>> term.token
 '58943ab3ce913fa50e3c4566e2f10f7b'
 >>> term.title
-u'Meinung'
+'Meinung'
 
 When the source is bound to an object which doesn't provide ICommonMetadata the
 titles do still work:
@@ -192,7 +192,7 @@ titles do still work:
 >>> term.token
 '58943ab3ce913fa50e3c4566e2f10f7b'
 >>> term.title
-u'Meinung'
+'Meinung'
 >>> terms.getTerm('Foobar').title
 'Foobar'
 
@@ -200,10 +200,10 @@ u'Meinung'
 The subressort source can also be bound to a unicode which is interpreted as
 ressort:
 
->>> bound = sub_ressort(u'Deutschland')
+>>> bound = sub_ressort('Deutschland')
 >>> sorted(bound)
-[u'Datenschutz', u'Integration', u'Joschka Fisher', u'Meinung']
->>> bound = sub_ressort(u'Bildung & Beruf')
+['Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung']
+>>> bound = sub_ressort('Bildung & Beruf')
 >>> sorted(bound)
 []
 
@@ -213,26 +213,26 @@ Products
 
 >>> products = zeit.cms.content.sources.PRODUCT_SOURCE(object())
 >>> pprint([x.id for x in products])
-[u'ZEI',
- u'ZMLB',
- u'BADDEPENDENCY',
- u'Dev',
- u'dpaBY',
- u'TEST',
- u'ZTCS',
- u'ZTWI',
- u'ZTGS',
- u'tdb',
- u'tbd',
- u'Reuters',
- u'KINZ',
- u'ZEDE']
+['ZEI',
+ 'ZMLB',
+ 'BADDEPENDENCY',
+ 'Dev',
+ 'dpaBY',
+ 'TEST',
+ 'ZTCS',
+ 'ZTWI',
+ 'ZTGS',
+ 'tdb',
+ 'tbd',
+ 'Reuters',
+ 'KINZ',
+ 'ZEDE']
 >>> terms = zope.component.getMultiAdapter(
 ...     (products, request),
 ...     zope.browser.interfaces.ITerms)
 >>> terms.getTerm(list(products)[-1]).title
-u'Zeit Online'
+'Zeit Online'
 >>> list(products)[-2].vgwortcode
-u'1234abc'
+'1234abc'
 >>> list(products)[-1].vgwortcode is None
 True

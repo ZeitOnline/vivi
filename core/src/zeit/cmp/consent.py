@@ -19,5 +19,5 @@ class ConsentInfo(zeit.cms.content.dav.DAVPropertiesAdapter,
 
     zeit.cms.content.dav.mapProperties(
         zeit.cmp.interfaces.IConsentInfo,
-        u"http://namespaces.zeit.de/CMS/cmp",
+        'http://namespaces.zeit.de/CMS/cmp',
         ('has_thirdparty', 'thirdparty_vendors',), use_default=True)

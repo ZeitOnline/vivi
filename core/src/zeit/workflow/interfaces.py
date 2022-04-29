@@ -13,7 +13,7 @@ import zope.schema
 # The not necessary singleton of a TriState
 NotNecessary = zeit.workflow.source.NotNecessary
 
-WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
+WORKFLOW_NS = 'http://namespaces.zeit.de/CMS/workflow'
 
 
 class ScriptError(Exception):
@@ -30,7 +30,7 @@ class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):
                               max=MAX_PUBLISH_DATE)),
         title=_('Publication period'),
         description=_('workflow-publication-period-description',
-                      u'Leave empty for no constraint.'),
+                      'Leave empty for no constraint.'),
         required=False)
 
     released_from = zope.interface.Attribute(
@@ -48,17 +48,17 @@ class IContentWorkflow(ITimeBasedPublishing):
     """
 
     edited = zope.schema.Choice(
-        title=_('status-edited', default=u'Edited'),
+        title=_('status-edited', default='Edited'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     corrected = zope.schema.Choice(
-        title=_('status-corrected', default=u'Corrected'),
+        title=_('status-corrected', default='Corrected'),
         default=False,
         source=zeit.workflow.source.TriState())
 
     seo_optimized = zope.schema.Choice(
-        title=_('status-seo-optimized', default=u'SEO optimized'),
+        title=_('status-seo-optimized', default='SEO optimized'),
         default=False,
         source=zeit.workflow.source.TriState())
 
@@ -81,7 +81,7 @@ class IOldCMSStatus(zope.interface.Interface):
     """
 
     status = zope.schema.TextLine(
-        title=u"Status like old CMS (OK, or not present)",
+        title='Status like old CMS (OK, or not present)',
         required=False)
 
 

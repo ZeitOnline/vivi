@@ -135,7 +135,7 @@ class IVideo(IBlock, ILayoutable):
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=VideoLayoutSource(),
-        default=u'large',
+        default='large',
         required=False)
 
     # XXX it would be nice if could somehow express that IVideo actually
@@ -162,7 +162,7 @@ class IReference(IBlock):
 class AnimationSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
-        (u'fade-in', _('Fade in')),
+        ('fade-in', _('Fade in')),
     ])
 
 
@@ -183,14 +183,14 @@ class IImage(IReference):
     display_mode = zope.schema.Choice(
         title=_('Display Mode'),
         source=zeit.content.article.source.IMAGE_DISPLAY_MODE_SOURCE,
-        default=u'column-width',
+        default='column-width',
         required=False)
 
     # Currently need default for bw compat.
     variant_name = zope.schema.Choice(
         title=_('Variant Name'),
         source=zeit.content.article.source.IMAGE_VARIANT_NAME_SOURCE,
-        default=u'wide',
+        default='wide',
         required=False)
 
     animation = zope.schema.Choice(
@@ -230,14 +230,14 @@ class IInfobox(IReference, ILayoutable):
         title=_('Layout'),
         source=InfoboxLayoutSource(),
         required=False,
-        default=u'default')
+        default='default')
 
 
 class PortraitboxLayoutSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
-        (u'short', _('short')),
-        (u'wide', _('wide')),
+        ('short', _('short')),
+        ('wide', _('wide')),
     ])
 
 
@@ -254,7 +254,7 @@ class IPortraitbox(IReference, ILayoutable):
         title=_('Layout'),
         source=PortraitboxLayoutSource(),
         required=False,
-        default=u'short')
+        default='short')
 
     name = zope.schema.TextLine(
         title=_('First and last name'),
@@ -361,7 +361,7 @@ class ICitation(IBlock):
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=CITATION_LAYOUT_SOURCE,
-        default=u'default',
+        default='default',
         required=False)
 
 
@@ -377,14 +377,14 @@ class ICitationComment(IBlock):
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=CITATIONCOMMENT_LAYOUT_SOURCE,
-        default=u'default',
+        default='default',
         required=False)
 
 
 class LiveblogVersions(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
-        (u'3', '3'),
+        ('3', '3'),
     ])
 
 
@@ -396,7 +396,7 @@ class ILiveblog(IBlock):
     version = zope.schema.Choice(
         title=_('Liveblog version'),
         source=LiveblogVersions(),
-        default=u'3',
+        default='3',
         required=False)
 
     collapse_preceding_content = zope.schema.Bool(
@@ -484,21 +484,21 @@ class IBreakingNewsBody(zope.interface.Interface):
 class AdplaceTileSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
-        (u'desktop_3', 'Desktop: 3'),
-        (u'desktop_4', 'Desktop: 4'),
-        (u'desktop_5', 'Desktop: 5'),
-        (u'desktop_8', 'Desktop: 8'),
-        (u'desktop_41', 'Desktop: 41'),
-        (u'desktop_42', 'Desktop: 42'),
-        (u'desktop_43', 'Desktop: 43'),
-        (u'mobile_1', 'Mobile: 1'),
-        (u'mobile_3', 'Mobile: 3'),
-        (u'mobile_4', 'Mobile: 4'),
-        (u'mobile_41', 'Mobile: 41'),
-        (u'mobile_42', 'Mobile: 42'),
-        (u'mobile_43', 'Mobile: 43'),
-        (u'ctm', 'Content Marketing Teaser Mobil / Desktop'),
-        (u'special', 'Desktop: 3 und Mobil: 1')
+        ('desktop_3', 'Desktop: 3'),
+        ('desktop_4', 'Desktop: 4'),
+        ('desktop_5', 'Desktop: 5'),
+        ('desktop_8', 'Desktop: 8'),
+        ('desktop_41', 'Desktop: 41'),
+        ('desktop_42', 'Desktop: 42'),
+        ('desktop_43', 'Desktop: 43'),
+        ('mobile_1', 'Mobile: 1'),
+        ('mobile_3', 'Mobile: 3'),
+        ('mobile_4', 'Mobile: 4'),
+        ('mobile_41', 'Mobile: 41'),
+        ('mobile_42', 'Mobile: 42'),
+        ('mobile_43', 'Mobile: 43'),
+        ('ctm', 'Content Marketing Teaser Mobil / Desktop'),
+        ('special', 'Desktop: 3 und Mobil: 1')
     ])
 
 
@@ -539,7 +539,7 @@ class PuzzleSource(zeit.cms.content.sources.ObjectSource,
             puzzle = Puzzle(
                 six.text_type(node.get('id')),
                 six.text_type(node.text.strip()),
-                node.get('multiple') == u'true'
+                node.get('multiple') == 'true'
             )
             result[puzzle.id] = puzzle
         return result

@@ -13,7 +13,7 @@ Create a connector:
 >>> from zeit.connector.connector import Connector
 >>> from zeit.connector.cache import resourceCacheFactory
 >>> connector = Connector(
-...     {'default': u"http://zip6.zeit.de/cms/work/"})
+...     {'default': 'http://zip6.zeit.de/cms/work/'})
 >>> connector
 <zeit.connector.connector.Connector object at 0x...>
 

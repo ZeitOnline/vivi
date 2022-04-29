@@ -13,26 +13,26 @@ class IObjectReference(IClipboardEntry):
 
     references = zope.schema.Object(
         zeit.cms.interfaces.ICMSContent,
-        title=u"Referenced object",
-        description=u"None if the the object reference is invalid.")
+        title='Referenced object',
+        description=u'None if the the object reference is invalid.')
 
     referenced_unique_id = zope.schema.TextLine(
-        title=u"Unique Id o the referenced object.",
+        title='Unique Id o the referenced object.',
         readonly=True)
 
     title = zope.schema.TextLine(
-        title=u'Title of the referenced object',
+        title='Title of the referenced object',
         readonly=True)
 
     content_type = zope.schema.TextLine(
-        title=u'Content type of the referenced object',
+        title='Content type of the referenced object',
         readonly=True)
 
 
 class IClipSchema(zope.interface.Interface):
     """Clip schema."""
 
-    title = zope.schema.TextLine(title=u"Title")
+    title = zope.schema.TextLine(title='Title')
 
 
 class IClip(IClipSchema, IClipboardEntry,

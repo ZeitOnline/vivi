@@ -57,7 +57,7 @@ class TestSimpleFind(unittest.TestCase,
                 dict(match_phrase_prefix={
                     'payload.vivi.autocomplete': 'search-term'})
             ], filter=[
-                {'match': {'payload.document.access': u'abo'}}
+                {'match': {'payload.document.access': 'abo'}}
             ]))))
 
     def test_query_result_should_be_returned(self):

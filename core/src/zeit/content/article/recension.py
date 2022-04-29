@@ -80,8 +80,8 @@ class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
     """Information about a book in a recension."""
 
     default_template = (
-        u'<entry xmlns="http://namespaces.zeit.de/bibinfo" '
-        u'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
+        '<entry xmlns="http://namespaces.zeit.de/bibinfo" '
+        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
 
     authors = zeit.cms.content.property.SimpleMultiProperty(
         '.auth-info.author')
@@ -108,7 +108,7 @@ class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
         '.edition.price',
         zeit.content.article.interfaces.IBookRecension['price'])
 
-    raw_data = u'Wird noch nicht eingelesen.'  # XXX
+    raw_data = 'Wird noch nicht eingelesen.'  # XXX
 
     __parent__ = None
     __name__ = None

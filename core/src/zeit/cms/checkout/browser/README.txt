@@ -123,7 +123,7 @@ Since the foobar view doesn't actually exist we'll get an error:
 >>> print(tb)
 Traceback (most recent call last):
 ...Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
-   name: u'@@foobar.html'
+   name: '@@foobar.html'
 
 Clean up the adpater:
 
@@ -161,7 +161,7 @@ an error because the foobar view still doesn't exist:
 >>> print(tb)
 Traceback (most recent call last):
 ...Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
-   name: u'@@foobar.html'
+   name: '@@foobar.html'
 
 Clean up the adapter:
 

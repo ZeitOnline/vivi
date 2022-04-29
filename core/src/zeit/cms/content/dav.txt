@@ -26,15 +26,15 @@ A plain text field:
 >>> converter
 <zeit.cms.content.dav.UnicodeProperty object at 0x...>
 >>> converter.fromProperty('a text')
-u'a text'
->>> converter.fromProperty(u'another text')
-u'another text'
->>> converter.fromProperty(u'')
-u''
->>> converter.toProperty(u'')
-u''
->>> converter.toProperty(u'Foo')
-u'Foo'
+'a text'
+>>> converter.fromProperty('another text')
+'another text'
+>>> converter.fromProperty('')
+''
+>>> converter.toProperty('')
+''
+>>> converter.toProperty('Foo')
+'Foo'
 
 
 Try this for some fields. Integer goes first:
@@ -54,9 +54,9 @@ InvalidIntLiteral: invalid literal for int...
 The other way round is handled by the toProperty method:
 
 >>> converter.toProperty(5)
-u'5'
+'5'
 >>> converter.toProperty(1234)
-u'1234'
+'1234'
 
 
 Floats are also supported:
@@ -79,9 +79,9 @@ InvalidFloatLiteral: could not convert string to float...
 Convert float to property. Doesn't fail for integers of course:
 
 >>> converter.toProperty(5.25)
-u'5.25'
+'5.25'
 >>> converter.toProperty(593)
-u'593'
+'593'
 
 
 
@@ -191,16 +191,16 @@ Create a dav property and set an invalid value:
 >>> dav_prop = zeit.cms.content.dav.DAVProperty(
 ...     field, 'my-ns', 'myname')
 >>> testcontent = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
->>> testcontent.uniqueId = u'http://xml.zeit.de/foo'
+>>> testcontent.uniqueId = 'http://xml.zeit.de/foo'
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(testcontent)
->>> properties[('myname', 'my-ns')] = u'f\xfcblas'
+>>> properties[('myname', 'my-ns')] = 'f\xfcblas'
 
 When we try to get the data we'll get the default value (None):
 
 >>> dav_prop.__get__(testcontent, object) is None
 True
 >>> print(log.getvalue())
-Could not parse DAV property value u'f\xfcblas' for ExampleContentType.myname at
+Could not parse DAV property value 'f\xfcblas' for ExampleContentType.myname at
 http://xml.zeit.de/foo [ValueError: (...time data ...not match format...)].
 Using default None instead.
 
@@ -212,10 +212,10 @@ For content objects there is also a token adapter:
 
 >>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 ... class Content:
-...     uniqueId = u'my-unique-id'
+...     uniqueId = 'my-unique-id'
 >>> content = Content()
 >>> zeit.cms.content.interfaces.IDAVToken(content)
-u'my-unique-id'
+'my-unique-id'
 
 
 Content sources
@@ -231,15 +231,15 @@ source:
 >>> field = zope.schema.Choice(
 ...     source=zeit.cms.content.contentsource.FolderSource())
 >>> converter = get_converter(field)
->>> folder = converter.fromProperty(u'http://xml.zeit.de/online')
+>>> folder = converter.fromProperty('http://xml.zeit.de/online')
 >>> folder
 <zeit.cms.repository.folder.Folder...>
 >>> folder.uniqueId
-u'http://xml.zeit.de/online/'
+'http://xml.zeit.de/online/'
 
 When a unique id references an object wich doesn't exist, None is returned:
 
->>> converter.fromProperty(u'http://xml.zeit.de/online/gibtsnich') is None
+>>> converter.fromProperty('http://xml.zeit.de/online/gibtsnich') is None
 True
 
 When a unique id references an object which exists but is not contained in the
@@ -266,7 +266,7 @@ True
 The other way round stores the unique id:
 
 >>> converter.toProperty(folder)
-u'http://xml.zeit.de/online/'
+'http://xml.zeit.de/online/'
 
 
 Principal source
@@ -279,11 +279,11 @@ good and stable token, as well as the actual value:
 >>> field = zope.schema.Choice(
 ...     source=zope.app.security.vocabulary.PrincipalSource())
 >>> converter = get_converter(field)
->>> converter.fromProperty(u'zope.user')
-u'zope.user'
+>>> converter.fromProperty('zope.user')
+'zope.user'
 
 When the user is not in the source, a ValueError is raised:
->>> converter.fromProperty(u'foo.bar')
+>>> converter.fromProperty('foo.bar')
 Traceback (most recent call last):
     ...
 ValueError: foo.bar
@@ -291,13 +291,13 @@ ValueError: foo.bar
 
 Converting to a property also just yields the principal id:
 
->>> converter.toProperty(u'zope.user')
-u'zope.user'
+>>> converter.toProperty('zope.user')
+'zope.user'
 
 Here we don't check for valid users:
 
->>> converter.toProperty(u'foo.bar')
-u'foo.bar'
+>>> converter.toProperty('foo.bar')
+'foo.bar'
 
 
 Object source
@@ -435,7 +435,7 @@ The date is written in iso format:
 None is represented as an empty stirng:
 
 >>> converter.toProperty(None)
-u''
+''
 
 
 
@@ -449,28 +449,28 @@ Collections of TextLine are serialised with a semicolon as separator.
 ...     default=())
 >>> converter = get_converter(field)
 >>> converter.fromProperty('Peter Buhr;Klaus Kleber')
-(u'Peter Buhr', u'Klaus Kleber')
+('Peter Buhr', 'Klaus Kleber')
 
 A single author also gives a tuple:
 
 >>> converter.fromProperty('Klaus Kleber')
-(u'Klaus Kleber',)
+('Klaus Kleber',)
 
 
 The other way round, items are joined with a semicolon:
 
 >>> converter.toProperty(('Peter Buhr', 'Klaus Kleber'))
-u'Peter Buhr;Klaus Kleber'
+'Peter Buhr;Klaus Kleber'
 
 In case there is a semicolon in a value, it will be escaped:
 
 >>> converter.toProperty(('Peter Buhr', 'Klaus; Kl;eb;er'))
-u'Peter Buhr;Klaus\\; Kl\\;eb\\;er'
+'Peter Buhr;Klaus\\; Kl\\;eb\\;er'
 
 Make sure the DAV value is correctly converted back to a tuple:
 
->>> converter.fromProperty(u'Peter Buhr;Klaus\\; Kl\\;eb\\;er')
-(u'Peter Buhr', u'Klaus; Kl;eb;er')
+>>> converter.fromProperty('Peter Buhr;Klaus\\; Kl\\;eb\\;er')
+('Peter Buhr', 'Klaus; Kl;eb;er')
 
 
 As the collection serialiser is registered for ICollection we can also use
@@ -481,7 +481,7 @@ List, Set and FrozenSet as field:
 ...     default=[])
 >>> converter = get_converter(field)
 >>> converter.fromProperty('Peter Buhr;Klaus Kleber')
-[u'Peter Buhr', u'Klaus Kleber']
+['Peter Buhr', 'Klaus Kleber']
 
 >>> field = zope.schema.Set(
 ...     value_type=zope.schema.TextLine(),
@@ -491,7 +491,7 @@ List, Set and FrozenSet as field:
 >>> type(result).__name__
 'set'
 >>> sorted(result)
-[u'Klaus Kleber', u'Peter Buhr']
+['Klaus Kleber', 'Peter Buhr']
 
 >>> field = zope.schema.FrozenSet(
 ...     value_type=zope.schema.TextLine(),
@@ -501,7 +501,7 @@ List, Set and FrozenSet as field:
 >>> type(result).__name__
 'frozenset'
 >>> sorted(result)
-[u'Klaus Kleber', u'Peter Buhr']
+['Klaus Kleber', 'Peter Buhr']
 
 
 
@@ -513,7 +513,7 @@ There is a generic tuple serializer which uses zope.xmlpickle for serialising:
 >>> field = zope.schema.Tuple(
 ...     value_type=zope.schema.Dict())
 >>> converter = get_converter(field)
->>> value = converter.toProperty(({'foo': u'b\xfcr'}, {'bar': 2}))
+>>> value = converter.toProperty(({'foo': 'b\xfcr'}, {'bar': 2}))
 >>> import six
 >>> type(value) == six.text_type
 True
@@ -535,7 +535,7 @@ True
 
 The other way round "eats" the generated xml:
 
->>> converter.fromProperty(u"""
+>>> converter.fromProperty("""
 ... <pickle>
 ...   <tuple>
 ...     <dictionary>
@@ -550,7 +550,7 @@ The other way round "eats" the generated xml:
 ...     </dictionary>
 ...   </tuple>
 ... </pickle>""")
-({'foo': u'b\xfcr'}, {'holladrio': 2.25})
+({'foo': 'b\xfcr'}, {'holladrio': 2.25})
 
 
 As it is generic it basically works for all other fields as well:
@@ -568,7 +568,7 @@ As it is generic it basically works for all other fields as well:
   </list>
 </pickle>
 
->>> converter.fromProperty(u"""
+>>> converter.fromProperty("""
 ... <pickle>
 ...   <list>
 ...     <int>4</int>
@@ -582,12 +582,12 @@ As it is generic it basically works for all other fields as well:
 
 If the xml pickle is invalid an ValueError is raised:
 
->>> converter.fromProperty(u'5')
+>>> converter.fromProperty('5')
 Traceback (most recent call last):
     ...
 ValueError: Start tag expected...
 
->>> converter.fromProperty(u'<int>5</int>')
+>>> converter.fromProperty('<int>5</int>')
 Traceback (most recent call last):
     ...
 ValueError: Invalid pickle.
@@ -650,7 +650,7 @@ Event: <zeit.cms.content.interfaces.DAVPropertyChangedEvent object at 0x...>
     Name: title
     Field: <zope.schema._bootstrapfields.TextLine object at 0x...>
 >>> dict(content.properties)
-{('title', 'myns'): u'Mary had a little lamb.'}
+{('title', 'myns'): 'Mary had a little lamb.'}
 
 
 When we set the title to None again, the property will be marked as to be

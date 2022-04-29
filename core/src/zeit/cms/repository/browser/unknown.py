@@ -10,7 +10,7 @@ class View:
         data = self.context.data.strip()
         if len(data) < 100:
             return data
-        return data[:100] + u'…'
+        return data[:100] + '…'
 
     def get_properties(self):
         properties = zeit.connector.interfaces.IWebDAVReadProperties(

@@ -54,19 +54,19 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertSelectedLabel('id=metadata-a.ressort', 'International')
         s.pause(100)
         self.assertEqual(
-            [u'(nothing selected)', u'Meinung', u'Nahost', u'US-Wahl'],
+            ['(nothing selected)', 'Meinung', 'Nahost', 'US-Wahl'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
         s.select('id=metadata-a.ressort', 'Deutschland')
         s.pause(100)
         self.assertEqual(
-            [u'(nothing selected)', u'Datenschutz', u'Integration',
-             u'Joschka Fisher', u'Meinung'],
+            ['(nothing selected)', 'Datenschutz', 'Integration',
+             'Joschka Fisher', 'Meinung'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
         s.keyPress('id=metadata-a.sub_ressort', Keys.TAB)  # Trigger blur
         s.pause(500)
         self.assertEqual(
-            [u'(nothing selected)', u'Datenschutz', u'Integration',
-             u'Joschka Fisher', u'Meinung'],
+            ['(nothing selected)', 'Datenschutz', 'Integration',
+             'Joschka Fisher', 'Meinung'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
 
     def test_invalid_input_should_display_error_message(self):

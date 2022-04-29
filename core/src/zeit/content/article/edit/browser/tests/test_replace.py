@@ -180,7 +180,7 @@ class FindReplaceTest(
         s.click('jquery=button:contains(Weiter)')
         self.wait_for_condition(
             'window.getSelection().getRangeAt(0).startOffset == 8')
-        s.click(u'jquery=button:contains(Zurück)')
+        s.click('jquery=button:contains(Zurück)')
         self.wait_for_condition(
             'window.getSelection().getRangeAt(0).startOffset == 0')
 
@@ -260,8 +260,8 @@ class FindReplaceTest(
         click(s, 'xpath=//a[@href="show_find_dialog"]')
         s.waitForElementPresent('id=find-dialog-searchtext')
         s.type('id=find-dialog-searchtext', 'foo')
-        s.click(u'jquery=button:contains(Zurück)')
-        s.click(u'jquery=button:contains(Zurück)')
+        s.click('jquery=button:contains(Zurück)')
+        s.click('jquery=button:contains(Zurück)')
         s.waitForConfirmation(
             'Der Textanfang wurde erreicht. Suche am Textende fortsetzen?')
         self.wait_for_condition(
@@ -318,7 +318,7 @@ class FindReplaceTest(
             zeit.cms.content.field.apply_default_values(
                 co, IArticle)
             co.year = 2010
-            co.ressort = u'International'
+            co.ressort = 'International'
             co.title = 'foo'
             co.keywords = (
                 wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)

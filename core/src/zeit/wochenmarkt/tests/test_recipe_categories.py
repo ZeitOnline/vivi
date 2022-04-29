@@ -28,7 +28,7 @@ class TestRecipeCategoriesWhitelist(
         names = []
         for item in result:
             names.append(item.name)
-        assert u'Barbecue' in names
+        assert 'Barbecue' in names
 
 
 class TestRecipeCategories(

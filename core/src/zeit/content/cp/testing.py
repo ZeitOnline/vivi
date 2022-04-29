@@ -215,7 +215,7 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
             content = (zeit.cms.testcontenttype.testcontenttype.
                        ExampleContentType())
             content.teaserTitle = content.title = (
-                u'c%s teaser' % i)
+                'c%s teaser' % i)
             name = 'c%s' % i
             repository[name] = content
             clipboard.addContent(

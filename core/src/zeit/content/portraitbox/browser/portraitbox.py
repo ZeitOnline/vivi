@@ -12,7 +12,7 @@ import zope.publisher.interfaces.browser
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
 
-    author = ressort = page = volume = year = u''
+    author = ressort = page = volume = year = ''
 
     @property
     def title(self):

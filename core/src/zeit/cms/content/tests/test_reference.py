@@ -129,21 +129,21 @@ class ReferencePropertyTest(
         self.assertTrue(content._p_changed)
 
     def test_metadata_of_reference_is_updated_on_checkin(self):
-        self.repository['target'].teaserTitle = u'foo'
+        self.repository['target'].teaserTitle = 'foo'
         content = self.repository['content']
         with checked_out(content) as co:
             co.references = (co.references.create(
                 self.repository['target']),)
         self.assertEqual(
-            u'foo',
+            'foo',
             self.repository['content'].xml.body.references.reference.title)
 
         with checked_out(self.repository['target']) as co:
-            co.teaserTitle = u'bar'
+            co.teaserTitle = 'bar'
         with checked_out(self.repository['content']):
             pass
         self.assertEqual(
-            u'bar',
+            'bar',
             self.repository['content'].xml.body.references.reference.title)
 
     def test_set_accepts_references(self):
@@ -256,14 +256,14 @@ class MultiResourceTest(
             'http://xml.zeit.de/target', content.related[0].uniqueId)
 
     def test_should_be_updated_on_checkin(self):
-        self.repository['target'].teaserTitle = u'foo'
+        self.repository['target'].teaserTitle = 'foo'
 
         content = self.repository['content']
         with checked_out(content) as co:
             co.related = (self.repository['target'],)
 
         with checked_out(self.repository['target']) as co:
-            co.teaserTitle = u'bar'
+            co.teaserTitle = 'bar'
         with checked_out(self.repository['content']):
             pass
 
@@ -272,7 +272,7 @@ class MultiResourceTest(
         # ICommonMetadata, its XMLReferenceUpdater will write 'title' (among
         # others) into the XML.
         self.assertEqual(
-            u'bar', body['references']['reference']['title'])
+            'bar', body['references']['reference']['title'])
 
 
 class SingleResourceTest(
@@ -293,14 +293,14 @@ class SingleResourceTest(
             'http://xml.zeit.de/target', content.related.uniqueId)
 
     def test_should_be_updated_on_checkin(self):
-        self.repository['target'].teaserTitle = u'foo'
+        self.repository['target'].teaserTitle = 'foo'
 
         content = self.repository['content']
         with checked_out(content) as co:
             co.related = self.repository['target']
 
         with checked_out(self.repository['target']) as co:
-            co.teaserTitle = u'bar'
+            co.teaserTitle = 'bar'
         with checked_out(self.repository['content']):
             pass
 
@@ -309,7 +309,7 @@ class SingleResourceTest(
         # ICommonMetadata, its XMLReferenceUpdater will write 'title' (among
         # others) into the XML.
         self.assertEqual(
-            u'bar', body['references']['reference']['title'])
+            'bar', body['references']['reference']['title'])
 
 
 class ReferenceTraversalBase:

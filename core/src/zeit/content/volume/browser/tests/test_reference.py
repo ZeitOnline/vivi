@@ -16,7 +16,7 @@ class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
         volume = zeit.content.volume.volume.Volume()
         volume.year = 2014
         volume.volume = 49
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         if cover_image:
             volume.set_cover('portrait', volume.product.id, self.repository[
                 'imagegroup'])

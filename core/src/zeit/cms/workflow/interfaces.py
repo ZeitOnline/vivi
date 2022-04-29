@@ -77,17 +77,17 @@ class IPublishInfo(zope.interface.Interface):
         readonly=True)
 
     locked = zope.schema.Bool(
-        title=_("Publish lock?"),
-        description=_("Please retract first"),
+        title=_('Publish lock?'),
+        description=_('Please retract first'),
         required=False,
         default=False)
 
     lock_reason = zope.schema.Text(
-        title=_("Publish lock reason"),
+        title=_('Publish lock reason'),
         required=False)
 
     error_messages = zope.schema.List(
-        title=u"List of warning and error messages.",
+        title='List of warning and error messages.',
         readonly=True,
         value_type=zope.schema.TextLine())
 
@@ -168,7 +168,7 @@ class IWithMasterObjectEvent(zope.interface.interfaces.IObjectEvent):
     """Object with master image."""
 
     master = zope.schema.Choice(
-        title=u'The master object of this event.',
+        title='The master object of this event.',
         source=zeit.cms.content.contentsource.cmsContentSource)
 
 

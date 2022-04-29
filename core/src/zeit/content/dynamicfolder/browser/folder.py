@@ -31,7 +31,7 @@ class View(zeit.cms.browser.listing.Listing,
             name='filename',
             getter=lambda i, f: i.__name__),
         zeit.cms.browser.listing.MetadataColumn(
-            u'Metadaten', name='metadata', searchable_text=False),
+            'Metadaten', name='metadata', searchable_text=False),
     )
 
     @property

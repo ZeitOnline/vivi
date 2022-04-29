@@ -24,7 +24,7 @@ class LoginFormLayer(plone.testing.Layer):
                 self['principalfolder'] = PrincipalFolder('principal.')
                 root['principals'] = self['principalfolder']
                 self['principalfolder']['user'] = InternalPrincipal(
-                    'user', 'userpw', u'Testuser')
+                    'user', 'userpw', 'Testuser')
 
                 site_manager = zope.component.getSiteManager(root)
                 site_manager.registerUtility(

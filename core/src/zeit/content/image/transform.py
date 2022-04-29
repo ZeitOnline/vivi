@@ -233,7 +233,7 @@ def persistent_thumbnail_factory(context):
     return thumbnail_container[image_name]
 
 
-THUMBNAIL_FOLDER_NAME = u'thumbnails'
+THUMBNAIL_FOLDER_NAME = 'thumbnails'
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)

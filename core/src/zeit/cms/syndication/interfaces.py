@@ -119,7 +119,7 @@ class IContentSyndicatedEvent(zope.interface.interfaces.IObjectEvent):
     """Issued when an object is syndicated."""
 
     targets = zope.schema.Set(
-        title=u"The syndication target.",
+        title='The syndication target.',
         value_type=zope.schema.Object(IFeed))
 
 

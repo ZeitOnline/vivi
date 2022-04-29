@@ -153,7 +153,7 @@ class ImageListRepresentation(
         zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing article content resources"""
 
-    author = ressort = page = u''
+    author = ressort = page = ''
 
     @property
     def title(self):

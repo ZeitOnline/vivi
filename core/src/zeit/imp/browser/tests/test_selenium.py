@@ -38,13 +38,13 @@ class Selenium(zeit.cms.testing.SeleniumTestCase):
 class SeleniumBasicTests(Selenium):
 
     def test_generic_load(self):
-        self.selenium.assertTextPresent(u'450×200')
+        self.selenium.assertTextPresent('450×200')
 
     def test_crop_mask(self):
         s = self.selenium
 
         # s.comment('After clicking on the mask choice the image is loaded')
-        self.click_label(u"450×200")
+        self.click_label('450×200')
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=')
@@ -60,7 +60,7 @@ class SeleniumBasicTests(Selenium):
 
         self.click_label("schwarzer Rahmen")
         s.verifyElementNotPresent('id=imp-mask-image')
-        self.click_label(u"450×200")
+        self.click_label('450×200')
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=%23000000')
@@ -147,7 +147,7 @@ class SeleniumCropTests(Selenium):
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.verifyElementNotPresent('css=label.cropped')
         s.dragAndDrop('id=imp-mask', '-30,-100')
-        self.click_label(u"450×200")
+        self.click_label('450×200')
         s.click('id=imp-action-crop')
         # s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
@@ -162,7 +162,7 @@ class SeleniumCropTests(Selenium):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.verifyElementNotPresent('css=label.cropped')
-        self.click_label(u"140×140")
+        self.click_label('140×140')
         s.clickAt('id=imp-zoom-slider', '500,0')
         s.setWindowSize(self.window_width, 1000)
         s.dragAndDrop('id=imp-mask', '+500,+500')
@@ -177,7 +177,7 @@ class SeleniumCropTests(Selenium):
         # As it snaps to the mask we can crop the image and no alert is
         # generated.
         s = self.selenium
-        self.click_label(u"450×200")
+        self.click_label('450×200')
         s.dragAndDrop('id=imp-mask', '+1000,+1000')
         s.click('id=imp-action-crop')
         s.waitForElementPresent('css=#imp-image-bar > div')
@@ -185,10 +185,10 @@ class SeleniumCropTests(Selenium):
     def test_zoom_slider_has_minimum_of_mask_size(self):
         s = self.selenium
         # Put the zoom slider somewhere else than the minimum,
-        self.click_label(u"450×200")
+        self.click_label('450×200')
         s.clickAt('id=imp-zoom-slider', '500,0')
         # then select another mask
-        self.click_label(u"140×140")
+        self.click_label('140×140')
         # Assert that the slider is at the minimum value
         self.wait_for_condition(
             'window.jQuery("#imp-zoom-slider div").position().left == 0')
@@ -200,16 +200,16 @@ class SeleniumMaskTests(Selenium):
 
     def test_input_fields_show_mask_size(self):
         s = self.selenium
-        self.click_label(u"450×200")
+        self.click_label('450×200')
         s.verifyValue('mask-w', '450')
         s.verifyValue('mask-h', '200')
-        self.click_label(u"210×210")
+        self.click_label('210×210')
         s.verifyValue('mask-w', '210')
         s.verifyValue('mask-h', '210')
 
     def test_input_fields_disabled_for_fixed_mask(self):
         s = self.selenium
-        self.click_label(u"450×200")
+        self.click_label('450×200')
         form = "window.document.getElementById('imp-configuration-form')"
         s.verifyEval("%s['mask-w'].disabled" % form, 'true')
         s.verifyEval("%s['mask-h'].disabled" % form, 'true')
@@ -318,7 +318,7 @@ class ResizeTests(Selenium):
     def setUp(self):
         super(ResizeTests, self).setUp()
         # Choose a mask
-        self.click_label(u"450×200")
+        self.click_label('450×200')
 
     def test_window_resize_updates_mask(self):
         s = self.selenium

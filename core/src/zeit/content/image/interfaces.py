@@ -55,12 +55,12 @@ class IImageMetadata(zope.interface.Interface):
 
     title = zope.schema.TextLine(
         title=_("Image title"),
-        default=u'',
+        default='',
         required=False)
 
     origin = zope.schema.TextLine(
         title=_("Origin"),
-        default=u'',
+        default='',
         required=False)
 
     copyright = zc.form.field.Combination((
@@ -99,12 +99,12 @@ class IImageMetadata(zope.interface.Interface):
     alt = zope.schema.TextLine(
         title=_("Alternative text"),
         description=_("Enter a textual description of the image"),
-        default=u'',
+        default='',
         required=False)
 
     caption = zope.schema.Text(
         title=_("Image sub text"),
-        default=u'',
+        default='',
         required=False)
 
     links_to = zope.schema.URI(
@@ -118,7 +118,7 @@ class IImageMetadata(zope.interface.Interface):
         default=False)
 
     acquire_metadata = zope.schema.Bool(
-        title=u'True if metadata should be acquired from the parent.')
+        title='True if metadata should be acquired from the parent.')
 
 
 class IImage(zeit.cms.interfaces.IAsset,
@@ -324,31 +324,31 @@ class IVariants(zope.interface.common.mapping.IEnumerableMapping):
 
 class IVariant(zope.interface.Interface):
 
-    id = zope.schema.TextLine(description=u'Unique Variant name')
-    name = zope.schema.TextLine(description=u'Grouping of Variant sizes')
-    display_name = zope.schema.TextLine(description=u'Displayed name')
+    id = zope.schema.TextLine(description='Unique Variant name')
+    name = zope.schema.TextLine(description='Grouping of Variant sizes')
+    display_name = zope.schema.TextLine(description='Displayed name')
     focus_x = zope.schema.Float(
-        description=u'Position of the focus point relative to image width')
+        description='Position of the focus point relative to image width')
     focus_y = zope.schema.Float(
-        description=u'Position of the focus point relative to image height')
+        description='Position of the focus point relative to image height')
     zoom = zope.schema.Float(
-        description=u'Zoom factor used, i.e. 1 for no zoom')
+        description='Zoom factor used, i.e. 1 for no zoom')
     aspect_ratio = zope.schema.TextLine(
-        description=u"String representation of ratio as X:Y, e.g. 16:9. "
-                    u"Can be set to 'original', to use width/height of image.")
+        description='String representation of ratio as X:Y, e.g. 16:9. '
+                    'Can be set to `original`, to use width/height of image.')
     max_size = zope.schema.TextLine(
-        description=u"Maximum width / height of this Variant, e.g. 160x90")
+        description='Maximum width / height of this Variant, e.g. 160x90')
     brightness = zope.schema.Float(
-        description=u'Factor to enhance brightness, 1.0 for original value')
+        description='Factor to enhance brightness, 1.0 for original value')
     contrast = zope.schema.Float(
-        description=u'Factor to enhance contrast, 1.0 for original value')
+        description='Factor to enhance contrast, 1.0 for original value')
     saturation = zope.schema.Float(
-        description=u'Factor to enhance saturation, 1.0 for original value')
+        description='Factor to enhance saturation, 1.0 for original value')
     sharpness = zope.schema.Float(
-        description=u'Factor to enhance sharpness, 1.0 for original value')
+        description='Factor to enhance sharpness, 1.0 for original value')
     fallback_size = zope.schema.TextLine(
-        description=u"Fallback width / height, e.g. 1200x514. "
-                    u"Used by Friedbert to limit the size of large variants.")
+        description='Fallback width / height, e.g. 1200x514. '
+                    'Used by Friedbert to limit the size of large variants.')
 
     ratio = zope.interface.Attribute(
         'Float representation of ratio')

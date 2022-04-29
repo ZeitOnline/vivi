@@ -14,8 +14,8 @@ class GalleryTypeSource(zeit.cms.content.sources.XMLSource):
 class LayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     values = {
-        u'image-only': _('Image only'),
-        u'hidden': _('Hidden'),
+        'image-only': _('Image only'),
+        'hidden': _('Hidden'),
     }
 
     def getValues(self):

@@ -9,24 +9,24 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
     def test_videos_should_contain_metadata_in_xml(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = next(factory)
-        video.teaserText = u'Bla bla'
+        video.teaserText = 'Bla bla'
         video = next(factory)  # in repository
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)
         pls.videos = (video,)
         self.assertEqual(
-            u'Bla bla', pls.xml['body']['videos']['video']['text'])
+            'Bla bla', pls.xml['body']['videos']['video']['text'])
 
     def test_video_title_should_show_up_as_teaser_title_in_playlist(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = next(factory)
-        video.title = u'The big Foo'
+        video.title = 'The big Foo'
         video = next(factory)  # in repository
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)
         pls.videos = (video,)
         self.assertEqual(
-            u'The big Foo', pls.xml['body']['videos']['video']['title'])
+            'The big Foo', pls.xml['body']['videos']['video']['title'])
 
     def test_security_should_allow_access_to_id_prefix(self):
         import zeit.cms.testing
@@ -43,19 +43,19 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
     def test_playlist_should_update_video_metadata_on_checkin(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = next(factory)
-        video.title = u'foo'
+        video.title = 'foo'
         video = next(factory)  # in repository
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)
         pls.videos = (video,)
         pls = next(factory)  # in repository
         with zeit.cms.checkout.helper.checked_out(video) as co:
-            co.title = u'bar'
+            co.title = 'bar'
         with zeit.cms.checkout.helper.checked_out(pls):
             pass
         pls = self.repository['pls']
         self.assertEqual(
-            u'bar', pls.xml['body']['videos']['video']['title'])
+            'bar', pls.xml['body']['videos']['video']['title'])
 
     def test_animation_video_reference(self):
         import zeit.content.animation.animation
@@ -72,7 +72,7 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
     def test_playlist_references_should_contain_its_videos(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = next(factory)
-        video.teaserText = u'Bla bla'
+        video.teaserText = 'Bla bla'
         video = next(factory)  # in repository
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)

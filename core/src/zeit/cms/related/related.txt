@@ -85,7 +85,7 @@ Let's have a look at the source:
 >>> related.related
 (<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,)
 >>> related.related[0].uniqueId
-u'http://xml.zeit.de/related'
+'http://xml.zeit.de/related'
 
 The context has been marked as changed, since otherwise the XML won't be stored
 on commit:

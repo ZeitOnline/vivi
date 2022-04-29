@@ -185,7 +185,7 @@ class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
 
     title = zeit.cms.content.property.ObjectPathProperty('.title')
 
-    default_template = u"""\
+    default_template = """\
         <channel
           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
