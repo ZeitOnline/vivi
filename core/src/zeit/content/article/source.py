@@ -1,8 +1,15 @@
-import six
 import xml.sax.saxutils
 import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zope.dottedname.resolve
+
+
+class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
+
+    def isAvailable(self, node, context):
+        import zeit.content.article.interfaces  # break circular import
+        context = zeit.content.article.interfaces.IArticle(context, None)
+        return super().isAvailable(node, context)
 
 
 class BookRecensionCategories(zeit.cms.content.sources.SimpleXMLSource):
@@ -50,7 +57,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
     title_xpath = '/templates/template'
 
     def _get_title_for(self, node):
-        return six.text_type(node['title'])
+        return str(node['title'])
 
     def allow_header_module(self, context):
         tree = self._get_tree()
@@ -84,19 +91,18 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
                 continue
             defaults = header.get('default_for').split(' ')
             if self._provides_default(context, defaults):
-                return (six.text_type(template.get('name')),
-                        six.text_type(header.get('name')))
+                return (str(template.get('name')), str(header.get('name')))
 
     def _get_generic_default(self):
         generic_default = self._get_tree().xpath('//*[@default_for="*"]')
         if len(generic_default) == 1:
             elem = generic_default.pop()
             if elem.tag == 'header':
-                return (six.text_type(elem.getparent().get('name')),
-                        six.text_type(elem.get('name')))
+                return (str(elem.getparent().get('name')),
+                        str(elem.get('name')))
             elif elem.tag == 'template':
-                return (six.text_type(elem.get('name')), u'')
-        return (u'', u'')
+                return (str(elem.get('name')), '')
+        return ('', '')
 
     def get_default_template(self, context):
         tree = self._get_tree()
@@ -104,7 +110,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
             if template.get('default_for'):
                 defaults = template.get('default_for').split(' ')
                 if self._provides_default(context, defaults):
-                    return (six.text_type(template.get('name')), u'')
+                    return (str(template.get('name')), '')
 
             # header might define default for this template
             # implicitly
@@ -127,7 +133,9 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 ARTICLE_TEMPLATE_SOURCE = ArticleTemplateSource()
 
 
-class ArticleHeaderSource(zeit.cms.content.sources.ParentChildSource):
+class ArticleHeaderSource(
+        BodyAwareXMLSource,
+        zeit.cms.content.sources.ParentChildSource):
 
     product_configuration = ArticleTemplateSource.product_configuration
     config_url = ArticleTemplateSource.config_url
@@ -144,7 +152,7 @@ class ArticleHeaderSource(zeit.cms.content.sources.ParentChildSource):
         return zeit.content.article.interfaces.IArticleMetadata
 
     def _get_title_for(self, node):
-        return six.text_type(node['title'])
+        return str(node['title'])
 
 
 class ArticleHeaderColorSource(ArticleHeaderSource):
@@ -154,17 +162,13 @@ class ArticleHeaderColorSource(ArticleHeaderSource):
     parent_value_key = 'header'
 
 
-class ImageDisplayModeSource(zeit.cms.content.sources.XMLSource):
+class ImageDisplayModeSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-display-mode-source'
     default_filename = 'article-image-display-modes.xml'
     attribute = 'id'
     title_xpath = '/display-modes/display-mode'
-
-    def isAvailable(self, node, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(ImageDisplayModeSource, self).isAvailable(node, article)
 
 
 IMAGE_DISPLAY_MODE_SOURCE = ImageDisplayModeSource()
@@ -186,17 +190,13 @@ class LegacyDisplayModeSource(zeit.cms.content.sources.XMLSource):
 LEGACY_DISPLAY_MODE_SOURCE = LegacyDisplayModeSource()
 
 
-class ImageVariantNameSource(zeit.cms.content.sources.XMLSource):
+class ImageVariantNameSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-variant-name-source'
     default_filename = 'article-image-variant-names.xml'
     attribute = 'id'
     title_xpath = '/variant-names/variant-name'
-
-    def isAvailable(self, node, context):
-        article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(ImageVariantNameSource, self).isAvailable(node, article)
 
 
 IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
@@ -222,7 +222,7 @@ class MainImageVariantNameSource(ImageVariantNameSource):
             [x for x in [context.template, context.header_layout] if x])
 
     def getValues(self, context):
-        values = super(MainImageVariantNameSource, self).getValues(context)
+        values = super().getValues(context)
         article = zeit.content.article.interfaces.IArticle(context)
         return self._filter_values(self._template(article), values)
 
