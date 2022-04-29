@@ -41,6 +41,7 @@ setup(
         'markdown',
         'markdownify',
         'opentelemetry-api',
+        'openapi-schema-validator',
         'pendulum>=2.0.0.dev0',
         'persistent',
         'prometheus-client',
