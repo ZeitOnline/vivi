@@ -16,8 +16,7 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import six
-import six.moves.urllib.parse
+import urllib.parse
 import z3c.traverser.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
@@ -234,7 +233,7 @@ class SingleReferenceProperty(ReferenceProperty):
     def __get__(self, instance, class_):
         if instance is None:
             return self
-        value = super(SingleReferenceProperty, self).__get__(instance, class_)
+        value = super().__get__(instance, class_)
         if value:
             return value[0]
         attribute = self.__name__(instance)
@@ -245,10 +244,10 @@ class SingleReferenceProperty(ReferenceProperty):
             value = ()
         else:
             value = (value,)
-        super(SingleReferenceProperty, self).__set__(instance, value)
+        super().__set__(instance, value)
 
     def _reference_nodes(self, instance):
-        result = super(SingleReferenceProperty, self)._reference_nodes(
+        result = super()._reference_nodes(
             instance)
         if not isinstance(result, list):
             result = [result]
@@ -268,18 +267,18 @@ class SingleResource(SingleReferenceProperty):
     def __get__(self, instance, class_):
         if instance is None:
             return self
-        reference = super(SingleResource, self).__get__(instance, class_)
+        reference = super().__get__(instance, class_)
         return reference.target
 
     def __set__(self, instance, value):
         if value is not None:
-            reference = super(SingleResource, self).__get__(instance, None)
+            reference = super().__get__(instance, None)
             value = reference.create(value)
-        super(SingleResource, self).__set__(instance, value)
+        super().__set__(instance, value)
         self.update_metadata(instance)
 
     def update_metadata(self, instance, suppress_errors=False):
-        reference = super(SingleResource, self).__get__(instance, None)
+        reference = super().__get__(instance, None)
         if reference:
             reference.update_metadata(suppress_errors)
 
@@ -290,7 +289,7 @@ class MultiResource(ReferenceProperty):
     """
 
     def references(self, instance):
-        return super(MultiResource, self).__get__(instance, None)
+        return super().__get__(instance, None)
 
     def __get__(self, instance, class_):
         if instance is None:
@@ -304,7 +303,7 @@ class MultiResource(ReferenceProperty):
         # since setting MultiResource overwrites existing Reference nodes,
         # thus destroying any properties they might have had.
         value = tuple(references.create(x) for x in value)
-        super(MultiResource, self).__set__(instance, value)
+        super().__set__(instance, value)
         self.update_metadata(instance)
 
     def update_metadata(self, instance, suppress_errors=False):
@@ -329,7 +328,7 @@ def update_metadata_on_checkin(context, event):
 class References(tuple):
 
     def __new__(cls, items, source, attribute, xml_reference_name):
-        self = super(References, cls).__new__(cls, items)
+        self = super().__new__(cls, items)
         self.source = source
         self.attribute = attribute
         self.xml_reference_name = xml_reference_name
@@ -374,8 +373,6 @@ class EmptyReference:
 
     def __bool__(self):
         return False
-
-    __nonzero__ = __bool__  # XXX py2 only
 
     def __eq__(self, other):
         if isinstance(other, type(self)):
@@ -450,7 +447,7 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     @property
     def uniqueId(self):
-        return '%s?%s' % (ID_PREFIX, six.moves.urllib.parse.urlencode(dict(
+        return '%s?%s' % (ID_PREFIX, urllib.parse.urlencode(dict(
             source=self.__parent__.uniqueId, attribute=self.attribute,
             target=self.target_unique_id)))
 
@@ -469,12 +466,12 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
             self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
-@grok.adapter(six.string_types[0], name=ID_PREFIX)
+@grok.adapter(str, name=ID_PREFIX)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_reference(unique_id):
     assert unique_id.startswith(ID_PREFIX)
-    params = six.moves.urllib.parse.parse_qs(
-        six.moves.urllib.parse.urlparse(unique_id).query)
+    params = urllib.parse.parse_qs(
+        urllib.parse.urlparse(unique_id).query)
     source = zeit.cms.cmscontent.resolve_wc_or_repository(params['source'][0])
     references = getattr(source, params['attribute'][0], {})
     return references.get(params['target'][0])
@@ -491,8 +488,8 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
         return base + '/++attribute++%s/%s' % (
             # XXX zope.publisher seems to decode stuff (but why?), so we need
             # to encode twice
-            self.context.attribute, six.moves.urllib.parse.quote_plus(
-                six.moves.urllib.parse.quote_plus(self.context.__name__)))
+            self.context.attribute, urllib.parse.quote_plus(
+                urllib.parse.quote_plus(self.context.__name__)))
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
@@ -503,7 +500,7 @@ class Traverser:
         self.request = request
 
     def publishTraverse(self, request, name):
-        reference = self.context.get(six.moves.urllib.parse.unquote_plus(name))
+        reference = self.context.get(urllib.parse.unquote_plus(name))
         if reference is not None:
             return reference
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
