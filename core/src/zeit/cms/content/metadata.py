@@ -1,9 +1,10 @@
+from zeit.cms.content.dav import DAVProperty
 from zeit.cms.content.interfaces import ICommonMetadata
+from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 import grokcore.component as grok
 import zeit.cms.content.dav
-import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.tagging.tag
@@ -52,56 +53,52 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
 
-    title = zeit.cms.content.property.ObjectPathProperty(
-        '.body.title', ICommonMetadata['title'])
-    subtitle = zeit.cms.content.property.ObjectPathProperty(
+    title = ObjectPathProperty('.body.title', ICommonMetadata['title'])
+    subtitle = ObjectPathProperty(
         '.body.subtitle', ICommonMetadata['subtitle'])
-    supertitle = zeit.cms.content.property.ObjectPathProperty(
+    supertitle = ObjectPathProperty(
         '.body.supertitle', ICommonMetadata['supertitle'])
-    byline = zeit.cms.content.property.ObjectPathProperty(
-        '.body.byline', ICommonMetadata['byline'])
+    byline = ObjectPathProperty('.body.byline', ICommonMetadata['byline'])
 
-    teaserTitle = zeit.cms.content.property.ObjectPathProperty(
+    teaserTitle = ObjectPathProperty(
         '.teaser.title', ICommonMetadata['teaserTitle'])
-    teaserText = zeit.cms.content.property.ObjectPathProperty(
+    teaserText = ObjectPathProperty(
         '.teaser.text', ICommonMetadata['teaserText'])
-    teaserSupertitle = zeit.cms.content.property.ObjectPathProperty(
+    teaserSupertitle = ObjectPathProperty(
         '.teaser.supertitle', ICommonMetadata['teaserSupertitle'])
 
-    authors = zeit.cms.content.dav.DAVProperty(
+    authors = DAVProperty(
         ICommonMetadata['authors'], DOCUMENT_SCHEMA_NS, 'author',
         use_default=True)
 
-    printRessort = zeit.cms.content.dav.DAVProperty(
+    printRessort = DAVProperty(
         ICommonMetadata['printRessort'], zeit.cms.interfaces.PRINT_NAMESPACE,
         'ressort')
 
-    commentsPremoderate = zeit.cms.content.dav.DAVProperty(
+    commentsPremoderate = DAVProperty(
         ICommonMetadata['commentsPremoderate'],
         DOCUMENT_SCHEMA_NS, 'comments_premoderate')
-
-    commentsAllowed = zeit.cms.content.dav.DAVProperty(
+    commentsAllowed = DAVProperty(
         ICommonMetadata['commentsAllowed'], DOCUMENT_SCHEMA_NS, 'comments')
-
-    commentSectionEnable = zeit.cms.content.dav.DAVProperty(
+    commentSectionEnable = DAVProperty(
         ICommonMetadata['commentSectionEnable'],
         DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
-    dailyNewsletter = zeit.cms.content.dav.DAVProperty(
+    dailyNewsletter = DAVProperty(
         ICommonMetadata['dailyNewsletter'], DOCUMENT_SCHEMA_NS, 'DailyNL')
 
-    product = zeit.cms.content.dav.DAVProperty(
+    product = DAVProperty(
         ICommonMetadata['product'], 'http://namespaces.zeit.de/CMS/workflow',
         'product-id')
 
-    ir_mediasync_id = zeit.cms.content.dav.DAVProperty(
+    ir_mediasync_id = DAVProperty(
         ICommonMetadata['ir_mediasync_id'], zeit.cms.interfaces.IR_NAMESPACE,
         'mediasync_id')
-    ir_article_id = zeit.cms.content.dav.DAVProperty(
+    ir_article_id = DAVProperty(
         ICommonMetadata['ir_article_id'], zeit.cms.interfaces.IR_NAMESPACE,
         'article_id')
 
-    _color_scheme = zeit.cms.content.dav.DAVProperty(
+    _color_scheme = DAVProperty(
         ICommonMetadata['color_scheme'], DOCUMENT_SCHEMA_NS, 'color_scheme')
 
     @property
