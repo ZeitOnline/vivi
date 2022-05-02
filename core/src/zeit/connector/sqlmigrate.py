@@ -4,6 +4,7 @@ import grokcore.component as grok
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.interfaces
+import zeit.content.author.interfaces
 import zope.component
 
 
@@ -81,3 +82,9 @@ class CommonMetadata(Converter):
                 attr.meta.__set__(self.content, value)
                 attr.body.__set__(self.content, None)
         return True
+
+
+class Author(CommonMetadata):
+
+    interface = zeit.content.author.interfaces.IAuthor
+    grok.name(interface.__name__)

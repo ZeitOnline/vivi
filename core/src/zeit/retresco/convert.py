@@ -1,4 +1,5 @@
 from datetime import datetime
+from zeit.cms.content.property import ObjectPathProperty, SwitchableProperty
 from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
@@ -630,7 +631,7 @@ def get_xml_properties(context):
     result = {}
     for name in dir(cls):
         prop = getattr(cls, name)
-        if isinstance(prop, zeit.cms.content.property.ObjectPathProperty):
+        if isinstance(prop, (ObjectPathProperty, SwitchableProperty)):
             value = getattr(context, name)
             if value:
                 result[name] = value

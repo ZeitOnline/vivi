@@ -1,5 +1,6 @@
 from requests.exceptions import RequestException
-from zeit.cms.content.property import ObjectPathProperty
+from zeit.cms.content.dav import DAVProperty
+from zeit.cms.content.property import ObjectPathProperty, SwitchableProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
 import collections.abc
@@ -33,9 +34,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         '</author>')
 
     for name in [
-        'biography',
         'display_name',
-        'cook_biography',
         'email',
         'sso_connect',
         'ssoid',
@@ -50,21 +49,31 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'initials',
         'is_cook',
         'lastname',
-        'occupation',
         'show_letterbox_link',
         'status',
-        'summary',
         'title',
+        'twitter',
+        'vgwortcode',
+        'vgwortid',
+        'website',
+    ]:
+        locals()[name] = SwitchableProperty(
+            DAVProperty(
+                IAuthor[name],
+                'http://namespaces.zeit.de/CMS/zeit.content.author', name),
+            ObjectPathProperty('.%s' % name, IAuthor[name]))
+
+    for name in [
+        'biography',
+        'cook_biography',
+        'occupation',
+        'summary',
         'topiclink_label_1',
         'topiclink_label_2',
         'topiclink_label_3',
         'topiclink_url_1',
         'topiclink_url_2',
         'topiclink_url_3',
-        'twitter',
-        'vgwortcode',
-        'vgwortid',
-        'website',
     ]:
         locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
 
