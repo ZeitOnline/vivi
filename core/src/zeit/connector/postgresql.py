@@ -41,7 +41,8 @@ def _build_filter(expr):
         namespace = var.namespace.replace(Properties.NS, '', 1)
         return Properties.unsorted[namespace][name].as_string() == value
     else:
-        raise RuntimeError(f"Unknown operand {op!r} while building search query")
+        raise RuntimeError(
+            f"Unknown operand {op!r} while building search query")
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
