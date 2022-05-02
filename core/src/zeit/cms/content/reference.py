@@ -11,7 +11,6 @@ XML nodes::
 Terminology note: the "source" (A or C) references the "target" (B).
 
 """
-import collections
 import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
@@ -130,10 +129,10 @@ class ReferenceProperty:
                                 'errors that could lead to data loss.')
 
     def _filter_duplicates(self, value):
-        # We actually want an OrderedSet, so we use only the keys.
-        result = collections.OrderedDict()
+        # set does not preserve order, so we use dict keys instead.
+        result = {}
         for item in value:
-            if item not in result.keys():
+            if item not in result:
                 result[item] = True
         return result.keys()
 
