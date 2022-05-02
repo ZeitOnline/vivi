@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.0 (2022-05-02)
+-------------------
+
+- ZO-1255: Remove visible_mobile from vivi
+
+- ZO-633: Implement search for postgresql connector
+
+
 5.14.2 (2022-04-29)
 -------------------
 
