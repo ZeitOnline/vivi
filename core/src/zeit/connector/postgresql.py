@@ -4,6 +4,7 @@ from google.cloud import storage
 from google.cloud.storage.retry import DEFAULT_RETRY
 from io import BytesIO
 from logging import getLogger
+from operator import itemgetter
 from sqlalchemy import Boolean, TIMESTAMP, Unicode
 from sqlalchemy import Column, ForeignKey, select
 from sqlalchemy import UniqueConstraint
@@ -29,6 +30,20 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
+
+
+def _build_filter(expr):
+    op = expr.operator
+    if op == 'and':
+        return sqlalchemy.and_(*(_build_filter(e) for e in expr.operands))
+    elif op == 'eq':
+        (var, value) = expr.operands
+        name = var.name
+        namespace = var.namespace.replace(Properties.NS, '', 1)
+        return Properties.unsorted[namespace][name].as_string() == value
+    else:
+        raise RuntimeError(
+            f"Unknown operand {op!r} while building search query")
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -191,8 +206,18 @@ class Connector:
     def locked(self, uniqueid):
         pass
 
-    def search(self, attributes, expression):
-        pass
+    def search(self, attrlist, expr):
+        query = select(Paths).join(Properties).filter(_build_filter(expr))
+        result = self.session.execute(query)
+        itemgetters = [
+            (
+                itemgetter(a.namespace.replace(Properties.NS, '', 1)),
+                itemgetter(a.name))
+            for a in attrlist]
+        for item in result.scalars():
+            for (nsgetter, keygetter) in itemgetters:
+                value = keygetter(nsgetter(item.properties.unsorted))
+                yield (f"{ID_NAMESPACE}{item.parent_path}/{item.name}", value)
 
 
 factory = Connector.factory

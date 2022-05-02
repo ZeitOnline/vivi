@@ -280,34 +280,77 @@ class ContractLock:
         self.assertEqual(unlock, lock)
 
 
+class ContractSearch:
+
+    def test_search_unknown_metadata(self):
+        from zeit.connector.search import SearchVar
+        var = SearchVar('name', 'namespace')
+        result = list(self.connector.search([var], var == 'foo'))
+        assert result == []
+
+    def test_search_known_metadata(self):
+        from zeit.connector.search import SearchVar
+        self.add_resource(
+            'foo', body='mybody', properties={('foo', self.NS): 'foo'})
+        self.add_resource(
+            'bar', body='mybody', properties={('foo', self.NS): 'bar'})
+        var = SearchVar('foo', self.NS)
+        result = list(self.connector.search([var], var == 'foo'))
+        assert result == [('http://xml.zeit.de/testing/foo', 'foo')]
+        result = list(self.connector.search([var], var == 'bar'))
+        assert result == [('http://xml.zeit.de/testing/bar', 'bar')]
+
+    def test_search_and_operator(self):
+        from zeit.connector.search import SearchVar
+        self.add_resource(
+            'foo', body='mybody', properties={
+                ('foo', self.NS): 'foo'})
+        self.add_resource(
+            'bar', body='mybody', properties={
+                ('foo', self.NS): 'bar',
+                ('ham', self.NS): 'egg'})
+        foo = SearchVar('foo', self.NS)
+        ham = SearchVar('ham', self.NS)
+        result = list(self.connector.search([ham], (foo == 'foo') & (ham == 'egg')))
+        assert result == []
+        result = list(self.connector.search([ham], (foo == 'bar') & (ham == 'egg')))
+        assert result == [('http://xml.zeit.de/testing/bar', 'egg')]
+
+
 class ContractDAV(
         ContractReadWrite,
         ContractCopyMove,
         ContractLock,
+        ContractSearch,
         zeit.connector.testing.ConnectorTest):
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
 
 
 class ContractMock(
         ContractReadWrite,
         ContractCopyMove,
         ContractLock,
+        # ContractSearch,
         zeit.connector.testing.MockTest):
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
+    # copy_inherited_functions(ContractSearch, locals())
 
 
 class ContractSQL(
         ContractReadWrite,
         # ContractCopyMove,
         # ContractLock,
+        ContractSearch,
         zeit.connector.testing.SQLTest):
 
     copy_inherited_functions(ContractReadWrite, locals())
     # copy_inherited_functions(ContractCopyMove, locals())
     # copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
