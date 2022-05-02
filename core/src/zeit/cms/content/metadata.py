@@ -1,6 +1,6 @@
 from zeit.cms.content.dav import DAVProperty
 from zeit.cms.content.interfaces import ICommonMetadata
-from zeit.cms.content.property import ObjectPathProperty
+from zeit.cms.content.property import ObjectPathProperty, SwitchableProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 import grokcore.component as grok
@@ -53,19 +53,32 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     recipe_categories = zeit.wochenmarkt.categories.RecipeCategories()
 
-    title = ObjectPathProperty('.body.title', ICommonMetadata['title'])
-    subtitle = ObjectPathProperty(
-        '.body.subtitle', ICommonMetadata['subtitle'])
-    supertitle = ObjectPathProperty(
-        '.body.supertitle', ICommonMetadata['supertitle'])
+    title = SwitchableProperty(
+        DAVProperty(ICommonMetadata['title'], DOCUMENT_SCHEMA_NS, 'title'),
+        ObjectPathProperty('.body.title', ICommonMetadata['title']))
+    subtitle = SwitchableProperty(
+        DAVProperty(ICommonMetadata['subtitle'], DOCUMENT_SCHEMA_NS,
+                    'subtitle'),
+        ObjectPathProperty('.body.subtitle', ICommonMetadata['subtitle']))
+    supertitle = SwitchableProperty(
+        DAVProperty(ICommonMetadata['supertitle'], DOCUMENT_SCHEMA_NS,
+                    'supertitle'),
+        ObjectPathProperty('.body.supertitle', ICommonMetadata['supertitle']))
     byline = ObjectPathProperty('.body.byline', ICommonMetadata['byline'])
 
-    teaserTitle = ObjectPathProperty(
-        '.teaser.title', ICommonMetadata['teaserTitle'])
-    teaserText = ObjectPathProperty(
-        '.teaser.text', ICommonMetadata['teaserText'])
-    teaserSupertitle = ObjectPathProperty(
-        '.teaser.supertitle', ICommonMetadata['teaserSupertitle'])
+    teaserTitle = SwitchableProperty(
+        DAVProperty(ICommonMetadata['teaserTitle'], DOCUMENT_SCHEMA_NS,
+                    'teaser_title'),
+        ObjectPathProperty('.teaser.title', ICommonMetadata['teaserTitle']))
+    teaserText = SwitchableProperty(
+        DAVProperty(ICommonMetadata['teaserText'], DOCUMENT_SCHEMA_NS,
+                    'teaser_subtitle'),
+        ObjectPathProperty('.teaser.text', ICommonMetadata['teaserText']))
+    teaserSupertitle = SwitchableProperty(
+        DAVProperty(ICommonMetadata['teaserSupertitle'], DOCUMENT_SCHEMA_NS,
+                    'teaser_supertitle'),
+        ObjectPathProperty(
+            '.teaser.supertitle', ICommonMetadata['teaserSupertitle']))
 
     authors = DAVProperty(
         ICommonMetadata['authors'], DOCUMENT_SCHEMA_NS, 'author',

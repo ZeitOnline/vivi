@@ -5,6 +5,7 @@ import xml.sax.saxutils
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.resource
+import zope.app.appsetup.product
 import zope.component
 import zope.schema.interfaces
 
@@ -307,3 +308,31 @@ class DAVConverterWrapper:
         return zope.component.getMultiAdapter(
             (field, self.DUMMY_PROPERTIES),
             zeit.cms.content.interfaces.IDAVPropertyConverter)
+
+
+class SwitchableProperty:
+    """Helper for data migration. Historically some data (e.g. `title`)
+    was stored in the XML body, which shall be moved to properties.
+    """
+
+    def __init__(self, meta, body):
+        self.meta = meta
+        self.body = body
+
+    def __get__(self, inst, cls):
+        if inst is None:
+            return self
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms') or {}
+        if config.get('teaserdata-in-properties'):
+            return self.meta.__get__(inst, cls)
+        else:
+            return self.body.__get__(inst, cls)
+
+    def __set__(self, inst, value):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms') or {}
+        if config.get('teaserdata-in-properties'):
+            self.meta.__set__(inst, value)
+        else:
+            self.body.__set__(inst, value)
