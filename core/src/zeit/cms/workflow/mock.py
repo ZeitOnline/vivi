@@ -9,7 +9,7 @@ import zope.interface
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublish)
-class MockPublish(object):
+class MockPublish:
     """A mock publisher."""
 
     def __init__(self, context):
@@ -61,12 +61,12 @@ class MockPublish(object):
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
-class MockPublishInfo(object):
+class MockPublishInfo:
 
     error_messages = ()
     date_print_published = None
-    last_modified_by = u'testuser'
-    last_published_by = u'testuser'
+    last_modified_by = 'testuser'
+    last_published_by = 'testuser'
     locked = False
     lock_reason = None
 

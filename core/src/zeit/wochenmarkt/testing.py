@@ -23,7 +23,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
 
-class RecipeCategoriesHelper(object):
+class RecipeCategoriesHelper:
     """Mixin for tests which need some recipe category infrastrucutre."""
 
     def get_category(self, code):

@@ -13,7 +13,7 @@ from zeit.connector.filesystem import Connector
 log = getLogger(__name__)
 
 
-class ContentCache(object):
+class ContentCache:
 
     @cachedproperty
     def cache(self):

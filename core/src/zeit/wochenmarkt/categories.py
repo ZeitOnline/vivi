@@ -21,7 +21,7 @@ xpath_functions['lower'] = xpath_lowercase
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
-class RecipeCategory(object):
+class RecipeCategory:
 
     def __init__(self, code, name):
         self.code = code
@@ -41,7 +41,7 @@ class RecipeCategory(object):
         return cls(code, name)
 
 
-class RecipeCategories(object):
+class RecipeCategories:
     """Property which stores recipe categories in DAV."""
 
     def __get__(self, instance, class_):

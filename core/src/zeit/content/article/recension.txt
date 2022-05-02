@@ -30,11 +30,11 @@ A book recension has an xml representation:
 
 Set values and verify the xml:
 
->>> rec.authors = (u'Klaus', 'Hans')
->>> rec.title = u'Fremdschlaefer'
->>> rec.genre = u'Schocker'
->>> rec.info = u'Info'
->>> rec.category = u'Beletristik'
+>>> rec.authors = ('Klaus', 'Hans')
+>>> rec.title = 'Fremdschlaefer'
+>>> rec.genre = 'Schocker'
+>>> rec.info = 'Info'
+>>> rec.category = 'Beletristik'
 >>> rec.age_limit = 4
 >>> rec.original_language = 'English'
 >>> rec.translator = 'Mr. T'
@@ -153,33 +153,33 @@ Let's retrive the recension we've created from the container:
 Verify the data:
 
 >>> rec.authors
-(u'Klaus', u'Hans')
+('Klaus', 'Hans')
 >>> rec.title
-u'Fremdschlaefer'
+'Fremdschlaefer'
 >>> rec.genre
-u'Schocker'
+'Schocker'
 >>> rec.info
-u'Info'
+'Info'
 >>> rec.category
-u'Beletristik'
+'Beletristik'
 >>> rec.age_limit
 4
 >>> rec.original_language
-u'English'
+'English'
 >>> rec.translator
-u'Mr. T'
+'Mr. T'
 >>> rec.publisher
-u'gocept'
+'gocept'
 >>> rec.location
-u'Halle'
+'Halle'
 >>> rec.year
 2002
 >>> rec.media_type
-u'Buch'
+'Buch'
 >>> rec.pages
 124
 >>> rec.price
-u'25,99'
+'25,99'
 
 
 If the recension is modified, the article is marked as changed. The article
@@ -191,7 +191,7 @@ needs to be attachted to a database to see this:
 >>> article._p_changed
 False
 
->>> rec.title = u'Zuhauseschläfer'
+>>> rec.title = 'Zuhauseschläfer'
 >>> rec._p_changed
 True
 >>> article._p_changed

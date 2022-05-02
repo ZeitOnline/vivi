@@ -11,7 +11,7 @@ The teaser block contains a list of teasers.
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> lead = cp['lead']
 >>> lead.apply_teaser_layouts_automatically = True
->>> lead.kind = u'major'
+>>> lead.kind = 'major'
 >>> lead.first_teaser_layout = zeit.content.cp.layout.get_layout('leader')
 >>> import zeit.content.cp.interfaces
 >>> import zeit.edit.interfaces
@@ -64,7 +64,7 @@ for <container module="">.
 Archive centerpages should always keep the same module attribute:
 
 >>> archive_cp = zeit.content.cp.centerpage.CenterPage()
->>> archive_cp.type = u'archive-print-volume'
+>>> archive_cp.type = 'archive-print-volume'
 >>> print(archive_cp.type)
 archive-print-volume
 >>> factory = zope.component.getAdapter(

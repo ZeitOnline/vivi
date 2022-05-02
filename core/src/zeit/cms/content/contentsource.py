@@ -27,7 +27,7 @@ class IAutocompleteSource(INamedCMSContentSource):
 
 
 @zope.interface.implementer(INamedCMSContentSource)
-class CMSContentSource(object):
+class CMSContentSource:
     """A source for all cms content."""
 
     name = 'all-types'
@@ -89,7 +89,7 @@ folderSource = FolderSource()
     zope.schema.interfaces.IChoice,
     ICMSContentSource,
     zope.interface.Interface)
-class ChoicePropertyWithCMSContentSource(object):
+class ChoicePropertyWithCMSContentSource:
 
     def __init__(self, context, source, content):
         self.context = context

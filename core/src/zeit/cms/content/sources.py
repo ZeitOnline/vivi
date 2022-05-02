@@ -525,10 +525,10 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('title')),
                 unicode_or_none(node.get('url')),
                 unicode_or_none(node.get('encoded')),
-                node.get('format-label') == u'Kolumne',
+                node.get('format-label') == 'Kolumne',
                 unicode_or_none(node.get('kind')),
-                node.get('video') == u'yes',
-                node.get('fallback_image') == u'yes',
+                node.get('video') == 'yes',
+                node.get('fallback_image') == 'yes',
                 unicode_or_none(node.get('podigee-id')),
                 unicode_or_none(node.get('podigee-url')),
                 unicode_or_none(node.get('color'))

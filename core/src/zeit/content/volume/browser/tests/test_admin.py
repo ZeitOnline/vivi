@@ -23,13 +23,13 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         zeit.cms.content.add.find_or_create_folder('2015', '01')
         self.repository['2015']['01']['ausgabe'] = volume
         content = ExampleContentType()
         content.year = 2015
         content.volume = 1
-        content.product = zeit.cms.content.sources.Product(u'ZEI')
+        content.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['testcontent'] = content
         IPublishInfo(self.repository['testcontent']).urgent = True
 
@@ -43,8 +43,8 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         article = Article()
         zeit.cms.content.field.apply_default_values(article, IArticle)
         article.year = 2017
-        article.title = u'title'
-        article.ressort = u'Deutschland'
+        article.title = 'title'
+        article.ressort = 'Deutschland'
         portraitbox = Portraitbox()
         self.repository['portraitbox'] = portraitbox
         body = EditableBody(article, article.xml.body)
@@ -126,7 +126,7 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['ausgabe'] = volume
 
     def test_publish_shows_spinner(self):

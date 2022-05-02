@@ -3,7 +3,7 @@ import zeit.cms.testing
 import zeit.cms.content.contentsource
 
 
-class ContentSourceBase(object):
+class ContentSourceBase:
 
     source = zeit.cms.content.contentsource.CMSContentSource()
     expected_types = [

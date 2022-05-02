@@ -53,7 +53,7 @@ When we just submit we'll get an error because 'Somalia' already exists:
 
 Umlauts are not allowed in file names:
 
->>> browser.getControl('New file name').value = u'Sööö'.encode('utf-8')
+>>> browser.getControl('New file name').value = 'Sööö'.encode('utf-8')
 >>> browser.getControl('Rename').click()
 >>> print(browser.contents)
 <div id="rename-box" class="floating">

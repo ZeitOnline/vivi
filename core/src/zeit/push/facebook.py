@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection(object):
+class Connection:
 
     def send(self, text, link, **kw):
         account = kw['account']
@@ -111,10 +111,10 @@ def create_access_token(argv=None):
                      'redirect_uri': options.redirect_uri,
                      'scope': scopes,
                  }))
-    print(u'Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
+    print('Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
         login_url))
     print(
-        u'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
+        'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
     result_url = input('die neue URL bitte hier eingeben: ')
     code = six.moves.urllib.parse.parse_qs(
         six.moves.urllib.parse.urlparse(result_url).query)['code'][0]
@@ -148,7 +148,7 @@ def create_access_token(argv=None):
         print(r.text)
         raise SystemExit(1)
     long_lived_user_token = r.json()['access_token']
-    print(u'Das User Token ist: %s' % long_lived_user_token)
+    print('Das User Token ist: %s' % long_lived_user_token)
 
     # Step 3. Retrieve page access token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#pagetokens>
@@ -160,4 +160,4 @@ def create_access_token(argv=None):
     page_token = [x['access_token'] for x in accounts['accounts']['data']
                   if x['name'] == options.page_name][0]
 
-    print(u'Das Page Token für %s ist: %s' % (options.page_name, page_token))
+    print('Das Page Token für %s ist: %s' % (options.page_name, page_token))

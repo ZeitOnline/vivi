@@ -40,8 +40,8 @@ class FreetextCopyTest(zeit.content.author.testing.FunctionalTestCase):
     def setUp(self):
         super(FreetextCopyTest, self).setUp()
         author = zeit.content.author.author.Author()
-        author.firstname = u'William'
-        author.lastname = u'Shakespeare'
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
         self.repository['author'] = author
 
     def test_authorships_should_be_copied_to_freetext_on_change(self):
@@ -167,7 +167,7 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
         self.config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.author')
         self.author = zeit.content.author.author.Author()
-        self.author.email = u'peter.schmidt@zeit.de'
+        self.author.email = 'peter.schmidt@zeit.de'
         self.author.sso_connect = True
 
     def acs(self, email, **json):
@@ -193,9 +193,9 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
         with self.acs(self.author.email, id=12345):
             self.repository['author'] = self.author
         self.assertEqual(12345, self.author.ssoid)
-        with self.acs(u'hans.müller@zeit.de', id=67890):
+        with self.acs('hans.müller@zeit.de', id=67890):
             with checked_out(self.repository['author']) as co:
-                co.email = u'hans.müller@zeit.de'
+                co.email = 'hans.müller@zeit.de'
         self.assertEqual(67890, self.repository['author'].ssoid)
 
     def test_ssoid_is_deleted_on_disable_sso_connect(self):
@@ -217,9 +217,9 @@ class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
             self.repository['author'] = self.author
         self.assertEqual(12345, self.author.ssoid)
 
-        with self.acs(u'hans.müller@zeit.de', id=67890):
+        with self.acs('hans.müller@zeit.de', id=67890):
             with checked_out(self.repository['author']) as co:
-                co.email = u'hans.müller@zeit.de'
+                co.email = 'hans.müller@zeit.de'
                 zope.event.notify(ObjectModifiedEvent(
                     co, Attributes(ICommonMetadata, 'email')))
                 self.assertEqual(67890, co.ssoid)

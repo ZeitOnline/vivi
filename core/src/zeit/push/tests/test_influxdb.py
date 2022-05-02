@@ -13,8 +13,8 @@ class ConnectionTest(zeit.push.testing.TestCase):
         message = zeit.push.urbanairship.Message(
             ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
         message.config = {
-            'payload_template': u'template.json',
-            'override_text': u'foo',
+            'payload_template': 'template.json',
+            'override_text': 'foo',
             'type': 'mobile'
         }
         with mock.patch('requests.post') as post:

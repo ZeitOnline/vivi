@@ -48,7 +48,7 @@ class Message(grok.Adapter):
             log.info('Push notification for %s sent', self.type)
         except Exception as e:
             self.log_error(str(e))
-            log.error(u'Error during push to %s with config %s',
+            log.error('Error during push to %s with config %s',
                       self.type, self.config, exc_info=True)
 
     def _disable_message_config(self):

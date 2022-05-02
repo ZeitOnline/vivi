@@ -31,7 +31,7 @@ class MDBImportWidget(zope.formlib.widget.SimpleInputWidget):
         return self.request.form.get(self.name, self._missing)
 
 
-class MDBProxy(object):
+class MDBProxy:
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')

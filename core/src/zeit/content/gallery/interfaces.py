@@ -20,7 +20,7 @@ class IGalleryFolderSource(zeit.cms.content.interfaces.ICMSContentSource):
 @zope.interface.implementer_only(IGalleryFolderSource)
 class GalleryFolderSource(zeit.cms.content.contentsource.FolderSource):
 
-    name = u'gallery-folders'
+    name = 'gallery-folders'
 
 
 galleryFolderSource = GalleryFolderSource()
@@ -32,7 +32,7 @@ class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     type = zope.schema.Choice(
         title=_('Gallery type'),
         source=zeit.content.gallery.source.GalleryTypeSource(),
-        default=u'standalone')
+        default='standalone')
 
     image_folder = zope.schema.Choice(
         title=_("Image folder"),
@@ -106,7 +106,7 @@ class IGalleryEntry(zope.interface.Interface):
         title=_("Image caption"),
         description=_('gallery-image-caption-description'),
         required=False,
-        missing_value=u'')
+        missing_value='')
 
 
 class GallerySource(zeit.cms.content.contentsource.CMSContentSource):

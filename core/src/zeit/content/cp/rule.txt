@@ -31,13 +31,13 @@ Specifying rules
 
 Rules can be specified in a file which contains:
 
->>> create_rules(u"""\
+>>> create_rules("""\
 ... applicable(is_block and area == 'teaser-mosaic' and position == 2)
-... error_unless(layout == 'dmr', u'Die zweite Teaserleiste muss ein DMR sein')
+... error_unless(layout == 'dmr', 'Die zweite Teaserleiste muss ein DMR sein')
 ...
 ... applicable(is_area and area == 'lead')
-... warning_unless(count > 6, u'In der Aufmacherfläche sollen mehr als 6 Teaserblöcke stehen')
-... error_unless(count > 2, u'In der Aufmacherfläche müssen mehr als 2 Teaserblöcke stehen')
+... warning_unless(count > 6, 'In der Aufmacherfläche sollen mehr als 6 Teaserblöcke stehen')
+... error_unless(count > 2, 'In der Aufmacherfläche müssen mehr als 2 Teaserblöcke stehen')
 ...
 ... applicable(is_area and area == 'lead')
 ... # always valid
@@ -52,7 +52,7 @@ area:
 >>> validator.status
 'error'
 >>> validator.messages
-[u'In der Aufmacherfl\xe4che m\xfcssen mehr als 2 Teaserbl\xf6cke stehen']
+['In der Aufmacherfl\xe4che m\xfcssen mehr als 2 Teaserbl\xf6cke stehen']
 
 
 Validating the number of blocks in an area
@@ -71,7 +71,7 @@ Validating the number of blocks in an area
 >>> validator.status
 'warning'
 >>> validator.messages
-[u'In der Aufmacherfl\xe4che sollen mehr als 6 Teaserbl\xf6cke stehen']
+['In der Aufmacherfl\xe4che sollen mehr als 6 Teaserbl\xf6cke stehen']
 
 
 Edge cases
@@ -81,7 +81,7 @@ Rules are seperated by blank lines and/or comments. That means writing your
 file without those, the whole file is interpreted as one rule. However, every
 rule has to start with `applicable`:
 
->>> create_rules(u"""\
+>>> create_rules("""\
 ... applicable(False)
 ... applicable(True)
 ... """)
@@ -91,7 +91,7 @@ rule has to start with `applicable`:
 
 Comments are allowed to seperate rules:
 
->>> create_rules(u"""\
+>>> create_rules("""\
 ... # The first rule
 ... applicable(True)
 ... # Here starts a second rule
@@ -106,30 +106,30 @@ Comments are allowed to seperate rules:
 
 An empty rules file can be parsed, too:
 
->>> create_rules(u"")
+>>> create_rules("")
 >>> rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
 >>> len(rm.rules)
 0
 
 Encoding:
 
->>> create_rules(u"""\
+>>> create_rules("""\
 ... applicable(True)
-... error_unless(False, u'öüäß')
+... error_unless(False, 'öüäß')
 ... """)
 >>> validator = zeit.edit.interfaces.IValidator(dummy)
 >>> validator.messages
-[u'\xf6\xfc\xe4\xdf']
+['\xf6\xfc\xe4\xdf']
 
 Syntax error handling:
 
->>> create_rules(u"""\
+>>> create_rules("""\
 ... applicable(True)
 ... error_unless(False
 ... """)
 >>> validator = zeit.edit.interfaces.IValidator(dummy)
 >>> validator.messages
-[u'\xf6\xfc\xe4\xdf']
+['\xf6\xfc\xe4\xdf']
 
 
 Clean up

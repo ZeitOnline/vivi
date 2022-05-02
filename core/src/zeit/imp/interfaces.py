@@ -53,11 +53,11 @@ class IPossibleScale(zope.interface.Interface):
         "Width, leading ? indicates variable width.")
     height = zope.interface.Attribute(
         "height, leading ? indicates variable height.")
-    title = zope.schema.TextLine(title=u'Title')
+    title = zope.schema.TextLine(title='Title')
 
 
 class IColor(zope.interface.Interface):
 
-    title = zope.schema.TextLine(title=u'Title')
+    title = zope.schema.TextLine(title='Title')
     color = zope.interface.Attribute(
         'Color definition in the form #RRGGBB (hex, like html)')

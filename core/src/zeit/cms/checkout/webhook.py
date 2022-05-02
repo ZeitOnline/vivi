@@ -57,7 +57,7 @@ def notify_webhook(self, uniqueId, url):
     transaction.abort()
 
 
-class Hook(object):
+class Hook:
 
     def __init__(self, url):
         self.url = url

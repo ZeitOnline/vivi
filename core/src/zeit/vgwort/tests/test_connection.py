@@ -133,7 +133,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         transaction.commit()
-        connector._properties[u'http://xml.zeit.de/author2'][
+        connector._properties['http://xml.zeit.de/author2'][
             ('type', 'http://namespaces.zeit.de/CMS/meta')] = 'foo'
         self.add_token(content)
 
@@ -281,8 +281,8 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.authorships = [co.authorships.create(tina),
                               co.authorships.create(paul)]
-            co.authorships[0].role = u'Illustration'
-            co.authorships[1].role = u'Visualisierung'
+            co.authorships[0].role = 'Illustration'
+            co.authorships[1].role = 'Visualisierung'
         content = self.repository['testcontent']
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)

@@ -235,7 +235,7 @@ Highlighting
 
 The tree indicates where the user is right now. Create a test request:
 
->>> class Request(object):
+>>> class Request:
 ...     view_url = None
 ...     def __init__(self, path, view_path=None):
 ...         self.path = path

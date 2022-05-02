@@ -19,7 +19,7 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
-class import_base(object):
+class import_base:
 
     def _update(self):
         log.info('Updating %s', self.bcobj)

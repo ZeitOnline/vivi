@@ -144,7 +144,7 @@ class Add(zeit.cms.browser.form.AddForm,
         IPublishInfo(self._created_object).urgent = True
 
 
-class Retract(object):
+class Retract:
 
     @property
     def breakingnews(self):

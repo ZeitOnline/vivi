@@ -38,14 +38,14 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         self.open('/@@zeit.content.author.add_contextfree')
         self.assertNotIn('Add duplicate author', b.contents)
         self.add_william(vgwort_id='9876')
-        self.assertEllipsis(u"""\
+        self.assertEllipsis("""\
             ...There were errors...
             ...An author with the given name already exists...
             """, b.contents)
         # No new author has been created in DAV so far.
         self.assertEqual(1, len(self.repository['foo']['bar']['authors']['S']))
 
-        b.getControl(u'Add duplicate author').selected = True
+        b.getControl('Add duplicate author').selected = True
         b.getControl(name='form.actions.add').click()
         self.assertNotIn('There were errors', b.contents)
         # Make sure the new author gets a new __name__ rather than overwriting

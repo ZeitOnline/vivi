@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
-class Honorar(object):
+class Honorar:
 
     def __init__(self, url_hdok, url_blacklist, username, password):
         self.urls = {'hdok': url_hdok, 'blacklist': url_blacklist}

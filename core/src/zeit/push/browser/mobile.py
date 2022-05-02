@@ -7,7 +7,7 @@ import zope.security.proxy
 log = logging.getLogger(__name__)
 
 
-class FindTitle(object):
+class FindTitle:
 
     def __call__(self):
         name = self.request.form.get('q')
@@ -18,7 +18,7 @@ class FindTitle(object):
         return source.getDefaultTitle(template)
 
 
-class PreviewPayload(object):
+class PreviewPayload:
 
     @cachedproperty
     def message(self):
@@ -35,7 +35,7 @@ class PreviewPayload(object):
     def rendered_linenumbers(self):
         result = []
         for i, line in enumerate(self.rendered.split('\n')):
-            result.append(u'%03d %s' % (i, line))
+            result.append('%03d %s' % (i, line))
         return '\n'.join(result)
 
     @cachedproperty

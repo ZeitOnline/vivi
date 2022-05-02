@@ -33,8 +33,8 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
-        ref.title = u'localtitle'
-        ref.caption = u'localcaption'
+        ref.title = 'localtitle'
+        ref.caption = 'localcaption'
         self.assertEqual('localtitle', ref.title)
         self.assertEqual('localcaption', ref.caption)
         ref.update_metadata()
@@ -75,12 +75,12 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
-        ref.title = u'localtitle'
-        ref.caption = u'localcaption'
+        ref.title = 'localtitle'
+        ref.caption = 'localcaption'
         self.assertEqual('localtitle', ref.title)
         self.assertEqual('localcaption', ref.caption)
         ref.title = None
-        ref.caption = u''  # the caption field is non-None
+        ref.caption = ''  # the caption field is non-None
         self.assertEqual(None, ref.title)
         self.assertEqual('', ref.caption)
 
@@ -106,7 +106,7 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_colorpicker_should_generate_proper_xml(self):
         content = self.repository['testcontent']
-        zeit.content.image.interfaces.IImages(content).fill_color = u'F00F00'
+        zeit.content.image.interfaces.IImages(content).fill_color = 'F00F00'
         assert len(content.xml.xpath(
             '//head/image[@fill_color="F00F00"]')) == 1
 

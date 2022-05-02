@@ -33,7 +33,7 @@ DAILY_NAME = 'taeglich'
 
 
 @zope.interface.implementer(zeit.newsletter.interfaces.INewsletterCategory)
-class NewsletterCategoryBase(object):
+class NewsletterCategoryBase:
 
     zeit.cms.content.dav.mapProperties(
         zeit.newsletter.interfaces.INewsletterCategory,

@@ -227,7 +227,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
             root.getroottree(), encoding='unicode')
         if clear_disabled:
-            dav[DISABLED_PROPERTY] = u''
+            dav[DISABLED_PROPERTY] = ''
 
     @cachedproperty
     def links(self):

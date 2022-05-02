@@ -30,10 +30,10 @@ class TestVideo(zeit.content.video.testing.TestCase):
 
 @pytest.mark.parametrize(
     'title,supertitle,result', [
-        (u'Äch bön oin Börlünär.', u'Kennedy said:',
-         u'kennedy-said-aech-boen-oin-boerluenaer'),
-        (None, u'Kennedy said:', u'kennedy-said'),
-        (u'Äch bön oin Börlünär.', None, u'aech-boen-oin-boerluenaer')])
+        ('Äch bön oin Börlünär.', 'Kennedy said:',
+         'kennedy-said-aech-boen-oin-boerluenaer'),
+        (None, 'Kennedy said:', 'kennedy-said'),
+        ('Äch bön oin Börlünär.', None, 'aech-boen-oin-boerluenaer')])
 def test_seo_slug_returns_url_normalized_version_of_title_and_supertitle(
         title, supertitle, result):
     video = zeit.content.video.video.Video()

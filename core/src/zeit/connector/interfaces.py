@@ -236,30 +236,30 @@ class IResource(zope.interface.Interface):
     """
 
     __name__ = zope.schema.TextLine(
-        title=u"The name within the parent",
-        description=u"Traverse the parent with this name to get the object.")
+        title='The name within the parent',
+        description='Traverse the parent with this name to get the object.')
 
     # TODO: make this an URI. We want the unique ids to not contain any unicode
     # characters, so a URI would be the right thing. Right now we have unicode
     # unique ids though makeing URI invalid.
-    id = zope.interface.Attribute("Unique id of resource")
+    id = zope.interface.Attribute('Unique id of resource')
 
     type = zope.interface.Attribute(
-        "Resource type (folder, image, ...). This is mapped to the property "
-        "defined by `RESOURCE_TYPE_PROPERTY`")
+        'Resource type (folder, image, ...). This is mapped to the property '
+        'defined by `RESOURCE_TYPE_PROPERTY`')
 
     data = zope.interface.Attribute(
-        u"Resource main data (body, image data) as a file-like object.")
+        'Resource main data (body, image data) as a file-like object.')
 
     contentType = zope.schema.BytesLine(
-        title=u"Content Type",
+        title=u'Content Type',
         description='The mime content type identifies the type of data.',
         default=b'',
         required=False)
 
     properties = zope.schema.Object(
         IWebDAVProperties,
-        title=u"WebDAV properties")
+        title='WebDAV properties')
 
 
 class IResourceCache(zope.interface.Interface):

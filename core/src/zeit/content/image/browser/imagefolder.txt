@@ -60,7 +60,7 @@ some setup:
 The current location is the folder itself because we have not set a root:
 
 >>> get_location(repository['2007']['01'])
-u'http://xml.zeit.de/2007/01/'
+'http://xml.zeit.de/2007/01/'
 
 Set the base folder:
 
@@ -74,12 +74,12 @@ Set the base folder:
 We'll get a folder inside the images now:
 
 >>> get_location(repository['2007']['01'])
-u'http://xml.zeit.de/bilder/2007/01/'
+'http://xml.zeit.de/bilder/2007/01/'
 
 For the `online` foders we have the same image folder:
 
 >>> get_location(repository['online']['2007']['01'])
-u'http://xml.zeit.de/bilder/2007/01/'
+'http://xml.zeit.de/bilder/2007/01/'
 
 
 When there is no image folder nothing bad happens:
@@ -89,4 +89,4 @@ When there is no image folder nothing bad happens:
 >>> browser.getControl('volume').value = '7'
 >>> browser.getControl('Apply').click()
 >>> get_location(repository['2006']['49'])
-u'http://xml.zeit.de/2006/49/'
+'http://xml.zeit.de/2006/49/'

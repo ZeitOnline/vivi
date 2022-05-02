@@ -85,7 +85,7 @@ Let's have a look at the source:
 >>> related.related
 (<zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>,)
 >>> related.related[0].uniqueId
-u'http://xml.zeit.de/related'
+'http://xml.zeit.de/related'
 
 The context has been marked as changed, since otherwise the XML won't be stored
 on commit:
@@ -269,7 +269,7 @@ When we remove the relateds they're of course removed from the XML:
 
 When we add an related which is not adaptable a useful error is raised:
 
->>> class Strange(object):
+>>> class Strange:
 ...     pass
 >>> strange_thing = Strange()
 >>> strange_thing.uniqueId = 'foo'

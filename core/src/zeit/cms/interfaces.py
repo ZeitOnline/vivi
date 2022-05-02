@@ -11,12 +11,12 @@ import zope.schema
 import zope.security
 
 
-DOCUMENT_SCHEMA_NS = u"http://namespaces.zeit.de/CMS/document"
-QPS_SCHEMA_NS = u"http://namespaces.zeit.de/QPS/attributes"
-ID_NAMESPACE = u'http://xml.zeit.de/'
-TEASER_NAMESPACE = u'http://xml.zeit.de/CMS/Teaser'
-PRINT_NAMESPACE = u"http://namespaces.zeit.de/CMS/print"
-IR_NAMESPACE = u"http://namespaces.zeit.de/CMS/interred"
+DOCUMENT_SCHEMA_NS = "http://namespaces.zeit.de/CMS/document"
+QPS_SCHEMA_NS = "http://namespaces.zeit.de/QPS/attributes"
+ID_NAMESPACE = 'http://xml.zeit.de/'
+TEASER_NAMESPACE = 'http://xml.zeit.de/CMS/Teaser'
+PRINT_NAMESPACE = "http://namespaces.zeit.de/CMS/print"
+IR_NAMESPACE = "http://namespaces.zeit.de/CMS/interred"
 ZEITWEB_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.web'
 
 # lovely.remotetask stores times as 32 bit leading to an overflow after 2030.
@@ -98,7 +98,7 @@ class IEditPermission(zope.security.interfaces.IPermission):
 class ITypeDeclaration(zope.interface.Interface):
 
     type_identifier = zope.schema.TextLine(
-        title=u'Unique identifier for this type')
+        title='Unique identifier for this type')
 
     # XXX add other attributes
 
@@ -133,10 +133,10 @@ def normalize_filename(filename):
     # zeit.cms.browser.js:filename.js, keep in sync!
     f = filename
     f = f.strip().lower()
-    f = f.replace(u'ä', 'ae')
-    f = f.replace(u'ö', 'oe')
-    f = f.replace(u'ü', 'ue')
-    f = f.replace(u'ß', 'ss')
+    f = f.replace('ä', 'ae')
+    f = f.replace('ö', 'oe')
+    f = f.replace('ü', 'ue')
+    f = f.replace('ß', 'ss')
 
     # Remove special characters at beginning and end
     # XXX It's unclear why this doesn't work as a single regexp.

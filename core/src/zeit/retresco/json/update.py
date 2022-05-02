@@ -9,7 +9,7 @@ import zope.app.appsetup.product
 log = logging.getLogger(__name__)
 
 
-class UpdateKeywords(object):
+class UpdateKeywords:
 
     # A hopefully more correct version than zeit.cms.browser.view.JSON
     def __call__(self):

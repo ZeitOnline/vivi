@@ -12,7 +12,7 @@ import zope.formlib.form
 # IPortraitboxLongtext to all form_fields
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.portraitbox.interfaces.IPortraitbox,

@@ -20,7 +20,7 @@ import zope.proxy
 log = logging.getLogger(__name__)
 
 
-class ContentList(object):
+class ContentList:
     """A feed contains a list of references to ICMSContent objects.
 
     These are stored as <block> tags, with the ``uniqueId`` attribute pointing
@@ -185,7 +185,7 @@ class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
 
     title = zeit.cms.content.property.ObjectPathProperty('.title')
 
-    default_template = u"""\
+    default_template = """\
         <channel
           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -232,7 +232,7 @@ def update_feed_metadata_on_checkin(context, event):
 
 
 @zope.interface.implementer(zeit.cms.syndication.interfaces.IEntry)
-class Entry(object):
+class Entry:
     """An entry in the feed."""
 
     def __init__(self, element):
@@ -284,7 +284,7 @@ class Entry(object):
 @zope.interface.implementer(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.content.interfaces.ICommonMetadata)
-class FakeEntry(object):
+class FakeEntry:
     """Entry which does not reference an object in the CMS."""
 
     def __init__(self, id, entry):

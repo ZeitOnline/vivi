@@ -191,7 +191,7 @@ def workflow_with_warning_for_testcontent(context):
         context, 'Fake Validation Warning Message', CAN_PUBLISH_WARNING)
 
 
-class FakeValidatingWorkflowMixin(object):
+class FakeValidatingWorkflowMixin:
     """Mixin to register and unregister FakeValidatingWorkflow."""
 
     def setUp(self):

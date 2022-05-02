@@ -13,7 +13,7 @@ import zope.i18n
 import zope.viewlet.viewlet
 
 
-class Repository(object):
+class Repository:
 
     def __call__(self):
         return zope.component.getUtility(
@@ -174,4 +174,4 @@ class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
         self.request.response.setHeader(
             'Cache-Control', 'no-cache')
         self.redirect(self.url(obj, view), status=301)
-        return u''
+        return ''

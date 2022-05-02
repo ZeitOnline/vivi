@@ -18,7 +18,7 @@ Setup
 >>> request = zope.publisher.browser.TestRequest(
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> request.setPrincipal(
-...     zope.security.testing.Principal(u'zope.globalmgr'))
+...     zope.security.testing.Principal('zope.globalmgr'))
 >>> import zope.security.management
 >>> zope.security.management.newInteraction(request)
 
@@ -84,7 +84,7 @@ True
 <zope.viewlet.metaconfigure.AssetStatus object at 0x...>
 >>> viewlet.update()
 >>> viewlet.render()
-u''
+''
 
 Reset the implements:
 

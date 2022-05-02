@@ -9,7 +9,7 @@ XML Tree
 >>> import zeit.cms.testing
 >>> field = XMLTree()
 >>> field.__name__ = 'xml'
->>> class Content(object):
+>>> class Content:
 ...     pass
 >>> content = Content()
 >>> tree = field.fromUnicode('<container/>')

@@ -34,7 +34,7 @@ UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
     zeit.cms.interfaces.IAsset)
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
 
-    default_template = u"""\
+    default_template = """\
         <volume xmlns:py="http://codespeak.net/lxml/objectify/pytype">
             <head/>
             <body/>
@@ -410,8 +410,8 @@ def _find_performing_articles_via_webtrekk(volume):
     this should only be used when performance is no criteria.
     """
     api_date_format = '%Y-%m-%d %H:%M:%S'
-    cr_metric_name = u'CR Bestellungen Abo (Artikelbasis)'
-    order_metric_name = u'Anzahl Bestellungen mit Seitenbezug'
+    cr_metric_name = 'CR Bestellungen Abo (Artikelbasis)'
+    order_metric_name = 'Anzahl Bestellungen mit Seitenbezug'
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.volume')
     info = zeit.cms.workflow.interfaces.IPublishInfo(volume)

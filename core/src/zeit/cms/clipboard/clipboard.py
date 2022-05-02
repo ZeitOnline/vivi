@@ -94,7 +94,7 @@ def principalAdapter(principal):
     zeit.cms.workingcopy.interfaces.IWorkingcopy,
     zope.publisher.interfaces.IPublisherRequest)
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
-class WorkingcopyTraverser(object):
+class WorkingcopyTraverser:
     """Traverses to clipboard through a workingcopy."""
 
     def __init__(self, context, request):

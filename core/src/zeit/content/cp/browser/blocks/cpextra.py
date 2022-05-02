@@ -5,7 +5,7 @@ import zope.component
 import zope.formlib.form
 
 
-class CPExtraView(object):
+class CPExtraView:
 
     @property
     def cpextra_title(self):

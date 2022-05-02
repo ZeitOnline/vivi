@@ -1,7 +1,7 @@
 from io import BytesIO
 
 
-class MemoryFile(object):
+class MemoryFile:
 
     def __init__(self, value=None):
         # XXX Even though the signature is BytesIO.__init__([initial_bytes]),

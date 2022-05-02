@@ -11,7 +11,7 @@ import zeit.content.video.video
 import zope.component
 
 
-class Converter(object):
+class Converter:
 
     def __init__(self):
         self.data = {}
@@ -107,11 +107,11 @@ class Video(Converter):
         custom['banner_id'] = cmsobj.banner_id
         custom['recensions'] = cls.bc_bool(cmsobj.has_recensions)
         custom['produkt-id'] = cmsobj.product.id if cmsobj.product else None
-        custom['cmskeywords'] = u';'.join(x.code for x in cmsobj.keywords)
+        custom['cmskeywords'] = ';'.join(x.code for x in cmsobj.keywords)
         custom['ressort'] = cmsobj.ressort
         custom['serie'] = cmsobj.serie.serienname if cmsobj.serie else None
-        custom['channels'] = u';'.join([' '.join([x for x in channel if x])
-                                        for channel in cmsobj.channels])
+        custom['channels'] = ';'.join([' '.join([x for x in channel if x])
+                                       for channel in cmsobj.channels])
         custom['supertitle'] = cmsobj.supertitle
         custom['credit'] = cmsobj.video_still_copyright
         custom['type'] = cmsobj.type
@@ -129,7 +129,7 @@ class Video(Converter):
                 if metadata and metadata.teaserTitle:
                     title = metadata.teaserTitle
                 else:
-                    title = u'unknown'
+                    title = 'unknown'
                 custom['ref_link%s' % i] = item.uniqueId
                 custom['ref_title%s' % i] = title
 

@@ -11,7 +11,7 @@ class RuleTest(zeit.content.article.testing.FunctionalTestCase):
         block = self.get_factory(self.get_article(), 'p')()
         r = Rule("""
 applicable(article)
-error_if(True, u'foo')
+error_if(True, 'foo')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
@@ -24,7 +24,7 @@ error_if(True, u'foo')
         r = Rule("""
 from zeit.content.infobox.interfaces import IInfobox
 applicable(True)
-error_if(IInfobox.providedBy(content[0]), u'foo')
+error_if(IInfobox.providedBy(content[0]), 'foo')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
@@ -37,7 +37,7 @@ error_if(IInfobox.providedBy(content[0]), u'foo')
         r = Rule("""
 from zeit.content.image.interfaces import IImage
 applicable(True)
-error_if(IImage.providedBy(content[0]), u'foo')
+error_if(IImage.providedBy(content[0]), 'foo')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
@@ -47,7 +47,7 @@ error_if(IImage.providedBy(content[0]), u'foo')
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         zeit.cms.content.add.find_or_create_folder('2015', '01')
         self.repository['2015']['01']['ausgabe'] = volume
         block = self.get_factory(self.get_article(), 'volume')()
@@ -56,7 +56,7 @@ error_if(IImage.providedBy(content[0]), u'foo')
         r = Rule("""
 from zeit.content.volume.interfaces import IVolume
 applicable(True)
-error_if(IVolume.providedBy(content[0]), u'bar')
+error_if(IVolume.providedBy(content[0]), 'bar')
 """)
         s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)

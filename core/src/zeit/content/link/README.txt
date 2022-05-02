@@ -40,7 +40,7 @@ Does the blog source matching work?
 
 >>> link.url = 'http://gocept.com'
 >>> link.blog.name
-u'Testblog'
+'Testblog'
 
 >>> print(zeit.cms.testing.xmltotext(link.xml))
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">

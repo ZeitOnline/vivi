@@ -12,7 +12,7 @@ Create a mock repository:
 >>> import zope.interface
 >>> import zope.location.interfaces
 >>> @zope.interface.implementer(zope.location.interfaces.ILocation)
-... class Repository(object):
+... class Repository:
 ...     __parent__ = getRootFolder()
 ...     __name__ = 'repo'
 ...
@@ -35,9 +35,9 @@ Create a simple content object:
 ...     zeit.cms.interfaces.ICMSContent,
 ...     zope.location.interfaces.ILocation,
 ...     zope.annotation.interfaces.IAttributeAnnotatable)
-... class Content(object):
+... class Content:
 ...     __parent__ = repository
-...     __name__ = u'content'
+...     __name__ = 'content'
 ...     uniqueId = 'http://xml.zeit.de/content'
 
 Make ICMSContent generally a contenttype:
@@ -63,7 +63,7 @@ location. Create a mock adapter which returns the repository:
 Setup interaction:
 
 >>> import zeit.cms.testing
->>> principal = zeit.cms.testing.create_interaction(u'zope.globalmgr')
+>>> principal = zeit.cms.testing.create_interaction('zope.globalmgr')
 
 
 Object widgets
@@ -139,7 +139,7 @@ Set the value to an existing, valid value; we now also see workflow
 information:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://xml.zeit.de/content'},
+...     form={'field.reference': 'http://xml.zeit.de/content'},
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
@@ -176,7 +176,7 @@ Returning location for <Content object at 0x...>
 Set the value to an existing but invalid value, so we get an validation error:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://xml.zeit.de/exists/blubs'},
+...     form={'field.reference': 'http://xml.zeit.de/exists/blubs'},
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
@@ -223,14 +223,14 @@ Returning location for <Content object at 0x...>
 Test the validation. Set a non existent resource:
 
 >>> request = zope.publisher.browser.TestRequest(
-...     form={'field.reference': u'http://xml.zeit.de/foo'},
+...     form={'field.reference': 'http://xml.zeit.de/foo'},
 ...     skin=zeit.cms.browser.interfaces.ICMSSkin)
 >>> widget = zeit.cms.browser.widget.ObjectReferenceWidget(
 ...     field, source, request)
 >>> widget.getInputValue()
 Traceback (most recent call last):
     ...
-ConversionError: (u'The object could not be found.', None)
+ConversionError: ('The object could not be found.', None)
 
 The invalid value is still rendered though:
 

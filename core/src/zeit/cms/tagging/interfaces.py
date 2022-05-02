@@ -47,19 +47,19 @@ class ITag(zeit.cms.interfaces.ICMSContent):
     """A tag."""
 
     code = zope.schema.TextLine(
-        title=u'Internal tag id')
+        title='Internal tag id')
 
     label = zope.schema.TextLine(
-        title=u'User visible text of tag')
+        title='User visible text of tag')
 
     pinned = zope.schema.Bool(
-        title=u'Prevent this tag from being changed by automatic processes?')
+        title='Prevent this tag from being changed by automatic processes?')
 
     entity_type = zope.schema.TextLine(
-        title=u'Entity type (e.g. Person, Location), may be None.')
+        title='Entity type (e.g. Person, Location), may be None.')
 
     url_value = zope.schema.ASCIILine(
-        title=u'Label encoded/normalized for use in an URL.')
+        title='Label encoded/normalized for use in an URL.')
 
 
 class IWhitelist(zope.interface.Interface):

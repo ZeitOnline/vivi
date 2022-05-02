@@ -23,7 +23,7 @@ def render(x):
         return quotestring(x)
 
 
-class SearchExpr(object):
+class SearchExpr:
     """SearchExpr is the most-general class.
        Its instances may be SearchTerms or arbitrarily
        nested combinations of them, linked by Boolean operators"""
@@ -82,7 +82,7 @@ class SearchTerm(SearchExpr):
         return self
 
 
-class SearchVar(object):
+class SearchVar:
     """SearchVar is the lowest being in the hierarchy.
        Others call this an atom. Basically, a qname, which
        is basically a namespace name pair"""
@@ -112,7 +112,7 @@ class SearchVar(object):
         return '%s %s' % (quotestring(self.namespace), quotestring(self.name))
 
 
-class SearchSymbol(object):
+class SearchSymbol:
     """SearchSymbol is a sibling of SearchVar, another atom
     """
     def __init__(self, name):

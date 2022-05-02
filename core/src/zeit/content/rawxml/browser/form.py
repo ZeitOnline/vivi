@@ -5,7 +5,7 @@ import zeit.content.rawxml.rawxml
 import zope.formlib.form
 
 
-class Base(object):
+class Base:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.rawxml.interfaces.IRawXML)

@@ -26,7 +26,7 @@ class EditCommon(zeit.content.cp.browser.view.EditBox):
         zeit.cms.browser.widget.ColorpickerWidget)
 
 
-class SwitchType(object):
+class SwitchType:
     """A generic non-browser view that changes the type of a block"""
 
     def __init__(self, parent, toswitch, request):
@@ -46,7 +46,7 @@ class SwitchType(object):
         return created
 
 
-class Position(object):
+class Position:
 
     def update(self):
         area = self.context.__parent__

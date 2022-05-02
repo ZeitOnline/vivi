@@ -3,7 +3,7 @@ import zope.interface
 
 
 @zope.interface.implementer(zeit.cms.redirect.interfaces.ILookup)
-class FakeLookup(object):
+class FakeLookup:
 
     def __init__(self):
         self.redirects = {}

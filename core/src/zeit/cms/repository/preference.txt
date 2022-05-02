@@ -7,7 +7,7 @@ objet. Login:
 
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
->>> principal = zeit.cms.testing.create_interaction(u'zope.user')
+>>> principal = zeit.cms.testing.create_interaction('zope.user')
 
 ... and get his preferences:
 

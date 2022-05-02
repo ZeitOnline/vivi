@@ -7,7 +7,7 @@ import zeit.push.browser.form
 import zope.formlib.form
 
 
-class Base(object):
+class Base:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.animation.interfaces.IAnimation

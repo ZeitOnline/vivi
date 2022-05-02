@@ -37,7 +37,7 @@ Initially there are no entries:
 
 The title of an infobox is a supertitle:
 
->>> ib.supertitle = u'Altersvorsorge'
+>>> ib.supertitle = 'Altersvorsorge'
 >>> print(zeit.cms.testing.xmltotext(ib.xml))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
@@ -47,7 +47,7 @@ Add a contents element:
 
 >>> ib.contents = (
 ...     ('Renteninformation', '<p>Nutzen Sie die Renteninformation, etc</p>'),)
->>> ib.supertitle = u'Altersvorsorge'
+>>> ib.supertitle = 'Altersvorsorge'
 >>> print(zeit.cms.testing.xmltotext(ib.xml))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
@@ -65,7 +65,7 @@ Add a contents element:
 ...     ('Fehlende Versicherungszeiten',
 ...      '<p>Pruefen Sie, ob in <strong>Ihrer</strong> Renteninformation '
 ...      'alle</p><p>Fitze fitze fatze</p>'))
->>> ib.supertitle = u'Altersvorsorge'
+>>> ib.supertitle = 'Altersvorsorge'
 >>> print(zeit.cms.testing.xmltotext(ib.xml))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
@@ -88,6 +88,6 @@ Of course we'll get the data back, in unicode:
 
 >>> import pprint
 >>> pprint.pprint(ib.contents)
-((u'Infor...
- (u'Fehle...
-  u'<p>Prue...
+(('Infor...
+ ('Fehle...
+  '<p>Prue...

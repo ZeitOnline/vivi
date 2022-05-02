@@ -9,7 +9,7 @@ import zope.interface
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IContentAdder)
-class ContentAdder(object):
+class ContentAdder:
 
     def __init__(self, request,
                  type_=None, ressort=None,

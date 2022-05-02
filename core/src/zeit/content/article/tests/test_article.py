@@ -159,7 +159,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
     def test_normalize_body(self):
         article = self.get_article()
         p = self.get_factory(article, 'p')()
-        p.text = u'“up” and „down‟ and «around»'
+        p.text = '“up” and „down‟ and «around»'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as co:
             block = co.body.values()[0]
@@ -167,7 +167,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
 
     def test_normalize_teaser(self):
         article = self.get_article()
-        article.teaserTitle = u'“up” and „down‟ and «around»'
+        article.teaserTitle = '“up” and „down‟ and «around»'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as co:
             self.assertEqual('"up" and "down" and "around"', co.teaserTitle)
@@ -178,8 +178,8 @@ class LayoutHeaderByArticleTemplate(
 
     def test_header_layout_should_determine_header_module_visibility(self):
         article = self.get_article()
-        article.template = u'column'
-        article.header_layout = u'default'
+        article.template = 'column'
+        article.header_layout = 'default'
         source = zeit.content.article.source.ArticleTemplateSource().factory
         self.assertTrue(source.allow_header_module(article))
 
@@ -256,8 +256,8 @@ class DefaultTemplateByContentType(
 
     def test_checkout_should_not_change_template_if_already_set(self):
         article = self.get_article()
-        article.template = u'column'
-        article.header_layout = u'heiter'
+        article.template = 'column'
+        article.header_layout = 'heiter'
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
@@ -266,7 +266,7 @@ class DefaultTemplateByContentType(
 
     def test_checkout_should_assign_default_if_current_value_invalid(self):
         article = self.get_article()
-        article.template = u'nonexistent'
+        article.template = 'nonexistent'
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
@@ -294,11 +294,11 @@ class DefaultTemplateByContentType(
     def test_changing_template_should_set_default_header(self):
         article = self.get_article()
         article._create_image_block_in_front()
-        article.template = u'column'
+        article.template = 'column'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as article:
             self.assertEqual(None, article.header_layout)
-            article.template = u'article'
+            article.template = 'article'
             zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
                 article, zope.lifecycleevent.Attributes(
                     zeit.content.article.interfaces.IArticle, 'template')))
@@ -321,19 +321,19 @@ class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
     def test_setting_access_to_abo_or_registration_disables_amp(self):
         with checked_out(self.article) as article:
             article.is_amp = True
-            article.access = u'abo'
+            article.access = 'abo'
             notify_modified(article, 'access')
             self.assertEqual(False, article.is_amp)
 
             article.is_amp = True
-            article.access = u'registration'
+            article.access = 'registration'
             notify_modified(article, 'access')
             self.assertEqual(False, article.is_amp)
 
     def test_setting_access_to_free_does_not_change_is_amp(self):
         with checked_out(self.article) as article:
             article.is_amp = True
-            article.access = u'free'
+            article.access = 'free'
             notify_modified(article, 'access')
             self.assertEqual(True, article.is_amp)
 
@@ -347,7 +347,7 @@ class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
 
     def test_only_change_is_amp_if_access_was_changed(self):
         with checked_out(self.article) as article:
-            article.access = u'abo'
+            article.access = 'abo'
             article.is_amp = True
             article.year = 2016
             notify_modified(article, 'year')
@@ -388,7 +388,7 @@ class ArticleXMLReferenceUpdate(
     def test_writes_genre_as_attribute(self):
         self.repository['article'] = self.get_article()
         with checked_out(self.repository['article']) as co:
-            co.genre = u'nachricht'
+            co.genre = 'nachricht'
 
         reference = zope.component.queryAdapter(
             self.repository['article'],

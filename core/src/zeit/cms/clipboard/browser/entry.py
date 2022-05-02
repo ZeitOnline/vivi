@@ -7,7 +7,7 @@ import zope.interface
 import zope.publisher.interfaces
 
 
-class Entry(object):
+class Entry:
 
     def __call__(self):
         url = zope.traversing.browser.absoluteURL(self.context.references,
@@ -18,7 +18,7 @@ class Entry(object):
         return self.context.references.uniqueId
 
 
-class AjaxDeleteEntry(object):
+class AjaxDeleteEntry:
 
     def delete(self):
         clipboard = zeit.cms.clipboard.interfaces.IClipboard(self.context)
@@ -29,7 +29,7 @@ class AjaxDeleteEntry(object):
 
 
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
-class EntryListRepresentation(object):
+class EntryListRepresentation:
 
     __name__ = None
 
@@ -49,7 +49,7 @@ class EntryListRepresentation(object):
 
 
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
-class InvalidReferenceListRepresentation(object):
+class InvalidReferenceListRepresentation:
 
     author = None
     ressort = None
@@ -97,7 +97,7 @@ def entryListRepresentationFactory(context, request):
     return list_repr
 
 
-class DragPane(object):
+class DragPane:
     """Show drag pane of referenced object."""
 
     def __call__(self):

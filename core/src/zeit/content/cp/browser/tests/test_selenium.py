@@ -279,8 +279,8 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_move_area_between_regions(self):
         s = self.selenium
-        s.click(u'link=Struktur')
-        s.click(u'link=Regionen')
+        s.click('link=Struktur')
+        s.click('link=Regionen')
         module = self.get_module('body', 'Solo')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
@@ -319,8 +319,8 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.assertCssCount('css=.type-region', 1)
         selector = 'css=.action-cp-body-module-droppable'
         module = self.get_module('body', 'Empty')
-        self.selenium.click(u'link=Struktur')
-        self.selenium.click(u'link=Regionen')
+        self.selenium.click('link=Struktur')
+        self.selenium.click('link=Regionen')
         self.selenium.waitForElementPresent(module)
         self.selenium.dragAndDropToObject(
             module, selector, '10,10')

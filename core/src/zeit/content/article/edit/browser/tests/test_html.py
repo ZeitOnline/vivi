@@ -132,6 +132,6 @@ class HTMLConvertTest(
 
     def test_quotation_marks_are_normalized(self):
         s = self.selenium
-        self.create(u'<p>“up” and „down‟ and «around»</p>')
+        self.create('<p>“up” and „down‟ and «around»</p>')
         self.convert()
         s.assertText('css=.editable p', '"up" and "down" and "around"')

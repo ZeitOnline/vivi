@@ -8,7 +8,7 @@ import zope.browsermenu.menu
 import zope.formlib.form
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.text.interfaces.IEmbed).select('__name__', 'text')
@@ -49,7 +49,7 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
     title = _('Edit embed')
 
 
-class CMPFields(object):
+class CMPFields:
 
     def __init__(self, context, request):
         super(CMPFields, self).__init__(context, request)

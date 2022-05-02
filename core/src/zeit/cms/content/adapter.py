@@ -29,7 +29,7 @@ def webdavproperties_to_cms_content(context):
     return zeit.cms.interfaces.ICMSContent(context.__parent__, None)
 
 
-class NullTarget(object):
+class NullTarget:
 
     def start(self, tag, attrib):
         pass

@@ -35,7 +35,7 @@ class ParagraphBase(zeit.content.article.edit.block.Block):
         return keep_allowed_tags(tree, self.allowed_tags)
 
     def _to_xml(self, value):
-        value = u'<p>%s</p>' % value
+        value = '<p>%s</p>' % value
         p = lxml.html.soupparser.fromstring(value)
         p = self.keep_allowed_tags(p)
         p.tag = self.type

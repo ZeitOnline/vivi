@@ -119,7 +119,7 @@ def area_for_element(context):
 
 
 @grok.implementer(zeit.edit.interfaces.IElementFactory)
-class ElementFactory(object):
+class ElementFactory:
     """Base class for element factories."""
 
     grok.baseclass()

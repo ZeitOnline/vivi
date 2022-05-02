@@ -29,7 +29,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection(object):
+class Connection:
     """Class to send push notifications to mobile devices via urbanairship."""
 
     def __init__(self, android_application_key, android_master_secret,
@@ -189,7 +189,7 @@ class Message(zeit.push.message.Message):
         parts = six.moves.urllib.parse.urlparse(self.url)
         path = six.moves.urllib.parse.urlunparse(
             ['', ''] + list(parts[2:])).lstrip('/')
-        return u'%s://%s' % (self.APP_IDENTIFIER, path)
+        return '%s://%s' % (self.APP_IDENTIFIER, path)
 
     @property
     def log_message_details(self):
@@ -266,9 +266,9 @@ def print_payload_documentation():
         'uses_image': True,
         'image': 'http://xml.zeit.de/image',
         'enabled': True,
-        'override_text': u'Some message text',
+        'override_text': 'Some message text',
         'type': 'mobile',
-        'title': u'Message title'}
+        'title': 'Message title'}
 
     template_text = pkg_resources.resource_string(
         __name__, 'tests/fixtures/payloadtemplate.json').decode('utf-8')

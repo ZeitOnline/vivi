@@ -20,14 +20,14 @@ are transmitted in json and can be added on the CP in general:
 >>> browser.open('@@block-factories.json')
 >>> factories = json.loads(browser.contents)
 >>> pprint.pprint(sorted(factories['factories'], key=lambda x: x['title']))
-[{u'css': u'module represents-content-object cp-module',
-  u'image': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-cpextra.png',
-  u'params': u'{}',
-  u'title': u'CPExtra',
-  u'type': u'cpextra'},
+[{'css': 'module represents-content-object cp-module',
+  'image': 'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-cpextra.png',
+  'params': '{}',
+  'title': 'CPExtra',
+  'type': 'cpextra'},
 ...]
 >>> factories['template_url']
-u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/block_factories.jsont'
+'http://localhost/++skin++cms/fanstatic/zeit.content.cp/block_factories.jsont'
 
 Adding blocks works by drag and drop. We simulate this here.
 
@@ -48,13 +48,13 @@ information about the created block:
 ...              '?block_type=cpextra')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result['signals'])
-[{u'args': [u'informatives',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@contents'],
-  u'name': u'reload',
-  u'when': None},
- {u'args': [u'id-7ccff7a0-3758-416c-ad30-d0183a2543fd'],
-  u'name': u'added',
-  u'when': u'after-reload'}]
+[{'args': ['informatives',
+            'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@contents'],
+  'name': 'reload',
+  'when': None},
+ {'args': ['id-7ccff7a0-3758-416c-ad30-d0183a2543fd'],
+  'name': 'added',
+  'when': 'after-reload'}]
 >>> print(browser.headers)
 Status: 200 Ok
 Content-Length: ...

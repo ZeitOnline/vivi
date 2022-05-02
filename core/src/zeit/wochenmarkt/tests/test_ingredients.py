@@ -41,14 +41,14 @@ class TestIngredients(zeit.wochenmarkt.testing.FunctionalTestCase):
         names = []
         for item in result:
             names.append(item.name)
-        assert u'Brathähnchen' in names
+        assert 'Brathähnchen' in names
 
     def test_ingredients_should_be_found_through_multiple_criteria(self):
         chicken = zope.component.getUtility(
             zeit.wochenmarkt.interfaces.IIngredientsWhitelist).category(
                 'chicken', 'B')
         assert 1 == len(chicken)
-        assert u'Brathähnchen' == chicken[0].name
+        assert 'Brathähnchen' == chicken[0].name
 
     def test_ingredients_should_be_sorted_with_exact_match_leading(self):
         result = zope.component.getUtility(

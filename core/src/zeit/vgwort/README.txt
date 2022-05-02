@@ -105,8 +105,8 @@ non-existence of properties, we initialize them with empty values:
 >>> print(info.reported_on)
 None
 >>> info.reported_error
-u''
->>> info.reported_error = u'foo'
+''
+>>> info.reported_error = 'foo'
 
 
 Publishing the same object again does not assign a new token:
@@ -117,7 +117,7 @@ Publishing the same object again does not assign a new token:
 2
 
 >>> info.reported_error
-u'foo'
+'foo'
 
 
 Tokens are only assigned for the master object of the event:

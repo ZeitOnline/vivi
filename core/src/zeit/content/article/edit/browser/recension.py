@@ -46,7 +46,7 @@ class Overview(zeit.cms.browser.view.Base):
             self.context)
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IBookRecension)

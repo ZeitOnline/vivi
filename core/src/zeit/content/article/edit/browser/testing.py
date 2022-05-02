@@ -31,7 +31,7 @@ class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
         return article
 
 
-class EditorHelper(object):
+class EditorHelper:
 
     editable_locator = '.block.type-p .editable'
 
@@ -49,9 +49,9 @@ class EditorHelper(object):
         s.waitForCssCount('css=.block.type-p', existing + 1)
         if contents:
             code = (
-                u"window.jQuery(window.jQuery('.block.type-p')[{0}])"
-                u".find('.editable')[0].innerHTML = '{1}';"
-            ).format(existing, contents.replace(u"'", u'\\"'))
+                "window.jQuery(window.jQuery('.block.type-p')[{0}])"
+                ".find('.editable')[0].innerHTML = '{1}';"
+            ).format(existing, contents.replace("'", '\\"'))
             self.selenium.runScript(code)
             self.mark_dirty()
 
@@ -111,7 +111,7 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase,
     window_height = 1000
 
 
-class RecipeListHelper(object):
+class RecipeListHelper:
 
     editable_locator = '.block.type-p .editable'
 

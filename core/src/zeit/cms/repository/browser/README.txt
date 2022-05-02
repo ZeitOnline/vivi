@@ -242,13 +242,13 @@ For any type the default browse location will be the folder itself:
 ...     (repository, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-u'http://xml.zeit.de/'
+'http://xml.zeit.de/'
 >>> online = repository['online']
 >>> location = zope.component.getMultiAdapter(
 ...     (online, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-u'http://xml.zeit.de/online/'
+'http://xml.zeit.de/online/'
 
 For a content object it will be the folder it is contained in:
 
@@ -256,7 +256,7 @@ For a content object it will be the folder it is contained in:
 ...     (online['2007']['01']['Saarland'], source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-u'http://xml.zeit.de/online/2007/01/'
+'http://xml.zeit.de/online/2007/01/'
 
 
 There is a view all ICMSContent which redirects to the browsing location:

@@ -12,7 +12,7 @@ Mock a connector:
 
 >>> import zeit.connector.interfaces
 >>> import zeit.connector.resource
->>> class Connector(object):
+>>> class Connector:
 ...     who = None
 ...     until = None
 ...     mylock = True
@@ -45,7 +45,7 @@ Create a fake content object:
 
 >>> import zeit.cms.interfaces
 >>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-... class Content(object):
+... class Content:
 ...     uniqueId = 'foo'
 
 LockStorage
@@ -90,7 +90,7 @@ Set until:
 >>> connector.mylock = True
 >>> info = lock_storage.getLock(content)
 >>> info.principal_id
-u'zeit.cms.unknown-dav-locker'
+'zeit.cms.unknown-dav-locker'
 >>> isinstance(info.timeout, float)
 True
 
@@ -113,7 +113,7 @@ anyway:
 
 Setting an allowed lock calls the lock method of the connector:
 
->>> info.principal_id = u'cms.gandalf'
+>>> info.principal_id = 'cms.gandalf'
 >>> lock_storage.setLock(content, info)
 Locking foo for cms.gandalf until ...
 

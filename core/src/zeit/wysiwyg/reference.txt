@@ -26,7 +26,7 @@ changed.
 
 Create an article that contains an image:
 
->>> source = u'''\
+>>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>
@@ -63,7 +63,7 @@ Here we check that each type of possible references is found:
 Images
 ======
 
->>> source = u'''\
+>>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>
@@ -85,7 +85,7 @@ Images
 
 An invalid ID is ignored:
 
->>> source = u'''\
+>>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>
@@ -112,7 +112,7 @@ Galleries
 >>> import zeit.content.gallery.gallery
 >>> repository['2006']['gal'] = zeit.content.gallery.gallery.Gallery()
 
->>> source = u'''\
+>>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>
@@ -126,7 +126,7 @@ Galleries
 
 Empty galleries should not break references:
 
->>> source = u'''\
+>>> source = '''\
 ... <article>
 ...   <head/>
 ...   <body>

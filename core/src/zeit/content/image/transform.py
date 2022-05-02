@@ -12,7 +12,7 @@ import zope.security.proxy
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.content.image.interfaces.ITransform)
-class ImageTransform(object):
+class ImageTransform:
 
     MAXIMUM_IMAGE_SIZE = 5000
 
@@ -233,7 +233,7 @@ def persistent_thumbnail_factory(context):
     return thumbnail_container[image_name]
 
 
-THUMBNAIL_FOLDER_NAME = u'thumbnails'
+THUMBNAIL_FOLDER_NAME = 'thumbnails'
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)

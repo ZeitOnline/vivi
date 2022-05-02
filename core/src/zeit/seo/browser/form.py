@@ -6,7 +6,7 @@ import zeit.seo.interfaces
 import zope.formlib.form
 
 
-class SEOBaseForm(object):
+class SEOBaseForm:
 
     form_fields = (
         zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO) +
@@ -47,7 +47,7 @@ def display_view_name(context):
     return 'seo-view.html'
 
 
-class OnlySEOBaseForm(object):
+class OnlySEOBaseForm:
 
     form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO)
 

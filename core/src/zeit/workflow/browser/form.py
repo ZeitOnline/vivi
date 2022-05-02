@@ -25,7 +25,7 @@ def workflow_form_factory(context, request):
         zeit.workflow.browser.interfaces.IWorkflowForm)
 
 
-class WorkflowActions(object):
+class WorkflowActions:
 
     def do_publish(self):
         if self.info.can_publish() == CAN_PUBLISH_SUCCESS:
@@ -36,7 +36,7 @@ class WorkflowActions(object):
             self.publish.publish(countdown=5)
             self.send_message(
                 _('scheduled-for-immediate-publishing',
-                  default=u"${id} has been scheduled for publishing.",
+                  default='${id} has been scheduled for publishing.',
                   mapping=self._error_mapping))
         else:
             self.send_validation_messages()
@@ -45,13 +45,13 @@ class WorkflowActions(object):
         self.publish.retract(countdown=5)
         self.send_message(
             _('scheduled-for-immediate-retracting',
-              default=u"${id} has been scheduled for retracting.",
+              default='${id} has been scheduled for retracting.',
               mapping=self._error_mapping))
 
     def send_validation_messages(self):
         self.send_message(
             _('publish-preconditions-not-met',
-              default=u"${id} cannot be published.",
+              default='${id} cannot be published.',
               mapping=self._error_mapping), type='error')
         for message in self.info.error_messages:
             self.send_message(message, type='error')

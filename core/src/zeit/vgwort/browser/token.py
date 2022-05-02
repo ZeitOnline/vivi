@@ -3,7 +3,7 @@ import zope.component
 import zope.publisher.xmlrpc
 
 
-class AvailableTokens(object):
+class AvailableTokens:
 
     def __call__(self):
         tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)

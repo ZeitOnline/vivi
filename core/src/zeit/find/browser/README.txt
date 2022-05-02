@@ -9,7 +9,7 @@ For UI-Tests we need a Testbrowser and some setup:
 >>> zeit.cms.testing.set_site()
 
 >>> import zope.security.testing
->>> principal = zope.security.testing.Principal(u'zope.user')
+>>> principal = zope.security.testing.Principal('zope.user')
 >>> participation = zope.security.testing.Participation(principal)
 
 >>> import zeit.cms.testing
@@ -68,12 +68,12 @@ Content-Type: text/json...
 >>> import json
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents))
-{u'access': [{u'access': u'free', u'access_title': u'frei verf\xfcgbar'},...
- u'products': [{u'product_id': u'ZEI', u'product_name': u'Die Zeit'},...
- u'ressorts': [{u'ressort': u'Deutschland', u'ressort_name': u'Deutschland'},...
- u'series': [{u'serie': u'-', u'serie_title': u'-'},...
- u'template_url': u'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_form.jsont',
- u'types': [{u'title': u'Image Group', u'type': u'image-group'}]}
+{'access': [{'access': 'free', 'access_title': 'frei verf\xfcgbar'},...
+ 'products': [{'product_id': 'ZEI', 'product_name': 'Die Zeit'},...
+ 'ressorts': [{'ressort': 'Deutschland', 'ressort_name': 'Deutschland'},...
+ 'series': [{'serie': '-', 'serie_title': '-'},...
+ 'template_url': 'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_form.jsont',
+ 'types': [{'title': 'Image Group', 'type': 'image-group'}]}
 
 
 Favorites
@@ -105,12 +105,12 @@ Adding a content object as a favorite requires the call of the
 It returns the css class for the favorite star:
 
 >>> pprint.pprint(json.loads(browser.contents))
-{u'favorited_css_class': u'toggle_favorited favorited',...
+{'favorited_css_class': 'toggle_favorited favorited',...
 
 The clipboard now has a clip "Favoriten" with one entry:
 
 >>> clipboard["Favoriten"].keys()
-[u'Somalia', u'DSC00109_2.JPG']
+['Somalia', 'DSC00109_2.JPG']
 
 
 Calling the toggle view again removes the object from the favorites:
@@ -122,7 +122,7 @@ Calling the toggle view again removes the object from the favorites:
 ...     'http://localhost:8080/++skin++cms/toggle_favorited?'
 ...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> pprint.pprint(json.loads(browser.contents))
-{u'favorited_css_class': u'toggle_favorited not_favorited',...
+{'favorited_css_class': 'toggle_favorited not_favorited',...
 
 The clip persists, but is now empty:
 
@@ -140,20 +140,20 @@ The search view returns all data for rendering the result:
 >>> browser.open('/++skin++cms/search_result?title=Obama')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
-{u'results': [{u'application_url': u'http://localhost:8080/++skin++cms',
+{'results': [{'application_url': 'http://localhost:8080/++skin++cms',
               ...
-              u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/.../thumbnail',
+              'graphical_preview_url': 'http://localhost:8080/++skin++cms/repository/.../thumbnail',
              ...
- u'template_url': u'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/fanstatic/zeit.find/search_result.jsont'}
+ 'template_url': 'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/fanstatic/zeit.find/search_result.jsont'}
 
 Favorites are marked in the search result as well:
 
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
- u'favorited': False,
- u'favorited_css_class': u'toggle_favorited not_favorited',
+ 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorited': False,
+ 'favorited_css_class': 'toggle_favorited not_favorited',
  ...
 
 Toggle favorite and search again:
@@ -164,9 +164,9 @@ Toggle favorite and search again:
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
- u'favorited': True,
- u'favorited_css_class': u'toggle_favorited favorited',
+ 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorited': True,
+ 'favorited_css_class': 'toggle_favorited favorited',
  ...
 
 This also works if there is a Clip in the favorites:
@@ -177,9 +177,9 @@ This also works if there is a Clip in the favorites:
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
- u'favorited': True,
- u'favorited_css_class': u'toggle_favorited favorited',
+ 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorited': True,
+ 'favorited_css_class': 'toggle_favorited favorited',
  ...
 
 The last query parameters are available:
@@ -188,7 +188,7 @@ The last query parameters are available:
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
 {...
- u'fulltext': u'Obama',
+ 'fulltext': 'Obama',
  ...
- u'types:list': [],
+ 'types:list': [],
  ...

@@ -67,7 +67,7 @@ class VideoTest(unittest.TestCase):
 
     def test_layout_should_be_set_to_format_attribute(self):
         video = self.get_video()
-        video.layout = u'small'
+        video.layout = 'small'
         self.assertEqual('small', video.layout)
         self.assertEqual('small', video.xml.get('format'))
 

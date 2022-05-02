@@ -30,7 +30,7 @@ class Social(zeit.push.browser.form.SocialBase,
 
     def setUpWidgets(self, *args, **kw):
         super(Social, self).setUpWidgets(*args, **kw)
-        if self.context.access != u'free':
+        if self.context.access != 'free':
             self.widgets['is_amp'].extra = 'disabled="disabled"'
 
 

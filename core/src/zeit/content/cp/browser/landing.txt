@@ -34,13 +34,13 @@ Drop testcontent on the landing zone:
 >>> import json
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/@@contents'],
-  u'name': u'reload',
-  u'when': None},
- {u'args': [u'id-f8384296-555c-49a2-819b-ffb4e633d59d'],
-  u'name': u'added',
-  u'when': u'after-reload'}]
+[{'args': ['lead',
+            'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/@@contents'],
+  'name': 'reload',
+  'when': None},
+ {'args': ['id-f8384296-555c-49a2-819b-ffb4e633d59d'],
+  'name': 'added',
+  'when': 'after-reload'}]
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(contents_url)
@@ -60,13 +60,13 @@ There is another landing zone after the created block now:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(url)
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/@@contents'],
-  u'name': u'reload',
-  u'when': None},
- {u'args': [u'id-63734348-b8d8-4eb9-9098-d8a47efd1eb6'],
-  u'name': u'added',
-  u'when': u'after-reload'}]
+[{'args': ['lead',
+            'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/@@contents'],
+  'name': 'reload',
+  'when': None},
+ {'args': ['id-63734348-b8d8-4eb9-9098-d8a47efd1eb6'],
+  'name': 'added',
+  'when': 'after-reload'}]
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(contents_url)
@@ -89,13 +89,13 @@ area on 2+ blocks):
 >>> url = '%s&uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
 >>> browser.open(url)
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/@@contents'],
-  u'name': u'reload',
-  u'when': None},
- {u'args': [u'id-f84a5439-3fe4-42ac-8a44-b54822d50a8f'],
-  u'name': u'added',
-  u'when': u'after-reload'}]
+[{'args': ['lead',
+            'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/@@contents'],
+  'name': 'reload',
+  'when': None},
+ {'args': ['id-f84a5439-3fe4-42ac-8a44-b54822d50a8f'],
+  'name': 'added',
+  'when': 'after-reload'}]
 >>> browser.open(contents_url)
 >>> print(browser.contents)
 <div...

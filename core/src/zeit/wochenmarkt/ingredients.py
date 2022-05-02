@@ -25,7 +25,7 @@ xpath_functions['lower'] = xpath_lowercase
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IIngredient)
-class Ingredient(object):
+class Ingredient:
 
     def __init__(self, code, **kwargs):
         self.code = code

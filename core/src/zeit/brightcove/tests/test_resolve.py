@@ -11,7 +11,7 @@ class VideoIdResolverTest(zeit.brightcove.testing.FunctionalTestCase):
             search.return_value = iter(
                 (('http://xml.zeit.de/video/2010-03/1234',),))
             self.assertEqual(
-                u'http://xml.zeit.de/video/2010-03/1234',
+                'http://xml.zeit.de/video/2010-03/1234',
                 zeit.brightcove.resolve.resolve_video_id('1234'))
 
     def test_should_raise_if_no_object_is_found(self):

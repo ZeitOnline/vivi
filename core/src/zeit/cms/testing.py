@@ -705,7 +705,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     return test
 
 
-class RepositoryHelper(object):
+class RepositoryHelper:
 
     @property
     def repository(self):
@@ -733,7 +733,7 @@ class FunctionalTestCase(
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
         zope.component.hooks.setSite(self.getRootFolder())
-        self.principal = create_interaction(u'zope.user')
+        self.principal = create_interaction('zope.user')
 
 
 # XXX We should subclass instead of monkey-patch, but then I'd have
@@ -893,7 +893,7 @@ def set_site(site=None):
 def create_interaction(name='zope.user'):
     name = six.text_type(name)  # XXX At least zope.dublincore requires unicode
     principal = zope.security.testing.Principal(
-        name, groups=['zope.Authenticated'], description=u'test@example.com')
+        name, groups=['zope.Authenticated'], description='test@example.com')
     request = zope.publisher.browser.TestRequest()
     request.setPrincipal(principal)
     zope.security.management.newInteraction(request)
@@ -901,7 +901,7 @@ def create_interaction(name='zope.user'):
 
 
 @contextlib.contextmanager
-def interaction(principal_id=u'zope.user'):
+def interaction(principal_id='zope.user'):
     if zope.security.management.queryInteraction():
         # There already is an interaction. Great. Leave it alone.
         yield
@@ -921,7 +921,7 @@ def site(root):
 
 
 @zope.interface.implementer(zope.i18n.interfaces.IGlobalMessageCatalog)
-class TestCatalog(object):
+class TestCatalog:
 
     language = 'tt'
     messages = {}

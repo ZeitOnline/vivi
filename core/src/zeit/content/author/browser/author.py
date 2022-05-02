@@ -12,14 +12,14 @@ class AuthorListRepresentation(
         zeit.content.author.interfaces.IAuthor,
         zope.publisher.interfaces.IPublicationRequest)
 
-    ressort = page = volume = year = author = u''
+    ressort = page = volume = year = author = ''
 
     @property
     def title(self):
         try:
             return self.context.display_name
         except Exception:
-            return u'%s %s' % (self.context.firstname, self.context.lastname)
+            return '%s %s' % (self.context.firstname, self.context.lastname)
 
     @property
     def searchableText(self):

@@ -16,10 +16,10 @@ import zope.interface
 class Infobox(zeit.cms.content.metadata.CommonMetadata):
 
     default_template = (
-        u'<container layout="artbox" label="info" '
-        u'xmlns:py="http://codespeak.net/lxml/objectify/pytype" '
-        u'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '
-        u'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />')
+        '<container layout="artbox" label="info" '
+        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" '
+        'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />')
 
     supertitle = zeit.cms.content.property.ObjectPathProperty('.supertitle')
 

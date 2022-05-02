@@ -9,7 +9,7 @@ class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
         import zope.interface
 
         @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-        class Content(object):
+        class Content:
             uniqueId = 'testcontent://'
 
         content = Content()
@@ -53,7 +53,7 @@ class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
             renameable.renameable = True
-            renameable.rename_to = u'new-name'
+            renameable.rename_to = 'new-name'
         self.assertIn('new-name', content.__parent__.keys())
         self.assertNotIn('testcontent', content.__parent__.keys())
 
@@ -75,7 +75,7 @@ class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
             renameable.renameable = False
-            renameable.rename_to = u'new-name'
+            renameable.rename_to = 'new-name'
         self.assertNotIn('new-name', content.__parent__.keys())
         self.assertIn('testcontent', content.__parent__.keys())
 
@@ -96,7 +96,7 @@ class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
             renameable.renameable = True
-            renameable.rename_to = u'new-name'
+            renameable.rename_to = 'new-name'
         content = self.get_content('new-name')
         renameable = IAutomaticallyRenameable(content)
         # Test for None as this is the value which we get when the DAV property

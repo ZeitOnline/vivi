@@ -13,21 +13,21 @@ class ParagraphTest(unittest.TestCase):
 
     def test_setting_text_inserts_xml(self):
         p = self.get_paragraph()
-        self.assertEqual(u'', p.text)
-        text = u'The quick brown fox jumps over the lazy dog.'
+        self.assertEqual('', p.text)
+        text = 'The quick brown fox jumps over the lazy dog.'
         p.text = text
         self.assertEqual(text, p.text)
-        text = u'The quick brown <em>fox</em> jumps over the lazy dog.'
+        text = 'The quick brown <em>fox</em> jumps over the lazy dog.'
         p.text = text
         self.assertEqual(text, p.text)
 
     def test_node_tails_should_be_include_in_text(self):
         p = self.get_paragraph('Im <strong>Tal</strong> der Buchstaben')
-        self.assertEqual(u'Im <strong>Tal</strong> der Buchstaben', p.text)
+        self.assertEqual('Im <strong>Tal</strong> der Buchstaben', p.text)
 
     def test_setting_invalid_xml_is_somehow_converted_to_valid_xml(self):
         p = self.get_paragraph()
-        p.text = u'<em>4 > 3'
+        p.text = '<em>4 > 3'
         self.assertEqual('<em>4 &gt; 3</em>', p.text)
 
     def test_setting_text_should_keep_attributes(self):
@@ -38,8 +38,8 @@ class ParagraphTest(unittest.TestCase):
 
     def test_setting_unicode_should_work(self):
         p = self.get_paragraph()
-        p.text = u'F\xfc!'
-        self.assertEqual(u'F\xfc!', p.text)
+        p.text = 'F\xfc!'
+        self.assertEqual('F\xfc!', p.text)
         self.assertTrue(isinstance(p.text, six.text_type))
 
     def test_text_should_be_unicode(self):
@@ -49,8 +49,8 @@ class ParagraphTest(unittest.TestCase):
 
     def test_setting_html_should_create_proper_xml(self):
         p = self.get_paragraph()
-        p.text = u'I am <strong>strong</strong><br>I am the best.'
-        self.assertEqual(u'I am <strong>strong</strong><br/>I am the best.',
+        p.text = 'I am <strong>strong</strong><br>I am the best.'
+        self.assertEqual('I am <strong>strong</strong><br/>I am the best.',
                          p.text)
 
     def test_xml_part_of_larger_tree_should_be_updated_in_place(self):
@@ -63,7 +63,7 @@ class ParagraphTest(unittest.TestCase):
 
     def test_setting_html_with_block_elements_should_keep_p_as_xml_tag(self):
         p = self.get_paragraph()
-        p.text = u'<h3>I am </h3><p>I am the best.</p>'
+        p.text = '<h3>I am </h3><p>I am the best.</p>'
         self.assertEqual(p.type, p.xml.tag)
 
     def compare(self, input, expected):
@@ -72,26 +72,26 @@ class ParagraphTest(unittest.TestCase):
         self.assertEqual(expected, p.text)
 
     def test_simple_text_should_be_escaped_correctly(self):
-        self.compare(u'a > b', 'a &gt; b')
+        self.compare('a > b', 'a &gt; b')
 
     def test_u_should_be_allowed(self):
-        self.compare(u'I am <u>underlined</u>.', 'I am <u>underlined</u>.')
+        self.compare('I am <u>underlined</u>.', 'I am <u>underlined</u>.')
 
     def test_br_should_be_allowed(self):
-        self.compare(u'I am <br/>here and<br/>here.',
+        self.compare('I am <br/>here and<br/>here.',
                      'I am <br/>here and<br/>here.')
 
     def test_unknown_elements_should_be_removed(self):
-        self.compare(u'A <sub>subtext</sub> is filtered',
-                     u'A subtext is filtered')
+        self.compare('A <sub>subtext</sub> is filtered',
+                     'A subtext is filtered')
 
     def test_leading_spaces_are_preserved(self):
-        self.compare(u'<em> <a>foo</a> bar</em>',
-                     u'<em> <a>foo</a> bar</em>')
+        self.compare('<em> <a>foo</a> bar</em>',
+                     '<em> <a>foo</a> bar</em>')
 
     def test_regression_after_beautiful_soup_update(self):
-        self.compare(u'<b>foo</b> bar baz',
-                     u'<b>foo</b> bar baz')
+        self.compare('<b>foo</b> bar baz',
+                     '<b>foo</b> bar baz')
 
 
 class UnorderedListTest(ParagraphTest):
@@ -103,8 +103,8 @@ class UnorderedListTest(ParagraphTest):
         return UnorderedList(None, body.ul)
 
     def compare(self, input, expected):
-        input = u'<li>%s</li>' % input
-        expected = u'<li>%s</li>' % expected
+        input = '<li>%s</li>' % input
+        expected = '<li>%s</li>' % expected
         p = self.get_paragraph()
         p.text = input
         self.assertEqual(expected, p.text)

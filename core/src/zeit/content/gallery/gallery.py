@@ -21,7 +21,7 @@ import zope.security.proxy
 
 # A gallery used to be a center page, that's why we initialize it with such a
 # template.
-GALLERY_TEMPLATE = u"""\
+GALLERY_TEMPLATE = """\
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     <head/>
     <body>
@@ -241,7 +241,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         image_sources = self._entries_container.xpath('block/image/@src')
         unique_id = None
         for path in image_sources:
-            if path.startswith(u'/cms/work/'):
+            if path.startswith('/cms/work/'):
                 unique_id = zeit.cms.interfaces.ID_NAMESPACE + path[10:]
             elif path.startswith(zeit.cms.interfaces.ID_NAMESPACE):
                 unique_id = path
@@ -287,7 +287,7 @@ def galleryentry_factory(context):
 
 
 @zope.interface.implementer(zeit.content.gallery.interfaces.IGalleryEntry)
-class GalleryEntry(object):
+class GalleryEntry:
 
     @property
     def crops(self):
@@ -300,7 +300,7 @@ class GalleryEntry(object):
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
-class EntryXMLRepresentation(object):
+class EntryXMLRepresentation:
 
     def __init__(self, context):
         self.context = context
@@ -370,7 +370,7 @@ def get_visible_entry_count_for_gallery(context):
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 @zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
-class EntryMetadata(object):
+class EntryMetadata:
     """ImageMetadata composition from gallery entry and its image."""
 
     def __init__(self, context):

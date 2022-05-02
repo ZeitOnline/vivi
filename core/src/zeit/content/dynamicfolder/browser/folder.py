@@ -5,7 +5,7 @@ import zeit.content.dynamicfolder.interfaces
 import zope.formlib.form
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.dynamicfolder.interfaces.IDynamicFolder)
@@ -31,7 +31,7 @@ class View(zeit.cms.browser.listing.Listing,
             name='filename',
             getter=lambda i, f: i.__name__),
         zeit.cms.browser.listing.MetadataColumn(
-            u'Metadaten', name='metadata', searchable_text=False),
+            'Metadaten', name='metadata', searchable_text=False),
     )
 
     @property
@@ -43,7 +43,7 @@ class View(zeit.cms.browser.listing.Listing,
         return result
 
 
-class ContentPlaceholder(object):
+class ContentPlaceholder:
 
     def __init__(self, name, parent, url):
         self.__name__ = name

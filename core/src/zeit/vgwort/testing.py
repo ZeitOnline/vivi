@@ -94,7 +94,7 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
 
 @zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
 @zope.interface.implementer(zope.index.text.interfaces.ISearchableText)
-class SearchableText(object):
+class SearchableText:
 
     def __init__(self, context):
         self.context = context

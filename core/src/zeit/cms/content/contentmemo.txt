@@ -39,15 +39,15 @@ True
 
 Let's set a note to the memo and check in:
 
->>> memo.memo = u'Not yet finished.'
+>>> memo.memo = 'Not yet finished.'
 >>> memo.memo
-u'Not yet finished.'
+'Not yet finished.'
 
 >>> checkin_manager = ICheckinManager(checked_out)
 >>> checked_in = checkin_manager.checkin()
 >>> memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
 >>> memo
-u'Not yet finished.'
+'Not yet finished.'
 
 Now we may change the memo:
 
@@ -55,14 +55,14 @@ Now we may change the memo:
 >>> checked_out = checkout_manager.checkout()
 >>> memo = zeit.cms.content.interfaces.IMemo(checked_out)
 >>> memo.memo
-u'Not yet finished.'
+'Not yet finished.'
 
->>> memo.memo = u'Everything is fine now'
+>>> memo.memo = 'Everything is fine now'
 >>> checkin_manager = ICheckinManager(checked_out)
 >>> checked_in = checkin_manager.checkin()
 >>> memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
 >>> memo
-u'Everything is fine now'
+'Everything is fine now'
 
 Make sure the memo has no XML representation.
 

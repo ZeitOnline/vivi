@@ -43,7 +43,7 @@ After adding we're at the edit form:
 Change text and encoding and save. Note that the value which is passed between
 browser and server is *always* UTF-8 regardles of the storage encoding.
 
->>> browser.getControl('Content').value = u'F\xfc'.encode('utf8')
+>>> browser.getControl('Content').value = 'F\xfc'.encode('utf8')
 >>> browser.getControl('Encoding').displayValue = ['UTF-8']
 >>> browser.getControl('Apply').click()
 >>> print(browser.contents)

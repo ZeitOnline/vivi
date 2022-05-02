@@ -73,11 +73,11 @@ class ObjectCopyTest(zeit.vgwort.testing.TestCase):
         content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
         token = zeit.vgwort.interfaces.IToken(content)
-        token.public_token = u'public'
-        token.private_token = u'private'
+        token.public_token = 'public'
+        token.private_token = 'private'
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_on = datetime.datetime.now(pytz.UTC)
-        info.reported_error = u'error'
+        info.reported_error = 'error'
         online = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/')
         zope.copypastemove.interfaces.IObjectCopier(content).copyTo(

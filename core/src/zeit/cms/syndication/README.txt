@@ -166,7 +166,7 @@ Syndicating is not possible when the feed is locked by somebody else.
 
 >>> import zeit.connector.interfaces
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
->>> connector.lock(u'http://xml.zeit.de/politik.feed', 'test.frodo', None)
+>>> connector.lock('http://xml.zeit.de/politik.feed', 'test.frodo', None)
 >>> manager.syndicate([target])
 Traceback (most recent call last):
     ...
@@ -174,7 +174,7 @@ SyndicationError: http://xml.zeit.de/politik.feed
 
 Unlock again:
 
->>> connector.unlock(u'http://xml.zeit.de/politik.feed')
+>>> connector.unlock('http://xml.zeit.de/politik.feed')
 
 
 After syndication the relation utility knows where a content is syndicated in:

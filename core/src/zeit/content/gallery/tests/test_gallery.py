@@ -43,16 +43,16 @@ class TestEntryMetadata(zeit.content.gallery.testing.FunctionalTestCase):
 
     def test_gallery_entry_metadata_should_proxy_attributes(self):
         entry = next(self.gallery.values())
-        entry.title = u'Nice title'
+        entry.title = 'Nice title'
         metadata = zeit.content.image.interfaces.IImageMetadata(entry)
-        assert metadata.title == u'Nice title'
+        assert metadata.title == 'Nice title'
 
     def test_gallery_entry_metadata_should_overrule_attributes(self):
         entry = next(self.gallery.values())
-        entry.title = u'Nice title'
+        entry.title = 'Nice title'
         metadata = zeit.content.image.interfaces.IImageMetadata(entry)
-        metadata.title = u'Beautiful title'
-        assert metadata.title == u'Beautiful title'
+        metadata.title = 'Beautiful title'
+        assert metadata.title == 'Beautiful title'
 
 
 class TestEntryImages(zeit.content.gallery.testing.FunctionalTestCase):

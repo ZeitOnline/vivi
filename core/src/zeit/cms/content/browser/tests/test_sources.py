@@ -38,7 +38,7 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         self.browser.open('http://localhost/@@source'
                           '?name=zeit.cms.content.sources.AccessSource')
         self.assert_json([
-            {'id': 'free', 'title': u'frei verfügbar'},
+            {'id': 'free', 'title': 'frei verfügbar'},
             {'id': 'registration', 'title': 'registrierungspflichtig'},
             {'id': 'abo', 'title': 'abopflichtig'},
         ])

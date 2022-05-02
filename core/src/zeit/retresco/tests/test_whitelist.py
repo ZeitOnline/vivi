@@ -19,7 +19,7 @@ class TestWhitelist(zeit.retresco.testing.FunctionalTestCase):
         return Whitelist()
 
     def test_get_creates_tag_from_code(self):
-        tag = self.whitelist.get(u'person☃Wolfgang')
+        tag = self.whitelist.get('person☃Wolfgang')
         self.assertEqual('Wolfgang', tag.label)
         self.assertEqual('person', tag.entity_type)
 
@@ -47,15 +47,15 @@ class TestWhitelistLocationAutocomplete(
             (zeit.cms.tagging.source.locationSource(None), request),
             zeit.cms.browser.interfaces.ISourceQueryURL)
         with mock.patch('zeit.retresco.connection.TMS.get_locations') as gl:
-            gl.return_value = [Tag(u'Schweiz', u'location'),
-                               Tag(u'Frankreich', u'location')]
+            gl.return_value = [Tag('Schweiz', 'location'),
+                               Tag('Frankreich', 'location')]
             b = self.browser
             b.open(url + '?term=ei')
             result = json.loads(b.contents)
-        self.assertEqual([{u'label': u'Schweiz',
-                           u'value': u'tag://location\\u2603Schweiz'},
-                          {u'label': u'Frankreich',
-                           u'value': u'tag://location\\u2603Frankreich'}],
+        self.assertEqual([{'label': 'Schweiz',
+                           'value': 'tag://location\\u2603Schweiz'},
+                          {'label': 'Frankreich',
+                           'value': 'tag://location\\u2603Frankreich'}],
                          result)
 
 

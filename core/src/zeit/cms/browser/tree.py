@@ -160,14 +160,14 @@ class Tree(zope.publisher.browser.BrowserView):
             pass
 
 
-class TreeExpand(object):
+class TreeExpand:
 
     def __call__(self, uniqueId):
         self.context.expandNode(uniqueId)
         return self.context()
 
 
-class TreeCollapse(object):
+class TreeCollapse:
 
     def __call__(self, uniqueId):
         self.context.collapseNode(uniqueId)

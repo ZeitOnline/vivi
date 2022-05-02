@@ -20,7 +20,7 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
             zeit.cms.content.interfaces.IXMLContent):
     """A type for managing links to non-local content."""
 
-    url = zope.schema.URI(title=_(u"Link address"))
+    url = zope.schema.URI(title=_('Link address'))
 
     target = zope.schema.Choice(
         title=_('Target'),
@@ -42,7 +42,7 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
         default=())
 
     blog = zope.schema.Choice(
-        title=_("Blog"),
+        title=_('Blog'),
         source=zeit.content.link.sources.BlogSource(),
         readonly=True,
         required=False)

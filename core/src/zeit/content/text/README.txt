@@ -10,9 +10,9 @@ Implementation
 >>> text = zeit.content.text.text.Text()
 >>> text
 <zeit.content.text.text.Text...>
->>> text.text = u'Mary had a little lamb.'
+>>> text.text = 'Mary had a little lamb.'
 >>> text.text
-u'Mary had a little lamb.'
+'Mary had a little lamb.'
 
 
 The text type has an encoding which specifies the desired encoding for storage.
@@ -46,14 +46,14 @@ fine:
 
 The __name__ failed, so set one:
 
->>> text.__name__ = u'mytext'
+>>> text.__name__ = 'mytext'
 >>> zope.schema.getValidationErrors(
 ...     zeit.content.text.interfaces.IText, text)
 []
 
 Set a unicode string with characters which are outside of ISO8859-15:
 
->>> text.text = u'Mary had a little lamb \u2014 and is happy.'
+>>> text.text = 'Mary had a little lamb \u2014 and is happy.'
 
 Since we have UTF-8 encoding the string can be encoded:
 
@@ -67,11 +67,11 @@ When we change the encoding to ISO8859-15 the validation is no longer passed:
 >>> failed = zope.schema.getValidationErrors(
 ...     zeit.content.text.interfaces.IText, text)
 >>> failed
-[(None, <CannotEncode 'charmap' codec can't encode character u'\u2014' in position 23: character maps to <undefined>>)]
+[(None, <CannotEncode 'charmap' codec can't encode character '\u2014' in position 23: character maps to <undefined>>)]
 >>> error = failed[0][1]
 >>> import zope.i18n
 >>> zope.i18n.translate(error.doc())
-u'Could not encode charachters 23-24 to ISO8859-15 (\u2014): character maps to <undefined>'
+'Could not encode charachters 23-24 to ISO8859-15 (\u2014): character maps to <undefined>'
 
 
 Switching back to UTF-8 solves the problem:
@@ -102,7 +102,7 @@ Let's get the text from the repository:
 >>> text
 <zeit.content.text.text.Text...>
 >>> text.text
-u'Mary had a little lamb \u2014 and is happy.'
+'Mary had a little lamb \u2014 and is happy.'
 >>> text.encoding
 'UTF-8'
 
@@ -116,6 +116,6 @@ When we remove the stored encoding a encoding is guessed:
 ...         zeit.connector.interfaces.DeleteProperty})
 >>> text = repository['atext']
 >>> text.text
-u'Mary had a little lamb \u2014 and is happy.'
+'Mary had a little lamb \u2014 and is happy.'
 >>> text.encoding
 'UTF-8'

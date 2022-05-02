@@ -9,7 +9,7 @@ import zope.authentication.interfaces
 import zope.traversing.browser
 
 
-class Login(object):
+class Login:
     """The actual login (authentication and remembering) is performed behind
     the scenes by the IAuthentication utility, registered by zeit.ldap.
     (The view name `loginForm.html` and the `camefrom` parameter are part of
@@ -47,7 +47,7 @@ class Login(object):
         return config['environment']
 
 
-class Logout(object):
+class Logout:
 
     def __call__(self):
         logged_out = IUnauthenticatedPrincipal.providedBy(
@@ -71,7 +71,7 @@ class Logout(object):
                     self.request.response.setHeader(key, value)
 
 
-class SSOLogin(object):
+class SSOLogin:
     """Provide a vivi-powered, cookie-based single-sign-on functionality.
 
     This is the same basic concept as the "big SSO", meine.zeit.de:
@@ -130,7 +130,7 @@ def set_cookie_headers(name, value):
         value, domains=domains, max_age=EXPIRE_ON_BROWSER_CLOSE)
 
 
-class SimpleSerializer(object):
+class SimpleSerializer:
     """Copied from pyramid.authentication._SimpleSerializer."""
 
     def loads(self, bstruct):

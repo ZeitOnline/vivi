@@ -7,7 +7,7 @@ import zope.dottedname.resolve
 import zope.interface
 
 
-class API(object):
+class API:
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')

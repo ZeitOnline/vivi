@@ -90,7 +90,7 @@ class EditEntry(zeit.cms.browser.form.EditForm):
 
     field_groups = (
         gocept.form.grouped.Fields(
-            title=u'',
+            title='',
             fields=('image', 'layout', 'caption', 'title', 'html'),
             css_class='full-width wide-widgets'),
     )

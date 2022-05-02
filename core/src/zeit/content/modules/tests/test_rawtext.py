@@ -126,7 +126,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
     def test_stores_local_values_in_xml(self):
         info = zeit.cmp.interfaces.IConsentInfo(self.module)
         info.has_thirdparty = True
-        info.thirdparty_vendors = [u'twitter', u'facebook']
+        info.thirdparty_vendors = ['twitter', 'facebook']
         self.assertEqual(True, info.has_thirdparty)
         self.assertEqual(('twitter', 'facebook'), info.thirdparty_vendors)
         self.assertEqual(('cmp-twitter', 'cmp-facebook'),
@@ -146,7 +146,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         with checked_out(self.repository['embed']) as co:
             info = zeit.cmp.interfaces.IConsentInfo(co)
             info.has_thirdparty = True
-            info.thirdparty_vendors = [u'twitter', u'facebook']
+            info.thirdparty_vendors = ['twitter', 'facebook']
         self.module.text_reference = self.repository['embed']
 
         info = zeit.cmp.interfaces.IConsentInfo(self.module)

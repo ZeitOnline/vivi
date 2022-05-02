@@ -77,7 +77,7 @@ def create_image_group_with_master_image(file_name=None):
     extension = os.path.splitext(file_name)[-1].lower()
 
     group = zeit.content.image.imagegroup.ImageGroup()
-    group.master_images = (('desktop', u'master-image' + extension),)
+    group.master_images = (('desktop', 'master-image' + extension),)
     repository['group'] = group
     image = zeit.content.image.image.LocalImage()
     image.open('w').write(fh.read())

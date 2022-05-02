@@ -23,7 +23,7 @@ _provides_dav_property = zeit.cms.content.dav.DAVProperty(
     'http://namespaces.zeit.de/CMS/meta', 'provides', 'provides')
 
 
-class TypeDeclaration(object):
+class TypeDeclaration:
 
     interface = None
     interface_type = zeit.cms.interfaces.ICMSContentType
@@ -111,7 +111,7 @@ class TypeDeclaration(object):
         if self.type is not None:
             return self.type
         assert self.interface is not None
-        return u'%s.%s' % (self.interface.__module__, self.interface.__name__)
+        return '%s.%s' % (self.interface.__module__, self.interface.__name__)
 
 
 @grok.subscribe(

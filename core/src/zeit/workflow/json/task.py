@@ -2,7 +2,7 @@ import celery.result
 import json
 
 
-class Status(object):
+class Status:
 
     def __init__(self, context, request):
         self.context = context

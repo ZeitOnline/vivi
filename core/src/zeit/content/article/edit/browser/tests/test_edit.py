@@ -22,7 +22,7 @@ def click(selenium, locator):
     selenium.mouseUp(locator)
 
 
-class TextViewHelper(object):
+class TextViewHelper:
 
     view_class = NotImplemented
 
@@ -125,7 +125,7 @@ class SaveTextTest(TextViewHelper,
     def test_wild_html_should_be_munged_into_paragraph(self):
         view = self.get_view()
         view.request.form['paragraphs'] = ['id-2', 'id-3']
-        view.request.form['text'] = [{'text': u'\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n',  # noqa
+        view.request.form['text'] = [{'text': '\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n',  # noqa
                                       'factory': 'div'},
                                      {'text': '\n<a><strong></strong></a>',
                                       'factory': 'p'}]
@@ -305,7 +305,7 @@ class TestEditingMultipleParagraphs(
             zeit.cms.content.field.apply_default_values(
                 co, IArticle)
             co.year = 2010
-            co.ressort = u'International'
+            co.ressort = 'International'
             co.title = 'foo'
             co.keywords = (
                 wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)
@@ -463,7 +463,7 @@ class TestLinkEditing(
             var range = window.getSelection().getRangeAt(0);
             return range.startContainer.childNodes[range.startOffset].data
         })(this);""")
-        self.assertEqual(u'link', result)
+        self.assertEqual('link', result)
 
     @unittest.skip('FF34 loses editable focus after OK button is clicked')
     def test_insert_link_should_select_link(self):
@@ -557,7 +557,7 @@ class TestLinkEditing(
         s.assertSelectedLabel(
             'css=.link_input select[name=service]', 'E-Mail')
         s.assertValue('css=.link_input input[name=mailto]', 'foo@example.com')
-        s.assertValue('css=.link_input input[name=subject]', u'')
+        s.assertValue('css=.link_input input[name=subject]', '')
 
     def test_selecting_mail_link_with_subject_opens_linkbar_in_mail_mode(self):
         self.add_testcontent_to_clipboard()
@@ -568,7 +568,7 @@ class TestLinkEditing(
         s.assertSelectedLabel(
             'css=.link_input select[name=service]', 'E-Mail')
         s.assertValue('css=.link_input input[name=mailto]', 'foo@example.com')
-        s.assertValue('css=.link_input input[name=subject]', u'bär')
+        s.assertValue('css=.link_input input[name=subject]', 'bär')
 
     def test_pressing_enter_in_mail_mode_adds_mailto_link(self):
         s = self.selenium
@@ -589,7 +589,7 @@ class TestLinkEditing(
         s.select('css=.link_input select[name=service]', 'label=E-Mail')
         s.waitForVisible('css=.link_input input[name=mailto]')
         s.type('css=.link_input input[name=mailto]', 'foo@example.com')
-        s.type('css=.link_input input[name=subject]', u'bär')
+        s.type('css=.link_input input[name=subject]', 'bär')
         s.keyDown('css=.link_input input[name=mailto]', Keys.ENTER)
         s.waitForElementPresent(
             'xpath=//a[@href="mailto:foo@example.com?subject=b%C3%A4r"]')

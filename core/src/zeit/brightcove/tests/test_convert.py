@@ -16,8 +16,8 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
 
     def test_converts_cms_fields_to_bc_names(self):
         cms = CMSVideo()
-        cms.title = u'title'
-        cms.teaserText = u'teaser'
+        cms.title = 'title'
+        cms.teaserText = 'teaser'
         bc = BCVideo.from_cms(cms)
         self.assertEqual('title', bc.data['name'])
         self.assertEqual('teaser', bc.data['description'])

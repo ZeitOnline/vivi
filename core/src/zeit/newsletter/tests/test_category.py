@@ -151,7 +151,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
     def setUp(self):
         super(BuilderTest, self).setUp()
         self.category = NewsletterCategory()
-        self.category.ressorts = (u'Politik', u'Wirtschaft')
+        self.category.ressorts = ('Politik', 'Wirtschaft')
         self.category.subject = 'nosubject'
         self.category.ad_middle_groups_above = self.MIDDLE_AD_GROUPS_ABOVE
         self.category.ad_thisweeks_groups_above = \
@@ -169,39 +169,39 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         return self.repository[name]
 
     def test_groups_content_according_to_ressort(self):
-        c1 = self.create_content('c1', u'Politik')
-        c2 = self.create_content('c2', u'Wirtschaft')
-        c3 = self.create_content('c3', u'Politik')
-        c4 = self.create_content('c4', u'Kultur')
+        c1 = self.create_content('c1', 'Politik')
+        c2 = self.create_content('c2', 'Wirtschaft')
+        c3 = self.create_content('c3', 'Politik')
+        c4 = self.create_content('c4', 'Kultur')
         self.builder([c1, c2, c3, c4])
 
         body = self.newsletter['newsletter_body']
         self.assertEqual(2 + self.NON_RESSORT_ELEMENTS, len(body))
         groups = [el for el in body.values() if el.type == 'group']
         group1, group2 = groups[:2]
-        self.assertEqual(u'Politik', group1.title)
-        self.assertEqual(u'Wirtschaft', group2.title)
+        self.assertEqual('Politik', group1.title)
+        self.assertEqual('Wirtschaft', group2.title)
 
         self.assertEqual([c1, c3], [x.reference for x in group1.values()])
         self.assertEqual([c2], [x.reference for x in group2.values()])
 
     def test_configured_ressorts_are_contained_even_if_empty(self):
-        c1 = self.create_content('c1', u'Politik')
-        c2 = self.create_content('c2', u'Kultur')
-        c3 = self.create_content('c3', u'Politik')
+        c1 = self.create_content('c1', 'Politik')
+        c2 = self.create_content('c2', 'Kultur')
+        c3 = self.create_content('c3', 'Politik')
         self.builder([c1, c2, c3])
 
         body = self.newsletter['newsletter_body']
         self.assertEqual(2 + self.NON_RESSORT_ELEMENTS, len(body))
         groups = [el for el in body.values() if el.type == 'group']
         group1, group2 = groups[:2]
-        self.assertEqual(u'Politik', group1.title)
-        self.assertEqual(u'Wirtschaft', group2.title)
+        self.assertEqual('Politik', group1.title)
+        self.assertEqual('Wirtschaft', group2.title)
 
         self.assertEqual([], group2.values())
 
     def test_group_should_work_if_content_not_adaptable_to_metadata(self):
-        c1 = self.create_content('c1', u'Politik')
+        c1 = self.create_content('c1', 'Politik')
         try:
             self.builder([mock.Mock(), c1])
         except TypeError as e:
@@ -210,7 +210,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
             raise e
         body = self.newsletter['newsletter_body']
         group1 = body[body.keys()[0]]
-        self.assertEqual(u'Politik', group1.title)
+        self.assertEqual('Politik', group1.title)
 
     def test_video_group_should_be_appended_even_if_empty(self):
         self.builder(())
@@ -304,31 +304,31 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
 
     def test_middle_advertisement_should_be_inserted(self):
         with checked_out(self.repository['mynl']) as co:
-            co.ad_middle_title = u'Some ad'
-        c1 = self.create_content('c1', u'Politik')
-        c2 = self.create_content('c2', u'Wirtschaft')
+            co.ad_middle_title = 'Some ad'
+        c1 = self.create_content('c1', 'Politik')
+        c2 = self.create_content('c2', 'Wirtschaft')
         self.builder((c1, c2))
         body = self.newsletter['newsletter_body']
         advertisement = body[self.MIDDLE_AD_GROUPS_ABOVE]
         self.assertEqual('advertisement-middle', advertisement.type)
-        self.assertEqual(u'Some ad', advertisement.title)
+        self.assertEqual('Some ad', advertisement.title)
 
     def test_thisweeks_advertisement_should_be_inserted(self):
         with checked_out(self.repository['mynl']) as co:
-            co.ad_thisweeks_title = u'Some ad'
-        c1 = self.create_content('c1', u'Politik')
-        c2 = self.create_content('c2', u'Wirtschaft')
-        c3 = self.create_content('c3', u'Kultur')
+            co.ad_thisweeks_title = 'Some ad'
+        c1 = self.create_content('c1', 'Politik')
+        c2 = self.create_content('c2', 'Wirtschaft')
+        c3 = self.create_content('c3', 'Kultur')
         self.builder((c1, c2, c3))
         body = self.newsletter['newsletter_body']
         advertisement = body[self.THISWEEKS_AD_GROUPS_ABOVE + 1]
         self.assertEqual('advertisement-thisweeks', advertisement.type)
-        self.assertEqual(u'Some ad', advertisement.title)
+        self.assertEqual('Some ad', advertisement.title)
 
     def test_thisweeks_advert_should_be_omitted_on_unchecked_weekday(self):
         weekday = datetime.date.today().weekday()
         with checked_out(self.repository['mynl']) as co:
-            co.ad_thisweeks_title = u'Some ad'
+            co.ad_thisweeks_title = 'Some ad'
             setattr(co, 'ad_thisweeks_on_%d' % weekday, False)
         self.builder(())
         body = self.newsletter['newsletter_body']
@@ -337,9 +337,9 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
 
     def test_bottom_advertisement_should_be_appended(self):
         with checked_out(self.repository['mynl']) as co:
-            co.ad_bottom_title = u'Some ad'
+            co.ad_bottom_title = 'Some ad'
         self.builder(())
         body = self.newsletter['newsletter_body']
         advertisement = body[self.BOTTOM_AD_POSITION]
         self.assertEqual('advertisement-bottom', advertisement.type)
-        self.assertEqual(u'Some ad', advertisement.title)
+        self.assertEqual('Some ad', advertisement.title)

@@ -31,7 +31,7 @@ When we check out an object now, it'll populate the workingcopy:
 >>> manager = ICheckoutManager(content)
 >>> checked_out = manager.checkout()
 >>> list(workingcopy.keys())
-[u'4schanzentournee-abgesang']
+['4schanzentournee-abgesang']
 
 
 When we checkin now, a ghost will populate the workingcopy:
@@ -40,7 +40,7 @@ When we checkin now, a ghost will populate the workingcopy:
 >>> manager = ICheckinManager(checked_out)
 >>> checked_in = manager.checkin()
 >>> list(workingcopy.keys())
-[u'4schanzentournee-abgesang']
+['4schanzentournee-abgesang']
 
 
 Get the ghost from the workingcopy:
@@ -54,16 +54,16 @@ checked out object:
 
 >>> checked_out = ICheckoutManager(content).checkout()
 >>> list(workingcopy.keys())
-[u'4schanzentournee-abgesang-2']
+['4schanzentournee-abgesang-2']
 
 Note that we have a different local name in the workingcopy. But this doesn't
 matter and is not really visible for the user anyway. The uniqueId is correct
 though:
 
 >>> checked_out.__name__
-u'4schanzentournee-abgesang-2'
+'4schanzentournee-abgesang-2'
 >>> checked_out.uniqueId
-u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
+'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
 
 When we do a temporary checkout no ghost will be added to the workingcopy:
 
@@ -73,7 +73,7 @@ When we do a temporary checkout no ghost will be added to the workingcopy:
 >>> manager.checkin()
 <zeit.cms.repository.unknown.PersistentUnknownResource...>
 >>> list(workingcopy.keys())
-[u'4schanzentournee-abgesang-2']
+['4schanzentournee-abgesang-2']
 
 Automatic ghost removing
 ========================

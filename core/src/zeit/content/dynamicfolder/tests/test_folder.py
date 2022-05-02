@@ -35,12 +35,12 @@ class TestContainerMethodsRespectVirtualChildren(
 
     def test_folder_keys_contains_children_defined_in_xml_config(self):
         self.assertEqual(
-            [u'art-déco', 'xaernten', 'xanten', 'xinjiang', u'überlingen'],
+            ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'],
             sorted(list(iter(self.folder))))
 
     def test_folder_iter_contains_children_defined_in_xml_config(self):
         self.assertEqual(
-            [u'art-déco', 'xaernten', 'xanten', 'xinjiang', u'überlingen'],
+            ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'],
             sorted(list(iter(self.folder))))
 
     def test_folder_getitem_returns_child_with_basic_info_set(self):
@@ -140,14 +140,14 @@ class TestDynamicFolder(
 
     def test_template_handles_umlauts_and_xml_special_chars(self):
         cp = self.folder['xaernten']
-        self.assertEqual(u'Xärnten & mehr', cp.title)
+        self.assertEqual('Xärnten & mehr', cp.title)
 
     def test_text_of_tags_can_be_used_in_template(self):
         # Remove all virtual childs that have been cached
         self.repository._content.clear()
 
         with mock.patch('jinja2.Template.render') as render:
-            render.return_value = u''
+            render.return_value = ''
             self.folder['xinjiang']  # load files and renders template
             self.assertEqual(1, render.call_count)
             self.assertIn(

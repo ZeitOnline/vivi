@@ -9,7 +9,7 @@ class ConsentInfo(zeit.cmp.testing.FunctionalTestCase):
         with checked_out(self.repository['testcontent']) as co:
             info = zeit.cmp.interfaces.IConsentInfo(co)
             info.has_thirdparty = True
-            info.thirdparty_vendors = [u'twitter', u'facebook']
+            info.thirdparty_vendors = ['twitter', 'facebook']
 
         info = zeit.cmp.interfaces.IConsentInfo(self.repository['testcontent'])
         self.assertEqual(True, info.has_thirdparty)

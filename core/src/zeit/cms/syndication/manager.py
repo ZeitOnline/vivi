@@ -13,7 +13,7 @@ import zope.interface
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(
     zeit.cms.syndication.interfaces.ISyndicationManager)
-class SyndicationManager(object):
+class SyndicationManager:
     """A syndicaiton manager for CMS content."""
 
     def __init__(self, context):

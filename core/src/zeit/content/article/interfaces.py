@@ -68,7 +68,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         required=False)
 
     main_image_block = zope.interface.Attribute(
-        u'First block of the body if it is present and is an image block')
+        'First block of the body if it is present and is an image block')
 
     template = zope.schema.Choice(
         title=_("Template"),
@@ -208,7 +208,7 @@ class IBookRecension(zope.interface.Interface):
         required=False)
 
     location = zope.schema.TextLine(
-        title=_('book-location', default=u'Location'),
+        title=_('book-location', default='Location'),
         required=False)
 
     year = zope.schema.Int(
@@ -243,7 +243,7 @@ class IBreakingNews(IArticle):
     """
 
     title = zope.schema.Text(
-        title=_("Title"), missing_value=u'')
+        title=_("Title"), missing_value='')
     title.setTaggedValue('zeit.cms.charlimit', 70)
 
     is_breaking = zope.schema.Bool(

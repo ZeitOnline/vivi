@@ -17,7 +17,7 @@ FILE_NAME_ATTRIBUTE = re.compile(' name="([^"]*)"')
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
-class MDB(object):
+class MDB:
 
     def __init__(self, url, username, password):
         self.url = url

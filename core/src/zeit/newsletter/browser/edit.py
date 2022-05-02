@@ -86,7 +86,7 @@ class GroupTitle(zeit.edit.browser.form.InlineForm):
         zeit.newsletter.interfaces.IGroup).select('title')
 
 
-class Empty(object):
+class Empty:
 
     def render(self):
-        return u''
+        return ''

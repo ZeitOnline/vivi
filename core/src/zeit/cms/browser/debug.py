@@ -4,7 +4,7 @@ import guppy
 hpy = guppy.hpy()
 
 
-class Refcount(object):
+class Refcount:
 
     def refcount(self, amount=None):
         result = []

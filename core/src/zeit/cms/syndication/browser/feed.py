@@ -52,8 +52,8 @@ class OrderedSelectionColumn(zc.table.column.SelectionColumn):
         if checked:
             checked_html = 'checked="checked"'
         return (
-            u'<input type="hidden" name="%s" value="%s" />'
-            u'<input type="checkbox" name="%s" value="%s" %s %s/> ') % (
+            '<input type="hidden" name="%s" value="%s" />'
+            '<input type="checkbox" name="%s" value="%s" %s %s/> ') % (
             used_name, value, name, value, checked_html, self.widget_extra)
 
     def input(self, items, request):
@@ -81,7 +81,7 @@ class FeedListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     year = page = volume = ressort = workflowState = modifiedBy = author = None
 
 
-class FeedView(object):
+class FeedView:
     """Sorts, pins and hides from hp."""
 
     title = _('Feed contents')
@@ -129,21 +129,21 @@ class FeedView(object):
         def _url_formatter(value, item, formatter):
             if not value:
                 value = item.__name__
-            return u'<a href="%s">%s</a>' % (item.url, html.escape(value))
+            return '<a href="%s">%s</a>' % (item.url, html.escape(value))
 
         def _escape(value, item, formatter):
             return html.escape(six.text_type(value))
 
         return (
             zc.table.column.GetterColumn(
-                _('title-position-in-feed', default=u'#'),
+                _('title-position-in-feed', default='#'),
                 lambda t, c: self.context.getPosition(t.context) or '',
                 cell_formatter=_escape),
             self.pinned_column,
             self.visible_on_hp_column,
             self.layout_column,
             self.visible_relateds_column,
-            zeit.cms.browser.listing.TypeColumn(u''),
+            zeit.cms.browser.listing.TypeColumn(''),
             zc.table.column.GetterColumn(
                 _('Author'),
                 lambda t, c: t.author,
@@ -166,7 +166,7 @@ class FeedView(object):
     def visible_on_hp_column(self):
         column = zc.table.column.SelectionColumn(
             self._id_getter, getter=self.visible_on_hp, prefix='hp',
-            title=_('title-visible-on-hp', default=u'HP'))
+            title=_('title-visible-on-hp', default='HP'))
         column.widget_extra = self.checkbox_widget_extra
         return column
 
@@ -212,7 +212,7 @@ class EditFeedView(FeedView):
     def delete_column(self):
         return zc.table.column.SelectionColumn(
             self._id_getter, getter=lambda x: False, prefix='remove',
-            title=_('title-remove', default=u'Remove'))
+            title=_('title-remove', default='Remove'))
 
     def updateFeed(self):
         content = self.content

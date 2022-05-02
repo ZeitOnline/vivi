@@ -74,7 +74,7 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_content_is_marked_according_to_ressort(self):
         obj = ExampleContentType()
-        obj.ressort = u'Sport'
+        obj.ressort = 'Sport'
 
         self.repository['sport'] = obj
         obj = self.repository['sport']

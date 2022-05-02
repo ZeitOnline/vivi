@@ -60,7 +60,7 @@ class FileBrowser(zeit.cms.browser.view.Base,
             else:
                 title = list_repr.title
                 unique_id = list_repr.url()
-                id_and_title = u'%s (%s)' % (name, title)
+                id_and_title = '%s (%s)' % (name, title)
 
             yield dict(
                 id=name,

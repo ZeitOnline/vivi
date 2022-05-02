@@ -65,24 +65,24 @@ class IAdvertisement(zeit.edit.interfaces.IBlock):
 class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
 
     last_created = zope.schema.Datetime(
-        title=_(u'Timestamp when the last newsletter object'
+        title=_('Timestamp when the last newsletter object'
                 ' in this category was created'))
 
     def create():
         """Creates a new newsletter object for this category."""
 
     subject = zope.schema.TextLine(
-        title=_(u'Subject'),
-        description=_(u'{today} -> %d.%m.%Y'))
+        title=_('Subject'),
+        description=_('{today} -> %d.%m.%Y'))
 
     mandant = zope.schema.Int(
-        title=_(u'Optivo Mandant ID'))
+        title=_('Optivo Mandant ID'))
 
     recipientlist = zope.schema.TextLine(
-        title=_(u'Name of recipient list'))
+        title=_('Name of recipient list'))
 
     recipientlist_test = zope.schema.TextLine(
-        title=_(u'Name of test-recipient list'),
+        title=_('Name of test-recipient list'),
         required=False)
 
     ressorts = zope.schema.List(
@@ -148,8 +148,8 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
         if obj.ad_middle_groups_above < obj.ad_thisweeks_groups_above:
             return
         raise InvariantViolated(
-            u'Der Werbeblock "Diese Woche in der aktuellen Zeit" muss an '
-            u'einer späteren Position als der Werbeblock "Mitte" erscheinen.')
+            'Der Werbeblock "Diese Woche in der aktuellen Zeit" muss an '
+            'einer späteren Position als der Werbeblock "Mitte" erscheinen.')
 
 
 class IRepositoryCategory(

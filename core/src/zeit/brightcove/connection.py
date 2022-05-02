@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.brightcove.interfaces.ICMSAPI)
-class CMSAPI(object):
+class CMSAPI:
     """Connection to the Brightcove "CMS API".
 
     * Overview: <https://support.brightcove.com/overview-cms-api>
@@ -150,7 +150,7 @@ class CMSAPI(object):
                 return self._request(
                     request, body=body, params=params, _retries=_retries + 1)
             message = getattr(err.response, 'text', '<no message>')
-            err.args = (u'%s: %s' % (err.args[0], message),) + err.args[1:]
+            err.args = ('%s: %s' % (err.args[0], message),) + err.args[1:]
             log.error('%s returned %s', request, status, exc_info=True)
             raise
 
@@ -185,7 +185,7 @@ def cms_from_product_config():
 
 
 @zope.interface.implementer(zeit.content.video.interfaces.IPlayer)
-class PlaybackAPI(object):
+class PlaybackAPI:
     """Connection to the Brightcove "Playback API".
 
     * Overview: <https://support.brightcove.com/overview-playback-api>

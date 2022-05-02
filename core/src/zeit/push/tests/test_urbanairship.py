@@ -45,9 +45,9 @@ class ConnectionTest(zeit.push.testing.TestCase):
             ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
         self.message.config = {
             'uses_image': True,
-            'payload_template': u'template.json',
+            'payload_template': 'template.json',
             'enabled': True,
-            'override_text': u'foo',
+            'override_text': 'foo',
             'type': 'mobile'
         }
         self.create_payload_template()
@@ -65,11 +65,11 @@ class ConnectionTest(zeit.push.testing.TestCase):
                     # Given in template
                     '2014-07-01T10:45:07', android.options['expiry'])
                 self.assertEqual(
-                    {u'group': u'subscriptions', u'tag': u'Eilmeldung'},
+                    {'group': 'subscriptions', 'tag': 'Eilmeldung'},
                     android.audience['OR'][0])
                 self.assertEqual('foo', android.notification['alert'])
                 self.assertEqual(
-                    u'Rückkehr der Warlords',
+                    'Rückkehr der Warlords',
                     android.notification['android']['extra']['headline'])
 
                 ios = push.call_args_list[1][0][0]
@@ -78,22 +78,22 @@ class ConnectionTest(zeit.push.testing.TestCase):
                     # Defaults to configured expiration_interval
                     '2014-07-01T11:15:07', ios.options['expiry'])
                 self.assertEqual(
-                    {u'group': u'subscriptions', u'tag': u'Eilmeldung'},
+                    {'group': 'subscriptions', 'tag': 'Eilmeldung'},
                     ios.audience['OR'][0])
                 self.assertEqual('foo', ios.notification['alert'])
                 self.assertEqual(
-                    u'Rückkehr der Warlords', ios.notification['ios']['title'])
+                    'Rückkehr der Warlords', ios.notification['ios']['title'])
 
                 open_slack = push.call_args_list[2][0][0]
                 self.assertEqual(['open::slack'], open_slack.device_types)
                 self.assertEqual(
                     '2014-07-01T11:15:07', open_slack.options['expiry'])
                 self.assertEqual(
-                    {u'open_channel': u'cec48c28-4486-4c95-989e-0bbed3edc714'},
+                    {'open_channel': 'cec48c28-4486-4c95-989e-0bbed3edc714'},
                     open_slack.audience)
                 self.assertEqual('foo', open_slack.notification['alert'])
                 self.assertEqual(
-                    u'Nicht Corona',
+                    'Nicht Corona',
                     open_slack.notification['open::slack']['extra']['recipients'])
 
 
@@ -188,7 +188,7 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IMessage, name=self.name)
         message.send()
         self.assertEqual(
-            [('content_title', u'http://www.zeit.de/content',
+            [('content_title', 'http://www.zeit.de/content',
               {'message': message})],
             self.get_calls('urbanairship'))
 
@@ -211,7 +211,7 @@ class MessageTest(zeit.push.testing.TestCase):
         self.assertEqual({'two': 1}, message.render())
 
     def test_payload_loads_jinja_payload_variables(self):
-        template_content = u"""{"messages":[{
+        template_content = """{"messages":[{
             "title": "{{article.title}}",
             "message": "{%if not uses_image %}Bildß{% endif %}"
         }]}"""
@@ -221,7 +221,7 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IMessage, name=self.name)
         message.config['payload_template'] = 'bar.json'
         payload = message.render()
-        self.assertEqual(u'Bildß', payload[0].get('message'))
+        self.assertEqual('Bildß', payload[0].get('message'))
         self.assertEqual(message.context.title, payload[0].get('title'))
 
     def test_deep_link_starts_with_app_identifier(self):
@@ -266,7 +266,7 @@ class IntegrationTest(zeit.push.testing.TestCase):
         calls = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='urbanairship').calls
         self.assertEqual(calls[0][0], 'content_title')
-        self.assertEqual(calls[0][1], u'http://www.zeit.de/content')
+        self.assertEqual(calls[0][1], 'http://www.zeit.de/content')
         self.assertEqual(calls[0][2].get('enabled'), True)
         self.assertEqual(calls[0][2].get('type'), 'mobile')
 

@@ -17,10 +17,10 @@ import zope.security
 import zeit.contentquery.interfaces
 
 
-class Empty(object):
+class Empty:
 
     def render(self):
-        return u''
+        return ''
 
 
 class AutoSaveText(zeit.edit.browser.view.Action):
@@ -69,7 +69,7 @@ class SaveText(AutoSaveText):
     undo_description = _('edit body text')
 
 
-class Paragraph(object):
+class Paragraph:
 
     @property
     def cms_module(self):
@@ -122,7 +122,7 @@ class BodyLandingZone(LandingZoneBase):
     order = 0
 
 
-class Body(object):
+class Body:
 
     @zope.cachedescriptors.property.Lazy
     def writeable(self):
@@ -143,7 +143,7 @@ class Body(object):
         return ' '.join(css_class)
 
 
-class EditableHeaderArea(object):
+class EditableHeaderArea:
 
     def show_area(self):
         source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE.factory
@@ -423,7 +423,7 @@ class EditDivision(zeit.edit.browser.form.InlineForm,
         self.set_charlimit('teaser')
 
 
-class DoubleQuotes(object):
+class DoubleQuotes:
 
     def __call__(self):
         return json.dumps(

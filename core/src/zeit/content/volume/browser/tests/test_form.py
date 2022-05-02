@@ -93,11 +93,11 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         content = ExampleContentType()
         content.year = 2010
         content.volume = 2
-        content.product = zeit.cms.content.sources.Product(u'ZEI')
+        content.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['testcontent'] = content
         volume = zeit.content.volume.interfaces.IVolume(content)
         self.assertEqual(
-            u'http://xml.zeit.de/2010/02/ausgabe',
+            'http://xml.zeit.de/2010/02/ausgabe',
             volume.uniqueId)
 
     def test_adds_centerpage_in_addition_to_volume(self):
@@ -129,7 +129,7 @@ class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         zeit.cms.content.add.find_or_create_folder('2015', '01')
         self.repository['2015']['01']['ausgabe'] = volume
 

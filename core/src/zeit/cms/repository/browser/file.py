@@ -24,7 +24,7 @@ class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
         searchableText = None
 
 
-class FileView(object):
+class FileView:
 
     title = _('View file')
 
@@ -58,7 +58,7 @@ class BlobWidget(zope.app.form.browser.FileWidget):
                 return self.context.missing_value
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(IFileEditSchema)
     form_fields['blob'].custom_widget = BlobWidget

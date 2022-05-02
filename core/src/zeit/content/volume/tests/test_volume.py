@@ -30,7 +30,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.repository['imagegroup'] = create_image_group()
         self.cover = self.repository['imagegroup']
         self.volume = Volume()
-        self.volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        self.volume.product = zeit.cms.content.sources.Product('ZEI')
 
     def add_ipad_cover(self, product_id='ZEI'):
         node = lxml.objectify.E.cover(
@@ -101,7 +101,7 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         content = ExampleContentType()
         content.year = 2015
         content.volume = 1
-        content.product = zeit.cms.content.sources.Product(u'ZEI')
+        content.product = zeit.cms.content.sources.Product('ZEI')
         volume = zeit.content.volume.interfaces.IVolume(content)
         self.assertEqual(
             volume,
@@ -116,7 +116,7 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         content = ExampleContentType()
         content.year = 2015
         content.volume = 1
-        content.product = zeit.cms.content.sources.Product(u'ZEDE')
+        content.product = zeit.cms.content.sources.Product('ZEDE')
         with self.assertRaises(TypeError):
             zeit.content.volume.interfaces.IVolume(content)
 
@@ -124,11 +124,11 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         zei_content = ExampleContentType()
         zei_content.year = 2015
         zei_content.volume = 1
-        zei_content.product = zeit.cms.content.sources.Product(u'ZEI')
+        zei_content.product = zeit.cms.content.sources.Product('ZEI')
         zmlb_content = ExampleContentType()
         zmlb_content.year = 2015
         zmlb_content.volume = 1
-        zmlb_content.product = zeit.cms.content.sources.Product(u'ZMLB')
+        zmlb_content.product = zeit.cms.content.sources.Product('ZMLB')
         self.assertEqual(zeit.content.volume.interfaces.IVolume(zei_content),
                          zeit.content.volume.interfaces.IVolume(zmlb_content))
 
@@ -138,7 +138,7 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
         zecw_content.year = 2015
         zecw_content.volume = 1
         zecw_content.product = zeit.cms.content.sources.Product(
-            u'BADDEPENDENCY')
+            'BADDEPENDENCY')
         with self.assertRaises(TypeError):
             zeit.content.volume.interfaces.IVolume(zecw_content)
 
@@ -150,7 +150,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['2015'] = Folder()
         self.repository['2015']['01'] = Folder()
         # Add a cover image-group
@@ -185,7 +185,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_looks_up_centerpage_for_depent_product_content(self):
         content = ExampleContentType()
-        content.product = zeit.cms.content.sources.Product(u'ZMLB')
+        content.product = zeit.cms.content.sources.Product('ZMLB')
         self.repository['2015']['01']['index'] = content
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
@@ -197,7 +197,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
     def test_no_teaserText_present_returns_default_string(self):
         volume = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2015/01/ausgabe')
-        self.assertEqual(u'Teäser 01/2015', volume.teaserText)
+        self.assertEqual('Teäser 01/2015', volume.teaserText)
 
     def test_covers_are_published_with_the_volume(self):
         volume = self.repository['2015']['01']['ausgabe']
@@ -225,7 +225,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         volume = Volume()
         volume.year = year
         volume.volume = name
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         volume.date_digital_published = datetime(
             year, name, 1, tzinfo=pytz.UTC)
         year = str(year)
@@ -256,7 +256,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
         name = 1
         volume.year = year
         volume.volume = name
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         self.elastic.search.return_value = [{'url': '/2015/02/ausgabe'}]
         self.assertEqual(None, volume.next)
         self.assertEqual(None, volume.previous)

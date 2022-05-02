@@ -5,7 +5,7 @@ import zope.interface
 import zope.schema
 
 
-class SearchVars(object):
+class SearchVars:
 
     def SearchVar(name, ns):
         prefix = 'http://namespaces.zeit.de/CMS/'

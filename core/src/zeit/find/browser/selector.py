@@ -4,7 +4,7 @@ import zope.component
 import zeit.cms.content.interfaces
 
 
-class Selector(object):
+class Selector:
 
     @property
     def initial_query(self):

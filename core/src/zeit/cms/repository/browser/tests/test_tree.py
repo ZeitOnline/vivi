@@ -40,9 +40,9 @@ class TreeURLTest(zeit.cms.testing.ZeitCmsTestCase):
         with mock.patch(
                 'zeit.cms.repository.interfaces.IUserPreferences') as prefs:
             with mock.patch('zeit.cms.browser.tree.Tree.treeState',
-                            new=[u'http://xml.zeit.de/bär']):
+                            new=['http://xml.zeit.de/bär']):
                 prefs().get_hidden_containers.return_value = [
-                    u'http://xml.zeit.de/föö']
+                    'http://xml.zeit.de/föö']
                 self.assertEqual(
                     'http://127.0.0.1/repository/++noop++'
                     '14b688265a0bc1b8a55c8ca8b7dfb8e6/@@tree.html',

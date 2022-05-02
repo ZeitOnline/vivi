@@ -7,7 +7,7 @@ import zope.interface
 
 @zope.component.adapter(zope.interface.Interface)
 @zope.interface.implementer(zeit.objectlog.interfaces.ILogProcessor)
-class ProcessForDisplay(object):
+class ProcessForDisplay:
 
     max_entries = 500
 
@@ -18,7 +18,7 @@ class ProcessForDisplay(object):
         return tuple(entries)[-self.max_entries:]
 
 
-class ObjectLog(object):
+class ObjectLog:
 
     def groups(self):
         request_timezone = ITZInfo(self.request)

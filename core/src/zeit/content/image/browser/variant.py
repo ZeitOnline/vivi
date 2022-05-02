@@ -4,7 +4,7 @@ import zeit.content.image.interfaces
 import zope.security.proxy
 
 
-class VariantSerializeMixin(object):
+class VariantSerializeMixin:
 
     def render(self, data=None):
         self.request.response.setHeader('Content-Type', 'application/json')
@@ -81,7 +81,7 @@ class VariantDetail(
         return self.render()
 
 
-class Editor(object):
+class Editor:
 
     def __call__(self):
         # Force generating thumbnail source if does not exist yet, so not each

@@ -513,7 +513,7 @@ all the named adapters:
 >>> len(deps)
 1
 >>> deps[0].uniqueId
-u'http://xml.zeit.de/politik.feed'
+'http://xml.zeit.de/politik.feed'
 >>> feed = deps[0]
 
 Currently neither the article nor the image is published:

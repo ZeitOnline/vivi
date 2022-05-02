@@ -89,7 +89,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=ul.ui-autocomplete li')
 
         self.assertEqual(s.getCssCount('css=li.recipe-category__item'), 1)
-        s.assertText('css=a.recipe-category__label', u'Pizza')
+        s.assertText('css=a.recipe-category__label', 'Pizza')
 
         # Add second category
         s.type('//input[@name="add_recipe_category"]', 'Hüls')

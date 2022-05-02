@@ -53,8 +53,8 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
             self.log.getvalue())
 
     def test_non_ascii_id_should_work(self):
-        self.repository[u'föö'] = ExampleContentType()
-        id = u'http://xml.zeit.de/föö'
+        self.repository['föö'] = ExampleContentType()
+        id = 'http://xml.zeit.de/föö'
         self.update(id)
         self.tms.index.assert_called_with(
             zeit.cms.interfaces.ICMSContent(id), {'body': None})

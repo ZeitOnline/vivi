@@ -2,7 +2,7 @@ import zeit.cms.relation.interfaces
 import zope.component
 
 
-class Index(object):
+class Index:
 
     @property
     def references(self):

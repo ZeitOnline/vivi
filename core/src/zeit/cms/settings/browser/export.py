@@ -4,7 +4,7 @@ import zope.cachedescriptors.property
 import zeit.cms.settings.interfaces
 
 
-class XML(object):
+class XML:
 
     @zope.cachedescriptors.property.Lazy
     def settings(self):

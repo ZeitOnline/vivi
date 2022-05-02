@@ -2,7 +2,7 @@ import zeit.content.cp.browser.editor
 import zeit.content.cp.interfaces
 
 
-class Display(object):
+class Display:
 
     def values(self):
         return zeit.content.cp.interfaces.IRenderedArea(

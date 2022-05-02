@@ -112,9 +112,9 @@ It always has 50x50 as bounding box so far:
 It is contained in the folder `thumbnails` with the same name as the image:
 
 >>> image.uniqueId
-u'http://xml.zeit.de/2006/DSC00109_2.JPG'
+'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> persistent_thumbnail.uniqueId
-u'http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG'
+'http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG'
 
 
 When adapting again, no new thumbnail is created but the one in the repository

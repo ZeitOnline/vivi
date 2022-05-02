@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IBanner)
-class Banner(object):
+class Banner:
 
     def __init__(self, banner_unique_id):
         self.banner_unique_id = banner_unique_id
@@ -72,7 +72,7 @@ def get_breaking_news_article():
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Push(object):
+class Push:
 
     def send(self, text, article_unique_id, **kw):
         log.debug('Publishing Homepage banner for %s', article_unique_id)

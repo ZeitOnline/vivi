@@ -3,7 +3,7 @@ import z3c.flashmessage.interfaces
 import zope.component
 
 
-class MessageList(object):
+class MessageList:
 
     @property
     def css_class(self):

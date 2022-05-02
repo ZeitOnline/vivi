@@ -11,7 +11,7 @@ import zope.component
 import zope.error.interfaces
 
 
-def installLocalUtility(root, factory, name, interface, utility_name=u''):
+def installLocalUtility(root, factory, name, interface, utility_name=''):
     utility = factory()
     root[name] = utility
     site_manager = zope.component.getSiteManager()

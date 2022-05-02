@@ -148,13 +148,13 @@ class CSSInjector(grok.Adapter):
                 del rule.selectorList[0]
             for selector in selectors:
                 # zeit.content.article
-                rule.selectorList.append(u'#%s %s' % (module, selector))
+                rule.selectorList.append('#%s %s' % (module, selector))
                 # zeit.content.cp
-                rule.selectorList.append(u'.%s %s' % (module, selector))
-        return u'<style>\n%s\n</style>' % six.ensure_text(css.cssText)
+                rule.selectorList.append('.%s %s' % (module, selector))
+        return '<style>\n%s\n</style>' % six.ensure_text(css.cssText)
 
 
-class EmbedParameterForm(object):
+class EmbedParameterForm:
 
     _form_fields = NotImplemented
     _omit_fields = ()
@@ -193,9 +193,9 @@ def embed_memo(context):
     return zeit.cms.content.interfaces.IMemo(embed)
 
 
-class EmptyMemo(object):
+class EmptyMemo:
 
-    memo = u''
+    memo = ''
 
 
 EMPTY_MEMO = EmptyMemo()

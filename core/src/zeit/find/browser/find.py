@@ -114,7 +114,7 @@ def get_favorited_css_class(favorited):
         'favorited' if favorited else 'not_favorited')
 
 
-class DottedNestedDict(object):
+class DottedNestedDict:
 
     def __init__(self, dict_):
         self.dict = dict_
@@ -455,7 +455,7 @@ def form_query(request, filter_terms=None):
 
 
 def get_favorites(request):
-    favorites_id = u'Favoriten'
+    favorites_id = 'Favoriten'
     clipboard = zeit.cms.clipboard.interfaces.IClipboard(request.principal)
     if favorites_id not in clipboard:
         clipboard.addClip(favorites_id)

@@ -201,7 +201,7 @@ class IAutomaticallyRenameable(zope.interface.Interface):
 
     """
 
-    renameable = zope.schema.Bool(title=u'Object renameable?')
+    renameable = zope.schema.Bool(title='Object renameable?')
     rename_to = zope.schema.TextLine(
         title=_("New file name"),
         required=False,

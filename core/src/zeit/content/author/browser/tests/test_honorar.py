@@ -23,7 +23,7 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
         api.search.return_value = [
-            {'gcid': '1234', 'vorname': u'Williäm', 'nachname': 'Shakespeare'},
+            {'gcid': '1234', 'vorname': 'Williäm', 'nachname': 'Shakespeare'},
             {'gcid': 2345, 'vorname': 'Random', 'nachname': 'Filler'},
         ]
         b = self.browser
@@ -49,12 +49,12 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl('Firstname').value = 'William'
         b.getControl('Lastname').value = 'Shakespeare'
         b.getControl('Look up author').click()
-        self.assertEllipsis(u"""\
+        self.assertEllipsis("""\
             ...There were errors...
             ...An author with the given name already exists...
             """, b.contents)
 
-        b.getControl(u'Add duplicate author').selected = True
+        b.getControl('Add duplicate author').selected = True
         b.getControl('Look up author').click()
         self.assertNotIn('There were errors', b.contents)
 

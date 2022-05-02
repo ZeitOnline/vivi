@@ -29,7 +29,7 @@ import zope.security.proxy
 
 @zope.interface.implementer(
     zeit.content.dynamicfolder.interfaces.IDynamicFolder)
-class DynamicFolderBase(object):
+class DynamicFolderBase:
     """Base class for the dynamic folder that holds all attributes.
 
     A base class is used to differentiate between repository and workingcopy.

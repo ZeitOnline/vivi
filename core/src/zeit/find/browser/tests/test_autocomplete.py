@@ -57,7 +57,7 @@ class TestSimpleFind(unittest.TestCase,
                 dict(match_phrase_prefix={
                     'payload.vivi.autocomplete': 'search-term'})
             ], filter=[
-                {'match': {'payload.document.access': u'abo'}}
+                {'match': {'payload.document.access': 'abo'}}
             ]))))
 
     def test_query_result_should_be_returned(self):
@@ -84,7 +84,7 @@ class TestSimpleFind(unittest.TestCase,
     def test_query_view_should_render_input(self):
         @zope.interface.implementer(
             zeit.cms.content.interfaces.IAutocompleteSource)
-        class FakeSource(object):
+        class FakeSource:
             def get_check_types(self):
                 return ('t1', 't2', 't3')
 

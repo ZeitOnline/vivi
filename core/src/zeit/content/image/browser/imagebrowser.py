@@ -2,7 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.content.image.interfaces
 
 
-class ImageBrowser(object):
+class ImageBrowser:
 
     title = _("Images")
 

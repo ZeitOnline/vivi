@@ -72,7 +72,7 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         else:
             optivo.test(
                 category.mandant, category.recipientlist_test,
-                to, u'[test] ' + self.subject,
+                to, '[test] ' + self.subject,
                 rendered['html'], rendered['text'])
 
 
@@ -168,7 +168,7 @@ class TeaserFactory(zeit.edit.block.TypeOnAttributeElementFactory):
     title = _('Teaser')
 
 
-class AdvertisementBase(object):
+class AdvertisementBase:
 
     area = zeit.newsletter.interfaces.IBody
     type = NotImplemented

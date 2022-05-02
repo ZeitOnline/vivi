@@ -47,7 +47,7 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         module = factory()
         info = zeit.cmp.interfaces.IConsentInfo(module)
         info.has_thirdparty = True
-        info.thirdparty_vendors = [u'Twitter', u'Facebook']
+        info.thirdparty_vendors = ['Twitter', 'Facebook']
         self.assertEqual(True, info.has_thirdparty)
         self.assertEqual(
             ('Twitter', 'Facebook'), info.thirdparty_vendors)

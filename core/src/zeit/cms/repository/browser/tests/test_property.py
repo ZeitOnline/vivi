@@ -27,7 +27,7 @@ class DAVPropertiesListingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_handles_non_ascii(self):
         with checked_out(self.repository['testcontent']) as co:
-            co.ressort = u'Zeit für die Schule'
+            co.ressort = 'Zeit für die Schule'
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/testcontent')
         b.getLink('DAV Properties').click()

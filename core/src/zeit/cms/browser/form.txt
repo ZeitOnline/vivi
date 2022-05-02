@@ -18,7 +18,7 @@ Create a simple interface and a class:
 ...     readonly = zope.schema.Text(readonly=True)
 ...     unsettable = zope.schema.Text(readonly=True)
 >>> @zope.interface.implementer(IContent)
-... class Content(object):
+... class Content:
 ...     settable = readonly = None
 ...     @property
 ...     def unsettable(self):

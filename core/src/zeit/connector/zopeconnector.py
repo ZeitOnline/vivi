@@ -84,7 +84,7 @@ factory = ZopeConnector.factory
 
 
 @zope.interface.implementer(transaction.interfaces.IDataManager)
-class DataManager(object):
+class DataManager:
     """Takes care of the transaction process in Zope. """
 
     def __init__(self, connector):
@@ -141,7 +141,7 @@ class DataManager(object):
 
 
 @zope.interface.implementer(transaction.interfaces.IDataManagerSavepoint)
-class ConnectorSavepoint(object):
+class ConnectorSavepoint:
 
     def rollback(self):
         raise Exception("Can't roll back connector savepoints.")

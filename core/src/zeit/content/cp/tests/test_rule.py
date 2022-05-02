@@ -46,7 +46,7 @@ error_if(True)
 """)
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
-        self.cp.type = u'homepage'
+        self.cp.type = 'homepage'
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
@@ -74,7 +74,7 @@ error_if(centerpage.title == 'foo')
 """)
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
-        self.cp.title = u'foo'
+        self.cp.title = 'foo'
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 

@@ -14,7 +14,7 @@ class InsertMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     icon = '/@@/zeit.cms/icons/insert.png'
 
 
-class InsertLightbox(object):
+class InsertLightbox:
 
     @zope.cachedescriptors.property.Lazy
     def clipboard(self):

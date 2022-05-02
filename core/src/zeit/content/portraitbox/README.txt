@@ -35,8 +35,8 @@ True
 
 Set data:
 
->>> pb.name = u'Hans Wurst'
->>> pb.text = u'<p><strong>Hans Wurst</strong> wursted hansig.</p>'
+>>> pb.name = 'Hans Wurst'
+>>> pb.text = '<p><strong>Hans Wurst</strong> wursted hansig.</p>'
 >>> pb.image = repository['2006']['DSC00109_2.JPG']
 >>> print(zeit.cms.testing.xmltotext(pb.xml))
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
@@ -61,7 +61,7 @@ Verify the HTML support:
 When there is only text and no <p> node the contents is wrapped into a <p>
 automatically:
 
->>> pb.text = u'ist <strong>ein Hans</strong> und wurstet.'
+>>> pb.text = 'ist <strong>ein Hans</strong> und wurstet.'
 >>> print(html.html)
 <p>ist <strong>ein Hans</strong> und wurstet.</p>
 

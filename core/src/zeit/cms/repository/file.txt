@@ -189,7 +189,7 @@ When we adapt the RepositoryFile to ILocalContent we'll get a LocalFile:
 >>> local
 <zeit.cms.repository.file.LocalFile...>
 >>> local.__name__
-u'DSC00109_2.JPG'
+'DSC00109_2.JPG'
 
 When we change some data ...
 

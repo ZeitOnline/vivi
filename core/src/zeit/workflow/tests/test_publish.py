@@ -53,7 +53,7 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.workflow.interfaces.IPublicationDependencies)
-class RelatedDependency(object):
+class RelatedDependency:
 
     def __init__(self, context):
         self.context = context
@@ -185,7 +185,7 @@ class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
             priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
             IPublish(content).publish()
         apply_async.assert_called_with(
-            ([u'http://xml.zeit.de/testcontent'],),
+            (['http://xml.zeit.de/testcontent'],),
             queue='publish_lowprio')
 
 
@@ -403,7 +403,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         # Error is logged
         log = zeit.objectlog.interfaces.ILog(c1)
         self.assertEqual(
-            [u'${name}: ${new_value}',
-             u'Collective Publication',
-             u'Error during publish/retract: ${exc}: ${message}'],
+            ['${name}: ${new_value}',
+             'Collective Publication',
+             'Error during publish/retract: ${exc}: ${message}'],
             [x.message for x in log.get_log()])

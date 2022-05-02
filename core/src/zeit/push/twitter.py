@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection(object):
+class Connection:
 
     def __init__(self, api_key, api_secret):
         self.api_key = api_key
@@ -28,7 +28,7 @@ class Connection(object):
 
         log.debug('Sending %s, %s to %s', text, link, account)
         try:
-            api.update_status(u'%s %s' % (text, link))
+            api.update_status('%s %s' % (text, link))
         except tweepy.TweepError as e:
             status = e.response.status_code
             if status < 500:

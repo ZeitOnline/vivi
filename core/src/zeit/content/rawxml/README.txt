@@ -20,7 +20,7 @@ Create an intance and set some data:
 >>> import lxml.objectify
 >>> import zeit.content.rawxml.rawxml
 >>> content = zeit.content.rawxml.rawxml.RawXML()
->>> content.title = u'Roh'
+>>> content.title = 'Roh'
 >>> content.xml = lxml.objectify.fromstring('<a/>')
 
 ``content`` provides the IRawXML interface:
@@ -38,8 +38,8 @@ stored in a webdav property:
 >>> import pprint
 >>> resource = zeit.connector.interfaces.IResource(content)
 >>> dict(resource.properties)[
-...     ('title', u'http://namespaces.zeit.de/CMS/document')]
-u'Roh'
+...     ('title', 'http://namespaces.zeit.de/CMS/document')]
+'Roh'
 >>> resource.data.read()
 "<?xml version='1.0' encoding='UTF-8'?>\n<a/>\n"
 >>> _ = resource.data.seek(0)
@@ -60,7 +60,7 @@ We can of course get the object back:
 All the data is still there:
 
 >>> new_content.title
-u'Roh'
+'Roh'
 >>> new_content.xml
 <Element a at ...>
 >>> lxml.etree.cleanup_namespaces(new_content.xml)

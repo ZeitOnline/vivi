@@ -16,7 +16,7 @@ class ContentStatus(zope.viewlet.viewlet.ViewletBase):
 
     def render(self):
         if self.workflow is None:
-            return u''
+            return ''
 
         states = []
 
@@ -40,12 +40,12 @@ class ContentStatus(zope.viewlet.viewlet.ViewletBase):
 
             class_ = self.get_class(value)
 
-            states.append(u'<span title=%s class="content-status %s">'
-                          u'%s</span>' %
+            states.append('<span title=%s class="content-status %s">'
+                          '%s</span>' %
                           (xml.sax.saxutils.quoteattr(long_title), class_,
                            xml.sax.saxutils.escape(short_title)))
 
-        return u'\n'.join(states)
+        return '\n'.join(states)
 
     def get_class(self, value):
         if not value:
@@ -58,4 +58,4 @@ class ContentStatus(zope.viewlet.viewlet.ViewletBase):
 class AssetStatus(zope.viewlet.viewlet.ViewletBase):
 
     def render(self):
-        return u''
+        return ''

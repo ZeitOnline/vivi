@@ -20,7 +20,7 @@ def dump_references(root):
 
 def load_references(root):
     import zeit.cms.testing
-    zeit.cms.testing.create_interaction(u'zope.manager')
+    zeit.cms.testing.create_interaction('zope.manager')
     _index(root, [x.strip() for x in sys.stdin.readlines()])
 
 

@@ -6,7 +6,7 @@ import zeit.wochenmarkt.interfaces
 import zope.interface
 
 
-class Ingredient(object):
+class Ingredient:
 
     def __init__(self, code, label, **kwargs):
         self.code = code

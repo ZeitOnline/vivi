@@ -13,7 +13,7 @@ import zope.cachedescriptors.property
 import zope.formlib.form
 
 
-class FormBase(object):
+class FormBase:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.infobox.interfaces.IInfobox).select(

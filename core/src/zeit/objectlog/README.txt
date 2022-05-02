@@ -76,7 +76,7 @@ True
 When we log another text, we'll get two results. Also, when a principal is
 logged in, he is logged:
 
->>> request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
+>>> request.setPrincipal(zope.security.testing.Principal('test.hans'))
 >>> log.log(content, "bar")
 >>> result = list(log.get_log(content))
 >>> len(result)
@@ -89,7 +89,7 @@ The order is oldest first:
 >>> result[1].message
 'bar'
 >>> result[1].principal
-u'test.hans'
+'test.hans'
 
 
 It is possible to pass a mapping to the log which can be used for translating
@@ -180,19 +180,19 @@ Verify the titles:
 ...     zope.app.form.browser.interfaces.ITerms)
 >>> term = terms.getTerm(list(source)[0])
 >>> zope.i18n.translate(term.title)
-u'2008 4 19  10:12:17  [System]: Foo'
+'2008 4 19  10:12:17  [System]: Foo'
 >>> term = terms.getTerm(list(source)[1])
 >>> zope.i18n.translate(term.title)
-u'2008 4 19  10:12:17  [Hans Wurst]: bar'
+'2008 4 19  10:12:17  [Hans Wurst]: bar'
 
 
 Make sure the log-terms do not break when the principal is deleted:
 
->>> request.setPrincipal(zope.security.testing.Principal(u'not.there'))
+>>> request.setPrincipal(zope.security.testing.Principal('not.there'))
 >>> content_log.log('not-there-log')
 >>> term = terms.getTerm(list(source)[-1]) 
 >>> zope.i18n.translate(term.title)
-u'2008 5 27  11:14:46  [not.there]: not-there-log'
+'2008 5 27  11:14:46  [not.there]: not-there-log'
 
 Let's make sure the log time is localized to the user's preferred time zone.
 Explicitly set a known time:
@@ -240,7 +240,7 @@ that reduces the list of log entries to just the last two:
 
 >>> @zope.component.adapter(Content)
 ... @zope.interface.implementer(zeit.objectlog.interfaces.ILogProcessor)
-... class Processor(object):
+... class Processor:
 ...     def __init__(self, context):
 ...         pass
 ...     def __call__(self, entries):

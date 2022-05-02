@@ -249,7 +249,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
             value = body
 
         if value is None or value.etag != current_etag:
-            raise KeyError(u"Object %r is not cached." % unique_id)
+            raise KeyError('Object %r is not cached.' % unique_id)
         self._update_cache_access(key)
         return value.open()
 

@@ -220,7 +220,7 @@ Then we need to create a test 'article' to be included in this CenterPage:
 
 >>> browser.open('/++skin++cms/repository/testcontent')
 >>> browser.getLink('Checkout').click()
->>> browser.getControl('Teaser title').value = u'Foreign teaser'
+>>> browser.getControl('Teaser title').value = 'Foreign teaser'
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
 >>> browser.getControl('Year').value = '2007'
 >>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
@@ -235,7 +235,7 @@ XXX work around https://github.com/zopefoundation/zope.testbrowser/issues/78
 >>> import six
 >>> def click_link(browser, text):
 ...    browser._response.body = browser._response.body.replace(b'<div ', b'<div xmlns:cms="http://namespaces.gocept.com/zeit-cms" ', 1)
-...    browser.open(browser.xpath(u'//a[contains(., "%s")]/@href' % six.ensure_text(text))[0])
+...    browser.open(browser.xpath('//a[contains(., "%s")]/@href' % six.ensure_text(text))[0])
 
 
 The layout can be selected at the edit box:

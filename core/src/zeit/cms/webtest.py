@@ -85,7 +85,7 @@ class WebTestTransport(six.moves.xmlrpc_client.Transport):
         return self.parse_response(res)
 
 
-class FakeSocket(object):
+class FakeSocket:
 
     prefix = b'HTTP/1.1 200 Ok\r\n\r\n'
 

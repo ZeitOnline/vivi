@@ -104,7 +104,7 @@ class ReferenceDetailsBody(ImageView):
         return get_img_tag(self.context.target, self.request, view='@@raw')
 
 
-class Scaled(object):
+class Scaled:
 
     filter = PIL.Image.ANTIALIAS
 
@@ -153,7 +153,7 @@ class ImageListRepresentation(
         zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing article content resources"""
 
-    author = ressort = page = u''
+    author = ressort = page = ''
 
     @property
     def title(self):
@@ -246,7 +246,7 @@ def imageadapter_browse_location(context, source):
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
 
-class MetadataPreviewHTML(object):
+class MetadataPreviewHTML:
 
     @cachedproperty
     def metadata(self):

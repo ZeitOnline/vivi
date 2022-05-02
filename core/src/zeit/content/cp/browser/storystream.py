@@ -11,7 +11,7 @@ class AddForm(zeit.content.cp.browser.form.AddForm):
 
     def create(self, data):
         obj = super(AddForm, self).create(data)
-        obj.type = u'storystream'  # XXX Hard-coding this is a bit shaky.
+        obj.type = 'storystream'  # XXX Hard-coding this is a bit shaky.
         zope.interface.alsoProvides(
             obj, zeit.content.cp.interfaces.IStoryStream)
         return obj

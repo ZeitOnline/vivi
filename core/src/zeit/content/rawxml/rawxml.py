@@ -12,7 +12,7 @@ import zope.proxy
 @zope.interface.implementer(zeit.content.rawxml.interfaces.IRawXML)
 class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
 
-    default_template = u'<your-xml-here/>'
+    default_template = '<your-xml-here/>'
     zeit.cms.content.dav.mapProperties(
         zeit.content.rawxml.interfaces.IRawXML,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,

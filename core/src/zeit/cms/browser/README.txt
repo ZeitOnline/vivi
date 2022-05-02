@@ -33,7 +33,7 @@ HTTPError: HTTP Error 404: Not Found
 >>> print(browser.contents)
 <?xml ...
     <title>
-           Object: &lt;zope...Folder object at 0x...&gt;, name: u'doesnotexist' – Zeit CMS
+           Object: &lt;zope...Folder object at 0x...&gt;, name: 'doesnotexist' – Zeit CMS
     </title>
     ...
 

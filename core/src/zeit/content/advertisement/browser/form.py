@@ -6,7 +6,7 @@ import zeit.content.advertisement.interfaces
 import zope.formlib.form
 
 
-class Base(object):
+class Base:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.advertisement.interfaces.IAdvertisement).select(

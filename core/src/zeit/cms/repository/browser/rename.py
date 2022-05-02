@@ -19,7 +19,7 @@ class IRenameSchema(zope.interface.Interface):
         constraint=zeit.cms.repository.interfaces.valid_name)
 
 
-class RenameGuards(object):
+class RenameGuards:
 
     @cachedproperty
     def is_published(self):

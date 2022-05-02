@@ -149,7 +149,7 @@ def image_references(context):
 
 @zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
 @zope.interface.implementer(zeit.content.image.interfaces.IReferences)
-class References(object):
+class References:
 
     def __init__(self, context):
         self.context = context

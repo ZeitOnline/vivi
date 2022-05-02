@@ -31,7 +31,7 @@ class Listing(zeit.cms.browser.listing.Listing):
         return self.context.values()
 
 
-class View(object):
+class View:
 
     def __init__(self, context, request):
         self.context = context

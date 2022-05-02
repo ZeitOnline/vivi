@@ -41,7 +41,7 @@ class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
         pass
 
 
-class BaseImage(object):
+class BaseImage:
 
     def __init__(self, uniqueId=None):
         super(BaseImage, self).__init__(uniqueId, mimeType='')

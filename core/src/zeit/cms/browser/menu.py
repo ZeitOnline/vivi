@@ -117,7 +117,7 @@ class LightboxActionMenuItem(ActionMenuItem):
         'action-menu-item-with-lightbox.pt')
 
 
-class DropDownMenuBase(object):
+class DropDownMenuBase:
 
     weight = 1000
     items_provider = None

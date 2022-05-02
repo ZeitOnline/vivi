@@ -5,7 +5,7 @@ import zeit.connector.interfaces
 import zeit.edit.interfaces
 
 
-UNDOABLE_TRANSACTION = u'zeit.edit.undo: '
+UNDOABLE_TRANSACTION = 'zeit.edit.undo: '
 
 
 @grok.implementer(zeit.edit.interfaces.IUndo)

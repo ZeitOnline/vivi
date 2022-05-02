@@ -7,7 +7,7 @@ import zope.formlib.form
 import zope.interface
 
 
-class OrderMixin(object):
+class OrderMixin:
     """
     Order can have the following values:
 

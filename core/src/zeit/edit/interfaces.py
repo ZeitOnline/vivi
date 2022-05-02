@@ -130,16 +130,16 @@ class IValidator(zope.interface.Interface):
     """Adapt an object to validate it with the rule system."""
 
     status = zope.schema.TextLine(
-        title=u"Validation status: {None, warning, error}")
+        title='Validation status: {None, warning, error}')
 
     messages = zope.schema.List(
-        title=u"List of error messages.")
+        title='List of error messages.')
 
 
 class IRulesManager(zope.interface.Interface):
-    """Collects all validation rules."""
+    '''Collects all validation rules.'''
 
-    rules = zope.schema.List(title=u"A list of rules.")
+    rules = zope.schema.List(title='A list of rules.')
 
 
 class IUndo(zope.interface.Interface):

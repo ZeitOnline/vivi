@@ -99,7 +99,7 @@ class LogEntry(persistent.Persistent):
 
 @zope.component.adapter(zope.interface.Interface)
 @zope.interface.implementer(zeit.objectlog.interfaces.ILog)
-class Log(object):
+class Log:
 
     def __init__(self, context):
         self.context = context

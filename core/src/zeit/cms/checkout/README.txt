@@ -82,7 +82,7 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> workingcopy = IWorkingcopy(principal)
 >>> list(workingcopy.keys())
-[u'4schanzentournee-abgesang']
+['4schanzentournee-abgesang']
 >>> list(workingcopy.values())
 [<zeit.cms.repository.unknown.PersistentUnknownResource...4schanzentournee-abgesang>]
 
@@ -98,7 +98,7 @@ After checking out the resource is locked in the WebDAV. This means other users
 cannot check it out. Login another user called `bob`:
 
 >>> zope.security.management.endInteraction()
->>> principal = zeit.cms.testing.create_interaction(u'bob')
+>>> principal = zeit.cms.testing.create_interaction('bob')
 
 Bob cannot check out:
 
@@ -115,7 +115,7 @@ CheckinCheckoutError: The content object is locked by ${name}.
 Let's log back in as the `zope.user`.
 
 >>> zope.security.management.endInteraction()
->>> principal = zeit.cms.testing.create_interaction(u'zope.user')
+>>> principal = zeit.cms.testing.create_interaction('zope.user')
 
 We also cannot check it out because checking out is only possible once:
 
@@ -133,14 +133,14 @@ back" into the repository.
 Get the object we cecked out above from the working copy and modify it:
 
 >>> checked_out = workingcopy['4schanzentournee-abgesang']
->>> checked_out.data = u'Lorem ipsum.'
+>>> checked_out.data = 'Lorem ipsum.'
 
 
 So far nothing in the repository has changed:
 
 >>> content = repository.getContent(checked_out.uniqueId)
 >>> content.data
-u'<?xml version="1.0" ...'
+'<?xml version="1.0" ...'
 
 But now we check in:
 
@@ -174,7 +174,7 @@ we can check it out again:
 
 >>> content = repository.getContent(checked_out.uniqueId)
 >>> content.data
-u'Lorem ipsum.'
+'Lorem ipsum.'
 >>> manager = ICheckoutManager(content)
 >>> manager.canCheckout
 True
@@ -251,7 +251,7 @@ The checked out content is stored in a temporary workingcopy:
 >>> checked_out.__parent__.__parent__ is None
 True
 >>> list(checked_out.__parent__.keys())
-[u'4schanzentournee-abgesang']
+['4schanzentournee-abgesang']
 
 
 The lock timeout is small for temporary checkouts (around 30 seconds):

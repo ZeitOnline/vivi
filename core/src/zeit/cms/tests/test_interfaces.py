@@ -34,7 +34,7 @@ class NormalizeFilenameTest(unittest.TestCase):
         self.assertEqual('foo-bar-baz', self.normalize('foo---bar--baz'))
 
     def test_replaces_umlauts_with_vowels(self):
-        self.assertEqual('aeaeoeuess', self.normalize(u'ääöüß'))
+        self.assertEqual('aeaeoeuess', self.normalize('ääöüß'))
 
     def test_keeps_filename_extensions(self):
         self.assertEqual('foo.jpg', self.normalize('foo.jpg'))

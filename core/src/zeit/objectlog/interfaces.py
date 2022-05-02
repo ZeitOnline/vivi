@@ -23,22 +23,22 @@ class ILogEntry(zope.interface.Interface):
     """One entry in the log."""
 
     principal = zope.schema.Choice(
-        title=u'Principal',
+        title='Principal',
         required=False,
         readonly=True,
         source=zope.app.security.vocabulary.PrincipalSource())
 
     message = zope.configuration.fields.MessageID(
-        title=u'Log message',
+        title='Log message',
         readonly=True)
 
     mapping = zope.schema.Dict(
-        title=u'Arbitrary data to store along the log.',
+        title='Arbitrary data to store along the log.',
         readonly=True,
         required=False)
 
     time = zope.schema.Datetime(
-        title=u'Timestamp',
+        title='Timestamp',
         readonly=True)
 
     def get_object():

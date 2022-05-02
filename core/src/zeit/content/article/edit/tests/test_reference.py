@@ -97,7 +97,7 @@ class TestInfobox(ReferenceTest):
 
     def test_layout_should_set_attribute(self):
         ref = self.get_ref()
-        ref.layout = u'debatte'
+        ref.layout = 'debatte'
         self.assertEqual('debatte', ref.xml.get('layout'))
 
 
@@ -114,44 +114,44 @@ class TestPortraitbox(ReferenceTest):
 
     def test_stored_layout_should_be_returned(self):
         ref = self.get_ref()
-        ref.layout = u'wide'
+        ref.layout = 'wide'
         ref = self.test_class(None, ref.xml)
         self.assertEqual('wide', ref.xml.get('layout'))
 
     def test_layout_should_set_attribute(self):
         ref = self.get_ref()
-        ref.layout = u'wide'
+        ref.layout = 'wide'
         self.assertEqual('wide', ref.xml.get('layout'))
 
     def test_default_name_should_be_read_from_referenced_box(self):
         ref = self.get_ref()
         with mock.patch('zeit.content.article.edit.reference.Portraitbox'
                         '.references') as pbox:
-            pbox.name = u'ref-name'
-            self.assertEqual(ref.name, u'ref-name')
+            pbox.name = 'ref-name'
+            self.assertEqual(ref.name, 'ref-name')
 
     def test_local_name_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
         with mock.patch('zeit.content.article.edit.reference.Portraitbox'
                         '.references') as pbox:
-            pbox.name = u'ref-name'
-            ref.name = u'local-name'
-            self.assertEqual(ref.name, u'local-name')
+            pbox.name = 'ref-name'
+            ref.name = 'local-name'
+            self.assertEqual(ref.name, 'local-name')
 
     def test_default_text_should_be_read_from_referenced_box(self):
         ref = self.get_ref()
         with mock.patch('zeit.content.article.edit.reference.Portraitbox'
                         '.references') as pbox:
-            pbox.text = u'ref-text'
-            self.assertEqual(ref.text, u'ref-text')
+            pbox.text = 'ref-text'
+            self.assertEqual(ref.text, 'ref-text')
 
     def test_local_text_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
         with mock.patch('zeit.content.article.edit.reference.Portraitbox'
                         '.references') as pbox:
-            pbox.text = u'ref-text'
-            ref.text = u'local-text'
-            self.assertEqual(ref.text, u'local-text')
+            pbox.text = 'ref-text'
+            ref.text = 'local-text'
+            self.assertEqual(ref.text, 'local-text')
 
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
@@ -217,7 +217,7 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(self.repository['article']):
             pass
         self.assertEqual(
-            u'2005-01-02T00:00:00+00:00',
+            '2005-01-02T00:00:00+00:00',
             self.repository['article'].xml.body.division.getchildren()[0].get(
                 'expires'))
 
@@ -228,7 +228,7 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
     def test_portraitbox_metadata_should_be_updated(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
         portraitbox = Portraitbox()
-        portraitbox.text = u'huzenpups'
+        portraitbox.text = 'huzenpups'
         self.assert_updated(portraitbox, 'portraitbox')
 
     def test_infobox_metadata_should_be_updated(self):
@@ -246,7 +246,7 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
     def test_volume_metadata_should_be_updated(self):
         from zeit.content.volume.volume import Volume
         volume = Volume()
-        volume.product = zeit.cms.content.sources.Product(u'ZEI')
+        volume.product = zeit.cms.content.sources.Product('ZEI')
         self.assert_updated(volume, 'volume', reference_field=True)
 
     def test_empty_reference_should_not_break_metadata_update(self):
@@ -260,7 +260,7 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
                     pass
 
 
-class EmptyMarkerTest(object):
+class EmptyMarkerTest:
 
     block_type = NotImplemented
 

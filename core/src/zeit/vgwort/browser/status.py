@@ -5,7 +5,7 @@ import zeit.vgwort.interfaces
 import zope.component
 
 
-class Status(object):
+class Status:
 
     @cachedproperty
     def reported_on(self):

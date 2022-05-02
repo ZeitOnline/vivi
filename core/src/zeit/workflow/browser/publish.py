@@ -20,7 +20,7 @@ class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
         return super(PublishMenuItem, self).render()
 
 
-class Publish(object):
+class Publish:
     """View for 1-Click-Publishing. Optionally displays validation info."""
 
     @cachedproperty

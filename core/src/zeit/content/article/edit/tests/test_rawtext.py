@@ -15,8 +15,8 @@ class RawTextTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_rawtext_should_be_set(self):
         rawtext = self.get_rawtext()
-        rawtext.text = u'my_text'
-        self.assertEqual(u'my_text', rawtext.xml.xpath('text')[0])
+        rawtext.text = 'my_text'
+        self.assertEqual('my_text', rawtext.xml.xpath('text')[0])
 
     def test_each_module_should_use_its_own_parameters(self):
         article = zeit.content.article.article.Article()

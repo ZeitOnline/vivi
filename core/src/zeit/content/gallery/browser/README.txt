@@ -364,7 +364,7 @@ image folder doesn't exist:
 >>> gallery
 <zeit.content.gallery.gallery.Gallery...>
 >>> get_location(gallery)
-u'http://xml.zeit.de/online/2007/01/'
+'http://xml.zeit.de/online/2007/01/'
 
 Create the image folder:
 
@@ -377,9 +377,9 @@ Create the image folder:
 We get the right location now:
 
 >>> get_location(gallery)
-u'http://xml.zeit.de/bilder/2008/26/bildergalerien/'
+'http://xml.zeit.de/bilder/2008/26/bildergalerien/'
 
 For add forms we need to make sure we'll get the right location on the folder:
 
 >>> get_location(gallery.__parent__)
-u'http://xml.zeit.de/bilder/2008/26/bildergalerien/'
+'http://xml.zeit.de/bilder/2008/26/bildergalerien/'

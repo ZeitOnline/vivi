@@ -40,7 +40,7 @@ class FacebookTest(zeit.push.testing.TestCase):
     def test_send_posts_status(self):
         facebook = zeit.push.facebook.Connection()
         facebook.send(
-            u'zeit.push.tests.faceboök %s' % self.nugget, 'http://example.com',
+            'zeit.push.tests.faceboök %s' % self.nugget, 'http://example.com',
             account='fb-test')
 
         for status in self.api.get_object(
@@ -56,7 +56,7 @@ class FacebookTest(zeit.push.testing.TestCase):
                 self.assertIn('example.com', status[
                     'attachments']['data'][0]['target']['url'])
 
-                self.assertIn(u'faceboök', status['message'])
+                self.assertIn('faceboök', status['message'])
                 break
         else:
             self.fail('Status was not posted')

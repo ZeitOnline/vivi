@@ -8,7 +8,7 @@ import zope.component.zcml
 import zope.interface
 
 
-class NoneGuard(object):
+class NoneGuard:
     """An IRuleGlob must never return None, because then it would not show up
     in the getAdapters() result, so its name would be undefined leading to
     eval-errors.

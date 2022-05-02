@@ -15,7 +15,7 @@ class TestImageMetadataAcquisition(
         self.group_id = create_image_group().uniqueId
         with zeit.cms.checkout.helper.checked_out(self.group) as co:
             metadata = zeit.content.image.interfaces.IImageMetadata(co)
-            metadata.title = u'Title'
+            metadata.title = 'Title'
 
     @property
     def group(self):
@@ -27,15 +27,15 @@ class TestImageMetadataAcquisition(
 
     def test_acquired_in_repository(self):
         metadata = zeit.content.image.interfaces.IImageMetadata(self.img)
-        self.assertEqual(u'Title', metadata.title)
+        self.assertEqual('Title', metadata.title)
 
     def test_acquired_in_workingcopy(self):
         with zeit.cms.checkout.helper.checked_out(self.img) as co:
             metadata = zeit.content.image.interfaces.IImageMetadata(co)
-            self.assertEqual(u'Title', metadata.title)
-            metadata.title = u'Image title'
+            self.assertEqual('Title', metadata.title)
+            metadata.title = 'Image title'
         metadata = zeit.content.image.interfaces.IImageMetadata(self.img)
-        self.assertEqual(u'Image title', metadata.title)
+        self.assertEqual('Image title', metadata.title)
 
     def test_in_workingcopy_when_removed_in_repository(self):
         co = zeit.cms.checkout.interfaces.ICheckoutManager(self.img).checkout()

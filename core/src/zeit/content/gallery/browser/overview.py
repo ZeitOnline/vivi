@@ -42,7 +42,7 @@ class Overview(zeit.cms.browser.view.Base):
         try:
             title = self.layout_terms.getTerm(entry.layout).title
         except KeyError:
-            return u''
+            return ''
         else:
             return zope.i18n.translate(title, context=self.request)
 

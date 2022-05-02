@@ -18,7 +18,7 @@ The lookup is delegated to a protocol handler:
 >>> import zope.component
 >>> import zope.interface
 >>> @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
-... class Content(object):
+... class Content:
 ...     def __init__(self, uid):
 ...         self.uniqueId = uid
 >>> gsm = zope.component.getGlobalSiteManager()

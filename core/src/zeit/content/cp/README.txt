@@ -8,9 +8,9 @@ Centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> cp
 <zeit.content.cp.centerpage.CenterPage...>
->>> cp.type = u'homepage'
+>>> cp.type = 'homepage'
 >>> cp.type
-u'homepage'
+'homepage'
 
 
 The ancient XML representation looked as follows:
@@ -121,7 +121,7 @@ Teaser block
 ...     informatives, zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')
 >>> factory.title
-u'List of teasers'
+'List of teasers'
 >>> block = factory()
 >>> block
 <zeit.content.cp.blocks.teaser.TeaserBlock...>

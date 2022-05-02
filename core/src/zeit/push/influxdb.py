@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection(object):
+class Connection:
     """Writes an event to InfluxDB which can be shown in Grafana."""
 
     def __init__(self, base_url, database, user, password, series):
@@ -30,7 +30,7 @@ class Connection(object):
                 '{url}/db/{database}/series'.format(
                     url=self.base_url, database=self.database),
                 timeout=2,
-                params={'u': self.user, 'p': self.password}, json=data)
+                params={'': self.user, 'p': self.password}, json=data)
         except Exception:
             log.warning(
                 'Writing push for %s to influx failed.', link, exc_info=True)

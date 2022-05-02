@@ -14,7 +14,7 @@ import zope.interface
 
 
 @zope.interface.implementer(zope.app.locking.interfaces.ILockStorage)
-class LockStorage(object):
+class LockStorage:
 
     def getLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):
@@ -29,7 +29,7 @@ class LockStorage(object):
         if locked_by is None and locked_until is None:
             return None
         if locked_by is None:
-            locked_by = u'zeit.cms.unknown-dav-locker'
+            locked_by = 'zeit.cms.unknown-dav-locker'
         if not my_lock:
             locked_by = "othersystem." + locked_by
 
