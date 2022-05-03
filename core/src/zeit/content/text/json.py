@@ -60,7 +60,6 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.content.text.interfaces.IJSON,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def validate_after_checkin(context, event):
-    breakpoint()
     schema = context.get_schema()
     if schema:
         validation = zeit.content.text.interfaces.IValidationSchema(context)

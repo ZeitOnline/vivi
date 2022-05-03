@@ -1,3 +1,4 @@
+import mock
 import zeit.cms.testing
 import zeit.content.text.embed
 import zeit.content.text.json
@@ -29,14 +30,34 @@ class JSONBrowserTest(zeit.content.text.testing.BrowserTestCase):
         b.getLink('Checkin').click()
         self.assertEllipsis('...<pre>...changed...</pre>...', b.contents)
 
+
+class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
+
+    schema_json = {'components': {
+        'schemas': {
+            'uuid': {
+                'type': 'string',
+                'pattern':
+                    "^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$"}
+        }
+    }}
+
     def test_validate_against_schema(self):
         self.repository['foo'] = zeit.content.text.json.JSON()
-        b = self.browser
-        b.open('http://localhost/++skin++cms/repository/foo')
-        b.getLink('Checkout').click()
-        self.assertEllipsis('...Validate...', b.contents)
-        b.getLink('Validate').click()
-        b.getControl('url of schema').value = (
+        browser = self.browser
+        browser.open('http://localhost/++skin++cms/repository/foo')
+        browser.getLink('Checkout').click()
+        self.assertEllipsis('...Validate...', browser.contents)
+        browser.getControl('Content').value = '"{urn:uuid:d995ba5a}"'
+        browser.getControl('Apply').click()
+        browser.getLink('Validate').click()
+        browser.getControl('url of schema').value = (
             'http://testschema.zeit.de/schema.yaml')
-        b.getControl('Apply').click()
-        self.assertEllipsis('...Updated on...', b.contents)
+        browser.getControl('specific schema to use for validation').value = (
+            'uuid')
+        browser.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', browser.contents)
+        with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
+            schema.return_value = self.schema_json
+            browser.getLink('Checkin').click()
+        self.assertEllipsis('...has been checked in...', browser.contents)
