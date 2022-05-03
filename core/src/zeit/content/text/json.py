@@ -1,5 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 
+import grokcore.component as grok
+
 import commentjson
 import jsonschema
 import logging
@@ -7,6 +9,7 @@ import openapi_schema_validator
 import requests
 import yaml
 
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.text.interfaces
@@ -32,15 +35,6 @@ class JSON(zeit.content.text.text.Text):
             status = getattr(err.response, 'status_code', None)
             log.error('%s returned %s', info.schema_url, status, exc_info=True)
 
-    def validate_data_against_schema(
-            self, field='components/schemas/Structure'):
-        schema = self.get_schema()
-        ref_resolver = jsonschema.validators.RefResolver.from_schema(schema)
-        openapi_schema_validator.validate(
-            self.data,
-            schema['components']['schemas']['Structure'],
-            resolver=ref_resolver)
-
 
 class JSONType(zeit.content.text.text.TextType):
 
@@ -59,3 +53,18 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.content.text.interfaces.IValidationSchema['schema_url'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         'schema_url')
+
+
+@grok.subscribe(
+    zeit.content.text.interfaces.IJSON,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def validate_after_checkin(context, event):
+    breakpoint()
+    schema = context.get_schema()
+    if schema:
+        ref_resolver = jsonschema.validators.RefResolver.from_schema(
+            schema)
+        openapi_schema_validator.validate(
+            context.data,
+            schema['components']['schemas']['Structure'],
+            resolver=ref_resolver)
