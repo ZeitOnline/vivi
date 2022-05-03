@@ -22,6 +22,7 @@ import os.path
 import sqlalchemy
 import sqlalchemy.orm
 import transaction
+import zeit.cms.util
 import zeit.connector.interfaces
 import zope.interface
 import zope.sqlalchemy
@@ -99,11 +100,14 @@ class Connector:
     def _get_body(self, id):
         body = self.body_cache.get(id)
         if body is not None:
-            return BytesIO(body)
+            body.seek(0)
+            return body
+        body = zeit.cms.util.MemoryFile()
         blob = self.bucket.blob(id)
-        body = blob.download_as_bytes()
+        blob.download_to_file(body)
         self.body_cache[id] = body
-        return BytesIO(body)
+        body.seek(0)
+        return body
 
     def __contains__(self, uniqueid):
         try:
