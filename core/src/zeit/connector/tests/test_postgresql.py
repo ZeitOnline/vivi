@@ -1,5 +1,6 @@
 from datetime import datetime
 from io import BytesIO
+from zeit.connector.interfaces import DeleteProperty
 from zeit.connector.resource import WriteableCachedResource
 import google.api_core.exceptions
 import transaction
@@ -44,6 +45,19 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testing',
             ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
         }, davprops)
+
+    def test_ignores_deleted_dav_properties(self):
+        res = self.get_resource('foo', b'mybody', {
+            ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
+            ('bar', 'http://namespaces.zeit.de/CMS/testing'): DeleteProperty,
+        })
+        self.connector.add(res)
+        props = self.connector._get_properties(res.id)
+        davprops = props.to_webdav()
+        self.assertEqual(
+            'foo', davprops[('foo', 'http://namespaces.zeit.de/CMS/testing')])
+        self.assertNotIn(
+            ('bar', 'http://namespaces.zeit.de/CMS/testing'), davprops)
 
     def test_provides_last_updated_column(self):
         # Properly we would test that the value of the last_updated column

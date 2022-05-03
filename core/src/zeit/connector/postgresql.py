@@ -14,6 +14,7 @@ from sqlalchemy.orm import backref
 from sqlalchemy.orm import relationship
 from uuid import uuid4
 from zeit.connector.dav.interfaces import DAVNotFoundError
+from zeit.connector.interfaces import DeleteProperty
 from zeit.connector.resource import CachedResource
 import collections
 import os
@@ -285,6 +286,8 @@ class Properties(DBObject):
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
+            if v is DeleteProperty:
+                continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
 
