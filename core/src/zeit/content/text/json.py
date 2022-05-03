@@ -49,10 +49,11 @@ class JSONType(zeit.content.text.text.TextType):
     zeit.content.text.interfaces.IValidationSchema)
 class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    schema_url = zeit.cms.content.dav.DAVProperty(
-        zeit.content.text.interfaces.IValidationSchema['schema_url'],
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.text.interfaces.IValidationSchema,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'schema_url')
+        ('schema_url', 'field_name')
+    )
 
 
 @grok.subscribe(
@@ -62,9 +63,10 @@ def validate_after_checkin(context, event):
     breakpoint()
     schema = context.get_schema()
     if schema:
+        validation = zeit.content.text.interfaces.IValidationSchema(context)
         ref_resolver = jsonschema.validators.RefResolver.from_schema(
             schema)
         openapi_schema_validator.validate(
             context.data,
-            schema['components']['schemas']['Structure'],
+            schema['components']['schemas'][validation.field_name],
             resolver=ref_resolver)

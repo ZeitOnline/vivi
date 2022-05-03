@@ -104,6 +104,10 @@ class IValidationSchema(zope.interface.Interface):
         title=_('url of schema'),
         required=False)
 
+    field_name = zope.schema.Text(
+        title=_('specific schema to use for validation'),
+        required=False)
+
 
 class IEmbed(IText):
 
