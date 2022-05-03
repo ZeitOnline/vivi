@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 
 import commentjson
+import jsonschema
 import logging
 import openapi_schema_validator
 import requests
@@ -30,6 +31,15 @@ class JSON(zeit.content.text.text.Text):
         except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             log.error('%s returned %s', info.schema_url, status, exc_info=True)
+
+    def validate_data_against_schema(
+            self, field='components/schemas/Structure'):
+        schema = self.get_schema()
+        ref_resolver = jsonschema.validators.RefResolver.from_schema(schema)
+        openapi_schema_validator.validate(
+            self.data,
+            schema['components']['schemas']['Structure'],
+            resolver=ref_resolver)
 
 
 class JSONType(zeit.content.text.text.TextType):
