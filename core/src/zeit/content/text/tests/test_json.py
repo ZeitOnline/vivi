@@ -1,3 +1,6 @@
+from jsonschema.exceptions import ValidationError
+
+import mock
 import requests_mock
 import yaml
 
@@ -31,3 +34,16 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             schema = json_content.get_schema()
 
         self.assertEqual(self.schema_json, schema)
+
+    def test_validate_data_against_schema(self):
+        json_content = zeit.content.text.json.JSON()
+        json_content.text = '{"UUID": "{urn:uuid:!noid!}"}'
+
+        with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
+            schema.return_value = self.schema_json
+
+            with self.assertRaises(ValidationError):
+                json_content.validate_data_against_schema()
+
+            json_content.text = '{"UUID": "{urn:uuid:d995ba5a}"}'
+            json_content.validate_data_against_schema()
