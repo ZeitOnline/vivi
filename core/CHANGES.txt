@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.1 (2022-05-03)
+-------------------
+
+- ZO-121: Add missing translation
+
+
 5.15.0 (2022-05-02)
 -------------------
 
