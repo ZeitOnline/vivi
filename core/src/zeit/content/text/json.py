@@ -26,17 +26,25 @@ class JSON(zeit.content.text.text.Text):
     def data(self):
         return commentjson.loads(self.text)
 
-    def get_schema(self):
-        info = zeit.content.text.interfaces.IValidationSchema(self)
+    def get_schema(self, schema_url):
         try:
-            response = requests.get(info.schema_url)  # yaml schema file expected
+            response = requests.get(schema_url)  # yaml schema file expected
             schema = yaml.safe_load(response.text)
             ref_resolver = jsonschema.validators.RefResolver.from_schema(
                 schema)
             return schema, ref_resolver
         except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
-            log.error('%s returned %s', info.schema_url, status, exc_info=True)
+            log.error('%s returned %s', schema_url, status, exc_info=True)
+
+    def validate_data(self):
+        validation = zeit.content.text.interfaces.IValidationSchema(self)
+        schema, ref_resolver = self.get_schema(validation.schema_url)
+        if schema:
+            openapi_schema_validator.validate(
+                self.data,
+                schema['components']['schemas'][validation.field_name],
+                resolver=ref_resolver)
 
 
 class JSONType(zeit.content.text.text.TextType):
@@ -63,10 +71,6 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.content.text.interfaces.IJSON,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def validate_after_checkin(context, event):
-    schema, ref_resolver = context.get_schema()
-    if schema:
-        validation = zeit.content.text.interfaces.IValidationSchema(context)
-        openapi_schema_validator.validate(
-            context.data,
-            schema['components']['schemas'][validation.field_name],
-            resolver=ref_resolver)
+    validation = zeit.content.text.interfaces.IValidationSchema(context)
+    if validation.schema_url and validation.field_name:
+        context.validate_data()

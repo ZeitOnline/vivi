@@ -33,7 +33,8 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             r_mock.register_uri(
                 'GET', 'https://testschema.zeit.de/openapi.yaml',
                 text=yaml.safe_dump(self.schema_json))
-            schema, ref_resolver = json_content.get_schema()
+            schema, ref_resolver = json_content.get_schema(
+                validation.schema_url)
 
         self.assertEqual(self.schema_json, schema)
         self.assertEqual(self.schema_json, ref_resolver.referrer)
