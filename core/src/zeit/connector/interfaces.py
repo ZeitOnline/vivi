@@ -354,3 +354,7 @@ class ResourceInvalidatedEvent:
 
 # Legacy
 ResourceInvaliatedEvent = ResourceInvalidatedEvent
+
+
+class ISQLMigrate(zope.interface.Interface):
+    pass

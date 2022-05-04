@@ -335,8 +335,12 @@ class PassthroughConnector(Connector):
             return self._import(id)
 
     def _import(self, id):
+        import zeit.connector.sqlmigrate  # soft dependency
+
         log.debug("_import %s", id)
         resource = self.upstream[id]
+        resource = zeit.connector.sqlmigrate.migrate(resource)
+
         # Hacky. Remove this as it is not json-serializable, and also
         # irrelevant except for DAV caches.
         resource.properties.data.pop(('cached-time', 'INTERNAL'), None)
