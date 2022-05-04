@@ -23,8 +23,11 @@ class JSON(zeit.content.text.text.Text):
         validation = zeit.content.text.interfaces.IValidationSchema(self)
         if validation.json_schema:
             schema = commentjson.loads(validation.json_schema)
+            rooted_schemas = {
+                'components': {
+                    'schemas': schema}}
             ref_resolver = jsonschema.validators.RefResolver.from_schema(
-                schema)
+                rooted_schemas)
             openapi_schema_validator.validate(
                 self.data,
                 schema[validation.field],
