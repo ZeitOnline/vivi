@@ -14,7 +14,7 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
 
     schema_json = {'components': {
         'schemas': {
-            'UUID': {
+            'uuid': {
                 'type': 'string',
                 'pattern':
                     "^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$"}
@@ -40,13 +40,18 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
 
     def test_validate_data_against_schema(self):
         json_content = zeit.content.text.json.JSON()
-        json_content.text = '{"UUID": "{urn:uuid:!noid!}"}'
+        json_content.text = '"{urn:uuid:!noid!}"'
+        validation = zeit.content.text.interfaces.IValidationSchema(
+            json_content)
+        validation.schema_url = (
+            'https://testschema.zeit.de/openapi.yaml')
+        validation.field_name = 'uuid'
 
         with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
-            schema.return_value = self.schema_json
-
+            schema.return_value = (
+                self.schema_json, RefResolver.from_schema(
+                    self.schema_json))
             with self.assertRaises(ValidationError):
-                json_content.validate_data_against_schema()
-
-            json_content.text = '{"UUID": "{urn:uuid:d995ba5a}"}'
-            json_content.validate_data_against_schema()
+                json_content.validate_data()
+            json_content.text = '"{urn:uuid:d995ba5a}"'
+            json_content.validate_data()
