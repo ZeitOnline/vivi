@@ -1,3 +1,4 @@
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.content.reference
@@ -10,7 +11,8 @@ import zope.interface
 class NextRead(zeit.cms.related.related.RelatedBase):
 
     nextread = zeit.cms.content.reference.MultiResource(
-        '.head.nextread.reference', 'related')
+        '.head.nextread.reference', 'related',
+        dav_namespace=DOCUMENT_SCHEMA_NS)
 
 
 @grok.implementer(zeit.magazin.interfaces.IRelatedLayout)

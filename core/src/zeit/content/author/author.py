@@ -2,6 +2,7 @@ from requests.exceptions import RequestException
 from zeit.cms.content.dav import DAVProperty
 from zeit.cms.content.property import ObjectPathProperty, SwitchableProperty
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.content.author.interfaces import IAuthor
 import collections.abc
 import grokcore.component as grok
@@ -127,7 +128,8 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class AuthorImages(zeit.cms.related.related.RelatedBase):
 
-    image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
+    image = zeit.cms.content.reference.SingleResource(
+        '.image_group', 'image', dav_namespace=DOCUMENT_SCHEMA_NS)
 
     fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.image_group', 'fill_color',

@@ -1,5 +1,6 @@
 from unittest.mock import Mock
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.content.reference import SingleReferenceProperty
 from zeit.cms.interfaces import ICMSContent
@@ -21,10 +22,13 @@ class ExampleReference(zeit.cms.content.reference.Reference):
 
 class ReferenceFixture:
 
+    dav_namespace = None
+
     def setUp(self):
         super().setUp()
         ExampleContentType.references = ReferenceProperty(
-            '.body.references.reference', 'test')
+            '.body.references.reference', 'test',
+            dav_namespace=self.dav_namespace)
         zope.security.protectclass.protectName(
             ExampleContentType, 'references', 'zope.Public')
         zope.security.protectclass.protectSetAttribute(
@@ -50,8 +54,7 @@ class ReferenceFixture:
         super().tearDown()
 
 
-class ReferencePropertyTest(
-        ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
+class ReferencePropertyBase(ReferenceFixture):
 
     def test_referenced_content_is_accessible_through_reference(self):
         content = self.repository['content']
@@ -116,36 +119,6 @@ class ReferencePropertyTest(
         content.references.create(self.repository['target'])
         self.assertFalse(content._p_changed)
 
-    def test_properties_of_reference_object_are_stored_in_xml(self):
-        content = self.repository['content']
-        content._p_jar = Mock()  # make _p_changed work
-        content.references = (content.references.create(
-            self.repository['target']),)
-        content._p_changed = False
-
-        content.references[0].foo = 'bar'
-        self.assertEqual(
-            'bar', content.xml.body.references.reference.get('foo'))
-        self.assertTrue(content._p_changed)
-
-    def test_metadata_of_reference_is_updated_on_checkin(self):
-        self.repository['target'].teaserTitle = 'foo'
-        content = self.repository['content']
-        with checked_out(content) as co:
-            co.references = (co.references.create(
-                self.repository['target']),)
-        self.assertEqual(
-            'foo',
-            self.repository['content'].xml.body.references.reference.title)
-
-        with checked_out(self.repository['target']) as co:
-            co.teaserTitle = 'bar'
-        with checked_out(self.repository['content']):
-            pass
-        self.assertEqual(
-            'bar',
-            self.repository['content'].xml.body.references.reference.title)
-
     def test_set_accepts_references(self):
         content = self.repository['content']
         target = self.repository['target']
@@ -189,6 +162,63 @@ class ReferencePropertyTest(
                 target=content.references.create(self.repository['target']),
                 xml_reference_name='test', suppress_errors=True)
         self.assertIn('data loss', str(e.exception))
+
+
+class ReferencePropertyTest(
+        ReferencePropertyBase,
+        zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_properties_of_reference_object_are_stored_in_xml(self):
+        content = self.repository['content']
+        content._p_jar = Mock()  # make _p_changed work
+        content.references = (content.references.create(
+            self.repository['target']),)
+        content._p_changed = False
+
+        content.references[0].foo = 'bar'
+        self.assertEqual(
+            'bar', content.xml.body.references.reference.get('foo'))
+        self.assertTrue(content._p_changed)
+
+    def test_metadata_of_reference_is_updated_on_checkin(self):
+        with checked_out(self.repository['target']) as co:
+            co.teaserTitle = 'foo'
+        content = self.repository['content']
+        with checked_out(content) as co:
+            co.references = (co.references.create(
+                self.repository['target']),)
+        self.assertEqual(
+            'foo',
+            self.repository['content'].xml.body.references.reference.title)
+
+        with checked_out(self.repository['target']) as co:
+            co.teaserTitle = 'bar'
+        with checked_out(self.repository['content']):
+            pass
+        self.assertEqual(
+            'bar',
+            self.repository['content'].xml.body.references.reference.title)
+
+
+class ReferencePropertyDAVTest(
+        ReferencePropertyBase,
+        zeit.cms.testing.ZeitCmsTestCase):
+
+    dav_namespace = 'http://namespaces.zeit.de/CMS/testing'
+
+    def setUp(self):
+        super().setUp()
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        config['teaserdata-in-properties'] = 'True'
+        # XXX Kludge to avoid having to complicate all the tests with a
+        # checkout step. (Which the XML-based variant would actually also need)
+        zeit.cms.content.liveproperty.LiveProperties.register_live_property(
+            'references', self.dav_namespace, WRITEABLE_ALWAYS)
+
+    def tearDown(self):
+        zeit.cms.content.liveproperty.LiveProperties.unregister_live_property(
+            'references', self.dav_namespace)
+        super().tearDown()
 
 
 class SingleReferenceFixture(ReferenceFixture):

@@ -6,6 +6,7 @@ import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.relation.interfaces
+import zeit.connector.interfaces
 import zope.component
 import zope.interface
 
@@ -81,3 +82,9 @@ def update_related_on_checkin(context, event):
     if related is None:
         return
     RelatedContent.related.update_metadata(related)
+
+
+@zope.component.adapter(RelatedBase)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
+def dav_properties_for_related(context):
+    return zeit.connector.interfaces.IWebDAVProperties(context.context)

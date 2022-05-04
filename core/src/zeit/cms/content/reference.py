@@ -21,6 +21,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.connector.interfaces
 import zope.component
 import zope.publisher.interfaces
 import zope.security.proxy
@@ -34,7 +35,7 @@ class ReferenceProperty:
     are stored as XML nodes.
     """
 
-    def __init__(self, path, xml_reference_name):
+    def __init__(self, path, xml_reference_name, dav_namespace=None):
         """
         :param str path: an lxml ObjectPath where to store the XML nodes
         :param unicode xml_reference_name: type of IXMLReference to use
@@ -49,6 +50,7 @@ class ReferenceProperty:
         """
         self.path = lxml.objectify.ObjectPath(path)
         self.xml_reference_name = xml_reference_name
+        self.dav_namespace = dav_namespace
 
     def __get__(self, instance, class_):
         """Returns a specialized tuple of IReference objects.
@@ -97,7 +99,7 @@ class ReferenceProperty:
         """
         self._check_for_references(value)
         value = self._filter_duplicates(value)
-        xml = zope.security.proxy.getObject(instance.xml)
+        xml = self.xml(instance)
         value = tuple(zope.security.proxy.getObject(x.xml) for x in value)
         if str(self.path) == '.':  # Special case for single reference
             assert len(value) <= 1
@@ -121,6 +123,17 @@ class ReferenceProperty:
             self.path.setattr(xml, value)
         instance._p_changed = True
 
+        # XXX This provides just enough write support to make the tests work.
+        # In particular, writing to a Reference object does NOT propagate
+        # _p_changed to the IWebDAVProperties dict at this time.
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        if config.get('teaserdata-in-properties') and self.dav_namespace:
+            props = zeit.connector.interfaces.IWebDAVProperties(instance)
+            key = (self.__name__(instance), self.dav_namespace)
+            xml = lxml.builder.E.val()
+            self.path.setattr(xml, value)
+            props[key] = lxml.etree.tostring(xml, encoding=str)
+
     def _check_for_references(self, values):
         """Raise ``TypeError`` if any value does not provide ``IReference``."""
         for value in values:
@@ -143,9 +156,19 @@ class ReferenceProperty:
             if getattr(class_, name, None) is self:
                 return name
 
+    def xml(self, instance):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        if config.get('teaserdata-in-properties') and self.dav_namespace:
+            props = zeit.connector.interfaces.IWebDAVProperties(instance)
+            key = (self.__name__(instance), self.dav_namespace)
+            xml = props.get(key, '<val/>')
+            return lxml.objectify.fromstring(xml)
+        else:
+            return zope.security.proxy.getObject(instance.xml)
+
     def _reference_nodes(self, instance):
         try:
-            return self.path.find(zope.security.proxy.getObject(instance.xml))
+            return self.path.find(self.xml(instance))
         except AttributeError:
             return []
 

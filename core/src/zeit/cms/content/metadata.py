@@ -45,9 +45,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     ), use_default=True)
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
-        '.head.author', xml_reference_name='author')
+        '.head.author', xml_reference_name='author',
+        dav_namespace=DOCUMENT_SCHEMA_NS)
     agencies = zeit.cms.content.reference.MultiResource(
-        '.head.agency', xml_reference_name='related')
+        '.head.agency', xml_reference_name='related',
+        dav_namespace=DOCUMENT_SCHEMA_NS)
 
     keywords = zeit.cms.tagging.tag.Tags()
 

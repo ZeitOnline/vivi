@@ -1,3 +1,4 @@
+from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.connector.sqlmigrate import migrate
 import grokcore.component.zcml
@@ -36,3 +37,17 @@ class SQLMigrate(zeit.cms.testing.ZeitCmsTestCase):
         # data was removed from XML
         body = lxml.etree.parse(res.data)
         self.assertFalse(body.xpath('//body/title'))
+
+    def test_references(self):
+        content = ExampleContentType()
+        IRelatedContent(content).related = [self.repository['testcontent']]
+        self.repository['foo'] = content
+        res = self.repository.connector['http://xml.zeit.de/foo']
+        res = migrate(res)
+        props = res.properties
+        self.assertEllipsis(
+            '<val><head...'
+            '<reference...href="http://xml.zeit.de/testcontent"...',
+            props[('related', NS + 'document')])
+        body = lxml.etree.parse(res.data)
+        self.assertFalse(body.xpath('//reference'))

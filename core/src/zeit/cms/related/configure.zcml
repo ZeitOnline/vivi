@@ -13,6 +13,8 @@
 
   <subscriber handler=".related.update_related_on_checkin" />
 
+  <adapter factory=".related.dav_properties_for_related" />
+
   <class class=".related.RelatedContent">
     <require
       interface=".interfaces.IRelatedContent"

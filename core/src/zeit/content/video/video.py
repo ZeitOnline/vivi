@@ -1,4 +1,6 @@
+from zeit.cms.content.metadata import CommonMetadata
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import pkg_resources
@@ -95,9 +97,9 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         return self.title
 
     authorships = AuthorshipsProperty(
-        str(zeit.cms.content.metadata.CommonMetadata.authorships.path),
-        zeit.cms.content.metadata.CommonMetadata.authorships.xml_reference_name
-    )
+        str(CommonMetadata.authorships.path),
+        CommonMetadata.authorships.xml_reference_name,
+        CommonMetadata.authorships.dav_namespace)
 
     # Override from CommonMetadata to change the source
     serie = zeit.cms.content.dav.DAVProperty(
@@ -115,7 +117,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 class VideoImage(zeit.cms.related.related.RelatedBase):
 
     image = zeit.cms.content.reference.SingleResource(
-        '.body.video_still', 'image')
+        '.body.video_still', 'image', dav_namespace=DOCUMENT_SCHEMA_NS)
 
     fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.body.video_still', 'fill_color',

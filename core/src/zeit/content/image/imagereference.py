@@ -1,3 +1,4 @@
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 import grokcore.component as grok
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.property
@@ -16,7 +17,7 @@ import zope.interface
 class ImagesAdapter(zeit.cms.related.related.RelatedBase):
 
     image = zeit.cms.content.reference.SingleResource(
-        '.head.image', 'image')
+        '.head.image', 'image', dav_namespace=DOCUMENT_SCHEMA_NS)
 
     fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.head.image', 'fill_color',

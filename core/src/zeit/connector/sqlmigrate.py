@@ -1,10 +1,13 @@
 from zeit.cms.content.property import SwitchableProperty
 from zeit.connector.interfaces import ISQLMigrate
 import grokcore.component as grok
+import lxml.builder
+import lxml.etree
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.interfaces
+import zeit.content.video.interfaces
 import zope.component
 
 
@@ -88,3 +91,47 @@ class Author(CommonMetadata):
 
     interface = zeit.content.author.interfaces.IAuthor
     grok.name(interface.__name__)
+
+
+class References(Converter):
+
+    interface = zeit.cms.content.interfaces.ICommonMetadata
+    grok.name(interface.__name__ + '.references')
+
+    PROPERTIES = {
+        '//head/author': 'authorships',
+        '//head/agency': 'agencies',
+        '//head/image': 'image',
+        '//head/references/reference': 'related',
+        '//head/nextread/reference': 'nextread',
+    }
+
+    def __call__(self):
+        props = zeit.connector.interfaces.IWebDAVProperties(self.content)
+        for xpath, name in self.PROPERTIES.items():
+            refs = self.content.xml.xpath(xpath)
+            if not refs:
+                continue
+            value = lxml.builder.E.val()
+            path = lxml.objectify.ObjectPath(
+                xpath.replace('//', '/').replace('/', '.'))
+            path.setattr(value, refs)
+            value = lxml.etree.tostring(value, encoding=str)
+            props[(name, 'http://namespaces.zeit.de/CMS/document')] = value
+
+            path.setattr(self.content.xml, ())
+        return True
+
+
+class AuthorImage(References):
+
+    interface = zeit.content.author.interfaces.IAuthor
+    grok.name(interface.__name__ + '.references')
+    PROPERTIES = {'//image_group': 'image'}
+
+
+class VideoImage(References):
+
+    interface = zeit.content.video.interfaces.IVideo
+    grok.name(interface.__name__ + '.references')
+    PROPERTIES = {'//video_still': 'image'}
