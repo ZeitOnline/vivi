@@ -1,3 +1,5 @@
+from jsonschema.exceptions import ValidationError
+
 import commentjson
 
 import zeit.content.text.interfaces
@@ -20,3 +22,15 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
         validation.field = 'uuid'
         self.assertEqual('uuid', validation.field)
         self.assertEqual(self.schema, validation.json_schema)
+
+    def test_validate_json_against_schema(self):
+        json_content = zeit.content.text.json.JSON()
+        json_content.text = '"{urn:uuid:!noid!}"'
+        validation = zeit.content.text.interfaces.IValidationSchema(
+            json_content)
+        validation.json_schema = self.schema
+        validation.field = 'uuid'
+        with self.assertRaises(ValidationError):
+            json_content.validate_data()
+        json_content.text = '"{urn:uuid:d995ba5a}"'
+        json_content.validate_data()
