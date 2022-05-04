@@ -22,3 +22,14 @@ class JSONType(zeit.content.text.text.TextType):
     title = _('JSON file')
     factory = JSON
     addform = zeit.cms.type.SKIP_ADD
+
+
+@zope.interface.implementer(
+    zeit.content.text.interfaces.IValidationSchema)
+class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.text.interfaces.IValidationSchema,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('json_schema', 'field')
+    )
