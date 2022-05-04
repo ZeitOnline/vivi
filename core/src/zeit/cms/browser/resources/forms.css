@@ -582,24 +582,24 @@ body.type-rawxml.location-workingcopy #edit-form form .field-group fieldset > di
 
 body.type-rawxml.location-workingcopy #edit-form form .field-group fieldset > div,
 body.type-embed.location-workingcopy #edit-form form .field-group fieldset > div,
-body.type-rawxml.location-workingcopy #edit-form .fieldname-text,
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml,
 body.type-embed.location-workingcopy #edit-form .fieldname-text,
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget,
-body.type-rawxml.location-workingcopy #edit-form .fieldname-text .widget {
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget {
   display: flex;
   flex-direction: column;
 }
 
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget textarea,
-body.type-rawxml.location-workingcopy #edit-form .fieldname-text .widget textarea {
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget textarea {
   width: 99%;
 }
 
-body.type-rawxml.location-workingcopy #edit-form .fieldname-text,
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml,
 body.type-embed.location-workingcopy #edit-form .fieldname-text,
-body.type-rawxml.location-workingcopy #edit-form .fieldname-text .widget,
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget,
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget,
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget textarea,
-body.type-rawxml.location-workingcopy #edit-form .fieldname-text .widget textarea {
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget textarea {
   flex-grow: 1;
 }
