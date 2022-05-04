@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 
 import commentjson
+import grokcore.component as grok
 import jsonschema.validators
 import openapi_schema_validator
 
@@ -20,8 +21,8 @@ class JSON(zeit.content.text.text.Text):
 
     def validate_data(self):
         validation = zeit.content.text.interfaces.IValidationSchema(self)
-        if validation.schema:
-            schema = commentjson.loads(validation.schema)
+        if validation.json_schema:
+            schema = commentjson.loads(validation.json_schema)
             ref_resolver = jsonschema.validators.RefResolver.from_schema(
                 schema)
             openapi_schema_validator.validate(
@@ -48,3 +49,12 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('json_schema', 'field')
     )
+
+
+@grok.subscribe(
+    zeit.content.text.interfaces.IJSON,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def validate_after_checkin(context, event):
+    validation = zeit.content.text.interfaces.IValidationSchema(context)
+    if validation.json_schema and validation.field:
+        context.validate_data()
