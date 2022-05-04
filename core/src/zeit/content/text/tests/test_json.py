@@ -34,3 +34,22 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             json_content.validate_data()
         json_content.text = '"{urn:uuid:d995ba5a}"'
         json_content.validate_data()
+
+    def test_schema_reference_resolver_should_work(self):
+        json_content = zeit.content.text.json.JSON()
+        json_content.text = '["{urn:uuid:d995ba5a}"]'
+        validation = zeit.content.text.interfaces.IValidationSchema(
+            json_content)
+        validation.json_schema = commentjson.dumps({
+            'overlord': {
+                'type': 'array',
+                'items': {
+                    '$ref': '#/components/schemas/uuid'
+                }
+            },
+            'uuid': {
+                'type': 'string',
+                'pattern':
+                    "^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$"}})
+        validation.field = 'overlord'
+        json_content.validate_data()
