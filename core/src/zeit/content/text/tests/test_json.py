@@ -1,4 +1,5 @@
 from jsonschema.exceptions import ValidationError
+from jsonschema.validators import RefResolver
 
 import mock
 import requests_mock
@@ -26,14 +27,16 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             json_content)
         validation.schema_url = (
             'https://testschema.zeit.de/openapi.yaml')
+        validation.field_name = 'uuid'
 
         with requests_mock.Mocker() as r_mock:
             r_mock.register_uri(
                 'GET', 'https://testschema.zeit.de/openapi.yaml',
                 text=yaml.safe_dump(self.schema_json))
-            schema = json_content.get_schema()
+            schema, ref_resolver = json_content.get_schema()
 
         self.assertEqual(self.schema_json, schema)
+        self.assertEqual(self.schema_json, ref_resolver.referrer)
 
     def test_validate_data_against_schema(self):
         json_content = zeit.content.text.json.JSON()

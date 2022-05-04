@@ -29,8 +29,11 @@ class JSON(zeit.content.text.text.Text):
     def get_schema(self):
         info = zeit.content.text.interfaces.IValidationSchema(self)
         try:
-            schema = requests.get(info.schema_url)  # yaml schema file expected
-            return yaml.safe_load(schema.text)
+            response = requests.get(info.schema_url)  # yaml schema file expected
+            schema = yaml.safe_load(response.text)
+            ref_resolver = jsonschema.validators.RefResolver.from_schema(
+                schema)
+            return schema, ref_resolver
         except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             log.error('%s returned %s', info.schema_url, status, exc_info=True)
@@ -60,11 +63,9 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.content.text.interfaces.IJSON,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def validate_after_checkin(context, event):
-    schema = context.get_schema()
+    schema, ref_resolver = context.get_schema()
     if schema:
         validation = zeit.content.text.interfaces.IValidationSchema(context)
-        ref_resolver = jsonschema.validators.RefResolver.from_schema(
-            schema)
         openapi_schema_validator.validate(
             context.data,
             schema['components']['schemas'][validation.field_name],

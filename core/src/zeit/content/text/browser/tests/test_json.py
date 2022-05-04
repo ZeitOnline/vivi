@@ -1,3 +1,4 @@
+import jsonschema.validators
 import mock
 import urllib.error
 
@@ -60,7 +61,9 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
         browser.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', browser.contents)
         with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
-            schema.return_value = self.schema_json
+            schema.return_value = (
+                self.schema_json, jsonschema.validators.RefResolver.from_schema(
+                    self.schema_json))
             browser.getLink('Checkin').click()
         self.assertEllipsis('...has been checked in...', browser.contents)
 
@@ -79,7 +82,9 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
         browser.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', browser.contents)
         with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
-            schema.return_value = self.schema_json
+            schema.return_value = (
+                self.schema_json, jsonschema.validators.RefResolver.from_schema(
+                    self.schema_json))
             with self.assertRaises(urllib.error.HTTPError):
                 browser.getLink('Checkin').click()
                 self.assertEllipsis(
