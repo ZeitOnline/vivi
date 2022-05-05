@@ -56,3 +56,29 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
                 json_content.validate_data()
             json_content.text = '"{urn:uuid:d995ba5a}"'
             json_content.validate_data()
+
+    def test_schema_reference_resolver_should_work(self):
+        json_content = zeit.content.text.json.JSON()
+        json_content.text = '["{urn:uuid:d995ba5a}"]'
+        validation = zeit.content.text.interfaces.IValidationSchema(
+            json_content)
+        validation.schema_url = (
+            'https://testschema.zeit.de/openapi.yaml')
+        schema_json = {
+            'components': {
+                'schemas': {
+                    'overlord': {
+                        'type': 'array',
+                        'items': {
+                            '$ref': '#/components/schemas/uuid'
+                        }
+                    },
+                    'uuid': {
+                        'type': 'string',
+                        'pattern':
+                            "^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$"}}}}
+        validation.field_name = 'overlord'
+        with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
+            schema.return_value = (
+                schema_json, RefResolver.from_schema(schema_json))
+            json_content.validate_data()
