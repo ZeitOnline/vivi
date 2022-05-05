@@ -126,20 +126,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         iterating over body/regions/values, for performance reasons.""")
 
 
-class IStoryStream(ICenterPage):
-    """CP with ``type``=='storystream'.
-
-    We're pretending this is a separate content type by providing its own
-    AddForm. (XXX Maybe convert to an actual content type that inherits from
-    Centerpage?)
-    """
-
-
-IStoryStream.setTaggedValue(
-    'zeit.cms.addform', 'zeit.content.cp.AddStoryStream')
-IStoryStream.setTaggedValue('zeit.cms.title', _('Add storystream'))
-
-
 class ISitemap(ICenterPage):
     """CP with ``type``=='sitemap'.
 

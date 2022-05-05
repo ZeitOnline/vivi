@@ -721,37 +721,6 @@
     permission="zope.View"
     />
 
-  <!-- Storystream -->
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.edit.browser.form.Forms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="storystream"
-    class=".form.StorystreamFormGroup"
-    permission="zope.View"
-    weight="35"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.StorystreamFormGroup"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.tldr"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="10"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.tldr"
-    class=".form.Tldr"
-    permission="zope.View"
-    />
 
   <!-- keywords -->
 

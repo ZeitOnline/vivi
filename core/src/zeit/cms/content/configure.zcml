@@ -123,13 +123,6 @@
       />
   </class>
 
-  <class class=".sources.StorystreamReference">
-    <require
-      permission="zope.View"
-      interface=".interfaces.IStorystreamReference"
-      />
-  </class>
-
   <!-- XML support -->
   <adapter factory=".xmlsupport.XMLReferenceUpdaterRunner" />
 

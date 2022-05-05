@@ -5,5 +5,4 @@
     <type name="centerpage">Centerpage</type>
     <type name="homepage">Homepage</type>
     <type name="ressort">Themenseite</type>
-    <type name="storystream">Storystream</type>
 </centerpage-types>

@@ -1,6 +1,4 @@
 from unittest.mock import Mock
-from zeit.cms.checkout.helper import checked_out
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.lxml.objectify
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -127,18 +125,6 @@ class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
 
         self.assertEqual(str(IBar), source.getTitle(None, IBar))
         self.assertEqual(str(IBar), source.getToken(None, IBar))
-
-
-class StorystreamReferenceTest(zeit.cms.testing.ZeitCmsTestCase):
-
-    def test_resolves_reference_from_source_config(self):
-        self.repository['storystream'] = ExampleContentType()
-        with checked_out(self.repository['testcontent']) as co:
-            co.storystreams = (zeit.cms.content.sources.StorystreamSource()(
-                None).find('test'),)
-        self.assertEqual(
-            self.repository['storystream'],
-            self.repository['testcontent'].storystreams[0].references)
 
 
 class AccessSourceTest(zeit.cms.testing.ZeitCmsTestCase):

@@ -413,38 +413,7 @@
   border-color: transparent;
 }
 
-.type-article #storystream\.tldr_title {
-  width: 100%;
-}
-
-.type-article .article-editor-inner .fieldname-tldr_date input[type="button"],
-.type-article .article-editor-inner .fieldname-tldr_date input[type="button"]:hover {
-  background: linear-gradient(0deg,  #f1f4f9 50%, #dee1e6 94%);
-  padding-left: 8px;
-}
-
-.type-article .fieldname-tldr_date input.week,
-.type-article .fieldname-tldr_date input.month,
-.type-article .fieldname-tldr_date input.infinity {
-  display: none;
-}
-
-.type-article #edit-form-storystream .fieldname-tldr_date {
-  clear: both;
-}
-
-.type-article #edit-form-storystream .fieldname-tldr_date .label,
-.type-article #edit-form-storystream .fieldname-storystreams .label {
-  margin-top: 2em;
-}
-
-.type-article .article-editor-inner .fieldname-storystreams input[name="storystream.storystreams.remove"],
-.type-article .article-editor-inner .fieldname-storystreams input[name="storystream.storystreams.remove"]:hover {
-  background-position: 10px -2720px, 0 0;
-}
-
 /* Uppercase and some other properties for some labels */
-
 .type-article .article-editor-inner .edit-bar a,
 .type-article .article-editor-inner .block-inner .label span,
 .type-article .article-editor-inner .block-inner legend,

@@ -101,7 +101,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'template': 'article',
                     'text-length': 1036,
                     'title': 'R\xfcckkehr der Warlords',
-                    'tldr_milestone': False,
                     'topic': 'Politik',
                     'volume': 1,
                     'year': 2007
@@ -169,15 +168,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         self.assertEqual(
             ['Mainchannel'], data['payload']['document']['channels'])
-
-    def test_converts_storystreams_correctly(self):
-        content = create_testcontent()
-        source = zeit.cms.content.interfaces.ICommonMetadata[
-            'storystreams'].value_type.source(None)
-        content.storystreams = (source.find('test'),)
-        data = zeit.retresco.interfaces.ITMSRepresentation(content)()
-        self.assertEqual(['test'],
-                         data['payload']['document']['storystreams'])
 
     def test_converts_authorships(self):
         author = zeit.content.author.author.Author()

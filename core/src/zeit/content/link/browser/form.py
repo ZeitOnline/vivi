@@ -36,12 +36,6 @@ class Base(zeit.push.browser.form.SocialBase,
         ('cap_title', 'banner_id'),
         css_class='column-right')
 
-    story_stream_group = gocept.form.grouped.Fields(
-        _("Storystream"),
-        ('tldr_title', 'tldr_text', 'tldr_milestone', 'tldr_date',
-         'storystreams'),
-        css_class='column-right wide-widgets')
-
     link_group = gocept.form.grouped.Fields(
         _("Link"),
         ('status_code', 'target', 'nofollow'),
@@ -51,7 +45,6 @@ class Base(zeit.push.browser.form.SocialBase,
     link_field_groups = (metadata_group,
                          option_group,
                          marketing_group,
-                         story_stream_group,
                          teaser_group,
                          link_group)
 
@@ -67,7 +60,6 @@ class Base(zeit.push.browser.form.SocialBase,
         option_group,
         marketing_group,
         teaser_group,
-        story_stream_group,
         zeit.push.browser.form.MobileBase.mobile_fields,
         link_group,
         zeit.push.browser.form.SocialBase.social_fields

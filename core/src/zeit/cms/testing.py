@@ -493,7 +493,6 @@ cms_product_config = """\
   source-products file://{base}/content/products.xml
   source-badges file://{base}/asset/badges.xml
   source-channels file://{base}/content/ressorts.xml
-  source-storystreams file://{base}/content/storystreams.xml
   source-printressorts file://{base}/content/print-ressorts.xml
   source-manual file://{base}/content/manual.xml
 
