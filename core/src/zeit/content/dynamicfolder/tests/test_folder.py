@@ -326,12 +326,10 @@ class MaterializeDynamicFolder(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
 
     def test_publish_materialized_content(self):
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
+        zeit.content.dynamicfolder.materialize.materialize_content(
             self.folder.uniqueId)
-        transaction.commit()
-        zeit.content.dynamicfolder.materialize.publish_content.delay(
-            self.folder.uniqueId)
-        transaction.commit()
+        zeit.content.dynamicfolder.materialize.publish_content(
+            self.folder)
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']).published)
 
