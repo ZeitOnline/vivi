@@ -64,7 +64,8 @@ class Publish:
         ids = []
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
-            self.log(obj, _('Collective Publication'))
+            self.log(obj, _('Collective Publication of ${count} objects',
+                            mapping={'count': len(objects)}))
             ids.append(obj.uniqueId)
         return self._execute_task(
             MULTI_PUBLISH_TASK, ids, priority, background, **kw)
@@ -79,7 +80,8 @@ class Publish:
         ids = []
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
-            self.log(obj, _('Collective Retraction'))
+            self.log(obj, _('Collective Retraction of ${count} objects',
+                            mapping={'count': len(objects)}))
             ids.append(obj.uniqueId)
         return self._execute_task(
             MULTI_RETRACT_TASK, ids, priority, background, **kw)

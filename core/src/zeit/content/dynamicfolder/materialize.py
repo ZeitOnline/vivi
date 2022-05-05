@@ -89,10 +89,20 @@ def materialize_content(unique_id):
 
 
 def publish_content(folder):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.dynamicfolder') or {}
+    batch_size = config.get('materialized-publish-batch-size', 100)
+    publish = zeit.cms.workflow.interfaces.IPublish(folder)
+    count = 0
     objects = []
     for item in folder.values():
         if IMaterializedContent.providedBy(item):
+            count += 1
             objects.append(item)
-    zeit.cms.workflow.interfaces.IPublish(
-        folder).publish_multiple(objects)
-    zeit.objectlog.interfaces.ILog(folder).log(_('Published'))
+        if len(objects) >= batch_size:
+            publish.publish_multiple(objects)
+            objects.clear()
+    if objects:
+        publish.publish_multiple(objects)
+    zeit.objectlog.interfaces.ILog(folder).log(
+        _('About to publish ${count} objects', count))

@@ -404,6 +404,6 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         log = zeit.objectlog.interfaces.ILog(c1)
         self.assertEqual(
             ['${name}: ${new_value}',
-             'Collective Publication',
+             'Collective Publication of ${count} objects',
              'Error during publish/retract: ${exc}: ${message}'],
             [x.message for x in log.get_log()])

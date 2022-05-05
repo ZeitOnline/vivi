@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon May  2 16:48:11 2022\n"
+"POT-Creation-Date: Thu May  5 16:10:27 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -610,7 +610,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:12
 #: zeit/content/advertisement/browser/form.py:32
-#: zeit/content/animation/browser/form.py:33
+#: zeit/content/animation/browser/form.py:37
 #: zeit/content/video/browser/video.py:40
 msgid "Navigation"
 msgstr "Navigation"
@@ -1625,8 +1625,7 @@ msgid "Menu of addable configuration objects"
 msgstr "Menu of addable configuration objects"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/content/dynamicfolder/materialize.py:103 zeit/workflow/publish.py:439
-#: zeit/workflow/publishinfo.py:50
+#: zeit/workflow/publish.py:441 zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1801,21 +1800,21 @@ msgstr "Metadaten bearbeiten"
 msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
-#: zeit/content/animation/browser/form.py:17
+#: zeit/content/animation/browser/form.py:21
 #: zeit/content/animation/interfaces.py:25 zeit/content/article/article.py:179
 #: zeit/content/article/browser/configure.zcml:80
 #: zeit/content/article/edit/browser/form.py:60
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/animation/browser/form.py:19
+#: zeit/content/animation/browser/form.py:23
 #: zeit/content/article/edit/browser/form.py:329
 #: zeit/content/link/browser/form.py:24 zeit/newsletter/newsletter.py:168
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr "Teaser"
 
-#: zeit/content/animation/browser/form.py:25
+#: zeit/content/animation/browser/form.py:29
 msgid "Add animated teaser"
 msgstr "Animierten Teaser hinzufügen\t"
 
@@ -3480,7 +3479,7 @@ msgstr "Löschen und erneut materialisieren"
 msgid "Materialize dynamic folder and update content"
 msgstr "Inhalte löschen und erneut materialisieren"
 
-#: zeit/content/dynamicfolder/browser/materialize.py:71
+#: zeit/content/dynamicfolder/browser/materialize.py:70
 msgid "Publish content of dynamic folder"
 msgstr "Inhalte des Ordners veröffentlichen"
 
@@ -3500,6 +3499,10 @@ msgstr "Konfigurationsdatei"
 #: zeit/content/dynamicfolder/materialize.py:38
 msgid "Materialized"
 msgstr "Materialisiert"
+
+#: zeit/content/dynamicfolder/materialize.py:108
+msgid "About to publish ${count} objects"
+msgstr "Starte Sammelveröffentlichung (${count} Objekte insgesamt)"
 
 #: zeit/content/gallery/browser/configure.zcml:172
 msgid "Transform"
@@ -5099,23 +5102,23 @@ msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
 #: zeit/workflow/publish.py:67
-msgid "Collective Publication"
-msgstr "Sammelveröffentlichung"
+msgid "Collective Publication of ${count} objects"
+msgstr "Sammelveröffentlichung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:82
-msgid "Collective Retraction"
-msgstr "Sammeldepublizierung"
+#: zeit/workflow/publish.py:83
+msgid "Collective Retraction of ${count} objects"
+msgstr "Sammeldepublizierung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:295
+#: zeit/workflow/publish.py:297
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:387
+#: zeit/workflow/publish.py:389
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 "Konnte nicht veröffentlicht werden, weil Bedingungen nicht erfüllt sind."
 
-#: zeit/workflow/publish.py:498
+#: zeit/workflow/publish.py:500
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
