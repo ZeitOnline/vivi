@@ -90,9 +90,9 @@ def materialize_content(unique_id):
 
 def publish_content(folder):
     objects = []
-    for key in folder.keys():
-        if IMaterializedContent.providedBy(folder[key]):
-            objects.append(folder[key])
+    for item in folder.values():
+        if IMaterializedContent.providedBy(item):
+            objects.append(item)
     zeit.cms.workflow.interfaces.IPublish(
         folder).publish_multiple(objects)
     zeit.objectlog.interfaces.ILog(folder).log(_('Published'))
