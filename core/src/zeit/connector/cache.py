@@ -370,9 +370,6 @@ class WebDAVPropertyKey:
             return self.name == other.name
         return self.name == other
 
-    def __ne__(self, other):  # BBB only py2
-        return not self.__eq__(other)
-
     def __lt__(self, other):
         if zope.security.proxy.isinstance(other, WebDAVPropertyKey):
             return self.name < other.name

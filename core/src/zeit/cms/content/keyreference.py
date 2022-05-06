@@ -35,9 +35,6 @@ class CMSContentKeyReference:
     def __eq__(self, other):
         return self.referenced_object == other.referenced_object
 
-    def __ne__(self, other):  # BBB only py2
-        return not self.__eq__(other)
-
     def __gt__(self, other):
         if self.key_type_id > other.key_type_id:
             return True

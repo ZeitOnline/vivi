@@ -40,9 +40,6 @@ class ContentBase(zope.container.contained.Contained):
             return False
         return self.uniqueId == other.uniqueId
 
-    def __ne__(self, other):  # BBB only needed for py2
-        return not self.__eq__(other)
-
     def __lt__(self, other):
         if not zeit.cms.interfaces.ICMSContent.providedBy(other):
             return False

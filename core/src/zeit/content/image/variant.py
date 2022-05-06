@@ -112,9 +112,6 @@ class Variant(zeit.cms.content.sources.AllowedBase):
         else:
             return False
 
-    def __ne__(self, other):  # BBB only py2
-        return not self.__eq__(other)
-
     def __cmp__(self, other):
         return super().__cmp__(other)
 
