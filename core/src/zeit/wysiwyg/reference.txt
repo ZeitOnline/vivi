@@ -5,8 +5,8 @@
 Setup
 =====
 
+>>> from io import StringIO
 >>> from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
->>> from six import StringIO
 >>> import lxml
 >>> import zeit.cms.testing
 >>> import zeit.wysiwyg.html

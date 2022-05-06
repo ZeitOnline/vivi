@@ -1,4 +1,3 @@
-import six
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zope.component
@@ -20,7 +19,7 @@ def fromNone(value):
     return ''
 
 
-@zope.component.adapter(six.text_type)
+@zope.component.adapter(str)
 @zope.interface.implementer(zeit.cms.content.interfaces.IDAVToken)
 def fromUnicode(value):
     return value

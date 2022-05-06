@@ -1,8 +1,8 @@
 from datetime import datetime
 from unittest import mock
 import pytz
-import six.moves.urllib.error
 import time
+import urllib.error
 import zeit.cms.checkout.interfaces
 import zeit.cms.testing
 import zope.app.locking.lockinfo
@@ -36,7 +36,7 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
             zeit.cms.checkout.interfaces.ICheckoutManager(
                 self.repository['testcontent']).checkout()
         b = self.browser
-        with self.assertRaises(six.moves.urllib.error.HTTPError) as info:
+        with self.assertRaises(urllib.error.HTTPError) as info:
             b.open('http://localhost/@@lock_status'
                    '?uniqueId=http://xml.zeit.de/testcontent')
             self.assertEqual(409, info.exception.status)
@@ -59,12 +59,12 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_status_404_for_nonexistent(self):
         b = self.browser
-        with self.assertRaises(six.moves.urllib.error.HTTPError) as info:
+        with self.assertRaises(urllib.error.HTTPError) as info:
             b.open('http://localhost/@@lock_status'
                    '?uniqueId=http://xml.zeit.de/nonexistent')
             self.assertEqual(404, info.exception.status)
 
-        with self.assertRaises(six.moves.urllib.error.HTTPError) as info:
+        with self.assertRaises(urllib.error.HTTPError) as info:
             with mock.patch('zeit.connector.mock.Connector.search') as search:
                 search.return_value = None
                 b.open('http://localhost/@@lock_status?uuid=dummy')

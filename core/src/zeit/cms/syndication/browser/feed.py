@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import html
 import logging
-import six
 import zc.table.column
 import zc.table.table
 import zeit.cms.browser.interfaces
@@ -132,7 +131,7 @@ class FeedView:
             return '<a href="%s">%s</a>' % (item.url, html.escape(value))
 
         def _escape(value, item, formatter):
-            return html.escape(six.text_type(value))
+            return html.escape(str(value))
 
         return (
             zc.table.column.GetterColumn(

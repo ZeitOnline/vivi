@@ -48,8 +48,8 @@ False
 
 When we publish the gallery now, the image is also published:
 
+>>> from io import StringIO
 >>> import logging
->>> from six import StringIO
 >>> logfile = StringIO()
 >>> log_handler = logging.StreamHandler(logfile)
 >>> logging.root.addHandler(log_handler)

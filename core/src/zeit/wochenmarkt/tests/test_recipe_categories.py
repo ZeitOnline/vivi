@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import lxml.etree
-import six
 import zeit.content.article.article
 import zeit.wochenmarkt.interfaces
 import zeit.wochenmarkt.testing
@@ -70,7 +69,7 @@ class TestRecipeCategories(
             '<recipe_categories...><category code="summer"/>...',
             lxml.etree.tostring(
                 content.xml.head.recipe_categories,
-                encoding=six.text_type))
+                encoding=str))
 
     def test_removing_all_categories_should_leave_no_trace(self):
         categories = self.setup_categories('summer')

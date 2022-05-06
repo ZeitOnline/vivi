@@ -4,7 +4,6 @@ from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.content.article.edit.interfaces import IDivision
 import gocept.testing.mock
 import lxml.objectify
-import six
 import unittest
 import zeit.cms.testing
 import zeit.content.article.article
@@ -88,7 +87,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             [child.tag for child in body.xml.division.iterchildren()])
         self.assertEqual(
             ['I have no division', 'Only paras'],
-            [six.text_type(child) for child
+            [str(child) for child
              in body.xml.division.iterchildren()])
 
     def test_adding_to_articles_without_division_should_migrate(self):

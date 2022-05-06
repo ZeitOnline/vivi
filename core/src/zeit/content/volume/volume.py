@@ -7,7 +7,6 @@ import itertools
 import logging
 import lxml.objectify
 import requests
-import six
 import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
@@ -254,7 +253,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as co:
-                    co.access = six.text_type(access_to)
+                    co.access = access_to
                     zope.lifecycleevent.modified(
                         co, zope.lifecycleevent.Attributes(
                             zeit.cms.content.interfaces.ICommonMetadata,

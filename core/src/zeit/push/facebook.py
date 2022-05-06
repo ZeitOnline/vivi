@@ -1,12 +1,11 @@
 # coding: utf-8
-from six.moves import input
 from zeit.push.interfaces import facebookAccountSource
 import argparse
 import fb
 import grokcore.component as grok
 import logging
 import requests
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.push.interfaces
 import zeit.push.message
 import zope.interface
@@ -106,7 +105,7 @@ def create_access_token(argv=None):
         'pages_show_list'
     ])
     login_url = ('https://www.facebook.com/dialog/oauth?' +
-                 six.moves.urllib.parse.urlencode({
+                 urllib.parse.urlencode({
                      'client_id': options.app_id,
                      'redirect_uri': options.redirect_uri,
                      'scope': scopes,
@@ -116,14 +115,14 @@ def create_access_token(argv=None):
     print(
         'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
     result_url = input('die neue URL bitte hier eingeben: ')
-    code = six.moves.urllib.parse.parse_qs(
-        six.moves.urllib.parse.urlparse(result_url).query)['code'][0]
+    code = urllib.parse.parse_qs(
+        urllib.parse.urlparse(result_url).query)['code'][0]
 
     # Step 1b: Convert code to token <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#confirm>
     r = requests.get(
         'https://graph.facebook.com/oauth/access_token?' +
-        six.moves.urllib.parse.urlencode({
+        urllib.parse.urlencode({
             'client_id': options.app_id,
             'client_secret': options.app_secret,
             'redirect_uri': options.redirect_uri,
@@ -138,7 +137,7 @@ def create_access_token(argv=None):
     # /docs/facebook-login/access-tokens/#extending>
     r = requests.get(
         'https://graph.facebook.com/oauth/access_token?' +
-        six.moves.urllib.parse.urlencode({
+        urllib.parse.urlencode({
             'client_id': options.app_id,
             'client_secret': options.app_secret,
             'grant_type': 'fb_exchange_token',

@@ -33,7 +33,7 @@ Mask
 
 The mask is loaded from the site with the image size and mask size parameters:
 
->>> from six.moves.urllib.parse import urlencode
+>>> from urllib.parse import urlencode
 >>> query = urlencode({
 ...     'image_width:int': '100',
 ...     'image_height:int': '200',

@@ -1,7 +1,7 @@
 from zeit.cms.testing import FunctionalTestCase
 import os.path
 import plone.testing
-import six.moves.urllib.parse
+import urllib.parse
 import unittest
 import xlrd
 import zeit.brightcove.testing
@@ -101,7 +101,7 @@ class SecurityPolicyXLSSheetCase:
                 self.browser.post(
                     path_with_skin,
                     # XXX pass variables in explicitly
-                    six.moves.urllib.parse.urlencode(eval(form)))
+                    urllib.parse.urlencode(eval(form)))
             else:
                 self.browser.open(path_with_skin)
 

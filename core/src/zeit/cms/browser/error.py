@@ -1,7 +1,6 @@
 import bugsnag
-import six
-import six.moves.urllib.parse
 import traceback
+import urllib.parse
 import zope.error.error
 import zope.exceptions.exceptionformatter
 import zope.i18n
@@ -56,14 +55,14 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         super().raising(info, request)
         self._notify_bugsnag(info, request)
         exception = info[1]
-        if not isinstance(info[2], six.string_types):
+        if not isinstance(info[2], str):
             exception.traceback = getFormattedException(info)
         else:
             exception.traceback = zope.error.error.getPrintable(info[2])
 
     def _notify_bugsnag(self, info, request):
         url = str(getattr(request, 'URL', ''))
-        path = six.moves.urllib.parse.urlparse(url).path if url else None
+        path = urllib.parse.urlparse(url).path if url else None
         username = (self._getUsername(request) or '').split(', ')
         if username:
             user = {'id': username[1], 'name': username[2]}

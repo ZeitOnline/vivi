@@ -1,7 +1,6 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import six
 import zeit.cms.content.field
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
@@ -101,7 +100,7 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
 
     # For consistency with the zeit.content.cp config files.
     def _get_title_for(self, node):
-        return six.text_type(node.get('title'))
+        return node.get('title')
 
 
 MODULES = ModuleSource()

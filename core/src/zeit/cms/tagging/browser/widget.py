@@ -1,7 +1,7 @@
 from collections import namedtuple
 import grokcore.component as grok
 import json
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -86,7 +86,7 @@ class Widget(grok.MultiAdapter,
             # an abstraction instead doesn't really seem worthwile either.
             import zeit.retresco.interfaces
             tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-            return six.moves.urllib.parse.urlparse(tms.primary['url']).netloc
+            return urllib.parse.urlparse(tms.primary['url']).netloc
         except (ImportError, LookupError):
             return None
 

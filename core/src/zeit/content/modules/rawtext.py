@@ -4,7 +4,6 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections.abc
 import grokcore.component as grok
 import lxml.objectify
-import six
 import zeit.cmp.consent
 import zeit.cmp.interfaces
 import zeit.cms.content.property
@@ -151,7 +150,7 @@ class CSSInjector(grok.Adapter):
                 rule.selectorList.append('#%s %s' % (module, selector))
                 # zeit.content.cp
                 rule.selectorList.append('.%s %s' % (module, selector))
-        return '<style>\n%s\n</style>' % six.ensure_text(css.cssText)
+        return '<style>\n%s\n</style>' % css.cssText
 
 
 class EmbedParameterForm:

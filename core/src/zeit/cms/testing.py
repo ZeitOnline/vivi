@@ -1,6 +1,6 @@
-from six import StringIO
-from six.moves.urllib.parse import urljoin
+from io import StringIO
 from unittest import mock
+from urllib.parse import urljoin
 import ZODB
 import ZODB.DemoStorage
 import base64
@@ -31,7 +31,6 @@ import pyramid_dogpile_cache2
 import pytest
 import re
 import selenium.webdriver
-import six
 import sys
 import tempfile
 import threading
@@ -100,7 +99,7 @@ class ProductConfigLayer(plone.testing.Layer):
         if not package:
             package = '.'.join(module.split('.')[:-1])
         self.package = package
-        if isinstance(config, six.string_types):  # BBB
+        if isinstance(config, str):  # BBB
             config = self.loadConfiguration(config, package)
         self.config = config
         self.patches = patches or {}
@@ -456,7 +455,7 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         for key, value in self._next('response_headers').items():
             self.send_header(key, value)
         self.end_headers()
-        self.wfile.write(six.ensure_binary(self._next('response_body')))
+        self.wfile.write(self._next('response_body').encode('utf-8'))
 
     def _next(self, name):
         result = getattr(self, name)
@@ -634,14 +633,14 @@ class OutputChecker(zope.testing.renormalizing.RENormalizing):
 
     def check_output(self, want, got, optionflags):
         # `want` is already unicode, since we pass `encoding` to DocFileSuite.
-        if not isinstance(got, six.text_type):
+        if not isinstance(got, str):
             got = got.decode('utf-8')
         want, got = self.remove_string_prefix(want, got)
         super_ = zope.testing.renormalizing.RENormalizing
         return super_.check_output(self, want, got, optionflags)
 
     def output_difference(self, example, got, optionflags):
-        if not isinstance(got, six.text_type):
+        if not isinstance(got, str):
             got = got.decode('utf-8')
         example.want, got = self.remove_string_prefix(example.want, got)
         super_ = zope.testing.renormalizing.RENormalizing
@@ -887,7 +886,6 @@ def set_site(site=None):
 
 # XXX use zope.publisher.testing for the following two
 def create_interaction(name='zope.user'):
-    name = six.text_type(name)  # XXX At least zope.dublincore requires unicode
     principal = zope.security.testing.Principal(
         name, groups=['zope.Authenticated'], description='test@example.com')
     request = zope.publisher.browser.TestRequest()
@@ -1063,7 +1061,7 @@ class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
     def setUp(self):
         super().setUp()
         self.browser = Browser(self.layer['wsgi_app'])
-        if isinstance(self.login_as, six.string_types):  # BBB:
+        if isinstance(self.login_as, str):  # BBB:
             self.login_as = self.login_as.split(':')
         self.browser.login(*self.login_as)
 
@@ -1149,7 +1147,7 @@ class FreezeMeta(type):
             return True
 
 
-class Freeze(six.with_metaclass(FreezeMeta, datetime.datetime)):
+class Freeze(datetime.datetime, metaclass=FreezeMeta):
 
     @classmethod
     def freeze(cls, val):
@@ -1189,4 +1187,4 @@ def clock(dt=None):
 
 
 def xmltotext(xml):
-    return lxml.etree.tostring(xml, pretty_print=True, encoding=six.text_type)
+    return lxml.etree.tostring(xml, pretty_print=True, encoding=str)

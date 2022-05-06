@@ -9,7 +9,6 @@ import lxml.etree
 import lxml.objectify
 import pytz
 import requests_mock
-import six
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -52,7 +51,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
             'product_id="ZEI"/>'
             '</covers>',
             lxml.etree.tostring(
-                self.volume.xml.covers, encoding=six.text_type))
+                self.volume.xml.covers, encoding=str))
 
     def test_deletes_existing_node_if_value_is_None(self):
         self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
@@ -60,7 +59,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
             lxml.etree.tostring(
-                self.volume.xml.covers, encoding=six.text_type))
+                self.volume.xml.covers, encoding=str))
 
     def test_raises_value_error_if_invalid_product_id_used_in_set_cover(self):
         with self.assertRaises(ValueError):

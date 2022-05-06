@@ -6,7 +6,6 @@ from zeit.cms.tagging.tag import Tag
 from zeit.retresco.tagger import Tagger
 from zeit.retresco.testing import create_testcontent
 import lxml.objectify
-import six
 import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
@@ -257,7 +256,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
         sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
         sync.sync()
         dav_attribs = '\n'.join(
-            six.text_type(a) for a in content.xml.head.attribute[:])
+            str(a) for a in content.xml.head.attribute[:])
         self.assertNotIn('rankedTags', dav_attribs)
 
     def test_existing_tags_should_cause_rankedTags_to_be_added_to_xml(self):

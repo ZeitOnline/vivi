@@ -1,5 +1,4 @@
 import logging
-import six
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
@@ -43,7 +42,7 @@ def properties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
 
-@zope.component.adapter(six.string_types[0])
+@zope.component.adapter(str)
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
 class SimpleUUID:
 

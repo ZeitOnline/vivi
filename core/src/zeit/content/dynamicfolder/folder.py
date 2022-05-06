@@ -10,8 +10,7 @@ import jinja2
 import lxml.etree
 import lxml.objectify
 import persistent
-import six
-import six.moves.urllib.parse
+import urllib.parse
 import uuid
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -170,12 +169,10 @@ class RepositoryDynamicFolder(
                 key_match = entry.xpath(key_getter)
                 if not key_match:
                     continue  # entry provides no key
-                key = six.moves.urllib.parse.unquote(key_match[0])
+                key = urllib.parse.unquote(key_match[0])
                 if isinstance(key, lxml.etree._ElementUnicodeResult):
                     # Dear lxml, why?
-                    key = six.text_type(key)
-                else:
-                    key = six.ensure_text(key)
+                    key = str(key)
                 contents[key] = dict(entry.attrib)  # copy
                 contents[key]['text'] = entry.text
                 contents[key]['__parent__'] = self
@@ -287,7 +284,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
 
     @classmethod
     def parse(cls, body):
-        if isinstance(body, (six.binary_type, six.text_type)):
+        if isinstance(body, (bytes, str)):
             try:
                 body = lxml.etree.fromstring(body)
             except lxml.etree.LxmlError:

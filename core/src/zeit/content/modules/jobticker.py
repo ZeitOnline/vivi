@@ -1,6 +1,5 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import six
 import zeit.cms.content.sources
 import zeit.content.modules.interfaces
 import zeit.edit.block
@@ -54,13 +53,13 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
         tree = self._get_tree()
         for node in tree.iterchildren('*'):
             feed = Feed(
-                six.text_type(node.get('id')),
-                six.text_type(node.get('title')),
+                node.get('id'),
+                node.get('title'),
                 zeit.cms.content.sources.unicode_or_none(node.get(
                     'available')),
-                six.text_type(node.get('teaser')),
-                six.text_type(node.get('landing_url')),
-                six.text_type(node.get('feed_url')))
+                node.get('teaser'),
+                node.get('landing_url'),
+                node.get('feed_url'))
             result[feed.id] = feed
         return result
 

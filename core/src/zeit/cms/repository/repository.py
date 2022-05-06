@@ -7,7 +7,6 @@ import logging
 import os.path
 import persistent
 import re
-import six
 import zeit.cms.interfaces
 import zeit.cms.redirect.interfaces
 import zeit.cms.repository.interfaces
@@ -257,7 +256,7 @@ class Repository(persistent.Persistent, Container):
         return super().keys()
 
     def getContent(self, unique_id):
-        if not isinstance(unique_id, six.string_types):
+        if not isinstance(unique_id, str):
             raise TypeError("unique_id: string expected, got %s" %
                             type(unique_id))
         unique_id = self._get_normalized_unique_id(unique_id)
@@ -403,7 +402,7 @@ def invalidate_content_cache(event):
         repository._content.pop(event.id, None)
 
 
-@grok.adapter(six.string_types[0], name=zeit.cms.interfaces.ID_NAMESPACE)
+@grok.adapter(str, name=zeit.cms.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_content(uniqueId):
     repository = zope.component.queryUtility(
@@ -420,7 +419,7 @@ def unique_id_to_content(uniqueId):
             return None
 
 
-@grok.adapter(six.string_types[0], name=zeit.cms.interfaces.ID_NAMESPACE)
+@grok.adapter(str, name=zeit.cms.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSWCContent)
 def unique_id_to_wc_or_repository(uniqueId):
     wc = zope.component.queryAdapter(
@@ -442,7 +441,7 @@ IGNORED_LIVE_PAGE_SUFFIXES = re.compile(r'/((seite-\d+)|(komplettansicht))/?$')
 IGNORED_VIVI_SUFFIXES = re.compile(r'/@@.*$')
 
 
-@grok.adapter(six.string_types[0], name='http://www.zeit.de/')
+@grok.adapter(str, name='http://www.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def live_url_to_content(uniqueId):
     uniqueId = uniqueId.replace('www', 'xml', 1)
@@ -450,7 +449,7 @@ def live_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
-@grok.adapter(six.string_types[0], name='https://www.zeit.de/')
+@grok.adapter(str, name='https://www.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def live_https_url_to_content(uniqueId):
     uniqueId = uniqueId.replace('https://www', 'http://xml', 1)
@@ -458,7 +457,7 @@ def live_https_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
-@grok.adapter(six.string_types[0], name='http://vivi.zeit.de/')
+@grok.adapter(str, name='http://vivi.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def vivi_url_to_content(uniqueId):
     prefix = 'http://vivi.zeit.de/repository/'
@@ -469,7 +468,7 @@ def vivi_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
-@grok.adapter(six.string_types[0], name='https://vivi.zeit.de/')
+@grok.adapter(str, name='https://vivi.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def vivi_https_url_to_content(uniqueId):
     prefix = 'https://vivi.zeit.de/repository/'
@@ -480,7 +479,7 @@ def vivi_https_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
-@grok.adapter(six.string_types[0], name='<no-scheme>://<no-netloc>/')
+@grok.adapter(str, name='<no-scheme>://<no-netloc>/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def no_scheme_unique_id_to_cms_content(unique_id):
     # try repository

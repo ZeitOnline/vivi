@@ -84,9 +84,9 @@ X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 The currently visited URL is transmitted as an argument. Define a helper
 function:
 
->>> import six.moves.urllib.parse
+>>> import urllib.parse
 >>> def open_tree(url):
-...     query = six.moves.urllib.parse.urlencode(dict(view_url=url))
+...     query = urllib.parse.urlencode(dict(view_url=url))
 ...     browser.open(
 ...         'http://localhost/++skin++cms/repository/'
 ...         '++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html?' + query)
@@ -114,7 +114,7 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 >>> view_url = 'http://localhost/++skin++cms/repository'
 >>> browser.open('http://localhost/++skin++cms/repository/tree.html/'
 ...              '@@expandTree?uniqueId=http://xml.zeit.de/online/'
-...              '&view_url=%s' % six.moves.urllib.parse.quote(view_url))
+...              '&view_url=%s' % urllib.parse.quote(view_url))
 >>> print(zeit.cms.testing.xmltotext(browser.document))
 <ul>
     <li active="True" class="Root...">

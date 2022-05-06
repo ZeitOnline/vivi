@@ -9,7 +9,7 @@ We need to set the site since we're a functional test:
 
 Articles consist of an XMLdocument. Most properties map to XML-Elements:
 
->>> from six import StringIO
+>>> from io import StringIO
 >>> from zeit.content.article.article import Article
 >>> article_xml = StringIO("""\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">

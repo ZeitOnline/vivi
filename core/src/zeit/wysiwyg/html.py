@@ -1,16 +1,14 @@
 # coding: utf8
-from six import unichr
-from six.moves import html_entities
 from zeit.wysiwyg.util import contains_element
 import copy
 import datetime
+import html.entities
 import lxml.builder
 import lxml.etree
 import lxml.html.soupparser
 import lxml.objectify
 import pendulum
 import pytz
-import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -56,7 +54,7 @@ class HTMLConverter:
         result = []
         for child in tree.iterchildren():
             result.append(lxml.etree.tostring(
-                child, pretty_print=True, encoding=six.text_type))
+                child, pretty_print=True, encoding=str))
         return ''.join(result)
 
     def from_html(self, tree, value):
@@ -75,8 +73,7 @@ class HTMLConverter:
         self._apply_steps(html, 'xpath_html', 'to_xml')
         for node in html.iterchildren():
             # support tails at the toplevel by faking a wrapper node
-            xml = '<foo>%s</foo>' % lxml.etree.tostring(
-                node, encoding=six.text_type)
+            xml = '<foo>%s</foo>' % lxml.etree.tostring(node, encoding=str)
             objectified = lxml.objectify.fromstring(xml)
             for child in objectified.iterchildren():
                 tree.append(child)
@@ -156,11 +153,11 @@ class HTMLConverter:
     @staticmethod
     def _replace_entities(value):
         # XXX is this efficient enough?
-        for entity_name, codepoint in html_entities.name2codepoint.items():
+        for entity_name, codepoint in html.entities.name2codepoint.items():
             if entity_name in ('gt', 'lt', 'quot', 'amp', 'apos'):
                 # don't replace XML built-in entities
                 continue
-            value = value.replace('&' + entity_name + ';', unichr(codepoint))
+            value = value.replace('&' + entity_name + ';', chr(codepoint))
         return value
 
 
@@ -696,7 +693,7 @@ class RawXMLStep(ConversionStep):
         result = []
         for child in node.iterchildren():
             result.append(lxml.etree.tostring(
-                child, pretty_print=True, encoding=six.text_type))
+                child, pretty_print=True, encoding=str))
         text = '\n'.join(result)
         new_node = lxml.builder.E.div(
             text, **{'class': 'inline-element raw'})

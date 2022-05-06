@@ -1,5 +1,5 @@
 from datetime import datetime
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent

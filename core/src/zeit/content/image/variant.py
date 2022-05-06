@@ -3,7 +3,6 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections.abc
 import copy
 import grokcore.component as grok
-import six
 import sys
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
@@ -102,7 +101,7 @@ class Variant(zeit.cms.content.sources.AllowedBase):
         for key, value in kw.items():
             if key not in fields:
                 continue  # ignore attributes that aren't part of the schema
-            value = fields[key].fromUnicode(six.text_type(value))
+            value = fields[key].fromUnicode(str(value))
             setattr(self, key, value)
 
     def __eq__(self, other):

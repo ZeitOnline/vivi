@@ -4,7 +4,6 @@ from zeit.retresco.interfaces import ISkipEnrich
 import argparse
 import grokcore.component as grok
 import logging
-import six
 import time
 import transaction
 import zeit.cms.celery
@@ -237,7 +236,7 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
 def reindex():
     parser = argparse.ArgumentParser(description='Reindex folder in TMS')
     parser.add_argument(
-        'ids', type=six.text_type, nargs='+', help='uniqueIds to reindex')
+        'ids', nargs='+', help='uniqueIds to reindex')
     parser.add_argument(
         '--file', action='store_true',
         help='Load uniqueIds from a file to reindex')

@@ -1,6 +1,6 @@
 from base64 import b64decode
-from six.moves.urllib.parse import urlparse, parse_qs
 from unittest import mock
+from urllib.parse import urlparse, parse_qs
 import json
 import plone.testing
 import zeit.cms.testing

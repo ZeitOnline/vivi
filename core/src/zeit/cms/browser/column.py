@@ -1,5 +1,4 @@
 import html
-import six
 import zc.table.column
 import zc.table.interfaces
 import zope.interface
@@ -34,8 +33,7 @@ class LinkColumn(zc.table.column.GetterColumn):
             return ''
 
         # Get the same display as if a normal column.
-        content = html.escape(
-            six.text_type(super().renderCell(item, formatter)))
+        content = html.escape(str(super().renderCell(item, formatter)))
 
         # Try to get a URL, if we can't then ignore setting up a link.
         try:

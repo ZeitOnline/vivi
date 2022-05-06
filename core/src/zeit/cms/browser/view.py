@@ -1,5 +1,4 @@
 import json
-import six
 import z3c.flashmessage.interfaces
 import zeit.cms.application
 import zope.component
@@ -14,7 +13,7 @@ class Base:
     def url(self, obj=None, name=None):
         # if the first argument is a string, that's the name. There should
         # be no second argument
-        if isinstance(obj, six.string_types):
+        if isinstance(obj, str):
             if name is not None:
                 raise TypeError(
                     'url() takes either obj argument, obj, string arguments, '

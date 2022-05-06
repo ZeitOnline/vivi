@@ -1,5 +1,5 @@
-import six.moves.urllib.parse
-import six.moves.urllib.request
+import urllib.parse
+import urllib.request
 import zeit.cms.browser.preview
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -23,8 +23,7 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         return url
 
     def workingcopy_url(self, url):
-        repository_path = six.moves.urllib.parse.urlparse(
-            self.context.uniqueId).path
+        repository_path = urllib.parse.urlparse(self.context.uniqueId).path
         fullpath = self.url(self.context)
         workingcopy = self.url(zope.component.getUtility(
             zeit.cms.workingcopy.interfaces.IWorkingcopyLocation))

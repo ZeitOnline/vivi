@@ -3,7 +3,6 @@ from zeit.content.article.source import LEGACY_DISPLAY_MODE_SOURCE
 from zeit.content.article.source import LEGACY_VARIANT_NAME_SOURCE
 import grokcore.component as grok
 import lxml.objectify
-import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.reference
 import zeit.content.article.edit.interfaces
@@ -185,7 +184,7 @@ def migrate_image_nodes_inside_p(article, event):
             if image.tail:
                 # boah.
                 stripped = lxml.objectify.XML(
-                    lxml.etree.tostring(image, encoding=six.text_type).rsplit(
+                    lxml.etree.tostring(image, encoding=str).rsplit(
                         image.tail, 1)[0])
                 p.addnext(getattr(lxml.objectify.E, p.tag)(image.tail))
                 lxml.objectify.deannotate(p.getnext())

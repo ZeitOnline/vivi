@@ -3,7 +3,6 @@ import html
 import json
 import logging
 import pkg_resources
-import six
 import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
@@ -46,7 +45,7 @@ class Form:
         value = instance.request.form.get(self.var_name, self.default)
         if value is self.default:
             return value
-        if self.json and isinstance(value, six.string_types):
+        if self.json and isinstance(value, str):
             value = json.loads(value)
         return value
 

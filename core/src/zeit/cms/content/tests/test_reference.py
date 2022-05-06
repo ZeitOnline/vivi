@@ -4,8 +4,8 @@ from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.content.reference import SingleReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import six.moves.urllib.error
-import six.moves.urllib.parse
+import urllib.error
+import urllib.parse
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.related.related
@@ -330,9 +330,9 @@ class ReferenceTraversalBase:
         try:
             b.open(
                 'http://localhost/++skin++vivi/@@redirect_to?unique_id=%s' % (
-                    six.moves.urllib.parse.quote_plus(
+                    urllib.parse.quote_plus(
                         self.get_reference(content).uniqueId)))
-        except six.moves.urllib.error.HTTPError as e:
+        except urllib.error.HTTPError as e:
             self.assertEqual(404, e.getcode())
             self.assertIn('/repository/content/++attribute++references', b.url)
 

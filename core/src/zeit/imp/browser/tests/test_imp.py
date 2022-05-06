@@ -1,8 +1,8 @@
+from urllib.parse import urlencode
 from io import BytesIO
 import PIL.Image
 import json
 import pkg_resources
-import six.moves.urllib.parse
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -68,8 +68,7 @@ class CropTest(TestBase):
 
     def get_image_data(self, **form):
         self.browser.post(
-            self.image_path + '/@@imp-crop',
-            six.moves.urllib.parse.urlencode(dict(
+            self.image_path + '/@@imp-crop', urlencode(dict(
                 w='1000', h='500',
                 x1='400', y1='100',
                 x2='800', y2='300',
@@ -82,8 +81,7 @@ class CropTest(TestBase):
 
     def test_crop_returns_image_url(self):
         self.browser.post(
-            self.image_path + '/@@imp-crop',
-            six.moves.urllib.parse.urlencode(dict(
+            self.image_path + '/@@imp-crop', urlencode(dict(
                 w='1200', h='749',
                 x1='400', y1='100',
                 x2='800', y2='300',

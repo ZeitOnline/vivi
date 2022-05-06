@@ -232,10 +232,9 @@ Then we need to create a test 'article' to be included in this CenterPage:
 True
 
 XXX work around https://github.com/zopefoundation/zope.testbrowser/issues/78
->>> import six
 >>> def click_link(browser, text):
 ...    browser._response.body = browser._response.body.replace(b'<div ', b'<div xmlns:cms="http://namespaces.gocept.com/zeit-cms" ', 1)
-...    browser.open(browser.xpath('//a[contains(., "%s")]/@href' % six.ensure_text(text))[0])
+...    browser.open(browser.xpath('//a[contains(., "%s")]/@href' % text)[0])
 
 
 The layout can be selected at the edit box:

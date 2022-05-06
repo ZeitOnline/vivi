@@ -1,7 +1,6 @@
 
 import logging
-import six
-import six.moves.xmlrpc_client
+import xmlrpc.client
 import zeit.connector.interfaces
 import zope.app.publisher.xmlrpc
 import zope.event
@@ -13,8 +12,8 @@ logger = logging.getLogger(__name__)
 class Invalidate(zope.app.publisher.xmlrpc.XMLRPCView):
 
     def invalidate(self, resource_id):
-        if not isinstance(resource_id, six.string_types):
-            raise six.moves.xmlrpc_client.Fault(
+        if not isinstance(resource_id, str):
+            raise xmlrpc.client.Fault(
                 100, "`resource_id` must be string type, got %s" % (
                     type(resource_id)))
         self._do_invalidate(resource_id)
@@ -22,7 +21,7 @@ class Invalidate(zope.app.publisher.xmlrpc.XMLRPCView):
 
     def invalidate_many(self, resource_list):
         if not isinstance(resource_list, (list, tuple)):
-            raise six.moves.xmlrpc_client.Fault(
+            raise xmlrpc.client.Fault(
                 100, "`resource_list` must be sequence type, got %s" % (
                     type(resource_list)))
 

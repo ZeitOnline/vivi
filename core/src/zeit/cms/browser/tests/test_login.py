@@ -3,8 +3,8 @@ from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
 import jwt
 import pkg_resources
 import plone.testing
-import six.moves.urllib.error
-import six.moves.urllib.parse
+import urllib.error
+import urllib.parse
 import zeit.cms.generation.install
 import zeit.cms.testing
 import zope.authentication.interfaces
@@ -143,7 +143,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         target = 'http://localhost/++skin++vivi/repository/2016'
         b.open('http://localhost/++skin++vivi/sso-login?url=' +
-               six.moves.urllib.parse.quote_plus(target))
+               urllib.parse.quote_plus(target))
         b.getControl('Username').value = 'user'
         b.getControl('Password').value = 'userpw'
         b.getControl('Log in').click()
@@ -165,7 +165,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
     def test_user_without_required_permission_shows_unauthorized(self):
         self.login()
         b = self.browser
-        with self.assertRaises(six.moves.urllib.error.HTTPError) as info:
+        with self.assertRaises(urllib.error.HTTPError) as info:
             b.open('http://localhost/++skin++vivi'
                    '/sso-login?permission=zeit.cms.admin.View')
             self.assertEqual(403, info.exception.status)

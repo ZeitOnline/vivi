@@ -1,4 +1,4 @@
-from six import StringIO
+from io import StringIO
 from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
 import lxml.etree
 import zeit.cms.testcontenttype.testcontenttype

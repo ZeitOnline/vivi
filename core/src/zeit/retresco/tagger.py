@@ -5,7 +5,6 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import lxml.objectify
-import six
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
@@ -59,7 +58,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __getitem__(self, key):
         node = self._find_tag_node(key)
-        tag = self._create_tag(six.text_type(node), node.get('type', ''))
+        tag = self._create_tag(str(node), node.get('type', ''))
         return tag
 
     def __setitem__(self, key, value):
@@ -77,7 +76,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def values(self):
         tags = self.to_xml()
-        return (self._create_tag(six.text_type(node), node.get('type', ''))
+        return (self._create_tag(str(node), node.get('type', ''))
                 for node in tags.iterchildren())
 
     def get(self, key, default=None):
@@ -189,7 +188,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             try:
                 node = self._find_tag_node(code, xml)
                 result.append(self._create_tag(
-                    six.text_type(node), node.get('type', '')))
+                    str(node), node.get('type', '')))
             except KeyError:
                 pass
         return result

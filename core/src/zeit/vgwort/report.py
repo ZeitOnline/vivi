@@ -5,7 +5,6 @@ import grokcore.component as grok
 import logging
 import os.path
 import pytz
-import six
 import sys
 import tempfile
 import zc.lockfile
@@ -152,4 +151,4 @@ def report(context):
     except zeit.vgwort.interfaces.WebServiceError as e:
         log.warning(
             'semantic error reporting %s' % context.uniqueId, exc_info=True)
-        source.mark_error(context, six.text_type(e))
+        source.mark_error(context, str(e))

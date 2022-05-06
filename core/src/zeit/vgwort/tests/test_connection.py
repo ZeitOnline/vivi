@@ -1,7 +1,6 @@
 from unittest import mock
 import gocept.httpserverlayer.custom
 import pkg_resources
-import six
 import time
 import unittest
 import zeit.cms.checkout.helper
@@ -64,7 +63,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             self.service.new_document(content)
         except zeit.vgwort.interfaces.WebServiceError as e:
-            self.assertIn('Shakespeare', six.text_type(e))
+            self.assertIn('Shakespeare', str(e))
         else:
             self.fail('WebServiceError should have been raised.')
 

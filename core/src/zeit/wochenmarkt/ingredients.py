@@ -6,7 +6,6 @@ import collections
 import grokcore.component as grok
 import logging
 import lxml.etree
-import six
 import zeit.cms.cli
 import zeit.retresco.interfaces
 import zeit.wochenmarkt.interfaces
@@ -97,8 +96,7 @@ class IngredientsWhitelist(
             try:
                 ingredient = Ingredient(
                     ingredient_node.get('id'),
-                    name=six.text_type(
-                        ingredient_node.get('singular')).strip(),
+                    name=str(ingredient_node.get('singular')).strip(),
                     category=ingredient_node.getparent().tag,
                     qwords=ingredient_node.get('q'),
                     qwords_category=ingredient_node.getparent().get('q'),

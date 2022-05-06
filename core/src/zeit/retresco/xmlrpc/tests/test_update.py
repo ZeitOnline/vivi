@@ -1,5 +1,5 @@
 # coding: utf-8
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import logging

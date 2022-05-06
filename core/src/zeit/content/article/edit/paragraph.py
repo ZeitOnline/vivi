@@ -4,7 +4,6 @@ import lxml.etree
 import lxml.html.clean
 import lxml.html.soupparser
 import lxml.objectify
-import six
 import xml.sax.saxutils
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
@@ -57,9 +56,9 @@ class Paragraph(ParagraphBase):
         # The copy.copy magically removes unnecessary namespace declarations.
         p_text = self.xml.text or ''
         text = xml.sax.saxutils.escape(p_text) + ''.join(
-            lxml.etree.tostring(copy.copy(c), encoding='unicode')
+            lxml.etree.tostring(copy.copy(c), encoding=str)
             for c in self.xml.iterchildren())
-        return six.text_type(text)
+        return text
 
     @text.setter
     def text(self, value):

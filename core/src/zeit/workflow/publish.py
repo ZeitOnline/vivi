@@ -6,7 +6,6 @@ import logging
 import os.path
 import pkg_resources
 import pytz
-import six
 import subprocess
 import tempfile
 import threading
@@ -175,8 +174,7 @@ class PublishRetractTask:
             return result
         finally:
             timer.mark('Done %s' % ids_str)
-            timings = six.text_type(timer)
-            timer_logger.debug('Timings:\n%s' % timings)
+            timer_logger.debug('Timings:\n%s', timer)
             dummy, total, timer_message = timer.get_timings()[-1]
             logger.info('%s (%2.4fs)' % (timer_message, total))
 
@@ -338,8 +336,8 @@ class PublishRetractTask:
 
         env['publish_action'] = action
 
-        if isinstance(input_data, six.text_type):
-            input_data = input_data.encode('UTF-8')
+        if isinstance(input_data, str):
+            input_data = input_data.encode('utf-8')
         with tempfile.NamedTemporaryFile() as f:
             f.write(input_data)
             f.flush()
@@ -351,8 +349,8 @@ class PublishRetractTask:
             proc.communicate()
             out.seek(0)
             err.seek(0)
-            stdout = six.ensure_str(out.read())
-            stderr = six.ensure_str(err.read())
+            stdout = out.read().decode('utf-8')
+            stderr = err.read().decode('utf-8')
             out.close()
             err.close()
 

@@ -1,4 +1,4 @@
-from six import StringIO
+from io import StringIO
 from unittest import mock
 import json
 import pkg_resources

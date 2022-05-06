@@ -3,7 +3,6 @@ from zeit.cms.interfaces import CONFIG_CACHE
 import collections
 import grokcore.component as grok
 import re
-import six
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
@@ -124,7 +123,7 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource,
         tree = self._get_tree()
         for node in tree.iterchildren('*'):
             newsletter = Newsletter(
-                six.text_type(node.get('id')),
+                node.get('id'),
                 self.child(node, 'title'),
                 self.child(node, 'image'),
                 self.child(node, 'text'),
@@ -140,7 +139,7 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource,
         child = node.find(name)
         if child is None:
             return None
-        return six.text_type(child.text).strip()
+        return child.text.strip()
 
 
 class INewsletterSignup(zeit.edit.interfaces.IBlock):

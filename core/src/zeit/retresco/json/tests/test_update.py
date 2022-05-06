@@ -1,5 +1,5 @@
-from six.moves.urllib.error import HTTPError
 from unittest import mock
+from urllib.error import HTTPError
 import json
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag

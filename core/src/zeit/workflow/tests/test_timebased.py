@@ -1,6 +1,6 @@
 from ..timebased import TimeBasedWorkflow
 from datetime import datetime, timedelta
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent

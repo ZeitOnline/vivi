@@ -1,4 +1,4 @@
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.addcentral.testing
 
 
@@ -38,7 +38,7 @@ class FormTest(zeit.addcentral.testing.BrowserTestCase):
     def test_ressort_is_required_for_breaking_news(self):
         b = self.browser
         b.post('http://localhost/++skin++vivi/@@addcentral',
-               six.moves.urllib.parse.urlencode({
+               urllib.parse.urlencode({
                    'sidebar.form.type_':
                    '<zeit.content.article.interfaces.IBreakingNews>',
                    'sidebar.form.ressort-empty-marker': '1',
@@ -48,7 +48,7 @@ class FormTest(zeit.addcentral.testing.BrowserTestCase):
         # Test that this does not poison the required status for other content
         # types.
         b.post('http://localhost/++skin++vivi/@@addcentral',
-               six.moves.urllib.parse.urlencode({
+               urllib.parse.urlencode({
                    'sidebar.form.type_':
                    'image',
                    'sidebar.form.ressort-empty-marker': '1',

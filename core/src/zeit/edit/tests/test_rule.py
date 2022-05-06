@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 import pytz

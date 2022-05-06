@@ -1,6 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
-import six.moves.urllib.parse
 import transaction
+import urllib.parse
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -174,12 +174,11 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
         else:
             semantic_change = self.request.get('semantic_change', '')
         self.redirect(self.url(
-            self.context, '@@checkin?%s' % six.moves.urllib.parse.urlencode(
-                dict(
-                    came_from=self.request.get('came_from', ''),
-                    ignore_conflicts='true',
-                    semantic_change=semantic_change,
-                ))))
+            self.context, '@@checkin?%s' % urllib.parse.urlencode(dict(
+                came_from=self.request.get('came_from', ''),
+                ignore_conflicts='true',
+                semantic_change=semantic_change,
+            ))))
 
     def delete(self):
         target = self.obj_in_repository
