@@ -66,14 +66,5 @@ Now we may change the memo:
 
 Make sure the memo has no XML representation.
 
->>> print(zeit.cms.testing.xmltotext(checked_in.xml))
-<testtype...>
-  <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">testcontenttype</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">...</attribute>
-  </head>
-  <body/>
-</testtype>
-
+>>> 'Everything' in zeit.cms.testing.xmltotext(checked_in.xml)
+False

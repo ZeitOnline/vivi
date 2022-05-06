@@ -1,4 +1,5 @@
 from io import StringIO
+from zeit.cms.workingcopy.interfaces import IWorkingcopy
 import datetime
 import gocept.lxml.objectify
 import grokcore.component as grok
@@ -183,12 +184,15 @@ class PropertyToXMLAttribute:
     zeit.cms.content.interfaces.IDAVPropertiesInXML,
     zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
 def map_dav_property_to_xml(context, event):
-    """Copy dav properties to XML if possible.
-
-    """
+    """Copy dav properties to XML if possible."""
+    # Checking ILocalContent.providedBy(context) would be semantically nicer,
+    # but then we would not support the "AddForm and checkin directly" usecase
+    # that most content types (except for Article) use.
+    parent = context.__parent__
+    if parent is not None and not IWorkingcopy.providedBy(parent):
+        return
     # Remove security proxy: If the user was allowed to change the property
     # (via setattr) *we* copy that to the xml, regardles of the security.
-    # XXX shouldn't we check for ILocalContent?
     content = zope.security.proxy.removeSecurityProxy(
         zeit.cms.content.interfaces.IXMLRepresentation(context))
     sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
