@@ -11,7 +11,7 @@ class AssetWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     """Workflow for assets."""
 
     def can_publish(self):
-        status = super(AssetWorkflow, self).can_publish()
+        status = super().can_publish()
         if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
             return status
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS

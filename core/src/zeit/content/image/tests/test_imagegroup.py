@@ -14,7 +14,7 @@ import zope.lifecycleevent
 class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ImageGroupTest, self).setUp()
+        super().setUp()
         self.group = create_image_group_with_master_image()
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
@@ -340,7 +340,7 @@ class ImageGroupFromImage(zeit.content.image.testing.BrowserTestCase):
 class ExternalIDTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ExternalIDTest, self).setUp()
+        super().setUp()
         self.group = create_image_group_with_master_image()
 
     def search(self, filename):
@@ -372,7 +372,7 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         from ..imagegroup import Thumbnails
-        super(ThumbnailsTest, self).setUp()
+        super().setUp()
         self.group = create_image_group_with_master_image()
         self.thumbnails = Thumbnails(self.group)
 

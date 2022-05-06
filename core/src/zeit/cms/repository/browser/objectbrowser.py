@@ -34,7 +34,7 @@ class ObjectBrowser(zeit.cms.browser.listing.Listing):
 
     def __call__(self):
         self.request.form['autoexpand-tree'] = True
-        return super(ObjectBrowser, self).__call__()
+        return super().__call__()
 
     def filter_content(self, obj):
         if self.filter_source is not None:

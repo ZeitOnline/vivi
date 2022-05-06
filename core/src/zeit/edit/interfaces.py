@@ -193,7 +193,7 @@ class IOrderUpdatedEvent(zope.container.interfaces.IContainerModifiedEvent):
 class OrderUpdatedEvent(zope.container.contained.ContainerModifiedEvent):
 
     def __init__(self, context, *old_order):
-        super(OrderUpdatedEvent, self).__init__(context)
+        super().__init__(context)
         self.old_order = old_order
 
 

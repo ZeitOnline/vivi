@@ -282,7 +282,7 @@ class TagReplaceStep(ConversionStep):
     assert len(html_xml_tags) == len(xml_html_tags)
 
     def __init__(self, context, converter):
-        super(TagReplaceStep, self).__init__(context, converter)
+        super().__init__(context, converter)
         self.xpath_xml = '|'.join(['.//%s' % tag for tag
                                    in self.xml_html_tags.keys()])
 
@@ -307,7 +307,7 @@ class PassThroughStep(ConversionStep):
     allow_tags = ['p', 'ul', 'ol']
 
     def __init__(self, context, converter):
-        super(PassThroughStep, self).__init__(context, converter)
+        super().__init__(context, converter)
         self.xpath_xml = '|'.join(['.//%s' % tag for tag in self.allow_tags])
 
     def to_html(self, node):
@@ -713,7 +713,7 @@ class ReferenceStep(ConversionStep):
     content_type = None  # override in subclass
 
     def __init__(self, context, converter):
-        super(ReferenceStep, self).__init__(context, converter)
+        super().__init__(context, converter)
         self.xpath_xml = './/%s' % self.content_type
         self.xpath_html = './/*[contains(@class, "%s")]' % self.content_type
 
@@ -748,14 +748,14 @@ class PortraitboxStep(ReferenceStep):
     content_type = 'portraitbox'
 
     def to_html(self, node):
-        new_node = super(PortraitboxStep, self).to_html(node)
+        new_node = super().to_html(node)
         layout = lxml.builder.E.div(
             node.get('layout') or '', **{'class': 'layout'})
         new_node.append(layout)
         return new_node
 
     def to_xml(self, node):
-        new_node = super(PortraitboxStep, self).to_xml(node)
+        new_node = super().to_xml(node)
         layout = node.xpath('*[@class="layout"]')[0].text or ''
         new_node.set('layout', layout)
         return new_node

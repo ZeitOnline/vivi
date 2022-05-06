@@ -49,7 +49,7 @@ def repository_content(context):
 class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(ManagerTest, self).setUp()
+        super().setUp()
         self.content = Content()
         gsm = zope.component.getGlobalSiteManager()
         gsm.registerAdapter(local_content)
@@ -57,7 +57,7 @@ class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def tearDown(self):
         self._tear_down_adapters()
-        super(ManagerTest, self).tearDown()
+        super().tearDown()
 
     def _tear_down_adapters(self):
         gsm = zope.component.getGlobalSiteManager()
@@ -121,7 +121,7 @@ class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
 class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(ValidateCheckinTest, self).setUp()
+        super().setUp()
         zope.component.getSiteManager().registerHandler(
             self.provoke_veto, (IValidateCheckinEvent,))
 
@@ -134,7 +134,7 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
     def tearDown(self):
         zope.component.getSiteManager().unregisterHandler(
             self.provoke_veto, (IValidateCheckinEvent,))
-        super(ValidateCheckinTest, self).tearDown()
+        super().tearDown()
 
     def provoke_veto(self, event):
         event.veto('provoked veto')
@@ -182,7 +182,7 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 class SemanticChangeTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(SemanticChangeTest, self).setUp()
+        super().setUp()
         self.content = self.repository['testcontent']
         self.sc = zeit.cms.content.interfaces.ISemanticChange(self.content)
 

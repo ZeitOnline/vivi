@@ -4,7 +4,7 @@ import zeit.cms.testing
 class MetadataForm(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
-        super(MetadataForm, self).setUp()
+        super().setUp()
         b = self.browser
         b.open(
             'http://localhost/++skin++cms/repository/testcontent/@@checkout')

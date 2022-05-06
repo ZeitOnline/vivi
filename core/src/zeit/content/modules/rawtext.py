@@ -88,7 +88,7 @@ class EmbedParameters(
             node = lxml.objectify.E.param(value, id=key)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.append(node)
-        super(EmbedParameters, self).__setattr__('_p_changed', True)
+        super().__setattr__('_p_changed', True)
 
     def _converter(self, name):
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
@@ -163,7 +163,7 @@ class EmbedParameterForm:
         # UI-only dependency
         from zeit.cms.browser.widget import RestructuredTextDisplayWidget
 
-        super(EmbedParameterForm, self).__init__(context, request)
+        super().__init__(context, request)
         self.form_fields = zope.formlib.form.FormFields(
             ICSS, zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(
                 *self._omit_fields)

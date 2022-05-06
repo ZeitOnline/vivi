@@ -68,7 +68,7 @@ class Tree(zeit.cms.browser.tree.Tree):
     def __call__(self):
         response = self.request.response
         response.setHeader('Cache-Control', 'private; max-age=360')
-        return super(Tree, self).__call__()
+        return super().__call__()
 
     def listContainer(self, container):
         for obj in sorted(container.values(),
@@ -123,7 +123,7 @@ class Tree(zeit.cms.browser.tree.Tree):
             url = self.getUrl(obj)
             if self.selected(url):
                 return True
-        return super(Tree, self).expanded(obj)
+        return super().expanded(obj)
 
 
 class HiddenCollections(zeit.cms.browser.view.Base):

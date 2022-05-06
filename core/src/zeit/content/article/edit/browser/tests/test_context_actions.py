@@ -5,7 +5,7 @@ class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
         import transaction
-        super(WorkingcopyTest, self).setUp()
+        super().setUp()
         self.selenium.setTimeout(3600000)
         self.open('/repository/online/2007/01/Somalia/')
         self.open('/repository/online/2007/01/Somalia/@@checkout')

@@ -196,7 +196,7 @@ class Message(zeit.push.message.Message):
         return 'Template %s' % self.config.get('payload_template')
 
     def log_success(self):
-        super(Message, self).log_success()
+        super().log_success()
         try:
             grafana = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='grafana')

@@ -10,7 +10,7 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
 
     @property
     def css_class(self):
-        classes = super(ViewletManager, self).css_class
+        classes = super().css_class
         visible = 'block-visible-off' if not self.context.visible else ''
         return ' '.join(['editable-module', visible, classes])
 

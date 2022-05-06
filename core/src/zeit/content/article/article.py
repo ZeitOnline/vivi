@@ -168,7 +168,7 @@ class NoMainImageBlockReference(zeit.cms.content.reference.EmptyReference):
 
     def create(self, target):
         self.source = self.source._create_image_block_in_front()
-        return super(NoMainImageBlockReference, self).create(target)
+        return super().create(target)
 
 
 class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -300,7 +300,7 @@ class SearchableText(grok.Adapter):
 class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
 
     def can_publish(self):
-        result = super(ArticleWorkflow, self).can_publish()
+        result = super().can_publish()
         if result == CAN_PUBLISH_ERROR:
             return CAN_PUBLISH_ERROR
         validator = zeit.edit.rule.ValidatingWorkflow(self.context)

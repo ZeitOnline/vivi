@@ -50,7 +50,7 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         zeit.cms.content.interfaces.ICommonMetadata)
 
     def setUpWidgets(self, *args, **kw):
-        super(CommonMetadataFormBase, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('teaserText')
         self.set_charlimit('tldr_text')
 
@@ -60,7 +60,7 @@ class CommonMetadataAddForm(CommonMetadataFormBase,
     """Add form which contains the common metadata."""
 
     def setUpWidgets(self, *args, **kw):
-        super(CommonMetadataAddForm, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
         if not self.widgets['year'].hasInput():
             self.widgets['year'].setRenderedValue(settings.default_year)

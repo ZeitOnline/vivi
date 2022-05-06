@@ -74,7 +74,7 @@ class Base(zeit.push.browser.form.SocialBase,
     )
 
     def setUpWidgets(self, *args, **kw):
-        super(Base, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('teaserSupertitle')
         self.set_charlimit('teaserTitle')
         self.set_charlimit('teaserText')
@@ -86,7 +86,7 @@ class Add(Base, zeit.cms.browser.form.AddForm):
     factory = zeit.content.link.link.Link
 
     def setUpWidgets(self, *args, **kw):
-        super(Add, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
         if not self.widgets['year'].hasInput():
             self.widgets['year'].setRenderedValue(settings.default_year)

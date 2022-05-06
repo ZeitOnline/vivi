@@ -19,7 +19,7 @@ class TestBase(zeit.imp.tests.BrowserTestCase):
     image_path = 'http://localhost/++skin++cms/repository/group'
 
     def setUp(self):
-        super(TestBase, self).setUp()
+        super().setUp()
         zope.component.hooks.setSite(self.getRootFolder())
         zeit.content.image.testing.create_image_group_with_master_image()
 

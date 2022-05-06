@@ -10,7 +10,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
         from zeit.content.volume.volume import Volume
-        super(VolumeReferenceTest, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.teaserText = 'original'
         self.repository['testvolume'] = volume

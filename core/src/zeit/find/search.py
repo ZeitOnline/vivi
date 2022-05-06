@@ -19,7 +19,7 @@ class Elasticsearch(zeit.retresco.search.Elasticsearch):
     def search(self, query, **kw):
         query.setdefault('_source', DEFAULT_FIELDS)
         kw.setdefault('rows', 50)
-        return super(Elasticsearch, self).search(query, **kw)
+        return super().search(query, **kw)
 
 
 @implementer(ICMSSearch)

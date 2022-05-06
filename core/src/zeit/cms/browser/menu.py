@@ -13,7 +13,7 @@ import zope.viewlet.viewlet
 class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
 
     def getMenuItems(self, object, request):
-        result = super(ExternalActionsMenu, self).getMenuItems(object, request)
+        result = super().getMenuItems(object, request)
         for item in result:
             item['target'] = "_blank"
             item['rel'] = 'zeit.cms.follow_with_lock'
@@ -37,7 +37,7 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
     rel = None
 
     def update(self):
-        super(ActionMenuItem, self).update()
+        super().update()
         self.item_id = 'menuitem.%s' % time.time()
 
     def get_url(self):
@@ -97,7 +97,7 @@ class CMSMenuItem(GlobalMenuItem):
 
     @property
     def css(self):
-        return super(CMSMenuItem, self).css
+        return super().css
 
     @property
     def selected(self):

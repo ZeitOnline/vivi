@@ -21,13 +21,13 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.sourcepoint.testing.LAYER
 
     def setUp(self):
-        super(JavascriptDownload, self).setUp()
+        super().setUp()
         self.patcher = mock.patch('zeit.sourcepoint.javascript.IPublish')
         self.publish = self.patcher.start()
 
     def tearDown(self):
         self.patcher.stop()
-        super(JavascriptDownload, self).tearDown()
+        super().tearDown()
 
     def test_latest_version_sorts_folder_items(self):
         folder = self.repository['sourcepoint']

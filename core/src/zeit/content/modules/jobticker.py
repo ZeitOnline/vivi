@@ -30,7 +30,7 @@ class JobTicker(zeit.edit.block.Element):
 class Feed(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, available, teaser, landing_url, feed_url):
-        super(Feed, self).__init__(id, title, available)
+        super().__init__(id, title, available)
         self.id = id
         self.teaser = teaser
         self.landing_url = landing_url
@@ -46,7 +46,7 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
 
     def __init__(self, content_iface):
         self.content_iface = content_iface
-        super(FeedSource, self).__init__()
+        super().__init__()
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -68,4 +68,4 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
         content = self.content_iface(context, None)
         if not content:
             return False
-        return super(FeedSource, self).isAvailable(value, content)
+        return super().isAvailable(value, content)

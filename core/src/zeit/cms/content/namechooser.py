@@ -16,7 +16,7 @@ class NameChooser(zope.container.contained.NameChooser):
         self.context = context
 
     def checkName(self, name, object):
-        super(NameChooser, self).checkName(name, object)
+        super().checkName(name, object)
         m = invalid_chars.search(name)
         if m is not None:
             raise zope.exceptions.interfaces.UserError(
@@ -27,4 +27,4 @@ class NameChooser(zope.container.contained.NameChooser):
             name = six.text_type(name)
         name = name.lower().replace(' ', '-')
         name = invalid_chars.sub('', name)
-        return super(NameChooser, self).chooseName(name, object)
+        return super().chooseName(name, object)

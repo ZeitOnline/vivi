@@ -195,11 +195,11 @@ class FakeValidatingWorkflowMixin:
     """Mixin to register and unregister FakeValidatingWorkflow."""
 
     def setUp(self):
-        super(FakeValidatingWorkflowMixin, self).setUp()
+        super().setUp()
         self.registered_adapters = []
 
     def tearDown(self):
-        super(FakeValidatingWorkflowMixin, self).tearDown()
+        super().tearDown()
         gsm = zope.component.getGlobalSiteManager()
         for adapter in self.registered_adapters:
             gsm.unregisterAdapter(adapter)

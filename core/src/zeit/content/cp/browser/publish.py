@@ -15,5 +15,5 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     # XXX duplicated from zeit.cms.checkout.browser.MenuItem
     def render(self):
         if self.is_visible():
-            return super(MenuItem, self).render()
+            return super().render()
         return ''

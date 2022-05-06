@@ -26,7 +26,7 @@ class TestHTMLContent(unittest.TestCase):
 class TestEntryMetadata(zeit.content.gallery.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestEntryMetadata, self).setUp()
+        super().setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
@@ -68,7 +68,7 @@ class TestEntryImages(zeit.content.gallery.testing.FunctionalTestCase):
 class TestVisibleEntryCount(zeit.content.gallery.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVisibleEntryCount, self).setUp()
+        super().setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)

@@ -42,10 +42,10 @@ class FileBrowser(zeit.cms.browser.view.Base,
         return zeit.cms.clipboard.interfaces.IClipboard(self.request.principal)
 
     def _list_folders(self):
-        return self.dictify(super(FileBrowser, self)._list_folders())
+        return self.dictify(super()._list_folders())
 
     def _list_files(self):
-        return self.dictify(super(FileBrowser, self)._list_files())
+        return self.dictify(super()._list_files())
 
     def dictify(self, objects):
         for obj in objects:

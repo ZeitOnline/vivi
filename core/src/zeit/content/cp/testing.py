@@ -154,7 +154,7 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
     window_height = 1000
 
     def setUp(self):
-        super(SeleniumTestCase, self).setUp()
+        super().setUp()
 
     def get_module(self, area, text):
         return ('xpath=//div'

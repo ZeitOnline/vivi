@@ -44,5 +44,5 @@ class LogEntrySource(
                       principal=principal,
                       message=message))
 
-        return super(LogEntrySource, self).createTerm(
+        return super().createTerm(
             context, source, value, title, token, request)

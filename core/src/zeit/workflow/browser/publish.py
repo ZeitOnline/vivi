@@ -17,7 +17,7 @@ class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     lightbox = '@@publish.html'
 
     def render(self):
-        return super(PublishMenuItem, self).render()
+        return super().render()
 
 
 class Publish:
@@ -73,4 +73,4 @@ class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
         if not self.visible or not IRepositoryContent.providedBy(self.context):
             return ''
         else:
-            return super(RetractMenuItem, self).render()
+            return super().render()

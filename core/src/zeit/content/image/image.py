@@ -44,7 +44,7 @@ class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
 class BaseImage:
 
     def __init__(self, uniqueId=None):
-        super(BaseImage, self).__init__(uniqueId, mimeType='')
+        super().__init__(uniqueId, mimeType='')
 
     # Not writeable since we always calculate it, but our superclasses want to.
     @FakeWriteableCachedProperty
@@ -162,7 +162,7 @@ class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
     target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
 
     def update_with_context(self, entry, workflow):
-        super(XMLReferenceUpdater, self).update_with_context(entry, workflow)
+        super().update_with_context(entry, workflow)
 
         parent = zope.security.proxy.removeSecurityProxy(
             workflow).context.__parent__
@@ -171,7 +171,7 @@ class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
 
         if not entry.get('expires'):
             parent_workflow = self.target_iface(parent)
-            super(XMLReferenceUpdater, self).update_with_context(
+            super().update_with_context(
                 entry, parent_workflow)
 
 

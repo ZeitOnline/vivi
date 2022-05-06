@@ -394,7 +394,7 @@ class Image(Converter):
             # skip zeit.newsimport images. Unfortunately, image(groups) have no
             # ressort or product-id with which we could filter this.
             return None
-        return super(Image, cls).__new__(cls, context)
+        return super().__new__(cls, context)
 
     def __call__(self):
         title = self.context.title or self.content.__name__

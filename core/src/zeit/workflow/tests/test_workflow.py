@@ -16,7 +16,7 @@ import zope.interface
 class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AssetWorkflowTests, self).setUp()
+        super().setUp()
         self.old_implements = list(zope.interface.implementedBy(
             zeit.cms.repository.unknown.PersistentUnknownResource))
         zope.interface.classImplementsOnly(
@@ -29,7 +29,7 @@ class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):
         zope.interface.classImplementsOnly(
             zeit.cms.repository.unknown.PersistentUnknownResource,
             *self.old_implements)
-        super(AssetWorkflowTests, self).tearDown()
+        super().tearDown()
 
     def test_asset_workflow(self):
         """The asset workflow is also a time based workflow.

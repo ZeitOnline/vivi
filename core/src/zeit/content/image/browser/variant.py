@@ -88,4 +88,4 @@ class Editor:
         # variant preview tries to do it simultaneously later on (which only
         # leads to conflicts).
         zeit.content.image.interfaces.IThumbnails(self.context).source_image
-        return super(Editor, self).__call__()
+        return super().__call__()

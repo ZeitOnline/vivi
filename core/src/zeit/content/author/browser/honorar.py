@@ -52,7 +52,7 @@ class LookupForm(zeit.cms.browser.form.FormBase,
         return True
 
     def update(self):
-        super(LookupForm, self).update()
+        super().update()
         if not self.need_confirmation_checkbox:
             self.form_fields = self.form_fields.omit('confirmed_duplicate')
             # XXX This empties the error state of other widgets, e.g.
@@ -73,7 +73,7 @@ class Lookup(zeit.cms.browser.view.Base):
             return
 
         # Render template to display selection
-        return super(Lookup, self).__call__()
+        return super().__call__()
 
     def redirect_to_addform(self, params):
         addform = self.url(

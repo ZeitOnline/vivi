@@ -28,7 +28,7 @@ class Manager(zeit.cms.browser.view.Base):
                 self.syndicate(targets, hidden=False, hidden_relateds=True)
             elif 'publish' in self.request.form:
                 self.publish(targets)
-        super(Manager, self).update()
+        super().update()
 
     def has_content(self):
         return self.manager.targets

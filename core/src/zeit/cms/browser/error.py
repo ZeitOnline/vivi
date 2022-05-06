@@ -18,7 +18,7 @@ class ErrorView:
             self.request.response.setHeader('Content-Type', 'text/plain')
             return self.message
         else:
-            return super(ErrorView, self).__call__()
+            return super().__call__()
 
     @property
     def is_xhr(self):
@@ -53,7 +53,7 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
         works out just fine, so we can enrich the exception object here.
         """
 
-        super(ErrorReportingUtility, self).raising(info, request)
+        super().raising(info, request)
         self._notify_bugsnag(info, request)
         exception = info[1]
         if not isinstance(info[2], six.string_types):

@@ -8,7 +8,7 @@ import zope.app.appsetup.product
 class Source(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(Source, self).setUp()
+        super().setUp()
         self.product_config = \
             zope.app.appsetup.product.getProductConfiguration('zeit.cms')
 

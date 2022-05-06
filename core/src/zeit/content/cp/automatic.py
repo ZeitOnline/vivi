@@ -34,7 +34,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             # There's no interface for xmlsupport.Persistent which could tell
             # us that this attribute needs special treatment.
             if name == '__parent__':
-                return super(AutomaticArea, self).__parent__
+                return super().__parent__
             if name in zeit.content.cp.interfaces.IArea:
                 return getattr(self.context, name)
             raise

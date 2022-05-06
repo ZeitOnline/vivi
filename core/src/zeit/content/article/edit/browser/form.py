@@ -27,7 +27,7 @@ class FormFields(zope.formlib.form.FormFields):
     def __init__(self, *args, **kw):
         kw.setdefault(
             'render_context', zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
-        super(FormFields, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
 
 
 class Heading:
@@ -36,7 +36,7 @@ class Heading:
         # workaround until the title is synchronized to the heading (#11255)
         if IAutomaticallyRenameable(self.context).renameable:
             return ''
-        return super(Heading, self).render()
+        return super().render()
 
 
 class MemoFormGroup(zeit.edit.browser.form.FormGroup):
@@ -71,7 +71,7 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm,
         'supertitle', 'title', 'subtitle')
 
     def setUpWidgets(self, *args, **kw):
-        super(ArticleContentHead, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('supertitle')
         self.set_charlimit('title')
         self.set_charlimit('subtitle')
@@ -91,7 +91,7 @@ class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(ArticleContentMainImage, self).__call__()
+        return super().__call__()
 
     def _success_handler(self):
         # even though the image is not displayed in the body area,
@@ -122,7 +122,7 @@ class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
     def render(self):
         if not IAutomaticallyRenameable(self.context).renameable:
             return ''
-        return super(FilenameFormGroup, self).render()
+        return super().render()
 
 
 class NewFilename(zeit.edit.browser.form.InlineForm):
@@ -163,13 +163,13 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
     ).select('hide_ligatus_recommendations', 'prevent_ligatus_indexing')
 
     def setUpWidgets(self, *args, **kw):
-        super(InternalLinks, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['related'].detail_view_name = '@@related-details'
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(InternalLinks, self).__call__()
+        return super().__call__()
 
 
 class StatusForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -226,7 +226,7 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select('ressort', 'sub_ressort')
 
     def render(self):
-        result = super(MetadataA, self).render()
+        result = super().render()
         if result:
             result += (
                 '<script type="text/javascript">'
@@ -255,7 +255,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select('authorships')
 
     def setUpWidgets(self, *args, **kw):
-        super(MetadataC, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['authorships'].add_type = IAuthor
         self.widgets['authorships'].display_list_below_buttons = True
 
@@ -271,7 +271,7 @@ class MetadataAgency(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields()
 
     def __init__(self, context, request):
-        super(MetadataAgency, self).__init__(context, request)
+        super().__init__(context, request)
         if FEATURE_TOGGLES.find('article_agencies'):
             self.form_fields = FormFields(ICommonMetadata).select('agencies')
 
@@ -341,7 +341,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(TeaserImage, self).__call__()
+        return super().__call__()
 
     def setUpWidgets(self, *args, **kw):
         try:
@@ -355,7 +355,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
                     zeit.cms.browser.widget.ColorpickerWidget)
         except TypeError:
             self.form_fields = self.form_fields.omit('fill_color')
-        super(TeaserImage, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['image'].add_type = IImageGroup
 
     def _success_handler(self):
@@ -376,7 +376,7 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
     form_fields = FormFields(ICommonMetadata).select('teaserSupertitle')
 
     def setUpWidgets(self, *args, **kw):
-        super(TeaserSupertitle, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('teaserSupertitle')
 
 
@@ -389,7 +389,7 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm,
     form_fields = FormFields(ICommonMetadata).select('teaserTitle')
 
     def setUpWidgets(self, *args, **kw):
-        super(TeaserTitle, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('teaserTitle')
 
 
@@ -402,7 +402,7 @@ class TeaserText(zeit.edit.browser.form.InlineForm,
     form_fields = FormFields(ICommonMetadata).select('teaserText')
 
     def setUpWidgets(self, *args, **kw):
-        super(TeaserText, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('teaserText')
 
     def _success_handler(self):
@@ -432,7 +432,7 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
         'year', 'volume', 'page', 'printRessort', 'byline')
 
     def setUpWidgets(self, *args, **kw):
-        super(OptionsB, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         # the 'page' field is an Int, so we can't use default='n/a'
         if not self.context.page:
             self.widgets['page'].setRenderedValue('n/a')
@@ -489,7 +489,7 @@ class RecipeCategories(zeit.edit.browser.form.InlineForm):
 
     def render(self):
         if IArticle(self.context).genre in RecipeCategories.recipe_genres:
-            return super(RecipeCategories, self).render()
+            return super().render()
         # Need to preserve the id for js to still be able to perform
         # reload-inline-form after it has been cleared once.
         return '<fieldset id="form-recipe-categories" />'
@@ -516,7 +516,7 @@ class ChannelSelector(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select('channels')
 
     def render(self):
-        result = super(ChannelSelector, self).render()
+        result = super().render()
         if result:
             result += """\
 <script type="text/javascript">
@@ -529,13 +529,13 @@ class ChannelSelector(zeit.edit.browser.form.InlineForm):
     def submit_on_remove(self, action, data):
         """Trigger a save each time the remove button is pressed,
         since there is no other event for the inline form to do that."""
-        super(ChannelSelector, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
 
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         """Once you override one action, you lose *all* inherited ones."""
-        super(ChannelSelector, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
 
 
 class StorystreamFormGroup(zeit.edit.browser.form.FoldableFormGroup):
@@ -554,7 +554,7 @@ class Tldr(zeit.edit.browser.form.InlineForm,
         'storystreams')
 
     def setUpWidgets(self, *args, **kw):
-        super(Tldr, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('tldr_title')
         self.set_charlimit('tldr_text')
 
@@ -563,10 +563,10 @@ class Tldr(zeit.edit.browser.form.InlineForm,
     def submit_on_remove(self, action, data):
         """Trigger a save each time the remove button is pressed,
         since there is no other event for the inline form to do that."""
-        super(Tldr, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
 
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         """Once you override one action, you lose *all* inherited ones."""
-        super(Tldr, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)

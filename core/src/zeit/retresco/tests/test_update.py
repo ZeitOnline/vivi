@@ -16,7 +16,7 @@ import zope.lifecycleevent
 class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(UpdateTest, self).setUp()
+        super().setUp()
         self.tms = mock.Mock()
         self.tms.get_article_data.return_value = {}
         self.tms.enrich.return_value = {}
@@ -168,7 +168,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(UpdatePublishTest, self).setUp()
+        super().setUp()
         self.tms = mock.Mock()
         self.tms.get_article_data.return_value = {}
         zope.component.getGlobalSiteManager().registerUtility(
@@ -216,13 +216,13 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
 class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(IndexParallelTest, self).setUp()
+        super().setUp()
         self.index_patch = mock.patch('zeit.retresco.update.index')
         self.index = self.index_patch.start()
 
     def tearDown(self):
         self.index_patch.stop()
-        super(IndexParallelTest, self).tearDown()
+        super().tearDown()
 
     def test_should_create_job_per_folder_entry(self):
         zeit.retresco.update.index_parallel.delay(
@@ -255,7 +255,7 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
     layer = zeit.retresco.testing.CELERY_LAYER
 
     def setUp(self):
-        super(RetryTest, self).setUp()
+        super().setUp()
 
         self.tms = mock.Mock()
         self.tms.get_article_data.return_value = {}
@@ -269,7 +269,7 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
 
     def tearDown(self):
         self.retry_patch.stop()
-        super(RetryTest, self).tearDown()
+        super().tearDown()
 
     def test_retries_on_technical_error(self):
         self.tms.enrich.side_effect = [TechnicalError('internal', 500), None]

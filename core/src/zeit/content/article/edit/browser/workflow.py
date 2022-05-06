@@ -55,7 +55,7 @@ class Publish(zeit.edit.browser.form.InlineForm):
         return fields
 
     def setUpWidgets(self, *args, **kw):
-        super(Publish, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         items = list(self.widgets.__Widgets_widgets_items__)
         items.append(self._make_view_widget('edit.form.checkin-buttons'))
         if not self.can_checkout:
@@ -150,7 +150,7 @@ class ViewWidget(zope.formlib.widget.BrowserWidget):
     def __init__(self, context, request, view):
         field = mock.Mock()
         field.__name__ = 'htmlcontent.%s' % id(self)
-        super(ViewWidget, self).__init__(field, request)
+        super().__init__(field, request)
         self.context = context
         self.request = request
         self.view = view

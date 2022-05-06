@@ -7,6 +7,6 @@ class EditBox(zeit.edit.browser.view.EditBox):
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
-        result = super(EditBox, self).handle_edit_action.success(data)
+        result = super().handle_edit_action.success(data)
         self.close = False
         return result

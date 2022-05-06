@@ -6,7 +6,7 @@ import zeit.content.cp.testing
 class TestNewsletter(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestNewsletter, self).setUp()
+        super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('newslettersignup')
         self.repository['centerpage'] = self.centerpage

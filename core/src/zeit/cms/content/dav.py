@@ -411,7 +411,7 @@ class ChannelProperty(UnicodeProperty):
 
     def toProperty(self, value):
         value = ' '.join([x for x in value if x])
-        return super(ChannelProperty, self).toProperty(value)
+        return super().toProperty(value)
 
 
 # Since CollectionTextLineProperty only applies to value_type TextLine,
@@ -473,7 +473,7 @@ class GenericCollectionProperty(GenericProperty):
         self.content_converter = None
 
     def fromProperty(self, value):
-        value = super(GenericCollectionProperty, self).fromProperty(value)
+        value = super().fromProperty(value)
         if self.content_converter is not None:
             type_ = type(zope.proxy.removeAllProxies(value))
             value = type_(self.content_converter.fromProperty(item)
@@ -485,7 +485,7 @@ class GenericCollectionProperty(GenericProperty):
             type_ = type(zope.proxy.removeAllProxies(value))
             value = type_(self.content_converter.toProperty(item)
                           for item in value)
-        return super(GenericCollectionProperty, self).toProperty(value)
+        return super().toProperty(value)
 
 
 def mapProperties(interface, namespace, names, use_default=False,

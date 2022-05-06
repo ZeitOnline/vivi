@@ -70,5 +70,5 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem, RenameGuards):
         if (zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
                 self.context) and
                 not self.is_published and not self.is_folder_with_content):
-            return super(MenuItem, self).render()
+            return super().render()
         return ''

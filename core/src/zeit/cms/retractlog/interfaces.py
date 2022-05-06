@@ -13,7 +13,7 @@ class URLText(zope.schema.Text):
     def _validate(self, value):
         if not value:
             raise zope.schema.interfaces.TooShort()
-        super(URLText, self)._validate(value)
+        super()._validate(value)
         url_limit = int(
             RETRACT_LOG_CONFIG.limit)
         if value.count('\n') >= url_limit:

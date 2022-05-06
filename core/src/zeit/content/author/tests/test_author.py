@@ -38,7 +38,7 @@ class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
 class FreetextCopyTest(zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(FreetextCopyTest, self).setUp()
+        super().setUp()
         author = zeit.content.author.author.Author()
         author.firstname = 'William'
         author.lastname = 'Shakespeare'
@@ -163,7 +163,7 @@ class BiographyQuestionsTest(zeit.content.author.testing.FunctionalTestCase):
 class SSOIdConnectTest(zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(SSOIdConnectTest, self).setUp()
+        super().setUp()
         self.config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.author')
         self.author = zeit.content.author.author.Author()

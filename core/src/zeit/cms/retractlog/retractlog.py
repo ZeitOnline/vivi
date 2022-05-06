@@ -20,7 +20,7 @@ class Job(zope.container.contained.Contained,
     """A list of ICMSContent URLs, which were or will be retracted."""
 
     def __init__(self):
-        super(Job, self).__init__()
+        super().__init__()
         self.urls_text = ''
         self.urls = []
         self.invalid = []

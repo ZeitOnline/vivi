@@ -98,7 +98,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
             x['access_token'] for x in accounts['accounts']['data']
             if x['name'] == self.settings['page_name']][0]
 
-        return super(GenerateToken, self).__call__()
+        return super().__call__()
 
     @property
     def settings(self):

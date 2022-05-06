@@ -35,7 +35,7 @@ class IngredientsWidget(
         'ingredients_widget.pt')
 
     def __init__(self, context, source, request):
-        super(IngredientsWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -86,7 +86,7 @@ class RecipeCategoriesWidget(
         'categories_widget.pt')
 
     def __init__(self, context, source, request):
-        super(RecipeCategoriesWidget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -125,7 +125,7 @@ class DisplayWidget(grok.MultiAdapter,
         'display-recipe-categories.pt')
 
     def __init__(self, field, source, request):
-        super(DisplayWidget, self).__init__(
+        super().__init__(
             field,
             zope.formlib.source.IterableSourceVocabulary(source, request),
             request)

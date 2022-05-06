@@ -101,4 +101,4 @@ class EditEntry(zeit.cms.browser.form.EditForm):
         if self.context.text is not None and self.context.text.countchildren():
             self.form_fields += zope.formlib.form.FormFields(
                 zeit.wysiwyg.interfaces.IHTMLContent)
-        super(EditEntry, self).setUpWidgets()
+        super().setUpWidgets()

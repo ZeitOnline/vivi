@@ -11,7 +11,7 @@ class RelatableContentSource(zeit.cms.content.contentsource.CMSContentSource):
         conf = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         types = conf.get('relatable-content-types', '*')
         if types == '*':
-            return super(RelatableContentSource, self).get_check_interfaces()
+            return super().get_check_interfaces()
         result = []
         for name in types.split():
             iface = zope.dottedname.resolve.resolve(name)

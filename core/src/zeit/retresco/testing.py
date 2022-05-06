@@ -44,7 +44,7 @@ class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
         config = self.raw_config.format(port=self['http_port'])
         self.config = zope.app.appsetup.product.loadConfiguration(
             StringIO(config))[self.package]
-        super(ProductConfigLayer, self).setUp()
+        super().setUp()
 
 
 CONFIG_LAYER = ProductConfigLayer(product_config, bases=(

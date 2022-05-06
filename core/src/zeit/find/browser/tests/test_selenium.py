@@ -10,7 +10,7 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
     skin = 'vivi'
 
     def setUp(self):
-        super(TestSearch, self).setUp()
+        super().setUp()
         zeit.find.testing.LAYER.set_result(
             'zeit.find.tests', 'data/obama.json')
         self.types_patch = mock.patch(
@@ -23,7 +23,7 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
     def tearDown(self):
         self.types_patch.stop()
-        super(TestSearch, self).tearDown()
+        super().tearDown()
 
     def test_extended_search_display(self):
         s = self.selenium

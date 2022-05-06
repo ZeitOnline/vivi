@@ -12,7 +12,7 @@ import zope.component
 class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(FindDOMTest, self).setUp()
+        super().setUp()
         self.open('/@@/zeit.content.article.edit.browser.tests.fixtures'
                   '/replace.html')
 
@@ -135,7 +135,7 @@ class FindReplaceTest(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def add_article(self):
-        super(FindReplaceTest, self).add_article()
+        super().add_article()
         below_body = '#edit-form-recensions .edit-bar .fold-link'
         self.eval(
             'document.querySelector("%s").scrollIntoView()' % below_body)

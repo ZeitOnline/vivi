@@ -20,7 +20,7 @@ class Login:
         zeit.cms.browser.resources.login_css.need()
         if not self.authenticated:
             # Render template with error message
-            result = super(Login, self).__call__()
+            result = super().__call__()
             return result
         if self.camefrom:
             return self.request.response.redirect(self.camefrom)

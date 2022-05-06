@@ -135,8 +135,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
     """Property which is stored in an XML attribute."""
 
     def __init__(self, path, attribute_name, field=None, use_default=False):
-        super(ObjectPathAttributeProperty, self).__init__(
-            path, field, use_default)
+        super().__init__(path, field, use_default)
         self.attribute_name = attribute_name
 
     def __get__(self, instance, class_):
@@ -170,7 +169,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
                 value = six.text_type(value)
             node = self.getNode(instance)
             if node is None:
-                super(ObjectPathAttributeProperty, self).__set__(instance, '')
+                super().__set__(instance, '')
                 node = self.getNode(instance)
             node.set(self.attribute_name, value)
 
@@ -228,7 +227,7 @@ class SimpleMultiProperty(MultiPropertyBase):
 class SingleResource(ObjectPathProperty):
 
     def __init__(self, path, xml_reference_name=None, attributes=None):
-        super(SingleResource, self).__init__(path)
+        super().__init__(path)
         if (xml_reference_name is None) ^ (attributes is None):
             raise ValueError(
                 "Either both `xml_reference_name` and `attributes` or neither"
@@ -249,7 +248,7 @@ class SingleResource(ObjectPathProperty):
                 if unique_id:
                     break
         else:
-            unique_id = super(SingleResource, self).__get__(instance, class_)
+            unique_id = super().__get__(instance, class_)
         if not unique_id:
             return None
         return zeit.cms.interfaces.ICMSContent(unique_id, None)
@@ -265,7 +264,7 @@ class SingleResource(ObjectPathProperty):
                     name=self.xml_reference_name)
             else:
                 node = value.uniqueId
-        super(SingleResource, self).__set__(instance, node)
+        super().__set__(instance, node)
 
     def __delete__(self, instance):
         self.__set__(instance, None)

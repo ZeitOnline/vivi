@@ -17,7 +17,7 @@ import zope.schema
 class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(EditableBodyTest, self).setUp()
+        super().setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
         fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
@@ -26,7 +26,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def tearDown(self):
         self.patches.reset()
-        super(EditableBodyTest, self).tearDown()
+        super().tearDown()
 
     def get_body(self, body=None):
         if not body:

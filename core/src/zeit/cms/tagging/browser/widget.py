@@ -35,7 +35,7 @@ class Widget(grok.MultiAdapter,
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
 
     def __init__(self, context, source, request):
-        super(Widget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -128,7 +128,7 @@ class DisplayWidget(grok.MultiAdapter,
     tag_highling_css_class = 'with-topic-page'
 
     def __init__(self, field, source, request):
-        super(DisplayWidget, self).__init__(
+        super().__init__(
             field,
             zope.formlib.source.IterableSourceVocabulary(source, request),
             request)

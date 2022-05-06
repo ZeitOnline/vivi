@@ -14,7 +14,7 @@ import zope.component
 class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def setUp(self):
-        super(WebServiceTest, self).setUp()
+        super().setUp()
         self.service = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)
 
@@ -190,7 +190,7 @@ class HTTPErrorTest(unittest.TestCase):
 class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def setUp(self):
-        super(MessageServiceTest, self).setUp()
+        super().setUp()
         # Need a real webservice to load the WSDL.
         self.service = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)

@@ -196,7 +196,7 @@ class IRetractedEvent(IWithMasterObjectEvent):
 class WithMasterObjectEvent(zope.interface.interfaces.ObjectEvent):
 
     def __init__(self, obj, master):
-        super(WithMasterObjectEvent, self).__init__(obj)
+        super().__init__(obj)
         self.master = master
 
 

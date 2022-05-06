@@ -16,6 +16,5 @@ class LinkListRepresentation(
 
     @zope.cachedescriptors.property.Lazy
     def searchableText(self):
-        result = [super(LinkListRepresentation, self).searchableText,
-                  self.context.url]
+        result = [super().searchableText, self.context.url]
         return ' '.join(six.text_type(s) for s in result if s)

@@ -294,7 +294,7 @@ class BiographyQuestions(
             node = lxml.objectify.E.question(value, id=key)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.append(node)
-        super(BiographyQuestions, self).__setattr__('_p_changed', True)
+        super().__setattr__('_p_changed', True)
 
     def keys(self):
         return list(zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(self))

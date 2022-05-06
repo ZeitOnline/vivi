@@ -11,7 +11,7 @@ import zeit.content.text.embed
 class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(EmbedParameters, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
@@ -81,7 +81,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
 class EmbedCSS(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(EmbedCSS, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
@@ -117,7 +117,7 @@ two, three { c: 3; }
 class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ConsentInfo, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(

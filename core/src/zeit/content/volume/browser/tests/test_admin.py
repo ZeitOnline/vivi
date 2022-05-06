@@ -19,7 +19,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.elastic = mock.Mock()
         zope.component.getGlobalSiteManager().registerUtility(
             self.elastic, zeit.find.interfaces.ICMSSearch)
-        super(VolumeAdminBrowserTest, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -118,7 +118,7 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):
-        super(PublishAllContent, self).setUp()
+        super().setUp()
         elastic = mock.Mock()
         elastic.search.return_value = zeit.cms.interfaces.Result()
         zope.component.getGlobalSiteManager().registerUtility(

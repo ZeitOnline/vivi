@@ -28,7 +28,7 @@ class SocialBase(Base):
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
-        super(SocialBase, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.form_fields += self.social_form_fields
 
     @property
@@ -47,7 +47,7 @@ class SocialBase(Base):
                     'twitter_print_text', 'twitter_print_enabled'))
 
     def setUpWidgets(self, *args, **kw):
-        super(SocialBase, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
         self.set_charlimit('twitter_print_text')
         self.set_charlimit('twitter_ressort_text')
@@ -68,7 +68,7 @@ class MobileBase(Base):
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
-        super(MobileBase, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.form_fields += self.mobile_form_fields
 
     @property
@@ -80,7 +80,7 @@ class MobileBase(Base):
                 'mobile_uses_image', 'mobile_image', 'mobile_buttons')
 
     def setUpWidgets(self, *args, **kw):
-        super(MobileBase, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         if self.request.form.get('%s.mobile_enabled' % self.prefix):
             self._set_widget_required('mobile_text')
             self._set_widget_required('mobile_payload_template')

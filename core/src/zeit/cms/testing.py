@@ -96,8 +96,7 @@ class ProductConfigLayer(plone.testing.Layer):
                  name='ConfigLayer', module=None, bases=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(ProductConfigLayer, self).__init__(
-            name=name, module=module, bases=bases)
+        super().__init__(name=name, module=module, bases=bases)
         if not package:
             package = '.'.join(module.split('.')[:-1])
         self.package = package
@@ -167,7 +166,7 @@ class ZCMLLayer(plone.testing.Layer):
             config_file = pkg_resources.resource_filename(module, config_file)
         self.config_file = config_file
         self.features = features
-        super(ZCMLLayer, self).__init__(
+        super().__init__(
             name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
@@ -282,7 +281,7 @@ class ZopeLayer(plone.testing.Layer):
     def __init__(self, name='ZopeLayer', module=None, bases=()):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(ZopeLayer, self).__init__(
+        super().__init__(
             name=name, module=module,
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
@@ -338,8 +337,7 @@ class WSGILayer(plone.testing.Layer):
     def __init__(self, name='WSGILayer', module=None, bases=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(WSGILayer, self).__init__(
-            name=name, module=module, bases=bases)
+        super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
         self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(
@@ -376,8 +374,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
     def __init__(self, name='CeleryLayer', module=None, bases=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(CeleryWorkerLayer, self).__init__(
-            name=name, module=module, bases=bases)
+        super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
         self['celery_app'] = zeit.cms.celery.CELERY
@@ -475,7 +472,7 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 
     def testSetUp(self):
-        super(HTTPLayer, self).testSetUp()
+        super().testSetUp()
         self['request_handler'].requests = []
         self['request_handler'].response_headers = {}
         self['request_handler'].response_body = '{}'
@@ -545,7 +542,7 @@ class WSGIServerLayer(plone.testing.Layer):
     port = 0  # choose automatically
 
     def __init__(self, *args, **kw):
-        super(WSGIServerLayer, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.wsgi_app = None
 
     @property
@@ -731,7 +728,7 @@ class FunctionalTestCase(
         return self.layer['zodbApp']
 
     def setUp(self):
-        super(FunctionalTestCase, self).setUp()
+        super().setUp()
         zope.component.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction('zope.user')
 
@@ -792,7 +789,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
     window_height = 600
 
     def setUp(self):
-        super(SeleniumTestCase, self).setUp()
+        super().setUp()
         self.layer['selenium'].setTimeout(self.TIMEOUT * 1000)
 
         if self.log_errors:
@@ -813,7 +810,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.execute('window.localStorage.clear()')
 
     def tearDown(self):
-        super(SeleniumTestCase, self).tearDown()
+        super().tearDown()
         if self.log_errors:
             logging.root.removeHandler(self.log_handler)
             logging.root.setLevel(self.old_log_level)
@@ -981,7 +978,7 @@ class Browser(zope.testbrowser.browser.Browser):
     xml_strict = False
 
     def __init__(self, wsgi_app):
-        super(Browser, self).__init__(wsgi_app=wsgi_app)
+        super().__init__(wsgi_app=wsgi_app)
 
     def login(self, username, password):
         auth = base64.b64encode(
@@ -1067,7 +1064,7 @@ class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
     login_as = ('user', 'userpw')
 
     def setUp(self):
-        super(BrowserTestCase, self).setUp()
+        super().setUp()
         self.browser = Browser(self.layer['wsgi_app'])
         if isinstance(self.login_as, six.string_types):  # BBB:
             self.login_as = self.login_as.split(':')

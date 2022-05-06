@@ -13,7 +13,7 @@ class AuthorshipXMLReferenceUpdater(
         zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AuthorshipXMLReferenceUpdater, self).setUp()
+        super().setUp()
         self.shakespeare = zeit.content.author.author.Author()
         self.shakespeare.firstname = 'William'
         self.shakespeare.lastname = 'Shakespeare'
@@ -124,7 +124,7 @@ class AuthorshipXMLReferenceUpdater(
 class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(RelatedReferenceTest, self).setUp()
+        super().setUp()
         self.repository['testauthor'] = zeit.content.author.author.Author()
         self.author = self.repository['testauthor']
         self.reference_container = zeit.content.article.edit.author.Author(

@@ -26,7 +26,7 @@ import zope.component
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVolumeCovers, self).setUp()
+        super().setUp()
         self.repository['imagegroup'] = create_image_group()
         self.cover = self.repository['imagegroup']
         self.volume = Volume()
@@ -86,7 +86,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 class TestReference(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestReference, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -146,7 +146,7 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
 class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVolume, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -212,7 +212,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVolumeQueries, self).setUp()
+        super().setUp()
         self.create_volume(2015, 1)
         self.create_volume(2015, 2)
         self.elastic = mock.Mock()
@@ -330,7 +330,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
 class TestWebtrekkQuery(TestVolumeQueries):
 
     def setUp(self):
-        super(TestWebtrekkQuery, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2019
         volume.volume = 1

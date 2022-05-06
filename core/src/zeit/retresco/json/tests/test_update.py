@@ -9,7 +9,7 @@ import zeit.retresco.testing
 class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TMSUpdateRequestTest, self).setUp()
+        super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def test_endpoint_avoids_get(self):

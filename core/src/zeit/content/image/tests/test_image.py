@@ -11,7 +11,7 @@ class TestImageMetadataAcquisition(
         zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestImageMetadataAcquisition, self).setUp()
+        super().setUp()
         self.group_id = create_image_group().uniqueId
         with zeit.cms.checkout.helper.checked_out(self.group) as co:
             metadata = zeit.content.image.interfaces.IImageMetadata(co)

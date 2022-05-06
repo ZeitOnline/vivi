@@ -522,7 +522,7 @@ class MultiPublishTask(PublishTask):
 
     def _run(self, objs):
         self._to_log = []
-        result = super(MultiPublishTask, self)._run(objs)
+        result = super()._run(objs)
         # Work around limitations of our ZODB-based DAV cache.
         # Since publishing a sizeable amount of objects will result in a rather
         # long-running transaction (100 articles take about two minutes), the
@@ -550,7 +550,7 @@ class MultiRetractTask(RetractTask):
 
     def _run(self, objs):
         self._to_log = []
-        result = super(MultiRetractTask, self)._run(objs)
+        result = super()._run(objs)
         # See MultiPublishTask for details.
         raise z3c.celery.celery.Abort(
             self._log_messages, self._to_log, message=result)

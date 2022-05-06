@@ -49,7 +49,7 @@ class Persistent:
     def __setattr__(self, key, value):
         if not (key.startswith('_p_') or key.startswith('_v_')):
             self._p_changed = True
-        super(Persistent, self).__setattr__(key, value)
+        super().__setattr__(key, value)
 
     @property
     def _p_changed(self):

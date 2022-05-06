@@ -14,7 +14,7 @@ class PropertyMock(mock.Mock):
 class FormTest(zeit.content.author.testing.BrowserTestCase):
 
     def setUp(self):
-        super(FormTest, self).setUp()
+        super().setUp()
         self.author_exists = mock.Mock()
         self.patch = mock.patch(
             'zeit.content.author.author.Author.exists', self.author_exists)
@@ -23,7 +23,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
 
     def tearDown(self):
         self.patch.stop()
-        super(FormTest, self).tearDown()
+        super().tearDown()
 
     def open(self, tail):
         self.browser.open('http://localhost/++skin++vivi' + tail)

@@ -35,7 +35,7 @@ class WidgetCSSMixin(zeit.cms.testing.ZeitCmsTestCase):
             legend = 'Legend'
 
             def setUpWidgets(self):
-                super(ExampleForm, self).setUpWidgets()
+                super().setUpWidgets()
                 self.widgets['foo'].vivi_css_class = 'barbaz qux'
 
         self.assertEllipsis("""\
@@ -126,7 +126,7 @@ class LightboxEditForm(zeit.edit.browser.view.EditBox):
 class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(InlineFormAutoSaveTest, self).setUp()
+        super().setUp()
         with zeit.cms.testing.site(None):
             zope.configuration.xmlconfig.string("""\
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -188,7 +188,7 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
                           zeit.cms.browser.interfaces.ICMSLayer),
                 provided=zope.interface.Interface,
                 name='autosave-edit')
-        super(InlineFormAutoSaveTest, self).tearDown()
+        super().tearDown()
 
     def test_submits_form_on_focusout(self):
         s = self.selenium

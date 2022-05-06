@@ -17,7 +17,7 @@ class XMLBlockFactory(zeit.content.cp.blocks.block.BlockFactory):
     title = _('Raw XML block')
 
     def get_xml(self):
-        container = super(XMLBlockFactory, self).get_xml()
+        container = super().get_xml()
         raw = lxml.objectify.E.raw('\n\n\n')
         lxml.objectify.deannotate(raw)
         container.append(raw)

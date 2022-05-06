@@ -29,7 +29,7 @@ class LocalDCTimes(RepositoryDCTimes):
     def modified(self):
         ts = self.context._p_mtime
         if ts is None:
-            modified = super(LocalDCTimes, self).modified
+            modified = super().modified
             if modified is None:
                 annotations = zope.annotation.interfaces.IAnnotations(
                     self.context)

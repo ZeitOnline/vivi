@@ -24,7 +24,7 @@ class TestContainerMethodsRespectVirtualChildren(
     """Test folder methods like keys, values etc to return virtual children."""
 
     def setUp(self):
-        super(TestContainerMethodsRespectVirtualChildren, self).setUp()
+        super().setUp()
         self.folder = self.repository['dynamicfolder']
 
     def assert_xanten_has_basic_info_set(self, xanten):
@@ -96,7 +96,7 @@ class TestDynamicFolder(
     """
 
     def setUp(self):
-        super(TestDynamicFolder, self).setUp()
+        super().setUp()
         self.folder = self.repository['dynamicfolder']
 
     def test_checkin_virtual_content_materializes_it(self):

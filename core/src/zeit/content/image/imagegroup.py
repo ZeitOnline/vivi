@@ -374,7 +374,7 @@ class ImageGroup(ImageGroupBase,
                  zeit.cms.repository.repository.Container):
 
     def __getitem__(self, key):
-        item = super(ImageGroup, self).__getitem__(key)
+        item = super().__getitem__(key)
         if key == self.master_image:
             zope.interface.alsoProvides(
                 item, zeit.content.image.interfaces.IMasterImage)

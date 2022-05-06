@@ -12,7 +12,7 @@ class LinkColumn(zc.table.column.GetterColumn):
 
     def __init__(self, view='', css_class=None, hide_header=False,
                  sortable=True, target=None, **kw):
-        super(LinkColumn, self).__init__(**kw)
+        super().__init__(**kw)
         self.view = view
         self.hide_header = hide_header
         if css_class:
@@ -25,7 +25,7 @@ class LinkColumn(zc.table.column.GetterColumn):
     def renderHeader(self, formatter):
         if self.hide_header:
             return ''
-        return super(LinkColumn, self).renderHeader(formatter)
+        return super().renderHeader(formatter)
 
     def renderCell(self, item, formatter):
         # Get the target object and compute the URL
@@ -35,7 +35,7 @@ class LinkColumn(zc.table.column.GetterColumn):
 
         # Get the same display as if a normal column.
         content = html.escape(
-            six.text_type(super(LinkColumn, self).renderCell(item, formatter)))
+            six.text_type(super().renderCell(item, formatter)))
 
         # Try to get a URL, if we can't then ignore setting up a link.
         try:

@@ -66,7 +66,7 @@ class LoginFormTest(zeit.cms.testing.BrowserTestCase):
     layer = LOGINFORM_LAYER
 
     def setUp(self):
-        super(LoginFormTest, self).setUp()
+        super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def test_unauthenticated_redirects_to_loginform(self):
@@ -97,7 +97,7 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
     layer = LOGINFORM_LAYER
 
     def setUp(self):
-        super(SSOTest, self).setUp()
+        super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def login(self):

@@ -36,7 +36,7 @@ class ContentList:
         '.object_limit')
 
     def __init__(self, *args, **kwargs):
-        super(ContentList, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.object_limit:
             self.object_limit = 50
 

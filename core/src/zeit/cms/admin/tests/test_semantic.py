@@ -10,7 +10,7 @@ import zeit.cms.workflow.interfaces
 class TestSemantic(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(TestSemantic, self).setUp()
+        super().setUp()
         self.content = ExampleContentType()
 
     def test_adjust_semantic_publish_displays_date_last_published_semantic(

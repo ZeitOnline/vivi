@@ -54,7 +54,7 @@ class PersistentTest(unittest.TestCase):
 class LivePropertyXMLSync(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(LivePropertyXMLSync, self).setUp()
+        super().setUp()
         manager = zope.component.getUtility(
             zeit.cms.content.interfaces.ILivePropertyManager)
         manager.register_live_property('foo', 'bar', WRITEABLE_ALWAYS)

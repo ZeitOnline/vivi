@@ -7,7 +7,7 @@ import zeit.edit.interfaces
 class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestPlaylist, self).setUp()
+        super().setUp()
         from zeit.content.cp.centerpage import CenterPage
         self.centerpage = CenterPage()
         self.playlist = self.centerpage['lead'].create_item('playlist')

@@ -15,7 +15,7 @@ import zope.component
 class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(LeadTimeTest, self).setUp()
+        super().setUp()
         self.repository['foo'] = ExampleContentType()
         cp = zeit.content.cp.centerpage.CenterPage()
         zope.interface.alsoProvides(cp, zeit.content.cp.interfaces.ILeadTimeCP)

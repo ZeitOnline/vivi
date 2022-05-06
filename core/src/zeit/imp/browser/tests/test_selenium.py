@@ -24,7 +24,7 @@ class Selenium(zeit.cms.testing.SeleniumTestCase):
     window_height = 600
 
     def setUp(self):
-        super(Selenium, self).setUp()
+        super().setUp()
         self.create_group()
         self.open_imp()
 
@@ -316,7 +316,7 @@ class ResizeTests(Selenium):
     window_height = 800
 
     def setUp(self):
-        super(ResizeTests, self).setUp()
+        super().setUp()
         # Choose a mask
         self.click_label('450×200')
 

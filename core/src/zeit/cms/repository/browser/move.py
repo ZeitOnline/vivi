@@ -79,5 +79,5 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem,
     def render(self):
         if (zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
                 self.context) and not self.is_folder_with_content):
-            return super(MenuItem, self).render()
+            return super().render()
         return ''

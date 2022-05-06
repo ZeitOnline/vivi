@@ -31,7 +31,7 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         writeable=WRITEABLE_ALWAYS)
 
     def can_publish(self):
-        status = super(ContentWorkflow, self).can_publish()
+        status = super().can_publish()
         if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
             return status
         if self.urgent:

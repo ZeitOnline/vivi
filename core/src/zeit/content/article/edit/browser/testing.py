@@ -9,7 +9,7 @@ class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
     block_type = NotImplemented
 
     def setUp(self):
-        super(BrowserTestCase, self).setUp()
+        super().setUp()
         browser = self.browser
         browser.open('http://localhost:8080/++skin++vivi/repository/online'
                      '/2007/01/Somalia/@@checkout')

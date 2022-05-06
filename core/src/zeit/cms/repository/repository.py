@@ -257,7 +257,7 @@ class Repository(persistent.Persistent, Container):
     def keys(self):
         if not self._initalizied:
             return []
-        return super(Repository, self).keys()
+        return super().keys()
 
     def getContent(self, unique_id):
         if not isinstance(unique_id, six.string_types):

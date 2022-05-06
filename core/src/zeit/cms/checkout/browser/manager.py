@@ -166,7 +166,7 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
         elif 'cancel' in self.request.form:
             self.cancel()
         else:
-            return super(CheckinConflictError, self).render()
+            return super().render()
 
     def checkin(self):
         if 'checkin' in self.request.form:
@@ -201,7 +201,7 @@ class CheckinConflictErrorInformation(zope.formlib.form.SubPageDisplayForm):
     form_fields = form_field_base.select('last_modified_by')
 
     def __init__(self, context, request):
-        super(CheckinConflictErrorInformation, self).__init__(context, request)
+        super().__init__(context, request)
         if zeit.cms.workflow.interfaces.IModified(
                 self.context).date_last_checkout:
             self.form_fields += self.form_field_base.select(
@@ -224,7 +224,7 @@ class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
     def render(self):
         if self.is_visible():
-            return super(MenuItem, self).render()
+            return super().render()
         return ''
 
 
@@ -254,5 +254,5 @@ class CheckinMenuItem(MenuItem):
 
     @property
     def action(self):
-        action = super(CheckinMenuItem, self).action
+        action = super().action
         return action + '&semantic_change=None'

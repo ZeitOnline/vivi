@@ -12,7 +12,7 @@ import zope.publisher.browser
 class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(ContentAdderTest, self).setUp()
+        super().setUp()
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
 

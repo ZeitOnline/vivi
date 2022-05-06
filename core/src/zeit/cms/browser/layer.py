@@ -15,7 +15,7 @@ class LayerAddTraverser(z3c.traverser.traverser.ContainerTraverserPlugin):
 
     def publishTraverse(self, request, name):
         """Resolve the container and add an additional layer if possible."""
-        result = super(LayerAddTraverser, self).publishTraverse(request, name)
+        result = super().publishTraverse(request, name)
         layer = zeit.cms.browser.interfaces.IAdditionalLayer(result, None)
         if layer is not None:
             # The skinlayer and the additional layer both inherit from

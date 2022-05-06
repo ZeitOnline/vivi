@@ -8,7 +8,7 @@ import zope.component
 class RuleTest(zeit.newsletter.testing.TestCase):
 
     def setUp(self):
-        super(RuleTest, self).setUp()
+        super().setUp()
         from zeit.newsletter.newsletter import Newsletter
         from zeit.newsletter.category import NewsletterCategory
         category = NewsletterCategory()

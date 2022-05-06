@@ -92,7 +92,7 @@ class HomepageMessage(zeit.push.message.Message):
 
     def _disable_message_config_on_commit(self, commit_success):
         if commit_success:
-            super(HomepageMessage, self)._disable_message_config()
+            super()._disable_message_config()
             # XXX Here be dragons. The 2PC protocol has finished successfully
             # at this point, but we're still in that same logical transaction.
             # Now we have just created new changes and need to commit them,

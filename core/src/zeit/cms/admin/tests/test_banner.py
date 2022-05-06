@@ -18,7 +18,7 @@ class TestBannerDisplayCheckbox(
 class TestBannerDisplay(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(TestBannerDisplay, self).setUp()
+        super().setUp()
         self.content = ExampleContentType()
 
     def test_banner_has_correct_default_value(

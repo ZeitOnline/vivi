@@ -18,7 +18,7 @@ class ITestInterface(zope.interface.Interface):
 class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(StoreProvidedInterfacesTest, self).setUp()
+        super().setUp()
         self.content = zeit.cms.repository.unknown.PersistentUnknownResource(
             'data')
         # avoid messing with interfaces (self.repository provides IZONSection,
@@ -29,7 +29,7 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def tearDown(self):
         self.section_patcher.stop()
-        super(StoreProvidedInterfacesTest, self).tearDown()
+        super().tearDown()
 
     def test_provides_stored_in_property(self):
         zope.interface.alsoProvides(self.content, ITestInterface)

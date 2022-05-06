@@ -408,7 +408,7 @@ class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
         # which needs to be accessible.
         if IImage.providedBy(value):
             return True
-        return super(ImageGroupSource, self).__contains__(value)
+        return super().__contains__(value)
 
 
 # XXX this source still allows bare Image *and* ImageGroup, we should change

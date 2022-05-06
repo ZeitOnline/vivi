@@ -17,13 +17,13 @@ class NextRead(zeit.edit.browser.form.InlineForm):
         zeit.magazin.interfaces.IRelatedLayout)
 
     def setUpWidgets(self, *args, **kw):
-        super(NextRead, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['nextread'].detail_view_name = '@@related-details'
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(NextRead, self).__call__()
+        return super().__call__()
 
 
 class Social(zeit.content.article.edit.browser.push.Social,

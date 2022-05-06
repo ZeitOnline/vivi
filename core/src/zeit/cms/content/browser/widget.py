@@ -76,7 +76,7 @@ class ParentChildDropdownUpdater:
     child_source = NotImplemented
 
     def __init__(self, context, request):
-        super(ParentChildDropdownUpdater, self).__init__(context, request)
+        super().__init__(context, request)
         self.parent_source = self.parent_source(self.context)
         self.parent_terms = zope.component.getMultiAdapter(
             (self.parent_source, request),

@@ -53,11 +53,11 @@ class URIChoice(zope.schema.URI):
     def __init__(self, *args, **kw):
         self.source = kw.pop('source')
         placeholder = kw.pop('placeholder')
-        super(URIChoice, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.setTaggedValue('placeholder', placeholder)
 
     def _validate(self, value):
-        super(URIChoice, self)._validate(value)
+        super()._validate(value)
         if self.context.extract_domain(value) not in self.source:
             raise zeit.cms.interfaces.ValidationError(
                 _('Unsupported embed domain'))

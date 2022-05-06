@@ -69,13 +69,13 @@ class SecurityPolicyXLSSheetCase:
     layer = WSGI_LAYER
 
     def __init__(self, username, cases, description):
-        super(SecurityPolicyXLSSheetCase, self).__init__()
+        super().__init__()
         self.username = username
         self.cases = cases
         self.description = description
 
     def setUp(self):
-        super(SecurityPolicyXLSSheetCase, self).setUp()
+        super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         self.browser.raiseHttpErrors = False
         if self.username != 'anonymous':

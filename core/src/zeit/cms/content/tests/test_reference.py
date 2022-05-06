@@ -22,7 +22,7 @@ class ExampleReference(zeit.cms.content.reference.Reference):
 class ReferenceFixture:
 
     def setUp(self):
-        super(ReferenceFixture, self).setUp()
+        super().setUp()
         ExampleContentType.references = ReferenceProperty(
             '.body.references.reference', 'test')
         zope.security.protectclass.protectName(
@@ -47,7 +47,7 @@ class ReferenceFixture:
 
     def tearDown(self):
         del ExampleContentType.references
-        super(ReferenceFixture, self).tearDown()
+        super().tearDown()
 
 
 class ReferencePropertyTest(
@@ -194,7 +194,7 @@ class ReferencePropertyTest(
 class SingleReferenceFixture(ReferenceFixture):
 
     def setUp(self):
-        super(SingleReferenceFixture, self).setUp()
+        super().setUp()
         ExampleContentType.references = SingleReferenceProperty(
             '.body.references.reference', 'test')
 
@@ -242,7 +242,7 @@ class MultiResourceTest(
         ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(MultiResourceTest, self).setUp()
+        super().setUp()
         ExampleContentType.related = zeit.cms.content.reference.MultiResource(
             '.body.references.reference', 'test')
 
@@ -279,7 +279,7 @@ class SingleResourceTest(
         ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(SingleResourceTest, self).setUp()
+        super().setUp()
         ExampleContentType.related = zeit.cms.content.reference.SingleResource(
             '.body.references.reference', 'test')
 

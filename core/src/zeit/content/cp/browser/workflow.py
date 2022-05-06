@@ -51,13 +51,13 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
     def handle_save_state(self, action, data):
         """Duplicate action from base class, since we overwrite handle_retract.
         """
-        super(CenterPageWorkflowForm, self).handle_save_state.success(data)
+        super().handle_save_state.success(data)
 
     @zope.formlib.form.action(_('Save state and publish now'), name='publish')
     def handle_publish(self, action, data):
         """Duplicate action from base class, since we overwrite handle_retract.
         """
-        super(CenterPageWorkflowForm, self).handle_publish.success(data)
+        super().handle_publish.success(data)
 
     @gocept.form.action.confirm(
         _('Save state and retract now'),
@@ -68,7 +68,7 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
         condition=is_published_and_has_permission)
     def handle_retract(self, action, data):
         """Overwrite action to additionally test Retract permission."""
-        super(CenterPageWorkflowForm, self).handle_retract.success(data)
+        super().handle_retract.success(data)
 
     def get_error_message(self, mapping):
         return _('Could not publish ${id} since it has validation errors.',

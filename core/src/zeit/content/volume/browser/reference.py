@@ -31,7 +31,7 @@ class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
     """Overwrite __init__ to work on `context.target`."""
 
     def __init__(self, context, request):
-        super(ReferenceDetailsHeading, self).__init__(context.target, request)
+        super().__init__(context.target, request)
 
 
 class Display(zeit.cms.browser.view.Base):

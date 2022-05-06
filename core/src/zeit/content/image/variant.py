@@ -17,7 +17,7 @@ class Variants(grok.Adapter, collections.abc.Mapping):
     grok.context(zeit.content.image.interfaces.IImageGroup)
 
     def __init__(self, context):
-        super(Variants, self).__init__(context)
+        super().__init__(context)
         self.settings = self.context.variants
         self.__parent__ = context
 
@@ -116,7 +116,7 @@ class Variant(zeit.cms.content.sources.AllowedBase):
         return not self.__eq__(other)
 
     def __cmp__(self, other):
-        return super(Variant, self).__cmp__(other)
+        return super().__cmp__(other)
 
     @property
     def ratio(self):

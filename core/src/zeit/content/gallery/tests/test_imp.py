@@ -8,7 +8,7 @@ import zeit.imp.interfaces
 class TestGalleryStorer(zeit.content.gallery.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestGalleryStorer, self).setUp()
+        super().setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
         gallery.image_folder = self.repository['2007']
         zeit.content.gallery.testing.add_image('2007', '01.jpg')

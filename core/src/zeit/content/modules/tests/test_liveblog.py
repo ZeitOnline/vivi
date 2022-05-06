@@ -7,7 +7,7 @@ import zeit.content.modules.testing
 class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ConsentInfo, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.liveblog.TickarooLiveblog(

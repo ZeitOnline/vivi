@@ -14,7 +14,7 @@ import zope.component
 class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestApplyLayout, self).setUp()
+        super().setUp()
         xml_selector = lxml.cssselect.CSSSelector(
             '#lead > .block-inner > .type-teaser').path
         self.teaser_selector = 'xpath=' + xml_selector + '[{pos}]@id'
@@ -131,7 +131,7 @@ class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
 class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(FunctionalTeaserDisplayTest, self).setUp()
+        super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)

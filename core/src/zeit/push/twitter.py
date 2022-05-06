@@ -56,7 +56,7 @@ class Message(zeit.push.message.Message):
         text = self.config.get('override_text')
         if not text:  # BBB
             self.get_text_from = 'short_text'
-            text = super(Message, self).text
+            text = super().text
         return text
 
     @property

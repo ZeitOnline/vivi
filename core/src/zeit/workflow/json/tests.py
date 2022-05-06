@@ -9,7 +9,7 @@ import zeit.workflow.testing
 class PublishJSONTest(zeit.workflow.testing.BrowserTestCase):
 
     def setUp(self):
-        super(PublishJSONTest, self).setUp()
+        super().setUp()
         self.browser.handleErrors = False
 
     def call_json(self, url):

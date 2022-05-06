@@ -11,5 +11,5 @@ class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
     form_fields['text'].custom_widget = zeit.cms.browser.widget.MarkdownWidget
 
     def setUpWidgets(self, *args, **kw):
-        super(EditProperties, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['text'].height = 50

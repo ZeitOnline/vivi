@@ -24,7 +24,7 @@ class JSONView(zeit.cms.browser.view.JSON):
     resource_library = 'zeit.find'
 
     def url(self, view, uniqueId):
-        return super(JSONView, self).url(
+        return super().url(
             self.context, '%s?uniqueId=%s' % (view, uniqueId))
 
 

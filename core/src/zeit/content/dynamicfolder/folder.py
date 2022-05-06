@@ -75,7 +75,7 @@ class RepositoryDynamicFolder(
         value = self.get(key)
         if value is not None and IVirtualContent.providedBy(value):
             return
-        super(RepositoryDynamicFolder, self).__delitem__(key)
+        super().__delitem__(key)
 
     @property
     def content_template(self):
@@ -195,7 +195,7 @@ class RepositoryDynamicFolder(
         call, i.e. we cannot reuse the storing mechanism.
 
         """
-        contents = super(RepositoryDynamicFolder, self)._local_unique_map
+        contents = super()._local_unique_map
         result = self.virtual_content.copy()
         result.update(contents)
         return result
@@ -273,7 +273,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
     ID_PROPERTY = (ContentUUID.id.name, ContentUUID.id.namespace)
 
     def __init__(self, context):
-        super(VirtualProperties, self).__init__()
+        super().__init__()
         self.context = context
         self.update(self.parse(context.xml))
         self[self.ID_PROPERTY] = '{%s}' % uuid.UUID(

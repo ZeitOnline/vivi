@@ -11,7 +11,7 @@ import zope.app.locking.lockinfo
 class TimeFreezeLockInfo(zope.app.locking.lockinfo.LockInfo):
 
     def __init__(self, *args, **kw):
-        super(TimeFreezeLockInfo, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.created = time.mktime(
             datetime(2019, 4, 15, 18, 20, tzinfo=pytz.UTC).timetuple())
 
@@ -19,7 +19,7 @@ class TimeFreezeLockInfo(zope.app.locking.lockinfo.LockInfo):
 class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
-        super(LockAPI, self).setUp()
+        super().setUp()
         # API is available without authentication
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 

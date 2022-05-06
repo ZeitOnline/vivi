@@ -4,7 +4,7 @@ import zeit.push.testing
 class FindTitleIntegration(zeit.push.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(FindTitleIntegration, self).setUp()
+        super().setUp()
         self.open('/repository/testcontent/@@checkout')
         s = self.selenium
         s.open(s.getLocation().replace('edit', 'edit-social'))

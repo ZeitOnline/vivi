@@ -17,13 +17,13 @@ class Topic(zeit.edit.browser.form.InlineForm):
         zeit.campus.interfaces.ITopic)
 
     def setUpWidgets(self, *args, **kw):
-        super(Topic, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['page'].detail_view_name = '@@related-details'
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(Topic, self).__call__()
+        return super().__call__()
 
 
 class StudyCourse(zeit.edit.browser.form.InlineForm):

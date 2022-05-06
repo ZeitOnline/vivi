@@ -156,7 +156,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
         if self._getter is None:
-            return super(GetterColumn, self).getter(item, formatter)
+            return super().getter(item, formatter)
         try:
             return self._getter(item, formatter)
         except Exception:
@@ -177,7 +177,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 class MetadataColumn(GetterColumn):
 
     def __init__(self, title='', searchable_text=True, **kwargs):
-        super(MetadataColumn, self).__init__(title=title, **kwargs)
+        super().__init__(title=title, **kwargs)
         self.searchable_text = searchable_text
 
     def getter(self, item, formatter):
@@ -231,7 +231,7 @@ class PublishedColumn(zc.table.column.GetterColumn):
 class FilenameColumn(GetterColumn):
 
     def cell_formatter(self, value, item, formatter):
-        formatted = super(FilenameColumn, self).cell_formatter(
+        formatted = super().cell_formatter(
             value, item, formatter)
         return '<span class="filename">%s</span>' % formatted
 

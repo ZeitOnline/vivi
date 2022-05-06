@@ -9,7 +9,7 @@ class Base:
 
     def __call__(self):
         self.request.response.setHeader('Cache-Control', 'no-cache')
-        return super(Base, self).__call__()
+        return super().__call__()
 
     def url(self, obj=None, name=None):
         # if the first argument is a string, that's the name. There should

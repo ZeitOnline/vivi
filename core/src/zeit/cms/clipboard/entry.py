@@ -58,5 +58,5 @@ def entry_to_clipboard(context):
 class Clip(zope.container.ordered.OrderedContainer):
 
     def __init__(self, title):
-        super(Clip, self).__init__()
+        super().__init__()
         self.title = title

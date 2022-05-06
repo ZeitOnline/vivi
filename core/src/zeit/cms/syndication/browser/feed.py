@@ -197,14 +197,14 @@ class EditFeedView(FeedView):
     checkbox_widget_extra = ''
 
     def __call__(self):
-        render = super(EditFeedView, self).__call__
+        render = super().__call__
         if self.request.form:
             self.updateFeed()
         return render()
 
     @zope.cachedescriptors.property.Lazy
     def columns(self):
-        columns = list(super(EditFeedView, self).columns)
+        columns = list(super().columns)
         columns[1:1] = [self.delete_column]
         return tuple(columns)
 
@@ -289,7 +289,7 @@ class RememberSyndicationTargetMenuItem(zeit.cms.browser.menu.ActionMenuItem):
         if view.in_targets:
             return ''
         else:
-            return super(RememberSyndicationTargetMenuItem, self).render()
+            return super().render()
 
 
 class RemoveFromMySyndicationTargetsMenuItem(
@@ -305,7 +305,7 @@ class RemoveFromMySyndicationTargetsMenuItem(
         if not view.in_targets:
             return ''
         else:
-            return super(RemoveFromMySyndicationTargetsMenuItem, self).render()
+            return super().render()
 
 
 @zope.component.adapter(

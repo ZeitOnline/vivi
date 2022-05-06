@@ -60,7 +60,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     skin = 'vivi'
 
     def setUp(self):
-        super(SeleniumTestCase, self).setUp()
+        super().setUp()
         self.repository['newsletter'] = Newsletter()
         transaction.commit()
 

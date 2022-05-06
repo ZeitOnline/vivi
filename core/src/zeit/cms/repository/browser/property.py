@@ -14,7 +14,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 class MetadataColumn(GetterColumn):
 
     def __init__(self):
-        super(MetadataColumn, self).__init__(title='')
+        super().__init__(title='')
 
     def cell_formatter(self, value, item, formatter):
         return '<span class="SearchableText">%s</span>' % ' '.join(

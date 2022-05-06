@@ -8,7 +8,7 @@ import zope.publisher.browser
 class TestAdding(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestAdding, self).setUp()
+        super().setUp()
         self.browser.open(
             'http://localhost:8080/++skin++vivi/repository/online/2007/01/')
 

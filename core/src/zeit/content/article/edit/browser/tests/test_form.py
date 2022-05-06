@@ -34,7 +34,7 @@ class ReadonlyTest(zeit.content.article.testing.BrowserTestCase):
     """
 
     def setUp(self):
-        super(ReadonlyTest, self).setUp()
+        super().setUp()
         self.browser.open(
             'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
             '/@@edit-forms')
@@ -102,7 +102,7 @@ class PageNumberDisplay(zeit.content.article.testing.BrowserTestCase):
 class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(HeaderSync, self).setUp()
+        super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=options-b.year')
 
@@ -124,7 +124,7 @@ class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
 class CharLimit(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(CharLimit, self).setUp()
+        super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
 
     def test_teaser_supertitle_has_character_limit(self):
@@ -169,7 +169,7 @@ class ChannelSelector(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(ChannelSelector, self).setUp()
+        super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('css=#edit-form-channel .fold-link')

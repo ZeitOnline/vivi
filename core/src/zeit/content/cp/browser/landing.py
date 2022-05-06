@@ -24,10 +24,10 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
 
     def update(self):
         self.areas = self.block_params.pop('areas', [])
-        super(BodyLandingZone, self).update()
+        super().update()
 
     def initialize_block(self):
-        super(BodyLandingZone, self).initialize_block()
+        super().initialize_block()
         for config in self.areas:
             area = self.block.create_item('area')
             area.kind = config.pop('kind')
