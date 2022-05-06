@@ -26,26 +26,6 @@ class JSON(zeit.content.text.text.Text):
     def data(self):
         return commentjson.loads(self.text)
 
-    def get_schema(self, schema_url):
-        try:
-            response = requests.get(schema_url)  # yaml schema file expected
-            schema = yaml.safe_load(response.text)
-            ref_resolver = jsonschema.validators.RefResolver.from_schema(
-                schema)
-            return schema, ref_resolver
-        except requests.exceptions.RequestException as err:
-            status = getattr(err.response, 'status_code', None)
-            log.error('%s returned %s', schema_url, status, exc_info=True)
-
-    def validate_data(self):
-        validation = zeit.content.text.interfaces.IValidationSchema(self)
-        schema, ref_resolver = self.get_schema(validation.schema_url)
-        if schema:
-            openapi_schema_validator.validate(
-                self.data,
-                schema['components']['schemas'][validation.field_name],
-                resolver=ref_resolver)
-
 
 class JSONType(zeit.content.text.text.TextType):
 
@@ -66,6 +46,26 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         ('schema_url', 'field_name')
     )
 
+    def _get(self):
+        try:
+            response = requests.get(self.schema_url)
+            schema = yaml.safe_load(response.text)
+            ref_resolver = jsonschema.validators.RefResolver.from_schema(
+                schema)
+            return schema, ref_resolver
+        except requests.exceptions.RequestException as err:
+            status = getattr(err.response, 'status_code', None)
+            log.warning(
+                '%s returned %s', self.schema_url, status, exc_info=True)
+
+    def validate(self):
+        schema, ref_resolver = self._get()
+        if schema:
+            openapi_schema_validator.validate(
+                self.context.data,
+                schema['components']['schemas'][self.field_name],
+                resolver=ref_resolver)
+
 
 @grok.subscribe(
     zeit.content.text.interfaces.IJSON,
@@ -73,4 +73,4 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
 def validate_after_checkin(context, event):
     validation = zeit.content.text.interfaces.IValidationSchema(context)
     if validation.schema_url and validation.field_name:
-        context.validate_data()
+        validation.validate()

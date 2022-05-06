@@ -33,8 +33,7 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             r_mock.register_uri(
                 'GET', 'https://testschema.zeit.de/openapi.yaml',
                 text=yaml.safe_dump(self.schema_json))
-            schema, ref_resolver = json_content.get_schema(
-                validation.schema_url)
+            schema, ref_resolver = validation._get()
 
         self.assertEqual(self.schema_json, schema)
         self.assertEqual(self.schema_json, ref_resolver.referrer)
@@ -48,14 +47,15 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             'https://testschema.zeit.de/openapi.yaml')
         validation.field_name = 'uuid'
 
-        with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
+        with mock.patch(
+                'zeit.content.text.json.ValidationSchema._get') as schema:
             schema.return_value = (
                 self.schema_json, RefResolver.from_schema(
                     self.schema_json))
             with self.assertRaises(ValidationError):
-                json_content.validate_data()
+                validation.validate()
             json_content.text = '"{urn:uuid:d995ba5a}"'
-            json_content.validate_data()
+            validation.validate()
 
     def test_schema_reference_resolver_should_work(self):
         json_content = zeit.content.text.json.JSON()
@@ -78,7 +78,8 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
                         'pattern':
                             "^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$"}}}}
         validation.field_name = 'overlord'
-        with mock.patch('zeit.content.text.json.JSON.get_schema') as schema:
+        with mock.patch(
+                'zeit.content.text.json.ValidationSchema._get') as schema:
             schema.return_value = (
                 schema_json, RefResolver.from_schema(schema_json))
-            json_content.validate_data()
+            validation.validate()

@@ -108,6 +108,16 @@ class IValidationSchema(zope.interface.Interface):
         title=_('specific schema to use for validation'),
         required=False)
 
+    def _get(self, context):
+        """
+        Get yaml schema to validate json from url
+        """
+
+    def validate_context(self, context):
+        """
+        Validate JSON data against schema
+        """
+
 
 class IEmbed(IText):
 
