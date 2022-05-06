@@ -21,6 +21,21 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
         }
     }}
 
+    def test_only_validate_if_field_in_schema(self):
+        json_content = zeit.content.text.json.JSON()
+        validation = zeit.content.text.interfaces.IValidationSchema(
+            json_content)
+        validation.schema_url = (
+            'https://testschema.zeit.de/openapi.yaml')
+        validation.field_name = 'evil'
+        with mock.patch(
+                'zeit.content.text.json.ValidationSchema._get') as schema:
+            schema.return_value = (
+                self.schema_json, RefResolver.from_schema(
+                    self.schema_json))
+            with self.assertRaises(ValidationError):
+                validation.validate()
+
     def test_get_schema_from_url(self):
         json_content = zeit.content.text.json.JSON()
         validation = zeit.content.text.interfaces.IValidationSchema(

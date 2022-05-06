@@ -46,6 +46,12 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         ('schema_url', 'field_name')
     )
 
+    def _valid_field_name(self, schema):
+        try:
+            return schema['components']['schemas'][self.field_name]
+        except KeyError:
+            log.error('Field name is not provided by schema ', exc_info=True)
+
     def _get(self):
         try:
             response = requests.get(self.schema_url)
@@ -60,7 +66,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def validate(self):
         schema, ref_resolver = self._get()
-        if schema:
+        if schema and self._valid_field_name(schema):
             openapi_schema_validator.validate(
                 self.context.data,
                 schema['components']['schemas'][self.field_name],
