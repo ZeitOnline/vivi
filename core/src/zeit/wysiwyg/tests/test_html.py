@@ -88,4 +88,4 @@ class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
         converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
         self.assertEqual(
             '<article><body><!-- foo --><p>Foo</p></body></article>',
-            lxml.etree.tostring(article.xml, encoding='unicode'))
+            lxml.etree.tostring(article.xml, encoding=str))

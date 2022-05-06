@@ -111,7 +111,7 @@ class CMSContent(Converter):
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'doc_type': getattr(ITypeDeclaration(self.context, None),
                                 'type_identifier', 'unknown'),
-            'body': lxml.etree.tostring(body, encoding='unicode'),
+            'body': lxml.etree.tostring(body, encoding=str),
         }
         result['payload'] = self.collect_dav_properties()
         return result
