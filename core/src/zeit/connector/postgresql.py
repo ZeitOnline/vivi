@@ -355,7 +355,7 @@ class PassthroughConnector(Connector):
         else:
             savepoint.commit()
             transaction.commit()
-        return resource
+        return super().__getitem__(id)
 
     def listCollection(self, id):
         if id not in self:
