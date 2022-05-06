@@ -12,7 +12,6 @@ import lxml.etree
 import os.path
 import pytz
 import re
-import sys
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -547,10 +546,7 @@ class Volume(Converter):
     def __new__(cls, context):
         if not cls.interface.providedBy(context):
             return None
-        if sys.version_info < (3,):
-            instance = super(Converter, cls).__new__(cls, None)
-        else:
-            instance = super(Converter, cls).__new__(cls)
+        instance = super(Converter, cls).__new__(cls)
         instance.context = context
         instance.content = context
         return instance

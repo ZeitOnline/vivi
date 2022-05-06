@@ -94,8 +94,6 @@ class HTTPBasicAuthCon:
         return
 
     def get_quoted_path(self, uri):
-        if sys.version_info < (3,) and isinstance(uri, str):
-            uri = uri.encode('utf8')
         path = urllib.parse.urlunparse(
             ('', '') + urllib.parse.urlparse(uri)[2:])
         # NOTE: Everything after the netloc is considered a path and will be
@@ -104,8 +102,6 @@ class HTTPBasicAuthCon:
         return quoted
 
     def quote_uri(self, uri):
-        if sys.version_info < (3,) and isinstance(uri, str):
-            uri = uri.encode('utf8')
         parsed = urllib.parse.urlparse(uri)
         quoted = urllib.parse.urlunparse(
             (parsed.scheme, parsed.netloc, self.get_quoted_path(uri),

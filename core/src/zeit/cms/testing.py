@@ -668,8 +668,7 @@ def remove_exception_module(msg):
     return msg[start:end]
 
 
-if sys.version_info > (3,):
-    doctest._strip_exception_details = remove_exception_module
+doctest._strip_exception_details = remove_exception_module
 
 
 optionflags = (doctest.REPORT_NDIFF +
@@ -982,9 +981,7 @@ class Browser(zope.testbrowser.browser.Browser):
 
     def login(self, username, password):
         auth = base64.b64encode(
-            ('%s:%s' % (username, password)).encode('utf-8'))
-        if sys.version_info > (3,):
-            auth = auth.decode('ascii')
+            ('%s:%s' % (username, password)).encode('utf-8')).decode('ascii')
         self.addHeader('Authorization', 'Basic %s' % auth)
 
     def reload(self):
