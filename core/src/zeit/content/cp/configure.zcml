@@ -172,11 +172,6 @@
     title="Edit Article Flow"
     />
 
-  <interface
-    interface=".interfaces.IStoryStream"
-    type="zeit.cms.content.interfaces.IAddableContent"
-    />
-
   <class class=".centerpage.CpSEO">
     <require
       interface=".interfaces.ICpSEO"

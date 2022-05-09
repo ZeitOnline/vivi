@@ -536,37 +536,3 @@ class ChannelSelector(zeit.edit.browser.form.InlineForm):
     def handle_edit_action(self, action, data):
         """Once you override one action, you lose *all* inherited ones."""
         super().handle_edit_action.success(data)
-
-
-class StorystreamFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-
-    title = _('Storystream')
-
-
-class Tldr(zeit.edit.browser.form.InlineForm,
-           zeit.cms.browser.form.CharlimitMixin):
-
-    legend = _('')
-    prefix = 'storystream'
-    undo_description = _('edit storystream')
-    form_fields = FormFields(ICommonMetadata).select(
-        'tldr_title', 'tldr_text', 'tldr_milestone', 'tldr_date',
-        'storystreams')
-
-    def setUpWidgets(self, *args, **kw):
-        super().setUpWidgets(*args, **kw)
-        self.set_charlimit('tldr_title')
-        self.set_charlimit('tldr_text')
-
-    # Generate an action name just like the SequenceWidget remove button.
-    @zope.formlib.form.action('remove', prefix='storystreams')
-    def submit_on_remove(self, action, data):
-        """Trigger a save each time the remove button is pressed,
-        since there is no other event for the inline form to do that."""
-        super().handle_edit_action.success(data)
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        """Once you override one action, you lose *all* inherited ones."""
-        super().handle_edit_action.success(data)

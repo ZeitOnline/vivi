@@ -297,32 +297,6 @@ class ICommonMetadata(zope.interface.Interface):
         source=ColorSchemeSource(),
         required=False)
 
-    tldr_title = zope.schema.TextLine(
-        title=_("tldr title"),
-        required=False,
-        max_length=70)
-
-    tldr_text = zope.schema.Text(
-        title=_("tldr text"),
-        required=False,
-        max_length=450)
-
-    tldr_milestone = zope.schema.Bool(
-        title=_("tldr milestone"),
-        required=False,
-        default=False)
-
-    tldr_date = zope.schema.Datetime(
-        title=_("tldr date"),
-        required=False)
-
-    storystreams = zope.schema.Tuple(
-        title=_("Storystreams"),
-        value_type=zope.schema.Choice(
-            source=zeit.cms.content.sources.StorystreamSource()),
-        default=(),
-        required=False)
-
     advertisement_title = zope.schema.TextLine(
         title=_("Advertisement title"),
         required=False)
@@ -379,13 +353,6 @@ class ISerie(zope.interface.Interface):
     encoded = zope.interface.Attribute('')
     column = zope.interface.Attribute('')
     video = zope.interface.Attribute('')
-
-
-class IStorystreamReference(zope.interface.Interface):
-
-    id = zope.interface.Attribute('')
-    title = zope.interface.Attribute('')
-    references = zope.interface.Attribute('')
 
 
 def hex_literal(value):

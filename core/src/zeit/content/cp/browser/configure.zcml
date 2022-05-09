@@ -18,15 +18,6 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.IFolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="zeit.content.cp.AddStoryStream"
-    class=".storystream.AddForm"
-    permission="zeit.AddContent"
-    menu="zeit-add-menu" title="StoryStream"
-    />
-
-  <browser:page
     for="zeit.content.cp.interfaces.IRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="add"

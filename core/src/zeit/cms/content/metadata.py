@@ -33,11 +33,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'lead_candidate',
         'overscrolling',
 
-        'tldr_title',
-        'tldr_text',
-        'tldr_milestone',
-        'tldr_date',
-
         'advertisement_title',
         'advertisement_text',
     ))
@@ -46,7 +41,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'access',
         'banner_outer',
         'channels',
-        'storystreams',
     ), use_default=True)
 
     authorships = zeit.cms.content.reference.ReferenceProperty(

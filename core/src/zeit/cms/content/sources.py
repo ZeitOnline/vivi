@@ -664,32 +664,6 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
             permission, context)
 
 
-class StorystreamReference(AllowedBase):
-
-    def __init__(self, id, title, available, centerpage_id):
-        super().__init__(id, title, available)
-        self.centerpage_id = centerpage_id
-
-    @property
-    def references(self):
-        return zeit.cms.interfaces.ICMSContent(self.centerpage_id, None)
-
-
-class StorystreamSource(ObjectSource, XMLSource):
-
-    config_url = 'source-storystreams'
-    default_filename = 'storystreams.xml'
-
-    @CONFIG_CACHE.cache_on_arguments()
-    def _values(self):
-        result = collections.OrderedDict()
-        for node in self._get_tree().iterchildren('*'):
-            id = node.get('name')
-            result[id] = StorystreamReference(
-                id, node.text, node.get('available'), node.get('href'))
-        return result
-
-
 class AccessSource(XMLSource):
 
     config_url = 'source-access'
