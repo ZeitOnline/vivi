@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.5 (2022-05-09)
+-------------------
+
+- ZO-721: Remove any storystream code
+
+
 5.15.4 (2022-05-09)
 -------------------
 
