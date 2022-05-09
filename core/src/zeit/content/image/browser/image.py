@@ -38,7 +38,7 @@ class Image(zope.file.download.Display):
         return self.stream_image()
 
     def stream_image(self):
-        return super(Image, self).__call__()
+        return super().__call__()
 
 
 class ImageView(zeit.cms.browser.view.Base):
@@ -80,7 +80,7 @@ class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
         'zeit.cms.browser', 'object-details-heading.pt'))
 
     def __init__(self, context, request):
-        super(ReferenceDetailsHeading, self).__init__(context.target, request)
+        super().__init__(context.target, request)
 
     def __call__(self):
         return self.template()

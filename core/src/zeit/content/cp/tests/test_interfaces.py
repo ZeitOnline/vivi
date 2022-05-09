@@ -10,7 +10,7 @@ class AreaValidationTest(
         gocept.testing.assertion.Exceptions):
 
     def setUp(self):
-        super(AreaValidationTest, self).setUp()
+        super().setUp()
         self.interface = zeit.content.cp.interfaces.IArea
         self.area = mock.Mock()
         self.area.count = 3

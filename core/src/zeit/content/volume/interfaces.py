@@ -15,7 +15,7 @@ class ProductSource(zeit.cms.content.sources.ProductSource):
     """
 
     def getValues(self, context):
-        values = super(ProductSource, self).getValues(context)
+        values = super().getValues(context)
         return [value for value in values if value.volume]
 
 

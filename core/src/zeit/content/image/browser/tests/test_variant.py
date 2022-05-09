@@ -23,7 +23,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.content.image.testing.HTTP_LAYER
 
     def setUp(self):
-        super(VariantJsonAPI, self).setUp()
+        super().setUp()
         self.group = create_image_group_with_master_image()
         self.group.variants = {
             'square': {'focus_x': 0.5, 'focus_y': 0.5, 'zoom': 1.0}
@@ -158,7 +158,7 @@ class VariantIntegrationTest(zeit.content.image.testing.SeleniumTestCase):
     window_width = 1300  # The "Variants" tab needs to fit in and be clickable.
 
     def setUp(self):
-        super(VariantIntegrationTest, self).setUp()
+        super().setUp()
         # XXX major kludge. We should find another way to check that saving
         # has worked instead of ".saved appears and disappears".
         self.orig_put = zeit.content.image.browser.variant.VariantDetail.PUT
@@ -170,7 +170,7 @@ class VariantIntegrationTest(zeit.content.image.testing.SeleniumTestCase):
 
     def tearDown(self):
         zeit.content.image.browser.variant.VariantDetail.PUT = self.orig_put
-        super(VariantIntegrationTest, self).tearDown()
+        super().tearDown()
 
     def test_integration(self):
         """Open Image group and change settings of master and a variant."""

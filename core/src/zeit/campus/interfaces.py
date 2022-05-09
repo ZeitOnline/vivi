@@ -73,14 +73,14 @@ class ITopic(zope.interface.Interface):
 class StudyCourse(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, available, text, href, button_text):
-        super(StudyCourse, self).__init__(id, title, available)
+        super().__init__(id, title, available)
         self.text = text
         self.href = href
         self.button_text = button_text
 
     def is_allowed(self, context):
         article = zeit.content.article.interfaces.IArticle(context, None)
-        return super(StudyCourse, self).is_allowed(article)
+        return super().is_allowed(article)
 
 
 class StudyCourseSource(

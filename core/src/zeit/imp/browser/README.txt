@@ -33,7 +33,7 @@ Mask
 
 The mask is loaded from the site with the image size and mask size parameters:
 
->>> from six.moves.urllib.parse import urlencode
+>>> from urllib.parse import urlencode
 >>> query = urlencode({
 ...     'image_width:int': '100',
 ...     'image_height:int': '200',
@@ -48,7 +48,7 @@ Content-Length: ...
 Content-Type: image/png
 ...
 >>> browser.contents[:10]
-'\x89PNG\r\n\x1a\n\x00\x00'
+b'\x89PNG\r\n\x1a\n\x00\x00'
 
 The border can be coloured:
 

@@ -1,7 +1,7 @@
 import bugsnag
 import json
 import logging
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.cms.browser.view
 import zope.component
 import zope.error.interfaces
@@ -38,7 +38,7 @@ class JSONLog(zeit.cms.browser.view.JSON):
         # XXX should we populate Python's logmessage timestamp from json?
         log_func(message)
 
-        path = six.moves.urllib.parse.urlparse(url).path if url else None
+        path = urllib.parse.urlparse(url).path if url else None
         js_error = decoded['message'][0]
         bugsnag.notify(
             JavaScriptError(js_error), context=path, severity='error',

@@ -234,7 +234,7 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
 
     def setUp(self):
-        super(TestDownloadTeasers, self).setUp()
+        super().setUp()
         image_dir = pkg_resources.resource_filename(
             "zeit.content.image.browser", "testdata"
         )
@@ -409,7 +409,7 @@ class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
 class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ExportTest, self).setUp()
+        super().setUp()
         self.repository['myvid'] = zeit.content.video.video.Video()
         self.request_patch = mock.patch(
             'zeit.brightcove.connection.CMSAPI._request')
@@ -417,7 +417,7 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def tearDown(self):
         self.request_patch.stop()
-        super(ExportTest, self).tearDown()
+        super().tearDown()
 
     def test_video_changes_are_written_to_brightcove_on_checkin(self):
         with zeit.cms.checkout.helper.checked_out(

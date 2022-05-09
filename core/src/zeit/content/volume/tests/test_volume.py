@@ -9,7 +9,6 @@ import lxml.etree
 import lxml.objectify
 import pytz
 import requests_mock
-import six
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -26,7 +25,7 @@ import zope.component
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVolumeCovers, self).setUp()
+        super().setUp()
         self.repository['imagegroup'] = create_image_group()
         self.cover = self.repository['imagegroup']
         self.volume = Volume()
@@ -52,7 +51,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
             'product_id="ZEI"/>'
             '</covers>',
             lxml.etree.tostring(
-                self.volume.xml.covers, encoding=six.text_type))
+                self.volume.xml.covers, encoding=str))
 
     def test_deletes_existing_node_if_value_is_None(self):
         self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
@@ -60,7 +59,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
             lxml.etree.tostring(
-                self.volume.xml.covers, encoding=six.text_type))
+                self.volume.xml.covers, encoding=str))
 
     def test_raises_value_error_if_invalid_product_id_used_in_set_cover(self):
         with self.assertRaises(ValueError):
@@ -86,7 +85,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 class TestReference(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestReference, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -146,7 +145,7 @@ class TestReference(zeit.content.volume.testing.FunctionalTestCase):
 class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVolume, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -212,7 +211,7 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TestVolumeQueries, self).setUp()
+        super().setUp()
         self.create_volume(2015, 1)
         self.create_volume(2015, 2)
         self.elastic = mock.Mock()
@@ -330,7 +329,7 @@ class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):
 class TestWebtrekkQuery(TestVolumeQueries):
 
     def setUp(self):
-        super(TestWebtrekkQuery, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2019
         volume.volume = 1

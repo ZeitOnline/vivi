@@ -7,7 +7,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
     block_type = 'topicbox'
 
     def setUp(self):
-        super(Form, self).setUp()
+        super().setUp()
         self.create_content()
 
     def create_content(self):

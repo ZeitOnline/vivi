@@ -5,7 +5,7 @@ import zeit.content.article.testing
 class Memo(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(Memo, self).setUp()
+        super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=memo.memo')
 

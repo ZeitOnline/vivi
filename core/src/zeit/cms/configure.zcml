@@ -45,8 +45,6 @@
 
   <utility factory=".tracing.default_tracer" />
 
-  <!-- cleanup -->
-  <subscriber handler=".cleanup.clean_exc_info" />
   <subscriber handler=".cleanup.clean_previous_interaction" />
 
   <!-- lxml security settings -->

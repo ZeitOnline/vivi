@@ -12,7 +12,7 @@ class Relations(persistent.Persistent):
     """Handles relations between content."""
 
     def __init__(self):
-        super(Relations, self).__init__()
+        super().__init__()
         self._catalog = zc.relation.catalog.Catalog(
             _dump_content, _load_content, btree=BTrees.family32.OI)
 

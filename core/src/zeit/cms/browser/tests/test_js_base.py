@@ -6,7 +6,7 @@ class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(EvaluateTest, self).setUp()
+        super().setUp()
         self.open('/@@/zeit.cms.browser.tests.fixtures/evaluate/index.html')
 
     def write_html(self, text):

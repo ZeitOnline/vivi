@@ -10,7 +10,7 @@ import zeit.newsletter.testing
 class AddTest(zeit.newsletter.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(AddTest, self).setUp()
+        super().setUp()
         self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
         category = NewsletterCategory()
         category.subject = 'nosubject'
@@ -35,7 +35,7 @@ class AddTest(zeit.newsletter.testing.SeleniumTestCase):
 class CategoryMetadata(zeit.newsletter.testing.BrowserTestCase):
 
     def setUp(self):
-        super(CategoryMetadata, self).setUp()
+        super().setUp()
         self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
         self.repository['newsletter']['taeglich'] = NewsletterCategory()
         transaction.commit()

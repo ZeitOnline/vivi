@@ -1,5 +1,4 @@
 import lxml.objectify
-import six
 import unittest
 import zeit.content.article.testing
 
@@ -40,12 +39,12 @@ class ParagraphTest(unittest.TestCase):
         p = self.get_paragraph()
         p.text = 'F\xfc!'
         self.assertEqual('F\xfc!', p.text)
-        self.assertTrue(isinstance(p.text, six.text_type))
+        self.assertTrue(isinstance(p.text, str))
 
     def test_text_should_be_unicode(self):
         p = self.get_paragraph()
         p.text = 'Dadudeldum'
-        self.assertTrue(isinstance(p.text, six.text_type))
+        self.assertTrue(isinstance(p.text, str))
 
     def test_setting_html_should_create_proper_xml(self):
         p = self.get_paragraph()

@@ -9,7 +9,7 @@ class EditorTest(zeit.newsletter.testing.BrowserTestCase):
 
     def setUp(self):
         from zeit.newsletter.newsletter import Newsletter
-        super(EditorTest, self).setUp()
+        super().setUp()
         self.repository['newsletter'] = Newsletter()
 
     def test_newsletter_can_be_checked_out(self):
@@ -21,7 +21,7 @@ class EditorTest(zeit.newsletter.testing.BrowserTestCase):
 class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(BlockEditingTest, self).setUp()
+        super().setUp()
         self.open('/repository/newsletter/@@checkout')
         # XXX without this, create_content_and_fill_clipboard raises a
         # ConflictError
@@ -150,7 +150,7 @@ class AdvertisementTest(zeit.newsletter.testing.SeleniumTestCase):
     def setUp(self):
         from zeit.newsletter.newsletter import Newsletter
         from zeit.newsletter.category import NewsletterCategory
-        super(AdvertisementTest, self).setUp()
+        super().setUp()
         category = NewsletterCategory()
         category.ad_middle_title = 'Some ad'
         category.ad_middle_groups_above = 0

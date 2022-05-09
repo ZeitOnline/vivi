@@ -50,4 +50,6 @@
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
+  <adapter factory=".form.ListRepresentation" />
+
 </configure>

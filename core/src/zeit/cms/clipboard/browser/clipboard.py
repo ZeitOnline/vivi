@@ -71,7 +71,7 @@ class Tree(zeit.cms.browser.tree.Tree):
         if (zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj) or
                 zeit.cms.clipboard.interfaces.IClip.providedBy(obj)):
             return obj.title
-        return super(Tree, self).getTitle(obj)
+        return super().getTitle(obj)
 
     def getType(self, obj):
         if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj):

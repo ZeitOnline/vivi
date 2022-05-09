@@ -182,7 +182,7 @@ KeyError: "The resource 'http://xml.zeit.de/testing.../lt2' does not exist."
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 []
 >>> list(cache.keys())
-['http://xml.zeit.de/testing.../']
+[b'http://xml.zeit.de/testing.../']
 
 Clean up:
 

@@ -105,7 +105,7 @@ class SendTest(zeit.newsletter.testing.TestCase):
         from zeit.newsletter.category import NewsletterCategory
         from zeit.newsletter.newsletter import Newsletter
         import zeit.cms.repository.folder
-        super(SendTest, self).setUp()
+        super().setUp()
         category = NewsletterCategory()
         category.mandant = '12345'
         category.recipientlist = 'recipientlist'

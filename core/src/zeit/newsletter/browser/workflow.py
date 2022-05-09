@@ -63,13 +63,13 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
         self._adapters = {
             zeit.newsletter.interfaces.ITestRecipient: recipient,
         }
-        super(Form, self).setUpWidgets(ignore_request)
+        super().setUpWidgets(ignore_request)
 
     # override from baseclass to change the title
     @zope.formlib.form.action(_('Send emails and publish now'),
                               name='publish')
     def handle_publish(self, action, data):
-        return super(Form, self).handle_publish.success_handler(
+        return super().handle_publish.success_handler(
             self, action, data)
 
     # once you override one action, you don't get any action from your base
@@ -77,12 +77,12 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
     @zope.formlib.form.action(_('Save state only'),
                               name='save')
     def handle_save_state(self, action, data):
-        return super(Form, self).handle_save_state.success_handler(
+        return super().handle_save_state.success_handler(
             self, action, data)
 
     @zope.formlib.form.action(_('Test email'),
                               name='test')
     def handle_test(self, action, data):
-        super(Form, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
         recipient = zeit.newsletter.interfaces.ITestRecipient(self.request)
         self.context.send_test(recipient.email)

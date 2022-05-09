@@ -4,7 +4,6 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import os.path
-import six
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
@@ -36,7 +35,7 @@ class ContentList:
         '.object_limit')
 
     def __init__(self, *args, **kwargs):
-        super(ContentList, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.object_limit:
             self.object_limit = 50
 
@@ -198,8 +197,7 @@ class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def xml_source(self):
         # BBB deprecated
-        return lxml.etree.tostring(
-            self.xml, pretty_print=True, encoding=six.text_type)
+        return lxml.etree.tostring(self.xml, pretty_print=True, encoding=str)
 
 
 class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -292,7 +290,7 @@ class FakeEntry:
             setattr(self, field, None)
         self.uniqueId = id
         self.__name__ = os.path.basename(id)
-        self.title = six.text_type(entry.find('title'))
+        self.title = str(entry.find('title'))
 
 
 @grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)

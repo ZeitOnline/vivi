@@ -63,7 +63,7 @@ class ReloadContainerAction(zeit.edit.browser.view.Action):
         try:
             zope.component.getSiteManager().registerHandler(
                 trigger_reload)
-            return super(ReloadContainerAction, self).__call__()
+            return super().__call__()
         finally:
             zope.component.getSiteManager().unregisterHandler(
                 trigger_reload)

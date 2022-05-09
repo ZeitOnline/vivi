@@ -40,7 +40,7 @@ class IAnimation(
     images = zope.schema.Tuple(
         title=_("Images"),
         default=(),
-        max_length=3,
+        max_length=5,
         required=False,
         value_type=zope.schema.Choice(
             source=zeit.content.image.interfaces.ImageSource()

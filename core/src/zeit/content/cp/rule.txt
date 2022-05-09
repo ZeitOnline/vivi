@@ -6,7 +6,6 @@ XXX this is supposed to be user documentation. writeme
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 
->>> import sys
 >>> import tempfile
 >>> import pyramid_dogpile_cache2
 >>> rules_file, rules_filename = tempfile.mkstemp()
@@ -17,8 +16,6 @@ XXX this is supposed to be user documentation. writeme
 
 >>> def create_rules(rules_str):
 ...     rules_file = open(rules_filename, 'w')
-...     if sys.version_info < (3,):
-...         rules_str = rules_str.encode('utf-8')
 ...     rules_file.write(rules_str)
 ...     rules_file.close()
 ...     pyramid_dogpile_cache2.clear()

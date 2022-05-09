@@ -5,7 +5,7 @@ import grokcore.component as grok
 import logging
 import persistent
 import random
-import six.moves.xmlrpc_client
+import xmlrpc.client
 import zc.queue
 import zeit.cms.cli
 import zeit.cms.content.dav
@@ -89,7 +89,7 @@ class TokenService(grok.GlobalUtility):
         return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
 
     # Make mutable by tests.
-    ServerProxy = six.moves.xmlrpc_client.ServerProxy
+    ServerProxy = xmlrpc.client.ServerProxy
 
     def claim_token(self):
         tokens = self.ServerProxy(self.config['claim-token-url'])

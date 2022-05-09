@@ -226,7 +226,7 @@ class ImageGroupBrowserTest(
 class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(ImageGroupWebdriverTest, self).setUp()
+        super().setUp()
         create_image_group_with_master_image()
 
     def test_visibility_of_origin_field_depends_on_display_type(self):
@@ -277,7 +277,7 @@ class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
         from zeit.content.image.browser.imagegroup import Thumbnail
-        super(ThumbnailTest, self).setUp()
+        super().setUp()
         self.group = create_image_group_with_master_image()
         self.thumbnail = Thumbnail()
         self.thumbnail.context = self.group

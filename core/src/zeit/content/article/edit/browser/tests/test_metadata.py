@@ -12,7 +12,7 @@ import zope.security.management
 class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(HeadTest, self).setUp()
+        super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=options-b.year')
@@ -130,7 +130,7 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
 class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(MetadataTest, self).setUp()
+        super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=options-b.year')
         self.selenium.click('css=#edit-form-metadata .fold-link')
@@ -191,7 +191,7 @@ class AuthorLocationTest(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(AuthorLocationTest, self).setUp()
+        super().setUp()
         shakespeare = zeit.content.author.author.Author()
         shakespeare.firstname = 'William'
         shakespeare.lastname = 'Shakespeare'

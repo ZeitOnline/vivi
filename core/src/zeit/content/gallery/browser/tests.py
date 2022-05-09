@@ -1,4 +1,4 @@
-from six import StringIO
+from io import StringIO
 import unittest
 import zeit.cms.testing
 import zeit.content.gallery.browser.ticket
@@ -10,7 +10,7 @@ class TestTicketAuthorization(unittest.TestCase):
 
     rnd = -2134234234
     hash_ = 28 * b'x'
-    principal = b'prin.cipal'
+    principal = 'prin.cipal'
 
     def setUp(self):
         self.config = zope.app.appsetup.product.saveConfiguration()
@@ -34,7 +34,7 @@ class TestTicketAuthorization(unittest.TestCase):
 
     def test_ticket(self):
         ticket = zeit.content.gallery.browser.ticket.get_hash(
-            self.rnd, self.principal.decode('utf-8'))
+            self.rnd, self.principal)
         unpacked = zeit.content.gallery.browser.ticket.unpack(ticket)
         self.assertEqual(unpacked[0], self.rnd)
         self.assertNotEqual(unpacked[1], self.hash_)

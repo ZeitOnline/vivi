@@ -13,7 +13,7 @@ class ReferenceProperty(zeit.cms.content.reference.SingleReferenceProperty):
             '__name__',
         ]}
 
-        super(ReferenceProperty, self).__set__(instance, value)
+        super().__set__(instance, value)
 
         for name, val in saved_attributes.items():
             setattr(instance, name, val)

@@ -1,7 +1,7 @@
 from collections import namedtuple
 import grokcore.component as grok
 import json
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -35,7 +35,7 @@ class Widget(grok.MultiAdapter,
     template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
 
     def __init__(self, context, source, request):
-        super(Widget, self).__init__(context, request)
+        super().__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -86,7 +86,7 @@ class Widget(grok.MultiAdapter,
             # an abstraction instead doesn't really seem worthwile either.
             import zeit.retresco.interfaces
             tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-            return six.moves.urllib.parse.urlparse(tms.primary['url']).netloc
+            return urllib.parse.urlparse(tms.primary['url']).netloc
         except (ImportError, LookupError):
             return None
 
@@ -128,7 +128,7 @@ class DisplayWidget(grok.MultiAdapter,
     tag_highling_css_class = 'with-topic-page'
 
     def __init__(self, field, source, request):
-        super(DisplayWidget, self).__init__(
+        super().__init__(
             field,
             zope.formlib.source.IterableSourceVocabulary(source, request),
             request)

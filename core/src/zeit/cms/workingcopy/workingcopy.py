@@ -20,13 +20,13 @@ class Workingcopy(zope.container.btree.BTreeContainer):
     temporary = False  # avoid migration of existing objects
 
     def __init__(self, temporary=False):
-        super(Workingcopy, self).__init__()
+        super().__init__()
         self.temporary = temporary
 
     def __iter__(self):
         for key in reversed(self._order):
             yield key
-        for key in super(Workingcopy, self).__iter__():
+        for key in super().__iter__():
             if key in self._order:
                 continue
             yield key
@@ -38,11 +38,11 @@ class Workingcopy(zope.container.btree.BTreeContainer):
     def __setitem__(self, key, item):
         if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(item):
             raise ValueError("Must provide ILocalContent")
-        super(Workingcopy, self).__setitem__(key, item)
+        super().__setitem__(key, item)
         self._order += (key, )
 
     def __delitem__(self, key):
-        super(Workingcopy, self).__delitem__(key)
+        super().__delitem__(key)
         order = list(self._order)
         try:
             order.remove(key)

@@ -1,6 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
-import six.moves.urllib.parse
 import transaction
+import urllib.parse
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -166,7 +166,7 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
         elif 'cancel' in self.request.form:
             self.cancel()
         else:
-            return super(CheckinConflictError, self).render()
+            return super().render()
 
     def checkin(self):
         if 'checkin' in self.request.form:
@@ -174,12 +174,11 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
         else:
             semantic_change = self.request.get('semantic_change', '')
         self.redirect(self.url(
-            self.context, '@@checkin?%s' % six.moves.urllib.parse.urlencode(
-                dict(
-                    came_from=self.request.get('came_from', ''),
-                    ignore_conflicts='true',
-                    semantic_change=semantic_change,
-                ))))
+            self.context, '@@checkin?%s' % urllib.parse.urlencode(dict(
+                came_from=self.request.get('came_from', ''),
+                ignore_conflicts='true',
+                semantic_change=semantic_change,
+            ))))
 
     def delete(self):
         target = self.obj_in_repository
@@ -201,7 +200,7 @@ class CheckinConflictErrorInformation(zope.formlib.form.SubPageDisplayForm):
     form_fields = form_field_base.select('last_modified_by')
 
     def __init__(self, context, request):
-        super(CheckinConflictErrorInformation, self).__init__(context, request)
+        super().__init__(context, request)
         if zeit.cms.workflow.interfaces.IModified(
                 self.context).date_last_checkout:
             self.form_fields += self.form_field_base.select(
@@ -224,7 +223,7 @@ class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
     def render(self):
         if self.is_visible():
-            return super(MenuItem, self).render()
+            return super().render()
         return ''
 
 
@@ -254,5 +253,5 @@ class CheckinMenuItem(MenuItem):
 
     @property
     def action(self):
-        action = super(CheckinMenuItem, self).action
+        action = super().action
         return action + '&semantic_change=None'

@@ -15,7 +15,7 @@ class Editor(zeit.edit.browser.editor.Editor):
         zeit.content.cp.browser.resources.RemoteURLResource(
             zeit.content.cp.browser.resources.lib,
             '/repository' + config['layout-css-path']).need()
-        return super(Editor, self).__call__()
+        return super().__call__()
 
     @property
     def form_css_class(self):

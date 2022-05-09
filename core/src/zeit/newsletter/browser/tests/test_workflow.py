@@ -8,7 +8,7 @@ import zeit.newsletter.testing
 class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
 
     def setUp(self):
-        super(WorkflowTest, self).setUp()
+        super().setUp()
         self.repository['newsletter'] = Newsletter()
         zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository['newsletter']).published = False

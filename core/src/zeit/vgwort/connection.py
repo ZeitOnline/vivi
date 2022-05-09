@@ -4,7 +4,7 @@ import random
 import requests
 import requests.auth
 import requests.exceptions
-import six.moves.urllib.parse
+import urllib.parse
 import threading
 import zeep
 import zeep.exceptions
@@ -54,7 +54,7 @@ class VGWortWebService:
 
     @property
     def wsdl(self):
-        return six.moves.urllib.parse.urljoin(self.base_url, self.service_path)
+        return urllib.parse.urljoin(self.base_url, self.service_path)
 
     def call(self, method_name, *args, **kw):
         with self.lock:

@@ -17,7 +17,7 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
 
     @property
     def css_class(self):
-        classes = super(ViewletManager, self).css_class
+        classes = super().css_class
         visible = 'block-visible-off' if not self.context.visible else ''
         return ' '.join(['editable-area', visible, classes])
 
@@ -26,7 +26,7 @@ class AreaViewletManager(ViewletManager):
 
     @property
     def css_class(self):
-        classes = super(AreaViewletManager, self).css_class
+        classes = super().css_class
 
         if not zeit.content.cp.interfaces.\
                 automatic_area_can_read_teasers_automatically(self.context):
@@ -87,7 +87,7 @@ class DynamicCombinationWidget(
         return widget
 
     def setRenderedValue(self, value):
-        super(DynamicCombinationWidget, self).setRenderedValue(value)
+        super().setRenderedValue(value)
         # SequenceWidget calls setPrefix first and setRenderedValue later, so
         # when self.widgets is called the first time, self._data has not been
         # set yet. Thus we have to recreate the widgets, now that we know the
@@ -216,7 +216,7 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         'blocks/teaser.edit-common.pt')
 
     def setUpWidgets(self, *args, **kw):
-        super(EditAutomatic, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['automatic'].reversed = False
 
 

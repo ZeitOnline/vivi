@@ -9,7 +9,7 @@ import zope.i18n
 class SortingMenu(zope.browsermenu.menu.BrowserMenu):
 
     def getMenuItems(self, object, request):
-        result = super(SortingMenu, self).getMenuItems(object, request)
+        result = super().getMenuItems(object, request)
         for item in result:
             item['title-translated'] = zope.i18n.translate(
                 item['title'], context=request)
@@ -28,6 +28,6 @@ class Delete(zeit.cms.browser.menu.LightboxActionMenuItem):
 
     def render(self):
         if self.visible:
-            return super(Delete, self).render()
+            return super().render()
         else:
             return ''

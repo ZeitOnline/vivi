@@ -35,10 +35,10 @@ class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
     def __init__(self, *args, **kw):
         self.form_fields['blob'].custom_widget = (
             zeit.cms.repository.browser.file.BlobWidget)
-        super(ImageFormBase, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
 
     def setUpWidgets(self, *args, **kw):
-        super(ImageFormBase, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['blob'].extra = 'accept="%s"' % (
             ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
 
@@ -104,14 +104,14 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
             self.update_file(self.context, blob)
         form_fields = self.form_fields
         self.form_fields = form_fields.omit('blob')
-        super(EditForm, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
         self.form_fields = form_fields
 
     def _get_widgets(self, form_fields, ignore_request):
         blob = form_fields.get('blob')
         if blob:
             form_fields = form_fields.omit('blob')
-        widgets = super(EditForm, self)._get_widgets(
+        widgets = super()._get_widgets(
             form_fields, ignore_request)
         if blob:
             widgets += zope.formlib.form.setUpWidgets(

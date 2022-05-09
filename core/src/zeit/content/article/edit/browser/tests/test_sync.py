@@ -8,7 +8,7 @@ class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
     teaser_supertitle = 'teaser-supertitle.teaserSupertitle'
 
     def setUp(self):
-        super(Supertitle, self).setUp()
+        super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=%s' % self.teaser_supertitle)
 

@@ -4,7 +4,6 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import celery
-import six
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
 import zope.browserpage
@@ -17,7 +16,7 @@ class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     lightbox = '@@publish.html'
 
     def render(self):
-        return super(PublishMenuItem, self).render()
+        return super().render()
 
 
 class Publish:
@@ -53,7 +52,7 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
     def __call__(self, job, objectlog=False):
         async_result = celery.result.AsyncResult(job)
         if async_result.failed():
-            error = six.text_type(async_result.result)
+            error = str(async_result.result)
             self.send_message(error, type='error')
             if objectlog:
                 zeit.objectlog.interfaces.ILog(self.context).log(error)
@@ -73,4 +72,4 @@ class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
         if not self.visible or not IRepositoryContent.providedBy(self.context):
             return ''
         else:
-            return super(RetractMenuItem, self).render()
+            return super().render()

@@ -6,7 +6,7 @@ import zeit.content.text.text
 class TestRawText(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestRawText, self).setUp()
+        super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('rawtext')
         self.repository['centerpage'] = self.centerpage

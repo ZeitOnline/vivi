@@ -47,7 +47,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
     css_class = None
 
     def __init__(self, *args, **kw):
-        super(InlineForm, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self._signals = []
 
     def reload(self, element=None):
@@ -70,13 +70,13 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
     def success_handler(self, action, data, errors=None):
         self.mark_transaction_undoable()
         self._success_handler()
-        return super(InlineForm, self).handle_edit_action.success(data)
+        return super().handle_edit_action.success(data)
 
     def _success_handler(self):
         pass
 
     def validate(self, action, data):
-        errors = super(InlineForm, self).validate(action, data)
+        errors = super().validate(action, data)
         self.get_all_input_even_if_invalid(data)
         return errors
 

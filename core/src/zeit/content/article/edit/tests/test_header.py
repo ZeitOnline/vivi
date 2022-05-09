@@ -11,7 +11,7 @@ import zope.security.proxy
 class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(HeaderAreaTest, self).setUp()
+        super().setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
         fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
@@ -20,7 +20,7 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
 
     def tearDown(self):
         self.patches.reset()
-        super(HeaderAreaTest, self).tearDown()
+        super().tearDown()
 
     def test_can_adapt_article_to_header(self):
         article = Article()

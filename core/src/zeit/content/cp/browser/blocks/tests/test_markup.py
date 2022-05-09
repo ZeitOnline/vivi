@@ -5,7 +5,7 @@ import zeit.content.cp.centerpage
 class TestMarkup(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestMarkup, self).setUp()
+        super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('markup')
         self.repository['centerpage'] = self.centerpage

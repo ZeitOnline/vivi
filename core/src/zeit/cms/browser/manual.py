@@ -22,7 +22,7 @@ LINK_SOURCE = LinkSource()
 class LinkField(zope.schema.TextLine):
 
     def __init__(self):
-        super(LinkField, self).__init__(readonly=True)
+        super().__init__(readonly=True)
 
 
 class ILink(zope.interface.Interface):
@@ -59,11 +59,11 @@ class LinkWidget(zope.formlib.widget.BrowserWidget):
 class FormMixin:
 
     def __init__(self, context, request):
-        super(FormMixin, self).__init__(context, request)
+        super().__init__(context, request)
         self.form_fields += zope.formlib.form.FormFields(ILink)
 
     def setUpWidgets(self, *args, **kwargs):
-        super(FormMixin, self).setUpWidgets(*args, **kwargs)
+        super().setUpWidgets(*args, **kwargs)
         # Skip the zope.metaconfigure baseclass synthesized by <browser:page>
         cls = self.__class__.__bases__[0]
         self.widgets['manual_link'].key = '.'.join([

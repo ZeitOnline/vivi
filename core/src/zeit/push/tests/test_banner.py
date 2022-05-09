@@ -15,7 +15,7 @@ import zope.security.management
 class BannerPublisherTest(zeit.push.testing.TestCase):
 
     def setUp(self):
-        super(BannerPublisherTest, self).setUp()
+        super().setUp()
         self.repository['foo'] = zeit.content.article.testing.create_article()
         self.publisher = zeit.push.banner.Push()
         banner_config = zeit.content.rawxml.rawxml.RawXML()

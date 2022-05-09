@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
@@ -36,11 +36,11 @@ class SimpleFind(zeit.cms.browser.view.JSON):
 def SimpleFindURL(context, request):
     base = zope.traversing.browser.absoluteURL(
         zope.component.hooks.getSite(), request)
-    query = six.moves.urllib.parse.urlencode(
+    query = urllib.parse.urlencode(
         [('types:list', context.get_check_types())], doseq=True)
     # Since IAutocompleteSource is only a marker and we don't have a baseclass,
     # hasattr is the overall easiest spelling, even though it's a bit kludgy.
     if hasattr(context, 'additional_query_conditions'):
-        query += '&' + six.moves.urllib.parse.urlencode(
+        query += '&' + urllib.parse.urlencode(
             context.additional_query_conditions)
     return ('%s/@@simple_find?%s' % (base, query))

@@ -94,12 +94,12 @@ class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
     @zope.formlib.form.action(_('Save state only'),
                               name='save')
     def handle_save_state(self, action, data):
-        super(WorkflowForm, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
 
     @zope.formlib.form.action(_('Save state and publish now'),
                               name='publish')
     def handle_publish(self, action, data):
-        super(WorkflowForm, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
         self.do_publish()
 
     @gocept.form.action.confirm(
@@ -110,7 +110,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
                           'unavailable to the public!'),
         condition=is_published)
     def handle_retract(self, action, data):
-        super(WorkflowForm, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
         self.do_retract()
 
 

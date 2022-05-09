@@ -24,7 +24,7 @@ Create an XML structure containing a body:
 ... </article>'''
 
 Instanciate a test content:
->>> from six import StringIO
+>>> from io import StringIO
 >>> import zeit.cms.testcontenttype.testcontenttype
 >>> article = zeit.cms.testcontenttype.testcontenttype.ExampleContentType(
 ...     xml_source=StringIO(source))

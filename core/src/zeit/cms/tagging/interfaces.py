@@ -88,11 +88,11 @@ class Keywords(zope.schema.Tuple):
         kw.setdefault('title', _('Keywords'))
         kw.setdefault('value_type', zope.schema.Choice(
             source=zeit.cms.tagging.source.WhitelistSource()))
-        super(Keywords, self).__init__(**kw)
+        super().__init__(**kw)
 
     def _validate(self, value):
         try:
-            super(Keywords, self)._validate(value)
+            super()._validate(value)
         except zope.schema.interfaces.TooShort:
             raise TooFewKeywords()
 

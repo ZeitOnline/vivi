@@ -1,5 +1,5 @@
 from datetime import datetime
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
@@ -66,7 +66,7 @@ class RelatedDependency:
 class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(PublicationDependencies, self).setUp()
+        super().setUp()
         self.patches = gocept.testing.mock.Patches()
         self.populate_repository_with_dummy_content()
         self.setup_dates_so_content_is_publishable()
@@ -80,7 +80,7 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
         self.patches.reset()
         zope.component.getSiteManager().unregisterAdapter(
             RelatedDependency, name='related')
-        super(PublicationDependencies, self).tearDown()
+        super().tearDown()
 
     def populate_repository_with_dummy_content(self):
         self.related = []
@@ -199,7 +199,7 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.CELERY_LAYER
 
     def setUp(self):
-        super(PublishEndToEndTest, self).setUp()
+        super().setUp()
         self.log = StringIO()
         self.handler = logging.StreamHandler(self.log)
         logging.root.addHandler(self.handler)
@@ -214,7 +214,7 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         logging.root.removeHandler(self.handler)
         for name in self.loggers:
             logging.getLogger(name).setLevel(self.oldlevels[name])
-        super(PublishEndToEndTest, self).tearDown()
+        super().tearDown()
 
     def test_publish_via_celery_end_to_end(self):
         content = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -271,7 +271,7 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
     error = "Error during publish/retract: ScriptError: ('', 1)"
 
     def setUp(self):
-        super(PublishErrorEndToEndTest, self).setUp()
+        super().setUp()
         self.bak_path = self.layer['publish-script'] + '.bak'
         shutil.move(self.layer['publish-script'], self.bak_path)
         with open(self.layer['publish-script'], 'w') as f:
@@ -280,7 +280,7 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     def tearDown(self):
         shutil.move(self.bak_path, self.layer['publish-script'])
-        super(PublishErrorEndToEndTest, self).tearDown()
+        super().tearDown()
 
     def test_error_during_publish_is_written_to_objectlog(self):
         content = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -404,6 +404,6 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         log = zeit.objectlog.interfaces.ILog(c1)
         self.assertEqual(
             ['${name}: ${new_value}',
-             'Collective Publication',
+             'Collective Publication of ${count} objects',
              'Error during publish/retract: ${exc}: ${message}'],
             [x.message for x in log.get_log()])

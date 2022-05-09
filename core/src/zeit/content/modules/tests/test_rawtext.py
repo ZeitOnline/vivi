@@ -2,7 +2,6 @@ from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 import lxml.etree
 import lxml.objectify
-import six
 import zeit.content.modules.rawtext
 import zeit.content.modules.testing
 import zeit.content.text.embed
@@ -11,7 +10,7 @@ import zeit.content.text.embed
 class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(EmbedParameters, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
@@ -22,7 +21,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
         self.assertEqual('val', self.module.params['p1'])
         self.assertEllipsis(
             '...<param id="p1">val</param>...',
-            lxml.etree.tostring(self.module.xml, encoding=six.text_type))
+            lxml.etree.tostring(self.module.xml, encoding=str))
 
     def test_provides_attribute_access_for_formlib(self):
         self.module.params.p1 = 'val'
@@ -58,7 +57,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
         self.assertEllipsis(
             '<container>...<param id="ref">http://xml.zeit.de/testcontent'
             '</param></container>',
-            lxml.etree.tostring(module.xml, encoding=six.text_type))
+            lxml.etree.tostring(module.xml, encoding=str))
         self.assertEqual(self.repository['testcontent'], module.params['ref'])
 
     def test_no_value_set_uses_field_default(self):
@@ -81,7 +80,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
 class EmbedCSS(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(EmbedCSS, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
@@ -117,7 +116,7 @@ two, three { c: 3; }
 class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ConsentInfo, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
@@ -134,7 +133,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         self.assertEqual(
             '<container has_thirdparty="yes"'
             ' thirdparty_vendors="twitter;facebook"/>',
-            lxml.etree.tostring(self.module.xml, encoding=six.text_type))
+            lxml.etree.tostring(self.module.xml, encoding=str))
 
     def test_passes_through_referenced_values(self):
         info = zeit.cmp.interfaces.IConsentInfo(self.module)

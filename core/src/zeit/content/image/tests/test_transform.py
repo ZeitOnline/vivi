@@ -10,7 +10,7 @@ import zeit.content.image.testing
 class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(CreateVariantImageTest, self).setUp()
+        super().setUp()
         self.transform = self._transform(
             'xx        xxxxxx',
             'xx        xxxxxx',

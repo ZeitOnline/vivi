@@ -51,7 +51,7 @@ class XMLRPCLayer(plone.testing.Layer):
     defaultBases = (WSGI_LAYER,)
 
     def setUp(self):
-        super(XMLRPCLayer, self).setUp()
+        super().setUp()
         token_service = zeit.vgwort.token.TokenService()
         token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(
             x, self['wsgi_app'])
@@ -83,7 +83,7 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
     level = 2
 
     def setUp(self):
-        super(EndToEndTestCase, self).setUp()
+        super().setUp()
         service = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)
         try:

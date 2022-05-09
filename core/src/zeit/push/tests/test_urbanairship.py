@@ -38,7 +38,7 @@ def send(self):
 class ConnectionTest(zeit.push.testing.TestCase):
 
     def setUp(self):
-        super(ConnectionTest, self).setUp()
+        super().setUp()
         self.api = zeit.push.urbanairship.Connection(
             None, None, None, None, None, None, None, None, 3600)
         self.message = zeit.push.urbanairship.Message(
@@ -100,7 +100,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
 class PayloadSourceTest(zeit.push.testing.TestCase):
 
     def setUp(self):
-        super(PayloadSourceTest, self).setUp()
+        super().setUp()
         self.create_payload_template()
         self.templates = list(zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE)
 
@@ -247,7 +247,7 @@ class IntegrationTest(zeit.push.testing.TestCase):
 
     def setUp(self):
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-        super(IntegrationTest, self).setUp()
+        super().setUp()
         content = ExampleContentType()
         content.title = 'content_title'
         self.repository['content'] = content
@@ -274,7 +274,7 @@ class IntegrationTest(zeit.push.testing.TestCase):
 class AuthorpushTest(IntegrationTest):
 
     def setUp(self):
-        super(AuthorpushTest, self).setUp()
+        super().setUp()
         from zeit.content.article.article import Article
         content = Article()
         content.title = 'foo'
@@ -331,7 +331,7 @@ class PushTest(zeit.push.testing.TestCase):
     level = 2
 
     def setUp(self):
-        super(PushTest, self).setUp()
+        super().setUp()
         self.message = zeit.push.urbanairship.Message(
             self.repository['testcontent'])
         self.message.config['payload_template'] = 'foo.json'

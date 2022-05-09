@@ -7,7 +7,7 @@ import zeit.content.cp.testing
 class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestAutomaticTeaserBlock, self).setUp()
+        super().setUp()
         self.auto_teaser_title = 'Teaser Title Foo'
         teaser = self.create_content('t1', self.auto_teaser_title)
 

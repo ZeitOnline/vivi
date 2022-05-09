@@ -6,7 +6,7 @@ class HTMLConvertTest(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(HTMLConvertTest, self).setUp()
+        super().setUp()
         self.add_article()
 
     def convert(self):

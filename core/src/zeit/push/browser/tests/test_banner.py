@@ -6,7 +6,7 @@ import zeit.push.testing
 class RetractBannerTest(zeit.push.testing.BrowserTestCase):
 
     def setUp(self):
-        super(RetractBannerTest, self).setUp()
+        super().setUp()
         # production uses a rawxml object, but we can cheat here.
         self.repository['banner'] = ExampleContentType()
 

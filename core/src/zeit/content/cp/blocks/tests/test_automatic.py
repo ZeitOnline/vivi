@@ -9,7 +9,7 @@ import zope.component
 class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticTeaserBlockTest, self).setUp()
+        super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.elastic = zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch)

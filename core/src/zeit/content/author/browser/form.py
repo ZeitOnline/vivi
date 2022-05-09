@@ -44,7 +44,7 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
     )
 
     def __init__(self, context, request):
-        super(FormBase, self).__init__(context, request)
+        super().__init__(context, request)
         self.form_fields = self._form_fields.omit(*self.omit_fields)
 
         source = zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(
@@ -62,7 +62,7 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
             css_class='wide-widgets full-width'),)
 
     def setUpWidgets(self, *args, **kw):
-        super(FormBase, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         for field in self.form_fields:
             if getattr(field.field, 'max_length', None):
                 self.set_charlimit(field.__name__)
@@ -172,8 +172,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
             return
         if self.prevent_duplicate_honorar_id(object):
             return
-        super(AddContextfree, self).add(
-            object, self.create_folder(object), 'index')
+        super().add(object, self.create_folder(object), 'index')
 
     def create_folder(self, object):
         path = self.author_folder + [object.lastname[0].upper()]
@@ -197,7 +196,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         return [x for x in author_folder.split('/') if x]
 
     def update(self):
-        super(AddContextfree, self).update()
+        super().update()
         if self._duplicate_result is not None:
             self.form_result = self._duplicate_result
         if not self.need_confirmation_checkbox:
@@ -218,7 +217,7 @@ class EditReference(zeit.edit.browser.form.InlineForm):
             'location', 'role')
 
     def setUpWidgets(self, *args, **kw):
-        super(EditReference, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['role']._messageNoValue = _('Author')
 
     @property

@@ -1,16 +1,14 @@
 # coding: utf8
-from six import unichr
-from six.moves import html_entities
 from zeit.wysiwyg.util import contains_element
 import copy
 import datetime
+import html.entities
 import lxml.builder
 import lxml.etree
 import lxml.html.soupparser
 import lxml.objectify
 import pendulum
 import pytz
-import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -56,7 +54,7 @@ class HTMLConverter:
         result = []
         for child in tree.iterchildren():
             result.append(lxml.etree.tostring(
-                child, pretty_print=True, encoding=six.text_type))
+                child, pretty_print=True, encoding=str))
         return ''.join(result)
 
     def from_html(self, tree, value):
@@ -75,8 +73,7 @@ class HTMLConverter:
         self._apply_steps(html, 'xpath_html', 'to_xml')
         for node in html.iterchildren():
             # support tails at the toplevel by faking a wrapper node
-            xml = '<foo>%s</foo>' % lxml.etree.tostring(
-                node, encoding=six.text_type)
+            xml = '<foo>%s</foo>' % lxml.etree.tostring(node, encoding=str)
             objectified = lxml.objectify.fromstring(xml)
             for child in objectified.iterchildren():
                 tree.append(child)
@@ -156,11 +153,11 @@ class HTMLConverter:
     @staticmethod
     def _replace_entities(value):
         # XXX is this efficient enough?
-        for entity_name, codepoint in html_entities.name2codepoint.items():
+        for entity_name, codepoint in html.entities.name2codepoint.items():
             if entity_name in ('gt', 'lt', 'quot', 'amp', 'apos'):
                 # don't replace XML built-in entities
                 continue
-            value = value.replace('&' + entity_name + ';', unichr(codepoint))
+            value = value.replace('&' + entity_name + ';', chr(codepoint))
         return value
 
 
@@ -282,7 +279,7 @@ class TagReplaceStep(ConversionStep):
     assert len(html_xml_tags) == len(xml_html_tags)
 
     def __init__(self, context, converter):
-        super(TagReplaceStep, self).__init__(context, converter)
+        super().__init__(context, converter)
         self.xpath_xml = '|'.join(['.//%s' % tag for tag
                                    in self.xml_html_tags.keys()])
 
@@ -307,7 +304,7 @@ class PassThroughStep(ConversionStep):
     allow_tags = ['p', 'ul', 'ol']
 
     def __init__(self, context, converter):
-        super(PassThroughStep, self).__init__(context, converter)
+        super().__init__(context, converter)
         self.xpath_xml = '|'.join(['.//%s' % tag for tag in self.allow_tags])
 
     def to_html(self, node):
@@ -696,7 +693,7 @@ class RawXMLStep(ConversionStep):
         result = []
         for child in node.iterchildren():
             result.append(lxml.etree.tostring(
-                child, pretty_print=True, encoding=six.text_type))
+                child, pretty_print=True, encoding=str))
         text = '\n'.join(result)
         new_node = lxml.builder.E.div(
             text, **{'class': 'inline-element raw'})
@@ -713,7 +710,7 @@ class ReferenceStep(ConversionStep):
     content_type = None  # override in subclass
 
     def __init__(self, context, converter):
-        super(ReferenceStep, self).__init__(context, converter)
+        super().__init__(context, converter)
         self.xpath_xml = './/%s' % self.content_type
         self.xpath_html = './/*[contains(@class, "%s")]' % self.content_type
 
@@ -748,14 +745,14 @@ class PortraitboxStep(ReferenceStep):
     content_type = 'portraitbox'
 
     def to_html(self, node):
-        new_node = super(PortraitboxStep, self).to_html(node)
+        new_node = super().to_html(node)
         layout = lxml.builder.E.div(
             node.get('layout') or '', **{'class': 'layout'})
         new_node.append(layout)
         return new_node
 
     def to_xml(self, node):
-        new_node = super(PortraitboxStep, self).to_xml(node)
+        new_node = super().to_xml(node)
         layout = node.xpath('*[@class="layout"]')[0].text or ''
         new_node.set('layout', layout)
         return new_node

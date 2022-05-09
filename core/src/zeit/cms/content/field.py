@@ -27,7 +27,7 @@ class _XMLBase(zope.schema.Field):
             self.parse = objectify_soup_fromstring
         else:
             self.parse = lxml.objectify.fromstring
-        super(_XMLBase, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
 
     def fromUnicode(self, text):
         try:

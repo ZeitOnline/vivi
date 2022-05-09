@@ -1,5 +1,4 @@
 import lxml.etree
-import six
 import zeit.retresco.testing
 
 
@@ -10,7 +9,7 @@ class TestTags(zeit.retresco.testing.FunctionalTestCase,
     def setUp(self):
         from zeit.cms.tagging.tag import Tags
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-        super(TestTags, self).setUp()
+        super().setUp()
 
         class Content(ExampleContentType):
             tags = Tags()
@@ -28,4 +27,4 @@ class TestTags(zeit.retresco.testing.FunctionalTestCase,
 <rankedTags xmlns:ns="http://namespaces.zeit.de/CMS/tagging">\
 <tag uuid="uid-karenduve" url_value="karenduve" type="author">Karen Duve</tag>\
 </rankedTags>""", lxml.etree.tostring(Tagger(self.content).to_xml(),
-                                      encoding=six.text_type))
+                                      encoding=str))

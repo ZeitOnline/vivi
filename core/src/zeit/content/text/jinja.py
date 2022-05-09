@@ -59,7 +59,7 @@ class Template(jinja2.Template):
 class MockDict(collections.defaultdict):
 
     def __init__(self):
-        super(MockDict, self).__init__(mock.MagicMock)
+        super().__init__(mock.MagicMock)
 
     def __contains__(self, key):
         return True

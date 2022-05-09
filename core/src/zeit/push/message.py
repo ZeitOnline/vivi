@@ -115,7 +115,7 @@ class AccountData(grok.Adapter):
     grok.context(zeit.cms.interfaces.ICMSContent)
 
     def __init__(self, context):
-        super(AccountData, self).__init__(context)
+        super().__init__(context)
         self.__parent__ = context  # make security work
 
     @property

@@ -15,7 +15,7 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
         'template', 'header_layout', 'header_color')
 
     def render(self):
-        result = super(EditTemplate, self).render()
+        result = super().render()
         if result:
             result += """\
 <script type="text/javascript">

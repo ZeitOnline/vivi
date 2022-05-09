@@ -37,7 +37,7 @@ class BreakingNewsTest(zeit.content.article.testing.FunctionalTestCase):
 class BreakingBannerTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(BreakingBannerTest, self).setUp()
+        super().setUp()
         banner_config = zeit.content.rawxml.rawxml.RawXML()
         banner_config.xml = etree.fromstring('<xml><article_id/></xml>')
         self.repository['banner'] = banner_config

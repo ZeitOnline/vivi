@@ -9,7 +9,7 @@ class NormalizeFilenameJSTest(
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(NormalizeFilenameJSTest, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/js.html')
 

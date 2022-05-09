@@ -1,10 +1,14 @@
 from zeit.cms.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
 import zeit.cms.browser.form
+import zeit.cms.browser.interfaces
 import zeit.content.animation.interfaces
 import zeit.content.image.interfaces
 import zeit.push.browser.form
+import zope.component
 import zope.formlib.form
+import zope.interface
 
 
 class Base:
@@ -41,3 +45,14 @@ class Edit(Base, zeit.cms.browser.form.EditForm):
 
 class Display(Base, zeit.cms.browser.form.DisplayForm):
     pass
+
+
+@zope.component.adapter(
+    zeit.content.animation.interfaces.IAnimation,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
+class ListRepresentation(zeit.cms.browser.listing.CommonListRepresentation):
+
+    @cachedproperty
+    def title(self):
+        return self.context.__name__

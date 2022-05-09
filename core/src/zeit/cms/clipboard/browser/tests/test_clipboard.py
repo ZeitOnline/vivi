@@ -7,7 +7,7 @@ import zeit.cms.testing
 class ClipboardTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(ClipboardTest, self).setUp()
+        super().setUp()
         self.clipboard = zeit.cms.clipboard.interfaces.IClipboard(
             self.principal)
         UNUSED_REQUEST = None

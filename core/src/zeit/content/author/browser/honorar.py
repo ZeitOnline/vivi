@@ -1,4 +1,4 @@
-from six.moves.urllib.parse import urlencode
+from urllib.parse import urlencode
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.author import Author
@@ -6,7 +6,6 @@ from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
 import json
-import six
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.content.author.interfaces
@@ -52,7 +51,7 @@ class LookupForm(zeit.cms.browser.form.FormBase,
         return True
 
     def update(self):
-        super(LookupForm, self).update()
+        super().update()
         if not self.need_confirmation_checkbox:
             self.form_fields = self.form_fields.omit('confirmed_duplicate')
             # XXX This empties the error state of other widgets, e.g.
@@ -73,7 +72,7 @@ class Lookup(zeit.cms.browser.view.Base):
             return
 
         # Render template to display selection
-        return super(Lookup, self).__call__()
+        return super().__call__()
 
     def redirect_to_addform(self, params):
         addform = self.url(
@@ -124,8 +123,7 @@ class Lookup(zeit.cms.browser.view.Base):
                 row[real] = penname
 
         return urlencode({
-            'form.' + self.FORM_FIELDS[key]: six.text_type(
-                value).encode('utf-8')
+            'form.' + self.FORM_FIELDS[key]: str(value).encode('utf-8')
             for key, value in row.items()
             if value and key in self.FORM_FIELDS
         })

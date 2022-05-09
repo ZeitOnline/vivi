@@ -6,7 +6,7 @@ import zeit.cms.testing
 class SourceSecurityTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
-        super(SourceSecurityTest, self).setUp()
+        super().setUp()
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository/testcontent/@@checkout')

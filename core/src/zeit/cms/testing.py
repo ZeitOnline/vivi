@@ -1,6 +1,6 @@
-from six import StringIO
-from six.moves.urllib.parse import urljoin
+from io import StringIO
 from unittest import mock
+from urllib.parse import urljoin
 import ZODB
 import ZODB.DemoStorage
 import base64
@@ -31,7 +31,6 @@ import pyramid_dogpile_cache2
 import pytest
 import re
 import selenium.webdriver
-import six
 import sys
 import tempfile
 import threading
@@ -96,12 +95,11 @@ class ProductConfigLayer(plone.testing.Layer):
                  name='ConfigLayer', module=None, bases=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(ProductConfigLayer, self).__init__(
-            name=name, module=module, bases=bases)
+        super().__init__(name=name, module=module, bases=bases)
         if not package:
             package = '.'.join(module.split('.')[:-1])
         self.package = package
-        if isinstance(config, six.string_types):  # BBB
+        if isinstance(config, str):  # BBB
             config = self.loadConfiguration(config, package)
         self.config = config
         self.patches = patches or {}
@@ -167,7 +165,7 @@ class ZCMLLayer(plone.testing.Layer):
             config_file = pkg_resources.resource_filename(module, config_file)
         self.config_file = config_file
         self.features = features
-        super(ZCMLLayer, self).__init__(
+        super().__init__(
             name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
@@ -282,7 +280,7 @@ class ZopeLayer(plone.testing.Layer):
     def __init__(self, name='ZopeLayer', module=None, bases=()):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(ZopeLayer, self).__init__(
+        super().__init__(
             name=name, module=module,
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
@@ -338,8 +336,7 @@ class WSGILayer(plone.testing.Layer):
     def __init__(self, name='WSGILayer', module=None, bases=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(WSGILayer, self).__init__(
-            name=name, module=module, bases=bases)
+        super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
         self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(
@@ -376,8 +373,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
     def __init__(self, name='CeleryLayer', module=None, bases=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        super(CeleryWorkerLayer, self).__init__(
-            name=name, module=module, bases=bases)
+        super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
         self['celery_app'] = zeit.cms.celery.CELERY
@@ -459,7 +455,7 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         for key, value in self._next('response_headers').items():
             self.send_header(key, value)
         self.end_headers()
-        self.wfile.write(six.ensure_binary(self._next('response_body')))
+        self.wfile.write(self._next('response_body').encode('utf-8'))
 
     def _next(self, name):
         result = getattr(self, name)
@@ -475,7 +471,7 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 
     def testSetUp(self):
-        super(HTTPLayer, self).testSetUp()
+        super().testSetUp()
         self['request_handler'].requests = []
         self['request_handler'].response_headers = {}
         self['request_handler'].response_body = '{}'
@@ -544,7 +540,7 @@ class WSGIServerLayer(plone.testing.Layer):
     port = 0  # choose automatically
 
     def __init__(self, *args, **kw):
-        super(WSGIServerLayer, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.wsgi_app = None
 
     @property
@@ -623,34 +619,7 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
-# XXX Hopefully not necessary once we're on py3
-class OutputChecker(zope.testing.renormalizing.RENormalizing):
-
-    string_prefix = re.compile(r"(\W|^)[uUbB]([rR]?[\'\"])", re.UNICODE)
-
-    # Strip out u'' and b'' literals, adapted from
-    # <https://stackoverflow.com/a/56507895>.
-    def remove_string_prefix(self, want, got):
-        return (re.sub(self.string_prefix, r'\1\2', want),
-                re.sub(self.string_prefix, r'\1\2', got))
-
-    def check_output(self, want, got, optionflags):
-        # `want` is already unicode, since we pass `encoding` to DocFileSuite.
-        if not isinstance(got, six.text_type):
-            got = got.decode('utf-8')
-        want, got = self.remove_string_prefix(want, got)
-        super_ = zope.testing.renormalizing.RENormalizing
-        return super_.check_output(self, want, got, optionflags)
-
-    def output_difference(self, example, got, optionflags):
-        if not isinstance(got, six.text_type):
-            got = got.decode('utf-8')
-        example.want, got = self.remove_string_prefix(example.want, got)
-        super_ = zope.testing.renormalizing.RENormalizing
-        return super_.output_difference(self, example, got, optionflags)
-
-
-checker = OutputChecker([
+checker = zope.testing.renormalizing.RENormalizing([
     (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
     (re.compile('0x[0-9a-f]+'), "0x..."),
     (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),
@@ -670,8 +639,7 @@ def remove_exception_module(msg):
     return msg[start:end]
 
 
-if sys.version_info > (3,):
-    doctest._strip_exception_details = remove_exception_module
+doctest._strip_exception_details = remove_exception_module
 
 
 optionflags = (doctest.REPORT_NDIFF +
@@ -730,7 +698,7 @@ class FunctionalTestCase(
         return self.layer['zodbApp']
 
     def setUp(self):
-        super(FunctionalTestCase, self).setUp()
+        super().setUp()
         zope.component.hooks.setSite(self.getRootFolder())
         self.principal = create_interaction('zope.user')
 
@@ -791,7 +759,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
     window_height = 600
 
     def setUp(self):
-        super(SeleniumTestCase, self).setUp()
+        super().setUp()
         self.layer['selenium'].setTimeout(self.TIMEOUT * 1000)
 
         if self.log_errors:
@@ -812,7 +780,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.execute('window.localStorage.clear()')
 
     def tearDown(self):
-        super(SeleniumTestCase, self).tearDown()
+        super().tearDown()
         if self.log_errors:
             logging.root.removeHandler(self.log_handler)
             logging.root.setLevel(self.old_log_level)
@@ -890,7 +858,6 @@ def set_site(site=None):
 
 # XXX use zope.publisher.testing for the following two
 def create_interaction(name='zope.user'):
-    name = six.text_type(name)  # XXX At least zope.dublincore requires unicode
     principal = zope.security.testing.Principal(
         name, groups=['zope.Authenticated'], description='test@example.com')
     request = zope.publisher.browser.TestRequest()
@@ -980,13 +947,11 @@ class Browser(zope.testbrowser.browser.Browser):
     xml_strict = False
 
     def __init__(self, wsgi_app):
-        super(Browser, self).__init__(wsgi_app=wsgi_app)
+        super().__init__(wsgi_app=wsgi_app)
 
     def login(self, username, password):
         auth = base64.b64encode(
-            ('%s:%s' % (username, password)).encode('utf-8'))
-        if sys.version_info > (3,):
-            auth = auth.decode('ascii')
+            ('%s:%s' % (username, password)).encode('utf-8')).decode('ascii')
         self.addHeader('Authorization', 'Basic %s' % auth)
 
     def reload(self):
@@ -1066,9 +1031,9 @@ class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
     login_as = ('user', 'userpw')
 
     def setUp(self):
-        super(BrowserTestCase, self).setUp()
+        super().setUp()
         self.browser = Browser(self.layer['wsgi_app'])
-        if isinstance(self.login_as, six.string_types):  # BBB:
+        if isinstance(self.login_as, str):  # BBB:
             self.login_as = self.login_as.split(':')
         self.browser.login(*self.login_as)
 
@@ -1154,7 +1119,7 @@ class FreezeMeta(type):
             return True
 
 
-class Freeze(six.with_metaclass(FreezeMeta, datetime.datetime)):
+class Freeze(datetime.datetime, metaclass=FreezeMeta):
 
     @classmethod
     def freeze(cls, val):
@@ -1194,4 +1159,4 @@ def clock(dt=None):
 
 
 def xmltotext(xml):
-    return lxml.etree.tostring(xml, pretty_print=True, encoding=six.text_type)
+    return lxml.etree.tostring(xml, pretty_print=True, encoding=str)

@@ -18,7 +18,7 @@ class DeleteContent(zeit.cms.browser.view.Base):
         form = self.request.form
         if form.get('form.actions.delete'):
             return self.delete()
-        return super(DeleteContent, self).__call__(*args, **kwargs)
+        return super().__call__(*args, **kwargs)
 
     def next_url(self, folder):
         return self.url(folder)

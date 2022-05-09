@@ -56,7 +56,7 @@ class NotOnClipboardMenuItem:
         if zeit.cms.clipboard.interfaces.IClipboard.providedBy(self.context):
             # Do not render on clipboard
             return ''
-        return super(NotOnClipboardMenuItem, self).render()
+        return super().render()
 
 
 class DeleteClipMenuItem(NotOnClipboardMenuItem,

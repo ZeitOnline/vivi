@@ -19,4 +19,4 @@ class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
     def render(self):
         if IRepositoryContent.providedBy(self.context):
             return ''
-        return super(EditContentsMenuItem, self).render()
+        return super().render()

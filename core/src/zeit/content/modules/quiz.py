@@ -12,6 +12,6 @@ class Quiz(zeit.edit.block.Element):
         '.', 'adreload_enabled', IQuiz['adreload_enabled'])
 
     def __init__(self, *args, **kw):
-        super(Quiz, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         if self.adreload_enabled is None:
             self.adreload_enabled = IQuiz['adreload_enabled'].default

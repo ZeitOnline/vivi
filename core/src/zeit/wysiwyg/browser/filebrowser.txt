@@ -15,7 +15,7 @@ the information as arguments instead of having views on objects :/
 
 List the folders and files in /
 
->>> from six.moves.urllib.parse import urlencode
+>>> from urllib.parse import urlencode
 >>> browser.open(base_url % (urlencode(
 ...     dict(Command='GetFoldersAndFiles',
 ...          Type='File',

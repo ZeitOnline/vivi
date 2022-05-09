@@ -128,7 +128,7 @@ class ContentSyndicatedEvent(zope.interface.interfaces.ObjectEvent):
     """Issued when an object is syndicated."""
 
     def __init__(self, object, targets):
-        super(ContentSyndicatedEvent, self).__init__(object)
+        super().__init__(object)
         self.targets = set(targets)
 
 

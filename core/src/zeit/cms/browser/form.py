@@ -81,13 +81,13 @@ class WidgetCSSMixin:
       by setting the ``vivi_css_class`` attribute on each widget:
 
         def setUpWidgets(self, *args, **kw):
-            super(ExampleForm, self).setUpWidgets(*args, **kw)
+            super().setUpWidgets(*args, **kw)
             self.widgets['foo'].vivi_css_class = 'barbaz qux'
 
     """
 
     def setUpWidgets(self, *args, **kw):
-        super(WidgetCSSMixin, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         for widget in self.widgets:
             widget.field_css_class = self._assemble_css_classes.__get__(widget)
 
@@ -120,7 +120,7 @@ class PlaceholderMixin:
         return False
 
     def setUpWidgets(self, *args, **kw):
-        super(PlaceholderMixin, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         for widget in self.widgets:
             if not self._is_textwidget(widget):
                 continue
@@ -159,7 +159,7 @@ class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
             next_url = self.nextURL()
             if next_url is not None:
                 return self.redirect(next_url)
-        return super(FormBase, self).render()
+        return super().render()
 
     def _send_message(self):
         """Send message from self.status and self.errors via flashmessage."""
@@ -209,7 +209,7 @@ class AddFormBase:
             self.new_object = self.make_object()
         else:
             self.new_object = self.context
-        return super(AddFormBase, self).setUpWidgets(ignore_request)
+        return super().setUpWidgets(ignore_request)
 
     def _get_widgets(self, form_fields, ignore_request):
         return zope.formlib.form.setUpInputWidgets(
@@ -301,7 +301,7 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         """Overwritten to use custom translation for Apply."""
-        super(EditForm, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
 
 
 class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):

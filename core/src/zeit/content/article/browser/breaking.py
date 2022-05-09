@@ -62,7 +62,7 @@ class Add(zeit.cms.browser.form.AddForm,
         GET['form.channels.0..combination_00'] = GET.get('form.ressort')
         GET['form.channels.0..combination_01'] = GET.get('form.sub_ressort')
         GET['form.channels.count'] = '1'
-        super(Add, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('title')
         self.widgets['title'].cssClass = 'breakingnews-title'
         self.widgets['__name__'].cssClass = 'breakingnews-filename'
@@ -103,7 +103,7 @@ class Add(zeit.cms.browser.form.AddForm,
                  'account': zeit.push.twitter.twitterAccountSource(
                      self.context).MAIN_ACCOUNT})
 
-        article = super(Add, self).create(data)
+        article = super().create(data)
         # XXX Duplicated from .form.AddAndCheckout
         settings = zeit.cms.settings.interfaces.IGlobalSettings(
             self.context)
@@ -130,7 +130,7 @@ class Add(zeit.cms.browser.form.AddForm,
         return article
 
     def add(self, object, container=None):
-        super(Add, self).add(object, container)
+        super().add(object, container)
         zeit.content.article.interfaces.IBreakingNews(
             self._created_object).is_breaking = True
         # We need to check out the new article so that AfterCheckout events are

@@ -11,7 +11,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):
-        super(AutomaticEditForm, self).setUp()
+        super().setUp()
         zope.security.management.endInteraction()
         zeit.cms.testing.create_interaction('zope.mgr')
 
@@ -99,7 +99,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestAutomaticArea, self).setUp()
+        super().setUp()
         teaser = self.create_content('t1', 'Teaser Title')
         cp_with_teaser = self.create_and_checkout_centerpage(
             'cp_with_teaser', contents=[teaser])

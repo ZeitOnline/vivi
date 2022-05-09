@@ -21,7 +21,7 @@ class TestElasticsearch(unittest.TestCase):
     }
 
     def setUp(self):
-        super(TestElasticsearch, self).setUp()
+        super().setUp()
         self.elasticsearch = zope.component.getUtility(IElasticsearch)
 
     def test_search_returns_a_result_object(self):

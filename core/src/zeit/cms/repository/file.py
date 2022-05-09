@@ -19,7 +19,7 @@ class RepositoryFile(zeit.cms.repository.repository.ContentBase):
     """A file in the repository."""
 
     def __init__(self, uniqueId, mimeType):
-        super(RepositoryFile, self).__init__()
+        super().__init__()
         self.uniqueId = uniqueId
         self.parameters = {}
         self.mimeType = mimeType
@@ -50,7 +50,7 @@ class LocalFile(persistent.Persistent, RepositoryFile):
     local_data = None
 
     def __init__(self, uniqueId=None, mimeType=''):
-        super(LocalFile, self).__init__(uniqueId, mimeType)
+        super().__init__(uniqueId, mimeType)
 
     def open(self, mode='r'):
         if mode not in ('r', 'w'):
@@ -62,7 +62,7 @@ class LocalFile(persistent.Persistent, RepositoryFile):
         if self.local_data is None:
             if mode == 'r':
                 try:
-                    data = super(LocalFile, self).open()
+                    data = super().open()
                 except KeyError:
                     pass
                 else:

@@ -1,4 +1,4 @@
-from six import StringIO
+from io import StringIO
 from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
 import lxml.etree
 import zeit.cms.testcontenttype.testcontenttype
@@ -9,7 +9,7 @@ import zeit.wysiwyg.testing
 class VideoExpiresTest(zeit.wysiwyg.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(VideoExpiresTest, self).setUp()
+        super().setUp()
         self.step = zeit.wysiwyg.html.VideoStep(None, None)
         self.video1 = zeit.cms.interfaces.ICMSContent(VIDEO1)
         self.video2 = zeit.cms.interfaces.ICMSContent(VIDEO2)
@@ -88,4 +88,4 @@ class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
         converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
         self.assertEqual(
             '<article><body><!-- foo --><p>Foo</p></body></article>',
-            lxml.etree.tostring(article.xml, encoding='unicode'))
+            lxml.etree.tostring(article.xml, encoding=str))

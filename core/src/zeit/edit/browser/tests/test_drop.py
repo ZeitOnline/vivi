@@ -4,7 +4,7 @@ import zeit.edit.testing
 class DroppableRegistration(zeit.edit.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(DroppableRegistration, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.edit.browser.tests.fixtures/content-drop/editor.html')
         self.wait_for_condition('!zeit.edit.editor.busy')
@@ -30,7 +30,7 @@ zeit.edit.drop.Droppable.prototype.drop = function(){
 class DragIntegration(zeit.edit.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(DragIntegration, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.edit.browser.tests.fixtures/content-drop/editor.html')
         self.wait_for_condition('!zeit.edit.editor.busy')

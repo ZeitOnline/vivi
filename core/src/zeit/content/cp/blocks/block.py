@@ -27,7 +27,7 @@ class VisibleMixin:
             'visible'])
 
     def __init__(self, context, xml):
-        super(VisibleMixin, self).__init__(context, xml)
+        super().__init__(context, xml)
         if 'visible' not in self.xml.attrib:
             self.visible = zeit.content.cp.interfaces.IElement[
                 'visible'].default

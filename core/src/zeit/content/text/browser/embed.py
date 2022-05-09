@@ -32,7 +32,7 @@ class AddMenuItem(zope.browsermenu.menu.BrowserMenuItem):
             self._permission = 'zeit.content.text.AddEmbed'
         else:
             self._permission = 'zeit.AddContent'
-        return super(AddMenuItem, self).__init__(context, request)
+        return super().__init__(context, request)
 
     @property
     def permission(self):
@@ -52,7 +52,7 @@ class Edit(FormBase, zeit.cms.browser.form.EditForm):
 class CMPFields:
 
     def __init__(self, context, request):
-        super(CMPFields, self).__init__(context, request)
+        super().__init__(context, request)
         if FEATURE_TOGGLES.find('embed_cmp_thirdparty'):
             self.form_fields += zope.formlib.form.FormFields(
                 zeit.cmp.interfaces.IConsentInfo).select(

@@ -21,12 +21,12 @@ class ImageAssetTest(zeit.content.image.testing.FunctionalTestCase):
 class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ImageReferenceTest, self).setUp()
+        super().setUp()
         ExampleContentType.images = ReferenceProperty('.body.image', 'image')
 
     def tearDown(self):
         del ExampleContentType.images
-        super(ImageReferenceTest, self).tearDown()
+        super().tearDown()
 
     def test_local_values_override_original_ones(self):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')

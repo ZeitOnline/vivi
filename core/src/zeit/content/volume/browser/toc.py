@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict, defaultdict
-from six import StringIO, ensure_str
+from io import StringIO
 from zeit.cms.browser.interfaces import IPreviewURL
 from zeit.cms.i18n import MessageFactory as _
 import csv
@@ -254,9 +254,7 @@ class Toc(zeit.cms.browser.view.Base):
             writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
             for toc_element in self._generate_csv_rows(toc_data):
 
-                writer.writerow(
-                    [ensure_str(val) for val in toc_element]
-                )
+                writer.writerow([val for val in toc_element])
 
             file_content = out.getvalue()
         finally:

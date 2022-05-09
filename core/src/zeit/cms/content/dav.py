@@ -6,7 +6,6 @@ import logging
 import lxml.etree
 import pendulum
 import re
-import six
 import sys
 import time
 import zeit.cms.content.interfaces
@@ -155,11 +154,11 @@ class UnicodeProperty:
         # ascii-str when the value has only 7bit characters. While this is an
         # optimisation in lxml we *need* a unicode here. If the value contains
         # 8 bit chars this is supposed to break.
-        value = six.text_type(value)
+        value = str(value)
         return self.context.fromUnicode(value)
 
     def toProperty(self, value):
-        return six.text_type(value)
+        return str(value)
 
 
 @zope.component.adapter(
@@ -208,11 +207,11 @@ class ChoicePropertyWithPrincipalSource:
 
     def fromProperty(self, value):
         if value in self.source:
-            return six.text_type(value)
+            return str(value)
         raise ValueError(value)
 
     def toProperty(self, value):
-        return six.text_type(value)
+        return str(value)
 
 
 DUMMY_REQUEST = zope.publisher.browser.TestRequest()
@@ -406,12 +405,12 @@ class ChannelProperty(UnicodeProperty):
 
     def fromProperty(self, value):
         # Cannot call super since CombinationField has no `fromUnicode`
-        value = six.text_type(value)
+        value = str(value)
         return tuple(value.split(' ')) if ' ' in value else (value, None)
 
     def toProperty(self, value):
         value = ' '.join([x for x in value if x])
-        return super(ChannelProperty, self).toProperty(value)
+        return super().toProperty(value)
 
 
 # Since CollectionTextLineProperty only applies to value_type TextLine,
@@ -473,7 +472,7 @@ class GenericCollectionProperty(GenericProperty):
         self.content_converter = None
 
     def fromProperty(self, value):
-        value = super(GenericCollectionProperty, self).fromProperty(value)
+        value = super().fromProperty(value)
         if self.content_converter is not None:
             type_ = type(zope.proxy.removeAllProxies(value))
             value = type_(self.content_converter.fromProperty(item)
@@ -485,7 +484,7 @@ class GenericCollectionProperty(GenericProperty):
             type_ = type(zope.proxy.removeAllProxies(value))
             value = type_(self.content_converter.toProperty(item)
                           for item in value)
-        return super(GenericCollectionProperty, self).toProperty(value)
+        return super().toProperty(value)
 
 
 def mapProperties(interface, namespace, names, use_default=False,

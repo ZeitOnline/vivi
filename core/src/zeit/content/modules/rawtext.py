@@ -4,7 +4,6 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections.abc
 import grokcore.component as grok
 import lxml.objectify
-import six
 import zeit.cmp.consent
 import zeit.cmp.interfaces
 import zeit.cms.content.property
@@ -88,7 +87,7 @@ class EmbedParameters(
             node = lxml.objectify.E.param(value, id=key)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.append(node)
-        super(EmbedParameters, self).__setattr__('_p_changed', True)
+        super().__setattr__('_p_changed', True)
 
     def _converter(self, name):
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
@@ -151,7 +150,7 @@ class CSSInjector(grok.Adapter):
                 rule.selectorList.append('#%s %s' % (module, selector))
                 # zeit.content.cp
                 rule.selectorList.append('.%s %s' % (module, selector))
-        return '<style>\n%s\n</style>' % six.ensure_text(css.cssText)
+        return '<style>\n%s\n</style>' % css.cssText.decode('utf-8')
 
 
 class EmbedParameterForm:
@@ -163,7 +162,7 @@ class EmbedParameterForm:
         # UI-only dependency
         from zeit.cms.browser.widget import RestructuredTextDisplayWidget
 
-        super(EmbedParameterForm, self).__init__(context, request)
+        super().__init__(context, request)
         self.form_fields = zope.formlib.form.FormFields(
             ICSS, zeit.cms.content.interfaces.IMemo) + self._form_fields.omit(
                 *self._omit_fields)

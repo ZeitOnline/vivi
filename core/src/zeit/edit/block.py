@@ -1,8 +1,7 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import six
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.cms.content.xmlsupport
 import zeit.edit.interfaces
 import zope.component
@@ -96,11 +95,10 @@ def xml_tree_equal(a, b):
     return True
 
 
-@grok.adapter(
-    six.string_types[0], name='http://block.vivi.zeit.de/')
+@grok.adapter(str, name='http://block.vivi.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def resolve_block_id(context):
-    parts = six.moves.urllib.parse.urlparse(context)
+    parts = urllib.parse.urlparse(context)
     assert parts.path.startswith('/')
     path = parts.path[1:]
     content = zeit.cms.cmscontent.resolve_wc_or_repository(path)

@@ -51,7 +51,7 @@ Content-Length: 882409
 Content-Type: image/jpeg
 ...
 >>> browser.contents
-'\xff\xd8\xff\xe1\x0c\xdaExif...'
+b'\xff\xd8\xff\xe1\x0c\xdaExif...'
 
 
 Check the file out. The edit view also contains the metadata:
@@ -87,7 +87,7 @@ Content-Length: 882409
 Content-Type: image/jpeg
 ...
 >>> browser.contents
-'\xff\xd8\xff\xe1\x0c\xdaExif...'
+b'\xff\xd8\xff\xe1\x0c\xdaExif...'
 
 Let's upload a new file:
 
@@ -127,7 +127,7 @@ Content-Length: 23
 Content-Type: text/plain
 ...
 >>> browser.contents
-'Mary had a little lamb.'
+b'Mary had a little lamb.'
 
 
 When we check in the file is updated in the repository:
@@ -163,7 +163,7 @@ Content-Length: 23
 Content-Type: text/plain
 ...
 >>> browser.contents
-'Mary had a little lamb.'
+b'Mary had a little lamb.'
 
 
 The metadata preview also shows the file details:
@@ -238,7 +238,7 @@ Content-Length: 22
 Content-Type: text/plain
 ...
 >>> browser.contents
-'Mary had a giant ogre.'
+b'Mary had a giant ogre.'
 
 Check it in:
 

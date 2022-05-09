@@ -15,7 +15,7 @@ class ColorSourceWidget(zope.formlib.source.SourceDropdownWidget):
 
     # adjust SourceDropdownWidgets to make it work as custom_widget...
     def __init__(self, field, request):
-        super(ColorSourceWidget, self).__init__(field, field.source, request)
+        super().__init__(field, field.source, request)
 
     @property
     def size(self):

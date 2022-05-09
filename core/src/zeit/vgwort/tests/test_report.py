@@ -15,14 +15,14 @@ import zope.interface
 class ReportTest(zeit.vgwort.testing.TestCase):
 
     def setUp(self):
-        super(ReportTest, self).setUp()
+        super().setUp()
         self.vgwort = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)
         self.tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
 
     def tearDown(self):
         self.vgwort.error = False
-        super(ReportTest, self).tearDown()
+        super().tearDown()
 
     def test_source_queries_elastic(self):
         elastic = mock.Mock()

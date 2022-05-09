@@ -5,7 +5,7 @@ import zeit.content.article.edit.browser.testing
 class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestUndo, self).setUp()
+        super().setUp()
         self.add_article()
 
     def test_undo_list_fresh_after_checkout_is_empty(self):

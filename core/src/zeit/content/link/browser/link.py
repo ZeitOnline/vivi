@@ -1,4 +1,3 @@
-import six
 import zeit.cms.browser.listing
 import zeit.content.link.interfaces
 import zope.cachedescriptors.property
@@ -16,6 +15,5 @@ class LinkListRepresentation(
 
     @zope.cachedescriptors.property.Lazy
     def searchableText(self):
-        result = [super(LinkListRepresentation, self).searchableText,
-                  self.context.url]
-        return ' '.join(six.text_type(s) for s in result if s)
+        result = [super().searchableText, self.context.url]
+        return ' '.join(str(s) for s in result if s)

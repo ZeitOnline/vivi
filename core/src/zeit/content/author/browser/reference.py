@@ -13,7 +13,7 @@ class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
         'zeit.cms.browser', 'object-details-heading.pt'))
 
     def __init__(self, context, request):
-        super(ReferenceDetailsHeading, self).__init__(context.target, request)
+        super().__init__(context.target, request)
 
     def __call__(self):
         return self.template()

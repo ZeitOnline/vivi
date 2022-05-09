@@ -1,7 +1,6 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import six
 import zeit.cms.content.field
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
@@ -25,11 +24,11 @@ class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
 
     def insert(self, position, item):
         self.clear()
-        return super(HeaderArea, self).insert(position, item)
+        return super().insert(position, item)
 
     def add(self, item):
         self.clear()
-        return super(HeaderArea, self).add(item)
+        return super().add(item)
 
     def clear(self):
         for key in list(self.keys()):
@@ -101,7 +100,7 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
 
     # For consistency with the zeit.content.cp config files.
     def _get_title_for(self, node):
-        return six.text_type(node.get('title'))
+        return node.get('title')
 
 
 MODULES = ModuleSource()

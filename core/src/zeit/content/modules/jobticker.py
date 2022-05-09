@@ -1,6 +1,5 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import six
 import zeit.cms.content.sources
 import zeit.content.modules.interfaces
 import zeit.edit.block
@@ -30,7 +29,7 @@ class JobTicker(zeit.edit.block.Element):
 class Feed(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, available, teaser, landing_url, feed_url):
-        super(Feed, self).__init__(id, title, available)
+        super().__init__(id, title, available)
         self.id = id
         self.teaser = teaser
         self.landing_url = landing_url
@@ -46,7 +45,7 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
 
     def __init__(self, content_iface):
         self.content_iface = content_iface
-        super(FeedSource, self).__init__()
+        super().__init__()
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -54,13 +53,13 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
         tree = self._get_tree()
         for node in tree.iterchildren('*'):
             feed = Feed(
-                six.text_type(node.get('id')),
-                six.text_type(node.get('title')),
+                node.get('id'),
+                node.get('title'),
                 zeit.cms.content.sources.unicode_or_none(node.get(
                     'available')),
-                six.text_type(node.get('teaser')),
-                six.text_type(node.get('landing_url')),
-                six.text_type(node.get('feed_url')))
+                node.get('teaser'),
+                node.get('landing_url'),
+                node.get('feed_url'))
             result[feed.id] = feed
         return result
 
@@ -68,4 +67,4 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
         content = self.content_iface(context, None)
         if not content:
             return False
-        return super(FeedSource, self).isAvailable(value, content)
+        return super().isAvailable(value, content)

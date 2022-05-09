@@ -4,7 +4,6 @@ from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.content.article.edit.interfaces import IDivision
 import gocept.testing.mock
 import lxml.objectify
-import six
 import unittest
 import zeit.cms.testing
 import zeit.content.article.article
@@ -17,7 +16,7 @@ import zope.schema
 class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(EditableBodyTest, self).setUp()
+        super().setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
         fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
@@ -26,7 +25,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def tearDown(self):
         self.patches.reset()
-        super(EditableBodyTest, self).tearDown()
+        super().tearDown()
 
     def get_body(self, body=None):
         if not body:
@@ -88,7 +87,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             [child.tag for child in body.xml.division.iterchildren()])
         self.assertEqual(
             ['I have no division', 'Only paras'],
-            [six.text_type(child) for child
+            [str(child) for child
              in body.xml.division.iterchildren()])
 
     def test_adding_to_articles_without_division_should_migrate(self):

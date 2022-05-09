@@ -178,7 +178,7 @@ Invalid Values
 The `DAVProperty` takes care of invalid values and logs them. Prepare the
 logger:
 
->>> from six import StringIO
+>>> from io import StringIO
 >>> import logging
 >>> log = StringIO()
 >>> logging.root.addHandler(logging.StreamHandler(log))
@@ -514,9 +514,8 @@ There is a generic tuple serializer which uses zope.xmlpickle for serialising:
 ...     value_type=zope.schema.Dict())
 >>> converter = get_converter(field)
 >>> value = converter.toProperty(({'foo': 'b\xfcr'}, {'bar': 2}))
->>> import six
->>> type(value) == six.text_type
-True
+>>> type(value)
+<class 'str'>
 >>> print(value)
 <pickle>
   <tuple>

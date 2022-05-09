@@ -1,10 +1,10 @@
-import os
-import six.moves.urllib.parse
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import lxml.objectify
 import magic
+import os
 import requests
+import urllib.parse
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -15,9 +15,9 @@ import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
-import zope.container.interfaces
 import zope.cachedescriptors.property
 import zope.component
+import zope.container.interfaces
 import zope.interface
 import zope.security.proxy
 
@@ -44,7 +44,7 @@ class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
 class BaseImage:
 
     def __init__(self, uniqueId=None):
-        super(BaseImage, self).__init__(uniqueId, mimeType='')
+        super().__init__(uniqueId, mimeType='')
 
     # Not writeable since we always calculate it, but our superclasses want to.
     @FakeWriteableCachedProperty
@@ -162,7 +162,7 @@ class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
     target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
 
     def update_with_context(self, entry, workflow):
-        super(XMLReferenceUpdater, self).update_with_context(entry, workflow)
+        super().update_with_context(entry, workflow)
 
         parent = zope.security.proxy.removeSecurityProxy(
             workflow).context.__parent__
@@ -171,7 +171,7 @@ class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
 
         if not entry.get('expires'):
             parent_workflow = self.target_iface(parent)
-            super(XMLReferenceUpdater, self).update_with_context(
+            super().update_with_context(
                 entry, parent_workflow)
 
 
@@ -187,8 +187,7 @@ def get_remote_image(url, timeout=2):
     if not response.ok:
         return
     image = LocalImage()
-    image.__name__ = os.path.basename(
-        six.moves.urllib.parse.urlsplit(url).path)
+    image.__name__ = os.path.basename(urllib.parse.urlsplit(url).path)
     with image.open('w') as fh:
         first_chunk = True
         for chunk in response.iter_content(DOWNLOAD_CHUNK_SIZE):

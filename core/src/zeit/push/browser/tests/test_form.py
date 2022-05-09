@@ -8,7 +8,7 @@ import zeit.push.workflow
 class SocialFormTest(zeit.push.testing.BrowserTestCase):
 
     def setUp(self):
-        super(SocialFormTest, self).setUp()
+        super().setUp()
         self.browser.open(
             'http://localhost/++skin++vivi/repository/'
             'testcontent/@@checkout')
@@ -257,7 +257,7 @@ class SocialAddFormTest(SocialFormTest):
 class TwitterShorteningTest(zeit.push.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TwitterShorteningTest, self).setUp()
+        super().setUp()
         self.open('/repository/testcontent/@@checkout')
         s = self.selenium
         s.open(s.getLocation().replace('edit', 'edit-social'))

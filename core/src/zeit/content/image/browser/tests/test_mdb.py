@@ -8,7 +8,7 @@ import zope.component
 class MDBImportJavascript(zeit.content.image.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(MDBImportJavascript, self).setUp()
+        super().setUp()
         zope.component.getGlobalSiteManager().registerUtility(
             zeit.content.image.mdb.FakeMDB())
 
@@ -30,7 +30,7 @@ class MDBImport(
         ImageGroupHelperMixin):
 
     def setUp(self):
-        super(MDBImport, self).setUp()
+        super().setUp()
         zope.component.getGlobalSiteManager().registerUtility(
             zeit.content.image.mdb.FakeMDB())
 

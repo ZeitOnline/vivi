@@ -1,6 +1,5 @@
 import grokcore.component as grok
 import logging
-import six
 import zeit.brightcove.convert
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -40,7 +39,7 @@ def query_video_id(video_id, default=None):
         return default
 
 
-@grok.adapter(six.string_types[0], name='http://video.zeit.de/')
+@grok.adapter(str, name='http://video.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def adapt_old_video_id_to_new_object(old_id):
     video_prefix = 'http://video.zeit.de/video/'

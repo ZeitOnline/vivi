@@ -10,7 +10,7 @@ import zope.event
 class LastSemanticPublish(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(LastSemanticPublish, self).setUp()
+        super().setUp()
         zeit.cms.workflow.mock._publish_times[
             'http://xml.zeit.de/testcontent'] = datetime(
                 2015, 5, 17, tzinfo=pytz.UTC)

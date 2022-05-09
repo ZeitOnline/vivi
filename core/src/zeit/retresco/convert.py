@@ -12,7 +12,6 @@ import lxml.etree
 import os.path
 import pytz
 import re
-import sys
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -112,7 +111,7 @@ class CMSContent(Converter):
                 zeit.cms.interfaces.ID_NAMESPACE, '/'),
             'doc_type': getattr(ITypeDeclaration(self.context, None),
                                 'type_identifier', 'unknown'),
-            'body': lxml.etree.tostring(body, encoding='unicode'),
+            'body': lxml.etree.tostring(body, encoding=str),
         }
         result['payload'] = self.collect_dav_properties()
         return result
@@ -394,7 +393,7 @@ class Image(Converter):
             # skip zeit.newsimport images. Unfortunately, image(groups) have no
             # ressort or product-id with which we could filter this.
             return None
-        return super(Image, cls).__new__(cls, context)
+        return super().__new__(cls, context)
 
     def __call__(self):
         title = self.context.title or self.content.__name__
@@ -547,10 +546,7 @@ class Volume(Converter):
     def __new__(cls, context):
         if not cls.interface.providedBy(context):
             return None
-        if sys.version_info < (3,):
-            instance = super(Converter, cls).__new__(cls, None)
-        else:
-            instance = super(Converter, cls).__new__(cls)
+        instance = super(Converter, cls).__new__(cls)
         instance.context = context
         instance.content = context
         return instance

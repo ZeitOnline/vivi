@@ -1,5 +1,5 @@
-from six.moves.urllib.error import HTTPError
 from unittest import mock
+from urllib.error import HTTPError
 import json
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag
@@ -9,7 +9,7 @@ import zeit.retresco.testing
 class TMSUpdateRequestTest(zeit.retresco.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TMSUpdateRequestTest, self).setUp()
+        super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
 
     def test_endpoint_avoids_get(self):

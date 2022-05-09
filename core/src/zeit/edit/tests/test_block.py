@@ -11,7 +11,7 @@ import zope.component
 class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ElementUniqueIdTest, self).setUp()
+        super().setUp()
         xml = lxml.objectify.fromstring("""
         <container
           xmlns:cp="http://namespaces.zeit.de/CMS/cp"
@@ -27,7 +27,7 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
 
     def tearDown(self):
         del ExampleContentType.__getitem__
-        super(ElementUniqueIdTest, self).tearDown()
+        super().tearDown()
 
     def test_block_ids_are_composed_of_parent_ids(self):
         self.assertEqual(

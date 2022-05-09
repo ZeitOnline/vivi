@@ -15,7 +15,7 @@ import zope.interface
 
 @zope.interface.implementer(
     zeit.content.animation.interfaces.IAnimation,
-    zeit.cms.interfaces.IEditorialContent,
+    zeit.cms.interfaces.IAsset,
 )
 class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     """A type for managing animations made from existing media."""

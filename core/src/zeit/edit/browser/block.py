@@ -13,7 +13,7 @@ class BlockViewletManager(
         zeit.edit.browser.view.ErrorPreventingViewletManager):
 
     def __init__(self, context, request, view):
-        super(BlockViewletManager, self).__init__(context, request, view)
+        super().__init__(context, request, view)
         self.validation_class, self.validation_messages = (
             zeit.edit.browser.view.validate(self.context))
 

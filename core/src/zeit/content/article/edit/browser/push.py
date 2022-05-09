@@ -24,12 +24,12 @@ class Social(zeit.push.browser.form.SocialBase,
     form_fields = FormFieldsFactory()
 
     def __init__(self, context, request):
-        super(Social, self).__init__(context, request)
+        super().__init__(context, request)
         self.form_fields += self.FormFieldsFactory(
             zeit.content.article.interfaces.IArticle).select('is_amp')
 
     def setUpWidgets(self, *args, **kw):
-        super(Social, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         if self.context.access != 'free':
             self.widgets['is_amp'].extra = 'disabled="disabled"'
 
@@ -52,13 +52,13 @@ class Mobile(zeit.push.browser.form.MobileBase,
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(Mobile, self).__call__()
+        return super().__call__()
 
     @property
     def mobile_form_fields(self):
         fields = self.FormFieldsFactory(IAuthorPush)
         fields['author_enabled'].custom_widget = HideOnFalseWidget
-        fields += super(Mobile, self).mobile_form_fields
+        fields += super().mobile_form_fields
         return fields
 
     @zope.formlib.form.action(
@@ -66,7 +66,7 @@ class Mobile(zeit.push.browser.form.MobileBase,
     def handle_edit_action(self, action, data):
         accountdata = zeit.push.interfaces.IAccountData(self.context)
         previous = accountdata.mobile_image
-        super(Mobile, self).handle_edit_action.success(data)
+        super().handle_edit_action.success(data)
         current = accountdata.mobile_image
         if current != previous:
             accountdata._set_mobile_service(image_set_manually=True)

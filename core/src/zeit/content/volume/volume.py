@@ -7,7 +7,6 @@ import itertools
 import logging
 import lxml.objectify
 import requests
-import six
 import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
@@ -185,7 +184,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
                                           href=imagegroup.uniqueId)
             lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
             self.xml.covers.append(node)
-        super(Volume, self).__setattr__('_p_changed', True)
+        super().__setattr__('_p_changed', True)
 
     def _is_valid_cover_id_and_product_id(self, cover_id, product_id):
         cover_ids = list(zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
@@ -254,7 +253,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         for cnt in cnts:
             try:
                 with zeit.cms.checkout.helper.checked_out(cnt) as co:
-                    co.access = six.text_type(access_to)
+                    co.access = access_to
                     zope.lifecycleevent.modified(
                         co, zope.lifecycleevent.Attributes(
                             zeit.cms.content.interfaces.ICommonMetadata,

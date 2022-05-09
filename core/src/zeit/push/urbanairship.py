@@ -9,8 +9,7 @@ import logging
 import pkg_resources
 import pytz
 import re
-import six
-import six.moves.urllib.parse
+import urllib.parse
 import sys
 import urbanairship
 import zeit.cms.content.interfaces
@@ -90,7 +89,7 @@ class Connection:
             for ua_push_object in to_push:
                 self.push(ua_push_object)
         except Exception:
-            path = six.moves.urllib.parse.urlparse(link).path
+            path = urllib.parse.urlparse(link).path
             info = sys.exc_info()
             bugsnag.notify(
                 info[2], traceback=info[2], context=path, severity='error',
@@ -186,8 +185,8 @@ class Message(zeit.push.message.Message):
 
     @property
     def app_link(self):
-        parts = six.moves.urllib.parse.urlparse(self.url)
-        path = six.moves.urllib.parse.urlunparse(
+        parts = urllib.parse.urlparse(self.url)
+        path = urllib.parse.urlunparse(
             ['', ''] + list(parts[2:])).lstrip('/')
         return '%s://%s' % (self.APP_IDENTIFIER, path)
 
@@ -196,7 +195,7 @@ class Message(zeit.push.message.Message):
         return 'Template %s' % self.config.get('payload_template')
 
     def log_success(self):
-        super(Message, self).log_success()
+        super().log_success()
         try:
             grafana = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='grafana')

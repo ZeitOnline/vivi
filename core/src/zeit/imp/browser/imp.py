@@ -13,7 +13,7 @@ class NoMasterImageErrorView:
 
     def __call__(self):
         transaction.doom()
-        return super(NoMasterImageErrorView, self).__call__()
+        return super().__call__()
 
 
 class ImpBase(zeit.cms.browser.view.Base):

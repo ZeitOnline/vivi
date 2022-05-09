@@ -1,4 +1,4 @@
-from six.moves.urllib.parse import urlparse, parse_qsl
+from urllib.parse import urlparse, parse_qsl
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.browser.interfaces
 import zeit.cms.content.add
@@ -12,7 +12,7 @@ import zope.publisher.browser
 class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(ContentAdderTest, self).setUp()
+        super().setUp()
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
 

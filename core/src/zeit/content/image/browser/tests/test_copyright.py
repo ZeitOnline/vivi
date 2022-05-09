@@ -7,7 +7,7 @@ class TestCopyrights(zeit.content.image.testing.BrowserTestCase,
                      ImageGroupHelperMixin):
 
     def setUp(self):
-        super(TestCopyrights, self).setUp()
+        super().setUp()
         self.add_imagegroup()
         self.set_title('New Hampshire')
         self.upload_primary_image('new-hampshire-artikel.jpg')

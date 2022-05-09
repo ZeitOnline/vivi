@@ -1,6 +1,5 @@
 import datetime
 import pytz
-import six
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
@@ -39,7 +38,7 @@ class Dummy:
     pass
 
 
-@zope.component.adapter(six.string_types[0])
+@zope.component.adapter(str)
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 def mock_video_repository(uniqueId):
     result = None

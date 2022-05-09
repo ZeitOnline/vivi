@@ -21,7 +21,7 @@ class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
     def render(self):
         if not self.widgets:
             return ''
-        return super(WorkflowPreview, self).render()
+        return super().render()
 
     @zope.cachedescriptors.property.Lazy
     def workflow(self):

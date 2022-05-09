@@ -23,15 +23,6 @@ Traceback (most recent call last):
 ValueError: 1
 
 
->>> import sys
->>> if sys.version_info < (3,):
-...     check = (sys.exc_info() != (None, None, None))
-... else:
-...     check = True
->>> check
-True
-
-
 >>> import zope.app.publication.interfaces
 >>> import zope.event
 >>> zope.event.notify(
@@ -39,6 +30,7 @@ True
 
 The exc_info is empty now:
 
+>>> import sys
 >>> sys.exc_info()
 (None, None, None)
 

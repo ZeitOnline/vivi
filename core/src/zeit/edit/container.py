@@ -2,7 +2,6 @@ import collections.abc
 import grokcore.component as grok
 import logging
 import lxml.etree
-import six
 import uuid
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -79,7 +78,7 @@ class Base(zeit.edit.block.Element,
             name=element_type)
 
     def __iter__(self):
-        return (six.text_type(k) for k in self._get_keys(self.xml))
+        return (str(k) for k in self._get_keys(self.xml))
 
     def __len__(self):
         return len(self.keys())
