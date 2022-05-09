@@ -105,4 +105,4 @@ def publish_content(folder):
     if objects:
         publish.publish_multiple(objects)
     zeit.objectlog.interfaces.ILog(folder).log(
-        _('About to publish ${count} objects', count))
+        _('About to publish ${count} objects', mapping={'count': count}))
