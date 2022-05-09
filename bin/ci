@@ -69,10 +69,6 @@ case $COMMAND in
         fi
         cp -R $DEPLOYMENT/work/source/coverage-report $WORKSPACE
 
-        py2count=$(find vivi/core/src -name '*.py' |
-            xargs grep -l "\([ (]u'\|class .*(object)\| six\|super([^)]\|__future__\)" | wc -l)
-        echo -e "\"files\"\n$py2count" > $WORKSPACE/plot-python2.csv
-
         $DEPLOYMENT/bin/sv shutdown
         exit $TEST_RESULT
     ;;
