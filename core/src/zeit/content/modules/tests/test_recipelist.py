@@ -13,7 +13,7 @@ class RecipeListTest(
         zeit.content.modules.testing.IngredientsHelper):
 
     def setUp(self):
-        super(RecipeListTest, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.recipelist.RecipeList(

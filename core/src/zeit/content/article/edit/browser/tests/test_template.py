@@ -7,7 +7,7 @@ class ArticleTemplateTest(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(ArticleTemplateTest, self).setUp()
+        super().setUp()
         self.add_article()
         self.selenium.waitForElementPresent('id=options-template.template')
 

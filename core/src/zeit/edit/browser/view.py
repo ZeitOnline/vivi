@@ -3,7 +3,6 @@ import html
 import json
 import logging
 import pkg_resources
-import six
 import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
@@ -46,7 +45,7 @@ class Form:
         value = instance.request.form.get(self.var_name, self.default)
         if value is self.default:
             return value
-        if self.json and isinstance(value, six.string_types):
+        if self.json and isinstance(value, str):
             value = json.loads(value)
         return value
 
@@ -86,7 +85,7 @@ class UndoableMixin:
 class Action(zeit.cms.browser.view.Base, UndoableMixin):
 
     def __init__(self, *args, **kw):
-        super(Action, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.signals = []
         self.data = {}
 
@@ -140,7 +139,7 @@ class EditBox(zeit.cms.browser.form.WidgetCSSMixin,
     def handle_edit_action(self, action, data):
         self.close = True
         self.mark_transaction_undoable()
-        return super(EditBox, self).handle_edit_action.success(data)
+        return super().handle_edit_action.success(data)
 
 
 # There is no SubPageAddForm, so we set this up analog to SubPageEditForm
@@ -156,16 +155,16 @@ class AddBox(zeit.cms.browser.form.AddFormBase,
 
     @property
     def form(self):
-        return super(AddBox, self).template
+        return super().template
 
     @zope.formlib.form.action(_('Add'))
     def handle_add(self, action, data):
         self.close = True
         self.mark_transaction_undoable()
-        return super(AddBox, self).handle_add.success(data)
+        return super().handle_add.success(data)
 
     def add(self):
-        result = super(AddBox, self).add()
+        result = super().add()
         # prevent redirect
         self._finished_add = False
         return result
@@ -175,7 +174,7 @@ class AddBox(zeit.cms.browser.form.AddFormBase,
         # super, thus self.adapters is not initialized, but
         # zeit.cms.browser.form.AddFormBase needs it
         self.adapters = {}
-        super(AddBox, self).setUpWidgets(ignore_request)
+        super().setUpWidgets(ignore_request)
 
 
 class EditBoxAction(zope.viewlet.viewlet.ViewletBase):

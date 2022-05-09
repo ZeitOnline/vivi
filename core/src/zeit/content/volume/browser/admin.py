@@ -26,9 +26,7 @@ class VolumeAdminForm(zeit.cms.admin.browser.admin.EditFormCI):
 
     @property
     def actions(self):
-        return (
-            list(super(VolumeAdminForm, self).actions) +
-            list(self.extra_actions))
+        return list(super().actions) + list(self.extra_actions)
 
 
 @zope.browserpage.namedtemplate.implementation(PublishAction)

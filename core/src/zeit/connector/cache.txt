@@ -39,7 +39,7 @@ StringIO:
 >>> file_handle
 <...BytesIO object at 0x...>
 >>> file_handle.read()
-'datadata/end of line.'
+b'datadata/end of line.'
 
 We can get the data also via `getData` now which also returns a StringIO for
 small objects:
@@ -55,11 +55,11 @@ reference to a plain string:
 >>> cached
 <zeit.connector.cache.Body object at 0x...>
 >>> cached.data
-'datadata/end of line.'
+b'datadata/end of line.'
 >>> cached.open('r')
 <...BytesIO object at 0x...>
 >>> cached.open('r').read()
-'datadata/end of line.'
+b'datadata/end of line.'
 
 Also the access times are noted in the cache:
 
@@ -69,7 +69,7 @@ True
 >>> cache._access_time_to_ids[last_access]
 <BTrees.OIBTree.OITreeSet object at 0x...>
 >>> list(cache._access_time_to_ids[last_access])
-['some-id']
+[b'some-id']
 
 When we now access getData the access time will be updated by at most one
 count since less time than the update interval should have passed:
@@ -99,7 +99,7 @@ Also the the time to id mapping has been updated:
 >>> cache._access_time_to_ids[new_access]
 <BTrees.OIBTree.OITreeSet object at 0x...>
 >>> list(cache._access_time_to_ids[new_access])
-['some-id']
+[b'some-id']
 
 Removal of cached bodies by time out
 ------------------------------------
@@ -114,7 +114,7 @@ cache:
 We now have two elements in the cache:
 
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
-['another-id', 'some-id']
+[b'another-id', b'some-id']
 
 Now sleep another 4 second and see the `some-id` will be gone after sweeping:
 
@@ -123,7 +123,7 @@ Now sleep another 4 second and see the `some-id` will be gone after sweeping:
 >>> cache.getData('another-id', properties)
 <...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
-['another-id', 'some-id']
+[b'another-id', b'some-id']
 
 Still there ...
 
@@ -132,7 +132,7 @@ Still there ...
 >>> cache.getData('another-id', properties)
 <...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
-['another-id', 'some-id']
+[b'another-id', b'some-id']
 
 Still there ...
 
@@ -141,7 +141,7 @@ Still there ...
 >>> cache.getData('another-id', properties)
 <...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
-['another-id', 'some-id']
+[b'another-id', b'some-id']
 
 Now it's gone:
 
@@ -150,11 +150,11 @@ Now it's gone:
 >>> cache.getData('another-id', properties)
 <...BytesIO object at 0x...>
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
-['another-id']
+[b'another-id']
 
 We don't have any data stored for the key now:
 
->>> cache._data[get_storage_key('some-id')]
+>>> cache._data[get_storage_key(b'some-id')]
 Traceback (most recent call last):
     ...
 KeyError: ...
@@ -306,9 +306,9 @@ The same ETAG also doesn't generate a conflict:
 >>> connection_1.sync()
 >>> connection_2.sync()
 >>> c_1.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
-'A small fileA small...'
+b'A small fileA small...'
 >>> c_2.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
-'A small fileA small...'
+b'A small fileA small...'
 
 
 Property Cache
@@ -346,7 +346,7 @@ True
 >>> 'blafasel' in cache
 False
 >>> list(cache.keys())
-['id']
+[b'id']
 
 >>> del cache['id']
 >>> cache['id']
@@ -363,7 +363,7 @@ Note that there is actually still the entry in the cache, but marked as
 deleted:
 
 >>> list(cache.keys(include_deleted=True))
-['id']
+[b'id']
 
 To really remove there is the remove method, which also works for "deleted"
 keys:

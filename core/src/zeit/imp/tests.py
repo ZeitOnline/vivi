@@ -136,7 +136,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
     def setUp(self):
-        super(TestCrop, self).setUp()
+        super().setUp()
         self.group = (
             zeit.content.image.testing.create_image_group_with_master_image())
         self.crop = zeit.imp.interfaces.ICropper(self.group)

@@ -1,4 +1,4 @@
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 import json
 import requests
 import zeit.cms.redirect.interfaces

@@ -4,8 +4,8 @@ from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.content.reference import SingleReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import six.moves.urllib.error
-import six.moves.urllib.parse
+import urllib.error
+import urllib.parse
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.related.related
@@ -22,7 +22,7 @@ class ExampleReference(zeit.cms.content.reference.Reference):
 class ReferenceFixture:
 
     def setUp(self):
-        super(ReferenceFixture, self).setUp()
+        super().setUp()
         ExampleContentType.references = ReferenceProperty(
             '.body.references.reference', 'test')
         zope.security.protectclass.protectName(
@@ -47,7 +47,7 @@ class ReferenceFixture:
 
     def tearDown(self):
         del ExampleContentType.references
-        super(ReferenceFixture, self).tearDown()
+        super().tearDown()
 
 
 class ReferencePropertyTest(
@@ -194,7 +194,7 @@ class ReferencePropertyTest(
 class SingleReferenceFixture(ReferenceFixture):
 
     def setUp(self):
-        super(SingleReferenceFixture, self).setUp()
+        super().setUp()
         ExampleContentType.references = SingleReferenceProperty(
             '.body.references.reference', 'test')
 
@@ -242,7 +242,7 @@ class MultiResourceTest(
         ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(MultiResourceTest, self).setUp()
+        super().setUp()
         ExampleContentType.related = zeit.cms.content.reference.MultiResource(
             '.body.references.reference', 'test')
 
@@ -279,7 +279,7 @@ class SingleResourceTest(
         ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(SingleResourceTest, self).setUp()
+        super().setUp()
         ExampleContentType.related = zeit.cms.content.reference.SingleResource(
             '.body.references.reference', 'test')
 
@@ -330,9 +330,9 @@ class ReferenceTraversalBase:
         try:
             b.open(
                 'http://localhost/++skin++vivi/@@redirect_to?unique_id=%s' % (
-                    six.moves.urllib.parse.quote_plus(
+                    urllib.parse.quote_plus(
                         self.get_reference(content).uniqueId)))
-        except six.moves.urllib.error.HTTPError as e:
+        except urllib.error.HTTPError as e:
             self.assertEqual(404, e.getcode())
             self.assertIn('/repository/content/++attribute++references', b.url)
 

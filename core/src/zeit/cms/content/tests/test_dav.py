@@ -19,7 +19,7 @@ class ITestInterface(zope.interface.Interface):
 class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(TestPropertyBase, self).setUp()
+        super().setUp()
         self.content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
 

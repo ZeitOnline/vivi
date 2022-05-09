@@ -69,7 +69,7 @@ class ExampleAddForm(zeit.cms.browser.form.AddForm):
 class Placeholder(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(Placeholder, self).setUp()
+        super().setUp()
         self.form = ExampleAddForm(
             object(), zope.publisher.browser.TestRequest())
         self.form.factory = object
@@ -98,7 +98,7 @@ class CharlimitForm(zeit.cms.browser.form.EditForm,
                     zeit.cms.browser.form.CharlimitMixin):
 
     def setUpWidgets(self, *args, **kw):
-        super(CharlimitForm, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('foo')
 
 

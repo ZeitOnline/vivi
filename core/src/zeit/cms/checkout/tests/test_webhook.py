@@ -26,7 +26,7 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
     layer = WEBHOOK_LAYER
 
     def setUp(self):
-        super(WebhookTest, self).setUp()
+        super().setUp()
         self.config = (
             '<webhooks><webhook url="http://localhost:%s"/></webhooks>' %
             self.layer['http_port'])
@@ -40,7 +40,7 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def tearDown(self):
         self.patch.stop()
-        super(WebhookTest, self).tearDown()
+        super().tearDown()
 
     def test_calls_post_with_uniqueId_for_configured_urls(self):
         with checked_out(self.repository['testcontent']):

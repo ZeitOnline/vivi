@@ -47,7 +47,7 @@ class Base:
         of `Volume`.
 
         """
-        super(Base, self).__init__(context, request)
+        super().__init__(context, request)
         covers = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
             self.context)
         # In the Addform there is no volume object. Thus we have to wait for
@@ -75,7 +75,7 @@ class Add(Base, zeit.cms.browser.form.AddForm):
     factory = zeit.content.volume.volume.Volume
 
     def setUpWidgets(self, *args, **kw):
-        super(Add, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
         if not self.widgets['year'].hasInput():
             self.widgets['year'].setRenderedValue(settings.default_year)
@@ -154,7 +154,7 @@ class Covers(grok.Adapter):
 
     def __getattr__(self, name):
         if not name.startswith('cover_'):
-            return super(Covers, self).__getattr__(name)
+            return super().__getattr__(name)
         name = name.replace('cover_', '', 1)
         product, cover = name.split('_')
         # We dont want the fallback in the UI
@@ -162,7 +162,7 @@ class Covers(grok.Adapter):
 
     def __setattr__(self, name, value):
         if not name.startswith('cover_'):
-            return super(Covers, self).__setattr__(name, value)
+            return super().__setattr__(name, value)
         name = name.replace('cover_', '', 1)
         product, cover = name.split('_')
         self.context.set_cover(cover, product, value)

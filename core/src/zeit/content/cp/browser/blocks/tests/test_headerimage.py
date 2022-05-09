@@ -5,7 +5,7 @@ import zeit.content.cp.centerpage
 class TestHeaderImage(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestHeaderImage, self).setUp()
+        super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('headerimage')
         self.repository['centerpage'] = self.centerpage

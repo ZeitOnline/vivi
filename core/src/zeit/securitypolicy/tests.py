@@ -1,7 +1,7 @@
 from zeit.cms.testing import FunctionalTestCase
 import os.path
 import plone.testing
-import six.moves.urllib.parse
+import urllib.parse
 import unittest
 import xlrd
 import zeit.brightcove.testing
@@ -69,13 +69,13 @@ class SecurityPolicyXLSSheetCase:
     layer = WSGI_LAYER
 
     def __init__(self, username, cases, description):
-        super(SecurityPolicyXLSSheetCase, self).__init__()
+        super().__init__()
         self.username = username
         self.cases = cases
         self.description = description
 
     def setUp(self):
-        super(SecurityPolicyXLSSheetCase, self).setUp()
+        super().setUp()
         self.browser = zeit.cms.testing.Browser(self.layer['wsgi_app'])
         self.browser.raiseHttpErrors = False
         if self.username != 'anonymous':
@@ -101,7 +101,7 @@ class SecurityPolicyXLSSheetCase:
                 self.browser.post(
                     path_with_skin,
                     # XXX pass variables in explicitly
-                    six.moves.urllib.parse.urlencode(eval(form)))
+                    urllib.parse.urlencode(eval(form)))
             else:
                 self.browser.open(path_with_skin)
 

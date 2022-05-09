@@ -1,7 +1,7 @@
 import logging
 import lxml.etree
 import lxml.objectify
-import six.moves.copyreg
+import copyreg
 
 
 log = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ def treeFactory(state):
             '<error><!-- XML-FEHLER: %s\n\n%s\n\n--></error>' % (e, state))
 
 
-six.moves.copyreg.constructor(treeFactory)
+copyreg.constructor(treeFactory)
 
 
 def reduceObjectifiedElement(object):
@@ -28,5 +28,5 @@ def reduceObjectifiedElement(object):
     return (treeFactory, (state, ))
 
 
-six.moves.copyreg.pickle(
+copyreg.pickle(
     lxml.objectify.ObjectifiedElement, reduceObjectifiedElement, treeFactory)

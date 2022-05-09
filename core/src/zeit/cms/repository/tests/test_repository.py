@@ -16,7 +16,7 @@ import zope.security.management
 class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(TestConflicts, self).setUp()
+        super().setUp()
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         self.repository['online']['conflicting'] = (

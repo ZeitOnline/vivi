@@ -10,8 +10,7 @@ import jinja2
 import lxml.etree
 import lxml.objectify
 import persistent
-import six
-import six.moves.urllib.parse
+import urllib.parse
 import uuid
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -75,7 +74,7 @@ class RepositoryDynamicFolder(
         value = self.get(key)
         if value is not None and IVirtualContent.providedBy(value):
             return
-        super(RepositoryDynamicFolder, self).__delitem__(key)
+        super().__delitem__(key)
 
     @property
     def content_template(self):
@@ -170,12 +169,10 @@ class RepositoryDynamicFolder(
                 key_match = entry.xpath(key_getter)
                 if not key_match:
                     continue  # entry provides no key
-                key = six.moves.urllib.parse.unquote(key_match[0])
+                key = urllib.parse.unquote(key_match[0])
                 if isinstance(key, lxml.etree._ElementUnicodeResult):
                     # Dear lxml, why?
-                    key = six.text_type(key)
-                else:
-                    key = six.ensure_text(key)
+                    key = str(key)
                 contents[key] = dict(entry.attrib)  # copy
                 contents[key]['text'] = entry.text
                 contents[key]['__parent__'] = self
@@ -195,7 +192,7 @@ class RepositoryDynamicFolder(
         call, i.e. we cannot reuse the storing mechanism.
 
         """
-        contents = super(RepositoryDynamicFolder, self)._local_unique_map
+        contents = super()._local_unique_map
         result = self.virtual_content.copy()
         result.update(contents)
         return result
@@ -273,7 +270,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
     ID_PROPERTY = (ContentUUID.id.name, ContentUUID.id.namespace)
 
     def __init__(self, context):
-        super(VirtualProperties, self).__init__()
+        super().__init__()
         self.context = context
         self.update(self.parse(context.xml))
         self[self.ID_PROPERTY] = '{%s}' % uuid.UUID(
@@ -287,7 +284,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
 
     @classmethod
     def parse(cls, body):
-        if isinstance(body, (six.binary_type, six.text_type)):
+        if isinstance(body, (bytes, str)):
             try:
                 body = lxml.etree.fromstring(body)
             except lxml.etree.LxmlError:

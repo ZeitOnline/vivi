@@ -7,7 +7,6 @@ from zeit.content.rawxml.rawxml import RawXML
 import jinja2
 import lxml.etree
 import pkg_resources
-import six
 import transaction
 import zope.component
 import zeit.cms.repository.folder
@@ -24,7 +23,7 @@ class TestContainerMethodsRespectVirtualChildren(
     """Test folder methods like keys, values etc to return virtual children."""
 
     def setUp(self):
-        super(TestContainerMethodsRespectVirtualChildren, self).setUp()
+        super().setUp()
         self.folder = self.repository['dynamicfolder']
 
     def assert_xanten_has_basic_info_set(self, xanten):
@@ -96,7 +95,7 @@ class TestDynamicFolder(
     """
 
     def setUp(self):
-        super(TestDynamicFolder, self).setUp()
+        super().setUp()
         self.folder = self.repository['dynamicfolder']
 
     def test_checkin_virtual_content_materializes_it(self):
@@ -166,7 +165,7 @@ class TestDynamicFolder(
             self.assertIn(
                 '<body>xanten dynamicfolder</body>',
                 lxml.etree.tostring(
-                    self.folder['xanten'].xml, encoding=six.text_type))
+                    self.folder['xanten'].xml, encoding=str))
 
     def test_works_with_raxml_template(self):
         # These get an xml declaration in their serialization, so we must not

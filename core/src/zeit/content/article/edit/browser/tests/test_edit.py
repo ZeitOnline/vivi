@@ -27,7 +27,7 @@ class TextViewHelper:
     view_class = NotImplemented
 
     def setUp(self):
-        super(TextViewHelper, self).setUp()
+        super().setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
         fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
@@ -36,7 +36,7 @@ class TextViewHelper:
 
     def tearDown(self):
         self.patches.reset()
-        super(TextViewHelper, self).tearDown()
+        super().tearDown()
 
     def get_view(self, body=None):
         if body is None:
@@ -154,7 +154,7 @@ class TestTextEditing(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestTextEditing, self).setUp()
+        super().setUp()
         self.add_article()
 
     def test_paragraph_etc_should_not_appear_as_modules(self):
@@ -294,7 +294,7 @@ class TestEditingMultipleParagraphs(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestEditingMultipleParagraphs, self).setUp()
+        super().setUp()
         from zeit.cms.checkout.helper import checked_out
         from zeit.content.article.article import Article
         from zeit.content.article.interfaces import IArticle
@@ -348,7 +348,7 @@ class TestLinkEditing(
     window_height = 1000
 
     def setUp(self):
-        super(TestLinkEditing, self).setUp()
+        super().setUp()
         self.add_article()
 
     def select_text(self):
@@ -644,7 +644,7 @@ class TestFolding(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestFolding, self).setUp()
+        super().setUp()
         self.add_article()
 
     def assert_foldable(self, block):
@@ -701,7 +701,7 @@ class TestDivision(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestDivision, self).setUp()
+        super().setUp()
         self.add_article()
 
     def create_division(self):
@@ -734,7 +734,7 @@ class TestLimitedInput(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestLimitedInput, self).setUp()
+        super().setUp()
         self.add_article()
 
     @unittest.skip("no typeKeys 'til webdriver")
@@ -758,7 +758,7 @@ class TestCountedInput(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestCountedInput, self).setUp()
+        super().setUp()
         self.add_article()
 
     @unittest.skip("no typeKeys 'til webdriver")
@@ -789,7 +789,7 @@ class AutoSaveIntegration(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(AutoSaveIntegration, self).setUp()
+        super().setUp()
         self.add_article()
         self.wait_for_dotted_name("zeit.content.article.Editable")
         self.execute(
@@ -816,7 +816,7 @@ class DirtySaveVersusPersistTests(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(DirtySaveVersusPersistTests, self).setUp()
+        super().setUp()
         self.add_article()
         self.wait_for_dotted_name("zeit.content.article.Editable")
         self.execute(

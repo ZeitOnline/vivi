@@ -32,7 +32,7 @@ class FormBase:
     for_display = False
 
     def __init__(self, context, request):
-        super(FormBase, self).__init__(context, request)
+        super().__init__(context, request)
 
         if not self.for_display:
             contents = copy.copy(self.form_fields['contents'])

@@ -14,7 +14,7 @@ import zope.component
 class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(RuleTest, self).setUp()
+        super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.teaser = self.cp['lead'].create_item('teaser')
 
@@ -94,7 +94,7 @@ class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
         import zeit.edit.interfaces
-        super(RulesManagerTest, self).setUp()
+        super().setUp()
         self.rm = zope.component.getUtility(
             zeit.edit.interfaces.IRulesManager)
 

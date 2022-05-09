@@ -14,7 +14,7 @@ layer = ZOPE_LAYER
 class FunctionalTestCase(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(FunctionalTestCase, self).setUp()
+        super().setUp()
         self.article = zeit.cms.interfaces.ICMSContent(
             "http://xml.zeit.de/online/2007/01/Somalia"
         )

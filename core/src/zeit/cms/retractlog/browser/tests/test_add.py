@@ -49,7 +49,7 @@ class TestJobAdd(zeit.cms.testing.ZeitCmsBrowserTestCase):
     login_as = 'seo:seopw'
 
     def setUp(self):
-        super(TestJobAdd, self).setUp()
+        super().setUp()
         self.add_content('test', 'foo')
 
     def add_content(self, foldername, contentname):
@@ -115,7 +115,7 @@ class TestJobView(zeit.cms.testing.ZeitCmsBrowserTestCase):
     login_as = 'seo:seopw'
 
     def setUp(self):
-        super(TestJobView, self).setUp()
+        super().setUp()
         # Add content
         test_folder = zeit.cms.content.add.find_or_create_folder('test')
         test_folder['foo'] = ExampleContentType()

@@ -20,7 +20,7 @@ Get the json view:
 True
 >>> dt_term = updater.parent_terms.getTerm('Deutschland')
 >>> updater(parent_token=dt_term.token)
-'[["Datenschutz", "3da775df8d065507c482a20bf7a93427"],
+b'[["Datenschutz", "3da775df8d065507c482a20bf7a93427"],
   ["Integration", "1115b855bb2a508bc2ca0609cc2d0f65"],
   ["Joschka Fisher", "d3eaed24e3bebd3c218443bd44778823"],
   ["Meinung", "58943ab3ce913fa50e3c4566e2f10f7b"]]'
@@ -35,4 +35,4 @@ Make sure those results are cached:
 For values which are not in the source we'll get an empty list:
 
 >>> updater(parent_token='foo')
-'[]'
+b'[]'

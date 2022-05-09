@@ -1,6 +1,6 @@
 from base64 import b64decode
-from six.moves.urllib.parse import urlparse, parse_qs
 from unittest import mock
+from urllib.parse import urlparse, parse_qs
 import json
 import plone.testing
 import zeit.cms.testing
@@ -29,7 +29,7 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
         'scriptResult': json.dumps({'anlage': 'ok', 'gcid': 'myid'})}})
 
     def setUp(self):
-        super(HDokIntegration, self).setUp()
+        super().setUp()
         self.api = zeit.content.author.honorar.Honorar(
             'http://localhost:%s' % self.layer['http_port'],
             'fake-invalid-url', 'user', 'pass')
@@ -41,7 +41,7 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
     def tearDown(self):
         if self.auth_token_patch._active_patches:
             self.auth_token_patch.stop()
-        super(HDokIntegration, self).tearDown()
+        super().tearDown()
 
     def test_retrieves_auth_token(self):
         self.auth_token_patch.stop()

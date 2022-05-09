@@ -8,7 +8,7 @@ class TestPublish(
         zeit.workflow.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestPublish, self).setUp()
+        super().setUp()
         self.open('/repository/testcontent')
 
     def prepare_content(self, id='http://xml.zeit.de/testcontent'):
@@ -105,7 +105,7 @@ class TestPublish(
 class TestRetract(zeit.workflow.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestRetract, self).setUp()
+        super().setUp()
         self.publish_info.published = True
         self.open('/repository/testcontent')
 

@@ -181,7 +181,7 @@ class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
 
     def isAvailable(self, node, context):
         return (
-            super(TwitterAccountSource, self).isAvailable(node, context) and
+            super().isAvailable(node, context) and
             node.get('name') not in [
                 self.main_account(), self.print_account()])
 
@@ -250,7 +250,7 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
 
     def isAvailable(self, node, context):
         return (
-            super(FacebookAccountSource, self).isAvailable(node, context) and
+            super().isAvailable(node, context) and
             node.get('name') != self.main_account())
 
     def access_token(self, value):

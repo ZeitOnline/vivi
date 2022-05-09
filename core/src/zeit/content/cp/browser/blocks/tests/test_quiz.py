@@ -5,7 +5,7 @@ import zeit.content.cp.centerpage
 class TestQuiz(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestQuiz, self).setUp()
+        super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('quiz')
         self.repository['centerpage'] = self.centerpage

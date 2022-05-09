@@ -7,7 +7,7 @@ import zope.interface.verify
 class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(VariantTraversal, self).setUp()
+        super().setUp()
         self.group = zeit.content.image.testing.create_image_group()
 
     def test_variants_provides_mapping_interface(self):
@@ -70,7 +70,7 @@ class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
 class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(VariantProperties, self).setUp()
+        super().setUp()
         self.group = (
             zeit.content.image.testing.create_image_group_with_master_image())
 

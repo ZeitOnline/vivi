@@ -241,7 +241,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestMoving, self).setUp()
+        super().setUp()
         cp = self.create_and_checkout_centerpage()
         self.teaser = zope.component.getAdapter(
             cp['lead'], zeit.edit.interfaces.IElementFactory, 'teaser')()
@@ -426,7 +426,7 @@ class TestSidebar(zeit.content.cp.testing.SeleniumTestCase):
 class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestOneClickPublish, self).setUp()
+        super().setUp()
         self.create_content_and_fill_clipboard()
 
     def _fill_lead(self):

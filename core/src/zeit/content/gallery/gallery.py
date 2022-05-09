@@ -2,7 +2,6 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
-import six
 import xml.sax.saxutils
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
@@ -52,7 +51,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
     @property
     def xml_source(self):
         return lxml.etree.tostring(
-            self.xml, 'UTF-8', xml_declaration=True, encoding=six.text_type)
+            self.xml, 'UTF-8', xml_declaration=True, encoding=str)
 
     @property
     def image_folder(self):
@@ -108,7 +107,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.is_crop_of = node.get('is_crop_of')
         entry.title = node.find('title')
         if entry.title is not None:
-            entry.title = six.text_type(entry.title)
+            entry.title = str(entry.title)
         entry.text = node.find('text')
         if entry.text is None:
             entry.text = lxml.objectify.E.text()
@@ -119,11 +118,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                                    *entry.text.getchildren()))
         entry.layout = node.get('layout')
         if entry.layout is not None:
-            entry.layout = six.text_type(entry.layout)
+            entry.layout = str(entry.layout)
 
         gallery_caption = node.find('caption')
         if gallery_caption is not None:
-            entry.caption = six.text_type(gallery_caption)
+            entry.caption = str(gallery_caption)
 
         # XXX need location information on the entry itself for crops(),
         # but just returning entry here breaks tests, so we do both for now.
@@ -233,8 +232,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 return block
 
     def _list_all_keys(self):
-        return (six.text_type(name)
-                for name in self._entries_container.xpath('block/@name'))
+        return (str(x) for x in self._entries_container.xpath('block/@name'))
 
     def _guess_image_folder(self):
         # Ugh. We haven't got a folder? This could be an old gallery.
@@ -403,7 +401,7 @@ class SearchableText(grok.Adapter):
     def getSearchableText(self):
         main_text = []
         for p in self.context.xml.body.xpath("//p"):
-            text = six.text_type(p).strip()
+            text = str(p).strip()
             if text:
                 main_text.append(text)
         return main_text

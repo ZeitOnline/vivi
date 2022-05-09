@@ -13,7 +13,6 @@ import lxml.objectify
 import os
 import persistent
 import persistent.mapping
-import sys
 import tempfile
 import time
 import transaction
@@ -98,8 +97,7 @@ class Body(persistent.Persistent):
             return
         self.etag = etag
 
-        if ((sys.version_info < (3,) and hasattr(data, 'seek')) or
-                (sys.version_info >= (3,) and data.seekable())):
+        if data.seekable():
             data.seek(0)
         s = data.read(self.BUFFER_SIZE)
         if len(s) < self.BUFFER_SIZE:
@@ -371,9 +369,6 @@ class WebDAVPropertyKey:
         if zope.security.proxy.isinstance(other, WebDAVPropertyKey):
             return self.name == other.name
         return self.name == other
-
-    def __ne__(self, other):  # BBB only py2
-        return not self.__eq__(other)
 
     def __lt__(self, other):
         if zope.security.proxy.isinstance(other, WebDAVPropertyKey):

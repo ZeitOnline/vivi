@@ -33,4 +33,4 @@ class FckEditorWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
                 self.request, name='zeit.wysiwyg')(),
             application_url=self.request.getApplicationURL()
         )
-        return super(FckEditorWidget, self).__call__() + TEMPLATE % data
+        return super().__call__() + TEMPLATE % data

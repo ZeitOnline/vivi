@@ -38,4 +38,4 @@ class ObjectLog:
             yield dict(entries=items, display_date=date.strftime('%d.%m.%Y'))
 
     def __call__(self):
-        return super(ObjectLog, self).__call__()
+        return super().__call__()

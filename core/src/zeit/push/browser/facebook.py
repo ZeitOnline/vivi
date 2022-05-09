@@ -2,7 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import fb
 import gocept.form.grouped
 import requests
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.cms.browser.menu
 import zope.app.appsetup.product
 import zope.formlib.form
@@ -43,7 +43,7 @@ class TokenForm(zeit.cms.browser.form.FormBase,
             'pages_show_list'
         ])
         url = ('https://www.facebook.com/dialog/oauth?' +
-               six.moves.urllib.parse.urlencode({
+               urllib.parse.urlencode({
                    'client_id': data['app_id'],
                    'redirect_uri': data['redirect_uri'],
                    'scope': scopes,
@@ -62,7 +62,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
         # /docs/facebook-login/manually-build-a-login-flow#confirm>
         r = requests.get(
             'https://graph.facebook.com/oauth/access_token?' +
-            six.moves.urllib.parse.urlencode({
+            urllib.parse.urlencode({
                 'client_id': self.settings['app_id'],
                 'client_secret': self.settings['app_secret'],
                 'redirect_uri': self.settings['redirect_uri'],
@@ -77,7 +77,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
         # /docs/facebook-login/access-tokens/#extending>
         r = requests.get(
             'https://graph.facebook.com/oauth/access_token?' +
-            six.moves.urllib.parse.urlencode({
+            urllib.parse.urlencode({
                 'client_id': self.settings['app_id'],
                 'client_secret': self.settings['app_secret'],
                 'grant_type': 'fb_exchange_token',
@@ -98,7 +98,7 @@ class GenerateToken(zeit.cms.browser.view.Base):
             x['access_token'] for x in accounts['accounts']['data']
             if x['name'] == self.settings['page_name']][0]
 
-        return super(GenerateToken, self).__call__()
+        return super().__call__()
 
     @property
     def settings(self):

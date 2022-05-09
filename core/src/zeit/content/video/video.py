@@ -27,7 +27,7 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
 
     def references(self, instance):
         """Returns a ``References`` object to easen creation of references."""
-        return super(AuthorshipsProperty, self).__get__(instance, None)
+        return super().__get__(instance, None)
 
     def __set__(self, instance, value):
         items = []
@@ -37,7 +37,7 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
                 items.append(item)
             else:
                 items.append(references.create(item))
-        super(AuthorshipsProperty, self).__set__(instance, items)
+        super().__set__(instance, items)
 
 
 @zope.interface.implementer(

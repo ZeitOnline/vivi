@@ -286,7 +286,7 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit comment citation block')
 
     def setUpWidgets(self, *args, **kw):
-        super(EditCitationComment, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.article')
         self.widgets['url'].extra = 'data-comments-api-url={}'.format(
@@ -381,7 +381,7 @@ class EditBox(zeit.edit.browser.form.InlineForm):
     omit_fields = list(zeit.edit.interfaces.IBlock)
 
     def setUpWidgets(self, *args, **kwargs):
-        super(EditBox, self).setUpWidgets(*args, **kwargs)
+        super().setUpWidgets(*args, **kwargs)
         self.widgets['subtitle'].vivi_css_class = 'markdown-enabled'
 
     @property
@@ -419,7 +419,7 @@ class EditDivision(zeit.edit.browser.form.InlineForm,
         return 'division.{0}'.format(self.context.__name__)
 
     def setUpWidgets(self, *args, **kw):
-        super(EditDivision, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('teaser')
 
 
@@ -487,8 +487,7 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
     undo_description = _('edit topic box')
 
     def setUpWidgets(self, *args, **kw):
-
-        super(EditTopicbox, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.set_charlimit('title')
         self.set_charlimit('supertitle')
         self.set_charlimit('link_text')
@@ -526,7 +525,7 @@ class EditRecipeList(zeit.edit.browser.form.InlineForm):
             *list(zeit.edit.interfaces.IBlock))
 
     def setUpWidgets(self, *args, **kw):
-        super(EditRecipeList, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['ingredients'].add_type = (
             zeit.content.article.edit.interfaces.IRecipeList)
         self.widgets['ingredients'].display_list_below_buttons = True

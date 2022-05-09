@@ -270,7 +270,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def setUp(self):
-        super(VideoEditTest, self).setUp()
+        super().setUp()
         self.create_content_and_fill_clipboard()
 
     @unittest.skip('Drag-n-drop does not work reliably with Selenium atm.')

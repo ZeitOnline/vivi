@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 import pytz
@@ -60,7 +60,7 @@ warning_if(True, "A warning")
 class GlobTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(GlobTest, self).setUp()
+        super().setUp()
 
         import lxml.objectify
         import zeit.edit.block
@@ -184,7 +184,7 @@ class RulesManagerTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
         import pyramid_dogpile_cache2
-        super(RulesManagerTest, self).setUp()
+        super().setUp()
         pyramid_dogpile_cache2.clear()
 
     def get_manager(self):
@@ -295,13 +295,13 @@ def validator_for_testcontent(context):
 class ValidatingWorkflowTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ValidatingWorkflowTest, self).setUp()
+        super().setUp()
         gsm = zope.component.getGlobalSiteManager()
         gsm.registerAdapter(validating_workflow_for_testcontent)
         gsm.registerAdapter(validator_for_testcontent)
 
     def tearDown(self):
-        super(ValidatingWorkflowTest, self).tearDown()
+        super().tearDown()
         gsm = zope.component.getGlobalSiteManager()
         gsm.unregisterAdapter(validating_workflow_for_testcontent)
         gsm.unregisterAdapter(validator_for_testcontent)

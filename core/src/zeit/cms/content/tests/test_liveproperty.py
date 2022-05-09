@@ -30,7 +30,7 @@ class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 class AlwaysWriteableProperty(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(AlwaysWriteableProperty, self).setUp()
+        super().setUp()
         manager = zope.component.getUtility(
             zeit.cms.content.interfaces.ILivePropertyManager)
         manager.register_live_property('foo', 'bar', WRITEABLE_ALWAYS)

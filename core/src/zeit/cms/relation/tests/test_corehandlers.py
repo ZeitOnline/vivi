@@ -10,7 +10,7 @@ class CorehandlerTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-        super(CorehandlerTest, self).setUp()
+        super().setUp()
 
         self.repository['parent'] = ExampleContentType()
         self.repository['reference'] = ExampleContentType()

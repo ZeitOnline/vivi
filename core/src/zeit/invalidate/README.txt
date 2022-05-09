@@ -20,8 +20,8 @@ invalidate the resource. Create a test handler:
 
 Create a log file and attach it to the logging to verify the logging:
 
+>>> from io import StringIO
 >>> import logging
->>> from six import StringIO
 >>> log = StringIO()
 >>> log_handler = logging.StreamHandler(log)
 >>> logging.root.addHandler(log_handler)

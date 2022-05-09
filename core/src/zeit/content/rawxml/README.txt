@@ -41,7 +41,7 @@ stored in a webdav property:
 ...     ('title', 'http://namespaces.zeit.de/CMS/document')]
 'Roh'
 >>> resource.data.read()
-"<?xml version='1.0' encoding='UTF-8'?>\n<a/>\n"
+b"<?xml version='1.0' encoding='UTF-8'?>\n<a/>\n"
 >>> _ = resource.data.seek(0)
 >>> resource.type
 'rawxml'

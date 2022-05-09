@@ -91,13 +91,10 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     def lockable(self):
         return zope.app.locking.interfaces.ILockable(self.context, None)
 
-    def update(self):
-        super(MenuItem, self).update()
-
     def render(self):
         if self.lockable is None:
             return ''
-        return super(MenuItem, self).render()
+        return super().render()
 
 
 def get_locking_indicator(context, request):

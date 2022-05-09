@@ -29,7 +29,7 @@ class Resource(fanstatic.Resource):
     def __init__(self, filename, *args, **kw):
         globs = kw.pop('globs', sys._getframe(1).f_globals)
         lib = kw.pop('lib', globs.get('lib'))
-        super(Resource, self).__init__(lib, filename, *args, **kw)
+        super().__init__(lib, filename, *args, **kw)
         globs['%s_%s' % self.splitext(filename)] = self
         register(self)
 
@@ -45,7 +45,7 @@ class SplitDirResource(Resource):
         base, type_ = self.splitext(filename)
         kw['globs'] = sys._getframe(1).f_globals
         kw['lib'] = kw['globs']['lib_%s' % type_]
-        super(SplitDirResource, self).__init__(filename, *args, **kw)
+        super().__init__(filename, *args, **kw)
 
 
 SplitDirResource('forms.css')

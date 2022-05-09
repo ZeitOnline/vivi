@@ -32,7 +32,7 @@ class PushServiceProperties(zeit.push.testing.TestCase):
 class SendingNotifications(zeit.push.testing.TestCase):
 
     def setUp(self):
-        super(SendingNotifications, self).setUp()
+        super().setUp()
         self.notifier = mock.Mock()
         zope.component.getGlobalSiteManager().registerAdapter(
             self.notifier, (zeit.cms.content.interfaces.ICommonMetadata,),

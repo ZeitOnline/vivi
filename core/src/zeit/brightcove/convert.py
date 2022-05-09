@@ -267,7 +267,7 @@ class DeletedVideo(Video):
     def __init__(self, id, cmsobj):
         # We fake just enough API so VideoUpdater can perform the delete
         # (or skip us entirely if we don't even have a CMS object anymore).
-        super(DeletedVideo, self).__init__()
+        super().__init__()
         self.data['id'] = id
         if cmsobj is not None:
             self.__dict__['__parent__'] = cmsobj.__parent__

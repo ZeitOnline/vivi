@@ -76,7 +76,7 @@ class LockInfo(persistent.mapping.PersistentMapping):
     locked_until = None
 
     def __init__(self, target, principal_id, locked_until=None):
-        super(LockInfo, self).__init__()
+        super().__init__()
         self.__parent__ = self.target = target
         self.principal_id = principal_id
         self.created = time.time()

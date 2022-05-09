@@ -78,7 +78,7 @@ class Add(zeit.cms.browser.form.AddForm):
                 type='error')
         else:
             self.send_message(_('Retract job created.'))
-        changed = super(Add, self).applyChanges(job, data)
+        changed = super().applyChanges(job, data)
         job.start()
         return changed
 

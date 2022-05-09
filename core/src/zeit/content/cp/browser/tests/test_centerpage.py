@@ -28,7 +28,7 @@ class PublishTest(zeit.content.cp.testing.BrowserTestCase):
 class PermissionsTest(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(PermissionsTest, self).setUp()
+        super().setUp()
         zeit.content.cp.browser.testing.create_cp(self.browser)
         self.browser.getLink('Checkin').click()
 

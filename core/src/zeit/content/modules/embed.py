@@ -1,4 +1,4 @@
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import zeit.cmp.interfaces

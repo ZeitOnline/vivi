@@ -7,7 +7,7 @@ import zeit.edit.interfaces
 class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(LSCDefaultTest, self).setUp()
+        super().setUp()
         self.repository[
             'article'] = zeit.content.article.testing.create_article()
         with checked_out(self.repository['article']) as co:

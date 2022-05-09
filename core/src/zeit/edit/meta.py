@@ -1,7 +1,6 @@
 import gocept.lxml.interfaces
 import grokcore.component
 import martian
-import six
 import zeit.edit.block
 import zeit.edit.interfaces
 import zope.component.zcml
@@ -37,7 +36,7 @@ class GlobalRuleGlobsGrokker(martian.GlobalGrokker):
                 for_=(adapts,),
                 factory=(NoneGuard(func),),
                 provides=zeit.edit.interfaces.IRuleGlob,
-                name=six.text_type(func.__name__))
+                name=func.__name__)
         return True
 
 

@@ -66,8 +66,7 @@ class ImageReference(zeit.cms.content.reference.Reference):
                 zeit.content.image.interfaces.IImageMetadata) and hasattr(
                 self, '_%s_local' % key):
             key = '_%s_local' % key
-
-        super(ImageReference, self).__setattr__(key, value)
+        super().__setattr__(key, value)
 
     @property
     def target_unique_id(self):
@@ -83,7 +82,7 @@ class ImageReference(zeit.cms.content.reference.Reference):
             self.xml.set('src', self.target.uniqueId)
 
     def update_metadata(self, suppress_errors=False):
-        super(ImageReference, self).update_metadata(suppress_errors)
+        super().update_metadata(suppress_errors)
         for name in zope.schema.getFieldNames(
                 zeit.content.image.interfaces.IImageMetadata):
             if hasattr(self, name):

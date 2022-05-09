@@ -10,7 +10,7 @@ import zope.publisher.browser
 class LandingZone(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(LandingZone, self).setUp()
+        super().setUp()
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
         root = zeit.edit.tests.fixture.Container(
             wc, lxml.objectify.fromstring('<container/>'))
@@ -71,7 +71,7 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
 class LandingZoneMove(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(LandingZoneMove, self).setUp()
+        super().setUp()
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
         root = zeit.edit.tests.fixture.Container(
             wc, lxml.objectify.fromstring('<container/>'))

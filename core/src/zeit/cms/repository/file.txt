@@ -51,7 +51,7 @@ We can get the data via the ``open`` method:
 >>> f.open('r')
 <...BytesIO object at 0x...>
 >>> f.open().read(10)
-'\xff\xd8\xff\xe1\x0c\xdaExif'
+b'\xff\xd8\xff\xe1\x0c\xdaExif'
 
 
 It is not possible to open the RepositoryFile for writing:
@@ -96,7 +96,7 @@ We can get the data via the ``open`` method:
 >>> local.open('r')
 <...BytesIO object at 0x...>
 >>> local.open().read(10)
-'\xff\xd8\xff\xe1\x0c\xdaExif'
+b'\xff\xd8\xff\xe1\x0c\xdaExif'
 
 So far we have no local copy:
 
@@ -115,7 +115,7 @@ The LocalFile can be opened for writing:
 The file has stored the new data now:
 
 >>> local.open().read()
-'New data'
+b'New data'
 >>> int(local.size)
 8
 
@@ -143,7 +143,7 @@ Writing works as usual:
 ...     b'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen')
 >>> f_write.close()
 >>> local.open('r').read()
-'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen'
+b'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen'
 >>> local.mimeType
 ''
 
@@ -154,7 +154,7 @@ data by itself will return an empty file:
 >>> local.uniqueId = 'http://xml.zeit.de/foo'
 >>> f = local.open()
 >>> f.read()
-''
+b''
 
 
 Integration
@@ -178,7 +178,7 @@ False
 >>> f
 <zeit.cms.repository.file.RepositoryFile...>
 >>> f.open().read(10)
-'\xff\xd8\xff\xe1\x0c\xdaExif'
+b'\xff\xd8\xff\xe1\x0c\xdaExif'
 >>> f.mimeType
 'image/jpeg'
 
@@ -206,7 +206,7 @@ repository:
 >>> repository_file
 <zeit.cms.repository.file.RepositoryFile...>
 >>> repository_file.open().read()
-'new data'
+b'new data'
 >>> repository_file.mimeType
 'text/plain'
 

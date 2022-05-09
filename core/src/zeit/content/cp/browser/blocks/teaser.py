@@ -78,7 +78,7 @@ class EditCommon(
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(EditCommon, self).__call__()
+        return super().__call__()
 
 
 class Display(zeit.cms.browser.view.Base):

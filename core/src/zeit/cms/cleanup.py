@@ -1,6 +1,4 @@
-
 import gc
-import sys
 import zope.app.publication.interfaces
 import zope.component
 import zope.security.management
@@ -8,12 +6,6 @@ import zope.security.management
 
 # Lower the gc thresholds
 gc.set_threshold(700, 10, 5)
-
-
-@zope.component.adapter(zope.app.publication.interfaces.IEndRequestEvent)
-def clean_exc_info(event):
-    if sys.version_info < (3,):
-        sys.exc_clear()
 
 
 @zope.component.adapter(zope.app.publication.interfaces.IEndRequestEvent)

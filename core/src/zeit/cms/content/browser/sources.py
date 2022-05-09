@@ -41,7 +41,7 @@ class SerializeSource(grok.Adapter):
     grok.context(zc.sourcefactory.factories.BasicSourceFactory)
 
     def __init__(self, context):
-        super(SerializeSource, self).__init__(context)
+        super().__init__(context)
         self.context.isAvailable = lambda *args: True
 
     def __call__(self):

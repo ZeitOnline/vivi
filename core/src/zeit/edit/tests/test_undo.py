@@ -13,7 +13,7 @@ import zope.component
 class UndoTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(UndoTest, self).setUp()
+        super().setUp()
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(

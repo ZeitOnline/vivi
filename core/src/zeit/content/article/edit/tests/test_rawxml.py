@@ -1,5 +1,4 @@
 import lxml
-import six
 import unittest
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -54,4 +53,4 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         self.assertEllipsis(
             '<...has_thirdparty="yes"'
             ' thirdparty_vendors="Twitter;Facebook"...',
-            lxml.etree.tostring(module.xml, encoding=six.text_type))
+            lxml.etree.tostring(module.xml, encoding=str))

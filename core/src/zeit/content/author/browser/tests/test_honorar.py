@@ -10,14 +10,14 @@ import zope.component
 class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
 
     def setUp(self):
-        super(HonorarLookupTest, self).setUp()
+        super().setUp()
         self.patch = mock.patch('zeit.content.author.author.Author.exists')
         self.author_exists = self.patch.start()
         self.author_exists.return_value = False
 
     def tearDown(self):
         self.patch.stop()
-        super(HonorarLookupTest, self).tearDown()
+        super().tearDown()
 
     def test_add_author_first_searches_honorar_db(self):
         api = zope.component.getUtility(

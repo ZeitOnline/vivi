@@ -33,7 +33,7 @@ class ArticleConfigLayer(zeit.cms.testing.ProductConfigLayer):
         import zeit.content.article.testing
         config = zeit.content.article.testing.product_config
         self.config = self.loadConfiguration(config, self.package)
-        super(ArticleConfigLayer, self).setUp()
+        super().setUp()
 
 
 ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')

@@ -18,7 +18,7 @@ class TestBannerOuterDisplayCheckbox(
 class TestBannerOuterDisplay(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(TestBannerOuterDisplay, self).setUp()
+        super().setUp()
         self.content = ExampleContentType()
 
     def test_banner_outer_has_correct_default_value(

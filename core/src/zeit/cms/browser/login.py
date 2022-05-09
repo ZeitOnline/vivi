@@ -1,6 +1,5 @@
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import jwt
-import six
 import time
 import webob.cookies
 import zeit.cms.browser.resources
@@ -20,7 +19,7 @@ class Login:
         zeit.cms.browser.resources.login_css.need()
         if not self.authenticated:
             # Render template with error message
-            result = super(Login, self).__call__()
+            result = super().__call__()
             return result
         if self.camefrom:
             return self.request.response.redirect(self.camefrom)
@@ -134,12 +133,12 @@ class SimpleSerializer:
     """Copied from pyramid.authentication._SimpleSerializer."""
 
     def loads(self, bstruct):
-        if isinstance(bstruct, six.text_type):
+        if isinstance(bstruct, str):
             return bstruct.encode('latin-1')
         return str(bstruct)
 
     def dumps(self, appstruct):
-        if isinstance(appstruct, six.text_type):
+        if isinstance(appstruct, str):
             return appstruct.encode('latin-1')
         return appstruct
 

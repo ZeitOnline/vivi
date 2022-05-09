@@ -1,5 +1,5 @@
 # coding: utf-8
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import logging
@@ -12,7 +12,7 @@ import zope.component
 class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
 
     def setUp(self):
-        super(XMLRPCTest, self).setUp()
+        super().setUp()
         server = zeit.cms.webtest.ServerProxy(
             'http://index:indexpw@localhost/', self.layer['wsgi_app'])
         self.update = getattr(server, '@@update_tms')
@@ -33,7 +33,7 @@ class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):
     def tearDown(self):
         logging.root.removeHandler(self.log_handler)
         logging.root.setLevel(self.old_log_level)
-        super(XMLRPCTest, self).tearDown()
+        super().tearDown()
 
     def test_xmlrpc_update_should_call_index(self):
         id = 'http://xml.zeit.de/online/2007/01/Somalia'

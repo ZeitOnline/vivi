@@ -38,7 +38,7 @@ class FragmentReady(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(FragmentReady, self).setUp()
+        super().setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/fragmentready.html')
 

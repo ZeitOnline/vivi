@@ -1,4 +1,4 @@
-from six import StringIO
+from io import StringIO
 from zeit.cms.content.cache import writeabledict
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
@@ -7,7 +7,6 @@ import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import re
-import six
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.field
@@ -168,7 +167,7 @@ class NoMainImageBlockReference(zeit.cms.content.reference.EmptyReference):
 
     def create(self, target):
         self.source = self.source._create_image_block_in_front()
-        return super(NoMainImageBlockReference, self).create(target)
+        return super().create(target)
 
 
 class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -290,7 +289,7 @@ class SearchableText(grok.Adapter):
     def getSearchableText(self):
         main_text = []
         for p in self.context.xml.body.xpath("//p//text()"):
-            text = six.text_type(p).strip()
+            text = str(p).strip()
             if text:
                 main_text.append(text)
         return main_text
@@ -300,7 +299,7 @@ class SearchableText(grok.Adapter):
 class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
 
     def can_publish(self):
-        result = super(ArticleWorkflow, self).can_publish()
+        result = super().can_publish()
         if result == CAN_PUBLISH_ERROR:
             return CAN_PUBLISH_ERROR
         validator = zeit.edit.rule.ValidatingWorkflow(self.context)

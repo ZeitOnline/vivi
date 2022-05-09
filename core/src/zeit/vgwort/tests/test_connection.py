@@ -1,7 +1,6 @@
 from unittest import mock
 import gocept.httpserverlayer.custom
 import pkg_resources
-import six
 import time
 import unittest
 import zeit.cms.checkout.helper
@@ -14,7 +13,7 @@ import zope.component
 class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def setUp(self):
-        super(WebServiceTest, self).setUp()
+        super().setUp()
         self.service = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)
 
@@ -64,7 +63,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             self.service.new_document(content)
         except zeit.vgwort.interfaces.WebServiceError as e:
-            self.assertIn('Shakespeare', six.text_type(e))
+            self.assertIn('Shakespeare', str(e))
         else:
             self.fail('WebServiceError should have been raised.')
 
@@ -190,7 +189,7 @@ class HTTPErrorTest(unittest.TestCase):
 class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def setUp(self):
-        super(MessageServiceTest, self).setUp()
+        super().setUp()
         # Need a real webservice to load the WSDL.
         self.service = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)

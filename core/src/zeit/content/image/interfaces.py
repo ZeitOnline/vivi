@@ -2,7 +2,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 import PIL.Image
-import six
 import zc.form.field
 import zc.form.interfaces
 import zc.sourcefactory.contextual
@@ -40,7 +39,7 @@ class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [six.text_type(node)
+        return [str(node)
                 for node in tree.iterchildren('*')
                 if self.isAvailable(node, context)]
 
@@ -408,7 +407,7 @@ class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
         # which needs to be accessible.
         if IImage.providedBy(value):
             return True
-        return super(ImageGroupSource, self).__contains__(value)
+        return super().__contains__(value)
 
 
 # XXX this source still allows bare Image *and* ImageGroup, we should change

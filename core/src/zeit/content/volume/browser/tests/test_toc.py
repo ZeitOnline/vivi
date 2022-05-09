@@ -18,7 +18,7 @@ import zeit.content.volume.testing
 class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(TocFunctionalTest, self).setUp()
+        super().setUp()
         self.toc_data = OrderedDict()
         self.toc_data['Die Zeit'] = OrderedDict(
             {'Politik': [{'page': '1',
@@ -141,7 +141,7 @@ class TocFunctionalTest(zeit.content.volume.testing.FunctionalTestCase):
 class TocBrowserTest(zeit.content.volume.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TocBrowserTest, self).setUp()
+        super().setUp()
         # Create the volume object with the mock IConnector
         volume = Volume()
         volume.year = 2015

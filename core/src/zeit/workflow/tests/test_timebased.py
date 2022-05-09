@@ -1,6 +1,6 @@
 from ..timebased import TimeBasedWorkflow
 from datetime import datetime, timedelta
-from six import StringIO
+from io import StringIO
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
@@ -100,7 +100,7 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.CELERY_LAYER
 
     def setUp(self):
-        super(TimeBasedCeleryEndToEndTest, self).setUp()
+        super().setUp()
         self.unique_id = 'http://xml.zeit.de/online/2007/01/Somalia'
         self.content = ICMSContent(self.unique_id)
         self.workflow = zeit.workflow.interfaces.IContentWorkflow(self.content)
@@ -119,7 +119,7 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         logging.root.removeHandler(self.handler)
         for name in self.loggers:
             logging.getLogger(name).setLevel(self.oldlevels[name])
-        super(TimeBasedCeleryEndToEndTest, self).tearDown()
+        super().tearDown()
 
     def test_time_based_workflow_basic_assumptions(self):
         assert not self.workflow.published

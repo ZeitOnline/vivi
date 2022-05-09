@@ -13,7 +13,7 @@ import zope.publisher.browser
 class BreadcrumbsView(zeit.cms.browser.breadcrumbs.Breadcrumbs):
 
     def __init__(self, context):
-        super(BreadcrumbsView, self).__init__()
+        super().__init__()
         self.context = context
         self.request = zope.publisher.browser.TestRequest()
 
@@ -21,7 +21,7 @@ class BreadcrumbsView(zeit.cms.browser.breadcrumbs.Breadcrumbs):
 class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
-        super(Breadcrumbs, self).setUp()
+        super().setUp()
         kultur = self.repository['kultur'] = \
             zeit.cms.repository.folder.Folder()
         kultur['musik'] = zeit.cms.repository.folder.Folder()

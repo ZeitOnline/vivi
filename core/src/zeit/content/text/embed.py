@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import collections  # noqa make available to eval()
 import logging
-import six
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.modules.interfaces
@@ -58,7 +57,7 @@ class Embed(zeit.content.text.text.Text,
                 invalid.append(name)
                 continue
             if not field.title:
-                field.title = six.text_type(name).title()
+                field.title = str(name).title()
             field.__name__ = name
             # Slight circular dependency
             field.interface = zeit.content.modules.interfaces.IEmbedParameters

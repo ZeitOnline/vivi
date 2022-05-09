@@ -28,7 +28,7 @@ class Video(zeit.content.article.edit.block.Block):
         zeit.content.article.edit.interfaces.IReference['is_empty'])
 
     def __init__(self, *args, **kw):
-        super(Video, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         if self.layout is None:
             self.layout = zeit.content.article.edit.interfaces.IVideo[
                 'layout'].default

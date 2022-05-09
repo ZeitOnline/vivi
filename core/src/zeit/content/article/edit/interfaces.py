@@ -3,7 +3,6 @@ from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.content.article.source import BodyAwareXMLSource
 import collections
 import datetime
-import six
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.content.article.interfaces
@@ -537,8 +536,8 @@ class PuzzleSource(zeit.cms.content.sources.ObjectSource,
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
             puzzle = Puzzle(
-                six.text_type(node.get('id')),
-                six.text_type(node.text.strip()),
+                node.get('id'),
+                node.text.strip(),
                 node.get('multiple') == 'true'
             )
             result[puzzle.id] = puzzle

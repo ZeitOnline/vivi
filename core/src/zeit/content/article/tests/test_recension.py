@@ -7,7 +7,7 @@ import zope.component
 class RecensionTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(RecensionTest, self).setUp()
+        super().setUp()
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         repository['article'] = zeit.content.article.article.Article()

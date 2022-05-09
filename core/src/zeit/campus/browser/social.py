@@ -16,7 +16,7 @@ class SocialBase(zeit.push.browser.form.SocialBase):
     )
 
     def __init__(self, *args, **kw):
-        super(SocialBase, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         # Insert campus_fields at the wanted position
         self.form_fields = self.form_fields.omit(*self.social_fields.fields)
         self.form_fields += self.social_form_fields.select(
@@ -24,13 +24,13 @@ class SocialBase(zeit.push.browser.form.SocialBase):
 
     @property
     def social_form_fields(self):
-        form_fields = super(SocialBase, self).social_form_fields
+        form_fields = super().social_form_fields
         return (
             form_fields +
             self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
                 *self.campus_fields))
 
     def setUpWidgets(self, *args, **kw):
-        super(SocialBase, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         if self.request.form.get('%s.facebook_campus_enabled' % self.prefix):
             self._set_widget_required('facebook_campus_text')

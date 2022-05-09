@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import logging
-import six
 import zc.table.column
 import zc.table.table
 import zeit.cms.browser.interfaces
@@ -129,7 +128,7 @@ class CommonListRepresentation(BaseListRepresentation):
         for name in ('author', 'title', 'subtitle', 'byline',
                      'ressort', 'volume', 'page', 'year', '__name__'):
             try:
-                items.append(six.text_type(getattr(self, name)))
+                items.append(str(getattr(self, name)))
             except Exception:
                 continue
         return ' '.join(items)
@@ -156,7 +155,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 
     def getter(self, item, formatter):
         if self._getter is None:
-            return super(GetterColumn, self).getter(item, formatter)
+            return super().getter(item, formatter)
         try:
             return self._getter(item, formatter)
         except Exception:
@@ -165,7 +164,7 @@ class GetterColumn(zc.table.column.GetterColumn):
     def cell_formatter(self, value, item, formatter):
         if value is None:
             return ''
-        return six.text_type(value)
+        return str(value)
 
     def getSortKey(self, item, formatter):
         value = super().getSortKey(item, formatter)
@@ -177,7 +176,7 @@ class GetterColumn(zc.table.column.GetterColumn):
 class MetadataColumn(GetterColumn):
 
     def __init__(self, title='', searchable_text=True, **kwargs):
-        super(MetadataColumn, self).__init__(title=title, **kwargs)
+        super().__init__(title=title, **kwargs)
         self.searchable_text = searchable_text
 
     def getter(self, item, formatter):
@@ -199,7 +198,7 @@ class LockedColumn(zc.table.column.GetterColumn):
             (item, formatter.request), name='get_locking_indicator')
 
     def cell_formatter(self, value, item, formatter):
-        return six.text_type(value)
+        return str(value)
 
 
 class TypeColumn(GetterColumn):
@@ -231,7 +230,7 @@ class PublishedColumn(zc.table.column.GetterColumn):
 class FilenameColumn(GetterColumn):
 
     def cell_formatter(self, value, item, formatter):
-        formatted = super(FilenameColumn, self).cell_formatter(
+        formatted = super().cell_formatter(
             value, item, formatter)
         return '<span class="filename">%s</span>' % formatted
 

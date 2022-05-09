@@ -26,4 +26,4 @@ class WorkflowMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
         # a superclass of IArticle.
         if not IRepositoryContent.providedBy(self.context):
             return ''
-        return super(WorkflowMenuItem, self).render()
+        return super().render()

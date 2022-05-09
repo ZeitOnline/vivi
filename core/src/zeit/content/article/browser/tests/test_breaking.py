@@ -12,7 +12,7 @@ import zope.i18n.translationdomain
 class TestAdding(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestAdding, self).setUp()
+        super().setUp()
         domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
         zope.component.getGlobalSiteManager().registerUtility(
             domain, name='zeit.cms')
@@ -173,7 +173,7 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
                             return_value='SUCCESS')
         mocker.start()
         self.addCleanup(mocker.stop)
-        super(RetractBannerTest, self).setUp()
+        super().setUp()
         banner_config = zeit.content.rawxml.rawxml.RawXML()
         banner_config.xml = lxml.etree.fromstring(
             '<xml><article_id>'

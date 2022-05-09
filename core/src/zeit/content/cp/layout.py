@@ -1,6 +1,5 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import six
 import zeit.cms.content.sources
 import zope.interface
 
@@ -8,7 +7,7 @@ import zope.interface
 class AllowedMixin(zeit.cms.content.sources.AllowedBase):
 
     def __init__(self, id, title, available, types):
-        super(AllowedMixin, self).__init__(id, title, available)
+        super().__init__(id, title, available)
         self.types = types.split(' ') if types else None
 
     def is_allowed(self, context):
@@ -20,7 +19,7 @@ class AllowedMixin(zeit.cms.content.sources.AllowedBase):
         return self.is_allowed_iface(cp) and self.is_allowed_type(cp)
 
     def is_allowed_iface(self, cp):
-        return super(AllowedMixin, self).is_allowed(cp)
+        return super().is_allowed(cp)
 
     def is_allowed_type(self, cp):
         if not self.types:
@@ -65,7 +64,7 @@ class BlockLayout(AllowedMixin):
     def __init__(self, id, title, image_pattern=None,
                  areas=None, default=(), available=None,
                  types=None, is_leader=False):
-        super(BlockLayout, self).__init__(id, title, available, types)
+        super().__init__(id, title, available, types)
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
         self.default_in_areas = default
@@ -97,7 +96,7 @@ class NoBlockLayout:
 class RegionConfig(AllowedMixin):
 
     def __init__(self, id, title, kind, areas, available, types):
-        super(RegionConfig, self).__init__(id, title, available, types)
+        super().__init__(id, title, available, types)
         self.kind = kind
         self.areas = areas
 
@@ -105,20 +104,20 @@ class RegionConfig(AllowedMixin):
 class AreaConfig(AllowedMixin):
 
     def __init__(self, id, title, kind, available, types):
-        super(AreaConfig, self).__init__(id, title, available, types)
+        super().__init__(id, title, available, types)
         self.kind = kind
 
 
 class ModuleConfig(AllowedMixin):
 
     def __init__(self, id, title, available, types):
-        super(ModuleConfig, self).__init__(id, title, available, types)
+        super().__init__(id, title, available, types)
 
 
 class ObjectSource(zeit.cms.content.sources.ObjectSource):
 
     def _get_title_for(self, node):
-        return six.text_type(node.get('title'))
+        return node.get('title')
 
 
 class TeaserBlockLayoutSource(

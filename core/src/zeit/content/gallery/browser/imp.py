@@ -11,7 +11,7 @@ class Imp(zeit.imp.browser.imp.ImpBase):
             # XXX this might fail!
             original = self.context.__parent__[self.context.is_crop_of]
             return self.redirect(self.url(original, '@@imp.html'))
-        return super(Imp, self).render()
+        return super().render()
 
     @zope.cachedescriptors.property.Lazy
     def image(self):

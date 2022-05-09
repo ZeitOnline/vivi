@@ -6,7 +6,6 @@ import logging
 import os.path
 import pkg_resources
 import pytz
-import six
 import subprocess
 import tempfile
 import threading
@@ -177,10 +176,7 @@ class PublishRetractTask:
             return result
         finally:
             timer.mark('Done %s' % ids_str)
-            timings = six.text_type(timer)
-            if six.PY2:
-                timings = timings.encode('utf-8')
-            timer_logger.debug('Timings:\n%s' % timings)
+            timer_logger.debug('Timings:\n%s', timer)
             dummy, total, timer_message = timer.get_timings()[-1]
             logger.info('%s (%2.4fs)' % (timer_message, total))
 
@@ -342,8 +338,8 @@ class PublishRetractTask:
 
         env['publish_action'] = action
 
-        if isinstance(input_data, six.text_type):
-            input_data = input_data.encode('UTF-8')
+        if isinstance(input_data, str):
+            input_data = input_data.encode('utf-8')
         with tempfile.NamedTemporaryFile() as f:
             f.write(input_data)
             f.flush()
@@ -355,8 +351,8 @@ class PublishRetractTask:
             proc.communicate()
             out.seek(0)
             err.seek(0)
-            stdout = six.ensure_str(out.read())
-            stderr = six.ensure_str(err.read())
+            stdout = out.read().decode('utf-8')
+            stderr = err.read().decode('utf-8')
             out.close()
             err.close()
 
@@ -524,7 +520,7 @@ class MultiPublishTask(PublishTask):
 
     def _run(self, objs):
         self._to_log = []
-        result = super(MultiPublishTask, self)._run(objs)
+        result = super()._run(objs)
         # Work around limitations of our ZODB-based DAV cache.
         # Since publishing a sizeable amount of objects will result in a rather
         # long-running transaction (100 articles take about two minutes), the
@@ -552,7 +548,7 @@ class MultiRetractTask(RetractTask):
 
     def _run(self, objs):
         self._to_log = []
-        result = super(MultiRetractTask, self)._run(objs)
+        result = super()._run(objs)
         # See MultiPublishTask for details.
         raise z3c.celery.celery.Abort(
             self._log_messages, self._to_log, message=result)
@@ -589,14 +585,11 @@ class Timer(threading.local):
             result.append((diff, total, message))
         return result
 
-    def __unicode__(self):
+    def __str__(self):
         result = []
         for diff, total, message in self.get_timings():
             result.append('%2.4f %2.4f %s' % (diff, total, message))
         return '\n'.join(result)
-
-    if six.PY3:
-        __str__ = __unicode__
 
 
 timer = Timer()

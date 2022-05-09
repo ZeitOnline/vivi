@@ -6,7 +6,7 @@ import zeit.content.article.testing
 class SocialFormTest(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
-        super(SocialFormTest, self).setUp()
+        super().setUp()
         self.browser.open(
             'http://localhost/++skin++vivi/repository/'
             'online/2007/01/Somalia/@@checkout')
@@ -37,7 +37,7 @@ class SocialFormTest(zeit.content.article.testing.BrowserTestCase):
 class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
 
     def setUp(self):
-        super(MobileFormTest, self).setUp()
+        super().setUp()
         self.browser.open(
             'http://localhost/++skin++vivi/repository/'
             'online/2007/01/Somalia/@@checkout')
@@ -83,7 +83,7 @@ class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
 class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(SocialAMPTest, self).setUp()
+        super().setUp()
         self.add_article()
 
     def test_AMP_is_disabled_after_choosing_non_free_access(self):

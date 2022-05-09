@@ -344,7 +344,7 @@ Publish script
 Set up a log handler to inspect
 
 >>> import logging
->>> from six import StringIO
+>>> from io import StringIO
 >>> logfile = StringIO()
 >>> log_handler = logging.StreamHandler(logfile)
 >>> logging.root.addHandler(log_handler)

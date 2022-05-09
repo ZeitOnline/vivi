@@ -125,7 +125,7 @@ __return(cp)"""
 class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestVolumeCoverWidget, self).setUp()
+        super().setUp()
         volume = Volume()
         volume.year = 2015
         volume.volume = 1

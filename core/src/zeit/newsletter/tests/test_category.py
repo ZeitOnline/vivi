@@ -43,7 +43,7 @@ class InvariantsTest(zeit.newsletter.testing.TestCase):
 class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
     def setUp(self):
-        super(CreateNewsletterTest, self).setUp()
+        super().setUp()
         self.category = NewsletterCategory()
         self.category.subject = 'nosubject'
         self.repository['mynl'] = self.category
@@ -149,7 +149,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
     BOTTOM_AD_POSITION = -1
 
     def setUp(self):
-        super(BuilderTest, self).setUp()
+        super().setUp()
         self.category = NewsletterCategory()
         self.category.ressorts = ('Politik', 'Wirtschaft')
         self.category.subject = 'nosubject'

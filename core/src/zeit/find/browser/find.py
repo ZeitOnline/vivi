@@ -1,8 +1,7 @@
 import datetime
 import logging
 import pendulum
-import six
-import six.moves.urllib.parse
+import urllib.parse
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
@@ -24,7 +23,7 @@ class JSONView(zeit.cms.browser.view.JSON):
     resource_library = 'zeit.find'
 
     def url(self, view, uniqueId):
-        return super(JSONView, self).url(
+        return super().url(
             self.context, '%s?uniqueId=%s' % (view, uniqueId))
 
 
@@ -167,7 +166,7 @@ class SearchResult(JSONView):
                 handler = getattr(self, 'get_%s' % key)
                 value = handler(result)
                 if isinstance(value, int) and not isinstance(value, bool):
-                    value = six.text_type(value)
+                    value = str(value)
                 entry[key] = value
             processed.append(entry)
         if not processed:
@@ -179,7 +178,7 @@ class SearchResult(JSONView):
             q = form_query(self.request)
             q['sort'] = self.sort_order()
         except InputError as e:
-            error = six.text_type(e)
+            error = str(e)
             return {'template': 'no_search_result.jsont', "error": error}
         if q is None:
             return {'template': 'no_search_result.jsont'}
@@ -269,7 +268,7 @@ class SearchResult(JSONView):
         url = result.get('payload.vivi.cms_preview_url')
         if not url:
             return None
-        url_p = six.moves.urllib.parse.urlsplit(url)
+        url_p = urllib.parse.urlsplit(url)
         if url_p.scheme == '':
             url = self.get_application_url() + url
         return url

@@ -76,7 +76,7 @@ class Clipboard(zope.container.ordered.OrderedContainer):
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(value):
             raise ValueError("Can only contain IClipboardEntry objects. "
                              "Got %r instead." % value)
-        super(Clipboard, self).__setitem__(key, value)
+        super().__setitem__(key, value)
 
 
 clipboardFactory = zope.annotation.factory(Clipboard)
@@ -119,4 +119,4 @@ class ClipboardNameChooser(zope.container.contained.NameChooser):
             name = name.replace('+', '', 1)
         while name.startswith('@'):
             name = name.replace('@', '', 1)
-        return super(ClipboardNameChooser, self).chooseName(name, object)
+        return super().chooseName(name, object)

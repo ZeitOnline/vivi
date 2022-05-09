@@ -64,7 +64,7 @@ class UnknownBlockTest(zeit.edit.testing.FunctionalTestCase):
 class ContainerTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ContainerTest, self).setUp()
+        super().setUp()
         self.context = mock.Mock()
         zope.interface.alsoProvides(self.context, IPersistent)
         self.container = zeit.edit.tests.fixture.Container(

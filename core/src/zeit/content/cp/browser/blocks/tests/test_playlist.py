@@ -1,5 +1,5 @@
 from zeit.content.video.playlist import Playlist
-import six.moves.urllib.error
+import urllib.error
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 
@@ -7,7 +7,7 @@ import zeit.edit.interfaces
 class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
 
     def setUp(self):
-        super(TestPlaylist, self).setUp()
+        super().setUp()
         from zeit.content.cp.centerpage import CenterPage
         self.centerpage = CenterPage()
         self.playlist = self.centerpage['lead'].create_item('playlist')
@@ -55,7 +55,7 @@ class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
             playlist_block.__name__, 'http://xml.zeit.de/my-video')
 
         b = self.browser
-        with self.assertRaises(six.moves.urllib.error.HTTPError):
+        with self.assertRaises(urllib.error.HTTPError):
             b.open(drop_url)
         self.assertEllipsis(
             '...Only playlists can be dropped on a playlist block...',

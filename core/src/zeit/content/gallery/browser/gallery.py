@@ -44,7 +44,7 @@ def gallery_browse_location(context, source):
 class MetadataPreview(zeit.content.image.browser.image.MetadataPreview):
 
     def __init__(self, context, request):
-        super(MetadataPreview, self).__init__(context.image, request)
+        super().__init__(context.image, request)
 
 
 class Index(zeit.cms.browser.view.Base):

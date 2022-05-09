@@ -9,8 +9,7 @@ import lxml.objectify
 import os.path
 import persistent
 import re
-import urllib
-import six.moves.urllib.parse
+import urllib.parse
 import sys
 import z3c.traverser.interfaces
 import zeit.cms.content.dav
@@ -153,7 +152,7 @@ class ImageGroupBase:
     def variant_url(self, name, width=None, height=None,
                     fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
-        path = six.moves.urllib.parse.urlparse(self.uniqueId).path
+        path = urllib.parse.urlparse(self.uniqueId).path
         if path.endswith('/'):
             path = path[:-1]
         if thumbnail:
@@ -256,8 +255,7 @@ class VariantTraverser:
 
     def parse_params(self, url):
         result = dict()
-        params = six.moves.urllib.parse.parse_qs(
-            six.moves.urllib.parse.urlparse(url).query)
+        params = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
 
         if 'width' in params and 'height' in params:
             result['size'] = [
@@ -374,7 +372,7 @@ class ImageGroup(ImageGroupBase,
                  zeit.cms.repository.repository.Container):
 
     def __getitem__(self, key):
-        item = super(ImageGroup, self).__getitem__(key)
+        item = super().__getitem__(key)
         if key == self.master_image:
             zope.interface.alsoProvides(
                 item, zeit.content.image.interfaces.IMasterImage)

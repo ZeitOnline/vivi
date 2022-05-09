@@ -167,7 +167,7 @@ class IAfterDeleteEvent(ICheckinCheckoutEvent):
 class EventBase(zope.interface.interfaces.ObjectEvent):
 
     def __init__(self, object, workingcopy, principal, publishing=False):
-        super(EventBase, self).__init__(object)
+        super().__init__(object)
         self.workingcopy = workingcopy
         self.principal = principal
         self.publishing = publishing
@@ -187,7 +187,7 @@ class AfterCheckoutEvent(EventBase):
 class ValidateCheckinEvent(EventBase):
 
     def __init__(self, *args, **kw):
-        super(ValidateCheckinEvent, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         self.vetoed = None
 
     def veto(self, message=None):

@@ -1,7 +1,6 @@
 from io import BytesIO
 from zeit.cms.i18n import MessageFactory as _
 import persistent
-import six
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
@@ -41,7 +40,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
         unicode_data = None
         if encoding:
             try:
-                unicode_data = six.text_type(data, encoding)
+                unicode_data = str(data, encoding)
             except UnicodeDecodeError:
                 pass
         if unicode_data is None:
@@ -50,7 +49,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
                     zeit.content.text.interfaces.IText['encoding'].vocabulary):
                 encoding = encoding_term.value
                 try:
-                    unicode_data = six.text_type(data, encoding)
+                    unicode_data = str(data, encoding)
                 except UnicodeDecodeError:
                     pass
                 else:
@@ -62,7 +61,7 @@ class TextType(zeit.cms.type.TypeDeclaration):
         return text
 
     def resource_body(self, content):
-        if isinstance(content.text, six.text_type):
+        if isinstance(content.text, str):
             return BytesIO(content.text.encode(content.encoding))
         else:
             return BytesIO(content.text)

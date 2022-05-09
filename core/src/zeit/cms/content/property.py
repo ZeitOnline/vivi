@@ -1,6 +1,5 @@
 import lxml.etree
 import lxml.objectify
-import six
 import sys
 import xml.sax.saxutils
 import zeit.cms.content.interfaces
@@ -38,7 +37,7 @@ class ObjectPathProperty:
             try:
                 if node.text is not None:
                     return self.field.bind(instance).fromUnicode(
-                        six.text_type(node.text))
+                        str(node.text))
             except zope.schema.interfaces.ValidationError:
                 # Fall back to not using the field when the validaion fails.
                 pass
@@ -49,7 +48,7 @@ class ObjectPathProperty:
         if isinstance(value, str):
             # This is safe because lxml only uses str for optimisation
             # reasons and unicode when non us-ascii chars are in the str:
-            value = six.text_type(value)
+            value = str(value)
         return value
 
     def __set__(self, instance, value):
@@ -116,11 +115,11 @@ class Structure(ObjectPathProperty):
         if node is None:
             return self.field.missing_value if self.field else None
         node = lxml.objectify.fromstring(
-            six.text_type(self.remove_namespaces(node)))
-        result = [xml.sax.saxutils.escape(six.text_type(node))]
+            str(self.remove_namespaces(node)))
+        result = [xml.sax.saxutils.escape(str(node))]
         for child in node.iterchildren():
             lxml.objectify.deannotate(child)
-            result.append(lxml.etree.tostring(child, encoding=six.text_type))
+            result.append(lxml.etree.tostring(child, encoding=str))
         return ''.join(result)
 
     def __set__(self, instance, value):
@@ -135,8 +134,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
     """Property which is stored in an XML attribute."""
 
     def __init__(self, path, attribute_name, field=None, use_default=False):
-        super(ObjectPathAttributeProperty, self).__init__(
-            path, field, use_default)
+        super().__init__(path, field, use_default)
         self.attribute_name = attribute_name
 
     def __get__(self, instance, class_):
@@ -154,7 +152,7 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
                     return self.field.missing_value
             else:
                 return None
-        value = six.text_type(value)
+        value = str(value)
         if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
             try:
                 return self.field.bind(instance).fromUnicode(value)
@@ -166,11 +164,11 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
         if value is None:
             self.getNode(instance).attrib.pop(self.attribute_name, None)
         else:
-            if not isinstance(value, six.string_types):
-                value = six.text_type(value)
+            if not isinstance(value, str):
+                value = str(value)
             node = self.getNode(instance)
             if node is None:
-                super(ObjectPathAttributeProperty, self).__set__(instance, '')
+                super().__set__(instance, '')
                 node = self.getNode(instance)
             node.set(self.attribute_name, value)
 
@@ -219,7 +217,7 @@ class MultiPropertyBase:
 class SimpleMultiProperty(MultiPropertyBase):
 
     def _element_factory(self, node, tree):
-        return six.text_type(node)
+        return str(node)
 
     def _node_factory(self, entry, tree):
         return entry
@@ -228,7 +226,7 @@ class SimpleMultiProperty(MultiPropertyBase):
 class SingleResource(ObjectPathProperty):
 
     def __init__(self, path, xml_reference_name=None, attributes=None):
-        super(SingleResource, self).__init__(path)
+        super().__init__(path)
         if (xml_reference_name is None) ^ (attributes is None):
             raise ValueError(
                 "Either both `xml_reference_name` and `attributes` or neither"
@@ -249,7 +247,7 @@ class SingleResource(ObjectPathProperty):
                 if unique_id:
                     break
         else:
-            unique_id = super(SingleResource, self).__get__(instance, class_)
+            unique_id = super().__get__(instance, class_)
         if not unique_id:
             return None
         return zeit.cms.interfaces.ICMSContent(unique_id, None)
@@ -265,7 +263,7 @@ class SingleResource(ObjectPathProperty):
                     name=self.xml_reference_name)
             else:
                 node = value.uniqueId
-        super(SingleResource, self).__set__(instance, node)
+        super().__set__(instance, node)
 
     def __delete__(self, instance):
         self.__set__(instance, None)

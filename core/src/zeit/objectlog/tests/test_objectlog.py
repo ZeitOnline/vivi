@@ -8,7 +8,7 @@ import zope.component
 class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(ObjectLog, self).setUp()
+        super().setUp()
         self.content = zeit.objectlog.testing.Content()
         self.getRootFolder()['content'] = self.content
         transaction.commit()

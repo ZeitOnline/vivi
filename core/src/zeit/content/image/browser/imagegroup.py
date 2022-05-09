@@ -65,7 +65,7 @@ class AddForm(FormBase,
         if not config.get('mdb-api-url'):
             self.form_fields = self.form_fields.omit('mdb_blob')
         self.max_size = config.get('max-image-size', 4000)
-        super(AddForm, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
 
     def validate(self, action, data):
         # SequenceWidget._generateSequence() silently discards invalid entries,
@@ -86,7 +86,7 @@ class AddForm(FormBase,
         original_get = widget._getWidget
         widget._getWidget = getWidgetAndValidate.__get__(widget)
 
-        result = super(AddForm, self).validate(action, data)
+        result = super().validate(action, data)
 
         widget._getWidget = original_get
         for child in widget._widgets.values():
@@ -102,7 +102,7 @@ class AddForm(FormBase,
             data.pop('mdb_blob', None),)
 
         # Create ImageGroup with remaining data.
-        group = super(AddForm, self).create(data)
+        group = super().create(data)
 
         # Create images from blobs. Skip missing blobs, i.e. None.
         self.images = [self.create_image(blob, data) for blob in blobs if blob]
@@ -118,13 +118,13 @@ class AddForm(FormBase,
         return group
 
     def add(self, group):
-        super(AddForm, self).add(group)
+        super().add(group)
         group = self._created_object  # We need IRepositoryContent.
 
         # Add images to ImageGroup container.
         for image in self.images:
             if image is not None:
-                super(AddForm, self).add(image, group)
+                super().add(image, group)
 
         self._created_object = group  # Additional add() calls overwrote this.
         zeit.ghost.ghost.create_ghost(group)
@@ -133,7 +133,7 @@ class AddForm(FormBase,
         # XXX cannot set this until object is in repository, since it wants to
         # objectlog, which requires a uniqueId.
         release_period = data.pop('release_period')
-        super(AddForm, self).createAndAdd(data)
+        super().createAndAdd(data)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self._created_object)
         info.release_period = release_period
 
@@ -156,7 +156,7 @@ class AddForm(FormBase,
         return 'variant.html'
 
     def setUpWidgets(self, *args, **kw):
-        super(AddForm, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['master_image_blobs'].addButtonLabel = _('Add motif')
         self.widgets['master_image_blobs'].subwidget.extra = 'accept="%s"' % (
             ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
@@ -169,7 +169,7 @@ class EditForm(FormBase, zeit.cms.browser.form.EditForm):
     form_fields = FormBase.form_fields.omit('__name__')
 
     def setUpWidgets(self, *args, **kw):
-        super(EditForm, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['master_images'].addButtonLabel = _(
             'Add viewport to master image mapping')
         self.widgets['copyright'].vivi_css_class = (
@@ -181,7 +181,7 @@ class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):
     title = _('Image group metadata')
 
     def setUpWidgets(self, *args, **kw):
-        super(DisplayForm, self).setUpWidgets(*args, **kw)
+        super().setUpWidgets(*args, **kw)
         self.widgets['copyright'].vivi_css_class = (
             'fieldname-copyright--display')
 
@@ -228,7 +228,7 @@ class View(zeit.cms.browser.listing.Listing):
         prefix = zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX
         if obj.__name__.startswith(prefix):
             return False
-        return super(View, self).filter_content(obj)
+        return super().filter_content(obj)
 
 
 class AddImage(zeit.content.image.browser.form.AddForm):

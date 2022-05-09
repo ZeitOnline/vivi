@@ -118,7 +118,7 @@ class DAVPropstat:
                 if pvalue and pvalue.startswith(XML_PREFIX_MARKER):
                     pvalue = pvalue[len(XML_PREFIX_MARKER):]
             else:
-                pvalue = lxml.etree.tostring(prop, encoding='unicode')
+                pvalue = lxml.etree.tostring(prop, encoding=str)
             if pvalue is None:
                 pvalue = ''
             self.properties[pkey] = pvalue

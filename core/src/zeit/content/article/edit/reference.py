@@ -64,7 +64,7 @@ class ReferenceFactory(zeit.content.article.edit.block.BlockFactory):
     grok.baseclass()
 
     def __call__(self, position=None):
-        block = super(ReferenceFactory, self).__call__(position)
+        block = super().__call__(position)
         block.is_empty = True
         return block
 
@@ -140,7 +140,7 @@ class Portraitbox(Reference):
         original='references')
 
     def __init__(self, *args, **kw):
-        super(Portraitbox, self).__init__(*args, **kw)
+        super().__init__(*args, **kw)
         if not self.layout:
             self.layout = zeit.content.article.edit.interfaces.IPortraitbox[
                 'layout'].default
