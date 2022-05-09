@@ -1,3 +1,4 @@
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.checkout.interfaces
@@ -17,11 +18,17 @@ class RelatedBase(zeit.cms.content.xmlsupport.Persistent):
 
     def __init__(self, context):
         self.context = context
-        self.xml = self.context.xml
+        self._v_xml = lambda: self.context.xml
         self.uniqueId = self.context.uniqueId
         # Make ReferenceProperty and Persistent work (set parent last so we
         # don't trigger a write).
         self.__parent__ = context
+
+    @cachedproperty
+    def xml(self):
+        xml = self._v_xml()
+        del self._v_xml
+        return xml
 
 
 @zope.interface.implementer(zeit.cms.related.interfaces.IRelatedContent)

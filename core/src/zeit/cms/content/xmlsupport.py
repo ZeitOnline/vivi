@@ -1,5 +1,6 @@
 from io import StringIO
 from zeit.cms.workingcopy.interfaces import IWorkingcopy
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import datetime
 import gocept.lxml.objectify
 import grokcore.component as grok
@@ -28,9 +29,17 @@ class XMLRepresentationBase:
         if xml_source is None:
             if self.default_template is None:
                 raise NotImplementedError(
-                    "default_template needs to be set in subclasses")
+                    'default_template needs to be set in subclasses')
             xml_source = StringIO(self.default_template)
-        self.xml = gocept.lxml.objectify.fromfile(xml_source)
+        self._v_xml_source = xml_source
+
+    @cachedproperty
+    def xml(self):
+        xml = self._v_xml_source
+        del self._v_xml_source
+        if callable(xml):
+            xml = xml()
+        return gocept.lxml.objectify.fromfile(xml)
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLContent)
