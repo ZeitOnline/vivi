@@ -150,7 +150,7 @@ class CSSInjector(grok.Adapter):
                 rule.selectorList.append('#%s %s' % (module, selector))
                 # zeit.content.cp
                 rule.selectorList.append('.%s %s' % (module, selector))
-        return '<style>\n%s\n</style>' % css.cssText
+        return '<style>\n%s\n</style>' % css.cssText.decode('utf-8')
 
 
 class EmbedParameterForm:

@@ -2,11 +2,12 @@ import datetime
 import re
 import zeit.cms.testing
 import zeit.content.image.testing
+import zope.testing.renormalizing
 
 
 now_plus_7_days = datetime.date.today() + datetime.timedelta(days=7)
 
-checker = zeit.cms.testing.OutputChecker([
+checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('%04d-%02d-%02d 00:00:00' % (
         now_plus_7_days.year, now_plus_7_days.month, now_plus_7_days.day)),
      '<Datetime-7-Days-In-Future>')])

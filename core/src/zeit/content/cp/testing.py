@@ -15,6 +15,7 @@ import zeit.retresco.testhelper
 import zope.component
 import zope.interface
 import zope.security.management
+import zope.testing.renormalizing
 
 
 product_config = """
@@ -76,7 +77,7 @@ LAYER = plone.testing.Layer(name='Layer', bases=(
     CP_TEMPLATE_LAYER, zeit.retresco.testhelper.ELASTICSEARCH_MOCK_LAYER))
 
 
-checker = zeit.cms.testing.OutputChecker([
+checker = zope.testing.renormalizing.RENormalizing([
     (re.compile(
         '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
         '<GUID>'),

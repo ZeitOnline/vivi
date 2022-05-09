@@ -244,7 +244,7 @@ Create resource:
 >>> res.id = 'http://xml.zeit.de/testing/edge6'
 >>> connector.add(res)
 >>> connector[res.id].data.read()
-'Pop goes the weasel!'
+b'Pop goes the weasel!'
 
 
 After deleting the resource via webdav it is still reachable in the connector
@@ -254,7 +254,7 @@ because it is cached:
 >>> result = conn.delete(connector._id2loc(
 ...     'http://xml.zeit.de/testing/edge6'))
 >>> connector[res.id].data.read()
-'Pop goes the weasel!'
+b'Pop goes the weasel!'
 
 Locking it will actually create a null resource lock:
 
@@ -267,7 +267,7 @@ a None content-type):
 >>> connector[res.id]
 <zeit.connector.resource.CachedResource object at 0x...>
 >>> connector[res.id].data.read()
-''
+b''
 >>> connector[res.id].contentType is None
 True
 

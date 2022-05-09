@@ -27,7 +27,7 @@ Remember the connection for later:
 Get a list:
 
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
-send: 'HEAD /cms/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: ...\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector/...\r\n\r\n'
+send: b'HEAD /cms/testing HTTP/1.1\r\nAccept-Encoding: identity\r\nHost: ...\r\nConnection: keep-alive\r\nUser-Agent: zeit.connector/...\r\n\r\n'
 reply: 'HTTP/1.1 301 Moved Permanently\r\n'
 header: Date: ...
 header: Server: ...
@@ -35,7 +35,7 @@ header: Location: http://.../cms/testing/
 header: Keep-Alive: timeout=..., max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/html; charset=iso-8859-1
-send: 'PROPFIND /cms/testing/ HTTP/1.1\r\n...Depth: 1\r\n...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
+send: b'PROPFIND /cms/testing/ HTTP/1.1\r\n...Depth: 1\r\n...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
 header: Server: ...
@@ -54,9 +54,9 @@ sent again:
 >>> import time
 >>> time.sleep(16)
 >>> connector._invalidate_cache('http://xml.zeit.de/testing/')
-send: 'PROPFIND /cms/testing/ HTTP/1.1...Depth: 1\r\n...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
+send: b'PROPFIND /cms/testing/ HTTP/1.1...Depth: 1\r\n...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: ''
-send: 'PROPFIND /cms/testing/ HTTP/1.1\r\n...Depth: 1...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
+send: b'PROPFIND /cms/testing/ HTTP/1.1\r\n...Depth: 1...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
 header: Server: ...

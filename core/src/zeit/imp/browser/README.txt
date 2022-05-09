@@ -48,7 +48,7 @@ Content-Length: ...
 Content-Type: image/png
 ...
 >>> browser.contents[:10]
-'\x89PNG\r\n\x1a\n\x00\x00'
+b'\x89PNG\r\n\x1a\n\x00\x00'
 
 The border can be coloured:
 

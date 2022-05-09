@@ -52,7 +52,7 @@ When an object changes the invalidaton will also tell the connector to reload:
 >>> result = conn.put(connector._id2loc(inv2), 
 ...                   'Mary had a little ogre.', 'text/plain')
 >>> connector[inv].data.read()
-'pop.'
+b'pop.'
 >>> zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(inv))
 >>> print(connector[inv].data.read().decode('utf-8'))
 Mary had a little lamb.

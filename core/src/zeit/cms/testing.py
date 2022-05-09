@@ -620,34 +620,7 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
-# XXX Hopefully not necessary once we're on py3
-class OutputChecker(zope.testing.renormalizing.RENormalizing):
-
-    string_prefix = re.compile(r"(\W|^)[uUbB]([rR]?[\'\"])", re.UNICODE)
-
-    # Strip out u'' and b'' literals, adapted from
-    # <https://stackoverflow.com/a/56507895>.
-    def remove_string_prefix(self, want, got):
-        return (re.sub(self.string_prefix, r'\1\2', want),
-                re.sub(self.string_prefix, r'\1\2', got))
-
-    def check_output(self, want, got, optionflags):
-        # `want` is already unicode, since we pass `encoding` to DocFileSuite.
-        if not isinstance(got, str):
-            got = got.decode('utf-8')
-        want, got = self.remove_string_prefix(want, got)
-        super_ = zope.testing.renormalizing.RENormalizing
-        return super_.check_output(self, want, got, optionflags)
-
-    def output_difference(self, example, got, optionflags):
-        if not isinstance(got, str):
-            got = got.decode('utf-8')
-        example.want, got = self.remove_string_prefix(example.want, got)
-        super_ = zope.testing.renormalizing.RENormalizing
-        return super_.output_difference(self, example, got, optionflags)
-
-
-checker = OutputChecker([
+checker = zope.testing.renormalizing.RENormalizing([
     (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
     (re.compile('0x[0-9a-f]+'), "0x..."),
     (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),

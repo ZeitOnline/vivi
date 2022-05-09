@@ -50,7 +50,7 @@ We get the image itself just by accessing its url:
 >>> image.headers['content-type']
 'image/jpeg'
 >>> image.contents[:16]
-'\xff\xd8\xff\xe1\x0c\xdaExif\x00\x00MM\x00*'
+b'\xff\xd8\xff\xe1\x0c\xdaExif\x00\x00MM\x00*'
 
 We also have a preview version of an images. The preview is scaled down on the
 server:
@@ -607,7 +607,7 @@ Content-Length: ...
 Content-Type: image/jpeg
 ...
 >>> browser.contents[:16]
-'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01'
+b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01'
 
 Broken images
 =============
