@@ -8,6 +8,7 @@ import logging
 import openapi_schema_validator
 import requests
 import yaml
+import zope.schema
 
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
@@ -49,10 +50,15 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
     def _valid_field_name(self, schema):
         try:
             return schema['components']['schemas'][self.field_name]
-        except KeyError:
-            log.error('Field name is not provided by schema ', exc_info=True)
+        except (AttributeError, KeyError):
+            message = 'Field name missing or not provided by schema'
+            raise zope.schema.ValidationError(message)
 
     def _get(self):
+        if not self.schema_url:
+            # Send this to "Meldung"
+            log.info('No schema url provided', exc_info=True)
+            return
         try:
             response = requests.get(self.schema_url)
             schema = yaml.safe_load(response.text)
@@ -61,12 +67,15 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             return schema, ref_resolver
         except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
-            log.warning(
-                '%s returned %s', self.schema_url, status, exc_info=True)
+            message = f'{self.schema_url} returned {status}'
+            log.warning(message, exc_info=True)
+            raise zope.schema.ValidationError(message)
 
     def validate(self):
         schema, ref_resolver = self._get()
-        if schema and self._valid_field_name(schema):
+        if not schema:
+            return
+        if self._valid_field_name(schema):
             openapi_schema_validator.validate(
                 self.context.data,
                 schema['components']['schemas'][self.field_name],
