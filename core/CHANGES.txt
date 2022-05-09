@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.4 (2022-05-09)
+-------------------
+
+- ZO-1286: Actually display the total entry count in the status log message
+
+
 5.15.3 (2022-05-09)
 -------------------
 
