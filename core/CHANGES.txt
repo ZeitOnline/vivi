@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.3 (2022-05-09)
+-------------------
+
+- ZO-114: UI tweaks for Animation object
+
+- ZO-1286: Publish dynamicfolder content in batches
+
+
+FIX:
+- Constrain height of textareas generally again, after 5.15.2
+
+
 5.15.2 (2022-05-04)
 -------------------
 
