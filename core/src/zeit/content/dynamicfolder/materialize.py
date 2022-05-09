@@ -1,21 +1,21 @@
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+from zeit.cms.i18n import MessageFactory as _
+from zeit.connector.interfaces import IWebDAVReadProperties
+from zeit.connector.interfaces import IWebDAVWriteProperties
+from zeit.content.dynamicfolder.interfaces import IMaterializedContent
+from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
 import logging
 import transaction
-
-import zope.interface
-import zope.security.proxy
-
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-from zeit.cms.i18n import MessageFactory as _
-
 import zeit.cms.celery
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
-import zeit.connector.interfaces as Cinterfaces
-import zeit.content.dynamicfolder.interfaces as DFinterfaces
+import zeit.content.dynamicfolder.interfaces
 import zeit.objectlog.interfaces
+import zope.interface
+import zope.security.proxy
 
 
 log = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ log = logging.getLogger(__name__)
 class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     activate = zeit.cms.content.dav.DAVProperty(
-        DFinterfaces.ICloneArmy['activate'],
+        zeit.content.dynamicfolder.interfaces.ICloneArmy['activate'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'materializeable',
         writeable=WRITEABLE_ALWAYS
     )
@@ -49,12 +49,12 @@ def materialize_content(unique_id):
     for key in virtual_content_keys:
         content = copy.copy(zope.security.proxy.getObject(parent[key]))
 
-        if DFinterfaces.IMaterializedContent.providedBy(content):
+        if IMaterializedContent.providedBy(content):
             regenerate.append(key)
             objects_to_retract.append(content)
             log.info('{} is going to be regenerated'.format(content.uniqueId))
 
-        if DFinterfaces.IVirtualContent.providedBy(content):
+        if IVirtualContent.providedBy(content):
             materialize.append(key)
 
     if regenerate:
@@ -67,19 +67,16 @@ def materialize_content(unique_id):
     if materialize:
         for key in materialize:
             content = copy.copy(zope.security.proxy.getObject(parent[key]))
-            repository_properties = Cinterfaces.IWebDAVReadProperties(
-                parent[key])
+            repository_properties = IWebDAVReadProperties(parent[key])
 
-            zope.interface.alsoProvides(
-                content, DFinterfaces.IMaterializedContent)
-            zope.interface.noLongerProvides(
-                content, DFinterfaces.IVirtualContent)
+            zope.interface.alsoProvides(content, IMaterializedContent)
+            zope.interface.noLongerProvides(content, IVirtualContent)
             zope.interface.alsoProvides(
                 content, zeit.cms.workingcopy.interfaces.ILocalContent)
             zope.interface.noLongerProvides(
                 content, zeit.cms.repository.interfaces.IRepositoryContent)
 
-            new_properties = Cinterfaces.IWebDAVWriteProperties(content)
+            new_properties = IWebDAVWriteProperties(content)
             new_properties.update(repository_properties)
             parent[key] = content
 
@@ -91,15 +88,21 @@ def materialize_content(unique_id):
     transaction.commit()
 
 
-@zeit.cms.celery.task
-def publish_content(unique_id):
-    folder = zeit.cms.interfaces.ICMSContent(unique_id)
+def publish_content(folder):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.dynamicfolder') or {}
+    batch_size = config.get('materialized-publish-batch-size', 100)
+    publish = zeit.cms.workflow.interfaces.IPublish(folder)
+    count = 0
     objects = []
-    for key in folder.keys():
-        if DFinterfaces.IMaterializedContent.providedBy(folder[key]):
-            objects.append(folder[key])
-    zeit.cms.workflow.interfaces.IPublish(
-        folder).publish_multiple(objects)
-    msg = _('Published')
-    zeit.objectlog.interfaces.ILog(folder).log(msg)
-    transaction.commit()
+    for item in folder.values():
+        if IMaterializedContent.providedBy(item):
+            count += 1
+            objects.append(item)
+        if len(objects) >= batch_size:
+            publish.publish_multiple(objects)
+            objects.clear()
+    if objects:
+        publish.publish_multiple(objects)
+    zeit.objectlog.interfaces.ILog(folder).log(
+        _('About to publish ${count} objects', count))

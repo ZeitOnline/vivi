@@ -60,8 +60,7 @@ class MaterializeMenuItem(
 class PublishMaterializedContent(zeit.cms.browser.view.Base):
 
     def __call__(self):
-        zeit.content.dynamicfolder.materialize.publish_content.delay(
-            self.context.uniqueId)
+        zeit.content.dynamicfolder.materialize.publish_content(self.context)
         self.redirect(self.url(self.context, '@@view.html'))
         return ''
 
