@@ -377,6 +377,22 @@ class IThumbnails(zope.container.interfaces.IReadContainer):
     source_image = zope.schema.Choice(source=bareImageSource)
 
 
+class IMasterImage(zope.interface.Interface):
+    """Marks an image in an image group as master for the other images."""
+
+
+class IImageReference(zeit.cms.content.interfaces.IReference, IImageMetadata):
+    """Reference to an image, allows overriding metadata locally for the
+    referring content object."""
+
+    fill_color = zope.schema.TextLine(
+        title=_('Alpha channel fill color'),
+        required=False,
+        max_length=6,
+        constraint=zeit.cms.content.interfaces.hex_literal,
+    )
+
+
 class IImages(zope.interface.Interface):
     """An object which references images."""
 
@@ -387,21 +403,9 @@ class IImages(zope.interface.Interface):
         source=imageGroupSource,
     )
 
-    fill_color = zope.schema.TextLine(
-        title=_('Alpha channel fill color'),
-        required=False,
-        max_length=6,
-        constraint=zeit.cms.content.interfaces.hex_literal,
-    )
-
-
-class IMasterImage(zope.interface.Interface):
-    """Marks an image in an image group as master for the other images."""
-
-
-class IImageReference(zeit.cms.content.interfaces.IReference, IImageMetadata):
-    """Reference to an image, allows overriding metadata locally for the
-    referring content object."""
+    # BBB Pass-through to IImageReference. `IImages.images` should maybe
+    # be a ReferenceField instead of a Choice?
+    fill_color = IImageReference['fill_color'].bind(object())
 
 
 class IMDB(zope.interface.Interface):
