@@ -4,7 +4,6 @@ from zeit.connector.interfaces import IWebDAVReadProperties
 from zeit.connector.interfaces import IWebDAVWriteProperties
 from zeit.content.dynamicfolder.interfaces import IMaterializedContent
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
-import copy
 import logging
 import transaction
 import zeit.cms.celery
@@ -15,7 +14,6 @@ import zeit.cms.workingcopy.interfaces
 import zeit.content.dynamicfolder.interfaces
 import zeit.objectlog.interfaces
 import zope.interface
-import zope.security.proxy
 
 
 log = logging.getLogger(__name__)
@@ -61,13 +59,11 @@ def materialize_content(unique_id):
         transaction.commit()
 
     for key in materialize:
-        content = copy.copy(zope.security.proxy.getObject(parent[key]))
-        repository_properties = IWebDAVReadProperties(parent[key])
+        content = parent[key]
+        repository_properties = IWebDAVReadProperties(content)
 
         zope.interface.alsoProvides(content, IMaterializedContent)
         zope.interface.noLongerProvides(content, IVirtualContent)
-        zope.interface.alsoProvides(
-            content, zeit.cms.workingcopy.interfaces.ILocalContent)
         zope.interface.noLongerProvides(
             content, zeit.cms.repository.interfaces.IRepositoryContent)
 
