@@ -52,10 +52,11 @@ class RecipeListTest(
         banana = ingredients['banana']
         milk = ingredients['milk']
         self.module.ingredients = [banana, milk]
-        self.assertEllipsis(
-            '<ingredient... code="banana" amount="2" '
-            'unit="g" details="sautiert"/>',
-            zeit.cms.testing.xmltotext(self.module.xml.ingredient))
+        xml = self.module.xml.ingredient
+        self.assertEqual('banana', xml.get('code'))
+        self.assertEqual('2', xml.get('amount'))
+        self.assertEqual('g', xml.get('unit'))
+        self.assertEqual('sautiert', xml.get('details'))
 
     def test_removing_all_ingredients_should_leave_no_trace(self):
         ingredients = self.setup_ingredients('banana')
