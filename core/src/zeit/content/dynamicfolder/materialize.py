@@ -43,7 +43,6 @@ def materialize_content(unique_id):
     ]]
 
     regenerate = []
-    objects_to_retract = []
     materialize = []
 
     for key in virtual_content_keys:
@@ -51,7 +50,6 @@ def materialize_content(unique_id):
 
         if IMaterializedContent.providedBy(content):
             regenerate.append(key)
-            objects_to_retract.append(content)
             log.info('{} is going to be regenerated'.format(content.uniqueId))
 
         if IVirtualContent.providedBy(content):
