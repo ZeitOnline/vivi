@@ -1,4 +1,3 @@
-from jsonschema.exceptions import ValidationError
 from jsonschema.validators import RefResolver
 
 import mock
@@ -33,7 +32,8 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             schema.return_value = (
                 self.schema_json, RefResolver.from_schema(
                     self.schema_json))
-            with self.assertRaises(ValidationError):
+            with self.assertRaises(
+                    zeit.content.text.interfaces.SchemaValidationError):
                 validation.validate()
 
     def test_get_schema_from_url(self):
@@ -67,7 +67,8 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
             schema.return_value = (
                 self.schema_json, RefResolver.from_schema(
                     self.schema_json))
-            with self.assertRaises(ValidationError):
+            with self.assertRaises(
+                    zeit.content.text.interfaces.SchemaValidationError):
                 validation.validate()
             json_content.text = '"{urn:uuid:d995ba5a}"'
             validation.validate()

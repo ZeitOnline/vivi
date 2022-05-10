@@ -1,0 +1,21 @@
+<html metal:use-macro="context/@@standard_macros/error-page">
+  <div metal:fill-slot="body"
+    i18n:domain="zeit.cms">
+
+    <h1 i18n:translate="">A validation error is occoured</h1>
+    <div class="error"
+      i18n:translate="">
+      <p>
+        The validation of json against the schema failed, because:
+      </p>
+      <p>
+        <span class="unique-id" tal:content="python:context.uniqueId"
+          i18n:name="resource-id">http://xml.zeit.de/asdf</span>.
+      </p>
+      <p>
+        Therefore the content cannot be checked in.
+      <p>
+    </div>
+    <pre tal:content="context"></pre>
+  </div>
+</html>

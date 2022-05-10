@@ -119,6 +119,13 @@ class IValidationSchema(zope.interface.Interface):
         """
 
 
+class SchemaValidationError(Exception):
+
+    def __init__(self, id, *args):
+        self.uniqueId = id
+        self.args = args
+
+
 class IEmbed(IText):
 
     render_as_template = zope.schema.Bool(title=_("Render as template?"))

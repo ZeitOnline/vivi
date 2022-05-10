@@ -101,6 +101,15 @@
     title="Validate"
     />
 
+  <browser:page
+    for="zeit.content.text.interfaces.SchemaValidationError"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class="zeit.content.text.browser.error.ErrorView"
+    template="validation-error.pt"
+    permission="zope.Public"
+    />
+
   <adapter
     for="zeit.content.text.interfaces.JSON
     zeit.cms.browser.interfaces.ICMSLayer"
