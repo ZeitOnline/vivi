@@ -47,8 +47,8 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
         self.assertEqual(
             '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-            '<cover href="http://xml.zeit.de/imagegroup/" id="ipad" '
-            'product_id="ZEI"/>'
+            '<cover id="ipad" product_id="ZEI" '
+            'href="http://xml.zeit.de/imagegroup/"/>'
             '</covers>',
             lxml.etree.tostring(
                 self.volume.xml.covers, encoding=str))
