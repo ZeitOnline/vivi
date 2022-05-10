@@ -47,7 +47,7 @@ def materialize_content(unique_id):
     materialize = []
 
     for key in virtual_content_keys:
-        content = copy.copy(zope.security.proxy.getObject(parent[key]))
+        content = parent[key]
 
         if IMaterializedContent.providedBy(content):
             regenerate.append(key)
