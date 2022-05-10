@@ -6,7 +6,6 @@ from zeit.connector.interfaces import IWebDAVWriteProperties
 from zeit.content.dynamicfolder.interfaces import IMaterializedContent
 from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import logging
-import transaction
 import zeit.cms.celery
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -30,48 +29,76 @@ class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
     )
 
 
-@zeit.cms.celery.task
-def materialize_content(unique_id):
-    log.info('Materialize {}'.format(unique_id))
-    folder = zeit.cms.interfaces.ICMSContent(unique_id)
+def materialize_content(folder):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.dynamicfolder') or {}
+    batch_size = config.get('materialized-publish-batch-size', 100)
 
     to_regenerate = []
+    regenerate_count = 0
     to_materialize = []
+    materialize_count = 0
 
     for content in folder.values():
         if IMaterializedContent.providedBy(content):
-            to_regenerate.append(content)
-            log.info('{} is going to be regenerated'.format(content.uniqueId))
-
+            to_regenerate.append(content.__name__)
+            regenerate_count += 1
         if IVirtualContent.providedBy(content):
-            to_materialize.append(content)
+            to_materialize.append(content.__name__)
+            materialize_count += 1
+        if len(to_regenerate) >= batch_size:
+            regenerate.delay(folder.uniqueId, to_regenerate)
+            to_regenerate.clear()
+        if len(to_materialize) >= batch_size:
+            materialize.delay(folder.uniqueId, to_materialize)
+            to_materialize.clear()
 
-    for content in to_regenerate:
-        del folder[content.__name__]
-        transaction.commit()
-        to_materialize.append(folder[content.__name__])
+    if to_regenerate:
+        regenerate.delay(folder.uniqueId, to_regenerate)
+    if to_materialize:
+        materialize.delay(folder.uniqueId, to_materialize)
 
-    for content in to_materialize:
-        materialize(folder, content)
-
-    zeit.objectlog.interfaces.ILog(folder).log(_('Materialized'))
-
-    transaction.commit()
+    zeit.objectlog.interfaces.ILog(folder).log(
+        _('Materialize ${materialize}, Regenerate ${regenerate}', mapping={
+            'materialize': materialize_count, 'regenerate': regenerate_count}))
 
 
-def materialize(folder, content):
+@zeit.cms.celery.task
+def materialize(folder_id, keys):
+    folder = zeit.cms.interfaces.ICMSContent(folder_id)
+    for key in keys:
+        content = folder[key]
+        log.info('Materialize %s', content.uniqueId)
+        _materialize(content)
+    zeit.objectlog.interfaces.ILog(folder).log(
+        _('Materialized ${count}', mapping={'count': len(keys)}))
+
+
+@zeit.cms.celery.task
+def regenerate(folder_id, keys):
+    folder = zeit.cms.interfaces.ICMSContent(folder_id)
+    for key in keys:
+        del folder[key]
+        content = folder[key]
+        log.info('Regenerate %s', content.uniqueId)
+        _materialize(content)
+    zeit.objectlog.interfaces.ILog(folder).log(
+        _('Regenerated ${count}', mapping={'count': len(keys)}))
+
+
+def _materialize(content):
     repository_properties = IWebDAVReadProperties(content)
 
     zope.interface.alsoProvides(content, IMaterializedContent)
     zope.interface.noLongerProvides(content, IVirtualContent)
 
+    folder = content.__parent__  # only available *with* IRepositoryContent
     zope.interface.noLongerProvides(content, IRepositoryContent)
     new_properties = IWebDAVWriteProperties(content)
     new_properties.update(repository_properties)
-    # XXX Why is content.__parent__ None here?
+    content.__parent__ = folder
     folder[content.__name__] = content
 
-    log.info('Materialize %s', content.uniqueId)
     zeit.objectlog.interfaces.ILog(content).log(_('Materialized'))
 
 

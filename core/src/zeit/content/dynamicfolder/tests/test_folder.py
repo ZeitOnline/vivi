@@ -292,8 +292,7 @@ class MaterializeDynamicFolder(
         self.folder = self.repository['dynamicfolder']
 
     def test_checkin_materialized_content_preserves_materialization(self):
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
-            self.folder.uniqueId)
+        zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         self.assertEqual(
             'Wahlergebnis in Kiel',
@@ -307,8 +306,7 @@ class MaterializeDynamicFolder(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
 
     def test_materializing_virtual_content(self):
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
-            self.folder.uniqueId)
+        zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         self.assertFalse(DFinterfaces.IVirtualContent.providedBy(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
@@ -316,8 +314,7 @@ class MaterializeDynamicFolder(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
 
     def test_materialized_content_is_virtual_content_again(self):
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
-            self.folder.uniqueId)
+        zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         del self.folder['wahlergebnis-kiel-wahlkreis-5-live']
         self.assertIn('wahlergebnis-kiel-wahlkreis-5-live', self.folder)
@@ -325,10 +322,8 @@ class MaterializeDynamicFolder(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
 
     def test_publish_materialized_content(self):
-        zeit.content.dynamicfolder.materialize.materialize_content(
-            self.folder.uniqueId)
-        zeit.content.dynamicfolder.materialize.publish_content(
-            self.folder)
+        zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
+        zeit.content.dynamicfolder.materialize.publish_content(self.folder)
         self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
             self.folder['wahlergebnis-kiel-wahlkreis-5-live']).published)
 
@@ -339,23 +334,21 @@ class MaterializeDynamicFolder(
         """
         self.repository['dynamicfolder']['real-folder'] = (
             zeit.cms.repository.folder.Folder())
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
-            self.repository['dynamicfolder'].uniqueId)
+        zeit.content.dynamicfolder.materialize.materialize_content(
+            self.repository['dynamicfolder'])
         transaction.commit()
         self.assertFalse(DFinterfaces.IVirtualContent.providedBy(
             self.repository['dynamicfolder']['real-folder']))
 
     def test_materialized_content_is_updated_when_materialized_again(self):
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
-            self.folder.uniqueId)
+        zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         with checked_out(
                 self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
             co.title = 'foo'
         self.assertEqual(
             'foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
-            self.folder.uniqueId)
+        zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         self.assertEqual(
             'Wahlergebnis in Kiel',
