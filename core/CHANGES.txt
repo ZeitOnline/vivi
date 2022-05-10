@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.6 (2022-05-10)
+-------------------
+
+- ZO-721: Ignore obsolete storystream metadata when indexing to TMS
+
+
 5.15.5 (2022-05-09)
 -------------------
 
