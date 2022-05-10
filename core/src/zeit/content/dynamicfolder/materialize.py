@@ -34,28 +34,25 @@ class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
 def materialize_content(unique_id):
     log.info('Materialize {}'.format(unique_id))
     msg = _('Materialized')
-    parent = zeit.cms.interfaces.ICMSContent(unique_id)
+    folder = zeit.cms.interfaces.ICMSContent(unique_id)
 
     regenerate = []
     materialize = []
 
-    for key in parent.keys():
-        content = parent[key]
-
+    for content in folder.values():
         if IMaterializedContent.providedBy(content):
-            regenerate.append(key)
+            regenerate.append(content)
             log.info('{} is going to be regenerated'.format(content.uniqueId))
 
         if IVirtualContent.providedBy(content):
-            materialize.append(key)
+            materialize.append(content)
 
-    for key in regenerate:
-        materialize.append(key)
-        del parent[key]
+    for content in regenerate:
+        del folder[content.__name__]
         transaction.commit()
+        materialize.append(folder[content.__name__])
 
-    for key in materialize:
-        content = parent[key]
+    for content in materialize:
         repository_properties = IWebDAVReadProperties(content)
 
         zope.interface.alsoProvides(content, IMaterializedContent)
@@ -64,12 +61,12 @@ def materialize_content(unique_id):
         zope.interface.noLongerProvides(content, IRepositoryContent)
         new_properties = IWebDAVWriteProperties(content)
         new_properties.update(repository_properties)
-        parent[key] = content
+        folder[content.__name__] = content
 
         log.info('Materialize {}'.format(content.uniqueId))
         zeit.objectlog.interfaces.ILog(content).log(msg)
 
-    zeit.objectlog.interfaces.ILog(parent).log(msg)
+    zeit.objectlog.interfaces.ILog(folder).log(msg)
 
     transaction.commit()
 
