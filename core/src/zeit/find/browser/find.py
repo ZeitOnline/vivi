@@ -76,6 +76,7 @@ class SearchForm(JSONView):
 
     CONTENT_TYPES = [
         'advertisement',
+        'animation',
         'article',
         'author',
         'centerpage-2009',
