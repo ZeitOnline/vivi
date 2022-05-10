@@ -57,31 +57,29 @@ def materialize_content(unique_id):
         if IVirtualContent.providedBy(content):
             materialize.append(key)
 
-    if regenerate:
-        for key in regenerate:
-            materialize.append(key)
-            del parent[key]
-            transaction.commit()
+    for key in regenerate:
+        materialize.append(key)
+        del parent[key]
+        transaction.commit()
 
     parent = zeit.cms.interfaces.ICMSContent(unique_id)
-    if materialize:
-        for key in materialize:
-            content = copy.copy(zope.security.proxy.getObject(parent[key]))
-            repository_properties = IWebDAVReadProperties(parent[key])
+    for key in materialize:
+        content = copy.copy(zope.security.proxy.getObject(parent[key]))
+        repository_properties = IWebDAVReadProperties(parent[key])
 
-            zope.interface.alsoProvides(content, IMaterializedContent)
-            zope.interface.noLongerProvides(content, IVirtualContent)
-            zope.interface.alsoProvides(
-                content, zeit.cms.workingcopy.interfaces.ILocalContent)
-            zope.interface.noLongerProvides(
-                content, zeit.cms.repository.interfaces.IRepositoryContent)
+        zope.interface.alsoProvides(content, IMaterializedContent)
+        zope.interface.noLongerProvides(content, IVirtualContent)
+        zope.interface.alsoProvides(
+            content, zeit.cms.workingcopy.interfaces.ILocalContent)
+        zope.interface.noLongerProvides(
+            content, zeit.cms.repository.interfaces.IRepositoryContent)
 
-            new_properties = IWebDAVWriteProperties(content)
-            new_properties.update(repository_properties)
-            parent[key] = content
+        new_properties = IWebDAVWriteProperties(content)
+        new_properties.update(repository_properties)
+        parent[key] = content
 
-            log.info('Materialize {}'.format(content.uniqueId))
-            zeit.objectlog.interfaces.ILog(content).log(msg)
+        log.info('Materialize {}'.format(content.uniqueId))
+        zeit.objectlog.interfaces.ILog(content).log(msg)
 
     zeit.objectlog.interfaces.ILog(parent).log(msg)
 
