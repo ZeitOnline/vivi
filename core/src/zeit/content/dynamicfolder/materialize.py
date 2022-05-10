@@ -1,5 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IRepositoryContent
 from zeit.connector.interfaces import IWebDAVReadProperties
 from zeit.connector.interfaces import IWebDAVWriteProperties
 from zeit.content.dynamicfolder.interfaces import IMaterializedContent
@@ -8,7 +9,6 @@ import logging
 import transaction
 import zeit.cms.celery
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.content.dynamicfolder.interfaces
@@ -64,9 +64,8 @@ def materialize_content(unique_id):
 
         zope.interface.alsoProvides(content, IMaterializedContent)
         zope.interface.noLongerProvides(content, IVirtualContent)
-        zope.interface.noLongerProvides(
-            content, zeit.cms.repository.interfaces.IRepositoryContent)
 
+        zope.interface.noLongerProvides(content, IRepositoryContent)
         new_properties = IWebDAVWriteProperties(content)
         new_properties.update(repository_properties)
         parent[key] = content
