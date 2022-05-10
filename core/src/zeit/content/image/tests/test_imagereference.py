@@ -105,8 +105,11 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
                 updater.update(content.xml, suppress_errors=True)
 
     def test_colorpicker_should_generate_proper_xml(self):
+        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         content = self.repository['testcontent']
-        zeit.content.image.interfaces.IImages(content).fill_color = 'F00F00'
+        img = zeit.content.image.interfaces.IImages(content)
+        img.image = image
+        img.fill_color = 'F00F00'
         assert len(content.xml.xpath(
             '//head/image[@fill_color="F00F00"]')) == 1
 

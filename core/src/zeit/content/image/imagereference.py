@@ -16,12 +16,31 @@ import zope.interface
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class ImagesAdapter(zeit.cms.related.related.RelatedBase):
 
-    image = zeit.cms.content.reference.SingleResource(
-        '.head.image', 'image', dav_namespace=DOCUMENT_SCHEMA_NS)
+    _image = zeit.cms.content.reference.SingleReferenceProperty(
+        '.head.image', 'image', dav_namespace=DOCUMENT_SCHEMA_NS,
+        dav_name='image')
 
-    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.head.image', 'fill_color',
-        zeit.content.image.interfaces.IImages['fill_color'])
+    @property
+    def image(self):
+        ref = self._image
+        return ref.target if ref else None
+
+    @image.setter
+    def image(self, value):
+        if value is not None:
+            value = self._image.create(value)
+        self._image = value
+
+    @property
+    def fill_color(self):
+        ref = self._image
+        return ref.fill_color if ref else None
+
+    @fill_color.setter
+    def fill_color(self, value):
+        ref = self._image
+        if ref:
+            ref.fill_color = value
 
 
 @grok.implementer(zeit.content.image.interfaces.IImageReference)
@@ -29,6 +48,10 @@ class ImageReference(zeit.cms.content.reference.Reference):
 
     grok.name('image')
     grok.provides(zeit.cms.content.interfaces.IReference)
+
+    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'fill_color',
+        zeit.content.image.interfaces.IImages['fill_color'])
 
     # XXX The *_original XML paths must be kept in sync with
     # z.c.image.metadata.XMLReferenceUpdater
@@ -132,7 +155,7 @@ def update_image_reference_on_checkin(context, event):
     __traceback_info__ = (context.uniqueId,)
     images = zeit.content.image.interfaces.IImages(context, None)
     if isinstance(images, ImagesAdapter):
-        ImagesAdapter.image.update_metadata(images)
+        ImagesAdapter._image.update_metadata(images)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

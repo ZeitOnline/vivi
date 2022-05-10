@@ -421,21 +421,6 @@ class IThumbnails(zope.container.interfaces.IReadContainer):
     source_image = zope.schema.Choice(source=bareImageSource)
 
 
-class IImages(zope.interface.Interface):
-    """An object which references images."""
-
-    image = zope.schema.Choice(
-        title=_('Image group'),
-        description=_("Drag an image group here"),
-        required=False,
-        source=imageGroupSource)
-
-    fill_color = zope.schema.TextLine(
-        title=_("Alpha channel fill color"),
-        required=False,
-        max_length=6, constraint=zeit.cms.content.interfaces.hex_literal)
-
-
 class IReferences(zope.interface.Interface):
 
     references = zope.schema.Tuple(
@@ -453,6 +438,24 @@ class IImageReference(zeit.cms.content.interfaces.IReference,
                       IImageMetadata):
     """Reference to an image, allows overriding metadata locally for the
     referring content object."""
+
+    fill_color = zope.schema.TextLine(
+        title=_("Alpha channel fill color"),
+        required=False,
+        max_length=6, constraint=zeit.cms.content.interfaces.hex_literal)
+
+
+class IImages(zope.interface.Interface):
+    """An object which references images."""
+
+    image = zope.schema.Choice(
+        title=_('Image group'),
+        description=_("Drag an image group here"),
+        required=False,
+        source=imageGroupSource)
+
+    # XXX We should use a ReferenceField instead of Choice
+    fill_color = IImageReference['fill_color'].bind(object())
 
 
 class IMDB(zope.interface.Interface):

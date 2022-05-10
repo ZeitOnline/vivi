@@ -18,6 +18,7 @@ import zeit.cms.related.related
 import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
+import zeit.content.image.imagereference
 import zeit.find.interfaces
 import zeit.workflow.dependency
 import zope.interface
@@ -126,14 +127,11 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 
 @zope.component.adapter(zeit.content.author.interfaces.IAuthor)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
-class AuthorImages(zeit.cms.related.related.RelatedBase):
+class AuthorImages(zeit.content.image.imagereference.ImagesAdapter):
 
-    image = zeit.cms.content.reference.SingleResource(
-        '.image_group', 'image', dav_namespace=DOCUMENT_SCHEMA_NS)
-
-    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.image_group', 'fill_color',
-        zeit.content.image.interfaces.IImages['fill_color'])
+    _image = zeit.cms.content.reference.SingleReferenceProperty(
+        '.image_group', 'image',
+        dav_namespace=DOCUMENT_SCHEMA_NS, dav_name='image')
 
 
 @grok.subscribe(

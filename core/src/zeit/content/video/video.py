@@ -11,6 +11,7 @@ import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.related.related
 import zeit.cms.type
+import zeit.content.image.imagereference
 import zeit.content.video.interfaces
 import zeit.push.interfaces
 import zeit.workflow.dependency
@@ -114,14 +115,11 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 
 @zope.component.adapter(zeit.content.video.interfaces.IVideo)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
-class VideoImage(zeit.cms.related.related.RelatedBase):
+class VideoImage(zeit.content.image.imagereference.ImagesAdapter):
 
-    image = zeit.cms.content.reference.SingleResource(
-        '.body.video_still', 'image', dav_namespace=DOCUMENT_SCHEMA_NS)
-
-    fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.body.video_still', 'fill_color',
-        zeit.content.image.interfaces.IImages['fill_color'])
+    _image = zeit.cms.content.reference.SingleReferenceProperty(
+        '.body.video_still', 'image',
+        dav_namespace=DOCUMENT_SCHEMA_NS, dav_name='image')
 
 
 @zope.interface.implementer(zeit.content.video.interfaces.IVideoRendition)

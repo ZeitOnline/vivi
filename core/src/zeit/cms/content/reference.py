@@ -35,7 +35,8 @@ class ReferenceProperty:
     are stored as XML nodes.
     """
 
-    def __init__(self, path, xml_reference_name, dav_namespace=None):
+    def __init__(self, path, xml_reference_name,
+                 dav_namespace=None, dav_name=None):
         """
         :param str path: an lxml ObjectPath where to store the XML nodes
         :param unicode xml_reference_name: type of IXMLReference to use
@@ -51,6 +52,7 @@ class ReferenceProperty:
         self.path = lxml.objectify.ObjectPath(path)
         self.xml_reference_name = xml_reference_name
         self.dav_namespace = dav_namespace
+        self.dav_name = dav_name
 
     def __get__(self, instance, class_):
         """Returns a specialized tuple of IReference objects.
@@ -129,7 +131,8 @@ class ReferenceProperty:
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         if config.get('teaserdata-in-properties') and self.dav_namespace:
             props = zeit.connector.interfaces.IWebDAVProperties(instance)
-            key = (self.__name__(instance), self.dav_namespace)
+            key = (self.dav_name or self.__name__(instance),
+                   self.dav_namespace)
             xml = lxml.builder.E.val()
             self.path.setattr(xml, value)
             props[key] = lxml.etree.tostring(xml, encoding=str)
@@ -160,7 +163,8 @@ class ReferenceProperty:
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         if config.get('teaserdata-in-properties') and self.dav_namespace:
             props = zeit.connector.interfaces.IWebDAVProperties(instance)
-            key = (self.__name__(instance), self.dav_namespace)
+            key = (self.dav_name or self.__name__(instance),
+                   self.dav_namespace)
             xml = props.get(key, '<val/>')
             return lxml.objectify.fromstring(xml)
         else:
