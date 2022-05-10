@@ -35,15 +35,11 @@ def materialize_content(unique_id):
     log.info('Materialize {}'.format(unique_id))
     msg = _('Materialized')
     parent = zeit.cms.interfaces.ICMSContent(unique_id)
-    virtual_content_keys = [key for key in parent.keys() if key not in [
-        parent.config_file.__name__,
-        parent.content_template_file.__name__
-    ]]
 
     regenerate = []
     materialize = []
 
-    for key in virtual_content_keys:
+    for key in parent.keys():
         content = parent[key]
 
         if IMaterializedContent.providedBy(content):
