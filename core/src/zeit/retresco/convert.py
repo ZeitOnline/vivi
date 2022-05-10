@@ -126,6 +126,11 @@ class CMSContent(Converter):
         ('document', 'is_instant_article'),
         ('document', 'minimal_header'),
         ('document', 'rebrush_website_content'),
+        ('document', 'storystreams'),
+        ('document', 'tldr_date'),
+        ('document', 'tldr_milestone'),
+        ('document', 'tldr_text'),
+        ('document', 'tldr_title'),
     }
 
     def collect_dav_properties(self):
