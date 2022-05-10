@@ -60,7 +60,6 @@ def materialize_content(unique_id):
         del parent[key]
         transaction.commit()
 
-    parent = zeit.cms.interfaces.ICMSContent(unique_id)
     for key in materialize:
         content = copy.copy(zope.security.proxy.getObject(parent[key]))
         repository_properties = IWebDAVReadProperties(parent[key])
