@@ -110,15 +110,6 @@ INTERNAL namespace are *not* mapped:
 <testtype...>
   <head>
     <attribute ns="under-the-hood" name="am-i">4711</attribute>
-    <attribute
-        ns="http://namespaces.zeit.de/CMS/document"
-        name="date-last-modified">...-...-...T...+00:00</attribute>
-    <attribute
-        ns="http://namespaces.zeit.de/CMS/document"
-        name="last_modified_by">zope.user</attribute>
-    <attribute
-        ns="http://namespaces.zeit.de/CMS/meta"
-        name="type">testcontenttype</attribute>
     ...
   </head>
   <body/>

@@ -21,8 +21,8 @@ class Materialize(zeit.cms.browser.view.Base):
         return super().__call__()
 
     def materialize(self):
-        zeit.content.dynamicfolder.materialize.materialize_content.delay(
-            self.context.uniqueId)
+        zeit.content.dynamicfolder.materialize.materialize_content(
+            self.context)
         next_url = self.url(self.context, '@@view.html')
         return'<span class="nextURL">%s</span>' % next_url
 
