@@ -7,6 +7,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.interfaces
+import zeit.content.link.interfaces
 import zeit.content.video.interfaces
 import zope.component
 
@@ -90,6 +91,12 @@ class CommonMetadata(Converter):
 class Author(CommonMetadata):
 
     interface = zeit.content.author.interfaces.IAuthor
+    grok.name(interface.__name__)
+
+
+class Link(CommonMetadata):
+
+    interface = zeit.content.link.interfaces.ILink
     grok.name(interface.__name__)
 
 

@@ -1,4 +1,7 @@
+from zeit.cms.content.dav import DAVProperty
+from zeit.cms.content.property import ObjectPathProperty, SwitchableProperty
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.link.interfaces import ILink
 import grokcore.component as grok
 import zeit.cms.content.metadata
 import zeit.cms.content.property
@@ -11,6 +14,9 @@ import zope.component
 import zope.interface
 
 
+NS = 'http://namespaces.zeit.de/CMS/link'
+
+
 @zope.interface.implementer(
     zeit.content.link.interfaces.ILink,
     zeit.cms.interfaces.IEditorialContent)
@@ -21,12 +27,19 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
         '<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
         '<head/><body/></link>')
 
-    url = zeit.cms.content.property.ObjectPathProperty('.body.url')
-    target = zeit.cms.content.property.ObjectPathProperty('.body.target')
-    nofollow = zeit.cms.content.property.ObjectPathProperty('.body.nofollow')
-    status_code = zeit.cms.content.property.ObjectPathProperty(
-        '.body.status', zeit.content.link.interfaces.ILink['status_code'],
-        use_default=True)
+    url = SwitchableProperty(
+        DAVProperty(ILink['url'], NS, 'url'),
+        ObjectPathProperty('.body.url'))
+    target = SwitchableProperty(
+        DAVProperty(ILink['target'], NS, 'target'),
+        ObjectPathProperty('.body.target'))
+    nofollow = SwitchableProperty(
+        DAVProperty(ILink['nofollow'], NS, 'nofollow'),
+        ObjectPathProperty('.body.nofollow'))
+    status_code = SwitchableProperty(
+        DAVProperty(ILink['status_code'], NS, 'status_code'),
+        ObjectPathProperty(
+            '.body.status', ILink['status_code'], use_default=True))
 
     @property
     def blog(self):
