@@ -17,6 +17,7 @@ import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
 import zeit.content.link.link
 import zeit.content.video.video
+import zeit.content.volume.volume
 import zeit.retresco.interfaces
 
 
@@ -81,13 +82,6 @@ class Content:
             # See zeit.content.audio.interfaces.IAudioReferences
             head.append(E.audio(href=id))
 
-        if 'covers' in self._tms_payload_head:
-            # See zeit.content.volume.volume.Volume.set_cover
-            covers = E.covers()
-            self.xml.append(covers)
-            for cover in self._tms_payload_head['covers']:
-                covers.append(E.cover(**cover))
-
     def _build_xml_image(self):
         """Teaser images are usually contained in the document head and
         reference an image group.
@@ -143,6 +137,19 @@ class TMSVideo(Content, zeit.content.video.video.Video):
             return
         image.tag = 'video_still'
         self.xml.find('body').append(image)
+
+
+class TMSVolume(Content, zeit.content.volume.volume.Volume):
+    def _build_xml_head(self):
+        super()._build_xml_head()
+        if 'covers' not in self._tms_payload_head:
+            return
+        # See zeit.content.volume.volume.Volume.set_cover
+        E = lxml.objectify.E
+        covers = E.covers()
+        self.xml.append(covers)
+        for cover in self._tms_payload_head['covers']:
+            covers.append(E.cover(**cover))
 
 
 @grok.implementer(zeit.cms.content.interfaces.IKPI)
