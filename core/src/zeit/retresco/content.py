@@ -1,3 +1,5 @@
+from zeit.cms.content.metadata import CommonMetadata
+from zeit.cms.content.property import SwitchableProperty
 from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
 import collections.abc
 import grokcore.component as grok
@@ -29,6 +31,9 @@ class Content:
         if 'url' in data:
             self.uniqueId = zeit.cms.interfaces.ID_NAMESPACE + data['url'][1:]
             self.__name__ = os.path.basename(self.uniqueId)
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms') or {}
+        self._teaserdata_in_properties = config.get('teaserdata-in-properties')
         self._build_xml_body()
         self._build_xml_head()
         self._build_xml_image()
@@ -36,15 +41,51 @@ class Content:
     def _build_xml_body(self):
         E = lxml.objectify.E
         self.xml = E.content()
-        for key, value in self._tms_payload.get('xml', {}).items():
-            self.xml.append(getattr(E, key)(value))
         for container in ['body', 'teaser']:
             if container not in self._tms_payload:
                 continue
             container = getattr(E, container)()
             self.xml.append(container)
-            for key, value in self._tms_payload[container.tag].items():
-                container.append(getattr(E, key)(value))
+        for key, value in self._tms_payload.get('xml', {}).items():
+            self.xml.append(getattr(E, key)(value))
+
+        if self._teaserdata_in_properties:
+            for section, mapping in (
+                    zeit.retresco.convert.CommonMetadata.payload.items()):
+                section = self._tms_payload.get(section, {})
+                for tms, vivi in mapping.items():
+                    attr = getattr(CommonMetadata, vivi, None)
+                    if not isinstance(attr, SwitchableProperty):
+                        continue
+                    value = section.get(tms)
+                    # We know these are all strings, so no type conversion is
+                    # needed except None, for which see DAVProperty.__set__
+                    if value is None:
+                        continue
+                    ns, name = davproperty_to_es(
+                        attr.meta.namespace, attr.meta.name)
+                    self._tms_payload.setdefault(ns, {}).setdefault(
+                        name, value)
+        else:
+            for container in ['body', 'teaser']:
+                if container not in self._tms_payload:
+                    continue
+                container = getattr(self.xml, container)
+                for key, value in self._tms_payload[container.tag].items():
+                    container.append(getattr(E, key)(value))
+
+    _head_references = {
+        'authors': {
+            'tag': 'author',
+            'ns': CommonMetadata.authorships.dav_namespace,
+            'name': 'authorships'
+        },
+        'agencies': {
+            'tag': 'agency',
+            'ns': CommonMetadata.agencies.dav_namespace,
+            'name': 'agencies'
+        },
+    }
 
     def _build_xml_head(self):
         """head items must be handled explicitly, because of their structure
@@ -58,16 +99,23 @@ class Content:
             return
 
         E = lxml.objectify.E
-        head = E.head()
-        self.xml.append(head)
 
-        for id in self._tms_payload_head.get('authors', ()):
-            # See zeit.content.author.reference.XMLReference
-            head.append(E.author(href=id))
-
-        for id in self._tms_payload_head.get('agencies', ()):
-            # See zeit.cms.content.metadata.CommonMetadata.agencies
-            head.append(E.agency(href=id))
+        if self._teaserdata_in_properties:
+            for key, config in self._head_references.items():
+                data = self._tms_payload_head.get(key)
+                if data:
+                    xml = E.val(E.head())
+                    for id in data:
+                        xml.head.append(getattr(E, config['tag'])(href=id))
+                    ns, name = davproperty_to_es(config['ns'], config['name'])
+                    self._tms_payload.setdefault(ns, {}).setdefault(
+                        name, lxml.etree.tostring(xml, encoding=str))
+        else:
+            head = E.head()
+            self.xml.append(head)
+            for key, config in self._head_references.items():
+                for id in self._tms_payload_head.get(key, ()):
+                    head.append(getattr(E, config['tag'])(href=id))
 
     def _build_xml_image(self):
         """Teaser images are usually contained in the document head and
@@ -76,9 +124,15 @@ class Content:
         We allow ITMSContent factories to override this default behaviour.
         """
         image = self._get_teaser_image_xml()
-        head = self.xml.find('head')
-        if head is not None and image is not None:
-            head.append(image)
+        if image is None:
+            return
+        if self._teaserdata_in_properties:
+            E = lxml.objectify.E
+            xml = E.val(E.head(image))
+            document = self._tms_payload.setdefault('document', {})
+            document['image'] = lxml.etree.tostring(xml, encoding=str)
+        else:
+            self.xml.head.append(image)
 
     def _get_teaser_image_xml(self):
         image = self._tms_payload_head.get('teaser_image')
@@ -102,7 +156,13 @@ class TMSAuthor(Content, zeit.content.author.author.Author):
         if image is None:
             return
         image.tag = 'image_group'
-        self.xml.append(image)
+        if self._teaserdata_in_properties:
+            E = lxml.objectify.E
+            xml = E.val(image)
+            document = self._tms_payload.setdefault('document', {})
+            document['image'] = lxml.etree.tostring(xml, encoding=str)
+        else:
+            self.xml.append(image)
 
 
 class TMSLink(Content, zeit.content.link.link.Link):
@@ -126,7 +186,13 @@ class TMSVideo(Content, zeit.content.video.video.Video):
         if image is None:
             return
         image.tag = 'video_still'
-        self.xml.body.append(image)
+        if self._teaserdata_in_properties:
+            E = lxml.objectify.E
+            xml = E.val(E.body(image))
+            document = self._tms_payload.setdefault('document', {})
+            document['image'] = lxml.etree.tostring(xml, encoding=str)
+        else:
+            self.xml.body.append(image)
 
 
 class TMSVolume(Content, zeit.content.volume.volume.Volume):

@@ -206,3 +206,38 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(1, kpi.visits)
         self.assertEqual(2, kpi.comments)
         self.assertEqual(3, kpi.subscriptions)
+
+    def test_can_access_data_in_properties_as_well_as_body(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        author = zeit.content.author.author.Author()
+        author.firstname = 'William'
+        author.lastname = 'Shakespeare'
+        self.repository['shake'] = author
+        with checked_out(article) as co:
+            co.keywords = (zeit.cms.tagging.tag.Tag('Berlin', 'location'),)
+            co.authorships = (co.authorships.create(self.repository['shake']),)
+            co.byline = None  # deprecated, will be removed soon anyway
+            co.agencies = (self.repository['shake'],)
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+
+        # Have to store expected values now, since after we flip the setting,
+        # they are not accessible anymore.
+        exclude = [
+            'xml', 'main_image', 'main_image_variant_name', 'paragraphs']
+        expected = {}
+        for name in zope.schema.getFieldNames(IArticle):
+            if name in exclude:
+                continue
+            expected[name] = getattr(article, name)
+
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        config['teaserdata-in-properties'] = 'True'
+        content = zeit.retresco.interfaces.ITMSContent(data)
+
+        self.assertIsInstance(content, zeit.content.article.article.Article)
+        self.assertTrue(IArticle.providedBy(content))
+        for name, value in expected.items():
+            self.assertEqual(value, getattr(content, name), name)

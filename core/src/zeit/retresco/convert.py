@@ -193,6 +193,20 @@ class CommonMetadata(Converter):
     }
     entity_types.update({x: x for x in zeit.retresco.interfaces.ENTITY_TYPES})
 
+    payload = {
+        'body': {
+            'supertitle': 'supertitle',
+            'title': 'title',
+            'subtitle': 'subtitle',
+            'byline': 'byline',
+        },
+        'teaser': {
+            'supertitle': 'teaserSupertitle',
+            'title': 'teaserTitle',
+            'text': 'teaserText',
+        }
+    }
+
     def __call__(self):
         section = None
         if self.context.ressort:
@@ -222,17 +236,10 @@ class CommonMetadata(Converter):
             'authors': [x.target.uniqueId for x in self.context.authorships],
             'agencies': [x.uniqueId for x in self.context.agencies],
         }
-        result['payload']['body'] = {
-            'supertitle': self.context.supertitle,
-            'title': self.context.title,
-            'subtitle': self.context.subtitle,
-            'byline': self.context.byline,
-        }
-        result['payload']['teaser'] = {
-            'supertitle': self.context.teaserSupertitle,
-            'title': self.context.teaserTitle,
-            'text': self.context.teaserText,
-        }
+        for section, mapping in self.payload.items():
+            result['payload'][section] = {}
+            for tms, vivi in mapping.items():
+                result['payload'][section][tms] = getattr(self.context, vivi)
         return result
 
 
