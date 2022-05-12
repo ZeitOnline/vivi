@@ -5,7 +5,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
 <!-- CMS/workflow -->
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="supertitle">Spitzmarke hierher</attribute>
     <countings>
       <counting type="agof">
         <code>online</code>

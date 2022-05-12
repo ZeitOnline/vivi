@@ -97,7 +97,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'revision': '11',
                     'serie': '-',
                     'show_commentthread': False,
-                    'supertitle': 'Spitzmarke hierher',
                     'template': 'article',
                     'text-length': 1036,
                     'title': 'R\xfcckkehr der Warlords',

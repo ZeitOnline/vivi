@@ -6,7 +6,6 @@
             <!-- die eineindeutige ID des Dokuments -->
             <uniqueid>cms:/cms/work/index</uniqueid>
         </id>
-        <attribute name="supertitle" ns="http://namespaces.zeit.de/CMS/document">News Channel</attribute>
         <!-- Dachzeile/Spitzmarke -->
         <!-- ggF. mehrere -->
         <!-- Schlagworte -->
