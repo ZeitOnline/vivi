@@ -4,7 +4,6 @@
 <!-- CMS/document -->
     <attribute name="text-length" ns="http://namespaces.zeit.de/CMS/document">1036</attribute>
 <!-- CMS/workflow -->
-    <attribute name="supertitle" ns="http://namespaces.zeit.de/CMS/document">Spitzmarke hierher</attribute>
     <countings>
       <counting type="agof">
         <code>allg_wiss</code>
