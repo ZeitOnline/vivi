@@ -177,6 +177,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertIsInstance(content, zeit.content.volume.volume.Volume)
         self.compare(
             zeit.content.volume.interfaces.IVolume, volume, content, ['xml'])
+        self.assertEqual(self.repository['testcontent'],
+                         content.get_cover('portrait', 'ZEI'))
 
     def test_blogpost_is_treated_as_link(self):
         link = zeit.content.link.link.Link()
