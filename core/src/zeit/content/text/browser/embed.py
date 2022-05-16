@@ -2,6 +2,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cmp.interfaces
 import zeit.cms.browser.form
+import zeit.cms.checkout.browser.manager
 import zeit.content.text.embed
 import zeit.content.text.interfaces
 import zope.browsermenu.menu
@@ -42,6 +43,16 @@ class AddMenuItem(zope.browsermenu.menu.BrowserMenuItem):
     def permission(self, value):
         if not self._permission:
             self._permission = value
+
+
+class CheckoutMenuItem(zeit.cms.checkout.browser.manager.CheckoutMenuItem):
+
+    def is_visible(self):
+        if FEATURE_TOGGLES.find('add_content_permissions'):
+            if not self.request.interaction.checkPermission(
+                    'zeit.content.text.EditEmbed', self.context):
+                return False
+        return super().is_visible()
 
 
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
