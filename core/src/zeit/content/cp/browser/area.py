@@ -243,3 +243,9 @@ class SchematicPreview:
         if area == self.context:
             classes.append('active')
         return ' '.join(classes)
+
+
+class Fold(zeit.cms.browser.view.Base):
+
+    def title(self):
+        return ''  # Already covered by layout.element.title.pt

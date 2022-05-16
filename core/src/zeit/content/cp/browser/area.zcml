@@ -295,6 +295,26 @@
       permission="zeit.content.cp.EditArea"
       weight="1000"
       />
+
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.IElement"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IEditBarViewletManager"
+      name="fold"
+      template="layout.fold.pt"
+      class="zeit.content.cp.browser.area.Fold"
+      permission="zeit.EditContent"
+      weight="-10"
+      />
+
   </configure>
+
+  <class class="..area.Region">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+  <class class="..area.Area">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
 
 </configure>
