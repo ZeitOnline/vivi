@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-
 from collections import OrderedDict, defaultdict
 from io import StringIO
 from zeit.cms.browser.interfaces import IPreviewURL
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import csv
 import os.path
@@ -51,9 +51,17 @@ class Toc(zeit.cms.browser.view.Base):
     MEDIASYNC_ID = ('mediasync_id', 'http://namespaces.zeit.de/CMS/interred')
 
     def _get_ir_content(self):
+        if FEATURE_TOGGLES.find('volume_toc_products_from_config'):
+            config = zope.app.appsetup.product.getProductConfiguration(
+                'zeit.content.volume')
+            products = [PRODUCTS.find(x.strip()) for x
+                        in config.get('toc-product-ids', '').split(' ')]
+        else:
+            products = [
+                self.context.product] + self.context.product.dependent_products
+
         results = {}
-        for product in self.product_ids:
-            product = PRODUCTS.find(product)
+        for product in products:
             if not product or not product.location:
                 continue
             result_for_product = defaultdict(list)

@@ -9,7 +9,6 @@ import zeit.content.image.testing
 product_config = """
 <product-config zeit.content.volume>
     volume-cover-source file://{here}/tests/fixtures/volume-covers.xml
-    toc-product-ids ZEI BAD
     default-teaser-text Teäser {{name}}/{{year}}
     access-control-config file://{here}/tests/fixtures/access-control.xml
     access-control-webtrekk-url https://webtrekkapi.foo
