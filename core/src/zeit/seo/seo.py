@@ -1,7 +1,5 @@
-"""Search engine optimisation."""
-
+from zeit.retresco.interfaces import ISkipEnrich
 import grokcore.component as grok
-
 import zeit.connector.interfaces
 import zeit.cms.interfaces
 import zeit.cms.content.dav
@@ -43,3 +41,7 @@ class SEO(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __init__(self, context):
         self.context = context
+
+    @property  # Write is handled by .browser.form.SEOEdit
+    def disable_enrich(self):
+        return ISkipEnrich.providedBy(self.context)

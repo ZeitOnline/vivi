@@ -48,6 +48,10 @@ class ISEO(zope.interface.Interface):
         title=_('Disable intext links'),
         required=False)
 
+    disable_enrich = zope.schema.Bool(
+        title=_('Disable enrich'),
+        required=False)
+
     keyword_entity_type = zope.schema.Choice(
         title=_('Keyword entity type'),
         source=EntityTypeSource(),

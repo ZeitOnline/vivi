@@ -34,6 +34,7 @@ Fill out the form:
 >>> browser.getControl('Meta cook robots').value = 'noindex'
 >>> browser.getControl('Keyword entity type').displayValue = ['free']
 >>> browser.getControl('Disable intext links').click()
+>>> browser.getControl('Disable enrich').click()
 >>> browser.getControl('Apply').click()
 
 Verify the source:
@@ -56,6 +57,11 @@ Verify the source:
   <body/>
 </testtype>
 <BLANKLINE>
+
+>>> content = getRootFolder()['workingcopy']['zope.user']['testcontent']
+>>> import zeit.retresco.interfaces
+>>> zeit.retresco.interfaces.ISkipEnrich.providedBy(content)
+True
 
 
 Go back to the SEO tab and check in. We're still at the SEO view then:
