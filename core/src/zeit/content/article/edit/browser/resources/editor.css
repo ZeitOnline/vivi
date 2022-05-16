@@ -230,14 +230,6 @@
   margin-bottom: 0;
 }
 
-.type-article .cp-content-inner .block-inner .fold-link {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2605px;
-}
-
-.type-article .cp-content-inner .block-inner .folded .fold-link {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2635px;
-}
-
 /* Article content main image */
 .type-article #edit-form-article-content .inline-form.wired .fieldname-main_image {
   width: auto;
