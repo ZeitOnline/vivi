@@ -271,22 +271,6 @@ def automatic_area_can_read_teasers_automatically(data):
     return False
 
 
-class AreaColorThemesSource(zeit.cms.content.sources.XMLSource):
-
-    attribute = 'name'
-    config_url = 'area-color-themes-source'
-    default_filename = 'area-color-themes.xml'
-    product_configuration = 'zeit.content.cp'
-    title_xpath = '/color-themes/theme'
-
-    def isAvailable(self, node, context):
-        cp = zeit.content.cp.interfaces.ICenterPage(context, None)
-        return super().isAvailable(node, cp)
-
-
-AREA_COLOR_THEMES_SOURCE = AreaColorThemesSource()
-
-
 class IReadArea(
         zeit.edit.interfaces.IReadContainer,
         ITopicLinks,
@@ -370,11 +354,6 @@ class IReadArea(
         title=_('Automatic type'),
         source=AutomaticTypeSource(),
         required=True)
-
-    area_color_theme = zope.schema.Choice(
-        title=_("Area color theme (ze.tt only)"),
-        source=AREA_COLOR_THEMES_SOURCE,
-        required=False)
 
     background_color = zope.schema.TextLine(
         title=_('Area background color (6 characters, no #)'),
