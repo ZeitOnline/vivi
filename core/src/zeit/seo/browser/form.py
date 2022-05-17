@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.retresco.interfaces import ISkipEnrich
 import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
@@ -28,6 +29,17 @@ class SEOBaseForm:
 class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
 
     title = _('Edit SEO data')
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        if 'disable_enrich' in data:
+            value = data.pop('disable_enrich')
+            content = zope.security.proxy.getObject(self.context)
+            if value:
+                zope.interface.alsoProvides(content, ISkipEnrich)
+            else:
+                zope.interface.noLongerProvides(content, ISkipEnrich)
+        return super().handle_edit_action.success(data)
 
 
 class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):

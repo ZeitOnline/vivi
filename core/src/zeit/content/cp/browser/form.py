@@ -83,7 +83,9 @@ class SEOCpForm:
         zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ICpSEO).select(
                 'enable_rss_tracking_parameter')
-    )
+        # ICenterPage statically provides ISkipEnrich,
+        # so there's no point in adding it to individual objects.
+    ).omit('disable_enrich')
 
 
 class SEOView(SEOCpForm, zeit.seo.browser.form.SEODisplay):
