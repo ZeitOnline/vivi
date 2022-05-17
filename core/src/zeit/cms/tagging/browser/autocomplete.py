@@ -20,7 +20,7 @@ class WhitelistSearch(zeit.cms.browser.view.JSON):
             results = self.whitelist.search(term)
         else:
             results = []
-        return [dict(label=result.label, value=result.uniqueId)
+        return [dict(label=result.title, value=result.uniqueId)
                 for result in results]
 
 

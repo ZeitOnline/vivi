@@ -96,6 +96,10 @@ class Tag:
             zeit.cms.tagging.interfaces.ID_NAMESPACE,
             self.code.encode('unicode_escape').decode('ascii')))
 
+    @property
+    def title(self):
+        return '%s (%s)' % (self.label, self.entity_type.title())
+
     def __repr__(self):
         return '<%s.%s %s>' % (
             self.__class__.__module__, self.__class__.__name__, self.uniqueId)
