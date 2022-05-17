@@ -137,7 +137,7 @@ class NewsletterSource(zeit.cms.content.sources.ObjectSource,
 
     def child(self, node, name):
         child = node.find(name)
-        if child is None:
+        if child is None or not child.text:
             return None
         return child.text.strip()
 
