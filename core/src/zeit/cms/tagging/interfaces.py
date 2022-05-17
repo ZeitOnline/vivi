@@ -61,6 +61,9 @@ class ITag(zeit.cms.interfaces.ICMSContent):
     url_value = zope.schema.ASCIILine(
         title='Label encoded/normalized for use in an URL.')
 
+    title = zope.schema.TextLine(
+        title='Title for display in UI')
+
 
 class IWhitelist(zope.interface.Interface):
     """The whitelist contains all selectable tags providing `ITag`."""

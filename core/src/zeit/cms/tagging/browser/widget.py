@@ -63,7 +63,7 @@ class Widget(grok.MultiAdapter,
         # now I opt for a quick solution to a fair mess of failing tests.
         return json.dumps([{
             'code': x.uniqueId,
-            'label': x.label,
+            'label': x.title,
             'pinned': x.pinned} for x in value or ()])
 
     def _toFieldValue(self, value):
@@ -103,7 +103,7 @@ class UpdateTags(zeit.cms.browser.view.JSON):
         zope.lifecycleevent.modified(self.context)
         return dict(tags=[
             dict(code=tag.uniqueId,
-                 label=tag.label,
+                 label=tag.title,
                  pinned=tag.pinned)
             for tag in tagger.values()])
 

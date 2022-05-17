@@ -63,7 +63,7 @@ class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase,
         b.open('@@update_tags')
         self.assertEqual([{
             'code': 'tag://test\\u2603B\\xe4rlin',
-            'label': 'Bärlin',
+            'label': 'Bärlin (Test)',
             'pinned': False,
         }], json.loads(b.contents)['tags'])
 
@@ -194,7 +194,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
             '//li/a[@href="http://localhost/live-prefix/thema/t1"]', 1)
         self.assertEqual(
             'with-topic-page',
-            sel.selenium.find_element_by_link_text('t1').get_attribute(
+            sel.selenium.find_element_by_link_text('t1 (Test)').get_attribute(
                 'class'))
         sel.assertXpathCount(
             '//li/a[@href="http://localhost/live-prefix/thema/t2"]', 0)
