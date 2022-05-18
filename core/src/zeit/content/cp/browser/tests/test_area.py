@@ -5,7 +5,6 @@ import unittest
 import zeit.cms.testing
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
-import zope.testbrowser.browser
 
 
 class ElementTestHelper:
@@ -202,25 +201,6 @@ class AreaBrowserTest(
         b.getControl('Add Custom Query').click()  # Force a submit
         self.assertEqual(
             '', b.getControl(name='form.query.0..combination_02').value)
-
-    def test_area_color_themes_should_be_available_for_product(self):
-        b = self.browser
-        b.open(self.content_url)
-        # Open area settings (index=1)
-        b.getLink('Edit block common', index=1).click()
-
-        # Only values for the current product are provided, in addition to
-        # another element, which is just the empty default.
-        theme = b.getControl('Area color theme (ze.tt only)')
-        assert len(theme.options) == 2
-
-        # We basicalle just check, that the correct value can be set.
-        theme.displayValue = 'Sonnenuntergang'
-        assert theme.displayValue == ['Sonnenuntergang']
-
-        # Setting a value not available to our product will throw an error.
-        with self.assertRaises(zope.testbrowser.browser.ItemNotFoundError):
-            theme.displayValue = 'Beere'
 
     def test_area_bg_color_is_set(self):
         browser = self.browser
