@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.10 (2022-05-18)
+--------------------
+
+- ZO-38: Display entity type for tags in repository as well
+
+
 5.15.9 (2022-05-18)
 -------------------
 
