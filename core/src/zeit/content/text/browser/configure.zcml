@@ -124,13 +124,14 @@
     item_class=".embed.AddMenuItem"
     />
 
-  <browser:page
+  <browser:viewlet
+    name="Checkout"
     for="zeit.content.text.interfaces.IEmbed"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.html"
-    class=".embed.Edit"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit"
+    class=".embed.CheckoutMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.Checkout"
+    icon="/@@/zeit.cms/icons/checkout.png"
     />
 
   <browser:page
