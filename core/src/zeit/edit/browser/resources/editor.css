@@ -430,6 +430,16 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px -2541px;
 }
 
+.cp-content-inner .block-inner .fold-link {
+    background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2605px;
+    padding-right: 0.5em;
+}
+
+.cp-content-inner .folded .block-inner .fold-link,
+.type-article .cp-content-inner .block-inner .folded .fold-link {
+    background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2635px;
+}
+
 .cp-content-inner .folded > .block-inner > * {
   display: none;
 }
