@@ -100,11 +100,18 @@ class Link(CommonMetadata):
     grok.name(interface.__name__)
 
 
+class Animation(CommonMetadata):
+
+    interface = zeit.content.animation.interfaces.IAnimation
+    grok.name(interface.__name__)
+
+
 class References(Converter):
 
     interface = zeit.cms.content.interfaces.ICommonMetadata
     grok.name(interface.__name__ + '.references')
 
+    NAMESPACE = 'http://namespaces.zeit.de/CMS/document'
     PROPERTIES = {
         '//head/author': 'authorships',
         '//head/agency': 'agencies',
@@ -124,7 +131,7 @@ class References(Converter):
                 xpath.replace('//', '/').replace('/', '.'))
             path.setattr(value, refs)
             value = lxml.etree.tostring(value, encoding=str)
-            props[(name, 'http://namespaces.zeit.de/CMS/document')] = value
+            props[(name, self.NAMESPACE)] = value
 
             path.setattr(self.content.xml, ())
         return True
@@ -142,3 +149,15 @@ class VideoImage(References):
     interface = zeit.content.video.interfaces.IVideo
     grok.name(interface.__name__ + '.references')
     PROPERTIES = {'//video_still': 'image'}
+
+
+class AnimationReferences(References):
+
+    interface = zeit.content.animation.interfaces.IAnimation
+    grok.name(interface.__name__ + '.references')
+    NAMESPACE = 'http://namespaces.zeit.de/CMS/animation'
+    PROPERTIES = {
+        '//body/article': 'article',
+        '//body/image': 'images',
+        '//body/video': 'video',
+    }
