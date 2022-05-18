@@ -8,6 +8,7 @@ import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.retresco.testing
 import zeit.retresco.update
+import zeit.workflow.interfaces
 import zope.component
 import zope.event
 import zope.lifecycleevent
@@ -164,6 +165,23 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
             self.repository['testcontent']).moveTo(self.repository, 'changed')
         self.assertTrue(self.tms.index.called)
 
+    def test_changing_workflow_properties_in_repository_should_index(self):
+        content = self.repository['testcontent']
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        event = zeit.cms.content.interfaces.DAVPropertyChangedEvent(
+            workflow, 'ns', 'name', 'old', 'new',
+            zeit.workflow.interfaces.IContentWorkflow['urgent'])
+
+        zope.interface.alsoProvides(
+            content, zeit.cms.checkout.interfaces.ILocalContent)
+        zope.event.notify(event)
+        self.assertFalse(self.tms.index.called)
+
+        zope.interface.noLongerProvides(
+            content, zeit.cms.checkout.interfaces.ILocalContent)
+        zope.event.notify(event)
+        self.assertTrue(self.tms.index.called)
+
 
 class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
 
@@ -185,13 +203,14 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
         zeit.cms.workflow.interfaces.IPublish(content).publish(
             background=False)
-        self.assertEqual([True], published)
+        # 2 calls: set urgent, then publish
+        self.assertEqual([False, True], published)
 
         content = self.repository['2006']['DSC00109_2.JPG']
         zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
         zeit.cms.workflow.interfaces.IPublish(content).publish(
             background=False)
-        self.assertEqual([True, True], published)
+        self.assertEqual([False, True, True], published)
 
     def test_retract_should_index_with_published_false(self):
         published = []

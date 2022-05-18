@@ -17,6 +17,7 @@ import zeit.cms.workingcopy.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.transform
 import zeit.retresco.interfaces
+import zeit.workflow.interfaces
 import zope.component
 import zope.lifecycleevent
 
@@ -83,6 +84,18 @@ def unindex_on_remove(context, event):
             event.oldParent):
         return
     unindex_async.delay(zeit.cms.content.interfaces.IUUID(context).id)
+
+
+@grok.subscribe(
+    zeit.workflow.interfaces.IContentWorkflow,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def index_workflow_properties(context, event):
+    content = context.context
+    if zeit.cms.checkout.interfaces.ILocalContent.providedBy(content):
+        return
+    name = event.field.__name__
+    if name in zeit.workflow.interfaces.IContentWorkflow.names(all=False):
+        index_async.delay(content.uniqueId, enrich=False)
 
 
 @zeit.cms.celery.task(bind=True, queue='search')
