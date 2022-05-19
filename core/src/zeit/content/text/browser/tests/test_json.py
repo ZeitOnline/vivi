@@ -1,5 +1,3 @@
-import jsonschema.validators
-import mock
 import urllib.error
 
 import zeit.cms.testing
@@ -36,15 +34,6 @@ class JSONBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
 class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
 
-    schema_json = {'components': {
-        'schemas': {
-            'uuid': {
-                'type': 'string',
-                'pattern':
-                    "^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$"}
-        }
-    }}
-
     def test_validate_against_schema(self):
         self.repository['foo'] = zeit.content.text.json.JSON()
         browser = self.browser
@@ -55,18 +44,12 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
         browser.getControl('Apply').click()
         browser.getLink('Validate').click()
         browser.getControl('url of schema').value = (
-            'http://testschema.zeit.de/schema.yaml')
+            zeit.content.text.testing.schema_url)
         browser.getControl('specific schema to use for validation').value = (
             'uuid')
         browser.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', browser.contents)
-        with mock.patch(
-                'zeit.content.text.json.ValidationSchema._get') as schema:
-            schema.return_value = (
-                self.schema_json,
-                jsonschema.validators.RefResolver.from_schema(
-                    self.schema_json))
-            browser.getLink('Checkin').click()
+        browser.getLink('Checkin').click()
         self.assertEllipsis('...has been checked in...', browser.contents)
 
     def test_validation_error_results_in_checkin_error(self):
@@ -78,18 +61,12 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
         browser.getControl('Apply').click()
         browser.getLink('Validate').click()
         browser.getControl('url of schema').value = (
-            'http://testschema.zeit.de/schema.yaml')
+            zeit.content.text.testing.schema_url)
         browser.getControl('specific schema to use for validation').value = (
             'uuid')
         browser.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', browser.contents)
-        with mock.patch(
-                'zeit.content.text.json.ValidationSchema._get') as schema:
-            schema.return_value = (
-                self.schema_json,
-                jsonschema.validators.RefResolver.from_schema(
-                    self.schema_json))
-            with self.assertRaises(urllib.error.HTTPError):
-                browser.getLink('Checkin').click()
-                self.assertEllipsis(
-                    '...Failed validating...', browser.contents)
+        with self.assertRaises(urllib.error.HTTPError):
+            browser.getLink('Checkin').click()
+            self.assertEllipsis(
+                '...Failed validating...', browser.contents)
