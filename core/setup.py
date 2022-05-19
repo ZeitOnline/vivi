@@ -48,6 +48,7 @@ setup(
         'pyramid_dogpile_cache2',
         'pytz',
         'requests',
+        'requests_file',
         'setuptools',
         'sqlalchemy',
         'transaction',
