@@ -7,6 +7,7 @@ import jsonschema
 import logging
 import openapi_schema_validator
 import requests
+import requests_file
 import yaml
 import zope.schema
 
@@ -47,6 +48,13 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         ('schema_url', 'field_name')
     )
 
+    def request(self, method, url, **kw):
+        session = requests.sessions.Session()
+        session.mount('file://', requests_file.FileAdapter())
+        response = session.request(method=method, url=url, **kw)
+        session.close()
+        return response
+
     def _valid_field_name(self, schema):
         try:
             return schema['components']['schemas'][self.field_name]
@@ -60,7 +68,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             log.info('No schema url provided', exc_info=True)
             return
         try:
-            response = requests.get(self.schema_url)
+            response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)
             ref_resolver = jsonschema.validators.RefResolver.from_schema(
                 schema)
