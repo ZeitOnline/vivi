@@ -52,6 +52,18 @@
       />
   </class>
 
+
+  <class class=".json.ValidationSchema">
+  <require
+      interface=".interfaces.IValidationSchema"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IValidationSchema"
+      permission="zeit.EditContent" />
+  </class>
+
+
   <class class=".embed.Embed">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require

@@ -1,0 +1,9 @@
+components:
+  schemas:
+    overlord:
+      type: array
+      items:
+        "$ref": "#/components/schemas/uuid"
+    uuid:
+      pattern: "^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$"
+      type: string
