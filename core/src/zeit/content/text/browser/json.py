@@ -63,7 +63,7 @@ class JSONDisplayWidget(zope.formlib.widget.DisplayWidget):
             pygments.formatters.HtmlFormatter(cssclass='pygments'))
 
 
-class EditForm(zeit.cms.browser.form.EditForm):
+class Validate(zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.text.interfaces.IValidationSchema)

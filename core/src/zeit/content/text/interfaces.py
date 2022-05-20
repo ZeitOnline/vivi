@@ -100,11 +100,11 @@ class IJSON(IText):
 
 class IValidationSchema(zope.interface.Interface):
 
-    schema_url = zope.schema.Text(
+    schema_url = zope.schema.TextLine(
         title=_('url of schema'),
         required=False)
 
-    field_name = zope.schema.Text(
+    field_name = zope.schema.TextLine(
         title=_('specific schema to use for validation'),
         required=False)
 

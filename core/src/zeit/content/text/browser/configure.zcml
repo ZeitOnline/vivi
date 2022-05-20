@@ -95,7 +95,7 @@
     for="zeit.content.text.interfaces.IJSON"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="validate.html"
-    class=".json.EditForm"
+    class=".json.Validate"
     permission="zeit.EditContent"
     menu="zeit-context-views"
     title="Validate"
