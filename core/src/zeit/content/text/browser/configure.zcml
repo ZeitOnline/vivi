@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
   <browser:page
@@ -91,6 +92,25 @@
     menu="zeit-context-views" title="View"
     />
 
+  <browser:page
+    for="zeit.content.text.interfaces.IJSON"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="validate.html"
+    class=".json.Validate"
+    permission="zeit.EditContent"
+    menu="zeit-context-views"
+    title="Validate"
+    />
+
+  <gocept:pagelet
+    for="zeit.content.text.interfaces.SchemaValidationError"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    class=".json.ValidationError"
+    template="validation-error.pt"
+    permission="zope.Public"
+    />
+
   <adapter
     for="zeit.content.text.interfaces.JSON
     zeit.cms.browser.interfaces.ICMSLayer"
@@ -98,6 +118,7 @@
     factory=".json.JSONInputWidget"
     permission="zope.Public"
     />
+
   <adapter
     for="zeit.content.text.interfaces.JSON
     zeit.cms.browser.interfaces.ICMSLayer"

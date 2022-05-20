@@ -141,15 +141,11 @@ class DisplayWidget(grok.MultiAdapter,
     def __call__(self):
         return self.template()
 
-    def _text(self, item):
-        return self.textForValue(self.vocabulary.getTerm(item))
-
     def items(self):
         items = []
         Tag = namedtuple('Tag', ['text', 'link', 'css_class'])
         for item in self._getFormValue():
-            text = self._text(item)
             link = self.tags_with_topicpages.get(item.uniqueId)
             css_class = self.tag_highling_css_class if link else ''
-            items.append(Tag(text, link, css_class))
+            items.append(Tag(item.title, link, css_class))
         return items

@@ -1,0 +1,35 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <!-- default menus (zope.app.zcmlfiles:menu.zcml) -->
+  <browser:menu
+      id="zmi_views"
+      title="Views"
+      description="Menu for displaying alternate representations of an object"
+      />
+  <browser:menu
+      id="zmi_actions"
+      title="Actions"
+      description="Menu for displaying actions to be performed"
+      />
+  <browser:menu
+      id="zope.app.container.add"
+      title="Add"
+      description="Menu for objects to be added according to
+                   containment constraints"
+      interface="zope.app.publisher.interfaces.browser.AddMenu"
+      />
+  <browser:menu
+      id="add_component"
+      title="Add"
+      description="Menu of objects to be added to site management folders"
+      />
+  <browser:menu
+      id="add_registration"
+      title="Add Registration"
+      description="Menu of addable configuration objects"
+      />
+
+</configure>

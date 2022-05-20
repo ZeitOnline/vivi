@@ -1,0 +1,8 @@
+<tal:block i18n:domain="zeit.cms">
+    <h1 i18n:translate="">A validation error has occurred</h1>
+    <p  class="error" i18n:translate="">Cannot check in, the validation of json against the schema failed:</p>
+    <div>
+        <pre tal:content="context"></pre>
+    </div>
+    <p>[<a href="./@@edit.html" i18n:translate="">Back to edit</a>]</p>
+</tal:block>

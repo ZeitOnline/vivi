@@ -3,6 +3,30 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.10 (2022-05-18)
+--------------------
+
+- ZO-38: Display entity type for tags in repository as well
+
+
+5.15.9 (2022-05-18)
+-------------------
+
+- ZO-1226: Make CP region+area foldable
+
+- ZO-1330: Remove area_color_theme from code
+
+- ZO-1339: Index TMS when workflow properties are edited while checked-in
+
+- ZO-339: Require special permission to check out embed objects (when feature toggle `add_content_permissions` is active)
+
+- ZO-38: Display entity type for tags
+
+- ZO-648: Add checkbox on SEO form to set ISkipEnrich
+
+- ZO-809: Genereate volume TOC for the volume object products, not a global config
+
+
 5.15.8 (2022-05-17)
 -------------------
 
