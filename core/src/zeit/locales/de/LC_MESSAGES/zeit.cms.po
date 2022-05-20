@@ -3015,7 +3015,7 @@ msgstr "SEO bearbeiten"
 
 #: zeit/content/cp/browser/form.py:44
 msgid "OG Metadata"
-msgstr "Metadaten"
+msgstr "OG Metadaten"
 
 #: zeit/content/cp/browser/form.py:63
 msgid "Add centerpage"
