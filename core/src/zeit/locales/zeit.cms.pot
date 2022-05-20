@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri May 20 10:46:22 2022\n"
+"POT-Creation-Date: Fri May 20 11:39:31 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,84 +23,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:15
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:132
-msgid "Registration"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:35
-msgid "Site-Management Folder"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:48
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:97
-#: zeit/cms/syndication/browser/configure.zcml:70
-#: zeit/content/cp/interfaces.py:675
-#: zeit/content/infobox/interfaces.py:17
-msgid "Contents"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225
-#: zeit/cms/ui.zcml:29
-#: zeit/cms/ui.zcml:36
+#: zeit/cms/menu.zcml:17
+#: zeit/cms/menu.zcml:24
 #: zeit/content/article/edit/browser/recension-list.pt:93
 #: zeit/edit/browser/view.py:160
 msgid "Add"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:78
-msgid "Make a site"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:87
-msgid "Manage Site"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:105
-msgid "Add Site Management Folder"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:124
-msgid "Registrations"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/container/browser/configure.zcml:5
-msgid "Find"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/generations/browser/configure.zcml:6
-msgid "Database Schemas"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:10
-msgid "Translate"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:28
-msgid "Import/Export"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:41
-msgid "Synchronize"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
-msgid "A Persistent Translation Domain"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
-msgid "Translation Domain"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
-msgid "Principal Annotation Utility"
-msgstr ""
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
-msgid "Stores Annotations for Principals"
 msgstr ""
 
 #: zeit/brightcove/configure.zcml:9
@@ -1086,6 +1016,38 @@ msgstr ""
 msgid "Not locked"
 msgstr ""
 
+#: zeit/cms/menu.zcml:7
+msgid "Menu for displaying alternate representations of an object"
+msgstr ""
+
+#: zeit/cms/menu.zcml:7
+msgid "Views"
+msgstr ""
+
+#: zeit/cms/menu.zcml:12
+msgid "Actions"
+msgstr ""
+
+#: zeit/cms/menu.zcml:12
+msgid "Menu for displaying actions to be performed"
+msgstr ""
+
+#: zeit/cms/menu.zcml:17
+msgid "Menu for objects to be added according to                    containment constraints"
+msgstr ""
+
+#: zeit/cms/menu.zcml:24
+msgid "Menu of objects to be added to site management folders"
+msgstr ""
+
+#: zeit/cms/menu.zcml:29
+msgid "Add Registration"
+msgstr ""
+
+#: zeit/cms/menu.zcml:29
+msgid "Menu of addable configuration objects"
+msgstr ""
+
 #: zeit/cms/permissions.zcml:8
 msgid "Rename content"
 msgstr ""
@@ -1449,6 +1411,12 @@ msgstr ""
 msgid "Edit contents"
 msgstr ""
 
+#: zeit/cms/syndication/browser/configure.zcml:70
+#: zeit/content/cp/interfaces.py:675
+#: zeit/content/infobox/interfaces.py:17
+msgid "Contents"
+msgstr ""
+
 #: zeit/cms/syndication/browser/feed.py:86
 msgid "Feed contents"
 msgstr ""
@@ -1606,38 +1574,6 @@ msgstr ""
 #: zeit/cms/tagging/interfaces.py:91
 #: zeit/content/article/edit/browser/form.py:106
 msgid "Keywords"
-msgstr ""
-
-#: zeit/cms/ui.zcml:19
-msgid "Menu for displaying alternate representations of an object"
-msgstr ""
-
-#: zeit/cms/ui.zcml:19
-msgid "Views"
-msgstr ""
-
-#: zeit/cms/ui.zcml:24
-msgid "Actions"
-msgstr ""
-
-#: zeit/cms/ui.zcml:24
-msgid "Menu for displaying actions to be performed"
-msgstr ""
-
-#: zeit/cms/ui.zcml:29
-msgid "Menu for objects to be added according to                    containment constraints"
-msgstr ""
-
-#: zeit/cms/ui.zcml:36
-msgid "Menu of objects to be added to site management folders"
-msgstr ""
-
-#: zeit/cms/ui.zcml:41
-msgid "Add Registration"
-msgstr ""
-
-#: zeit/cms/ui.zcml:41
-msgid "Menu of addable configuration objects"
 msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
@@ -4211,23 +4147,23 @@ msgstr ""
 msgid "specific schema to use for validation"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:128
+#: zeit/content/text/interfaces.py:121
 msgid "Render as template?"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:131
+#: zeit/content/text/interfaces.py:124
 msgid "Parameter definition"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:137
+#: zeit/content/text/interfaces.py:130
 msgid "Embed CSS"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:141
+#: zeit/content/text/interfaces.py:134
 msgid "Embed AMP Code"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:142
+#: zeit/content/text/interfaces.py:135
 msgid "Please use an AMP validator to check your code"
 msgstr ""
 

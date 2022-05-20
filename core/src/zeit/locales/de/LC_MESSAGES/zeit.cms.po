@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri May 20 10:46:22 2022\n"
+"POT-Creation-Date: Fri May 20 11:39:31 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -24,81 +24,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:15
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:132
-msgid "Registration"
-msgstr "Registration"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:35
-msgid "Site-Management Folder"
-msgstr "Site-Management Folder"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:48
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:97
-#: zeit/cms/syndication/browser/configure.zcml:70
-#: zeit/content/cp/interfaces.py:675 zeit/content/infobox/interfaces.py:17
-msgid "Contents"
-msgstr "Inhalt"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
-#: zeit/cms/browser/form.py:225 zeit/cms/ui.zcml:29 zeit/cms/ui.zcml:36
+#: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
 #: zeit/content/article/edit/browser/recension-list.pt:93
 #: zeit/edit/browser/view.py:160
 msgid "Add"
 msgstr "Inhalte hinzufügen…"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:78
-msgid "Make a site"
-msgstr "Make a site"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:87
-msgid "Manage Site"
-msgstr "Manage Site"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:105
-msgid "Add Site Management Folder"
-msgstr "Add Site Management Folder"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:124
-msgid "Registrations"
-msgstr "Registrations"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/container/browser/configure.zcml:5
-msgid "Find"
-msgstr "Find"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/generations/browser/configure.zcml:6
-msgid "Database Schemas"
-msgstr "Database Schemas"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:10
-msgid "Translate"
-msgstr "Translate"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:28
-msgid "Import/Export"
-msgstr "Import/Export"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:41
-msgid "Synchronize"
-msgstr "Synchronize"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
-msgid "A Persistent Translation Domain"
-msgstr "A Persistent Translation Domain"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
-msgid "Translation Domain"
-msgstr "Translation Domain"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
-msgid "Principal Annotation Utility"
-msgstr "Principal Annotation Utility"
-
-#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
-msgid "Stores Annotations for Principals"
-msgstr "Stores Annotations for Principals"
 
 #: zeit/brightcove/configure.zcml:9
 msgid "Edit brightcove videos"
@@ -1042,6 +973,42 @@ msgstr "Gesperrt von ${user}"
 msgid "Not locked"
 msgstr "Nicht gesperrt"
 
+#: zeit/cms/menu.zcml:7
+msgid "Menu for displaying alternate representations of an object"
+msgstr "Menu for displaying alternate representations of an object"
+
+#: zeit/cms/menu.zcml:7
+msgid "Views"
+msgstr "Views"
+
+#: zeit/cms/menu.zcml:12
+msgid "Actions"
+msgstr "Aktionen"
+
+#: zeit/cms/menu.zcml:12
+msgid "Menu for displaying actions to be performed"
+msgstr "Menu for displaying actions to be performed"
+
+#: zeit/cms/menu.zcml:17
+msgid ""
+"Menu for objects to be added according to                    containment "
+"constraints"
+msgstr ""
+"Menu for objects to be added according to                    containment "
+"constraints"
+
+#: zeit/cms/menu.zcml:24
+msgid "Menu of objects to be added to site management folders"
+msgstr "Menu of objects to be added to site management folders"
+
+#: zeit/cms/menu.zcml:29
+msgid "Add Registration"
+msgstr "Registrierung hinzufügen"
+
+#: zeit/cms/menu.zcml:29
+msgid "Menu of addable configuration objects"
+msgstr "Menu of addable configuration objects"
+
 #: zeit/cms/permissions.zcml:8
 msgid "Rename content"
 msgstr "Inhalt umbenennen"
@@ -1407,6 +1374,11 @@ msgstr "Metadaten"
 msgid "Edit contents"
 msgstr "Bearbeiten"
 
+#: zeit/cms/syndication/browser/configure.zcml:70
+#: zeit/content/cp/interfaces.py:675 zeit/content/infobox/interfaces.py:17
+msgid "Contents"
+msgstr "Inhalt"
+
 #: zeit/cms/syndication/browser/feed.py:86
 msgid "Feed contents"
 msgstr "Inhalt des Channels"
@@ -1572,42 +1544,6 @@ msgstr "Bitte mindestens 3 Schlagworte vergeben"
 #: zeit/content/article/edit/browser/form.py:106
 msgid "Keywords"
 msgstr "Schlagworte"
-
-#: zeit/cms/ui.zcml:19
-msgid "Menu for displaying alternate representations of an object"
-msgstr "Menu for displaying alternate representations of an object"
-
-#: zeit/cms/ui.zcml:19
-msgid "Views"
-msgstr "Views"
-
-#: zeit/cms/ui.zcml:24
-msgid "Actions"
-msgstr "Aktionen"
-
-#: zeit/cms/ui.zcml:24
-msgid "Menu for displaying actions to be performed"
-msgstr "Menu for displaying actions to be performed"
-
-#: zeit/cms/ui.zcml:29
-msgid ""
-"Menu for objects to be added according to                    containment "
-"constraints"
-msgstr ""
-"Menu for objects to be added according to                    containment "
-"constraints"
-
-#: zeit/cms/ui.zcml:36
-msgid "Menu of objects to be added to site management folders"
-msgstr "Menu of objects to be added to site management folders"
-
-#: zeit/cms/ui.zcml:41
-msgid "Add Registration"
-msgstr "Registrierung hinzufügen"
-
-#: zeit/cms/ui.zcml:41
-msgid "Menu of addable configuration objects"
-msgstr "Menu of addable configuration objects"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
 #: zeit/workflow/publish.py:437 zeit/workflow/publishinfo.py:50
@@ -4161,23 +4097,23 @@ msgstr "Schema url"
 msgid "specific schema to use for validation"
 msgstr "Name Schemafeld"
 
-#: zeit/content/text/interfaces.py:128
+#: zeit/content/text/interfaces.py:121
 msgid "Render as template?"
 msgstr "Als Friedbert-Template rendern"
 
-#: zeit/content/text/interfaces.py:131
+#: zeit/content/text/interfaces.py:124
 msgid "Parameter definition"
 msgstr "Parameter-Definition"
 
-#: zeit/content/text/interfaces.py:137
+#: zeit/content/text/interfaces.py:130
 msgid "Embed CSS"
 msgstr "vivi CSS"
 
-#: zeit/content/text/interfaces.py:141
+#: zeit/content/text/interfaces.py:134
 msgid "Embed AMP Code"
 msgstr "AMP-Code"
 
-#: zeit/content/text/interfaces.py:142
+#: zeit/content/text/interfaces.py:135
 msgid "Please use an AMP validator to check your code"
 msgstr "Code bitte in einem AMP Validator testen"
 
@@ -5244,6 +5180,51 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Registration"
+#~ msgstr "Registration"
+
+#~ msgid "Site-Management Folder"
+#~ msgstr "Site-Management Folder"
+
+#~ msgid "Make a site"
+#~ msgstr "Make a site"
+
+#~ msgid "Manage Site"
+#~ msgstr "Manage Site"
+
+#~ msgid "Add Site Management Folder"
+#~ msgstr "Add Site Management Folder"
+
+#~ msgid "Registrations"
+#~ msgstr "Registrations"
+
+#~ msgid "Find"
+#~ msgstr "Find"
+
+#~ msgid "Database Schemas"
+#~ msgstr "Database Schemas"
+
+#~ msgid "Translate"
+#~ msgstr "Translate"
+
+#~ msgid "Import/Export"
+#~ msgstr "Import/Export"
+
+#~ msgid "Synchronize"
+#~ msgstr "Synchronize"
+
+#~ msgid "A Persistent Translation Domain"
+#~ msgstr "A Persistent Translation Domain"
+
+#~ msgid "Translation Domain"
+#~ msgstr "Translation Domain"
+
+#~ msgid "Principal Annotation Utility"
+#~ msgstr "Principal Annotation Utility"
+
+#~ msgid "Stores Annotations for Principals"
+#~ msgstr "Stores Annotations for Principals"
 
 #~ msgid ""
 #~ "<p> The validation of json against the schema failed, because: </p> <p> "
