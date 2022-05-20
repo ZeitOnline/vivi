@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu May 19 22:37:19 2022\n"
+"POT-Creation-Date: Fri May 20 10:46:22 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,24 +23,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:15
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:132
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:15
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:132
 msgid "Registration"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:35
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:35
 msgid "Site-Management Folder"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:48
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:97
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:48
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:97
 #: zeit/cms/syndication/browser/configure.zcml:70
 #: zeit/content/cp/interfaces.py:675
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:57
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:57
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225
@@ -51,55 +51,55 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:78
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:78
 msgid "Make a site"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:87
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:87
 msgid "Manage Site"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:105
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:105
 msgid "Add Site Management Folder"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:124
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/component/browser/configure.zcml:124
 msgid "Registrations"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/container/browser/configure.zcml:5
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/container/browser/configure.zcml:5
 msgid "Find"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/generations/browser/configure.zcml:6
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/generations/browser/configure.zcml:6
 msgid "Database Schemas"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:10
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:10
 msgid "Translate"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:28
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:28
 msgid "Import/Export"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:41
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:41
 msgid "Synchronize"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
 msgid "A Persistent Translation Domain"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/i18n/browser/configure.zcml:54
 msgid "Translation Domain"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
 msgid "Principal Annotation Utility"
 msgstr ""
 
-#: /Users/huelsen/Projects/vivi-deployment/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
+#: /Users/schnerring/zeit/vivi/work/app/lib/python3.7/site-packages/zope/app/principalannotation/browser.zcml:6
 msgid "Stores Annotations for Principals"
 msgstr ""
 
@@ -278,9 +278,9 @@ msgstr ""
 #: zeit/content/image/browser/configure.zcml:131
 #: zeit/content/image/browser/configure.zcml:313
 #: zeit/content/rawxml/browser/configure.zcml:15
-#: zeit/content/text/browser/configure.zcml:14
-#: zeit/content/text/browser/configure.zcml:57
-#: zeit/content/text/browser/configure.zcml:76
+#: zeit/content/text/browser/configure.zcml:15
+#: zeit/content/text/browser/configure.zcml:58
+#: zeit/content/text/browser/configure.zcml:77
 #: zeit/edit/browser/editor.py:9
 msgid "Edit"
 msgstr ""
@@ -307,9 +307,9 @@ msgstr ""
 #: zeit/content/author/browser/form.py:88
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
-#: zeit/content/text/browser/configure.zcml:24
-#: zeit/content/text/browser/configure.zcml:85
-#: zeit/content/text/browser/configure.zcml:166
+#: zeit/content/text/browser/configure.zcml:25
+#: zeit/content/text/browser/configure.zcml:86
+#: zeit/content/text/browser/configure.zcml:167
 msgid "View"
 msgstr ""
 
@@ -4122,26 +4122,26 @@ msgstr ""
 msgid "View Raw XML"
 msgstr ""
 
-#: zeit/content/text/browser/configure.zcml:6
+#: zeit/content/text/browser/configure.zcml:7
 #: zeit/content/text/text.py:31
 msgid "Plain text"
 msgstr ""
 
-#: zeit/content/text/browser/configure.zcml:68
+#: zeit/content/text/browser/configure.zcml:69
 #: zeit/content/text/json.py:36
 msgid "JSON file"
 msgstr ""
 
-#: zeit/content/text/browser/configure.zcml:94
+#: zeit/content/text/browser/configure.zcml:95
 msgid "Validate"
 msgstr ""
 
-#: zeit/content/text/browser/configure.zcml:138
+#: zeit/content/text/browser/configure.zcml:139
 #: zeit/content/text/embed.py:75
 msgid "Embed"
 msgstr ""
 
-#: zeit/content/text/browser/configure.zcml:157
+#: zeit/content/text/browser/configure.zcml:158
 #: zeit/content/text/browser/embed.py:75
 msgid "Edit embed parameters"
 msgstr ""
@@ -4183,12 +4183,16 @@ msgstr ""
 msgid "View JSON file"
 msgstr ""
 
-#: zeit/content/text/browser/validation-error.pt:5
-msgid "A validation error is occoured"
+#: zeit/content/text/browser/validation-error.pt:2
+msgid "A validation error has occurred"
 msgstr ""
 
-#: zeit/content/text/browser/validation-error.pt:12
-msgid "<p> The validation of json against the schema failed, because: </p> <p> ${resource-id}. </p> <p> Therefore the content cannot be checked in.</p> <p></p>"
+#: zeit/content/text/browser/validation-error.pt:3
+msgid "Cannot check in, the validation of json against the schema failed:"
+msgstr ""
+
+#: zeit/content/text/browser/validation-error.pt:7
+msgid "Back to edit"
 msgstr ""
 
 #: zeit/content/text/interfaces.py:14
@@ -4207,23 +4211,23 @@ msgstr ""
 msgid "specific schema to use for validation"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:131
+#: zeit/content/text/interfaces.py:128
 msgid "Render as template?"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:134
+#: zeit/content/text/interfaces.py:131
 msgid "Parameter definition"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:140
+#: zeit/content/text/interfaces.py:137
 msgid "Embed CSS"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:144
+#: zeit/content/text/interfaces.py:141
 msgid "Embed AMP Code"
 msgstr ""
 
-#: zeit/content/text/interfaces.py:145
+#: zeit/content/text/interfaces.py:142
 msgid "Please use an AMP validator to check your code"
 msgstr ""
 

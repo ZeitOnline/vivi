@@ -1,18 +1,8 @@
-<html metal:use-macro="context/@@standard_macros/error-page">
-  <div metal:fill-slot="body"
-    i18n:domain="zeit.cms">
-
-    <h1 i18n:translate="">A validation error is occoured</h1>
-    <div class="error"
-      i18n:translate="">
-      <p>
-        The validation of json against the schema failed, because:
-      </p>
-      <p tal:content="context">
-      </p>
-      <p>
-        Therefore the content cannot be checked in.
-      <p>
+<tal:block i18n:domain="zeit.cms">
+    <h1 i18n:translate="">A validation error has occurred</h1>
+    <p  class="error" i18n:translate="">Cannot check in, the validation of json against the schema failed:</p>
+    <div>
+        <pre tal:content="context"></pre>
     </div>
-  </div>
-</html>
+    <p>[<a href="./@@edit.html" i18n:translate="">Back to edit</a>]</p>
+</tal:block>
