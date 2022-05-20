@@ -809,15 +809,15 @@ msgstr "Kommentare anzeigen"
 
 #: zeit/cms/content/interfaces.py:250
 msgid "Banner"
-msgstr "Alle Werbung"
+msgstr "Alle Werbung anzeigen"
 
 #: zeit/cms/content/interfaces.py:255
 msgid "Banner in Content"
-msgstr "Werbung im Artikeltext"
+msgstr "Werbung im Artikeltext anzeigen"
 
 #: zeit/cms/content/interfaces.py:260
 msgid "Banner Mainad"
-msgstr "Außenwerbung"
+msgstr "Außenwerbung anzeigen"
 
 #: zeit/cms/content/interfaces.py:265
 msgid "Banner id"
