@@ -67,3 +67,10 @@ class Validate(zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.text.interfaces.IValidationSchema)
+
+
+class ValidationError:
+
+    def __call__(self):
+        self.request.response.setStatus(412)
+        return super().__call__()

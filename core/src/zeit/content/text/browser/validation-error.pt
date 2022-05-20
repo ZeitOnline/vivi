@@ -8,14 +8,11 @@
       <p>
         The validation of json against the schema failed, because:
       </p>
-      <p>
-        <span class="unique-id" tal:content="python:context.uniqueId"
-          i18n:name="resource-id">http://xml.zeit.de/asdf</span>.
+      <p tal:content="context">
       </p>
       <p>
         Therefore the content cannot be checked in.
       <p>
     </div>
-    <pre tal:content="context"></pre>
   </div>
 </html>

@@ -120,10 +120,7 @@ class IValidationSchema(zope.interface.Interface):
 
 
 class SchemaValidationError(Exception):
-
-    def __init__(self, id, *args):
-        self.uniqueId = id
-        self.args = args
+    pass
 
 
 class IEmbed(IText):

@@ -91,7 +91,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
                     resolver=ref_resolver)
             except jsonschema.exceptions.ValidationError as error:
                 raise zeit.content.text.interfaces.SchemaValidationError(
-                    error)
+                    str(error))
 
 
 @grok.subscribe(
