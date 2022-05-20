@@ -98,7 +98,6 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.content.text.interfaces.IJSON,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def validate_after_checkin(context, event):
-    context = zope.security.proxy.removeSecurityProxy(context)
     validation = zeit.content.text.interfaces.IValidationSchema(context)
     if validation.schema_url and validation.field_name:
         validation.validate()
