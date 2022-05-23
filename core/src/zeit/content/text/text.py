@@ -20,7 +20,7 @@ class Text(zeit.cms.repository.repository.ContentBase,
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IText,
         zeit.content.text.interfaces.DAV_NAMESPACE,
-        ('mimeType', 'encoding'),
+        ('mimeType',),
         use_default=True)
 
 
@@ -36,33 +36,12 @@ class TextType(zeit.cms.type.TypeDeclaration):
         data = resource.data.read()
         text = self.factory()
         text.uniqueId = resource.id
-        encoding = text.encoding  # Read from the DAV properties
-        unicode_data = None
-        if encoding:
-            try:
-                unicode_data = str(data, encoding)
-            except UnicodeDecodeError:
-                pass
-        if unicode_data is None:
-            # Guess encoding
-            for encoding_term in (
-                    zeit.content.text.interfaces.IText['encoding'].vocabulary):
-                encoding = encoding_term.value
-                try:
-                    unicode_data = str(data, encoding)
-                except UnicodeDecodeError:
-                    pass
-                else:
-                    break
-        assert unicode_data is not None
-        if encoding != text.encoding:
-            text.encoding = encoding
-        text.text = unicode_data
+        text.text = data.decode('utf-8')
         return text
 
     def resource_body(self, content):
         if isinstance(content.text, str):
-            return BytesIO(content.text.encode(content.encoding))
+            return BytesIO(content.text.encode('utf-8'))
         else:
             return BytesIO(content.text)
 
