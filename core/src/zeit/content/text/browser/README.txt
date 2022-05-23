@@ -22,15 +22,6 @@ We're looking at the add form now. Enter a filename and a text:
 ...     <?xml encoding="utf8"?>
 ...     <foo/>'''
 
-We can choose the encoding:
-
->>> browser.getControl('Encoding').displayOptions
-['UTF-8', 'ISO8859-15']
->>> browser.getControl('Encoding').displayValue
-['UTF-8']
->>> browser.getControl('Encoding').displayValue = ['ISO8859-15']
-
-
 After adding we're at the edit form:
 
 >>> browser.getControl('Add').click()
@@ -39,12 +30,7 @@ After adding we're at the edit form:
  <title>... Edit plain text </title>
  ...
 
-
-Change text and encoding and save. Note that the value which is passed between
-browser and server is *always* UTF-8 regardles of the storage encoding.
-
 >>> browser.getControl('Content').value = 'F\xfc'.encode('utf8')
->>> browser.getControl('Encoding').displayValue = ['UTF-8']
 >>> browser.getControl('Apply').click()
 >>> print(browser.contents)
 <?xml...

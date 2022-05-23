@@ -34,23 +34,8 @@ class IText(zeit.cms.repository.interfaces.IDAVContent):
     text = Code(
         title=_('Content'))
 
-    encoding = zope.schema.Choice(
-        title=_('Encoding'),
-        values=('UTF-8', 'ISO8859-15'),
-        default='UTF-8')
-
     mimeType = zeit.cms.repository.interfaces.IFile['mimeType'].bind(object())
     mimeType.default = 'text/plain'
-
-    @zope.interface.invariant
-    def text_encodable(data):
-        if data.text:
-            try:
-                data.text.encode(data.encoding)
-            except UnicodeEncodeError as e:
-                raise CannotEncode(data.text, data.encoding, e)
-
-        return True
 
 
 class TextSource(zeit.cms.content.contentsource.CMSContentSource):
