@@ -48,10 +48,10 @@ def materialize_content(folder):
             materialize_count += 1
         if len(to_regenerate) >= batch_size:
             regenerate.delay(folder.uniqueId, to_regenerate)
-            to_regenerate.clear()
+            to_regenerate = []
         if len(to_materialize) >= batch_size:
             materialize.delay(folder.uniqueId, to_materialize)
-            to_materialize.clear()
+            to_materialize = []
 
     if to_regenerate:
         regenerate.delay(folder.uniqueId, to_regenerate)
@@ -115,7 +115,7 @@ def publish_content(folder):
             objects.append(item)
         if len(objects) >= batch_size:
             publish.publish_multiple(objects)
-            objects.clear()
+            objects = []
     if objects:
         publish.publish_multiple(objects)
     zeit.objectlog.interfaces.ILog(folder).log(

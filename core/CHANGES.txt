@@ -3,6 +3,22 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.12 (2022-05-23)
+--------------------
+
+- ZO-1286: Form batches properly
+
+- ZO-1367: Remove unused field IText.encoding
+
+
+5.15.11 (2022-05-23)
+--------------------
+
+- ZO-1094: Validate json against schema given schema url
+
+- ZO-1161: Update advertising translations
+
+
 5.15.10 (2022-05-18)
 --------------------
 
