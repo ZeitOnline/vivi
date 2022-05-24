@@ -18,10 +18,10 @@ class FormBase:
         zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent,
             zeit.cms.content.interfaces.ICommonMetadata).omit(
-            'keywords', 'year', 'volume', 'page', 'lead_candidate',
+            'keywords', 'page', 'lead_candidate',
             'commentsPremoderate', 'commentsAllowed',
             'commentSectionEnable', 'vg_wort_id', 'printRessort', 'authors',
-            'authorships', 'recipe_categories', 'ir_mediasync_id',
+            'authorships', 'ir_mediasync_id',
             'ir_article_id', ) +
         zope.formlib.form.FormFields(
             zeit.content.image.interfaces.IImages) +
