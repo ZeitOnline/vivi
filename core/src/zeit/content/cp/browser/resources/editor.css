@@ -54,8 +54,10 @@
 
 
 
-/* When there is no "other" edit, we show the common. */
-.edit-bar > a.common-link:first-child {
+/* When there is no "other" edit, we show the common.
+   Due to foldable, there are 2 preceding children (fold-link and module-icon)
+ */
+.edit-bar > a.common-link:nth-child(3) {
   background-image: url('/fanstatic/zeit.edit/edit.png');
   display: block;
   padding-right: 0.5em;
