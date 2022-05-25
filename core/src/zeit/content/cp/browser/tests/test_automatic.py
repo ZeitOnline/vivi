@@ -1,5 +1,6 @@
 import transaction
 import zeit.cms.testing
+import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
 import zope.security.management
 
