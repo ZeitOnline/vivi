@@ -11,7 +11,6 @@ def create_cp(browser, filename='island'):
     browser.getControl('File name').value = filename
     browser.getControl('Title').value = 'Auf den Spuren der Elfen'
     browser.getControl('Ressort').displayValue = ['Reisen']
-    browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
     browser.getControl(name="form.actions.add").click()
 
 
