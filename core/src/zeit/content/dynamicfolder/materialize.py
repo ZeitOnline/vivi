@@ -114,7 +114,7 @@ def publish_content(folder):
             count += 1
             objects.append(item)
         if len(objects) >= batch_size:
-            publish.publish_multiple(objects)
+            publish.publish_multiple(objects, priority='materialize')
             objects = []
     if objects:
         publish.publish_multiple(objects, priority='materialize')
