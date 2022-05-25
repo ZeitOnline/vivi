@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.15.14 (2022-05-25)
+--------------------
+
+- ZO-1286: Use a dedicated celery queue for materialize and publish of dynamic folders
+
+
 5.15.13 (2022-05-24)
 --------------------
 
