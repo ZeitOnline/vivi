@@ -63,7 +63,7 @@ def materialize_content(folder):
             'materialize': materialize_count, 'regenerate': regenerate_count}))
 
 
-@zeit.cms.celery.task
+@zeit.cms.celery.task(queue='materialize')
 def materialize(folder_id, keys):
     folder = zeit.cms.interfaces.ICMSContent(folder_id)
     for key in keys:
@@ -74,7 +74,7 @@ def materialize(folder_id, keys):
         _('Materialized ${count}', mapping={'count': len(keys)}))
 
 
-@zeit.cms.celery.task
+@zeit.cms.celery.task(queue='materialize')
 def regenerate(folder_id, keys):
     folder = zeit.cms.interfaces.ICMSContent(folder_id)
     for key in keys:
@@ -117,6 +117,6 @@ def publish_content(folder):
             publish.publish_multiple(objects)
             objects = []
     if objects:
-        publish.publish_multiple(objects)
+        publish.publish_multiple(objects, priority='materialize')
     zeit.objectlog.interfaces.ILog(folder).log(
         _('About to publish ${count} objects', mapping={'count': count}))
