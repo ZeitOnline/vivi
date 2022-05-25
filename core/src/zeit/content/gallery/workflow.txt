@@ -78,10 +78,7 @@ Publishing http://xml.zeit.de/online/gallery
 ...publish.sh:
 publish test script
 work/online/gallery
-work/image-folder/
 work/image-folder/01.jpg
-work/image-folder/thumbnails/
-work/image-folder/thumbnails/01.jpg
 done.
 Done http://xml.zeit.de/online/gallery (...s)
 
@@ -103,10 +100,7 @@ Running job ...
 Retracting http://xml.zeit.de/online/gallery
 ...publish.sh:
 retract test script
-work/image-folder/thumbnails/01.jpg
-work/image-folder/thumbnails/
 work/image-folder/01.jpg
-work/image-folder/
 work/online/gallery
 done.
 <BLANKLINE>

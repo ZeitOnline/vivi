@@ -1,5 +1,5 @@
-from math import ceil
 from io import BytesIO
+from math import ceil
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import PIL.ImageColor
@@ -9,8 +9,8 @@ import lxml.objectify
 import os.path
 import persistent
 import re
-import urllib.parse
 import sys
+import urllib.parse
 import z3c.traverser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -21,6 +21,7 @@ import zeit.cms.type
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.variant
+import zeit.workflow.dependency
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent.interfaces
@@ -641,3 +642,15 @@ def remove_thumbnail_source_on_delete(context, event):
     thumbnail_name = thumbnails.source_image_name(context)
     if thumbnail_name in group:
         del group[thumbnail_name]
+
+
+class FolderDependencies(zeit.workflow.dependency.DependencyBase):
+
+    grok.context(zeit.content.image.interfaces.IImageGroup)
+    grok.name('zeit.cms.repository.folder')
+
+    retract_dependencies = True
+
+    def get_dependencies(self):
+        return [x for x in self.context.values()
+                if not x.__name__.startswith(Thumbnails.SOURCE_IMAGE_PREFIX)]
