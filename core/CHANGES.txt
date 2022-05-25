@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.0 (2022-05-25)
+-------------------
+
+- ZO-1261: Remove unused package zeit.newsletter
+
+- ZO-1286: Use dedicated queue for publish as well
+
+
 5.15.14 (2022-05-25)
 --------------------
 
