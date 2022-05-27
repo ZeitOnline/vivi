@@ -28,15 +28,48 @@ class FormBase:
          ('og_title', 'og_description', 'og_image'),
         css_class='wide-widgets column-right')
 
+    head_fields = gocept.form.grouped.Fields(
+        _("Head"),
+        ('ressort', 'sub_ressort'),
+        css_class='widgets-float column-left')
+
+    option_fields = gocept.form.grouped.Fields(
+        _("Options"),
+        ('banner_id', 'overscrolling'),
+        css_class='column-right checkboxes')
+
+    auto_cp_fields = gocept.form.grouped.Fields(
+        _("Run in channel"),
+        ('channels'),
+        css_class='column-right')
+
+    navigation_fields = gocept.form.grouped.Fields(
+        _("Navigation"),
+        ('__name__', 'keywords', 'serie', 'product', 'copyrights'),
+        css_class='column-right')
+
+    cpform_fields = (zope.formlib.form.FormFields(
+            zeit.content.image.interfaces.IImages) +
+            zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ICenterPage))
+
+    form_fields = cpform_fields.select(
+            *list(itertools.chain.from_iterable(
+                [group.get_field_names() for group in
+                 (text_fields,
+                  og_fields,
+                  head_fields,
+                  option_fields,
+                  auto_cp_fields,
+                  navigation_fields)])))
+
     field_groups = (
-        base.navigation_fields,
-        base.head_fields,
         text_fields,
-        gocept.form.grouped.RemainingFields(
-            _("misc."),
-            css_class='column-right'),
-        base.option_fields,
         og_fields,
+        head_fields,
+        option_fields,
+        auto_cp_fields,
+        navigation_fields
     )
 
 
