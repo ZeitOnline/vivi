@@ -1,3 +1,4 @@
+from zeit.content.image.transform import THUMBNAIL_FOLDER_NAME
 import grokcore.component as grok
 import zeit.content.gallery.interfaces
 import zeit.workflow.dependency
@@ -12,6 +13,8 @@ class PublicationDependencies(zeit.workflow.dependency.DependencyBase):
     retract_dependencies = True
 
     def get_dependencies(self):
-        if self.context.image_folder is not None:
-            return (self.context.image_folder,)
+        folder = self.context.image_folder
+        if folder is not None:
+            return [x for x in folder.values()
+                    if x.__name__ != THUMBNAIL_FOLDER_NAME]
         return ()

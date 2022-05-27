@@ -1,5 +1,6 @@
 # coding: utf-8
 from unittest import mock
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.image import imagegroup
 from zeit.content.image.testing import create_image_group_with_master_image
 from zeit.content.image.testing import create_local_image
@@ -413,3 +414,10 @@ class ThumbnailsTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(
             ['master-image.jpg', 'thumbnail-source-master-image.jpg'],
             self.group.keys())
+
+    def test_thumbnail_is_not_published(self):
+        IPublish(self.group).publish(background=False)
+        self.assertTrue(IPublishInfo(self.group).published)
+        self.assertTrue(IPublishInfo(self.group['master-image.jpg']).published)
+        thumbnail = self.group['thumbnail-source-master-image.jpg']
+        self.assertFalse(IPublishInfo(thumbnail).published)
