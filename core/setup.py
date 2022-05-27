@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='5.15.14.dev0',
+    version='5.16.1.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -255,7 +255,6 @@ setup(
             'zeit_edit_js=zeit.edit.browser.resources:lib_js',
             'zeit_find=zeit.find.browser.resources:lib',
             'zeit_imp=zeit.imp.browser.resources:lib',
-            'zeit_newsletter=zeit.newsletter.browser.resources:lib',
             'zeit_push=zeit.push.browser.resources:lib',
             'zeit_seo=zeit.seo.browser.resources:lib',
             'zeit_wochenmarkt=zeit.wochenmarkt.browser.resources:lib',

@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -1135,7 +1135,6 @@ msgstr "Embed-Objekt hinzufügen"
 
 #: zeit/cms/permissions.zcml:164
 #, fuzzy
-#| msgid "Add Embed objects"
 msgid "Edit Embed objects"
 msgstr "Embed-Objekt hinzufügen"
 
@@ -2783,7 +2782,7 @@ msgstr "HDok-ID"
 
 #: zeit/content/author/interfaces.py:69
 msgid "Display name"
-msgstr "Pseudonym"
+msgstr "Anzeigename"
 
 #: zeit/content/author/interfaces.py:71
 msgid "Default: 'Firstname Lastname'"
@@ -3402,13 +3401,11 @@ msgstr "Materialisiere ${materialize}, regeneriere ${regenerate}"
 
 #: zeit/content/dynamicfolder/materialize.py:74
 #, fuzzy
-#| msgid "Materialized"
 msgid "Materialized ${count}"
 msgstr "Materialisiert"
 
 #: zeit/content/dynamicfolder/materialize.py:86
 #, fuzzy
-#| msgid "Related content"
 msgid "Regenerated ${count}"
 msgstr "interne Links"
 
@@ -4063,7 +4060,6 @@ msgstr "JSON-Datei anzeigen"
 
 #: zeit/content/text/browser/validation-error.pt:2
 #, fuzzy
-#| msgid "A validation error is occoured"
 msgid "A validation error has occurred"
 msgstr "Ein Validierungsfehler ist aufgetreten."
 
