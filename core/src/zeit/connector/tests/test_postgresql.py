@@ -1,6 +1,6 @@
 from datetime import datetime
 from io import BytesIO
-from zeit.connector.resource import WriteableCachedResource
+from zeit.connector.resource import Resource, WriteableCachedResource
 import google.api_core.exceptions
 import transaction
 import zeit.connector.testing
@@ -8,7 +8,7 @@ import zeit.connector.testing
 
 class SQLConnectorTest(zeit.connector.testing.SQLTest):
 
-    def test_serialization(self):
+    def test_serializes_properties_as_json(self):
         res = self.get_resource('foo', b'mybody', {
             ('uuid', 'http://namespaces.zeit.de/CMS/document'):
             '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}',
@@ -22,14 +22,20 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual('testing', props.type)
         self.assertEqual(False, props.is_collection)
         self.assertEqual('deadbeaf-c5aa-4232-837a-ae6701270436', props.id)
-        blob = self.connector.bucket.blob(props.id)
-        self.assertEqual(b'mybody', blob.download_as_bytes())
         self.assertEqual({
             'document': {
                 'uuid': '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}'},
             'one': {'foo': 'foo'},
             'two': {'bar': 'bar'},
         }, props.unsorted)
+
+    def test_stores_body_in_gcs_for_configured_binary_content_types(self):
+        res = self.get_resource('foo', b'mybody')
+        res.type = 'file'
+        self.connector.add(res)
+        props = self.connector._get_properties(res.id)
+        blob = self.connector.bucket.blob(props.id)
+        self.assertEqual(b'mybody', blob.download_as_bytes())
 
     def test_injects_uuid_and_type_into_dav_properties(self):
         res = self.get_resource('foo', b'mybody', {
@@ -58,9 +64,13 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
 
     def test_determines_size_for_gcs_upload(self):
         body = b'mybody'
-        for res in [self.get_resource('foo', body), WriteableCachedResource(
-                'http://xml.zeit.de/testing/foo', 'foo', 'testing',
-                lambda: {}, lambda: BytesIO(body), 'teext/plain')]:
+        for res in [
+                Resource(
+                    'http://xml.zeit.de/testing/foo', 'foo', 'file',
+                    BytesIO(body), {}, 'text/plain'),
+                WriteableCachedResource(
+                    'http://xml.zeit.de/testing/foo', 'foo', 'file',
+                    lambda: {}, lambda: BytesIO(body), 'text/plain')]:
             self.connector.add(res)
             props = self.connector._get_properties(res.id)
             blob = self.connector.bucket.blob(props.id)
@@ -68,6 +78,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
 
     def test_delete_removes_gcs_blob(self):
         res = self.get_resource('foo', b'mybody')
+        res.type = 'file'
         self.connector.add(res)
         props = self.connector._get_properties(res.id)
         blob = self.connector.bucket.blob(props.id)

@@ -5,7 +5,7 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 from io import BytesIO
 from logging import getLogger
 from operator import itemgetter
-from sqlalchemy import Boolean, TIMESTAMP, Unicode
+from sqlalchemy import Boolean, TIMESTAMP, Unicode, UnicodeText
 from sqlalchemy import Column, ForeignKey, select
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
@@ -74,8 +74,10 @@ class Connector:
             raise KeyError(uniqueid)
         if props.is_collection:
             _get_body = partial(BytesIO, b'')
-        else:
+        elif props.binary_body:
             _get_body = partial(self._get_body, props.id)
+        else:
+            _get_body = partial(BytesIO, props.body.encode('utf-8'))
         return CachedResource(
             uniqueid, uniqueid.split('/')[-1], props.type,
             props.to_webdav, _get_body,
@@ -144,11 +146,16 @@ class Connector:
 
         if not props.is_collection:
             self.body_cache.pop(props.id, None)
-            blob = self.bucket.blob(props.id)
-            data = resource.data  # may not be a static property
-            size = data.seek(0, os.SEEK_END)
-            data.seek(0)
-            blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
+            if props.binary_body:
+                blob = self.bucket.blob(props.id)
+                data = resource.data  # may not be a static property
+                size = data.seek(0, os.SEEK_END)
+                data.seek(0)
+                blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
+            else:
+                # vivi uses utf-8 encoding throughout, see
+                # zeit.cms.content.adapter for XML and zeit.content.text.text
+                props.body = resource.data.read().decode('utf-8')
 
         if uniqueid in self.property_cache:
             self.property_cache[uniqueid] = props
@@ -171,7 +178,7 @@ class Connector:
         props = self._get_properties(uniqueid)
         if props is None:
             raise KeyError(uniqueid)
-        if not props.is_collection:
+        if not props.is_collection and props.binary_body:
             blob = self.bucket.blob(props.id)
             blob.delete()
         self.session.delete(props)
@@ -253,11 +260,21 @@ class Properties(DBObject):
     type = Column(Unicode, nullable=False, server_default='unknown')
     is_collection = Column(Boolean, nullable=False, server_default='false')
 
+    body = Column(UnicodeText)
+
     unsorted = Column(JSONB)
 
     last_updated = Column(
         TIMESTAMP(timezone=True),
         server_default=sqlalchemy.func.now(), onupdate=sqlalchemy.func.now())
+
+    @property
+    def binary_body(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.connector')
+        binary_types = config.get(
+            'binary-types', 'image,file,unknown').split(',')
+        return self.type in binary_types
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
