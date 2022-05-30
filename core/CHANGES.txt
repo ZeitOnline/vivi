@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.1 (2022-05-30)
+-------------------
+
+- ZO-1286: Use already existing `manual` queue for materialize
+
+- ZO-1367: Store body of non-binary objects in SQL instead of GCS
+
+- ZO-1395: No longer publish thumbnail images of imagegroups and galleries
+
+
 5.16.0 (2022-05-25)
 -------------------
 
