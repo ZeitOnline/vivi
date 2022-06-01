@@ -2,6 +2,7 @@ from datetime import datetime
 from io import StringIO
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -10,11 +11,13 @@ import gocept.testing.mock
 import logging
 import os
 import pytz
+import requests_mock
 import shutil
 import time
 import transaction
 import zeit.cms.related.interfaces
 import zeit.cms.testing
+import zeit.content.article.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.publish
 import zeit.workflow.testing
@@ -407,3 +410,24 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
              'Collective Publication of ${count} objects',
              'Error during publish/retract: ${exc}: ${message}'],
             [x.message for x in log.get_log()])
+
+
+class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
+
+    layer = zeit.content.article.testing.LAYER
+
+    def test_object_is_published(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            self.assertEqual(
+                'http://xml.zeit.de/online/2007/01/Somalia',
+                result['uniqueId'])
+            self.assertIn('uuid', result)
+        self.assertTrue(IPublishInfo(article).published)

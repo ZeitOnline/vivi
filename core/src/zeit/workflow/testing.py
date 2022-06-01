@@ -28,6 +28,7 @@ product_config = """
     retract-script true
     dependency-publish-limit 100
     blacklist /blacklist
+    publisher-base-url http://localhost:8060/test/
 </product-config>
 """
 
