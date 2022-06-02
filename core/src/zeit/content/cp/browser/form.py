@@ -35,7 +35,9 @@ class FormBase:
 
     option_fields = gocept.form.grouped.Fields(
         _("Options"),
-        ('banner_id', 'overscrolling'),
+        ('type',
+         'banner_id', 'cap_title', 'advertisement_title', 'advertisement_text',
+         'overscrolling'),
         css_class='column-right checkboxes')
 
     auto_cp_fields = gocept.form.grouped.Fields(
