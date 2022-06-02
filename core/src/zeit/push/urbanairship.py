@@ -32,9 +32,12 @@ class Connection:
     """Class to send push notifications to mobile devices via urbanairship."""
 
     def __init__(self, base_url, application_key, master_secret,
+                 legacy_url, legacy_key, legacy_secret,
                  expire_interval):
         self.base_url = base_url
         self.credentials = (application_key, master_secret)
+        self.legacy_url = legacy_url
+        self.legacy_credentials = (legacy_key, legacy_secret)
         self.expire_interval = expire_interval
 
     def send(self, text, link, **kw):
@@ -68,12 +71,18 @@ class Connection:
     ENDPOINT = '/push'  # for tests
 
     def push(self, push):
-        log.debug('Sending Push to Urban Airship: %s', push)
+        if FEATURE_TOGGLES.find('push_airship_com'):
+            self._push(push, self.legacy_url, self.legacy_credentials)
+        if FEATURE_TOGGLES.find('push_airship_eu'):
+            self._push(push, self.base_url, self.credentials)
+
+    def _push(self, push, base_url, credentials):
+        log.debug('Sending push to %s: %s', base_url, push)
         http = requests.Session()
         try:
             r = http.post(
-                self.base_url + self.ENDPOINT, json=push,
-                auth=self.credentials, headers={
+                base_url + self.ENDPOINT, json=push,
+                auth=credentials, headers={
                     'Accept': 'application/vnd.urbanairship+json; version=3'})
             r.raise_for_status()
             return r
@@ -81,13 +90,13 @@ class Connection:
             status = getattr(e.response, 'status_code', 599)
             if status < 500:
                 log.error(
-                    'Semantic error during push to UA with payload %s',
-                    push, exc_info=True)
+                    'Semantic error during push to %s with payload %s',
+                    base_url, push, exc_info=True)
                 raise zeit.push.interfaces.WebServiceError('Unauthorized')
             else:
                 log.error(
-                    'Technical error during push to UA with payload %s',
-                    push, exc_info=True)
+                    'Technical error during push to %s with payload %s',
+                    base_url, push, exc_info=True)
                 raise zeit.push.interfaces.TechnicalError(str(e))
 
 
@@ -191,6 +200,9 @@ def from_product_config():
         config['urbanairship-base-url'].rstrip('/'),
         config['urbanairship-application-key'],
         config['urbanairship-master-secret'],
+        config.get('urbanairship-legacy-base-url', '').rstrip('/'),
+        config.get('urbanairship-legacy-application-key'),
+        config.get('urbanairship-legacy-master-secret'),
         expire_interval=int(config['urbanairship-expire-interval']))
 
 
