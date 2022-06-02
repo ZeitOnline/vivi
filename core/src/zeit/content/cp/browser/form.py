@@ -48,20 +48,21 @@ class FormBase:
         ('__name__', 'keywords', 'serie', 'product', 'copyrights'),
         css_class='column-right')
 
-    cpform_fields = (zope.formlib.form.FormFields(
+    cpform_fields = (
+        zope.formlib.form.FormFields(
             zeit.content.image.interfaces.IImages) +
-            zope.formlib.form.FormFields(
+        zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ICenterPage))
 
-    form_fields = cpform_fields.select(
-            *list(itertools.chain.from_iterable(
-                [group.get_field_names() for group in
-                 (text_fields,
-                  og_fields,
-                  head_fields,
-                  option_fields,
-                  auto_cp_fields,
-                  navigation_fields)])))
+    form_fields = cpform_fields.select(*list(itertools.chain.from_iterable(
+        [group.get_field_names() for group in (
+            text_fields,
+            og_fields,
+            head_fields,
+            option_fields,
+            auto_cp_fields,
+            navigation_fields,
+        )])))
 
     field_groups = (
         text_fields,
@@ -69,7 +70,7 @@ class FormBase:
         head_fields,
         option_fields,
         auto_cp_fields,
-        navigation_fields
+        navigation_fields,
     )
 
 
