@@ -2,6 +2,7 @@ import grokcore.component as grok
 import logging
 import lxml.etree
 import zeit.cms.content.dav
+import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.util
@@ -84,14 +85,14 @@ class TypeDeclaration:
         # add to the repository. (Unfortunately, __provides__ is a custom type
         # and not a simple list, so we can only manipulate it through the
         # zope.interface functions, which is a little clumsy.)
-        try:
-            zope.interface.noLongerProvides(
-                unwrapped, zeit.cms.workingcopy.interfaces.ILocalContent)
-        except ValueError:
-            # Can only remove directly provided interfaces.
-            removed_local_content = False
-        else:
-            removed_local_content = True
+        local_content = zeit.cms.checkout.interfaces.ILocalContent.providedBy(
+            unwrapped)
+        if local_content:
+            try:
+                zope.interface.noLongerProvides(
+                    unwrapped, zeit.cms.checkout.interfaces.ILocalContent)
+            except ValueError:
+                local_content = False
         provides = unwrapped.__provides__
         if not list(zope.interface.directlyProvidedBy(unwrapped)):
             # In the case we don't have any direct provides just store nothing.
@@ -102,7 +103,7 @@ class TypeDeclaration:
             # We probably stored an object providing IRepositoryContent,
             # thus we may not change anything.
             pass
-        if removed_local_content:
+        if local_content:
             zope.interface.alsoProvides(
                 unwrapped, zeit.cms.workingcopy.interfaces.ILocalContent)
 
