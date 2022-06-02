@@ -40,7 +40,7 @@ class FormBase:
 
     auto_cp_fields = gocept.form.grouped.Fields(
         _("Run in channel"),
-        ('channels'),
+        ('channels',),
         css_class='column-right')
 
     navigation_fields = gocept.form.grouped.Fields(
