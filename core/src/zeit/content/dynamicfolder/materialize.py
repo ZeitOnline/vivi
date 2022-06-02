@@ -63,7 +63,7 @@ def materialize_content(folder):
             'materialize': materialize_count, 'regenerate': regenerate_count}))
 
 
-@zeit.cms.celery.task(queue='materialize')
+@zeit.cms.celery.task(queue='manual')
 def materialize(folder_id, keys):
     folder = zeit.cms.interfaces.ICMSContent(folder_id)
     for key in keys:
@@ -74,7 +74,7 @@ def materialize(folder_id, keys):
         _('Materialized ${count}', mapping={'count': len(keys)}))
 
 
-@zeit.cms.celery.task(queue='materialize')
+@zeit.cms.celery.task(queue='manual')
 def regenerate(folder_id, keys):
     folder = zeit.cms.interfaces.ICMSContent(folder_id)
     for key in keys:
@@ -114,9 +114,13 @@ def publish_content(folder):
             count += 1
             objects.append(item)
         if len(objects) >= batch_size:
-            publish.publish_multiple(objects, priority='materialize')
+            publish.publish_multiple(objects, priority='manual')
             objects = []
-    if objects:
-        publish.publish_multiple(objects, priority='materialize')
+    # The folder itself does not actually need to be published, we're only
+    # doing it for the objectlog message. Add it as the last object, so the
+    # user can confirm when all publish tasks have completed.
+    objects.append(folder)
+    # This also handles any batch that may be remaining after the loop.
+    publish.publish_multiple(objects, priority='manual')
     zeit.objectlog.interfaces.ILog(folder).log(
         _('About to publish ${count} objects', mapping={'count': count}))

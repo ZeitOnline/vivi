@@ -83,6 +83,13 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsTestCase):
             zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
                 self.content))
 
+        content = self.repository['foo']
+        self.assertFalse(
+            zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(content))
+        zeit.connector.interfaces.IResource(content)
+        self.assertFalse(
+            zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(content))
+
     def test_file(self):
         f = zeit.cms.repository.file.LocalFile()
         f.open('w').write(b'data')

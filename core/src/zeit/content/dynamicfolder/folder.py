@@ -42,7 +42,8 @@ class DynamicFolderBase:
 
 
 @zope.interface.implementer(
-    zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder)
+    zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder,
+    zeit.cms.repository.interfaces.INonRecursiveCollection)
 class RepositoryDynamicFolder(
         DynamicFolderBase,
         zeit.cms.repository.folder.Folder):

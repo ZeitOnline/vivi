@@ -119,6 +119,7 @@ class CMSContent(Converter):
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
     DEPRECATED = {
         ('document', 'breaking_news'),
+        ('document', 'DailyNL'),
         ('document', 'comments_api_v2'),
         ('document', 'countings'),
         ('document', 'export_cds'),
