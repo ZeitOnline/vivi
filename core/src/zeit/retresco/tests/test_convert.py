@@ -66,7 +66,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'title': 'Rückkehr der Warlords'
                 },
                 'document': {
-                    'DailyNL': False,
                     'artbox_thema': False,
                     'audio_speechbert': True,
                     'author': ['Hans Meiser'],

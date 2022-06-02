@@ -22,7 +22,6 @@
                             "id": "5020444524001"
                         },
                         "document": {
-                            "DailyNL": false,
                             "banner": true,
                             "breaking_news": false,
                             "comments": true,
@@ -101,7 +100,6 @@
                             "title": "Morgens halb zehn in Deutschland"
                         },
                         "document": {
-                            "DailyNL": false,
                             "access": "registration",
                             "artbox_thema": false,
                             "author": [

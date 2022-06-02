@@ -1231,14 +1231,9 @@
   padding-left:3px !important;
 }
 
-/* no left-padding for some labels... */
+/* no left-padding for some labels */
 .type-article .article-editor-inner .inline-form label {
   padding-left:0px;
-}
-
-/* ...and exceptions for the others respectively related elements */
-.type-article form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
-  margin-left:0px;
 }
 
 /*
