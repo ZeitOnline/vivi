@@ -58,10 +58,6 @@
       />
   </class>
 
-  <adapter
-    factory=".centerpage.cp_references"
-    name="zeit.content.cp.centerpage"
-    />
   <adapter factory="zeit.edit.rule.ValidatingWorkflow"
     provides="zeit.cms.workflow.interfaces.IPublishInfo"
     for=".interfaces.ICenterPage"

@@ -76,11 +76,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         source=zeit.content.cp.source.CPTypeSource(),
         default='centerpage')
 
-    header_image = zope.schema.Choice(
-        title=_('Header image'),
-        required=False,
-        source=zeit.content.image.interfaces.imageSource)
-
     topiclink_title = zope.schema.TextLine(
         title=_('Name for topiclinks'),
         required=False)

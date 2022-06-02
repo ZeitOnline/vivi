@@ -77,10 +77,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.cp.interfaces.ICenterPage['type'],
         zeit.content.cp.interfaces.DAV_NAMESPACE, 'type')
 
-    header_image = zeit.cms.content.reference.SingleResource(
-        '.head.header_image',
-        xml_reference_name='image')
-
     topiclink_title = zeit.cms.content.property.ObjectPathProperty(
         '.head.topiclinks.topiclink_title',
         zeit.content.cp.interfaces.ICenterPage['topiclink_title'])
@@ -265,14 +261,6 @@ def cms_content_iter(context):
         if block is not None])
 
 
-@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
-@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
-def cp_references(context):
-    if context.header_image:
-        return [context.header_image]
-    return []
-
-
 @zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
@@ -282,8 +270,6 @@ def update_centerpage_on_checkin(context, event):
         return
     for content in zeit.edit.interfaces.IElementReferences(context):
         context.updateMetadata(content)
-
-    context.header_image = context.header_image
 
 
 @zope.component.adapter(
