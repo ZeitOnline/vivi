@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.2 (2022-06-02)
+-------------------
+
+- ZO-1261: Remove obsolete field ICommonMetadata.dailyNewsletter
+
+- ZO-1286: Add objectlog entry after dynamic folder contents have been published
+
+
 5.16.1 (2022-05-30)
 -------------------
 
