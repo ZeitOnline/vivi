@@ -122,3 +122,5 @@ def publish_content(folder):
     objects.append(folder)
     # This also handles any batch that may be remaining after the loop.
     publish.publish_multiple(objects, priority='manual')
+    zeit.objectlog.interfaces.ILog(folder).log(
+        _('About to publish ${count} objects', mapping={'count': count}))

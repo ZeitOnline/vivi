@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Jun  2 10:43:19 2022\n"
+"POT-Creation-Date: Thu Jun  2 11:14:17 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -3399,6 +3399,10 @@ msgstr "interne Links"
 msgid "Materialized"
 msgstr "Materialisiert"
 
+#: zeit/content/dynamicfolder/materialize.py:126
+msgid "About to publish ${count} objects"
+msgstr "Starte Sammelveröffentlichung (${count} Objekte insgesamt)"
+
 #: zeit/content/gallery/browser/configure.zcml:172
 msgid "Transform"
 msgstr "Bearbeiten"
@@ -4974,9 +4978,6 @@ msgstr "mit Info"
 
 #~ msgid "Should this article be listed in the daily newsletter?"
 #~ msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
-
-#~ msgid "About to publish ${count} objects"
-#~ msgstr "Starte Sammelveröffentlichung (${count} Objekte insgesamt)"
 
 #~ msgid "Encoding"
 #~ msgstr "Kodierung"
