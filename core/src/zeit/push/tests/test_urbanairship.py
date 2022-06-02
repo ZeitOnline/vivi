@@ -3,11 +3,10 @@ from datetime import datetime
 from unittest import mock
 from zeit.cms.interfaces import ICMSContent
 from zope.lifecycleevent import ObjectCreatedEvent
-import json
 import os
 import pytz
+import requests_mock
 import unittest
-import urbanairship.push.core
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.push.interfaces
@@ -15,24 +14,6 @@ import zeit.push.testing
 import zeit.push.urbanairship
 import zope.component
 import zope.event
-
-
-def send(self):
-    """Mock that sends to /validate/.
-
-    We cannot mock the URL only, since the logger in the original `send`
-    expects more data to be returned by the response.
-
-    """
-    body = json.dumps(self.payload)
-    response = self._airship._request(
-        method='POST',
-        body=body,
-        url='https://go.urbanairship.com/api/push/validate/',
-        content_type='application/json',
-        version=3
-    )
-    return urbanairship.push.core.PushResponse(response)
 
 
 class ConnectionTest(zeit.push.testing.TestCase):
@@ -60,41 +41,42 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 self.api.send('any', 'any', message=self.message)
                 self.assertEqual(3, push.call_count)
                 android = push.call_args_list[0][0][0]
-                self.assertEqual(['android'], android.device_types)
+                self.assertEqual(['android'], android['device_types'])
                 self.assertEqual(
                     # Given in template
-                    '2014-07-01T10:45:07', android.options['expiry'])
+                    '2014-07-01T10:45:07', android['options']['expiry'])
                 self.assertEqual(
                     {'group': 'subscriptions', 'tag': 'Eilmeldung'},
-                    android.audience['OR'][0])
-                self.assertEqual('foo', android.notification['alert'])
+                    android['audience']['OR'][0])
+                self.assertEqual('foo', android['notification']['alert'])
                 self.assertEqual(
                     'Rückkehr der Warlords',
-                    android.notification['android']['extra']['headline'])
+                    android['notification']['android']['extra']['headline'])
 
                 ios = push.call_args_list[1][0][0]
-                self.assertEqual(['ios'], ios.device_types)
+                self.assertEqual(['ios'], ios['device_types'])
                 self.assertEqual(
                     # Defaults to configured expiration_interval
-                    '2014-07-01T11:15:07', ios.options['expiry'])
+                    '2014-07-01T11:15:07', ios['options']['expiry'])
                 self.assertEqual(
                     {'group': 'subscriptions', 'tag': 'Eilmeldung'},
-                    ios.audience['OR'][0])
-                self.assertEqual('foo', ios.notification['alert'])
+                    ios['audience']['OR'][0])
+                self.assertEqual('foo', ios['notification']['alert'])
                 self.assertEqual(
-                    'Rückkehr der Warlords', ios.notification['ios']['title'])
+                    'Rückkehr der Warlords',
+                    ios['notification']['ios']['title'])
 
                 open_slack = push.call_args_list[2][0][0]
-                self.assertEqual(['open::slack'], open_slack.device_types)
+                self.assertEqual(['open::slack'], open_slack['device_types'])
                 self.assertEqual(
-                    '2014-07-01T11:15:07', open_slack.options['expiry'])
+                    '2014-07-01T11:15:07', open_slack['options']['expiry'])
                 self.assertEqual(
                     {'open_channel': 'cec48c28-4486-4c95-989e-0bbed3edc714'},
-                    open_slack.audience)
-                self.assertEqual('foo', open_slack.notification['alert'])
+                    open_slack['audience'])
+                self.assertEqual('foo', open_slack['notification']['alert'])
                 self.assertEqual(
                     'Nicht Corona',
-                    open_slack.notification['open::slack']['extra']['recipients'])
+                    open_slack['notification']['open::slack']['extra']['recipients'])
 
 
 class PayloadSourceTest(zeit.push.testing.TestCase):
@@ -357,10 +339,9 @@ class PushTest(zeit.push.testing.TestCase):
 
     @unittest.skip('UA has too tight validation, nonsense requests fail')
     def test_push_works(self):
-        with mock.patch('urbanairship.push.core.Push.send', send):
-            with mock.patch('urbanairship.push.core.PushResponse') as push:
-                self.api.send('any', 'any', message=self.message)
-                self.assertEqual(200, push.call_args[0][0].status_code)
+        self.api.ENDPOINT = '/push/validate'
+        with self.assertNothingRaised():
+            self.api.send('any', 'any', message=self.message)
 
     def test_invalid_credentials_should_raise(self):
         invalid_connection = zeit.push.urbanairship.Connection(
@@ -370,12 +351,8 @@ class PushTest(zeit.push.testing.TestCase):
             invalid_connection.send('any', 'any', message=self.message)
 
     def test_server_error_should_raise(self):
-        response = mock.Mock()
-        response.status_code = 500
-        response.headers = {}
-        response.content = ''
-        response.json.return_value = {}
-        with mock.patch('requests.sessions.Session.request') as request:
-            request.return_value = response
+        http = requests_mock.Mocker()
+        http.post(self.api.BASE_URL + self.api.ENDPOINT, status_code=500)
+        with http:
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
                 self.api.send('any', 'any', message=self.message)

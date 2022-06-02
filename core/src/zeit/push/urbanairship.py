@@ -9,14 +9,14 @@ import logging
 import pkg_resources
 import pytz
 import re
-import urllib.parse
+import requests
 import sys
-import urbanairship
+import urllib.parse
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
-import zeit.content.image.interfaces
 import zeit.content.image.image
+import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -51,13 +51,10 @@ class Connection:
         message = kw['message']
 
         now = datetime.now(pytz.UTC)
-        to_push = []
         for push_message in message.render():
-            # Check out
-            # https://docs.urbanairship.com/api/ua/#push-object
+            # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
             for device in push_message.get('device_types', []):
-                application_credentials = self.credentials.get(
-                    device, [None, None])
+                credentials = tuple(self.credentials.get(device, (None, None)))
 
                 push_message.setdefault('options', {}).setdefault(
                     'expiry', self.expire_interval)
@@ -69,47 +66,42 @@ class Connection:
                 push_message['options']['expiry'] = push_message[
                     'options']['expiry'].strftime('%Y-%m-%dT%H:%M:%S')
 
-                ua_push_object = urbanairship.Airship(
-                    *application_credentials
-                ).create_push()
-                ua_push_object.options = push_message['options']
-                ua_push_object.audience = push_message['audience']
-                ua_push_object.device_types = urbanairship.device_types(device)
-                ua_push_object.notification = push_message['notification']
-                to_push.append(ua_push_object)
+                try:
+                    self.push(push_message, credentials)
+                except Exception:
+                    path = urllib.parse.urlparse(link).path
+                    info = sys.exc_info()
+                    bugsnag.notify(
+                        info[2], traceback=info[2], context=path,
+                        severity='error',
+                        grouping_hash=message.config.get('payload_template'))
+                    raise
 
-        # Urban airship does support batch pushing, but
-        # the python module does not
-        # https://github.com/urbanairship/python-library/issues/34
-        # Still we should not push each object directly after is
-        # created, because otherwise the whole push process can fail with
-        # a later object
-        # Great validation would be a solution to this problem :)
-        try:
-            for ua_push_object in to_push:
-                self.push(ua_push_object)
-        except Exception:
-            path = urllib.parse.urlparse(link).path
-            info = sys.exc_info()
-            bugsnag.notify(
-                info[2], traceback=info[2], context=path, severity='error',
-                grouping_hash=message.config.get('payload_template'))
-            raise
+    BASE_URL = 'https://go.urbanairship.com/api'
+    ENDPOINT = '/push'  # for tests
 
-    def push(self, push):
-        log.debug('Sending Push to Urban Airship: %s', push.payload)
+    def push(self, push, credentials):
+        log.debug('Sending Push to Urban Airship: %s', push)
+        http = requests.Session()
         try:
-            push.send()
-        except urbanairship.common.Unauthorized:
-            log.error(
-                'Semantic error during push to Urban Airship with payload %s',
-                push.payload, exc_info=True)
-            raise zeit.push.interfaces.WebServiceError('Unauthorized')
-        except urbanairship.common.AirshipFailure as e:
-            log.error(
-                'Technical error during push to Urban Airship with payload %s',
-                push.payload, exc_info=True)
-            raise zeit.push.interfaces.TechnicalError(str(e))
+            r = http.post(
+                self.BASE_URL + self.ENDPOINT, json=push, auth=credentials,
+                headers={'Accept':
+                         'application/vnd.urbanairship+json; version=3'})
+            r.raise_for_status()
+            return r
+        except requests.exceptions.RequestException as e:
+            status = getattr(e.response, 'status_code', 599)
+            if status < 500:
+                log.error(
+                    'Semantic error during push to UA with payload %s',
+                    push, exc_info=True)
+                raise zeit.push.interfaces.WebServiceError('Unauthorized')
+            else:
+                log.error(
+                    'Technical error during push to UA with payload %s',
+                    push, exc_info=True)
+                raise zeit.push.interfaces.TechnicalError(str(e))
 
 
 class Message(zeit.push.message.Message):
