@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Jun  2 09:28:27 2022\n"
+"POT-Creation-Date: Thu Jun  2 10:43:19 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -241,7 +241,7 @@ msgid "Author"
 msgstr "Autor"
 
 #: zeit/cms/browser/listing.py:278 zeit/cms/content/browser/template.py:42
-#: zeit/cms/content/interfaces.py:195 zeit/cms/content/interfaces.py:546
+#: zeit/cms/content/interfaces.py:195 zeit/cms/content/interfaces.py:539
 #: zeit/cms/retractlog/browser/retractlog.py:25
 #: zeit/cms/retractlog/interfaces.py:26
 #: zeit/cms/syndication/browser/feed.py:151
@@ -274,7 +274,7 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: zeit/cms/browser/listing.py:290 zeit/cms/content/interfaces.py:95
-#: zeit/cms/content/interfaces.py:654
+#: zeit/cms/content/interfaces.py:647
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:37
 #: zeit/contentquery/interfaces.py:196
@@ -677,7 +677,7 @@ msgstr "light"
 msgid "color scheme dark"
 msgstr "dark"
 
-#: zeit/cms/content/interfaces.py:78 zeit/cms/content/interfaces.py:664
+#: zeit/cms/content/interfaces.py:78 zeit/cms/content/interfaces.py:657
 #: zeit/content/article/edit/interfaces.py:561
 #: zeit/content/article/interfaces.py:215 zeit/content/volume/interfaces.py:36
 msgid "Year"
@@ -690,7 +690,7 @@ msgstr "Jahr"
 msgid "Volume"
 msgstr "Ausgabe"
 
-#: zeit/cms/content/interfaces.py:99 zeit/cms/content/interfaces.py:659
+#: zeit/cms/content/interfaces.py:99 zeit/cms/content/interfaces.py:652
 #: zeit/contentquery/interfaces.py:199
 msgid "Sub ressort"
 msgstr "Unterressort"
@@ -787,128 +787,120 @@ msgid "VG Wort Id"
 msgstr "VG Wort Id"
 
 #: zeit/cms/content/interfaces.py:228
-msgid "Daily newsletter"
-msgstr "Newsletter"
-
-#: zeit/cms/content/interfaces.py:229
-msgid "Should this article be listed in the daily newsletter?"
-msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
-
-#: zeit/cms/content/interfaces.py:235
 msgid "Comments premoderate"
 msgstr "Kommentare prämoderieren"
 
-#: zeit/cms/content/interfaces.py:240
+#: zeit/cms/content/interfaces.py:233
 msgid "Comments allowed"
 msgstr "Kommentare erlaubt"
 
-#: zeit/cms/content/interfaces.py:245
+#: zeit/cms/content/interfaces.py:238
 msgid "Show commentthread"
 msgstr "Kommentare anzeigen"
 
-#: zeit/cms/content/interfaces.py:250
+#: zeit/cms/content/interfaces.py:243
 msgid "Banner"
 msgstr "Alle Werbung anzeigen"
 
-#: zeit/cms/content/interfaces.py:255
+#: zeit/cms/content/interfaces.py:248
 msgid "Banner in Content"
 msgstr "Werbung im Artikeltext anzeigen"
 
-#: zeit/cms/content/interfaces.py:260
+#: zeit/cms/content/interfaces.py:253
 msgid "Banner Mainad"
 msgstr "Außenwerbung anzeigen"
 
-#: zeit/cms/content/interfaces.py:265
+#: zeit/cms/content/interfaces.py:258
 msgid "Banner id"
 msgstr "Banner-Id"
 
-#: zeit/cms/content/interfaces.py:269
+#: zeit/cms/content/interfaces.py:262
 msgid "Hide AdBlocker notification"
 msgstr "AdBlocker-Hinweis ausblenden"
 
-#: zeit/cms/content/interfaces.py:274 zeit/content/volume/interfaces.py:28
+#: zeit/cms/content/interfaces.py:267 zeit/content/volume/interfaces.py:28
 msgid "Product id"
 msgstr "Standard-Quelle"
 
-#: zeit/cms/content/interfaces.py:282
+#: zeit/cms/content/interfaces.py:275
 msgid "Overscrolling"
 msgstr "Overscrolling"
 
-#: zeit/cms/content/interfaces.py:287
+#: zeit/cms/content/interfaces.py:280
 msgid "CAP title"
 msgstr "CAP-Titel"
 
-#: zeit/cms/content/interfaces.py:291
+#: zeit/cms/content/interfaces.py:284
 msgid "Deeplink URL"
 msgstr "Deep-Link-URL"
 
-#: zeit/cms/content/interfaces.py:296
+#: zeit/cms/content/interfaces.py:289
 msgid "Color scheme"
 msgstr "Farbschema/Darkmode"
 
-#: zeit/cms/content/interfaces.py:301
+#: zeit/cms/content/interfaces.py:294
 msgid "Advertisement title"
 msgstr "Auszeichnungs-Titel"
 
-#: zeit/cms/content/interfaces.py:305
+#: zeit/cms/content/interfaces.py:298
 msgid "Advertisement text"
 msgstr "Auszeichnungs-Text"
 
-#: zeit/cms/content/interfaces.py:309
+#: zeit/cms/content/interfaces.py:302
 msgid "InterRed MediaSync ID"
 msgstr "MediaSync ID"
 
-#: zeit/cms/content/interfaces.py:314
+#: zeit/cms/content/interfaces.py:307
 msgid "InterRed Article ID"
 msgstr "InterRed Beitrags-ID"
 
-#: zeit/cms/content/interfaces.py:362
+#: zeit/cms/content/interfaces.py:355
 msgid "Invalid hex literal"
 msgstr "Kein gültiger Farbwert"
 
-#: zeit/cms/content/interfaces.py:442 zeit/content/cp/interfaces.py:591
+#: zeit/cms/content/interfaces.py:435 zeit/content/cp/interfaces.py:591
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:610
+#: zeit/cms/content/interfaces.py:603
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
-#: zeit/cms/content/interfaces.py:616
+#: zeit/cms/content/interfaces.py:609
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:643
+#: zeit/cms/content/interfaces.py:636
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:650
+#: zeit/cms/content/interfaces.py:643
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Type"
 msgstr "Typ"
 
-#: zeit/cms/content/interfaces.py:669
+#: zeit/cms/content/interfaces.py:662
 msgid "Month"
 msgstr "Monat"
 
-#: zeit/cms/content/interfaces.py:701
+#: zeit/cms/content/interfaces.py:694
 msgid "Caching time browser"
 msgstr "Cachezeit Browser"
 
-#: zeit/cms/content/interfaces.py:707
+#: zeit/cms/content/interfaces.py:700
 msgid "Caching time server"
 msgstr "Cachezeit Fastly"
 
-#: zeit/cms/content/interfaces.py:736
+#: zeit/cms/content/interfaces.py:729
 msgid "Remote image URL"
 msgstr "Remote Bild URL"
 
-#: zeit/cms/content/interfaces.py:741
+#: zeit/cms/content/interfaces.py:734
 msgid "Remote timestamp URL"
 msgstr "Remote Zeitstempel URL"
 
-#: zeit/cms/content/metadata.py:158
+#: zeit/cms/content/metadata.py:155
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
@@ -4976,6 +4968,12 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Daily newsletter"
+#~ msgstr "Newsletter"
+
+#~ msgid "Should this article be listed in the daily newsletter?"
+#~ msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
 
 #~ msgid "About to publish ${count} objects"
 #~ msgstr "Starte Sammelveröffentlichung (${count} Objekte insgesamt)"

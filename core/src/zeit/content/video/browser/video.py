@@ -42,7 +42,7 @@ class Base(zeit.push.browser.form.SocialBase,
             css_class='column-right'),
         gocept.form.grouped.Fields(
             _("Options"),
-            ('dailyNewsletter', 'banner', 'banner_id',
+            ('banner', 'banner_id',
              'breaking_news', 'has_recensions', 'commentsAllowed',
              'commentsPremoderate', 'has_advertisement', 'type'),
             css_class='column-right checkboxes'),
