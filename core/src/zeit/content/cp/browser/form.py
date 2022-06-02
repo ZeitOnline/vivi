@@ -64,11 +64,11 @@ class FormBase:
 
     field_groups = (
         text_fields,
-        og_fields,
-        head_fields,
-        option_fields,
-        auto_cp_fields,
         navigation_fields,
+        auto_cp_fields,
+        og_fields,
+        option_fields,
+        head_fields,
     )
 
 
