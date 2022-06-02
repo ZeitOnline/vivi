@@ -21,7 +21,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def setUp(self):
         super().setUp()
         self.api = zeit.push.urbanairship.Connection(
-            None, None, None, None, None, None, None, None, 3600)
+            None, None, None, expire_interval=3600)
         self.message = zeit.push.urbanairship.Message(
             ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
         self.message.config = {
@@ -39,8 +39,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 datetime(2014, 7, 1, 10, 15, 7, 38, tzinfo=pytz.UTC))
             with mock.patch.object(self.api, 'push') as push:
                 self.api.send('any', 'any', message=self.message)
-                self.assertEqual(3, push.call_count)
-                android = push.call_args_list[0][0][0]
+                android = push.call_args[0][0][0]
                 self.assertEqual(['android'], android['device_types'])
                 self.assertEqual(
                     # Given in template
@@ -53,7 +52,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                     'Rückkehr der Warlords',
                     android['notification']['android']['extra']['headline'])
 
-                ios = push.call_args_list[1][0][0]
+                ios = push.call_args[0][0][1]
                 self.assertEqual(['ios'], ios['device_types'])
                 self.assertEqual(
                     # Defaults to configured expiration_interval
@@ -66,7 +65,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
                     'Rückkehr der Warlords',
                     ios['notification']['ios']['title'])
 
-                open_slack = push.call_args_list[2][0][0]
+                open_slack = push.call_args[0][0][2]
                 self.assertEqual(['open::slack'], open_slack['device_types'])
                 self.assertEqual(
                     '2014-07-01T11:15:07', open_slack['options']['expiry'])
@@ -318,24 +317,10 @@ class PushTest(zeit.push.testing.TestCase):
             self.repository['testcontent'])
         self.message.config['payload_template'] = 'foo.json'
         self.api = zeit.push.urbanairship.Connection(
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_ANDROID_APPLICATION_KEY'],
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_ANDROID_MASTER_SECRET'],
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_IOS_APPLICATION_KEY'],
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_IOS_MASTER_SECRET'],
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_OPENCHANNEL_APPLICATION_KEY'],
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_OPENCHANNEL_MASTER_SECRET'],
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_WEB_APPLICATION_KEY'],
-            os.environ[
-                'ZEIT_PUSH_URBANAIRSHIP_WEB_MASTER_SECRET'],
-            1
-        )
+            os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'],
+            os.environ['ZEIT_PUSH_URBANAIRSHIP_APPLICATION_KEY'],
+            os.environ['ZEIT_PUSH_URBANAIRSHIP_MASTER_SECRET'],
+            expire_interval=1)
 
     @unittest.skip('UA has too tight validation, nonsense requests fail')
     def test_push_works(self):
@@ -345,14 +330,16 @@ class PushTest(zeit.push.testing.TestCase):
 
     def test_invalid_credentials_should_raise(self):
         invalid_connection = zeit.push.urbanairship.Connection(
-            'invalid', 'invalid', 'invalid', 'invalid', 'invalid', 'invalid',
-            'invalid', 'invalid', 1)
+            os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'],
+            'invalid', 'invalid', expire_interval=1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             invalid_connection.send('any', 'any', message=self.message)
 
     def test_server_error_should_raise(self):
         http = requests_mock.Mocker()
-        http.post(self.api.BASE_URL + self.api.ENDPOINT, status_code=500)
+        http.post(
+            os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'] + self.api.ENDPOINT,
+            status_code=500)
         with http:
             with self.assertRaises(zeit.push.interfaces.TechnicalError):
                 self.api.send('any', 'any', message=self.message)

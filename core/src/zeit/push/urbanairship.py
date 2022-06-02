@@ -31,63 +31,50 @@ log = logging.getLogger(__name__)
 class Connection:
     """Class to send push notifications to mobile devices via urbanairship."""
 
-    def __init__(self, android_application_key, android_master_secret,
-                 ios_application_key, ios_master_secret,
-                 openchannel_application_key, openchannel_master_secret,
-                 web_application_key, web_master_secret, expire_interval,
-                 ):
-        self.credentials = {
-            'android': [android_application_key, android_master_secret],
-            'ios': [ios_application_key, ios_master_secret],
-            'open::slack': [openchannel_application_key,
-                            openchannel_master_secret],
-            'web': [web_application_key, web_master_secret]
-        }
+    def __init__(self, base_url, application_key, master_secret,
+                 expire_interval):
+        self.base_url = base_url
+        self.credentials = (application_key, master_secret)
         self.expire_interval = expire_interval
 
     def send(self, text, link, **kw):
         # Since the UA payloads we need contain much more data than just text
         # and link, we talk to the IMessage object instead.
         message = kw['message']
+        pushes = message.render()
 
         now = datetime.now(pytz.UTC)
-        for push_message in message.render():
-            # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
-            for device in push_message.get('device_types', []):
-                credentials = tuple(self.credentials.get(device, (None, None)))
+        # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
+        for push in pushes:
+            expiry = push.setdefault('options', {}).setdefault(
+                'expiry', self.expire_interval)
+            # We transmit an absolute timestamp, not relative seconds, as a
+            # safetybelt against (very) delayed pushes. The format must not
+            # contain microseconds, so no `isoformat`.
+            expiry = now + timedelta(seconds=expiry)
+            push['options']['expiry'] = expiry.strftime('%Y-%m-%dT%H:%M:%S')
 
-                push_message.setdefault('options', {}).setdefault(
-                    'expiry', self.expire_interval)
-                # We transmit an absolute timestamp, not relative seconds, as a
-                # safetybelt against (very) delayed pushes. The format must not
-                # contain microseconds, so no `isoformat`.
-                push_message['options']['expiry'] = (
-                    now + timedelta(seconds=push_message['options']['expiry']))
-                push_message['options']['expiry'] = push_message[
-                    'options']['expiry'].strftime('%Y-%m-%dT%H:%M:%S')
+        try:
+            self.push(pushes)
+        except Exception:
+            path = urllib.parse.urlparse(link).path
+            info = sys.exc_info()
+            bugsnag.notify(
+                info[2], traceback=info[2], context=path,
+                severity='error',
+                grouping_hash=message.config.get('payload_template'))
+            raise
 
-                try:
-                    self.push(push_message, credentials)
-                except Exception:
-                    path = urllib.parse.urlparse(link).path
-                    info = sys.exc_info()
-                    bugsnag.notify(
-                        info[2], traceback=info[2], context=path,
-                        severity='error',
-                        grouping_hash=message.config.get('payload_template'))
-                    raise
-
-    BASE_URL = 'https://go.urbanairship.com/api'
     ENDPOINT = '/push'  # for tests
 
-    def push(self, push, credentials):
+    def push(self, push):
         log.debug('Sending Push to Urban Airship: %s', push)
         http = requests.Session()
         try:
             r = http.post(
-                self.BASE_URL + self.ENDPOINT, json=push, auth=credentials,
-                headers={'Accept':
-                         'application/vnd.urbanairship+json; version=3'})
+                self.base_url + self.ENDPOINT, json=push,
+                auth=self.credentials, headers={
+                    'Accept': 'application/vnd.urbanairship+json; version=3'})
             r.raise_for_status()
             return r
         except requests.exceptions.RequestException as e:
@@ -201,16 +188,9 @@ class Message(zeit.push.message.Message):
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
     return Connection(
-        android_application_key=config['urbanairship-android-application-key'],
-        android_master_secret=config['urbanairship-android-master-secret'],
-        ios_application_key=config['urbanairship-ios-application-key'],
-        ios_master_secret=config['urbanairship-ios-master-secret'],
-        openchannel_application_key=(
-            config['urbanairship-openchannel-application-key']),
-        openchannel_master_secret=(
-            config['urbanairship-openchannel-master-secret']),
-        web_application_key=config['urbanairship-web-application-key'],
-        web_master_secret=config['urbanairship-web-master-secret'],
+        config['urbanairship-base-url'].rstrip('/'),
+        config['urbanairship-application-key'],
+        config['urbanairship-master-secret'],
         expire_interval=int(config['urbanairship-expire-interval']))
 
 
