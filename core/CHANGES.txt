@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.3 (2022-06-02)
+-------------------
+
+- ZO-1286: Add status message with total object count
+
+
 5.16.2 (2022-06-02)
 -------------------
 
