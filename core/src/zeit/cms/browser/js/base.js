@@ -157,10 +157,10 @@ zeit.cms.log_error = function(err) {
     }
     if (real_error.errors) {
         forEach(real_error.errors, function(error) {
-            console.exception(error);
+            console.error(error);
         });
     } else {
-        console.exception(real_error);
+        console.error(real_error);
     }
     return err;
 };

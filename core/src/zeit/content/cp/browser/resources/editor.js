@@ -132,7 +132,7 @@ jQuery(document).bind('fragment-ready', function(event) {
 //                callback(data);
 //             })
 //             .fail(function (xhr, status, error) {
-//                 console.exception(error);
+//                 console.error(error);
 //             });
 //         },
 //         items: '.block.type-area > .block-inner > .edit-bar',
