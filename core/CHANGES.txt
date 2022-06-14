@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.4 (2022-06-14)
+-------------------
+
+- ZO-1118: Send all push device types in a single request to airship, send to both US and EU instance
+
+
 5.16.3 (2022-06-02)
 -------------------
 
