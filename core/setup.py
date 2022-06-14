@@ -53,7 +53,6 @@ setup(
         'sqlalchemy',
         'transaction',
         'tweepy',
-        'urbanairship >= 3.1.0',
         'webob',
         'werkzeug',
         'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched

@@ -9,14 +9,14 @@ import logging
 import pkg_resources
 import pytz
 import re
-import urllib.parse
+import requests
 import sys
-import urbanairship
+import urllib.parse
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
-import zeit.content.image.interfaces
 import zeit.content.image.image
+import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -31,85 +31,73 @@ log = logging.getLogger(__name__)
 class Connection:
     """Class to send push notifications to mobile devices via urbanairship."""
 
-    def __init__(self, android_application_key, android_master_secret,
-                 ios_application_key, ios_master_secret,
-                 openchannel_application_key, openchannel_master_secret,
-                 web_application_key, web_master_secret, expire_interval,
-                 ):
-        self.credentials = {
-            'android': [android_application_key, android_master_secret],
-            'ios': [ios_application_key, ios_master_secret],
-            'open::slack': [openchannel_application_key,
-                            openchannel_master_secret],
-            'web': [web_application_key, web_master_secret]
-        }
+    def __init__(self, base_url, application_key, master_secret,
+                 legacy_url, legacy_key, legacy_secret,
+                 expire_interval):
+        self.base_url = base_url
+        self.credentials = (application_key, master_secret)
+        self.legacy_url = legacy_url
+        self.legacy_credentials = (legacy_key, legacy_secret)
         self.expire_interval = expire_interval
 
     def send(self, text, link, **kw):
         # Since the UA payloads we need contain much more data than just text
         # and link, we talk to the IMessage object instead.
         message = kw['message']
+        pushes = message.render()
 
         now = datetime.now(pytz.UTC)
-        to_push = []
-        for push_message in message.render():
-            # Check out
-            # https://docs.urbanairship.com/api/ua/#push-object
-            for device in push_message.get('device_types', []):
-                application_credentials = self.credentials.get(
-                    device, [None, None])
+        # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
+        for push in pushes:
+            expiry = push.setdefault('options', {}).setdefault(
+                'expiry', self.expire_interval)
+            # We transmit an absolute timestamp, not relative seconds, as a
+            # safetybelt against (very) delayed pushes. The format must not
+            # contain microseconds, so no `isoformat`.
+            expiry = now + timedelta(seconds=expiry)
+            push['options']['expiry'] = expiry.strftime('%Y-%m-%dT%H:%M:%S')
 
-                push_message.setdefault('options', {}).setdefault(
-                    'expiry', self.expire_interval)
-                # We transmit an absolute timestamp, not relative seconds, as a
-                # safetybelt against (very) delayed pushes. The format must not
-                # contain microseconds, so no `isoformat`.
-                push_message['options']['expiry'] = (
-                    now + timedelta(seconds=push_message['options']['expiry']))
-                push_message['options']['expiry'] = push_message[
-                    'options']['expiry'].strftime('%Y-%m-%dT%H:%M:%S')
-
-                ua_push_object = urbanairship.Airship(
-                    *application_credentials
-                ).create_push()
-                ua_push_object.options = push_message['options']
-                ua_push_object.audience = push_message['audience']
-                ua_push_object.device_types = urbanairship.device_types(device)
-                ua_push_object.notification = push_message['notification']
-                to_push.append(ua_push_object)
-
-        # Urban airship does support batch pushing, but
-        # the python module does not
-        # https://github.com/urbanairship/python-library/issues/34
-        # Still we should not push each object directly after is
-        # created, because otherwise the whole push process can fail with
-        # a later object
-        # Great validation would be a solution to this problem :)
         try:
-            for ua_push_object in to_push:
-                self.push(ua_push_object)
+            self.push(pushes)
         except Exception:
             path = urllib.parse.urlparse(link).path
             info = sys.exc_info()
             bugsnag.notify(
-                info[2], traceback=info[2], context=path, severity='error',
+                info[2], traceback=info[2], context=path,
+                severity='error',
                 grouping_hash=message.config.get('payload_template'))
             raise
 
+    ENDPOINT = '/push'  # for tests
+
     def push(self, push):
-        log.debug('Sending Push to Urban Airship: %s', push.payload)
+        if FEATURE_TOGGLES.find('push_airship_com'):
+            self._push(push, self.legacy_url, self.legacy_credentials)
+        if FEATURE_TOGGLES.find('push_airship_eu'):
+            self._push(push, self.base_url, self.credentials)
+
+    def _push(self, push, base_url, credentials):
+        log.debug('Sending push to %s: %s', base_url, push)
+        http = requests.Session()
         try:
-            push.send()
-        except urbanairship.common.Unauthorized:
-            log.error(
-                'Semantic error during push to Urban Airship with payload %s',
-                push.payload, exc_info=True)
-            raise zeit.push.interfaces.WebServiceError('Unauthorized')
-        except urbanairship.common.AirshipFailure as e:
-            log.error(
-                'Technical error during push to Urban Airship with payload %s',
-                push.payload, exc_info=True)
-            raise zeit.push.interfaces.TechnicalError(str(e))
+            r = http.post(
+                base_url + self.ENDPOINT, json=push,
+                auth=credentials, headers={
+                    'Accept': 'application/vnd.urbanairship+json; version=3'})
+            r.raise_for_status()
+            return r
+        except requests.exceptions.RequestException as e:
+            status = getattr(e.response, 'status_code', 599)
+            if status < 500:
+                log.error(
+                    'Semantic error during push to %s with payload %s',
+                    base_url, push, exc_info=True)
+                raise zeit.push.interfaces.WebServiceError('Unauthorized')
+            else:
+                log.error(
+                    'Technical error during push to %s with payload %s',
+                    base_url, push, exc_info=True)
+                raise zeit.push.interfaces.TechnicalError(str(e))
 
 
 class Message(zeit.push.message.Message):
@@ -209,16 +197,12 @@ class Message(zeit.push.message.Message):
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
     return Connection(
-        android_application_key=config['urbanairship-android-application-key'],
-        android_master_secret=config['urbanairship-android-master-secret'],
-        ios_application_key=config['urbanairship-ios-application-key'],
-        ios_master_secret=config['urbanairship-ios-master-secret'],
-        openchannel_application_key=(
-            config['urbanairship-openchannel-application-key']),
-        openchannel_master_secret=(
-            config['urbanairship-openchannel-master-secret']),
-        web_application_key=config['urbanairship-web-application-key'],
-        web_master_secret=config['urbanairship-web-master-secret'],
+        config['urbanairship-base-url'].rstrip('/'),
+        config['urbanairship-application-key'],
+        config['urbanairship-master-secret'],
+        config.get('urbanairship-legacy-base-url', '').rstrip('/'),
+        config.get('urbanairship-legacy-application-key'),
+        config.get('urbanairship-legacy-master-secret'),
         expire_interval=int(config['urbanairship-expire-interval']))
 
 
