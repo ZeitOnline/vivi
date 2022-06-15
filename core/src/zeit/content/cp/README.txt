@@ -70,23 +70,6 @@ There is also such a handler for IObjectMovedEvent:
 True
 
 
-Header image
-++++++++++++
-
->>> import zeit.cms.repository.interfaces
->>> import zope.component
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
->>> cp.header_image = repository['2006']['DSC00109_2.JPG']
->>> print(zeit.cms.testing.xmltotext(cp.xml))
-<centerpage...>
-<head>
-...
-<header_image src="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
-...
-</centerpage>
-
-
 OG-Metadata
 +++++++++++
 
