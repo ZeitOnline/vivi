@@ -65,7 +65,7 @@ class FacebookTest(zeit.push.testing.TestCase):
         facebook = zeit.push.facebook.Connection()
         with self.assertRaises(zeit.push.interfaces.TechnicalError) as e:
             facebook.send('foo', '', account='fb_ressort_deutschland')
-        self.assertIn('Invalid OAuth access token.', str(e.exception))
+        self.assertIn('Invalid OAuth access token', str(e.exception))
 
 
 class FacebookAccountsTest(zeit.push.testing.TestCase):
