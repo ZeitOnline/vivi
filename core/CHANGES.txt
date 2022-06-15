@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.5 (2022-06-15)
+-------------------
+
+- ZO-1211: Simplify CP metadata form
+
+
 5.16.4 (2022-06-14)
 -------------------
 
