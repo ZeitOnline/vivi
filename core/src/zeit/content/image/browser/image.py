@@ -106,7 +106,7 @@ class ReferenceDetailsBody(ImageView):
 
 class Scaled:
 
-    filter = PIL.Image.ANTIALIAS
+    filter = PIL.Image.Resampling.LANCZOS
 
     def __call__(self):
         return self.scaled()

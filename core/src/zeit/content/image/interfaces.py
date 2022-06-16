@@ -136,13 +136,13 @@ class IImage(zeit.cms.interfaces.IAsset,
 
 class ITransform(zope.interface.Interface):
 
-    def thumbnail(width, height, filter=PIL.Image.ANTIALIAS):
+    def thumbnail(width, height, filter=PIL.Image.Resampling.LANCZOS):
         """Create a thumbnail version of the image.
 
         returns IImage object.
         """
 
-    def resize(width=None, height=None, filter=PIL.Image.ANTIALIAS):
+    def resize(width=None, height=None, filter=PIL.Image.Resampling.LANCZOS):
         """Create a resized version of the image.
 
         returns IImage object.

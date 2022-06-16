@@ -28,7 +28,7 @@ class ScaledImage(zeit.cms.browser.view.Base):
     def get_scaled_image(self, image, width, height):
         width, height = int(width), int(height)
         cropper = zeit.imp.interfaces.ICropper(image)
-        cropper.downsample_filter = PIL.Image.NEAREST
+        cropper.downsample_filter = PIL.Image.Resampling.NEAREST
         parse_filter_args(self.request, cropper)
         pil_image = cropper.crop(width, height, 0, 0, width, height)
         f = BytesIO()
