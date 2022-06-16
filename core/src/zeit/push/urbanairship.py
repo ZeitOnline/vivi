@@ -88,11 +88,13 @@ class Connection:
             return r
         except requests.exceptions.RequestException as e:
             status = getattr(e.response, 'status_code', 599)
+            e.response.reason = "%s (%s)" % (
+                e.response.reason, e.response.text)
             if status < 500:
                 log.error(
                     'Semantic error during push to %s with payload %s',
                     base_url, push, exc_info=True)
-                raise zeit.push.interfaces.WebServiceError('Unauthorized')
+                raise zeit.push.interfaces.WebServiceError(str(e))
             else:
                 log.error(
                     'Technical error during push to %s with payload %s',
