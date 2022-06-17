@@ -1,4 +1,3 @@
-from selenium.webdriver.common.keys import Keys
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 
@@ -78,26 +77,3 @@ class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
         self.open_form()
         self.assertEllipsis(
             '...<div class="output">Author push enabled...', b.contents)
-
-
-class SocialAMPTest(zeit.content.article.edit.browser.testing.EditorTestCase):
-
-    def setUp(self):
-        super().setUp()
-        self.add_article()
-
-    def test_AMP_is_disabled_after_choosing_non_free_access(self):
-        s = self.selenium
-        s.click('css=#edit-form-socialmedia .fold-link')
-        s.waitForVisible(r'css=#social\.is_amp')
-        self.assertEqual(True, s.isEditable(r'css=#social\.is_amp'))
-
-        s.check(r'css=#social\.is_amp')
-        s.click('css=#edit-form-metadata .fold-link')
-        s.waitForVisible('css=#form-metadata-access select')
-        s.select('css=#form-metadata-access select', 'label=abopflichtig')
-        s.keyPress('css=#form-metadata-access select', Keys.TAB)
-        s.waitForElementNotPresent('css=#form-metadata-access .dirty')
-        s.pause(500)
-        s.waitForElementPresent('css=.fieldname-is_amp .checkboxdisabled')
-        self.assertEqual(False, s.isEditable(r'css=#social\.is_amp'))
