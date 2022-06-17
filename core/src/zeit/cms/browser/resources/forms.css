@@ -57,11 +57,6 @@ label {
   display: none;
 }
 
-.fieldname-amp_code .hint,
-label[for="form.authors"] + .hint {
-  display: block;
-}
-
 /* formlib styling */
 
 fieldset {
