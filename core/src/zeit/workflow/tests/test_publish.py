@@ -431,3 +431,23 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
                 result['uniqueId'])
             self.assertIn('uuid', result)
         self.assertTrue(IPublishInfo(article).published)
+
+    def test_comments_are_published(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            result_comments = result['comments']
+            result_comments.pop('uuid')  # NOTE changes each run
+            self.assertEqual({
+                'comments_allowed': False,
+                'pre_moderated': False,
+                'type': 'commentsection',
+                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
+                'visible': False}, result_comments)
+        self.assertTrue(IPublishInfo(article).published)
