@@ -1,3 +1,4 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import datetime
 import logging
 import pendulum
@@ -25,6 +26,11 @@ class JSONView(zeit.cms.browser.view.JSON):
     def url(self, view, uniqueId):
         return super().url(
             self.context, '%s?uniqueId=%s' % (view, uniqueId))
+
+
+class FieldsList(zeit.cms.content.sources.SimpleXMLSourceBase):
+
+    default_filename = 'search_in_fields_list.xml'
 
 
 class SearchForm(JSONView):
@@ -451,6 +457,13 @@ def form_query(request, filter_terms=None):
     if form is None:
         return None
     form['filter_terms'] = filter_terms
+    fields = []
+    if not FEATURE_TOGGLES.find('ignore_search_in_fields_list'):
+        try:
+            fields = FieldsList().getValues()
+        except Exception:
+            log.info('XML source for FieldsList not found')
+    form['fields'] = fields
     return zeit.find.search.query(**form)
 
 
