@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.7 (2022-06-20)
+-------------------
+
+- ZO-1118: More airship error logging fixes
+
+
 5.16.6 (2022-06-16)
 -------------------
 
