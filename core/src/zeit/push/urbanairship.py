@@ -84,12 +84,12 @@ class Connection:
                 base_url + self.ENDPOINT, json=push,
                 auth=credentials, headers={
                     'Accept': 'application/vnd.urbanairship+json; version=3'})
+            if not r.ok:
+                r.reason = '%s (%s)' % (r.reason, r.text)
             r.raise_for_status()
             return r
         except requests.exceptions.RequestException as e:
             status = getattr(e.response, 'status_code', 599)
-            e.response.reason = "%s (%s)" % (
-                e.response.reason, e.response.text)
             if status < 500:
                 log.error(
                     'Semantic error during push to %s with payload %s',
