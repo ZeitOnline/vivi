@@ -12,12 +12,11 @@ class Comments(grok.Adapter):
     grok.name('comments')
 
     def json(self):
-        meta = zeit.cms.content.interfaces.ICommonMetadata(self.context)
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         return {
-            'comments_allowed': meta.commentsAllowed,
-            'pre_moderated': meta.commentsPremoderate,
+            'comments_allowed': self.context.commentsAllowed,
+            'pre_moderated': self.context.commentsPremoderate,
             'type': 'commentsection',
             'uuid': uuid.shortened,
             'unique_id': self.context.uniqueId,
-            'visible': meta.commentSectionEnable}
+            'visible': self.context.commentSectionEnable}
