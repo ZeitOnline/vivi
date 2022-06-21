@@ -126,7 +126,7 @@ def publish_priority_default(context):
 
 
 class IPublish(zope.interface.Interface):
-    """Interface for publishing/unpublishing objects."""
+    """Interface for publishing/retracting objects."""
 
     def publish(priority=None, background=True, **kw):
         """Publish object.
@@ -175,7 +175,7 @@ class IWithMasterObjectEvent(zope.interface.interfaces.IObjectEvent):
 class IBeforePublishEvent(IWithMasterObjectEvent):
     """Issued before an object is published.
 
-    Subscribers may veto publication by rasing an exception.
+    Subscribers may veto publication by raising an exception.
 
     """
 

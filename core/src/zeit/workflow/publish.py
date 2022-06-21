@@ -1,4 +1,5 @@
 from datetime import datetime
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
@@ -6,6 +7,7 @@ import logging
 import os.path
 import pkg_resources
 import pytz
+import requests
 import subprocess
 import tempfile
 import threading
@@ -366,6 +368,33 @@ class PublishRetractTask:
                 raise zeit.workflow.interfaces.ScriptError(
                     stderr, proc.returncode)
 
+    def _format_json(obj):
+        uuid = zeit.cms.content.interfaces.IUUID(obj)
+        json = {'uuid': uuid.shortened, 'uniqueId': obj.uniqueId}
+        for name, adapter in zope.component.getAdapters(
+                (obj,), zeit.workflow.interfaces.IPublisherData):
+            if not name:
+                continue
+            json[name] = adapter.json()
+        return json
+
+    @classmethod
+    def call_publisher(cls, to_publish_list):
+        publish_list = []
+        for obj in to_publish_list:
+            result = cls._format_json(obj)
+            publish_list.append(result)
+
+        if publish_list:
+            config = zope.app.appsetup.product.getProductConfiguration(
+                'zeit.workflow')
+            publisher_base_url = config['publisher-base-url']
+            response = requests.post(
+                url=f'{publisher_base_url}publish',
+                json=publish_list)
+            if response.status_code != 200:
+                raise ValueError('XXX error handling to be implemented')
+
 
 class PublishTask(PublishRetractTask):
     """Publish object."""
@@ -396,8 +425,11 @@ class PublishTask(PublishRetractTask):
         for obj in published:
             paths.extend(self.get_all_paths(obj))
 
-        if paths:
-            self.call_script('publish', paths)
+        if FEATURE_TOGGLES.find('new_publisher'):
+            self.call_publisher(published)
+        else:
+            if paths:
+                self.call_script('publish', paths)
 
         for obj in published:
             try:
