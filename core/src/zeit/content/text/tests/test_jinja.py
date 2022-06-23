@@ -28,9 +28,9 @@ class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
         try:
             tpl({'foo': lambda: [][0]})
         except IndexError:
-            self.assertIn(
-                '  File "<template>", line 1, in top-level template code\n',
-                traceback.format_exception(*sys.exc_info()))
+            self.assertEllipsis(
+                '...File "<template>", line ... in top-level template code...',
+                ''.join(traceback.format_exception(*sys.exc_info())))
         else:
             self.fail('did not raise')
 
