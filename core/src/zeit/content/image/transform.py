@@ -19,9 +19,9 @@ class ImageTransform:
     def __init__(self, context):
         self.context = context
         try:
-            self.image = PIL.Image.open(
-                zope.security.proxy.removeSecurityProxy(context.open()))
-            self.image.load()
+            with zope.security.proxy.removeSecurityProxy(context.open()) as f:
+                self.image = PIL.Image.open(f)
+                self.image.load()
         except IOError:
             raise zeit.content.image.interfaces.ImageProcessingError(
                 "Cannot transform image %s" % context.__name__)
@@ -186,7 +186,8 @@ class ImageTransform:
 
         options = zeit.content.image.interfaces.ENCODER_PARAMETERS.find(format)
 
-        pil_image.save(image.open('w'), format, **options)
+        with image.open('w') as f:
+            pil_image.save(f, format, **options)
         image.__parent__ = self.context
         image_times = zope.dublincore.interfaces.IDCTimes(self.context, None)
         if image_times and image_times.modified:
