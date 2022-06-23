@@ -24,7 +24,8 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def create_image(self, pil_image):
         image = zeit.content.image.image.LocalImage()
-        pil_image.save(image.open('w'), 'PNG')
+        with image.open('w') as f:
+            pil_image.save(f, 'PNG')
         return image
 
     ascii_to_color = {
@@ -54,7 +55,8 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         return transform
 
     def to_ascii(self, image):
-        pil_image = PIL.Image.open(image.open('r'))
+        with image.open('r') as f:
+            pil_image = PIL.Image.open(f)
         width, height = pil_image.size
         result = []
         for y in range(height):

@@ -178,9 +178,9 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(40000, sum(r))
         self.assertEqual(40000, sum(g))
         self.assertEqual(40000, sum(b))
-        self.assertEqual(40000, r[99])
-        self.assertEqual(40000, g[99])
-        self.assertEqual(40000, b[99])
+        self.assertEqual(40000, r[100])
+        self.assertEqual(40000, g[100])
+        self.assertEqual(40000, b[100])
 
     def test_sharpness_filter(self):
         # Testing the sharpnes is not quite trival. We just check that the

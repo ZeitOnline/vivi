@@ -47,9 +47,10 @@ class TestImageMetadataAcquisition(
 class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
 
     def test_master_image_without_filename_extension_sets_mime_as_type(self):
-        fh = self.repository['2006']['DSC00109_2.JPG'].open()
         image = zeit.content.image.image.LocalImage()
-        image.open('w').write(fh.read())
+        with image.open('w') as out:
+            with self.repository['2006']['DSC00109_2.JPG'].open() as fh:
+                out.write(fh.read())
         self.repository['example-image'] = image
         ref = zope.component.getAdapter(
             self.repository['example-image'],

@@ -134,7 +134,7 @@ We have uploaded a new image now. Let's have a look at the metadata screen:
     <div class="context-views">...
     <div class="image-metadata">
       <img src=".../2006/DSC00109_2.JPG/metadata-preview" alt=""
-            height="90" width="66" border="0" />
+            height="90" width="67" border="0" />
       <div>image/jpeg</div>
       <div>
         119x160
@@ -532,7 +532,7 @@ Make sure we have a metadata preview for repository image groups:
       <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="60" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
       <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
@@ -581,7 +581,7 @@ The image group has a special drag pane which shows all the images:
 ...     'repository/2006/new-hampshire/@@drag-pane.html')
 >>> print(browser.contents)
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="60" width="100" border="0" />
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
   <div class="Text">New Hampshire</div>

@@ -53,7 +53,7 @@ but uses this as a bounding box:
 It is possible to pass the filter for scaling:
 
 >>> import PIL.Image
->>> transform.thumbnail(100, 100, PIL.Image.NEAREST)
+>>> transform.thumbnail(100, 100, PIL.Image.Resampling.NEAREST)
 <zeit.content.image.image.TemporaryImage...>
 
 Simple resize
@@ -86,7 +86,7 @@ TypeError: Need at least one of width and height.
 It is possible to pass the filter for scaling:
 
 >>> import PIL.Image
->>> transform.resize(100, 100, PIL.Image.NEAREST)
+>>> transform.resize(100, 100, PIL.Image.Resampling.NEAREST)
 <zeit.content.image.image.TemporaryImage...>
 
 
@@ -107,7 +107,7 @@ The persistent thumbnail is an image itself:
 It always has 50x50 as bounding box so far:
 
 >>> persistent_thumbnail.getImageSize()
-(50, 37)
+(50, 38)
 
 It is contained in the folder `thumbnails` with the same name as the image:
 

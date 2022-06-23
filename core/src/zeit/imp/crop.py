@@ -25,7 +25,7 @@ class Cropper:
     }
 
     pil_image = None
-    downsample_filter = PIL.Image.ANTIALIAS
+    downsample_filter = PIL.Image.Resampling.LANCZOS
 
     def __init__(self, context):
         self.context = self.__parent__ = context

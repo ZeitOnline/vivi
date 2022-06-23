@@ -248,8 +248,9 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
             zeit.content.image.interfaces.IVariants(self.group)['square'],
             format='WEBP')
         self.assertEqual('image/webp', image.mimeType)
-        image = PIL.Image.open(image.open())
-        image.load()
+        with image.open() as f:
+            image = PIL.Image.open(f)
+            image.load()
         self.assertEqual('WEBP', image.format)
 
     def test_parse_url_variant(self):
