@@ -408,6 +408,8 @@ class CeleryWorkerLayer(plone.testing.Layer):
             prop = getattr(cls, name)
             if isinstance(prop, kombu.utils.objects.cached_property):
                 self['celery_app'].__dict__.pop(name, None)
+        # Kludgy way to reset `app.backend`
+        self['celery_app']._local = threading.local()
 
     def testSetUp(self):
         # Switch database to the currently active DemoStorage,
