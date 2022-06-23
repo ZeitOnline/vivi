@@ -21,7 +21,7 @@ class Embed(zeit.content.text.text.Text,
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IEmbed,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('render_as_template', 'parameter_definition', 'vivi_css', 'amp_code'))
+        ('render_as_template', 'parameter_definition', 'vivi_css'))
 
     @property
     def parameter_fields(self):
