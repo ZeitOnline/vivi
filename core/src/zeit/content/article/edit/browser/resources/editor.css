@@ -1837,16 +1837,11 @@
     margin-top: -4px;  /* vertically centered appearance */
 }
 
-.type-article #form-social .field.fieldname-is_amp {
-    clear: left;
-}
-
 /* XXX We should use <fieldset>, but we'd have to combine the templates of
    zeit.edit.browser.form.InlineForm and gocept.form.grouped which is hard */
 .type-article #form-social .field.fieldname-short_text,
 .type-article #form-social .field.fieldname-twitter_ressort_text,
-.type-article #form-social .field.fieldname-twitter_print_text,
-.type-article #form-social .field.fieldname-is_amp {
+.type-article #form-social .field.fieldname-twitter_print_text {
     border-top: 1px solid #d5dee7;
     clear: both;
     display: flow-root;
@@ -1859,8 +1854,7 @@
 .type-article #form-social .field.fieldname-facebook_main_text:before ,
 .type-article #form-social .field.fieldname-short_text:before ,
 .type-article #form-social .field.fieldname-twitter_ressort_text:before ,
-.type-article #form-social .field.fieldname-twitter_print_text:before ,
-.type-article #form-social .field.fieldname-is_amp:before {
+.type-article #form-social .field.fieldname-twitter_print_text:before {
     display: block;
     font-variant: small-caps;
     font-weight: bold;
@@ -1883,10 +1877,6 @@
 }
 .type-article #form-social .field.fieldname-twitter_ressort_text:before {
     content: "Twitter Ressort";
-}
-.type-article #form-social .field.fieldname-is_amp:before {
-    content: "Mobile Plattformen";
-    display: block;  /* counteract float: left of .widget */
 }
 /* end XXX */
 

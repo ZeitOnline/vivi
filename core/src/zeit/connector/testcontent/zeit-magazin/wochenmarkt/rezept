@@ -47,7 +47,6 @@
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="header_layout">leinwand</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="hide_adblocker_notification">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="hide_ligatus_recommendations">no</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="is_amp">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="is_instant_article">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last-semantic-change">2020-04-14T09:19:57.550528+00:00</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.manager</attribute>
