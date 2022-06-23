@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.8 (2022-06-23)
+-------------------
+
+- ZO-1351: Publish content to new publisher, if toggle enabled. For development purposes
+
+- ZO-1475: Remove obsolete `IArticle.is_amp` and `IEmbed.amp_code` fields
+
+- ZO-1478: Update Pillow from version 6 to current 9
+
+
 5.16.7 (2022-06-20)
 -------------------
 
