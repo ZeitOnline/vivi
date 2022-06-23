@@ -110,8 +110,6 @@ class Add(zeit.cms.browser.form.AddForm,
         article.year = settings.default_year
         article.volume = settings.default_volume
 
-        article.is_amp = True
-
         push = zeit.push.interfaces.IPushMessages(article)
         push.short_text = data['title']
         push.message_config = message_config

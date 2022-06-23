@@ -81,7 +81,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'hide_ligatus_recommendations': False,
                     'imagecount': '0',
                     'in_rankings': 'yes',
-                    'is_amp': True,
                     'is_content': 'yes',
                     'last_modified_by': 'zope.user',
                     'lead_candidate': True,

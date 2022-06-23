@@ -62,13 +62,6 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
             '...<attribute...name="is_breaking">yes</attribute>...',
             zeit.cms.testing.xmltotext(article.xml))
 
-    def test_sets_amp(self):
-        self.create_breakingnews()
-        self.fill_in_required_values()
-        self.browser.getControl('Publish and push').click()
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
-        self.assertEqual(True, article.is_amp)
-
     def test_publish_sends_push_messages(self):
         # This tests the integration with zeit.push, but not the actual push
         # methods themselves.

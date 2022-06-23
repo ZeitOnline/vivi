@@ -25,13 +25,9 @@ class Social(zeit.push.browser.form.SocialBase,
 
     def __init__(self, context, request):
         super().__init__(context, request)
-        self.form_fields += self.FormFieldsFactory(
-            zeit.content.article.interfaces.IArticle).select('is_amp')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
-        if self.context.access != 'free':
-            self.widgets['is_amp'].extra = 'disabled="disabled"'
 
 
 class MobileContainer(zeit.edit.browser.form.FoldableFormGroup):

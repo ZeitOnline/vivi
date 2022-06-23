@@ -311,49 +311,6 @@ def notify_modified(article, field):
             zeit.cms.content.interfaces.ICommonMetadata, field)))
 
 
-class AccessRestrictsAMP(zeit.content.article.testing.FunctionalTestCase):
-
-    def setUp(self):
-        super().setUp()
-        self.repository['article'] = self.get_article()
-        self.article = self.repository['article']
-
-    def test_setting_access_to_abo_or_registration_disables_amp(self):
-        with checked_out(self.article) as article:
-            article.is_amp = True
-            article.access = 'abo'
-            notify_modified(article, 'access')
-            self.assertEqual(False, article.is_amp)
-
-            article.is_amp = True
-            article.access = 'registration'
-            notify_modified(article, 'access')
-            self.assertEqual(False, article.is_amp)
-
-    def test_setting_access_to_free_does_not_change_is_amp(self):
-        with checked_out(self.article) as article:
-            article.is_amp = True
-            article.access = 'free'
-            notify_modified(article, 'access')
-            self.assertEqual(True, article.is_amp)
-
-    def test_do_not_change_is_amp_if_access_is_missing(self):
-        """For bw-compat old articles without access are treated as free."""
-        with checked_out(self.article) as article:
-            article.is_amp = True
-            article.access = None
-            notify_modified(article, 'access')
-            self.assertEqual(True, article.is_amp)
-
-    def test_only_change_is_amp_if_access_was_changed(self):
-        with checked_out(self.article) as article:
-            article.access = 'abo'
-            article.is_amp = True
-            article.year = 2016
-            notify_modified(article, 'year')
-            self.assertEqual(True, article.is_amp)
-
-
 class CopyTeaserToPush(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):

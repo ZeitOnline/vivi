@@ -85,11 +85,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.article.source.ArticleHeaderColorSource(),
         required=False)
 
-    is_amp = zope.schema.Bool(
-        title=_('Is AMP'),
-        default=True,
-        required=False)
-
     hide_ligatus_recommendations = zope.schema.Bool(
         title=_('Hide Ligatus recommendations'),
         default=False,
