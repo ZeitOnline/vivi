@@ -107,7 +107,7 @@ The persistent thumbnail is an image itself:
 It always has 50x50 as bounding box so far:
 
 >>> persistent_thumbnail.getImageSize()
-(50, 37)
+(50, 38)
 
 It is contained in the folder `thumbnails` with the same name as the image:
 
