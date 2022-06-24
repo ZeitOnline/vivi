@@ -231,7 +231,7 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         transaction.begin()
 
         self.assertEllipsis("""\
-Received task...
+...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...
 Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
@@ -254,7 +254,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
         transaction.begin()
 
         self.assertEllipsis("""\
-Received task...
+...
     for http://xml.zeit.de/online/2007/01/Flugsicherheit,
         http://xml.zeit.de/online/2007/01/Saarland
 Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit,

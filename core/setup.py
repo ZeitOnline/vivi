@@ -169,7 +169,7 @@ setup(
             'zope.viewlet',
         ],
         'test': [
-            'celery >= 4.0',
+            'celery >= 5.0',
             'celery_longterm_scheduler',
             'cssselect',
             'docker',
