@@ -22,6 +22,7 @@ import zeit.content.article.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
+import zeit.workflow.publish_3rdparty
 import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
@@ -418,6 +419,10 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
 
     layer = zeit.content.article.testing.LAYER
 
+    @pytest.fixture(autouse=True)
+    def monkeypatch(self, monkeypatch):
+        self.monkeypatch = monkeypatch
+
     def test_object_is_published(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -432,6 +437,23 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
                 'http://xml.zeit.de/online/2007/01/Somalia',
                 result['uniqueId'])
             self.assertIn('uuid', result)
+        self.assertTrue(IPublishInfo(article).published)
+
+    def test_authordashboard_is_notified(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            result_authordashboard = result['authordashboard']
+            result_authordashboard.pop('uuid')  # NOTE changes each run
+            self.assertEqual({
+                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
+            }, result_authordashboard)
         self.assertTrue(IPublishInfo(article).published)
 
     def test_comments_are_published(self):
@@ -477,7 +499,6 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_comments_warning_unknown_content_type(self):
         import zeit.content.cp.centerpage
-        import zeit.workflow.publish_3rdparty
         cp = zeit.content.cp.centerpage.CenterPage()
         assert zope.component.queryAdapter(
             cp, zeit.workflow.interfaces.IPublisherData,

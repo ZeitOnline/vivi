@@ -14,6 +14,17 @@ log = logging.getLogger(__name__)
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class AuthorDashboard(grok.Adapter):
+    grok.context(zeit.cms.content.interfaces.ICommonMetadata)
+    grok.name('authordashboard')
+
+    def json(self):
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        return {
+            'uuid': uuid.shortened,
+            'unique_id': self.context.uniqueId}
+
+
 class CommentsMixin:
 
     CONTENT_TYPES = frozenset([
