@@ -10,6 +10,7 @@ from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
 import logging
 import os
+import pytest
 import pytz
 import requests_mock
 import shutil
@@ -19,6 +20,7 @@ import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.objectlog.interfaces
+import zeit.workflow.interfaces
 import zeit.workflow.publish
 import zeit.workflow.testing
 import zope.app.appsetup.product
@@ -451,3 +453,40 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
                 'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
                 'visible': False}, result_comments)
         self.assertTrue(IPublishInfo(article).published)
+
+    def test_comments_adapters_are_registered(self):
+        import zeit.content.article.article
+        import zeit.content.gallery.gallery
+        import zeit.content.video.video
+        article = zeit.content.article.article.Article()
+        assert zope.component.queryAdapter(
+            article, zeit.workflow.interfaces.IPublisherData,
+            name="comments") is not None
+        gallery = zeit.content.gallery.gallery.Gallery()
+        assert zope.component.queryAdapter(
+            gallery, zeit.workflow.interfaces.IPublisherData,
+            name="comments") is not None
+        video = zeit.content.video.video.Video()
+        assert zope.component.queryAdapter(
+            video, zeit.workflow.interfaces.IPublisherData,
+            name="comments") is not None
+
+    @pytest.fixture(autouse=True)
+    def caplog(self, caplog):
+        self.caplog = caplog
+
+    def test_comments_warning_unknown_content_type(self):
+        import zeit.content.cp.centerpage
+        import zeit.workflow.publish_3rdparty
+        cp = zeit.content.cp.centerpage.CenterPage()
+        assert zope.component.queryAdapter(
+            cp, zeit.workflow.interfaces.IPublisherData,
+            name="comments") is None
+        data_factory = zeit.workflow.publish_3rdparty.ArticleComments(cp)
+        self.caplog.clear()
+        data = data_factory.json()
+        assert data is None
+        (record,) = self.caplog.records
+        assert record.message == (
+            "Got content_type 'centerpage-2009' for comments, "
+            "check adapter registration for Comments.")
