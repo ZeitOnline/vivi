@@ -511,3 +511,136 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
         assert record.message == (
             "Got content_type 'centerpage-2009' for comments, "
             "check adapter registration for Comments.")
+
+    def test_facebooknewstab_is_published(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            result_fbnt = result['facebooknewstab']
+            result_fbnt.pop('uuid')  # NOTE changes each run
+            self.assertEqual({
+                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
+                'live_url': 'https://www.zeit.de/online/2007/01/Somalia'},
+                result_fbnt)
+        self.assertTrue(IPublishInfo(article).published)
+
+    def test_facebooknewstab_warning_unknown_content_type(self):
+        import zeit.content.cp.centerpage
+        cp = zeit.content.cp.centerpage.CenterPage()
+        data_factory = zeit.workflow.publish_3rdparty.FacebookNewstab(cp)
+        self.caplog.clear()
+        data = data_factory.json()
+        assert data is None
+        (record,) = self.caplog.records
+        assert record.message == (
+            "Got content_type 'centerpage-2009' for facebooknewstab, "
+            "check adapter registration for FacebookNewstab.")
+
+    def test_facebooknewstab_skipped_date_first_released(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        # this article has date_first_published set to an old date
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        IPublishInfo(article).urgent = True
+        self.assertTrue(IPublishInfo(article).published)
+        self.assertEqual(IPublishInfo(article).date_first_released.year, 2020)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' not in result
+        # set it to something else and make sure nothing else caused the skip
+        info = IPublishInfo(article)
+        info.date_first_released = info.date_first_released.replace(
+            year=2022)
+        self.assertEqual(IPublishInfo(article).date_first_released.year, 2022)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' in result
+
+    def test_facebooknewstab_skipped_product_id_adv(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        # this is the setting which causes the resource to be skipped
+        with checked_out(article) as co:
+            co.product = zeit.cms.content.sources.Product("ADV")
+        self.assertFalse(IPublishInfo(article).published)
+        self.assertEqual(article.product.id, "ADV")
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' not in result
+        # set it to something else and make sure nothing else caused the skip
+        with checked_out(article) as co:
+            co.product = zeit.cms.content.sources.Product("ZTWI")
+        self.assertEqual(article.product.id, "ZTWI")
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' in result
+
+    def test_facebooknewstab_skipped_product_id_vab(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        # this is the setting which causes the resource to be skipped
+        with checked_out(article) as co:
+            co.product = zeit.cms.content.sources.Product("VAB")
+        self.assertFalse(IPublishInfo(article).published)
+        self.assertEqual(article.product.id, "VAB")
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' not in result
+        # set it to something else and make sure nothing else caused the skip
+        with checked_out(article) as co:
+            co.product = zeit.cms.content.sources.Product("ZTGS")
+        self.assertEqual(article.product.id, "ZTGS")
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' in result
+
+    def test_facebooknewstab_skipped_ressort(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        # this is the setting which causes the resource to be skipped
+        with checked_out(article) as co:
+            co.ressort = "Administratives"
+        self.assertFalse(IPublishInfo(article).published)
+        self.assertEqual(article.ressort, "Administratives")
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' not in result
+        # set it to something else and make sure nothing else caused the skip
+        with checked_out(article) as co:
+            co.ressort = "Politik"
+        self.assertEqual(article.ressort, "Politik")
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' in result
