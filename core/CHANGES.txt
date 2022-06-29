@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.11 (2022-06-29)
+--------------------
+
+- ZO-339: Actually allow users with EditEmbed permission to edit embeds
+
+
 5.16.10 (2022-06-27)
 --------------------
 
