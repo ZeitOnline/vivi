@@ -38,8 +38,9 @@ class Cropper:
         self.filters.append((filter_class, factor))
 
     def crop(self, w, h, x1, y1, x2, y2, border=None):
-        pil_image = PIL.Image.open(
-            zope.security.proxy.removeSecurityProxy(self.context).open())
+        with zope.security.proxy.getObject(self.context).open() as f:
+            pil_image = PIL.Image.open(f)
+            pil_image.load()
 
         pil_image = pil_image.resize((w, h), self.downsample_filter)
         pil_image = pil_image.crop((x1, y1, x2, y2))

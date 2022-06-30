@@ -61,6 +61,7 @@ class VGWortWebService:
             try:
                 method = getattr(self.client.service, method_name)
                 result = method(*args, **kw)
+                self.client.transport.session.close()
                 if isinstance(result, tuple):
                     raise zeit.vgwort.interfaces.TechnicalError(result)
                 return result

@@ -86,6 +86,7 @@ class Connection:
                     'Accept': 'application/vnd.urbanairship+json; version=3'})
             if not r.ok:
                 r.reason = '%s (%s)' % (r.reason, r.text)
+            http.close()
             r.raise_for_status()
             return r
         except requests.exceptions.RequestException as e:

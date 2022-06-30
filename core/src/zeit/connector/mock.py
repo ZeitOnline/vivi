@@ -143,6 +143,7 @@ class Connector(zeit.connector.filesystem.Connector):
         # Just a very basic in-memory data storage for testing purposes.
         resource.data.seek(0)
         self._data[id] = resource.data.read()
+        resource.data.close()
         path = self._path(id)
         self._paths.setdefault(os.path.dirname(path), set()).add(
             os.path.basename(path))

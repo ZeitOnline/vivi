@@ -116,11 +116,12 @@ class Connector:
         return zeit.connector.dav.davconnection.DAVConnection(host, port)
 
     def disconnect(self):
-        connections = self.connections
-        try:
-            del connections.default
-        except AttributeError:
-            pass
+        for root in self._roots:
+            conn = getattr(self.connections, root, None)
+            if conn is None:
+                continue
+            conn.close()
+            delattr(self.connections, root)
 
     def listCollection(self, id):
         """List the filenames of a collection identified by <id> (see[8]). """

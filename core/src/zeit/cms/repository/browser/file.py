@@ -72,6 +72,7 @@ class FormBase:
         while s:
             target.write(s)
             s = data.read(self.BUFFER_SIZE)
+        data.close()
         target.close()
         file.mimeType = data.headers['content-type']
 

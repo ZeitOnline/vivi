@@ -48,12 +48,13 @@ def add_image(folder, filename, name=None):
 
     filename = pkg_resources.resource_filename(
         __name__, 'browser/testdata/' + filename)
-    test_data = open(filename, 'rb').read()
 
     image = zeit.content.image.image.LocalImage()
     image.__name__ = name
     image.contentType = 'image/jpeg'
-    image.open('w').write(test_data)
+    with image.open('w') as img:
+        with open(filename, 'rb') as f:
+            img.write(f.read())
 
     metadata = zeit.content.image.interfaces.IImageMetadata(image)
     metadata.copyright = (('ZEIT online', 'http://www.zeit.de'),)

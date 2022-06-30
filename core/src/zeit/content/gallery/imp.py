@@ -23,7 +23,8 @@ class GalleryStorer:
 
     def store(self, name, pil_image):
         image = zeit.content.image.image.LocalImage()
-        pil_image.save(image.open('w'), 'JPEG', optimize=True, quality=80)
+        with image.open('w') as f:
+            pil_image.save(f, 'JPEG', optimize=True, quality=80)
 
         self.copy_image_metadata(image)
         new_entry = self.copy_entry(image)
