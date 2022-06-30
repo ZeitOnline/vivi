@@ -266,10 +266,10 @@ class Connector:
                 properties[('getlastmodified', 'DAV:')] = modified
 
         metadata_parse_error = False
+        data = None
         try:
             data = self._get_metadata_file(id)
             xml = lxml.etree.parse(data)
-            data.close()
         except ValueError:
             # Performance optimization: We know this error happens only for
             # directories, so we can determine the resource type here instead
@@ -279,6 +279,9 @@ class Connector:
             metadata_parse_error = True
         except lxml.etree.LxmlError:
             metadata_parse_error = True
+        finally:
+            if data is not None:
+                data.close()
         if metadata_parse_error:
             self.property_cache[id] = properties
             return properties

@@ -79,6 +79,7 @@ class Body(persistent.Persistent):
                 while s:
                     tmp.write(s)
                     s = data.read(self.BUFFER_SIZE)
+                data.close()
                 tmp.seek(0, 0)
                 data_file = open(tmp.name, 'rb')
             else:
@@ -111,11 +112,11 @@ class Body(persistent.Persistent):
         while s:
             target.write(s)
             s = data.read(self.BUFFER_SIZE)
+        data.close()
 
         if small:
             self.data = target.getvalue()
-        else:
-            target.close()
+        target.close()
 
     def _p_resolveConflict(self, old, commited, newstate):
         if commited[1]['etag'] == newstate[1]['etag']:
