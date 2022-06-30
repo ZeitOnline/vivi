@@ -22,8 +22,8 @@ def is_region(context):
     return True
 
 
-@glob(zope.interface.Interface)  # noqa
-def is_region(context):
+@glob(zope.interface.Interface)
+def is_region(context):  # noqa
     return False
 
 
@@ -32,8 +32,8 @@ def region(context):
     return zeit.content.cp.interfaces.IRegion(context).__name__
 
 
-@glob(zope.interface.Interface)  # noqa
-def region(context):
+@glob(zope.interface.Interface)
+def region(context):  # noqa
     return None
 
 
@@ -42,8 +42,8 @@ def layout(context):
     return context.layout.id
 
 
-@glob(zope.interface.Interface)  # noqa
-def layout(context):
+@glob(zope.interface.Interface)
+def layout(context):  # noqa
     return None
 
 
