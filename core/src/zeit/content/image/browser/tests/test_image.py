@@ -44,7 +44,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             'http://www.zeit.de/')
 
         b.getControl(name='form.blob').add_file(
-            pkg_resources.resource_stream(
+            pkg_resources.resource_string(
                 'zeit.content.image.browser',
                 'testdata/new-hampshire-artikel.jpg'),
             'image/jpeg', 'föö.jpg'.encode('utf-8'))
@@ -64,11 +64,9 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='form.copyright.combination_03').value = (
             'http://www.zeit.de/')
 
-        b.getControl(name='form.blob').add_file(
-            pkg_resources.resource_stream(
-                'zeit.content.image.browser',
-                'testdata/berlin-polizei.webp'),
-            'image/webp', 'foo.webp')
+        b.getControl(name='form.blob').add_file(pkg_resources.resource_string(
+            'zeit.content.image.browser',
+            'testdata/berlin-polizei.webp'), 'image/webp', 'foo.webp')
         b.getControl(name='form.actions.add').click()
         self.assertEllipsis('...Unsupported image type...', b.contents)
 
@@ -86,7 +84,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             'http://www.zeit.de/')
 
         b.getControl(name='form.blob').add_file(
-            pkg_resources.resource_stream(
+            pkg_resources.resource_string(
                 'zeit.content.image.browser',
                 'testdata/shoppingmeile_2251x4001px.jpg'),
             'image/jpeg', 'föö.jpg'.encode('utf-8'))
@@ -109,7 +107,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
             'http://www.zeit.de/')
 
         b.getControl(name='form.blob').add_file(
-            pkg_resources.resource_stream(
+            pkg_resources.resource_string(
                 'zeit.content.image.browser',
                 'testdata/shoppingmeile_4001x2251px.jpg'),
             'image/jpeg', 'bär.jpg'.encode('utf-8'))

@@ -1,4 +1,4 @@
-import os.path
+import pkg_resources
 
 
 def add_folder(browser, name):
@@ -14,11 +14,9 @@ def add_image(browser, name):
     menu = browser.getControl(name='add_menu')
     menu.displayValue = ['Image (single)']
     browser.open(menu.value[0])
-    test_file = os.path.join(os.path.dirname(__file__),
-                             'testdata', name)
-    test_data = open(test_file, 'rb')
     file_control = browser.getControl(name='form.blob')
-    file_control.add_file(test_data, 'image/jpeg', name)
+    file_control.add_file(pkg_resources.resource_string(
+        __name__, f'testdata/{name}'), 'image/jpeg', name)
     browser.getControl(name='form.copyright.combination_00').value = (
         'ZEIT ONLINE')
     browser.getControl(name='form.copyright.combination_01').displayValue = (

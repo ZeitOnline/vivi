@@ -47,15 +47,15 @@ class ImageGroupHelperMixin:
             self._upload_cms_content(field, uniqueId=filename)
             return
         self.browser.getControl(name='form.{}'.format(field)).add_file(
-            pkg_resources.resource_stream(
-                'zeit.content.image.browser',
-                'testdata/{}'.format(filename)),
+            pkg_resources.resource_string(
+                'zeit.content.image.browser', f'testdata/{filename}'),
             'image/jpeg', filename)
 
     def _upload_cms_content(self, field, uniqueId):
         file = zeit.cms.interfaces.ICMSContent(uniqueId)
-        self.browser.getControl(name='form.{}'.format(field)).add_file(
-            file.open(), 'image/jpeg', uniqueId.split('/')[-1])
+        with file.open() as f:
+            self.browser.getControl(name='form.{}'.format(field)).add_file(
+                f, 'image/jpeg', uniqueId.split('/')[-1])
 
     def upload_primary_image(self, filename):
         self._upload_image('master_image_blobs.0.', filename)
@@ -194,7 +194,7 @@ class ImageGroupBrowserTest(
         b = self.browser
         self.add_imagegroup()
         b.getControl(name='form.master_image_blobs.0.').add_file(
-            pkg_resources.resource_stream(
+            pkg_resources.resource_string(
                 'zeit.content.image.browser',
                 'testdata/opernball.jpg'),
             'image/jpeg', 'dpa Picture-Alliance-90999280-HighRes.jpg')
@@ -207,7 +207,7 @@ class ImageGroupBrowserTest(
     def test_normalizes_image_filename_on_upload(self):
         self.add_imagegroup()
         self.browser.getControl(name='form.master_image_blobs.0.').add_file(
-            pkg_resources.resource_stream(
+            pkg_resources.resource_string(
                 'zeit.content.image.browser',
                 'testdata/new-hampshire-artikel.jpg'),
             'image/jpeg', 'föö.jpg'.encode('utf-8'))

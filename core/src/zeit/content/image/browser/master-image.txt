@@ -8,12 +8,12 @@ group:
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
->>> import os.path
+>>> import pkg_resources
 >>> def set_file_data(name):
-...     test_file = os.path.join(
-...         os.path.dirname(__file__), 'testdata', name)
-...     file_control = browser.getControl(name='form.master_image_blobs.0.')
-...     file_control.add_file(open(test_file, 'rb'), 'image/jpg', name)
+...     browser.getControl(name='form.master_image_blobs.0.').add_file(
+...         pkg_resources.resource_string(
+...             'zeit.content.image.browser', 'testdata/%s' % name),
+...         'image/jpg', name)
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/')
 >>> menu = browser.getControl(name='add_menu')

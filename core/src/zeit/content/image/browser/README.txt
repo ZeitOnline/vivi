@@ -89,6 +89,7 @@ Fill out some values:
 >>> test_data = open(test_file, 'rb')
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'opernball.jpg')
+>>> test_data.close()
 >>> browser.getControl('Image title').value = 'Opernball'
 >>> browser.getControl('Alternative').value = 'Zwei Taenzer'
 >>> browser.getControl('Image sub text').value = 'Tanz beim Opernball'
@@ -115,7 +116,7 @@ Let's verify get the right file data back from the image:
 
 >>> image.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...            'DSC00109_2.JPG/@@raw')
->>> _ = test_data.seek(0)
+>>> test_data = open(test_file, 'rb')
 >>> image.contents == test_data.read()
 True
 >>> test_data.close()
@@ -245,7 +246,8 @@ There must not be the "references" field on the add form:
 False
 
 >>> file_control = browser.getControl(name='form.blob')
->>> file_control.add_file(open(test_file, 'rb'), 'image/jpeg', 'opernball.jpg')
+>>> with open(test_file, 'rb') as f:
+...     file_control.add_file(f, 'image/jpeg', 'opernball.jpg')
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.url
 'http://localhost/++skin++cms/workingcopy/zope.user/opernball.jpg/@@edit.html'
@@ -332,6 +334,7 @@ False
 ...     test_data = open(test_file, 'rb')
 ...     file_control = browser.getControl(name='form.' + field)
 ...     file_control.add_file(test_data, 'image/jpeg', name)
+...     test_data.close()
 
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
@@ -622,6 +625,7 @@ read it):
 >>> test_data = BytesIO(b'392-392938r82r')
 >>> file_control = browser.getControl(name='form.blob')
 >>> file_control.add_file(test_data, 'image/jpeg', 'corrupt.jpg')
+>>> test_data.close()
 >>> browser.getControl(name='form.actions.add').click()
 >>> print(browser.contents)
 <?xml ...
