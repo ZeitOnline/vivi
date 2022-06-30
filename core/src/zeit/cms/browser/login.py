@@ -95,7 +95,8 @@ class SSOLogin:
             raise zope.security.interfaces.Unauthorized(permission)
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         principal = self.request.principal
-        private_key = open(config['sso-private-key-file']).read()
+        with open(config['sso-private-key-file']) as f:
+            private_key = f.read()
         headers = set_cookie_headers(
             config['sso-cookie-name-prefix'] + permission,
             jwt.encode({

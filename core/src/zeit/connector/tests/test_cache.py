@@ -29,9 +29,9 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         self.cache._etags[self.key] = 'etag1'
         data = zeit.connector.cache.SlottedStringRef(b'data')
         self.cache._data[self.key] = data
-        self.assertEqual(
-            b'data',
-            self.cache.getData(self.uniqueId, self.properties1).read())
+        got = self.cache.getData(self.uniqueId, self.properties1)
+        self.assertEqual(b'data', got.read())
+        got.close()
         del self.cache._etags[self.key]
         self.assertRaises(
             KeyError, self.cache.getData, self.uniqueId, self.properties1)
@@ -40,23 +40,26 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
             KeyError, self.cache.getData, self.uniqueId, self.properties1)
 
     def test_missing_blob_file(self):
-        data1 = BytesIO(self.BUFFER_SIZE * 2 * b'x')
-        data2 = BytesIO(self.BUFFER_SIZE * 2 * b'y')
-        self.cache.setData(self.uniqueId, self.properties1, data1)
+        body1 = self.BUFFER_SIZE * 2 * b'x'
+        data1 = BytesIO(body1)
+        body2 = self.BUFFER_SIZE * 2 * b'y'
+        data2 = BytesIO(body2)
+        self.cache.setData(self.uniqueId, self.properties1, data1).close()
         transaction.commit()
         body = self.cache._data[self.key]
         os.remove(body.data.committed())
         del body.data._p_changed  # Invalidate, thus force reload
         self.assertRaises(KeyError,
                           self.cache.getData, self.uniqueId, self.properties1)
-        self.cache.setData(self.uniqueId, self.properties2, data2)
-        self.assertEqual(
-            data2.getvalue(),
-            self.cache.getData(self.uniqueId, self.properties2).read())
+        self.cache.setData(self.uniqueId, self.properties2, data2).close()
+        got = self.cache.getData(self.uniqueId, self.properties2)
+        self.assertEqual(body2, got.read())
+        got.close()
 
     def test_missing_blob_file_with_legacy_data(self):
         data = ZODB.blob.Blob()
-        data.open('w').write(b'ablob')
+        with data.open('w') as f:
+            f.write(b'ablob')
         self.cache._data[self.key] = data
         self.cache._etags = BTrees.family64.OO.BTree()
         self.cache._etags[self.key] = 'etag1'
@@ -65,11 +68,12 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         del data._p_changed
         self.assertRaises(KeyError,
                           self.cache.getData, self.uniqueId, self.properties1)
-        data2 = BytesIO(self.BUFFER_SIZE * 2 * b'y')
-        self.cache.setData(self.uniqueId, self.properties2, data2)
-        self.assertEqual(
-            data2.getvalue(),
-            self.cache.getData(self.uniqueId, self.properties2).read())
+        expected = self.BUFFER_SIZE * 2 * b'y'
+        data2 = BytesIO(expected)
+        self.cache.setData(self.uniqueId, self.properties2, data2).close()
+        got = self.cache.getData(self.uniqueId, self.properties2)
+        self.assertEqual(expected, got.read())
+        got.close()
 
     def test_blob_conflict_resolution(self):
         size = zeit.connector.cache.Body.BUFFER_SIZE
@@ -77,7 +81,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
 
         def store():
             transaction.abort()
-            self.cache.setData(self.uniqueId, self.properties1, body)
+            self.cache.setData(self.uniqueId, self.properties1, body).close()
             transaction.commit()
         t1 = threading.Thread(target=store)
         t2 = threading.Thread(target=store)

@@ -35,17 +35,20 @@ StringIO:
 
 >>> from io import BytesIO
 >>> data = BytesIO(b'datadata/end of line.')
->>> file_handle = cache.setData('some-id', properties, data)
->>> file_handle
+>>> f = cache.setData('some-id', properties, data)
+>>> f
 <...BytesIO object at 0x...>
->>> file_handle.read()
+>>> f.read()
 b'datadata/end of line.'
+>>> f.close()
 
 We can get the data also via `getData` now which also returns a StringIO for
 small objects:
 
->>> cache.getData('some-id', properties)
+>>> f = cache.getData('some-id', properties)
+>>> f
 <...BytesIO object at 0x...>
+>>> f.close()
 
 We have data in the cache. Since it's a small object it is stored as a
 reference to a plain string:
@@ -56,10 +59,12 @@ reference to a plain string:
 <zeit.connector.cache.Body object at 0x...>
 >>> cached.data
 b'datadata/end of line.'
->>> cached.open('r')
+>>> f = cached.open('r')
+>>> f
 <...BytesIO object at 0x...>
->>> cached.open('r').read()
+>>> f.read()
 b'datadata/end of line.'
+>>> f.close()
 
 Also the access times are noted in the cache:
 
@@ -74,8 +79,10 @@ True
 When we now access getData the access time will be updated by at most one
 count since less time than the update interval should have passed:
 
->>> cache.getData('some-id', properties)
+>>> f = cache.getData('some-id', properties)
+>>> f
 <...BytesIO object at 0x...>
+>>> f.close()
 >>> cache._last_access_time[get_storage_key('some-id')] <= last_access + 1
 True
 
@@ -86,8 +93,10 @@ Let's wait 1 second:
 
 If we access now the time will be updated:
 
->>> cache.getData('some-id', properties)
+>>> f = cache.getData('some-id', properties)
+>>> f
 <...BytesIO object at 0x...>
+>>> f.close()
 >>> new_access = cache._last_access_time[get_storage_key('some-id')]
 >>> new_access > last_access
 True
@@ -108,8 +117,7 @@ Add another resource to the cache to see how resources are removed from the
 cache:
 
 >>> data = BytesIO(b'another text')
->>> cache.setData('another-id', properties, data)
-<...BytesIO object at 0x...>
+>>> cache.setData('another-id', properties, data).close()
 
 We now have two elements in the cache:
 
@@ -120,8 +128,10 @@ Now sleep another 4 second and see the `some-id` will be gone after sweeping:
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> cache.getData('another-id', properties)
+>>> f = cache.getData('another-id', properties)
+>>> f
 <...BytesIO object at 0x...>
+>>> f.close()
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 [b'another-id', b'some-id']
 
@@ -129,8 +139,10 @@ Still there ...
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> cache.getData('another-id', properties)
+>>> f = cache.getData('another-id', properties)
+>>> f
 <...BytesIO object at 0x...>
+>>> f.close()
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 [b'another-id', b'some-id']
 
@@ -138,8 +150,10 @@ Still there ...
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> cache.getData('another-id', properties)
+>>> f = cache.getData('another-id', properties)
+>>> f
 <...BytesIO object at 0x...>
+>>> f.close()
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 [b'another-id', b'some-id']
 
@@ -147,8 +161,10 @@ Now it's gone:
 
 >>> time.sleep(1)
 >>> cache.sweep(4)
->>> cache.getData('another-id', properties)
+>>> f = cache.getData('another-id', properties)
+>>> f
 <...BytesIO object at 0x...>
+>>> f.close()
 >>> sorted(get_storage_key(k) for k in cache._last_access_time.keys())
 [b'another-id']
 
@@ -174,17 +190,17 @@ Create data which is larger than that:
 >>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
 >>> large_data = bytes(large_data.encode('utf-8'))
 >>> 
->>> file_handle = cache.setData(
-...     'some-id', properties, BytesIO(large_data))
->>> hasattr(file_handle, 'read')
+>>> f = cache.setData('some-id', properties, BytesIO(large_data))
+>>> f.read() == large_data
 True
->>> file_handle.read() == large_data
-True
+>>> f.close()
 
 We can get the data also via `getData` which returns an open file handle:
 
->>> hasattr(cache.getData('some-id', properties), 'read')
+>>> f = cache.getData('some-id', properties)
+>>> hasattr(f, 'read')
 True
+>>> f.close()
 
 Internally a blob is created in this case:
 
@@ -202,10 +218,10 @@ storage. Make the blob commited:
 
 We get the commited data now:
 
->>> hasattr(cache.getData('some-id', properties), 'read')
+>>> f = cache.getData('some-id', properties)
+>>> f.read() == large_data
 True
->>> cache.getData('some-id', properties).read() == large_data
-True
+>>> f.close()
 
 Transaction integration
 -----------------------
@@ -223,13 +239,14 @@ Add an object to the cache and commit:
 
 >>> data = BytesIO(b'Frodo went deep into Mordor.')
 >>> properties = {('getetag', 'DAV:'): 'ent'}
->>> file_handle = cache.setData('mordor', properties, data)
+>>> cache.setData('mordor', properties, data).close()
 >>> transaction.commit()
 
 After commiting everything is "not changed" of course. Now get an the object
 from the cache:
 
->>> file_handle = cache.getData('mordor', properties)
+>>> f = cache.getData('mordor', properties)
+>>> f.close()
 
 All the cache parts are still not changed:
 
@@ -269,8 +286,8 @@ different. We don't expect this to happen.
 >>> root_1 = connection_1.root()
 
 >>> c_1 = root_1["cache"] = zeit.connector.cache.ResourceCache()
->>> body = BytesIO(b'A small file' * BUFFER_SIZE)
->>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'initial-etag'}, body)
+>>> body = b'A small file' * BUFFER_SIZE
+>>> c_1.setData('id', {('getetag', 'DAV:'): 'initial-etag'}, BytesIO(body)).close()
 >>> transactionmanager_1.commit()
 
 >>> transactionmanager_2 = transaction.TransactionManager()
@@ -282,8 +299,8 @@ Different ETAGS:
 
 >>> body1 = BytesIO(b'Body 1' * BUFFER_SIZE)
 >>> body2 = BytesIO(b'Body 2' * BUFFER_SIZE)
->>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'etag1'}, body1)
->>> dummy = c_2.setData('id', {('getetag', 'DAV:'): 'etag2'}, body2)
+>>> c_1.setData('id', {('getetag', 'DAV:'): 'etag1'}, body1).close()
+>>> c_2.setData('id', {('getetag', 'DAV:'): 'etag2'}, body2).close()
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
@@ -299,16 +316,20 @@ KeyError: "Object 'id' is not cached."
 
 The same ETAG also doesn't generate a conflict:
 
->>> dummy = c_1.setData('id', {('getetag', 'DAV:'): 'etag3'}, body)
->>> dummy = c_2.setData('id', {('getetag', 'DAV:'): 'etag3'}, body)
+>>> c_1.setData('id', {('getetag', 'DAV:'): 'etag3'}, BytesIO(body)).close()
+>>> c_2.setData('id', {('getetag', 'DAV:'): 'etag3'}, BytesIO(body)).close()
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
 >>> connection_1.sync()
 >>> connection_2.sync()
->>> c_1.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
+>>> f = c_1.getData('id', {('getetag', 'DAV:'): 'etag3'})
+>>> f.read()
 b'A small fileA small...'
->>> c_2.getData('id', {('getetag', 'DAV:'): 'etag3'}).read()
+>>> f.close()
+>>> f = c_2.getData('id', {('getetag', 'DAV:'): 'etag3'})
+>>> f.read()
 b'A small fileA small...'
+>>> f.close()
 
 
 Property Cache

@@ -30,9 +30,9 @@ class DAVServerLayer(plone.testing.Layer):
     def setUp(self):
         dav = self.get_random_port()
         query = self.get_random_port()
-        client = docker.from_env()
+        self['docker'] = docker.from_env()
         try:
-            self['dav_container'] = client.containers.run(
+            self['dav_container'] = self['docker'].containers.run(
                 "registry.zeit.de/dav-server:1.1.1", detach=True, remove=True,
                 ports={9000: dav, 9999: query})
         except requests.exceptions.ConnectionError:
@@ -49,6 +49,8 @@ class DAVServerLayer(plone.testing.Layer):
     def tearDown(self):
         self['dav_container'].stop()
         del self['dav_container']
+        self['docker'].close()
+        del self['docker']
         del self['dav_url']
         del self['query_url']
         del self['connector']
