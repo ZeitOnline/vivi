@@ -1,4 +1,3 @@
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import datetime
 import logging
 import pendulum
@@ -458,11 +457,10 @@ def form_query(request, filter_terms=None):
         return None
     form['filter_terms'] = filter_terms
     fields = []
-    if not FEATURE_TOGGLES.find('ignore_search_in_fields_list'):
-        try:
-            fields = FieldsList().getValues()
-        except Exception:
-            log.info('XML source for FieldsList not found')
+    try:
+        fields = FieldsList().getValues()
+    except Exception:
+        log.info('Source for FieldsList vivi-find-search-fields.xml not found')
     form['fields'] = fields
     return zeit.find.search.query(**form)
 
