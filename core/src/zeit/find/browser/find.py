@@ -30,7 +30,7 @@ class JSONView(zeit.cms.browser.view.JSON):
 
 class FieldsList(zeit.cms.content.sources.SimpleXMLSourceBase):
 
-    default_filename = 'search_in_fields_list.xml'
+    default_filename = 'vivi-find-search-fields.xml'
 
 
 class SearchForm(JSONView):
