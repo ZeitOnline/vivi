@@ -27,6 +27,11 @@ class JSONView(zeit.cms.browser.view.JSON):
             self.context, '%s?uniqueId=%s' % (view, uniqueId))
 
 
+class FieldsList(zeit.cms.content.sources.SimpleXMLSourceBase):
+
+    default_filename = 'vivi-find-search-fields.xml'
+
+
 class SearchForm(JSONView):
 
     template = 'search_form.jsont'
@@ -451,6 +456,12 @@ def form_query(request, filter_terms=None):
     if form is None:
         return None
     form['filter_terms'] = filter_terms
+    fields = []
+    try:
+        fields = FieldsList().getValues()
+    except Exception:
+        log.info('Source for FieldsList vivi-find-search-fields.xml not found')
+    form['fields'] = fields
     return zeit.find.search.query(**form)
 
 
