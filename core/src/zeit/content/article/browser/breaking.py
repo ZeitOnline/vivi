@@ -95,7 +95,6 @@ class Add(zeit.cms.browser.form.AddForm,
             message_config.append(
                 {'type': 'facebook', 'enabled': True,
                  'override_text': data['title'],
-                 'breaking_news': True,
                  'account': zeit.push.facebook.facebookAccountSource(
                      self.context).MAIN_ACCOUNT})
             message_config.append(

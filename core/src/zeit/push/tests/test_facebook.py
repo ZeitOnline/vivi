@@ -1,5 +1,4 @@
 # coding: utf-8
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import fb
 import os
@@ -97,17 +96,3 @@ class FacebookMessageTest(zeit.push.testing.TestCase):
         message = zope.component.getAdapter(
             content, zeit.push.interfaces.IMessage, name='facebook')
         self.assertIn('wt_zmc=sm.int.zonaudev.facebook', message.url)
-
-    def test_breaking_flag_is_removed_from_service_after_send(self):
-        content = ExampleContentType()
-        self.repository['foo'] = content
-        push = zeit.push.interfaces.IPushMessages(content)
-        push.message_config = ({
-            'type': 'facebook', 'enabled': True, 'breaking_news': True,
-            'override_text': 'facebook'},)
-        IPublishInfo(content).urgent = True
-        IPublish(content).publish()
-        self.assertEqual(
-            ({'type': 'facebook', 'enabled': False, 'breaking_news': False,
-              'override_text': 'facebook'},),
-            push.message_config)
