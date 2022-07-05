@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.12 (2022-07-05)
+--------------------
+
+- ZO-1550: Remove `breaking_news` flag from facebook push data
+
+
 5.16.11 (2022-06-29)
 --------------------
 
