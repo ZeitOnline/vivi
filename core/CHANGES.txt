@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.13 (2022-07-12)
+--------------------
+
+- ZO-1375: search in configurable fields only to simplify result set
+
+
 5.16.12 (2022-07-05)
 --------------------
 
