@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.16.14 (2022-07-12)
+--------------------
+
+- ZO-1375: Handle queries without search string
+
+
 5.16.13 (2022-07-12)
 --------------------
 
