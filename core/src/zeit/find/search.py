@@ -81,10 +81,11 @@ def query(fulltext=None, **conditions):
     must = []
     filters = []
     clauses = dict()
+    fields = conditions.pop('fields', [])
     # handle fulltext
     if fulltext:
         must.append(dict(query_string=dict(
-            query=fulltext, fields=conditions.pop('fields', []),
+            query=fulltext, fields=fields,
             default_operator='AND')))
     # handle from_, until
     from_ = conditions.pop('from_', None)
