@@ -63,7 +63,6 @@ class VGWortWebService:
             try:
                 method = getattr(self.client.service, method_name)
                 result = method(*args, **kw)
-                self.client.transport.session.close()
                 if isinstance(result, tuple):
                     raise zeit.vgwort.interfaces.TechnicalError(result)
                 return result
@@ -84,6 +83,11 @@ class VGWortWebService:
             except requests.exceptions.RequestException as e:
                 # No e.message available here.
                 raise zeit.vgwort.interfaces.TechnicalError(str(e))
+            finally:
+                try:
+                    self.client.transport.session.close()
+                except Exception:
+                    pass
 
     def create(self, type_, **kw):
         cls = self.client.get_type('{%s}%s' % (self.namespace, type_))
