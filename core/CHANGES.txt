@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.17.1 (2022-07-13)
+-------------------
+
+- ZO-633: Optimize sql connector search for uuid
+
+
 5.17.0 (2022-07-13)
 -------------------
 
