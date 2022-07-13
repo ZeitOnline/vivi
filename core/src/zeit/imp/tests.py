@@ -38,7 +38,9 @@ class TestLayerMask(unittest.TestCase):
                    (0, 255, 0, 128): ' '}
 
     def assert_mask(self, expected, mask):
-        mask_image = PIL.Image.open(mask.open('r'))
+        with mask.open('r') as f:
+            mask_image = PIL.Image.open(f)
+            mask_image.load()
         width, height = mask_image.size
         got = []
         for y in range(height):
@@ -91,7 +93,9 @@ class TestLayerMask(unittest.TestCase):
 
     def test_given_border_colour_should_be_used(self):
         mask = zeit.imp.mask.Mask((100, 100), (100, 100), border=(255, 0, 0))
-        image = PIL.Image.open(mask.open('r'))
+        with mask.open('r') as f:
+            image = PIL.Image.open(f)
+            image.load()
         self.assertEqual((255, 0, 0, 255), image.getpixel((0, 0)))
 
     def test_rect_box_should_match_given_mask_size(self):

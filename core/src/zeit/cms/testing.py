@@ -570,9 +570,18 @@ class WSGIServerLayer(plone.testing.Layer):
             self['http_port'] = self['httpd'].effective_port
         self['http_address'] = '%s:%s' % (self['http_host'], self['http_port'])
 
-        self['httpd_thread'] = threading.Thread(target=self['httpd'].run)
+        self['httpd_thread'] = threading.Thread(target=self._run)
         self['httpd_thread'].daemon = True
         self['httpd_thread'].start()
+
+    def _run(self):
+        try:
+            self['httpd'].run()
+        except Exception:
+            # Ignore "bad file descriptor" exceptions during tearDown
+            logging.getLogger('waitress').warning(
+                'Suppressed exception to keep thread from crashing'
+                ' (most probably during shutdown anyway)', exc_info=True)
 
     def tearDown(self):
         self['httpd'].close()

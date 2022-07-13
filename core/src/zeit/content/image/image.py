@@ -49,9 +49,8 @@ class BaseImage:
     # Not writeable since we always calculate it, but our superclasses want to.
     @FakeWriteableCachedProperty
     def mimeType(self):
-        data = self.open()
-        head = data.read(200)
-        data.close()
+        with self.open() as f:
+            head = f.read(200)
         with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
             file_type = m.id_buffer(head)
         if not file_type.startswith('image/'):
@@ -59,7 +58,8 @@ class BaseImage:
         return file_type
 
     def getImageSize(self):
-        return PIL.Image.open(self.open()).size
+        with self.open() as f:
+            return PIL.Image.open(f).size
 
     @property
     def ratio(self):
@@ -185,6 +185,7 @@ def get_remote_image(url, timeout=2):
     except Exception:
         return
     if not response.ok:
+        response.close()
         return
     image = LocalImage()
     image.__name__ = os.path.basename(urllib.parse.urlsplit(url).path)

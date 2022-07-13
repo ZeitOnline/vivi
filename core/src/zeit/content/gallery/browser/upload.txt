@@ -80,8 +80,8 @@ Construct a POST which looks like a post which the Flash movie would generate:
 
 After calling POSTing, a new image has been added to the folder:
 
->>> post_data = post_data_template % (pkg_resources.resource_stream(
-...     'zeit.content.gallery.browser', 'testdata/01.jpg').read())
+>>> post_data = post_data_template % (pkg_resources.resource_string(
+...     'zeit.content.gallery.browser', 'testdata/01.jpg'))
 >>> browser.post('@@upload-image', post_data, content_type)
 >>> print(browser.contents)
 {}

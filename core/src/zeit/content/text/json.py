@@ -72,6 +72,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             schema = yaml.safe_load(response.text)
             ref_resolver = jsonschema.validators.RefResolver.from_schema(
                 schema)
+            response.close()
             return schema, ref_resolver
         except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)

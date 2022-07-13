@@ -255,8 +255,8 @@ def is_block(context):
     return True
 
 
-@glob(zope.interface.Interface)  # noqa
-def is_block(context):
+@glob(zope.interface.Interface)
+def is_block(context):  # noqa
     return False
 
 
@@ -265,8 +265,8 @@ def is_area(context):
     return True
 
 
-@glob(zope.interface.Interface)  # noqa
-def is_area(context):
+@glob(zope.interface.Interface)
+def is_area(context):  # noqa
     return False
 
 

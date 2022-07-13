@@ -24,8 +24,11 @@ gallery:
 >>> image = zeit.content.image.image.LocalImage()
 >>> import os.path
 >>> filename = os.path.join(os.path.dirname(__file__), 'browser', 'testdata', '01.jpg')
->>> test_data = open(filename, 'rb').read()
->>> _ = image.open('w').write(open(filename, 'rb').read())
+>>> test_data = open(filename, 'rb')
+>>> img = image.open('w')
+>>> _ = img.write(test_data.read())
+>>> img.close()
+>>> test_data.close()
 >>> folder['01.jpg'] = image
 >>> image = folder['01.jpg']
 

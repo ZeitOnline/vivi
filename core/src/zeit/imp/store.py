@@ -19,8 +19,8 @@ class ImageGroupStorer:
         # Luckily, PIL simply ignores kwargs that are not supported by a
         # format, so we can always specify quality, even though it only makes
         # sense for JPEG, but not PNG.
-        pil_image.save(
-            image.open('w'), image_format, optimize=True, quality=80)
+        with image.open('w') as f:
+            pil_image.save(f, image_format, optimize=True, quality=80)
         extension = image_format.lower()
         # XXX Ugly heuristic, but using .jpg is not only generally nicer, but
         # also backwards-compatible behaviour.

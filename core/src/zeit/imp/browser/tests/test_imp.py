@@ -38,8 +38,9 @@ class ImageBarTest(TestBase):
 
     def test_other_images(self):
         image = zeit.content.image.image.LocalImage()
-        image.open('w').write(pkg_resources.resource_string(
-            __name__, 'testdata/01.jpg'))
+        with image.open('w') as f:
+            f.write(pkg_resources.resource_string(
+                __name__, 'testdata/01.jpg'))
         self.repository['group']['foo-240x120.jpg'] = image
         self.assertAPI([{
             'url':
@@ -49,8 +50,9 @@ class ImageBarTest(TestBase):
 
         # Another image
         image = zeit.content.image.image.LocalImage()
-        image.open('w').write(pkg_resources.resource_string(
-            __name__, 'testdata/02.jpg'))
+        with image.open('w') as f:
+            f.write(pkg_resources.resource_string(
+                __name__, 'testdata/02.jpg'))
         self.repository['group']['foo-artikel.jpg'] = image
         transaction.commit()
         self.assertAPI([

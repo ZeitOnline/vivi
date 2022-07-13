@@ -137,6 +137,8 @@ class ContractReadWrite:
         self.assertEqual(['file'], [x[0] for x in self.listCollection(
             'http://xml.zeit.de/testing/folder')])
         # Re-adding a collection is a no-op
+        collection = Resource(
+            None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
         self.connector['http://xml.zeit.de/testing/folder'] = collection
         self.assertEqual(['file'], [x[0] for x in self.listCollection(
             'http://xml.zeit.de/testing/folder')])

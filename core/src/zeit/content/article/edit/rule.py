@@ -15,13 +15,13 @@ def content(context):
     return []
 
 
-@glob(zeit.content.article.edit.interfaces.IVideo)  # noqa
-def content(context):
+@glob(zeit.content.article.edit.interfaces.IVideo)
+def content(context):  # noqa
     return [x for x in [context.video] if x]
 
 
-@glob(zeit.content.article.edit.interfaces.IReference)  # noqa
-def content(context):
+@glob(zeit.content.article.edit.interfaces.IReference)
+def content(context):  # noqa
     field = zope.interface.implementedBy(type(
         zope.security.proxy.getObject(context))).get('references')
     if field.required:
@@ -30,16 +30,16 @@ def content(context):
         return [x for x in [context.references] if x]
 
 
-@glob(zeit.content.article.edit.interfaces.IImage)  # noqa
-def content(context):
+@glob(zeit.content.article.edit.interfaces.IImage)
+def content(context):  # noqa
     if context.references.target:
         return [context.references.target]
     else:
         return []
 
 
-@glob(zeit.content.article.edit.interfaces.IVolume)  # noqa
-def content(context):
+@glob(zeit.content.article.edit.interfaces.IVolume)
+def content(context):  # noqa
     if context.references.target:
         return [context.references.target]
     else:

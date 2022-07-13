@@ -46,12 +46,16 @@ The file has a size:
 
 We can get the data via the ``open`` method:
 
->>> f.open()
+>>> fh = f.open()
+>>> fh
 <...BytesIO object at 0x...>
->>> f.open('r')
+>>> fh.close()
+>>> fh = f.open('r')
+>>> fh
 <...BytesIO object at 0x...>
->>> f.open().read(10)
+>>> fh.read(10)
 b'\xff\xd8\xff\xe1\x0c\xdaExif'
+>>> fh.close()
 
 
 It is not possible to open the RepositoryFile for writing:
@@ -91,12 +95,16 @@ True
 
 We can get the data via the ``open`` method:
 
->>> local.open()
+>>> fh = local.open()
+>>> fh
 <...BytesIO object at 0x...>
->>> local.open('r')
+>>> fh.close()
+>>> fh = local.open('r')
+>>> fh
 <...BytesIO object at 0x...>
->>> local.open().read(10)
+>>> fh.read(10)
 b'\xff\xd8\xff\xe1\x0c\xdaExif'
+>>> fh.close()
 
 So far we have no local copy:
 
@@ -114,8 +122,10 @@ The LocalFile can be opened for writing:
 
 The file has stored the new data now:
 
->>> local.open().read()
+>>> fh = local.open()
+>>> fh.read()
 b'New data'
+>>> fh.close()
 >>> int(local.size)
 8
 
@@ -142,8 +152,10 @@ Writing works as usual:
 >>> _ = f_write.write(
 ...     b'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen')
 >>> f_write.close()
->>> local.open('r').read()
+>>> fh = local.open('r')
+>>> fh.read()
 b'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen'
+>>> fh.close()
 >>> local.mimeType
 ''
 
@@ -155,6 +167,7 @@ data by itself will return an empty file:
 >>> f = local.open()
 >>> f.read()
 b''
+>>> f.close()
 
 
 Integration
@@ -177,8 +190,10 @@ False
 >>> f = repository['2006']['DSC00109_2.JPG']
 >>> f
 <zeit.cms.repository.file.RepositoryFile...>
->>> f.open().read(10)
+>>> fh = f.open()
+>>> fh.read(10)
 b'\xff\xd8\xff\xe1\x0c\xdaExif'
+>>> fh.close()
 >>> f.mimeType
 'image/jpeg'
 
@@ -205,8 +220,10 @@ repository:
 >>> repository_file = zeit.cms.checkout.interfaces.IRepositoryContent(local)
 >>> repository_file
 <zeit.cms.repository.file.RepositoryFile...>
->>> repository_file.open().read()
+>>> fh = repository_file.open()
+>>> fh.read()
 b'new data'
+>>> fh.close()
 >>> repository_file.mimeType
 'text/plain'
 

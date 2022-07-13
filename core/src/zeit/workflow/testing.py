@@ -1,4 +1,4 @@
-from mockssh.streaming import Stream
+from mockssh.streaming import Stream, StreamTransfer
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 import gocept.selenium
@@ -122,6 +122,18 @@ def transfer(self):
 original_transfer = Stream.transfer
 Stream.transfer = transfer
 Stream.eof = False
+
+
+# Prevent ResourceWarning
+def run_and_close(self):
+    original_run(self)
+    self.process.stdin.close()
+    self.process.stdout.close()
+    self.process.stderr.close()
+
+
+original_run = StreamTransfer.run
+StreamTransfer.run = run_and_close
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER, SCRIPTS_LAYER))

@@ -34,9 +34,9 @@ class RepositoryFile(zeit.cms.repository.repository.ContentBase):
 
     @property
     def size(self):
-        f = self.open()
-        f.seek(0, 2)
-        return f.tell()
+        with self.open() as f:
+            f.seek(0, 2)
+            return f.tell()
 
     @property
     def connector(self):

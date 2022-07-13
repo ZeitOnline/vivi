@@ -370,11 +370,16 @@ class TestXMLSupport(zeit.connector.testing.ConnectorTest):
 class TestTBCConnector(zeit.connector.testing.ConnectorTest):
 
     def setUp(self):
+        super().setUp()
         connector = zeit.connector.connector.TransactionBoundCachingConnector(
             roots={'default': self.layer['dav_url'],
                    'search': self.layer['query_url']})
         gsm = zope.component.getGlobalSiteManager()
         gsm.registerUtility(connector, zeit.connector.interfaces.IConnector)
+
+    def tearDown(self):
+        self.connector.disconnect()
+        super().tearDown()
 
     def test_smoke(self):
         resource = self.connector['http://xml.zeit.de/testing']

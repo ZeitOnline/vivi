@@ -10,7 +10,6 @@ import pytest
 import requests
 import socket
 import sqlalchemy
-import threading
 import transaction
 import zeit.cms.testing
 import zeit.connector.connector
@@ -47,6 +46,7 @@ class DAVServerLayer(plone.testing.Layer):
         mkdir(self['connector'], 'http://xml.zeit.de/testing')
 
     def tearDown(self):
+        self['connector'].disconnect()
         self['dav_container'].stop()
         del self['dav_container']
         self['docker'].close()
@@ -86,7 +86,7 @@ class DAVServerLayer(plone.testing.Layer):
 
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
-        connector.connections = threading.local()
+        connector.disconnect()
 
 
 DAV_SERVER_LAYER = DAVServerLayer()
