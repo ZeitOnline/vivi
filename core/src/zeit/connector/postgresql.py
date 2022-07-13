@@ -13,6 +13,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import backref
 from sqlalchemy.orm import relationship
 from uuid import uuid4
+from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.resource import CachedResource
 import collections
@@ -214,17 +215,27 @@ class Connector:
         pass
 
     def search(self, attrlist, expr):
-        query = select(Paths).join(Properties).filter(_build_filter(expr))
-        result = self.session.execute(query)
-        itemgetters = [
-            (
-                itemgetter(a.namespace.replace(Properties.NS, '', 1)),
-                itemgetter(a.name))
-            for a in attrlist]
-        for item in result.scalars():
-            for (nsgetter, keygetter) in itemgetters:
-                value = keygetter(nsgetter(item.properties.unsorted))
-                yield (f"{ID_NAMESPACE}{item.parent_path}/{item.name}", value)
+        if (len(attrlist) == 1 and attrlist[0].name == 'uuid'
+                and attrlist[0].namespace == DOCUMENT_SCHEMA_NS):
+            # Sorely needed performance optimization.
+            uuid = expr.operands[-1]
+            result = self.session.execute(
+                select(Paths.parent_path, Paths.name).filter_by(id=uuid))
+            for item in result:
+                yield (f"{ID_NAMESPACE}{item.parent_path}/{item.name}", uuid)
+        else:
+            query = select(Paths).join(Properties).filter(_build_filter(expr))
+            result = self.session.execute(query)
+            itemgetters = [
+                (
+                    itemgetter(a.namespace.replace(Properties.NS, '', 1)),
+                    itemgetter(a.name))
+                for a in attrlist]
+            for item in result.scalars():
+                for (nsgetter, keygetter) in itemgetters:
+                    value = keygetter(nsgetter(item.properties.unsorted))
+                    yield (
+                        f"{ID_NAMESPACE}{item.parent_path}/{item.name}", value)
 
 
 factory = Connector.factory

@@ -1,6 +1,7 @@
 from datetime import datetime
 from io import BytesIO
 from zeit.connector.resource import Resource, WriteableCachedResource
+from zeit.connector.search import SearchVar
 import google.api_core.exceptions
 import transaction
 import zeit.connector.testing
@@ -98,3 +99,13 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             None,
             self.connector.session.get(Paths, self.connector._pathkey(res.id)))
         self.assertEqual(None, self.connector.session.get(Properties, uuid))
+
+    def test_search_for_uuid_uses_indexed_column(self):
+        res = self.get_resource('foo', b'mybody')
+        self.connector.add(res)
+        props = self.connector._get_properties(res.id)
+        UUID = SearchVar('uuid', 'http://namespaces.zeit.de/CMS/document')
+        result = self.connector.search([UUID], UUID == props.id)
+        unique_id, uuid = next(result)
+        self.assertEqual(res.id, unique_id)
+        self.assertEqual(props.id, uuid)
