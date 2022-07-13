@@ -158,7 +158,7 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.end_headers()
         # suds expects SOAP or nothing (and may the Lord have mercy if the
         # server should return 500 with an HTML error message instead...)
-        self.wfile.write('')
+        self.wfile.write(b'')
 
 
 HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
