@@ -50,7 +50,9 @@ class VGWortWebService:
         # This means it is downloaded afresh every time, but that doesn't
         # occur often, as the utility is instantiated only once, so it's
         # not performance critical other otherwise bad.
-        return zeep.Client(self.wsdl, transport=self.transport)
+        client = zeep.Client(self.wsdl, transport=self.transport)
+        client.transport.session.close()
+        return client
 
     @property
     def wsdl(self):
