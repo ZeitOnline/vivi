@@ -14,7 +14,7 @@ def test_suite():
         'uuid.txt',
 
         'longrunning.txt',
-        'stressing.txt',
+        # 'stressing.txt',
         layer=zeit.connector.testing.REAL_CONNECTOR_LAYER,
     )
     zeit.connector.testing.mark_doctest_suite(suite, pytest.mark.slow)
