@@ -85,7 +85,7 @@ class RepositoryDynamicFolder(
             self._v_content_template = jinja2.Template(
                 zeit.connector.interfaces.IResource(
                     self.content_template_file).data.read().decode('utf-8'),
-                autoescape=True, extensions=['jinja2.ext.autoescape'])
+                autoescape=True)
         return self._v_content_template
 
     @property
