@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.17.3 (2022-07-14)
+-------------------
+
+- ZO-1564: Add various "rights granted" flags to vgwort report API call
+
+
 5.17.2 (2022-07-13)
 -------------------
 
