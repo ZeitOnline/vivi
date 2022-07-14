@@ -47,8 +47,10 @@ class VGWortWebService:
         # This means it is downloaded afresh every time, but that doesn't
         # occur often, as the utility is instantiated only once, so it's
         # not performance critical other otherwise bad.
-        client = zeep.Client(self.wsdl, transport=self.transport)
-        client.transport.session.close()
+        try:
+            client = zeep.Client(self.wsdl, transport=self.transport)
+        finally:
+            self.transport.session.close()
         return client
 
     @property
@@ -82,7 +84,7 @@ class VGWortWebService:
                 raise zeit.vgwort.interfaces.TechnicalError(str(e))
             finally:
                 try:
-                    self.client.transport.session.close()
+                    self.transport.session.close()
                 except Exception:
                     pass
 
