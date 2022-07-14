@@ -56,13 +56,13 @@ class CommentsMixin:
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class ArticleComments(grok.Adapter, CommentsMixin):
-    grok.context(zeit.content.article.interfaces.IArticleMetadata)
+    grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('comments')
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class GalleryComments(grok.Adapter, CommentsMixin):
-    grok.context(zeit.content.gallery.interfaces.IGalleryMetadata)
+    grok.context(zeit.content.gallery.interfaces.IGallery)
     grok.name('comments')
 
 
@@ -74,7 +74,7 @@ class VideoComments(grok.Adapter, CommentsMixin):
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class FacebookNewstab(grok.Adapter):
-    grok.context(zeit.content.article.interfaces.IArticleMetadata)
+    grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('facebooknewstab')
 
     CONTENT_TYPES = frozenset([
