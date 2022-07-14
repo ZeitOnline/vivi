@@ -185,7 +185,10 @@ class MessageService(VGWortWebService):
         parties = self.create(
             'Parties', authors=self.create('Authors', author=authors))
         self.call('newMessage', parties, text, ranges,
-                  privateidentificationid=token.private_token)
+                  privateidentificationid=token.private_token,
+                  reproductionRight=True, distributionRight=True,
+                  publicAccessRight=True, otherRightsOfPublicReproduction=True,
+                  rightsGrantedConfirmation=True, withoutOwnParticipation=True)
 
 
 def service_factory(TYPE):
