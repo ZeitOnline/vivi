@@ -348,15 +348,17 @@ class PublishRetractTask:
 
             out = tempfile.NamedTemporaryFile()
             err = tempfile.NamedTemporaryFile()
-            proc = subprocess.Popen(
-                [filename, f.name], stdout=out, stderr=err, env=env)
-            proc.communicate()
-            out.seek(0)
-            err.seek(0)
-            stdout = out.read().decode('utf-8')
-            stderr = err.read().decode('utf-8')
-            out.close()
-            err.close()
+            try:
+                proc = subprocess.Popen(
+                    [filename, f.name], stdout=out, stderr=err, env=env)
+                proc.communicate()
+                out.seek(0)
+                err.seek(0)
+                stdout = out.read().decode('utf-8')
+                stderr = err.read().decode('utf-8')
+            finally:
+                out.close()
+                err.close()
 
             if proc.returncode:
                 logger.error("%s exited with %s" % (filename, proc.returncode))

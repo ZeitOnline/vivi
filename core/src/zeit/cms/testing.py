@@ -624,6 +624,15 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
                 options=options,
                 service_args=['--log-path=chromedriver.log'])
 
+    def _stop_selenium(self):
+        super()._stop_selenium()
+        if 'seleniumrc' not in self:
+            return
+        self['seleniumrc'].command_executor._conn.clear()
+        binary = getattr(self['seleniumrc'], 'binary', None)
+        if binary is not None:
+            binary._log_file.close()
+
 
 WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
