@@ -6,6 +6,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.article.interfaces
+import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.video.interfaces
 import zeit.workflow.interfaces
@@ -24,6 +25,46 @@ class AuthorDashboard(grok.Adapter):
         return {
             'uuid': uuid.shortened,
             'unique_id': self.context.uniqueId}
+
+
+class BigQueryMixin:
+    PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
+
+    def json(self):
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        path = self.context.uniqueId
+        # TODO with Python >= 3.9 we can use:
+        # path = self.context.uniqueId.removeprefix(self.PREFIX)
+        if path.startswith(self.PREFIX):
+            path = path[len(self.PREFIX):]
+        return {
+            'uuid': uuid.shortened,
+            'unique_id': self.context.uniqueId,
+            'path': path}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class ArticleBigQuery(grok.Adapter, BigQueryMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('bigquery')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class CenterPageBigQuery(grok.Adapter, BigQueryMixin):
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.name('bigquery')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class GalleryBigQuery(grok.Adapter, BigQueryMixin):
+    grok.context(zeit.content.gallery.interfaces.IGallery)
+    grok.name('bigquery')
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class VideoBigQuery(grok.Adapter, BigQueryMixin):
+    grok.context(zeit.content.video.interfaces.IVideo)
+    grok.name('bigquery')
 
 
 class CommentsMixin:

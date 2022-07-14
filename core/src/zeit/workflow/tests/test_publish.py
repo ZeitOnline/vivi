@@ -456,6 +456,46 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
             }, result_authordashboard)
         self.assertTrue(IPublishInfo(article).published)
 
+    def test_bigquery_is_published(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            result_fbnt = result['bigquery']
+            result_fbnt.pop('uuid')  # NOTE changes each run
+            self.assertEqual({
+                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
+                'path': '/online/2007/01/Somalia'},
+                result_fbnt)
+        self.assertTrue(IPublishInfo(article).published)
+
+    def test_bigquery_adapters_are_registered(self):
+        import zeit.content.article.article
+        import zeit.content.cp.centerpage
+        import zeit.content.gallery.gallery
+        import zeit.content.video.video
+        article = zeit.content.article.article.Article()
+        assert zope.component.queryAdapter(
+            article, zeit.workflow.interfaces.IPublisherData,
+            name="bigquery") is not None
+        centerpage = zeit.content.cp.centerpage.CenterPage()
+        assert zope.component.queryAdapter(
+            centerpage, zeit.workflow.interfaces.IPublisherData,
+            name="bigquery") is not None
+        gallery = zeit.content.gallery.gallery.Gallery()
+        assert zope.component.queryAdapter(
+            gallery, zeit.workflow.interfaces.IPublisherData,
+            name="bigquery") is not None
+        video = zeit.content.video.video.Video()
+        assert zope.component.queryAdapter(
+            video, zeit.workflow.interfaces.IPublisherData,
+            name="bigquery") is not None
+
     def test_comments_are_published(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
