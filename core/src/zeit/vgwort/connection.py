@@ -1,19 +1,16 @@
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import logging
-import operator
 import random
 import requests
 import requests.auth
 import requests.exceptions
-import urllib.parse
 import threading
+import urllib.parse
 import zeep
 import zeep.exceptions
-import zeep.xsd.elements
-import zeep.xsd.elements.indicators
 import zeit.content.author.interfaces
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
-import zope.cachedescriptors.property
 import zope.interface
 
 
@@ -43,15 +40,17 @@ class VGWortWebService:
         session.auth = requests.auth.HTTPBasicAuth(username, password)
         self.transport = zeep.Transport(session=session)
 
-    @zope.cachedescriptors.property.Lazy
+    @cachedproperty
     def client(self):
         # We intenionally don't cache the WSDL file, since that leads to
         # intransparent behaviour when debugging.
         # This means it is downloaded afresh every time, but that doesn't
         # occur often, as the utility is instantiated only once, so it's
         # not performance critical other otherwise bad.
-        client = zeep.Client(self.wsdl, transport=self.transport)
-        client.transport.session.close()
+        try:
+            client = zeep.Client(self.wsdl, transport=self.transport)
+        finally:
+            self.transport.session.close()
         return client
 
     @property
@@ -85,7 +84,7 @@ class VGWortWebService:
                 raise zeit.vgwort.interfaces.TechnicalError(str(e))
             finally:
                 try:
-                    self.client.transport.session.close()
+                    self.transport.session.close()
                 except Exception:
                     pass
 
@@ -109,8 +108,8 @@ class PixelService(VGWortWebService):
 @zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
 class MessageService(VGWortWebService):
 
-    service_path = '/services/1.1/messageService.wsdl'
-    namespace = 'http://vgwort.de/1.1/MessageService/xsd'
+    service_path = '/services/2.0/messageService.wsdl'
+    namespace = 'http://vgwort.de/2.0/MessageService/xsd'
 
     def new_document(self, content):
         content = zeit.cms.content.interfaces.ICommonMetadata(
@@ -130,7 +129,7 @@ class MessageService(VGWortWebService):
                 try:
                     if author.vgwortcode:
                         authors.append(
-                            self.create('Involved', code__1=author.vgwortcode))
+                            self.create('Involved', code=author.vgwortcode))
                     elif (author.firstname and author.lastname and
                             author.firstname.strip() and
                             author.lastname.strip()):
@@ -161,12 +160,12 @@ class MessageService(VGWortWebService):
                 if not author.vgwortcode:
                     continue
                 authors.append(
-                    self.create('Involved', code__1=author.vgwortcode))
+                    self.create('Involved', code=author.vgwortcode))
             except AttributeError:
                 log.warning('Ignoring agencies for %s', content, exc_info=True)
         if content.product and content.product.vgwortcode:
             authors.append(self.create(
-                'Involved', code__1=content.product.vgwortcode))
+                'Involved', code=content.product.vgwortcode))
 
         if not authors:
             raise zeit.vgwort.interfaces.WebServiceError(
@@ -188,7 +187,10 @@ class MessageService(VGWortWebService):
         parties = self.create(
             'Parties', authors=self.create('Authors', author=authors))
         self.call('newMessage', parties, text, ranges,
-                  privateidentificationid=token.private_token)
+                  privateidentificationid=token.private_token,
+                  reproductionRight=True, distributionRight=True,
+                  publicAccessRight=True, otherRightsOfPublicReproduction=True,
+                  rightsGrantedConfirmation=True, withoutOwnParticipation=True)
 
 
 def service_factory(TYPE):
@@ -231,45 +233,3 @@ class MockMessageService:
         if self.error:
             raise self.error('Provoked error')
         self.calls.append(content)
-
-
-def _find_element_to_render(self, value):
-    """copy&paste from upstream to fix
-    <https://github.com/mvantellingen/python-zeep/issues/1047>
-    """
-    matches = []
-    for name, element in self.elements_nested:
-        if isinstance(element, zeep.xsd.elements.Element):
-            element_name = None
-            if name in value:  # PATCHED
-                element_name = name
-            elif element.name in value:
-                element_name = element.name
-            if element_name:
-                try:
-                    choice_value = value[element_name]
-                except KeyError:
-                    choice_value = value
-
-                if choice_value is not None:
-                    matches.append((1, element, choice_value))
-        else:
-            if name is not None:
-                try:
-                    choice_value = value[name]
-                except (KeyError, TypeError):
-                    choice_value = value
-            else:
-                choice_value = value
-
-            score = element.accept(choice_value)
-            if score:
-                matches.append((score, element, choice_value))
-
-    if matches:
-        matches = sorted(matches, key=operator.itemgetter(0), reverse=True)
-        return matches[0][1:]
-
-
-zeep.xsd.elements.indicators.Choice._find_element_to_render = (
-    _find_element_to_render)
