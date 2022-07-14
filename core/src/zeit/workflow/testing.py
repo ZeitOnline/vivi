@@ -29,7 +29,6 @@ product_config = """
     dependency-publish-limit 100
     blacklist /blacklist
     publisher-base-url http://localhost:8060/test/
-    facebooknewstab-live-prefix https://www.zeit.de/
     facebooknewstab-startdate 2021-03-24
 </product-config>
 """

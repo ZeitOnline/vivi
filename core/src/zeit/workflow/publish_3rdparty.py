@@ -81,6 +81,8 @@ class FacebookNewstab(grok.Adapter):
         'article',
     ])
 
+    PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
+
     def json(self):
         content_type = zeit.cms.type.get_type(self.context)
         if content_type not in self.CONTENT_TYPES:
@@ -110,16 +112,12 @@ class FacebookNewstab(grok.Adapter):
             # ignore resources before the cut off date
             return
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        # TODO does this setting exist under a different name already?
-        live_prefix = config['facebooknewstab-live-prefix']
-        live_url = self.context.uniqueId
-        if live_url.startswith(zeit.cms.interfaces.ID_NAMESPACE):
-            # TODO with Python >= 3.9 we can use:
-            # live_url = live_url.removeprefix(
-            #     zeit.cms.interfaces.ID_NAMESPACE)
-            live_url = live_url[len(zeit.cms.interfaces.ID_NAMESPACE):]
-            live_url = f'{live_prefix}{live_url}'
+        path = self.context.uniqueId
+        # TODO with Python >= 3.9 we can use:
+        # path = self.context.uniqueId.removeprefix(self.PREFIX)
+        if path.startswith(self.PREFIX):
+            path = path[len(self.PREFIX):]
         return {
             'uuid': uuid.shortened,
             'unique_id': self.context.uniqueId,
-            'live_url': live_url}
+            'path': path}

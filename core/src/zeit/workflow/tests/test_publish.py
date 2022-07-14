@@ -526,7 +526,7 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
             result_fbnt.pop('uuid')  # NOTE changes each run
             self.assertEqual({
                 'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
-                'live_url': 'https://www.zeit.de/online/2007/01/Somalia'},
+                'path': '/online/2007/01/Somalia'},
                 result_fbnt)
         self.assertTrue(IPublishInfo(article).published)
 
