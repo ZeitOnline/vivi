@@ -47,7 +47,9 @@ class RawCSS:
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'text/css')
-        return self.context.data
+        res = zeit.connector.interfaces.IResource(self.context)
+        with res.data as f:
+            return f.read().decode('utf-8')
 
 
 class RemoteURLResource(fanstatic.core.Renderable, fanstatic.core.Dependable):

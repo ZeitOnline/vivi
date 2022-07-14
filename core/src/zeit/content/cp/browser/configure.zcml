@@ -261,7 +261,7 @@
 
   <browser:page
     name="raw.css"
-    for="zeit.cms.repository.interfaces.IUnknownResource"
+    for="zeit.cms.interfaces.ICMSContent"
     class=".resources.RawCSS"
     permission="zope.View" />
 
