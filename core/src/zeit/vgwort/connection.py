@@ -1,16 +1,16 @@
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import logging
 import random
 import requests
 import requests.auth
 import requests.exceptions
-import urllib.parse
 import threading
+import urllib.parse
 import zeep
 import zeep.exceptions
 import zeit.content.author.interfaces
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
-import zope.cachedescriptors.property
 import zope.interface
 
 
@@ -40,7 +40,7 @@ class VGWortWebService:
         session.auth = requests.auth.HTTPBasicAuth(username, password)
         self.transport = zeep.Transport(session=session)
 
-    @zope.cachedescriptors.property.Lazy
+    @cachedproperty
     def client(self):
         # We intenionally don't cache the WSDL file, since that leads to
         # intransparent behaviour when debugging.
