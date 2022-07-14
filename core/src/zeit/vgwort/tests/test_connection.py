@@ -233,7 +233,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
-        self.assertEqual('1234abc', authors[-1].code__1)
+        self.assertEqual('1234abc', authors[-1].code)
 
     def test_author_code_should_be_passed_instead_of_name(self):
         author = zeit.content.author.author.Author()
@@ -249,7 +249,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
-        self.assertEqual('codecodecode', authors[0].code__1)
+        self.assertEqual('codecodecode', authors[0].code)
 
     def test_author_name_should_be_passed(self):
         author = zeit.content.author.author.Author()
@@ -288,7 +288,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(1, len(authors))
-        self.assertEqual('code', authors[0].code__1)
+        self.assertEqual('code', authors[0].code)
 
     def test_url_should_point_to_www_zeit_de(self):
         content = self.get_content([])
