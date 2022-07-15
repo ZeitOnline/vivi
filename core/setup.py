@@ -175,11 +175,20 @@ setup(
             'gocept.httpserverlayer>=1.4.0.dev0',
             'gocept.jasmine',
             'gocept.jslint>=0.2',
-            'gocept.selenium>=2.4.0',
+            'gocept.pytestlayer',
+            'gocept.selenium<7.1',
+            'selenium<4',  # ZO-681
             'gocept.testing>=1.4.0.dev0',
             'mock-ssh-server',
             'plone.testing[zca,zodb]',
-            'pytest',
+            'pygraphviz',  # to render linesman results
+            'pytest<7.1.0.dev0',  # github.com/pytest-dev/pytest/issues/9765
+            'pytest-cov',
+            'pytest-flake8',
+            'pytest-remove-stale-bytecode',
+            'pytest-rerunfailures',
+            'pytest-sugar',
+            'pytest-timeout',
             'requests-mock',
             'waitress',
             'webtest',
@@ -190,6 +199,39 @@ setup(
             'zope.error',
             'zope.testbrowser',
             'zope.testing>=3.8.0',
+        ],
+        'deploy': [
+            'fluent-logger',
+            'flower',
+            'gunicorn',
+            'linesman',
+            'pastescript',
+            'psycopg2-binary',
+            'python-json-logger',
+            'repoze.vhm',
+            'slowlog',
+            'waitress',
+        ],
+        'zon': [
+            'gocept.fckeditor==2.6.4.1.post3+py3.3',
+            'gocept.form==0.8.0+py3',
+            'gocept.jasmine==0.7+py3.2',
+            'gocept.mochikit==1.4.2.5+py3',
+            'gocept.lxml==0.3.0+py3.1',
+            'linesman==0.3.2+py3.3',
+            'slowlog==0.9+py3.2',
+            'z3c.noop==1.0+py3.2',
+            'z3c.menu.simple==0.6.0+py3.3',
+            'zc.datetimewidget==0.8.0+py3.2',
+            'zc.table==0.9+py3',
+            'zeo==5.2.1+blobclose',
+            'zope.app.locking==3.5.0+py3.1',
+            'zope.xmlpickle==4.0.0+py3k1',
+            # We created our own py310 wheels on devpi.zeit.de for these:
+            # lxml==4.2.3
+            # perfmetrics==3.2.0.post0
+            # zope.interface==5.4.0
+            # zope.hookable==5.1.0
         ],
     },
     entry_points={
