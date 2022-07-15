@@ -764,18 +764,8 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
                 continue
             doc = resource.xml
             original_transformed = str(transform(doc))
-            try:
-                expected = json.loads(original_transformed)
-            except json.JSONDecodeError as e:
-                print(
-                    f"Original XSLT transform for {resource.uniqueId} "
-                    f"produced bad result: {e}\n{original_transformed}")
-                expected = e
+            expected = json.loads(original_transformed)
             data_factory = zeit.workflow.publish_3rdparty.Speechbert(
                 resource)
             result = data_factory.json()['payload']
-            if isinstance(expected, Exception):
-                # the original transform threw an exception, so skip the
-                # comparison, we just wanted to see whether new transform works
-                continue
             assert result == expected

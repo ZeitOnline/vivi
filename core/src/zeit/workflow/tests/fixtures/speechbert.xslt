@@ -61,18 +61,18 @@
 <xsl:template match="head/image">
   "image": "<xsl:value-of select="string:replace(./@base-id, 'http://xml.', 'https://img.')" />wide__820x461__desktop",</xsl:template>
 <xsl:template match="body/title">
-  "headline": "<xsl:value-of select="string:replace(string:replace(., '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
+  "headline": "<xsl:value-of select="string:replace(string:replace(string:replace(., '&#13;', '\r'), '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
 <xsl:template match="body/subtitle">
-  "subtitle": "<xsl:value-of select="string:replace(string:replace(., '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
+  "subtitle": "<xsl:value-of select="string:replace(string:replace(string:replace(., '&#13;', '\r'), '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
 <xsl:template match="body/supertitle">
-  "supertitle": "<xsl:value-of select="string:replace(string:replace(., '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
+  "supertitle": "<xsl:value-of select="string:replace(string:replace(string:replace(., '&#13;', '\r'), '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
 <xsl:template match="teaser/text">
-  "teaser": "<xsl:value-of select="string:replace(string:replace(., '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
+  "teaser": "<xsl:value-of select="string:replace(string:replace(string:replace(., '&#13;', '\r'), '&#10;', '\n'), '&quot;', '\&quot;')"/>",</xsl:template>
 
 <xsl:template mode="body" match="body">
   <!-- Thank you https://stackoverflow.com/a/17098873 -->
   <xsl:for-each select="(//body/division/* | //body/division/ul/*)[(local-name(.) = 'p' or local-name() = 'li' or local-name(.) = 'intertitle') and (translate(normalize-space(.), ' ', '') != '')]">
-    { "type": "<xsl:value-of select="name(.)" />", "content": "<xsl:value-of select="string:replace(string:replace(., '&#10;', '\n'), '&quot;', '\&quot;')"/>"}<xsl:if test="position() != last()">,</xsl:if>
+    { "type": "<xsl:value-of select="name(.)" />", "content": "<xsl:value-of select="string:replace(string:replace(string:replace(., '&#13;', '\r'), '&#10;', '\n'), '&quot;', '\&quot;')"/>"}<xsl:if test="position() != last()">,</xsl:if>
     </xsl:for-each>
 </xsl:template>
 
