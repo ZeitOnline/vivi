@@ -1,6 +1,7 @@
 import datetime
 import grokcore.component as grok
 import logging
+import time
 import zope.app.appsetup.product
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -162,3 +163,95 @@ class FacebookNewstab(grok.Adapter):
             'uuid': uuid.shortened,
             'unique_id': self.context.uniqueId,
             'path': path}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Speechbert(grok.Adapter):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('speechbert')
+
+    def ignore(self, date_first_released):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow') or {}
+        max_age = int(config['speechbert-max-age'])
+        if (time.time() - date_first_released.float_timestamp) >= max_age:
+            return True
+        ignore_genres = [
+            x.lower() for x in config['speechbert-ignore-genres'].split()]
+        genre = self.context.genre
+        if genre and genre.lower() in ignore_genres:
+            return True
+        ignore_templates = [
+            x.lower() for x in config['speechbert-ignore-templates'].split()]
+        template = self.context.template
+        if template.lower() in ignore_templates:
+            return True
+        return False
+
+    def json(self):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        if self.ignore(info.date_first_released):
+            return
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        result = {
+            'uuid': uuid.shortened,
+            'unique_id': self.context.uniqueId}
+        payload = result['payload'] = {}
+        if self.context.access != 'free':
+            payload['access'] = self.context.access
+        head = getattr(self.context.xml, 'head')
+        # TODO there is a "not(role)" check in the original XSLT
+        payload['authors'] = [
+            x.display_name for x in head.findall('author')]
+        body = payload['body'] = []
+        elements = self.context.body.xml.xpath(
+            "(//division/* | //division/ul/*)")
+        for elem in elements:
+            if elem.tag not in ('intertitle', 'li', 'p'):
+                continue
+            if elem.text is not None:
+                body.append(dict(
+                    content=elem.text,
+                    type=elem.tag))
+            else:
+                text = elem.findtext('**')
+                if text is None:
+                    text = elem.findtext('*')
+                body.append(dict(
+                    content=text,
+                    type=elem.tag))
+        if self.context.channels:
+            payload['channels'] = ' '.join(*self.context.channels)
+        if self.context.genre:
+            payload['genre'] = self.context.genre
+        if self.context.audio_speechbert:
+            payload['hasAudio'] = True
+        payload['headline'] = self.context.title
+        image_url = self.context.main_image.source.xml.attrib.get('base-id')
+        if image_url:
+            payload['image'] = image_url.replace(
+                zeit.cms.interfaces.ID_NAMESPACE,
+                'https://img.zeit.de/').rstrip('/') + '/wide__820x461__desktop'
+        if info.date_last_published_semantic is not None:
+            payload['lastModified'] = (
+                info.date_last_published_semantic.isoformat())
+        if info.date_first_released is not None:
+            payload['publishDate'] = info.date_first_released.isoformat()
+        payload['section'] = self.context.ressort
+        if self.context.serie:
+            payload['series'] = self.context.serie.serienname
+        if self.context.sub_ressort:
+            payload['subsection'] = self.context.sub_ressort
+        if self.context.subtitle:
+            payload['subtitle'] = self.context.subtitle
+        if self.context.supertitle:
+            payload['supertitle'] = self.context.supertitle
+        payload['tags'] = []
+        if hasattr(head, 'rankedTags'):
+            payload['tags'].extend(
+                self.context.xml.head.rankedTags.getchildren())
+        payload['teaser'] = self.context.teaserText
+        payload['url'] = ''
+        if uuid.shortened:
+            payload['uuid'] = uuid.shortened
+        return result

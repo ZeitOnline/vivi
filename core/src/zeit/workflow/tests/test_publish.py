@@ -14,6 +14,7 @@ import pytest
 import pytz
 import requests_mock
 import shutil
+import sys
 import time
 import transaction
 import zeit.cms.related.interfaces
@@ -684,3 +685,97 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' in result
+
+    def test_speechbert_is_published(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=False)
+            (result,) = response.last_request.json()
+            result_sb = result['speechbert']
+            self.assertEqual(
+                ['payload', 'unique_id', 'uuid'],
+                sorted(result_sb.keys()))
+        self.assertTrue(IPublishInfo(article).published)
+
+    def test_speechbert_ignore_genres(self):
+        article = ICMSContent(
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        # disable the max-age filter
+        config['speechbert-max-age'] = sys.maxsize
+        config['speechbert-ignore-genres'] = 'rezept-vorstellung'
+        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        assert data_factory.json() is None
+        config['speechbert-ignore-genres'] = ''
+        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        assert data_factory.json() is not None
+
+    def test_speechbert_ignore_templates(self):
+        article = ICMSContent(
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        # disable the max-age filter
+        config['speechbert-max-age'] = sys.maxsize
+        config['speechbert-ignore-templates'] = 'article'
+        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        assert data_factory.json() is None
+        config['speechbert-ignore-templates'] = ''
+        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        assert data_factory.json() is not None
+
+    def test_speechbert_max_age(self):
+        article = ICMSContent(
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        assert data_factory.json() is None
+        config['speechbert-max-age'] = sys.maxsize
+        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        assert data_factory.json() is not None
+
+    def test_speechbert_extraction(self):
+        import json
+        import lxml.etree
+        import pkg_resources
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        source = pkg_resources.resource_string(
+            'zeit.workflow.tests', 'fixtures/speechbert.xslt')
+        transform = lxml.etree.XSLT(lxml.etree.XML(source))
+        stack = [ICMSContent('http://xml.zeit.de/')]
+        while stack:
+            resource = stack.pop()
+            folder = zeit.cms.repository.interfaces.IFolder(resource, None)
+            if folder is not None:
+                stack.extend(folder.values())
+                continue
+            article = zeit.content.article.interfaces.IArticle(resource, None)
+            if article is None:
+                continue
+            doc = resource.xml
+            original_transformed = str(transform(doc))
+            try:
+                expected = json.loads(original_transformed)
+            except json.JSONDecodeError as e:
+                print(
+                    f"Original XSLT transform for {resource.uniqueId} "
+                    f"produced bad result: {e}\n{original_transformed}")
+                expected = e
+            data_factory = zeit.workflow.publish_3rdparty.Speechbert(
+                resource)
+            result = data_factory.json()['payload']
+            if isinstance(expected, Exception):
+                # the original transform threw an exception, so skip the
+                # comparison, we just wanted to see whether new transform works
+                continue
+            assert result == expected
