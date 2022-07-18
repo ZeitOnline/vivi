@@ -22,14 +22,14 @@ class Connection:
         access_token, access_secret = (
             twitterAccountSource.factory.access_token(account))
 
-        auth = tweepy.OAuthHandler(self.api_key, self.api_secret)
+        auth = tweepy.OAuth1UserHandler(self.api_key, self.api_secret)
         auth.set_access_token(access_token, access_secret)
         api = tweepy.API(auth)
 
         log.debug('Sending %s, %s to %s', text, link, account)
         try:
             api.update_status('%s %s' % (text, link))
-        except tweepy.TweepError as e:
+        except tweepy.HTTPException as e:
             status = e.response.status_code
             if status < 500:
                 raise zeit.push.interfaces.WebServiceError(str(e))
