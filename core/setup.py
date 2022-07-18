@@ -18,7 +18,7 @@ setup(
         'BTrees',
         'Jinja2 >= 2.11.0.dev0',
         'Pillow',
-        'PyJWT',
+        'PyJWT>=2.0.0',
         'cryptography',  # so pyjwt can offer RSA
         'ZODB',
         'beautifulsoup4',

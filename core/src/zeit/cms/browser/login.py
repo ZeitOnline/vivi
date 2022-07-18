@@ -107,7 +107,7 @@ class SSOLogin:
                 # cookie with all permissions (or probably roles) instead.
                 'permissions': [permission],
                 'exp': int(time.time()) + int(config['sso-expiration']),
-            }, private_key, config['sso-algorithm']).decode('ascii'))
+            }, private_key, config['sso-algorithm']))
         for key, value in headers:
             self.request.response.setHeader(key, value)
         url = self.request.form.get('url', zope.traversing.browser.absoluteURL(
