@@ -30,7 +30,6 @@ import plone.testing.zodb
 import pyramid_dogpile_cache2
 import pytest
 import re
-import selenium.webdriver
 import sys
 import tempfile
 import threading
@@ -603,26 +602,13 @@ HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
 
 class WebdriverLayer(gocept.selenium.WebdriverLayer):
 
-    # copy&paste from superclass to customize the ff binary, and to note that
-    # chrome indeed does support non-headless now.
-    def _start_selenium(self):
-        if self._browser == 'firefox':
-            options = selenium.webdriver.FirefoxOptions()
-            # The default 'info' is still way too verbose
-            options.log.level = 'error'
-            if self.headless:
-                options.add_argument('-headless')
-            options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
-            self['seleniumrc'] = selenium.webdriver.Firefox(
-                firefox_profile=self.profile, options=options)
-
-        if self._browser == 'chrome':
-            options = selenium.webdriver.ChromeOptions()
-            if self.headless:
-                options.add_argument('--headless')
-            self['seleniumrc'] = selenium.webdriver.Chrome(
-                options=options,
-                service_args=['--log-path=chromedriver.log'])
+    def get_firefox_webdriver_args(self):
+        args = super().get_firefox_webdriver_args()
+        options = args['options']
+        # The default 'info' is still way too verbose
+        options.log.level = 'error'
+        options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+        return args
 
     def _stop_selenium(self):
         super()._stop_selenium()
