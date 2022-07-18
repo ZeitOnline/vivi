@@ -18,7 +18,7 @@ setup(
         'BTrees',
         'Jinja2 >= 2.11.0.dev0',
         'Pillow',
-        'PyJWT',
+        'PyJWT>=2.0.0',
         'cryptography',  # so pyjwt can offer RSA
         'ZODB',
         'beautifulsoup4',
@@ -51,7 +51,7 @@ setup(
         'setuptools',
         'sqlalchemy',
         'transaction',
-        'tweepy',
+        'tweepy>=4.5.0',
         'webob',
         'werkzeug',
         'z3c.celery >= 1.2.0.dev0',  # XXX Should be [ui], but is entrenched

@@ -19,7 +19,7 @@ class TwitterTest(zeit.push.testing.TestCase):
         self.access_token = os.environ['ZEIT_PUSH_TWITTER_ACCESS_TOKEN']
         self.access_secret = os.environ['ZEIT_PUSH_TWITTER_ACCESS_SECRET']
 
-        auth = tweepy.OAuthHandler(self.api_key, self.api_secret)
+        auth = tweepy.OAuth1UserHandler(self.api_key, self.api_secret)
         auth.set_access_token(self.access_token, self.access_secret)
         self.api = tweepy.API(auth)
         # repr keeps all digits  while str would cut them.
