@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.17.4 (2022-07-18)
+-------------------
+
+MAINT:
+- Update python libraries
+
+
 5.17.3 (2022-07-14)
 -------------------
 
