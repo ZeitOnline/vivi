@@ -184,7 +184,7 @@ def update_author_freetext(content):
 
 @grok.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
-    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+    zope.lifecycleevent.IObjectModifiedEvent)
 def update_freetext_on_change(context, event):
     if event.descriptions:
         for description in event.descriptions:
@@ -196,7 +196,7 @@ def update_freetext_on_change(context, event):
 
 @grok.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
-    zope.lifecycleevent.interfaces.IObjectCreatedEvent)
+    zope.lifecycleevent.IObjectCreatedEvent)
 def update_freetext_on_add(context, event):
     # ObjectCopied inherits from ObjectCreated
     if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(context):

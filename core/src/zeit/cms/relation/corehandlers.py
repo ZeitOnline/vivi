@@ -7,6 +7,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zope.component
+import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)
@@ -27,7 +28,7 @@ def update_index_on_checkin(context, event):
 
 @grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
-    zope.container.interfaces.IObjectAddedEvent)
+    zope.lifecycleevent.IObjectAddedEvent)
 def update_index_on_add(context, event):
     if not zeit.cms.repository.interfaces.ICollection.providedBy(
             context.__parent__):

@@ -7,7 +7,7 @@ import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zope.interface
-import zope.lifecycleevent.interfaces
+import zope.lifecycleevent
 import zope.security.proxy
 
 
@@ -55,7 +55,7 @@ class SemanticChangeLocal(SemanticChange):
 
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.interfaces.IObjectCreatedEvent)
+    zope.lifecycleevent.IObjectCreatedEvent)
 def set_semantic_change_on_create(context, event):
     if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
         return

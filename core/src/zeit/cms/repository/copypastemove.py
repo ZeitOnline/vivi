@@ -54,7 +54,7 @@ def delete_objectlog_on_delete(event):
 
 @grok.subscribe(
     zeit.cms.repository.interfaces.IRepositoryContent,
-    zope.lifecycleevent.interfaces.IObjectMovedEvent)
+    zope.lifecycleevent.IObjectMovedEvent)
 def delete_objectlog_on_move(context, event):
     if not all([event.oldParent, event.oldName]):
         return

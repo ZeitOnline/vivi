@@ -17,8 +17,8 @@ import zeit.workflow.interfaces
 import zeit.workflow.timebased
 import zope.cachedescriptors.property
 import zope.component
-import zope.container.interfaces
 import zope.interface
+import zope.location.interfaces
 import zope.security.proxy
 
 
@@ -77,7 +77,7 @@ class BaseImage:
 
 @zope.interface.implementer_only(
     zeit.content.image.interfaces.IImage,
-    zope.container.interfaces.IContained)
+    zope.location.interfaces.IContained)
 class RepositoryImage(BaseImage, zeit.cms.repository.file.RepositoryFile):
     pass
 
@@ -85,7 +85,7 @@ class RepositoryImage(BaseImage, zeit.cms.repository.file.RepositoryFile):
 @zope.interface.implementer_only(
     zeit.content.image.interfaces.IImage,
     zeit.cms.workingcopy.interfaces.ILocalContent,
-    zope.container.interfaces.IContained)
+    zope.location.interfaces.IContained)
 class LocalImage(BaseImage, zeit.cms.repository.file.LocalFile):
     pass
 

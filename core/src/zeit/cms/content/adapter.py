@@ -5,9 +5,9 @@ import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zope.annotation
-import zope.container.interfaces
 import zope.component
 import zope.interface
+import zope.location.interfaces
 import zope.security.proxy
 
 
@@ -69,7 +69,7 @@ def xml_source(context):
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IContentSortKey)
-@zope.component.adapter(zope.container.interfaces.IContained)
+@zope.component.adapter(zope.location.interfaces.IContained)
 def content_sort_key(context):
     weight = 0
     key = context.__name__.lower()

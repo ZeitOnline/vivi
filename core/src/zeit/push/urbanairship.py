@@ -21,7 +21,7 @@ import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
 import zope.interface
-import zope.lifecycleevent.interfaces
+import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)
@@ -294,7 +294,7 @@ def json_dump_sphinx(obj):
 
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle,
-    zope.lifecycleevent.interfaces.IObjectCreatedEvent)
+    zope.lifecycleevent.IObjectCreatedEvent)
 def set_author_as_default_push_template(context, event):
     if not FEATURE_TOGGLES.find('push_new_articles_ua_author_tag'):
         return

@@ -177,7 +177,7 @@
   <adapter factory=".objectbrowser.content_default_browse_location" />
 
   <browser:page
-    for="zope.container.interfaces.IContained"
+    for="zope.location.interfaces.IContained"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="default-browsing-location"
     class=".objectbrowser.BrowsingLocation"

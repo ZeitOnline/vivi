@@ -17,8 +17,8 @@ import zeit.contentquery.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
 import zope.component
-import zope.container.interfaces
 import zope.interface
+import zope.lifecycleevent
 
 
 @zope.component.adapter(
@@ -470,7 +470,7 @@ def rendered_xml(context):
 
 @grok.subscribe(
     zeit.content.cp.interfaces.IBlock,
-    zope.container.interfaces.IObjectAddedEvent)
+    zope.lifecycleevent.IObjectAddedEvent)
 def overflow_blocks(context, event):
     area = context.__parent__
     if (area.automatic or
@@ -487,7 +487,7 @@ def overflow_blocks(context, event):
 
 @grok.subscribe(
     zeit.content.cp.interfaces.IBlock,
-    zope.container.interfaces.IObjectMovedEvent)
+    zope.lifecycleevent.IObjectMovedEvent)
 def adjust_auto_blocks_to_count(context, event):
     if IAutomaticTeaserBlock.providedBy(context):
         return  # avoid infty loop when adding / deleting auto teaser
@@ -497,7 +497,7 @@ def adjust_auto_blocks_to_count(context, event):
 
 @grok.subscribe(
     zeit.content.cp.interfaces.IArea,
-    zope.container.interfaces.IObjectMovedEvent)
+    zope.lifecycleevent.IObjectMovedEvent)
 def maybe_remove_overflow(context, event):
     # We only want add or move, but not remove.
     if zope.lifecycleevent.IObjectRemovedEvent.providedBy(event):
@@ -526,7 +526,7 @@ def maybe_remove_overflow_after_sort(context, event):
 
 @grok.subscribe(
     zeit.content.cp.interfaces.IArea,
-    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+    zope.lifecycleevent.IObjectModifiedEvent)
 def overflow_excessive_blocks(context, event):
     for description in event.descriptions:
         if description.interface is zeit.content.cp.interfaces.IArea:
@@ -538,7 +538,7 @@ def overflow_excessive_blocks(context, event):
 
 @grok.subscribe(
     zeit.content.cp.interfaces.IArea,
-    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+    zope.lifecycleevent.IObjectModifiedEvent)
 def prefill_metadata_from_referenced_cp(context, event):
     for description in event.descriptions:
         if description.interface is zeit.content.cp.interfaces.IArea:

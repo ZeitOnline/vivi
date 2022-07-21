@@ -26,6 +26,7 @@ import zeit.edit.interfaces
 import zeit.seo.seo
 import zope.interface
 import zope.lifecycleevent
+import zope.location.interfaces
 import zope.security.proxy
 
 
@@ -60,7 +61,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     DELEGATE_METHODS = (
         set(zeit.edit.interfaces.IContainer) -
         set(zeit.cms.content.interfaces.IXMLRepresentation) -
-        set(zope.container.interfaces.IContained) -
+        set(zope.location.interfaces.IContained) -
         set(zeit.edit.interfaces.IElement)
     )
 

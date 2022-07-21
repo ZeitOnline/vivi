@@ -4,6 +4,7 @@ import zeit.cms.interfaces
 import zope.container.contained
 import zope.container.interfaces
 import zope.interface
+import zope.location.interfaces
 import zope.schema
 import zope.viewlet.interfaces
 
@@ -27,7 +28,7 @@ class IElement(zeit.cms.content.interfaces.IXMLRepresentation):
     uniqueId = zope.interface.Attribute("Only used as source for references")
 
 
-class IBlock(IElement, zope.container.interfaces.IContained):
+class IBlock(IElement, zope.location.interfaces.IContained):
     """A block is an element contained in an area.
 
     In contrast to areas it usually can be edited, sorted, etc.
@@ -46,7 +47,7 @@ class IUnknownBlock(IBlock):
 
 
 class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
-                     zope.container.interfaces.IContained,
+                     zope.location.interfaces.IContained,
                      zope.container.interfaces.IReadContainer,
                      IElement):
     """Area on the CP which can be edited.
