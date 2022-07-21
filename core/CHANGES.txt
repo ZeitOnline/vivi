@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.17.5 (2022-07-21)
+-------------------
+
+- ZO-1603: Add "last indexed" field to TMS
+
+
 5.17.4 (2022-07-18)
 -------------------
 
