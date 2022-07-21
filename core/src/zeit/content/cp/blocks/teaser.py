@@ -11,8 +11,9 @@ import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.edit.interfaces
 import zope.component
-import zope.container.interfaces
 import zope.interface
+import zope.lifecycleevent
+import zope.location.interfaces
 import zope.schema
 
 
@@ -47,7 +48,7 @@ class Layoutable:
 @zope.interface.implementer_only(
     zeit.content.cp.interfaces.ITeaserBlock,
     zeit.cms.syndication.interfaces.IFeed,
-    zope.container.interfaces.IContained)
+    zope.location.interfaces.IContained)
 class TeaserBlock(
         Layoutable,
         zeit.content.cp.blocks.block.Block,
@@ -142,7 +143,7 @@ def extract_manual_teasers(context):
 
 @grok.subscribe(
     zeit.content.cp.interfaces.ITeaserBlock,
-    zope.container.interfaces.IObjectMovedEvent)
+    zope.lifecycleevent.IObjectMovedEvent)
 def change_layout_if_not_allowed_in_new_area(context, event):
     # Getting a default layout can mean that the current layout is not allowed
     # in this area (can happen when a block was moved between areas). Thus, we
@@ -153,7 +154,7 @@ def change_layout_if_not_allowed_in_new_area(context, event):
 
 @grok.subscribe(
     zeit.content.cp.interfaces.ITeaserBlock,
-    zope.container.interfaces.IObjectAddedEvent)
+    zope.lifecycleevent.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
     """Set layout for new teasers only."""
     area = context.__parent__

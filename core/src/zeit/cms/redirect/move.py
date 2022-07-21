@@ -6,7 +6,7 @@ import zeit.cms.redirect.interfaces
 import zeit.cms.relation.corehandlers
 import zeit.cms.repository.interfaces
 import zope.component
-import zope.lifecycleevent.interfaces
+import zope.lifecycleevent
 
 
 @zope.interface.implementer(zeit.cms.redirect.interfaces.IRenameInfo)
@@ -21,7 +21,7 @@ class RenameInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 
 @grok.subscribe(
     zeit.cms.repository.interfaces.IRepositoryContent,
-    zope.lifecycleevent.interfaces.IObjectMovedEvent)
+    zope.lifecycleevent.IObjectMovedEvent)
 def store_redirect(context, event):
     if not all([event.oldParent, event.newParent,
                 event.oldName, event.newName]):

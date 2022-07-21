@@ -180,7 +180,7 @@ Adding sends an event. Register an event handler for IBeforeObjectAddedEvent
 >>> site_manager.registerHandler(
 ...     added,
 ...     (zeit.cms.interfaces.ICMSContent,
-...      zope.lifecycleevent.interfaces.IObjectMovedEvent))
+...      zope.lifecycleevent.IObjectMovedEvent))
 
 After adding it to the repository, it has a unique id:
 
@@ -337,7 +337,7 @@ Let's clean that up again:
 >>> site_manager.unregisterHandler(
 ...     added,
 ...     (zeit.cms.interfaces.ICMSContent,
-...      zope.lifecycleevent.interfaces.IObjectMovedEvent))
+...      zope.lifecycleevent.IObjectMovedEvent))
 True
 >>> del repository['online']['01']
 >>> del repository['online']['01-2']

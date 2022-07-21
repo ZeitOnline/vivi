@@ -24,7 +24,7 @@ import zeit.content.image.variant
 import zeit.workflow.dependency
 import zope.container.contained
 import zope.interface
-import zope.lifecycleevent.interfaces
+import zope.lifecycleevent
 import zope.location.interfaces
 import zope.security.proxy
 
@@ -516,7 +516,7 @@ EXTERNAL_ID_PATTERN = re.compile(r'^[^\d]*([\d]+)[^\d]*$')
 
 @grok.subscribe(
     zeit.content.image.interfaces.IImage,
-    zope.lifecycleevent.interfaces.IObjectAddedEvent)
+    zope.lifecycleevent.IObjectAddedEvent)
 def guess_external_id(context, event):
     if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
             context.__parent__):

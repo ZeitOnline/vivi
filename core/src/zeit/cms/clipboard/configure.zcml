@@ -30,7 +30,7 @@
       set_schema=".interfaces.IObjectReference"
       permission="zope.ManageContent" /> 
     <require
-      interface="zope.container.interfaces.IContained"
+      interface="zope.location.interfaces.IContained"
       permission="zope.View" /> 
   </class>
   
