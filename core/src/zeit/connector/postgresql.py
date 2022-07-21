@@ -20,7 +20,9 @@ import collections
 import os
 import os.path
 import sqlalchemy
+import sqlalchemy.event
 import sqlalchemy.orm
+import time
 import transaction
 import zeit.connector.interfaces
 import zope.interface
@@ -50,9 +52,13 @@ def _build_filter(expr):
 @zope.interface.implementer(zeit.connector.interfaces.IConnector)
 class Connector:
 
-    def __init__(self, dsn, storage_project, storage_bucket):
+    def __init__(self, dsn, storage_project, storage_bucket,
+                 reconnect_tries=3, reconnect_wait=0.1):
         self.dsn = dsn
+        self.reconnect_tries = reconnect_tries
+        self.reconnect_wait = reconnect_wait
         self.engine = sqlalchemy.create_engine(dsn, future=True)
+        sqlalchemy.event.listen(self.engine, 'engine_connect', self._reconnect)
         self.session = sqlalchemy.orm.scoped_session(
             sqlalchemy.orm.sessionmaker(bind=self.engine, future=True))
         zope.sqlalchemy.register(self.session)
@@ -65,8 +71,41 @@ class Connector:
         import zope.app.appsetup.product
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.connector') or {}
+        params = {}
+        reconnect_tries = config.get('sql-reconnect-tries')
+        if reconnect_tries is not None:
+            params['reconnect_tries'] = int(reconnect_tries)
+        reconnect_wait = config.get('sql-reconnect-wait')
+        if reconnect_wait is not None:
+            params['reconnect_wait'] = float(reconnect_wait)
         return cls(
-            config['dsn'], config['storage-project'], config['storage-bucket'])
+            config['dsn'], config['storage-project'], config['storage-bucket'],
+            **params)
+
+    # Inspired by <https://docs.sqlalchemy.org/en/14/core/pooling.html
+    #   #custom-legacy-pessimistic-ping>
+    def _reconnect(self, connection, branch):
+        if branch:
+            return
+        attempt = 0
+        while True:
+            attempt += 1
+            t = None
+            try:
+                t = connection.begin()
+                connection.scalar(select(1))
+                t.rollback()
+            except Exception:
+                if t:
+                    t.rollback()
+                if attempt >= self.reconnect_tries:
+                    raise
+                wait = self.reconnect_wait * attempt
+                log.warning(
+                    'Reconnecting in %s due to error', wait, exc_info=True)
+                time.sleep(wait)
+            else:
+                break
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
