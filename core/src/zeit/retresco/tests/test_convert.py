@@ -150,6 +150,9 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
             data['payload']['document'].pop('date_last_checkout'))
         self.assertStartsWith(
             str(datetime.date.today().year),
+            data['payload']['meta'].pop('tms_last_indexed'))
+        self.assertStartsWith(
+            str(datetime.date.today().year),
             data['payload']['document'].pop(
                 'date-last-modified',
                 # Only IXMLContent has this

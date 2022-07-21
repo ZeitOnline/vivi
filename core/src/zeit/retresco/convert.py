@@ -10,6 +10,7 @@ import logging
 import lxml.builder
 import lxml.etree
 import os.path
+import pendulum
 import pytz
 import re
 import zeit.cms.browser.interfaces
@@ -114,6 +115,8 @@ class CMSContent(Converter):
             'body': lxml.etree.tostring(body, encoding=str),
         }
         result['payload'] = self.collect_dav_properties()
+        result['payload'].setdefault('meta', {})[
+            'tms_last_indexed'] = pendulum.now('UTC').isoformat()
         return result
 
     DUMMY_ES_PROPERTIES = zeit.retresco.content.WebDAVProperties(None)
