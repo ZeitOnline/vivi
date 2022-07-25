@@ -332,10 +332,6 @@ class IReadArea(
     default_teaser_layout = zope.interface.Attribute(
         'Default layout for teaser lists inside this area')
 
-    require_lead_candidates = zope.schema.Bool(
-        title=_('Require lead candidates when auto filling?'),
-        default=True)
-
     automatic = zope.schema.Bool(
         title=_('automatic'),
         default=False)

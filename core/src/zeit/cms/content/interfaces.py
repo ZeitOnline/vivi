@@ -115,11 +115,6 @@ class ICommonMetadata(zope.interface.Interface):
         required=False)
     zope.interface.alsoProvides(channels.value_type, IChannelField)
 
-    lead_candidate = zope.schema.Bool(
-        title=_('Lead candidate'),
-        default=True,
-        required=False)
-
     printRessort = zope.schema.TextLine(
         title=_("Print ressort"),
         readonly=True,

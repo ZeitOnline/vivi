@@ -56,17 +56,9 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             if not IAutomaticTeaserBlock.providedBy(block):
                 result.append(block)
                 continue
-            # This assumes that the *first* block always has a leader layout,
-            # since otherwise the first result that may_be_leader might be
-            # given to a non-leader block.
-            if self.context.require_lead_candidates and block.layout.is_leader:
-                teaser = pop_filter(content, is_lead_candidate)
-                if teaser is None:
-                    teaser = pop_filter(content)
-                    block.change_layout(self.context.default_teaser_layout)
-            else:
-                teaser = pop_filter(content)
-            if teaser is None:
+            try:
+                teaser = content.pop(0)
+            except IndexError:
                 continue
             block.insert(0, teaser)
             result.append(block)
@@ -84,20 +76,3 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         for child in self.values():
             if any([x.providedBy(child) for x in interfaces]):
                 yield child
-
-
-def pop_filter(items, predicate=None):
-    """Remove the first object from the list for which predicate returns True;
-    no predicate means no filtering.
-    """
-    for i, item in enumerate(items):
-        if predicate is None or predicate(item):
-            items.pop(i)
-            return item
-
-
-def is_lead_candidate(content):
-    metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
-    if metadata is None:
-        return False
-    return metadata.lead_candidate

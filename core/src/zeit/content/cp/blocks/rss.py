@@ -30,7 +30,6 @@ class RSSLink:
             raise AttributeError(name)
         return field.missing_value
 
-    lead_candidate = True
     authorships = ()
 
     @cachedproperty

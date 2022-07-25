@@ -206,7 +206,7 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase,
         bc = BCVideo()
         cms = CMSVideo()
         bc.apply_to_cms(cms)
-        self.assertTrue(cms.lead_candidate)
+        self.assertTrue(cms.overscrolling)
 
 
 class PlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
