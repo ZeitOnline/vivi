@@ -190,7 +190,8 @@ class MessageService(VGWortWebService):
                   privateidentificationid=token.private_token,
                   reproductionRight=True, distributionRight=True,
                   publicAccessRight=True, otherRightsOfPublicReproduction=True,
-                  rightsGrantedConfirmation=True, withoutOwnParticipation=True)
+                  rightsGrantedConfirmation=True,
+                  withoutOwnParticipation=False)
 
 
 def service_factory(TYPE):
