@@ -95,6 +95,8 @@ class Configuration:
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'hide-dupes', IConfiguration['hide_dupes'], use_default=True)
+    consider_for_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'consider-dupes', IConfiguration['hide_dupes'], use_default=True)
 
     existing_teasers = NotImplemented
 

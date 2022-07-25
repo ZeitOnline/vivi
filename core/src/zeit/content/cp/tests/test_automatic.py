@@ -658,6 +658,14 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/t1',
             list(IRenderedArea(self.area).values()[0])[0].uniqueId)
 
+    def test_consider_for_dupes_is_False_then_duplicates_are_not_skipped(self):
+        self.cp['feature']['lead'].create_item('teaser').append(
+            self.repository['t1'])
+        self.cp['feature']['lead'].consider_for_dupes = False
+        self.assertEqual(
+            'http://xml.zeit.de/t1',
+            list(IRenderedArea(self.area).values()[0])[0].uniqueId)
+
     def test_already_rendered_area_results_are_cached(self):
         a2 = create_automatic_area(self.cp)
         a2.referenced_cp = self.repository['cp_with_teaser']
