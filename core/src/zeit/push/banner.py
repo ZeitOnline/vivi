@@ -3,7 +3,6 @@ from zeit.cms.checkout.interfaces import ICheckinManager
 from zeit.cms.workflow.interfaces import IPublish, PRIORITY_HOMEPAGE
 import grokcore.component as grok
 import logging
-import transaction
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -41,10 +40,8 @@ class Banner:
         return content
 
     def publish(self):
-        IPublish(self.xml_banner).publish(priority=PRIORITY_HOMEPAGE)
-
-    def retract(self):
-        IPublish(self.xml_banner).retract(priority=PRIORITY_HOMEPAGE)
+        IPublish(self.xml_banner).publish(
+            background=False, priority=PRIORITY_HOMEPAGE)
 
     def _ensure_unlocked(self):
         banner = zeit.cms.interfaces.ICMSContent(self.banner_unique_id)
@@ -85,30 +82,6 @@ class HomepageMessage(zeit.push.message.Message):
 
     grok.name('homepage')
     get_text_from = 'short_text'
-
-    def _disable_message_config(self):
-        transaction.get().addAfterCommitHook(
-            self._disable_message_config_on_commit)
-
-    def _disable_message_config_on_commit(self, commit_success):
-        if commit_success:
-            super()._disable_message_config()
-            # XXX Here be dragons. The 2PC protocol has finished successfully
-            # at this point, but we're still in that same logical transaction.
-            # Now we have just created new changes and need to commit them,
-            # which is not really a task for commit hooks.
-            #
-            # transaction._callAfterCommitHooks() wisely tries to prevent
-            # people doing stuff like this (by removing all 2PC participants
-            # after all hooks have run), but doesn't quite succeed, which leads
-            # to "Duplicate tpc_begin calls for same transaction" errors inside
-            # ZEO.ClientStorage.tpc_begin; although I don't really know how or
-            # why (also, this doesn't happen in tests, only actual server).
-            #
-            # We cheat and abuse the fact that the transaction object does not
-            # care and allows itself to be commited twice, thereby starting a
-            # _new_ 2PC run, which then luckily _happens_ to work out fine.
-            transaction.commit()
 
     @property
     def url(self):
