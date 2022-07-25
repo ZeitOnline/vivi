@@ -688,25 +688,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.ChannelFormGroup"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.lead-candidate"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="10"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.lead-candidate"
-    class=".form.LeadCandidate"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ChannelFormGroup"
-    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.channel-selector"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"

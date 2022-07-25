@@ -27,8 +27,7 @@ class Base(zeit.push.browser.form.SocialBase,
 
     option_group = gocept.form.grouped.Fields(
         _("Options"),
-        ('channels', 'lead_candidate', 'serie', 'access',
-         'keywords'),
+        ('channels', 'serie', 'access', 'keywords'),
         css_class='column-right')
 
     marketing_group = gocept.form.grouped.Fields(

@@ -4,7 +4,6 @@
         id="leader"
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="450x200"
-        is_leader="true"
         areas="solo duo minor major"
         default="solo"
         />

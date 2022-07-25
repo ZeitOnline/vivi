@@ -130,6 +130,7 @@ class CMSContent(Converter):
         ('document', 'foldable'),
         ('document', 'is_amp'),
         ('document', 'is_instant_article'),
+        ('document', 'lead_candidate'),
         ('document', 'minimal_header'),
         ('document', 'rebrush_website_content'),
         ('document', 'storystreams'),

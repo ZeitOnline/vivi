@@ -24,7 +24,7 @@ class Base(zeit.push.browser.form.SocialBase,
         'product', 'ressort', 'keywords', 'serie',
         'banner', 'banner_id', 'type',
         'has_recensions', 'commentsAllowed',
-        'commentsPremoderate', 'related', 'channels', 'lead_candidate',
+        'commentsPremoderate', 'related', 'channels',
         'video_still_copyright', 'has_advertisement',
         # remaining:
         '__name__', 'image',

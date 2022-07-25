@@ -48,62 +48,6 @@ class AutomaticAreaElasticsearchTest(
             lambda *args, **kw: return_values.pop(0))
         self.assertEqual(1, len(IRenderedArea(self.area).values()))
 
-    def test_only_marked_articles_are_put_into_leader_block(self):
-        self.repository['normal'] = ExampleContentType()
-        leader = ExampleContentType()
-        leader.lead_candidate = True
-        self.repository['leader'] = leader
-
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/normal'}, {'url': '/leader'}])
-        self.elasticsearch.search.return_value.hits = 2
-        result = IRenderedArea(self.area).values()
-        self.assertEqual(
-            'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
-        self.assertEqual(
-            'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
-
-    def test_no_marked_articles_available_leader_block_gets_normal_article(
-            self):
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/testcontent'}])
-        self.elasticsearch.search.return_value.hits = 1
-        result = IRenderedArea(self.area).values()
-        leader = result[0]
-        self.assertEqual(
-            'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
-
-    def test_no_marked_articles_leader_block_layout_is_changed_virtually(self):
-        self.area.kind = 'major'
-        self.area.apply_teaser_layouts_automatically = True
-        self.area._first_teaser_layout = 'leader'
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/testcontent'}])
-        self.elasticsearch.search.return_value.hits = 1
-        result = IRenderedArea(self.area).values()
-        leader = result[0]
-        self.assertEqual('buttons', leader.layout.id)
-        self.assertEqual('leader', self.area.values()[0].layout.id)
-        self.assertEllipsis(
-            '...module="buttons"...',
-            zeit.cms.testing.xmltotext(
-                zeit.content.cp.interfaces.IRenderedXML(self.area)))
-
-    def test_leader_block_takes_everything_if_area_configured(self):
-        self.repository['normal'] = ExampleContentType()
-        leader = ExampleContentType()
-        leader.lead_candidate = True
-        self.repository['leader'] = leader
-
-        self.area.require_lead_candidates = False
-
-        self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/normal'}, {'url': '/leader'}])
-        self.elasticsearch.search.return_value.hits = 2
-        result = IRenderedArea(self.area).values()
-        self.assertEqual(
-            'http://xml.zeit.de/normal', list(result[0])[0].uniqueId)
-
     def test_renders_xml_with_filled_in_blocks(self):
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result(
             [{'url': '/testcontent'}])
@@ -127,9 +71,7 @@ class AutomaticAreaElasticsearchTest(
 
     def test_turning_automatic_off_materializes_filled_in_blocks(self):
         self.repository['normal'] = ExampleContentType()
-        leader = ExampleContentType()
-        leader.lead_candidate = True
-        self.repository['leader'] = leader
+        self.repository['leader'] = ExampleContentType()
 
         zope.component.getAdapter(
             self.area, zeit.edit.interfaces.IElementFactory, name='xml')()
@@ -147,9 +89,9 @@ class AutomaticAreaElasticsearchTest(
         self.assertEqual(
             ['teaser', 'teaser', 'xml'], [x.type for x in result])
         self.assertEqual(
-            'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
+            'http://xml.zeit.de/normal', list(result[0])[0].uniqueId)
         self.assertEqual(
-            'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
+            'http://xml.zeit.de/leader', list(result[1])[0].uniqueId)
 
     def test_checkin_smoke_test(self):
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()

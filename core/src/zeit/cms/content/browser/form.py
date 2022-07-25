@@ -32,7 +32,7 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
         css_class='wide-widgets column-left')
     auto_cp_fields = gocept.form.grouped.Fields(
         _("Run in channel"),
-        ('channels', 'lead_candidate'),
+        ('channels',),
         css_class='column-right')
 
     field_groups = (

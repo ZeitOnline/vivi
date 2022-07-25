@@ -138,12 +138,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.content.cp.interfaces.IArea['count'])
 
-    require_lead_candidates = (
-        zeit.cms.content.property.ObjectPathAttributeProperty(
-            '.', 'require_lead_candidates',
-            zeit.content.cp.interfaces.IArea['require_lead_candidates'],
-            use_default=True))
-
     topiclink_label_1 = ReferencedCpFallbackProperty(
         '.topiclink_label_1',
         zeit.content.cp.interfaces.IArea['topiclink_label_1'])
