@@ -43,9 +43,6 @@ class Banner:
     def publish(self):
         IPublish(self.xml_banner).publish(priority=PRIORITY_HOMEPAGE)
 
-    def retract(self):
-        IPublish(self.xml_banner).retract(priority=PRIORITY_HOMEPAGE)
-
     def _ensure_unlocked(self):
         banner = zeit.cms.interfaces.ICMSContent(self.banner_unique_id)
         lockable = zope.app.locking.interfaces.ILockable(banner, None)
