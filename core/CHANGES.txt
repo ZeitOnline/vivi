@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.17.7 (2022-07-25)
+-------------------
+
+- ZO-1298: Remove automatic area lead candidate mechanic
+
+- ZO-1564: Adjust vgwort rights flags
+
+
+MAINT:
+- Publish breaking news banner directly together with its article
+
+
 5.17.6 (2022-07-21)
 -------------------
 
