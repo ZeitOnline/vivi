@@ -626,9 +626,10 @@ class ITopicbox(IBlock,
         title=_("Title"),
         max_length=30)
 
-    link = zope.schema.TextLine(
+    link = zope.schema.URI(
         title=_('Link'),
-        required=False)
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
 
     link_text = zope.schema.TextLine(
         title=_("Linktext"),

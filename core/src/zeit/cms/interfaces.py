@@ -1,9 +1,11 @@
 # coding: utf8
+from urllib.parse import urlparse
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import pyramid_dogpile_cache2
 import pytz
 import re
+import zope.app.appsetup.product
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.common.sequence
@@ -52,6 +54,23 @@ valid_name_regex = re.compile(r'^[A-Za-z0-9\.\,\-_*()~]+$').match
 def valid_name(value):
     if not valid_name_regex(value):
         raise InvalidName(value)
+    return True
+
+
+class InvalidLinkTarget(zope.schema.ValidationError):
+    __doc__ = _('Invalid link target')
+
+
+def valid_link_target(value):
+    if not value:
+        return True
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    if 'invalid-link-targets' not in config:
+        return True
+    host = urlparse(value).netloc
+    for invalid in config['invalid-link-targets'].split(' '):
+        if host == invalid:
+            raise InvalidLinkTarget()
     return True
 
 
