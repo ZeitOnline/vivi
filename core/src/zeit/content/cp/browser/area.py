@@ -178,11 +178,14 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             'count', 'query', 'query_order',
             'elasticsearch_raw_query', 'elasticsearch_raw_order',
             'is_complete_query',
-            'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes',
+            'automatic', 'automatic_type',
+            'hide_dupes', 'consider_for_dupes',
+            'referenced_cp',
             'referenced_topicpage', 'topicpage_filter', 'topicpage_order',
             'topicpagelist_order',
-            'related_topicpage', 'rss_feed', 'reach_service', 'reach_section',
-            'reach_access', 'reach_age')
+            'related_topicpage',
+            'rss_feed',
+            'reach_service', 'reach_section', 'reach_access', 'reach_age')
 
     field_groups = (
         # XXX Kludgy: ``automatic`` must come after ``count``, since setting

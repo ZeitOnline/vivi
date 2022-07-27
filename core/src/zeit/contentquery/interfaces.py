@@ -247,6 +247,10 @@ class IConfiguration(zope.interface.Interface):
         title=_('Hide duplicate teasers'),
         default=True)
 
+    consider_for_dupes = zope.schema.Bool(
+        title=_('Consider for duplicate teasers'),
+        default=True)
+
     query = zope.schema.Tuple(
         title=_('Custom Query'),
         value_type=zeit.content.cp.field.DynamicCombination(

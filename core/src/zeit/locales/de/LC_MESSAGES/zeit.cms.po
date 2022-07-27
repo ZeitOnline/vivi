@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri May 20 11:39:31 2022\n"
+"POT-Creation-Date: Mon Jul 25 08:18:59 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -197,9 +197,9 @@ msgstr "Abbrechen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: zeit/cms/browser/form.py:301 zeit/cms/repository/browser/file.py:105
+#: zeit/cms/browser/form.py:301 zeit/cms/repository/browser/file.py:106
 #: zeit/content/article/edit/browser/form.py:535
-#: zeit/content/article/edit/browser/push.py:65
+#: zeit/content/article/edit/browser/push.py:61
 #: zeit/content/article/edit/browser/reference.py:56
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
 #: zeit/content/cp/browser/view.py:8 zeit/content/image/browser/form.py:100
@@ -235,13 +235,13 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:274 zeit/cms/syndication/browser/feed.py:147
 #: zeit/content/article/edit/interfaces.py:270
-#: zeit/content/article/interfaces.py:178 zeit/content/author/author.py:113
+#: zeit/content/article/interfaces.py:173 zeit/content/author/author.py:113
 #: zeit/content/author/browser/form.py:221
 msgid "Author"
 msgstr "Autor"
 
 #: zeit/cms/browser/listing.py:278 zeit/cms/content/browser/template.py:42
-#: zeit/cms/content/interfaces.py:195 zeit/cms/content/interfaces.py:546
+#: zeit/cms/content/interfaces.py:195 zeit/cms/content/interfaces.py:539
 #: zeit/cms/retractlog/browser/retractlog.py:25
 #: zeit/cms/retractlog/interfaces.py:26
 #: zeit/cms/syndication/browser/feed.py:151
@@ -250,15 +250,13 @@ msgstr "Autor"
 #: zeit/content/advertisement/interfaces.py:26
 #: zeit/content/article/edit/interfaces.py:443
 #: zeit/content/article/edit/interfaces.py:626
-#: zeit/content/article/interfaces.py:180
-#: zeit/content/article/interfaces.py:246 zeit/content/author/interfaces.py:36
-#: zeit/content/cp/interfaces.py:162 zeit/content/cp/interfaces.py:301
-#: zeit/content/cp/interfaces.py:450 zeit/content/gallery/interfaces.py:91
-#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:189
-#: zeit/content/rawxml/interfaces.py:16 zeit/content/text/interfaces.py:80
+#: zeit/content/article/interfaces.py:175
+#: zeit/content/article/interfaces.py:241 zeit/content/author/interfaces.py:36
+#: zeit/content/cp/interfaces.py:157 zeit/content/cp/interfaces.py:296
+#: zeit/content/cp/interfaces.py:445 zeit/content/gallery/interfaces.py:91
+#: zeit/content/infobox/interfaces.py:20 zeit/content/modules/interfaces.py:191
+#: zeit/content/rawxml/interfaces.py:16 zeit/content/text/interfaces.py:65
 #: zeit/content/video/browser/object-details-body.pt:24
-#: zeit/newsletter/interfaces.py:43 zeit/newsletter/interfaces.py:56
-#: zeit/cms/content/interfaces.py:539 zeit/content/text/interfaces.py:65
 msgid "Title"
 msgstr "Titel"
 
@@ -276,10 +274,10 @@ msgid "Modified"
 msgstr "Verändert"
 
 #: zeit/cms/browser/listing.py:290 zeit/cms/content/interfaces.py:95
-#: zeit/cms/content/interfaces.py:654
+#: zeit/cms/content/interfaces.py:647
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:37
-#: zeit/contentquery/interfaces.py:196 zeit/cms/content/interfaces.py:647
+#: zeit/contentquery/interfaces.py:196
 msgid "Ressort"
 msgstr "Ressort"
 
@@ -541,12 +539,13 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:12
 #: zeit/content/advertisement/browser/form.py:32
-#: zeit/content/animation/browser/form.py:37
+#: zeit/content/animation/browser/form.py:37 zeit/content/cp/browser/form.py:49
 #: zeit/content/video/browser/video.py:40
 msgid "Navigation"
 msgstr "Navigation"
 
-#: zeit/cms/content/browser/form.py:16 zeit/content/infobox/browser/form.py:29
+#: zeit/cms/content/browser/form.py:16 zeit/content/cp/browser/form.py:32
+#: zeit/content/infobox/browser/form.py:29
 #: zeit/content/portraitbox/browser/form.py:20
 #: zeit/magazin/browser/portraitbox.py:24
 msgid "Head"
@@ -554,7 +553,7 @@ msgstr "Kopf"
 
 #: zeit/cms/content/browser/form.py:20
 #: zeit/content/advertisement/browser/form.py:18
-#: zeit/content/cp/browser/form.py:34 zeit/content/gallery/browser/form.py:27
+#: zeit/content/cp/browser/form.py:17 zeit/content/gallery/browser/form.py:27
 #: zeit/content/image/browser/form.py:21
 #: zeit/content/infobox/browser/form.py:25
 #: zeit/content/infobox/browser/form.py:80
@@ -564,23 +563,25 @@ msgstr "Texte"
 
 #: zeit/cms/content/browser/form.py:25 zeit/content/article/browser/form.py:37
 #: zeit/content/article/edit/browser/form.py:414
-#: zeit/content/link/browser/form.py:29 zeit/content/video/browser/video.py:44
+#: zeit/content/cp/browser/form.py:37 zeit/content/link/browser/form.py:29
+#: zeit/content/video/browser/video.py:44
 msgid "Options"
 msgstr "Optionen"
 
 #: zeit/cms/content/browser/form.py:30 zeit/cms/content/interfaces.py:132
-#: zeit/content/article/interfaces.py:174 zeit/contentquery/interfaces.py:187
+#: zeit/content/article/interfaces.py:169 zeit/contentquery/interfaces.py:187
 msgid "Authors"
 msgstr "Autoren"
 
 #: zeit/cms/content/browser/form.py:34
 #: zeit/content/article/edit/browser/form.py:500
+#: zeit/content/cp/browser/form.py:44
 msgid "Run in channel"
 msgstr "Automatisch platzieren"
 
 #: zeit/cms/content/browser/form.py:43 zeit/content/article/browser/form.py:34
 #: zeit/content/article/edit/browser/recension.py:64
-#: zeit/content/author/browser/form.py:36 zeit/content/cp/browser/form.py:53
+#: zeit/content/author/browser/form.py:36
 #: zeit/content/gallery/browser/form.py:37
 msgid "misc."
 msgstr "Sonstiges"
@@ -591,7 +592,7 @@ msgid "Namespace"
 msgstr "Namespace"
 
 #: zeit/cms/content/browser/template-properties.pt:9
-#: zeit/cms/repository/browser/property.py:34 zeit/content/cp/interfaces.py:166
+#: zeit/cms/repository/browser/property.py:34 zeit/content/cp/interfaces.py:161
 msgid "Name"
 msgstr "Name"
 
@@ -679,10 +680,9 @@ msgstr "light"
 msgid "color scheme dark"
 msgstr "dark"
 
-#: zeit/cms/content/interfaces.py:78 zeit/cms/content/interfaces.py:664
+#: zeit/cms/content/interfaces.py:78 zeit/cms/content/interfaces.py:657
 #: zeit/content/article/edit/interfaces.py:561
-#: zeit/content/article/interfaces.py:215 zeit/content/volume/interfaces.py:36
-#: zeit/cms/content/interfaces.py:657
+#: zeit/content/article/interfaces.py:210 zeit/content/volume/interfaces.py:36
 msgid "Year"
 msgstr "Jahr"
 
@@ -693,8 +693,8 @@ msgstr "Jahr"
 msgid "Volume"
 msgstr "Ausgabe"
 
-#: zeit/cms/content/interfaces.py:99 zeit/cms/content/interfaces.py:659
-#: zeit/contentquery/interfaces.py:199 zeit/cms/content/interfaces.py:652
+#: zeit/cms/content/interfaces.py:99 zeit/cms/content/interfaces.py:652
+#: zeit/contentquery/interfaces.py:199
 msgid "Sub ressort"
 msgstr "Unterressort"
 
@@ -768,20 +768,20 @@ msgstr "„Von“-Zeile"
 
 #: zeit/cms/content/interfaces.py:201
 #: zeit/content/article/edit/interfaces.py:448
-#: zeit/content/modules/interfaces.py:193
+#: zeit/content/modules/interfaces.py:195
 msgid "Subtitle"
 msgstr "Teaser/Vorspann (Unterzeile)"
 
-#: zeit/cms/content/interfaces.py:208 zeit/content/cp/interfaces.py:521
+#: zeit/cms/content/interfaces.py:208 zeit/content/cp/interfaces.py:516
 msgid "Teaser title"
 msgstr "Überschrift (Centerpage)"
 
-#: zeit/cms/content/interfaces.py:213 zeit/content/cp/interfaces.py:525
+#: zeit/cms/content/interfaces.py:213 zeit/content/cp/interfaces.py:520
 #: zeit/content/video/browser/object-details-body.pt:28
 msgid "Teaser text"
 msgstr "Teaser (Centerpage)"
 
-#: zeit/cms/content/interfaces.py:218 zeit/content/cp/interfaces.py:517
+#: zeit/cms/content/interfaces.py:218 zeit/content/cp/interfaces.py:512
 msgid "Teaser kicker"
 msgstr "Teaser-Spitzmarke"
 
@@ -790,131 +790,120 @@ msgid "VG Wort Id"
 msgstr "VG Wort Id"
 
 #: zeit/cms/content/interfaces.py:228
-msgid "Daily newsletter"
-msgstr "Newsletter"
-
-#: zeit/cms/content/interfaces.py:229
-msgid "Should this article be listed in the daily newsletter?"
-msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
-
-#: zeit/cms/content/interfaces.py:235 zeit/cms/content/interfaces.py:228
 msgid "Comments premoderate"
 msgstr "Kommentare prämoderieren"
 
-#: zeit/cms/content/interfaces.py:240 zeit/cms/content/interfaces.py:233
+#: zeit/cms/content/interfaces.py:233
 msgid "Comments allowed"
 msgstr "Kommentare erlaubt"
 
-#: zeit/cms/content/interfaces.py:245 zeit/cms/content/interfaces.py:238
+#: zeit/cms/content/interfaces.py:238
 msgid "Show commentthread"
 msgstr "Kommentare anzeigen"
 
-#: zeit/cms/content/interfaces.py:250 zeit/cms/content/interfaces.py:243
+#: zeit/cms/content/interfaces.py:243
 msgid "Banner"
 msgstr "Alle Werbung anzeigen"
 
-#: zeit/cms/content/interfaces.py:255 zeit/cms/content/interfaces.py:248
+#: zeit/cms/content/interfaces.py:248
 msgid "Banner in Content"
 msgstr "Werbung im Artikeltext anzeigen"
 
-#: zeit/cms/content/interfaces.py:260 zeit/cms/content/interfaces.py:253
+#: zeit/cms/content/interfaces.py:253
 msgid "Banner Mainad"
 msgstr "Außenwerbung anzeigen"
 
-#: zeit/cms/content/interfaces.py:265 zeit/cms/content/interfaces.py:258
+#: zeit/cms/content/interfaces.py:258
 msgid "Banner id"
 msgstr "Banner-Id"
 
-#: zeit/cms/content/interfaces.py:269 zeit/cms/content/interfaces.py:262
+#: zeit/cms/content/interfaces.py:262
 msgid "Hide AdBlocker notification"
 msgstr "AdBlocker-Hinweis ausblenden"
 
-#: zeit/cms/content/interfaces.py:274 zeit/content/volume/interfaces.py:28
-#: zeit/cms/content/interfaces.py:267
+#: zeit/cms/content/interfaces.py:267 zeit/content/volume/interfaces.py:28
 msgid "Product id"
 msgstr "Standard-Quelle"
 
-#: zeit/cms/content/interfaces.py:282 zeit/cms/content/interfaces.py:275
+#: zeit/cms/content/interfaces.py:275
 msgid "Overscrolling"
 msgstr "Overscrolling"
 
-#: zeit/cms/content/interfaces.py:287 zeit/cms/content/interfaces.py:280
+#: zeit/cms/content/interfaces.py:280
 msgid "CAP title"
 msgstr "CAP-Titel"
 
-#: zeit/cms/content/interfaces.py:291 zeit/cms/content/interfaces.py:284
+#: zeit/cms/content/interfaces.py:284
 msgid "Deeplink URL"
 msgstr "Deep-Link-URL"
 
-#: zeit/cms/content/interfaces.py:296 zeit/cms/content/interfaces.py:289
+#: zeit/cms/content/interfaces.py:289
 msgid "Color scheme"
 msgstr "Farbschema/Darkmode"
 
-#: zeit/cms/content/interfaces.py:301 zeit/cms/content/interfaces.py:294
+#: zeit/cms/content/interfaces.py:294
 msgid "Advertisement title"
 msgstr "Auszeichnungs-Titel"
 
-#: zeit/cms/content/interfaces.py:305 zeit/cms/content/interfaces.py:298
+#: zeit/cms/content/interfaces.py:298
 msgid "Advertisement text"
 msgstr "Auszeichnungs-Text"
 
-#: zeit/cms/content/interfaces.py:309 zeit/cms/content/interfaces.py:302
+#: zeit/cms/content/interfaces.py:302
 msgid "InterRed MediaSync ID"
 msgstr "MediaSync ID"
 
-#: zeit/cms/content/interfaces.py:314 zeit/cms/content/interfaces.py:307
+#: zeit/cms/content/interfaces.py:307
 msgid "InterRed Article ID"
 msgstr "InterRed Beitrags-ID"
 
-#: zeit/cms/content/interfaces.py:362 zeit/cms/content/interfaces.py:355
+#: zeit/cms/content/interfaces.py:355
 msgid "Invalid hex literal"
 msgstr "Kein gültiger Farbwert"
 
-#: zeit/cms/content/interfaces.py:442 zeit/content/cp/interfaces.py:591
-#: zeit/cms/content/interfaces.py:435
+#: zeit/cms/content/interfaces.py:435 zeit/content/cp/interfaces.py:586
 msgid "XML Source"
 msgstr "XML-Quelltext"
 
-#: zeit/cms/content/interfaces.py:610 zeit/cms/content/interfaces.py:603
+#: zeit/cms/content/interfaces.py:603
 msgid "Last semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
-#: zeit/cms/content/interfaces.py:616 zeit/cms/content/interfaces.py:609
+#: zeit/cms/content/interfaces.py:609
 msgid "Update last semantic change"
 msgstr "Datum / Uhrzeit aktualisieren"
 
-#: zeit/cms/content/interfaces.py:643 zeit/cms/content/interfaces.py:636
+#: zeit/cms/content/interfaces.py:636
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:650
+#: zeit/cms/content/interfaces.py:643
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:58
-#: zeit/cms/content/interfaces.py:643
 msgid "Type"
 msgstr "Typ"
 
-#: zeit/cms/content/interfaces.py:669 zeit/cms/content/interfaces.py:662
+#: zeit/cms/content/interfaces.py:662
 msgid "Month"
 msgstr "Monat"
 
-#: zeit/cms/content/interfaces.py:701 zeit/cms/content/interfaces.py:694
+#: zeit/cms/content/interfaces.py:694
 msgid "Caching time browser"
 msgstr "Cachezeit Browser"
 
-#: zeit/cms/content/interfaces.py:707 zeit/cms/content/interfaces.py:700
+#: zeit/cms/content/interfaces.py:700
 msgid "Caching time server"
 msgstr "Cachezeit Fastly"
 
-#: zeit/cms/content/interfaces.py:736 zeit/cms/content/interfaces.py:729
+#: zeit/cms/content/interfaces.py:729
 msgid "Remote image URL"
 msgstr "Remote Bild URL"
 
-#: zeit/cms/content/interfaces.py:741 zeit/cms/content/interfaces.py:734
+#: zeit/cms/content/interfaces.py:734
 msgid "Remote timestamp URL"
 msgstr "Remote Zeitstempel URL"
 
-#: zeit/cms/content/metadata.py:158 zeit/cms/content/metadata.py:155
+#: zeit/cms/content/metadata.py:155
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
@@ -1139,7 +1128,6 @@ msgid "Add Embed objects"
 msgstr "Embed-Objekt hinzufügen"
 
 #: zeit/cms/permissions.zcml:164
-#, fuzzy
 msgid "Edit Embed objects"
 msgstr "Embed-Objekt hinzufügen"
 
@@ -1216,15 +1204,15 @@ msgstr "Neue Datei hochladen"
 msgid "Form input is not a file object"
 msgstr "keine gültige Datei"
 
-#: zeit/cms/repository/browser/file.py:82
+#: zeit/cms/repository/browser/file.py:83
 msgid "Add file"
 msgstr "Datei hinzufügen"
 
-#: zeit/cms/repository/browser/file.py:101
+#: zeit/cms/repository/browser/file.py:102
 msgid "Edit file"
 msgstr "Datei bearbeiten"
 
-#: zeit/cms/repository/browser/file.py:108
+#: zeit/cms/repository/browser/file.py:109
 msgid "Your changes have been saved."
 msgstr "Ihre Änderungen wurden gespeichert."
 
@@ -1368,8 +1356,7 @@ msgstr "Vorgabe für Ausgabe"
 #: zeit/content/article/edit/browser/form.py:218
 #: zeit/content/image/browser/configure.zcml:241
 #: zeit/content/image/browser/configure.zcml:257
-#: zeit/content/link/browser/form.py:18 zeit/newsletter/browser/form.py:10
-#: zeit/newsletter/browser/form.py:15
+#: zeit/content/link/browser/form.py:18
 msgid "Metadata"
 msgstr "Metadaten"
 
@@ -1379,7 +1366,7 @@ msgid "Edit contents"
 msgstr "Bearbeiten"
 
 #: zeit/cms/syndication/browser/configure.zcml:70
-#: zeit/content/cp/interfaces.py:675 zeit/content/infobox/interfaces.py:17
+#: zeit/content/cp/interfaces.py:670 zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr "Inhalt"
 
@@ -1550,7 +1537,7 @@ msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:437 zeit/workflow/publishinfo.py:50
+#: zeit/workflow/publish.py:471 zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1613,7 +1600,7 @@ msgstr "Veröffentlichungszustand"
 
 #: zeit/cms/workingcopy/browser/configure.zcml:19
 #: zeit/content/article/browser/form.py:137 zeit/content/text/interfaces.py:35
-#: zeit/content/text/interfaces.py:95 zeit/content/text/interfaces.py:80
+#: zeit/content/text/interfaces.py:80
 msgid "Content"
 msgstr "Inhalt"
 
@@ -1672,8 +1659,8 @@ msgstr "Farbe Button"
 #: zeit/content/advertisement/interfaces.py:42
 #: zeit/content/article/edit/image.py:91
 #: zeit/content/article/edit/interfaces.py:171
-#: zeit/content/article/interfaces.py:59 zeit/content/cp/interfaces.py:97
-#: zeit/content/cp/interfaces.py:313 zeit/content/cp/interfaces.py:654
+#: zeit/content/article/interfaces.py:59 zeit/content/cp/interfaces.py:92
+#: zeit/content/cp/interfaces.py:308 zeit/content/cp/interfaces.py:649
 #: zeit/content/image/browser/configure.zcml:249
 #: zeit/content/image/browser/imagegroup.py:222 zeit/content/image/image.py:146
 #: zeit/content/portraitbox/interfaces.py:18
@@ -1683,8 +1670,8 @@ msgstr "Bild"
 
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:172
-#: zeit/content/article/interfaces.py:60 zeit/content/cp/interfaces.py:314
-#: zeit/content/cp/interfaces.py:655 zeit/content/image/interfaces.py:429
+#: zeit/content/article/interfaces.py:60 zeit/content/cp/interfaces.py:309
+#: zeit/content/cp/interfaces.py:650 zeit/content/image/interfaces.py:429
 #: zeit/push/interfaces.py:358
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
@@ -1713,7 +1700,6 @@ msgstr "Animation"
 #: zeit/magazin/browser/configure.zcml:46
 #: zeit/magazin/browser/configure.zcml:74
 #: zeit/magazin/browser/configure.zcml:100
-#: zeit/newsletter/browser/category.py:50
 msgid "Edit metadata"
 msgstr "Metadaten bearbeiten"
 
@@ -1734,7 +1720,7 @@ msgstr "Artikel"
 
 #: zeit/content/animation/browser/form.py:23
 #: zeit/content/article/edit/browser/form.py:329
-#: zeit/content/link/browser/form.py:24 zeit/newsletter/newsletter.py:168
+#: zeit/content/link/browser/form.py:24
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr "Teaser"
@@ -1791,7 +1777,7 @@ msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
 #: zeit/content/article/browser/configure.zcml:95
-#: zeit/content/article/interfaces.py:262
+#: zeit/content/article/interfaces.py:257
 msgid "Add breaking news"
 msgstr "Eilmeldung"
 
@@ -1970,8 +1956,7 @@ msgid "edit internal links"
 msgstr "Relateds bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:177
-#: zeit/content/cp/browser/workflow.py:29
-#: zeit/newsletter/browser/workflow.py:19 zeit/workflow/browser/form.py:124
+#: zeit/content/cp/browser/workflow.py:29 zeit/workflow/browser/form.py:124
 #: zeit/workflow/browser/form.py:157 zeit/workflow/browser/form.py:187
 msgid "Status"
 msgstr "Status"
@@ -1982,7 +1967,6 @@ msgstr "Status"
 #: zeit/content/article/edit/browser/form.py:270
 #: zeit/content/article/edit/browser/form.py:294
 #: zeit/content/article/edit/browser/form.py:306
-#: zeit/newsletter/browser/form.py:17
 msgid "edit metadata"
 msgstr "Metadaten bearbeiten"
 
@@ -2048,15 +2032,15 @@ msgstr "Social Media und Apps"
 msgid "edit social media"
 msgstr "Social Media bearbeiten"
 
-#: zeit/content/article/edit/browser/push.py:39 zeit/push/browser/form.py:64
+#: zeit/content/article/edit/browser/push.py:35 zeit/push/browser/form.py:64
 msgid "Mobile apps"
 msgstr "Push/Eilmeldung"
 
-#: zeit/content/article/edit/browser/push.py:47
+#: zeit/content/article/edit/browser/push.py:43
 msgid "edit mobile apps"
 msgstr "Push bearbeiten"
 
-#: zeit/content/article/edit/browser/push.py:78
+#: zeit/content/article/edit/browser/push.py:74
 msgid "Author push enabled"
 msgstr "Der Artikel wird an Nutzer gepusht, die dem Autor folgen."
 
@@ -2073,7 +2057,7 @@ msgid "[edit]"
 msgstr "[bearbeiten]"
 
 #: zeit/content/article/edit/browser/recension-list.pt:78
-#: zeit/content/article/interfaces.py:223
+#: zeit/content/article/interfaces.py:218
 msgid "Pages"
 msgstr "Seiten"
 
@@ -2096,7 +2080,7 @@ msgid "Book details"
 msgstr "Buchdetails"
 
 #: zeit/content/article/edit/browser/recension.py:60
-#: zeit/content/article/interfaces.py:207
+#: zeit/content/article/interfaces.py:202
 msgid "Publisher"
 msgstr "Verlag"
 
@@ -2109,7 +2093,7 @@ msgid "Edit book information"
 msgstr "Rezensionsinformationen bearbeiten"
 
 #: zeit/content/article/edit/browser/recension.py:80
-#: zeit/content/article/interfaces.py:231
+#: zeit/content/article/interfaces.py:226
 msgid "Raw data"
 msgstr "Quelltext"
 
@@ -2271,7 +2255,7 @@ msgstr "Ziehen Sie ein Video hierher, um es zu verknüpfen"
 #: zeit/content/article/edit/interfaces.py:361
 #: zeit/content/article/edit/interfaces.py:377
 #: zeit/content/article/edit/interfaces.py:453
-#: zeit/content/cp/interfaces.py:496 zeit/content/gallery/interfaces.py:101
+#: zeit/content/cp/interfaces.py:491 zeit/content/gallery/interfaces.py:101
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
@@ -2356,8 +2340,7 @@ msgstr "Vor- und Nachname"
 
 #: zeit/content/article/edit/interfaces.py:263
 #: zeit/content/gallery/interfaces.py:97 zeit/content/infobox/interfaces.py:21
-#: zeit/content/portraitbox/interfaces.py:15 zeit/newsletter/interfaces.py:58
-#: zeit/wysiwyg/interfaces.py:11
+#: zeit/content/portraitbox/interfaces.py:15 zeit/wysiwyg/interfaces.py:11
 msgid "Text"
 msgstr "Text"
 
@@ -2392,7 +2375,7 @@ msgid "URL"
 msgstr "URL"
 
 #: zeit/content/article/edit/interfaces.py:393
-#: zeit/content/modules/interfaces.py:314
+#: zeit/content/modules/interfaces.py:316
 msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
@@ -2401,23 +2384,23 @@ msgid "Liveblog version"
 msgstr "Liveblog Version"
 
 #: zeit/content/article/edit/interfaces.py:402
-#: zeit/content/modules/interfaces.py:317
+#: zeit/content/modules/interfaces.py:319
 msgid "Collapse preceding content"
 msgstr "Vorherigen Inhalt einklappen"
 
 #: zeit/content/article/edit/interfaces.py:415
-#: zeit/content/cp/interfaces.py:706
+#: zeit/content/cp/interfaces.py:701
 msgid "Cardstack id"
 msgstr "ID"
 
 #: zeit/content/article/edit/interfaces.py:417
-#: zeit/content/cp/interfaces.py:709
+#: zeit/content/cp/interfaces.py:704
 msgid "Advertorial?"
 msgstr "Advertorial?"
 
 #: zeit/content/article/edit/interfaces.py:437
 #: zeit/content/article/edit/interfaces.py:621
-#: zeit/content/cp/interfaces.py:297 zeit/content/cp/interfaces.py:447
+#: zeit/content/cp/interfaces.py:292 zeit/content/cp/interfaces.py:442
 #: zeit/content/infobox/interfaces.py:13
 #: zeit/content/video/browser/object-details-body.pt:20
 #: zeit/content/volume/browser/toc_listing.py:32
@@ -2481,7 +2464,7 @@ msgid "Linktext"
 msgstr "LInktext"
 
 #: zeit/content/article/edit/interfaces.py:639
-#: zeit/content/cp/interfaces.py:354
+#: zeit/content/cp/interfaces.py:349
 msgid "Automatic type"
 msgstr "Quelle"
 
@@ -2576,7 +2559,7 @@ msgstr "Rezensionsinformationen anzeigen"
 msgid "First related as box"
 msgstr "Erstes Related als Box"
 
-#: zeit/content/article/interfaces.py:49 zeit/content/article/interfaces.py:187
+#: zeit/content/article/interfaces.py:49 zeit/content/article/interfaces.py:182
 msgid "Genre"
 msgstr "Genre"
 
@@ -2593,60 +2576,55 @@ msgid "Header color"
 msgstr "Header-Farbe"
 
 #: zeit/content/article/interfaces.py:89
-msgid "Is AMP"
-msgstr ""
-"In Google Suchergebnissen als Accelerated Mobile Pages (AMP) darstellen"
-
-#: zeit/content/article/interfaces.py:94
 msgid "Hide Ligatus recommendations"
 msgstr "Outbrain Empfehlungen ausblenden"
 
-#: zeit/content/article/interfaces.py:99
+#: zeit/content/article/interfaces.py:94
 msgid "Prevent Ligatus indexing"
 msgstr "Indizierung bei Outbrain unterdrücken"
 
-#: zeit/content/article/interfaces.py:104
+#: zeit/content/article/interfaces.py:99
 msgid "Recent comments first"
 msgstr "Neueste Kommentare zuerst"
 
-#: zeit/content/article/interfaces.py:109
+#: zeit/content/article/interfaces.py:104
 msgid "Has audio file"
 msgstr "Audiodatei vorhanden"
 
-#: zeit/content/article/interfaces.py:183
+#: zeit/content/article/interfaces.py:178
 msgid "Info"
 msgstr "Info"
 
-#: zeit/content/article/interfaces.py:191
+#: zeit/content/article/interfaces.py:186
 msgid "ZEIT category"
 msgstr "ZEIT-Kategorie"
 
-#: zeit/content/article/interfaces.py:195
+#: zeit/content/article/interfaces.py:190
 msgid "Agelimit"
 msgstr "Altersbeschränkung"
 
-#: zeit/content/article/interfaces.py:199
+#: zeit/content/article/interfaces.py:194
 msgid "Original language"
 msgstr "Originalsprache"
 
-#: zeit/content/article/interfaces.py:203
+#: zeit/content/article/interfaces.py:198
 msgid "Translator"
 msgstr "Übersetzer"
 
 #. Default: "Location"
-#: zeit/content/article/interfaces.py:211
+#: zeit/content/article/interfaces.py:206
 msgid "book-location"
 msgstr "Ort"
 
-#: zeit/content/article/interfaces.py:219
+#: zeit/content/article/interfaces.py:214
 msgid "Media type"
 msgstr "Medientyp"
 
-#: zeit/content/article/interfaces.py:227
+#: zeit/content/article/interfaces.py:222
 msgid "Price (EUR)"
 msgstr "Preis in €"
 
-#: zeit/content/article/interfaces.py:250
+#: zeit/content/article/interfaces.py:245
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
 
@@ -2885,7 +2863,7 @@ msgstr "Ort"
 msgid "Author role"
 msgstr "Rolle"
 
-#: zeit/content/cp/area.py:415
+#: zeit/content/cp/area.py:417
 msgid "Area"
 msgstr "Fläche"
 
@@ -2921,39 +2899,39 @@ msgstr "Video-Riegel"
 msgid "raw text block"
 msgstr "Embed Code"
 
-#: zeit/content/cp/blocks/teaser.py:25
+#: zeit/content/cp/blocks/teaser.py:26
 msgid "No default teaser layout defined for this area."
 msgstr "Kein Default-Layout für diese Fläche vorhanden"
 
-#: zeit/content/cp/blocks/teaser.py:87
+#: zeit/content/cp/blocks/teaser.py:88
 msgid "List of teasers"
 msgstr "Teaser"
 
-#: zeit/content/cp/browser/area.py:194 zeit/content/cp/interfaces.py:226
+#: zeit/content/cp/browser/area.py:197 zeit/content/cp/interfaces.py:221
 msgid "automatic-area-type-centerpage"
 msgstr "Centerpage"
 
-#: zeit/content/cp/browser/area.py:196 zeit/content/cp/interfaces.py:234
+#: zeit/content/cp/browser/area.py:199 zeit/content/cp/interfaces.py:229
 msgid "automatic-area-type-rss-feed"
 msgstr "RSS-Feed"
 
-#: zeit/content/cp/browser/area.py:198 zeit/content/cp/interfaces.py:227
+#: zeit/content/cp/browser/area.py:201 zeit/content/cp/interfaces.py:222
 msgid "automatic-area-type-custom"
 msgstr "Individuelle Abfrage"
 
-#: zeit/content/cp/browser/area.py:200 zeit/content/cp/interfaces.py:228
+#: zeit/content/cp/browser/area.py:203 zeit/content/cp/interfaces.py:223
 msgid "automatic-area-type-topicpage"
 msgstr "TMS-Themenseite"
 
-#: zeit/content/cp/browser/area.py:204 zeit/content/cp/interfaces.py:231
+#: zeit/content/cp/browser/area.py:207 zeit/content/cp/interfaces.py:226
 msgid "automatic-area-type-elasticsearch-query"
 msgstr "ES-Query"
 
-#: zeit/content/cp/browser/area.py:208 zeit/content/cp/interfaces.py:229
+#: zeit/content/cp/browser/area.py:211 zeit/content/cp/interfaces.py:224
 msgid "automatic-area-type-related-topics"
 msgstr "Verwandte TMS-Themenseiten"
 
-#: zeit/content/cp/browser/area.py:210 zeit/content/cp/interfaces.py:232
+#: zeit/content/cp/browser/area.py:213 zeit/content/cp/interfaces.py:227
 msgid "automatic-area-type-reach"
 msgstr "Reach"
 
@@ -3017,19 +2995,19 @@ msgstr "SEO ansehen"
 msgid "Edit SEO"
 msgstr "SEO bearbeiten"
 
-#: zeit/content/cp/browser/form.py:44
+#: zeit/content/cp/browser/form.py:27
 msgid "OG Metadata"
 msgstr "OG Metadaten"
 
-#: zeit/content/cp/browser/form.py:63
+#: zeit/content/cp/browser/form.py:80
 msgid "Add centerpage"
 msgstr "Centerpage hinzufügen"
 
-#: zeit/content/cp/browser/form.py:71
+#: zeit/content/cp/browser/form.py:88
 msgid "Edit centerpage"
 msgstr "Centerpage bearbeiten"
 
-#: zeit/content/cp/browser/form.py:77
+#: zeit/content/cp/browser/form.py:94
 msgid "View centerpage metadata"
 msgstr "Metadaten"
 
@@ -3076,19 +3054,16 @@ msgstr "Auschecken"
 
 #: zeit/content/cp/browser/workflow.py:33
 #: zeit/content/image/browser/imagegroup.py:59
-#: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:129
-#: zeit/workflow/browser/form.py:161
+#: zeit/workflow/browser/form.py:129 zeit/workflow/browser/form.py:161
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: zeit/content/cp/browser/workflow.py:35
-#: zeit/newsletter/browser/workflow.py:27 zeit/workflow/browser/form.py:134
+#: zeit/content/cp/browser/workflow.py:35 zeit/workflow/browser/form.py:134
 #: zeit/workflow/browser/form.py:166 zeit/workflow/browser/form.py:191
 msgid "Log"
 msgstr "Log"
 
-#: zeit/content/cp/browser/workflow.py:50
-#: zeit/newsletter/browser/workflow.py:77 zeit/workflow/browser/form.py:94
+#: zeit/content/cp/browser/workflow.py:50 zeit/workflow/browser/form.py:94
 msgid "Save state only"
 msgstr "Nur Status speichern"
 
@@ -3113,15 +3088,15 @@ msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 "${id} hat Validierungsfehler und  kann daher nicht veröffentlicht werden."
 
-#: zeit/content/cp/centerpage.py:214
+#: zeit/content/cp/centerpage.py:211
 msgid "Centerpage 2009"
 msgstr "Center-Page"
 
-#: zeit/content/cp/configure.zcml:165
+#: zeit/content/cp/configure.zcml:161
 msgid "Edit Area"
 msgstr "Fläche bearbeiten"
 
-#: zeit/content/cp/configure.zcml:170
+#: zeit/content/cp/configure.zcml:166
 msgid "Edit Article Flow"
 msgstr "Artikelflow benutzen"
 
@@ -3154,212 +3129,208 @@ msgid "CP type"
 msgstr "Center-Page-Typ"
 
 #: zeit/content/cp/interfaces.py:80
-msgid "Header image"
-msgstr "Header-Bild"
-
-#: zeit/content/cp/interfaces.py:85
 msgid "Name for topiclinks"
 msgstr "Navi-Teaser"
 
-#: zeit/content/cp/interfaces.py:89
+#: zeit/content/cp/interfaces.py:84
 msgid "Titel"
 msgstr "Überschrift"
 
-#: zeit/content/cp/interfaces.py:93
+#: zeit/content/cp/interfaces.py:88
 msgid "Description"
 msgstr "Beschreibung"
 
-#: zeit/content/cp/interfaces.py:147 zeit/content/cp/interfaces.py:171
-#: zeit/content/cp/interfaces.py:285
+#: zeit/content/cp/interfaces.py:142 zeit/content/cp/interfaces.py:166
+#: zeit/content/cp/interfaces.py:280
 msgid "Visible in frontend"
 msgstr "Sichtbar im Frontend"
 
-#: zeit/content/cp/interfaces.py:175 zeit/content/cp/interfaces.py:289
+#: zeit/content/cp/interfaces.py:170 zeit/content/cp/interfaces.py:284
 msgid "Kind"
 msgstr "Typ"
 
-#: zeit/content/cp/interfaces.py:178
+#: zeit/content/cp/interfaces.py:173
 msgid "Kind Title"
 msgstr "Titel"
 
-#: zeit/content/cp/interfaces.py:215
+#: zeit/content/cp/interfaces.py:210
 msgid "${kind} area ${title}"
 msgstr "${kind} Fläche ${title}"
 
-#: zeit/content/cp/interfaces.py:216
+#: zeit/content/cp/interfaces.py:211
 msgid "no title"
 msgstr "ohne Titel"
 
-#: zeit/content/cp/interfaces.py:230
+#: zeit/content/cp/interfaces.py:225
 msgid "automatic-area-type-query"
 msgstr "Query"
 
-#: zeit/content/cp/interfaces.py:233
+#: zeit/content/cp/interfaces.py:228
 msgid "automatic-area-type-topicpagelist"
 msgstr "Themenseiten-Ranking"
 
-#: zeit/content/cp/interfaces.py:290
+#: zeit/content/cp/interfaces.py:285
 msgid "Used internally for rendering on Friedbert"
 msgstr "Zum Rendern via Friedbert"
 
-#: zeit/content/cp/interfaces.py:305 zeit/content/cp/interfaces.py:460
+#: zeit/content/cp/interfaces.py:300 zeit/content/cp/interfaces.py:455
 msgid "Read more"
 msgstr "Weiterlesen"
 
-#: zeit/content/cp/interfaces.py:309 zeit/content/cp/interfaces.py:463
+#: zeit/content/cp/interfaces.py:304 zeit/content/cp/interfaces.py:458
 msgid "Read more URL"
 msgstr "»Weiterlesen«-URL"
 
-#: zeit/content/cp/interfaces.py:319
+#: zeit/content/cp/interfaces.py:314
 msgid "Maximum block count"
 msgstr "Anzahl Teaser"
 
-#: zeit/content/cp/interfaces.py:323
+#: zeit/content/cp/interfaces.py:318
 msgid "Overflow into"
 msgstr "Verknüpfen mit"
 
-#: zeit/content/cp/interfaces.py:328
+#: zeit/content/cp/interfaces.py:323
 msgid "Apply teaser layouts automatically?"
 msgstr "Teaser-Layouts automatisch einstellen"
 
-#: zeit/content/cp/interfaces.py:333
+#: zeit/content/cp/interfaces.py:328
 msgid "First teaser layout"
 msgstr "Layout 1. Teaser"
 
-#: zeit/content/cp/interfaces.py:341
+#: zeit/content/cp/interfaces.py:336
 msgid "Require lead candidates when auto filling?"
 msgstr "Aufmacherfähig erforderlich für Autofläche?"
 
-#: zeit/content/cp/interfaces.py:345
+#: zeit/content/cp/interfaces.py:340
 msgid "automatic"
 msgstr "Autopilot"
 
-#: zeit/content/cp/interfaces.py:359
+#: zeit/content/cp/interfaces.py:354
 msgid "Area background color (6 characters, no #)"
 msgstr "Hintergrundfarbe (6 Zeichen, ohne Hash)"
 
-#: zeit/content/cp/interfaces.py:360
+#: zeit/content/cp/interfaces.py:355
 msgid "Hex value of background color for area"
 msgstr "Hintergrundfarbe (Hex-Wert)"
 
-#: zeit/content/cp/interfaces.py:371
+#: zeit/content/cp/interfaces.py:366
 msgid ""
 "Automatic area with teaser from centerpage requires a referenced centerpage."
 msgstr "Es ist keine valide Centerpage angegeben."
 
-#: zeit/content/cp/interfaces.py:375
+#: zeit/content/cp/interfaces.py:370
 msgid ""
 "Automatic area with teaser from custom query requires a query condition."
 msgstr "Es ist keine valide Query angegeben."
 
-#: zeit/content/cp/interfaces.py:379
+#: zeit/content/cp/interfaces.py:374
 msgid "Automatic area with teaser from TMS topicpage requires a topicpage ID."
 msgstr "Es ist keine valide Themenseite angegeben."
 
-#: zeit/content/cp/interfaces.py:383
+#: zeit/content/cp/interfaces.py:378
 msgid ""
 "Automatic area with teaser from elasticsearch query requires a raw query."
 msgstr "Es ist keine valide Query angegeben."
 
-#: zeit/content/cp/interfaces.py:387
+#: zeit/content/cp/interfaces.py:382
 msgid "Automatic area with rss-feed requires a given feed"
 msgstr "Es ist kein valider RSS-Feed angegeben."
 
-#: zeit/content/cp/interfaces.py:390
+#: zeit/content/cp/interfaces.py:385
 msgid "Automatic area with related-topics requires a given topicpage"
 msgstr "Es ist keine valide Themeseiten ID angegeben."
 
-#: zeit/content/cp/interfaces.py:394
+#: zeit/content/cp/interfaces.py:389
 msgid "Automatic area with teasers from reach require a given kind"
 msgstr "Autoflächen mit Reach als Quelle benötigen eine Metrik"
 
-#: zeit/content/cp/interfaces.py:411
+#: zeit/content/cp/interfaces.py:406
 msgid "Elasticsearch raw query is malformed: %s"
 msgstr "Elasticsearch-Query fehlerhaft: {error}"
 
-#: zeit/content/cp/interfaces.py:455
+#: zeit/content/cp/interfaces.py:450
 msgid "Whether block can be removed by automation, e.g. AutoPilot"
 msgstr ""
 "Ist der Block “flüchtig” und darf automatisch entfernt werden, z.B. vom "
 "AutoPilot?"
 
-#: zeit/content/cp/interfaces.py:466
+#: zeit/content/cp/interfaces.py:461
 msgid "Background color (ZMO only)"
 msgstr "Hintergrundfarbe (ZMO)"
 
-#: zeit/content/cp/interfaces.py:500 zeit/content/cp/interfaces.py:551
+#: zeit/content/cp/interfaces.py:495 zeit/content/cp/interfaces.py:546
 msgid "Force image on mobile"
 msgstr "mobil mit Bild"
 
-#: zeit/content/cp/interfaces.py:577
+#: zeit/content/cp/interfaces.py:572
 msgid "The root element must be <container>."
 msgstr "Der Wurzelkonten muss ein <container> sein."
 
-#: zeit/content/cp/interfaces.py:580
+#: zeit/content/cp/interfaces.py:575
 msgid "cp:type must be 'xml'."
 msgstr "Das Attribut »cp:type« muss »xml« sein."
 
-#: zeit/content/cp/interfaces.py:583
+#: zeit/content/cp/interfaces.py:578
 msgid "No or empty cp:__name__ attribute."
 msgstr "Kein oder leers Attribut »cp:__name__«."
 
-#: zeit/content/cp/interfaces.py:600 zeit/content/video/playlist.py:29
+#: zeit/content/cp/interfaces.py:595 zeit/content/video/playlist.py:29
 msgid "Playlist"
 msgstr "Playlist"
 
-#: zeit/content/cp/interfaces.py:608
+#: zeit/content/cp/interfaces.py:603
 msgid "CP Extra Id"
 msgstr "CPExtra"
 
-#: zeit/content/cp/interfaces.py:627 zeit/workflow/interfaces.py:27
+#: zeit/content/cp/interfaces.py:622 zeit/workflow/interfaces.py:27
 msgid "From"
 msgstr "Von"
 
-#: zeit/content/cp/interfaces.py:628 zeit/workflow/interfaces.py:29
+#: zeit/content/cp/interfaces.py:623 zeit/workflow/interfaces.py:29
 msgid "To"
 msgstr "Bis"
 
-#: zeit/content/cp/interfaces.py:659
+#: zeit/content/cp/interfaces.py:654
 msgid "Animate"
 msgstr "Animieren"
 
-#: zeit/content/cp/interfaces.py:666
+#: zeit/content/cp/interfaces.py:661
 msgid "left"
 msgstr "links"
 
-#: zeit/content/cp/interfaces.py:667
+#: zeit/content/cp/interfaces.py:662
 msgid "center"
 msgstr "mittig"
 
-#: zeit/content/cp/interfaces.py:668
+#: zeit/content/cp/interfaces.py:663
 msgid "right"
 msgstr "rechts"
 
-#: zeit/content/cp/interfaces.py:676 zeit/content/modules/interfaces.py:153
+#: zeit/content/cp/interfaces.py:671 zeit/content/modules/interfaces.py:155
 msgid "Use Markdown"
 msgstr "verwendet Markdown"
 
-#: zeit/content/cp/interfaces.py:680
+#: zeit/content/cp/interfaces.py:675
 msgid "Alignment"
 msgstr "Ausrichtung"
 
-#: zeit/content/cp/interfaces.py:681
+#: zeit/content/cp/interfaces.py:676
 msgid "Choose alignment"
 msgstr "Ausrichtung wählen"
 
-#: zeit/content/cp/interfaces.py:713
+#: zeit/content/cp/interfaces.py:708
 msgid "Background color"
 msgstr "Hintergrundfarbe"
 
-#: zeit/content/cp/interfaces.py:714
+#: zeit/content/cp/interfaces.py:709
 msgid "Choose a background color"
 msgstr "Hintergrundfarbe auswählen"
 
-#: zeit/content/cp/interfaces.py:727 zeit/content/modules/interfaces.py:80
+#: zeit/content/cp/interfaces.py:722 zeit/content/modules/interfaces.py:80
 msgid "Jobbox Ticker"
 msgstr "Jobbox Ticker"
 
-#: zeit/content/cp/interfaces.py:753
+#: zeit/content/cp/interfaces.py:748
 msgid "Enable RSS Tracking-Parameter"
 msgstr "RSS Tracking-Parameter aktivieren"
 
@@ -3387,7 +3358,6 @@ msgstr "Inhalte löschen und erneut materialisieren"
 msgid "Publish content of dynamic folder"
 msgstr "Inhalte des Ordners veröffentlichen"
 
-#: zeit/content/dynamicfolder/folder.py:215
 #: zeit/content/dynamicfolder/folder.py:216
 msgid "Dynamic Folder"
 msgstr "Dynamischer Ordner"
@@ -3406,20 +3376,17 @@ msgid "Materialize ${materialize}, Regenerate ${regenerate}"
 msgstr "Materialisiere ${materialize}, regeneriere ${regenerate}"
 
 #: zeit/content/dynamicfolder/materialize.py:74
-#, fuzzy
 msgid "Materialized ${count}"
-msgstr "Materialisiert"
+msgstr "Materialisiert ${count}"
 
 #: zeit/content/dynamicfolder/materialize.py:86
-#, fuzzy
 msgid "Regenerated ${count}"
-msgstr "interne Links"
+msgstr "Regeneriert ${count}"
 
 #: zeit/content/dynamicfolder/materialize.py:102
 msgid "Materialized"
 msgstr "Materialisiert"
 
-#: zeit/content/dynamicfolder/materialize.py:122
 #: zeit/content/dynamicfolder/materialize.py:126
 msgid "About to publish ${count} objects"
 msgstr "Starte Sammelveröffentlichung (${count} Objekte insgesamt)"
@@ -3677,7 +3644,7 @@ msgstr ""
 "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die "
 "Resource keinen gültigen Inhalt hat."
 
-#: zeit/content/image/imagegroup.py:387 zeit/content/image/imagegroup.py:388
+#: zeit/content/image/imagegroup.py:388
 msgid "Image Group"
 msgstr "Bildergruppe"
 
@@ -3865,81 +3832,80 @@ msgstr ""
 "Füge hier eine Twitter-, Instagram-, Youtube-, Datawrapper-, Facebook- oder "
 "Vimeo-URL ein."
 
-#: zeit/content/modules/interfaces.py:148
+#: zeit/content/modules/interfaces.py:150
 msgid "Newsletter Signup"
 msgstr "Newsletter"
 
-#: zeit/content/modules/interfaces.py:152
+#: zeit/content/modules/interfaces.py:154
 msgid "Newslettersignup Prefix"
 msgstr "Vorwort"
 
-#: zeit/content/modules/interfaces.py:160
+#: zeit/content/modules/interfaces.py:162
 msgid "Quiz id"
 msgstr "ID"
 
-#: zeit/content/modules/interfaces.py:162
+#: zeit/content/modules/interfaces.py:164
 msgid "Enable adreload"
 msgstr "Adreload aktivieren"
 
-#: zeit/content/modules/interfaces.py:171
+#: zeit/content/modules/interfaces.py:173
 msgid "Email address must contain @."
 msgstr "E-Mail-Adresse muss @ enthalten"
 
-#: zeit/content/modules/interfaces.py:197
+#: zeit/content/modules/interfaces.py:199
 msgid "Recipient"
 msgstr "Empfänger"
 
-#: zeit/content/modules/interfaces.py:201
-#: zeit/content/modules/interfaces.py:206 zeit/newsletter/interfaces.py:25
-#: zeit/newsletter/interfaces.py:75
+#: zeit/content/modules/interfaces.py:203
+#: zeit/content/modules/interfaces.py:208
 msgid "Subject"
 msgstr "Betreff"
 
-#: zeit/content/modules/interfaces.py:210
+#: zeit/content/modules/interfaces.py:212
 msgid "Success message"
 msgstr "Text Erfolgsmeldung"
 
-#: zeit/content/modules/interfaces.py:213
+#: zeit/content/modules/interfaces.py:215
 msgid "Email required?"
 msgstr "Emailadresse als Pflichtfeld?"
 
-#: zeit/content/modules/interfaces.py:252
+#: zeit/content/modules/interfaces.py:254
 msgid "Value must be number or range."
 msgstr "Wert muss Zahl oder Umfang (3-4) sein."
 
-#: zeit/content/modules/interfaces.py:258
+#: zeit/content/modules/interfaces.py:260
 msgid "Merge with previous recipe list module"
 msgstr "Mit vorheriger Rezeptliste zusammenführen"
 
-#: zeit/content/modules/interfaces.py:262
+#: zeit/content/modules/interfaces.py:264
 msgid "Recipe name"
 msgstr "Rezeptname"
 
-#: zeit/content/modules/interfaces.py:266
+#: zeit/content/modules/interfaces.py:268
 msgid "Subheading"
 msgstr "Zwischenüberschrift"
 
-#: zeit/content/modules/interfaces.py:270
+#: zeit/content/modules/interfaces.py:272
 msgid "Appears in recipe search?"
 msgstr "Zwischenüberschrift in Suche anzeigen?"
 
-#: zeit/content/modules/interfaces.py:274
+#: zeit/content/modules/interfaces.py:276
 msgid "Complexity"
 msgstr "Komplexität"
 
-#: zeit/content/modules/interfaces.py:279
+#: zeit/content/modules/interfaces.py:281
 msgid "Time"
 msgstr "Dauer"
 
-#: zeit/content/modules/interfaces.py:284
+#: zeit/content/modules/interfaces.py:286
 msgid "Servings"
 msgstr "Portionen"
 
-#: zeit/content/modules/interfaces.py:289
+#: zeit/content/modules/interfaces.py:291
 msgid "Special ingredient"
 msgstr "Sonderzutat"
 
-#: zeit/content/modules/interfaces.py:290
+#: zeit/content/modules/interfaces.py:292
 msgid ""
 "A non-searchable free text ingredient without a cp (e.g. an extra portion of "
 "love)"
@@ -3947,27 +3913,27 @@ msgstr ""
 "Ein Freitextfeld für nicht durchsuchbare Sonderzutaten ohne Zutaten-CP (z.B. "
 "eine Extraportion Liebe)"
 
-#: zeit/content/modules/interfaces.py:296
+#: zeit/content/modules/interfaces.py:298
 msgid "Ingredients"
 msgstr "Zutaten"
 
-#: zeit/content/modules/interfaces.py:322
+#: zeit/content/modules/interfaces.py:324
 msgid "Liveblog status"
 msgstr "Liveblog-Status"
 
-#: zeit/content/modules/interfaces.py:327
+#: zeit/content/modules/interfaces.py:329
 msgid "Liveblog theme"
 msgstr "Liveblog-Theme"
 
-#: zeit/content/modules/interfaces.py:333
+#: zeit/content/modules/interfaces.py:335
 msgid "Intersections"
 msgstr "Zwischenüberschriften"
 
-#: zeit/content/modules/interfaces.py:355
+#: zeit/content/modules/interfaces.py:357
 msgid "Podcast id"
 msgstr "Episoden-ID"
 
-#: zeit/content/modules/interfaces.py:357
+#: zeit/content/modules/interfaces.py:359
 msgid "Provider"
 msgstr "Quelle"
 
@@ -4037,7 +4003,7 @@ msgstr "Embed hinzufügen"
 msgid "Edit embed"
 msgstr "Embed bearbeiten"
 
-#: zeit/content/text/browser/embed.py:85
+#: zeit/content/text/browser/embed.py:84
 msgid "View embed"
 msgstr "Embed anzeigen"
 
@@ -4066,7 +4032,6 @@ msgid "View JSON file"
 msgstr "JSON-Datei anzeigen"
 
 #: zeit/content/text/browser/validation-error.pt:2
-#, fuzzy
 msgid "A validation error has occurred"
 msgstr "Ein Validierungsfehler ist aufgetreten."
 
@@ -4088,37 +4053,25 @@ msgstr ""
 "Die Zeichen ${start}-${end} ( (${characters}) können nicht in »${encoding}« "
 "dargestellt werden (${reason})."
 
-#: zeit/content/text/interfaces.py:38
-msgid "Encoding"
-msgstr "Kodierung"
-
-#: zeit/content/text/interfaces.py:104 zeit/content/text/interfaces.py:89
+#: zeit/content/text/interfaces.py:89
 msgid "url of schema"
 msgstr "Schema url"
 
-#: zeit/content/text/interfaces.py:108 zeit/content/text/interfaces.py:93
+#: zeit/content/text/interfaces.py:93
 msgid "specific schema to use for validation"
 msgstr "Name Schemafeld"
 
-#: zeit/content/text/interfaces.py:121 zeit/content/text/interfaces.py:106
+#: zeit/content/text/interfaces.py:106
 msgid "Render as template?"
 msgstr "Als Friedbert-Template rendern"
 
-#: zeit/content/text/interfaces.py:124 zeit/content/text/interfaces.py:109
+#: zeit/content/text/interfaces.py:109
 msgid "Parameter definition"
 msgstr "Parameter-Definition"
 
-#: zeit/content/text/interfaces.py:130 zeit/content/text/interfaces.py:115
+#: zeit/content/text/interfaces.py:115
 msgid "Embed CSS"
 msgstr "vivi CSS"
-
-#: zeit/content/text/interfaces.py:134 zeit/content/text/interfaces.py:119
-msgid "Embed AMP Code"
-msgstr "AMP-Code"
-
-#: zeit/content/text/interfaces.py:135 zeit/content/text/interfaces.py:120
-msgid "Please use an AMP validator to check your code"
-msgstr "Code bitte in einem AMP Validator testen"
 
 #: zeit/content/text/jinja.py:41
 msgid "Jinja template"
@@ -4363,74 +4316,78 @@ msgid "Hide duplicate teasers"
 msgstr "Dubletten vermeiden"
 
 #: zeit/contentquery/interfaces.py:251
+msgid "Consider for duplicate teasers"
+msgstr "Für Dublettenvermeidung berücksichtigen"
+
+#: zeit/contentquery/interfaces.py:255
 msgid "Custom Query"
 msgstr "UND-Bedingung"
 
-#: zeit/contentquery/interfaces.py:254
+#: zeit/contentquery/interfaces.py:258
 msgid "Custom Query Type"
 msgstr " "
 
-#: zeit/contentquery/interfaces.py:258
+#: zeit/contentquery/interfaces.py:262
 msgid "Custom Query Operator"
 msgstr " Operator"
 
-#: zeit/contentquery/interfaces.py:265 zeit/contentquery/interfaces.py:275
+#: zeit/contentquery/interfaces.py:269 zeit/contentquery/interfaces.py:279
 msgid "Sort order"
 msgstr "Sortierung"
 
-#: zeit/contentquery/interfaces.py:271
+#: zeit/contentquery/interfaces.py:275
 msgid "Elasticsearch raw query"
 msgstr "ES-Query"
 
-#: zeit/contentquery/interfaces.py:280
+#: zeit/contentquery/interfaces.py:284
 msgid "Take over complete query body"
 msgstr "Query nicht nachverarbeiten (published:true nicht vergessen)"
 
-#: zeit/contentquery/interfaces.py:281
+#: zeit/contentquery/interfaces.py:285
 msgid "Remember to add payload.workflow.published:true"
 msgstr "payload.workflow.published:true nicht vergessen"
 
-#: zeit/contentquery/interfaces.py:286
+#: zeit/contentquery/interfaces.py:290
 msgid "Get teasers from CenterPage"
 msgstr "Teaser beziehen von..."
 
-#: zeit/contentquery/interfaces.py:291
+#: zeit/contentquery/interfaces.py:295
 msgid "Referenced Topicpage"
 msgstr "ID"
 
-#: zeit/contentquery/interfaces.py:295
+#: zeit/contentquery/interfaces.py:299
 msgid "Topicpage filter"
 msgstr "Filter"
 
-#: zeit/contentquery/interfaces.py:300 zeit/contentquery/interfaces.py:305
+#: zeit/contentquery/interfaces.py:304 zeit/contentquery/interfaces.py:309
 msgid "Topicpage order"
 msgstr "Sortierung"
 
-#: zeit/contentquery/interfaces.py:310
+#: zeit/contentquery/interfaces.py:314
 msgid "Referenced Topicpage Id"
 msgstr "Themenseiten ID"
 
-#: zeit/contentquery/interfaces.py:314
+#: zeit/contentquery/interfaces.py:318
 msgid "RSS-Feed"
 msgstr "RSS-Feed"
 
-#: zeit/contentquery/interfaces.py:319
+#: zeit/contentquery/interfaces.py:323
 msgid "Reach Metric"
 msgstr "Sortierung"
 
-#: zeit/contentquery/interfaces.py:325
+#: zeit/contentquery/interfaces.py:329
 msgid "Reach Section"
 msgstr "Ressort (bei der HP bitte weglassen)"
 
-#: zeit/contentquery/interfaces.py:330
+#: zeit/contentquery/interfaces.py:334
 msgid "Reach Access"
 msgstr "Filter (Ressort wird ignoriert, wenn der Filter gesetzt ist)"
 
-#: zeit/contentquery/interfaces.py:331
+#: zeit/contentquery/interfaces.py:335
 msgid "Reach access ignores section if set"
 msgstr "Das Ressort wird ignoriert, wenn der Filter gesetzt ist."
 
-#: zeit/contentquery/interfaces.py:336
+#: zeit/contentquery/interfaces.py:340
 msgid "Reach Age (days)"
 msgstr "Alter (in Tagen)"
 
@@ -4467,11 +4424,11 @@ msgstr "Rückgängig machen bis \"${action}\""
 msgid "There was an error rendering ${name}: ${exc_type} ${exc_msg}"
 msgstr "Fehler beim Laden von ${name}: ${exc_type} ${exc_msg}"
 
-#: zeit/edit/interfaces.py:17
+#: zeit/edit/interfaces.py:18
 msgid "Block type"
 msgstr "Block-Typ"
 
-#: zeit/edit/interfaces.py:182
+#: zeit/edit/interfaces.py:183
 msgid "Given name {name} is not unique inside parent {parent}."
 msgstr "Der Name {name} ist nicht eindeutig in {parent}."
 
@@ -4494,192 +4451,6 @@ msgstr "Next-Read Layout"
 #: zeit/magazin/interfaces.py:88
 msgid "long text (ZMO)"
 msgstr "langer Text - ZEITmagazin ONLINE"
-
-#: zeit/newsletter/browser/category.py:22
-msgid "Middle ad"
-msgstr "Werbeblock Mitte"
-
-#: zeit/newsletter/browser/category.py:26
-msgid "This week's ad"
-msgstr "Diese Woche in der aktuellen Zeit"
-
-#: zeit/newsletter/browser/category.py:30
-msgid "Bottom ad"
-msgstr "Werbeblock Ende"
-
-#: zeit/newsletter/browser/category.py:34
-msgid "General"
-msgstr "Allgemein"
-
-#: zeit/newsletter/browser/category.py:37
-msgid "Optivo"
-msgstr "Optivo"
-
-#: zeit/newsletter/browser/category.py:45
-msgid "Newsletter metadata"
-msgstr "Metadaten Newsletter"
-
-#: zeit/newsletter/browser/edit.group.landing.pt:2
-msgid "Landing zone"
-msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
-
-#: zeit/newsletter/browser/edit.group_add.pt:2
-msgid "+ Add group"
-msgstr "Ressort hinzufügen"
-
-#: zeit/newsletter/browser/edit.py:83
-msgid "edit group title"
-msgstr "Ressort-Titel bearbeiten"
-
-#: zeit/newsletter/browser/workflow.py:69
-msgid "Send emails and publish now"
-msgstr "Veröffentlichen und E-Mail senden"
-
-#: zeit/newsletter/browser/workflow.py:83
-msgid "Test email"
-msgstr "Test-E-Mail senden"
-
-#: zeit/newsletter/category.py:134
-msgid "Newsletter category"
-msgstr "Newsletter-Kategorie"
-
-#: zeit/newsletter/interfaces.py:54
-msgid "Target URL"
-msgstr "Ziel-URL"
-
-#: zeit/newsletter/interfaces.py:68
-msgid "Timestamp when the last newsletter object in this category was created"
-msgstr ""
-"Datum/Uhrzeit wann der letzte Newsletter dieser Kategorie erstellt wurde"
-
-#: zeit/newsletter/interfaces.py:76
-msgid "{today} -> %d.%m.%Y"
-msgstr "{today} -> %d.%m.%Y"
-
-#: zeit/newsletter/interfaces.py:79
-msgid "Optivo Mandant ID"
-msgstr "Optivo Mandat-ID"
-
-#: zeit/newsletter/interfaces.py:82
-msgid "Name of recipient list"
-msgstr "Name der Empfängerliste"
-
-#: zeit/newsletter/interfaces.py:85
-msgid "Name of test-recipient list"
-msgstr "Name der Empfängerliste (Testversand)"
-
-#: zeit/newsletter/interfaces.py:89
-msgid "Ressorts"
-msgstr "Ressorts"
-
-#: zeit/newsletter/interfaces.py:95
-msgid "Unique id of video playlist"
-msgstr "Video-Playlist ID"
-
-#: zeit/newsletter/interfaces.py:99
-msgid "Number of groups above middle ad"
-msgstr "Position Werbeblock Mitte (nach wieviel Ressorts)"
-
-#: zeit/newsletter/interfaces.py:101
-msgid "Middle ad target URL"
-msgstr "URL"
-
-#: zeit/newsletter/interfaces.py:103
-msgid "Middle ad title"
-msgstr "Titel"
-
-#: zeit/newsletter/interfaces.py:105
-msgid "Middle ad text"
-msgstr "Text"
-
-#: zeit/newsletter/interfaces.py:108
-msgid "Middle ad image"
-msgstr "Bild"
-
-#: zeit/newsletter/interfaces.py:113
-msgid "Number of groups above this week's ad"
-msgstr "Position Werbeblock aktuell (nach wieviel Ressorts)"
-
-#: zeit/newsletter/interfaces.py:116
-msgid "This week's ad target URL"
-msgstr "URL"
-
-#: zeit/newsletter/interfaces.py:118
-msgid "This week's ad title"
-msgstr "Titel"
-
-#: zeit/newsletter/interfaces.py:120
-msgid "This week's ad text"
-msgstr "Text"
-
-#: zeit/newsletter/interfaces.py:123
-msgid "This week's ad image"
-msgstr "Bild"
-
-#: zeit/newsletter/interfaces.py:127
-msgid "Monday"
-msgstr "Montag"
-
-#: zeit/newsletter/interfaces.py:128
-msgid "Tuesday"
-msgstr "Dienstag"
-
-#: zeit/newsletter/interfaces.py:129
-msgid "Wednesday"
-msgstr "Mittwoch"
-
-#: zeit/newsletter/interfaces.py:130
-msgid "Thursday"
-msgstr "Donnerstag"
-
-#: zeit/newsletter/interfaces.py:131
-msgid "Friday"
-msgstr "Freitag"
-
-#: zeit/newsletter/interfaces.py:132
-msgid "Saturday"
-msgstr "Samstag"
-
-#: zeit/newsletter/interfaces.py:133
-msgid "Sunday"
-msgstr "Sonntag"
-
-#: zeit/newsletter/interfaces.py:135
-msgid "Bottom ad target URL"
-msgstr "URL"
-
-#: zeit/newsletter/interfaces.py:137
-msgid "Bottom ad title"
-msgstr "Titel"
-
-#: zeit/newsletter/interfaces.py:139
-msgid "Bottom ad text"
-msgstr "Text"
-
-#: zeit/newsletter/interfaces.py:142
-msgid "Bottom ad image"
-msgstr "Bild"
-
-#: zeit/newsletter/interfaces.py:178
-msgid "Sent"
-msgstr "Verschickt"
-
-#: zeit/newsletter/interfaces.py:184
-msgid "Email for test"
-msgstr "E-Mail-Adresse"
-
-#: zeit/newsletter/newsletter.py:84
-msgid "Daily Newsletter"
-msgstr "Newsletter"
-
-#: zeit/newsletter/newsletter.py:151
-msgid "Group"
-msgstr "Ressort"
-
-#: zeit/newsletter/newsletter.py:226 zeit/newsletter/newsletter.py:234
-#: zeit/newsletter/newsletter.py:242
-msgid "Advertisement"
-msgstr "Werbung"
 
 #: zeit/push/browser/banner-retract.pt:9
 msgid "Retract ${target}"
@@ -5044,32 +4815,32 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:48
+#: zeit/workflow/publish.py:50
 msgid "Publication scheduled"
 msgstr "wird veröffentlicht"
 
-#: zeit/workflow/publish.py:54
+#: zeit/workflow/publish.py:56
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
-#: zeit/workflow/publish.py:66
+#: zeit/workflow/publish.py:68
 msgid "Collective Publication of ${count} objects"
 msgstr "Sammelveröffentlichung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:82
+#: zeit/workflow/publish.py:84
 msgid "Collective Retraction of ${count} objects"
 msgstr "Sammeldepublizierung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:293
+#: zeit/workflow/publish.py:295
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:385
+#: zeit/workflow/publish.py:416
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 "Konnte nicht veröffentlicht werden, weil Bedingungen nicht erfüllt sind."
 
-#: zeit/workflow/publish.py:496
+#: zeit/workflow/publish.py:530
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -5183,6 +4954,168 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Daily newsletter"
+#~ msgstr "Newsletter"
+
+#~ msgid "Should this article be listed in the daily newsletter?"
+#~ msgstr "Soll der Artikel im Tages-Newsletter gelistet werden?"
+
+#~ msgid "Is AMP"
+#~ msgstr ""
+#~ "In Google Suchergebnissen als Accelerated Mobile Pages (AMP) darstellen"
+
+#~ msgid "Header image"
+#~ msgstr "Header-Bild"
+
+#~ msgid "Encoding"
+#~ msgstr "Kodierung"
+
+#~ msgid "Embed AMP Code"
+#~ msgstr "AMP-Code"
+
+#~ msgid "Please use an AMP validator to check your code"
+#~ msgstr "Code bitte in einem AMP Validator testen"
+
+#~ msgid "Middle ad"
+#~ msgstr "Werbeblock Mitte"
+
+#~ msgid "This week's ad"
+#~ msgstr "Diese Woche in der aktuellen Zeit"
+
+#~ msgid "Bottom ad"
+#~ msgstr "Werbeblock Ende"
+
+#~ msgid "General"
+#~ msgstr "Allgemein"
+
+#~ msgid "Optivo"
+#~ msgstr "Optivo"
+
+#~ msgid "Newsletter metadata"
+#~ msgstr "Metadaten Newsletter"
+
+#~ msgid "Landing zone"
+#~ msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
+
+#~ msgid "+ Add group"
+#~ msgstr "Ressort hinzufügen"
+
+#~ msgid "edit group title"
+#~ msgstr "Ressort-Titel bearbeiten"
+
+#~ msgid "Send emails and publish now"
+#~ msgstr "Veröffentlichen und E-Mail senden"
+
+#~ msgid "Test email"
+#~ msgstr "Test-E-Mail senden"
+
+#~ msgid "Newsletter category"
+#~ msgstr "Newsletter-Kategorie"
+
+#~ msgid "Target URL"
+#~ msgstr "Ziel-URL"
+
+#~ msgid ""
+#~ "Timestamp when the last newsletter object in this category was created"
+#~ msgstr ""
+#~ "Datum/Uhrzeit wann der letzte Newsletter dieser Kategorie erstellt wurde"
+
+#~ msgid "{today} -> %d.%m.%Y"
+#~ msgstr "{today} -> %d.%m.%Y"
+
+#~ msgid "Optivo Mandant ID"
+#~ msgstr "Optivo Mandat-ID"
+
+#~ msgid "Name of recipient list"
+#~ msgstr "Name der Empfängerliste"
+
+#~ msgid "Name of test-recipient list"
+#~ msgstr "Name der Empfängerliste (Testversand)"
+
+#~ msgid "Ressorts"
+#~ msgstr "Ressorts"
+
+#~ msgid "Unique id of video playlist"
+#~ msgstr "Video-Playlist ID"
+
+#~ msgid "Number of groups above middle ad"
+#~ msgstr "Position Werbeblock Mitte (nach wieviel Ressorts)"
+
+#~ msgid "Middle ad target URL"
+#~ msgstr "URL"
+
+#~ msgid "Middle ad title"
+#~ msgstr "Titel"
+
+#~ msgid "Middle ad text"
+#~ msgstr "Text"
+
+#~ msgid "Middle ad image"
+#~ msgstr "Bild"
+
+#~ msgid "Number of groups above this week's ad"
+#~ msgstr "Position Werbeblock aktuell (nach wieviel Ressorts)"
+
+#~ msgid "This week's ad target URL"
+#~ msgstr "URL"
+
+#~ msgid "This week's ad title"
+#~ msgstr "Titel"
+
+#~ msgid "This week's ad text"
+#~ msgstr "Text"
+
+#~ msgid "This week's ad image"
+#~ msgstr "Bild"
+
+#~ msgid "Monday"
+#~ msgstr "Montag"
+
+#~ msgid "Tuesday"
+#~ msgstr "Dienstag"
+
+#~ msgid "Wednesday"
+#~ msgstr "Mittwoch"
+
+#~ msgid "Thursday"
+#~ msgstr "Donnerstag"
+
+#~ msgid "Friday"
+#~ msgstr "Freitag"
+
+#~ msgid "Saturday"
+#~ msgstr "Samstag"
+
+#~ msgid "Sunday"
+#~ msgstr "Sonntag"
+
+#~ msgid "Bottom ad target URL"
+#~ msgstr "URL"
+
+#~ msgid "Bottom ad title"
+#~ msgstr "Titel"
+
+#~ msgid "Bottom ad text"
+#~ msgstr "Text"
+
+#~ msgid "Bottom ad image"
+#~ msgstr "Bild"
+
+#~ msgid "Sent"
+#~ msgstr "Verschickt"
+
+#~ msgid "Email for test"
+#~ msgstr "E-Mail-Adresse"
+
+#~ msgid "Daily Newsletter"
+#~ msgstr "Newsletter"
+
+#~ msgid "Group"
+#~ msgstr "Ressort"
+
+#~ msgid "Advertisement"
+#~ msgstr "Werbung"
 
 #~ msgid "Registration"
 #~ msgstr "Registration"

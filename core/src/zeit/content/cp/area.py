@@ -378,6 +378,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         for area in cp.cached_areas:
             if area == current_area:
                 above = False
+            if not area.consider_for_dupes:
+                continue
             if above:  # automatic teasers above current area
                 if area not in area_teasered_content:
                     area_teasered_content[area] = set(
