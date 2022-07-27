@@ -300,9 +300,10 @@ class IReadArea(
         title=_("Read more"),
         required=False)
 
-    read_more_url = zope.schema.TextLine(
+    read_more_url = zope.schema.URI(
         title=_("Read more URL"),
-        required=False)
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
 
     image = zope.schema.Choice(
         title=_('Image'),
@@ -450,9 +451,10 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
     read_more = zope.schema.TextLine(
         title=_("Read more"),
         required=False)
-    read_more_url = zope.schema.TextLine(
+    read_more_url = zope.schema.URI(
         title=_("Read more URL"),
-        required=False)
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
     background_color = zope.schema.TextLine(
         title=_("Background color (ZMO only)"),
         required=False,

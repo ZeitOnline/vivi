@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+import zeit.cms.interfaces
 import zeit.content.link.sources
 import zope.schema
 
@@ -20,7 +21,9 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
             zeit.cms.content.interfaces.IXMLContent):
     """A type for managing links to non-local content."""
 
-    url = zope.schema.URI(title=_('Link address'))
+    url = zope.schema.URI(
+        title=_('Link address'),
+        constraint=zeit.cms.interfaces.valid_link_target)
 
     target = zope.schema.Choice(
         title=_('Target'),

@@ -1,6 +1,7 @@
 import lxml.etree
-import zeit.content.link.testing
 import zeit.content.link.link
+import zeit.content.link.testing
+import zope.app.appsetup
 
 
 class TestForm(zeit.content.link.testing.BrowserTestCase):
@@ -70,3 +71,16 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
                          block.get('ressort'))
         self.assertEqual('gocept homepage',
                          block.find('title').text)
+
+    def test_checks_for_invalid_hostnames(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        config['invalid-link-targets'] = 'example.com other.com'
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/2006/')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Link']
+        b.open(menu.value[0])
+        b.getControl('File name').value = 'mylink'
+        b.getControl('Link address').value = 'http://example.com/test'
+        b.getControl(name='form.actions.add').click()
+        self.assertEllipsis('...Invalid link target...', b.contents)
