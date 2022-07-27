@@ -2,7 +2,7 @@ from functools import partial
 from gocept.cache.property import TransactionBoundCache
 from google.cloud import storage
 from google.cloud.storage.retry import DEFAULT_RETRY
-from io import BytesIO
+from io import BytesIO, StringIO
 from logging import getLogger
 from operator import itemgetter
 from sqlalchemy import Boolean, TIMESTAMP, Unicode, UnicodeText
@@ -17,6 +17,7 @@ from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.resource import CachedResource
 import collections
+import opentelemetry.instrumentation.sqlalchemy
 import os
 import os.path
 import sqlalchemy
@@ -24,6 +25,7 @@ import sqlalchemy.event
 import sqlalchemy.orm
 import time
 import transaction
+import zeit.cms.tracing
 import zeit.connector.interfaces
 import zope.interface
 import zope.sqlalchemy
@@ -62,6 +64,8 @@ class Connector:
         self.session = sqlalchemy.orm.scoped_session(
             sqlalchemy.orm.sessionmaker(bind=self.engine, future=True))
         zope.sqlalchemy.register(self.session)
+        EngineTracer(zeit.cms.tracing.default_tracer(),
+                     self.engine, enable_commenter=True)
         self.gcs_client = storage.Client(project=storage_project)
         self.bucket = self.gcs_client.bucket(storage_bucket)
 
@@ -420,3 +424,16 @@ class PassthroughConnector(Connector):
 
 
 passthrough_factory = PassthroughConnector.factory
+
+
+class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
+
+    def _before_cur_exec(
+            self, conn, cursor, statement, params, context, executemany):
+        statement, params = super()._before_cur_exec(
+            conn, cursor, statement, params, context, executemany)
+        p = StringIO()
+        for k, v in params.items():
+            p.write('%s=%r\n' % (k, str(v)[:100]))
+        context._otel_span.set_attribute('db.parameters', p.getvalue())
+        return statement, params
