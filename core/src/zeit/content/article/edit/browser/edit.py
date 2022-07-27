@@ -297,6 +297,19 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
         return 'citationcomment.{0}'.format(self.context.__name__)
 
 
+class SaluteSomething(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.ISaluteSomething).omit(
+            *list(zeit.edit.interfaces.IBlock))
+    undo_description = _('edit salute something block')
+
+    @property
+    def prefix(self):
+        return 'salutatesomething.{0}'.format(self.context.__name__)
+
+
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
 
     legend = None

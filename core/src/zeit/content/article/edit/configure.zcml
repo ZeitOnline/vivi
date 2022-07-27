@@ -101,6 +101,17 @@
       />
   </class>
 
+<class class=".salute_something.SaluteSomething">
+  <require
+    interface=".interfaces.ISaluteSomething"
+    permission="zope.View"
+    />
+  <require
+    set_schema=".interfaces.ISaluteSomething"
+    permission="zeit.EditContent"
+    />
+</class>
+
   <class class=".video.Video">
     <require
       interface=".interfaces.IVideo"
