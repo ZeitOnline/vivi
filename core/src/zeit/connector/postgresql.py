@@ -25,8 +25,10 @@ import sqlalchemy.event
 import sqlalchemy.orm
 import time
 import transaction
+import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.interfaces
+import zope.component
 import zope.interface
 import zope.sqlalchemy
 
@@ -146,7 +148,10 @@ class Connector:
         if body is not None:
             return BytesIO(body)
         blob = self.bucket.blob(id)
-        body = blob.download_as_bytes()
+        t = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with t.start_as_current_span('gcs', attributes={
+                'db.operation': 'download', 'id': id}):
+            body = blob.download_as_bytes()
         self.body_cache[id] = body
         return BytesIO(body)
 
@@ -195,7 +200,11 @@ class Connector:
                 data = resource.data  # may not be a static property
                 size = data.seek(0, os.SEEK_END)
                 data.seek(0)
-                blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
+                t = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+                with t.start_as_current_span('gcs', attributes={
+                        'db.operation': 'upload', 'id': id,
+                        'size': str(size)}):
+                    blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
             else:
                 # vivi uses utf-8 encoding throughout, see
                 # zeit.cms.content.adapter for XML and zeit.content.text.text
@@ -224,7 +233,10 @@ class Connector:
             raise KeyError(uniqueid)
         if not props.is_collection and props.binary_body:
             blob = self.bucket.blob(props.id)
-            blob.delete()
+            t = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+            with t.start_as_current_span('gcs', attributes={
+                    'db.operation': 'delete', 'id': id}):
+                blob.delete()
         self.session.delete(props)
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
