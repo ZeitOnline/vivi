@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.17.8 (2022-07-27)
+-------------------
+
+- ZO-1576: Implement hostname denylist for link targets
+
+- ZO-605: Add `consider_for_dupes` flag to exclude area content from duplicate checking
+
+
 5.17.7 (2022-07-25)
 -------------------
 
