@@ -1,6 +1,5 @@
 from ..interfaces import IElasticsearch
 from zeit.cms.interfaces import IResult
-import json
 import unittest
 import zeit.retresco.testing
 import zope.component
@@ -39,8 +38,8 @@ class TestElasticsearch(unittest.TestCase):
         query = self.query.copy()
         query['_source'] = ['payload.teaser.title', 'payload.body.title']
         self.elasticsearch.search(query, rows=2)
-        call_body = self.elasticsearch.client.search.call_args[1]['body']
-        self.assertEqual(query['_source'], json.loads(call_body)['_source'])
+        args = self.elasticsearch.client.search.call_args[1]
+        self.assertEqual(query['_source'], args['_source'])
 
     def test_search_rejects_specific_source_and_payload_flag(self):
         query = self.query.copy()

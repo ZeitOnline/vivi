@@ -1,7 +1,6 @@
 import elasticsearch
 import elasticsearch.connection
 import elasticsearch.transport
-import json
 import pkg_resources
 import requests.utils
 import zeit.cms.interfaces
@@ -68,8 +67,7 @@ class Elasticsearch:
 
         __traceback_info__ = (self.index, query)
         response = self.client.search(
-            index=self.index, body=json.dumps(query),
-            from_=start, size=rows)
+            index=self.index, from_=start, size=rows, **query)
         result = zeit.cms.interfaces.Result(
             [x['_source'] for x in response['hits']['hits']])
         if isinstance(response['hits']['total'], int):  # BBB ES-2.x
@@ -83,7 +81,7 @@ class Elasticsearch:
         Search - Aggregations documentation for further information."""
 
         __traceback_info__ = (self.index, query)
-        response = self.client.search(index=self.index, body=json.dumps(query))
+        response = self.client.search(index=self.index, **query)
         return response['aggregations']
 
     def date_range(self, start, end):
