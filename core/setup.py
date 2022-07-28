@@ -40,6 +40,8 @@ setup(
         'markdown',
         'markdownify',
         'opentelemetry-api>=1.11.1',
+        'opentelemetry-api',
+        'opentelemetry-instrumentation-sqlalchemy',
         'openapi-schema-validator',
         'pendulum>=2.0.0.dev0',
         'persistent',

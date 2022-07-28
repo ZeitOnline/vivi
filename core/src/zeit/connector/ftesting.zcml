@@ -3,6 +3,7 @@
 
   <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
+  <utility factory="zeit.cms.tracing.default_tracer" />
 
   <include package="zeit.connector" />
   <include package="zeit.connector" file="service.zcml" />
