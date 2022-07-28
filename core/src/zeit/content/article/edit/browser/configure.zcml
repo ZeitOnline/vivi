@@ -307,6 +307,26 @@
     permission="zope.View"
     />
 
+  <!-- Salute Something -->
+  
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ISaluteSomething"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-salute-something"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+  
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ISaluteSomething"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-salute-something"
+    class=".edit.SaluteSomething"
+    permission="zope.View"
+    />
+
   <browser:page
     for="zeit.content.article.edit.interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -788,6 +808,10 @@
   </class>
 
   <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..salute_something.SaluteSomething">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

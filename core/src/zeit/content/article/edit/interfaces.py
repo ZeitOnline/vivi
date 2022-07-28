@@ -145,6 +145,15 @@ class IVideo(IBlock, ILayoutable):
         default=True)
 
 
+class ISaluteSomething(zeit.edit.interfaces.IBlock):
+
+    salutation_wording = zope.schema.Text(
+        title=_('Salutation Wording'))
+
+    salutation_object = zope.schema.Text(
+        title=_('Salutation Object'))
+
+
 class IReference(IBlock):
     """A block which references another object."""
 
