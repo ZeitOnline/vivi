@@ -101,13 +101,13 @@
       />
   </class>
 
-  <class class=".salute_something.SaluteSomething">
+  <class class=".video_ardtagesschau.VideoARDTagesschau">
     <require
-      interface=".interfaces.ISaluteSomething"
+      interface=".interfaces.IVideoARDTagesschau"
       permission="zope.View"
       />
     <require
-      set_schema=".interfaces.ISaluteSomething"
+      set_schema=".interfaces.IVideoARDTagesschau"
       permission="zeit.EditContent"
       />
   </class>

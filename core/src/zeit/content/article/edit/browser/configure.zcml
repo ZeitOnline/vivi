@@ -307,23 +307,23 @@
     permission="zope.View"
     />
 
-  <!-- Salute Something -->
+  <!-- Video ARD Tagesschau -->
   
   <browser:viewlet
-    for="zeit.content.article.edit.interfaces.ISaluteSomething"
+    for="zeit.content.article.edit.interfaces.IVideoARDTagesschau"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit-salute-something"
+    name="edit-video-ardtagesschau"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     />
   
   <browser:page
-    for="zeit.content.article.edit.interfaces.ISaluteSomething"
+    for="zeit.content.article.edit.interfaces.IVideoARDTagesschau"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-salute-something"
-    class=".edit.SaluteSomething"
+    name="edit-video-ardtagesschau"
+    class=".edit.VideoARDTagesschau"
     permission="zope.View"
     />
 
@@ -811,7 +811,7 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
-  <class class="..salute_something.SaluteSomething">
+  <class class="..video_ardtagesschau.VideoARDTagesschau">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

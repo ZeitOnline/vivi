@@ -297,6 +297,19 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
         return 'citationcomment.{0}'.format(self.context.__name__)
 
 
+class VideoARDTagesschau(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IVideoARDTagesschau).omit(
+            *list(zeit.edit.interfaces.IBlock))
+    undo_description = _('edit video tagesschau block')
+
+    @property
+    def prefix(self):
+        return 'videoardtagesschau.{0}'.format(self.context.__name__)
+
+
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
 
     legend = None

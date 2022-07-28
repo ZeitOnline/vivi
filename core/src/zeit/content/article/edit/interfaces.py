@@ -145,13 +145,10 @@ class IVideo(IBlock, ILayoutable):
         default=True)
 
 
-class ISaluteSomething(zeit.edit.interfaces.IBlock):
+class IVideoARDTagesschau(zeit.edit.interfaces.IBlock):
 
-    salutation_wording = zope.schema.Text(
-        title=_('Salutation Wording'))
-
-    salutation_object = zope.schema.Text(
-        title=_('Salutation Object'))
+    video_ardtagesschau_data = zope.schema.Text(
+        title=_('Video ARD Tagesschau'))
 
 
 class IReference(IBlock):
