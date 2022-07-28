@@ -192,7 +192,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         # automatic to True needs to know the teaser count. Thus, we order the
         # form_fields accordingly, and alter the _display_ order here.
         gocept.form.grouped.Fields(
-            '', ('automatic_type', 'automatic', 'count', 'hide_dupes')),
+            '', ('automatic_type', 'automatic', 'count',
+                 'hide_dupes', 'consider_for_dupes')),
         gocept.form.grouped.Fields(
             _('automatic-area-type-centerpage'), ('referenced_cp',)),
         gocept.form.grouped.Fields(
