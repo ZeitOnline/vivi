@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.18.3 (2022-07-28)
+-------------------
+
+- ZO-1629: Work around NonRecordingSpan opentelemetry bug
+
+
 5.18.2 (2022-07-28)
 -------------------
 
