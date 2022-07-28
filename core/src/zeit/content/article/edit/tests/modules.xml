@@ -27,4 +27,5 @@
   <module id="topicbox">Themenbox</module>
   <module id="video">Video</module>
   <module id="volume">Ausgabe</module>
+  <module id="video_ardtagesschau">Video ARD Tagesschau</module>
 </modules>

@@ -307,6 +307,26 @@
     permission="zope.View"
     />
 
+  <!-- Video ARD Tagesschau -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IVideoARDTagesschau"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-video-ardtagesschau"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IVideoARDTagesschau"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-video-ardtagesschau"
+    class=".edit.EditVideoARDTagesschau"
+    permission="zope.View"
+    />
+
   <browser:page
     for="zeit.content.article.edit.interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -788,6 +808,10 @@
   </class>
 
   <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..video_ardtagesschau.VideoARDTagesschau">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

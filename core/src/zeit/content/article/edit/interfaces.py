@@ -145,6 +145,12 @@ class IVideo(IBlock, ILayoutable):
         default=True)
 
 
+class IVideoARDTagesschau(zeit.edit.interfaces.IBlock):
+
+    video_ardtagesschau_data = zope.schema.Text(
+        title=_('Video ARD Tagesschau'))
+
+
 class IReference(IBlock):
     """A block which references another object."""
 
