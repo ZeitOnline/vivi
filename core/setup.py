@@ -25,7 +25,7 @@ setup(
         'bugsnag',
         'collective.monkeypatcher',
         'commentjson',
-        'elasticsearch >=7.0.0, <8.0.0',
+        'elasticsearch >=7.16.0, <8.0.0',
         'fb',
         'filemagic',
         'gocept.cache >= 2.1',
