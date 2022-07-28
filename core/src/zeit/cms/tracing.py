@@ -6,7 +6,7 @@ try:
     from opentelemetry.sdk.trace import Tracer, TracerProvider
     from opentelemetry.sdk.trace.export import BatchSpanProcessor
     from opentelemetry.sdk.resources import Resource
-    from opentelemetry.sdk.util.instrumentation import InstrumentationInfo
+    from opentelemetry.sdk.util.instrumentation import InstrumentationScope
     from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
         OTLPSpanExporter)
 except ImportError:
@@ -38,19 +38,24 @@ class OpenTelemetryTracerProvider(TracerProvider):
                 insecure=not self.otlp_url.startswith('https'))))
         self.initialized = True
 
-    def get_tracer(self, name=None, version=''):
+    # Even though TracerProvider declares kwargs,
+    # opentelemetry.trace.get_tracer() passes them as positional, so we cannot
+    # use `**kw` here, sigh.
+    def get_tracer(self, name, version=None, schema_url=None):
         if not name:
             name = __name__
-        return DelayedInitializationTracer(self, name, version)
+        return DelayedInitializationTracer(self, name, version, schema_url)
 
 
 class DelayedInitializationTracer(Tracer):
 
-    def __init__(self, provider, name, version):
+    def __init__(self, provider, name, version, schema_url):
         super().__init__(
             provider.sampler, provider.resource,
             provider._active_span_processor, provider.id_generator,
-            InstrumentationInfo(name, version), provider._span_limits)
+            None,  # InstrumentationInfo was replaced by InstrumentationScope
+            provider._span_limits,
+            InstrumentationScope(name, version, schema_url))
         self.provider = provider
 
     def start_as_current_span(self, *args, **kw):

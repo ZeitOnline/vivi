@@ -39,7 +39,7 @@ setup(
         'martian',
         'markdown',
         'markdownify',
-        'opentelemetry-api',
+        'opentelemetry-api>=1.11.1',
         'openapi-schema-validator',
         'pendulum>=2.0.0.dev0',
         'persistent',
@@ -180,6 +180,8 @@ setup(
             'selenium<4',  # ZO-681
             'gocept.testing>=1.4.0.dev0',
             'mock-ssh-server',
+            'opentelemetry-exporter-otlp',
+            'opentelemetry-sdk',
             'plone.testing[zca,zodb]',
             'pygraphviz',  # to render linesman results
             'pytest<7.1.0.dev0',  # github.com/pytest-dev/pytest/issues/9765
