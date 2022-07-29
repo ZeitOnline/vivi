@@ -219,8 +219,6 @@ Products
  'Dev',
  'dpaBY',
  'TEST',
- 'ADV',
- 'VAB',
  'ZTCS',
  'ZTWI',
  'ZTGS',

@@ -608,41 +608,17 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             assert 'facebooknewstab' in result
 
-    def test_facebooknewstab_skipped_product_id_adv(self):
+    def test_facebooknewstab_skipped_product_id(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
-        # this is the setting which causes the resource to be skipped
-        with checked_out(article) as co:
-            co.product = zeit.cms.content.sources.Product("ADV")
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
-        self.assertEqual(article.product.id, "ADV")
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' not in result
-        # set it to something else and make sure nothing else caused the skip
-        with checked_out(article) as co:
-            co.product = zeit.cms.content.sources.Product("ZTWI")
-        self.assertEqual(article.product.id, "ZTWI")
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' in result
-
-    def test_facebooknewstab_skipped_product_id_vab(self):
-        FEATURE_TOGGLES.set('new_publisher')
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
-        # this is the setting which causes the resource to be skipped
-        with checked_out(article) as co:
-            co.product = zeit.cms.content.sources.Product("VAB")
-        self.assertFalse(IPublishInfo(article).published)
-        self.assertEqual(article.product.id, "VAB")
+        self.assertEqual(article.product.id, "ZEDE")
+        # we add more products than needed for the test to make sure
+        # the config parsing works correctly
+        config['facebooknewstab-ignore-products'] = "ADV, VAB, ZEDE"
         with requests_mock.Mocker() as rmock:
             response = rmock.post(
                 'http://localhost:8060/test/publish', status_code=200)
@@ -664,11 +640,15 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
-        # this is the setting which causes the resource to be skipped
-        with checked_out(article) as co:
-            co.ressort = "Administratives"
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
-        self.assertEqual(article.ressort, "Administratives")
+        self.assertEqual(article.ressort, "International")
+        # we add more products than needed for the test to make sure
+        # the config parsing works correctly, that is also why there is
+        # a space in front of International
+        config['facebooknewstab-ignore-ressorts'] = ",".join([
+            "Administratives", " International"])
         with requests_mock.Mocker() as rmock:
             response = rmock.post(
                 'http://localhost:8060/test/publish', status_code=200)

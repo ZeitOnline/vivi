@@ -135,18 +135,24 @@ class FacebookNewstab(grok.Adapter):
                 "check adapter registration for FacebookNewstab.",
                 content_type)
             return
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow') or {}
+        ignore_ressorts = set(
+            x.strip().lower()
+            for x in config.get(
+                'facebooknewstab-ignore-ressorts', '').split(','))
         ressort = self.context.ressort
-        if ressort == "Administratives":
-            # ignore resources with this ressort
+        if ressort.lower() in ignore_ressorts:
             return
         product_id = self.context.product.id
-        if product_id in ("ADV", "VAB"):
-            # ignore resources with these product ids
+        ignore_products = set(
+            x.strip().lower()
+            for x in config.get(
+                'facebooknewstab-ignore-products', '').split(','))
+        if product_id.lower() in ignore_products:
             return
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         date_first_released = info.date_first_released
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow') or {}
         facebooknewstab_startdate = datetime.datetime.strptime(
             config['facebooknewstab-startdate'],
             "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
