@@ -38,6 +38,15 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         blob = self.connector.bucket.blob(props.id)
         self.assertEqual(b'mybody', blob.download_as_bytes())
 
+    def test_empty_body_does_not_break(self):
+        res = self.get_resource('foo', b'mybody')
+        self.connector.add(res)
+        props = self.connector._get_properties(res.id)
+        props.body = None  # Not quite clear how this happens in production
+        transaction.commit()
+        res = self.connector[res.id]
+        self.assertEqual(b'', res.data.read())
+
     def test_injects_uuid_and_type_into_dav_properties(self):
         res = self.get_resource('foo', b'mybody', {
             ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',

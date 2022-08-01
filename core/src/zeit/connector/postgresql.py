@@ -123,6 +123,8 @@ class Connector:
             _get_body = partial(BytesIO, b'')
         elif props.binary_body:
             _get_body = partial(self._get_body, props.id)
+        elif not props.body:
+            _get_body = partial(BytesIO, b'')
         else:
             _get_body = partial(BytesIO, props.body.encode('utf-8'))
         return CachedResource(
