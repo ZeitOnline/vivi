@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.18.4 (2022-08-01)
+-------------------
+
+FIX:
+- Be defensive about body=None in sql
+
+
 5.18.3 (2022-07-28)
 -------------------
 
