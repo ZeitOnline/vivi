@@ -538,21 +538,6 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
     def caplog(self, caplog):
         self.caplog = caplog
 
-    def test_comments_warning_unknown_content_type(self):
-        import zeit.content.cp.centerpage
-        cp = zeit.content.cp.centerpage.CenterPage()
-        assert zope.component.queryAdapter(
-            cp, zeit.workflow.interfaces.IPublisherData,
-            name="comments") is None
-        data_factory = zeit.workflow.publish_3rdparty.ArticleComments(cp)
-        self.caplog.clear()
-        data = data_factory.json()
-        assert data is None
-        (record,) = self.caplog.records
-        assert record.message == (
-            "Got content_type 'centerpage-2009' for comments, "
-            "check adapter registration for Comments.")
-
     def test_facebooknewstab_is_published(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -570,18 +555,6 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
                 'path': '/online/2007/01/Somalia'},
                 result_fbnt)
         self.assertTrue(IPublishInfo(article).published)
-
-    def test_facebooknewstab_warning_unknown_content_type(self):
-        import zeit.content.cp.centerpage
-        cp = zeit.content.cp.centerpage.CenterPage()
-        data_factory = zeit.workflow.publish_3rdparty.FacebookNewstab(cp)
-        self.caplog.clear()
-        data = data_factory.json()
-        assert data is None
-        (record,) = self.caplog.records
-        assert record.message == (
-            "Got content_type 'centerpage-2009' for facebooknewstab, "
-            "check adapter registration for FacebookNewstab.")
 
     def test_facebooknewstab_skipped_date_first_released(self):
         FEATURE_TOGGLES.set('new_publisher')

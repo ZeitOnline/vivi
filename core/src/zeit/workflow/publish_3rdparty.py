@@ -69,23 +69,7 @@ class VideoBigQuery(grok.Adapter, BigQueryMixin):
 
 
 class CommentsMixin:
-
-    CONTENT_TYPES = frozenset([
-        'article',
-        'gallery',
-        'video',
-    ])
-
     def json(self):
-        content_type = zeit.cms.type.get_type(self.context)
-        if content_type not in self.CONTENT_TYPES:
-            # we want to prevent this being called for content types
-            # which don't need comments, so emit a warning
-            log.warning(
-                "Got content_type %r for comments, "
-                "check adapter registration for Comments.",
-                content_type)
-            return
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         return {
             'comments_allowed': self.context.commentsAllowed,
@@ -119,22 +103,9 @@ class FacebookNewstab(grok.Adapter):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('facebooknewstab')
 
-    CONTENT_TYPES = frozenset([
-        'article',
-    ])
-
     PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
 
     def json(self):
-        content_type = zeit.cms.type.get_type(self.context)
-        if content_type not in self.CONTENT_TYPES:
-            # we want to prevent this being called for content types
-            # which don't need comments, so emit a warning
-            log.warning(
-                "Got content_type %r for facebooknewstab, "
-                "check adapter registration for FacebookNewstab.",
-                content_type)
-            return
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow') or {}
         ignore_ressorts = set(
