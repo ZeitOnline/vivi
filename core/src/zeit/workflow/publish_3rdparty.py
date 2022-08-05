@@ -131,11 +131,7 @@ class FacebookNewstab(grok.Adapter):
             # ignore resources before the cut off date
             return
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        path = self.context.uniqueId
-        # TODO with Python >= 3.9 we can use:
-        # path = self.context.uniqueId.removeprefix(self.PREFIX)
-        if path.startswith(self.PREFIX):
-            path = path[len(self.PREFIX):]
+        path = self.context.uniqueId.removeprefix(self.PREFIX)
         return {
             'uuid': uuid.shortened,
             'unique_id': self.context.uniqueId,
