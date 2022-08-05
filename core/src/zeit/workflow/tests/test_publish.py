@@ -671,6 +671,7 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
+        assert article.audio_speechbert is None
         with requests_mock.Mocker() as rmock:
             response = rmock.post(
                 'http://localhost:8060/test/publish', status_code=200)
@@ -680,7 +681,14 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertEqual(
                 ['payload', 'unique_id', 'uuid'],
                 sorted(result_sb.keys()))
+            # TODO: the following assert should fail, we tested above that
+            # the attribute is None, but in Speechbert.json() it is True
+            # assert 'hasAudio' not in result_sb['payload']
+            result_sb = zeit.workflow.publish_3rdparty.Speechbert(
+                article).json()
+            assert result_sb['payload']['hasAudio'] is True
         self.assertTrue(IPublishInfo(article).published)
+        assert article.audio_speechbert is True
 
     def test_speechbert_ignore_genres(self):
         article = ICMSContent(
@@ -749,3 +757,186 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
                 resource)
             result = data_factory.json()['payload']
             assert result == expected
+
+    def test_speechbert_payload(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        del payload['body']  # not relevant in this test
+        del payload['image']  # not relevant in this test
+        assert payload == dict(
+            access='abo',
+            authors=['Eva Biringer'],
+            channels='zeit-magazin essen-trinken',
+            genre='rezept-vorstellung',
+            headline='Vier Rezepte für eine Herdplatte',
+            lastModified='2020-04-14T09:19:59.618155+00:00',
+            publishDate='2020-04-14T09:19:59.618155+00:00',
+            section='zeit-magazin',
+            subsection='essen-trinken',
+            subtitle=(
+                'Ist genug Brot und Kuchen gebacken, bleibt endlich wieder '
+                'Zeit, zu kochen. Mit diesen One-Pot-Gerichten können Sie den '
+                'Zuckerschock vom Osterwochenende kontern.'),
+            tags=[
+                'Kochrezept',
+                'Coronavirus',
+                'Quarantäne',
+                'Social Distancing',
+                'Rezept',
+                'Mahlzeit',
+                'kochen'],
+            teaser=(
+                'Ist genug Brot und Kuchen gebacken, '
+                'bleibt endlich wieder Zeit, zu kochen.'),
+            url='',
+            uuid='16e82986-cdc0-492d-84e8-267d09b4ab53')
+
+    def test_speechbert_payload_access_free(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert article.access == 'free'
+        assert 'access' not in payload
+
+    def test_speechbert_payload_no_authors(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/terror-abschuss-schaeuble')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert article.authors == ()
+        assert payload['authors'] == []
+
+    def test_speechbert_payload_multiple_authors(self):
+        # TODO: there is no existing test data with multiple authors
+        pass
+
+    def test_speechbert_payload_no_channels(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert article.channels == ()
+        assert 'channels' not in payload
+
+    def test_speechbert_payload_single_channel(self):
+        # TODO: there is no existing test data with a single channel
+        pass
+
+    def test_speechbert_payload_no_genre(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert article.genre is None
+        assert 'genre' not in payload
+
+    def test_speechbert_payload_no_image(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert isinstance(
+            article.main_image,
+            zeit.content.article.article.NoMainImageBlockReference)
+        assert 'image' not in payload
+
+    def test_speechbert_payload_no_last_modified(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        info = zeit.cms.workflow.interfaces.IPublishInfo(article)
+        assert info.date_last_published_semantic is None
+        assert 'lastModified' not in payload
+
+    def test_speechbert_payload_no_publish_date(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        info = zeit.cms.workflow.interfaces.IPublishInfo(article)
+        assert info.date_first_released is None
+        assert 'publishDate' not in payload
+
+    def test_speechbert_payload_sub_section(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert article.sub_ressort is None
+        assert 'subsection' not in payload
+
+    def test_speechbert_payload_series(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert article.serie is not None
+        assert payload['series'] == '-'
+
+    def test_speechbert_payload_supertitle(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert article.supertitle == 'Geopolitik'
+        assert payload['supertitle'] == 'Geopolitik'
+
+    def test_speechbert_payload_no_uuid(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        payload = zeit.workflow.publish_3rdparty.Speechbert(
+            article).json()['payload']
+        assert zeit.cms.content.interfaces.IUUID(article).shortened is None
+        assert 'uuid' not in payload

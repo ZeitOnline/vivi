@@ -194,22 +194,13 @@ class Speechbert(grok.Adapter):
             return True
         return False
 
-    def json(self):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released):
-            return
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        result = {
-            'uuid': uuid.shortened,
-            'unique_id': self.context.uniqueId}
-        payload = result['payload'] = {}
-        if self.context.access != 'free':
-            payload['access'] = self.context.access
-        head = getattr(self.context.xml, 'head')
+    def get_authors(self):
         # TODO there is a "not(role)" check in the original XSLT
-        payload['authors'] = [
-            x.display_name for x in head.findall('author')]
-        body = payload['body'] = []
+        return [
+            x.display_name for x in self.context.xml.head.findall('author')]
+
+    def get_body(self):
+        body = []
         elements = self.context.body.xml.xpath(
             "(//division/* | //division/ul/*)")
         for elem in elements:
@@ -226,38 +217,54 @@ class Speechbert(grok.Adapter):
                 body.append(dict(
                     content=text,
                     type=elem.tag))
-        if self.context.channels:
-            payload['channels'] = ' '.join(*self.context.channels)
-        if self.context.genre:
-            payload['genre'] = self.context.genre
-        if self.context.audio_speechbert:
-            payload['hasAudio'] = True
-        payload['headline'] = self.context.title
+        return body
+
+    def get_image(self):
         image_url = self.context.main_image.source.xml.attrib.get('base-id')
         if image_url:
-            payload['image'] = image_url.replace(
+            return image_url.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,
                 'https://img.zeit.de/').rstrip('/') + '/wide__820x461__desktop'
+
+    def get_tags(self):
+        tags = []
+        if hasattr(self.context.xml.head, 'rankedTags'):
+            tags.extend(
+                self.context.xml.head.rankedTags.getchildren())
+        return tags
+
+    def json(self):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        if self.ignore(info.date_first_released):
+            return
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        payload = dict(
+            authors=self.get_authors(),
+            body=self.get_body(),
+            genre=self.context.genre,
+            hasAudio=self.context.audio_speechbert or None,
+            headline=self.context.title,
+            image=self.get_image(),
+            section=self.context.ressort,
+            subsection=self.context.sub_ressort,
+            subtitle=self.context.subtitle,
+            supertitle=self.context.supertitle,
+            tags=self.get_tags(),
+            teaser=self.context.teaserText,
+            url='',
+            uuid=uuid.shortened)
+        if self.context.access != 'free':
+            payload['access'] = self.context.access
+        if self.context.channels:
+            payload['channels'] = ' '.join(*self.context.channels)
         if info.date_last_published_semantic is not None:
             payload['lastModified'] = (
                 info.date_last_published_semantic.isoformat())
         if info.date_first_released is not None:
             payload['publishDate'] = info.date_first_released.isoformat()
-        payload['section'] = self.context.ressort
         if self.context.serie:
             payload['series'] = self.context.serie.serienname
-        if self.context.sub_ressort:
-            payload['subsection'] = self.context.sub_ressort
-        if self.context.subtitle:
-            payload['subtitle'] = self.context.subtitle
-        if self.context.supertitle:
-            payload['supertitle'] = self.context.supertitle
-        payload['tags'] = []
-        if hasattr(head, 'rankedTags'):
-            payload['tags'].extend(
-                self.context.xml.head.rankedTags.getchildren())
-        payload['teaser'] = self.context.teaserText
-        payload['url'] = ''
-        if uuid.shortened:
-            payload['uuid'] = uuid.shortened
-        return result
+        return dict(
+            payload={k: v for k, v in payload.items() if v is not None},
+            uuid=uuid.shortened,
+            unique_id=self.context.uniqueId)
