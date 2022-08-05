@@ -45,6 +45,10 @@ class IAuthor(zope.interface.Interface,
     facebook = zope.schema.TextLine(title=_('Facebook handle'), required=False)
     instagram = zope.schema.TextLine(
         title=_('Instagram handle'), required=False)
+    jabber = zope.schema.TextLine(title=_('Jabber handle'), required=False)
+    signal = zope.schema.TextLine(title=_('Signal handle'), required=False)
+    threema = zope.schema.TextLine(title=_('Threema id'), required=False)
+    pgp = zope.schema.TextLine(title=_('PGP key'), required=False)
     website = zope.schema.TextLine(title=_('Website handle'), required=False)
 
     vgwortid = zope.schema.Int(
