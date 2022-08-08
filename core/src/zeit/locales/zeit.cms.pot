@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Jul 27 12:37:16 2022\n"
+"POT-Creation-Date: Fri Aug  5 13:40:22 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -234,7 +234,7 @@ msgstr ""
 #: zeit/cms/repository/browser/folder.zcml:17
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/content/article/browser/menu.py:18
-#: zeit/content/author/browser/form.py:88
+#: zeit/content/author/browser/form.py:90
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:25
@@ -259,8 +259,8 @@ msgstr ""
 #: zeit/cms/syndication/browser/feed.py:147
 #: zeit/content/article/edit/interfaces.py:270
 #: zeit/content/article/interfaces.py:173
-#: zeit/content/author/author.py:113
-#: zeit/content/author/browser/form.py:221
+#: zeit/content/author/author.py:117
+#: zeit/content/author/browser/form.py:223
 msgid "Author"
 msgstr ""
 
@@ -614,7 +614,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:43
 #: zeit/content/article/browser/form.py:34
 #: zeit/content/article/edit/browser/recension.py:64
-#: zeit/content/author/browser/form.py:36
+#: zeit/content/author/browser/form.py:38
 #: zeit/content/gallery/browser/form.py:37
 msgid "misc."
 msgstr ""
@@ -2693,36 +2693,36 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:38
+#: zeit/content/author/browser/form.py:40
 msgid "Author Favourites"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:60
-#: zeit/content/author/interfaces.py:224
+#: zeit/content/author/browser/form.py:62
+#: zeit/content/author/interfaces.py:228
 msgid "Biography"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:74
-#: zeit/content/author/browser/form.py:105
+#: zeit/content/author/browser/form.py:76
+#: zeit/content/author/browser/form.py:107
 msgid "Add author"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:81
+#: zeit/content/author/browser/form.py:83
 msgid "Edit author"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:94
+#: zeit/content/author/browser/form.py:96
 #: zeit/content/author/browser/honorar.py:22
 msgid "Add duplicate author"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:150
+#: zeit/content/author/browser/form.py:152
 #: zeit/content/author/browser/honorar.py:49
 #: zeit/content/volume/browser/form.py:126
 msgid "There were errors"
 msgstr ""
 
-#: zeit/content/author/browser/form.py:210
+#: zeit/content/author/browser/form.py:212
 msgid "edit author location"
 msgstr ""
 
@@ -2802,118 +2802,134 @@ msgid "Instagram handle"
 msgstr ""
 
 #: zeit/content/author/interfaces.py:48
-msgid "Website handle"
+msgid "Jabber handle"
+msgstr ""
+
+#: zeit/content/author/interfaces.py:49
+msgid "Signal handle"
+msgstr ""
+
+#: zeit/content/author/interfaces.py:50
+msgid "Threema id"
 msgstr ""
 
 #: zeit/content/author/interfaces.py:51
+msgid "PGP key"
+msgstr ""
+
+#: zeit/content/author/interfaces.py:52
+msgid "Website handle"
+msgstr ""
+
+#: zeit/content/author/interfaces.py:55
 msgid "VG-Wort ID"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:57
+#: zeit/content/author/interfaces.py:61
 msgid "VG-Wort Code"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:61
+#: zeit/content/author/interfaces.py:65
 msgid "Honorar ID"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:69
+#: zeit/content/author/interfaces.py:73
 msgid "Display name"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:71
+#: zeit/content/author/interfaces.py:75
 msgid "Default: 'Firstname Lastname'"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:74
+#: zeit/content/author/interfaces.py:78
 msgid "Initials"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:77
+#: zeit/content/author/interfaces.py:81
 msgid "Community-Profile URL"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:80
+#: zeit/content/author/interfaces.py:84
 msgid "SSO-Id"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:83
+#: zeit/content/author/interfaces.py:87
 msgid "Connect with SSO-Account"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:87
+#: zeit/content/author/interfaces.py:91
 msgid "Redaktionszugeh\303\266rigkeit"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:92
+#: zeit/content/author/interfaces.py:96
 msgid "External?"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:95
+#: zeit/content/author/interfaces.py:99
 msgid "is author"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:99
+#: zeit/content/author/interfaces.py:103
 msgid "is cook"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:102
+#: zeit/content/author/interfaces.py:106
 msgid "Enable followpush?"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:105
+#: zeit/content/author/interfaces.py:109
 msgid "Enable feedback?"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:108
+#: zeit/content/author/interfaces.py:112
 msgid "Link letterbox"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:111
+#: zeit/content/author/interfaces.py:115
 msgid "Short Biography"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:114
+#: zeit/content/author/interfaces.py:118
 msgid "Short Cook Biography"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:119
+#: zeit/content/author/interfaces.py:123
 msgid "Favourite content"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:127
+#: zeit/content/author/interfaces.py:131
 msgid "Occupation"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:133
+#: zeit/content/author/interfaces.py:137
 msgid "Label for favourite topic #1"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:137
+#: zeit/content/author/interfaces.py:141
 msgid "Label for favourite topic #2"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:141
+#: zeit/content/author/interfaces.py:145
 msgid "Label for favourite topic #3"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:145
+#: zeit/content/author/interfaces.py:149
 msgid "URL for favourite topic #1"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:149
+#: zeit/content/author/interfaces.py:153
 msgid "URL for favourite topic #2"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:153
+#: zeit/content/author/interfaces.py:157
 msgid "URL for favourite topic #3"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:211
+#: zeit/content/author/interfaces.py:215
 msgid "Location"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:216
+#: zeit/content/author/interfaces.py:220
 msgid "Author role"
 msgstr ""
 
@@ -2961,37 +2977,37 @@ msgstr ""
 msgid "List of teasers"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:197
+#: zeit/content/cp/browser/area.py:198
 #: zeit/content/cp/interfaces.py:221
 msgid "automatic-area-type-centerpage"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:199
+#: zeit/content/cp/browser/area.py:200
 #: zeit/content/cp/interfaces.py:229
 msgid "automatic-area-type-rss-feed"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:201
+#: zeit/content/cp/browser/area.py:202
 #: zeit/content/cp/interfaces.py:222
 msgid "automatic-area-type-custom"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:203
+#: zeit/content/cp/browser/area.py:204
 #: zeit/content/cp/interfaces.py:223
 msgid "automatic-area-type-topicpage"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:207
+#: zeit/content/cp/browser/area.py:208
 #: zeit/content/cp/interfaces.py:226
 msgid "automatic-area-type-elasticsearch-query"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:211
+#: zeit/content/cp/browser/area.py:212
 #: zeit/content/cp/interfaces.py:224
 msgid "automatic-area-type-related-topics"
 msgstr ""
 
-#: zeit/content/cp/browser/area.py:213
+#: zeit/content/cp/browser/area.py:214
 #: zeit/content/cp/interfaces.py:227
 msgid "automatic-area-type-reach"
 msgstr ""
