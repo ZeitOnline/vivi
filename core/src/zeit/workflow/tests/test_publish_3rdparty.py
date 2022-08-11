@@ -244,8 +244,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             # TODO: the following assert should fail, we tested above that
             # the attribute is None, but in Speechbert.json() it is True
             # assert 'hasAudio' not in result_sb['payload']
-            result_sb = zeit.workflow.publish_3rdparty.Speechbert(
-                article).json()
+            data_factory = zope.component.getAdapter(
+                article,
+                zeit.workflow.interfaces.IPublisherData,
+                name="speechbert")
+            result_sb = data_factory.json()
             assert result_sb['payload']['hasAudio'] is True
         self.assertTrue(IPublishInfo(article).published)
         assert article.audio_speechbert is True
@@ -258,10 +261,16 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         # disable the max-age filter
         config['speechbert-max-age'] = sys.maxsize
         config['speechbert-ignore-genres'] = 'rezept-vorstellung'
-        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
         assert data_factory.json() is None
         config['speechbert-ignore-genres'] = ''
-        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
         assert data_factory.json() is not None
 
     def test_speechbert_ignore_templates(self):
@@ -272,10 +281,16 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         # disable the max-age filter
         config['speechbert-max-age'] = sys.maxsize
         config['speechbert-ignore-templates'] = 'article'
-        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
         assert data_factory.json() is None
         config['speechbert-ignore-templates'] = ''
-        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
         assert data_factory.json() is not None
 
     def test_speechbert_max_age(self):
@@ -283,10 +298,16 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
         assert data_factory.json() is None
         config['speechbert-max-age'] = sys.maxsize
-        data_factory = zeit.workflow.publish_3rdparty.Speechbert(article)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
         assert data_factory.json() is not None
 
     def test_speechbert_extraction(self):
@@ -325,8 +346,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         del payload['body']  # not relevant in this test
         del payload['image']  # not relevant in this test
         assert payload == dict(
@@ -364,8 +388,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert article.access == 'free'
         assert 'access' not in payload
 
@@ -376,8 +403,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/terror-abschuss-schaeuble')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert article.authors == ()
         assert payload['authors'] == []
 
@@ -392,8 +422,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert article.channels == ()
         assert 'channels' not in payload
 
@@ -408,8 +441,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert article.genre is None
         assert 'genre' not in payload
 
@@ -420,8 +456,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert isinstance(
             article.main_image,
             zeit.content.article.article.NoMainImageBlockReference)
@@ -434,8 +473,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         info = zeit.cms.workflow.interfaces.IPublishInfo(article)
         assert info.date_last_published_semantic is None
         assert 'lastModified' not in payload
@@ -447,8 +489,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         info = zeit.cms.workflow.interfaces.IPublishInfo(article)
         assert info.date_first_released is None
         assert 'publishDate' not in payload
@@ -460,8 +505,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert article.sub_ressort is None
         assert 'subsection' not in payload
 
@@ -472,8 +520,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert article.serie is not None
         assert payload['series'] == '-'
 
@@ -484,8 +535,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
 
@@ -496,7 +550,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        payload = zeit.workflow.publish_3rdparty.Speechbert(
-            article).json()['payload']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()['payload']
         assert zeit.cms.content.interfaces.IUUID(article).shortened is None
         assert 'uuid' not in payload
