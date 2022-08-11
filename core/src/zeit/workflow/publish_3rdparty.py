@@ -22,26 +22,16 @@ class AuthorDashboard(grok.Adapter):
     grok.name('authordashboard')
 
     def json(self):
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        return {
-            'uuid': uuid.shortened,
-            'unique_id': self.context.uniqueId}
+        # no payload. uuid and uniqueId are passed in automatically
+        return {}
 
 
 class BigQueryMixin:
     PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
 
     def json(self):
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        path = self.context.uniqueId
-        # TODO with Python >= 3.9 we can use:
-        # path = self.context.uniqueId.removeprefix(self.PREFIX)
-        if path.startswith(self.PREFIX):
-            path = path[len(self.PREFIX):]
-        return {
-            'uuid': uuid.shortened,
-            'unique_id': self.context.uniqueId,
-            'path': path}
+        path = self.context.uniqueId.removeprefix(self.PREFIX)
+        return {'path': path}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
@@ -70,6 +60,9 @@ class VideoBigQuery(grok.Adapter, BigQueryMixin):
 
 class CommentsMixin:
     def json(self):
+        # the uuid and unique_id are required in the payload,
+        # since the publisher should have no logic in that regard,
+        # we duplicate the two here
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         return {
             'comments_allowed': self.context.commentsAllowed,
@@ -130,12 +123,8 @@ class FacebookNewstab(grok.Adapter):
         if date_first_released < facebooknewstab_startdate:
             # ignore resources before the cut off date
             return
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
         path = self.context.uniqueId.removeprefix(self.PREFIX)
-        return {
-            'uuid': uuid.shortened,
-            'unique_id': self.context.uniqueId,
-            'path': path}
+        return {'path': path}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
@@ -231,7 +220,4 @@ class Speechbert(grok.Adapter):
             payload['publishDate'] = info.date_first_released.isoformat()
         if self.context.serie:
             payload['series'] = self.context.serie.serienname
-        return dict(
-            payload={k: v for k, v in payload.items() if v is not None},
-            uuid=uuid.shortened,
-            unique_id=self.context.uniqueId)
+        return {k: v for k, v in payload.items() if v is not None}

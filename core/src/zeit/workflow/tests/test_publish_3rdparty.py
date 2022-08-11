@@ -41,10 +41,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_authordashboard = result['authordashboard']
-            result_authordashboard.pop('uuid')  # NOTE changes each run
-            self.assertEqual({
-                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
-            }, result_authordashboard)
+            self.assertEqual({}, result_authordashboard)
         self.assertTrue(IPublishInfo(article).published)
 
     def test_bigquery_is_published(self):
@@ -58,10 +55,8 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_fbnt = result['bigquery']
-            result_fbnt.pop('uuid')  # NOTE changes each run
-            self.assertEqual({
-                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
-                'path': '/online/2007/01/Somalia'},
+            self.assertEqual(
+                {'path': '/online/2007/01/Somalia'},
                 result_fbnt)
         self.assertTrue(IPublishInfo(article).published)
 
@@ -135,10 +130,8 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_fbnt = result['facebooknewstab']
-            result_fbnt.pop('uuid')  # NOTE changes each run
-            self.assertEqual({
-                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
-                'path': '/online/2007/01/Somalia'},
+            self.assertEqual(
+                {'path': '/online/2007/01/Somalia'},
                 result_fbnt)
         self.assertTrue(IPublishInfo(article).published)
 
@@ -239,7 +232,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_sb = result['speechbert']
             self.assertEqual(
-                ['payload', 'unique_id', 'uuid'],
+                [
+                    'authors', 'body', 'hasAudio', 'headline', 'publishDate',
+                    'section', 'series', 'subtitle', 'supertitle', 'tags',
+                    'teaser', 'url', 'uuid'],
                 sorted(result_sb.keys()))
             # TODO: the following assert should fail, we tested above that
             # the attribute is None, but in Speechbert.json() it is True
@@ -249,7 +245,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                 zeit.workflow.interfaces.IPublisherData,
                 name="speechbert")
             result_sb = data_factory.json()
-            assert result_sb['payload']['hasAudio'] is True
+            assert result_sb['hasAudio'] is True
         self.assertTrue(IPublishInfo(article).published)
         assert article.audio_speechbert is True
 
@@ -336,7 +332,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             expected = json.loads(original_transformed)
             data_factory = zeit.workflow.publish_3rdparty.Speechbert(
                 resource)
-            result = data_factory.json()['payload']
+            result = data_factory.json()
             assert result == expected
 
     def test_speechbert_payload(self):
@@ -350,7 +346,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         del payload['body']  # not relevant in this test
         del payload['image']  # not relevant in this test
         assert payload == dict(
@@ -392,7 +388,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert article.access == 'free'
         assert 'access' not in payload
 
@@ -407,7 +403,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert article.authors == ()
         assert payload['authors'] == []
 
@@ -426,7 +422,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert article.channels == ()
         assert 'channels' not in payload
 
@@ -445,7 +441,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert article.genre is None
         assert 'genre' not in payload
 
@@ -460,7 +456,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert isinstance(
             article.main_image,
             zeit.content.article.article.NoMainImageBlockReference)
@@ -477,7 +473,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         info = zeit.cms.workflow.interfaces.IPublishInfo(article)
         assert info.date_last_published_semantic is None
         assert 'lastModified' not in payload
@@ -493,7 +489,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         info = zeit.cms.workflow.interfaces.IPublishInfo(article)
         assert info.date_first_released is None
         assert 'publishDate' not in payload
@@ -509,7 +505,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert article.sub_ressort is None
         assert 'subsection' not in payload
 
@@ -524,7 +520,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert article.serie is not None
         assert payload['series'] == '-'
 
@@ -539,7 +535,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
 
@@ -554,6 +550,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()['payload']
+        payload = data_factory.json()
         assert zeit.cms.content.interfaces.IUUID(article).shortened is None
         assert 'uuid' not in payload
