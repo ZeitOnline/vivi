@@ -410,6 +410,14 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert article.authors == (
             'Marc-Uwe Kling',
             'Bernd Kissel')
+        # there is a third author that is filtered out
+        raw_authors = [
+            (x.display_name, x.find('role') is not None)
+            for x in article.xml.head.findall('author')]
+        assert raw_authors == [
+            ('Marc-Uwe Kling', False),
+            ('Bernd Kissel', False),
+            ('Julian Stahnke', True)]
         assert payload['authors'] == [
             'Marc-Uwe Kling',
             'Bernd Kissel']

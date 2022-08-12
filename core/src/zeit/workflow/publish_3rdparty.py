@@ -151,9 +151,12 @@ class Speechbert(grok.Adapter):
         return False
 
     def get_authors(self):
-        # TODO there is a "not(role)" check in the original XSLT
-        return [
-            x.display_name for x in self.context.xml.head.findall('author')]
+        result = []
+        for author in self.context.xml.head.findall('author'):
+            if author.find('role') is not None:
+                continue
+            result.append(author.display_name)
+        return result
 
     def get_body(self):
         body = []
