@@ -315,6 +315,10 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             lambda s, d: False)
 
     def test_speechbert_extraction(self):
+        # this test compares the output of the original xslt from the old
+        # publisher with the new output
+        # BBB this test can be removed once the new publisher is successfully
+        # deployed in production for a while
         import json
         import lxml.etree
         import pkg_resources
