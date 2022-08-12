@@ -180,7 +180,7 @@ class Speechbert(grok.Adapter):
     def get_channels(self):
         if self.context.channels is not None:
             if self.context.channels:
-                return ' '.join(*self.context.channels)
+                return ' '.join(filter(None, *self.context.channels))
             else:
                 channels = self.context.xml.head.findall(
                     "attribute[@name='channels']")
@@ -194,11 +194,10 @@ class Speechbert(grok.Adapter):
             return 'false'
 
     def get_image(self):
-        image_url = self.context.main_image.source.xml.attrib.get('base-id')
-        if image_url is None:
-            image = self.context.xml.head.find('image')
-            if image is not None:
-                image_url = image.attrib.get('base-id')
+        image_url = None
+        image = self.context.xml.head.find('image')
+        if image is not None:
+            image_url = image.attrib.get('base-id')
         if image_url:
             return image_url.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,

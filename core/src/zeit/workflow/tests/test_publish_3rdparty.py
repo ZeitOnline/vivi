@@ -437,8 +437,15 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload['channels'] == ''
 
     def test_speechbert_payload_single_channel(self):
-        # TODO: there is no existing test data with a single channel
-        pass
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2022/08/trockenheit')
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()
+        assert article.channels == (('News', None),)
+        assert payload['channels'] == 'News'
 
     def test_speechbert_payload_no_genre(self):
         article = ICMSContent(
