@@ -26,10 +26,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def caplog(self, caplog):
         self.caplog = caplog
 
-    @pytest.fixture(autouse=True)
-    def monkeypatch(self, monkeypatch):
-        self.monkeypatch = monkeypatch
-
     def test_authordashboard_is_notified(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -306,14 +302,22 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             name="speechbert")
         assert data_factory.json() is not None
 
+
+class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+
+    layer = zeit.content.article.testing.LAYER
+
+    @pytest.fixture(autouse=True)
+    def monkeypatch(self, monkeypatch):
+        monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+
     def test_speechbert_extraction(self):
         import json
         import lxml.etree
         import pkg_resources
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         source = pkg_resources.resource_string(
             'zeit.workflow.tests', 'fixtures/speechbert.xslt')
         transform = lxml.etree.XSLT(lxml.etree.XML(source))
@@ -336,10 +340,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             assert result == expected
 
     def test_speechbert_payload(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         data_factory = zope.component.getAdapter(
@@ -378,10 +378,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             uuid='16e82986-cdc0-492d-84e8-267d09b4ab53')
 
     def test_speechbert_payload_access_free(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -393,10 +389,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert 'access' not in payload
 
     def test_speechbert_payload_no_authors(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/terror-abschuss-schaeuble')
         data_factory = zope.component.getAdapter(
@@ -408,10 +400,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload['authors'] == []
 
     def test_speechbert_payload_multiple_authors(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
         data_factory = zope.component.getAdapter(
@@ -427,10 +415,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             'Bernd Kissel']
 
     def test_speechbert_payload_no_channels(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -442,10 +426,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert 'channels' not in payload
 
     def test_speechbert_payload_empty_channels(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
         data_factory = zope.component.getAdapter(
@@ -461,10 +441,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         pass
 
     def test_speechbert_payload_no_genre(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -476,10 +452,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert 'genre' not in payload
 
     def test_speechbert_payload_no_image(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -493,10 +465,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert 'image' not in payload
 
     def test_speechbert_payload_no_last_modified(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -509,10 +477,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert 'lastModified' not in payload
 
     def test_speechbert_payload_no_publish_date(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -525,10 +489,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert 'publishDate' not in payload
 
     def test_speechbert_payload_sub_section(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -540,10 +500,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert 'subsection' not in payload
 
     def test_speechbert_payload_series(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -555,10 +511,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload['series'] == '-'
 
     def test_speechbert_payload_supertitle(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -570,10 +522,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload['supertitle'] == 'Geopolitik'
 
     def test_speechbert_payload_no_uuid(self):
-        self.monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, d: False)
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
