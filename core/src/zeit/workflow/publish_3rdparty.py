@@ -170,13 +170,35 @@ class Speechbert(grok.Adapter):
                 text = elem.findtext('**')
                 if text is None:
                     text = elem.findtext('*')
+                if text is None:
+                    continue
                 body.append(dict(
                     content=text,
                     type=elem.tag))
         return body
 
+    def get_channels(self):
+        if self.context.channels is not None:
+            if self.context.channels:
+                return ' '.join(*self.context.channels)
+            else:
+                channels = self.context.xml.head.findall(
+                    "attribute[@name='channels']")
+                if channels:
+                    return ' '.join(str(x) for x in channels)
+
+    def get_hasAudio(self):
+        if self.context.audio_speechbert is True:
+            return 'true'
+        if self.context.audio_speechbert is False:
+            return 'false'
+
     def get_image(self):
         image_url = self.context.main_image.source.xml.attrib.get('base-id')
+        if image_url is None:
+            image = self.context.xml.head.find('image')
+            if image is not None:
+                image_url = image.attrib.get('base-id')
         if image_url:
             return image_url.replace(
                 zeit.cms.interfaces.ID_NAMESPACE,
@@ -197,8 +219,9 @@ class Speechbert(grok.Adapter):
         payload = dict(
             authors=self.get_authors(),
             body=self.get_body(),
+            channels=self.get_channels(),
             genre=self.context.genre,
-            hasAudio=self.context.audio_speechbert or None,
+            hasAudio=self.get_hasAudio(),
             headline=self.context.title,
             image=self.get_image(),
             section=self.context.ressort,
@@ -211,8 +234,6 @@ class Speechbert(grok.Adapter):
             uuid=uuid.shortened)
         if self.context.access != 'free':
             payload['access'] = self.context.access
-        if self.context.channels:
-            payload['channels'] = ' '.join(*self.context.channels)
         if info.date_last_published_semantic is not None:
             payload['lastModified'] = (
                 info.date_last_published_semantic.isoformat())

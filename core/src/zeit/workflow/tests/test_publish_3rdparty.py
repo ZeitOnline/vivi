@@ -245,7 +245,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                 zeit.workflow.interfaces.IPublisherData,
                 name="speechbert")
             result_sb = data_factory.json()
-            assert result_sb['hasAudio'] is True
+            assert result_sb['hasAudio'] == 'true'
         self.assertTrue(IPublishInfo(article).published)
         assert article.audio_speechbert is True
 
@@ -408,8 +408,23 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload['authors'] == []
 
     def test_speechbert_payload_multiple_authors(self):
-        # TODO: there is no existing test data with multiple authors
-        pass
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()
+        assert article.authors == (
+            'Marc-Uwe Kling',
+            'Bernd Kissel')
+        assert payload['authors'] == [
+            'Marc-Uwe Kling',
+            'Bernd Kissel']
 
     def test_speechbert_payload_no_channels(self):
         self.monkeypatch.setattr(
@@ -425,6 +440,21 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.json()
         assert article.channels == ()
         assert 'channels' not in payload
+
+    def test_speechbert_payload_empty_channels(self):
+        self.monkeypatch.setattr(
+            zeit.workflow.publish_3rdparty.Speechbert,
+            'ignore',
+            lambda s, d: False)
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        payload = data_factory.json()
+        assert article.channels == ()
+        assert payload['channels'] == ''
 
     def test_speechbert_payload_single_channel(self):
         # TODO: there is no existing test data with a single channel

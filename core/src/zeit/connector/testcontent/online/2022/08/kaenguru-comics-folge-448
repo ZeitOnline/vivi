@@ -1,0 +1,105 @@
+<article>
+  <head>
+    <header/>
+    <author hdok="10056819" href="http://xml.zeit.de/autoren/K/Marc-Uwe_Kling/index" publication-date="" expires="">
+      <display_name>Marc-Uwe Kling</display_name>
+    </author>
+    <author hdok="10056870" href="http://xml.zeit.de/autoren/K/Bernd_Kissel/index" publication-date="" expires="">
+      <display_name>Bernd Kissel</display_name>
+    </author>
+    <rankedTags>
+      <tag type="organisation">Twitter</tag>
+    </rankedTags>
+    <image base-id="http://xml.zeit.de/administratives/kaenguru-comics/2022-08/09/" type="png" publication-date="" expires="" caption_local="Marc-Uwe und das Känguru fragen sich, ob sie das Bettzeug wechseln sollten.">
+      <bu>Marc-Uwe und das Känguru fragen sich, ob sie das Bettzeug wechseln sollten.</bu>
+      <copyright/>
+    </image>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="audio_speechbert">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Marc-Uwe Kling;Bernd Kissel</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="channels"/>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments_premoderate">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="corrected">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2022-08-08T15:38:19.399909+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">2022-08-09T03:00:11.795232+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2022-08-09T03:00:12.199589+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">2022-08-09T03:00:11.795232+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published_semantic">2022-08-09T03:00:11.795232+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="edited">yes</attribute>
+    <attribute ns="http://apache.org/dav/props/" name="executable">F</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="header_layout">default</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="hide_adblocker_notification">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="hide_ligatus_recommendations">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_amp">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last-semantic-change">2021-12-06T16:05:27.826473+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">julia.schmiedeberg@zeit.de</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="lead_candidate">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="overscrolling">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="prevent_ligatus_indexing">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="previous_uniqueIds">http://xml.zeit.de/kaenguru-comics/2021-12/964b9dff-d1f6-4192-af39-b5bd35f2413e.tmp;http://xml.zeit.de/kaenguru-comics/2021-12/folge-295-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-296-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-297-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-298-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-299-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-300-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-301-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-302-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-303-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-304-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-306-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-308-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-309-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-310-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-311-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-312-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-313-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-314-2;http://xml.zeit.de/kaenguru-comics/2021-12/folge-315-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-316;http://xml.zeit.de/kaenguru-comics/2022-01/folge-317-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-318-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-319-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-320-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-322-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-324-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-325-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-326-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-327-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-328-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-330-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-331-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-332-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-333-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-334-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-335-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-336-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-337-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-338-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-339-2;http://xml.zeit.de/kaenguru-comics/2022-01/folge-340-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-342;http://xml.zeit.de/kaenguru-comics/2022-02/folge-343-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-344-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-345-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-346-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-348-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-349-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-350-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-351-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-352-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-353-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-354-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-355-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-356-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-357-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-358-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-359-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-360-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-361-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-362-2;http://xml.zeit.de/kaenguru-comics/2022-02/folge-363-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-364;http://xml.zeit.de/kaenguru-comics/2022-03/folge-365-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-366-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-367-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-368-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-369-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-370-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-371-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-372-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-374-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-375-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-377-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-378-2;http://xml.zeit.de/kaenguru-comics/2022-03/folge-379-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-380;http://xml.zeit.de/kaenguru-comics/2022-04/folge-381-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-382-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-383-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-384-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-385-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-386-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-387-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-388-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-389-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-340-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-301;http://xml.zeit.de/kaenguru-comics/2022-04/folge-391-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-392-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-393-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-395-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-396-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-397-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-398-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-399-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-401-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-402-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-403-2;http://xml.zeit.de/kaenguru-comics/2022-04/folge-404-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-405;http://xml.zeit.de/kaenguru-comics/2022-05/folge-407-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-408-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-409-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-410-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-411-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-412-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-413-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-414-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-415-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-416-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-417-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-419-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-420-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-421-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-422-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-423-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-425-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-426-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-427-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-428-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-429-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-430-2;http://xml.zeit.de/kaenguru-comics/2022-05/folge-431-2;http://xml.zeit.de/kaenguru-comics/2022-06/folge-432;http://xml.zeit.de/kaenguru-comics/2022-06/folge-433-2;http://xml.zeit.de/kaenguru-comics/2022-06/folge-434-2;http://xml.zeit.de/kaenguru-comics/2022-06/folge-435-2;http://xml.zeit.de/kaenguru-comics/2022-06/folge-438-2;http://xml.zeit.de/kaenguru-comics/2022-06/folge-439-2;http://xml.zeit.de/kaenguru-comics/2022-08/folge-440;http://xml.zeit.de/kaenguru-comics/2022-08/folge-441-2;http://xml.zeit.de/kaenguru-comics/2022-08/folge-442-2;http://xml.zeit.de/kaenguru-comics/2022-08/folge-443-2;http://xml.zeit.de/kaenguru-comics/2022-08/folge-444-2;http://xml.zeit.de/kaenguru-comics/2022-08/folge-445-2;http://xml.zeit.de/kaenguru-comics/2022-08/folge-446-2;http://xml.zeit.de/kaenguru-comics/2022-08/folge-447-2</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">471bf09d89d94c0783550fbfd1cd0c28</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="publish_job_id">cfbb9374-dc65-47e5-b249-8e90505e738d</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="recent_comments_first">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="released_from">2022-08-09T03:00:00+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Gesellschaft</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="seo_optimized">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">Chefsache</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="sub_ressort">Zeitgeschehen</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="template">zon-article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">156</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="tldr_milestone">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="urgent">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:0b4182a1-c68a-4c33-baac-6c2c43a06a2d}</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2022</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
+  &lt;initialized_object&gt;
+    &lt;klass&gt;
+      &lt;global name="Provides" module="zope.interface.declarations"/&gt;
+    &lt;/klass&gt;
+    &lt;arguments&gt;
+      &lt;tuple&gt;
+        &lt;global name="Article" module="zeit.content.article.article"/&gt;
+        &lt;global name="IZONArticle" module="zeit.content.article.interfaces"/&gt;
+        &lt;global name="IZONContent" module="zeit.cms.section.interfaces"/&gt;
+      &lt;/tuple&gt;
+    &lt;/arguments&gt;
+  &lt;/initialized_object&gt;
+&lt;/pickle&gt;</attribute>
+  </head>
+  <body>
+    <title>Beneidenswert</title>
+    <subtitle>Der Känguru-Comic vom 9. August 2022
+</subtitle>
+    <division type="page">
+      <image display_mode="column-width" variant_name="wide" is_empty="True"/>
+      <rawtext>
+        <text_reference type="intern" href="http://xml.zeit.de/pembeds/scrollable-image-with-link" publication-date="" expires=""/>
+        <param id="image">http://xml.zeit.de/administratives/kaenguru-comics/2022-08/09/</param>
+      </rawtext>
+      <p>
+        <a class="" href="https://www.zeit.de/serie/die-kaenguru-comics" target="_blank">
+          <em>Hier finden Sie alle Känguru-Comics</em>
+        </a>
+      </p>
+      <p/>
+      <p/>
+    </division>
+    <supertitle>Folge 448</supertitle>
+  </body>
+  <teaser>
+    <supertitle>Folge 448</supertitle>
+    <text>Der Känguru-Comic vom 9. August 2022
+</text>
+    <title>Beneidenswert</title>
+  </teaser>
+</article>
