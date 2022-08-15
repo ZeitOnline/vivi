@@ -1,0 +1,87 @@
+<article>
+  <head>
+    <header/>
+    <agency href="http://xml.zeit.de/autoren/dpa" publication-date="" expires="">
+      <display_name>dpa  </display_name>
+    </agency>
+    <rankedTags>
+      <tag type="person">Felix Ekardt</tag>
+      <tag type="location">Sachsen</tag>
+      <tag type="organisation">BUND</tag>
+      <tag type="organisation">Deutsche Presse-Agentur</tag>
+      <tag type="keyword">Trockenheit</tag>
+      <tag type="keyword">Hitze</tag>
+    </rankedTags>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="audio_speechbert">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="channels">News</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments_premoderate">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="corrected">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2022-08-10T21:35:23.213099+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">2022-08-09T06:11:30+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2022-08-10T21:35:24.546250+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">2022-08-10T21:35:23.950553+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published_semantic">2022-08-09T06:11:30+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="edited">yes</attribute>
+    <attribute ns="http://apache.org/dav/props/" name="executable">F</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="has_recensions">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="header_layout">default</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="hide_adblocker_notification">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="hide_ligatus_recommendations">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last-semantic-change">2022-08-09T06:11:30+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.dpa</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="overscrolling">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="prevent_ligatus_indexing">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">dpaSN</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">65d4f9fedc7b49faacb9fe738f375a36</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="published">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/dpa" name="pubstatus">usable</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="recent_comments_first">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">News</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="template">zon-article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/dpa" name="updated">2022-08-10T21:10:07+00:00</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/dpa" name="urn">urn:newsml:dpa.com:20090101:220809-99-323096</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:70be866f-1aac-422a-a38e-936722358e1c}</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/dpa" name="version">2</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
+  &lt;initialized_object&gt;
+    &lt;klass&gt;
+      &lt;global name="Provides" module="zope.interface.declarations"/&gt;
+    &lt;/klass&gt;
+    &lt;arguments&gt;
+      &lt;tuple&gt;
+        &lt;global name="Article" module="zeit.content.article.article"/&gt;
+        &lt;global name="IZONArticle" module="zeit.content.article.interfaces"/&gt;
+        &lt;global name="IZONContent" module="zeit.cms.section.interfaces"/&gt;
+      &lt;/tuple&gt;
+    &lt;/arguments&gt;
+  &lt;/initialized_object&gt;
+&lt;/pickle&gt;</attribute>
+  </head>
+  <body>
+    <supertitle>Wetter</supertitle>
+    <title>Trockenheit macht Tieren zu schaffen: Menschen können helfen</title>
+    <subtitle/>
+    <division type="page">
+      <image base-id="http://xml.zeit.de/news/2022-08/09/trockenheit-macht-tieren-zu-schaffen-menschen-koennen-helfen-image-group/" type="jpeg" title="Erdkröte" publication-date="" expires="" display_mode="column-width" variant_name="wide" is_empty="False" title_local="Erdkröte" caption_local="Eine Erdkröte überquert einen Wanderweg.">
+        <bu>Eine Erdkröte überquert einen Wanderweg.</bu>
+        <copyright/>
+      </image>
+      <p>Die anhaltende Trockenheit mit hohen Temperaturen macht auch vielen Tieren zu schaffen. "Amphibien wie der Feuersalamander brauchen klare Quellbäche, damit ihre Larven darin heranwachsen können. Fische leiden unter hohen Wassertemperaturen und dem damit einhergehenden Sauerstoffmangel", sagte Felix Ekardt, Vorsitzender des Bundes für Umwelt und Naturschutz (BUND) in Sachsen, der Deutschen Presse-Agentur. Aber auch viele Kleinstlebewesen oder Insekten seien an wasserführende Bäche, Teiche oder Flüsse gebunden. Wenn Gewässer austrockneten, habe das Auswirkungen auf einzelne Arten, aber auch auf das Gesamtgefüge des Ökosystems.</p>
+      <topicbox supertitle="Aktuelles" title="Schlagzeilen" link="https://www.zeit.de//news/index" link_text="Mehr News" automatic_type="related-api">
+        <topicpage_filter>dpa-import</topicpage_filter>
+      </topicbox>
+      <p>"Geht der Biotopverbund, also die Vernetzung von Lebensräumen, dadurch verloren, werden Populationen voneinander isoliert, und ein Austausch ist nicht mehr möglich", erklärte der Wissenschaftler. Zahlreiche andere Wildtiere oder Insekten nähmen dagegen ihren Wasserbedarf über die Nahrung auf. "Sind Nahrung und kühle Versteckmöglichkeiten ausreichend vorhanden, kommen sie gut durch den Sommer. Wichtig ist aber auch hier die Vernetzung der Lebensräume, um Ausweichmöglichkeiten zu haben."</p>
+      <p>Laut Ekardt lässt sich der Verlust an Tieren in Dürrezeiten nur schwer zu beziffern. Das hänge von vielen Faktoren wie der Qualität der Lebensräume, der Nahrungsverfügbarkeit und auch davon ab, in welchem Ausmaß der Lebensraum schon zerschnitten ist. "Aussagen, ob die Trockenheit zu Verlusten im Bestand führt, müssen über mehrere Jahre wissenschaftlich untersucht werden. Generell sind Trockenheit und Hitze für viele Tiere zusätzliche Stressfaktoren, die nun zu anderen Belastungen hinzukommen - wie etwa der Verlust von Lebensraum durch Versiegelung oder dessen Zerschneidung durch Straßen.</p>
+      <p>"Kurzfristig ist es jetzt wichtig, Tieren an Wasserstellen wie Bächen und Seen, in Feuchtgebieten und Wäldern Rückzugsräume und Ruhe zu gönnen", betonte Ekardt. Unnötige Störungen kosteten sie Energie und erhöhten ihren Wasserbedarf. Insekten, Reptilien, Säugetiere und Vögel freuten sich über zusätzliche Wasserstellen - vom Teich bis zur Wasserschale auf dem Balkon oder im Garten. Trinkgefäße sollten dabei regelmäßig gereinigt werden. Für Insekten seien aus dem Wasser ragende Stöckchen und Steine zum sicheren Landen nützlich.</p>
+      <p>"Zusätzlich schätzen die Tiere jetzt kühle und feuchte Verstecke. Laubhaufen, der Kompost im Garten, Gebüsche, aber auch gemulchte Beete können Rettung in der Trockenheit und Hitze bedeuten", sagte Ekardt. Jeder könne dazu einen Beitrag im Garten oder auf dem Balkon leisten. Auf längere Zeit helfe Tieren vor allem der Wasserrückhalt in der Landschaft etwa durch Gewässer-Renaturierungen, die Wiedervernässung trockengelegter Gebiete, mehr Wald und das Vernetzen von Lebensräumen: "Biotopverbindungen verbinden einzelne, isolierte Populationen, ermöglichen einen Austausch sowie sichere Wanderungen."</p>
+      <p>Ekardt erinnerte daran, dass es mit Ausnahme von 2021 zuletzt nur sehr trockene Jahre gab. Schnelle Anpassungsmöglichkeiten vieler Tierarten seien begrenzt und hingen stark von ihren Lebensräumen ab. "Es ist wichtig, dass wir Menschen Lebensräume generell erhalten, für mehr Wasserrückhalt in der Landschaft sorgen und diese wiedervernetzen. Essenziell ist hierbei auch, die Klimakrise einzudämmen, sonst erwarten uns immer mehr Hitzewellen."</p>
+      <p>© dpa-infocom, dpa:220809-99-323096/2</p>
+    </division>
+  </body>
+</article>

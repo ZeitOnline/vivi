@@ -377,7 +377,11 @@ class PublishRetractTask:
                 (obj,), zeit.workflow.interfaces.IPublisherData):
             if not name:
                 continue
-            json[name] = adapter.json()
+            data = adapter.json()
+            # only add data if the adapter returned some
+            # TODO should we log when we got no data?
+            if data is not None:
+                json[name] = data
         return json
 
     @classmethod

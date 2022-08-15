@@ -327,7 +327,7 @@ ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
 '01-2'
 
 >>> repository['online'].keys()
-['01', '01-2', '2005', '2006', '2007']
+['01', '01-2', '2005', '2006', '2007', '2022']
 >>> len(repository['online']['01'].keys())
 53
 

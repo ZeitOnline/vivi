@@ -29,6 +29,10 @@ product_config = """
     dependency-publish-limit 100
     blacklist /blacklist
     publisher-base-url http://localhost:8060/test/
+    facebooknewstab-startdate 2021-03-24
+    speechbert-ignore-genres datenvisualisierung video quiz
+    speechbert-ignore-templates zon-liveblog
+    speechbert-max-age 7776000
 </product-config>
 """
 
