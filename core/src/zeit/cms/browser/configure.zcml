@@ -448,8 +448,8 @@
     permission="zope.Public"
   />
 
-  <!-- testing only -->
   <browser:resourceDirectory
+    zcml:condition="have zeit.cms.testing"
     name="zeit.cms.browser.tests.fixtures"
     directory="js/tests"
     />

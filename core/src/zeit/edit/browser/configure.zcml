@@ -241,8 +241,8 @@
     permission="zope.View"
     />
 
-  <!-- testing only -->
   <browser:resourceDirectory
+    zcml:condition="have zeit.cms.testing"
     name="zeit.edit.browser.tests.fixtures"
     directory="tests/fixtures"
     />
