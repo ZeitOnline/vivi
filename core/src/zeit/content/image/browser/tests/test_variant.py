@@ -1,4 +1,5 @@
 from zeit.content.image.testing import create_image_group_with_master_image
+import fanstatic
 import gocept.jasmine.jasmine
 import json
 import pytest
@@ -238,7 +239,14 @@ class VariantIntegrationTest(zeit.content.image.testing.SeleniumTestCase):
 class VariantApp(gocept.jasmine.jasmine.TestApp):
 
     def need_resources(self):
-        zeit.content.image.browser.resources.test_variant_js.need()
+        lib = fanstatic.Library('zeit.content.image.test', '.')
+        test = fanstatic.Resource(lib, 'test_variant.js', depends=[
+            zeit.content.image.browser.resources.variant_js])
+        test.need()
+        registry = fanstatic.LibraryRegistry.instance()
+        registry.prepared = False  # Force adding a not-entrypoint-based library
+        registry.add(lib)
+        registry.prepare()
 
 
 @pytest.mark.selenium

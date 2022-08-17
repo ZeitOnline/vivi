@@ -290,7 +290,6 @@ setup(
             'zeit_content_cp=zeit.content.cp.browser.resources:lib',
             'zeit_content_gallery=zeit.content.gallery.browser.resources:lib',
             'zeit_content_image=zeit.content.image.browser.resources:lib',
-            'zeit_content_image_test=zeit.content.image.browser.resources:test_lib',
             'zeit_content_link=zeit.content.link.browser.resources:lib',
             'zeit_content_volume=zeit.content.volume.browser.resources:lib',
 

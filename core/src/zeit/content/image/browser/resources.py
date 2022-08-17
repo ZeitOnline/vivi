@@ -16,7 +16,3 @@ Resource('variant.js', depends=[
 
 Resource('form.js', depends=[zeit.cms.browser.resources.base])
 Resource('mdb.js', depends=[zeit.cms.browser.resources.base])
-
-test_lib = fanstatic.Library('zeit.content.image.test', 'tests')
-test_variant_js = fanstatic.Resource(
-    test_lib, 'test_variant.js', depends=[variant_js])  # noqa
