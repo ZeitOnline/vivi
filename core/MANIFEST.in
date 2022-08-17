@@ -4,6 +4,7 @@ recursive-include src *.pot
 recursive-include src *.pt
 recursive-include src *.sh
 recursive-include src *.txt
+recursive-include src *.xml
 recursive-include src *.zcml
 
 recursive-include **/resources *
