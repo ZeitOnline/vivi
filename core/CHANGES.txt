@@ -6,6 +6,8 @@ vivi.core changes
 5.18.6 (2022-08-17)
 -------------------
 
+- ZO-1408: Implement 3rdparty services for new publisher
+
 MAINT:
 - Update python from 3.10.5 to 3.10.6
 
