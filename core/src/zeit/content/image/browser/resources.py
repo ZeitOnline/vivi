@@ -2,7 +2,6 @@ from js.backbone import backbone
 from js.cropper import cropper
 from js.handlebars import handlebars
 from zeit.cms.browser.resources import Resource, Library
-import fanstatic
 import zeit.cms.browser.resources
 
 
