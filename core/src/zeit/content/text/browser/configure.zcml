@@ -43,7 +43,7 @@
     name="zmi_icon"
     width="18"
     height="18"
-    file="texticon.png"
+    file="resources/icon.png"
     />
 
   <browser:icon
@@ -52,7 +52,7 @@
     name="zmi_icon"
     width="20"
     height="20"
-    file="vivi/texticon.png"
+    file="resources/vivi/icon.png"
     />
 
   <browser:page

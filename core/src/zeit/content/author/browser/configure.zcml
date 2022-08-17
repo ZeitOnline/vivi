@@ -63,7 +63,7 @@
     name="zmi_icon"
     width="16"
     height="16"
-    file="author.png"
+    file="resources/icon.png"
     />
 
   <browser:page
