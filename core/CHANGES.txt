@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.19.1 (2022-08-17)
+-------------------
+
+FIX:
+- Apply testing zcml statements only in tests, not always
+
+
 5.19.0 (2022-08-17)
 -------------------
 
