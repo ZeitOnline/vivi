@@ -267,8 +267,7 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
     def getValues(self):
         values = self.folder.values()
         if self.interface is not None:
-            values = [x for x in values
-                      if zeit.content.text.interfaces.IText.providedBy(x)]
+            values = [x for x in values if self.interface.providedBy(x)]
         return values
 
     def getTitle(self, value):
