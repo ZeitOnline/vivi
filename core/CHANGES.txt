@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.19.6 (2022-08-23)
+-------------------
+
+- ZO-605: Tweak UI wording
+
+
 5.19.5 (2022-08-22)
 -------------------
 
