@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug  5 13:40:22 2022\n"
+"POT-Creation-Date: Tue Aug 23 09:05:44 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1569,7 +1569,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:471
+#: zeit/workflow/publish.py:475
 #: zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr ""
@@ -4899,11 +4899,11 @@ msgstr ""
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:416
+#: zeit/workflow/publish.py:420
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:530
+#: zeit/workflow/publish.py:534
 msgid "Retracted"
 msgstr ""
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Aug  5 13:40:22 2022\n"
+"POT-Creation-Date: Tue Aug 23 09:05:44 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -1538,7 +1538,7 @@ msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:471 zeit/workflow/publishinfo.py:50
+#: zeit/workflow/publish.py:475 zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -4325,11 +4325,13 @@ msgstr "Anzahl Teaser"
 
 #: zeit/contentquery/interfaces.py:247
 msgid "Hide duplicate teasers"
-msgstr "Dubletten vermeiden"
+msgstr "Innerhalb dieser Fläche Dubletten vermeiden"
 
 #: zeit/contentquery/interfaces.py:251
 msgid "Consider for duplicate teasers"
-msgstr "Für Dublettenvermeidung berücksichtigen"
+msgstr ""
+"Die Inhalte dieser Fläche bei der Dublettenvermeidung in anderen Flächen "
+"berücksichtigen"
 
 #: zeit/contentquery/interfaces.py:255
 msgid "Custom Query"
@@ -4847,12 +4849,12 @@ msgstr "Sammeldepublizierung (${count} Objekte)"
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:416
+#: zeit/workflow/publish.py:420
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 "Konnte nicht veröffentlicht werden, weil Bedingungen nicht erfüllt sind."
 
-#: zeit/workflow/publish.py:530
+#: zeit/workflow/publish.py:534
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
