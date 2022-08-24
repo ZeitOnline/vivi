@@ -281,15 +281,15 @@ class DefaultTemplateByContentType(
         self.assertEqual(
             'original', self.repository['article'].main_image_variant_name)
 
-    def test_checkout_should_not_change_variant_name_if_already_set(self):
+    def test_checkout_change_variant_name_if_invalid(self):
         article = self.get_article()
         article._create_image_block_in_front()
-        article.main_image_variant_name = 'wide'
+        article.main_image_variant_name = 'zmo-only'
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
         self.assertEqual(
-            'wide', self.repository['article'].main_image_variant_name)
+            'original', self.repository['article'].main_image_variant_name)
 
     def test_changing_template_should_set_default_header(self):
         article = self.get_article()

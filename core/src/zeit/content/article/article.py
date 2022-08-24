@@ -330,10 +330,10 @@ def set_template_and_header_defaults(context, event):
         context.template = template if template else None
         context.header_layout = header_layout if header_layout else None
 
+    source = zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE
     if (context.main_image_block and
-            not context.main_image_block._variant_name and
+            context.main_image_block._variant_name not in source(context) and
             (context.template or context.header_layout)):
-        source = zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE
         context.main_image_variant_name = source.factory.get_default(context)
 
 

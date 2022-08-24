@@ -5,8 +5,22 @@ import zeit.cms.section.interfaces
 import zeit.content.article.source
 import zeit.content.image.interfaces
 import zope.schema
+import zope.schema.interfaces
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
+
+
+class VariantChoice(zope.schema.Choice):
+
+    def validate(self, value):
+        try:
+            super().validate(value)
+        except zope.schema.interfaces.ConstraintNotSatisfied:
+            raise InvalidVariant(value)
+
+
+class InvalidVariant(zope.schema.ValidationError):
+    __doc__ = _('Variant is not allowed for this article template')
 
 
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
@@ -62,7 +76,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 
-    main_image_variant_name = zope.schema.Choice(
+    main_image_variant_name = VariantChoice(
         title=_('Variant Name'),
         source=zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE,
         required=False)

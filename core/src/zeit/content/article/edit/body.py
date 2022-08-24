@@ -194,8 +194,8 @@ def validate_article(context, event):
         zeit.content.image.interfaces.IImages,
     ]
     for iface in interfaces:
-        errors.extend(zope.schema.getValidationErrors(
-            iface, iface(context)) or [])
+        err = zope.schema.getValidationErrors(iface, iface(context)) or []
+        errors.extend([(iface[k], v) for k, v in err])
     # XXX using a separate event handler would be cleaner, but we only support
     # retrieving a single error (last_validation_error), so this doesn't work.
     if (IAutomaticallyRenameable(context).renameable and
