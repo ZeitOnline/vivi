@@ -200,7 +200,8 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertFalse(manager.canCheckin)
         errors = dict(manager.last_validation_error)
         self.assertIsInstance(
-            errors['title'], zope.schema.ValidationError)
+            errors[zeit.content.article.interfaces.IArticle['title']],
+            zope.schema.ValidationError)
 
     def test_security_proxied_fields_should_be_validated_correctly(self):
         self.repository['article'] = zeit.content.article.article.Article()
@@ -225,4 +226,5 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertFalse(manager.canCheckin)
         errors = dict(manager.last_validation_error)
         self.assertIsInstance(
-            errors['fill_color'], zope.schema.ValidationError)
+            errors[zeit.content.image.interfaces.IImages['fill_color']],
+            zope.schema.ValidationError)
