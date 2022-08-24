@@ -99,7 +99,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
                             # e.g. SequenceWidget
                             continue
                         data[name] = widget._toFieldValue(
-                            widget._getFormInput())
+                            widget._getFormInput() or widget._missing)
                 except zope.formlib.interfaces.ConversionError:
                     pass
 
