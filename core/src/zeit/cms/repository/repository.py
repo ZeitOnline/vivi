@@ -479,6 +479,28 @@ def vivi_https_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
+@grok.adapter(str, name='http://vivi.staging.zeit.de/')
+@grok.implementer(zeit.cms.interfaces.ICMSContent)
+def vivi_staging_url_to_content(uniqueId):
+    prefix = 'http://vivi.staging.zeit.de/repository/'
+    if not uniqueId.startswith(prefix):
+        return None
+    uniqueId = uniqueId.replace(prefix, zeit.cms.interfaces.ID_NAMESPACE, 1)
+    uniqueId = IGNORED_VIVI_SUFFIXES.sub('', uniqueId)
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
+
+
+@grok.adapter(str, name='https://vivi.staging.zeit.de/')
+@grok.implementer(zeit.cms.interfaces.ICMSContent)
+def vivi_staging_https_url_to_content(uniqueId):
+    prefix = 'https://vivi.staging.zeit.de/repository/'
+    if not uniqueId.startswith(prefix):
+        return None
+    uniqueId = uniqueId.replace(prefix, zeit.cms.interfaces.ID_NAMESPACE, 1)
+    uniqueId = IGNORED_VIVI_SUFFIXES.sub('', uniqueId)
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
+
+
 @grok.adapter(str, name='<no-scheme>://<no-netloc>/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def no_scheme_unique_id_to_cms_content(unique_id):
