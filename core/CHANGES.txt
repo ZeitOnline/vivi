@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.19.7 (2022-08-24)
+-------------------
+
+- ZO-1472: Also accept vivi.staging as uniqueId
+
+- ZO-1747: Adjust article image variant on checkout if vertical has changed
+
+- ZO-1748: Prevent spurious "None" values in inline forms
+
+
 5.19.6 (2022-08-23)
 -------------------
 
