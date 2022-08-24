@@ -107,6 +107,15 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
                 folded_workingcopy=None, folded_repository=None))
 
 
+class InlineFormTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_should_not_create_spurious_None_values(self):
+        request = zope.publisher.browser.TestRequest(
+            form={'edit.actions.apply': 'clicked'})
+        form = InlineEditForm(self.repository['testcontent'], request)
+        self.assertEllipsis('...value=""...', form())
+
+
 class InlineEditForm(zeit.edit.browser.form.InlineForm):
 
     legend = ''
