@@ -48,6 +48,10 @@ class IAuthor(zope.interface.Interface,
     jabber = zope.schema.TextLine(title=_('Jabber handle'), required=False)
     signal = zope.schema.TextLine(title=_('Signal handle'), required=False)
     threema = zope.schema.TextLine(title=_('Threema id'), required=False)
+    additional_contact_title = zope.schema.TextLine(title=_(
+        'additional contact title'), required=False)
+    additional_contact_content = zope.schema.TextLine(title=_(
+        'additional contact content'), required=False)
     pgp = zope.schema.TextLine(title=_('PGP key'), required=False)
     website = zope.schema.TextLine(title=_('Website handle'), required=False)
 

@@ -31,7 +31,8 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
             ('title', 'firstname', 'lastname', 'initials',
              'email', 'ssoid', 'sso_connect',
              'twitter', 'facebook', 'instagram', 'jabber', 'signal',
-             'threema', 'pgp'),
+             'threema', 'pgp', 'additional_contact_title',
+             'additional_contact_content'),
 
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(

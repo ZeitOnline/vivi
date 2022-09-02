@@ -33,6 +33,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         '</author>')
 
     for name in [
+        'additional_contact_title',
+        'additional_contact_content',
         'biography',
         'display_name',
         'cook_biography',
