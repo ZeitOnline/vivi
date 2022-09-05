@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Sep  2 14:42:42 2022\n"
+"POT-Creation-Date: Mon Sep  5 13:33:26 2022\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -2765,11 +2765,11 @@ msgstr "Threema ID"
 
 #: zeit/content/author/interfaces.py:51
 msgid "additional contact title"
-msgstr "weiterer Kontakt  - Titel"
+msgstr "Weiterer Kontakt: Titel (z.B. Eine Webseite)"
 
 #: zeit/content/author/interfaces.py:53
 msgid "additional contact content"
-msgstr "Weiterer Kontakt - Inhalt"
+msgstr "Weiterer Kontakt: Link/Inhalt (z.B. https://www.eine-webseite.de)"
 
 #: zeit/content/author/interfaces.py:55
 msgid "PGP key"
