@@ -340,7 +340,7 @@ class Properties(DBObject):
     @property
     def binary_body(self):
         config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.connector')
+            'zeit.connector') or {}
         binary_types = config.get(
             'binary-types', 'image,file,unknown').split(',')
         return self.type in binary_types
