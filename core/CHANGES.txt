@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.19.8 (2022-09-06)
+-------------------
+
+- ZO-1663: Add additional contact fields to author (one for title and one for it's content)
+
+
 5.19.7 (2022-08-24)
 -------------------
 
