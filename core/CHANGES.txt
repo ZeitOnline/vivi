@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.19.9 (2022-09-06)
+-------------------
+
+FIX:
+- Be defensive when no psql binary-types are configured
+
+
 5.19.8 (2022-09-06)
 -------------------
 
