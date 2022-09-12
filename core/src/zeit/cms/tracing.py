@@ -17,7 +17,7 @@ except ImportError:
 class OpenTelemetryTracerProvider(TracerProvider):
 
     def __init__(self, service_name, service_version, environment, hostname,
-                 otlp_url):
+                 otlp_url, headers=None):
         # see <specification/resource/semantic_conventions/README.md>
         resource = Resource.create({
             'service.name': service_name,
@@ -28,6 +28,7 @@ class OpenTelemetryTracerProvider(TracerProvider):
         super().__init__(resource=resource)
 
         self.otlp_url = otlp_url
+        self.headers = headers
         self.initialized = False
 
     def initialize(self):
@@ -35,7 +36,8 @@ class OpenTelemetryTracerProvider(TracerProvider):
         self.add_span_processor(
             BatchSpanProcessor(OTLPSpanExporter(
                 endpoint=self.otlp_url,
-                insecure=not self.otlp_url.startswith('https'))))
+                insecure=not self.otlp_url.startswith('https'),
+                headers=self.headers)))
         self.initialized = True
 
     # Even though TracerProvider declares kwargs,
