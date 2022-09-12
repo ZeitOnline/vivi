@@ -101,13 +101,17 @@
       />
   </class>
 
-  <class class=".video_ardtagesschau.VideoARDTagesschau">
+  <class class=".videotagesschau.VideoTagesschau">
     <require
-      interface=".interfaces.IVideoARDTagesschau"
+      interface=".interfaces.IVideoTagesschau"
       permission="zope.View"
       />
     <require
-      set_schema=".interfaces.IVideoARDTagesschau"
+      set_schema=".interfaces.IVideoTagesschau"
+      permission="zeit.EditContent"
+      />
+    <require
+      set_attributes="tagesschauvideos"
       permission="zeit.EditContent"
       />
   </class>
@@ -446,5 +450,7 @@
       interface=".interfaces.IFindReplace"
       permission="zeit.EditContent" />
   </class>
+
+  <utility factory=".videotagesschau.from_product_config" />
 
 </configure>

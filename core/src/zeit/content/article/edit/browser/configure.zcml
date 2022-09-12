@@ -308,22 +308,22 @@
     />
 
   <!-- Video ARD Tagesschau -->
-  
+
   <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IVideoARDTagesschau"
+    for="zeit.content.article.edit.interfaces.IVideoTagesschau"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit-video-ardtagesschau"
+    name="edit-videotagesschau"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     />
-  
+
   <browser:page
-    for="zeit.content.article.edit.interfaces.IVideoARDTagesschau"
+    for="zeit.content.article.edit.interfaces.IVideoTagesschau"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-video-ardtagesschau"
-    class=".edit.VideoARDTagesschau"
+    name="edit-videotagesschau"
+    class=".edit.VideoTagesschau"
     permission="zope.View"
     />
 
@@ -754,6 +754,15 @@
     permission="zope.View"
     />
 
+  <adapter
+    for="zope.schema.interfaces.IChoice
+         ..interfaces.IVideoTagesschauSource
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.IInputWidget"
+    factory="zope.formlib.source.SourceRadioWidget"
+    permission="zope.Public"
+    />
+
   <!-- division -->
 
   <browser:viewlet
@@ -811,7 +820,7 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
-  <class class="..video_ardtagesschau.VideoARDTagesschau">
+  <class class="..videotagesschau.VideoTagesschau">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

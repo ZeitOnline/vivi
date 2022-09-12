@@ -2025,3 +2025,15 @@
 #edit-form-article-content .type-recipelist .fieldname-servings div.empty {
   left: auto;
 }
+
+.type-article .block.type-videotagesschau .inline-form .form-controls {
+    display: block;
+}
+
+.type-article .block.type-ardvideo .inline-form .form-controls input[value="Apply"] {
+    display: none;
+}
+
+.type-article .block.type-ardvideo .inline-form a {
+    color: #004455;
+}

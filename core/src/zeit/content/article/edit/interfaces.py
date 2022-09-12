@@ -3,10 +3,13 @@ from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.content.article.source import BodyAwareXMLSource
 import collections
 import datetime
+import logging
+import zc.sourcefactory.contextual
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.content.article.interfaces
 import zeit.content.article.source
+import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
@@ -16,12 +19,10 @@ import zeit.content.modules.jobticker
 import zeit.content.portraitbox.interfaces
 import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
+import zeit.contentquery.interfaces
 import zeit.edit.interfaces
 import zope.schema
-import zeit.contentquery.interfaces
 import zope.security.proxy
-import zeit.content.cp.interfaces
-import logging
 
 log = logging.getLogger(__name__)
 
@@ -145,10 +146,52 @@ class IVideo(IBlock, ILayoutable):
         default=True)
 
 
-class IVideoARDTagesschau(zeit.edit.interfaces.IBlock):
+class IVideoTagesschauSource(zope.schema.interfaces.IIterableSource):
+    pass
 
-    video_ardtagesschau_data = zope.schema.Text(
-        title=_('Video ARD Tagesschau'))
+
+class VideoTagesschauSelection(
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+
+    @zope.interface.implementer(IVideoTagesschauSource)
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+        pass
+
+    def getValues(self, context):
+        return context.tagesschauvideos.values()
+
+    def getTitle(self, context, value):
+        return '<strong>%s</strong> (%s)<br /><a href="%s" target="_blank">%s</a>' % (value.title, value.type, value.video_url_hd, _('open video'))
+
+    def getToken(self, context, value):
+        return value.id
+
+
+class IVideoTagesschau(IBlock):
+    """Block for placing 'Tagesschau' Video in article"""
+
+    tagesschauvideo = zope.schema.Choice(
+        title=_('Select video'),
+        source=VideoTagesschauSelection(),
+        required=False)
+
+    tagesschauvideos = zope.interface.Attribute('List of available videos')
+
+
+#### TODO
+###@zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
+###class TagesschauError(Exception):
+###
+###    def doc(self):
+###        # TODO
+###        return _(
+###            'ERRROR TAGESSCHAU TODO')
+
+
+class IVideoTagesschauAPI(zope.interface.Interface):
+
+    def request_videos(self):
+        """call Tagesschau API"""
 
 
 class IReference(IBlock):
