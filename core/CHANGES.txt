@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.20.2 (2022-09-13)
+-------------------
+
+- ZO-1716: Add fields for three liveblogs (title and url) to Centerpage meta infos
+
+
+MAINT:
+- Speed up bw-compat code for image group without master images
+
+
 5.20.1 (2022-09-13)
 -------------------
 
