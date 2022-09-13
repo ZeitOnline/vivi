@@ -502,13 +502,9 @@ def find_master_image(context):
         master_image = context.get(master_name)
         if master_image is not None:
             return master_image
-    master_image = None
-    for image in context.values():
-        if zeit.content.image.interfaces.IImage.providedBy(
-                image) and image.size > getattr(master_image, 'size', 0):
-            master_image = image
-            break
-    return master_image
+    for image in context.values():  # BBB
+        if zeit.content.image.interfaces.IImage.providedBy(image):
+            return image
 
 
 EXTERNAL_ID_PATTERN = re.compile(r'^[^\d]*([\d]+)[^\d]*$')
