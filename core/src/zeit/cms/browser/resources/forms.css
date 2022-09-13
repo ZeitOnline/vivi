@@ -516,7 +516,10 @@ iframe {
 
 .fieldname-topiclink_label_1,
 .fieldname-topiclink_label_2,
-.fieldname-topiclink_label_3 {
+.fieldname-topiclink_label_3,
+.fieldname-liveblog_label_1,
+.fieldname-liveblog_label_2,
+.fieldname-liveblog_label_3 {
     width:30%;
     float:left;
     clear:both;
@@ -524,7 +527,10 @@ iframe {
 
 .fieldname-topiclink_url_1,
 .fieldname-topiclink_url_2,
-.fieldname-topiclink_url_3 {
+.fieldname-topiclink_url_3,
+.fieldname-liveblog_url_1,
+.fieldname-liveblog_url_2,
+.fieldname-liveblog_url_3 {
     margin-right:13px;
     float:right;
     width:60%;
