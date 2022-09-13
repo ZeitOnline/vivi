@@ -52,23 +52,57 @@ class ITopicLinks(zope.interface.Interface):
         title=_('Label for topiclink #3'),
         required=False)
 
-    topiclink_url_1 = zope.schema.TextLine(
+    topiclink_url_1 = zope.schema.URI(
         title=_('URL for topiclink #1'),
-        required=False)
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
 
-    topiclink_url_2 = zope.schema.TextLine(
+    topiclink_url_2 = zope.schema.URI(
         title=_('URL for topiclink #2'),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
+
+    topiclink_url_3 = zope.schema.URI(
+        title=_('URL for topiclink #3'),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
+
+
+class ILiveblogLinks(zope.interface.Interface):
+
+    liveblog_label_1 = zope.schema.TextLine(
+        title=_('Label for liveblog #1'),
         required=False)
 
-    topiclink_url_3 = zope.schema.TextLine(
-        title=_('URL for topiclink #3'),
+    liveblog_label_2 = zope.schema.TextLine(
+        title=_('Label for liveblog #2'),
         required=False)
+
+    liveblog_label_3 = zope.schema.TextLine(
+        title=_('Label for liveblog #3'),
+        required=False)
+
+    liveblog_url_1 = zope.schema.URI(
+        title=_('URL for liveblog #1'),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
+
+    liveblog_url_2 = zope.schema.URI(
+        title=_('URL for liveblog #2'),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
+
+    liveblog_url_3 = zope.schema.URI(
+        title=_('URL for liveblog #3'),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
 
 
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
                   zeit.edit.interfaces.IContainer,
                   ITopicLinks,
+                  ILiveblogLinks,
                   zeit.retresco.interfaces.ISkipEnrich):
 
     type = zope.schema.Choice(

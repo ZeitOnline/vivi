@@ -106,6 +106,30 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         '.head.topiclinks.topiclink.topiclink_url_3',
         zeit.content.cp.interfaces.ICenterPage['topiclink_url_3'])
 
+    liveblog_label_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.liveblogs.liveblog_label_1',
+        zeit.content.cp.interfaces.ICenterPage['liveblog_label_1'])
+
+    liveblog_url_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.liveblogs.liveblog_url_1',
+        zeit.content.cp.interfaces.ICenterPage['liveblog_url_1'])
+
+    liveblog_label_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.liveblogs.liveblog_label_2',
+        zeit.content.cp.interfaces.ICenterPage['liveblog_label_2'])
+
+    liveblog_url_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.liveblogs.liveblog_url_2',
+        zeit.content.cp.interfaces.ICenterPage['liveblog_url_2'])
+
+    liveblog_label_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.liveblogs.liveblog_label_3',
+        zeit.content.cp.interfaces.ICenterPage['liveblog_label_3'])
+
+    liveblog_url_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.liveblogs.liveblog_url_3',
+        zeit.content.cp.interfaces.ICenterPage['liveblog_url_3'])
+
     og_title = zeit.cms.content.property.ObjectPathProperty(
         '.head.og_meta.og_title',
         zeit.content.cp.interfaces.ICenterPage['og_title'])
