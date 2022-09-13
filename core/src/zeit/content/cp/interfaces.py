@@ -65,10 +65,38 @@ class ITopicLinks(zope.interface.Interface):
         required=False)
 
 
+class ILiveblogLinks(zope.interface.Interface):
+
+    liveblog_label_1 = zope.schema.TextLine(
+        title=_('Label for liveblog #1'),
+        required=False)
+
+    liveblog_label_2 = zope.schema.TextLine(
+        title=_('Label for liveblog #2'),
+        required=False)
+
+    liveblog_label_3 = zope.schema.TextLine(
+        title=_('Label for liveblog #3'),
+        required=False)
+
+    liveblog_url_1 = zope.schema.TextLine(
+        title=_('URL for liveblog #1'),
+        required=False)
+
+    liveblog_url_2 = zope.schema.TextLine(
+        title=_('URL for liveblog #2'),
+        required=False)
+
+    liveblog_url_3 = zope.schema.TextLine(
+        title=_('URL for liveblog #3'),
+        required=False)
+
+
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
                   zeit.edit.interfaces.IContainer,
                   ITopicLinks,
+                  ILiveblogLinks,
                   zeit.retresco.interfaces.ISkipEnrich):
 
     type = zope.schema.Choice(

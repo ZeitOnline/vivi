@@ -20,6 +20,9 @@ class FormBase:
          'topiclink_label_1', 'topiclink_url_1',
          'topiclink_label_2', 'topiclink_url_2',
          'topiclink_label_3', 'topiclink_url_3',
+         'liveblog_label_1', 'liveblog_url_1',
+         'liveblog_label_2', 'liveblog_url_2',
+         'liveblog_label_3', 'liveblog_url_3',
          ),
         css_class='wide-widgets column-left')
 
