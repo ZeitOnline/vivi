@@ -130,7 +130,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         '.head.liveblogs.liveblog_url_3',
         zeit.content.cp.interfaces.ICenterPage['liveblog_url_3'])
 
-
     og_title = zeit.cms.content.property.ObjectPathProperty(
         '.head.og_meta.og_title',
         zeit.content.cp.interfaces.ICenterPage['og_title'])
