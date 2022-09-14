@@ -3182,7 +3182,7 @@ msgstr "Center-Page-Typ"
 
 #: zeit/content/cp/interfaces.py:114
 msgid "Name for topiclinks"
-msgstr "Navi-Teaser"
+msgstr "Navi-Themen Titel"
 
 #: zeit/content/cp/interfaces.py:118
 msgid "Titel"
