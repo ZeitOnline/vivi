@@ -39,13 +39,17 @@ class BugsnagMiddleware:
 # bugsnag itself does not provide a paste filter factory
 def bugsnag_filter(global_conf, **local_conf):
     user_from_ip = ast.literal_eval(
-        local_conf.pop('set_user_id_to_client_ip', 'True'))
-
-    if 'notify_release_stages' in local_conf:
-        local_conf['notify_release_stages'] = local_conf[
-            'notify_release_stages'].split(',')
-    bugsnag.configure(**local_conf)
+        local_conf.get('set_user_id_to_client_ip', 'True'))
+    configure(local_conf)
 
     def bugsnag_filter(app):
         return BugsnagMiddleware(app, user_from_ip)
     return bugsnag_filter
+
+
+def configure(conf):
+    conf.pop('set_user_id_to_client_ip', None)
+    if 'notify_release_stages' in conf:
+        conf['notify_release_stages'] = conf[
+            'notify_release_stages'].split(',')
+    bugsnag.configure(**conf)

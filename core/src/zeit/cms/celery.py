@@ -36,6 +36,7 @@ except ImportError:
 
             return Callable
 else:
+    import bugsnag
     import kombu
     import zeit.cms.zope
     import zope.app.appsetup.appsetup
@@ -57,6 +58,11 @@ else:
 
             zeit.cms.zope.configure_product_config(self.app.conf['SETTINGS'])
             zeit.cms.zope.load_zcml(self.app.conf['SETTINGS'])
+            prefix = 'bugsnag.'
+            bugsnag_conf = {
+                key.replace(prefix, '', 1): value for key, value in
+                self.app.conf['SETTINGS'].items() if key.startswith(prefix)}
+            zeit.cms.bugsnag.configure(bugsnag_conf)
 
             if self.app.conf.get('worker_pool') == 'solo':
                 # When debugging there is no fork, so perform ZODB setup now.
@@ -123,10 +129,16 @@ else:
             celery_longterm_scheduler.backend.serialize(kw)
 
     @celery.signals.task_failure.connect
-    def on_task_failure(**kwargs):
-        log.error("Task %s failed",
-                  kwargs.get('task_id', ''),
-                  exc_info=kwargs.get('exception'))
+    def on_task_failure(**kw):
+        log.error('Task %s (%s) failed',
+                  kw.get('sender', '<unknown task>'),
+                  kw.get('task_id', ''),
+                  exc_info=kw.get('exception'))
+        bugsnag.notify(
+            kw['exception'], traceback=kw['traceback'],
+            context=kw['sender'].name,
+            extra_data={'task_id': kw['task_id'],
+                        'args': kw['args'], 'kw': kw['kwargs']})
 
     CELERY = celery.Celery(
         __name__, task_cls=Task, loader=ZopeLoader,
