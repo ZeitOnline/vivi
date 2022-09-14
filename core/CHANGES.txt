@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.20.3 (2022-09-14)
+-------------------
+
+- ZO-1865: Send celery failures to bugsnag
+
+
+MAINT:
+- Update navi topics wording/translations
+
+
 5.20.2 (2022-09-13)
 -------------------
 
