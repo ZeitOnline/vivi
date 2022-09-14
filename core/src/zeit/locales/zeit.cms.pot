@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Sep 13 13:22:41 2022\n"
+"POT-Creation-Date: Wed Sep 14 10:34:42 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -279,9 +279,9 @@ msgstr ""
 #: zeit/content/article/interfaces.py:189
 #: zeit/content/article/interfaces.py:255
 #: zeit/content/author/interfaces.py:36
-#: zeit/content/cp/interfaces.py:185
-#: zeit/content/cp/interfaces.py:324
-#: zeit/content/cp/interfaces.py:470
+#: zeit/content/cp/interfaces.py:191
+#: zeit/content/cp/interfaces.py:330
+#: zeit/content/cp/interfaces.py:476
 #: zeit/content/gallery/interfaces.py:91
 #: zeit/content/infobox/interfaces.py:20
 #: zeit/content/modules/interfaces.py:191
@@ -626,7 +626,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/template-properties.pt:9
 #: zeit/cms/repository/browser/property.py:34
-#: zeit/content/cp/interfaces.py:189
+#: zeit/content/cp/interfaces.py:195
 msgid "Name"
 msgstr ""
 
@@ -806,18 +806,18 @@ msgid "Subtitle"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:203
-#: zeit/content/cp/interfaces.py:542
+#: zeit/content/cp/interfaces.py:548
 msgid "Teaser title"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:208
-#: zeit/content/cp/interfaces.py:546
+#: zeit/content/cp/interfaces.py:552
 #: zeit/content/video/browser/object-details-body.pt:28
 msgid "Teaser text"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:213
-#: zeit/content/cp/interfaces.py:538
+#: zeit/content/cp/interfaces.py:544
 msgid "Teaser kicker"
 msgstr ""
 
@@ -899,7 +899,7 @@ msgid "Invalid hex literal"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:430
-#: zeit/content/cp/interfaces.py:612
+#: zeit/content/cp/interfaces.py:618
 msgid "XML Source"
 msgstr ""
 
@@ -1403,7 +1403,7 @@ msgid "Edit contents"
 msgstr ""
 
 #: zeit/cms/syndication/browser/configure.zcml:70
-#: zeit/content/cp/interfaces.py:696
+#: zeit/content/cp/interfaces.py:702
 #: zeit/content/infobox/interfaces.py:17
 msgid "Contents"
 msgstr ""
@@ -1693,9 +1693,9 @@ msgstr ""
 #: zeit/content/article/edit/image.py:91
 #: zeit/content/article/edit/interfaces.py:171
 #: zeit/content/article/interfaces.py:73
-#: zeit/content/cp/interfaces.py:120
-#: zeit/content/cp/interfaces.py:337
-#: zeit/content/cp/interfaces.py:675
+#: zeit/content/cp/interfaces.py:126
+#: zeit/content/cp/interfaces.py:343
+#: zeit/content/cp/interfaces.py:681
 #: zeit/content/image/browser/configure.zcml:249
 #: zeit/content/image/browser/imagegroup.py:222
 #: zeit/content/image/image.py:146
@@ -1707,8 +1707,8 @@ msgstr ""
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:172
 #: zeit/content/article/interfaces.py:74
-#: zeit/content/cp/interfaces.py:338
-#: zeit/content/cp/interfaces.py:676
+#: zeit/content/cp/interfaces.py:344
+#: zeit/content/cp/interfaces.py:682
 #: zeit/content/image/interfaces.py:429
 #: zeit/push/interfaces.py:358
 msgid "Drag an image group here"
@@ -2303,7 +2303,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:361
 #: zeit/content/article/edit/interfaces.py:377
 #: zeit/content/article/edit/interfaces.py:453
-#: zeit/content/cp/interfaces.py:517
+#: zeit/content/cp/interfaces.py:523
 #: zeit/content/gallery/interfaces.py:101
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
@@ -2442,19 +2442,19 @@ msgid "Collapse preceding content"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:415
-#: zeit/content/cp/interfaces.py:727
+#: zeit/content/cp/interfaces.py:733
 msgid "Cardstack id"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:417
-#: zeit/content/cp/interfaces.py:730
+#: zeit/content/cp/interfaces.py:736
 msgid "Advertorial?"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:437
 #: zeit/content/article/edit/interfaces.py:621
-#: zeit/content/cp/interfaces.py:320
-#: zeit/content/cp/interfaces.py:467
+#: zeit/content/cp/interfaces.py:326
+#: zeit/content/cp/interfaces.py:473
 #: zeit/content/infobox/interfaces.py:13
 #: zeit/content/video/browser/object-details-body.pt:20
 #: zeit/content/volume/browser/toc_listing.py:32
@@ -2519,7 +2519,7 @@ msgid "Linktext"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:640
-#: zeit/content/cp/interfaces.py:374
+#: zeit/content/cp/interfaces.py:380
 msgid "Automatic type"
 msgstr ""
 
@@ -2990,37 +2990,37 @@ msgid "List of teasers"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:198
-#: zeit/content/cp/interfaces.py:249
+#: zeit/content/cp/interfaces.py:255
 msgid "automatic-area-type-centerpage"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:200
-#: zeit/content/cp/interfaces.py:257
+#: zeit/content/cp/interfaces.py:263
 msgid "automatic-area-type-rss-feed"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:202
-#: zeit/content/cp/interfaces.py:250
+#: zeit/content/cp/interfaces.py:256
 msgid "automatic-area-type-custom"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:204
-#: zeit/content/cp/interfaces.py:251
+#: zeit/content/cp/interfaces.py:257
 msgid "automatic-area-type-topicpage"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:208
-#: zeit/content/cp/interfaces.py:254
+#: zeit/content/cp/interfaces.py:260
 msgid "automatic-area-type-elasticsearch-query"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:212
-#: zeit/content/cp/interfaces.py:252
+#: zeit/content/cp/interfaces.py:258
 msgid "automatic-area-type-related-topics"
 msgstr ""
 
 #: zeit/content/cp/browser/area.py:214
-#: zeit/content/cp/interfaces.py:255
+#: zeit/content/cp/interfaces.py:261
 msgid "automatic-area-type-reach"
 msgstr ""
 
@@ -3182,7 +3182,7 @@ msgstr ""
 msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 
-#: zeit/content/cp/centerpage.py:236
+#: zeit/content/cp/centerpage.py:235
 msgid "Centerpage 2009"
 msgstr ""
 
@@ -3210,246 +3210,246 @@ msgstr ""
 msgid "URL for topiclink #1"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:60
+#: zeit/content/cp/interfaces.py:61
 msgid "URL for topiclink #2"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:64
+#: zeit/content/cp/interfaces.py:66
 msgid "URL for topiclink #3"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:71
+#: zeit/content/cp/interfaces.py:74
 msgid "Label for liveblog #1"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:75
+#: zeit/content/cp/interfaces.py:78
 msgid "Label for liveblog #2"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:79
+#: zeit/content/cp/interfaces.py:82
 msgid "Label for liveblog #3"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:83
+#: zeit/content/cp/interfaces.py:86
 msgid "URL for liveblog #1"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:87
+#: zeit/content/cp/interfaces.py:91
 msgid "URL for liveblog #2"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:91
+#: zeit/content/cp/interfaces.py:96
 msgid "URL for liveblog #3"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:103
+#: zeit/content/cp/interfaces.py:109
 msgid "CP type"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:108
+#: zeit/content/cp/interfaces.py:114
 msgid "Name for topiclinks"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:112
+#: zeit/content/cp/interfaces.py:118
 msgid "Titel"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:116
+#: zeit/content/cp/interfaces.py:122
 msgid "Description"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:170
-#: zeit/content/cp/interfaces.py:194
-#: zeit/content/cp/interfaces.py:308
+#: zeit/content/cp/interfaces.py:176
+#: zeit/content/cp/interfaces.py:200
+#: zeit/content/cp/interfaces.py:314
 msgid "Visible in frontend"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:198
-#: zeit/content/cp/interfaces.py:312
+#: zeit/content/cp/interfaces.py:204
+#: zeit/content/cp/interfaces.py:318
 msgid "Kind"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:201
+#: zeit/content/cp/interfaces.py:207
 msgid "Kind Title"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:238
+#: zeit/content/cp/interfaces.py:244
 msgid "${kind} area ${title}"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:239
+#: zeit/content/cp/interfaces.py:245
 msgid "no title"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:253
+#: zeit/content/cp/interfaces.py:259
 msgid "automatic-area-type-query"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:256
+#: zeit/content/cp/interfaces.py:262
 msgid "automatic-area-type-topicpagelist"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:313
+#: zeit/content/cp/interfaces.py:319
 msgid "Used internally for rendering on Friedbert"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:328
-#: zeit/content/cp/interfaces.py:480
+#: zeit/content/cp/interfaces.py:334
+#: zeit/content/cp/interfaces.py:486
 msgid "Read more"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:332
-#: zeit/content/cp/interfaces.py:483
+#: zeit/content/cp/interfaces.py:338
+#: zeit/content/cp/interfaces.py:489
 msgid "Read more URL"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:343
+#: zeit/content/cp/interfaces.py:349
 msgid "Maximum block count"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:347
+#: zeit/content/cp/interfaces.py:353
 msgid "Overflow into"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:352
+#: zeit/content/cp/interfaces.py:358
 msgid "Apply teaser layouts automatically?"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:357
+#: zeit/content/cp/interfaces.py:363
 msgid "First teaser layout"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:365
+#: zeit/content/cp/interfaces.py:371
 msgid "automatic"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:379
+#: zeit/content/cp/interfaces.py:385
 msgid "Area background color (6 characters, no #)"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:380
+#: zeit/content/cp/interfaces.py:386
 msgid "Hex value of background color for area"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:391
+#: zeit/content/cp/interfaces.py:397
 msgid "Automatic area with teaser from centerpage requires a referenced centerpage."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:395
+#: zeit/content/cp/interfaces.py:401
 msgid "Automatic area with teaser from custom query requires a query condition."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:399
+#: zeit/content/cp/interfaces.py:405
 msgid "Automatic area with teaser from TMS topicpage requires a topicpage ID."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:403
+#: zeit/content/cp/interfaces.py:409
 msgid "Automatic area with teaser from elasticsearch query requires a raw query."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:407
+#: zeit/content/cp/interfaces.py:413
 msgid "Automatic area with rss-feed requires a given feed"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:410
+#: zeit/content/cp/interfaces.py:416
 msgid "Automatic area with related-topics requires a given topicpage"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:414
+#: zeit/content/cp/interfaces.py:420
 msgid "Automatic area with teasers from reach require a given kind"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:431
+#: zeit/content/cp/interfaces.py:437
 msgid "Elasticsearch raw query is malformed: %s"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:475
+#: zeit/content/cp/interfaces.py:481
 msgid "Whether block can be removed by automation, e.g. AutoPilot"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:487
+#: zeit/content/cp/interfaces.py:493
 msgid "Background color (ZMO only)"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:521
-#: zeit/content/cp/interfaces.py:572
+#: zeit/content/cp/interfaces.py:527
+#: zeit/content/cp/interfaces.py:578
 msgid "Force image on mobile"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:598
+#: zeit/content/cp/interfaces.py:604
 msgid "The root element must be <container>."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:601
+#: zeit/content/cp/interfaces.py:607
 msgid "cp:type must be 'xml'."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:604
+#: zeit/content/cp/interfaces.py:610
 msgid "No or empty cp:__name__ attribute."
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:621
+#: zeit/content/cp/interfaces.py:627
 #: zeit/content/video/playlist.py:29
 msgid "Playlist"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:629
+#: zeit/content/cp/interfaces.py:635
 msgid "CP Extra Id"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:648
+#: zeit/content/cp/interfaces.py:654
 #: zeit/workflow/interfaces.py:27
 msgid "From"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:649
+#: zeit/content/cp/interfaces.py:655
 #: zeit/workflow/interfaces.py:29
 msgid "To"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:680
+#: zeit/content/cp/interfaces.py:686
 msgid "Animate"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:687
+#: zeit/content/cp/interfaces.py:693
 msgid "left"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:688
+#: zeit/content/cp/interfaces.py:694
 msgid "center"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:689
+#: zeit/content/cp/interfaces.py:695
 msgid "right"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:697
+#: zeit/content/cp/interfaces.py:703
 #: zeit/content/modules/interfaces.py:155
 msgid "Use Markdown"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:701
+#: zeit/content/cp/interfaces.py:707
 msgid "Alignment"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:702
+#: zeit/content/cp/interfaces.py:708
 msgid "Choose alignment"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:734
+#: zeit/content/cp/interfaces.py:740
 msgid "Background color"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:735
+#: zeit/content/cp/interfaces.py:741
 msgid "Choose a background color"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:748
+#: zeit/content/cp/interfaces.py:754
 #: zeit/content/modules/interfaces.py:80
 msgid "Jobbox Ticker"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:774
+#: zeit/content/cp/interfaces.py:780
 msgid "Enable RSS Tracking-Parameter"
 msgstr ""
 
