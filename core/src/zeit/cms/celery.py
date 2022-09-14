@@ -130,7 +130,8 @@ else:
 
     @celery.signals.task_failure.connect
     def on_task_failure(**kw):
-        log.error("Task %s failed",
+        log.error('Task %s (%s) failed',
+                  kw.get('sender', '<unknown task>'),
                   kw.get('task_id', ''),
                   exc_info=kw.get('exception'))
         bugsnag.notify(
