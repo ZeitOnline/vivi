@@ -311,8 +311,12 @@ class PersistentCache(AccessTimes, persistent.Persistent):
         self._update_cache_access(key)
         return value is not self and not self._is_deleted(value)
 
-    def keys(self, include_deleted=False):
-        keys = self._storage.keys()
+    def keys(self, include_deleted=False, min=None, max=None):
+        if min is not None:
+            min = get_storage_key(min)
+        if max is not None:
+            max = get_storage_key(max)
+        keys = self._storage.keys(min=min, max=max)
         if include_deleted:
             return keys
         return (key for key in keys if key in self)
