@@ -686,12 +686,24 @@ class Connector:
                 self._invalidate_cache(self._loc2id(new_location))
         else:
             exists = True
+
         if exists:
             self._update_property_cache(davres)
             self._update_child_id_cache(davres)
+
+            # Remove no longer existing child entries from property_cache
+            IPersistentCache = zeit.connector.interfaces.IPersistentCache
+            if id.endswith('/') and IPersistentCache.providedBy(
+                    self.property_cache):
+                end = id[:-1] + chr(ord('/') + 1)
+                for key in self.property_cache.keys(min=id, max=end):
+                    if key not in self.child_name_cache:
+                        del self.property_cache[key]
         else:
             self._remove_from_caches(id, [self.property_cache,
                                           self.child_name_cache])
+
+        # Update our parent's child_name_cache
         parent, name = self._id_splitlast(id)
         try:
             children = self.child_name_cache[parent]

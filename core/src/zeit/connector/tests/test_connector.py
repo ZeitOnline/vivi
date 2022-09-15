@@ -267,6 +267,11 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
             list(self.connector.child_name_cache.get(
                 'http://xml.zeit.de/testing/')))
 
+    def test_invalidate_removes_deleted_entries_from_property_cache(self):
+        del self.layer['connector'][self.rid]
+        self.connector.invalidate_cache('http://xml.zeit.de/testing')
+        self.assertNotIn(self.rid, self.connector.property_cache)
+
 
 class TestMove(zeit.connector.testing.ConnectorTest):
 
