@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.20.4 (2022-09-15)
+-------------------
+
+- ZO-1864: Remove orphaned entries from property cache during invalidate
+
+
 5.20.3 (2022-09-14)
 -------------------
 
