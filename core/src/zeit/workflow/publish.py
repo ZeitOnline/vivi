@@ -395,11 +395,14 @@ class PublishRetractTask:
             config = zope.app.appsetup.product.getProductConfiguration(
                 'zeit.workflow')
             publisher_base_url = config['publisher-base-url']
+            publish_url = f'{publisher_base_url}publish'
             response = requests.post(
-                url=f'{publisher_base_url}publish',
+                url=publish_url,
                 json=publish_list)
             if response.status_code != 200:
-                raise ValueError('XXX error handling to be implemented')
+                raise ValueError(
+                    f'Publishing to {publish_url} failed '
+                    f'with {response.status_code}: {response.reason}')
 
 
 class PublishTask(PublishRetractTask):
