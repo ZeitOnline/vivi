@@ -1,1 +1,0 @@
-Only record tracing data if the zeit.connector.postgresql logger is set to debug

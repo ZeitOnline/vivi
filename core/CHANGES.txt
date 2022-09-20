@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.20.5 (2022-09-20)
+-------------------
+
+MAINT:
+- Only record tracing data if the zeit.connector.postgresql logger is set to debug
+
+
 5.20.4 (2022-09-15)
 -------------------
 
