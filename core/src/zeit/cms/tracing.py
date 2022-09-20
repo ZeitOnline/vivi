@@ -97,7 +97,7 @@ def start_span(module, *args, **kw):
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         return tracer.start_span(*args, **kw)
     else:
-        return opentelemetry.trace.NonRecordingSpan()
+        return opentelemetry.trace.INVALID_SPAN
 
 
 @contextlib.contextmanager
