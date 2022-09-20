@@ -18,5 +18,5 @@ class TracerSmokeTest(zeit.cms.testing.ZeitCmsTestCase):
             zeit.cms.tracing.default_tracer()
 
     def test_start_span_yields_nonrecording_according_to_loglevel(self):
-        span = zeit.cms.tracing.start_span('test.tracing')
+        span = zeit.cms.tracing.start_span('test.tracing', 'example')
         self.assertIsInstance(span, opentelemetry.trace.NonRecordingSpan)
