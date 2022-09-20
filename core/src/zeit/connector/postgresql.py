@@ -68,7 +68,7 @@ class Connector:
         self.session = sqlalchemy.orm.scoped_session(
             sqlalchemy.orm.sessionmaker(bind=self.engine, future=True))
         zope.sqlalchemy.register(self.session)
-        EngineTracer(zeit.cms.tracing.default_tracer(), self.engine)
+        EngineTracer(self.engine)
         self.gcs_client = storage.Client(project=storage_project)
         self.bucket = self.gcs_client.bucket(storage_bucket)
 
@@ -151,8 +151,7 @@ class Connector:
         if body is not None:
             return BytesIO(body)
         blob = self.bucket.blob(id)
-        t = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-        with t.start_as_current_span('gcs', attributes={
+        with zeit.cms.tracing.use_span(__name__, 'gcs', attributes={
                 'db.operation': 'download', 'id': id}):
             body = blob.download_as_bytes()
         self.body_cache[id] = body
@@ -203,8 +202,7 @@ class Connector:
                 data = resource.data  # may not be a static property
                 size = data.seek(0, os.SEEK_END)
                 data.seek(0)
-                t = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-                with t.start_as_current_span('gcs', attributes={
+                with zeit.cms.tracing.use_span(__name__, 'gcs', attributes={
                         'db.operation': 'upload', 'id': id,
                         'size': str(size)}):
                     blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
@@ -236,8 +234,7 @@ class Connector:
             raise KeyError(uniqueid)
         if not props.is_collection and props.binary_body:
             blob = self.bucket.blob(props.id)
-            t = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-            with t.start_as_current_span('gcs', attributes={
+            with zeit.cms.tracing.use_span(__name__, 'gcs', attributes={
                     'db.operation': 'delete', 'id': id}):
                 blob.delete()
         self.session.delete(props)
@@ -442,6 +439,13 @@ passthrough_factory = PassthroughConnector.factory
 
 
 class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
+
+    def __init__(self, engine):
+        tracer = self  # Kludge to inject zeit.cms.tracing.start_span()
+        super().__init__(tracer, engine)
+
+    def start_span(self, *args, **kw):
+        return zeit.cms.tracing.start_span(__name__, *args, **kw)
 
     def _before_cur_exec(
             self, conn, cursor, statement, params, context, executemany):

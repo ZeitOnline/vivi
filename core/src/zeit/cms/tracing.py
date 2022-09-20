@@ -1,3 +1,5 @@
+import contextlib
+import logging
 import opentelemetry.trace
 import zeit.cms.interfaces
 import zope.interface
@@ -88,3 +90,17 @@ def default_tracer():
       the argument to get_tracer().
     """
     return opentelemetry.trace.get_tracer(__name__)
+
+
+def start_span(module, *args, **kw):
+    if logging.getLogger(module).isEnabledFor(logging.DEBUG):
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        return tracer.start_span(*args, **kw)
+    else:
+        return opentelemetry.trace.NonRecordingSpan()
+
+
+@contextlib.contextmanager
+def use_span(module, *args, **kw):
+    with opentelemetry.trace.use_span(start_span(module, *args, **kw)) as span:
+        yield span
