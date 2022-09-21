@@ -29,8 +29,16 @@ class Publish:
                 zope.i18n.translate(x, context=self.request)
                 for x in self.publish_info.error_messages])}
         publish = zeit.cms.workflow.interfaces.IPublish(self.context)
-        return publish.publish().id
+        result = publish.publish()
+        if result is None:
+            # ran inline instead of in background using celery tasks
+            return
+        return result.id
 
     def _retract(self):
         publish = zeit.cms.workflow.interfaces.IPublish(self.context)
-        return publish.retract().id
+        result = publish.retract()
+        if result is None:
+            # ran inline instead of in background using celery tasks
+            return
+        return result.id
