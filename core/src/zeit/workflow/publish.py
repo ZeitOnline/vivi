@@ -370,14 +370,14 @@ class PublishRetractTask:
                 raise zeit.workflow.interfaces.ScriptError(
                     stderr, proc.returncode)
 
-    def _format_json(obj):
+    def _format_json(obj, method):
         uuid = zeit.cms.content.interfaces.IUUID(obj)
         json = {'uuid': uuid.shortened, 'uniqueId': obj.uniqueId}
         for name, adapter in zope.component.getAdapters(
                 (obj,), zeit.workflow.interfaces.IPublisherData):
             if not name:
                 continue
-            data = adapter.json()
+            data = getattr(adapter, f"{method}_json")()
             # only add data if the adapter returned some
             # TODO should we log when we got no data?
             if data is not None:
@@ -395,7 +395,7 @@ class PublishRetractTask:
         url = f'{publisher_base_url}{method}'
         response = requests.post(
             url=url,
-            json=[cls._format_json(obj) for obj in to_process_list])
+            json=[cls._format_json(obj, method) for obj in to_process_list])
         if response.status_code != 200:
             raise ValueError(
                 f'Calling publisher on {url} failed '

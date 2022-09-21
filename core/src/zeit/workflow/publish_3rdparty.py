@@ -21,17 +21,24 @@ class AuthorDashboard(grok.Adapter):
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('authordashboard')
 
-    def json(self):
+    def publish_json(self):
         # no payload. uuid and uniqueId are passed in automatically
         return {}
+
+    def retract_json(self):
+        # on retraction nothing is done
+        return None
 
 
 class BigQueryMixin:
     PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
 
-    def json(self):
+    def publish_json(self):
         path = self.context.uniqueId.removeprefix(self.PREFIX)
         return {'path': path}
+
+    def retract_json(self):
+        return self.publish_json()
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
@@ -59,7 +66,7 @@ class VideoBigQuery(grok.Adapter, BigQueryMixin):
 
 
 class CommentsMixin:
-    def json(self):
+    def publish_json(self):
         # the uuid and unique_id are required in the payload,
         # since the publisher should have no logic in that regard,
         # we duplicate the two here
@@ -71,6 +78,10 @@ class CommentsMixin:
             'uuid': uuid.shortened,
             'unique_id': self.context.uniqueId,
             'visible': self.context.commentSectionEnable}
+
+    def retract_json(self):
+        # on retraction nothing is done
+        return None
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
@@ -98,7 +109,7 @@ class FacebookNewstab(grok.Adapter):
 
     PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
 
-    def json(self):
+    def publish_json(self):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow') or {}
         ignore_ressorts = set(
@@ -127,29 +138,36 @@ class FacebookNewstab(grok.Adapter):
         path = self.context.uniqueId.removeprefix(self.PREFIX)
         return {'path': path}
 
+    def retract_json(self):
+        return self.publish_json()
+
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class Speechbert(grok.Adapter):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('speechbert')
 
-    def ignore(self, date_first_released):
+    def ignore(self, date_first_released, method):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow') or {}
         max_age = int(config['speechbert-max-age'])
         if date_first_released is not None:
             if (time.time() - date_first_released.float_timestamp) >= max_age:
                 return True
-        ignore_genres = [
-            x.lower() for x in config['speechbert-ignore-genres'].split()]
-        genre = self.context.genre
-        if genre and genre.lower() in ignore_genres:
-            return True
-        ignore_templates = [
-            x.lower() for x in config['speechbert-ignore-templates'].split()]
-        template = self.context.template
-        if template is not None and template.lower() in ignore_templates:
-            return True
+        if method == "publish":
+            ignore_genres = [
+                x.lower()
+                for x in config['speechbert-ignore-genres'].split()]
+            genre = self.context.genre
+            if genre and genre.lower() in ignore_genres:
+                return True
+        if method == "publish":
+            ignore_templates = [
+                x.lower()
+                for x in config['speechbert-ignore-templates'].split()]
+            template = self.context.template
+            if template is not None and template.lower() in ignore_templates:
+                return True
         return False
 
     def get_authors(self):
@@ -215,10 +233,7 @@ class Speechbert(grok.Adapter):
                 self.context.xml.head.rankedTags.getchildren())
         return tags
 
-    def json(self):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released):
-            return
+    def _json(self):
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         payload = dict(
             authors=self.get_authors(),
@@ -238,6 +253,7 @@ class Speechbert(grok.Adapter):
             uuid=uuid.shortened)
         if self.context.access != 'free':
             payload['access'] = self.context.access
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.date_last_published_semantic is not None:
             payload['lastModified'] = (
                 info.date_last_published_semantic.isoformat())
@@ -246,3 +262,15 @@ class Speechbert(grok.Adapter):
         if self.context.serie:
             payload['series'] = self.context.serie.serienname
         return {k: v for k, v in payload.items() if v is not None}
+
+    def publish_json(self):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        if self.ignore(info.date_first_released, "publish"):
+            return
+        return self._json()
+
+    def retract_json(self):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        if self.ignore(info.date_first_released, "retract"):
+            return
+        return self._json()

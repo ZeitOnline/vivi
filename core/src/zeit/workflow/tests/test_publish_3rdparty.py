@@ -50,10 +50,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                 'http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
-            result_fbnt = result['bigquery']
+            result_bq = result['bigquery']
             self.assertEqual(
                 {'path': '/online/2007/01/Somalia'},
-                result_fbnt)
+                result_bq)
         self.assertTrue(IPublishInfo(article).published)
 
     def test_bigquery_adapters_are_registered(self):
@@ -234,13 +234,13 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                     'teaser', 'url', 'uuid'],
                 sorted(result_sb.keys()))
             # TODO: the following assert should fail, we tested above that
-            # the attribute is None, but in Speechbert.json() it is True
+            # the attribute is None, but in Speechbert.publish_json() it is True
             # assert 'hasAudio' not in result_sb['payload']
             data_factory = zope.component.getAdapter(
                 article,
                 zeit.workflow.interfaces.IPublisherData,
                 name="speechbert")
-            result_sb = data_factory.json()
+            result_sb = data_factory.publish_json()
             assert result_sb['hasAudio'] == 'true'
         self.assertTrue(IPublishInfo(article).published)
         assert article.audio_speechbert is True
@@ -257,13 +257,13 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        assert data_factory.json() is None
+        assert data_factory.publish_json() is None
         config['speechbert-ignore-genres'] = ''
         data_factory = zope.component.getAdapter(
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        assert data_factory.json() is not None
+        assert data_factory.publish_json() is not None
 
     def test_speechbert_ignore_templates(self):
         article = ICMSContent(
@@ -277,13 +277,13 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        assert data_factory.json() is None
+        assert data_factory.publish_json() is None
         config['speechbert-ignore-templates'] = ''
         data_factory = zope.component.getAdapter(
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        assert data_factory.json() is not None
+        assert data_factory.publish_json() is not None
 
     def test_speechbert_max_age(self):
         article = ICMSContent(
@@ -294,13 +294,13 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        assert data_factory.json() is None
+        assert data_factory.publish_json() is None
         config['speechbert-max-age'] = sys.maxsize
         data_factory = zope.component.getAdapter(
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        assert data_factory.json() is not None
+        assert data_factory.publish_json() is not None
 
 
 class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
@@ -312,7 +312,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         monkeypatch.setattr(
             zeit.workflow.publish_3rdparty.Speechbert,
             'ignore',
-            lambda s, d: False)
+            lambda s, d, m: False)
 
     def test_speechbert_extraction(self):
         # this test compares the output of the original xslt from the old
@@ -340,7 +340,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             expected = json.loads(original_transformed)
             data_factory = zeit.workflow.publish_3rdparty.Speechbert(
                 resource)
-            result = data_factory.json()
+            result = data_factory.publish_json()
             assert result == expected
 
     def test_speechbert_payload(self):
@@ -350,7 +350,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         del payload['body']  # not relevant in this test
         del payload['image']  # not relevant in this test
         assert payload == dict(
@@ -388,7 +388,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.access == 'free'
         assert 'access' not in payload
 
@@ -399,7 +399,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.authors == ()
         assert payload['authors'] == []
 
@@ -410,7 +410,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.authors == (
             'Marc-Uwe Kling',
             'Bernd Kissel')
@@ -433,7 +433,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.channels == ()
         assert 'channels' not in payload
 
@@ -444,7 +444,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.channels == ()
         assert payload['channels'] == ''
 
@@ -455,7 +455,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.channels == (('News', None),)
         assert payload['channels'] == 'News'
 
@@ -466,7 +466,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.genre is None
         assert 'genre' not in payload
 
@@ -477,7 +477,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert isinstance(
             article.main_image,
             zeit.content.article.article.NoMainImageBlockReference)
@@ -490,7 +490,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         info = zeit.cms.workflow.interfaces.IPublishInfo(article)
         assert info.date_last_published_semantic is None
         assert 'lastModified' not in payload
@@ -502,7 +502,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         info = zeit.cms.workflow.interfaces.IPublishInfo(article)
         assert info.date_first_released is None
         assert 'publishDate' not in payload
@@ -514,7 +514,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.sub_ressort is None
         assert 'subsection' not in payload
 
@@ -525,7 +525,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.serie is not None
         assert payload['series'] == '-'
 
@@ -536,7 +536,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
 
@@ -547,6 +547,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             article,
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
-        payload = data_factory.json()
+        payload = data_factory.publish_json()
         assert zeit.cms.content.interfaces.IUUID(article).shortened is None
         assert 'uuid' not in payload
