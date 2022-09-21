@@ -120,9 +120,10 @@ class FacebookNewstab(grok.Adapter):
         facebooknewstab_startdate = datetime.datetime.strptime(
             config['facebooknewstab-startdate'],
             "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
-        if date_first_released < facebooknewstab_startdate:
-            # ignore resources before the cut off date
-            return
+        if date_first_released is not None:
+            if date_first_released < facebooknewstab_startdate:
+                # ignore resources before the cut off date
+                return
         path = self.context.uniqueId.removeprefix(self.PREFIX)
         return {'path': path}
 
@@ -136,8 +137,9 @@ class Speechbert(grok.Adapter):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow') or {}
         max_age = int(config['speechbert-max-age'])
-        if (time.time() - date_first_released.float_timestamp) >= max_age:
-            return True
+        if date_first_released is not None:
+            if (time.time() - date_first_released.float_timestamp) >= max_age:
+                return True
         ignore_genres = [
             x.lower() for x in config['speechbert-ignore-genres'].split()]
         genre = self.context.genre
@@ -146,7 +148,7 @@ class Speechbert(grok.Adapter):
         ignore_templates = [
             x.lower() for x in config['speechbert-ignore-templates'].split()]
         template = self.context.template
-        if template.lower() in ignore_templates:
+        if template is not None and template.lower() in ignore_templates:
             return True
         return False
 

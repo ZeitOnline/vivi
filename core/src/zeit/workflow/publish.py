@@ -385,24 +385,29 @@ class PublishRetractTask:
         return json
 
     @classmethod
-    def call_publisher(cls, to_publish_list):
-        publish_list = []
-        for obj in to_publish_list:
-            result = cls._format_json(obj)
-            publish_list.append(result)
+    def call_publisher_method(cls, to_process_list, method):
+        if not to_process_list:
+            return
 
-        if publish_list:
-            config = zope.app.appsetup.product.getProductConfiguration(
-                'zeit.workflow')
-            publisher_base_url = config['publisher-base-url']
-            publish_url = f'{publisher_base_url}publish'
-            response = requests.post(
-                url=publish_url,
-                json=publish_list)
-            if response.status_code != 200:
-                raise ValueError(
-                    f'Publishing to {publish_url} failed '
-                    f'with {response.status_code}: {response.reason}')
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        publisher_base_url = config['publisher-base-url']
+        url = f'{publisher_base_url}{method}'
+        response = requests.post(
+            url=url,
+            json=[cls._format_json(obj) for obj in to_process_list])
+        if response.status_code != 200:
+            raise ValueError(
+                f'Calling publisher on {url} failed '
+                f'with {response.status_code}: {response.reason}')
+
+    @classmethod
+    def call_publish(cls, to_publish_list):
+        cls.call_publisher_method(to_publish_list, 'publish')
+
+    @classmethod
+    def call_retract(cls, to_retract_list):
+        cls.call_publisher_method(to_retract_list, 'retract')
 
 
 class PublishTask(PublishRetractTask):
@@ -435,7 +440,7 @@ class PublishTask(PublishRetractTask):
             paths.extend(self.get_all_paths(obj))
 
         if FEATURE_TOGGLES.find('new_publisher'):
-            self.call_publisher(published)
+            self.call_publish(published)
         else:
             if paths:
                 self.call_script('publish', paths)
@@ -513,8 +518,11 @@ class RetractTask(PublishRetractTask):
         for obj in retracted:
             paths.extend(reversed(self.get_all_paths(obj)))
 
-        if paths:
-            self.call_script('retract', paths)
+        if FEATURE_TOGGLES.find('new_publisher'):
+            self.call_retract(retracted)
+        else:
+            if paths:
+                self.call_script('retract', paths)
 
         for obj in retracted:
             try:

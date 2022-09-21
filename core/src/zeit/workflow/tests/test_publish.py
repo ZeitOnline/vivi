@@ -432,3 +432,20 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
                 result['uniqueId'])
             self.assertIn('uuid', result)
         self.assertTrue(IPublishInfo(article).published)
+
+    def test_object_is_retracted(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        IPublishInfo(article).published = True
+        self.assertTrue(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/retract', status_code=200)
+            IPublish(article).retract(background=False)
+            (result,) = response.last_request.json()
+            self.assertEqual(
+                'http://xml.zeit.de/online/2007/01/Somalia',
+                result['uniqueId'])
+            self.assertIn('uuid', result)
+        self.assertFalse(IPublishInfo(article).published)
