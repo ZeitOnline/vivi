@@ -106,6 +106,7 @@ setup(
             'ZConfig',
             'celery >= 4.0',
             'celery_longterm_scheduler',
+            'celery_redis_sync',
             'redis',
             'cssutils',
             'docutils',
