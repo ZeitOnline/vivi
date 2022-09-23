@@ -220,7 +220,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
-        assert article.audio_speechbert is None
         with requests_mock.Mocker() as rmock:
             response = rmock.post(
                 'http://localhost:8060/test/publish', status_code=200)
@@ -233,17 +232,12 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                     'section', 'series', 'subtitle', 'supertitle', 'tags',
                     'teaser', 'url', 'uuid'],
                 sorted(result_sb.keys()))
-            # TODO: the following assert should fail, we tested above that
-            # the attribute is None, but in Speechbert.publish_json() it is True
-            # assert 'hasAudio' not in result_sb['payload']
-            data_factory = zope.component.getAdapter(
-                article,
-                zeit.workflow.interfaces.IPublisherData,
-                name="speechbert")
-            result_sb = data_factory.publish_json()
-            assert result_sb['hasAudio'] == 'true'
         self.assertTrue(IPublishInfo(article).published)
-        assert article.audio_speechbert is True
+
+    def test_speechbert_audiospeechbert(self):
+        # TODO: add a test which checks audiospeechbert which should
+        # set hasAudio to False to tell speechbert to skip audio generation
+        pass
 
     def test_speechbert_ignore_genres(self):
         article = ICMSContent(
