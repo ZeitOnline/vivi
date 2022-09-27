@@ -3,6 +3,8 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
+import celery.result
+import celery.states
 import logging
 import os.path
 import pkg_resources
@@ -95,7 +97,9 @@ class Publish:
             return task.apply_async(
                 (ids,), queue=self.get_priority(priority), **kw)
         else:
-            task(ids)
+            result = task(ids)
+            return celery.result.EagerResult(
+                'eager', result, celery.states.SUCCESS)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
