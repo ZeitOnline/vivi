@@ -500,6 +500,7 @@ cms_product_config = """\
 
   preview-prefix http://localhost/preview-prefix/
   live-prefix http://localhost/live-prefix/
+  image-live-prefix http://localhost/img-live-prefix/
   friebert-wc-preview-prefix /wcpreview
 
   breadcrumbs-use-common-metadata true

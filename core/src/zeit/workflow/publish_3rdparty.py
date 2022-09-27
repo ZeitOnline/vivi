@@ -9,6 +9,7 @@ import zeit.cms.type
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
 import zeit.content.video.interfaces
 import zeit.workflow.interfaces
 
@@ -171,12 +172,7 @@ class Speechbert(grok.Adapter):
         return False
 
     def get_authors(self):
-        result = []
-        for author in self.context.xml.head.findall('author'):
-            if author.find('role') is not None:
-                continue
-            result.append(author.display_name)
-        return result
+        return [author.target.display_name for author in self.context.authorships if not author.role]
 
     def get_body(self):
         body = []
@@ -201,14 +197,10 @@ class Speechbert(grok.Adapter):
         return body
 
     def get_channels(self):
-        if self.context.channels is not None:
-            if self.context.channels:
-                return ' '.join(filter(None, *self.context.channels))
-            else:
-                channels = self.context.xml.head.findall(
-                    "attribute[@name='channels']")
-                if channels:
-                    return ' '.join(str(x) for x in channels)
+        if not self.context.channels:
+            return
+        return ' '.join(filter(None, *self.context.channels))
+            
 
     def get_hasAudio(self):
         if self.context.audio_speechbert is True:
@@ -217,21 +209,20 @@ class Speechbert(grok.Adapter):
             return 'false'
 
     def get_image(self):
-        image_url = None
-        image = self.context.xml.head.find('image')
-        if image is not None:
-            image_url = image.attrib.get('base-id')
-        if image_url:
-            return image_url.replace(
-                zeit.cms.interfaces.ID_NAMESPACE,
-                'https://img.zeit.de/').rstrip('/') + '/wide__820x461__desktop'
+        image = zeit.content.image.interfaces.IImages(self.context).image
+        if not image:
+            return
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms') or {}
+        prefix = config.get('image-live-prefix', '').strip('/')
+        variant_url = image.variant_url('wide', width=820, height=461)
+        if not variant_url:
+            return
+        return f'{prefix}{variant_url}'
 
     def get_tags(self):
-        tags = []
-        if hasattr(self.context.xml.head, 'rankedTags'):
-            tags.extend(
-                self.context.xml.head.rankedTags.getchildren())
-        return tags
+        tags = zeit.cms.content.interfaces.ICommonMetadata(self.context).keywords
+        return [tag.label for tag in tags]
 
     def _json(self):
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
