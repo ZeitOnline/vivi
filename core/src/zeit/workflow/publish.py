@@ -3,6 +3,8 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
+import celery.result
+import celery.states
 import logging
 import os.path
 import pkg_resources
@@ -95,7 +97,9 @@ class Publish:
             return task.apply_async(
                 (ids,), queue=self.get_priority(priority), **kw)
         else:
-            task(ids)
+            result = task(ids)
+            return celery.result.EagerResult(
+                'eager', result, celery.states.SUCCESS)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -370,14 +374,14 @@ class PublishRetractTask:
                 raise zeit.workflow.interfaces.ScriptError(
                     stderr, proc.returncode)
 
-    def _format_json(obj):
+    def _format_json(obj, method):
         uuid = zeit.cms.content.interfaces.IUUID(obj)
         json = {'uuid': uuid.shortened, 'uniqueId': obj.uniqueId}
         for name, adapter in zope.component.getAdapters(
                 (obj,), zeit.workflow.interfaces.IPublisherData):
             if not name:
                 continue
-            data = adapter.json()
+            data = getattr(adapter, f"{method}_json")()
             # only add data if the adapter returned some
             # TODO should we log when we got no data?
             if data is not None:
@@ -385,21 +389,29 @@ class PublishRetractTask:
         return json
 
     @classmethod
-    def call_publisher(cls, to_publish_list):
-        publish_list = []
-        for obj in to_publish_list:
-            result = cls._format_json(obj)
-            publish_list.append(result)
+    def call_publisher_method(cls, to_process_list, method):
+        if not to_process_list:
+            return
 
-        if publish_list:
-            config = zope.app.appsetup.product.getProductConfiguration(
-                'zeit.workflow')
-            publisher_base_url = config['publisher-base-url']
-            response = requests.post(
-                url=f'{publisher_base_url}publish',
-                json=publish_list)
-            if response.status_code != 200:
-                raise ValueError('XXX error handling to be implemented')
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        publisher_base_url = config['publisher-base-url']
+        url = f'{publisher_base_url}{method}'
+        response = requests.post(
+            url=url,
+            json=[cls._format_json(obj, method) for obj in to_process_list])
+        if response.status_code != 200:
+            raise ValueError(
+                f'Calling publisher on {url} failed '
+                f'with {response.status_code}: {response.reason}')
+
+    @classmethod
+    def call_publish(cls, to_publish_list):
+        cls.call_publisher_method(to_publish_list, 'publish')
+
+    @classmethod
+    def call_retract(cls, to_retract_list):
+        cls.call_publisher_method(to_retract_list, 'retract')
 
 
 class PublishTask(PublishRetractTask):
@@ -432,7 +444,7 @@ class PublishTask(PublishRetractTask):
             paths.extend(self.get_all_paths(obj))
 
         if FEATURE_TOGGLES.find('new_publisher'):
-            self.call_publisher(published)
+            self.call_publish(published)
         else:
             if paths:
                 self.call_script('publish', paths)
@@ -510,8 +522,11 @@ class RetractTask(PublishRetractTask):
         for obj in retracted:
             paths.extend(reversed(self.get_all_paths(obj)))
 
-        if paths:
-            self.call_script('retract', paths)
+        if FEATURE_TOGGLES.find('new_publisher'):
+            self.call_retract(retracted)
+        else:
+            if paths:
+                self.call_script('retract', paths)
 
         for obj in retracted:
             try:
