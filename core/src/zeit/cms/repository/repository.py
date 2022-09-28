@@ -457,6 +457,14 @@ def live_https_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId, None)
 
 
+@grok.adapter(str, name='https://www.staging.zeit.de/')
+@grok.implementer(zeit.cms.interfaces.ICMSContent)
+def staging_https_url_to_content(uniqueId):
+    uniqueId = uniqueId.replace('https://www.staging', 'http://xml', 1)
+    uniqueId = IGNORED_LIVE_PAGE_SUFFIXES.sub('', uniqueId)
+    return zeit.cms.interfaces.ICMSContent(uniqueId, None)
+
+
 @grok.adapter(str, name='http://vivi.zeit.de/')
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def vivi_url_to_content(uniqueId):
