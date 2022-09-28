@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.20.7 (2022-09-28)
+-------------------
+
+- ZO-1857: Implement retract with new publisher
+
+
+MAINT:
+- Allow https://www.staging.zeit.de URLs to be adapted to ICMSContent
+
+
 5.20.6 (2022-09-20)
 -------------------
 
