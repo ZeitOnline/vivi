@@ -259,25 +259,20 @@ class PublishRetractTask:
 
         return result_obj
 
-    def get_all_paths(self, obj):
-        unique_ids = []
-        self.recurse(self.get_unique_id, obj, unique_ids)
-        # The publish/retract scripts doesn't want URLs but local paths, so
-        # munge them.
-        paths = [self.convert_uid_to_path(uid) for uid in unique_ids]
-        return paths
-
-    def get_unique_id(self, obj, unique_ids):
-        unique_ids.append(obj.uniqueId)
+    def collect(self, obj, result):
+        result.append(obj)
         return obj
 
-    def convert_uid_to_path(self, uid):
+    @classmethod
+    def convert_to_path(cls, obj):
+        # The publish/retract scripts doesn't want uniqueIds but local paths,
+        # so munge them.
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         path_prefix = config['path-prefix']
         return os.path.join(
             path_prefix,
-            uid.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
+            obj.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '', 1))
 
     def log(self, obj, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -316,8 +311,9 @@ class PublishRetractTask:
         return obj
 
     @classmethod
-    def call_script(cls, action, paths):
+    def call_script(cls, action, to_process_list):
         """Actually do the publication."""
+        paths = [cls.convert_to_path(x) for x in to_process_list]
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         script = config.get('publish-script')
@@ -439,15 +435,17 @@ class PublishTask(PublishRetractTask):
             else:
                 published.append(obj)
 
-        paths = []
+        to_publish = []
         for obj in published:
-            paths.extend(self.get_all_paths(obj))
+            deps = []
+            self.recurse(self.collect, obj, deps)
+            to_publish.extend(deps)
 
-        if FEATURE_TOGGLES.find('new_publisher'):
-            self.call_publish(published)
-        else:
-            if paths:
-                self.call_script('publish', paths)
+        if to_publish:
+            if FEATURE_TOGGLES.find('new_publisher'):
+                self.call_publish(to_publish)
+            else:
+                self.call_script('publish', to_publish)
 
         for obj in published:
             try:
@@ -518,15 +516,17 @@ class RetractTask(PublishRetractTask):
             else:
                 retracted.append(obj)
 
-        paths = []
+        to_retract = []
         for obj in retracted:
-            paths.extend(reversed(self.get_all_paths(obj)))
+            deps = []
+            self.recurse(self.collect, obj, deps)
+            to_retract.extend(reversed(deps))
 
-        if FEATURE_TOGGLES.find('new_publisher'):
-            self.call_retract(retracted)
-        else:
-            if paths:
-                self.call_script('retract', paths)
+        if to_retract:
+            if FEATURE_TOGGLES.find('new_publisher'):
+                self.call_retract(to_retract)
+            else:
+                self.call_script('retract', to_retract)
 
         for obj in retracted:
             try:

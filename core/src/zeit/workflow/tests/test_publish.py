@@ -347,9 +347,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
                 'zeit.workflow.publish.PublishTask.call_script') as script:
             IPublish(self.repository).publish_multiple(
                 [c1, c2], background=False)
-            script.assert_called_with(
-                'publish', ['work/online/2007/01/Somalia',
-                            'work/online/2007/01/eta-zapatero'])
+            script.assert_called_with('publish', [c1, c2])
         self.assertTrue(IPublishInfo(c1).published)
         self.assertTrue(IPublishInfo(c2).published)
 
@@ -357,9 +355,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
                 'zeit.workflow.publish.RetractTask.call_script') as script:
             IPublish(self.repository).retract_multiple(
                 [c1, c2], background=False)
-            script.assert_called_with(
-                'retract', ['work/online/2007/01/Somalia',
-                            'work/online/2007/01/eta-zapatero'])
+            script.assert_called_with('retract', [c1, c2])
         self.assertFalse(IPublishInfo(c1).published)
         self.assertFalse(IPublishInfo(c2).published)
 
