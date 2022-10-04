@@ -415,7 +415,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             'Marc-Uwe Kling',
             'Bernd Kissel']
 
-    def test_speechbert_payload_no_channels(self):
+    def test_speechbert_payload_no_entry_if_attribute_none(self):
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -425,17 +425,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.publish_json()
         assert article.channels == ()
         assert 'channels' not in payload
-
-    def test_speechbert_payload_empty_channels(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.channels == ()
-        assert payload['channels'] == ''
 
     def test_speechbert_payload_single_channel(self):
         article = ICMSContent(
@@ -447,65 +436,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.publish_json()
         assert article.channels == (('News', None),)
         assert payload['channels'] == 'News'
-
-    def test_speechbert_payload_no_genre(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.genre is None
-        assert 'genre' not in payload
-
-    def test_speechbert_payload_no_image(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert isinstance(
-            article.main_image,
-            zeit.content.article.article.NoMainImageBlockReference)
-        assert 'image' not in payload
-
-    def test_speechbert_payload_no_last_modified(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(article)
-        assert info.date_last_published_semantic is None
-        assert 'lastModified' not in payload
-
-    def test_speechbert_payload_no_publish_date(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(article)
-        assert info.date_first_released is None
-        assert 'publishDate' not in payload
-
-    def test_speechbert_payload_sub_section(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.sub_ressort is None
-        assert 'subsection' not in payload
 
     def test_speechbert_payload_series(self):
         article = ICMSContent(
@@ -528,14 +458,3 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.publish_json()
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
-
-    def test_speechbert_payload_no_uuid(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert zeit.cms.content.interfaces.IUUID(article).shortened is None
-        assert 'uuid' not in payload
