@@ -41,7 +41,7 @@ setup(
         'markdownify',
         'opentelemetry-api>=1.11.1',
         'opentelemetry-api',
-        'opentelemetry-instrumentation-sqlalchemy',
+        'opentelemetry-instrumentation-sqlalchemy>=0.34b0',
         'openapi-schema-validator',
         'pendulum>=2.0.0.dev0',
         'persistent',
