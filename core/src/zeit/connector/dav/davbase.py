@@ -8,6 +8,7 @@ import re
 import socket
 import sys
 import urllib.parse
+import zeit.cms.tracing
 
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
 DEBUG_REQUEST = False
@@ -299,14 +300,18 @@ class DAVBase:
                     body))
         # that's HTTPxxxAuthCon.request, called via DAVConnection
         logger.debug('%s %s', method, url)
-        self.request(method, url, body, extra_hdrs)
-        try:
-            resp = self.getresponse()
-        except http.client.BadStatusLine:
-            # Gnah. We may have waited too long.  Try one more time.
-            self.connect()
+        with zeit.cms.tracing.use_span(
+                __name__, 'DAV %s' % method, attributes={
+                'http.url': url, 'http.method': method}) as span:
             self.request(method, url, body, extra_hdrs)
-            resp = self.getresponse()
+            try:
+                resp = self.getresponse()
+            except http.client.BadStatusLine:
+                # Gnah. We may have waited too long.  Try one more time.
+                self.connect()
+                self.request(method, url, body, extra_hdrs)
+                resp = self.getresponse()
+            span.set_attribute('http.status_code', resp.status)
 
         if DEBUG_REQUEST:
             sys.stderr.write(

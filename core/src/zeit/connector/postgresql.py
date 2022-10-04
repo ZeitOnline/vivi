@@ -4,7 +4,6 @@ from google.cloud import storage
 from google.cloud.storage.retry import DEFAULT_RETRY
 from io import BytesIO, StringIO
 from logging import getLogger
-from opentelemetry.trace.propagation import tracecontext
 from operator import itemgetter
 from sqlalchemy import Boolean, TIMESTAMP, Unicode, UnicodeText
 from sqlalchemy import Column, ForeignKey, select
@@ -19,7 +18,6 @@ from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.resource import CachedResource
 import collections
 import opentelemetry.instrumentation.sqlalchemy
-import opentelemetry.instrumentation.utils
 import os
 import os.path
 import sqlalchemy
@@ -68,7 +66,7 @@ class Connector:
         self.session = sqlalchemy.orm.scoped_session(
             sqlalchemy.orm.sessionmaker(bind=self.engine, future=True))
         zope.sqlalchemy.register(self.session)
-        EngineTracer(self.engine)
+        EngineTracer(self.engine, enable_commenter=True)
         self.gcs_client = storage.Client(project=storage_project)
         self.bucket = self.gcs_client.bucket(storage_bucket)
 
@@ -440,9 +438,9 @@ passthrough_factory = PassthroughConnector.factory
 
 class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
 
-    def __init__(self, engine):
+    def __init__(self, engine, **kw):
         tracer = self  # Kludge to inject zeit.cms.tracing.start_span()
-        super().__init__(tracer, engine)
+        super().__init__(tracer, engine, **kw)
 
     def start_span(self, *args, **kw):
         return zeit.cms.tracing.start_span(__name__, *args, **kw)
@@ -455,15 +453,4 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
         for k, v in params.items():
             p.write('%s=%r\n' % (k, str(v)[:100]))
         context._otel_span.set_attribute('db.parameters', p.getvalue())
-        # XXX We bypass enable_commenter in superclass, until
-        # opentelemetry-python-contrib#1200 is released.
-        statement += self._generate_comment()
         return statement, params
-
-    propagator = tracecontext.TraceContextTextMapPropagator()
-
-    def _generate_comment(self):
-        meta = {}
-        self.propagator.inject(meta)
-        return opentelemetry.instrumentation.utils._generate_sql_comment(
-            **meta)
