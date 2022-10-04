@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.20.8 (2022-10-04)
+-------------------
+
+- ZO-1921: Instrument DAV requests for tracing
+
+
 5.20.7 (2022-09-28)
 -------------------
 
