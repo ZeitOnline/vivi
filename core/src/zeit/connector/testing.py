@@ -41,6 +41,8 @@ class DAVServerLayer(plone.testing.Layer):
         self['query_url'] = 'http://localhost:%s' % query
         self.wait_for_http(self['dav_url'])
         # self.wait_for_http(self['query_url'])
+        zope.component.provideUtility(
+            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer)
         TBC = zeit.connector.connector.TransactionBoundCachingConnector
         self['connector'] = TBC({'default': self['dav_url']})
         mkdir(self['connector'], 'http://xml.zeit.de/testing')
