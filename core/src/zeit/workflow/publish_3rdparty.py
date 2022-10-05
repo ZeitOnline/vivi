@@ -1,3 +1,4 @@
+from itertools import chain
 import datetime
 import grokcore.component as grok
 import logging
@@ -171,10 +172,6 @@ class Speechbert(grok.Adapter):
                 return True
         return False
 
-    def get_authors(self):
-        return [x.target.display_name for x in self.context.authorships
-                if not x.role]
-
     def get_body(self):
         body = []
         elements = self.context.body.xml.xpath(
@@ -197,17 +194,6 @@ class Speechbert(grok.Adapter):
                     type=elem.tag))
         return body
 
-    def get_channels(self):
-        if not self.context.channels:
-            return
-        return ' '.join(filter(None, *self.context.channels))
-
-    def get_hasAudio(self):
-        if self.context.audio_speechbert is True:
-            return 'true'
-        if self.context.audio_speechbert is False:
-            return 'false'
-
     def get_image(self):
         image = zeit.content.image.interfaces.IImages(self.context).image
         if not image:
@@ -220,24 +206,22 @@ class Speechbert(grok.Adapter):
             return
         return f'{prefix}{variant_url}'
 
-    def get_tags(self):
-        return [x.label for x in self.context.keywords]
-
     def _json(self):
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         payload = dict(
-            authors=self.get_authors(),
+            authors=[x.target.display_name for x in self.context.authorships
+                     if not x.role],
             body=self.get_body(),
-            channels=self.get_channels(),
+            channels=' '.join([x for x in chain(*self.context.channels) if x]),
             genre=self.context.genre,
-            hasAudio=self.get_hasAudio(),
+            hasAudio='true' if self.context.audio_speechbert else 'false',
             headline=self.context.title,
             image=self.get_image(),
             section=self.context.ressort,
             subsection=self.context.sub_ressort,
             subtitle=self.context.subtitle,
             supertitle=self.context.supertitle,
-            tags=self.get_tags(),
+            tags=[x.label for x in self.context.keywords],
             teaser=self.context.teaserText,
             url='',
             uuid=uuid.shortened)
@@ -251,16 +235,16 @@ class Speechbert(grok.Adapter):
             payload['publishDate'] = info.date_first_released.isoformat()
         if self.context.serie:
             payload['series'] = self.context.serie.serienname
-        return {k: v for k, v in payload.items() if v is not None}
+        return {k: v for k, v in payload.items() if v}
 
     def publish_json(self):
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released, "publish"):
+        if self.ignore(info.date_first_released, 'publish'):
             return
         return self._json()
 
     def retract_json(self):
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released, "retract"):
+        if self.ignore(info.date_first_released, 'retract'):
             return
         return self._json()

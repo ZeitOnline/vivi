@@ -86,10 +86,9 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_sb = result['speechbert']
             self.assertEqual(
-                [
-                    'authors', 'body', 'headline',
-                    'section', 'series', 'subtitle', 'supertitle', 'tags',
-                    'teaser', 'url'],
+                ['hasAudio', 'headline',
+                 'section', 'series', 'subtitle', 'supertitle', 'tags',
+                 'teaser', 'url'],
                 sorted(result_sb.keys()))
         self.assertFalse(IPublishInfo(article).published)
 

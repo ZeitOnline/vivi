@@ -231,10 +231,9 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_sb = result['speechbert']
             self.assertEqual(
-                [
-                    'authors', 'body', 'hasAudio', 'headline', 'publishDate',
-                    'section', 'series', 'subtitle', 'supertitle', 'tags',
-                    'teaser', 'url', 'uuid'],
+                ['body', 'hasAudio', 'headline', 'publishDate',
+                 'section', 'series', 'subtitle', 'supertitle', 'tags',
+                 'teaser', 'url', 'uuid'],
                 sorted(result_sb.keys()))
         self.assertTrue(IPublishInfo(article).published)
 
