@@ -373,17 +373,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert article.access == 'free'
         assert 'access' not in payload
 
-    def test_speechbert_payload_no_authors(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/terror-abschuss-schaeuble')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.authors == ()
-        assert payload['authors'] == []
-
     def test_speechbert_payload_multiple_authors(self):
         article = ICMSContent(
             'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
