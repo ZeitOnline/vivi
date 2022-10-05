@@ -36,6 +36,10 @@ product_config = """
   puzzleforms-source file://{base}/edit/tests/puzzleforms.xml
   topicpage-filter-source file://{base}/tests/topicpage-esqueries.json
   config-base-url file://{base}/tests/
+  tagesschau-api-url-post https://ard-tagesschau/post
+  tagesschau-api-url-get https://ard-tagesschau/get
+  tagesschau-sig-uri XYZ
+  tagesschau-api-key 1a2b3c4d5e
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 

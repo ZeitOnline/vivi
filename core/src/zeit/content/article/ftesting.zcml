@@ -14,6 +14,8 @@
 
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
+  <include package="zeit.content.article.edit" />
+  <includeOverrides package="zeit.content.article.edit" file="mock.zcml" />
   <include package="zeit.content.article.edit.browser" />
 
   <include package="zeit.content.image" />

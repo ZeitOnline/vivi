@@ -236,3 +236,14 @@ def from_product_config():
         config['tagesschau-api-url-get'],
         config['tagesschau-sig-uri'],
         config['tagesschau-api-key'])
+
+
+@zope.interface.implementer(
+    zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+def MockVideoTagesschau():
+    from unittest import mock  # testing dependency
+    tagesschau_api = mock.Mock()
+    zope.interface.alsoProvides(
+        tagesschau_api, zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+    #return DUMMY_RESPONSE
+    tagesschau_api.request_videos.return_value = 'mock-hippo'
