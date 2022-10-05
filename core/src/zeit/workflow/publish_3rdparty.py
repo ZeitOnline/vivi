@@ -1,3 +1,4 @@
+from itertools import chain
 import datetime
 import grokcore.component as grok
 import logging
@@ -9,6 +10,7 @@ import zeit.cms.type
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
 import zeit.content.video.interfaces
 import zeit.workflow.interfaces
 
@@ -170,14 +172,6 @@ class Speechbert(grok.Adapter):
                 return True
         return False
 
-    def get_authors(self):
-        result = []
-        for author in self.context.xml.head.findall('author'):
-            if author.find('role') is not None:
-                continue
-            result.append(author.display_name)
-        return result
-
     def get_body(self):
         body = []
         elements = self.context.body.xml.xpath(
@@ -200,56 +194,39 @@ class Speechbert(grok.Adapter):
                     type=elem.tag))
         return body
 
-    def get_channels(self):
-        if self.context.channels is not None:
-            if self.context.channels:
-                return ' '.join(filter(None, *self.context.channels))
-            else:
-                channels = self.context.xml.head.findall(
-                    "attribute[@name='channels']")
-                if channels:
-                    return ' '.join(str(x) for x in channels)
-
-    def get_hasAudio(self):
-        if self.context.audio_speechbert is True:
-            return 'true'
-        if self.context.audio_speechbert is False:
-            return 'false'
-
     def get_image(self):
-        image_url = None
-        image = self.context.xml.head.find('image')
-        if image is not None:
-            image_url = image.attrib.get('base-id')
-        if image_url:
-            return image_url.replace(
-                zeit.cms.interfaces.ID_NAMESPACE,
-                'https://img.zeit.de/').rstrip('/') + '/wide__820x461__desktop'
-
-    def get_tags(self):
-        tags = []
-        if hasattr(self.context.xml.head, 'rankedTags'):
-            tags.extend(
-                self.context.xml.head.rankedTags.getchildren())
-        return tags
+        image = zeit.content.image.interfaces.IImages(self.context).image
+        if not image:
+            return
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms') or {}
+        prefix = config.get('image-live-prefix', '').strip('/')
+        variant_url = image.variant_url('wide', width=820, height=461)
+        if not variant_url:
+            return
+        return f'{prefix}{variant_url}'
 
     def _json(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms') or {}
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         payload = dict(
-            authors=self.get_authors(),
+            authors=[x.target.display_name for x in self.context.authorships
+                     if not x.role],
             body=self.get_body(),
-            channels=self.get_channels(),
+            channels=' '.join([x for x in chain(*self.context.channels) if x]),
             genre=self.context.genre,
-            hasAudio=self.get_hasAudio(),
+            hasAudio='true' if self.context.audio_speechbert else 'false',
             headline=self.context.title,
             image=self.get_image(),
             section=self.context.ressort,
             subsection=self.context.sub_ressort,
             subtitle=self.context.subtitle,
             supertitle=self.context.supertitle,
-            tags=self.get_tags(),
+            tags=[x.label for x in self.context.keywords],
             teaser=self.context.teaserText,
-            url='',
+            url=self.context.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, config['live-prefix']),
             uuid=uuid.shortened)
         if self.context.access != 'free':
             payload['access'] = self.context.access
@@ -261,16 +238,20 @@ class Speechbert(grok.Adapter):
             payload['publishDate'] = info.date_first_released.isoformat()
         if self.context.serie:
             payload['series'] = self.context.serie.serienname
-        return {k: v for k, v in payload.items() if v is not None}
+        return {k: v for k, v in payload.items() if v}
 
     def publish_json(self):
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released, "publish"):
+        if self.ignore(info.date_first_released, 'publish'):
             return
         return self._json()
 
     def retract_json(self):
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released, "retract"):
+        if self.ignore(info.date_first_released, 'retract'):
             return
-        return self._json()
+        return {
+            # Can we simplify this protocol? uuid is already passed in toplevel
+            # so we should not have to repeat it here.
+            'uuid': zeit.cms.content.interfaces.IUUID(self.context).shortened
+        }

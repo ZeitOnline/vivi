@@ -85,12 +85,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             result_sb = result['speechbert']
-            self.assertEqual(
-                [
-                    'authors', 'body', 'headline',
-                    'section', 'series', 'subtitle', 'supertitle', 'tags',
-                    'teaser', 'url'],
-                sorted(result_sb.keys()))
+            self.assertEqual(['uuid'], sorted(result_sb.keys()))
         self.assertFalse(IPublishInfo(article).published)
 
     def test_speechbert_ignore_genres(self):

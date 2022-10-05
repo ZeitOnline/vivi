@@ -2,12 +2,16 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
+from zeit.content.image.testing import create_image_group_with_master_image
 import pytest
 import requests_mock
 import sys
 import zeit.cms.related.interfaces
+import zeit.cms.tagging.tag
+import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
+import zeit.content.author.author
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
@@ -227,10 +231,9 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_sb = result['speechbert']
             self.assertEqual(
-                [
-                    'authors', 'body', 'hasAudio', 'headline', 'publishDate',
-                    'section', 'series', 'subtitle', 'supertitle', 'tags',
-                    'teaser', 'url', 'uuid'],
+                ['body', 'hasAudio', 'headline', 'publishDate',
+                 'section', 'series', 'subtitle', 'supertitle', 'tags',
+                 'teaser', 'url', 'uuid'],
                 sorted(result_sb.keys()))
         self.assertTrue(IPublishInfo(article).published)
 
@@ -301,6 +304,12 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     layer = zeit.content.article.testing.LAYER
 
+    def create_author(self, firstname, lastname, key):
+        author = zeit.content.author.author.Author()
+        author.firstname = firstname
+        author.lastname = lastname
+        self.repository[key] = author
+
     @pytest.fixture(autouse=True)
     def monkeypatch(self, monkeypatch):
         monkeypatch.setattr(
@@ -308,36 +317,19 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             'ignore',
             lambda s, d, m: False)
 
-    def test_speechbert_extraction(self):
-        # this test compares the output of the original xslt from the old
-        # publisher with the new output
-        # BBB this test can be removed once the new publisher is successfully
-        # deployed in production for a while
-        import json
-        import lxml.etree
-        import pkg_resources
-        source = pkg_resources.resource_string(
-            'zeit.workflow.tests', 'fixtures/speechbert.xslt')
-        transform = lxml.etree.XSLT(lxml.etree.XML(source))
-        stack = [ICMSContent('http://xml.zeit.de/')]
-        while stack:
-            resource = stack.pop()
-            folder = zeit.cms.repository.interfaces.IFolder(resource, None)
-            if folder is not None:
-                stack.extend(folder.values())
-                continue
-            article = zeit.content.article.interfaces.IArticle(resource, None)
-            if article is None:
-                continue
-            doc = resource.xml
-            original_transformed = str(transform(doc))
-            expected = json.loads(original_transformed)
-            data_factory = zeit.workflow.publish_3rdparty.Speechbert(
-                resource)
-            result = data_factory.publish_json()
-            assert result == expected
-
     def test_speechbert_payload(self):
+        article = ICMSContent(
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        self.create_author('Eva', 'Biringer', 'author')
+        with checked_out(article) as co:
+            wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
+            co.keywords = (
+                wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)
+            co.authorships = [co.authorships.create(self.repository['author'])]
+            group = create_image_group_with_master_image(
+                file_name='http://xml.zeit.de/2016/DSC00109_2.PNG')
+            zeit.content.image.interfaces.IImages(co).image = group
+
         article = ICMSContent(
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         data_factory = zope.component.getAdapter(
@@ -346,13 +338,14 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             name="speechbert")
         payload = data_factory.publish_json()
         del payload['body']  # not relevant in this test
-        del payload['image']  # not relevant in this test
         assert payload == dict(
             access='abo',
             authors=['Eva Biringer'],
             channels='zeit-magazin essen-trinken',
             genre='rezept-vorstellung',
+            hasAudio='true',
             headline='Vier Rezepte für eine Herdplatte',
+            image='http://localhost/img-live-prefix/group/wide__820x461',
             lastModified='2020-04-14T09:19:59.618155+00:00',
             publishDate='2020-04-14T09:19:59.618155+00:00',
             section='zeit-magazin',
@@ -361,18 +354,11 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
                 'Ist genug Brot und Kuchen gebacken, bleibt endlich wieder '
                 'Zeit, zu kochen. Mit diesen One-Pot-Gerichten können Sie den '
                 'Zuckerschock vom Osterwochenende kontern.'),
-            tags=[
-                'Kochrezept',
-                'Coronavirus',
-                'Quarantäne',
-                'Social Distancing',
-                'Rezept',
-                'Mahlzeit',
-                'kochen'],
+            tags=['Testtag', 'Testtag2', 'Testtag3'],
             teaser=(
                 'Ist genug Brot und Kuchen gebacken, '
                 'bleibt endlich wieder Zeit, zu kochen.'),
-            url='',
+            url='http://localhost/live-prefix/zeit-magazin/wochenmarkt/rezept',
             uuid='16e82986-cdc0-492d-84e8-267d09b4ab53')
 
     def test_speechbert_payload_access_free(self):
@@ -386,18 +372,19 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert article.access == 'free'
         assert 'access' not in payload
 
-    def test_speechbert_payload_no_authors(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/terror-abschuss-schaeuble')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.authors == ()
-        assert payload['authors'] == []
-
     def test_speechbert_payload_multiple_authors(self):
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        with checked_out(article) as co:
+            self.create_author('Marc-Uwe', 'Kling', 'a1')
+            self.create_author('Bernd', 'Kissel', 'a2')
+            self.create_author('Julian', 'Stahnke', 'a3')
+            co.authorships = [
+                co.authorships.create(self.repository['a1']),
+                co.authorships.create(self.repository['a2']),
+                co.authorships.create(self.repository['a3'])]
+            co.authorships[2].role = 'Illustration'
+
         article = ICMSContent(
             'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
         data_factory = zope.component.getAdapter(
@@ -405,22 +392,18 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             zeit.workflow.interfaces.IPublisherData,
             name="speechbert")
         payload = data_factory.publish_json()
-        assert article.authors == (
-            'Marc-Uwe Kling',
-            'Bernd Kissel')
-        # there is a third author that is filtered out
-        raw_authors = [
-            (x.display_name, x.find('role') is not None)
-            for x in article.xml.head.findall('author')]
+        raw_authors = [(
+            author.target.display_name, author.role)
+            for author in article.authorships]
         assert raw_authors == [
-            ('Marc-Uwe Kling', False),
-            ('Bernd Kissel', False),
-            ('Julian Stahnke', True)]
+            ('Marc-Uwe Kling', None),
+            ('Bernd Kissel', None),
+            ('Julian Stahnke', 'Illustration')]
         assert payload['authors'] == [
             'Marc-Uwe Kling',
             'Bernd Kissel']
 
-    def test_speechbert_payload_no_channels(self):
+    def test_speechbert_payload_no_entry_if_attribute_none(self):
         article = ICMSContent(
             'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         data_factory = zope.component.getAdapter(
@@ -430,17 +413,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.publish_json()
         assert article.channels == ()
         assert 'channels' not in payload
-
-    def test_speechbert_payload_empty_channels(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.channels == ()
-        assert payload['channels'] == ''
 
     def test_speechbert_payload_single_channel(self):
         article = ICMSContent(
@@ -452,65 +424,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.publish_json()
         assert article.channels == (('News', None),)
         assert payload['channels'] == 'News'
-
-    def test_speechbert_payload_no_genre(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.genre is None
-        assert 'genre' not in payload
-
-    def test_speechbert_payload_no_image(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert isinstance(
-            article.main_image,
-            zeit.content.article.article.NoMainImageBlockReference)
-        assert 'image' not in payload
-
-    def test_speechbert_payload_no_last_modified(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(article)
-        assert info.date_last_published_semantic is None
-        assert 'lastModified' not in payload
-
-    def test_speechbert_payload_no_publish_date(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        info = zeit.cms.workflow.interfaces.IPublishInfo(article)
-        assert info.date_first_released is None
-        assert 'publishDate' not in payload
-
-    def test_speechbert_payload_sub_section(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert article.sub_ressort is None
-        assert 'subsection' not in payload
 
     def test_speechbert_payload_series(self):
         article = ICMSContent(
@@ -533,14 +446,3 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.publish_json()
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
-
-    def test_speechbert_payload_no_uuid(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        payload = data_factory.publish_json()
-        assert zeit.cms.content.interfaces.IUUID(article).shortened is None
-        assert 'uuid' not in payload
