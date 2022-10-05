@@ -172,7 +172,8 @@ class Speechbert(grok.Adapter):
         return False
 
     def get_authors(self):
-        return [author.target.display_name for author in self.context.authorships if not author.role]
+        return [x.target.display_name for x in self.context.authorships
+                if not x.role]
 
     def get_body(self):
         body = []
@@ -200,7 +201,6 @@ class Speechbert(grok.Adapter):
         if not self.context.channels:
             return
         return ' '.join(filter(None, *self.context.channels))
-            
 
     def get_hasAudio(self):
         if self.context.audio_speechbert is True:
@@ -221,8 +221,7 @@ class Speechbert(grok.Adapter):
         return f'{prefix}{variant_url}'
 
     def get_tags(self):
-        tags = zeit.cms.content.interfaces.ICommonMetadata(self.context).keywords
-        return [tag.label for tag in tags]
+        return [x.label for x in self.context.keywords]
 
     def _json(self):
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
