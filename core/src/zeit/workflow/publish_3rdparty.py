@@ -207,6 +207,8 @@ class Speechbert(grok.Adapter):
         return f'{prefix}{variant_url}'
 
     def _json(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms') or {}
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         payload = dict(
             authors=[x.target.display_name for x in self.context.authorships
@@ -223,7 +225,8 @@ class Speechbert(grok.Adapter):
             supertitle=self.context.supertitle,
             tags=[x.label for x in self.context.keywords],
             teaser=self.context.teaserText,
-            url='',
+            url=self.context.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, config['live-prefix']),
             uuid=uuid.shortened)
         if self.context.access != 'free':
             payload['access'] = self.context.access

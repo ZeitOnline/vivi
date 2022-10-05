@@ -358,7 +358,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             teaser=(
                 'Ist genug Brot und Kuchen gebacken, '
                 'bleibt endlich wieder Zeit, zu kochen.'),
-            url='',
+            url='http://localhost/live-prefix/zeit-magazin/wochenmarkt/rezept',
             uuid='16e82986-cdc0-492d-84e8-267d09b4ab53')
 
     def test_speechbert_payload_access_free(self):
