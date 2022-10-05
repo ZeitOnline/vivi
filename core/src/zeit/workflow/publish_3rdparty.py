@@ -250,4 +250,8 @@ class Speechbert(grok.Adapter):
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if self.ignore(info.date_first_released, 'retract'):
             return
-        return self._json()
+        return {
+            # Can we simplify this protocol? uuid is already passed in toplevel
+            # so we should not have to repeat it here.
+            'uuid': zeit.cms.content.interfaces.IUUID(self.context).shortened
+        }
