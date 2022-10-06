@@ -73,7 +73,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     'banner_content': True,
                     'color_scheme': 'Redaktion',
                     'comments': False,
-                    'comments_api_v2': False,
+                    'comments_rebrush': False,
                     'comments_premoderate': False,
                     'copyrights': 'ZEIT online',
                     'has_recensions': False,
