@@ -82,13 +82,15 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         zeit.workflow.testing.run_tasks()
 
     def test_publish_button_publishes_volume_content(self):
+        volume = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2015/01/ausgabe')
         self.elastic.search.return_value = zeit.cms.interfaces.Result(
             [{'url': '/testcontent'}])
         with mock.patch(
                 'zeit.workflow.publish.PublishTask.call_script') as script:
             self.publish_content()
-            script.assert_called_with('publish', ['work/testcontent',
-                                                  'work/2015/01/ausgabe'])
+            script.assert_called_with(
+                'publish', [self.repository['testcontent'], volume])
         self.assertTrue(IPublishInfo(self.repository['testcontent']).published)
         self.assertTrue(
             IPublishInfo(self.repository['2015']['01']['ausgabe']).published)

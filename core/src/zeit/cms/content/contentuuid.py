@@ -14,9 +14,18 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
+class Shortenable:
+
+    @property
+    def shortened(self):
+        # Cut off the rather useless 'urn:uuid:' prefix
+        if self.id:
+            return self.id.strip('{}').replace('urn:uuid:', '')
+
+
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
-class ContentUUID:
+class ContentUUID(Shortenable):
 
     id = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.IUUID['id'],
@@ -24,12 +33,6 @@ class ContentUUID:
 
     def __init__(self, context):
         self.context = context
-
-    @property
-    def shortened(self):
-        # Cut off the rather useless 'urn:uuid:' prefix
-        if self.id:
-            return self.id.strip('{}').replace('urn:uuid:', '')
 
     def __str__(self):
         return '<%s.%s %s>' % (
@@ -44,7 +47,7 @@ def properties(context):
 
 @zope.component.adapter(str)
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
-class SimpleUUID:
+class SimpleUUID(Shortenable):
 
     def __init__(self, context):
         self.id = context
