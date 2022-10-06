@@ -229,6 +229,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
+    commentsAPIv2 = zope.schema.Bool(
+        title=_("Use Comments APIv2"),
+        required=False,
+        default=False)
+
     commentSectionEnable = zope.schema.Bool(
         title=_("Show commentthread"),
         required=False,
