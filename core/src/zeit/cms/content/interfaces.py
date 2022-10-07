@@ -229,6 +229,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
+    commentsRebrush = zope.schema.Bool(
+        title=_("Use Comments 'rebrush'"),
+        required=False,
+        default=False)
+
     commentSectionEnable = zope.schema.Bool(
         title=_("Show commentthread"),
         required=False,

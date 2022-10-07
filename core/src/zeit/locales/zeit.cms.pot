@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 14 10:51:40 2022\n"
+"POT-Creation-Date: Fri Oct  7 08:24:09 2022\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -267,7 +267,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:278
 #: zeit/cms/content/browser/template.py:42
 #: zeit/cms/content/interfaces.py:190
-#: zeit/cms/content/interfaces.py:534
+#: zeit/cms/content/interfaces.py:539
 #: zeit/cms/retractlog/browser/retractlog.py:25
 #: zeit/cms/retractlog/interfaces.py:26
 #: zeit/cms/syndication/browser/feed.py:151
@@ -307,7 +307,7 @@ msgstr ""
 
 #: zeit/cms/browser/listing.py:290
 #: zeit/cms/content/interfaces.py:95
-#: zeit/cms/content/interfaces.py:642
+#: zeit/cms/content/interfaces.py:647
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:37
 #: zeit/contentquery/interfaces.py:196
@@ -712,7 +712,7 @@ msgid "color scheme dark"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:78
-#: zeit/cms/content/interfaces.py:652
+#: zeit/cms/content/interfaces.py:657
 #: zeit/content/article/edit/interfaces.py:561
 #: zeit/content/article/interfaces.py:224
 #: zeit/content/volume/interfaces.py:36
@@ -728,7 +728,7 @@ msgid "Volume"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:99
-#: zeit/cms/content/interfaces.py:647
+#: zeit/cms/content/interfaces.py:652
 #: zeit/contentquery/interfaces.py:199
 msgid "Sub ressort"
 msgstr ""
@@ -834,114 +834,118 @@ msgid "Comments allowed"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:233
-msgid "Show commentthread"
+msgid "Use Comments 'rebrush'"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:238
-msgid "Banner"
+msgid "Show commentthread"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:243
-msgid "Banner in Content"
+msgid "Banner"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:248
-msgid "Banner Mainad"
+msgid "Banner in Content"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:253
+msgid "Banner Mainad"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:258
 msgid "Banner id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:257
+#: zeit/cms/content/interfaces.py:262
 msgid "Hide AdBlocker notification"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:262
+#: zeit/cms/content/interfaces.py:267
 #: zeit/content/volume/interfaces.py:28
 msgid "Product id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:270
+#: zeit/cms/content/interfaces.py:275
 msgid "Overscrolling"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:275
+#: zeit/cms/content/interfaces.py:280
 msgid "CAP title"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:279
+#: zeit/cms/content/interfaces.py:284
 msgid "Deeplink URL"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:284
+#: zeit/cms/content/interfaces.py:289
 msgid "Color scheme"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:289
+#: zeit/cms/content/interfaces.py:294
 msgid "Advertisement title"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:293
+#: zeit/cms/content/interfaces.py:298
 msgid "Advertisement text"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:297
+#: zeit/cms/content/interfaces.py:302
 msgid "InterRed MediaSync ID"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:302
+#: zeit/cms/content/interfaces.py:307
 msgid "InterRed Article ID"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:350
+#: zeit/cms/content/interfaces.py:355
 msgid "Invalid hex literal"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:430
+#: zeit/cms/content/interfaces.py:435
 #: zeit/content/cp/interfaces.py:618
 msgid "XML Source"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:598
+#: zeit/cms/content/interfaces.py:603
 msgid "Last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:604
+#: zeit/cms/content/interfaces.py:609
 msgid "Update last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:631
+#: zeit/cms/content/interfaces.py:636
 msgid "Memo"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:638
+#: zeit/cms/content/interfaces.py:643
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Type"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:657
+#: zeit/cms/content/interfaces.py:662
 msgid "Month"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:689
+#: zeit/cms/content/interfaces.py:694
 msgid "Caching time browser"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:695
+#: zeit/cms/content/interfaces.py:700
 msgid "Caching time server"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:724
+#: zeit/cms/content/interfaces.py:729
 msgid "Remote image URL"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:729
+#: zeit/cms/content/interfaces.py:734
 msgid "Remote timestamp URL"
 msgstr ""
 
-#: zeit/cms/content/metadata.py:154
+#: zeit/cms/content/metadata.py:158
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
@@ -1569,7 +1573,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:475
+#: zeit/workflow/publish.py:485
 #: zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr ""
@@ -4915,31 +4919,31 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:50
+#: zeit/workflow/publish.py:52
 msgid "Publication scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:56
+#: zeit/workflow/publish.py:58
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:68
+#: zeit/workflow/publish.py:70
 msgid "Collective Publication of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:84
+#: zeit/workflow/publish.py:86
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:295
+#: zeit/workflow/publish.py:294
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:420
+#: zeit/workflow/publish.py:428
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:534
+#: zeit/workflow/publish.py:549
 msgid "Retracted"
 msgstr ""
 
