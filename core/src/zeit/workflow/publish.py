@@ -1,4 +1,5 @@
 from datetime import datetime
+from json import dumps
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
@@ -393,13 +394,16 @@ class PublishRetractTask:
             'zeit.workflow')
         publisher_base_url = config['publisher-base-url']
         url = f'{publisher_base_url}{method}'
+        json = [cls._format_json(obj, method) for obj in to_process_list]
         response = requests.post(
             url=url,
-            json=[cls._format_json(obj, method) for obj in to_process_list])
+            json=json)
         if response.status_code != 200:
-            raise ValueError(
+            publisher_parts = dumps(response.json()['errors'])
+            raise PublishError(
                 f'Calling publisher on {url} failed '
-                f'with {response.status_code}: {response.reason}')
+                f'with {response.status_code}: {response.reason}. '
+                f'Details: {publisher_parts}')
 
     @classmethod
     def call_publish(cls, to_publish_list):
@@ -408,6 +412,10 @@ class PublishRetractTask:
     @classmethod
     def call_retract(cls, to_retract_list):
         cls.call_publisher_method(to_retract_list, 'retract')
+
+
+class PublishError(Exception):
+    pass
 
 
 class PublishTask(PublishRetractTask):
