@@ -102,5 +102,6 @@ def start_span(module, *args, **kw):
 
 @contextlib.contextmanager
 def use_span(module, *args, **kw):
-    with opentelemetry.trace.use_span(start_span(module, *args, **kw)) as span:
+    span = start_span(module, *args, **kw)
+    with opentelemetry.trace.use_span(span, end_on_exit=True) as span:
         yield span
