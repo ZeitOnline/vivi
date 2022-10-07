@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.0 (2022-10-07)
+-------------------
+
+- ZO-1422: Send all dependencies to new publisher
+
+- ZO-1890: Add marker for switching to new comments 'rebrush' frontend
+
+- ZO-1909: Use vivi API in publisher speechbert adapter
+
+
 5.20.8 (2022-10-04)
 -------------------
 
