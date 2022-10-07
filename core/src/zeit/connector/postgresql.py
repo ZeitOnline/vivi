@@ -149,7 +149,8 @@ class Connector:
         if body is not None:
             return BytesIO(body)
         blob = self.bucket.blob(id)
-        with zeit.cms.tracing.use_span(__name__, 'gcs', attributes={
+        with zeit.cms.tracing.use_span(
+                __name__ + '.tracing', 'gcs', attributes={
                 'db.operation': 'download', 'id': id}):
             body = blob.download_as_bytes()
         self.body_cache[id] = body
@@ -200,7 +201,8 @@ class Connector:
                 data = resource.data  # may not be a static property
                 size = data.seek(0, os.SEEK_END)
                 data.seek(0)
-                with zeit.cms.tracing.use_span(__name__, 'gcs', attributes={
+                with zeit.cms.tracing.use_span(
+                        __name__ + '.tracing', 'gcs', attributes={
                         'db.operation': 'upload', 'id': id,
                         'size': str(size)}):
                     blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
@@ -232,7 +234,8 @@ class Connector:
             raise KeyError(uniqueid)
         if not props.is_collection and props.binary_body:
             blob = self.bucket.blob(props.id)
-            with zeit.cms.tracing.use_span(__name__, 'gcs', attributes={
+            with zeit.cms.tracing.use_span(
+                    __name__ + '.tracing', 'gcs', attributes={
                     'db.operation': 'delete', 'id': id}):
                 blob.delete()
         self.session.delete(props)
@@ -443,7 +446,7 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
         super().__init__(tracer, engine, **kw)
 
     def start_span(self, *args, **kw):
-        return zeit.cms.tracing.start_span(__name__, *args, **kw)
+        return zeit.cms.tracing.start_span(__name__ + '.tracing', *args, **kw)
 
     def _before_cur_exec(
             self, conn, cursor, statement, params, context, executemany):

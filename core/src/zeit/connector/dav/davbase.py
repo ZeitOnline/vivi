@@ -301,7 +301,7 @@ class DAVBase:
         # that's HTTPxxxAuthCon.request, called via DAVConnection
         logger.debug('%s %s', method, url)
         with zeit.cms.tracing.use_span(
-                __name__, 'DAV %s' % method, attributes={
+                __name__ + '.tracing', 'DAV %s' % method, attributes={
                 'http.url': url, 'http.method': method}) as span:
             self.request(method, url, body, extra_hdrs)
             try:
