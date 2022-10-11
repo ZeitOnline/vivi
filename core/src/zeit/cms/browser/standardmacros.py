@@ -9,6 +9,7 @@ import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
 import zope.security.proxy
+import pkg_resources
 
 
 class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
@@ -62,3 +63,9 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
     def environment(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         return config['environment']
+
+    @property
+    def vivi_version(self):
+        if pkg_resources.get_distribution('vivi.core'):
+            return pkg_resources.get_distribution('vivi.core').version
+        return 'version not found'
