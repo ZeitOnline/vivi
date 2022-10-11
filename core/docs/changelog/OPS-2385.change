@@ -1,0 +1,1 @@
+OPS-2385: Move UI-only ZCML includes from zeit.cms:configure to ui.zcml (so zeit.web can skip them)

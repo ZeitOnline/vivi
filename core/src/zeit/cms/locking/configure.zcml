@@ -1,9 +1,12 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." exclude="browser"/>
 
   <utility 
     provides="zope.app.locking.interfaces.ILockStorage"
     factory=".locking.LockStorage" />
-
 
   <!-- Basically copied from zope.app.locking -->
   <class class=".locking.LockInfo">

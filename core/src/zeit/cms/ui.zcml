@@ -18,8 +18,11 @@
   <include package="zope.app.publisher" file="meta.zcml" />
   <include package="zope.principalregistry" file="meta.zcml" />
   <include package="zope.app.container.browser" file="meta.zcml" />
+
   <include package="zeit.cms" file="application.zcml" />
+  <include package="zeit.cms" file="lxml.zcml" />
   <include package="zeit.cms" file="menu.zcml" />
+  <include package="zeit.cms" file="patches.zcml" />
 
   <include package="zope.app.content" />
   <include package="zope.app.dependable" />
@@ -61,7 +64,6 @@
   <include package="zope.app.broken" />
 
   <!-- Skins -->
-
   <include package="zope.app.basicskin" />
   <include package="zope.app.rotterdam" />
 
@@ -124,5 +126,16 @@
 
   <include package="zeit.connector" />
   <include package="zeit.objectlog" />
+
+  <include package="zeit.cms.admin" />
+  <include package="zeit.cms.checkout" />
+  <include package="zeit.cms.clipboard" />
+  <include package="zeit.cms.locking" />
+  <include package="zeit.cms.relation" />
+  <include package="zeit.cms.retractlog" />
+  <include package="zeit.cms.settings" />
+  <include package="zeit.cms.syndication" />
+  <include package="zeit.cms" file="securitypolicy.zcml" />
+  <include package="zeit.cms.workingcopy" />
 
 </configure>

@@ -1,0 +1,45 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <class class="lxml.objectify.ObjectifiedElement">
+    <require permission="zope.View"
+      attributes="
+      __getitem__
+      countchildren
+      get
+      find
+      findall
+      getparent
+      index
+      iterchildren
+      tag
+      text
+      xpath
+      "/>
+    <require permission="zeit.EditContent"
+      attributes="
+      __setslice__
+      append
+      insert
+      makeelement
+      replace
+      " />
+  </class>
+
+  <class class="lxml.objectify.StringElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+
+  <class class="lxml.objectify.IntElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+
+  <class class="lxml.objectify.NoneElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+
+  <class class="lxml.etree.ElementChildIterator">
+    <require permission="zope.View"
+      attributes="__iter__ next" />
+  </class>
+
+</configure>

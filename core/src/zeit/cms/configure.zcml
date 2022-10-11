@@ -7,35 +7,16 @@
   <include package="grokcore.component" file="meta.zcml" />
   <include file="meta.zcml" />
 
-  <grok:grok package="." exclude="application browser celery generation testcontenttype testing webtest zope" />
-
-  <!-- Include requirements -->
-  <include package="zeit.cms" file="securitypolicy.zcml" />
-
-  <!-- local includes -->
+  <grok:grok package="." exclude="admin application browser celery checkout clipboard generation locking relation retractlog settings syndication testcontenttype testing webtest workingcopy zope" />
 
   <include file="permissions.zcml" />
-  <include file="patches.zcml" />
-
-  <include package=".admin" />
   <include package=".content" />
-  <include package=".related" />
-  <include package=".checkout"  />
-  <include package=".repository" />
-  <include package=".workingcopy" />
-  <include package=".syndication" />
-  <include package=".clipboard" />
-  <include package=".locking" />
-  <include package=".workflow" />
-  <include package=".relation" />
-  <include package=".settings" />
-  <include package=".tagging" />
-  <include package=".section" />
   <include package=".redirect" />
-  <include package=".retractlog" />
-
-
-  <!-- configuration -->
+  <include package=".related" />
+  <include package=".repository" />
+  <include package=".section" />
+  <include package=".tagging" />
+  <include package=".workflow" />
 
   <utility
     name="zeit.cms"
@@ -46,49 +27,5 @@
   <utility factory=".tracing.default_tracer" />
 
   <subscriber handler=".cleanup.clean_previous_interaction" />
-
-  <!-- lxml security settings -->
-
-  <class class="lxml.objectify.ObjectifiedElement">
-    <require permission="zope.View"
-      attributes="
-      __getitem__
-      countchildren
-      get
-      find
-      findall
-      getparent
-      index
-      iterchildren
-      tag
-      text
-      xpath
-      "/>
-    <require permission="zeit.EditContent"
-      attributes="
-      __setslice__
-      append
-      insert
-      makeelement
-      replace
-      " />
-  </class>
-
-  <class class="lxml.objectify.StringElement">
-    <require like_class="lxml.objectify.ObjectifiedElement" />
-  </class>
-
-  <class class="lxml.objectify.IntElement">
-    <require like_class="lxml.objectify.ObjectifiedElement" />
-  </class>
-
-  <class class="lxml.objectify.NoneElement">
-    <require like_class="lxml.objectify.ObjectifiedElement" />
-  </class>
-
-  <class class="lxml.etree.ElementChildIterator">
-    <require permission="zope.View"
-      attributes="__iter__ next" />
-  </class>
 
 </configure>
