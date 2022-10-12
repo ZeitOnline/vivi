@@ -31,7 +31,8 @@
     <html xmlns="http://www.w3.org/1999/xhtml"
       tal:define="view_title options/title|view/title|string:Zeit CMS;
       context_title context/@@standard_macros/context_title;
-      favicon string:${request/getApplicationURL}/fanstatic/zeit.cms/icons/favicon.png">
+      favicon string:${request/getApplicationURL}/fanstatic/zeit.cms/icons/favicon.png"
+      tal:attributes="data-vivi-version context/@@standard_macros/vivi_version">
       <head>
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
