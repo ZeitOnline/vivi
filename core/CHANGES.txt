@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.1 (2022-10-12)
+-------------------
+
+MAINT:
+- Include currently used vivi version as data-attribute on HTML tag
+
+
 5.21.0 (2022-10-07)
 -------------------
 
