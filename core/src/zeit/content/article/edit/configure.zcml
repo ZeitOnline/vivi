@@ -451,4 +451,6 @@
       permission="zeit.EditContent" />
   </class>
 
+  <utility factory=".videotagesschau.from_product_config" />
+
 </configure>

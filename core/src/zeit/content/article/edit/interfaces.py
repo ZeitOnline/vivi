@@ -3,10 +3,13 @@ from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.content.article.source import BodyAwareXMLSource
 import collections
 import datetime
+import logging
+import zc.sourcefactory.contextual
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.content.article.interfaces
 import zeit.content.article.source
+import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
@@ -16,12 +19,10 @@ import zeit.content.modules.jobticker
 import zeit.content.portraitbox.interfaces
 import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
+import zeit.contentquery.interfaces
 import zeit.edit.interfaces
 import zope.schema
-import zeit.contentquery.interfaces
 import zope.security.proxy
-import zeit.content.cp.interfaces
-import logging
 
 log = logging.getLogger(__name__)
 
@@ -178,6 +179,12 @@ class IVideoTagesschau(IBlock):
         required=False)
 
     tagesschauvideos = zope.interface.Attribute('List of available videos')
+
+
+class IVideoTagesschauAPI(zope.interface.Interface):
+
+    def request_videos(self):
+        """call Tagesschau API"""
 
 
 class IReference(IBlock):
