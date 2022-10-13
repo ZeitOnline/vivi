@@ -145,6 +145,41 @@ class IVideo(IBlock, ILayoutable):
         default=True)
 
 
+class IVideoTagesschauSource(zope.schema.interfaces.IIterableSource):
+    pass
+
+
+class VideoTagesschauSelection(
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+
+    @zope.interface.implementer(IVideoTagesschauSource)
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+        pass
+
+    def getValues(self, context):
+        return context.tagesschauvideos.values()
+
+    def getTitle(self, context, value):
+        label = ('<strong>%s</strong> (%s)<br />'
+            '<a href="%s" target="_blank">%s</a>' %
+            (value.title, value.type, value.video_url_hd, _('open video')))
+        return label
+
+    def getToken(self, context, value):
+        return value.id
+
+
+class IVideoTagesschau(IBlock):
+    """Block for placing 'Tagesschau' Video in article"""
+
+    tagesschauvideo = zope.schema.Choice(
+        title=_('Select video'),
+        source=VideoTagesschauSelection(),
+        required=False)
+
+    tagesschauvideos = zope.interface.Attribute('List of available videos')
+
+
 class IReference(IBlock):
     """A block which references another object."""
 

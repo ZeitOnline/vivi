@@ -101,6 +101,21 @@
       />
   </class>
 
+  <class class=".videotagesschau.VideoTagesschau">
+    <require
+      interface=".interfaces.IVideoTagesschau"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IVideoTagesschau"
+      permission="zeit.EditContent"
+      />
+    <require
+      set_attributes="tagesschauvideos"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".video.Video">
     <require
       interface=".interfaces.IVideo"

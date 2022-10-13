@@ -297,6 +297,23 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
         return 'citationcomment.{0}'.format(self.context.__name__)
 
 
+class VideoTagesschau(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    video = zeit.content.article.edit.interfaces.IVideoTagesschau
+    form_fields = zope.formlib.form.FormFields(video).select('tagesschauvideo')
+    undo_description = _('edit video tagesschau block')
+
+    @property
+    def prefix(self):
+        return 'videotagesschau.{0}'.format(self.context.__name__)
+
+    # Have to copy, since when adding one @action, we lose any inherited ones.
+    @zope.formlib.form.action(_('Apply'), failure='success_handler')
+    def handle_edit_action(self, action, data):
+        return self.success_handler(action, data)
+
+
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
 
     legend = None
