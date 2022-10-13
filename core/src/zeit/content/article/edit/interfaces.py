@@ -161,7 +161,10 @@ class VideoTagesschauSelection(
         return context.tagesschauvideos.values()
 
     def getTitle(self, context, value):
-        return '<strong>%s</strong> (%s)<br /><a href="%s" target="_blank">%s</a>' % (value.title, value.type, value.video_url_hd, _('open video'))
+        label = ('<strong>%s</strong> (%s)<br />'
+            '<a href="%s" target="_blank">%s</a>' %
+            (value.title, value.type, value.video_url_hd, _('open video')))
+        return label
 
     def getToken(self, context, value):
         return value.id
@@ -176,16 +179,6 @@ class IVideoTagesschau(IBlock):
         required=False)
 
     tagesschauvideos = zope.interface.Attribute('List of available videos')
-
-
-#### TODO
-###@zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
-###class TagesschauError(Exception):
-###
-###    def doc(self):
-###        # TODO
-###        return _(
-###            'ERRROR TAGESSCHAU TODO')
 
 
 class IVideoTagesschauAPI(zope.interface.Interface):

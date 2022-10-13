@@ -299,11 +299,12 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     def prefix(self):
         return 'citationcomment.{0}'.format(self.context.__name__)
 
+
 class VideoTagesschau(zeit.edit.browser.form.InlineForm):
 
     legend = None
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IVideoTagesschau).select('tagesschauvideo')
+    video = zeit.content.article.edit.interfaces.IVideoTagesschau
+    form_fields = zope.formlib.form.FormFields(video).select('tagesschauvideo')
     undo_description = _('edit video tagesschau block')
 
     @property

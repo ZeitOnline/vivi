@@ -9,6 +9,7 @@ from lxml.objectify import E
 from zeit.cms.content.property import ObjectPathAttributeProperty
 
 import zeit.cms.interfaces
+from zeit.cms.content.interfaces import IUUID
 import zeit.content.article.article
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
@@ -21,57 +22,11 @@ log = logging.getLogger(__name__)
 
 # QSTN: Better define this as dict (in ProductConfiguration) to replace
 #       mapping in z.c.article.edit.browser.edit.VideoTagesschau.handle_update?
-VIDEO_ATTRIBUTES= {'id', 'title', 'type', 'synopsis', 'video_url_hd',
+VIDEO_ATTRIBUTES = {'id', 'title', 'type', 'synopsis', 'video_url_hd',
     'video_url_hls_stream', 'video_url_hq', 'video_url_ln',
     'thumbnail_url_fullhd', 'thumbnail_url_large', 'thumbnail_url_small',
     'date_published', 'date_available'}
 
-DUMMY_RESPONSE = '''
-{"cutoff": 1.975,
- "recommendations": [{"main_title": "NEU TITEL 1 Ukraine meldet russische Angriffe auf Infrastruktur und Erfolge bei Rückeroberungen, die Diskussion um Waffenlieferungen dauert an",
-                      "program_id": "crid://daserste.de/tagesschau24/7dd07892-7528-43f8-9a52-76679ebfc65dAAAXXX/1",
-                      "published_start_time": "2022-09-12T11:02:00",
-                      "score": 101.98643,
-                      "search_strategy": "hotnews-no-local",
-                      "short_synopsis": "TITEL 1 Ukraine meldet russische Angriffe auf Infrastruktur und Erfolge bei Rückeroberungen, die Diskussion um Waffenlieferungen dauert an",
-                      "start_of_availability": "2022-09-12T11:02:59",
-                      "thumbnail_uris": {"fullhd": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231AAAXXX~_v-videowebl.jpg",
-                                         "large": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231XXX~_v-videowebm.jpg",
-                                         "small": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231XXX~_v-videowebs.jpg"},
-                      "video_uris": {"hd": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webxl.h264.mp4",
-                                     "hlsStream": "https://adaptive.tagesschau.de/i/video/2022/0912/TV-20220912-1057-5500.,webl.h264,webs.h264,webm.h264,webxl.h264,webxxl.h264,.mp4.csmil/master.m3u8",
-                                     "hq": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webl.h264.mp4",
-                                     "ln": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webs.h264.mp4"}},
-                     {"main_title": "TITEL 2 Ukraine meldet russische Angriffe auf Infrastruktur und Erfolge bei Rückeroberungen, die Diskussion um Waffenlieferungen dauert an",
-                      "program_id": "crid://daserste.de/tagesschau24/7dd07892-7528-43f8-9a52-76679ebfc65dYYY/1",
-                      "published_start_time": "2022-09-12T11:02:00",
-                      "score": 101.98643,
-                      "search_strategy": "hotnews-no-local",
-                      "short_synopsis": "TITEL 2 Ukraine meldet russische Angriffe auf Infrastruktur und Erfolge bei Rückeroberungen, die Diskussion um Waffenlieferungen dauert an",
-                      "start_of_availability": "2022-09-12T11:02:59",
-                      "thumbnail_uris": {"fullhd": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231YYY~_v-videowebl.jpg",
-                                         "large": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231YYY~_v-videowebm.jpg",
-                                         "small": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231YYY~_v-videowebs.jpg"},
-                      "video_uris": {"hd": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webxl.h264.mp4",
-                                     "hlsStream": "https://adaptive.tagesschau.de/i/video/2022/0912/TV-20220912-1057-5500.,webl.h264,webs.h264,webm.h264,webxl.h264,webxxl.h264,.mp4.csmil/master.m3u8",
-                                     "hq": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webl.h264.mp4",
-                                     "ln": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webs.h264.mp4"}},
-                     {"main_title": "TITEL 3 Ukraine meldet russische Angriffe auf Infrastruktur und Erfolge bei Rückeroberungen, die Diskussion um Waffenlieferungen dauert an",
-                      "program_id": "crid://daserste.de/tagesschau24/7dd07892-7528-43f8-9a52-76679ebfc65dZZZ/1",
-                      "published_start_time": "2022-09-12T11:02:00",
-                      "score": 101.98643,
-                      "search_strategy": "hotnews-no-local",
-                      "short_synopsis": "TITEL 2 Ukraine meldet russische Angriffe auf Infrastruktur und Erfolge bei Rückeroberungen, die Diskussion um Waffenlieferungen dauert an",
-                      "start_of_availability": "2022-09-12T11:02:59",
-                      "thumbnail_uris": {"fullhd": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231ZZZ~_v-videowebl.jpg",
-                                         "large": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231ZZZ~_v-videowebm.jpg",
-                                         "small": "https://www.tagesschau.de/multimedia/bilder/sendungsbild-1010231ZZZ~_v-videowebs.jpg"},
-                      "video_uris": {"hd": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webxl.h264.mp4",
-                                     "hlsStream": "https://adaptive.tagesschau.de/i/video/2022/0912/TV-20220912-1057-5500.,webl.h264,webs.h264,webm.h264,webxl.h264,webxxl.h264,.mp4.csmil/master.m3u8",
-                                     "hq": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webl.h264.mp4",
-                                     "ln": "https://media.tagesschau.de/video/2022/0912/TV-20220912-1057-5500.webs.h264.mp4"}}],
- "src_txt_hash": "881424269bcdd572e37c6ef3ff702baefb7845e9a12a22518e062e0b5f194e9a"}
-'''
 
 @grok.implementer(zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
 class VideoTagesschauAPI():
@@ -97,7 +52,7 @@ class VideoTagesschauAPI():
                 log.info(f'Found tagesschauvideo for {article.title} '
                          f'[{payload["article_uuid"]}]')
                 return rget.json()
-        except Exception:
+        except Exception as e:
             log.error(f'GET Tagesschau video {article.title} '
                       f'[{payload["article_uuid"]}]: {e}')
             pass
@@ -105,27 +60,18 @@ class VideoTagesschauAPI():
         # NOTE: currently there is no way to do the following requests
         #       in one step to call video urls
         try:
-            rpost = requests.post(f'{self.api_url_post}?SIG_URI={self.sig_uri}'
-                f'&API_KEY={self.api_key}&ART_HASH={article_hash}', json=payload)
+            requests.post(f'{self.api_url_post}?SIG_URI={self.sig_uri}'
+                f'&API_KEY={self.api_key}&ART_HASH={article_hash}',
+                json=payload)
         # TODO: more detailed exception report?
         except Exception as e:
             log.error(f'POST {article.title} [{payload["article_uuid"]}] '
                       f'to Tagesschau: {e}')
-            # TODO return something?
-        # NOTE: this sleep is just a guess
-        # better: retry loop?
+        # NOTE: this sleep is just a guess; better: retry loop?
         time.sleep(3)
         try:
             rget = requests.get(f'{self.api_url_get}/{article_hash}',
                                 headers=headers)
-            # TODO
-            ### self.errors = (zeit.content.article.edit.interfaces.TagesschauError(),)
-            ### self.status = _('There were errors')
-            ### self.send_message('Hallo', type='error')
-            import pdb; pdb.set_trace()
-            # DUMMY:
-            # import json
-            # return json.loads(DUMMY_RESPONSE)
             return rget.json()
         except Exception as e:
             log.error(f'GET Tagesschau video {article.title} '
@@ -134,16 +80,15 @@ class VideoTagesschauAPI():
     def _prepare_payload(self, article):
         uniqueId_parts = urlparse(article.uniqueId).path.split('/')
         filename = uniqueId_parts[-1]
-        # for new articles
+        # new articles
         if filename.endswith('.tmp'):
             article_uuid = f'{{urn:uuid:{filename.replace(".tmp", "")}}}'
-            # TODO: Try to use real URI
+            # TODO: Try to use filename if it exists
             article_uri = f'{"/".join(uniqueId_parts[0:-1])}/'\
                 f'{zeit.cms.interfaces.normalize_filename(article.title)}'
         else:
-            # TODO
-            article_uuid = 'du-123-mmy-456'
-            article_uri = 'http://www.dumm.y'
+            article_uuid = IUUID(article).id
+            article_uri = "/".join(uniqueId_parts)
         payload = {'article_custom_id': article_uuid,
                 'article_title': article.title,
                 'article_text': self._xml2plain(article),
@@ -151,8 +96,9 @@ class VideoTagesschauAPI():
         return payload
 
     def _xml2plain(self, article):
-        text_content = []
         # TODO: improve main_text? More than <p>?
+        #       Does API like HTML with semantic tags?
+        text_content = []
         for p in article.xml.body.xpath("//p//text()"):
             text = str(p).strip()
             if text:
@@ -214,6 +160,7 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
     produces = VideoTagesschau
     title = _('Video ARD Tagesschau')
 
+
 class Video:
 
     def __init__(self, recommendations=None, **kwargs):
@@ -244,6 +191,6 @@ def MockVideoTagesschau():
     from unittest import mock  # testing dependency
     tagesschau_api = mock.Mock()
     zope.interface.alsoProvides(
-        tagesschau_api, zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
-    #return DUMMY_RESPONSE
-    tagesschau_api.request_videos.return_value = 'mock-hippo'
+        tagesschau_api,
+        zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+    return tagesschau_api
