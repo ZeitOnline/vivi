@@ -34,13 +34,13 @@ case $COMMAND in
         ln -sfT $WORKSPACE $DEPLOYMENT/work/source/vivi
     ;;
     test-app-run)
+        cd $WORKSPACE
+        rm -f report*.xml coverage.xml cobertura.xml
+        cd $DEPLOYMENT/work/source
+        rm -f report*.xml coverage.xml cobertura.xml .coverage
+
         cd $DEPLOYMENT
         ./batou deploy jenkins
-
-        cd $WORKSPACE
-        rm -f report*.xml cobertura.xml
-        cd $DEPLOYMENT/work/source
-        rm -f report*.xml coverage.xml .coverage
 
         export GOCEPT_SELENIUM_JUNIT_ATTACH=True
 
