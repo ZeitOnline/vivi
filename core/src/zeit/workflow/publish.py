@@ -393,6 +393,8 @@ class PublishRetractTask:
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         publisher_base_url = config['publisher-base-url']
+        if not publisher_base_url.endswith('/'):
+            publisher_base_url += '/'
         url = f'{publisher_base_url}{method}'
         json = [cls._format_json(obj, method) for obj in to_process_list]
         response = requests.post(
