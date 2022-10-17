@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.3 (2022-10-17)
+-------------------
+
+FIX:
+- FIX: Be defensive about publisher url config trailing slash
+
+
 5.21.2 (2022-10-17)
 -------------------
 
