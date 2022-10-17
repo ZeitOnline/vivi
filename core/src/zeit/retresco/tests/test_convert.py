@@ -1,5 +1,6 @@
 # coding: utf-8
 from zeit.cms.checkout.helper import checked_out
+from zeit.content.dynamicfolder.testing import create_dynamic_folder
 from zeit.retresco.testing import create_testcontent
 import datetime
 import pytz
@@ -483,3 +484,14 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         content = zeit.retresco.interfaces.ITMSContent(data)
         self.assertEqual(2, zeit.content.gallery.interfaces.IVisibleEntryCount(
             content))
+
+    def test_converts_dynamicfolder(self):
+        folder = create_dynamic_folder(
+            'zeit.content.dynamicfolder:tests/fixtures/dynamic-centerpages/',
+            files=['config.xml', 'tags.xml', 'template.xml'])
+        self.repository['dynamic'] = folder
+        data = zeit.retresco.interfaces.ITMSRepresentation(
+            self.repository['dynamic'])()
+        self.assertEqual(
+            'http://xml.zeit.de/data/config.xml',
+            data['payload']['document']['config_file'])

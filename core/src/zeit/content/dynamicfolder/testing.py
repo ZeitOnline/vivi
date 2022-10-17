@@ -29,20 +29,26 @@ class DynamicLayer(plone.testing.Layer):
         with zeit.cms.testing.site(self['zodbApp']):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
-
-            folder = zeit.cms.repository.folder.Folder()
-            repository['data'] = folder
-            for name in self.files:
-                folder[name] = PersistentUnknownResource(
-                    data=pkg_resources.resource_string(
-                        __name__, '{}{}'.format(
-                            self.path, name)).decode(
-                        'latin-1'))
-
-            dynamic = RepositoryDynamicFolder()
-            dynamic.config_file = folder['config.xml']
-            repository['dynamicfolder'] = dynamic
+            repository['dynamicfolder'] = create_dynamic_folder(
+                __package__ + ':' + self.path, self.files)
             transaction.commit()
+
+
+def create_dynamic_folder(package, files):
+    package, _, path = package.partition(':')
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+
+    folder = zeit.cms.repository.folder.Folder()
+    repository['data'] = folder
+    for name in files:
+        folder[name] = PersistentUnknownResource(
+            data=pkg_resources.resource_string(
+                package, path + name).decode('latin-1'))
+
+    dynamic = RepositoryDynamicFolder()
+    dynamic.config_file = folder['config.xml']
+    return dynamic
 
 
 LAYER = DynamicLayer(path='tests/fixtures/dynamic-centerpages/', files=[

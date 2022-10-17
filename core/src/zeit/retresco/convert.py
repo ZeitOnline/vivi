@@ -20,6 +20,7 @@ import zeit.cms.workflow.interfaces
 import zeit.content.advertisement.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
+import zeit.content.dynamicfolder.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
@@ -363,20 +364,16 @@ class Advertisement(Converter):
         }
 
 
-class Link(Converter):
+class DynamicFolder(Converter):
 
-    interface = zeit.content.link.interfaces.ILink
+    interface = zeit.content.dynamicfolder.interfaces.IDynamicFolder
     grok.name(interface.__name__)
 
     def __call__(self):
         return {
-            'title': self.context.url,
-            'teaser': self.context.url,
-            'payload': {'body': {
-                'url': self.context.url,
-                'target': self.context.target,
-                'nofollow': self.context.nofollow,
-            }}
+            # Required fields, so make sure to always index.
+            'title': self.content.__name__,
+            'teaser': self.content.__name__,
         }
 
 
@@ -437,6 +434,23 @@ class Infobox(Converter):
             title, text = self.context.contents[0]
             result['payload']['body'].update(title=title, text=text)
         return result
+
+
+class Link(Converter):
+
+    interface = zeit.content.link.interfaces.ILink
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.url,
+            'teaser': self.context.url,
+            'payload': {'body': {
+                'url': self.context.url,
+                'target': self.context.target,
+                'nofollow': self.context.nofollow,
+            }}
+        }
 
 
 class Portraitbox(Converter):
