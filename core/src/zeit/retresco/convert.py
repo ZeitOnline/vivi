@@ -363,23 +363,6 @@ class Advertisement(Converter):
         }
 
 
-class Link(Converter):
-
-    interface = zeit.content.link.interfaces.ILink
-    grok.name(interface.__name__)
-
-    def __call__(self):
-        return {
-            'title': self.context.url,
-            'teaser': self.context.url,
-            'payload': {'body': {
-                'url': self.context.url,
-                'target': self.context.target,
-                'nofollow': self.context.nofollow,
-            }}
-        }
-
-
 class Gallery(Converter):
 
     interface = zeit.content.gallery.interfaces.IGallery
@@ -437,6 +420,23 @@ class Infobox(Converter):
             title, text = self.context.contents[0]
             result['payload']['body'].update(title=title, text=text)
         return result
+
+
+class Link(Converter):
+
+    interface = zeit.content.link.interfaces.ILink
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            'title': self.context.url,
+            'teaser': self.context.url,
+            'payload': {'body': {
+                'url': self.context.url,
+                'target': self.context.target,
+                'nofollow': self.context.nofollow,
+            }}
+        }
 
 
 class Portraitbox(Converter):
