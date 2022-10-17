@@ -20,6 +20,7 @@ import zeit.cms.workflow.interfaces
 import zeit.content.advertisement.interfaces
 import zeit.content.article.interfaces
 import zeit.content.author.interfaces
+import zeit.content.dynamicfolder.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
@@ -360,6 +361,19 @@ class Advertisement(Converter):
                 'title': self.context.title,
                 'text': self.context.text,
             }}
+        }
+
+
+class DynamicFolder(Converter):
+
+    interface = zeit.content.dynamicfolder.interfaces.IDynamicFolder
+    grok.name(interface.__name__)
+
+    def __call__(self):
+        return {
+            # Required fields, so make sure to always index.
+            'title': self.content.__name__,
+            'teaser': self.content.__name__,
         }
 
 
