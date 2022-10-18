@@ -47,20 +47,10 @@ class VideoTagesschauAPI():
             'origin': 'https://www.zeit.de'}
 
         # lookup for existing videos for given parameter
-        try:
-            rget = self._request(
-                       f'GET {self.api_url_get}/{article_hash}',
-                       retries=0,
-                       headers=headers)
-            if rget.status_code == 200:
-                log.info(f'Found tagesschauvideo for {article.title} '
-                         f'[{payload["article_custom_id"]}]')
-                return rget.json()
-        except Exception as e:
-            log.error(f'GET Tagesschau video {article.title} '
-                      f'[{payload["article_custom_id"]}]: {e}', exc_info=True)
-            pass
-
+        video_recommendations = self._request_recommendations(
+            article, payload, article_hash, headers)
+        if len(video_recommendations['recommendations']) > 0:
+            return video_recommendations
         # NOTE: currently there is no way to do the following requests
         #       in one step to call video urls
         try:
@@ -75,14 +65,24 @@ class VideoTagesschauAPI():
                       f'to Tagesschau: {e}')
         # NOTE: this sleep is just a guess; better: retry loop?
         time.sleep(3)
+        self._request_recommendations(
+            article, payload, article_hash, headers)
+
+    def _request_recommendations(
+            self, article, payload, article_hash, headers):
         try:
             rget = self._request(
                 f'GET {self.api_url_get}/{article_hash}',
                 retries=0, headers=headers)
-            return rget.json()
+            if rget.status_code == 200:
+                log.info(f'Found tagesschauvideo for {article.title} '
+                         f'[{payload["article_custom_id"]}]')
+                return rget.json()
+            return {"recommendations": []}
         except Exception as e:
             log.error(f'GET Tagesschau video {article.title} '
-                      f'[{payload["article_custom_id"]}]: {e}')
+                      f'[{payload["article_custom_id"]}]: {e}', exc_info=True)
+            pass
 
     def _request(self, request, retries=0, headers=None, **kw):
         verb, path = request.split(' ')
