@@ -120,7 +120,7 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             '/artikel/pfad/tagesschaurelevanter-artikel',
             payload['article_uri'])
 
-    def test_find_a_name_for_it(self):
+    def test_api_request_calls(self):
         article = self.get_article()
         article.uniqueId = 'http://xml.zeit.de/content/fuer/die/taggesschau'
         body = ("<division><p>Das ist Tagesschau relevant.</p>"

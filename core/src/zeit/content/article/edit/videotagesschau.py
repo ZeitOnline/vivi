@@ -178,7 +178,7 @@ class VideoTagesschau(zeit.content.article.edit.block.Block):
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = VideoTagesschau
-    title = _('Video ARD Tagesschau')
+    title = _('ARD Video')
 
 
 class Video:
