@@ -44,13 +44,6 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         'rules-url': 'file://%s/example_rules.py' %
         pkg_resources.resource_filename(__name__, 'tests/fixtures')},
         'zeit.retresco': {'topicpage-prefix': '/2007'},
-        # XXX Break circular testing dependency cp<-->article
-        'zeit.content.article': {
-            'tagesschau-api-url-post': '',
-            'tagesschau-api-url-get': '',
-            'tagesschau-sig-uri': '',
-            'tagesschau-api-key': '',
-        }
     }, bases=(
         zeit.content.image.testing.CONFIG_LAYER,
         zeit.content.modules.testing.CONFIG_LAYER,
