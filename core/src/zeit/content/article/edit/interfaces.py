@@ -161,9 +161,11 @@ class VideoTagesschauSelection(
         return context.tagesschauvideos.values()
 
     def getTitle(self, context, value):
-        label = ('<strong>%s</strong> (%s)<br />'
+        label = (
+            '<strong>%s</strong> (%s)<br />'
             '<a href="%s" target="_blank">%s</a>' %
-            (value.title, value.type, value.video_url_hd, _('open video')))
+            (value.title, value.type, value.video_url_hd, _('open video'))
+        )
         return label
 
     def getToken(self, context, value):

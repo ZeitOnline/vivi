@@ -88,11 +88,7 @@ class VideoTagesschauAPI():
         verb, path = request.split(' ')
         method = getattr(requests, verb.lower())
         try:
-            r = method(
-                    path,
-                    headers=headers,
-                    **kw
-                    )
+            r = method(path, headers=headers, **kw)
             return r
         except Exception as e:
             log.error(f'ARD-API: {e}', exc_info=True)
@@ -109,10 +105,10 @@ class VideoTagesschauAPI():
             article_uri = "/".join(uniqueId_parts)
         article_uuid = IUUID(article).id
         payload = {
-                'article_custom_id': article_uuid,
-                'article_title': article.title,
-                'article_text': self._xml2plain(article),
-                'article_uri': article_uri}
+            'article_custom_id': article_uuid,
+            'article_title': article.title,
+            'article_text': self._xml2plain(article),
+            'article_uri': article_uri}
         return payload
 
     def _xml2plain(self, article):

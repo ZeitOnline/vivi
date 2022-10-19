@@ -337,7 +337,7 @@ class VideoTagesschau(zeit.edit.browser.form.InlineForm):
                 'thumbnail_url_small': recom['thumbnail_uris']['small'],
                 'date_published': recom['published_start_time'],
                 'date_available': recom['start_of_availability']
-                }))
+            }))
         self.context.tagesschauvideos = recommendations
         self.context.tagesschauvideo = None
         if recommendations:

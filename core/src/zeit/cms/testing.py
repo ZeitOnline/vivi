@@ -536,8 +536,7 @@ CONFIG_LAYER = ProductConfigLayer(
             'tagesschau-api-url-post': '',
             'tagesschau-api-url-get': '',
             'tagesschau-sig-uri': '',
-            'tagesschau-api-key': '',
-        }
+            'tagesschau-api-key': ''}
     })
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
