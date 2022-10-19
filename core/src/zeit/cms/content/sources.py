@@ -484,7 +484,8 @@ class Serie(AllowedBase):
 
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
                  column=False, kind=None, video=False, fallback_image=False,
-                 podigee_id=None, podigee_url=None, color=None):
+                 podigee_id=None, podigee_url=None, zonaudioapp_id=None,
+                 color=None):
         super().__init__(serienname, title, None)
         self.id = serienname
         self.serienname = serienname
@@ -497,6 +498,7 @@ class Serie(AllowedBase):
         self.fallback_image = fallback_image
         self.podigee_url = podigee_url
         self.podigee_id = podigee_id
+        self.zonaudioapp_id = zonaudioapp_id
         self.color = color
 
     def __eq__(self, other):
@@ -530,6 +532,7 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 node.get('fallback_image') == 'yes',
                 unicode_or_none(node.get('podigee-id')),
                 unicode_or_none(node.get('podigee-url')),
+                unicode_or_none(node.get('zonaudioapp-id')),
                 unicode_or_none(node.get('color'))
             )
         return result
