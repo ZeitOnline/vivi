@@ -44,13 +44,10 @@ class VideoTagesschauAPI():
         payload = self._prepare_payload(article)
         article_hash = hashlib.sha256(
             payload['article_text'].encode('utf-8')).hexdigest()
-        headers = {
-            'Access-Control-Allow-Headers': '*',
-            'origin': 'https://www.zeit.de'}
 
         # lookup for existing videos for given parameter
         video_recommendations = self._request_recommendations(
-            article, payload, article_hash, headers)
+            article, payload, article_hash)
         if video_recommendations['recommendations']:
             log.info(f'Found tagesschauvideo for "{article.title}" '
                      f'{payload["article_custom_id"]}')
@@ -71,14 +68,13 @@ class VideoTagesschauAPI():
         # NOTE: this sleep is just a guess; better: retry loop?
         time.sleep(3)
         return self._request_recommendations(
-            article, payload, article_hash, headers)
+            article, payload, article_hash)
 
     def _request_recommendations(
-            self, article, payload, article_hash, headers):
+            self, article, payload, article_hash):
         try:
             rget = self._request(
-                f'GET {self.api_url_get}/{article_hash}',
-                retries=0, headers=headers)
+                f'GET {self.api_url_get}/{article_hash}', retries=0)
             if rget.status_code == 200:
                 return rget.json()
             if rget.status_code == 404:
