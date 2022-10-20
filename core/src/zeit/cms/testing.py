@@ -531,12 +531,12 @@ CONFIG_LAYER = ProductConfigLayer(
         'repository-path': pkg_resources.resource_filename(
             'zeit.connector', 'testcontent')
     },
-        # XXX Break circular testing dependency cp<-->article
-        'zeit.content.article': {
-            'tagesschau-api-url-post': '',
-            'tagesschau-api-url-get': '',
-            'tagesschau-sig-uri': '',
-            'tagesschau-api-key': ''}
+###        # XXX Break circular testing dependency cp<-->article
+###        'zeit.content.article': {
+###            'tagesschau-api-url-post': '',
+###            'tagesschau-api-url-get': '',
+###            'tagesschau-sig-uri': '',
+###            'tagesschau-api-key': ''}
     })
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))

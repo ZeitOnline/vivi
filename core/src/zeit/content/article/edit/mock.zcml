@@ -1,8 +1,0 @@
-<configure
-   xmlns="http://namespaces.zope.org/zope"
-   xmlns:meta="http://namespaces.zope.org/meta"
-   i18n_domain="zope"
-   >
-
-  <utility factory="zeit.content.article.edit.videotagesschau.MockVideoTagesschau" />
-</configure>
