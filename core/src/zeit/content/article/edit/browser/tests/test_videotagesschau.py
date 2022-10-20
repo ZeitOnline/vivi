@@ -137,7 +137,7 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             config)
         with mock.patch('zeit.content.article.edit.'
                         'videotagesschau.VideoTagesschauAPI._request') as rq:
-            api.request_videos(article)
+            api_request = api.request_videos(article)
             path, args = rq.call_args_list[0]
             self.assertEqual('GET https://ard-tagesschau/get/'
                              '6b0a8d0a2d3724730be6bde771c6c4cdd183757367'
@@ -151,3 +151,5 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual('GET https://ard-tagesschau/get/'
                              '6b0a8d0a2d3724730be6bde771c6c4cdd183757367'
                              '9289abd8809a881e34cd4f', path[0])
+            assert isinstance(api_request, dict)
+            assert isinstance(api_request['recommendations'], list)

@@ -65,7 +65,7 @@ class VideoTagesschauAPI():
                       f'to Tagesschau: {e}')
         # NOTE: this sleep is just a guess; better: retry loop?
         time.sleep(3)
-        self._request_recommendations(
+        return self._request_recommendations(
             article, payload, article_hash, headers)
 
     def _request_recommendations(
