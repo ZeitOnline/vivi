@@ -49,7 +49,9 @@ class VideoTagesschauAPI():
         # lookup for existing videos for given parameter
         video_recommendations = self._request_recommendations(
             article, payload, article_hash, headers)
-        if len(video_recommendations['recommendations']) > 0:
+        if video_recommendations['recommendations']:
+            log.info(f'Found tagesschauvideo for "{article.title}" '
+                     f'{payload["article_custom_id"]}')
             return video_recommendations
         # NOTE: currently there is no way to do the following requests
         #       in one step to call video urls
@@ -61,7 +63,8 @@ class VideoTagesschauAPI():
                 json=payload)
         # TODO: more detailed exception report?
         except Exception as e:
-            log.error(f'POST {article.title} [{payload["article_custom_id"]}] '
+            log.error(f'POST "{article.title}" '
+                      f'[{payload["article_custom_id"]}] '
                       f'to Tagesschau: {e}')
         # NOTE: this sleep is just a guess; better: retry loop?
         time.sleep(3)
@@ -75,13 +78,18 @@ class VideoTagesschauAPI():
                 f'GET {self.api_url_get}/{article_hash}',
                 retries=0, headers=headers)
             if rget.status_code == 200:
-                log.info(f'Found tagesschauvideo for {article.title} '
-                         f'[{payload["article_custom_id"]}]')
                 return rget.json()
+            if rget.status_code == 404:
+                log.info(
+                    f'404: No entry for current version of '
+                    f'"{article.title}" '
+                    f'{payload["article_custom_id"]}; '
+                    f'key: {article_hash}')
             return {"recommendations": []}
         except Exception as e:
-            log.error(f'GET Tagesschau video {article.title} '
-                      f'[{payload["article_custom_id"]}]: {e}', exc_info=True)
+            log.error(f'GET Tagesschau video for "{article.title}" '
+                      f'{payload["article_custom_id"]}: {e}',
+                      exc_info=True)
             pass
 
     def _request(self, request, retries=0, headers=None, **kw):
