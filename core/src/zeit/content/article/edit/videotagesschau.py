@@ -58,7 +58,6 @@ class VideoTagesschauAPI():
             self._request(
                 f'POST {self.api_url_post}?SIG_URI={self.sig_uri}'
                 f'&API_KEY={self.api_key}&ART_HASH={article_hash}',
-                retries=0,
                 json=payload)
         # TODO: more detailed exception report?
         except Exception as e:
@@ -74,7 +73,7 @@ class VideoTagesschauAPI():
             self, article, payload, article_hash):
         try:
             rget = self._request(
-                f'GET {self.api_url_get}/{article_hash}', retries=0)
+                f'GET {self.api_url_get}/{article_hash}')
             if rget.status_code == 200:
                 return rget.json()
             if rget.status_code == 404:
@@ -90,7 +89,7 @@ class VideoTagesschauAPI():
                       exc_info=True)
             pass
 
-    def _request(self, request, retries=0, headers=None, **kw):
+    def _request(self, request, headers=None, **kw):
         verb, path = request.split(' ')
         method = getattr(requests, verb.lower())
         try:
