@@ -1,24 +1,26 @@
-import time
-import requests
-import zope.interface
-import zope.security.management
-import hashlib
-from urllib.parse import urlparse
-import zope.security.proxy
 from lxml.objectify import E
-from zeit.cms.content.property import ObjectPathAttributeProperty
-
-import zeit.cms.interfaces
+from urllib.parse import urlparse
 from zeit.cms.content.interfaces import IUUID
+from zeit.cms.content.property import ObjectPathAttributeProperty
+from zeit.cms.i18n import MessageFactory as _
+from zope.index.text.interfaces import ISearchableText
+import grokcore.component as grok
+import hashlib
+import logging
+import requests
+import time
+import zeit.cms.browser.view
+import zeit.cms.interfaces
 import zeit.content.article.article
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.cms.browser.view
-from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
-import logging
+import zope.interface
+import zope.security.management
+import zope.security.proxy
+
 
 log = logging.getLogger(__name__)
+
 
 # QSTN: Better define this as dict (in ProductConfiguration) to replace
 #       mapping in z.c.article.edit.browser.edit.VideoTagesschau.handle_update?
@@ -110,24 +112,14 @@ class VideoTagesschauAPI():
             article_uri = f'{"/".join(uniqueId_parts[0:-1])}/'\
                 f'{zeit.cms.interfaces.normalize_filename(article.title)}'
         else:
-            article_uri = "/".join(uniqueId_parts)
-        article_uuid = IUUID(article).id
+            article_uri = '/'.join(uniqueId_parts)
+        body = ' '.join(ISearchableText(article).getSearchableText())
         payload = {
-            'article_custom_id': article_uuid,
+            'article_custom_id': IUUID(article).id,
             'article_title': article.title,
-            'article_text': self._xml2plain(article),
+            'article_text': body,
             'article_uri': article_uri}
         return payload
-
-    def _xml2plain(self, article):
-        # TODO: improve main_text? More than <p>?
-        #       Does API like HTML with semantic tags?
-        text_content = []
-        for p in article.xml.body.xpath("//p//text()"):
-            text = str(p).strip()
-            if text:
-                text_content.append(text)
-        return ' '.join(text_content)
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IVideoTagesschau)
