@@ -1,4 +1,4 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure xmlns:zcml="http://namespaces.zope.org/zcml" xmlns="http://namespaces.zope.org/zope">
 
   <class class=".body.EditableBody">
     <require
@@ -97,6 +97,21 @@
       />
     <require
       set_schema=".interfaces.IImage"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".videotagesschau.VideoTagesschau">
+    <require
+      interface=".interfaces.IVideoTagesschau"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IVideoTagesschau"
+      permission="zeit.EditContent"
+      />
+    <require
+      set_attributes="tagesschauvideos"
       permission="zeit.EditContent"
       />
   </class>
@@ -435,5 +450,8 @@
       interface=".interfaces.IFindReplace"
       permission="zeit.EditContent" />
   </class>
+
+  <utility factory=".videotagesschau.from_product_config" zcml:condition="not-have zeit.cms.testing" />
+  <utility factory="zeit.content.article.edit.videotagesschau.MockVideoTagesschau" zcml:condition="have zeit.cms.testing" />
 
 </configure>

@@ -4,8 +4,10 @@ import zeit.cms.browser.manual
 import zeit.cms.browser.widget
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.interfaces
+import zeit.content.article.interfaces
 import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
+from zeit.content.article.edit.videotagesschau import Video
 import zeit.content.modules.rawtext
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
@@ -295,6 +297,51 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'citationcomment.{0}'.format(self.context.__name__)
+
+
+class VideoTagesschau(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    video = zeit.content.article.edit.interfaces.IVideoTagesschau
+    form_fields = zope.formlib.form.FormFields(video).select('tagesschauvideo')
+    undo_description = _('edit video tagesschau block')
+
+    @property
+    def prefix(self):
+        return 'videotagesschau.{0}'.format(self.context.__name__)
+
+    # Have to copy, since when adding one @action, we lose any inherited ones.
+    @zope.formlib.form.action(_('Apply'), failure='success_handler')
+    def handle_edit_action(self, action, data):
+        return self.success_handler(action, data)
+
+    @zope.formlib.form.action(_('generate-video-recommendation'))
+    def handle_update(self, action, data):
+        article = zope.security.proxy.getObject(
+            zeit.content.article.interfaces.IArticle(self.context))
+        api = zope.component.getUtility(
+            zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+        recommendations = list()
+        for recom in api.request_videos(article)['recommendations']:
+            recommendations.append(Video(**{
+                'id': recom['program_id'],
+                'title': recom['main_title'],
+                'type': recom['search_strategy'],
+                'synopsis': recom['short_synopsis'],
+                'video_url_hd': recom['video_uris']['hd'],
+                'video_url_hls_stream': recom['video_uris']['hlsStream'],
+                'video_url_hq': recom['video_uris']['hq'],
+                'video_url_ln': recom['video_uris']['ln'],
+                'thumbnail_url_fullhd': recom['thumbnail_uris']['fullhd'],
+                'thumbnail_url_large': recom['thumbnail_uris']['large'],
+                'thumbnail_url_small': recom['thumbnail_uris']['small'],
+                'date_published': recom['published_start_time'],
+                'date_available': recom['start_of_availability']
+            }))
+        self.context.tagesschauvideos = recommendations
+        self.context.tagesschauvideo = None
+        if recommendations:
+            self.context.tagesschauvideo = recommendations[0]
 
 
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
