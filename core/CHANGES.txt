@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.6 (2022-10-21)
+-------------------
+
+- ZO-1583: ARD Tagesschau video module
+
+
 5.21.5 (2022-10-20)
 -------------------
 
