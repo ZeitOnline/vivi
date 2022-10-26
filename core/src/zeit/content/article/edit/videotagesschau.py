@@ -9,7 +9,6 @@ import hashlib
 import logging
 import requests
 import time
-import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.content.article.article
 import zeit.content.article.edit.block
