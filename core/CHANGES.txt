@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.7 (2022-10-28)
+-------------------
+
+FIX:
+- rm imported but unused module
+
+
 5.21.6 (2022-10-21)
 -------------------
 
