@@ -37,6 +37,7 @@ product_config = """
   topicpage-filter-source file://{base}/tests/topicpage-esqueries.json
   config-base-url file://{base}/tests/
   tagesschau-api-url-post https://ard-tagesschau/post
+  tagesschau-api-url-post-sync https://ard-tagesschau/post/sync
   tagesschau-api-url-get https://ard-tagesschau/get
   tagesschau-sig-uri XYZ
   tagesschau-api-key 1a2b3c4d5e

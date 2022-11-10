@@ -9,6 +9,7 @@ import hashlib
 import logging
 import requests
 import time
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.interfaces
 import zeit.content.article.article
 import zeit.content.article.edit.block
@@ -35,6 +36,7 @@ class VideoTagesschauAPI():
 
     def __init__(self, config):
         self.api_url_post = config['tagesschau-api-url-post']
+        self.api_url_post_sync = config['tagesschau-api-url-post-sync']
         self.api_url_get = config['tagesschau-api-url-get']
         self.sig_uri = config['tagesschau-sig-uri']
         self.api_key = config['tagesschau-api-key']
@@ -51,11 +53,12 @@ class VideoTagesschauAPI():
             log.info(f'Found tagesschauvideo for "{article.title}" '
                      f'{payload["article_custom_id"]}')
             return video_recommendations
-        # NOTE: currently there is no way to do the following requests
-        #       in one step to call video urls
+        api_url = self.api_url_post
+        if FEATURE_TOGGLES.find('ard_sync_api'):
+            api_url = self.api_url_post_sync
         try:
-            self._request(
-                f'POST {self.api_url_post}?SIG_URI={self.sig_uri}'
+            rpost = self._request(
+                f'POST {api_url}?SIG_URI={self.sig_uri}'
                 f'&API_KEY={self.api_key}&ART_HASH={article_hash}',
                 json=payload)
         # TODO: more detailed exception report?
@@ -63,6 +66,8 @@ class VideoTagesschauAPI():
             log.error(f'POST "{article.title}" '
                       f'[{payload["article_custom_id"]}] '
                       f'to Tagesschau: {e}')
+        if rpost.status_code == 200:
+            return rpost.json()
         # NOTE: this sleep is just a guess; better: retry loop?
         time.sleep(3)
         return self._request_recommendations(
@@ -92,8 +97,8 @@ class VideoTagesschauAPI():
         verb, path = request.split(' ')
         method = getattr(requests, verb.lower())
         try:
-            r = method(path, headers=headers, **kw)
-            return r
+            rq = method(path, headers=headers, **kw)
+            return rq
         except Exception as e:
             log.error(f'ARD-API: {e}', exc_info=True)
             pass
