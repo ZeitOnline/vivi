@@ -4,6 +4,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.push.interfaces import IPushMessages
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
@@ -156,7 +157,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
 
 class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
 
-    def test_normalize_body(self):
+    def test_normalize_body_to_inch(self):
         article = self.get_article()
         p = self.get_factory(article, 'p')()
         p.text = '“up” and „down‟ and «around»'
@@ -165,12 +166,30 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
             block = co.body.values()[0]
             self.assertEqual('"up" and "down" and "around"', block.text)
 
-    def test_normalize_teaser(self):
+    def test_normalize_teaser_to_inch(self):
         article = self.get_article()
         article.teaserTitle = '“up” and „down‟ and «around»'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as co:
             self.assertEqual('"up" and "down" and "around"', co.teaserTitle)
+
+    def test_normalize_body(self):
+        FEATURE_TOGGLES.set('normalize_quotes')
+        article = self.get_article()
+        p = self.get_factory(article, 'p')()
+        p.text = '‟up” and „down“ and »around«'
+        self.repository['article'] = article
+        with checked_out(self.repository['article']) as co:
+            block = co.body.values()[0]
+            self.assertEqual('»up« and »down« and »around«', block.text)
+
+    def test_normalize_teaser(self):
+        FEATURE_TOGGLES.set('normalize_quotes')
+        article = self.get_article()
+        article.teaserTitle = '“up” and „down‟ and «around»'
+        self.repository['article'] = article
+        with checked_out(self.repository['article']) as co:
+            self.assertEqual('»up« and »down« and »around«', co.teaserTitle)
 
 
 class LayoutHeaderByArticleTemplate(
