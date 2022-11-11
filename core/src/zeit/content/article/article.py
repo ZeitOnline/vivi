@@ -1,5 +1,6 @@
 from io import StringIO
 from zeit.cms.content.cache import writeabledict
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 import gocept.cache.property
@@ -347,7 +348,9 @@ def ensure_block_ids(context, event):
     body.ensure_division()
 
 
-DOUBLE_QUOTE_CHARACTERS = re.compile('[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
+QUOTE_CHARACTERS = re.compile('[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
+QUOTE_CHARACTERS_OPEN = re.compile('[\u201e\u201f]')
+QUOTE_CHARACTERS_CLOSE = re.compile('[\u201c\u201d]')
 
 
 @grok.subscribe(
@@ -355,24 +358,39 @@ DOUBLE_QUOTE_CHARACTERS = re.compile('[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def normalize_quotation_marks(context, event):
     # XXX objectify has immutable text/tail. le sigh.
+
+    normalize = normalize_quotes if FEATURE_TOGGLES.find(
+        'normalize_quotes') else normalize_quotes_to_inch_sign
     context.xml.body = lxml.objectify.fromstring(lxml.etree.tostring(
-        normalize_quotes(
+        normalize(
             lxml.etree.fromstring(lxml.etree.tostring(context.xml.body)))))
 
     if context.xml.find('teaser') is not None:
         context.xml.teaser = lxml.objectify.fromstring(lxml.etree.tostring(
-            normalize_quotes(
+            normalize(
                 lxml.etree.fromstring(
                     lxml.etree.tostring(context.xml.teaser)))))
 
 
 def normalize_quotes(node):
     if node.text:
-        node.text = DOUBLE_QUOTE_CHARACTERS.sub('"', node.text)
+        node.text = QUOTE_CHARACTERS_OPEN.sub('»', node.text)
+        node.text = QUOTE_CHARACTERS_CLOSE.sub('«', node.text)
     if node.tail:
-        node.tail = DOUBLE_QUOTE_CHARACTERS.sub('"', node.tail)
+        node.tail = QUOTE_CHARACTERS_OPEN.sub('»', node.tail)
+        node.text = QUOTE_CHARACTERS_CLOSE.sub('«', node.text)
     for child in node.iterchildren():
         normalize_quotes(child)
+    return node
+
+
+def normalize_quotes_to_inch_sign(node):
+    if node.text:
+        node.text = QUOTE_CHARACTERS.sub('"', node.text)
+    if node.tail:
+        node.tail = QUOTE_CHARACTERS.sub('"', node.tail)
+    for child in node.iterchildren():
+        normalize_quotes_to_inch_sign(child)
     return node
 
 
