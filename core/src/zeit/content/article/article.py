@@ -367,8 +367,8 @@ def ensure_block_ids(context, event):
 
 
 QUOTE_CHARACTERS = re.compile('[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
-QUOTE_CHARACTERS_OPEN = re.compile('[\u201e\u201f]')
-QUOTE_CHARACTERS_CLOSE = re.compile('[\u201c\u201d]')
+QUOTE_CHARACTERS_OPEN = re.compile('[\u201c\u201e]')
+QUOTE_CHARACTERS_CLOSE = re.compile('[\u201d\u201f]')
 
 
 @grok.subscribe(

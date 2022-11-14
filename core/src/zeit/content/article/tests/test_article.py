@@ -160,7 +160,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
     def test_normalize_body_to_inch(self):
         article = self.get_article()
         p = self.get_factory(article, 'p')()
-        p.text = '“up” and „down‟ and «around»'
+        p.text = '“up” and „down‟ and »around«'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as co:
             block = co.body.values()[0]
@@ -168,7 +168,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
 
     def test_normalize_teaser_to_inch(self):
         article = self.get_article()
-        article.teaserTitle = '“up” and „down‟ and «around»'
+        article.teaserTitle = '“up” and „down‟ and »around«'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as co:
             self.assertEqual('"up" and "down" and "around"', co.teaserTitle)
@@ -177,7 +177,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
         FEATURE_TOGGLES.set('normalize_quotes')
         article = self.get_article()
         p = self.get_factory(article, 'p')()
-        p.text = '‟up” and „down“ and »around«'
+        p.text = '“up” and „down‟ and »around«'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as co:
             block = co.body.values()[0]
@@ -186,7 +186,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
     def test_normalize_teaser(self):
         FEATURE_TOGGLES.set('normalize_quotes')
         article = self.get_article()
-        article.teaserTitle = '“up” and „down‟ and «around»'
+        article.teaserTitle = '“up” and „down‟ and »around«'
         self.repository['article'] = article
         with checked_out(self.repository['article']) as co:
             self.assertEqual('»up« and »down« and »around«', co.teaserTitle)
