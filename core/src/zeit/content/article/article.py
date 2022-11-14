@@ -358,7 +358,6 @@ QUOTE_CHARACTERS_CLOSE = re.compile('[\u201d\u201f]')
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def normalize_quotation_marks(context, event):
     # XXX objectify has immutable text/tail. le sigh.
-
     normalize = normalize_quotes if FEATURE_TOGGLES.find(
         'normalize_quotes') else normalize_quotes_to_inch_sign
     context.xml.body = lxml.objectify.fromstring(lxml.etree.tostring(
