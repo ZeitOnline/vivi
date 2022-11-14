@@ -474,7 +474,7 @@ class DoubleQuotes:
 
     def __call__(self):
         return json.dumps(
-            zeit.content.article.article.DOUBLE_QUOTE_CHARACTERS.pattern)
+            zeit.content.article.article.QUOTE_CHARACTERS.pattern)
 
 
 class EditJobTicker(zeit.edit.browser.form.InlineForm):
