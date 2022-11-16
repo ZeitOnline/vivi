@@ -69,10 +69,15 @@ class BaseImage:
         except Exception:
             return None
 
+    FORMATS = {
+        'jpg': 'JPEG',
+        'x-ms-bmp': 'BMP',
+    }
+
     @property
     def format(self):
         subtype = self.mimeType.split('/')[-1]
-        return subtype.upper()
+        return self.FORMATS.get(subtype, subtype.upper())
 
 
 @zope.interface.implementer_only(

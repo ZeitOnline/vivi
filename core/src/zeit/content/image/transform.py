@@ -180,9 +180,6 @@ class ImageTransform:
         image = zeit.content.image.image.TemporaryImage()
         if not format:
             format = self.context.format
-        # Yay consistency
-        if format == 'JPG':
-            format = 'JPEG'
 
         options = zeit.content.image.interfaces.ENCODER_PARAMETERS.find(format)
 
