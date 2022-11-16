@@ -96,6 +96,16 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         with self.assertRaises(google.api_core.exceptions.NotFound):
             blob.download_as_bytes()
 
+    def test_delete_ignores_nonexistent_gcs_blob(self):
+        res = self.get_resource('foo', b'mybody')
+        res.type = 'file'
+        self.connector.add(res)
+        props = self.connector._get_properties(res.id)
+        blob = self.connector.bucket.blob(props.id)
+        blob.delete()
+        with self.assertNothingRaised():
+            del self.connector[res.id]
+
     def test_delete_removes_rows_from_all_tables(self):
         from zeit.connector.postgresql import Paths, Properties
         res = self.get_resource('foo', b'mybody')

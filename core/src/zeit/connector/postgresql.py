@@ -17,6 +17,7 @@ from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.resource import CachedResource
 import collections
+import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
 import os
 import os.path
@@ -237,7 +238,11 @@ class Connector:
             with zeit.cms.tracing.use_span(
                     __name__ + '.tracing', 'gcs', attributes={
                     'db.operation': 'delete', 'id': id}):
-                blob.delete()
+                try:
+                    blob.delete()
+                except google.api_core.exceptions.NotFound:
+                    log.info('Ignored NotFound while deleting GCS blob %s', id)
+                    pass
         self.session.delete(props)
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
