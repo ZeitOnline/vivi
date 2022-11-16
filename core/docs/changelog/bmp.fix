@@ -1,1 +1,0 @@
-FIX: Don't immediately break when we encounter a BMP image (even though officically we only support jpg+png)

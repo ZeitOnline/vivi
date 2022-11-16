@@ -3,6 +3,15 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.8 (2022-11-16)
+-------------------
+
+FIX:
+- FIX: Don't immediately break when we encounter a BMP image (even though officically we only support jpg+png)
+
+- Ignore nonexistent GCS blobs during delete
+
+
 5.21.7 (2022-10-28)
 -------------------
 
