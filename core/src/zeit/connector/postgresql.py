@@ -181,6 +181,8 @@ class Connector:
 
     def add(self, resource, verify_etag=True):
         uniqueid = self._normalize(resource.id)
+        if uniqueid == ID_NAMESPACE:
+            raise KeyError('Cannot write to root object')
         props = self._get_properties(uniqueid)
         exists = props is not None
         if not exists:

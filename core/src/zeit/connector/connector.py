@@ -1,6 +1,7 @@
 """Connect to the CMS backend."""
 
 from io import BytesIO
+from zeit.connector.interfaces import ID_NAMESPACE
 import datetime
 import gocept.cache.property
 import gocept.lxml.objectify
@@ -518,6 +519,8 @@ class Connector:
     def _internal_add(self, id, resource, verify_etag=True):
         """The grunt work of __setitem__() and add()
         """
+        if id.rstrip('/') == ID_NAMESPACE.rstrip('/'):
+            raise KeyError('Cannot write to root object')
         self._invalidate_cache(id)
         locktoken = self._get_my_locktoken(id)
         autolock = (locktoken is None)
