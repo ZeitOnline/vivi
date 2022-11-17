@@ -3,8 +3,6 @@ from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.push.interfaces import IPushMessages
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
@@ -328,34 +326,6 @@ def notify_modified(article, field):
     zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
         article, zope.lifecycleevent.Attributes(
             zeit.cms.content.interfaces.ICommonMetadata, field)))
-
-
-class CopyTeaserToPush(zeit.content.article.testing.FunctionalTestCase):
-
-    def setUp(self):
-        super().setUp()
-        article = self.get_article()
-        article.teaserText = 'mytext'
-        self.repository['article'] = article
-        self.article = self.repository['article']
-
-    def test_most_genre_does_nothing(self):
-        with checked_out(self.article) as article:
-            notify_modified(article, 'teaserText')
-            self.assertEqual(None, IPushMessages(article).short_text)
-
-    def test_genre_nachricht_copies(self):
-        with checked_out(self.article) as article:
-            article.genre = 'nachricht'
-            notify_modified(article, 'teaserText')
-            self.assertEqual('mytext', IPushMessages(article).short_text)
-
-    def test_push_already_set_does_not_change_anything(self):
-        with checked_out(self.article) as article:
-            article.genre = 'nachricht'
-            IPushMessages(article).short_text = 'manual'
-            notify_modified(article, 'teaserText')
-            self.assertEqual('manual', IPushMessages(article).short_text)
 
 
 class ArticleXMLReferenceUpdate(
