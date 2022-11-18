@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.9 (2022-11-18)
+-------------------
+
+- ZO-2132: Normalize quotes to angled instead of inch if toggle `normalize_quotes` is set
+
+- ZO-2179: Prohibit writing the root object to IConnector
+
+
 5.21.8 (2022-11-16)
 -------------------
 
