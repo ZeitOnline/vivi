@@ -105,6 +105,9 @@ class Connector(zeit.connector.filesystem.Connector):
             id = CannonicalId(id + '/')
         resource.id = str(id)  # override
 
+        if id.rstrip('/') == ID_NAMESPACE.rstrip('/'):
+            raise KeyError('Cannot write to root object')
+
         if id in self:
             old_etag = self[id].properties.get(('getetag', 'DAV:'))
         else:

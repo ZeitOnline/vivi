@@ -94,6 +94,11 @@ class ContractReadWrite:
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual('testing', res.type)
 
+    def test_setitem_prohibits_writing_root_object(self):
+        res = self.get_resource('foo')
+        with self.assertRaises(KeyError):
+            self.connector['http://xml.zeit.de/'] = res
+
     def test_delitem_removes_resource(self):
         res = self.add_resource('foo')
         self.assertIn(res.id, self.connector)
