@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.10 (2022-11-23)
+--------------------
+
+- ZO-1471: No longer copy teaserText to twitter push text (ZO-920)
+
+- ZO-2042: usage of ard sync api
+
+
 5.21.9 (2022-11-18)
 -------------------
 
