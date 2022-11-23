@@ -62,9 +62,6 @@ class Block(VisibleMixin, zeit.edit.block.SimpleElement):
     read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more_url')
 
-    background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'background_color')
-
     @property
     def type_title(self):
         """Retrieve title for this block type from XML config."""
