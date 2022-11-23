@@ -3,6 +3,7 @@ import json
 import zope.component
 from unittest import mock
 import lxml.objectify
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.videotagesschau
@@ -135,6 +136,7 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             'zeit.content.article')
         api = zeit.content.article.edit.videotagesschau.VideoTagesschauAPI(
             config)
+        FEATURE_TOGGLES.unset('ard_sync_api')
         with mock.patch('zeit.content.article.edit.'
                         'videotagesschau.VideoTagesschauAPI._request') as rq:
             api_request = api.request_videos(article)
@@ -151,5 +153,16 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual('GET https://ard-tagesschau/get/'
                              '6b0a8d0a2d3724730be6bde771c6c4cdd183757367'
                              '9289abd8809a881e34cd4f', path[0])
+            assert isinstance(api_request, dict)
+            assert isinstance(api_request['recommendations'], list)
+        FEATURE_TOGGLES.set('ard_sync_api')
+        with mock.patch('zeit.content.article.edit.'
+                        'videotagesschau.VideoTagesschauAPI._request') as rq:
+            api_request = api.request_videos(article)
+            path, args = rq.call_args_list[1]
+            self.assertEqual('POST https://ard-tagesschau/post/sync?SIG_URI=XYZ'
+                             '&API_KEY=1a2b3c4d5e&ART_HASH=6b0a8d0a2d37247'
+                             '30be6bde771c6c4cdd1837573679289abd8809a881e3'
+                             '4cd4f', path[0])
             assert isinstance(api_request, dict)
             assert isinstance(api_request['recommendations'], list)
