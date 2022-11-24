@@ -467,6 +467,9 @@ zeit.content.article.Editable = gocept.Class.extend({
     update_toolbar: function() {
         var self = this;
         var element = self.get_selected_container();
+        if (isUndefinedOrNull(element)) {
+            return;  // happens e.g. during initialization
+        }
         if (element.nodeType == element.TEXT_NODE) {
             element = element.parentNode;
         }
@@ -846,6 +849,9 @@ zeit.content.article.Editable = gocept.Class.extend({
     },
 
     get_selected_container: function() {
+        if (!window.getSelection().rangeCount) {
+            return null;
+        }
         var container;
         var range = window.getSelection().getRangeAt(0);
         if ((range.startContainer.nodeType ==
