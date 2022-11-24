@@ -43,6 +43,7 @@ case $COMMAND in
         ./batou deploy jenkins
 
         export GOCEPT_SELENIUM_JUNIT_ATTACH=True
+        export GOCEPT_WEBDRIVER_FF_BINARY=/opt/firefox-106/firefox  # ZO-2215
 
         set +e
         shift
