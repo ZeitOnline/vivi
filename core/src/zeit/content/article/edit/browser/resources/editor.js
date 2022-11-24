@@ -467,7 +467,10 @@ zeit.content.article.Editable = gocept.Class.extend({
     update_toolbar: function() {
         var self = this;
         var element = self.get_selected_container();
-		if (element.nodeType == element.TEXT_NODE) {
+        if (isUndefinedOrNull(element)) {
+            return;  // happens e.g. during initialization
+        }
+        if (element.nodeType == element.TEXT_NODE) {
             element = element.parentNode;
         }
         forEach(MochiKit.DOM.getElementsByTagAndClassName(
@@ -490,8 +493,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 }
             });
             element = element.parentNode;
-		}
-
+        }
     },
 
     relocate_toolbar: function(fast) {
@@ -847,6 +849,9 @@ zeit.content.article.Editable = gocept.Class.extend({
     },
 
     get_selected_container: function() {
+        if (!window.getSelection().rangeCount) {
+            return null;
+        }
         var container;
         var range = window.getSelection().getRangeAt(0);
         if ((range.startContainer.nodeType ==
@@ -1036,7 +1041,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (typeof refocus === 'undefined' || refocus === true) {
             self.editable.focus();
         }
-		self.update_toolbar();
+        self.update_toolbar();
     },
 
     init_shortcuts: function() {
@@ -1077,55 +1082,55 @@ zeit.content.article.Editable = gocept.Class.extend({
                     }
                 }
         }));
-  },
+    },
 
-  selectall: function() {
-    var self = this;
-    $('#editable-body .block.type-p p, #editable-body .block.type-ul p, #editable-body .block.type-p li, #editable-body .block.type-p h3, #editable-body .block.type-intertitle h3, #editable-body .block.type-ul li, #editable-body .fieldname-custom_caption textarea, #form-article-content-head textarea').each(function(index, value) {
-      var content = $(this).text();
-      if(content !='') {
-        var range = document.createRange();
-        range.selectNodeContents(this);
-        var sel = window.getSelection();
-        sel.addRange(range);
-        $('#editable-body textarea').css({'background':'#b4d5ff'});
-        $('#form-article-content-head textarea').css({'background':'#b4d5ff'});
-      }
-    });
-  },
-
-  show_find_dialog: function() {
+    selectall: function() {
       var self = this;
-      var dialog = new zeit.content.article.FindDialog(self);
-      dialog.show();
-  },
-
-  find_and_select_next: function(
-      text, direction, case_sensitive, start_selection) {
-      var self = this;
-      return zeit.content.article.find_next(
-          self.editable, text, direction, case_sensitive, start_selection);
-  },
-
-  replace_text: function(node, start, end, replacement) {
-      var self = this;
-      self.dirty = true;
-      node.textContent = (node.textContent.substring(0, start)
-                          + replacement
-                          + node.textContent.substring(end));
-  },
-
-  replace_all: function(find, replace) {
-      var self = this;
-      self.dirty = true;  // XXX Is this really correct?
-      var d = self.save(/*supress_reload=*/true);
-      d.addCallback(function() {
-          return zeit.edit.makeJSONRequest(
-              $('#editable-body').attr('cms:url') + '/@@replace-all',
-          {'find': find, 'replace': replace});
+      $('#editable-body .block.type-p p, #editable-body .block.type-ul p, #editable-body .block.type-p li, #editable-body .block.type-p h3, #editable-body .block.type-intertitle h3, #editable-body .block.type-ul li, #editable-body .fieldname-custom_caption textarea, #form-article-content-head textarea').each(function(index, value) {
+        var content = $(this).text();
+        if(content !='') {
+          var range = document.createRange();
+          range.selectNodeContents(this);
+          var sel = window.getSelection();
+          sel.addRange(range);
+          $('#editable-body textarea').css({'background':'#b4d5ff'});
+          $('#form-article-content-head textarea').css({'background':'#b4d5ff'});
+        }
       });
-      return d;
-  }
+    },
+
+    show_find_dialog: function() {
+        var self = this;
+        var dialog = new zeit.content.article.FindDialog(self);
+        dialog.show();
+    },
+
+    find_and_select_next: function(
+        text, direction, case_sensitive, start_selection) {
+        var self = this;
+        return zeit.content.article.find_next(
+            self.editable, text, direction, case_sensitive, start_selection);
+    },
+
+    replace_text: function(node, start, end, replacement) {
+        var self = this;
+        self.dirty = true;
+        node.textContent = (node.textContent.substring(0, start)
+                            + replacement
+                            + node.textContent.substring(end));
+    },
+
+    replace_all: function(find, replace) {
+        var self = this;
+        self.dirty = true;  // XXX Is this really correct?
+        var d = self.save(/*supress_reload=*/true);
+        d.addCallback(function() {
+            return zeit.edit.makeJSONRequest(
+                $('#editable-body').attr('cms:url') + '/@@replace-all',
+            {'find': find, 'replace': replace});
+        });
+        return d;
+    }
 
 });
 
