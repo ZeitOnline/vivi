@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.11 (2022-11-24)
+--------------------
+
+- ZO-2215: Don't try to reposition the toolbar while the article editor is still initializing
+
+
+FIX:
+- ZO-2104: Mark unstable test as xfail
+
+
 5.21.10 (2022-11-23)
 --------------------
 
