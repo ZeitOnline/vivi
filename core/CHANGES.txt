@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.21.12 (2022-11-29)
+--------------------
+
+- ZO-2132: Roll back changes, they're causing data loss for some users, even though they use a toggle
+
+
 5.21.11 (2022-11-24)
 --------------------
 
