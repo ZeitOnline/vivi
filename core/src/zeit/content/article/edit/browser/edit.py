@@ -474,12 +474,7 @@ class DoubleQuotes:
 
     def __call__(self):
         return json.dumps(
-            {"chars": zeit.content.article.article.QUOTE_CHARACTERS.pattern,
-             "chars_open": (
-                 zeit.content.article.article.QUOTE_CHARACTERS_OPEN.pattern),
-             "chars_close": (
-                 zeit.content.article.article.QUOTE_CHARACTERS_CLOSE.pattern),
-             "normalize_quotes": FEATURE_TOGGLES.find('normalize_quotes')})
+            zeit.content.article.article.DOUBLE_QUOTE_CHARACTERS.pattern)
 
 
 class EditJobTicker(zeit.edit.browser.form.InlineForm):
