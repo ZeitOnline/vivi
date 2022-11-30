@@ -20,10 +20,7 @@ class EditCommon(zeit.content.cp.browser.view.EditBox):
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IBlock).select(
             'supertitle', 'title',
-            'read_more', 'read_more_url',
-            'background_color')
-    form_fields['background_color'].custom_widget = (
-        zeit.cms.browser.widget.ColorpickerWidget)
+            'read_more', 'read_more_url')
 
 
 class SwitchType:

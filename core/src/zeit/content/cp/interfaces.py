@@ -489,10 +489,6 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
         title=_("Read more URL"),
         required=False,
         constraint=zeit.cms.interfaces.valid_link_target)
-    background_color = zope.schema.TextLine(
-        title=_("Background color (ZMO only)"),
-        required=False,
-        max_length=6, constraint=zeit.cms.content.interfaces.hex_literal)
 
 
 class IUnknownBlock(zeit.edit.interfaces.IUnknownBlock, IBlock):
