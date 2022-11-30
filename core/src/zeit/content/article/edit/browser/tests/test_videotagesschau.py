@@ -40,11 +40,11 @@ MOCKDEFAULT = '''
                                      "ln": "tages.schau/video2_ln"}},
                      {"main_title": "Video 3",
                       "program_id": "crid://daserste.de/crid3",
-                      "published_start_time": "2022-09-32T33:02:00",
+                      "published_start_time": "2022-09-23T23:02:00",
                       "score": 303.98643,
                       "search_strategy": "hotnews-no-local",
                       "short_synopsis": "Das ist Video 3",
-                      "start_of_availability": "2022-09-32T33:02:59",
+                      "start_of_availability": "2022-09-23T23:02:59",
                       "thumbnail_uris": {"fullhd": "tages.schau/thumb3",
                                          "large": "tages.schau/thumb2",
                                          "small": "tages.schau/thumb3"},
@@ -81,7 +81,8 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(
             'crid://daserste.de/crid3', brwsr.getControl('Video 3').value)
         self.assertTrue(
-            '<strong>Video 2</strong> (hotnews-no-local)<br />'
+            '<strong>Video 2</strong> - 2022-09-22 22:02:00 '
+            '(hotnews-no-local)<br />'
             '<a href="tages.schau/video2_hd" target="_blank">open video</a>'
             '</label>' in brwsr.contents)
 
@@ -160,7 +161,8 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
                         'videotagesschau.VideoTagesschauAPI._request') as rq:
             api_request = api.request_videos(article)
             path, args = rq.call_args_list[1]
-            self.assertEqual('POST https://ard-tagesschau/post/sync?SIG_URI=XYZ'
+            self.assertEqual('POST https://ard-tagesschau/post/sync'
+                             '?SIG_URI=XYZ'
                              '&API_KEY=1a2b3c4d5e&ART_HASH=6b0a8d0a2d37247'
                              '30be6bde771c6c4cdd1837573679289abd8809a881e3'
                              '4cd4f', path[0])
