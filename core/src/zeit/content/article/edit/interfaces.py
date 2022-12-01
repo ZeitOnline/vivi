@@ -189,6 +189,19 @@ class IVideoTagesschauAPI(zope.interface.Interface):
         """call Tagesschau API"""
 
 
+@zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
+class VideoTagesschauNoResultError(Exception):
+
+    def __init__(self, error_type):
+        self.error_type = error_type
+
+    def doc(self):
+        errmsg = dict()
+        errmsg['empty'] = _('No tagesschau video recommendation found.')
+        errmsg['technical'] = _('Error while requesting tagesschau API')
+        return _(errmsg[self.error_type])
+
+
 class IReference(IBlock):
     """A block which references another object."""
 

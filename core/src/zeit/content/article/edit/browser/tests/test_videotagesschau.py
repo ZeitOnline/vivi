@@ -8,6 +8,18 @@ import zeit.content.article.edit.browser.testing
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.videotagesschau
 
+MOCKDEFAULTBROKEN = '''
+{"cutoff": 1.975
+}
+'''
+
+MOCKDEFAULTEMPTY = '''
+{"cutoff": 1.975,
+ "recommendations": [],
+ "src_txt_hash": "881424269bcdd572e37c6ef3ff702baefb7845e9a12a22518e062e09a"
+}
+'''
+
 MOCKDEFAULT = '''
 {"cutoff": 1.975,
  "recommendations": [{"main_title": "Video 1",
@@ -84,6 +96,32 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
             '<strong>Video 2</strong> (hotnews-no-local)<br />'
             '<a href="tages.schau/video2_hd" target="_blank">open video</a>'
             '</label>' in brwsr.contents)
+
+    def test_api_call_empty_recommendations_triggers_errormessage(self):
+        api = zope.component.getUtility(
+            zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+        api.request_videos.return_value = json.loads(MOCKDEFAULTEMPTY)
+        self.get_article(with_empty_block=True)
+        brwsr = self.browser
+        brwsr.open(
+            'editable-body/blockname/@@edit-videotagesschau?show_form=1')
+        self.assertEqual(len(brwsr.xpath('//input[@type="radio"]')), 1)
+        brwsr.getControl('generate-video-recommendation').click()
+        self.assertEqual(len(brwsr.xpath('//ul[@class="errors"]')), 1)
+        self.assertEllipsis('...No tagesschau video recommendation found...', brwsr.contents)
+
+    def test_api_call_fails_triggers_errormessage(self):
+        api = zope.component.getUtility(
+            zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+        api.request_videos.return_value = json.loads(MOCKDEFAULTBROKEN)
+        self.get_article(with_empty_block=True)
+        brwsr = self.browser
+        brwsr.open(
+            'editable-body/blockname/@@edit-videotagesschau?show_form=1')
+        self.assertEqual(len(brwsr.xpath('//input[@type="radio"]')), 1)
+        brwsr.getControl('generate-video-recommendation').click()
+        self.assertEqual(len(brwsr.xpath('//ul[@class="errors"]')), 1)
+        self.assertEllipsis('...Error while requesting tagesschau API...', brwsr.contents)
 
 
 class Form2(zeit.content.article.testing.FunctionalTestCase):
