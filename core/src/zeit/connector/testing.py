@@ -10,6 +10,7 @@ import pytest
 import requests
 import socket
 import sqlalchemy
+import time
 import transaction
 import zeit.cms.testing
 import zeit.connector.connector
@@ -65,14 +66,19 @@ class DAVServerLayer(plone.testing.Layer):
             return s.getsockname()[1]
 
     def wait_for_http(self, url, timeout=5, sleep=0.2):
+        http = requests.Session()
         slept = 0
         while slept < timeout:
+            slept += sleep
+            time.sleep(sleep)
             try:
-                requests.get(url, timeout=1)
+                http.get(url, timeout=1)
             except Exception:
                 pass
             else:
+                http.close()
                 return
+        http.close()
         raise RuntimeError('%s did not start up' % url)
 
     def testTearDown(self):
