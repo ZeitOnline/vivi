@@ -163,7 +163,8 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
     def test_missing_config_should_use_from_path_only(self):
         # This makes testing easier
         import zope.app.appsetup.product
-        del zope.app.appsetup.product._configs['zeit.cms']
+        del zope.app.appsetup.product._configs['zeit.cms'][
+            'breadcrumbs-use-common-metadata']
         content = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.repository['foo'] = content
         view = BreadcrumbsView(content)
