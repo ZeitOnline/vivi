@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.0 (2022-12-08)
+-------------------
+
+- BEM-113: Support categorizing feature-toggle.xml with intermediary tags
+
+
 5.21.12 (2022-11-29)
 --------------------
 
