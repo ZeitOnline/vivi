@@ -41,6 +41,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     @cached_on_content('area_values', lambda x: x.context.__name__)
     def values(self):
+        #if self.kind in ['kpi-table', 'kpi-accordion']:
+        #    breakpoint()
         if not self.automatic:
             return self.context.values()
 

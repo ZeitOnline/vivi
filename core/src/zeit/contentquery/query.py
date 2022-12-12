@@ -291,22 +291,26 @@ class TMSContentQuery(ContentQuery):
         rows = self._teaser_count + 5  # total teasers + some spares
         key = (self.topicpage, self.filter_id, start, self.order)
         if key in cache:
-            response, start, _ = cache[key]
+            resp_work, start, _ = cache[key]
         else:
             response, hits = self._get_documents(start, rows)
-            cache[key] = response, start, hits
+            from itertools import tee
+            resp_work, resp_cache = tee(response)
+            cache[key] = resp_cache, start, hits
 
         result = []
         dupes = 0
         while len(result) < self.rows:
             try:
-                item = next(response)
+                #if self.context.kind in ['kpi-table', 'kpi-accordion'] and self.context.topicpage_order == 'visits':
+                #    breakpoint()
+                item = next(resp_work)
             except StopIteration:
                 start = start + rows            # fetch next batch
-                response, hits = self._get_documents(start, rows)
-                cache[key] = response, start, hits
+                resp_work, hits = self._get_documents(start, rows)
+                cache[key] = resp_work, start, hits
                 try:
-                    item = next(response)
+                    item = next(resp_work)
                 except StopIteration:
                     break                       # results are exhausted
 
@@ -323,6 +327,8 @@ class TMSContentQuery(ContentQuery):
     def _get_documents(self, start, rows):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         try:
+            #if self.context.kind == 'kpi-table' and self.context.topicpage_order == 'visits':
+            #    breakpoint()
             response = tms.get_topicpage_documents(
                 id=self.topicpage, filter=self.filter_id, order=self.order,
                 start=start, rows=rows)
