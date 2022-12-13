@@ -161,10 +161,13 @@ class VideoTagesschauSelection(
         return context.tagesschauvideos.values()
 
     def getTitle(self, context, value):
+        date_published = datetime.datetime.strptime(
+            value.date_published, "%Y-%m-%dT%H:%M:%S")
         label = (
-            '<strong>%s</strong> (%s)<br />'
+            '<strong>%s</strong> - %s (%s)<br />'
             '<a href="%s" target="_blank">%s</a>' %
-            (value.title, value.type, value.video_url_hd, _('open video'))
+            (value.title, date_published, value.type, value.video_url_hd,
+                _('open video'))
         )
         return label
 
