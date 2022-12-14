@@ -17,12 +17,13 @@ log = logging.getLogger(__name__)
 
 class JavaScript:
 
-    FILENAME = 'msg_{now}.js'
+    FILENAME = '{prefix}_{now}.js'
 
-    def __init__(self, folder_id, url, api_token):
+    def __init__(self, folder_id, url, api_token, prefix):
         self.folder_id = folder_id
         self.url = url
         self.api_token = api_token
+        self.prefix = prefix
 
     @cachedproperty
     def folder(self):
@@ -57,6 +58,7 @@ class JavaScript:
     def _store(self, content):
         obj = zeit.content.text.text.Text()
         filename = self.FILENAME.format(
+            prefix=self.prefix,
             now=datetime.datetime.now().strftime('%Y%m%d%H%M'))
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content
@@ -80,7 +82,8 @@ def sourcepoint_from_product_config():
     return JavaScript(
         config['sp-javascript-folder'],
         config['sp-url'],
-        config['sp-api-token'])
+        config['sp-api-token'],
+        'msg')
 
 
 @zope.interface.implementer(zeit.sourcepoint.interfaces.IAdDefend)
@@ -90,7 +93,8 @@ def addefend_from_product_config():
     return JavaScript(
         config['addefend-javascript-folder'],
         config['addefend-url'],
-        config['addefend-api-token'])
+        config['addefend-api-token'],
+        'addefend_script')
 
 
 @zeit.cms.cli.runner()
