@@ -28,5 +28,5 @@ class IJavaScript(zope.interface.Interface):
         """
 
 
-class IAdDefend(IJavaScript):
+class ISourcePoint(IJavaScript):
     pass

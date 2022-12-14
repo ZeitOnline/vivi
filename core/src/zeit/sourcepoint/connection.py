@@ -11,7 +11,7 @@ import zeit.sourcepoint.javascript
 log = logging.getLogger(__name__)
 
 
-@zope.interface.implementer(zeit.sourcepoint.interfaces.IJavaScript)
+@zope.interface.implementer(zeit.sourcepoint.interfaces.ISourcePoint)
 def sourcepoint_from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.sourcepoint')
@@ -26,7 +26,7 @@ def sourcepoint_from_product_config():
 def update(principal=zeit.cms.cli.from_config(
         'zeit.sourcepoint', 'update-principal')):
     log.info('Checking Sourcepoint JS')
-    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
+    store = zope.component.getUtility(zeit.sourcepoint.interfaces.ISourcePoint)
     store.update()
 
 
@@ -36,12 +36,12 @@ def sweep():
     parser = argparse.ArgumentParser()
     parser.add_argument('--keep', type=int, default=10)
     options = parser.parse_args()
-    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
+    store = zope.component.getUtility(zeit.sourcepoint.interfaces.ISourcePoint)
     store.sweep(keep=options.keep)
     log.info('Sweep end')
 
 
-@zope.interface.implementer(zeit.sourcepoint.interfaces.IAdDefend)
+@zope.interface.implementer(zeit.sourcepoint.interfaces.IJavaScript)
 def addefend_from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.sourcepoint')
@@ -55,7 +55,7 @@ def addefend_from_product_config():
 def update_addefend(principal=zeit.cms.cli.from_config(
         'zeit.sourcepoint', 'update-principal')):
     log.info('Checking AdDefend JS')
-    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IAdDefend)
+    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
     store.update()
 
 
@@ -65,6 +65,6 @@ def sweep_addefend():
     parser = argparse.ArgumentParser()
     parser.add_argument('--keep', type=int, default=10)
     options = parser.parse_args()
-    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IAdDefend)
+    store = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
     store.sweep(keep=options.keep)
     log.info('Sweep end')
