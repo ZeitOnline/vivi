@@ -1,4 +1,4 @@
 <configure xmlns="http://namespaces.zope.org/zope">
-  <utility factory=".javascript.sourcepoint_from_product_config" />
-  <utility factory=".javascript.addefend_from_product_config" />
+  <utility factory=".connection.sourcepoint_from_product_config" />
+  <utility factory=".connection.addefend_from_product_config" />
 </configure>
