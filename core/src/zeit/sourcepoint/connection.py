@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 def sourcepoint_from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.sourcepoint')
-    return zeit.sourcepoint.javascript.JavaScript(
+    return zeit.sourcepoint.javascript.Sourcepoint(
         config['sp-javascript-folder'],
         config['sp-url'],
         config['sp-api-token'],
@@ -48,7 +48,6 @@ def addefend_from_product_config():
     return zeit.sourcepoint.javascript.JavaScript(
         config['addefend-javascript-folder'],
         config['addefend-url'],
-        config['addefend-api-token'],
         'addefend_script')
 
 

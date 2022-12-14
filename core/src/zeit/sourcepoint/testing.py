@@ -9,7 +9,6 @@ product_config = """\
   sp-api-token mytoken
   sp-url http://example.com
   sp-javascript-folder http://xml.zeit.de/sourcepoint/
-  addefend-api-token mytoken
   addefend-url http://example.com
   addefend-javascript-folder http://xml.zeit.de/addefend/
 </product-config>
