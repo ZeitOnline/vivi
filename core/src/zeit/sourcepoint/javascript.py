@@ -15,7 +15,6 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-@zope.interface.implementer(zeit.sourcepoint.interfaces.IJavaScript)
 class JavaScript:
 
     FILENAME = 'msg_{now}.js'
@@ -75,11 +74,23 @@ class JavaScript:
 
 
 @zope.interface.implementer(zeit.sourcepoint.interfaces.IJavaScript)
-def from_product_config():
+def sourcepoint_from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.sourcepoint')
     return JavaScript(
-        config['javascript-folder'], config['url'], config['api-token'])
+        config['sp-javascript-folder'],
+        config['sp-url'],
+        config['sp-api-token'])
+
+
+@zope.interface.implementer(zeit.sourcepoint.interfaces.IAdDefend)
+def addefend_from_product_config():
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.sourcepoint')
+    return JavaScript(
+        config['addefend-javascript-folder'],
+        config['addefend-url'],
+        config['addefend-api-token'])
 
 
 @zeit.cms.cli.runner()
