@@ -27,6 +27,7 @@ class Layer(plone.testing.Layer):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
             repository['sourcepoint'] = zeit.cms.repository.folder.Folder()
+            repository['addefend'] = zeit.cms.repository.folder.Folder()
 
 
 LAYER = Layer()

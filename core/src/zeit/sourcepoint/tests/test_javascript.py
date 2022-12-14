@@ -99,3 +99,18 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(1, len(folder))
         js.sweep(keep=2)
         self.assertEqual(1, len(folder))
+
+    def test_download_addefend_js(self):
+        folder = self.repository['addefend']
+        folder['addefend_script_20221213.js'] = Text('yesterday')
+        js = zope.component.getUtility(zeit.sourcepoint.interfaces.IAdDefend)
+        self.assertEqual(1, len(folder))
+        with mock.patch.object(js, '_download') as download, clock(
+                datetime(2022, 12, 14, 13, 13)):
+            download.return_value = 'new'
+            js.update()
+        transaction.commit()
+        self.assertEqual([
+            'addefend_script_20221213.js', 'addefend_script_202212141313.js'],
+            sorted(folder.keys()))
+        self.assertEqual(True, self.publish().publish.called)
