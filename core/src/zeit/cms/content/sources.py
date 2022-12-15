@@ -478,7 +478,7 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
 
     def override(self, value, *names):
         for name in names:
-            setattr(self._get_tree(), name, value)
+            self._overrides()[name] = value
 
     # Changes are discarded between tests, as they call dogpile clear()
     @FEATURE_CACHE.cache_on_arguments()

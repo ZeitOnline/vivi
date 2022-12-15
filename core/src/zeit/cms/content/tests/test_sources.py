@@ -1,5 +1,7 @@
 from unittest.mock import Mock
 import gocept.lxml.objectify
+import pkg_resources
+import pyramid_dogpile_cache2
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.testing
@@ -178,3 +180,22 @@ class SerieSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         context = None
         self.assertEqual(None, source.factory.getTitle(context, None))
         self.assertEqual(None, source.factory.getToken(context, None))
+
+
+class FeatureToggleTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_allows_overriding_values(self):
+        toggles = zeit.cms.content.sources.FeatureToggleSource()(None)
+        toggles.factory.config_url = 'toggle'
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        config['toggle'] = 'file://' + pkg_resources.resource_filename(
+            'zeit.cms.content', 'feature-toggle-grouped.xml')
+        self.assertFalse(toggles.find('example'))
+        toggles.set('example')
+        self.assertTrue(toggles.find('example'))
+        toggles.unset('example')
+        self.assertFalse(toggles.find('example'))
+
+        toggles.set('example')
+        pyramid_dogpile_cache2.clear()
+        self.assertFalse(toggles.find('example'))
