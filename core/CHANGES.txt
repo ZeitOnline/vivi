@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.2 (2022-12-15)
+-------------------
+
+- ZO-2324: Switch container registry
+
+
 5.22.1 (2022-12-15)
 -------------------
 
