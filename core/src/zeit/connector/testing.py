@@ -27,13 +27,17 @@ class DockerSetupError(requests.exceptions.ConnectionError):
 
 class DAVServerLayer(plone.testing.Layer):
 
+    container_image = (
+        'europe-west3-docker.pkg.dev/zeitonline-engineering/docker-zon/'
+        'dav-server:1.1.1')
+
     def setUp(self):
         dav = self.get_random_port()
         query = self.get_random_port()
         self['docker'] = docker.from_env()
         try:
             self['dav_container'] = self['docker'].containers.run(
-                "registry.zeit.de/dav-server:1.1.1", detach=True, remove=True,
+                self.container_image, detach=True, remove=True,
                 ports={9000: dav, 9999: query})
         except requests.exceptions.ConnectionError:
             raise DockerSetupError(

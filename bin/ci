@@ -2,11 +2,28 @@
 
 set -xe
 
+function prepare_credentials() {
+    k8s_cluster="$1"
+    export GCLOUD_CREDENTIALS="$(mktemp).json"
+    set +x; echo -E "${GCP_SERVICE_ACCOUNT}" > $GCLOUD_CREDENTIALS; set -x
+    export CLOUDSDK_CONFIG="$(mktemp -d)"
+    export DOCKER_CONFIG="$(mktemp -d)"
+    export KUBECONFIG="$(mktemp)"
+    trap "rm -rf $GCLOUD_CREDENTIALS $CLOUDSDK_CONFIG $DOCKER_CONFIG $KUBECONFIG" EXIT
+    gcloud --quiet auth activate-service-account --key-file=$GCLOUD_CREDENTIALS
+    gcloud --quiet auth configure-docker europe-west3-docker.pkg.dev
+    # Writes to $KUBECONFIG, where kubectl expects it.
+    gcloud container clusters get-credentials $k8s_cluster \
+           --project="zeitonline-main" --zone="europe-west3-a"
+}
+
+
 DEPLOYMENT=$WORKSPACE/../$(basename $WORKSPACE)-deployment
 
 COMMAND=${1:-test-app}
 case $COMMAND in
     test-app)
+        prepare_credentials staging  # for docker pull dav-server
         bin/ci setup-batou
         env PGPORT=$($DEPLOYMENT/bin/get_open_port) pg_virtualenv -v ${PGVENV:-13} \
             $WORKSPACE/bin/ci test-app-run
