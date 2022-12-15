@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.1 (2022-12-15)
+-------------------
+
+- BEM-113: Make overriding toggles for tests work again
+
+- ZO-2226: Display publish date in video selection
+
+
 5.22.0 (2022-12-08)
 -------------------
 
