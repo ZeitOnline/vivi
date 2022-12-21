@@ -473,6 +473,7 @@ class EditDivision(zeit.edit.browser.form.InlineForm,
 class DoubleQuotes:
 
     def __call__(self):
+        self.request.response.setHeader('Cache-Control', 'no-cache')
         return json.dumps(
             {"chars": zeit.content.article.article.QUOTE_CHARACTERS.pattern,
              "chars_open": (
