@@ -1,6 +1,8 @@
 from zeit.cms.workflow.interfaces import IPublish
+from zope.app.appsetup.product import getProductConfiguration
 from zope.cachedescriptors.property import Lazy as cachedproperty
 
+import ast
 import datetime
 import logging
 import requests
@@ -16,10 +18,21 @@ class JavaScript:
 
     FILENAME = '{prefix}_{now}.js'
 
-    def __init__(self, folder_id, url, prefix):
+    def __init__(self, folder_id, url, prefix, headers=None):
         self.folder_id = folder_id
         self.url = url
         self.prefix = prefix
+        if headers:
+            self.headers = ast.literal_eval(headers)
+
+    @classmethod
+    def from_product_config(cls, name):
+        config = getProductConfiguration('zeit.sourcepoint')
+        return cls(
+            config[f'{name}-javascript-folder'],
+            config[f'{name}-url'],
+            config[f'{name}-filename'],
+            config.get(f'{name}-headers', ""))
 
     @cachedproperty
     def folder(self):
@@ -40,13 +53,10 @@ class JavaScript:
         if new and new != current:
             self._store(new)
 
-    def _request_text(self):
-        return requests.get(self.url).text
-
     def _download(self):
         log.info('Downloading from %s', self.url)
         try:
-            return self._request_text()
+            return requests.get(self.url, headers=self.headers).text
         except Exception:
             log.warning('Error downloading %s, ignored', self.
                         url, exc_info=True)
@@ -70,17 +80,3 @@ class JavaScript:
         for name in delete:
             IPublish(self.folder[name]).retract(background=False)
             del self.folder[name]
-
-
-class Sourcepoint(JavaScript):
-
-    def __init__(self, folder_id, url, api_token, prefix):
-        self.folder_id = folder_id
-        self.url = url
-        self.api_token = api_token
-        self.prefix = prefix
-
-    def _request_text(self):
-        return requests.get(
-                self.url,
-                headers={'Authorization': 'Token %s' % self.api_token}).text

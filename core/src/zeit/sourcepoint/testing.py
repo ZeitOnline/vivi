@@ -6,11 +6,13 @@ import zope.component
 
 product_config = """\
 <product-config zeit.sourcepoint>
-  sp-api-token mytoken
-  sp-url http://example.com
-  sp-javascript-folder http://xml.zeit.de/sourcepoint/
   addefend-url http://example.com
   addefend-javascript-folder http://xml.zeit.de/addefend/
+  addefend-filename addefend_script
+  sourcepoint-url http://example.com
+  sourcepoint-javascript-folder http://xml.zeit.de/sourcepoint/
+  sourcepoint-headers {'authorization': 'Token mytoken'}
+  sourcepoint-filename msg
 </product-config>
 """
 
