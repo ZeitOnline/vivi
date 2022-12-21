@@ -37,7 +37,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         folder['msg_201901170815.js'] = Text()
         folder['msg_201901171230.js'] = Text()
         js = zope.component.getUtility(
-            zeit.sourcepoint.interfaces.ISourcePoint)
+            zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
         self.assertEqual('http://xml.zeit.de/sourcepoint/msg_201901171230.js',
                          js.latest_version.uniqueId)
 
@@ -46,7 +46,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         current = Text('current')
         folder['msg_20190101.js'] = current
         js = zope.component.getUtility(
-            zeit.sourcepoint.interfaces.ISourcePoint)
+            zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
         self.assertEqual(1, len(folder))
         with mock.patch.object(js, '_download') as download:
             download.return_value = current.text
@@ -59,7 +59,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         current = Text('current')
         folder['msg_20190101.js'] = current
         js = zope.component.getUtility(
-            zeit.sourcepoint.interfaces.ISourcePoint)
+            zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
         self.assertEqual(1, len(folder))
         with mock.patch.object(js, '_download') as download, clock(
                 datetime(2019, 3, 17, 8, 33)):
@@ -75,7 +75,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         current = Text('current')
         folder['msg_20190101.js'] = current
         js = zope.component.getUtility(
-            zeit.sourcepoint.interfaces.ISourcePoint)
+            zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
         self.assertEqual(1, len(folder))
         with mock.patch('requests.get') as request:
             request.side_effect = RuntimeError('provoked')
@@ -91,7 +91,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         folder['msg_201901170815.js'] = Text()
         folder['msg_201901171230.js'] = Text()
         js = zope.component.getUtility(
-            zeit.sourcepoint.interfaces.ISourcePoint)
+            zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
         js.sweep(keep=2)
         self.assertEqual(['msg_201901170815.js', 'msg_201901171230.js'],
                          sorted(folder.keys()))
@@ -101,7 +101,7 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         folder = self.repository['sourcepoint']
         folder['msg_20190110.js'] = Text()
         js = zope.component.getUtility(
-            zeit.sourcepoint.interfaces.ISourcePoint)
+            zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
         self.assertEqual(1, len(folder))
         js.sweep(keep=2)
         self.assertEqual(1, len(folder))
@@ -109,7 +109,8 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
     def test_download_addefend_js(self):
         folder = self.repository['addefend']
         folder['addefend_script_20221213.js'] = Text('yesterday')
-        js = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript)
+        js = zope.component.getUtility(
+            zeit.sourcepoint.interfaces.IJavaScript, name='addefend')
         self.assertEqual(1, len(folder))
         with mock.patch.object(js, '_download') as download, clock(
                 datetime(2022, 12, 14, 13, 13)):
