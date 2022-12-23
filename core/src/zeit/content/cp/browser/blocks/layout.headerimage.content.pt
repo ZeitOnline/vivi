@@ -1,11 +1,10 @@
 <div i18n:domain="zeit.cms">
+  <img tal:condition="context/image"
+       tal:attributes="src view/image_url" />
   <div class="header">
     <tal:block condition="context/supertitle">
     <span class="supertitle" tal:content="context/supertitle"/><br/>
     </tal:block>
     <span class="title" tal:content="context/title"/>
   </div>
-
-  <img tal:condition="context/image"
-       tal:attributes="src view/image_url" />
 </div>
