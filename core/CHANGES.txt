@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.4 (2023-01-04)
+-------------------
+
+FIX:
+- ZO-1847: Seriesheader preview should not cover Vivi UI
+
+
 5.22.3 (2022-12-23)
 -------------------
 
