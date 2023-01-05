@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.5 (2023-01-05)
+-------------------
+
+- ZO-2388: Remove christmas tree and spirit
+
+
 5.22.4 (2023-01-04)
 -------------------
 
