@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.6 (2023-01-11)
+-------------------
+
+- ZO-2136: render error message for users for no tagesschau recommendations
+
+
 5.22.5 (2023-01-05)
 -------------------
 
