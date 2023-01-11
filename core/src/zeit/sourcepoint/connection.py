@@ -26,40 +26,23 @@ def addefend_from_product_config():
 @zeit.cms.cli.runner()
 def update(principal=zeit.cms.cli.from_config(
         'zeit.sourcepoint', 'update-principal')):
-    log.info('Checking Sourcepoint JS')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--source', type=str, default='sourcepoint')
+    options = parser.parse_args()
+    log.info(f'Checking {options.source} JS')
     store = zope.component.getUtility(
-        zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
+        zeit.sourcepoint.interfaces.IJavaScript, name=options.source)
     store.update()
 
 
 @zeit.cms.cli.runner()
 def sweep():
-    log.info('Sweep start')
     parser = argparse.ArgumentParser()
     parser.add_argument('--keep', type=int, default=10)
+    parser.add_argument('--source', type=str, default='sourcepoint')
     options = parser.parse_args()
+    log.info(f'Sweep {options.source} start')
     store = zope.component.getUtility(
-        zeit.sourcepoint.interfaces.IJavaScript, name='sourcepoint')
+        zeit.sourcepoint.interfaces.IJavaScript, name=options.source)
     store.sweep(keep=options.keep)
-    log.info('Sweep end')
-
-
-@zeit.cms.cli.runner()
-def update_addefend(principal=zeit.cms.cli.from_config(
-        'zeit.sourcepoint', 'update-principal')):
-    log.info('Checking AdDefend JS')
-    store = zope.component.getUtility(
-        zeit.sourcepoint.interfaces.IJavaScript, name='addefend')
-    store.update()
-
-
-@zeit.cms.cli.runner()
-def sweep_addefend():
-    log.info('Sweep start')
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--keep', type=int, default=10)
-    options = parser.parse_args()
-    store = zope.component.getUtility(
-        zeit.sourcepoint.interfaces.IJavaScript, name='addefend')
-    store.sweep(keep=options.keep)
-    log.info('Sweep end')
+    log.info(f'Sweep {options.source} end')
