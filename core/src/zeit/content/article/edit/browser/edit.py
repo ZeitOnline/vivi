@@ -1,14 +1,17 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.edit.videotagesschau import Video
+from zeit.content.article.edit.browser.interfaces import (
+    VideoTagesschauNoResultError)
 import json
 import zeit.cms.browser.manual
 import zeit.cms.browser.widget
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.interfaces
-import zeit.content.article.interfaces
 import zeit.content.article.edit.header
 import zeit.content.article.edit.interfaces
-from zeit.content.article.edit.videotagesschau import Video
+import zeit.content.article.interfaces
 import zeit.content.modules.rawtext
+import zeit.contentquery.interfaces
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.library
@@ -16,7 +19,6 @@ import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
 import zope.security
-import zeit.contentquery.interfaces
 
 
 class Empty:
@@ -340,13 +342,11 @@ class VideoTagesschau(zeit.edit.browser.form.InlineForm):
                     'date_available': recom['start_of_availability']
                 }))
             if recommendations == []:
-                self.errors = (
-                    zeit.content.article.edit.interfaces.VideoTagesschauNoResultError('empty'),) # noqa
+                self.errors = (VideoTagesschauNoResultError('empty'),)
                 self.status = _('There were errors')
             self.context.tagesschauvideos = recommendations
         except Exception:
-            self.errors = (
-                zeit.content.article.edit.interfaces.VideoTagesschauNoResultError('technical'),) # noqa
+            self.errors = (VideoTagesschauNoResultError('technical'),)
             self.status = _('There were errors')
 
 
