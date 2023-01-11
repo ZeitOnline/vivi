@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.7 (2023-01-11)
+-------------------
+
+- ZO-2136: Move UI-only exception to browser package
+
+
 5.22.6 (2023-01-11)
 -------------------
 
