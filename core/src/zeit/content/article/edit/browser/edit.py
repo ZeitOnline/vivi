@@ -319,29 +319,35 @@ class VideoTagesschau(zeit.edit.browser.form.InlineForm):
     def handle_update(self, action, data):
         article = zope.security.proxy.getObject(
             zeit.content.article.interfaces.IArticle(self.context))
-        api = zope.component.getUtility(
-            zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
-        recommendations = list()
-        for recom in api.request_videos(article)['recommendations']:
-            recommendations.append(Video(**{
-                'id': recom['program_id'],
-                'title': recom['main_title'],
-                'type': recom['search_strategy'],
-                'synopsis': recom['short_synopsis'],
-                'video_url_hd': recom['video_uris']['hd'],
-                'video_url_hls_stream': recom['video_uris']['hlsStream'],
-                'video_url_hq': recom['video_uris']['hq'],
-                'video_url_ln': recom['video_uris']['ln'],
-                'thumbnail_url_fullhd': recom['thumbnail_uris']['fullhd'],
-                'thumbnail_url_large': recom['thumbnail_uris']['large'],
-                'thumbnail_url_small': recom['thumbnail_uris']['small'],
-                'date_published': recom['published_start_time'],
-                'date_available': recom['start_of_availability']
-            }))
-        self.context.tagesschauvideos = recommendations
-        self.context.tagesschauvideo = None
-        if recommendations:
-            self.context.tagesschauvideo = recommendations[0]
+        try:
+            api = zope.component.getUtility(
+                zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+            recommendations = list()
+            for recom in api.request_videos(article)['recommendations']:
+                recommendations.append(Video(**{
+                    'id': recom['program_id'],
+                    'title': recom['main_title'],
+                    'type': recom['search_strategy'],
+                    'synopsis': recom['short_synopsis'],
+                    'video_url_hd': recom['video_uris']['hd'],
+                    'video_url_hls_stream': recom['video_uris']['hlsStream'],
+                    'video_url_hq': recom['video_uris']['hq'],
+                    'video_url_ln': recom['video_uris']['ln'],
+                    'thumbnail_url_fullhd': recom['thumbnail_uris']['fullhd'],
+                    'thumbnail_url_large': recom['thumbnail_uris']['large'],
+                    'thumbnail_url_small': recom['thumbnail_uris']['small'],
+                    'date_published': recom['published_start_time'],
+                    'date_available': recom['start_of_availability']
+                }))
+            if recommendations == []:
+                self.errors = (
+                    zeit.content.article.edit.interfaces.VideoTagesschauNoResultError('empty'),) # noqa
+                self.status = _('There were errors')
+            self.context.tagesschauvideos = recommendations
+        except Exception:
+            self.errors = (
+                zeit.content.article.edit.interfaces.VideoTagesschauNoResultError('technical'),) # noqa
+            self.status = _('There were errors')
 
 
 class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
