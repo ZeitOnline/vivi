@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.8 (2023-01-11)
+-------------------
+
+- ZO-2136: Fix brown-bag release
+
+
 5.22.7 (2023-01-11)
 -------------------
 
