@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.9 (2023-01-12)
+-------------------
+
+- ZO-2136: Don't display spurious "updated on" notifications on article forms after saving
+
+
 5.22.8 (2023-01-11)
 -------------------
 
