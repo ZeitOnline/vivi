@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.10 (2023-01-13)
+--------------------
+
+- ZO-2233: Implement AdDefend JS-Code as vivi object
+
+
 5.22.9 (2023-01-12)
 -------------------
 
