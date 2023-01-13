@@ -26,3 +26,7 @@ class IJavaScript(zope.interface.Interface):
         """Removes old versions from DAV, keeping the given number of most
         recent ones.
         """
+
+
+class ISourcePoint(IJavaScript):
+    pass
