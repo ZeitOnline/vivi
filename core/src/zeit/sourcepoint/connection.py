@@ -23,9 +23,9 @@ def addefend_from_product_config():
         'addefend')
 
 
-@zeit.cms.cli.runner()
-def update(principal=zeit.cms.cli.from_config(
-        'zeit.sourcepoint', 'update-principal')):
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
+    'zeit.sourcepoint', 'update-principal'))
+def update():
     parser = argparse.ArgumentParser()
     parser.add_argument('--source', type=str, default='sourcepoint')
     options = parser.parse_args()
