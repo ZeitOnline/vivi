@@ -23,7 +23,8 @@ class JavaScript:
         self.url = url
         self.prefix = prefix
         if headers:
-            self.headers = ast.literal_eval(headers)
+            headers = ast.literal_eval(headers)
+        self.headers = headers
 
     @classmethod
     def from_product_config(cls, name):
