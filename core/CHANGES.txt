@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.11 (2023-01-24)
+--------------------
+
+- ZO-2233: Fix configuration parsing when there are no additional HTTP headers
+
+
 5.22.10 (2023-01-13)
 --------------------
 
