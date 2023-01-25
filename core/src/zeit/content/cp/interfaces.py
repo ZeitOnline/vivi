@@ -52,6 +52,14 @@ class ITopicLinks(zope.interface.Interface):
         title=_('Label for topiclink #3'),
         required=False)
 
+    topiclink_label_4 = zope.schema.TextLine(
+        title=_('Label for topiclink #4'),
+        required=False)
+
+    topiclink_label_5 = zope.schema.TextLine(
+        title=_('Label for topiclink #5'),
+        required=False)
+
     topiclink_url_1 = zope.schema.URI(
         title=_('URL for topiclink #1'),
         required=False,
@@ -64,6 +72,16 @@ class ITopicLinks(zope.interface.Interface):
 
     topiclink_url_3 = zope.schema.URI(
         title=_('URL for topiclink #3'),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
+
+    topiclink_url_4 = zope.schema.URI(
+        title=_('URL for topiclink #4'),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_link_target)
+
+    topiclink_url_5 = zope.schema.URI(
+        title=_('URL for topiclink #5'),
         required=False,
         constraint=zeit.cms.interfaces.valid_link_target)
 
