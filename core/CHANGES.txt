@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.13 (2023-01-25)
+--------------------
+
+- ZO-2498: Add two new topiclink_[url|label] fields to centerpages
+
+
 5.22.12 (2023-01-24)
 --------------------
 
