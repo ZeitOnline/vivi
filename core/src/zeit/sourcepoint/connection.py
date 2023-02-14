@@ -35,7 +35,8 @@ def update():
     store.update()
 
 
-@zeit.cms.cli.runner()
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
+    'zeit.sourcepoint', 'update-principal'))
 def sweep():
     parser = argparse.ArgumentParser()
     parser.add_argument('--keep', type=int, default=10)
