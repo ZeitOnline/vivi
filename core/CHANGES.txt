@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.14 (2023-02-14)
+--------------------
+
+- ZO-2233: Fix retract cronjob entrypoint principal
+
+
 5.22.13 (2023-01-25)
 --------------------
 
