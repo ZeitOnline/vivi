@@ -14,6 +14,7 @@ import zeit.content.image.imagegroup
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.magazin.interfaces
+import zeit.cms.workflow.interfaces
 import zope.component
 import zope.event
 import zope.interface
@@ -371,3 +372,51 @@ class ArticleElementReferencesTest(
         self.create_empty_portraitbox_reference()
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
+
+
+class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super().setUp()
+        article = self.get_article()
+        p = self.get_factory(article, 'p')()
+        p.text = 'speechbert reads interesting news'
+        p = self.get_factory(article, 'p')()
+        p.text = 'one two three'
+        self.repository['article'] = article
+        zeit.cms.workflow.interfaces.IPublishInfo(self.repository['article']).urgent = True
+        zeit.cms.workflow.interfaces.IPublish(self.repository['article']).publish()
+
+    def test_article_has_speechbert_checksum(self):
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
+        assert checksum.checksum == 'b4a1bd02e1a320ce563a9b23715be5ef'
+
+    def test_checksum_updates_on_checkin(self):
+        old = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article']).checksum
+        article = self.repository['article']
+        p = self.get_factory(article, 'p')()
+        p.text = 'foo bar baz'
+        self.repository['article'] = article
+        zeit.cms.workflow.interfaces.IPublish(self.repository['article']).publish()
+        new = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
+        assert new.checksum == 'b21be74fea26f7211b63f21aff05ef0b'
+        assert new.checksum != old
+
+    def test_no_body_does_not_break(self):
+        article = self.get_article()
+        self.repository['article'] = article
+        zeit.cms.workflow.interfaces.IPublishInfo(self.repository['article']).urgent = True
+        zeit.cms.workflow.interfaces.IPublish(self.repository['article']).publish()
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
+        assert checksum.checksum == 'd751713988987e9331980363e24189ce'
+
+    def test_no_checksum_for_ignored_genres(self):
+        uniqueId = 'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        config['speechbert-ignore-genres'] = 'rezept-vorstellung'
+        zeit.cms.workflow.interfaces.IPublish(
+            zeit.cms.interfaces.ICMSContent(uniqueId)).publish()
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(
+            zeit.cms.interfaces.ICMSContent(uniqueId))
+        assert not checksum.checksum
