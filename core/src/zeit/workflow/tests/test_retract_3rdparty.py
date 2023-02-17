@@ -2,7 +2,6 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import requests_mock
-import sys
 import zeit.content.article.testing
 import zeit.workflow.testing
 import zope.component
@@ -93,8 +92,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        # disable the max-age filter
-        config['speechbert-max-age'] = sys.maxsize
         config['speechbert-ignore-genres'] = 'rezept-vorstellung'
         data_factory = zope.component.getAdapter(
             article,
@@ -108,8 +105,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        # disable the max-age filter
-        config['speechbert-max-age'] = sys.maxsize
         config['speechbert-ignore-templates'] = 'article'
         data_factory = zope.component.getAdapter(
             article,
