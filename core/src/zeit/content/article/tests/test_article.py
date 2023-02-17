@@ -379,10 +379,7 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         article = self.get_article()
-        p = self.get_factory(article, 'p')()
-        p.text = 'speechbert reads interesting news'
-        p = self.get_factory(article, 'p')()
-        p.text = 'one two three'
+        article.body.create_item('p').text = 'foo'
         self.repository['article'] = article
         IPublishInfo(self.repository['article']).urgent = True
         IPublish(self.repository['article']).publish()
@@ -390,18 +387,17 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
     def test_article_has_speechbert_checksum(self):
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(
             self.repository['article'])
-        assert checksum.checksum == 'b4a1bd02e1a320ce563a9b23715be5ef'
+        assert checksum.checksum == 'deddeca0c34609deb8dc43eb5b8176c5'
 
     def test_checksum_updates_on_publish(self):
         old = zeit.content.article.interfaces.ISpeechbertChecksum(
             self.repository['article']).checksum
         article = self.repository['article']
-        p = self.get_factory(article, 'p')()
-        p.text = 'foo bar baz'
+        article.body.create_item('p').text = 'bar'
         article = self.repository['article'] = article
         IPublish(article).publish()
         new = zeit.content.article.interfaces.ISpeechbertChecksum(article)
-        assert new.checksum == 'b21be74fea26f7211b63f21aff05ef0b'
+        assert new.checksum == '63a4bec39620f3b239ba5a111e77b1ed'
         assert new.checksum != old
 
     def test_no_body_does_not_break(self):
