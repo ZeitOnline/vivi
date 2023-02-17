@@ -391,7 +391,7 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article'])
         assert checksum.checksum == 'b4a1bd02e1a320ce563a9b23715be5ef'
 
-    def test_checksum_updates_on_checkin(self):
+    def test_checksum_updates_on_publish(self):
         old = zeit.content.article.interfaces.ISpeechbertChecksum(self.repository['article']).checksum
         article = self.repository['article']
         p = self.get_factory(article, 'p')()
