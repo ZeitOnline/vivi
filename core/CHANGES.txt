@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.15 (2023-02-17)
+--------------------
+
+- ZO-2522: Use checksome to validate speechbert audio against article text
+
+
 5.22.14 (2023-02-14)
 --------------------
 
