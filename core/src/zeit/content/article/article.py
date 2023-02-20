@@ -394,7 +394,7 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     checksum = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.ISpeechbertChecksum['checksum'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'checksum',
+        zeit.cms.interfaces.SPEECHBERT_NAMESPACE, 'checksum',
         writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE)
 
 
