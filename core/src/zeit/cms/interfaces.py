@@ -13,13 +13,14 @@ import zope.schema
 import zope.security
 
 
-DOCUMENT_SCHEMA_NS = "http://namespaces.zeit.de/CMS/document"
-QPS_SCHEMA_NS = "http://namespaces.zeit.de/QPS/attributes"
+DOCUMENT_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/document'
+QPS_SCHEMA_NS = 'http://namespaces.zeit.de/QPS/attributes'
 ID_NAMESPACE = 'http://xml.zeit.de/'
 TEASER_NAMESPACE = 'http://xml.zeit.de/CMS/Teaser'
-PRINT_NAMESPACE = "http://namespaces.zeit.de/CMS/print"
-IR_NAMESPACE = "http://namespaces.zeit.de/CMS/interred"
+PRINT_NAMESPACE = 'http://namespaces.zeit.de/CMS/print'
+IR_NAMESPACE = 'http://namespaces.zeit.de/CMS/interred'
 ZEITWEB_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.web'
+SPEECHBERT_NAMESPACE = 'http://namespaces.zeit.de/CMS/speech'
 
 # lovely.remotetask stores times as 32 bit leading to an overflow after 2030.
 MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
