@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.16 (2023-02-20)
+--------------------
+
+FIX:
+- ZO-2522: Fix speechbert namespace
+
+
 5.22.15 (2023-02-17)
 --------------------
 
