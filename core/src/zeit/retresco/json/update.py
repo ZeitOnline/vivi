@@ -1,8 +1,10 @@
+from zeit.cms.i18n import MessageFactory as _
 import json
 import logging
 import zeit.cms.celery
 import zeit.cms.content.contentuuid
 import zeit.cms.content.interfaces
+import zeit.objectlog.interfaces
 import zeit.retresco.update
 import zope.app.appsetup.product
 
@@ -48,6 +50,7 @@ def update_async(uuid):
             raise KeyError(uuid)
     except Exception:
         log.warning('TMS wants to update invalid id %s, ignored', uuid)
-    else:
-        zeit.retresco.update.index(
-            content, enrich=True, update_keywords=True, publish=True)
+        return
+    zeit.objectlog.interfaces.ILog(content).log(_('TMS reindex'))
+    zeit.retresco.update.index(
+        content, enrich=True, update_keywords=True, publish=True)
