@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='5.22.3.dev0',
+    version='5.22.17.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -252,8 +252,8 @@ setup(
             'set-properties = zeit.connector.restore:set_props_from_file',
             'ingredients-collect-used = zeit.wochenmarkt.ingredients:collect_used',
             'retract-overdue-timebased = zeit.workflow.timebased:retract_overdue_objects',
-            'sourcepoint-sweep = zeit.sourcepoint.javascript:sweep',
-            'sourcepoint-update = zeit.sourcepoint.javascript:update',
+            'external-javascript-sweep = zeit.sourcepoint.connection:sweep',
+            'external-javascript-update = zeit.sourcepoint.connection:update',
             'search-elastic=zeit.find.cli:search_elastic',
             'update-topiclist=zeit.retresco.connection:update_topiclist',
             'tms-reindex-object=zeit.retresco.update:reindex',

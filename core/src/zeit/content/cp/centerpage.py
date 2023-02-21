@@ -106,6 +106,22 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         '.head.topiclinks.topiclink.topiclink_url_3',
         zeit.content.cp.interfaces.ICenterPage['topiclink_url_3'])
 
+    topiclink_label_4 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_4',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_4'])
+
+    topiclink_url_4 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_4',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_4'])
+
+    topiclink_label_5 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_5',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_5'])
+
+    topiclink_url_5 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_5',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_5'])
+
     liveblog_label_1 = zeit.cms.content.property.ObjectPathProperty(
         '.head.liveblogs.liveblog_label_1',
         zeit.content.cp.interfaces.ICenterPage['liveblog_label_1'])

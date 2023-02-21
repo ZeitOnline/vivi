@@ -19,6 +19,14 @@
       Legend
     </legend>
 
+    <div class="form-status" tal:condition="view/status">
+        <ul class="errors" tal:condition="view/errors">
+            <li tal:repeat="error view/error_views">
+                <span tal:replace="structure error">Error Type</span>
+            </li>
+        </ul>
+    </div>
+
     <div tal:repeat="widget view/widgets"
          tal:attributes="class widget/field_css_class">
       <div

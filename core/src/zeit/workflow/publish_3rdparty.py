@@ -2,7 +2,6 @@ from itertools import chain
 import datetime
 import grokcore.component as grok
 import logging
-import time
 import zope.app.appsetup.product
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -149,13 +148,9 @@ class Speechbert(grok.Adapter):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('speechbert')
 
-    def ignore(self, date_first_released, method):
+    def ignore(self, method):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow') or {}
-        max_age = int(config['speechbert-max-age'])
-        if date_first_released is not None:
-            if (time.time() - date_first_released.float_timestamp) >= max_age:
-                return True
         if method == "publish":
             ignore_genres = [
                 x.lower()
@@ -241,14 +236,12 @@ class Speechbert(grok.Adapter):
         return {k: v for k, v in payload.items() if v}
 
     def publish_json(self):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released, 'publish'):
+        if self.ignore('publish'):
             return
         return self._json()
 
     def retract_json(self):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if self.ignore(info.date_first_released, 'retract'):
+        if self.ignore('retract'):
             return
         return {
             # Can we simplify this protocol? uuid is already passed in toplevel

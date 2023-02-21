@@ -5,7 +5,6 @@ from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 from zeit.content.image.testing import create_image_group_with_master_image
 import pytest
 import requests_mock
-import sys
 import zeit.cms.related.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
@@ -247,8 +246,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        # disable the max-age filter
-        config['speechbert-max-age'] = sys.maxsize
         config['speechbert-ignore-genres'] = 'rezept-vorstellung'
         data_factory = zope.component.getAdapter(
             article,
@@ -267,8 +264,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        # disable the max-age filter
-        config['speechbert-max-age'] = sys.maxsize
         config['speechbert-ignore-templates'] = 'article'
         data_factory = zope.component.getAdapter(
             article,
@@ -276,23 +271,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             name="speechbert")
         assert data_factory.publish_json() is None
         config['speechbert-ignore-templates'] = ''
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        assert data_factory.publish_json() is not None
-
-    def test_speechbert_max_age(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
-        assert data_factory.publish_json() is None
-        config['speechbert-max-age'] = sys.maxsize
         data_factory = zope.component.getAdapter(
             article,
             zeit.workflow.interfaces.IPublisherData,
@@ -315,7 +293,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         monkeypatch.setattr(
             zeit.workflow.publish_3rdparty.Speechbert,
             'ignore',
-            lambda s, d, m: False)
+            lambda s, m: False)
 
     def test_speechbert_payload(self):
         article = ICMSContent(

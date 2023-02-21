@@ -6,9 +6,13 @@ import zope.component
 
 product_config = """\
 <product-config zeit.sourcepoint>
-  api-token mytoken
-  url http://example.com
-  javascript-folder http://xml.zeit.de/sourcepoint/
+  addefend-url http://example.com
+  addefend-javascript-folder http://xml.zeit.de/addefend/
+  addefend-filename addefend_script
+  sourcepoint-url http://example.com
+  sourcepoint-javascript-folder http://xml.zeit.de/sourcepoint/
+  sourcepoint-headers {'authorization': 'Token mytoken'}
+  sourcepoint-filename msg
 </product-config>
 """
 
@@ -27,6 +31,7 @@ class Layer(plone.testing.Layer):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
             repository['sourcepoint'] = zeit.cms.repository.folder.Folder()
+            repository['addefend'] = zeit.cms.repository.folder.Folder()
 
 
 LAYER = Layer()

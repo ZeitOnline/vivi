@@ -3,6 +3,93 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.16 (2023-02-20)
+--------------------
+
+FIX:
+- ZO-2522: Fix speechbert namespace
+
+
+5.22.15 (2023-02-17)
+--------------------
+
+- ZO-2522: Use checksome to validate speechbert audio against article text
+
+
+5.22.14 (2023-02-14)
+--------------------
+
+- ZO-2233: Fix retract cronjob entrypoint principal
+
+
+5.22.13 (2023-01-25)
+--------------------
+
+- ZO-2498: Add two new topiclink_[url|label] fields to centerpages
+
+
+5.22.12 (2023-01-24)
+--------------------
+
+- ZO-2233: Fix cronjob entrypoint principal
+
+
+5.22.11 (2023-01-24)
+--------------------
+
+- ZO-2233: Fix configuration parsing when there are no additional HTTP headers
+
+
+5.22.10 (2023-01-13)
+--------------------
+
+- ZO-2233: Implement AdDefend JS-Code as vivi object
+
+
+5.22.9 (2023-01-12)
+-------------------
+
+- ZO-2136: Don't display spurious "updated on" notifications on article forms after saving
+
+
+5.22.8 (2023-01-11)
+-------------------
+
+- ZO-2136: Fix brown-bag release
+
+
+5.22.7 (2023-01-11)
+-------------------
+
+- ZO-2136: Move UI-only exception to browser package
+
+
+5.22.6 (2023-01-11)
+-------------------
+
+- ZO-2136: render error message for users for no tagesschau recommendations
+
+
+5.22.5 (2023-01-05)
+-------------------
+
+- ZO-2388: Remove christmas tree and spirit
+
+
+5.22.4 (2023-01-04)
+-------------------
+
+FIX:
+- ZO-1847: Seriesheader preview should not cover Vivi UI
+
+
+5.22.3 (2022-12-23)
+-------------------
+
+MAINT:
+- Update python libraries
+
+
 5.22.2 (2022-12-15)
 -------------------
 

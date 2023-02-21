@@ -5,6 +5,8 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 import gocept.cache.property
 import grokcore.component as grok
+import hashlib
+import json
 import lxml.etree
 import lxml.objectify
 import re
@@ -25,6 +27,7 @@ import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.workflow.dependency
+import zeit.workflow.interfaces
 import zeit.workflow.workflow
 import zope.component
 import zope.dublincore.interfaces
@@ -400,3 +403,29 @@ class ArticleMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     def update_with_context(self, node, context):
         if context.genre:
             node.set('genre', context.genre)
+
+
+@zope.interface.implementer(
+    zeit.content.article.interfaces.ISpeechbertChecksum)
+class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    checksum = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.ISpeechbertChecksum['checksum'],
+        zeit.cms.interfaces.SPEECHBERT_NAMESPACE, 'checksum',
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE)
+
+
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.workflow.interfaces.IBeforePublishEvent)
+def calculate_checksum(context, event):
+    speechbert = zope.component.getAdapter(
+        context, zeit.workflow.interfaces.IPublisherData, name='speechbert')
+    if speechbert.ignore('publish'):
+        return
+    checksum = hashlib.md5()
+    body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode(
+        'utf-8')
+    checksum.update(body)
+    article = zeit.content.article.interfaces.ISpeechbertChecksum(context)
+    article.checksum = checksum.hexdigest()

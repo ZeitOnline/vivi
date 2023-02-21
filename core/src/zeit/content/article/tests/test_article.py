@@ -1,9 +1,10 @@
 # coding: utf8
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
@@ -390,3 +391,42 @@ class ArticleElementReferencesTest(
         self.create_empty_portraitbox_reference()
         self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
             self.article)))
+
+
+class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_checksum_updates_on_publish(self):
+        article = self.get_article()
+        article.body.create_item('p').text = 'foo'
+        article = self.repository['article'] = article
+        IPublishInfo(article).urgent = True
+        IPublish(article).publish()
+
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        first = checksum.checksum
+        assert len(first) == 32
+
+        article.body.create_item('p').text = 'bar'
+        article = self.repository['article'] = article
+        IPublish(article).publish()
+
+        second = checksum.checksum
+        assert len(second) == 32
+        assert second != first
+
+    def test_no_body_does_not_break(self):
+        article = self.repository['article'] = self.get_article()
+        IPublishInfo(article).urgent = True
+        IPublish(article).publish()
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        assert checksum.checksum == 'd751713988987e9331980363e24189ce'
+
+    def test_no_checksum_for_ignored_genres(self):
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        config['speechbert-ignore-genres'] = 'rezept-vorstellung'
+        IPublish(article).publish()
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        assert not checksum.checksum
