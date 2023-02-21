@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.22.17 (2023-02-21)
+--------------------
+
+- ZO-2132: Normalize quotes to angled instead of inch if toggle `normalize_quotes` is set
+
+
 5.22.16 (2023-02-20)
 --------------------
 
