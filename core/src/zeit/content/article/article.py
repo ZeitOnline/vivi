@@ -380,7 +380,7 @@ def normalize_quotes(node):
         node.text = QUOTE_CHARACTERS_CLOSE.sub('«', node.text)
     if node.tail:
         node.tail = QUOTE_CHARACTERS_OPEN.sub('»', node.tail)
-        node.text = QUOTE_CHARACTERS_CLOSE.sub('«', node.text)
+        node.tail = QUOTE_CHARACTERS_CLOSE.sub('«', node.tail)
     for child in node.iterchildren():
         normalize_quotes(child)
     return node
