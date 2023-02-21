@@ -10,7 +10,7 @@ zeit.content.article.html.to_xml = function(tree) {
         replace_double_br_with_p,
         kill_empty_p,
         escape_missing_href,
-        normalize_quotation_marks
+        NORMALIZE_QUOTES
     ];
 
     // XXX dropping unknown tags but keeping their text is still implemented on
@@ -133,12 +133,26 @@ function wrap_toplevel_children_in_p(tree) {
 }
 
 
-var DOUBLE_QUOTE_CHARACTERS = '';
+var QUOTE_CHARACTERS = '';
+var QUOTE_CHARACTERS_OPEN = '';
+var QUOTE_CHARACTERS_CLOSE = '';
+var NORMALIZE_QUOTES = normalize_quotation_marks_to_inch_sign;
+
+function normalize_quotation_marks_to_inch_sign(tree) {
+    forEach(tree.childNodes, function(el) {
+        if (el.nodeType == el.TEXT_NODE) {
+            el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS, '"');
+        } else {
+            normalize_quotation_marks_to_inch_sign(el);
+        }
+    });
+}
 
 function normalize_quotation_marks(tree) {
     forEach(tree.childNodes, function(el) {
         if (el.nodeType == el.TEXT_NODE) {
-            el.nodeValue = el.nodeValue.replace(DOUBLE_QUOTE_CHARACTERS, '"');
+            el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_OPEN, '»');
+            el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_CLOSE, '«');
         } else {
             normalize_quotation_marks(el);
         }
@@ -152,7 +166,10 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     $.getJSON(
         application_url + '/@@double-quote-characters',
         function(response) {
-            DOUBLE_QUOTE_CHARACTERS = new RegExp(response, 'g');
+            QUOTE_CHARACTERS = new RegExp(response['chars'], 'g');
+            QUOTE_CHARACTERS_OPEN = new RegExp(response['chars_open'], 'g');
+            QUOTE_CHARACTERS_CLOSE = new RegExp(response['chars_close'], 'g');
+            NORMALIZE_QUOTES = (response["normalize_quotes"]) ? normalize_quotation_marks : normalize_quotation_marks_to_inch_sign;
     });
 });
 
