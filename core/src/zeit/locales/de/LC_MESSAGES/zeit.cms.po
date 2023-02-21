@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Jan 25 11:24:06 2023\n"
+"POT-Creation-Date: Tue Feb 21 13:01:02 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -261,7 +261,7 @@ msgstr "Autor"
 msgid "Title"
 msgstr "Titel"
 
-#: zeit/cms/browser/listing.py:282 zeit/cms/interfaces.py:85
+#: zeit/cms/browser/listing.py:282 zeit/cms/interfaces.py:86
 #: zeit/cms/repository/browser/file.py:35
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
@@ -908,11 +908,11 @@ msgstr "Remote Zeitstempel URL"
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
-#: zeit/cms/interfaces.py:42
+#: zeit/cms/interfaces.py:43
 msgid "Name contains invalid characters"
 msgstr "Dateiname enthält ungültige Zeichen"
 
-#: zeit/cms/interfaces.py:61
+#: zeit/cms/interfaces.py:62
 msgid "Invalid link target"
 msgstr ""
 "Kein gültiges Linkziel. ZEIT Inhalte müssen nach www.zeit.de verlinken."
@@ -1718,7 +1718,7 @@ msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
 #: zeit/content/animation/browser/form.py:21
-#: zeit/content/animation/interfaces.py:25 zeit/content/article/article.py:178
+#: zeit/content/animation/interfaces.py:25 zeit/content/article/article.py:182
 #: zeit/content/article/browser/configure.zcml:80
 #: zeit/content/article/edit/browser/form.py:60
 msgid "Article"
@@ -1912,27 +1912,27 @@ msgstr "Ad-Place-Block bearbeiten"
 msgid "edit page break"
 msgstr "Seitenumbruch bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:489
+#: zeit/content/article/edit/browser/edit.py:495
 msgid "edit jobbox ticker"
 msgstr "Jobticker bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:505
+#: zeit/content/article/edit/browser/edit.py:511
 msgid "edit mail block"
 msgstr "Mail-Formular bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:540
+#: zeit/content/article/edit/browser/edit.py:546
 msgid "edit topic box"
 msgstr "Themenbox bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:556
+#: zeit/content/article/edit/browser/edit.py:562
 msgid "edit newsletter signup"
 msgstr "Newsletter-Anmeldung bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:575
+#: zeit/content/article/edit/browser/edit.py:581
 msgid "edit recipe list"
 msgstr "Rezeptliste bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:597
+#: zeit/content/article/edit/browser/edit.py:603
 msgid "edit ingredientdice block"
 msgstr "Zutatenwürfel bearbeiten"
 
@@ -2672,6 +2672,10 @@ msgstr "Preis in €"
 #: zeit/content/article/interfaces.py:259
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
+
+#: zeit/content/article/interfaces.py:289
+msgid "Speechbert Checksum"
+msgstr "TTS Checksumme"
 
 #: zeit/content/author/browser/form.py:30
 msgid "Contact"
@@ -4711,6 +4715,10 @@ msgstr "Update TMS index"
 msgid "Use TMS GUI"
 msgstr "TMS-GUI benutzen"
 
+#: zeit/retresco/json/update.py:54
+msgid "TMS reindex"
+msgstr "Reindiziert/Veröffentlicht"
+
 #: zeit/securitypolicy/security.zcml:11
 msgid "All users have this role implicitly"
 msgstr "All users have this role implicitly"
@@ -5352,9 +5360,6 @@ msgstr "mit Info"
 
 #~ msgid "Preconfigured-Query"
 #~ msgstr "Filter"
-
-#~ msgid "Speechbert Audio"
-#~ msgstr "Text-to-Speech-Player"
 
 #~ msgid "Elasticsearch raw query is malformed: {error}"
 #~ msgstr "Elasticsearch-Query fehlerhaft: {error}"

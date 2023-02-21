@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Jan 25 11:24:06 2023\n"
+"POT-Creation-Date: Tue Feb 21 13:01:02 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -293,7 +293,7 @@ msgid "Title"
 msgstr ""
 
 #: zeit/cms/browser/listing.py:282
-#: zeit/cms/interfaces.py:85
+#: zeit/cms/interfaces.py:86
 #: zeit/cms/repository/browser/file.py:35
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:29
@@ -950,11 +950,11 @@ msgstr ""
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
-#: zeit/cms/interfaces.py:42
+#: zeit/cms/interfaces.py:43
 msgid "Name contains invalid characters"
 msgstr ""
 
-#: zeit/cms/interfaces.py:61
+#: zeit/cms/interfaces.py:62
 msgid "Invalid link target"
 msgstr ""
 
@@ -1756,7 +1756,7 @@ msgstr ""
 
 #: zeit/content/animation/browser/form.py:21
 #: zeit/content/animation/interfaces.py:25
-#: zeit/content/article/article.py:178
+#: zeit/content/article/article.py:182
 #: zeit/content/article/browser/configure.zcml:80
 #: zeit/content/article/edit/browser/form.py:60
 msgid "Article"
@@ -1950,27 +1950,27 @@ msgstr ""
 msgid "edit page break"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:489
+#: zeit/content/article/edit/browser/edit.py:495
 msgid "edit jobbox ticker"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:505
+#: zeit/content/article/edit/browser/edit.py:511
 msgid "edit mail block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:540
+#: zeit/content/article/edit/browser/edit.py:546
 msgid "edit topic box"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:556
+#: zeit/content/article/edit/browser/edit.py:562
 msgid "edit newsletter signup"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:575
+#: zeit/content/article/edit/browser/edit.py:581
 msgid "edit recipe list"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:597
+#: zeit/content/article/edit/browser/edit.py:603
 msgid "edit ingredientdice block"
 msgstr ""
 
@@ -2732,6 +2732,10 @@ msgstr ""
 
 #: zeit/content/article/interfaces.py:259
 msgid "Breaking news article"
+msgstr ""
+
+#: zeit/content/article/interfaces.py:289
+msgid "Speechbert Checksum"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:30
@@ -4766,6 +4770,10 @@ msgstr ""
 
 #: zeit/retresco/configure.zcml:64
 msgid "Use TMS GUI"
+msgstr ""
+
+#: zeit/retresco/json/update.py:54
+msgid "TMS reindex"
 msgstr ""
 
 #: zeit/securitypolicy/security.zcml:11
