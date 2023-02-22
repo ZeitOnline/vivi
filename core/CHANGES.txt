@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.0 (2023-02-22)
+-------------------
+
+- ZO-2645: Add IAnimation.gallery field
+
+
 5.22.19 (2023-02-21)
 --------------------
 
