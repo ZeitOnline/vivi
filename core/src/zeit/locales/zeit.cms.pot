@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Feb 21 13:01:02 2023\n"
+"POT-Creation-Date: Wed Feb 22 09:14:01 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1728,7 +1728,7 @@ msgstr ""
 msgid "Link address"
 msgstr ""
 
-#: zeit/content/animation/animation.py:44
+#: zeit/content/animation/animation.py:46
 #: zeit/content/animation/browser/configure.zcml:6
 #: zeit/content/article/edit/interfaces.py:243
 msgid "Animation"
@@ -1755,7 +1755,7 @@ msgid "View metadata"
 msgstr ""
 
 #: zeit/content/animation/browser/form.py:21
-#: zeit/content/animation/interfaces.py:25
+#: zeit/content/animation/interfaces.py:26
 #: zeit/content/article/article.py:182
 #: zeit/content/article/browser/configure.zcml:80
 #: zeit/content/article/edit/browser/form.py:60
@@ -1778,22 +1778,30 @@ msgid "use images"
 msgstr ""
 
 #: zeit/content/animation/interfaces.py:14
+msgid "use gallery"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:15
 msgid "use video"
 msgstr ""
 
-#: zeit/content/animation/interfaces.py:31
+#: zeit/content/animation/interfaces.py:32
 msgid "Display mode"
 msgstr ""
 
-#: zeit/content/animation/interfaces.py:35
+#: zeit/content/animation/interfaces.py:36
 msgid "Video to use for animation"
 msgstr ""
 
-#: zeit/content/animation/interfaces.py:41
+#: zeit/content/animation/interfaces.py:42
 #: zeit/content/gallery/browser/configure.zcml:85
 #: zeit/content/image/browser/configure.zcml:172
 #: zeit/content/image/browser/imagebrowser.py:7
 msgid "Images"
+msgstr ""
+
+#: zeit/content/animation/interfaces.py:52
+msgid "Gallery to use for animation"
 msgstr ""
 
 #: zeit/content/article/browser/breaking-retract.pt:4

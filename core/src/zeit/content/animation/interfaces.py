@@ -11,6 +11,7 @@ class DisplayModeSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = collections.OrderedDict([
         ("images", _("use images")),
+        ("gallery", _("use gallery")),
         ("video", _("use video")),
     ])
 
@@ -45,4 +46,10 @@ class IAnimation(
         value_type=zope.schema.Choice(
             source=zeit.content.image.interfaces.ImageSource()
         ),
+    )
+
+    gallery = zope.schema.Choice(
+        title=_("Gallery to use for animation"),
+        source=zeit.content.gallery.interfaces.gallerySource,
+        required=False,
     )
