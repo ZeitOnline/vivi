@@ -15,12 +15,12 @@ class Base:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.animation.interfaces.IAnimation
-    ).select("article", "video", "images", "display_mode")
+    ).select("article", "images", "gallery", "video", "display_mode")
 
     field_groups = (
         gocept.form.grouped.RemainingFields(_("Article")),
         gocept.form.grouped.Fields(
-            _("Teaser"), ("display_mode", "images", "video")),
+            _("Teaser"), ("display_mode", "images", "gallery", "video")),
     )
 
 

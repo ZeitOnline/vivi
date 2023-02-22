@@ -30,6 +30,8 @@ class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     )
     images = zeit.cms.content.reference.MultiResource(".body.image", "image")
     video = zeit.cms.content.reference.SingleResource(".body.video", "related")
+    gallery = zeit.cms.content.reference.SingleResource(
+        ".body.gallery", "related")
 
     def __getattr__(self, name):
         if name not in list(ICommonMetadata):
