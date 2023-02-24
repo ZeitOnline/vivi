@@ -246,6 +246,24 @@
     menu="zeit-context-views" title="Metadata"
     />
 
+  <browser:viewlet
+    name="CopyrightCompanyPurchaseReport"
+    for="*"
+    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
+    class=".imagegroup.MenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.ChangeGlobalSettings"
+    weight="200"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="CopyrightCompanyPurchaseReport"
+    class=".imagegroup.CopyrightCompanyPurchaseReport"
+    permission="zope.View"
+    />
+
   <browser:page
     for="..interfaces.IRepositoryImageGroup"
     name="zeit.content.image.Add"
