@@ -132,7 +132,7 @@ class ICommonMetadata(zope.interface.Interface):
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
     # DEPRECATED, use authorships instead
-    # (still used by zeit.vgwort for querying)
+    # (still used by publisher `speechbert.xslt`)
     authors = zope.schema.Tuple(
         title=_("Authors (freetext)"),
         value_type=zope.schema.TextLine(),
