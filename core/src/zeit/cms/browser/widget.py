@@ -685,9 +685,24 @@ class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
         value = super()._toFormValue(
             value)
         try:
-            return markdownify.markdownify(value)
+            return markdownify.markdownify(value, heading_style='ATX')
         except OSError:
             return value
+
+
+class MarkdownDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
+
+    detail_view_name = '@@object-details'
+
+    def __call__(self):
+        if self._renderedValueSet():
+            value = self._data
+        else:
+            value = self.context.default
+        if value == self.context.missing_value:
+            return ''
+        return ('<div class="markdown-display-widget">%s</div>' % value
+                if value else value)
 
 
 def TupleSequenceWidget(field, source, request):

@@ -278,6 +278,22 @@
       />
 
   <adapter
+      for="zeit.cms.content.field.Markdown
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      factory=".widget.MarkdownWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zeit.cms.content.field.Markdown
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.interfaces.IDisplayWidget"
+      factory="zeit.cms.browser.widget.MarkdownDisplayWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
       for="zope.schema.interfaces.ITuple
            zope.schema.interfaces.IIterableSource
            zope.publisher.interfaces.browser.IBrowserRequest"
