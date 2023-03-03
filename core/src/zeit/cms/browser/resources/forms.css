@@ -558,13 +558,15 @@ a.add_view {
 }
 
 /* XML File view optimization to prevent small textareas */
-body.type-rawxml.location-workingcopy #edit-form form,
-body.type-embed.location-workingcopy #edit-form form {
+body.type-embed.location-workingcopy #edit-form form,
+body.type-markup.location-workingcopy #edit-form form,
+body.type-rawxml.location-workingcopy #edit-form form {
   height: 100%;
 }
 
-body.type-rawxml.location-workingcopy #edit-form > form > div.field-group,
-body.type-embed.location-workingcopy #edit-form > form > div.field-group {
+body.type-embed.location-workingcopy #edit-form > form > div.field-group,
+body.type-markup.location-workingcopy #edit-form > form > div.field-group,
+body.type-rawxml.location-workingcopy #edit-form > form > div.field-group {
   position: static;
   top: unset;
   right: unset;
@@ -573,38 +575,48 @@ body.type-embed.location-workingcopy #edit-form > form > div.field-group {
 }
 
 /* subtract height of fieldset legend */
-body.type-rawxml.location-workingcopy #edit-form form .field-group fieldset,
-body.type-embed.location-workingcopy #edit-form form .field-group fieldset {
+body.type-embed.location-workingcopy #edit-form form .field-group fieldset,
+body.type-markup.location-workingcopy #edit-form form .field-group fieldset,
+body.type-rawxml.location-workingcopy #edit-form form .field-group fieldset {
   height: calc(100% - 30px);
 }
 
-body.type-rawxml.location-workingcopy #edit-form form .field-group,
 body.type-embed.location-workingcopy #edit-form form .field-group,
+body.type-markup.location-workingcopy #edit-form form .field-group,
+body.type-rawxml.location-workingcopy #edit-form form .field-group,
 body.type-embed.location-workingcopy #edit-form form .field-group fieldset > div,
+body.type-markup.location-workingcopy #edit-form form .field-group fieldset > div,
 body.type-rawxml.location-workingcopy #edit-form form .field-group fieldset > div {
   height: inherit;
 }
 
-body.type-rawxml.location-workingcopy #edit-form form .field-group fieldset > div,
 body.type-embed.location-workingcopy #edit-form form .field-group fieldset > div,
-body.type-rawxml.location-workingcopy #edit-form .fieldname-xml,
+body.type-markup.location-workingcopy #edit-form form .field-group fieldset > div,
+body.type-rawxml.location-workingcopy #edit-form form .field-group fieldset > div,
+body.type-markup.location-workingcopy #edit-form .fieldname-text,
 body.type-embed.location-workingcopy #edit-form .fieldname-text,
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml,
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget,
+body.type-markup.location-workingcopy #edit-form .fieldname-text .widget,
 body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget {
   display: flex;
   flex-direction: column;
 }
 
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget textarea,
+body.type-markup.location-workingcopy #edit-form .fieldname-text .widget textarea,
 body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget textarea {
   width: 99%;
 }
 
-body.type-rawxml.location-workingcopy #edit-form .fieldname-xml,
 body.type-embed.location-workingcopy #edit-form .fieldname-text,
-body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget,
+body.type-markup.location-workingcopy #edit-form .fieldname-text,
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml,
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget,
+body.type-markup.location-workingcopy #edit-form .fieldname-text .widget,
+body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget,
 body.type-embed.location-workingcopy #edit-form .fieldname-text .widget textarea,
+body.type-markup.location-workingcopy #edit-form .fieldname-text .widget textarea,
 body.type-rawxml.location-workingcopy #edit-form .fieldname-xml .widget textarea {
   flex-grow: 1;
 }
