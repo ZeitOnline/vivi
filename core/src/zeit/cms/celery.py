@@ -7,6 +7,7 @@ import zeit.cms.cli
 log = logging.getLogger(__name__)
 
 try:
+    from opentelemetry.instrumentation.celery import CeleryInstrumentor
     import celery
     import celery.loaders.app
     import celery.signals
@@ -152,3 +153,5 @@ else:
 
     # Export decorator, so client modules can say `@zeit.cms.celery.task()`.
     task = CELERY.task
+
+    CeleryInstrumentor().instrument()

@@ -124,6 +124,7 @@ setup(
             'js.underscore',
             'js.vanderlee_colorpicker',
             'opentelemetry-instrumentation',
+            'opentelemetry-instrumentation-celery',
             'opentelemetry-instrumentation-requests',
             'opentelemetry-instrumentation-wsgi',
             'pypandoc',
