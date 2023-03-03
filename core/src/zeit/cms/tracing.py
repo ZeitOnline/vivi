@@ -1,6 +1,9 @@
 import contextlib
 import logging
 import opentelemetry.trace
+import pkg_resources
+import re
+import socket
 import zeit.cms.interfaces
 import zope.interface
 
@@ -90,6 +93,25 @@ def default_tracer():
       the argument to get_tracer().
     """
     return opentelemetry.trace.get_tracer(__name__)
+
+
+@zope.interface.implementer(zeit.cms.interfaces.ITracer)
+def tracer_from_product_config():
+    import zope.app.appsetup.product
+
+    hostname = socket.gethostname()
+    # We don't want the FQDN and date suffix.
+    hostname = re.split('([-]{1}[0-9]{3,})|(.zeit){1}', hostname)[0]
+
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    provider = zeit.cms.tracing.OpenTelemetryTracerProvider(
+        'vivi', pkg_resources.get_distribution('vivi.core').version,
+        config['environment'], hostname, config['otlp-url'], headers={
+            'x-honeycomb-team': config['honeycomb-apikey'],
+            'x-honeycomb-dataset': config['honeycomb-dataset'],
+        })
+    opentelemetry.trace.set_tracer_provider(provider)
+    return default_tracer()
 
 
 def start_span(module, *args, **kw):
