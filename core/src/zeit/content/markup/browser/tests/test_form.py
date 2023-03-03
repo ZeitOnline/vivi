@@ -15,9 +15,8 @@ class MarkupTest(zeit.content.markup.testing.BrowserTestCase):
         b.getControl('File name').value = 'test-markdown'
 
         b.getControl('Add').click()
-        self.assertFalse('There were errors' in b.contents)
+        self.assertNotIn('There were errors', b.contents)
         b.getLink('Checkin').click()
 
         self.assertEllipsis('...goodbye...', b.contents)
-        # content is rendered html
-        self.assertEllipsis('...sad noises...', b.contents)
+        self.assertEllipsis('...<h1>sad noises</h1>...', b.contents)

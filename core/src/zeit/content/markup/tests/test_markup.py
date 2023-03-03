@@ -1,4 +1,5 @@
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.testing import xmltotext
 
 import zope.event
 import zope.lifecycleevent
@@ -25,10 +26,12 @@ class MarkupTest(zeit.content.markup.testing.FunctionalTestCase):
             co.authorships = [co.authorships.create(
                 self.repository['author'])]
             co.title = 'bah'
-            co.text = 'baz'
+            co.text = '<h1>baz</h1>'
 
         self.assertEqual('bah', self.repository['markup'].title)
         self.assertEqual(
             'Ursula',
             self.repository['markup'].authorships[0].target.firstname)
-        self.assertEqual('baz', self.repository['markup'].text)
+        self.assertEqual('<h1>baz</h1>', self.repository['markup'].text)
+        self.assertEllipsis(
+            '...<h1>baz</h1>...', xmltotext(self.repository['markup'].xml))
