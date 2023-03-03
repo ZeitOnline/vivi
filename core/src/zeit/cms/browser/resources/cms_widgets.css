@@ -834,3 +834,21 @@ a.button.addbullet:hover {
     background: url("./icons/icons_sprites.png") no-repeat scroll 1px -1920px transparent;
     padding-left: 20px;
 }
+
+.markdown-display-widget {
+    background-color: #fcfcfc;
+    padding: 1em;
+}
+
+.markdown-display-widget a {
+    color: blue;
+}
+
+.markdown-display-widget h1 {
+    font-size: 2em;
+    padding-left: 0;
+}
+.markdown-display-widget h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+}

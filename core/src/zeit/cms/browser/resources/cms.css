@@ -75,6 +75,8 @@ legend {
 pre {
   padding: 1em;
   overflow: auto;
+  color: black;
+  background-color: #fcfcfc;
 }
 
 /*
