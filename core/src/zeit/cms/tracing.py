@@ -97,6 +97,7 @@ def default_tracer():
 
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
 def tracer_from_product_config():
+    from opentelemetry.instrumentation.requests import RequestsInstrumentor
     import zope.app.appsetup.product
 
     hostname = socket.gethostname()
@@ -111,6 +112,9 @@ def tracer_from_product_config():
             'x-honeycomb-dataset': config['honeycomb-dataset'],
         })
     opentelemetry.trace.set_tracer_provider(provider)
+
+    RequestsInstrumentor().instrument(tracer_provider=provider)
+
     return default_tracer()
 
 
