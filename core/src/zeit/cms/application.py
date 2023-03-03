@@ -1,8 +1,11 @@
+from opentelemetry.util.http import ExcludeList
 from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 import fanstatic
 import grokcore.component as grok
+import opentelemetry.instrumentation.wsgi
 import os
 import webob.cookies
+import wsgiref.util
 import zeit.cms.cli
 import zeit.cms.wsgi
 import zeit.cms.zope
@@ -62,7 +65,9 @@ class Application:
             pipeline = [
                 ('linesman', 'egg:linesman#profiler'),
             ] + pipeline
-        return zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
+        app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
+        app = OpenTelemetryMiddleware(app, ExcludeList(['/@@health-check$']))
+        return app
 
 
 APPLICATION = Application()
@@ -113,3 +118,18 @@ class BrowserRequest(zope.publisher.browser.BrowserRequest):
 grok.global_utility(
     BrowserRequest.factory,
     zope.app.publication.interfaces.IBrowserRequestFactory)
+
+
+class OpenTelemetryMiddleware(
+        opentelemetry.instrumentation.wsgi.OpenTelemetryMiddleware):
+    """Port excluded_urls feature from opentelemetry-instrumentation-asgi"""
+
+    def __init__(self, wsgi, excluded_urls=None, *args, **kw):
+        super().__init__(wsgi, *args, **kw)
+        self.excluded_urls = excluded_urls
+
+    def __call__(self, environ, start_response):
+        url = wsgiref.util.request_uri(environ)
+        if self.excluded_urls and self.excluded_urls.url_disabled(url):
+            return self.wsgi(environ, start_response)
+        return super().__call__(environ, start_response)
