@@ -98,6 +98,7 @@ def default_tracer():
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
 def tracer_from_product_config():
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
+    from zeit.cms.zeo import ZEOInstrumentor
     import zope.app.appsetup.product
 
     hostname = socket.gethostname()
@@ -114,6 +115,8 @@ def tracer_from_product_config():
     opentelemetry.trace.set_tracer_provider(provider)
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
+    if logging.getLogger('zeo.tracing').isEnabledFor(logging.DEBUG):
+        ZEOInstrumentor().instrument(tracer_provider=provider)
 
     return default_tracer()
 

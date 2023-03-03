@@ -123,6 +123,7 @@ setup(
             'js.select2',
             'js.underscore',
             'js.vanderlee_colorpicker',
+            'opentelemetry-instrumentation',
             'opentelemetry-instrumentation-requests',
             'opentelemetry-instrumentation-wsgi',
             'pypandoc',
