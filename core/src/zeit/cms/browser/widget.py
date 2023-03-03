@@ -693,14 +693,14 @@ class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
 class MarkdownDisplayWidget(zope.formlib.widget.DisplayWidget):
 
     def __call__(self):
+        """Copy&Paste from superclass to *not* XML escape the value."""
         if self._renderedValueSet():
             value = self._data
         else:
             value = self.context.default
         if value == self.context.missing_value:
-            return ''
-        return ('<div class="markdown-display-widget">%s</div>' % value
-                if value else value)
+            value = ''
+        return '<div class="markdown-display-widget">%s</div>' % value
 
 
 def TupleSequenceWidget(field, source, request):
