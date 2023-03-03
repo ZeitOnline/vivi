@@ -690,9 +690,7 @@ class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
             return value
 
 
-class MarkdownDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
-
-    detail_view_name = '@@object-details'
+class MarkdownDisplayWidget(zope.formlib.widget.DisplayWidget):
 
     def __call__(self):
         if self._renderedValueSet():
