@@ -78,6 +78,10 @@ class Color(zope.schema.TextLine):
     pass
 
 
+class Markdown(zope.schema.Text):
+    pass
+
+
 EMPTY = object()
 
 

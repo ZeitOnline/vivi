@@ -685,9 +685,22 @@ class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
         value = super()._toFormValue(
             value)
         try:
-            return markdownify.markdownify(value)
+            return markdownify.markdownify(value, heading_style='ATX')
         except OSError:
             return value
+
+
+class MarkdownDisplayWidget(zope.formlib.widget.DisplayWidget):
+
+    def __call__(self):
+        """Copy&Paste from superclass to *not* XML escape the value."""
+        if self._renderedValueSet():
+            value = self._data
+        else:
+            value = self.context.default
+        if value == self.context.missing_value:
+            value = ''
+        return '<div class="markdown-display-widget">%s</div>' % value
 
 
 def TupleSequenceWidget(field, source, request):

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Feb 22 09:14:01 2023\n"
+"POT-Creation-Date: Thu Mar  2 11:36:48 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -567,6 +567,7 @@ msgstr ""
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/animation/browser/form.py:37
 #: zeit/content/cp/browser/form.py:54
+#: zeit/content/markup/browser/form.py:34
 #: zeit/content/video/browser/video.py:40
 msgid "Navigation"
 msgstr ""
@@ -1739,6 +1740,7 @@ msgstr ""
 #: zeit/content/dynamicfolder/browser/folder.py:20
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/link/browser/configure.zcml:17
+#: zeit/content/markup/browser/configure.zcml:18
 #: zeit/content/volume/browser/configure.zcml:19
 #: zeit/magazin/browser/configure.zcml:46
 #: zeit/magazin/browser/configure.zcml:74
@@ -1750,6 +1752,7 @@ msgstr ""
 #: zeit/content/cp/browser/configure.zcml:44
 #: zeit/content/gallery/browser/configure.zcml:56
 #: zeit/content/link/browser/configure.zcml:32
+#: zeit/content/markup/browser/configure.zcml:33
 #: zeit/content/volume/browser/configure.zcml:74
 msgid "View metadata"
 msgstr ""
@@ -3976,6 +3979,34 @@ msgstr ""
 
 #: zeit/content/link/interfaces.py:48
 msgid "Blog"
+msgstr ""
+
+#: zeit/content/markup/browser/configure.zcml:9
+msgid "Markup"
+msgstr ""
+
+#: zeit/content/markup/browser/form.py:20
+msgid "Markup Content"
+msgstr ""
+
+#: zeit/content/markup/browser/form.py:26
+msgid "Add markup"
+msgstr ""
+
+#: zeit/content/markup/browser/form.py:40
+msgid "Edit markup"
+msgstr ""
+
+#: zeit/content/markup/browser/form.py:45
+msgid "Display markup metadata"
+msgstr ""
+
+#: zeit/content/markup/interfaces.py:12
+msgid "Markdown content"
+msgstr ""
+
+#: zeit/content/markup/markup.py:36
+msgid "Markup content"
 msgstr ""
 
 #: zeit/content/modules/interfaces.py:19
