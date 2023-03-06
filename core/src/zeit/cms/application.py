@@ -8,6 +8,7 @@ import webob.cookies
 import wsgiref.util
 import zeit.cms.cli
 import zeit.cms.wsgi
+import zeit.cms.zeo
 import zeit.cms.zope
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
@@ -66,7 +67,9 @@ class Application:
                 ('linesman', 'egg:linesman#profiler'),
             ] + pipeline
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
-        app = OpenTelemetryMiddleware(app, ExcludeList(['/@@health-check$']))
+        app = OpenTelemetryMiddleware(
+            app, ExcludeList(['/@@health-check$']),
+            request_hook=zeit.cms.zeo.apply_samplerate)
         return app
 
 

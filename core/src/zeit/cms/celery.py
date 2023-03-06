@@ -39,6 +39,7 @@ except ImportError:
 else:
     import bugsnag
     import kombu
+    import zeit.cms.zeo
     import zeit.cms.zope
     import zope.app.appsetup.appsetup
 
@@ -155,3 +156,5 @@ else:
     task = CELERY.task
 
     CeleryInstrumentor().instrument()
+    celery.signals.task_prerun.connect(
+        zeit.cms.zeo.apply_samplerate, weak=False)

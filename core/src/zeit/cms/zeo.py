@@ -1,7 +1,10 @@
 from ZEO.asyncio.client import ClientRunner, Protocol
 from opentelemetry.instrumentation.instrumentor import BaseInstrumentor
 import functools
+import logging
 import opentelemetry.trace
+import random
+import zope.app.appsetup.product
 
 
 class ZEOInstrumentor(BaseInstrumentor):
@@ -33,9 +36,15 @@ class ZEOInstrumentor(BaseInstrumentor):
                 else:
                     tid = ''
 
-                with tracer.start_as_current_span(
-                        'ZEO ' + operation, attributes={
-                            'type': 'client', 'db.transaction': tid}):
+                if logging.getLogger(__name__).isEnabledFor(logging.DEBUG):
+                    config = zope.app.appsetup.product.getProductConfiguration(
+                        'zeit.cms')
+                    with tracer.start_as_current_span(
+                            'ZEO ' + operation, attributes={
+                                'type': 'client', 'db.transaction': tid,
+                                'SampleRate': config['samplerate-zeo']}):
+                        return wrapped_call(method, *args, **kw)
+                else:
                     return wrapped_call(method, *args, **kw)
 
             self._ClientRunner__call = instrumented_call
@@ -67,3 +76,12 @@ class ZEOInstrumentor(BaseInstrumentor):
                     continue
                 original = func.__wrapped__
                 setattr(cls, name, original)
+
+
+def apply_samplerate(*args, **kw):
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    zeo = logging.getLogger(__name__)
+    if random.randint(1, 100) <= int(config.get('samplerate-zeo', 0)):
+        zeo.setLevel(logging.DEBUG)
+    else:
+        zeo.setLevel(logging.NOTSET)

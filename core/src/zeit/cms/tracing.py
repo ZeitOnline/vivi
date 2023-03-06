@@ -115,8 +115,7 @@ def tracer_from_product_config():
     opentelemetry.trace.set_tracer_provider(provider)
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
-    if logging.getLogger('zeo.tracing').isEnabledFor(logging.DEBUG):
-        ZEOInstrumentor().instrument(tracer_provider=provider)
+    ZEOInstrumentor().instrument(tracer_provider=provider)
 
     return default_tracer()
 
