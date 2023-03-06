@@ -41,7 +41,7 @@ case $COMMAND in
             sed -ne '/JENKINS_BATOU_BRANCH=/s/JENKINS_BATOU_BRANCH=//p' | \
             tr --delete '\r\n')
         if [ -z "$BATOU_BRANCH" ]; then
-          BATOU_BRANCH=master
+          BATOU_BRANCH=main
         fi
         git reset --hard origin/$BATOU_BRANCH
 
