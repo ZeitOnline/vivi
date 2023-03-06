@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.2 (2023-03-06)
+-------------------
+
+- ZO-2463: Include all necessary otlp exporter dependencies
+
+
 5.23.1 (2023-03-06)
 -------------------
 
