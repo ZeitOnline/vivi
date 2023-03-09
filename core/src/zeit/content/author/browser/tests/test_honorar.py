@@ -1,6 +1,9 @@
 # coding: utf-8
 from unittest import mock
+import datetime
+import json
 import zeit.content.author.author
+import zeit.content.author.browser.honorar as honorar
 import zeit.content.author.interfaces
 import zeit.content.author.testing
 import zeit.find.interfaces
@@ -116,3 +119,57 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
             '...Author with honorar ID 12345...'
             'redirect_to?unique_id=http://xml.zeit.de/author/foo...',
             b.contents)
+
+
+class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
+
+    def test_report_for_invalid_gcids_is_csv_download(self):
+        now = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        b = self.browser
+        with mock.patch('zeit.content.author.browser.honorar.HonorarReports.report_invalid_gcid') as create_content: # noqa
+            create_content.return_value = 'some csv'
+            b.open('http://localhost/++skin++vivi/HonorarReports') # noqa
+            self.assertIn(b.headers['content-type'],
+                          ('text/csv', 'text/csv;charset=utf-8'))
+            self.assertEqual('attachment; '
+                             f'filename="Hdok-geloeschteGCIDs_{now}.csv"',
+                             b.headers['content-disposition'])
+            self.assertEllipsis("some csv", b.contents)
+
+
+class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
+
+    def test_invalid_gcids_api_request_builds_correct_csv_report(self):
+        elastic = mock.Mock()
+        zope.component.getGlobalSiteManager().registerUtility(
+            elastic, zeit.find.interfaces.ICMSSearch)
+        elastic.search.return_value = zeit.cms.interfaces.Result(json.loads(
+             """[{"payload": {"xml": {"honorar_id": "123"}},
+             "url": "/autoren/P/Sophia_Phildius/index"},
+             {"payload": {"xml": {"honorar_id": "10055333"}},
+             "url": "/autoren/M/Yasmine_MBarek/index"}]""", strict=False))
+        api = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        api.invalid_gcids.return_value = [
+            {'geloeschtGCID': 123,
+             'geloeschtName': 'Doppeltes Lottchen',
+             'geloeschtUUID': '2D39CE6F-AD11-4F6B-9471-5A8D3BAFF4D4',
+             'konto': 'ext_klippert',
+             'refGCID': 321,
+             'refName': 'Lottchen',
+             'refUUID': '44AA0603-86FA-ED47-8DBE-2589773E130F',
+             'ts': '03/03/2023 14:53:22'},
+            {'geloeschtGCID': 789,
+             'geloeschtName': 'Zwil Ling',
+             'geloeschtUUID': 'A88EC3B5-9E31-1E48-848B-BE5F4EEE1F31',
+             'konto': 'ext_klippert',
+             'refGCID': 987,
+             'refName': 'Zwil Ling',
+             'refUUID': '6C3DB770-20DE-BD48-A990-5B0FD1D93F26',
+             'ts': '03/03/2023 17:35:56'}]
+        csv = honorar.HonorarReports.report_invalid_gcid(self)
+        expected = (
+            'Geloeschte HDok-ID;Vivi-Autorenobjekt zu geloeschter HDok-ID;ggf.'
+            ' gueltige HDok-ID;ggf. gueltiges Vivi-Autorenobjekt\n123;'
+            'https://www.zeit.de/autoren/P/Sophia_Phildius/index;321;\n')
+        self.assertEqual(csv, expected)
