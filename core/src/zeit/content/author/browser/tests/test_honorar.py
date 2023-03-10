@@ -144,10 +144,10 @@ class CSVRendering(zeit.retresco.testing.FunctionalTestCase):
         zope.component.getGlobalSiteManager().registerUtility(
             elastic, zeit.find.interfaces.ICMSSearch)
         elastic.search.return_value = zeit.cms.interfaces.Result(json.loads(
-             """[{"payload": {"xml": {"honorar_id": "123"}},
-             "url": "/autoren/P/Sophia_Phildius/index"},
-             {"payload": {"xml": {"honorar_id": "10055333"}},
-             "url": "/autoren/M/Yasmine_MBarek/index"}]""", strict=False))
+            """[{"payload": {"xml": {"honorar_id": "123"}},
+            "url": "/autoren/P/Sophia_Phildius/index"},
+            {"payload": {"xml": {"honorar_id": "10055333"}},
+            "url": "/autoren/M/Yasmine_MBarek/index"}]""", strict=False))
         api = zope.component.getUtility(
             zeit.content.author.interfaces.IHonorar)
         api.invalid_gcids.return_value = [
