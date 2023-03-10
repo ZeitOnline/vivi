@@ -113,11 +113,13 @@ class VideoTagesschauAPI():
         else:
             article_uri = '/'.join(uniqueId_parts)
         body = ' '.join(ISearchableText(article).getSearchableText())
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         payload = {
             'article_custom_id': IUUID(article).id,
             'article_title': article.title,
             'article_text': body,
-            'article_uri': article_uri}
+            'article_uri': f'{urlparse(config["live-prefix"]).hostname}'
+                           f'{article_uri}'}
         return payload
 
 

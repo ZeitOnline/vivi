@@ -151,13 +151,13 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             'Das ist Tagesschau relevant. Auch das ist '
             'Tagesschau relevant.', payload['article_text'])
         self.assertEqual(
-            '/content/fuer/die/taggesschau',
+            'localhost/content/fuer/die/taggesschau',
             payload['article_uri'])
 
         article.uniqueId = 'http://xml.zeit.de/artikel/pfad/111-aaa.tmp'
         payload = api._prepare_payload(article)
         self.assertEqual(
-            '/artikel/pfad/tagesschaurelevanter-artikel',
+            'localhost/artikel/pfad/tagesschaurelevanter-artikel',
             payload['article_uri'])
 
     def test_api_request_calls(self):
