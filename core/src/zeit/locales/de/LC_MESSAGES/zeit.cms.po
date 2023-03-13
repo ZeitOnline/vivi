@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Mar  3 10:26:45 2023\n"
+"POT-Creation-Date: Mon Mar 13 08:42:53 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -1882,7 +1882,7 @@ msgstr "Videoempfehlung generieren"
 #: zeit/content/article/edit/browser/edit.py:346
 #: zeit/content/article/edit/browser/edit.py:350
 #: zeit/content/author/browser/form.py:153
-#: zeit/content/author/browser/honorar.py:49
+#: zeit/content/author/browser/honorar.py:52
 #: zeit/content/volume/browser/form.py:126
 msgid "There were errors"
 msgstr "Fehler aufgetreten"
@@ -2710,7 +2710,7 @@ msgid "Edit author"
 msgstr "Autor bearbeiten"
 
 #: zeit/content/author/browser/form.py:97
-#: zeit/content/author/browser/honorar.py:22
+#: zeit/content/author/browser/honorar.py:25
 msgid "Add duplicate author"
 msgstr "Zweiten Autor dieses Namens hinzufügen"
 
@@ -2727,7 +2727,7 @@ msgid "Author with honorar ID ${honorar_id} already exists:"
 msgstr "Ein Autor mit HDok-ID ${honorar_id} existiert bereits:"
 
 #: zeit/content/author/browser/honorar-result.pt:3
-#: zeit/content/author/browser/honorar.py:29
+#: zeit/content/author/browser/honorar.py:32
 msgid "Create author"
 msgstr "Autor hinzufügen"
 
@@ -2745,19 +2745,23 @@ msgstr "Autor übernehmen"
 msgid "Create new author"
 msgstr "Neuen Autor anlegen"
 
-#: zeit/content/author/browser/honorar.py:20
+#: zeit/content/author/browser/honorar.py:23
 #: zeit/content/author/interfaces.py:37
 msgid "Firstname"
 msgstr "Vorname"
 
-#: zeit/content/author/browser/honorar.py:21
+#: zeit/content/author/browser/honorar.py:24
 #: zeit/content/author/interfaces.py:38
 msgid "Lastname"
 msgstr "Nachname"
 
-#: zeit/content/author/browser/honorar.py:34
+#: zeit/content/author/browser/honorar.py:37
 msgid "Look up author"
 msgstr "weiter"
+
+#: zeit/content/author/browser/honorar.py:207
+msgid "Honorar Reports"
+msgstr "HDok Dublettenreport"
 
 #: zeit/content/author/browser/interfaces.py:10
 msgid ""
