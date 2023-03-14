@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Mar  3 10:26:45 2023\n"
+"POT-Creation-Date: Mon Mar 13 08:42:53 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1920,7 +1920,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/edit.py:346
 #: zeit/content/article/edit/browser/edit.py:350
 #: zeit/content/author/browser/form.py:153
-#: zeit/content/author/browser/honorar.py:49
+#: zeit/content/author/browser/honorar.py:52
 #: zeit/content/volume/browser/form.py:126
 msgid "There were errors"
 msgstr ""
@@ -2772,7 +2772,7 @@ msgid "Edit author"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:97
-#: zeit/content/author/browser/honorar.py:22
+#: zeit/content/author/browser/honorar.py:25
 msgid "Add duplicate author"
 msgstr ""
 
@@ -2789,7 +2789,7 @@ msgid "Author with honorar ID ${honorar_id} already exists:"
 msgstr ""
 
 #: zeit/content/author/browser/honorar-result.pt:3
-#: zeit/content/author/browser/honorar.py:29
+#: zeit/content/author/browser/honorar.py:32
 msgid "Create author"
 msgstr ""
 
@@ -2805,18 +2805,22 @@ msgstr ""
 msgid "Create new author"
 msgstr ""
 
-#: zeit/content/author/browser/honorar.py:20
+#: zeit/content/author/browser/honorar.py:23
 #: zeit/content/author/interfaces.py:37
 msgid "Firstname"
 msgstr ""
 
-#: zeit/content/author/browser/honorar.py:21
+#: zeit/content/author/browser/honorar.py:24
 #: zeit/content/author/interfaces.py:38
 msgid "Lastname"
 msgstr ""
 
-#: zeit/content/author/browser/honorar.py:34
+#: zeit/content/author/browser/honorar.py:37
 msgid "Look up author"
+msgstr ""
+
+#: zeit/content/author/browser/honorar.py:207
+msgid "Honorar Reports"
 msgstr ""
 
 #: zeit/content/author/browser/interfaces.py:10

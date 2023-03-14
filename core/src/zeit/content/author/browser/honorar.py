@@ -4,9 +4,12 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.author import Author
 from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import datetime
 import gocept.form.grouped
+import io
 import json
 import zeit.cms.browser.form
+import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.content.author.interfaces
 import zope.component
@@ -145,3 +148,62 @@ class DispatchAdd(zeit.cms.browser.view.Base):
         else:
             view = 'zeit.content.author.add_contextfree'
         self.redirect(self.url(view))
+
+
+class HonorarReports(zeit.cms.browser.view.Base):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        filedate = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        filename = f'Hdok-geloeschteGCIDs_{filedate}.csv'
+        self.request.response.setHeader('Content-Type', 'text/csv')
+        self.request.response.setHeader('location', 'https://www.zeit.de')
+        self.request.response.setHeader(
+            'Content-Disposition', 'attachment; filename="%s"' % filename)
+        self.send_message(f'Download {filename}')
+        return self.report_invalid_gcid()
+
+    def report_invalid_gcid(self, days_ago=31):
+
+        hdok = zope.component.getUtility(
+            zeit.content.author.interfaces.IHonorar)
+        hdok_authors_deleted = hdok.invalid_gcids(days_ago)
+        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        es_authors = es.search({'query': {'bool': {'filter': [
+            {'terms': {'payload.xml.honorar_id':
+                       [x['geloeschtGCID'] for x in hdok_authors_deleted] +
+                       [x['refGCID'] for x in hdok_authors_deleted]}}
+        ]}}, '_source': ['url', 'payload.xml.honorar_id']}, rows=1000)
+        es_authors = {
+            x['payload']['xml']['honorar_id']:
+            'https://www.zeit.de' + x['url'] for x in es_authors}
+
+        csv_rows = io.StringIO()
+        for item in hdok_authors_deleted:
+            deleted = str(item['geloeschtGCID'])
+            replaced = str(item['refGCID'])
+            if deleted not in es_authors:
+                continue
+            csv_rows.write(';'.join([
+                deleted,
+                es_authors[deleted],
+                replaced,
+                es_authors.get(replaced, ''),
+            ]) + '\n')
+
+        csv_rows = (
+            'Geloeschte HDok-ID;Vivi-Autorenobjekt zu geloeschter HDok-ID;'
+            'ggf. gueltige HDok-ID;ggf. gueltiges Vivi-Autorenobjekt\n' +
+            csv_rows.getvalue())
+
+        return csv_rows
+
+
+class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
+
+    title = _("Honorar Reports")
+    viewURL = '@@HonorarReports'
+    pathitem = '@@HonorarReports'

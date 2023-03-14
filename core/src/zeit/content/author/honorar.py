@@ -1,8 +1,6 @@
 from zeit.cms.interfaces import CONFIG_CACHE
-import argparse
 import base64
 import datetime
-import io
 import json
 import logging
 import pkg_resources
@@ -152,94 +150,3 @@ def MockHonorar():
     honorar.search.return_value = []
     honorar.create.return_value = 'mock-honorar-id'
     return honorar
-
-
-@zeit.cms.cli.runner()
-def report_invalid_gcid():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--intv-short-days', type=int, default=31,
-                        help='check gcids until <n> days ago')
-    parser.add_argument('--intv-long-days', type=int, default=365,
-                        help='check gcids until <m> days ago')
-    parser.add_argument('--mail-to', help='recipient for report')
-    parser.add_argument('--mail-from', help='sender for report')
-    parser.add_argument('--mail-server', help='smtp server')
-    parser.add_argument('--dry-run', action='store_true')
-    args = parser.parse_args()
-
-    hdok = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
-    hdok_authors_deleted = hdok.invalid_gcids(args.intv_short_days)
-
-    if len(hdok_authors_deleted) == 0:
-        mailbody = f'In den vergangen {args.intv_short_days} Tagen wurden \
-            keine Dubletten in HDok identifziert, die auch in Vivi existieren'
-        if len(hdok.invalid_gcids(args.intv_long_days)) == 0:
-            mailbody += '\n\nEs werden überhaupt keine Dubletten mehr \
-                gefunden. Bitte die Schnittstelle prüfen lassen!'
-        send_mail(args.mail_from, args.mail_to, mailbody, args.mail_server)
-        return
-
-    es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-    es_authors = es.search({'query': {'bool': {'filter': [
-        {'terms': {'payload.xml.honorar_id':
-                   [x['geloeschtGCID'] for x in hdok_authors_deleted] +
-                   [x['refGCID'] for x in hdok_authors_deleted]}}
-    ]}}, '_source': ['url', 'payload.xml.honorar_id']}, rows=1000)
-    es_authors = {
-        x['payload']['xml']['honorar_id']:
-        'https://www.zeit.de' + x['url'] for x in es_authors}
-
-    output = io.StringIO()
-    for item in hdok_authors_deleted:
-        deleted = str(item['geloeschtGCID'])
-        replaced = str(item['refGCID'])
-        if deleted not in es_authors:
-            continue
-        output.write(';'.join([
-            deleted,
-            es_authors[deleted],
-            replaced,
-            es_authors.get(replaced, ''),
-        ]) + '\n')
-
-    attachment = (
-        'Geloeschte HDok-ID;Vivi-Autorenobjekt zu geloeschter HDok-ID;'
-        'ggf. gueltige HDok-ID;ggf. gueltiges Vivi-Autorenobjekt\n' +
-        output.getvalue())
-
-    mailbody = (
-        'Im Anhang ist eine Liste der Autoren, die in den letzten 31 '
-        'Tagen als Dubletten identifiziert und in HDok gelöscht wurden.\n\n\n')
-    if args.dry_run:
-        print(mailbody)
-        print(attachment)
-    else:
-        send_mail(
-            args.mail_from, args.mail_to, mailbody, args.mail_server,
-            attachment)
-
-
-def send_mail(from_, to, body, server, attachment=None):
-    from email.mime.base import MIMEBase
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-    import smtplib
-
-    msg = MIMEMultipart()
-    msgtext = MIMEText(body.encode('utf-8'), 'plain', 'utf-8')
-    msg.attach(msgtext)
-    msg['Subject'] = 'Hdok Dubletten-Report'
-    msg['From'] = from_
-    msg['To'] = to
-
-    if attachment:
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(attachment)
-        part.add_header(
-            'Content-Disposition', 'attachment; filename=invalide-gcids.csv')
-        msg.attach(part)
-
-    s = smtplib.SMTP(server)
-    s.send_message(msg)
-    s.quit()
-    log.info('mail sent to %s', to)
