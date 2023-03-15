@@ -345,60 +345,57 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
         """
         file_content = ''
         out = io.StringIO()
-        try:
-            writer = csv.writer(out, delimiter=self.CSV_SEPERATOR)
-            for row in self.create_imagegroup_list():
+        writer = csv.writer(out, delimiter=self.CSV_SEPERATOR)
+        for row in self.create_imagegroup_list():
 
-                writer.writerow([val for val in row])
+            writer.writerow(row)
 
-            file_content = out.getvalue()
-        finally:
-            out.close()
-            return file_content
+        file_content = out.getvalue()
+        return file_content
 
-    def create_imagegroup_list(self, days_ago=40):
-        date = (
-            datetime.datetime.today() -
-            datetime.timedelta(days=days_ago)).strftime(
-            '%Y-%m-%dT%H:%M:%S')
-        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        query = {
-            "query": {"bool": {
-                "must": [
-                    {"match": {"doc_type": "image-group"}},
-                    {"match": {"payload.image.single_purchase": "yes"}}],
-                "filter": [{
-                    "range": {
-                        "payload.document.date_first_released": {"gte": date}}}
-                ]}}}
-        imagegroups = es.search(
-            query, rows=10000)
+    def create_imagegroup_list(self):
         csv_rows = list()
         csv_rows.append([
             _('publish_date'), _('image_number'), _('copyright infos'),
             _('internal link')])
-        for imgr in imagegroups:
+        for imgr_content in self.find_imagegroups():
             try:
-                imgr_content = zeit.retresco.interfaces.ITMSContent(imgr)
                 imgr_metadata = zeit.content.image.interfaces.IImageMetadata(
                     imgr_content)
                 publish_date = IPublishInfo(imgr_content).date_first_released
-                master_image = imgr_metadata.context.master_image
                 copyrights = '/'.join(map(str, imgr_metadata.copyright))
                 vivi_url = imgr_content.uniqueId.replace(
                     'http://xml.zeit.de', 'https://vivi.zeit.de/repository')
                 csv_rows.append([
                     publish_date.to_datetime_string(),
-                    master_image,
+                    imgr_content.master_image,
                     copyrights,
                     vivi_url])
             except Exception as e:
                 csv_rows.append([
                     'ERROR',
                     str(e),
-                    imgr['url']])
+                    imgr_content.uniqueId])
                 continue
         return csv_rows
+
+    def find_imagegroups(self, days_ago=40):
+        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        query = {
+            "query": {"bool": {
+                "filter": [{
+                    "range": {
+                        "payload.document.date_first_released": {
+                            "gte": f'now-{days_ago}d/d'}
+                    }},
+                    {"term": {"doc_type": "image-group"}},
+                    {"term": {"payload.image.single_purchase": True}}
+                ]}}}
+        results = es.search(query, rows=10000)
+        imgroups = list()
+        for result in results:
+            imgroups.append(zeit.retresco.interfaces.ITMSContent(result))
+        return imgroups
 
 
 class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
