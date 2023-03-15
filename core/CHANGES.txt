@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.3 (2023-03-15)
+-------------------
+
+- ZO-2655: CSV with invalid Authors (gcids) as browser view instead of mail
+
+
+FIX:
+- ZO-2757: FIX: uri paramamteter for tagesschau request includes www.zeit.de
+
+
 5.23.2 (2023-03-06)
 -------------------
 
