@@ -38,6 +38,7 @@ except ImportError:
 
             return Callable
 else:
+    from zeit.cms.tracing import anonymize
     import bugsnag
     import kombu
     import opentelemetry.trace
@@ -135,7 +136,7 @@ else:
         @contextmanager
         def transaction(self, principal_id):
             span = opentelemetry.trace.get_current_span()
-            span.set_attribute('enduser.id', principal_id)
+            span.set_attribute('enduser.id', anonymize(principal_id))
             with super().transaction(principal_id):
                 yield
 

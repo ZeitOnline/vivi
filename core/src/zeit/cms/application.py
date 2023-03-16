@@ -1,4 +1,5 @@
 from opentelemetry.util.http import ExcludeList
+from zeit.cms.tracing import anonymize
 from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import fanstatic
@@ -143,7 +144,7 @@ class OpenTelemetryMiddleware(
 def otel_request_hook(span, environ):
     zeit.cms.zeo.apply_samplerate(span, environ)
     clientip = environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0]
-    span.set_attribute('net.peer.ip', clientip)
+    span.set_attribute('net.peer.ip', anonymize(clientip))
 
 
 @grok.subscribe(zope.publisher.interfaces.IEndRequestEvent)
@@ -152,4 +153,4 @@ def add_username_to_span(event):
     if not principal or IUnauthenticatedPrincipal.providedBy(principal):
         return
     span = opentelemetry.trace.get_current_span()
-    span.set_attribute('enduser.id', principal.id)
+    span.set_attribute('enduser.id', anonymize(principal.id))
