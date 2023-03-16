@@ -69,7 +69,7 @@ class Application:
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(
             app, ExcludeList(['/@@health-check$']),
-            request_hook=zeit.cms.zeo.apply_samplerate)
+            request_hook=otel_request_hook)
         return app
 
 
@@ -136,3 +136,9 @@ class OpenTelemetryMiddleware(
         if self.excluded_urls and self.excluded_urls.url_disabled(url):
             return self.wsgi(environ, start_response)
         return super().__call__(environ, start_response)
+
+
+def otel_request_hook(span, environ):
+    zeit.cms.zeo.apply_samplerate(span, environ)
+    clientip = environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0]
+    span.set_attribute('net.peer.ip', clientip)
