@@ -1,3 +1,4 @@
+from cryptography.fernet import Fernet
 import contextlib
 import logging
 import opentelemetry.trace
@@ -133,3 +134,12 @@ def use_span(module, *args, **kw):
     span = start_span(module, *args, **kw)
     with opentelemetry.trace.use_span(span, end_on_exit=True) as span:
         yield span
+
+
+def anonymize(value):
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    key = config.get('honeycomb-personal-data-key')
+    if not key:
+        # Better to send irreversibly encrypted data than cleartext.
+        key = Fernet.generate_key()
+    return Fernet(key).encrypt(value.encode('utf-8')).decode('ascii')

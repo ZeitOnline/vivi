@@ -1,8 +1,11 @@
 from opentelemetry.util.http import ExcludeList
+from zeit.cms.tracing import anonymize
 from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
+from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import fanstatic
 import grokcore.component as grok
 import opentelemetry.instrumentation.wsgi
+import opentelemetry.trace
 import os
 import webob.cookies
 import wsgiref.util
@@ -69,7 +72,7 @@ class Application:
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(
             app, ExcludeList(['/@@health-check$']),
-            request_hook=zeit.cms.zeo.apply_samplerate)
+            request_hook=otel_request_hook)
         return app
 
 
@@ -136,3 +139,18 @@ class OpenTelemetryMiddleware(
         if self.excluded_urls and self.excluded_urls.url_disabled(url):
             return self.wsgi(environ, start_response)
         return super().__call__(environ, start_response)
+
+
+def otel_request_hook(span, environ):
+    zeit.cms.zeo.apply_samplerate(span, environ)
+    clientip = environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0]
+    span.set_attribute('net.peer.ip', anonymize(clientip))
+
+
+@grok.subscribe(zope.publisher.interfaces.IEndRequestEvent)
+def add_username_to_span(event):
+    principal = getattr(event.request, 'principal', None)
+    if not principal or IUnauthenticatedPrincipal.providedBy(principal):
+        return
+    span = opentelemetry.trace.get_current_span()
+    span.set_attribute('enduser.id', anonymize(principal.id))
