@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import ast
 import logging
 import os
@@ -39,6 +40,7 @@ except ImportError:
 else:
     import bugsnag
     import kombu
+    import opentelemetry.trace
     import zeit.cms.zeo
     import zeit.cms.zope
     import zope.app.appsetup.appsetup
@@ -129,6 +131,13 @@ else:
         def _assert_json_serializable(self, *args, **kw):
             celery_longterm_scheduler.backend.serialize(args)
             celery_longterm_scheduler.backend.serialize(kw)
+
+        @contextmanager
+        def transaction(self, principal_id):
+            span = opentelemetry.trace.get_current_span()
+            span.set_attribute('enduser.id', principal_id)
+            with super().transaction(principal_id):
+                yield
 
     @celery.signals.task_failure.connect
     def on_task_failure(**kw):
