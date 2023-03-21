@@ -4,6 +4,7 @@ from zeit.content.article.source import BodyAwareXMLSource
 import collections
 import datetime
 import logging
+import pendulum
 import zc.sourcefactory.contextual
 import zeit.cms.content.field
 import zeit.cms.content.sources
@@ -161,8 +162,8 @@ class VideoTagesschauSelection(
         return context.tagesschauvideos.values()
 
     def getTitle(self, context, value):
-        date_published = datetime.datetime.strptime(
-            value.date_published, "%Y-%m-%dT%H:%M:%S")
+        date_published = pendulum.parse(
+            value.date_published).to_datetime_string()
         label = (
             '<strong>%s</strong> - %s (%s)<br />'
             '<a href="%s" target="_blank">%s</a>' %
