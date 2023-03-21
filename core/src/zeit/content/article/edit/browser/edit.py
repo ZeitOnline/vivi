@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.videotagesschau import Video
 from zeit.content.article.edit.browser.interfaces import (
     VideoTagesschauNoResultError)
+import logging
 import json
 import zeit.cms.browser.manual
 import zeit.cms.browser.widget
@@ -19,6 +20,8 @@ import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
 import zope.security
+
+log = logging.getLogger(__name__)
 
 
 class Empty:
@@ -354,7 +357,8 @@ class VideoTagesschau(zeit.edit.browser.form.InlineForm):
                 self.errors = (VideoTagesschauNoResultError('empty'),)
                 self.status = _('There were errors')
             self.context.tagesschauvideos = recommendations
-        except Exception:
+        except Exception as exc:
+            log.error(f'ARD-API: {exc}', exc_info=True)
             self.errors = (VideoTagesschauNoResultError('technical'),)
             self.status = _('There were errors')
 
