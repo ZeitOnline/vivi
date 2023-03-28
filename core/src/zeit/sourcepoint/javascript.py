@@ -1,12 +1,14 @@
 from zeit.cms.workflow.interfaces import IPublish
 from zope.app.appsetup.product import getProductConfiguration
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import zope.event
 
 import ast
 import datetime
 import logging
 import requests
 
+from zeit.cms.repository.interfaces import ObjectReloadedEvent
 import zeit.cms.interfaces
 import zeit.content.text.text
 
@@ -74,6 +76,7 @@ class JavaScript:
         IPublish(self.folder[filename]).publish(background=False)
 
     def sweep(self, keep):
+        zope.event.notify(ObjectReloadedEvent(self.folder))  # XXX
         names = sorted(self.folder.keys())
         if len(names) <= keep:
             return
