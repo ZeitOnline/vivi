@@ -33,7 +33,7 @@ class JavaScript:
             config[f'{name}-javascript-folder'],
             config[f'{name}-url'],
             config[f'{name}-filename'],
-            config.get(f'{name}-headers', ""))
+            config.get(f'{name}-headers'))
 
     @cachedproperty
     def folder(self):
