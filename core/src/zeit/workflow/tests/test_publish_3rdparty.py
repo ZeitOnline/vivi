@@ -323,7 +323,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             genre='rezept-vorstellung',
             hasAudio='true',
             headline='Vier Rezepte für eine Herdplatte',
-            image='http://localhost/img-live-prefix/group/wide__820x461',
+            image='http://localhost/img-live-prefix/group/',
             lastModified='2020-04-14T09:19:59.618155+00:00',
             publishDate='2020-04-14T09:19:59.618155+00:00',
             section='zeit-magazin',

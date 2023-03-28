@@ -196,7 +196,7 @@ class Speechbert(grok.Adapter):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms') or {}
         prefix = config.get('image-live-prefix', '').strip('/')
-        variant_url = image.variant_url('wide', width=820, height=461)
+        variant_url = image.variant_url('')  # ZO-2856: no slug
         if not variant_url:
             return
         return f'{prefix}{variant_url}'
