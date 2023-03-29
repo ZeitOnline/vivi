@@ -13,6 +13,7 @@ import zope.interface
 try:
     from opentelemetry.sdk.trace import Tracer, TracerProvider
     from opentelemetry.sdk.trace.export import BatchSpanProcessor
+    from opentelemetry.sdk.trace.export import ConsoleSpanExporter
     from opentelemetry.sdk.resources import Resource
     from opentelemetry.sdk.util.instrumentation import InstrumentationScope
     from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
@@ -120,6 +121,14 @@ def tracer_from_product_config():
     RequestsInstrumentor().instrument(tracer_provider=provider)
     ZEOInstrumentor().instrument(tracer_provider=provider)
 
+    return default_tracer()
+
+
+@zope.interface.implementer(zeit.cms.interfaces.ITracer)
+def stdout_tracer():
+    provider = TracerProvider()
+    provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+    opentelemetry.trace.set_tracer_provider(provider)
     return default_tracer()
 
 
