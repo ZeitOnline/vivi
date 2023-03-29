@@ -2,9 +2,11 @@ from cryptography.fernet import Fernet
 import contextlib
 import logging
 import opentelemetry.trace
+import os
 import pkg_resources
 import re
 import socket
+import time
 import zeit.cms.interfaces
 import zope.interface
 
@@ -139,7 +141,17 @@ def use_span(module, *args, **kw):
 def anonymize(value):
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     key = config.get('honeycomb-personal-data-key')
-    if not key:
-        # Better to send irreversibly encrypted data than cleartext.
+    if not key:  # Better to send irreversibly encrypted data than cleartext.
         key = Fernet.generate_key()
-    return Fernet(key).encrypt(value.encode('utf-8')).decode('ascii')
+    ts = config.get('honeycomb-personal-data-ts')
+    if ts:
+        ts = int(ts)
+    else:
+        ts = int(time.time())
+    iv = config.get('honeycomb-personal-data-iv')
+    if iv:
+        iv = iv.encode('utf-8')
+    else:
+        iv = os.urandom(16)
+    return Fernet(key)._encrypt_from_parts(
+        value.encode('utf-8'), ts, iv).decode('ascii')
