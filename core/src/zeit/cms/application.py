@@ -146,6 +146,11 @@ def otel_request_hook(span, environ):
     clientip = environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0]
     span.set_attribute('net.peer.ip', anonymize(clientip))
 
+    path = span.attributes.get('http.target', '').split('/')
+    if len(path) >= 3 and path[1] == 'workingcopy':
+        path[2] = anonymize(path[2])
+        span.set_attribute('http.target', '/'.join(path))
+
 
 @grok.subscribe(zope.publisher.interfaces.IEndRequestEvent)
 def add_username_to_span(event):
