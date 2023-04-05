@@ -33,8 +33,10 @@ class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     gallery = zeit.cms.content.reference.SingleResource(
         ".body.gallery", "related")
 
+    _proxy_attributes = frozenset(list(ICommonMetadata) + ['genre'])
+
     def __getattr__(self, name):
-        if name not in list(ICommonMetadata):
+        if name not in self._proxy_attributes:
             raise AttributeError(name)
         return getattr(self.article, name)
 
