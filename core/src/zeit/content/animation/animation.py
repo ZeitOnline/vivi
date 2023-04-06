@@ -38,6 +38,11 @@ class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     def __getattr__(self, name):
         if name not in self._proxy_attributes:
             raise AttributeError(name)
+        # ZO-2032: MUST provide ICommonMetadata attributes under
+        # any and all circumstances. If the article reference is
+        # broken, return None values at least.
+        if self.article is None:
+            return None
         return getattr(self.article, name)
 
 
