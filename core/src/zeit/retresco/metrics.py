@@ -6,6 +6,7 @@ import prometheus_client
 import zeit.cms.cli
 import zeit.find.interfaces
 import zeit.retresco.interfaces
+import zope.app.appsetup.product
 import zope.component
 
 
@@ -15,8 +16,14 @@ log = logging.getLogger(__name__)
 
 class Metric:
 
-    def __init__(self, name, query=None, es=None):
-        super().__init__(name, '', registry=REGISTRY)
+    def __init__(self, name, query=None, es=None, **kw):
+        kw.update({
+            'name': name,
+            'documentation': '',
+            'labelnames': ['environment'],
+            'registry': REGISTRY,
+        })
+        super().__init__(**kw)
         self.query = query
         self.es = es
 
@@ -63,6 +70,8 @@ def collect():
     parser.add_argument('pushgateway')
     options = parser.parse_args()
 
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    environment = config['environment']
     elastic = {
         'external': zope.component.getUtility(
             zeit.retresco.interfaces.IElasticsearch),
@@ -72,10 +81,10 @@ def collect():
     for metric in IMPORTERS:
         query = {'query': {'bool': {'filter': metric.query}}}
         es = elastic[metric.es]
-        metric.set(es.search(query, rows=0).hits)
+        metric.labels(environment).set(es.search(query, rows=0).hits)
 
     tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
-    TOKEN_COUNT.set(len(tokens))
+    TOKEN_COUNT.labels(environment).set(len(tokens))
 
     for row in elastic[BROKEN.es].search(BROKEN.query, rows=100):
         content = ICMSContent('http://xml.zeit.de' + row['url'], None)
@@ -87,7 +96,7 @@ def collect():
             id = ref.target_unique_id
             if id and id not in tms:
                 log.warn('%s: author %s not found in TMS', content, id)
-                BROKEN.inc()
+                BROKEN.labels(environment).inc()
 
     prometheus_client.push_to_gateway(
         options.pushgateway, job=__name__, registry=REGISTRY)
