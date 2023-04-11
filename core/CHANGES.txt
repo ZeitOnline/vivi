@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.5 (2023-04-11)
+-------------------
+
+- ZO-2417: Enable Animation.genre attribute
+
+
+MAINT:
+- Add environment label to importer metrics
+
+
 5.23.4 (2023-03-31)
 -------------------
 
