@@ -146,6 +146,9 @@ def otel_request_hook(span, environ):
     clientip = environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0]
     span.set_attribute('net.peer.ip', anonymize(clientip))
 
+    # Unfortunately, the otel API for Span is write-only, sigh.
+    if getattr(span, 'attributes', None) is None:
+        return
     path = span.attributes.get('http.target', '').split('/')
     if len(path) >= 3 and path[1] == 'workingcopy':
         path[2] = anonymize(path[2])
