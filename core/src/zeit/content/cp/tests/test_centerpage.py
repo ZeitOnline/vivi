@@ -3,6 +3,7 @@ from unittest import mock
 from xmldiff.main import diff_trees
 from zeit.cms.checkout.helper import checked_out
 import unittest
+import zeit.cms.content.sources
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -113,3 +114,14 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
             zeit.cms.workflow.interfaces.IPublishPriority(cp))
+
+
+class SeriesAvailableTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def test_series_available(self):
+        cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        cp_series = zeit.cms.content.sources.SerieSource()(cp)
+        names = [x.serienname for x in cp_series]
+        # See zeit.cms.content.serie.xml
+        assert "Podcast" in names
+        assert "Notcast" not in names
