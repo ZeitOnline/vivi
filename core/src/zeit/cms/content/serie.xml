@@ -13,7 +13,7 @@
   <series title="Hör-Reise" serienname="Hör-Reise" url="hoer-reise" encoded="H%C3%B6r-Reise"/>
   <series title="Zeitläufte" serienname="Zeitläufte" url="zeitlaeufte" encoded="Zeitl%C3%A4ufte"/>
   <series title="Podcast" serienname="Podcast" url="podcast" encoded="Podcast" fallback_image="yes"
-          available="zope.interface.Interface" />
+          available="zeit.cms.section.interfaces.IZONContent" />
   <series title="Notcast" serienname="Notcast" url="notcast" encoded="Notcast"
           available="zeit.web.core.interfaces.IInternalUse" />
   <videoseries>
