@@ -484,10 +484,10 @@ def signal_timeout_request(self, method, url, **kw):
         raise SignalTimeout()
 
     try:
-        # Handler registration fails if it's attempted in a worker thread
-        signal.signal(signal.SIGALRM, handler)
         # Timeout tuples (connect, read) shall not invoke signal timeouts
         sig_timeout = float(kw['timeout'])
+        # Handler registration fails if it's attempted in a worker thread
+        signal.signal(signal.SIGALRM, handler)
     except (KeyError, TypeError, ValueError):
         sig_timeout = None
     else:
