@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.6 (2023-04-14)
+-------------------
+
+- ZO-2032: Provide ICommonMetadata attributes even if article ref is broken
+
+- ZO-2555: view for csv download of images with single purchase
+
+- ZO-2757: avoid failures if missing unimportant informations; different datetime
+
+
 5.23.5 (2023-04-11)
 -------------------
 
