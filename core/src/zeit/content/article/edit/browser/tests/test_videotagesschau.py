@@ -20,6 +20,36 @@ MOCKDEFAULTEMPTY = '''
 }
 '''
 
+MOCKDEFAULTEMPTYIMPORTANT = '''
+{"cutoff": 1.975,
+ "recommendations": [{"main_title": null,
+                      "program_id": "crid://daserste.de/crid1",
+                      "search_strategy": "hotnews-no-local",
+                      "short_synopsis": null,
+                      "start_of_availability": "2022-09-12T11:02:59",
+                      "thumbnail_uris": {"large": "tages.schau/thumb2",
+                                         "small": ""},
+                      "video_uris": {"hd": "tages.schau/video1_hd",
+                                     "hlsStream": "",
+                                     "ln": "tages.schau/video1_ln"}}
+                    ],
+ "src_txt_hash": "881424269bcdd572e37c6ef3ff702baefb7845e9a12a22518e062e09a"
+}
+'''
+
+MOCKDEFAULTEMPTYUNIMPORTANT = '''
+{"cutoff": 1.975,
+ "recommendations": [{"main_title": "Video 1",
+                      "program_id": "crid://daserste.de/crid1",
+                      "short_synopsis": null,
+                      "published_start_time": "2022-09-12T11:02:00.120000",
+                      "thumbnail_uris": {"large": "tages.schau/thumb2"},
+                      "video_uris": {"hd": "tages.schau/video1_hd"}}
+                    ],
+ "src_txt_hash": "881424269bcdd572e37c6ef3ff702baefb7845e9a12a22518e062e09a"
+}
+'''
+
 MOCKDEFAULT = '''
 {"cutoff": 1.975,
  "recommendations": [{"main_title": "Video 1",
@@ -109,7 +139,8 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(len(brwsr.xpath('//input[@type="radio"]')), 1)
         brwsr.getControl('generate-video-recommendation').click()
         self.assertEqual(len(brwsr.xpath('//ul[@class="errors"]')), 1)
-        self.assertEllipsis('...No tagesschau video recommendation found...', brwsr.contents)
+        self.assertEllipsis('...No tagesschau video recommendation found...',
+                            brwsr.contents)
 
     def test_api_call_fails_triggers_errormessage(self):
         api = zope.component.getUtility(
@@ -122,7 +153,33 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(len(brwsr.xpath('//input[@type="radio"]')), 1)
         brwsr.getControl('generate-video-recommendation').click()
         self.assertEqual(len(brwsr.xpath('//ul[@class="errors"]')), 1)
-        self.assertEllipsis('...Error while requesting tagesschau API...', brwsr.contents)
+        self.assertEllipsis('...Error while requesting tagesschau API...',
+                            brwsr.contents)
+
+    def test_api_call_succeeds_with_basic_informations_and_different_datetime_format(self): # noqa
+        api = zope.component.getUtility(
+            zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+        api.request_videos.return_value = json.loads(
+            MOCKDEFAULTEMPTYUNIMPORTANT)
+        self.get_article(with_empty_block=True)
+        brwsr = self.browser
+        brwsr.open(
+            'editable-body/blockname/@@edit-videotagesschau?show_form=1')
+        self.assertEqual(len(brwsr.xpath('//input[@type="radio"]')), 1)
+        brwsr.getControl('generate-video-recommendation').click()
+        self.assertEqual(len(brwsr.xpath('//ul[@class="errors"]')), 0)
+
+    def test_api_call_succeeds_not_without_basic_informations(self):
+        api = zope.component.getUtility(
+            zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+        api.request_videos.return_value = json.loads(MOCKDEFAULTEMPTYIMPORTANT)
+        self.get_article(with_empty_block=True)
+        brwsr = self.browser
+        brwsr.open(
+            'editable-body/blockname/@@edit-videotagesschau?show_form=1')
+        self.assertEqual(len(brwsr.xpath('//input[@type="radio"]')), 1)
+        brwsr.getControl('generate-video-recommendation').click()
+        self.assertEqual(len(brwsr.xpath('//ul[@class="errors"]')), 1)
 
 
 class Form2(zeit.content.article.testing.FunctionalTestCase):
