@@ -499,8 +499,8 @@ class Serie(AllowedBase):
     def __init__(self, serienname=None, title=None, url=None, encoded=None,
                  column=False, kind=None, video=False, fallback_image=False,
                  podigee_id=None, podigee_url=None, zonaudioapp_id=None,
-                 color=None):
-        super().__init__(serienname, title, None)
+                 color=None, available=None):
+        super().__init__(serienname, title, available)
         self.id = serienname
         self.serienname = serienname
         self.title = title
@@ -547,7 +547,8 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('podigee-id')),
                 unicode_or_none(node.get('podigee-url')),
                 unicode_or_none(node.get('zonaudioapp-id')),
-                unicode_or_none(node.get('color'))
+                unicode_or_none(node.get('color')),
+                unicode_or_none(node.get('available'))
             )
         return result
 
