@@ -109,9 +109,9 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         default=False,
         required=False)
 
-    recent_comments_first = zope.schema.Bool(
-        title=_('Recent comments first'),
-        default=False,
+    comments_sorting = zope.schema.Choice(
+        title=_('Comments sorting'),
+        source=zeit.content.article.source.CommentsSortingSource(),
         required=False)
 
     has_audio = zope.schema.Bool(
