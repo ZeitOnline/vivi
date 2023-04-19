@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.7 (2023-04-19)
+-------------------
+
+- ZO-1642: Support available for series source
+
+
 5.23.6 (2023-04-14)
 -------------------
 
