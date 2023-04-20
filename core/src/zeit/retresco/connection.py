@@ -420,11 +420,11 @@ def _build_topic_xml(topicpages):
             if len(attr) == 1:
                 vivi = tms = attr[0]
             elif len(attr) == 2:
-                vivi, tms = attr
+                tms, vivi = attr
             elif len(attr) == 3:
-                vivi, tms, _ = attr
-                if not tms:
-                    tms = vivi
+                tms, vivi, _ = attr
+                if not vivi:
+                    vivi = tms
             value = row.get(tms)
             if value is None:
                 continue
