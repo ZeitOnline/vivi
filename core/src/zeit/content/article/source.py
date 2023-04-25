@@ -1,3 +1,4 @@
+from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
 import zc.sourcefactory.source
 import zeit.cms.content.sources
@@ -258,3 +259,11 @@ class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
 
 
 LEGACY_VARIANT_NAME_SOURCE = LegacyVariantNameSource()
+
+
+class CommentsSortingSource(zeit.cms.content.sources.SimpleDictSource):
+    values = {
+        'newest': _('newest first'),
+        'oldest': _('oldest first'),
+        'highlights': _('highlights'),
+    }

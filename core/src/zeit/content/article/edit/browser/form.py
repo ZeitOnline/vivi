@@ -417,7 +417,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     prefix = 'options-a'
     undo_description = _('edit options')
     form_fields = FormFields(IArticle).select(
-        'serie', 'recent_comments_first')
+        'serie', 'comments_sorting')
 
 
 class OptionsB(zeit.edit.browser.form.InlineForm):

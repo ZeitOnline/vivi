@@ -73,7 +73,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         ('has_recensions', 'artbox_thema', 'audio_speechbert', 'genre',
          'template', 'header_layout', 'header_color',
          'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
-         'recent_comments_first'))
+         'comments_sorting'))
 
     has_audio = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['has_audio'],
