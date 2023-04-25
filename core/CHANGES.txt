@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.8 (2023-04-25)
+-------------------
+
+- ZO-2850: Add IArticle.comments_sorting
+
+
+FIX:
+- ZO-3028: import entity type for topicpages
+
+
 5.23.7 (2023-04-19)
 -------------------
 
