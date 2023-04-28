@@ -67,7 +67,7 @@ def collect():
     architecture/mechanics is just not worth it at this point.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('pushgateway')
+    parser.add_argument('--pushgateway')
     options = parser.parse_args()
 
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
@@ -98,5 +98,8 @@ def collect():
                 log.warn('%s: author %s not found in TMS', content, id)
                 BROKEN.labels(environment).inc()
 
-    prometheus_client.push_to_gateway(
-        options.pushgateway, job=__name__, registry=REGISTRY)
+    if not options.pushgateway:
+        print(prometheus_client.generate_latest(REGISTRY).decode('utf-8'))
+    else:
+        prometheus_client.push_to_gateway(
+            options.pushgateway, job=__name__, registry=REGISTRY)
