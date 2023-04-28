@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.23.9 (2023-04-28)
+-------------------
+
+- ZO-3164: Record vivi_facebook_token_expires_timestamp_seconds metric
+
+
 5.23.8 (2023-04-25)
 -------------------
 
