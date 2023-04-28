@@ -1,8 +1,10 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.content.article.interfaces import IArticle
+from zeit.push.interfaces import facebookAccountSource
 import argparse
 import logging
 import prometheus_client
+import requests
 import zeit.cms.cli
 import zeit.find.interfaces
 import zeit.retresco.interfaces
@@ -60,6 +62,8 @@ BROKEN = Counter('vivi_articles_with_missing_tms_authors', {
     ]}},
     '_source': ['url', 'payload.head.authors'],
 }, 'external')
+FB_TOKEN_EXPIRES = Gauge(
+    'vivi_facebook_token_expires_timestamp_seconds', labelnames=['account'])
 
 
 @zeit.cms.cli.runner()
@@ -100,6 +104,19 @@ def collect():
             if id and id not in tms:
                 log.warn('%s: author %s not found in TMS', content, id)
                 BROKEN.labels(environment).inc()
+
+    http = requests.Session()
+    for account in facebookAccountSource(None):
+        token = facebookAccountSource.factory.access_token(account)
+        r = http.get('https://graph.facebook.com/debug_token',
+                     params={'input_token': token, 'access_token': token})
+        try:
+            r.raise_for_status()
+            expires = r.json()['data']['data_access_expires_at']
+        except Exception:
+            expires = 1
+        FB_TOKEN_EXPIRES.labels(environment, account).set(expires)
+    http.close()
 
     if not options.pushgateway:
         print(prometheus_client.generate_latest(REGISTRY).decode('utf-8'))
