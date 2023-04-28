@@ -17,10 +17,13 @@ log = logging.getLogger(__name__)
 class Metric:
 
     def __init__(self, name, query=None, es=None, **kw):
+        labels = ['environment']
+        for x in kw.pop('labelnames', ()):
+            labels.append(x)
         kw.update({
             'name': name,
             'documentation': '',
-            'labelnames': ['environment'],
+            'labelnames': labels,
             'registry': REGISTRY,
         })
         super().__init__(**kw)
