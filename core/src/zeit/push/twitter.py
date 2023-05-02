@@ -1,4 +1,5 @@
 from zeit.push.interfaces import twitterAccountSource
+import argparse
 import grokcore.component as grok
 import logging
 import tweepy
@@ -73,3 +74,26 @@ class Message(zeit.push.message.Message):
     @property
     def log_message_details(self):
         return 'Account %s' % self.config.get('account', '-')
+
+
+def create_access_token(argv=None):
+    parser = argparse.ArgumentParser(
+        description='Create Twitter access token')
+    parser.add_argument('--app-key', help='Application Key')
+    parser.add_argument('--app-secret', help='Application Secret')
+    options = parser.parse_args(argv)
+    if not all([options.app_key, options.app_secret]):
+        parser.print_help()
+        raise SystemExit(1)
+
+    oauth = tweepy.OAuth1UserHandler(
+        options.app_key, options.app_secret,
+        # https://developer.twitter.com/en/docs/authentication
+        #   /oauth-1-0a/pin-based-oauth
+        callback='oob')
+    login_url = oauth.get_authorization_url()
+    print('Bitte bei Twitter anmelden und dann diese URL öffnen:\n%s' % (
+        login_url))
+    pin = input('Die von Twitter angezeigte PIN bitte hier eingeben: ')
+    token, secret = oauth.get_access_token(pin)
+    print(f'Token: {token}\nSecret: {secret}')
