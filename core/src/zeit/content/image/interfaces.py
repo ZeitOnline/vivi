@@ -87,6 +87,10 @@ class IImageMetadata(zope.interface.Interface):
         title=_("Copyrights"),
         missing_value=None)
 
+    single_purchase = zope.schema.Bool(
+        title=_('Single purchase'),
+        required=False)
+
     external_id = zope.schema.TextLine(
         title=_('External company ID'),
         required=False)

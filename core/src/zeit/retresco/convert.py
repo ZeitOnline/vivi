@@ -134,6 +134,7 @@ class CMSContent(Converter):
         ('document', 'lead_candidate'),
         ('document', 'minimal_header'),
         ('document', 'rebrush_website_content'),
+        ('document', 'recent_comments_first'),
         ('document', 'storystreams'),
         ('document', 'tldr_date'),
         ('document', 'tldr_milestone'),

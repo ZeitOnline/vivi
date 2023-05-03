@@ -353,6 +353,7 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(1, len(topics))
         self.assertEqual('Berlin', topics[0].text)
         self.assertEqual('42', topics[0].get('kpi_1'))
+        self.assertEqual('location', topics[0].get('type'))
 
     def test_topiclist_excludes_pages_with_redirect(self):
         pages = [{

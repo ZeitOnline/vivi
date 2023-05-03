@@ -2,18 +2,25 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zope.formlib.widget import CustomWidgetFactory
+import csv
+import datetime
 import gocept.form.grouped
+import io
 import re
 import zc.table.column
 import zeit.cms.browser.form
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
+import zeit.cms.browser.menu
 import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
+import zeit.find.interfaces
 import zeit.ghost.ghost
+import zeit.retresco.interfaces
 import zeit.workflow.interfaces
 import zope.app.appsetup.appsetup
 import zope.formlib.form
@@ -311,3 +318,88 @@ class DefaultView(zeit.cms.browser.view.Base):
         if self.context.display_type == INFOGRAPHIC_DISPLAY_TYPE:
             view = '@@view.html'
         self.request.response.redirect(self.url(self.context, view))
+
+
+class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
+
+    CSV_SEPERATOR = '\t'
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        filedate = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        filename = f'copyright-payment-report_{filedate}.csv'
+        self.request.response.setHeader('Content-Type', 'text/csv')
+        self.request.response.setHeader('location', 'https://www.zeit.de')
+        self.request.response.setHeader(
+            'Content-Disposition', 'attachment; filename="%s"' % filename)
+        self.send_message(f'Download {filename}')
+        return self.create_csv()
+
+    def create_csv(self):
+        """
+        Creates CSV File of image groups.
+        :return: unicode - csv content
+        """
+        file_content = ''
+        out = io.StringIO()
+        writer = csv.writer(out, delimiter=self.CSV_SEPERATOR)
+        for row in self.create_imagegroup_list():
+
+            writer.writerow(row)
+
+        file_content = out.getvalue()
+        return file_content
+
+    def create_imagegroup_list(self):
+        csv_rows = list()
+        csv_rows.append([
+            _('publish_date'), _('image_number'), _('copyright infos'),
+            _('internal link')])
+        for imgr_content in self.find_imagegroups():
+            try:
+                imgr_metadata = zeit.content.image.interfaces.IImageMetadata(
+                    imgr_content)
+                publish_date = IPublishInfo(imgr_content).date_first_released
+                copyrights = '/'.join(map(str, imgr_metadata.copyright))
+                vivi_url = imgr_content.uniqueId.replace(
+                    'http://xml.zeit.de', 'https://vivi.zeit.de/repository')
+                csv_rows.append([
+                    publish_date.to_datetime_string(),
+                    imgr_content.master_image,
+                    copyrights,
+                    vivi_url])
+            except Exception as e:
+                csv_rows.append([
+                    'ERROR',
+                    str(e),
+                    imgr_content.uniqueId])
+                continue
+        return csv_rows
+
+    def find_imagegroups(self, days_ago=40):
+        es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+        query = {
+            "query": {"bool": {
+                "filter": [{
+                    "range": {
+                        "payload.document.date_first_released": {
+                            "gte": f'now-{days_ago}d/d'}
+                    }},
+                    {"term": {"doc_type": "image-group"}},
+                    {"term": {"payload.image.single_purchase": True}}
+                ]}}}
+        results = es.search(query, rows=10000)
+        imgroups = list()
+        for result in results:
+            imgroups.append(zeit.retresco.interfaces.ITMSContent(result))
+        return imgroups
+
+
+class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
+
+    title = _("CopyrightPurchaseReport")
+    viewURL = '@@CopyrightCompanyPurchaseReport'
+    pathitem = '@@CopyrightCompanyPurchaseReport'

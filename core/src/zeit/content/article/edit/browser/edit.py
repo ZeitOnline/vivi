@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.videotagesschau import Video
 from zeit.content.article.edit.browser.interfaces import (
     VideoTagesschauNoResultError)
+import logging
 import json
 import zeit.cms.browser.manual
 import zeit.cms.browser.widget
@@ -19,6 +20,8 @@ import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
 import zope.security
+
+log = logging.getLogger(__name__)
 
 
 class Empty:
@@ -327,25 +330,35 @@ class VideoTagesschau(zeit.edit.browser.form.InlineForm):
             recommendations = list()
             for recom in api.request_videos(article)['recommendations']:
                 recommendations.append(Video(**{
-                    'id': recom['program_id'],
-                    'title': recom['main_title'],
-                    'type': recom['search_strategy'],
-                    'synopsis': recom['short_synopsis'],
-                    'video_url_hd': recom['video_uris']['hd'],
-                    'video_url_hls_stream': recom['video_uris']['hlsStream'],
-                    'video_url_hq': recom['video_uris']['hq'],
-                    'video_url_ln': recom['video_uris']['ln'],
-                    'thumbnail_url_fullhd': recom['thumbnail_uris']['fullhd'],
-                    'thumbnail_url_large': recom['thumbnail_uris']['large'],
-                    'thumbnail_url_small': recom['thumbnail_uris']['small'],
-                    'date_published': recom['published_start_time'],
-                    'date_available': recom['start_of_availability']
+                    'id': recom.get('program_id'),
+                    'title': recom.get('main_title'),
+                    'date_published': recom.get('published_start_time'),
+                    'video_url_hd': recom['video_uris'].get('hd'),
+                    # these values are nice to have but processing should
+                    # not fail if they do not exist or have `None` values:
+                    'type': (
+                        recom.get('search_strategy', '<unknown>')
+                        or '<unknown>'),
+                    'synopsis': recom.get('short_synopsis', '') or '',
+                    'video_url_hls_stream': (
+                        recom['video_uris'].get('hlsStream', '') or ''),
+                    'video_url_hq': recom['video_uris'].get('hq', '') or '',
+                    'video_url_ln': recom['video_uris'].get('ln', '') or '',
+                    'thumbnail_url_large': (
+                        recom['thumbnail_uris'].get('large', '') or ''),
+                    'thumbnail_url_fullhd': (
+                        recom['thumbnail_uris'].get('fullhd', '') or ''),
+                    'thumbnail_url_small': (
+                        recom['thumbnail_uris'].get('small', '') or ''),
+                    'date_available': (
+                        recom.get('start_of_availability', '') or '')
                 }))
             if recommendations == []:
                 self.errors = (VideoTagesschauNoResultError('empty'),)
                 self.status = _('There were errors')
             self.context.tagesschauvideos = recommendations
-        except Exception:
+        except Exception as exc:
+            log.error(f'ARD-API: {exc}', exc_info=True)
             self.errors = (VideoTagesschauNoResultError('technical'),)
             self.status = _('There were errors')
 

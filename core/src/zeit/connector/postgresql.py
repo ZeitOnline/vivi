@@ -19,6 +19,7 @@ from zeit.connector.resource import CachedResource
 import collections
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
+import opentelemetry.metrics
 import os
 import os.path
 import sqlalchemy
@@ -450,7 +451,9 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
 
     def __init__(self, engine, **kw):
         tracer = self  # Kludge to inject zeit.cms.tracing.start_span()
-        super().__init__(tracer, engine, **kw)
+        meter = opentelemetry.metrics.get_meter(__name__, 'unused',)
+        unused_metrics = meter.create_up_down_counter('unused')
+        super().__init__(tracer, engine, unused_metrics, **kw)
 
     def start_span(self, *args, **kw):
         return zeit.cms.tracing.start_span(__name__ + '.tracing', *args, **kw)
