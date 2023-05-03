@@ -3,12 +3,15 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import os
 import time
 import tweepy
+import unittest
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.twitter
 import zope.component
 
 
+@unittest.skip(
+    'The free Twitter API level only allows writing tweets, not reading them')
 class TwitterTest(zeit.push.testing.TestCase):
 
     level = 2
