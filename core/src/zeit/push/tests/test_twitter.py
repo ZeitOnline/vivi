@@ -27,7 +27,7 @@ class TwitterTest(zeit.push.testing.TestCase):
 
         self.patch = mock.patch(
             'zeit.push.interfaces.TwitterAccountSource.access_token')
-        self.patch.start().return_value = (self.access_token, '')
+        self.patch.start().return_value = self.access_token
 
     def tearDown(self):
         self.patch.stop()

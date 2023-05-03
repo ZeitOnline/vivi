@@ -20,7 +20,7 @@ class Connection:
 
     def send(self, text, link, **kw):
         account = kw['account']
-        access_token, _ = twitterAccountSource.factory.access_token(account)
+        access_token = twitterAccountSource.factory.access_token(account)
         api = tweepy.Client(access_token)
 
         log.debug('Sending %s, %s to %s', text, link, account)

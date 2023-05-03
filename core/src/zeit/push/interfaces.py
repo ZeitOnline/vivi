@@ -192,9 +192,8 @@ class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
                            self.attribute,
                            xml.sax.saxutils.quoteattr(value)))
         if not nodes:
-            return (None, None)
-        node = nodes[0]
-        return (node.get('token'), node.get('secret'))
+            return None
+        return nodes[0].get('token')
 
 
 twitterAccountSource = TwitterAccountSource()
