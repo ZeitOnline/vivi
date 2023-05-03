@@ -73,7 +73,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         ('has_recensions', 'artbox_thema', 'audio_speechbert', 'genre',
          'template', 'header_layout', 'header_color',
          'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
-         'recent_comments_first'))
+         'comments_sorting'))
 
     has_audio = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['has_audio'],
@@ -350,10 +350,9 @@ def ensure_block_ids(context, event):
     body.keys()
     body.ensure_division()
 
-
 QUOTE_CHARACTERS = re.compile('[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
-QUOTE_CHARACTERS_OPEN = re.compile('[\u201c\u201e]')
-QUOTE_CHARACTERS_CLOSE = re.compile('[\u201d\u201f]')
+QUOTE_CHARACTERS_OPEN = re.compile('[\u201c\u201e\u201d\u201f\u00ab\u00bb](\w)')
+QUOTE_CHARACTERS_CLOSE = re.compile('([\w\.])[\u201c\u201e\u201d\u201f\u00ab\u00bb]')
 
 
 @grok.subscribe(
@@ -376,11 +375,11 @@ def normalize_quotation_marks(context, event):
 
 def normalize_quotes(node):
     if node.text:
-        node.text = QUOTE_CHARACTERS_OPEN.sub('»', node.text)
-        node.text = QUOTE_CHARACTERS_CLOSE.sub('«', node.text)
+        node.text = QUOTE_CHARACTERS_OPEN.sub('»\1', node.text)
+        node.text = QUOTE_CHARACTERS_CLOSE.sub('\1«', node.text)
     if node.tail:
-        node.tail = QUOTE_CHARACTERS_OPEN.sub('»', node.tail)
-        node.tail = QUOTE_CHARACTERS_CLOSE.sub('«', node.tail)
+        node.tail = QUOTE_CHARACTERS_OPEN.sub('»\1', node.tail)
+        node.tail = QUOTE_CHARACTERS_CLOSE.sub('\1«', node.tail)
     for child in node.iterchildren():
         normalize_quotes(child)
     return node
