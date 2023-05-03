@@ -14,22 +14,18 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Connection:
 
-    def __init__(self, api_key, api_secret):
-        self.api_key = api_key
-        self.api_secret = api_secret
+    def __init__(self, client_id, client_secret):
+        self.client_id = client_id
+        self.client_secret = client_secret
 
     def send(self, text, link, **kw):
         account = kw['account']
-        access_token, access_secret = (
-            twitterAccountSource.factory.access_token(account))
-
-        auth = tweepy.OAuth1UserHandler(self.api_key, self.api_secret)
-        auth.set_access_token(access_token, access_secret)
-        api = tweepy.API(auth)
+        access_token, _ = twitterAccountSource.factory.access_token(account)
+        api = tweepy.Client(access_token)
 
         log.debug('Sending %s, %s to %s', text, link, account)
         try:
-            api.update_status('%s %s' % (text, link))
+            api.create_tweet(text=f'{text} {link}', user_auth=False)
         except tweepy.HTTPException as e:
             status = e.response.status_code
             if status < 500:
@@ -79,21 +75,26 @@ class Message(zeit.push.message.Message):
 def create_access_token(argv=None):
     parser = argparse.ArgumentParser(
         description='Create Twitter access token')
-    parser.add_argument('--app-key', help='Application Key')
-    parser.add_argument('--app-secret', help='Application Secret')
+    parser.add_argument('--client-id', help='OAuth2 Client ID')
+    parser.add_argument('--client-secret', help='OAuth2 Client Secret')
     options = parser.parse_args(argv)
-    if not all([options.app_key, options.app_secret]):
+    if not all([options.client_id, options.client_secret]):
         parser.print_help()
         raise SystemExit(1)
 
-    oauth = tweepy.OAuth1UserHandler(
-        options.app_key, options.app_secret,
+    oauth = tweepy.OAuth2UserHandler(
+        client_id=options.client_id,
+        redirect_uri='https://vivi.zeit.de/@@ping',
         # https://developer.twitter.com/en/docs/authentication
-        #   /oauth-1-0a/pin-based-oauth
-        callback='oob')
+        #   /guides/v2-authentication-mapping
+        scope=['tweet.write', 'tweet.read', 'users.read', 'offline.access'],
+        client_secret=options.client_secret)
     login_url = oauth.get_authorization_url()
     print('Bitte bei Twitter anmelden und dann diese URL öffnen:\n%s' % (
         login_url))
-    pin = input('Die von Twitter angezeigte PIN bitte hier eingeben: ')
-    token, secret = oauth.get_access_token(pin)
-    print(f'Token: {token}\nSecret: {secret}')
+    print(
+        'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
+    result_url = input('die neue URL bitte hier eingeben: ')
+
+    token = oauth.fetch_token(result_url)
+    print('Das Token ist: %s' % token)

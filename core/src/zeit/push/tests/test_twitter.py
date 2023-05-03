@@ -21,31 +21,29 @@ class TwitterTest(zeit.push.testing.TestCase):
         self.api_key = os.environ['ZEIT_PUSH_TWITTER_API_KEY']
         self.api_secret = os.environ['ZEIT_PUSH_TWITTER_API_SECRET']
         self.access_token = os.environ['ZEIT_PUSH_TWITTER_ACCESS_TOKEN']
-        self.access_secret = os.environ['ZEIT_PUSH_TWITTER_ACCESS_SECRET']
-
-        auth = tweepy.OAuth1UserHandler(self.api_key, self.api_secret)
-        auth.set_access_token(self.access_token, self.access_secret)
-        self.api = tweepy.API(auth)
+        self.api = tweepy.Client(self.access_token)
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
 
+        self.patch = mock.patch(
+            'zeit.push.interfaces.TwitterAccountSource.access_token')
+        self.patch.start().return_value = (self.access_token, '')
+
     def tearDown(self):
-        for status in self.api.home_timeline():
+        self.patch.stop()
+
+        for status in self.api.get_home_timeline(user_auth=False).data:
             if self.nugget in status.text:
-                status.destroy()
+                self.api.delete_tweet(status.id, user_auth=False)
 
     def test_send_posts_twitter_status(self):
-        twitter = zeit.push.twitter.Connection(
-            self.api_key, self.api_secret)
-        with mock.patch(
-             'zeit.push.interfaces.TwitterAccountSource.access_token') as tok:
-            tok.return_value = (self.access_token, self.access_secret)
-            twitter.send(
-                'zeit.push.tests.ümläut.twitter %s' % self.nugget,
-                'http://example.com',
-                account='twitter-test')
+        twitter = zeit.push.twitter.Connection(self.api_key, self.api_secret)
+        twitter.send(
+            'zeit.push.tests.ümläut.twitter %s' % self.nugget,
+            'http://example.com',
+            account='twitter-test')
 
-        for status in self.api.home_timeline():
+        for status in self.api.get_home_timeline(user_auth=False).data:
             if self.nugget in status.text:
                 self.assertStartsWith(
                     'zeit.push.tests.ümläut.twitter %s' % self.nugget,

@@ -1,5 +1,5 @@
 <twitter-accounts>
-  <account name="twitter-test" token="None" secret="None">Gocept Testaccount</account>
+  <account name="twitter-test" token="None" secret="None">ZON Testaccount</account>
   <account name="twitter-print" token="None" secret="None">DIEZEIT</account>
   <account name="twitter_ressort_wissen" token="None" secret="None">Wissen</account>
   <account name="twitter_ressort_politik" token="None" secret="None">Politik</account>
