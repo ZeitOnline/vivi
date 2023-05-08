@@ -379,11 +379,11 @@ def normalize_quotation_marks(context, event):
 
 def normalize_quotes(node):
     if node.text:
-        node.text = QUOTE_CHARACTERS_OPEN.sub('»\1', node.text)
-        node.text = QUOTE_CHARACTERS_CLOSE.sub('\1«', node.text)
+        node.text = QUOTE_CHARACTERS_OPEN.sub(r'»\1', node.text)
+        node.text = QUOTE_CHARACTERS_CLOSE.sub(r'\1«', node.text)
     if node.tail:
-        node.tail = QUOTE_CHARACTERS_OPEN.sub('»\1', node.tail)
-        node.tail = QUOTE_CHARACTERS_CLOSE.sub('\1«', node.tail)
+        node.tail = QUOTE_CHARACTERS_OPEN.sub(r'»\1', node.tail)
+        node.tail = QUOTE_CHARACTERS_CLOSE.sub(r'\1«', node.tail)
     for child in node.iterchildren():
         normalize_quotes(child)
     return node
