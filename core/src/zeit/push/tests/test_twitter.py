@@ -1,4 +1,5 @@
 # coding: utf-8
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import os
 import time
@@ -36,10 +37,13 @@ class TwitterTest(zeit.push.testing.TestCase):
     def test_send_posts_twitter_status(self):
         twitter = zeit.push.twitter.Connection(
             self.api_key, self.api_secret)
-        twitter.send(
-            'zeit.push.tests.ümläut.twitter %s' % self.nugget,
-            'http://example.com',
-            account='twitter-test')
+        with mock.patch(
+             'zeit.push.interfaces.TwitterAccountSource.access_token') as tok:
+            tok.return_value = (self.access_token, self.access_secret)
+            twitter.send(
+                'zeit.push.tests.ümläut.twitter %s' % self.nugget,
+                'http://example.com',
+                account='twitter-test')
 
         for status in self.api.home_timeline():
             if self.nugget in status.text:

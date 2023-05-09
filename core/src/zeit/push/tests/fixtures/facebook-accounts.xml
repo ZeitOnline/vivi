@@ -1,5 +1,5 @@
 <facebook-accounts>
-  <account name="fb-test" token="CAAGZCkxHefV8BAFx0CjyFY8hYn5dd0vKJh0NPOSLQxkR4jYQtwbu3QQvNzglDqyp26E6zCgX4LDsmpZChrBWAUa8r4l1cLCCfAExjvTyKRbucS1jo2ng4xpErMxKQOXHpdmZCziU6Ar9zZAuswmLZBhGiq0JV8qJBUaTkPjEciQq2BoYUZARQQ">Gocept Testaccount</account>
+  <account name="fb-test" token="None">Gocept Testaccount</account>
   <account name="fb-magazin" token="None" secret="None">Magazin</account>
   <account name="fb-campus" token="None" secret="None">Campus</account>
   <account name="fb-zett" token="None" secret="None">ze.tt</account>

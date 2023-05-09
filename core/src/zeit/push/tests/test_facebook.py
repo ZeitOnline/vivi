@@ -1,4 +1,5 @@
 # coding: utf-8
+from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import fb
 import os
@@ -39,9 +40,12 @@ class FacebookTest(zeit.push.testing.TestCase):
 
     def test_send_posts_status(self):
         facebook = zeit.push.facebook.Connection()
-        facebook.send(
-            'zeit.push.tests.faceboök %s' % self.nugget, 'http://example.com',
-            account='fb-test')
+        with mock.patch(
+             'zeit.push.interfaces.FacebookAccountSource.access_token') as tok:
+            tok.return_value = self.access_token
+            facebook.send(
+                'zeit.push.tests.faceboök %s' % self.nugget,
+                'http://example.com', account='fb-test')
 
         for status in self.api.get_object(
                 cat='single', id='me', fields=['feed'])['feed']['data']:
