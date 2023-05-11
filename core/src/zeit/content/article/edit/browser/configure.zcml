@@ -900,4 +900,25 @@
     directory="tests/fixtures"
     />
 
+
+  <!-- Animated Article Header -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAnimatedHeader"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-animatedheader"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IAnimatedHeader"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-animatedheader"
+    class=".edit.EditAnimatedHeader"
+    permission="zope.View"
+    />
+
 </configure>

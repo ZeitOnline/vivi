@@ -353,6 +353,10 @@ class IEmbed(IBlock, zeit.content.modules.interfaces.IEmbed):
     pass
 
 
+class IAnimatedHeader(IBlock, zeit.content.modules.interfaces.IAnimatedHeader):
+    pass
+
+
 class AvailableBlockLayoutSource(BodyAwareXMLSource):
     """
     Superclass for articleblocklayouts, which can be defined via XML

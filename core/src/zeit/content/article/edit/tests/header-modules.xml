@@ -4,4 +4,5 @@
   <module id="video" title="Video"/>
   <module id="raw" title="Embed-Code"/>
   <module id="rawtext" title="Embed-Link"/>
+  <module id="animatedheader" title="AnimatedHeader"/>
 </modules>
