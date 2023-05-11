@@ -90,6 +90,7 @@ class SearchForm(JSONView):
         'image-group',
         'infobox',
         'link',
+        'markup',
         'playlist',
         'portraitbox',
         'rawxml',
