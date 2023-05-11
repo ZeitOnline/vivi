@@ -395,11 +395,16 @@ class PublishRetractTask:
         publisher_base_url = config['publisher-base-url']
         if not publisher_base_url.endswith('/'):
             publisher_base_url += '/'
+
+        headers = {}
+        hostname = config.get('publisher-host')
+        if hostname:
+            headers['host'] = hostname
+
         url = f'{publisher_base_url}{method}'
         json = [cls._format_json(obj, method) for obj in to_process_list]
         response = requests.post(
-            url=url,
-            json=json)
+            url=url, json=json, headers=headers)
         if response.status_code != 200:
             publisher_parts = dumps(response.json()['errors'])
             raise PublishError(
