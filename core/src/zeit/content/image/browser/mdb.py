@@ -1,5 +1,6 @@
 import json
 import zeit.content.image.interfaces
+import zope.app.pagetemplate
 import zope.formlib.widget
 
 

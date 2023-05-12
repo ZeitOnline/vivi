@@ -1,7 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
+import filetype
 import lxml.objectify
-import magic
 import os
 import requests
 import urllib.parse
@@ -50,9 +50,8 @@ class BaseImage:
     @FakeWriteableCachedProperty
     def mimeType(self):
         with self.open() as f:
-            head = f.read(200)
-        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
-            file_type = m.id_buffer(head)
+            head = f.read(261)
+        file_type = filetype.guess_mime(head) or ''
         if not file_type.startswith('image/'):
             return ''
         return file_type

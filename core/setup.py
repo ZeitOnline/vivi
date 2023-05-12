@@ -27,7 +27,7 @@ setup(
         'commentjson',
         'elasticsearch >=7.16.0, <8.0.0',
         'fb',
-        'filemagic',
+        'filetype',
         'gocept.cache >= 2.1',
         # XXX Should move to [ui], but is entrenched
         'gocept.form[formlib]>=0.7.5',
