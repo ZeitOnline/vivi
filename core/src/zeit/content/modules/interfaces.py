@@ -75,16 +75,6 @@ class IEmbed(zeit.edit.interfaces.IBlock):
         pass
 
 
-class IAnimatedHeader(zeit.edit.interfaces.IBlock):
-    url = URIChoice(title=_('Animated URL'),
-                    placeholder=_('Add URL'),
-                    source=EMBED_PROVIDER_SOURCE)
-
-    gallery = zope.schema.Choice(
-        title=_("Gallery to use for animation"),
-        source=zeit.content.gallery.interfaces.gallerySource,
-        required=False,
-    )
 
     #domain = zope.interface.Attribute('The secondlevel domain of our `url`')
 
@@ -173,6 +163,9 @@ class INewsletterSignup(zeit.edit.interfaces.IBlock):
         description=_('Use Markdown'),
         required=False)
 
+
+class IAnimatedHeader(zeit.edit.interfaces.IBlock):
+    pass
 
 class IQuiz(zeit.edit.interfaces.IBlock):
 

@@ -7,11 +7,10 @@ import zeit.content.modules.animatedheader
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IAnimatedHeader)
-class AnimatedHeader(zeit.content.modules.animatedheader.AnimatedHeader,
-                     zeit.content.animation.animation.Animation,
-                     zeit.content.article.edit.block.Block):
+class AnimatedHeader(zeit.content.article.edit.block.Block):
 
     type = 'animatedheader'
+    animation = zeit.cms.content.reference.SingleResource(".", "related")
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
