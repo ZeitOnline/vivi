@@ -319,3 +319,18 @@ class Connector(zeit.connector.filesystem.Connector):
 
 
 factory = Connector.factory
+
+
+class TextPlain(filetype.Type):
+    """The `filetype` library only detects binary types.
+    For some tests it is helpful to use a text type, because they can
+    manipulate the contents more easily than in binary, so we cheat a little.
+    """
+
+    prefix = b'Mary had'
+
+    def match(self, buf):
+        return buf[:len(self.prefix)] == self.prefix
+
+
+filetype.TYPES.append(TextPlain('text/plain', '.txt'))
