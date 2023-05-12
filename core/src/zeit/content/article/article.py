@@ -351,12 +351,10 @@ def ensure_block_ids(context, event):
     body.ensure_division()
 
 
-QUOTE_CHARACTERS = re.compile(
-    r'[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
-QUOTE_CHARACTERS_OPEN = re.compile(
-    r'[\u201c\u201e\u201d\u201f\u00ab\u00bb](\w)')
-QUOTE_CHARACTERS_CLOSE = re.compile(
-    r'([\w\.])[\u201c\u201e\u201d\u201f\u00ab\u00bb]')
+_QUOTE_CHARACTERS = r'[\u201c\u201d\u201e\u201f\u00ab\u00bb]'
+QUOTE_CHARACTERS = re.compile(_QUOTE_CHARACTERS)
+QUOTE_CHARACTERS_OPEN = re.compile(rf'{_QUOTE_CHARACTERS}(\w)')
+QUOTE_CHARACTERS_CLOSE = re.compile(rf'([\w\.]){_QUOTE_CHARACTERS}')
 
 
 @grok.subscribe(
