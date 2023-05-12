@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.3\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -3972,11 +3972,11 @@ msgstr "Markup"
 
 #: zeit/content/markup/browser/form.py:20
 msgid "Markup Content"
-msgstr "Markup Inhalt"
+msgstr "Markup"
 
 #: zeit/content/markup/browser/form.py:26
 msgid "Add markup"
-msgstr "Markup Inhalt hinzufügen"
+msgstr "Markup hinzufügen"
 
 #: zeit/content/markup/browser/form.py:40
 msgid "Edit markup"
@@ -3984,7 +3984,7 @@ msgstr "Markup editieren"
 
 #: zeit/content/markup/browser/form.py:45
 msgid "Display markup metadata"
-msgstr "Markup Inhalte anzeigen"
+msgstr "Markup anzeigen"
 
 #: zeit/content/markup/interfaces.py:12
 msgid "Markdown content"
@@ -3992,7 +3992,7 @@ msgstr "Text im Markdown Format hinzufügen"
 
 #: zeit/content/markup/markup.py:36
 msgid "Markup content"
-msgstr "Markup Inhalt"
+msgstr "Markup"
 
 #: zeit/content/modules/interfaces.py:19
 msgid "Raw text reference"
