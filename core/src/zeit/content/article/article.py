@@ -351,9 +351,10 @@ def ensure_block_ids(context, event):
     body.ensure_division()
 
 
-QUOTE_CHARACTERS = re.compile('[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
-QUOTE_CHARACTERS_OPEN = re.compile('[\u201c\u201e]')
-QUOTE_CHARACTERS_CLOSE = re.compile('[\u201d\u201f]')
+_QUOTE_CHARACTERS = r'[\u201c\u201d\u201e\u201f\u00ab\u00bb]'
+QUOTE_CHARACTERS = re.compile(_QUOTE_CHARACTERS)
+QUOTE_CHARACTERS_OPEN = re.compile(rf'{_QUOTE_CHARACTERS}(\w)')
+QUOTE_CHARACTERS_CLOSE = re.compile(rf'([\w\.]){_QUOTE_CHARACTERS}')
 
 
 @grok.subscribe(
@@ -376,11 +377,11 @@ def normalize_quotation_marks(context, event):
 
 def normalize_quotes(node):
     if node.text:
-        node.text = QUOTE_CHARACTERS_OPEN.sub('»', node.text)
-        node.text = QUOTE_CHARACTERS_CLOSE.sub('«', node.text)
+        node.text = QUOTE_CHARACTERS_OPEN.sub(r'»\1', node.text)
+        node.text = QUOTE_CHARACTERS_CLOSE.sub(r'\1«', node.text)
     if node.tail:
-        node.tail = QUOTE_CHARACTERS_OPEN.sub('»', node.tail)
-        node.tail = QUOTE_CHARACTERS_CLOSE.sub('«', node.tail)
+        node.tail = QUOTE_CHARACTERS_OPEN.sub(r'»\1', node.tail)
+        node.tail = QUOTE_CHARACTERS_CLOSE.sub(r'\1«', node.tail)
     for child in node.iterchildren():
         normalize_quotes(child)
     return node

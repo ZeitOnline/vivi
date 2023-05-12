@@ -151,8 +151,8 @@ function normalize_quotation_marks_to_inch_sign(tree) {
 function normalize_quotation_marks(tree) {
     forEach(tree.childNodes, function(el) {
         if (el.nodeType == el.TEXT_NODE) {
-            el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_OPEN, '»');
-            el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_CLOSE, '«');
+            el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_OPEN, '»$1');
+            el.nodeValue = el.nodeValue.replace(QUOTE_CHARACTERS_CLOSE, '$1«');
         } else {
             normalize_quotation_marks(el);
         }
