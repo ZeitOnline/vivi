@@ -209,7 +209,7 @@ When we adapt the RepositoryFile to ILocalContent we'll get a LocalFile:
 When we change some data ...
 
 >>> f_write = local.open('w')
->>> _ = f_write.write(b'new data')
+>>> _ = f_write.write(b'Mary had a little lamb.')
 >>> f_write.close()
 >>> local.mimeType = 'text/plain'
 
@@ -222,7 +222,7 @@ repository:
 <zeit.cms.repository.file.RepositoryFile...>
 >>> fh = repository_file.open()
 >>> fh.read()
-b'new data'
+b'Mary had a little lamb.'
 >>> fh.close()
 >>> repository_file.mimeType
 'text/plain'
