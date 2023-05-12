@@ -360,7 +360,7 @@ class AnimationObjectSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = (IAnimation,)
 
 
-class IAnimatedHeader(IBlock, zeit.content.modules.interfaces.IAnimatedHeader):
+class IAnimatedHeader(IBlock):
     animation = zope.schema.Choice(
         title=_("URL of animation"),
         source=AnimationObjectSource(),

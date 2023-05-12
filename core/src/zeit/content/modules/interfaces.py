@@ -164,9 +164,6 @@ class INewsletterSignup(zeit.edit.interfaces.IBlock):
         required=False)
 
 
-class IAnimatedHeader(zeit.edit.interfaces.IBlock):
-    pass
-
 class IQuiz(zeit.edit.interfaces.IBlock):
 
     quiz_id = zope.schema.TextLine(

@@ -3,7 +3,6 @@ import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.animation.animation
 import zeit.content.article.edit.interfaces
-import zeit.content.modules.animatedheader
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IAnimatedHeader)
