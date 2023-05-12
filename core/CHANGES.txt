@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.25.0 (2023-05-12)
+-------------------
+
+- ZO-3245: Use pure python mime detection library
+
+
 5.24.1 (2023-05-12)
 -------------------
 
