@@ -165,6 +165,8 @@ class Speechbert(grok.Adapter):
             template = self.context.template
             if template is not None and template.lower() in ignore_templates:
                 return True
+        if self.context.product.is_news:
+            return True
         return False
 
     def get_body(self):
