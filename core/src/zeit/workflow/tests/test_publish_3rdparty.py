@@ -277,6 +277,25 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             name="speechbert")
         assert data_factory.publish_json() is not None
 
+    def test_speechbert_ignores_dpa_news(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        assert data_factory.publish_json() is not None
+        with checked_out(article) as co:
+            co.product = zeit.cms.content.sources.Product(
+                id='dpaBY',
+                title='DPA Bayern',
+                show='source',
+                is_news=True)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name="speechbert")
+        assert data_factory.publish_json() is None
+
 
 class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
