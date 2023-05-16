@@ -11,7 +11,6 @@ import zeit.edit.interfaces
 import zeit.wochenmarkt.ingredients
 import zope.app.appsetup.product
 import zope.schema
-import zeit.content.gallery.interfaces
 
 
 class IRawText(zeit.edit.interfaces.IBlock):
@@ -73,13 +72,6 @@ class IEmbed(zeit.edit.interfaces.IBlock):
 
     def extract_domain(url):
         pass
-
-
-
-    #domain = zope.interface.Attribute('The secondlevel domain of our `url`')
-
-    #def extract_domain(url):
-    #    pass
 
 
 class IJobTicker(zeit.edit.interfaces.IBlock):

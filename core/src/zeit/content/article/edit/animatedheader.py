@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.content.article.edit.block
-import zeit.content.animation.animation
 import zeit.content.article.edit.interfaces
 
 
