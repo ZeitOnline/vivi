@@ -212,6 +212,7 @@ setup(
         'deploy': [
             'fluent-logger',
             'flower',
+            'grpcio-status',  # warning instead of required by google-api-core
             'gunicorn',
             'linesman',
             'opentelemetry-exporter-otlp-proto-grpc',
