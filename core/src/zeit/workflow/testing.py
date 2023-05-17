@@ -239,3 +239,11 @@ def run_tasks():
     too and wait an additional 5 seconds, sigh.
     """
     zeit.cms.testing.celery_ping.apply_async(countdown=5).get()
+
+
+def publish_json(context, name):
+    data_factory = zope.component.getAdapter(
+        context,
+        zeit.workflow.interfaces.IPublisherData,
+        name=name)
+    return data_factory.publish_json()
