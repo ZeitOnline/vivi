@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.25.1 (2023-05-17)
+-------------------
+
+- ZO-3159: Ignore news articles in speechbert
+
+
 5.25.0 (2023-05-12)
 -------------------
 
