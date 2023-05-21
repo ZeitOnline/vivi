@@ -4,6 +4,7 @@ import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.content.article.interfaces
 import zeit.content.video.interfaces
+import zeit.content.gallery.interfaces
 import zope.schema
 
 
