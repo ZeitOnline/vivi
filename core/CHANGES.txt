@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.0 (2023-05-22)
+-------------------
+
+MAINT:
+- Separate forked dependency declarations per extra
+
+
 5.25.1 (2023-05-17)
 -------------------
 
