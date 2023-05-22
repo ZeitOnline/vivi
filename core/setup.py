@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vivi.core',
-    version='5.25.2.dev0',
+    version='5.26.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -225,18 +225,8 @@ setup(
             'waitress',
         ],
         'zon': [
-            'gocept.fckeditor==2.6.4.1.post3+py3.3',
             'gocept.form==0.8.0+py3',
-            'gocept.jasmine==0.7+py3.2',
-            'gocept.mochikit==1.4.2.5+py3',
             'gocept.lxml==0.3.0+py3.1',
-            'linesman==0.3.2+py3.3',
-            'slowlog==0.9+py3.2',
-            'z3c.noop==1.0+py3.2',
-            'z3c.menu.simple==0.6.0+py3.3',
-            'zc.datetimewidget==0.8.0+py3.2',
-            'zc.table==0.9+py3',
-            'zeo==5.2.1+blobclose',
             'zope.app.locking==3.5.0+py3.1',
             'zope.xmlpickle==4.0.0+py3k1',
             # We created our own py310 wheels on devpi.zeit.de for these:
@@ -244,6 +234,21 @@ setup(
             # perfmetrics==3.2.0.post0
             # zope.interface==5.4.0
             # zope.hookable==5.1.0
+        ],
+        'deploy-zon': [
+            'linesman==0.3.2+py3.3',
+            'slowlog==0.9+py3.2',
+        ],
+        'test-zon': [
+            'gocept.jasmine==0.7+py3.2',
+        ],
+        'ui-zon': [
+            'gocept.fckeditor==2.6.4.1.post3+py3.3',
+            'gocept.mochikit==1.4.2.5+py3',
+            'js.jqueryui==1.10.3+tooltip',
+            'z3c.noop==1.0+py3.2',
+            'z3c.menu.simple==0.6.0+py3.3',
+            'zc.datetimewidget==0.8.0+py3.2',
         ],
     },
     entry_points={
