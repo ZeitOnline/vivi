@@ -1,8 +1,14 @@
+from unittest import mock
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
-from zeit.content.image.testing import create_image_group_with_master_image
+from zeit.content.cp.testing import create_centerpage
+from zeit.content.image.testing import (
+    create_image_group_with_master_image,
+    create_image_group
+)
 import pytest
 import requests_mock
 import zeit.cms.related.interfaces
@@ -11,6 +17,7 @@ import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.author.author
+import zeit.retresco.interfaces
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
@@ -24,6 +31,14 @@ import zope.i18n
 class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     layer = zeit.content.article.testing.LAYER
+
+    def setUp(self):
+        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
+        self.representation = self.patch.start()
+        super().setUp()
+
+    def tearDown(self):
+        self.patch.stop()
 
     @pytest.fixture(autouse=True)
     def caplog(self, caplog):
@@ -397,3 +412,55 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
+
+
+class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+
+    layer = zeit.content.article.testing.LAYER
+
+    def setUp(self):
+        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
+        self.representation = self.patch.start()
+        super().setUp()
+
+    def tearDown(self):
+        self.patch.stop()
+        super().tearDown()
+
+    def test_tms_wait_for_index_article(self):
+        article = ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.publish_json()
+        assert payload == {'wait': True}
+
+    def test_tms_wait_for_index_centerpage(self):
+        cp = create_centerpage()
+        data_factory = zope.component.getAdapter(
+            cp,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.publish_json()
+        assert payload == {'wait': False}
+
+    def test_tms_imagegroup_is_ignored(self):
+        import zeit.cms.repository.folder
+        image_group = create_image_group()
+        with checked_out(image_group):
+            pass  # trigger uuid creation
+        self.representation().return_value = None
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        repository['news'] = zeit.cms.repository.folder.Folder()
+        repository['news']['group'] = image_group
+
+        image_group = ICMSContent('http://xml.zeit.de/news/group/')
+        data_factory = zope.component.getAdapter(
+            image_group,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.publish_json()
+        assert payload is None
