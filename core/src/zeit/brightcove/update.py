@@ -76,7 +76,7 @@ class import_video(import_base):
             IPublish(self.cmsobj).retract(background=False)
         del self.bcobj.__parent__[self.bcobj.id]
         still = zeit.content.image.interfaces.IImages(self.cmsobj).image
-        if still.__name__ == '%s-still' % self.bcobj.id:
+        if still is not None and still.__name__ == '%s-still' % self.bcobj.id:
             del still.__parent__[still.__name__]
         return True
 
