@@ -451,6 +451,17 @@
       permission="zeit.EditContent" />
   </class>
 
+  <class class=".animatedheader.AnimatedHeader">
+    <require
+      interface=".interfaces.IAnimatedHeader"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAnimatedHeader"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <utility factory=".videotagesschau.from_product_config" zcml:condition="not-have zeit.cms.testing" />
   <utility factory="zeit.content.article.edit.videotagesschau.MockVideoTagesschau" zcml:condition="have zeit.cms.testing" />
 

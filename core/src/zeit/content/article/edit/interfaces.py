@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
+from zeit.content.animation.interfaces import IAnimation
 from zeit.content.article.source import BodyAwareXMLSource
 import collections
 import datetime
@@ -351,6 +352,20 @@ class IRawText(IBlock, zeit.content.modules.interfaces.IRawText):
 
 class IEmbed(IBlock, zeit.content.modules.interfaces.IEmbed):
     pass
+
+
+class AnimationObjectSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'animation'
+    check_interfaces = (IAnimation,)
+
+
+class IAnimatedHeader(IBlock):
+    animation = zope.schema.Choice(
+        title=_("URL of animation"),
+        source=AnimationObjectSource(),
+        required=True,
+    )
 
 
 class AvailableBlockLayoutSource(BodyAwareXMLSource):
