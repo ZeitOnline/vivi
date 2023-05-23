@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.1 (2023-05-23)
+-------------------
+
+- ZO-2452: Add animation to article header module
+
+
 5.26.0 (2023-05-22)
 -------------------
 
