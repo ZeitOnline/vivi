@@ -7,6 +7,7 @@ import zeit.content.author.browser.honorar as honorar
 import zeit.content.author.interfaces
 import zeit.content.author.testing
 import zeit.find.interfaces
+import zeit.retresco.testing
 import zope.component
 
 

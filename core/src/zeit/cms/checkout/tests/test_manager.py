@@ -11,6 +11,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
+import zope.annotation.interfaces
 import zope.component
 
 
