@@ -17,7 +17,6 @@ import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.author.author
-import zeit.retresco.interfaces
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
