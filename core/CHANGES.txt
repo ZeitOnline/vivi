@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.2 (2023-05-30)
+-------------------
+
+- ZO-1992: Control publish to tms in vivi
+
+
 5.26.1 (2023-05-23)
 -------------------
 
