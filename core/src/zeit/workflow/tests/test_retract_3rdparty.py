@@ -1,3 +1,5 @@
+from unittest import mock
+
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
@@ -9,6 +11,15 @@ import zope.component
 
 class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.content.article.testing.LAYER
+
+    def setUp(self):
+        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
+        self.representation = self.patch.start()
+        super().setUp()
+
+    def tearDown(self):
+        self.patch.stop()
+        super().tearDown()
 
     def test_authordashboard_is_ignored_during_retraction(self):
         FEATURE_TOGGLES.set('new_publisher')
@@ -112,3 +123,22 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             name="speechbert")
         # for retraction this is NOT ignored
         assert data_factory.retract_json() is not None
+
+    def test_tms_retract_article(self):
+        article = self.repository['testcontent']
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.retract_json()
+        assert payload == {}
+
+    def test_tms_retract_ignores_content_without_tms_representation(self):
+        content = self.repository['testcontent']
+        self.representation().return_value = None
+        data_factory = zope.component.getAdapter(
+            content,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.retract_json()
+        assert payload is None

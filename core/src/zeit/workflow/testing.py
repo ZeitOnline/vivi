@@ -1,4 +1,5 @@
 from mockssh.streaming import Stream, StreamTransfer
+from unittest import mock
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 import gocept.selenium
@@ -153,6 +154,19 @@ WD_LAYER = zeit.cms.testing.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='SeleniumLayer', bases=(WD_LAYER,))
+
+
+class TMSMockLayer(plone.testing.Layer):
+
+    def testSetUp(self):
+        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
+        self.representation = self.patch.start()
+
+    def testTearDown(self):
+        self.patch.stop()
+
+
+TMS_MOCK_LAYER = TMSMockLayer(name='TMSMockLayer', bases=(ZOPE_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

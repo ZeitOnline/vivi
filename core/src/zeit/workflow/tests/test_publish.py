@@ -413,6 +413,15 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
 
     layer = zeit.content.article.testing.LAYER
 
+    def setUp(self):
+        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
+        self.representation = self.patch.start()
+        super().setUp()
+
+    def tearDown(self):
+        self.patch.stop()
+        super().tearDown()
+
     def test_object_is_published(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')

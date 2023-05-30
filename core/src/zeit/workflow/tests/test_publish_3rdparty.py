@@ -1,3 +1,5 @@
+from unittest import mock
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
@@ -24,6 +26,14 @@ import zope.i18n
 class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     layer = zeit.content.article.testing.LAYER
+
+    def setUp(self):
+        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
+        self.representation = self.patch.start()
+        super().setUp()
+
+    def tearDown(self):
+        self.patch.stop()
 
     @pytest.fixture(autouse=True)
     def caplog(self, caplog):
@@ -397,3 +407,38 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
+
+
+class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.TMS_MOCK_LAYER
+
+    def test_tms_wait_for_index_article(self):
+        article = self.repository['testcontent']
+        zope.interface.alsoProvides(
+            article, zeit.content.article.interfaces.IArticle)
+        data_factory = zope.component.getAdapter(
+            article,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.publish_json()
+        assert payload == {'wait': True}
+
+    def test_tms_only_waits_for_articles(self):
+        content = self.repository['testcontent']
+        data_factory = zope.component.getAdapter(
+            content,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.publish_json()
+        assert payload == {'wait': False}
+
+    def test_tms_ignores_content_without_tms_representation(self):
+        content = self.repository['testcontent']
+        self.layer.representation().return_value = None
+        data_factory = zope.component.getAdapter(
+            content,
+            zeit.workflow.interfaces.IPublisherData,
+            name='tms')
+        payload = data_factory.publish_json()
+        assert payload is None

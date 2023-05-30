@@ -250,3 +250,32 @@ class Speechbert(grok.Adapter):
             # so we should not have to repeat it here.
             'uuid': zeit.cms.content.interfaces.IUUID(self.context).shortened
         }
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class TMS(grok.Adapter):
+    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.name('tms')
+
+    def ignore(self):
+        if zeit.retresco.interfaces.ITMSRepresentation(
+                self.context)() is None:
+            return True
+        return False
+
+    def wait_for_index_update(self):
+        if zeit.content.article.interfaces.IArticle.providedBy(self.context):
+            # TMS supplies article body intext links, therefore publish process
+            # must wait for elastic index update
+            return True
+        return False
+
+    def publish_json(self):
+        if self.ignore():
+            return
+        return {'wait': self.wait_for_index_update()}
+
+    def retract_json(self):
+        if self.ignore():
+            return
+        return {}
