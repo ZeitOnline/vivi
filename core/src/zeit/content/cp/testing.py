@@ -1,5 +1,3 @@
-from zeit.cms.checkout.helper import checked_out
-
 from unittest import mock
 import gocept.selenium
 import pkg_resources
@@ -91,16 +89,6 @@ checker = zope.testing.renormalizing.RENormalizing([
 ])
 
 checker.transformers[0:0] = zeit.cms.testing.checker.transformers
-
-
-def create_centerpage(name='cp'):
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
-    repository[name] = zeit.content.cp.centerpage.CenterPage()
-    cp = repository[name]
-    with checked_out(cp) as cp:
-        cp.title = 'Test Title'
-    return repository[name]
 
 
 def FunctionalDocFileSuite(*args, **kw):
