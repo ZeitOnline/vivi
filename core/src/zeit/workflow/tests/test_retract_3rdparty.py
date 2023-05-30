@@ -1,8 +1,6 @@
 from unittest import mock
 
-from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.content.image.testing import create_image_group
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import requests_mock
@@ -127,10 +125,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert data_factory.retract_json() is not None
 
     def test_tms_retract_article(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
-        with checked_out(article):
-            pass  # trigger uuid creation
+        article = self.repository['testcontent']
         data_factory = zope.component.getAdapter(
             article,
             zeit.workflow.interfaces.IPublisherData,
@@ -138,20 +133,11 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.retract_json()
         assert payload == {}
 
-    def test_tms_retract_news_image_group_is_ignored(self):
-        import zeit.cms.repository.folder
-        image_group = create_image_group()
-        with checked_out(image_group):
-            pass  # trigger uuid creation
+    def test_tms_retract_ignores_content_without_tms_representation(self):
+        content = self.repository['testcontent']
         self.representation().return_value = None
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        repository['news'] = zeit.cms.repository.folder.Folder()
-        repository['news']['group'] = image_group
-
-        image_group = ICMSContent('http://xml.zeit.de/news/group/')
         data_factory = zope.component.getAdapter(
-            image_group,
+            content,
             zeit.workflow.interfaces.IPublisherData,
             name='tms')
         payload = data_factory.retract_json()

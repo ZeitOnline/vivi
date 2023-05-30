@@ -4,11 +4,7 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
-from zeit.content.cp.testing import create_centerpage
-from zeit.content.image.testing import (
-    create_image_group_with_master_image,
-    create_image_group
-)
+from zeit.content.image.testing import create_image_group_with_master_image
 import pytest
 import requests_mock
 import zeit.cms.related.interfaces
@@ -415,20 +411,12 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
-    layer = zeit.content.article.testing.LAYER
-
-    def setUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
-        super().setUp()
-
-    def tearDown(self):
-        self.patch.stop()
-        super().tearDown()
+    layer = zeit.workflow.testing.TMS_MOCK_LAYER
 
     def test_tms_wait_for_index_article(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        article = self.repository['testcontent']
+        zope.interface.alsoProvides(
+            article, zeit.content.article.interfaces.IArticle)
         data_factory = zope.component.getAdapter(
             article,
             zeit.workflow.interfaces.IPublisherData,
@@ -436,29 +424,20 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         payload = data_factory.publish_json()
         assert payload == {'wait': True}
 
-    def test_tms_wait_for_index_centerpage(self):
-        cp = create_centerpage()
+    def test_tms_only_waits_for_articles(self):
+        content = self.repository['testcontent']
         data_factory = zope.component.getAdapter(
-            cp,
+            content,
             zeit.workflow.interfaces.IPublisherData,
             name='tms')
         payload = data_factory.publish_json()
         assert payload == {'wait': False}
 
-    def test_tms_imagegroup_is_ignored(self):
-        import zeit.cms.repository.folder
-        image_group = create_image_group()
-        with checked_out(image_group):
-            pass  # trigger uuid creation
-        self.representation().return_value = None
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        repository['news'] = zeit.cms.repository.folder.Folder()
-        repository['news']['group'] = image_group
-
-        image_group = ICMSContent('http://xml.zeit.de/news/group/')
+    def test_tms_ignores_content_without_tms_representation(self):
+        content = self.repository['testcontent']
+        self.layer.representation().return_value = None
         data_factory = zope.component.getAdapter(
-            image_group,
+            content,
             zeit.workflow.interfaces.IPublisherData,
             name='tms')
         payload = data_factory.publish_json()
