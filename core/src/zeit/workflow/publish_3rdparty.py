@@ -265,17 +265,17 @@ class TMS(grok.Adapter):
 
     def wait_for_index_update(self):
         if zeit.content.article.interfaces.IArticle.providedBy(self.context):
+            # TMS supplies article body intext links, therefore publish process
+            # must wait for elastic index update
             return True
         return False
 
     def publish_json(self):
-        # no payload. uuid and uniqueId are passed in automatically
         if self.ignore():
             return
         return {'wait': self.wait_for_index_update()}
 
     def retract_json(self):
-        # on retraction
         if self.ignore():
             return
         return {}
