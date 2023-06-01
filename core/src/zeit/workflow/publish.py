@@ -41,7 +41,7 @@ class Publish:
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=None, background=True, **kw):
+    def publish(self, priority=None, background=True, ignore_3rdp=[], **kw):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.can_publish() == CAN_PUBLISH_ERROR:
@@ -49,7 +49,7 @@ class Publish:
                 "Publish pre-conditions not satisifed.")
 
         return self._execute_task(
-            PUBLISH_TASK, [self.context.uniqueId], priority, background,
+            PUBLISH_TASK, [self.context.uniqueId], ignore_3rdp, priority, background,
             _('Publication scheduled'), **kw)
 
     def retract(self, priority=None, background=True, **kw):
@@ -90,7 +90,7 @@ class Publish:
         return self._execute_task(
             MULTI_RETRACT_TASK, ids, priority, background, **kw)
 
-    def _execute_task(self, task, ids, priority, background,
+    def _execute_task(self, task, ids, ignore_3rdp, priority, background,
                       message=None, **kw):
         if background:
             if message:
@@ -98,7 +98,7 @@ class Publish:
             return task.apply_async(
                 (ids,), queue=self.get_priority(priority), **kw)
         else:
-            result = task(ids)
+            result = task(ids, ignore_3rdp)
             return celery.result.EagerResult(
                 'eager', result, celery.states.SUCCESS)
 
@@ -128,7 +128,7 @@ class PublishRetractTask:
     def __init__(self, jobid):
         self.jobid = jobid
 
-    def run(self, ids):
+    def run(self, ids, ignore_3rdp):
         """Run task in worker."""
         ids_str = ', '.join(ids)
         info = (type(self).__name__, ids_str, self.jobid)
@@ -145,7 +145,7 @@ class PublishRetractTask:
         timer.mark('Looked up object')
 
         try:
-            result = self._run(objs)
+            result = self._run(objs, ignore_3rdp)
         except z3c.celery.celery.Abort:
             raise
         except Exception as e:
@@ -371,12 +371,12 @@ class PublishRetractTask:
                 raise zeit.workflow.interfaces.ScriptError(
                     stderr, proc.returncode)
 
-    def _format_json(obj, method):
+    def _format_json(obj, method, ignore_3rdp):
         uuid = zeit.cms.content.interfaces.IUUID(obj)
         json = {'uuid': uuid.shortened, 'uniqueId': obj.uniqueId}
         for name, adapter in zope.component.getAdapters(
                 (obj,), zeit.workflow.interfaces.IPublisherData):
-            if not name:
+            if not name or name in ignore_3rdp:
                 continue
             data = getattr(adapter, f"{method}_json")()
             # only add data if the adapter returned some
@@ -386,7 +386,7 @@ class PublishRetractTask:
         return json
 
     @classmethod
-    def call_publisher_method(cls, to_process_list, method):
+    def call_publisher_method(cls, to_process_list, method, ignore_3rdp):
         if not to_process_list:
             return
 
@@ -402,7 +402,7 @@ class PublishRetractTask:
             headers['host'] = hostname
 
         url = f'{publisher_base_url}{method}'
-        json = [cls._format_json(obj, method) for obj in to_process_list]
+        json = [cls._format_json(obj, method, ignore_3rdp) for obj in to_process_list]
         response = requests.post(
             url=url, json=json, headers=headers)
         if response.status_code != 200:
@@ -413,8 +413,8 @@ class PublishRetractTask:
                 f'Details: {publisher_parts}')
 
     @classmethod
-    def call_publish(cls, to_publish_list):
-        cls.call_publisher_method(to_publish_list, 'publish')
+    def call_publish(cls, to_publish_list, ignore_3rdp):
+        cls.call_publisher_method(to_publish_list, 'publish', ignore_3rdp)
 
     @classmethod
     def call_retract(cls, to_retract_list):
@@ -430,7 +430,7 @@ class PublishTask(PublishRetractTask):
 
     mode = MODE_PUBLISH
 
-    def _run(self, objs):
+    def _run(self, objs, ignore_3rdp):
         logger.info('Publishing %s' % ', '.join(obj.uniqueId for obj in objs))
         errors = []
         published = []
@@ -458,7 +458,7 @@ class PublishTask(PublishRetractTask):
 
         if to_publish:
             if FEATURE_TOGGLES.find('new_publisher'):
-                self.call_publish(to_publish)
+                self.call_publish(to_publish, ignore_3rdp)
             else:
                 self.call_script('publish', to_publish)
 
@@ -505,8 +505,8 @@ class PublishTask(PublishRetractTask):
 
 
 @zeit.cms.celery.task(bind=True)
-def PUBLISH_TASK(self, ids):
-    return PublishTask(self.request.id).run(ids)
+def PUBLISH_TASK(self, ids, ignore_3rdp):
+    return PublishTask(self.request.id).run(ids, ignore_3rdp)
 
 
 class RetractTask(PublishRetractTask):
