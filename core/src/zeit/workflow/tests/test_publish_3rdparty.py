@@ -39,6 +39,22 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def caplog(self, caplog):
         self.caplog = caplog
 
+    def test_ignore_3rdparty_list_is_respected(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        with requests_mock.Mocker() as rmock:
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(
+                background=False, ignore_3rdp=['facebooknewstab', 'speechbert'])
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' not in result
+            assert 'speechbert' not in result
+            assert 'authordashboard' in result
+        self.assertTrue(IPublishInfo(article).published)
+
     def test_authordashboard_is_notified(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
