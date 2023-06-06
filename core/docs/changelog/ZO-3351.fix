@@ -1,0 +1,1 @@
+ZO-3351: Educated guess, wait for checkin completion before publish to avoid race condition
