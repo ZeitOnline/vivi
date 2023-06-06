@@ -7,9 +7,6 @@
     <header name="embed" allow_header_module="true">
       <title>Header-Modul oben</title>
     </header>
-    <header name="animatedheader" allow_header_module="true">
-      <title>Header-Animated-Modul oben</title>
-    </header>
     <header name="podcast" allow_header_module="true">
       <title>Podcast</title>
     </header>
@@ -21,9 +18,6 @@
     <title>Visual Article</title>
     <header name="embed" allow_header_module="true">
       <title>Header-Modul oben</title>
-    </header>
-    <header name="animatedheader" allow_header_module="true">
-      <title>Header-Animated-Modul oben</title>
     </header>
     <header name="fullwidth-classic">
       <title>Vollbreit, classic</title>

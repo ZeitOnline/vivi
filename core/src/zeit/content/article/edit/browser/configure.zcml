@@ -901,23 +901,23 @@
     />
 
 
-  <!-- Animated Article Header -->
+  <!-- Animation -->
 
   <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IAnimatedHeader"
+    for="zeit.content.article.edit.interfaces.IAnimation"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit-animatedheader"
+    name="edit-animation"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     />
 
   <browser:page
-    for="zeit.content.article.edit.interfaces.IAnimatedHeader"
+    for="zeit.content.article.edit.interfaces.IAnimation"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-animatedheader"
-    class=".edit.EditAnimatedHeader"
+    name="edit-animation"
+    class=".edit.EditAnimation"
     permission="zope.View"
     />
 
