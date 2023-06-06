@@ -1,5 +1,6 @@
 from datetime import datetime
 from json import dumps
+from time import sleep
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
@@ -458,6 +459,7 @@ class PublishTask(PublishRetractTask):
 
         if to_publish:
             if FEATURE_TOGGLES.find('new_publisher'):
+                sleep(5)
                 self.call_publish(to_publish)
             else:
                 self.call_script('publish', to_publish)
