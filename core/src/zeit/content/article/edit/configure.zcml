@@ -451,13 +451,13 @@
       permission="zeit.EditContent" />
   </class>
 
-  <class class=".animatedheader.AnimatedHeader">
+  <class class=".animation.Animation">
     <require
-      interface=".interfaces.IAnimatedHeader"
+      interface=".interfaces.IAnimation"
       permission="zope.View"
       />
     <require
-      set_schema=".interfaces.IAnimatedHeader"
+      set_schema=".interfaces.IAnimation"
       permission="zeit.EditContent"
       />
   </class>

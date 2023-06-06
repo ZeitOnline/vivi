@@ -7,7 +7,7 @@
   <module id="citation_comment">Zitat-Leserkommentar</module>
   <module id="division">Seitenumbruch</module>
   <module id="embed">Social Embed</module>
-  <module id="animatedheader">Animated Header</module>
+  <module id="animation">Animation</module>
   <module id="gallery">Bildergalerie</module>
   <module id="image">Bild</module>
   <module id="infobox">Infobox</module>

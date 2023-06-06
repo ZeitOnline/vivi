@@ -620,16 +620,16 @@ class EditIngredientDice(zeit.edit.browser.form.InlineForm):
         return 'ingredientdice.{0}'.format(self.context.__name__)
 
 
-class EditAnimatedHeader(
+class EditAnimation(
         zeit.cms.browser.manual.FormMixin,
         zeit.edit.browser.form.InlineForm):
 
     legend = ''
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IAnimatedHeader).omit(
+        zeit.content.article.edit.interfaces.IAnimation).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit animated header block')
+    undo_description = _('edit animation block')
 
     @property
     def prefix(self):
-        return 'animatedheader.{0}'.format(self.context.__name__)
+        return 'animation.{0}'.format(self.context.__name__)

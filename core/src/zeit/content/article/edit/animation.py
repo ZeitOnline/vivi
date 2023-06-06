@@ -4,14 +4,14 @@ import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 
 
-@grok.implementer(zeit.content.article.edit.interfaces.IAnimatedHeader)
-class AnimatedHeader(zeit.content.article.edit.block.Block):
+@grok.implementer(zeit.content.article.edit.interfaces.IAnimation)
+class Animation(zeit.content.article.edit.block.Block):
 
-    type = 'animatedheader'
+    type = 'animation'
     animation = zeit.cms.content.reference.SingleResource(".", "related")
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
-    produces = AnimatedHeader
-    title = _('Animated header')
+    produces = Animation
+    title = _('Animation')
