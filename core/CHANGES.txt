@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.5 (2023-06-07)
+-------------------
+
+- ZO-3364: Renames 'AnimatedHeader' modul to 'Animation'
+
+
 5.26.4 (2023-06-06)
 -------------------
 
