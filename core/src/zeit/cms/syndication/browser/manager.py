@@ -1,3 +1,4 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 import zc.table.column
@@ -57,6 +58,8 @@ class Manager(zeit.cms.browser.view.Base):
             info = zeit.cms.workflow.interfaces.IPublishInfo(target)
             if info.can_publish() == CAN_PUBLISH_SUCCESS:
                 publish = zeit.cms.workflow.interfaces.IPublish(target)
+                if FEATURE_TOGGLES.find('new_publisher'):
+                    self.manager.syndicate(targets)
                 publish.publish()
                 self.send_message(_('scheduled-for-publishing',
                                     mapping=mapping))
