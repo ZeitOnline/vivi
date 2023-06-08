@@ -372,15 +372,7 @@ class Connector:
             delmark=zeit.connector.interfaces.DeleteProperty,
             locktoken=locktoken)
 
-        # Update property cache
-        del properties[('cached-time', 'INTERNAL')]
-        try:
-            cached_properties = self.property_cache[id]
-        except KeyError:
-            pass
-        else:
-            cached_properties.update(properties)
-            self.property_cache[id] = cached_properties
+        self._invalidate_cache(id)
 
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
