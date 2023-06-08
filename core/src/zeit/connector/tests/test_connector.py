@@ -186,7 +186,8 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         davres.update()
         self.assertTrue(key not in davres.get_all_properties())
         properties = self.connector[self.rid].properties
-        self.assertEqual(cache_time, properties[key])
+        # change in properties triggers invalidate cache!
+        self.assertNotEqual(cache_time, properties[key])
 
     def test_cache_time_is_not_stored_on_dav_with_add(self):
         key = ('cached-time', 'INTERNAL')
