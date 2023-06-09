@@ -445,6 +445,7 @@ class PublishTask(PublishRetractTask):
             try:
                 obj = self.recurse(self.lock, obj, obj)
                 obj = self.recurse(self.before_publish, obj, obj)
+                obj = self.recurse(self.unlock, obj, obj)
             except Exception as e:
                 errors.append((obj, e))
             else:
@@ -453,7 +454,9 @@ class PublishTask(PublishRetractTask):
         to_publish = []
         for obj in published:
             deps = []
+            obj = self.recurse(self.lock, obj, obj)
             self.recurse(self.collect, obj, deps)
+            obj = self.recurse(self.unlock, obj, obj)
             to_publish.extend(deps)
 
         if to_publish:
@@ -464,6 +467,7 @@ class PublishTask(PublishRetractTask):
 
         for obj in published:
             try:
+                obj = self.recurse(self.lock, obj, obj)
                 self.recurse(self.after_publish, obj, obj)
                 obj = self.recurse(self.unlock, obj, obj)
             except Exception as e:
