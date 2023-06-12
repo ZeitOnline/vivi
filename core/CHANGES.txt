@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.9 (2023-06-12)
+-------------------
+
+FIX:
+- ZO-3351: Revert lock and unlock for every function that requires the lock
+
+
 5.26.8 (2023-06-09)
 -------------------
 
