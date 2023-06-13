@@ -39,7 +39,7 @@ def index_after_add(event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
             event.newParent):
         return
-    log.info('AfterAdd: Creating async index job for %s' % context.uniqueId)
+    log.info('AfterAdd: Creating index job for %s', context.uniqueId)
     index_async.delay(context.uniqueId)
 
 
@@ -52,6 +52,7 @@ def index_after_checkin(context, event):
     # XXX Work around race condition between celery/redis (applies already
     # in tpc_vote) and DAV-cache in ZODB (applies only in tpc_finish, so
     # the celery job *may* start executing before that happens), BUG-796.
+    log.info('AfterCheckin: Creating async index job for %s', context.uniqueId)
     index_async.apply_async((context.uniqueId,), countdown=5)
 
 
@@ -73,6 +74,7 @@ def index_on_publish(context, event):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.workflow.interfaces.IRetractedEvent)
 def index_after_retract(context, event):
+    log.info('AfterRetract: Creating async index job for %s', context.uniqueId)
     index_async.apply_async((context.uniqueId, False), countdown=5)
 
 

@@ -2,12 +2,15 @@ from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
 from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 from zeit.connector.interfaces import DeleteProperty
 import collections.abc
+import logging
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
 import zope.component
 import zope.interface
 import zope.security.interfaces
+
+log = logging.getLogger(__name__)
 
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
@@ -92,6 +95,7 @@ def remove_live_properties(context, event):
         properties = zeit.connector.interfaces.IWebDAVProperties(context)
     except TypeError:
         return
+    log.info('BeforeCheckin: remove live properties from %s', context.uniqueId)
     manager = zope.component.getUtility(
         zeit.cms.content.interfaces.ILivePropertyManager)
     for live_property in manager.live_properties:
