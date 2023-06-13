@@ -453,6 +453,18 @@ pre {
     font-size: 20px;
 }
 
+.environment-devel #main-navigation > li:first-child > a {
+    background: transparent url("layout/logo_devel.png") no-repeat left center;
+}
+
+.environment-devel #main-navigation > li:first-child > a:after {
+    content: "DEVEL";
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
 #main-navigation > li:first-child > a > span {
   display: none;
 }
