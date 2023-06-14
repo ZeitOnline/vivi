@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.10 (2023-06-14)
+--------------------
+
+- ZO-3351: fix race condition for asynchronous index tasks on publish
+
+- ZO-3394: Vivi devel should have its own logo
+
+
 5.26.9 (2023-06-12)
 -------------------
 

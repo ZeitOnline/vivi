@@ -1,1 +1,0 @@
-ZO-3351: fix race condition for asynchronous index tasks on publish
