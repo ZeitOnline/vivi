@@ -21,6 +21,8 @@ def update_index_on_checkin(context, event):
         return
     if getattr(event, 'publishing', False):
         return
+    log.info('BeforeCheckin: Creating async index job for %s',
+             context.uniqueId)
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
     relations.index(context)

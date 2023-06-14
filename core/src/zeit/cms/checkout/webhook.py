@@ -21,6 +21,8 @@ log = logging.getLogger(__name__)
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def notify_after_checkin(context, event):
     # XXX Work around redis/ZODB race condition, see BUG-796.
+    log.info('AfterCheckin: Creating async index job for %s: publishing: %s',
+             context.uniqueId, event.publishing)
     for hook in HOOKS:
         notify_webhook.apply_async((context.uniqueId, hook.url), countdown=5)
 
