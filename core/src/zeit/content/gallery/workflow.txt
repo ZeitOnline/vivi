@@ -107,8 +107,6 @@ work/image-folder/01.jpg
 work/online/gallery
 done.
 <BLANKLINE>
-BeforeCheckin: remove live properties from http://xml.zeit.de/online/gallery
-AfterCheckin: Creating async index job for http://xml.zeit.de/online/gallery: publishing: True
 Done http://xml.zeit.de/online/gallery (...s)
 
 

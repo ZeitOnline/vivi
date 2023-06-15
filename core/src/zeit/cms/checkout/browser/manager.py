@@ -129,8 +129,6 @@ class Checkin(zeit.cms.browser.view.Base, CheckinAndRedirect):
             semantic_change = None
         else:
             semantic_change = bool(semantic_change)
-        if isinstance(event, str) and event == 'False':
-            event = False
         return self.perform_checkin(
             semantic_change, bool(event), bool(ignore_conflicts))
 

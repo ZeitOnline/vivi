@@ -41,7 +41,6 @@ class TMSMockLayer(plone.testing.Layer):
         self['tms'].get_related_documents.return_value = (
             zeit.cms.interfaces.Result())
         self['tms'].get_article_data.return_value = {}
-        self['tms'].generate_keyword_list.return_value = []
         zope.interface.alsoProvides(
             self['tms'], zeit.retresco.interfaces.ITMS)
         zope.component.getSiteManager().registerUtility(self['tms'])
