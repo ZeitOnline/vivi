@@ -189,7 +189,6 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
         super().setUp()
         self.tms = mock.Mock()
         self.tms.get_article_data.return_value = {}
-        self.tms.generate_keyword_list.return_value = []
         zope.component.getGlobalSiteManager().registerUtility(
             self.tms, zeit.retresco.interfaces.ITMS)
 

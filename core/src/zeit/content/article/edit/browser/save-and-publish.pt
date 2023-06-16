@@ -3,7 +3,7 @@
 
 <tal:block condition="view/can_publish">
 <ol id="worklist">
-  <li action="checkin" cms:param="&amp;semantic_change=None&amp;event=False" i18n:translate="">Checking in</li>
+  <li action="checkin" cms:param="&amp;semantic_change=None" i18n:translate="">Checking in</li>
   <li action="start_job" cms:param="publish" i18n:translate="">Publishing</li>
   <li action="reload" i18n:translate="">Reloading</li>
 </ol>

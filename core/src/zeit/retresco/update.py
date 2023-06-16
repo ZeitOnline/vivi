@@ -40,7 +40,7 @@ def index_after_add(event):
             event.newParent):
         return
     log.info('AfterAdd: Creating index job for %s', context.uniqueId)
-    update_content_index(context.uniqueId)
+    index_async.delay(context.uniqueId)
 
 
 @grok.subscribe(
@@ -64,7 +64,10 @@ def index_on_publish(context, event):
     # speaking that "already happened" on checkin, to support the "checkin
     # and publish immediately" use case -- since there publish likely
     # happens *before* the index_async job created by checkin ran.
-    update_content_index(context.uniqueId, publish=True)
+    enrich = True
+    if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
+        enrich = False
+    index(context, enrich=enrich)
 
 
 @grok.subscribe(
@@ -99,13 +102,6 @@ def index_workflow_properties(context, event):
 
 @zeit.cms.celery.task(bind=True, queue='search')
 def index_async(self, uniqueId, enrich=True):
-    try:
-        update_content_index(uniqueId, enrich=enrich)
-    except zeit.retresco.interfaces.TechnicalError:
-        self.retry()
-
-
-def update_content_index(uniqueId, enrich=True, publish=False):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
         log.warning('Could not index %s because it does not exist any longer.',
@@ -115,11 +111,13 @@ def update_content_index(uniqueId, enrich=True, publish=False):
         enrich = False
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     has_keywords = meta is not None and meta.keywords
-    index(
-        context,
-        enrich=enrich,
-        update_keywords=enrich and not has_keywords,
-        publish=publish)
+    try:
+        index(
+            context,
+            enrich=enrich,
+            update_keywords=enrich and not has_keywords)
+    except zeit.retresco.interfaces.TechnicalError:
+        self.retry()
 
 
 # Preserve previously stored fields during re-index.
