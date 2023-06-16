@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.11 (2023-06-16)
+--------------------
+
+- ZO-3351: Revert asynchronous to synchronous tasks during checkout/publish
+
+
 5.26.10 (2023-06-14)
 --------------------
 
