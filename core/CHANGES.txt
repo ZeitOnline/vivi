@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.26.12 (2023-06-19)
+--------------------
+
+- ZO-3351: Update keywords during publish, to support "checkin+publish immediately" usecase
+
+
 5.26.11 (2023-06-16)
 --------------------
 
