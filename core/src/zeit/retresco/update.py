@@ -59,15 +59,12 @@ def index_after_checkin(context, event):
 @grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
-def index_on_publish(context, event):
+def index_before_publish(context, event):
     # Unfortunately we have to enrich here too, even though strictly
     # speaking that "already happened" on checkin, to support the "checkin
     # and publish immediately" use case -- since there publish likely
     # happens *before* the index_async job created by checkin ran.
-    enrich = True
-    if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
-        enrich = False
-    index(context, enrich=enrich)
+    index_on_checkin(context, enrich=True)
 
 
 @grok.subscribe(
@@ -107,17 +104,18 @@ def index_async(self, uniqueId, enrich=True):
         log.warning('Could not index %s because it does not exist any longer.',
                     uniqueId)
         return
+    try:
+        index_on_checkin(context, enrich=enrich)
+    except zeit.retresco.interfaces.TechnicalError:
+        self.retry()
+
+
+def index_on_checkin(context, enrich=True):
     if not FEATURE_TOGGLES.find('tms_enrich_on_checkin'):
         enrich = False
     meta = zeit.cms.content.interfaces.ICommonMetadata(context, None)
     has_keywords = meta is not None and meta.keywords
-    try:
-        index(
-            context,
-            enrich=enrich,
-            update_keywords=enrich and not has_keywords)
-    except zeit.retresco.interfaces.TechnicalError:
-        self.retry()
+    index(context, enrich=enrich, update_keywords=enrich and not has_keywords)
 
 
 # Preserve previously stored fields during re-index.
