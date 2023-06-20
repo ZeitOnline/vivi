@@ -322,7 +322,7 @@ class PublishRetractTask:
             script = pkg_resources.resource_filename(
                 'zeit.workflow', 'publish.sh')
         cls._call_script(script, action, '\n'.join(paths))
-        timer.mark('Called %s script' % action)
+        timer.mark('Called Publisher SSH script: %s' % action)
 
     @classmethod
     def _call_script(cls, filename, action, input_data):
@@ -405,6 +405,7 @@ class PublishRetractTask:
         json = [cls._format_json(obj, method) for obj in to_process_list]
         response = requests.post(
             url=url, json=json, headers=headers)
+        timer.mark('Called Publisher HTTP API: %s' % method)
         if response.status_code != 200:
             publisher_parts = dumps(response.json()['errors'])
             raise PublishError(
