@@ -128,26 +128,55 @@ class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
         self.assertEqual('foo', b.getControl('Title').value)
 
 
+def teaser_view(block):
+    request = zope.publisher.browser.TestRequest(
+        skin=zeit.cms.browser.interfaces.ICMSLayer)
+    view = zeit.content.cp.browser.blocks.teaser.Display()
+    view.context = block
+    view.request = request
+    view.update()
+    return view
+
+
+class TeaserArticleBuilder:
+    def __init__(self, repository):
+        self.repository = repository
+        self.article = zeit.content.article.article.Article()
+
+    def with_metadata(self, metadata):
+        for key, value in metadata.items():
+            setattr(self.article, key, value)
+        return self
+
+    def with_citation(self, text):
+        body = zeit.content.article.edit.body.EditableBody(
+            self.article, self.article.xml.body)
+        citation = body.create_item('citation', 1)
+        citation.text = text
+        return self
+
+    def build(self, block):
+        self.repository['article_test'] = self.article
+        block.insert(0, self.article)
+        return self.article, teaser_view(block)
+
+
 class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
-        self.request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSLayer)
-
-    def view(self, block):
-        view = zeit.content.cp.browser.blocks.teaser.Display()
-        view.context = block
-        view.request = self.request
-        view.update()
-        return view
+        self.tab = TeaserArticleBuilder(self.repository)
 
     def create_teaserblock(self, layout):
         container = self.cp.body.create_item('region').create_item('area')
         block = zope.component.getAdapter(
             container, zeit.edit.interfaces.IElementFactory, name='teaser')()
         block.layout = zeit.content.cp.layout.get_layout(layout)
+        return block
+
+    def create_teaserimage_block(self, layout):
+        block = self.create_teaserblock(layout)
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         for i in range(3):
             id = 't%s' % i
@@ -159,16 +188,6 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
             block.insert(0, self.repository['t%s' % i])
         return block
 
-    def create_article_with_citation(self):
-        import zeit.content.article.article
-        import zeit.content.article.edit.body
-        article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
-        citation = body.create_item('citation', 1)
-        citation.text = "Foo"
-        return article
-
     def create_gallery(self):
         gallery = zeit.content.gallery.gallery.Gallery()
         gallery.image_folder = self.repository['2007']
@@ -179,11 +198,11 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
         return gallery
 
     def test_layout_without_image_pattern_shows_no_header_image(self):
-        view = self.view(self.create_teaserblock(layout='short'))
+        view = teaser_view(self.create_teaserimage_block(layout='short'))
         self.assertEqual(None, view.header_image)
 
     def test_layout_with_image_pattern_shows_header_image(self):
-        view = self.view(self.create_teaserblock(layout='large'))
+        view = teaser_view(self.create_teaserimage_block(layout='large'))
         self.assertEqual(
             'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw',
             view.header_image)
@@ -191,15 +210,12 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_shows_list_representation_title_for_non_metadata(self):
         block = self.cp['lead'].create_item('teaser')
         block.insert(0, self.repository['2007'])
-        view = self.view(block)
+        view = teaser_view(block)
         self.assertEqual('2007', view.teasers[0]['texts'][0]['content'])
 
     def test_quote_teaser_shows_citation_text_if_article_has_citation(self):
-        article = self.create_article_with_citation()
-        self.repository['article_with_citation'] = article
-        quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
-        quote_teaserblock.insert(0, article)
-        view = self.view(quote_teaserblock)
+        _, view = self.tab.with_citation('Foo').build(
+            self.create_teaserblock('zar-quote-yellow'))
         self.assertEqual('Foo', view.teasers[0]['texts'][2][
             'content'])
         self.assertEqual('Zitat:', view.teasers[0]['texts'][1][
@@ -214,43 +230,32 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
         assert block.force_mobile_image
 
     def test_teaser_forces_mobile_image_per_default(self):
-        assert self.create_teaserblock('large').force_mobile_image
+        assert self.create_teaserimage_block('large').force_mobile_image
 
     def test_teaser_with_non_quote_layout_shows_teaser_text(
             self):
-        article = self.create_article_with_citation()
-        article.teaserTitle = 'Bar'
-        article.teaserText = 'Baz'
-        self.repository['article_with_citation'] = article
-        quote_teaserblock = self.create_teaserblock('large')
-        quote_teaserblock.insert(0, article)
-        view = self.view(quote_teaserblock)
-        self.assertEqual('Bar', view.teasers[0]['texts'][1][
+        article, view = self.tab.with_citation('Foo').with_metadata(
+            {'teaserTitle': 'Bar', 'teaserText': 'Baz'}).build(
+            self.create_teaserblock('large'))
+        self.assertEqual(article.teaserTitle, view.teasers[0]['texts'][1][
             'content'])
-        self.assertEqual('Baz', view.teasers[0]['texts'][2][
+        self.assertEqual(article.teaserText, view.teasers[0]['texts'][2][
             'content'])
 
     def test_quote_teaser_without_quote_in_article_shows_teaser_text(
             self):
-        article = zeit.content.article.article.Article()
-        article.teaserTitle = 'Bar'
-        article.teaserText = 'Baz'
-        self.repository['article_with_citation'] = article
-        quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
-        quote_teaserblock.insert(0, article)
-        view = self.view(quote_teaserblock)
-        self.assertEqual('Bar', view.teasers[0]['texts'][1][
+        article, view = self.tab.with_metadata(
+            {'teaserTitle': 'Bar', 'teaserText': 'Baz'}).build(
+            self.create_teaserblock('zar-quote-yellow'))
+        self.assertEqual(article.teaserTitle, view.teasers[0]['texts'][1][
             'content'])
-        self.assertEqual('Baz', view.teasers[0]['texts'][2][
+        self.assertEqual(article.teaserText, view.teasers[0]['texts'][2][
             'content'])
 
     def test_content_types_without_teaser_property_have_fallbacks(
             self):
-        article = zeit.content.article.article.Article()
-        article.title = 'Bar'
-        self.repository['article_with_citation'] = article
-        quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
-        quote_teaserblock.insert(0, article)
-        view = self.view(quote_teaserblock)
-        self.assertEqual('Bar', view.teasers[0]['texts'][1][
+        article, view = self.tab.with_metadata(
+            {'title': 'Bar'}).build(
+            self.create_teaserblock('zar-quote-yellow'))
+        self.assertEqual(article.title, view.teasers[0]['texts'][1][
             'content'])
