@@ -1,3 +1,5 @@
+import string
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testing import xmltotext
 
@@ -35,3 +37,28 @@ class MarkupTest(zeit.content.markup.testing.FunctionalTestCase):
         self.assertEqual('<h1>baz</h1>', self.repository['markup'].text)
         self.assertEllipsis(
             '...<h1>baz</h1>...', xmltotext(self.repository['markup'].xml))
+
+    def test_teaser_text_shows_a_shorter_version_of_text(self):
+        markup = zeit.content.markup.markup.Markup()
+        self.repository['markup'] = markup
+        with checked_out(self.repository['markup']) as co:
+            co.text = ' '.join([letter for letter in string.ascii_lowercase])
+
+        self.assertEqual(
+            'a b c d e f g h i j ...',
+            self.repository['markup'].teaserText)
+
+    def test_teaser_text_shows_nothing_if_text_is_missing(self):
+        markup = zeit.content.markup.markup.Markup()
+        self.repository['markup'] = markup
+        self.assertEqual(None, self.repository['markup'].teaserText)
+
+    def test_teaser_text_only_shortened_if_long_enough(self):
+        markup = zeit.content.markup.markup.Markup()
+        self.repository['markup'] = markup
+        with checked_out(self.repository['markup']) as co:
+            co.text = 'a b'
+
+        self.assertEqual(
+            'a b',
+            self.repository['markup'].teaserText)
