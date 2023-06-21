@@ -1,3 +1,5 @@
+from opentelemetry.instrumentation.utils import http_status_to_status_code
+from opentelemetry.trace.status import Status
 import base64
 import http.client
 import logging
@@ -312,6 +314,7 @@ class DAVBase:
                 self.request(method, url, body, extra_hdrs)
                 resp = self.getresponse()
             span.set_attribute('http.status_code', resp.status)
+            span.set_status(Status(http_status_to_status_code(resp.status)))
 
         if DEBUG_REQUEST:
             sys.stderr.write(
