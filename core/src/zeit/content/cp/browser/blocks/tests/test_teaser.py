@@ -243,3 +243,14 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
             'content'])
         self.assertEqual('Baz', view.teasers[0]['texts'][2][
             'content'])
+
+    def test_content_types_without_teaser_property_have_fallbacks(
+            self):
+        article = zeit.content.article.article.Article()
+        article.title = 'Bar'
+        self.repository['article_with_citation'] = article
+        quote_teaserblock = self.create_teaserblock('zar-quote-yellow')
+        quote_teaserblock.insert(0, article)
+        view = self.view(quote_teaserblock)
+        self.assertEqual('Bar', view.teasers[0]['texts'][1][
+            'content'])
