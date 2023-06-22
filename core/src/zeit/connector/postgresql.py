@@ -5,11 +5,10 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 from io import BytesIO, StringIO
 from logging import getLogger
 from operator import itemgetter
-from sqlalchemy import Boolean, TIMESTAMP, Unicode, UnicodeText
+from sqlalchemy import Boolean, TIMESTAMP, Unicode, UnicodeText, Uuid
 from sqlalchemy import Column, ForeignKey, select
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import backref
 from sqlalchemy.orm import relationship
 from uuid import uuid4
@@ -89,11 +88,9 @@ class Connector:
             config['dsn'], config['storage-project'], config['storage-bucket'],
             **params)
 
-    # Inspired by <https://docs.sqlalchemy.org/en/14/core/pooling.html
+    # Inspired by <https://docs.sqlalchemy.org/en/20/core/pooling.html
     #   #custom-legacy-pessimistic-ping>
-    def _reconnect(self, connection, branch):
-        if branch:
-            return
+    def _reconnect(self, connection):
         attempt = 0
         while True:
             attempt += 1
@@ -319,8 +316,9 @@ class Paths(DBObject):
     parent_path = Column(Unicode, primary_key=True, index=True)
     name = Column(Unicode, primary_key=True)
 
-    id = Column(UUID, ForeignKey('properties.id', ondelete='cascade'),
-                nullable=False, index=True)
+    id = Column(
+        Uuid(as_uuid=False), ForeignKey('properties.id', ondelete='cascade'),
+        nullable=False, index=True)
     properties = relationship(
         'Properties', uselist=False, lazy='joined', backref=backref(
             'path', uselist=False,
@@ -331,7 +329,7 @@ class Properties(DBObject):
 
     __tablename__ = 'properties'
 
-    id = Column(UUID, primary_key=True)
+    id = Column(Uuid(as_uuid=False), primary_key=True)
     type = Column(Unicode, nullable=False, server_default='unknown')
     is_collection = Column(Boolean, nullable=False, server_default='false')
 
