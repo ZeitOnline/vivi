@@ -408,6 +408,15 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
 
+    def test_includes_child_tags_in_body(self):
+        article = zeit.content.article.testing.create_article()
+        p = article.body.create_item('p')
+        p.text = 'before <em>during</em> after'
+        article = self.repository['article'] = article
+        payload = zeit.workflow.testing.publish_json(article, 'speechbert')
+        assert payload['body'] == [
+            {'type': 'p', 'content': 'before during after'}]
+
 
 class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 

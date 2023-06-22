@@ -176,19 +176,12 @@ class Speechbert(grok.Adapter):
         for elem in elements:
             if elem.tag not in ('intertitle', 'li', 'p'):
                 continue
-            if elem.text is not None:
-                body.append(dict(
-                    content=elem.text,
-                    type=elem.tag))
-            else:
-                text = elem.findtext('**')
-                if text is None:
-                    text = elem.findtext('*')
-                if text is None:
-                    continue
-                body.append(dict(
-                    content=text,
-                    type=elem.tag))
+            text = elem.xpath('.//text()')
+            if not text:
+                continue
+            body.append({
+                'content': ' '.join([x.strip() for x in text]),
+                'type': elem.tag})
         return body
 
     def get_image(self):
