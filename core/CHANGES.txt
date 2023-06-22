@@ -3,6 +3,17 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.0 (2023-06-22)
+-------------------
+
+- ZO-2808: display teaser preview for markup in centerpage
+  ZO-2808: display markup preview in folder list view
+
+- ZO-3415: Collect text of nested tags for speechbert payload
+
+- ZO-3443: Update to sqlalchemy-2 API
+
+
 5.26.13 (2023-06-20)
 --------------------
 
