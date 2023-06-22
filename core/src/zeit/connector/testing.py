@@ -189,9 +189,9 @@ class PostgresLayer(plone.testing.Layer):
             db = os.environ['PGDATABASE']
             os.environ['PGDATABASE'] = 'template1'
             c = engine.connect()
-            c.connection.connection.set_isolation_level(0)
+            c.connection.driver_connection.set_isolation_level(0)
             c.execute(sql('CREATE DATABASE %s' % db))
-            c.connection.connection.set_isolation_level(1)
+            c.connection.driver_connection.set_isolation_level(1)
             c.close()
             os.environ['PGDATABASE'] = db
             self['sql_connection'] = engine.connect()

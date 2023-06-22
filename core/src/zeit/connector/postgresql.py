@@ -89,11 +89,9 @@ class Connector:
             config['dsn'], config['storage-project'], config['storage-bucket'],
             **params)
 
-    # Inspired by <https://docs.sqlalchemy.org/en/14/core/pooling.html
+    # Inspired by <https://docs.sqlalchemy.org/en/20/core/pooling.html
     #   #custom-legacy-pessimistic-ping>
-    def _reconnect(self, connection, branch):
-        if branch:
-            return
+    def _reconnect(self, connection):
         attempt = 0
         while True:
             attempt += 1
