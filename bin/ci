@@ -25,8 +25,7 @@ case $COMMAND in
     test-app)
         prepare_credentials staging  # for docker pull dav-server
         bin/ci setup-batou
-        env PGPORT=$($DEPLOYMENT/bin/get_open_port) pg_virtualenv -v ${PGVENV:-13} \
-            $WORKSPACE/bin/ci test-app-run
+        bin/ci test-app-run
     ;;
     setup-batou)
         if [ ! -d $DEPLOYMENT ]; then

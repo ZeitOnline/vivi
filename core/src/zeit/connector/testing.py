@@ -32,8 +32,8 @@ class DAVServerLayer(plone.testing.Layer):
         'dav-server:1.1.1')
 
     def setUp(self):
-        dav = self.get_random_port()
-        query = self.get_random_port()
+        dav = get_random_port()
+        query = get_random_port()
         self['docker'] = docker.from_env()
         try:
             self['dav_container'] = self['docker'].containers.run(
@@ -61,13 +61,6 @@ class DAVServerLayer(plone.testing.Layer):
         del self['dav_url']
         del self['query_url']
         del self['connector']
-
-    # Taken from pytest-nginx
-    def get_random_port(self):
-        s = socket.socket()
-        with contextlib.closing(s):
-            s.bind(('localhost', 0))
-            return s.getsockname()[1]
 
     def wait_for_http(self, url, timeout=5, sleep=0.2):
         http = requests.Session()
@@ -102,6 +95,14 @@ class DAVServerLayer(plone.testing.Layer):
 
 
 DAV_SERVER_LAYER = DAVServerLayer()
+
+
+# Taken from pytest-nginx
+def get_random_port():
+    s = socket.socket()
+    with contextlib.closing(s):
+        s.bind(('localhost', 0))
+        return s.getsockname()[1]
 
 
 class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
@@ -141,6 +142,51 @@ MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
+class SQLLayer(plone.testing.Layer):
+
+    container_image = 'postgres:14'
+
+    def setUp(self):
+        self['docker'] = docker.from_env()
+        port = get_random_port()
+        try:
+            self['psql_container'] = self['docker'].containers.run(
+                self.container_image, detach=True, remove=True,
+                environment={'POSTGRES_PASSWORD': 'postgres'},
+                ports={5432: port})
+        except requests.exceptions.ConnectionError:
+            raise DockerSetupError(
+                "Couldn't start docker container, is docker running?")
+
+        self['dsn'] = f'postgresql://postgres:postgres@localhost:{port}'
+        self.wait_for_startup(self['dsn'])
+
+    def wait_for_startup(self, dsn, timeout=5, sleep=0.2):
+        engine = sqlalchemy.create_engine(dsn)
+        slept = 0
+        while slept < timeout:
+            slept += sleep
+            time.sleep(sleep)
+            try:
+                engine.connect()
+            except Exception:
+                pass
+            else:
+                engine.dispose()
+                return
+        raise RuntimeError('%s did not start up' % dsn)
+
+    def tearDown(self):
+        del self['dsn']
+        self['psql_container'].stop()
+        del self['psql_container']
+        self['docker'].close()
+        del self['docker']
+
+
+SQL_LAYER = SQLLayer()
+
+
 class GCSLayer(plone.testing.Layer):
 
     bucket = 'vivi-test'
@@ -163,11 +209,11 @@ GCS_LAYER = GCSLayer()
 
 class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
-    defaultBases = (GCS_LAYER,)
+    defaultBases = (SQL_LAYER, GCS_LAYER,)
 
     def setUp(self):
         self.config = {
-            'dsn': 'postgresql://',
+            'dsn': self['dsn'],
             'storage-project': 'ignored_by_emulator',
             'storage-bucket': GCS_LAYER.bucket}
         os.environ.setdefault('PGDATABASE', 'vivi_test')
@@ -177,7 +223,7 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
 SQL_CONFIG_LAYER = SQLConfigLayer({})
 
 
-class PostgresLayer(plone.testing.Layer):
+class SQLDatabaseLayer(plone.testing.Layer):
 
     def setUp(self):
         connector = zope.component.getUtility(
@@ -255,14 +301,14 @@ class PostgresLayer(plone.testing.Layer):
         del self['sql_nested']
 
 
-POSTGRES_LAYER = PostgresLayer()
+SQL_DB_LAYER = SQLDatabaseLayer()
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.sql'],
     bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER))
 SQL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(
-    bases=(SQL_ZCML_LAYER, POSTGRES_LAYER))
+    bases=(SQL_ZCML_LAYER, SQL_DB_LAYER))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
