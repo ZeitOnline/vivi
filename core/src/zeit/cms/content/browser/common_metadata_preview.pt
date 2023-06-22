@@ -2,13 +2,21 @@
   <metal:data fill-slot="preview">
     <div class="super-title"
       title="Spitzmarke"
+      tal:condition="context/teaserTitle"
       tal:content="context/supertitle">
-      Super title
+      Super Title
     </div>
     <div class="teaser-title"
       title="Teaser"
+      tal:condition="context/teaserTitle"
       tal:content="context/teaserTitle">
-      Teaser Title 
+      Teaser Title
+    </div>
+    <div class="teaser-title"
+      title="Title"
+      tal:condition="not:context/teaserTitle"
+      tal:content="context/title">
+      Title
     </div>
     <div class="teaser-text"
       title="Teaser"

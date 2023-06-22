@@ -156,22 +156,24 @@ class ITeaserRepresentation(zope.interface.Interface):
 @grok.implementer(ITeaserRepresentation)
 def default_teaser_representation(content, request):
 
-    def make_text_entry(metadata, css_class, name=None):
+    def make_text_entry(metadata, css_class, name=None, fallback=None):
         if name is None:
             name = css_class
-        return dict(css_class=css_class, content=getattr(metadata, name))
+        value = getattr(metadata, name)
+        if not value and fallback:
+            value = getattr(metadata, fallback)
+        return dict(css_class=css_class, content=value)
 
     texts = []
     metadata = zeit.cms.content.interfaces.ICommonMetadata(
         content, None)
     if metadata is not None:
-        supertitle_property = (
-            'teaserSupertitle' if metadata.teaserSupertitle
-            else 'supertitle')
         texts.append(make_text_entry(
-            metadata, 'supertitle', supertitle_property))
-        for name in ('teaserTitle', 'teaserText'):
-            texts.append(make_text_entry(metadata, name))
+            metadata, 'supertitle', 'teaserSupertitle', 'supertitle'))
+        texts.append(make_text_entry(
+            metadata, 'teaserTitle', fallback='title'))
+        texts.append(make_text_entry(
+            metadata, 'teaserText'))
     else:
         # General-purpose fallback, mostly to support IAuthor teasers.
         list_repr = zope.component.queryMultiAdapter(
