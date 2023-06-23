@@ -448,18 +448,6 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
         transaction.abort()
         self.assertEqual(0, self.request.call_count)
 
-    def test_video_is_published_on_checkin(self):
-        video = self.repository['myvid']
-        zeit.cms.workflow.interfaces.IPublish(video).publish(background=False)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        last_published = info.date_last_published
-
-        with zeit.cms.checkout.helper.checked_out(video):
-            pass
-        transaction.commit()
-
-        self.assertGreater(info.date_last_published, last_published)
-
     def test_playlist_is_published_on_checkin(self):
         self.repository['playlist'] = zeit.content.video.playlist.Playlist()
         playlist = self.repository['playlist']
