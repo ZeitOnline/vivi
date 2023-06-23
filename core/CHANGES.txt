@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.1 (2023-06-23)
+-------------------
+
+- ZO-3452: No longer publish Video objects on checkin
+
+
 5.27.0 (2023-06-22)
 -------------------
 
