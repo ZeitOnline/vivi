@@ -240,7 +240,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_sb = result['speechbert']
             self.assertEqual(
-                ['body', 'hasAudio', 'headline', 'publishDate',
+                ['body', 'checksum', 'hasAudio', 'headline', 'publishDate',
                  'section', 'series', 'subtitle', 'supertitle', 'tags',
                  'teaser', 'url', 'uuid'],
                 sorted(result_sb.keys()))
