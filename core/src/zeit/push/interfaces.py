@@ -151,6 +151,19 @@ class IBanner(zope.interface.Interface):
         'UniqueId of the current article in the homepage banner')
 
 
+class ITwitterCredentials(zope.interface.Interface):
+    """Stores (ephemeral) Twitter access tokens and refresh tokens."""
+
+    def access_token(account_name):
+        pass
+
+    def refresh_token(account_name):
+        pass
+
+    def update(account_name, access_token, refresh_token):
+        pass
+
+
 class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.push'
@@ -184,16 +197,6 @@ class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
             super().isAvailable(node, context) and
             node.get('name') not in [
                 self.main_account(), self.print_account()])
-
-    def access_token(self, value):
-        tree = self._get_tree()
-        nodes = tree.xpath('%s[@%s= %s]' % (
-                           self.title_xpath,
-                           self.attribute,
-                           xml.sax.saxutils.quoteattr(value)))
-        if not nodes:
-            return None
-        return nodes[0].get('token')
 
 
 twitterAccountSource = TwitterAccountSource()

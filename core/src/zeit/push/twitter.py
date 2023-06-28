@@ -1,4 +1,4 @@
-from zeit.push.interfaces import twitterAccountSource
+from zeit.push.interfaces import ITwitterCredentials
 import argparse
 import grokcore.component as grok
 import logging
@@ -20,12 +20,10 @@ class Connection:
 
     def send(self, text, link, **kw):
         account = kw['account']
-        access_token = twitterAccountSource.factory.access_token(account)
-        api = tweepy.Client(access_token)
-
+        api = TwitterClient(self.client_id, self.client_secret, account)
         log.debug('Sending %s, %s to %s', text, link, account)
         try:
-            api.create_tweet(text=f'{text} {link}', user_auth=False)
+            api.create_tweet(text=f'{text} {link}')
         except tweepy.HTTPException as e:
             status = e.response.status_code
             if status < 500:
@@ -42,6 +40,62 @@ def from_product_config():
         'zeit.push')
     return Connection(
         config['twitter-application-id'], config['twitter-application-secret'])
+
+
+class TwitterClient(tweepy.Client):
+
+    # https://developer.twitter.com/en/docs/authentication
+    #   /guides/v2-authentication-mapping
+    scopes = ['tweet.write', 'tweet.read', 'users.read', 'offline.access']
+
+    def __init__(self, client_id, client_secret, account_name):
+        super().__init__()
+        self.oauth = OAuth2UserHandler(
+            client_id=client_id, client_secret=client_secret,
+            redirect_uri='https://vivi.zeit.de/@@ping', scope=self.scopes)
+        self.account_name = account_name
+
+    def request(self, method, route, params=None, json=None, user_auth=False):
+        user_auth = False  # Always use OAuth2, never OAuth1
+        try:
+            return super().request(method, route, params, json, user_auth)
+        except tweepy.Unauthorized:
+            self.refresh_token()
+            return super().request(method, route, params, json, user_auth)
+
+    def _get_authenticating_user_id(self, *, oauth_1=False):
+        return super()._get_authenticating_user_id(oauth_1=False)
+
+    @property
+    def bearer_token(self):
+        return zope.component.getUtility(ITwitterCredentials).access_token(
+            self.account_name)
+
+    @bearer_token.setter
+    def bearer_token(self, value):
+        pass  # superclass wants to write here, but we don't.
+
+    def refresh_token(self):
+        creds = zope.component.getUtility(ITwitterCredentials)
+        # Note: This creates *both* a new access token and refresh token,
+        # and thus invalidates the passed-in refresh token,
+        # see https://twittercommunity.com/t/168899/42
+        log.info('Refreshing tokens for %s', self.account_name)
+        new = self.oauth.refresh_token(creds.refresh_token(self.account_name))
+        creds.update(
+            self.account_name, new['access_token'], new['refresh_token'])
+
+
+class OAuth2UserHandler(tweepy.OAuth2UserHandler):
+    """Adapted from https://github.com/tweepy/tweepy/discussions/1912
+    to work for a "confidential client" application."""
+
+    def refresh_token(self, refresh_token):
+        return super().refresh_token(
+            'https://api.twitter.com/2/oauth2/token',
+            auth=self.auth,
+            refresh_token=refresh_token,
+            body='grant_type=refresh_token')
 
 
 class Message(zeit.push.message.Message):
@@ -82,13 +136,7 @@ def create_access_token(argv=None):
         parser.print_help()
         raise SystemExit(1)
 
-    oauth = tweepy.OAuth2UserHandler(
-        client_id=options.client_id,
-        redirect_uri='https://vivi.zeit.de/@@ping',
-        # https://developer.twitter.com/en/docs/authentication
-        #   /guides/v2-authentication-mapping
-        scope=['tweet.write', 'tweet.read', 'users.read', 'offline.access'],
-        client_secret=options.client_secret)
+    oauth = TwitterClient(options.client_id, options.client_secret, None).oauth
     login_url = oauth.get_authorization_url()
     print('Bitte bei Twitter anmelden und dann diese URL öffnen:\n%s' % (
         login_url))

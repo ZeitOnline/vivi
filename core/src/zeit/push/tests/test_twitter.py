@@ -1,9 +1,7 @@
 # coding: utf-8
-from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import os
 import time
-import tweepy
 import unittest
 import zeit.push.interfaces
 import zeit.push.testing
@@ -18,32 +16,29 @@ class TwitterTest(zeit.push.testing.TestCase):
     level = 2
 
     def setUp(self):
-        self.api_key = os.environ['ZEIT_PUSH_TWITTER_API_KEY']
-        self.api_secret = os.environ['ZEIT_PUSH_TWITTER_API_SECRET']
-        self.access_token = os.environ['ZEIT_PUSH_TWITTER_ACCESS_TOKEN']
-        self.api = tweepy.Client(self.access_token)
+        super().setUp()
+        self.client_id = os.environ['ZEIT_PUSH_TWITTER_API_KEY']
+        self.client_secret = os.environ['ZEIT_PUSH_TWITTER_API_SECRET']
+        self.api = zeit.push.twitter.TwitterClient(
+            self.client_id, self.client_secret, 'twitter-test')
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
 
-        self.patch = mock.patch(
-            'zeit.push.interfaces.TwitterAccountSource.access_token')
-        self.patch.start().return_value = self.access_token
-
     def tearDown(self):
-        self.patch.stop()
-
-        for status in self.api.get_home_timeline(user_auth=False).data:
+        for status in self.api.get_home_timeline().data:
             if self.nugget in status.text:
-                self.api.delete_tweet(status.id, user_auth=False)
+                self.api.delete_tweet(status.id)
+        super().tearDown()
 
     def test_send_posts_twitter_status(self):
-        twitter = zeit.push.twitter.Connection(self.api_key, self.api_secret)
+        twitter = zeit.push.twitter.Connection(
+            self.client_id, self.client_secret)
         twitter.send(
             'zeit.push.tests.ümläut.twitter %s' % self.nugget,
             'http://example.com',
             account='twitter-test')
 
-        for status in self.api.get_home_timeline(user_auth=False).data:
+        for status in self.api.get_home_timeline().data:
             if self.nugget in status.text:
                 self.assertStartsWith(
                     'zeit.push.tests.ümläut.twitter %s' % self.nugget,
@@ -54,7 +49,7 @@ class TwitterTest(zeit.push.testing.TestCase):
 
     def test_errors_should_raise_appropriate_exception(self):
         twitter = zeit.push.twitter.Connection(
-            self.api_key, self.api_secret)
+            self.client_id, self.client_secret)
         with self.assertRaises(zeit.push.interfaces.WebServiceError) as e:
             twitter.send('a' * 350, '', account='twitter-test')
         self.assertIn('Tweet needs to be a bit shorter', str(e.exception))

@@ -1,6 +1,6 @@
 <twitter-accounts>
-  <account name="twitter-test" token="None">ZON Testaccount</account>
-  <account name="twitter-print" token="None">DIEZEIT</account>
-  <account name="twitter_ressort_wissen" token="None">Wissen</account>
-  <account name="twitter_ressort_politik" token="None">Politik</account>
+  <account name="twitter-test">ZON Testaccount</account>
+  <account name="twitter-print">DIEZEIT</account>
+  <account name="twitter_ressort_wissen">Wissen</account>
+  <account name="twitter_ressort_politik">Politik</account>
 </twitter-accounts>
