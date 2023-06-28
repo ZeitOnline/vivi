@@ -200,10 +200,13 @@ class Speechbert(grok.Adapter):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms') or {}
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(
+            self.context)
         payload = dict(
             authors=[x.target.display_name for x in self.context.authorships
                      if not x.role],
             body=self.get_body(),
+            checksum=checksum.checksum,
             channels=' '.join([x for x in chain(*self.context.channels) if x]),
             genre=self.context.genre,
             hasAudio='true' if self.context.audio_speechbert else 'false',
