@@ -5,6 +5,7 @@ import logging
 import tweepy
 import zeit.push.interfaces
 import zeit.push.message
+import zope.container.btree
 import zope.interface
 
 
@@ -96,6 +97,19 @@ class OAuth2UserHandler(tweepy.OAuth2UserHandler):
             auth=self.auth,
             refresh_token=refresh_token,
             body='grant_type=refresh_token')
+
+
+@zope.interface.implementer(zeit.push.interfaces.ITwitterCredentials)
+class TwitterCredentials(zope.container.btree.BTreeContainer):
+
+    def access_token(self, account_name):
+        return self.get(account_name, {}).get('access')
+
+    def refresh_token(self, account_name):
+        return self.get(account_name, {}).get('refresh')
+
+    def update(self, account_name, access_token, refresh_token):
+        self[account_name] = {'access': access_token, 'refresh': refresh_token}
 
 
 class Message(zeit.push.message.Message):

@@ -186,6 +186,7 @@ setup(
             'gocept.selenium<7.1',
             'selenium<4',  # ZO-681
             'gocept.testing>=1.4.0.dev0',
+            'hvac',
             'mock-ssh-server',
             'opentelemetry-exporter-otlp',
             'opentelemetry-sdk',

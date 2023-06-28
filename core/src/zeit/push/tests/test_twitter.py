@@ -1,6 +1,8 @@
 # coding: utf-8
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import gocept.testing.assertion
 import os
+import plone.testing.zca
 import time
 import unittest
 import zeit.push.interfaces
@@ -9,14 +11,15 @@ import zeit.push.twitter
 import zope.component
 
 
-@unittest.skip(
-    'The free Twitter API level only allows writing tweets, not reading them')
-class TwitterTest(zeit.push.testing.TestCase):
+class TwitterTest(unittest.TestCase, gocept.testing.assertion.String):
 
     level = 2
 
     def setUp(self):
-        super().setUp()
+        plone.testing.zca.pushGlobalRegistry()
+        zope.component.getSiteManager().registerUtility(
+            zeit.push.testing.TwitterCredentials())
+
         self.client_id = os.environ['ZEIT_PUSH_TWITTER_API_KEY']
         self.client_secret = os.environ['ZEIT_PUSH_TWITTER_API_SECRET']
         self.api = zeit.push.twitter.TwitterClient(
@@ -28,7 +31,7 @@ class TwitterTest(zeit.push.testing.TestCase):
         for status in self.api.get_home_timeline().data:
             if self.nugget in status.text:
                 self.api.delete_tweet(status.id)
-        super().tearDown()
+        plone.testing.zca.popGlobalRegistry()
 
     def test_send_posts_twitter_status(self):
         twitter = zeit.push.twitter.Connection(
