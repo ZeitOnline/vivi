@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.2 (2023-06-30)
+-------------------
+
+- ZO-2683: Add checksum to Speechbert payload
+
+
 5.27.1 (2023-06-23)
 -------------------
 
