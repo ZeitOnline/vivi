@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.3 (2023-06-30)
+-------------------
+
+- ZO-2483: ignore 3rd party services list as parameter for publisher
+
+
 5.27.2 (2023-06-30)
 -------------------
 
