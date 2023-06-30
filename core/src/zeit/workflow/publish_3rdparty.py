@@ -275,3 +275,24 @@ class TMS(grok.Adapter):
         if self.ignore():
             return
         return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class PublisherData(grok.Adapter):
+    grok.context(zeit.cms.interfaces.ICMSContent)
+
+    ignore = ()  # extension point e.g. for bulk publish scripts
+
+    def __call__(self, action):
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        result = {'uuid': uuid.shortened, 'uniqueId': self.context.uniqueId}
+        for name, adapter in zope.component.getAdapters(
+                (self.context,), zeit.workflow.interfaces.IPublisherData):
+            if not name:  # ourselves
+                continue
+            if name in self.ignore:
+                continue
+            data = getattr(adapter, f'{action}_json')()
+            if data is not None:
+                result[name] = data
+        return result

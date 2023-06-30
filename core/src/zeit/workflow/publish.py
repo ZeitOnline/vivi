@@ -402,7 +402,8 @@ class PublishRetractTask:
             headers['host'] = hostname
 
         url = f'{publisher_base_url}{method}'
-        json = [cls._format_json(obj, method) for obj in to_process_list]
+        json = [zeit.workflow.interfaces.IPublisherData(obj)(method)
+                for obj in to_process_list]
         response = requests.post(
             url=url, json=json, headers=headers)
         timer.mark('Called Publisher HTTP API: %s' % method)

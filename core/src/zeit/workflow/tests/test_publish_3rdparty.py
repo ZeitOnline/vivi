@@ -39,6 +39,38 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def caplog(self, caplog):
         self.caplog = caplog
 
+    def test_ignore_3rdparty_list_is_respected(self):
+        FEATURE_TOGGLES.set('new_publisher')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+        self.assertFalse(IPublishInfo(article).published)
+        article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
+        IPublishInfo(article_2).urgent = True
+        IPublishInfo(article_2).published = True
+        self.assertTrue(IPublishInfo(article_2).published)
+        with requests_mock.Mocker() as rmock:
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = [
+                'speechbert', 'facebooknewstab']
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article).publish(background=True)
+            (result,) = response.last_request.json()
+            assert 'facebooknewstab' not in result
+            assert 'speechbert' not in result
+            assert 'authordashboard' in result
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = [
+                'speechbert']
+            response = rmock.post(
+                'http://localhost:8060/test/publish', status_code=200)
+            IPublish(article_2).publish(background=False)
+            (result,) = response.last_request.json()
+            assert 'speechbert' not in result
+            assert 'facebooknewstab' in result
+            assert 'authordashboard' in result
+        zeit.workflow.publish_3rdparty.PublisherData.ignore = []  # reset
+        self.assertTrue(IPublishInfo(article).published)
+        self.assertTrue(IPublishInfo(article_2).published)
+
     def test_authordashboard_is_notified(self):
         FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
