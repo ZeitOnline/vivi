@@ -41,6 +41,7 @@ class TwitterTest(unittest.TestCase, gocept.testing.assertion.String):
             'http://example.com',
             account='twitter-test')
 
+        time.sleep(30)  # Don't poll, so we avoid rather tight API rate limits
         for status in self.api.get_home_timeline().data:
             if self.nugget in status.text:
                 self.assertStartsWith(
