@@ -24,11 +24,11 @@ class MockPublish:
         if can_publish == CAN_PUBLISH_ERROR:
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Cannot publish.")
+        _published[self.context.uniqueId] = True
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context,
                                                             self.context))
         print("Publishing: %s" % self.context.uniqueId)
-        _published[self.context.uniqueId] = True
         zope.event.notify(
             zeit.cms.workflow.interfaces.PublishedEvent(self.context,
                                                         self.context))
