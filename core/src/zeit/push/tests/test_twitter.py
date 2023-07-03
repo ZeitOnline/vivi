@@ -1,9 +1,9 @@
 # coding: utf-8
-from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import gocept.testing.assertion
 import os
+import plone.testing.zca
 import time
-import tweepy
 import unittest
 import zeit.push.interfaces
 import zeit.push.testing
@@ -11,41 +11,39 @@ import zeit.push.twitter
 import zope.component
 
 
-@unittest.skip(
-    'The free Twitter API level only allows writing tweets, not reading them')
-class TwitterTest(zeit.push.testing.TestCase):
+@unittest.skip('Twitter API v2 is currently very flaky')
+class TwitterTest(unittest.TestCase, gocept.testing.assertion.String):
 
     level = 2
 
     def setUp(self):
-        self.api_key = os.environ['ZEIT_PUSH_TWITTER_API_KEY']
-        self.api_secret = os.environ['ZEIT_PUSH_TWITTER_API_SECRET']
-        self.access_token = os.environ['ZEIT_PUSH_TWITTER_ACCESS_TOKEN']
-        self.access_secret = os.environ['ZEIT_PUSH_TWITTER_ACCESS_SECRET']
+        plone.testing.zca.pushGlobalRegistry()
+        zope.component.getSiteManager().registerUtility(
+            zeit.push.testing.TwitterCredentials())
 
-        auth = tweepy.OAuth1UserHandler(self.api_key, self.api_secret)
-        auth.set_access_token(self.access_token, self.access_secret)
-        self.api = tweepy.API(auth)
+        self.client_id = os.environ['ZEIT_PUSH_TWITTER_API_KEY']
+        self.client_secret = os.environ['ZEIT_PUSH_TWITTER_API_SECRET']
+        self.api = zeit.push.twitter.TwitterClient(
+            self.client_id, self.client_secret, 'twitter-test')
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
 
     def tearDown(self):
-        for status in self.api.home_timeline():
+        for status in self.api.get_home_timeline().data:
             if self.nugget in status.text:
-                status.destroy()
+                self.api.delete_tweet(status.id)
+        plone.testing.zca.popGlobalRegistry()
 
     def test_send_posts_twitter_status(self):
         twitter = zeit.push.twitter.Connection(
-            self.api_key, self.api_secret)
-        with mock.patch(
-             'zeit.push.interfaces.TwitterAccountSource.access_token') as tok:
-            tok.return_value = (self.access_token, self.access_secret)
-            twitter.send(
-                'zeit.push.tests.ümläut.twitter %s' % self.nugget,
-                'http://example.com',
-                account='twitter-test')
+            self.client_id, self.client_secret)
+        twitter.send(
+            'zeit.push.tests.ümläut.twitter %s' % self.nugget,
+            'http://example.com',
+            account='twitter-test')
 
-        for status in self.api.home_timeline():
+        time.sleep(30)  # Don't poll, so we avoid rather tight API rate limits
+        for status in self.api.get_home_timeline().data:
             if self.nugget in status.text:
                 self.assertStartsWith(
                     'zeit.push.tests.ümläut.twitter %s' % self.nugget,
@@ -56,7 +54,7 @@ class TwitterTest(zeit.push.testing.TestCase):
 
     def test_errors_should_raise_appropriate_exception(self):
         twitter = zeit.push.twitter.Connection(
-            self.api_key, self.api_secret)
+            self.client_id, self.client_secret)
         with self.assertRaises(zeit.push.interfaces.WebServiceError) as e:
             twitter.send('a' * 350, '', account='twitter-test')
         self.assertIn('Tweet needs to be a bit shorter', str(e.exception))

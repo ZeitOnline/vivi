@@ -95,11 +95,11 @@ class Add(zeit.cms.browser.form.AddForm,
             message_config.append(
                 {'type': 'facebook', 'enabled': True,
                  'override_text': data['title'],
-                 'account': zeit.push.facebook.facebookAccountSource(
+                 'account': zeit.push.interfaces.facebookAccountSource(
                      self.context).MAIN_ACCOUNT})
             message_config.append(
                 {'type': 'twitter', 'enabled': True,
-                 'account': zeit.push.twitter.twitterAccountSource(
+                 'account': zeit.push.interfaces.twitterAccountSource(
                      self.context).MAIN_ACCOUNT})
 
         article = super().create(data)
