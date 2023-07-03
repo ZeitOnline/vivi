@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.4 (2023-07-03)
+-------------------
+
+- ZO-3172: Update Twitter API to v2
+
+
 5.27.3 (2023-06-30)
 -------------------
 
