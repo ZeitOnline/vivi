@@ -31,6 +31,8 @@ class Connection:
                 raise zeit.push.interfaces.WebServiceError(str(e))
             else:
                 raise zeit.push.interfaces.TechnicalError(str(e))
+        finally:
+            api.session.close()
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
