@@ -1,4 +1,4 @@
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import zeit.cms.interfaces
@@ -21,7 +21,7 @@ class MockPublish:
             self.context = object
         can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context).can_publish()
-        if can_publish != CAN_PUBLISH_SUCCESS:
+        if can_publish == CAN_PUBLISH_ERROR:
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Cannot publish.")
         zope.event.notify(
