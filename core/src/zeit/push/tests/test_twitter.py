@@ -11,6 +11,7 @@ import zeit.push.twitter
 import zope.component
 
 
+@unittest.skip('Twitter API v2 is currently very flaky')
 class TwitterTest(unittest.TestCase, gocept.testing.assertion.String):
 
     level = 2
