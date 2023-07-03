@@ -17,7 +17,7 @@ class MockPublish:
 
     def publish(self, priority=PRIORITY_DEFAULT, background=True,
                 object=None, **kw):
-        if object:
+        if object is not None:
             self.context = object
         can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context).can_publish()
@@ -35,7 +35,7 @@ class MockPublish:
 
     def retract(self, priority=PRIORITY_DEFAULT, background=True,
                 object=None, **kw):
-        if object:
+        if object is not None:
             self.context = object
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
