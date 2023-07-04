@@ -119,7 +119,7 @@ class MockPublishInfo:
     def can_publish(self):
         return _can_publish.get(
             self.context.uniqueId,
-            zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR)
+            zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS)
 
     # Test support
 
