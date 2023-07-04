@@ -164,6 +164,14 @@ class IPublish(zope.interface.Interface):
         """
 
 
+class IPublisher(zope.interface.Interface):
+    """Interface for calling the publisher."""
+
+    def request(self, to_process_list, method):
+        """Call the publisher with a list of objects and tell it
+        what to do with `method` which is either publish or retract.
+        """
+
 class IPublicationDependencies(zope.interface.Interface):
     """Adapter to find the publication dependencies of an object."""
 

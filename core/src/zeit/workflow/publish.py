@@ -1,5 +1,4 @@
 from datetime import datetime
-from json import dumps
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
@@ -10,7 +9,6 @@ import logging
 import os.path
 import pkg_resources
 import pytz
-import requests
 import subprocess
 import tempfile
 import threading
@@ -385,42 +383,15 @@ class PublishRetractTask:
                 json[name] = data
         return json
 
-    @classmethod
-    def call_publisher_method(cls, to_process_list, method):
-        if not to_process_list:
-            return
+    def call_publish(self, to_publish_list):
+        publisher = zope.component.getUtility(
+            zeit.cms.workflow.interfaces.IPublisher)
+        publisher.request(to_publish_list, 'publish')
 
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        publisher_base_url = config['publisher-base-url']
-        if not publisher_base_url.endswith('/'):
-            publisher_base_url += '/'
-
-        headers = {}
-        hostname = config.get('publisher-host')
-        if hostname:
-            headers['host'] = hostname
-
-        url = f'{publisher_base_url}{method}'
-        json = [zeit.workflow.interfaces.IPublisherData(obj)(method)
-                for obj in to_process_list]
-        response = requests.post(
-            url=url, json=json, headers=headers)
-        timer.mark('Called Publisher HTTP API: %s' % method)
-        if response.status_code != 200:
-            publisher_parts = dumps(response.json()['errors'])
-            raise PublishError(
-                f'Calling publisher on {url} failed '
-                f'with {response.status_code}: {response.reason}. '
-                f'Details: {publisher_parts}')
-
-    @classmethod
-    def call_publish(cls, to_publish_list):
-        cls.call_publisher_method(to_publish_list, 'publish')
-
-    @classmethod
-    def call_retract(cls, to_retract_list):
-        cls.call_publisher_method(to_retract_list, 'retract')
+    def call_retract(self, to_retract_list):
+        publisher = zope.component.getUtility(
+            zeit.cms.workflow.interfaces.IPublisher)
+        publisher.request(to_retract_list, 'retract')
 
 
 class PublishError(Exception):
