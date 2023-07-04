@@ -145,8 +145,8 @@ True
 But not if they are already published (there are no changes that could be
 relevant for the article):
 
->>> import zeit.workflow.interfaces
->>> zeit.workflow.interfaces.IPublicationDependencies(
+>>> import zeit.cms.workflow.interfaces
+>>> zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     repository['testcontent']).get_dependencies()
 []
 

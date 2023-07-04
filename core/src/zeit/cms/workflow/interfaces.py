@@ -164,6 +164,22 @@ class IPublish(zope.interface.Interface):
         """
 
 
+class IPublicationDependencies(zope.interface.Interface):
+    """Adapter to find the publication dependencies of an object."""
+
+    def get_dependencies():
+        """Return a sequence of all dependent objects.
+
+    The sequence contains all objects which need to be published along with the
+    adapted object. Dependent containers will be published recursively.
+    """
+
+    retract_dependencies = zope.interface.Attribute("""\
+        If True, retract dependent objects along with the adapted object.
+        Usually we cannot know whether an object is used by someone else and
+        thus can't retract it, but in some cases this decision can be made.""")
+
+
 class IWithMasterObjectEvent(zope.interface.interfaces.IObjectEvent):
     """Object with master image."""
 

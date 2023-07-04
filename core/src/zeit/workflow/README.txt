@@ -490,7 +490,7 @@ Simple dependencies
 Let's assume the Somalia article has a dependency on the politik.feed. This
 is done via a named adapter to IPublicationDependencies:
 
->>> class SomaliaFeed(zeit.workflow.dependency.DependencyBase):
+>>> class SomaliaFeed(zeit.cms.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         if self.context.uniqueId.endswith('Somalia'):
 ...             return (repository['politik.feed'],)
@@ -500,13 +500,13 @@ is done via a named adapter to IPublicationDependencies:
 >>> gsm.registerAdapter(
 ...     SomaliaFeed,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='somalia')
 
 Get the dependencies for the somalia article. There is an adapter which gathers
 all the named adapters:
 
->>> deps = zeit.workflow.interfaces.IPublicationDependencies(
+>>> deps = zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 >>> deps
 [<zeit.cms.syndication.feed.Feed...>]
@@ -624,7 +624,7 @@ published when either is published.
 
 Add the reverse dependency:
 
->>> class FeedSomalia(zeit.workflow.dependency.DependencyBase):
+>>> class FeedSomalia(zeit.cms.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         if self.context == feed:
 ...             return (somalia,)
@@ -634,7 +634,7 @@ Add the reverse dependency:
 >>> gsm.registerAdapter(
 ...     FeedSomalia,
 ...     (zeit.cms.syndication.interfaces.IFeed,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 
 
@@ -675,7 +675,7 @@ will be published nevertheles.
 
 Let somalia also depend on the /2007 folder:
 
->>> class SomaliaFolder(zeit.workflow.dependency.DependencyBase):
+>>> class SomaliaFolder(zeit.cms.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         if self.context.uniqueId.endswith('Somalia'):
 ...             return (repository['2007'],)
@@ -685,10 +685,10 @@ Let somalia also depend on the /2007 folder:
 >>> gsm.registerAdapter(
 ...     SomaliaFolder,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='folder')
 
->>> zeit.workflow.interfaces.IPublicationDependencies(
+>>> zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 [<zeit.cms.repository.folder.Folder...>,
  <zeit.cms.syndication.feed.Feed...>]
@@ -741,19 +741,19 @@ Remove the test adapters:
 >>> gsm.unregisterAdapter(
 ...     FeedSomalia,
 ...     (zeit.cms.syndication.interfaces.IFeed,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 True
 >>> gsm.unregisterAdapter(
 ...     SomaliaFeed,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='somalia')
 True
 >>> gsm.unregisterAdapter(
 ...     SomaliaFolder,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='folder')
 True
 

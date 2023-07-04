@@ -17,6 +17,7 @@ import time
 import transaction
 import zeit.cms.related.interfaces
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
 import zeit.content.article.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
@@ -56,7 +57,7 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.workflow.interfaces.IPublicationDependencies)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublicationDependencies)
 class RelatedDependency:
 
     def __init__(self, context):
