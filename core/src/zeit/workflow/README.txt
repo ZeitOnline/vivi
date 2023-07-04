@@ -500,13 +500,13 @@ is done via a named adapter to IPublicationDependencies:
 >>> gsm.registerAdapter(
 ...     SomaliaFeed,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='somalia')
 
 Get the dependencies for the somalia article. There is an adapter which gathers
 all the named adapters:
 
->>> deps = zeit.workflow.interfaces.IPublicationDependencies(
+>>> deps = zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 >>> deps
 [<zeit.cms.syndication.feed.Feed...>]
@@ -634,7 +634,7 @@ Add the reverse dependency:
 >>> gsm.registerAdapter(
 ...     FeedSomalia,
 ...     (zeit.cms.syndication.interfaces.IFeed,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 
 
@@ -685,10 +685,10 @@ Let somalia also depend on the /2007 folder:
 >>> gsm.registerAdapter(
 ...     SomaliaFolder,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='folder')
 
->>> zeit.workflow.interfaces.IPublicationDependencies(
+>>> zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 [<zeit.cms.repository.folder.Folder...>,
  <zeit.cms.syndication.feed.Feed...>]
@@ -741,19 +741,19 @@ Remove the test adapters:
 >>> gsm.unregisterAdapter(
 ...     FeedSomalia,
 ...     (zeit.cms.syndication.interfaces.IFeed,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 True
 >>> gsm.unregisterAdapter(
 ...     SomaliaFeed,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='somalia')
 True
 >>> gsm.unregisterAdapter(
 ...     SomaliaFolder,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.workflow.interfaces.IPublicationDependencies,
+...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='folder')
 True
 

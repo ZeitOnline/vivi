@@ -59,5 +59,7 @@
 
   <!-- Publish -->
   <adapter factory=".publish.Publish" />
+  <utility factory=".publisher.Publisher" zcml:condition="not-have zeit.workflow.testing" />
+  <utility factory=".publisher.MockPublisher" zcml:condition="have zeit.workflow.testing" />
 
 </configure>

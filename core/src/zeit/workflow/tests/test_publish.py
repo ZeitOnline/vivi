@@ -17,6 +17,7 @@ import time
 import transaction
 import zeit.cms.related.interfaces
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
 import zeit.content.article.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
@@ -56,7 +57,7 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.workflow.interfaces.IPublicationDependencies)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublicationDependencies)
 class RelatedDependency:
 
     def __init__(self, context):
@@ -343,19 +344,14 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/eta-zapatero')
         IPublishInfo(c1).urgent = True
         IPublishInfo(c2).urgent = True
-        with mock.patch(
-                'zeit.workflow.publish.PublishTask.call_script') as script:
-            IPublish(self.repository).publish_multiple(
-                [c1, c2], background=False)
-            script.assert_called_with('publish', [c1, c2])
+
+        IPublish(self.repository).publish_multiple(
+            [c1, c2], background=False)
         self.assertTrue(IPublishInfo(c1).published)
         self.assertTrue(IPublishInfo(c2).published)
 
-        with mock.patch(
-                'zeit.workflow.publish.RetractTask.call_script') as script:
-            IPublish(self.repository).retract_multiple(
-                [c1, c2], background=False)
-            script.assert_called_with('retract', [c1, c2])
+        IPublish(self.repository).retract_multiple(
+            [c1, c2], background=False)
         self.assertFalse(IPublishInfo(c1).published)
         self.assertFalse(IPublishInfo(c2).published)
 

@@ -6,7 +6,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.cms.util
-import zeit.workflow.dependency
+import zeit.cms.workflow.dependency
 import zope.interface
 
 
@@ -43,7 +43,7 @@ def folder_sort_key(context):
     return (weight, key)
 
 
-class FolderDependencies(zeit.workflow.dependency.DependencyBase):
+class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
 
     grok.context(zeit.cms.repository.interfaces.ICollection)
     grok.name('zeit.cms.repository.folder')
