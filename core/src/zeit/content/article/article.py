@@ -17,6 +17,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
 import zeit.cms.type
+import zeit.cms.workflow.dependency
 import zeit.cms.workflow.interfaces
 import zeit.connector.filesystem
 import zeit.connector.interfaces
@@ -26,7 +27,6 @@ import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zeit.workflow.dependency
 import zeit.workflow.interfaces
 import zeit.workflow.workflow
 import zope.component

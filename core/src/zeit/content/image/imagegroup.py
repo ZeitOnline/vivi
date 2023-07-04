@@ -18,10 +18,10 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
+import zeit.cms.workflow.dependency
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.variant
-import zeit.workflow.dependency
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
@@ -640,7 +640,7 @@ def remove_thumbnail_source_on_delete(context, event):
         del group[thumbnail_name]
 
 
-class FolderDependencies(zeit.workflow.dependency.DependencyBase):
+class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
 
     grok.context(zeit.content.image.interfaces.IImageGroup)
     grok.name('zeit.cms.repository.folder')

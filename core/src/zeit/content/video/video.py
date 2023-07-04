@@ -9,9 +9,9 @@ import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.related.related
 import zeit.cms.type
+import zeit.cms.workflow.dependency
 import zeit.content.video.interfaces
 import zeit.push.interfaces
-import zeit.workflow.dependency
 import zope.interface
 
 
@@ -139,7 +139,7 @@ class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'video'
 
 
-class Dependencies(zeit.workflow.dependency.DependencyBase):
+class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
 
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('zeit.content.video')
@@ -153,7 +153,7 @@ class Dependencies(zeit.workflow.dependency.DependencyBase):
         return dependencies
 
 
-class DependenciesImages(zeit.workflow.dependency.DependencyBase):
+class DependenciesImages(zeit.cms.workflow.dependency.DependencyBase):
 
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('zeit.content.video.still')
