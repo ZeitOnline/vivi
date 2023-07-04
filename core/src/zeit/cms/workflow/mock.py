@@ -145,3 +145,9 @@ try:
     zope.testing.cleanup.addCleanUp(reset)
 except ImportError:
     pass
+
+
+@zope.component.adapter(zeit.cms.workflow.interfaces.IPublishInfo)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
+def workflow_dav_properties(context):
+    return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
