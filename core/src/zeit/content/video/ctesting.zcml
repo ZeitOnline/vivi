@@ -1,11 +1,9 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   i18n_domain="zope"
-   >
+   i18n_domain="zope">
 
-  <include package="zeit.cms" file="ftesting.zcml" />
-
-  <include package="zeit.addcentral" />
+  <include package="zeit.content.video" />
+  <include package="zeit.content.video.browser" />
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />

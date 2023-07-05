@@ -5,17 +5,17 @@
    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
-  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
-
-  <include package="zeit.content.article" file="ftesting.zcml"/>
-  <include package="zeit.content.cp" file="ftesting.zcml"/>
-  <include package="zeit.content.gallery" file="ftesting.zcml"/>
-  <include package="zeit.content.infobox" file="ftesting.zcml"/>
-  <include package="zeit.content.link" file="ftesting.zcml"/>
-
-  <include package="zeit.push" file="testing.zcml" />
+  <includeOverrides package="zeit.workflow" />
 
   <include package="zeit.campus" />
   <include package="zeit.campus.browser" />
+
+  <include package="zeit.content.article" file="ctesting.zcml" />
+  <include package="zeit.content.cp" file="ctesting.zcml" />
+  <include package="zeit.content.gallery" file="ctesting.zcml" />
+  <include package="zeit.content.infobox" file="ctesting.zcml" />
+  <include package="zeit.content.link" file="ctesting.zcml" />
+
+  <include package="zeit.push" file="ctesting.zcml" />
 
 </configure>

@@ -8,6 +8,8 @@
 
   <grok:grok package="." />
 
+  <include package="zeit.edit.browser" />
+
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

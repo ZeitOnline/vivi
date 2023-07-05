@@ -6,15 +6,7 @@
 
   <include package="zeit.cms" file="ftesting.zcml" />
 
-  <include package="zeit.content.link" />
-  <include package="zeit.content.link.browser" />
-
-  <include package="zeit.content.image" />
-  <include package="zeit.content.image.browser" />
-
-  <include package="zeit.push" />
-  <include package="zeit.push" file="mock-webservice.zcml" />
-  <include package="zeit.push.browser" />
-  <include package="zeit.content.text" />
+  <include package="zeit.content.link" file="ctesting.zcml" />
+  <include package="zeit.push" file="ctesting.zcml" />
 
 </configure>

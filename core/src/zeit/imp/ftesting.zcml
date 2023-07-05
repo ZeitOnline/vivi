@@ -9,7 +9,8 @@
   <include package="zeit.imp" />
   <include package="zeit.imp.browser" />
 
-  <include package="zeit.content.image" file="ftesting.zcml" />
+  <include package="zeit.content.image" />
+  <include package="zeit.content.image.browser" />
 
   <grant
     principal="zope.user"

@@ -1,0 +1,12 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.push" />
+  <include package="zeit.push" file="service.zcml" />
+  <include package="zeit.push.browser" />
+
+  <include package="zeit.content.text" />
+
+</configure>

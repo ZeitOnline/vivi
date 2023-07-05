@@ -9,24 +9,13 @@
   <include package="zeit.cms" file="ftesting.zcml" />
   <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
-  <include package="zeit.edit.browser" />
+  <include package="zeit.content.cp" file="ctesting.zcml" />
 
   <include package="zeit.content.article" />
-
-  <include package="zeit.content.cp" />
-  <include package="zeit.content.cp.browser" />
-
+  <include package="zeit.content.gallery" />
   <include package="zeit.content.text" />
   <include package="zeit.content.text.browser" />
-
-  <include package="zeit.content.image" />
-  <include package="zeit.content.image.browser" />
-
-  <include package="zeit.content.modules" />
-
-  <include package="zeit.content.video" />
-
-  <include package="zeit.content.gallery" />
+  <include package="zeit.content.video" file="ctesting.zcml" />
 
   <!-- Allow test user to create and move areas -->
   <grant

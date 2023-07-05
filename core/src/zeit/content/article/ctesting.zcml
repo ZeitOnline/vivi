@@ -1,0 +1,25 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   i18n_domain="zope">
+
+  <include package="zeit.edit" file="meta.zcml" />
+
+  <include package="zeit.content.article" />
+  <include package="zeit.content.article.browser" />
+  <include package="zeit.content.article.edit" />
+  <include package="zeit.content.article.edit.browser" />
+
+  <include package="zeit.edit" />
+  <include package="zeit.edit.browser" />
+
+  <include package="zeit.content.modules" />
+  <include package="zeit.content.modules.browser" />
+
+  <include package="zeit.content.image" />
+  <include package="zeit.content.image.browser" />
+
+  <!-- just the UI, we don't care if no actual searches can be performed -->
+  <!-- XXX zeit.find should provide a mock utility by default for tests -->
+  <include package="zeit.find.browser" />
+
+</configure>
