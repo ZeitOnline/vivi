@@ -3,8 +3,6 @@ from zeit.content.image.testing import create_image_group_with_master_image
 import pkg_resources
 import zeit.cms.interfaces
 import zeit.content.image.testing
-import zeit.edit.interfaces
-import zeit.edit.rule
 
 
 class ImageGroupHelperMixin:
