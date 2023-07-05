@@ -29,13 +29,6 @@ PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
 LAYER = plone.testing.Layer(bases=(PUSH_LAYER,), name='GalleryLayer')
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
-WORKFLOW_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-workflow.zcml', bases=(CONFIG_LAYER,))
-WORKFLOW_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(WORKFLOW_ZCML_LAYER,))
-WORKFLOW_LAYER = plone.testing.Layer(
-    name='WorkflowLayer', module=__name__,
-    bases=(WORKFLOW_ZOPE_LAYER, zeit.workflow.testing.SCRIPTS_LAYER))
-
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 

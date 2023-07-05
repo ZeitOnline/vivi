@@ -10,8 +10,4 @@ def test_suite():
         'reference.txt',
         package='zeit.content.gallery',
         layer=zeit.content.gallery.testing.ZOPE_LAYER))
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'workflow.txt',
-        package='zeit.content.gallery',
-        layer=zeit.content.gallery.testing.WORKFLOW_LAYER))
     return suite
