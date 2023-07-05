@@ -41,22 +41,18 @@ class SendingNotifications(zeit.push.testing.TestCase):
         self.notifier = self.notifier()
         self.notifier.type = 'mypush'
 
-    def publish(self, content):
-        IPublishInfo(content).urgent = True
-        IPublish(content).publish()
-
     def test_enabled_service_is_called(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
         push.message_config = [{'type': 'mypush', 'enabled': True}]
-        self.publish(content)
+        IPublish(content).publish()
         self.assertTrue(self.notifier.send.called)
 
     def test_disabled_service_is_not_called(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
         push.message_config = [{'type': 'mypush', 'enabled': False}]
-        self.publish(content)
+        IPublish(content).publish()
         self.assertFalse(self.notifier.send.called)
 
     def test_error_during_push_is_caught(self):
@@ -64,7 +60,7 @@ class SendingNotifications(zeit.push.testing.TestCase):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
         push.message_config = [{'type': 'mypush', 'enabled': True}]
-        self.publish(content)
+        IPublish(content).publish()
         # This is sort of assertNothingRaised, except that publishing
         # runs in a separate thread (remotetask), so we would not see
         # the exception here anyway.

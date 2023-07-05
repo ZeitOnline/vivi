@@ -58,9 +58,8 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
     def test_dav_adapter_work_with_ITMSContent(self):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
-        zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(article).publish(
-            background=False)
+        props = zeit.connector.interfaces.IWebDAVProperties(article)
+        props[('published', zeit.workflow.interfaces.WORKFLOW_NS)] = 'yes'
         self.assertIs(True, zeit.cms.workflow.interfaces.IPublishInfo(
             article).published)
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
