@@ -2,5 +2,6 @@
 <access>
   <type id="free" c1_id="free">frei verfügbar</type>
   <type id="registration" c1_id="metered">registrierungspflichtig</type>
+  <type id="dynamic" c1_id="dynamic">dynamisch</type>
   <type id="abo" c1_id="paid">abopflichtig</type>
 </access>

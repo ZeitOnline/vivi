@@ -1,3 +1,4 @@
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testcontenttype.interfaces
@@ -63,7 +64,7 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             self.assertEqual((), co.channels)
 
 
-class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
+class Access(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_change_access_value_is_logged(self):
         article = self.repository['testcontent']
@@ -89,6 +90,15 @@ class AccessChangeEvent(zeit.cms.testing.ZeitCmsTestCase):
                     zeit.cms.content.interfaces.ICommonMetadata,
                     'access'))
             self.assertEqual([], list(log.get_log()))
+
+    def test_free_is_treated_as_dynamic_according_to_toggle(self):
+        article = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.access = 'free'
+        article = self.repository['testcontent']
+        self.assertEqual('free', article.access)
+        FEATURE_TOGGLES.set('access_treat_free_as_dynamic')
+        self.assertEqual('dynamic', article.access)
 
 
 class ColorScheme(zeit.cms.testing.ZeitCmsTestCase):
