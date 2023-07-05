@@ -9,6 +9,7 @@
   <include package="zeit.content.article.browser" />
   <include package="zeit.content.article.edit" />
   <include package="zeit.content.article.edit.browser" />
+  <includeOverrides package="zeit.content.article" file="mock-workflow.zcml" />
 
   <include package="zeit.edit" />
   <include package="zeit.edit.browser" />

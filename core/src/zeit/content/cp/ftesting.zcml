@@ -9,6 +9,7 @@
   <include package="zeit.cms" file="ftesting.zcml" />
   <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
+  <exclude package="zeit.content.cp" file="mock-workflow.zcml" />
   <include package="zeit.content.cp" file="ctesting.zcml" />
 
   <include package="zeit.content.article" />
