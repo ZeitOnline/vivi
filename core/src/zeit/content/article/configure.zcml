@@ -59,6 +59,16 @@
     <require like_class="zeit.cms.content.reference.EmptyReference" />
   </class>
 
+  <class class=".article.Speechbert">
+    <require
+      permission="zope.View"
+      interface=".interfaces.ISpeechbertChecksum"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.ISpeechbertChecksum"
+      />
+  </class>
 
    <!-- recensions -->
 
