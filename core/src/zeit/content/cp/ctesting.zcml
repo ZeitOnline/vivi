@@ -3,11 +3,11 @@
    i18n_domain="zope"
    >
 
-  <include package="zeit.cms" file="ftesting.zcml" />
-
-  <include package="zeit.addcentral" />
+  <include package="zeit.content.cp" />
+  <include package="zeit.content.cp.browser" />
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
+  <include package="zeit.content.modules" />
 
 </configure>

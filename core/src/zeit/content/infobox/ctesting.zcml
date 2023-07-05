@@ -1,0 +1,12 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   i18n_domain="zope"
+   >
+
+  <include package="zeit.content.infobox" />
+  <include package="zeit.content.infobox.browser" />
+
+  <include package="zeit.wysiwyg" />
+  <include package="zeit.wysiwyg.browser" />
+
+</configure>

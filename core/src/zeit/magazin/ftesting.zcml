@@ -8,12 +8,11 @@
   <include package="zeit.magazin" />
   <include package="zeit.magazin.browser" />
 
-  <include package="zeit.content.article" file="ftesting.zcml"/>
-  <include package="zeit.content.gallery" file="ftesting.zcml" />
-  <include package="zeit.content.link" file="ftesting.zcml" />
-  <include package="zeit.content.portraitbox" file="ftesting.zcml" />
+  <include package="zeit.content.article" file="ctesting.zcml"/>
+  <include package="zeit.content.gallery" file="ctesting.zcml" />
+  <include package="zeit.content.link" file="ctesting.zcml" />
+  <include package="zeit.content.portraitbox" file="ctesting.zcml" />
 
-  <include package="zeit.push" file="testing.zcml" />
-  <include package="zeit.wysiwyg" />
+  <include package="zeit.push" file="ctesting.zcml" />
 
 </configure>

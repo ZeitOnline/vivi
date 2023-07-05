@@ -1,6 +1,5 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   xmlns:meta="http://namespaces.zope.org/meta"
    i18n_domain="zope"
    >
 
@@ -9,7 +8,6 @@
   <include package="zeit.content.animation" />
   <include package="zeit.content.animation.browser" />
 
-  <include package="zeit.content.article" />
-  <include package="zeit.content.article.browser" />
+  <include package="zeit.content.article" file="ctesting.zcml" />
 
 </configure>

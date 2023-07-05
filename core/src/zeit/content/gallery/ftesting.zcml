@@ -5,26 +5,8 @@
    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <include package="zeit.content.gallery" file="ctesting.zcml" />
 
-  <include package="zeit.content.image" />
-  <include package="zeit.content.image.browser" />
-
-  <include package="zeit.content.gallery" />
-  <include package="zeit.content.gallery.browser" />
-
-  <include package="zeit.wysiwyg" />
-  <include package="zeit.wysiwyg.browser" />
-
-  <include package="zeit.imp" />
-  <include package="zeit.imp.browser" />
-
-  <include package="zeit.push" />
-  <include package="zeit.push.browser" />
-  <include package="zeit.content.text" />
-
-  <grant
-    principal="zope.user"
-    permission="zeit.imp.Use"
-    />
+  <include package="zeit.push" file="ctesting.zcml" />
 
 </configure>

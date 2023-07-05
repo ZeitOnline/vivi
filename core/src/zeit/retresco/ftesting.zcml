@@ -12,23 +12,23 @@
   <include package="zeit.retresco.json" />
   <include package="zeit.retresco.xmlrpc" />
 
-  <include package="zeit.content.advertisement" file="ftesting.zcml" />
-  <include package="zeit.content.article" file="ftesting.zcml" />
-  <include package="zeit.content.author" file="ftesting.zcml" />
-  <include package="zeit.content.dynamicfolder" file="ftesting.zcml" />
-  <include package="zeit.content.gallery" file="ftesting.zcml" />
-  <include package="zeit.content.image" file="ftesting.zcml" />
-  <include package="zeit.content.infobox" file="ftesting.zcml" />
-  <include package="zeit.content.link" file="ftesting.zcml" />
-  <include package="zeit.content.portraitbox" file="ftesting.zcml" />
-  <include package="zeit.content.rawxml" file="ftesting.zcml" />
-  <include package="zeit.content.text" file="ftesting.zcml" />
-  <include package="zeit.content.volume" file="ftesting.zcml" />
+  <include package="zeit.content.advertisement" />
+  <include package="zeit.content.article" file="ctesting.zcml" />
+  <include package="zeit.content.author" />
+  <include package="zeit.content.dynamicfolder" file="ctesting.zcml" />
+  <include package="zeit.content.gallery" file="ctesting.zcml" />
+  <include package="zeit.content.image" />
+  <include package="zeit.content.infobox" file="ctesting.zcml" />
+  <include package="zeit.content.link" file="ctesting.zcml" />
+  <include package="zeit.content.portraitbox" file="ctesting.zcml" />
+  <include package="zeit.content.rawxml" />
+  <include package="zeit.content.text" />
+  <include package="zeit.content.volume" />
+  <include package="zeit.wochenmarkt" />
 
-  <include package="zeit.find" file="ftesting.zcml" />
-  <include package="zeit.seo" file="ftesting.zcml" />
-  <include package="zeit.push" file="testing.zcml" />
-  <include package="zeit.wochenmarkt" file="ftesting.zcml" />
+  <include package="zeit.find" />
+  <include package="zeit.seo" />
+  <include package="zeit.push" file="ctesting.zcml" />
 
   <principal
     id="zope.index"

@@ -10,10 +10,7 @@
   <include package="zeit.brightcove" />
   <include package="zeit.brightcove.json" />
 
-  <include package="zeit.content.image" />
-  <include package="zeit.content.image.browser" />
-  <include package="zeit.content.video" />
-  <include package="zeit.content.video.browser" />
+  <include package="zeit.content.video" file="ctesting.zcml" />
 
   <include package="zeit.content.author" />
 
