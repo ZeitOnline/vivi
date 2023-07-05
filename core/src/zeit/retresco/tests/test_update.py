@@ -168,6 +168,8 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
     def test_changing_workflow_properties_in_repository_should_index(self):
         content = self.repository['testcontent']
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        zope.interface.alsoProvides(
+            workflow, zeit.workflow.interfaces.IContentWorkflow)
         event = zeit.cms.content.interfaces.DAVPropertyChangedEvent(
             workflow, 'ns', 'name', 'old', 'new',
             zeit.workflow.interfaces.IContentWorkflow['urgent'])
@@ -201,17 +203,14 @@ class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
                 content).published)
         self.tms.index = index
         content = self.repository['testcontent']
-        zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
         zeit.cms.workflow.interfaces.IPublish(content).publish(
             background=False)
-        # 2 calls: set urgent, then publish
-        self.assertEqual([False, True], published)
+        self.assertEqual([True], published)
 
         content = self.repository['2006']['DSC00109_2.JPG']
-        zeit.cms.workflow.interfaces.IPublishInfo(content).urgent = True
         zeit.cms.workflow.interfaces.IPublish(content).publish(
             background=False)
-        self.assertEqual([False, True, True], published)
+        self.assertEqual([True, True], published)
 
     def test_retract_should_index_with_published_false(self):
         published = []

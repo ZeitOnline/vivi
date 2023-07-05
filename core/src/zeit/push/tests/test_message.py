@@ -1,5 +1,5 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import IPublish
 import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
@@ -38,15 +38,11 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IPushNotifier, name='twitter')
         self.assertEqual([], twitter.calls)
 
-    def publish(self, content):
-        IPublishInfo(content).urgent = True
-        IPublish(content).publish()
-
     def test_enabled_flag_is_removed_from_service_after_send(self):
         content = self.create_content('mytext')
         push = zeit.push.interfaces.IPushMessages(content)
         push.message_config = ({'type': 'twitter', 'enabled': True},)
-        self.publish(content)
+        IPublish(content).publish()
         self.assertEqual(
             ({'type': 'twitter', 'enabled': False},), push.message_config)
 

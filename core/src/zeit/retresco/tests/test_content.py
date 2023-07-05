@@ -58,11 +58,10 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
     def test_dav_adapter_work_with_ITMSContent(self):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
-        zeit.cms.workflow.interfaces.IPublishInfo(article).urgent = True
-        zeit.cms.workflow.interfaces.IPublish(article).publish(
-            background=False)
-        self.assertIs(True, zeit.cms.workflow.interfaces.IPublishInfo(
-            article).published)
+        props = zeit.connector.interfaces.IWebDAVProperties(article)
+        props[('published', zeit.workflow.interfaces.WORKFLOW_NS)] = 'yes'
+        self.assertEqual(
+            True, zeit.workflow.publishinfo.PublishInfo(article).published)
         data = zeit.retresco.interfaces.ITMSRepresentation(article)()
         content = zeit.retresco.interfaces.ITMSContent(data)
 
@@ -73,11 +72,10 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         # in stride and return "no such property" for any request, which then
         # is translated to the field's default or missing value.
         self.assertEqual(
-            False, zeit.cms.workflow.interfaces.IPublishInfo(
-                article).published)
+            False, zeit.workflow.publishinfo.PublishInfo(article).published)
 
-        info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        self.assertIs(True, info.published)
+        self.assertEqual(
+            True, zeit.workflow.publishinfo.PublishInfo(content).published)
 
     def test_restores_provided_interfaces(self):
         article = zeit.cms.interfaces.ICMSContent(

@@ -2,7 +2,7 @@ from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import IPublish
 import transaction
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -30,7 +30,6 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['cp'] = cp
 
     def publish(self, content):
-        IPublishInfo(content).urgent = True
         IPublish(content).publish()
         transaction.commit()
 

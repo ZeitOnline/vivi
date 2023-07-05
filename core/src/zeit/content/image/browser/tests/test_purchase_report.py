@@ -3,7 +3,7 @@ from unittest import mock
 from zeit.content.image.browser.imagegroup import CopyrightCompanyPurchaseReport # noqa
 from zeit.content.image.interfaces import IImageMetadata
 from zeit.cms.workflow.interfaces import IPublishInfo
-import datetime
+import pendulum
 import zeit.cms.content.add
 import zeit.cms.content.sources
 import zeit.cms.testing
@@ -19,7 +19,8 @@ class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
         with zeit.cms.checkout.helper.checked_out(group) as co:
             IImageMetadata(co).copyright = (
                 'Fotograf Eins', 'Agentur Eins', None, None, 0)
-        dfr = IPublishInfo(group).date_first_released.to_datetime_string()
+        dfr = pendulum.datetime(2023, 8, 1)
+        IPublishInfo(group).date_first_released = dfr
         with mock.patch('zeit.content.image.browser.imagegroup.'
                         'CopyrightCompanyPurchaseReport.'
                         'find_imagegroups') as findimgr:
@@ -30,7 +31,7 @@ class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
 
             expected = [['publish_date', 'image_number',
                          'copyright infos', 'internal link'],
-                        [dfr, 'master-image.jpg',
+                        [dfr.to_datetime_string(), 'master-image.jpg',
                          'Fotograf Eins/Agentur Eins/None/None/0',
                          'https://vivi.zeit.de/repository/group/']]
             self.assertEqual(csv_list, expected)
@@ -39,7 +40,7 @@ class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
 class PurchaseToCSVDocument(zeit.content.image.testing.BrowserTestCase):
 
     def test_csv_copyright_purchase_view_is_csv_file_download(self):
-        now = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        now = pendulum.now().strftime('%Y-%m-%d-%H-%M-%S')
         b = self.browser
         with mock.patch('zeit.content.image.browser.imagegroup'
                         '.CopyrightCompanyPurchaseReport.create_csv') as create_content: # noqa

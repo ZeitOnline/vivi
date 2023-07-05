@@ -39,7 +39,14 @@ ARTICLE_CONFIG_LAYER = ArticleConfigLayer({}, package='zeit.content.article')
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
     CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
+BROWSER_LAYER = zeit.cms.testing.WSGILayer(
+    name='BrowserLayer', bases=(ZOPE_LAYER,))
+
+
+WORKFLOW_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-workflow.zcml', bases=(
+    CONFIG_LAYER, ARTICLE_CONFIG_LAYER))
+WORKFLOW_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(WORKFLOW_LAYER,))
+CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(WORKFLOW_ZOPE_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(CELERY_LAYER,))
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
@@ -57,7 +64,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
-    layer = WSGI_LAYER
+    layer = BROWSER_LAYER
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
