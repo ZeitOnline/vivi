@@ -41,13 +41,6 @@
       />
   </class>
 
-  <adapter
-    factory="zeit.workflow.asset.AssetWorkflow"
-    for=".interfaces.IDynamicFolder"
-    provides="zeit.workflow.interfaces.IAssetWorkflow"
-    trusted="yes"
-    />
-
   <class class="zeit.content.dynamicfolder.materialize.CloneArmy">
     <require
       interface="zeit.content.dynamicfolder.interfaces.ICloneArmy"
