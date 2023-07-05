@@ -1,7 +1,0 @@
-<configure xmlns="http://namespaces.zope.org/zope">
-
-  <include package="zeit.content.gallery" file="ftesting.zcml" />
-  <includeOverrides package="zeit.workflow" />
-
-</configure>
-
