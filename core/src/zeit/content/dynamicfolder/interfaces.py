@@ -33,7 +33,8 @@ class ICloneArmy(zope.interface.Interface):
         default=False)
 
 
-class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
+class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent,
+                     zeit.cms.interfaces.IAsset):
     """Interface for the Content-Type DynamicFolder.
 
     Does not specify that it is a container, since it is only a container
