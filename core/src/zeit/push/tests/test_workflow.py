@@ -1,7 +1,7 @@
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import IPublish
 from zeit.push.interfaces import IPushMessages
 import zeit.cms.content.interfaces
 import zeit.cms.testing
