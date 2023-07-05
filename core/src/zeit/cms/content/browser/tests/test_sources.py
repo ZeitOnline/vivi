@@ -40,6 +40,7 @@ class SourceAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         self.assert_json([
             {'id': 'free', 'title': 'frei verfügbar'},
             {'id': 'registration', 'title': 'registrierungspflichtig'},
+            {'id': 'dynamic', 'title': 'dynamisch'},
             {'id': 'abo', 'title': 'abopflichtig'},
         ])
 
