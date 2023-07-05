@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
+import zeit.content.infobox.browser.form
 import zeit.content.infobox.infobox
 import zeit.content.infobox.interfaces
 import zope.formlib.form
