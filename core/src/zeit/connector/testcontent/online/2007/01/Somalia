@@ -2,6 +2,7 @@
 <article>
   <head>
 <!-- CMS/document -->
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:4850d936-a3b7-4ff0-8434-57d26ca7521b}</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">1036</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="pagelabel">Online</attribute>
 <!-- CMS/workflow -->
