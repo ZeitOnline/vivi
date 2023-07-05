@@ -260,7 +260,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         image = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
         with checked_out(image):
-            pass  # trigger uuid creation
+            pass  # satisfy editing fields
         data = zeit.retresco.interfaces.ITMSRepresentation(image)()
         self.assert_editing_fields(data)
         self.assertEqual({
@@ -356,8 +356,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_skips_newsimport_images(self):
         group = zeit.content.image.testing.create_image_group()
-        with checked_out(group):
-            pass  # trigger uuid creation
         self.repository['news'] = zeit.cms.repository.folder.Folder()
         self.repository['news']['group'] = group
         data = zeit.retresco.interfaces.ITMSRepresentation(group)()
