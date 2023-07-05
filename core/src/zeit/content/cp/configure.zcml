@@ -63,6 +63,11 @@
     for=".interfaces.ICenterPage"
     trusted="yes"
     />
+  <adapter factory="zeit.edit.rule.ValidatingWorkflow"
+    provides="zeit.workflow.interfaces.ITimeBasedPublishing"
+    for=".interfaces.ICenterPage"
+    trusted="yes"
+    />
   <subscriber handler=".centerpage.modified_propagator" />
   <subscriber handler=".centerpage.update_centerpage_on_checkin" />
   <subscriber
