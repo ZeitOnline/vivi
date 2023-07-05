@@ -1,5 +1,6 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
+   xmlns:grok="http://namespaces.zope.org/grok"
    i18n_domain="zope">
 
   <include package="zeit.edit" file="meta.zcml" />
@@ -21,5 +22,7 @@
   <!-- just the UI, we don't care if no actual searches can be performed -->
   <!-- XXX zeit.find should provide a mock utility by default for tests -->
   <include package="zeit.find.browser" />
+
+  <grok:grok package="zeit.workflow.publish_3rdparty" />
 
 </configure>
