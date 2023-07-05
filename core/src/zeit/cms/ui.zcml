@@ -61,9 +61,7 @@
   <include package="zope.app.broken" />
 
   <!-- Skins -->
-
   <include package="zope.app.basicskin" />
-  <include package="zope.app.rotterdam" />
 
   <!-- browser -->
   <browser:defaultView name="index.html" />

@@ -155,7 +155,6 @@ setup(
             'zope.app.publication',
             'zope.app.publisher',
             'zope.app.renderer',
-            'zope.app.rotterdam',
             'zope.app.schema',
             'zope.app.securitypolicy',
             'zope.app.tree',
