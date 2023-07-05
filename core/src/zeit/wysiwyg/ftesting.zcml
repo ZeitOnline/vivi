@@ -5,8 +5,6 @@
    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
-  <!-- I don't like this depdendency here but it makes testing much easier -->
-  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
