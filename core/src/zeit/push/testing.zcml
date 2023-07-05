@@ -18,7 +18,6 @@
   <include package="zeit.content.article.edit.browser" />
 
   <include package="zeit.content.author" />
-  <includeOverrides package="zeit.content.author" file="mock.zcml" />
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
