@@ -3,6 +3,7 @@ from datetime import datetime
 from unittest import mock
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
 import lxml.etree
@@ -197,12 +198,12 @@ class TestVolume(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_covers_are_published_with_the_volume(self):
         volume = self.repository['2015']['01']['ausgabe']
-        zeit.cms.workflow.interfaces.IPublish(volume).publish(background=False)
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
-            self.repository['imagegroup']).published)
-        zeit.cms.workflow.interfaces.IPublish(volume).retract(background=False)
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
-            self.repository['imagegroup']).published)
+        self.assertIn(
+            self.repository['imagegroup'],
+            IPublicationDependencies(volume).get_dependencies())
+        self.assertIn(
+            self.repository['imagegroup'],
+            IPublicationDependencies(volume).get_retract_dependencies())
 
 
 class TestVolumeQueries(zeit.content.volume.testing.FunctionalTestCase):

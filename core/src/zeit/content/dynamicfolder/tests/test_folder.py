@@ -3,12 +3,12 @@ from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.repository.unknown import PersistentUnknownResource
+from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.rawxml.rawxml import RawXML
 import jinja2
 import lxml.etree
 import pkg_resources
 import transaction
-import zope.component
 import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -16,6 +16,7 @@ import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.interfaces as DFinterfaces
 import zeit.content.dynamicfolder.materialize
 import zeit.content.dynamicfolder.testing
+import zope.component
 
 
 class TestContainerMethodsRespectVirtualChildren(
@@ -216,27 +217,6 @@ class TestDynamicFolder(
         self.assertEqual('changed', zeit.seo.interfaces.ISEO(
             self.folder['xanten']).html_title)
 
-    def assert_published(self, content):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        self.assertTrue(info.published, '%s not published' % content.uniqueId)
-
-    def assert_not_published(self, content):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        self.assertFalse(
-            info.published, '%s still published' % content.uniqueId)
-
-    def test_publishes_folder_with_config_and_template(self):
-        zeit.cms.workflow.interfaces.IPublish(
-            self.folder).publish(background=False)
-        self.assert_published(self.folder)
-        self.assert_published(self.folder.config_file)
-        self.assert_published(self.folder.content_template_file)
-        zeit.cms.workflow.interfaces.IPublish(
-            self.folder).retract(background=False)
-        self.assert_not_published(self.folder)
-        self.assert_not_published(self.folder.config_file)
-        self.assert_not_published(self.folder.content_template_file)
-
     def test_does_not_break_on_erroneous_config(self):
         from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
         dynamic = RepositoryDynamicFolder()
@@ -246,7 +226,7 @@ class TestDynamicFolder(
         with self.assertNothingRaised():
             self.repository['brokenfolder'].values()
 
-    def test_publish_dynamic_folder(self):
+    def test_publish_dynamic_folder_does_not_publish_contents(self):
         calls = []
 
         def check_publish(context, event):
@@ -261,23 +241,22 @@ class TestDynamicFolder(
         zeit.cms.workflow.interfaces.IPublish(
             self.folder).publish(background=False)
         self.assertIn('http://xml.zeit.de/dynamicfolder/', calls)
-        self.assertIn('http://xml.zeit.de/data/config.xml', calls)
-        self.assertIn('http://xml.zeit.de/data/template.xml', calls)
+        # Would be nice to check these, for completeness, but mock IPublish
+        # does not handle IPublicationDependencies, so we have
+        # `test_publishes_folder_with_config_and_template` instead.
+        # self.assertIn('http://xml.zeit.de/data/config.xml', calls)
+        # self.assertIn('http://xml.zeit.de/data/template.xml', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/art-déco', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/xaernten', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/xanten', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/xinjiang', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/überlingen', calls)
 
-    def test_folder_dependencies(self):
-        dependencies = list(zeit.workflow.interfaces.IPublicationDependencies(
-            self.folder).get_dependencies())
-        self.assertEqual(
-            'http://xml.zeit.de/data/config.xml',
-            dependencies[0].uniqueId)
-        self.assertEqual(
-            'http://xml.zeit.de/data/template.xml',
-            dependencies[1].uniqueId)
+    def test_publishes_folder_with_config_and_template(self):
+        pub = IPublicationDependencies(self.folder)
+        for deps in [pub.get_dependencies(), pub.get_retract_dependencies()]:
+            self.assertIn(self.folder.config_file, deps)
+            self.assertIn(self.folder.content_template_file, deps)
 
 
 class MaterializeDynamicFolder(
