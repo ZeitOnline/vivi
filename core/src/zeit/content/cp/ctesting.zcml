@@ -5,6 +5,7 @@
 
   <include package="zeit.content.cp" />
   <include package="zeit.content.cp.browser" />
+  <includeOverrides package="zeit.content.cp" file="mock-workflow.zcml" />
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
