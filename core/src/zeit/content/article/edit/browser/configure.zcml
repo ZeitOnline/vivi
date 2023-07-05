@@ -9,6 +9,7 @@
   <grok:grok package="." />
 
   <include file="form.zcml" />
+  <include package="zeit.edit.browser" />
   <include package="zeit.workflow.browser" />
 
   <adapter
