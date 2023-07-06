@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.5 (2023-07-06)
+-------------------
+
+- ZO-3478: Introduce toggle `access_treat_free_as_dynamic`
+
+
 5.27.4 (2023-07-03)
 -------------------
 
