@@ -24,6 +24,7 @@ class MockPublish:
                 object=None, **kw):
         if object is not None:
             self.context = object
+        self.context = zope.security.proxy.getObject(self.context)
         can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context).can_publish()
         if can_publish == CAN_PUBLISH_ERROR:
@@ -43,6 +44,7 @@ class MockPublish:
                 object=None, **kw):
         if object is not None:
             self.context = object
+        self.context = zope.security.proxy.getObject(self.context)
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
                                                             self.context))
