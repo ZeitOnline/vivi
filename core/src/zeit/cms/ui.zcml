@@ -22,21 +22,16 @@
   <include package="zeit.cms" file="menu.zcml" />
 
   <include package="zope.app.content" />
-  <include package="zope.app.generations" />
   <include package="zope.app.pagetemplate" />
   <include package="zope.app.publication" file="meta.zcml" />
   <include package="zope.app.publication" />
   <include package="zope.app.publisher" />
-  <include package="zope.app.schema" />
   <include package="zope.app.security" />
   <include package="zope.copypastemove" />
   <include package="zope.componentvocabulary" />
   <include package="zope.publisher" />
   <include package="zope.site" />
   <include package="zope.size" />
-
-  <!-- Views -->
-  <include package="zope.app.http" />
 
   <!-- Translations -->
   <configure package="zope.app.locales">
@@ -95,7 +90,6 @@
   <include package="zope.principalregistry" />
   <include package="zope.app.authentication"/>
   <include package="zope.app.tree"/>
-  <include package="zope.app.renderer"/>
   <include package="zope.app.preference" file="meta.zcml"/>
   <include package="zope.app.preference"/>
   <include package="zope.app.locking"/>
