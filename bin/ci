@@ -50,6 +50,8 @@ case $COMMAND in
         ln -sfT $WORKSPACE $DEPLOYMENT/work/source/vivi
     ;;
     test-app-run)
+        shift
+
         cd $WORKSPACE
         rm -f report*.xml coverage.xml cobertura.xml
         cd $DEPLOYMENT/work/source
@@ -60,15 +62,16 @@ case $COMMAND in
 
         export GOCEPT_SELENIUM_JUNIT_ATTACH=True
 
+        source $DEPLOYMENT/work/test/environ
+        cd $DEPLOYMENT/work/source
+
         set +e
-        shift
-        $DEPLOYMENT/bin/test -v -p no:sugar -m 'not selenium' \
-            --cov=. --junitxml=report.xml "$@"
+        $DEPLOYMENT/work/app/bin/coverage run -m pytest \
+            -v -p no:sugar -m 'not selenium' --junitxml=report.xml "$@"
         TEST_RESULT=$?
 
-        $DEPLOYMENT/bin/test -v -p no:sugar -m 'selenium' \
-            --cov=. --junitxml=report_selenium.xml \
-            --cov-append --cov-report=html --cov-report=xml \
+        $DEPLOYMENT/work/app/bin/coverage run --append -m pytest \
+            -v -p no:sugar -m 'selenium' --junitxml=report_selenium.xml \
             --reruns=3 --reruns-delay=1 "$@"
         SELENIUM_RESULT=$?
         if [ "$TEST_RESULT" = "0" ]; then
@@ -77,6 +80,9 @@ case $COMMAND in
         if [ "$SELENIUM_RESULT" = "0" ]; then
             rm -f geckodriver.log
         fi
+
+        $DEPLOYMENT/work/app/bin/coverage xml
+        $DEPLOYMENT/work/app/bin/coverage html
 
         cp $DEPLOYMENT/work/source/report*.xml $WORKSPACE
         if [ -f $DEPLOYMENT/work/source/coverage.xml ]; then
