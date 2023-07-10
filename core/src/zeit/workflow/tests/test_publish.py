@@ -40,6 +40,13 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertIn('LockingError', str(info.exception))
         self.assertEqual(False, IPublishInfo(article).published)
 
+    def test_safetybelt_object_with_can_publish_false_is_not_published(self):
+        # can_publish was already checked in IPublish.publish(), we make sure
+        # the state has not changed by the time the actual publish task runs.
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        zeit.workflow.publish.PUBLISH_TASK([article.uniqueId])
+        self.assertEqual(False, IPublishInfo(article).published)
+
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
 
