@@ -1,6 +1,8 @@
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
+import celery.result
+import celery.states
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
@@ -15,28 +17,34 @@ class MockPublish:
     def __init__(self, context):
         self.context = context
 
+    def _result(self):
+        return celery.result.EagerResult('eager', None, celery.states.SUCCESS)
+
     def publish(self, priority=PRIORITY_DEFAULT, background=True,
                 object=None, **kw):
-        if object:
+        if object is not None:
             self.context = object
+        self.context = zope.security.proxy.getObject(self.context)
         can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
             self.context).can_publish()
-        if can_publish != CAN_PUBLISH_SUCCESS:
+        if can_publish == CAN_PUBLISH_ERROR:
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Cannot publish.")
+        _published[self.context.uniqueId] = True
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context,
                                                             self.context))
         print("Publishing: %s" % self.context.uniqueId)
-        _published[self.context.uniqueId] = True
         zope.event.notify(
             zeit.cms.workflow.interfaces.PublishedEvent(self.context,
                                                         self.context))
+        return self._result()
 
     def retract(self, priority=PRIORITY_DEFAULT, background=True,
                 object=None, **kw):
-        if object:
+        if object is not None:
             self.context = object
+        self.context = zope.security.proxy.getObject(self.context)
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
                                                             self.context))
@@ -45,18 +53,21 @@ class MockPublish:
         zope.event.notify(
             zeit.cms.workflow.interfaces.RetractedEvent(self.context,
                                                         self.context))
+        return self._result()
 
     def publish_multiple(
             self, objects, priority=PRIORITY_LOW, background=True, **kw):
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.publish(priority, background, obj)
+        return self._result()
 
     def retract_multiple(
             self, objects, priority=PRIORITY_LOW, background=True, **kw):
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.retract(priority, background, obj)
+        return self._result()
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
@@ -108,7 +119,7 @@ class MockPublishInfo:
     def can_publish(self):
         return _can_publish.get(
             self.context.uniqueId,
-            zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR)
+            zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS)
 
     # Test support
 
@@ -136,3 +147,9 @@ try:
     zope.testing.cleanup.addCleanUp(reset)
 except ImportError:
     pass
+
+
+@zope.component.adapter(zeit.cms.workflow.interfaces.IPublishInfo)
+@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
+def workflow_dav_properties(context):
+    return zeit.connector.interfaces.IWebDAVProperties(context.context, None)

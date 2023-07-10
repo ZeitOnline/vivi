@@ -31,7 +31,6 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         content.volume = 1
         content.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['testcontent'] = content
-        IPublishInfo(self.repository['testcontent']).urgent = True
 
     def create_article_with_references(self):
         from zeit.content.article.edit.body import EditableBody
@@ -63,7 +62,6 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
             self.repository['image'])
         image_reference._validate = mock.Mock()
         self.repository['article_with_ref'] = article
-        IPublishInfo(article).urgent = True
         return self.repository['article_with_ref']
 
     def test_view_has_action_buttons(self):
@@ -79,18 +77,11 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/'
                '2015/01/ausgabe/@@publish-all')
-        zeit.workflow.testing.run_tasks()
 
     def test_publish_button_publishes_volume_content(self):
-        volume = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2015/01/ausgabe')
         self.elastic.search.return_value = zeit.cms.interfaces.Result(
             [{'url': '/testcontent'}])
-        with mock.patch(
-                'zeit.workflow.publish.PublishTask.call_script') as script:
-            self.publish_content()
-            script.assert_called_with(
-                'publish', [self.repository['testcontent'], volume])
+        self.publish_content()
         self.assertTrue(IPublishInfo(self.repository['testcontent']).published)
         self.assertTrue(
             IPublishInfo(self.repository['2015']['01']['ausgabe']).published)

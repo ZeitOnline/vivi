@@ -1,3 +1,6 @@
+from zeit.cms.workflow.interfaces import IPublicationDependencies
+from zeit.cms.repository.folder import Folder
+from zeit.content.image.testing import create_local_image
 import transaction
 import unittest
 import zeit.content.gallery.gallery
@@ -88,3 +91,27 @@ class TestVisibleEntryCount(zeit.content.gallery.testing.FunctionalTestCase):
         count = zeit.content.gallery.interfaces.IVisibleEntryCount(
             self.gallery)
         self.assertEqual(2, count)
+
+
+class TestWorkflow(zeit.content.gallery.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super().setUp()
+
+        self.folder = self.repository['image-folder'] = Folder()
+        image = create_local_image('opernball.jpg')
+        image = self.folder['opernball.jpg'] = image
+
+        gallery = zeit.content.gallery.gallery.Gallery()
+        gallery.image_folder = self.folder
+        self.gallery = self.repository['gallery'] = gallery
+
+    def test_publishes_images_from_folder_with_gallery(self):
+        pub = IPublicationDependencies(self.gallery)
+        for deps in [pub.get_dependencies(), pub.get_retract_dependencies()]:
+            self.assertIn(self.folder['opernball.jpg'], deps)
+
+    def test_nonexistent_image_folder_does_not_break(self):
+        del self.folder.__parent__[self.folder.__name__]
+        self.assertEqual(
+            [], IPublicationDependencies(self.gallery).get_dependencies())

@@ -57,6 +57,7 @@ Now we can publish:
 >>> browser.open('@@checkin')
 >>> browser.getLink('Workflow').click()
 >>> browser.getControl('Save state and publish now').click()
+Publishing: http://xml.zeit.de/online/2007/01/island
 >>> print(browser.contents)
 <...http://xml.zeit.de/online/2007/01/island has been scheduled
 for publishing...

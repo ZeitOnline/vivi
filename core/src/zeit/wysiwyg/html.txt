@@ -689,7 +689,7 @@ though it's nested.
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
   <body>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
         <bu py:pytype="str">Cap cap cap</bu>
     </image>
     <p><strong> Hurz</strong> foobar </p>

@@ -1,4 +1,5 @@
 <head>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:ce448cdc-cf0c-4e9d-8bdd-874fc5a37cde}</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Jochen Stahnke</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights"></attribute>

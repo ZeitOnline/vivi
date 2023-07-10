@@ -313,18 +313,6 @@ Publish the politik channel:
 ...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
 >>> politik_checkbox.value = True
 >>> browser.getControl('Publish').click()
->>> print(browser.contents)
-<?xml ...
-        <li class="error">Could not publish "politik.feed".</li>
-        ...
-
-Make the object publishable and try again:
-
->>> import zeit.cms.workflow.mock
->>> from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
->>> feed_id = 'http://xml.zeit.de/politik.feed'
->>> zeit.cms.workflow.mock._can_publish[feed_id] = CAN_PUBLISH_SUCCESS
->>> browser.getControl('Publish').click()
 Publishing: http://xml.zeit.de/politik.feed
 
 

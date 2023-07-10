@@ -254,22 +254,3 @@ The metadata is updated (asynchronously) when the centerpage is checked in:
          date-first-released=""
          date-last-published=""
          last-semantic-change="2009-09-11T08:18:48+00:00"...
-
-Publish test content:
-
->>> zeit.cms.workflow.interfaces.IPublishInfo(
-...     repository['testcontent']).urgent = True
->>> job_id = zeit.cms.workflow.interfaces.IPublish(
-...     repository['testcontent']).publish()
-
-The data is, again, updated when the CP is checked in:
-
->>> with zeit.cms.checkout.helper.checked_out(repository['cp']):
-...     pass
->>> print(zeit.cms.testing.xmltotext(repository['cp'].xml))
-<centerpage...
-  <block ...href="http://xml.zeit.de/testcontent"...
-         date-last-modified="2009-09-11T08:18:48+00:00"
-         date-first-released="2009-09-11T08:18:48+00:00"
-         date-last-published="2009-09-11T08:18:48+00:00"
-         last-semantic-change="2009-09-11T08:18:48+00:00"...

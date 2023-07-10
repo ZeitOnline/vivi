@@ -82,9 +82,11 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         # Safetybelt against the "publish videos after checkin" feature
         bc = create_video()
         import_video(bc)  # Create CMS object
-        with mock.patch('zeit.workflow.publish.Publish.publish') as publish:
-            import_video(bc)
-            self.assertEqual(1, publish.call_count)
+        publish = mock.Mock()
+        zope.component.getGlobalSiteManager().registerHandler(
+            publish, (zeit.cms.workflow.interfaces.IPublishedEvent,))
+        import_video(bc)
+        self.assertEqual(2, publish.call_count)  # video + still
 
     def test_should_ignore_publish_for_already_locked_object(self):
         bc = create_video()
@@ -142,18 +144,22 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         bc = create_video()
         import_video(bc)
         bc.data['state'] = 'INACTIVE'
-        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
-            import_video(bc)
-            self.assertEqual(True, retract.called)
+        retract = mock.Mock()
+        zope.component.getGlobalSiteManager().registerHandler(
+            retract, (zeit.cms.workflow.interfaces.IRetractedEvent,))
+        import_video(bc)
+        self.assertEqual(True, retract.called)
 
     def test_deleted_video_should_be_retracted(self):
         bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
-        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
-            import_video(deleted)
-            self.assertEqual(True, retract.called)
+        retract = mock.Mock()
+        zope.component.getGlobalSiteManager().registerHandler(
+            retract, (zeit.cms.workflow.interfaces.IRetractedEvent,))
+        import_video(deleted)
+        self.assertEqual(True, retract.called)
 
     def test_images_of_retracted_video_should_be_retracted(self):
         import_video(create_video())

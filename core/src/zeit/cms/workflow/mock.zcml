@@ -2,6 +2,6 @@
 
   <adapter factory=".mock.MockPublish" />
   <adapter factory=".mock.MockPublishInfo" />
+  <adapter factory=".mock.workflow_dav_properties" />
 
 </configure>
-

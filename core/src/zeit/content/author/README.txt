@@ -131,22 +131,17 @@ Authors are published along with the articles that reference them:
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.authorships = [co.authorships.create(repository['shakespeare'])]
 
->>> import transaction
->>> zeit.cms.workflow.interfaces.IPublishInfo(
-...     repository['testcontent']).urgent = True
->>> transaction.commit()
->>> ignored = zeit.cms.workflow.interfaces.IPublish(
-...     repository['testcontent']).publish()
-
->>> info = zeit.cms.workflow.interfaces.IPublishInfo(repository['shakespeare'])
->>> info.published
-True
+>>> import zeit.cms.workflow.interfaces
+>>> zeit.cms.workflow.interfaces.IPublicationDependencies(
+...     repository['testcontent']).get_dependencies()
+[<zeit.content.author.author.Author http://xml.zeit.de/shakespeare>]
 
 But not if they are already published (there are no changes that could be
 relevant for the article):
 
->>> import zeit.workflow.interfaces
->>> zeit.workflow.interfaces.IPublicationDependencies(
+>>> info = zeit.cms.workflow.interfaces.IPublishInfo(repository['shakespeare'])
+>>> info.published = True
+>>> zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     repository['testcontent']).get_dependencies()
 []
 

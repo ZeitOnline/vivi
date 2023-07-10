@@ -335,6 +335,7 @@ class IProduct(zope.interface.Interface):
         'Product-ID of another Product we belong to')
     dependent_products = zope.interface.Attribute(
         'List of products whose relates_to points to us')
+    is_news = zope.interface.Attribute('is_news')
 
 
 class ISerie(zope.interface.Interface):

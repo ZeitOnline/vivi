@@ -2,6 +2,7 @@
 from datetime import datetime
 from unittest import mock
 from zeit.cms.interfaces import ICMSContent
+from zeit.cms.workflow.interfaces import IPublish
 from zope.lifecycleevent import ObjectCreatedEvent
 import os
 import pytz
@@ -234,16 +235,11 @@ class IntegrationTest(zeit.push.testing.TestCase):
         self.repository['content'] = content
         self.content = self.repository['content']
 
-    def publish(self, content):
-        from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-        IPublishInfo(content).urgent = True
-        IPublish(content).publish()
-
     def test_publish_triggers_push_notification_via_message_config(self):
         from zeit.push.interfaces import IPushMessages
         push = IPushMessages(self.content)
         push.message_config = [{'type': 'mobile', 'enabled': True}]
-        self.publish(self.content)
+        IPublish(self.content).publish()
         calls = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='urbanairship').calls
         self.assertEqual(calls[0][0], 'content_title')
@@ -277,7 +273,7 @@ class AuthorpushTest(IntegrationTest):
         self.repository['foo'] = content
 
     def test_author_push_on_publish_for_created_article(self):
-        self.publish(self.repository['foo'])
+        IPublish(self.repository['foo']).publish()
         calls = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='urbanairship').calls
         self.assertEqual(calls[0][2].get('enabled'), True)
@@ -286,13 +282,10 @@ class AuthorpushTest(IntegrationTest):
 
     def test_multiple_created_articles_push_with_auhtor_template(self):
         from zeit.content.article.article import Article
-        from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
         content = Article()
         content.title = 'bar'
         zope.event.notify(ObjectCreatedEvent(content))
         self.repository['bar'] = content
-        IPublishInfo(self.repository['bar']).urgent = True
-        IPublishInfo(self.repository['foo']).urgent = True
         IPublish(content).publish_multiple([self.repository['foo'],
                                             self.repository['bar']])
         calls = zope.component.getUtility(

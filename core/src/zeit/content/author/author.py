@@ -15,9 +15,9 @@ import zeit.cms.interfaces
 import zeit.cms.related.related
 import zeit.cms.repository.interfaces
 import zeit.cms.type
+import zeit.cms.workflow.dependency
 import zeit.content.author.interfaces
 import zeit.find.interfaces
-import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
 import zope.security.proxy
@@ -237,7 +237,7 @@ def _create_honorar_entry(author):
     })
 
 
-class Dependencies(zeit.workflow.dependency.DependencyBase):
+class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
     """When content is published, make sure that all author objects
     referenced by it are also available to the published content.
     """

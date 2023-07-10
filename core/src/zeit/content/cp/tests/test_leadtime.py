@@ -1,7 +1,8 @@
+from unittest import mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import IPublish
 import transaction
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -29,7 +30,6 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['cp'] = cp
 
     def publish(self, content):
-        IPublishInfo(content).urgent = True
         IPublish(content).publish()
         transaction.commit()
 
@@ -64,11 +64,13 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(None, leadtime.end)
 
     def test_publishes_article_if_already_published(self):
+        publish = mock.Mock()
+        zope.component.getGlobalSiteManager().registerHandler(
+            publish, (zeit.cms.workflow.interfaces.IPublishedEvent,))
         self.publish(self.repository['foo'])
-        before = IPublishInfo(self.repository['foo']).date_last_published
+        self.assertEqual(1, publish.call_count)
         self.publish(self.repository['cp'])
-        after = IPublishInfo(self.repository['foo']).date_last_published
-        self.assertGreater(after, before)
+        self.assertEqual(3, publish.call_count)
 
     def test_article_checked_out_by_somebody_else_steals_lock_first(self):
         zope.security.management.endInteraction()

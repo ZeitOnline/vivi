@@ -6,10 +6,17 @@ appears on the image as well:
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.testing
 >>> import zeit.content.image.testing
+>>> import zeit.workflow.asset
 >>> import zope.component
 
 >>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()
+
+>>> zope.component.getSiteManager().registerAdapter(
+...     zeit.workflow.asset.AssetWorkflow,
+...     provided=zeit.workflow.interfaces.IAssetWorkflow)
+>>> zope.component.getSiteManager().registerAdapter(
+...     zeit.workflow.timebased.XMLReferenceUpdater, name='timebased')
 
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)

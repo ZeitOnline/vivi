@@ -2,7 +2,6 @@ from itertools import chain
 import datetime
 import grokcore.component as grok
 import logging
-import zope.app.appsetup.product
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -11,7 +10,9 @@ import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.video.interfaces
+import zeit.retresco.interfaces
 import zeit.workflow.interfaces
+import zope.app.appsetup.product
 
 
 log = logging.getLogger(__name__)
@@ -254,8 +255,7 @@ class TMS(grok.Adapter):
     grok.name('tms')
 
     def ignore(self):
-        if zeit.retresco.interfaces.ITMSRepresentation(
-                self.context)() is None:
+        if zeit.retresco.interfaces.ITMSRepresentation(self.context)() is None:
             return True
         return False
 

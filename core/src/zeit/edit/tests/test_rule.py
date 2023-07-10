@@ -148,11 +148,21 @@ error_unless(is_published(context))
     def test_scheduled_for_publishing(self):
         import zeit.cms.interfaces
         import zeit.edit.rule
+        import zeit.workflow.workflow
+
+        class Timebased(zeit.workflow.timebased.TimeBasedWorkflow):
+
+            def setup_job(self, *args, **kw):
+                pass
+
+        zope.component.getSiteManager().registerAdapter(
+            Timebased, provided=zeit.cms.workflow.interfaces.IPublishInfo)
 
         r = zeit.edit.rule.Rule("""
 error_unless(scheduled_for_publishing(context))
 """)
         tc = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+        zope.interface.alsoProvides(tc, zeit.cms.interfaces.IEditorialContent)
         s = self.apply(r, tc)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 

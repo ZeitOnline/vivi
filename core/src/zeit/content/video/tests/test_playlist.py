@@ -1,3 +1,4 @@
+from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.cms.checkout.helper import checked_out
 import zeit.cms.workflow.interfaces
 import zeit.content.animation.animation
@@ -91,10 +92,7 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
         pls = next(factory)
         pls.videos = (video,)
         pls = next(factory)  # in repository
-
-        zeit.cms.workflow.interfaces.IPublish(video).publish()
-        self.assertTrue(
-            zeit.cms.workflow.interfaces.IPublishInfo(pls).published)
+        self.assertIn(pls, IPublicationDependencies(video).get_dependencies())
 
     def test_non_playlist_referencing_content_not_published_with_video(self):
         factory = zeit.content.video.testing.video_factory(self)
@@ -104,9 +102,5 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
         with checked_out(self.repository['testcontent']) as co:
             zeit.cms.related.interfaces.IRelatedContent(co).related = (video,)
 
-        zeit.cms.workflow.interfaces.IPublish(video).publish()
-        self.assertTrue(
-            zeit.cms.workflow.interfaces.IPublishInfo(video).published)
-        self.assertFalse(
-            zeit.cms.workflow.interfaces.IPublishInfo(
-                self.repository['testcontent']).published)
+        self.assertNotIn(self.repository['testcontent'],
+                         IPublicationDependencies(video).get_dependencies())

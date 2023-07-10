@@ -12,6 +12,7 @@ import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
+import zeit.cms.workflow.dependency
 import zeit.content.cp.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
@@ -19,7 +20,6 @@ import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.search
-import zeit.workflow.dependency
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
@@ -342,7 +342,7 @@ def publish_priority_volume(context):
     return zeit.cms.workflow.interfaces.PRIORITY_LOW
 
 
-class CoverDependency(zeit.workflow.dependency.DependencyBase):
+class CoverDependency(zeit.cms.workflow.dependency.DependencyBase):
     """
     If a Volume is published, its covers are published as well.
     """
