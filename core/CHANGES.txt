@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.6 (2023-07-10)
+-------------------
+
+- ZO-2613: Remove rotterdam skin
+
+
 5.27.5 (2023-07-06)
 -------------------
 
