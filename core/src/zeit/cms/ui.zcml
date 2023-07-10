@@ -21,66 +21,38 @@
   <include package="zeit.cms" file="application.zcml" />
   <include package="zeit.cms" file="menu.zcml" />
 
-  <include package="zope.app.content" />
-  <include package="zope.app.dependable" />
-  <include package="zope.app.generations" />
   <include package="zope.app.pagetemplate" />
   <include package="zope.app.publication" file="meta.zcml" />
   <include package="zope.app.publication" />
   <include package="zope.app.publisher" />
-  <include package="zope.app.schema" />
-  <include package="zope.app.security" />
+  <!-- We should copy those two files instead, the package is archived -->
+  <include package="zope.app.security" file="globalmodules.zcml" />
+  <include package="zope.app.security" file="_protections.zcml" />
   <include package="zope.copypastemove" />
   <include package="zope.componentvocabulary" />
+  <include package="zope.error" />
   <include package="zope.publisher" />
   <include package="zope.site" />
   <include package="zope.size" />
 
-  <!-- Views -->
-  <include package="zope.app.http" />
-
   <!-- Translations -->
+  <include package="zope.i18n" />
   <configure package="zope.app.locales">
     <include package="zope.i18n" file="meta.zcml" />
     <i18n:registerTranslations directory="." />
   </configure>
 
-  <include package="zope.app.i18n" />
-
   <!-- Database boostrapping and maintanance -->
   <include package="zope.app.appsetup" />
-  <include package="zope.app.zopeappgenerations" />
-
-  <!-- Services -->
-  <include package="zope.app.principalannotation" />
-
-  <!-- Utilities -->
-  <include package="zope.app.error" />
-
-  <!-- Broken-object support -->
-  <include package="zope.app.broken" />
-
-  <!-- Skins -->
-
-  <include package="zope.app.basicskin" />
-  <include package="zope.app.rotterdam" />
 
   <!-- browser -->
   <browser:defaultView name="index.html" />
 
-  <include package="zope.app.component.browser" />
-  <include package="zope.app.container.browser" />
-  <include package="zope.app.exception.browser" />
-  <include package="zope.app.form.browser" file="meta.zcml" />
-  <include package="zope.app.form.browser" />
-  <include package="zope.app.security.browser" />
-
   <!-- Additional packages -->
 
-  <include package="zope.app.applicationcontrol" />
+  <include package="zope.applicationcontrol" />
   <include package="zope.dublincore" />
   <include package="zope.formlib" />
-  <include package="zope.app.wsgi" />
 
   <include package="zope.i18n.locales"/>
   <include package="zope.traversing.browser"/>
@@ -92,17 +64,22 @@
   <include package="zope.mimetype" />
   <include package="zope.file" />
 
+  <!-- Authentication -->
   <include package="zope.login" />
   <include package="zope.authentication" />
   <include package="zope.pluggableauth" />
-  <include package="zope.app.localpermission" />
+  <include package="zope.app.exception.browser" />
   <include package="zope.principalregistry" />
-  <include package="zope.app.securitypolicy"/>
+  <include package="zope.app.principalannotation" />
+  <!-- Grant UI -->
+  <include package="zope.app.form.browser" file="meta.zcml" />
   <include package="zope.app.authentication"/>
+  <include package="zope.app.security.browser" />
+
   <include package="zope.app.tree"/>
-  <include package="zope.app.renderer"/>
   <include package="zope.app.preference" file="meta.zcml"/>
   <include package="zope.app.preference"/>
+
   <include package="zope.app.locking"/>
   <include package="zope.app.keyreference"/>
 

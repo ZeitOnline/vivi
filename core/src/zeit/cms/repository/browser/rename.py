@@ -10,6 +10,7 @@ import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
 import zope.schema
+import zope.app.pagetemplate.viewpagetemplatefile
 
 
 class IRenameSchema(zope.interface.Interface):
