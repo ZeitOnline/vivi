@@ -110,6 +110,9 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_homepage_has_different_publish_priority(self):
         cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        self.assertEqual(
+            zeit.cms.workflow.interfaces.PRIORITY_HIGH,
+            zeit.cms.workflow.interfaces.IPublishPriority(cp))
         cp.type = 'homepage'
         self.assertEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
