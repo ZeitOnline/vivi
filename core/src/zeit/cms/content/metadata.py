@@ -12,6 +12,16 @@ import zeit.wochenmarkt.categories
 import zope.interface
 
 
+class ToggleableAccess(zeit.cms.content.dav.DAVProperty):
+
+    def __get__(self, instance, class_, properties=None):
+        value = super().__get__(instance, class_, properties)
+        if FEATURE_TOGGLES.find(
+                'access_treat_free_as_dynamic') and value == 'free':
+            return 'dynamic'
+        return value
+
+
 @zope.interface.implementer(ICommonMetadata)
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
@@ -41,6 +51,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'banner_outer',
         'channels',
     ), use_default=True)
+
+    access = ToggleableAccess(
+        ICommonMetadata['access'], DOCUMENT_SCHEMA_NS, 'access',
+        use_default=True)
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author')
@@ -100,22 +114,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     ir_article_id = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['ir_article_id'], zeit.cms.interfaces.IR_NAMESPACE,
         'article_id')
-
-    _access = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['access'], DOCUMENT_SCHEMA_NS, 'access',
-        use_default=True)
-
-    @property
-    def access(self):
-        value = self._access
-        if FEATURE_TOGGLES.find(
-                'access_treat_free_as_dynamic') and value == 'free':
-            return 'dynamic'
-        return value
-
-    @access.setter
-    def access(self, value):
-        self._access = value
 
     _color_scheme = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['color_scheme'], DOCUMENT_SCHEMA_NS, 'color_scheme')
