@@ -1,9 +1,10 @@
 from unittest import mock
 
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
+from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 import requests_mock
 import zeit.content.article.testing
+import zeit.workflow.publisher
 import zeit.workflow.testing
 import zope.component
 
@@ -15,6 +16,9 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
         self.representation = self.patch.start()
         super().setUp()
+        self.gsm = zope.component.getGlobalSiteManager()
+        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(),
+                                 IPublisher)
 
     def tearDown(self):
         self.patch.stop()

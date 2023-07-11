@@ -333,122 +333,6 @@ http://xml.zeit.de/online/2007/01/eta-zapatero
 http://xml.zeit.de/online/2007/01/eta-zapatero
      Retracted
 
-
-
-Actual publish retract
-======================
-
-Publish script
---------------
-
-Set up a log handler to inspect
-
->>> import logging
->>> from io import StringIO
->>> logfile = StringIO()
->>> log_handler = logging.StreamHandler(logfile)
->>> logging.root.addHandler(log_handler)
->>> loggers = [None, 'zeit']
->>> oldlevels = {}
->>> for name in loggers:
-...     logger = logging.getLogger(name)
-...     oldlevels[name] = logger.level
-...     logger.setLevel(logging.INFO)
-
-
-The actual publishing happens by external the publish script.
-Publish the folder again and verify the log:
-
->>> job_id = publish.publish(background=False)
->>> print(logfile.getvalue())
-Running job ... for http://xml.zeit.de/online/2007/01/
-Publishing http://xml.zeit.de/online/2007/01/
-...publish.sh:
-publish test script
-work/online/2007/01/
-work/online/2007/01/4schanzentournee-abgesang
-work/online/2007/01/Arbeitsmarktzahlen
-work/online/2007/01/EU-Beitritt-rumaenien-bulgarien
-work/online/2007/01/Flugsicherheit
-work/online/2007/01/Ford-Beerdigung
-work/online/2007/01/Gesundheitsreform-Die
-work/online/2007/01/Guantanamo
-work/online/2007/01/Lateinamerika-Jahresrueckblick
-work/online/2007/01/Mehrwertsteuer-Jobs
-work/online/2007/01/Merkel-Ansprache
-work/online/2007/01/Querdax
-work/online/2007/01/Querdax-05-01-07
-work/online/2007/01/RUND-Olympique-Marseille
-work/online/2007/01/Rosia-Montana
-work/online/2007/01/Saarland
-work/online/2007/01/Saddam-Anschlaege
-work/online/2007/01/Saddam-Kommentar
-work/online/2007/01/Saddam-Prozess
-work/online/2007/01/Saddam-Verbuendete
-work/online/2007/01/Schrempp
-work/online/2007/01/Somalia
-work/online/2007/01/Somalia-Grill
-work/online/2007/01/Somalia-Treffen
-work/online/2007/01/Spitzenkandidat-Stoiber
-work/online/2007/01/Stern-Umfrage-Bayern
-work/online/2007/01/bildergalerie-mehrwertsteuer
-work/online/2007/01/bildergalerie-mehrwertsteuer-erhoehung
-work/online/2007/01/bildergalerie-spiegel
-work/online/2007/01/elterngeld-schlieben
-work/online/2007/01/eta-zapatero
-work/online/2007/01/eta-zapatero-kommentar
-work/online/2007/01/eu-praesidentschaft-gustavsson
-work/online/2007/01/finanztest-online-banking
-work/online/2007/01/finanztest-online-banking-tipps
-work/online/2007/01/flugzeugabsturz-indonesien
-work/online/2007/01/index
-work/online/2007/01/internationale-presseschau-japan-irak-klima
-work/online/2007/01/lebenslagen-01
-work/online/2007/01/mein-leben-mit-musik-52
-work/online/2007/01/rauchen-verbessert-die-welt
-work/online/2007/01/rund-Sprachforschung
-work/online/2007/01/saddam-exekution
-work/online/2007/01/saddam-grab
-work/online/2007/01/saddam-hinrichtung-2006
-work/online/2007/01/saddam-luttwak
-work/online/2007/01/saddam-nachruf
-work/online/2007/01/somalia-donnerstag
-work/online/2007/01/somalia-kismayu
-work/online/2007/01/studiVZ
-work/online/2007/01/teddy-kollek-nachruf
-work/online/2007/01/terror-abschuss-schaeuble
-work/online/2007/01/thailand-anschlaege
-work/online/2007/01/weissrussland-russland-gas
-done.
-Done http://xml.zeit.de/online/2007/01/ (...s)
-
-
-Retract script
---------------
-
-The retract script removes files and folders. It removes in the opposite order
-of publish:
-
->>> _ = logfile.seek(0)
->>> _ = logfile.truncate()
->>> job_id = publish.retract(background=False)
->>> print(logfile.getvalue())
-Running job ...
-Retracting http://xml.zeit.de/online/2007/01/
-...publish.sh:
-retract test script
-work/online/2007/01/weissrussland-russland-gas
-work/online/2007/01/thailand-anschlaege
-work/online/2007/01/terror-abschuss-schaeuble
-work/online/2007/01/teddy-kollek-nachruf
-...
-work/online/2007/01/Arbeitsmarktzahlen
-work/online/2007/01/4schanzentournee-abgesang
-work/online/2007/01/
-done.
-Done http://xml.zeit.de/online/2007/01/ (...s)
-
-
 Dependencies
 ============
 
@@ -543,8 +427,6 @@ Dependend retract
 
 Retract does *not* honour dependencies by default:
 
->>> _ = logfile.seek(0)
->>> _ = logfile.truncate()
 >>> job_id = publish.retract(background=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
@@ -557,20 +439,9 @@ True
 
 Make sure the file would actually have been removed:
 
->>> print(logfile.getvalue())
-Running job ...
-Retracting http://xml.zeit.de/online/2007/01/Somalia
-...publish.sh:
-retract test script
-work/online/2007/01/Somalia
-done.
-...
-
 If the dependencies adapter allows it, the dependencies are retracted as well:
 
 >>> SomaliaFeed.retract_dependencies = True
->>> _ = logfile.seek(0)
->>> _ = logfile.truncate()
 >>> job_id = publish.retract(background=False)
 BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
@@ -636,103 +507,3 @@ http://xml.zeit.de/2006/49/Zinsen
 >>> gsm.unregisterHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 True
-
-
-
-Depending on non workflowed objects
-+++++++++++++++++++++++++++++++++++
-
-When there is a dependency on an object which is not publishable by itself it
-will be published nevertheles.
-
-Let somalia also depend on the /2007 folder:
-
->>> class SomaliaFolder(zeit.cms.workflow.dependency.DependencyBase):
-...     def get_dependencies(self):
-...         if self.context.uniqueId.endswith('Somalia'):
-...             return (repository['2007'],)
-...         return ()
-...
->>> import zeit.content.cp.interfaces
->>> gsm.registerAdapter(
-...     SomaliaFolder,
-...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.cms.workflow.interfaces.IPublicationDependencies,
-...     name='folder')
-
->>> zeit.cms.workflow.interfaces.IPublicationDependencies(
-...     somalia).get_dependencies()
-[<zeit.cms.repository.unknown...>,
- <zeit.cms.repository.folder.Folder...>]
-
-2007 is not published:
-
->>> not not zeit.cms.workflow.interfaces.IPublishInfo(
-...     repository['2007']).published
-False
-
-When somalia is published, the folder and its content is also published:
-
->>> _ = logfile.seek(0)
->>> _ = logfile.truncate()
->>> job_id = publish.publish(background=False)
->>> print(logfile.getvalue())
-Running job ...
-Publishing http://xml.zeit.de/online/2007/01/Somalia
-...publish.sh:
-publish test script
-work/online/2007/01/Somalia
-work/2006/49/Zinsen
-work/2007/
-work/2007/01/
-work/2007/02/
-work/2007/03/
-work/2007/test
-work/2007/01/LB-Sch-ttler
-...
-work/2007/02/Vorspann-Dappen
-work/2007/02/W-Clear-02
-work/2007/03/group/
-done.
-...
-
-And 2007 is marked as published now:
-
->>> zeit.cms.workflow.interfaces.IPublishInfo(repository['2007']).published
-True
-
-The publication is also logged in the object log:
-
->>> print_log(log.get_log(repository['2007']))
-http://xml.zeit.de/2007/
-     Published
-
-
-Remove the test adapters:
-
->>> gsm.unregisterAdapter(
-...     FeedSomalia,
-...     (zeit.content.cp.interfaces.IFeed,),
-...     zeit.cms.workflow.interfaces.IPublicationDependencies,
-...     name='feed')
-True
->>> gsm.unregisterAdapter(
-...     SomaliaFeed,
-...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.cms.workflow.interfaces.IPublicationDependencies,
-...     name='somalia')
-True
->>> gsm.unregisterAdapter(
-...     SomaliaFolder,
-...     (zeit.cms.repository.interfaces.IUnknownResource,),
-...     zeit.cms.workflow.interfaces.IPublicationDependencies,
-...     name='folder')
-True
-
-
-Clean up
-++++++++
-
->>> logging.root.removeHandler(log_handler)
->>> for name in loggers:
-...     logging.getLogger(name).setLevel(oldlevels[name])

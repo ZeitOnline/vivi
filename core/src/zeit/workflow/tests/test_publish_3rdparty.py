@@ -2,7 +2,7 @@ from unittest import mock
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
+from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 from zeit.content.image.testing import create_image_group_with_master_image
 import pytest
 import requests_mock
@@ -15,6 +15,7 @@ import zeit.content.author.author
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
+import zeit.workflow.publisher
 import zeit.workflow.publish_3rdparty
 import zeit.workflow.testing
 import zope.app.appsetup.product
@@ -30,6 +31,9 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
         self.representation = self.patch.start()
         super().setUp()
+        self.gsm = zope.component.getGlobalSiteManager()
+        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(),
+                                 IPublisher)
 
     def tearDown(self):
         self.patch.stop()

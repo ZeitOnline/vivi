@@ -2,17 +2,14 @@ from datetime import datetime
 from io import StringIO
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
 import logging
-import os
 import pytz
 import requests_mock
-import shutil
 import time
 import transaction
 import zeit.cms.related.interfaces
@@ -23,6 +20,7 @@ import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
 import zeit.workflow.testing
+import zeit.workflow.publisher
 import zope.app.appsetup.product
 import zope.component
 import zope.i18n
@@ -242,7 +240,6 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEllipsis("""\
 ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
-...
 Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
                             self.log.getvalue())
         self.assertIn('Published', get_object_log(content))
@@ -261,14 +258,12 @@ Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
         transaction.commit()
         self.assertEqual('Published.', publish.get())
         transaction.begin()
-
         self.assertEllipsis("""\
 ...
     for http://xml.zeit.de/online/2007/01/Flugsicherheit,
         http://xml.zeit.de/online/2007/01/Saarland
 Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit,
        http://xml.zeit.de/online/2007/01/Saarland
-...
 Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
  http://xml.zeit.de/online/2007/01/Saarland (...s)...""",
                             self.log.getvalue())
@@ -280,18 +275,16 @@ Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
 class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
-    error = "Error during publish/retract: ScriptError: ('', 1)"
+    error = "Error during publish/retract: PublishError: Error"
 
     def setUp(self):
+        self.publisher = mock.patch('zeit.workflow.publisher.MockPublisher.request')
+        self.mocker = self.publisher.start()
+        self.mocker.side_effect = zeit.workflow.publisher.PublishError("Error")
         super().setUp()
-        self.bak_path = self.layer['publish-script'] + '.bak'
-        shutil.move(self.layer['publish-script'], self.bak_path)
-        with open(self.layer['publish-script'], 'w') as f:
-            f.write('#!/bin/sh\nexit 1')
-        os.chmod(self.layer['publish-script'], 0o755)
 
     def tearDown(self):
-        shutil.move(self.bak_path, self.layer['publish-script'])
+        self.publisher.stop()
         super().tearDown()
 
     def test_error_during_publish_is_written_to_objectlog(self):
@@ -343,7 +336,7 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
 class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
-    def test_publishes_and_retracts_multiple_objects_in_single_script_call(
+    def test_publishes_and_retracts_multiple_objects_in_single_call(
             self):
         c1 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
@@ -351,19 +344,10 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/online/2007/01/eta-zapatero')
         IPublishInfo(c1).urgent = True
         IPublishInfo(c2).urgent = True
-        with mock.patch(
-                'zeit.workflow.publish.PublishTask.call_script') as script:
-            IPublish(self.repository).publish_multiple(
-                [c1, c2], background=False)
-            script.assert_called_with('publish', [c1, c2])
+        IPublish(self.repository).publish_multiple([c1, c2])
         self.assertTrue(IPublishInfo(c1).published)
         self.assertTrue(IPublishInfo(c2).published)
-
-        with mock.patch(
-                'zeit.workflow.publish.RetractTask.call_script') as script:
-            IPublish(self.repository).retract_multiple(
-                [c1, c2], background=False)
-            script.assert_called_with('retract', [c1, c2])
+        IPublish(self.repository).retract_multiple([c1, c2])
         self.assertFalse(IPublishInfo(c1).published)
         self.assertFalse(IPublishInfo(c2).published)
 
@@ -425,6 +409,9 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
         self.representation = self.patch.start()
         super().setUp()
+        self.gsm = zope.component.getGlobalSiteManager()
+        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(),
+                                 zeit.cms.workflow.interfaces.IPublisher)
 
     def tearDown(self):
         self.patch.stop()
