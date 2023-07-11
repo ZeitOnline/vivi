@@ -1,6 +1,5 @@
 import grokcore.component as grok
 import grokcore.component.testing
-import unittest
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
@@ -60,7 +59,7 @@ class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual(self.content, adapter.__parent__)
 
 
-class FindPropertyTest(unittest.TestCase):
+class FindPropertyTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_match_found_returns_property(self):
         prop = zeit.cms.content.dav.findProperty(
