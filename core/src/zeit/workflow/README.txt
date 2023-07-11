@@ -449,34 +449,6 @@ done.
 Done http://xml.zeit.de/online/2007/01/ (...s)
 
 
-Error handling
---------------
-
-When the publish/retract script fails we'll get an error logged. The script
-fails when there is 'JPG' in the input data:
-
->>> jpg = repository['2006']['DSC00109_2.JPG']
->>> workflow = zeit.workflow.interfaces.IContentWorkflow(jpg)
->>> workflow.urgent = True
->>> publish = zeit.cms.workflow.interfaces.IPublish(jpg)
->>> job_id = publish.publish(background=False)
-Traceback (most recent call last):
-HandleAfterAbort: Error during publish/retract: ScriptError: ('error\n', 1)
-
->>> print_log(log.get_log(jpg))
-http://xml.zeit.de/2006/DSC00109_2.JPG
-     Urgent: yes
-http://xml.zeit.de/2006/DSC00109_2.JPG
-      Error during publish/retract: ScriptError: ('error\n', 1)
-
-Reset the folder implements:
-
->>> zope.interface.classImplementsOnly(
-...     zeit.cms.repository.folder.Folder,
-...     *old_implements)
-
-
-
 Dependencies
 ============
 

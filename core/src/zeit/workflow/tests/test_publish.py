@@ -379,9 +379,9 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch(
-                'zeit.workflow.publish.PublishTask.call_script') as script:
+                'zeit.workflow.publish.PublishTask.call_publish') as publish:
             IPublish(self.repository).publish_multiple([], background=False)
-            self.assertFalse(script.called)
+            self.assertFalse(publish.called)
 
     def test_error_in_one_item_continues_with_other_items(self):
         c1 = zeit.cms.interfaces.ICMSContent(
@@ -431,7 +431,6 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
         super().tearDown()
 
     def test_object_is_published(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
@@ -447,7 +446,6 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_object_is_retracted(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True

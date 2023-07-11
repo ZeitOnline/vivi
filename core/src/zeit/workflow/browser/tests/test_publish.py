@@ -1,3 +1,4 @@
+from unittest import mock
 import transaction
 import zeit.workflow.testing
 import zope.component.hooks
@@ -59,21 +60,16 @@ class TestPublish(
         s.assertText('css=.fieldname-logs .widget', '*Published*')
 
     def test_error_during_publish_should_be_messaged(self):
-        import zope.app.appsetup.product
-        config = zope.app.appsetup.product._configs
-        old_script = config['zeit.workflow']['publish-script']
-        config['zeit.workflow']['publish-script'] = 'invalid'
-        try:
-            self.prepare_content()
-            s = self.selenium
+        self.prepare_content()
+        s = self.selenium
+        with mock.patch(
+                'zeit.workflow.publisher.MockPublisher.request') as publish:
+            publish.side_effect = RuntimeError('provoked')
             s.click('link=Publish')
             s.waitForElementPresent('css=li.error')
-            # XXX: Once we switched over to python 3 completely, we can specify
-            # the error message again as FileNotFoundError.
             s.assertText(
-                'css=li.error', 'Error during publish/retract: *Error*')
-        finally:
-            config['zeit.workflow']['publish-script'] = old_script
+                'css=li.error',
+                'Error during publish/retract: RuntimeError: provoked')
 
     def test_opening_dialog_from_folder_view_points_to_content(self):
         # Regression VIV-452

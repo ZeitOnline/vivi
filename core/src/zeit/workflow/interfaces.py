@@ -15,10 +15,6 @@ NotNecessary = zeit.workflow.source.NotNecessary
 WORKFLOW_NS = 'http://namespaces.zeit.de/CMS/workflow'
 
 
-class ScriptError(Exception):
-    """Raised when the publish/retract script fails."""
-
-
 class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):
     """Time based publishing."""
 

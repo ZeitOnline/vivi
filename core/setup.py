@@ -173,7 +173,6 @@ setup(
             'selenium<4',  # ZO-681
             'gocept.testing>=1.4.0.dev0',
             'hvac',
-            'mock-ssh-server',
             'opentelemetry-exporter-otlp',
             'opentelemetry-sdk',
             'plone.testing[zca,zodb]',
