@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.27.7 (2023-07-11)
+-------------------
+
+- ZO-3478: Reimplement as a single DAVProperty, so zeit.contentquery still works
+
+
 5.27.6 (2023-07-10)
 -------------------
 
