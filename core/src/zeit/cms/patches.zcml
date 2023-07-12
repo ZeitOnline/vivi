@@ -19,4 +19,11 @@
     preserveOriginal="true"
     replacement=".zodb_patch.getState_with_logging" />
 
+  <monkey:patch
+    description="Apply total timeout until a response is received"
+    class="requests.sessions.Session"
+    original="request"
+    preserveOriginal="true"
+    replacement=".requests.request_with_timeout" />
+
 </configure>
