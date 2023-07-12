@@ -97,7 +97,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_bq = result['bigquery']
             self.assertEqual(
-                {'path': '/online/2007/01/Somalia'},
+                {},
                 result_bq)
         self.assertTrue(IPublishInfo(article).published)
 
@@ -133,12 +133,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_comments = result['comments']
-            result_comments.pop('uuid')  # NOTE changes each run
             self.assertEqual({
                 'comments_allowed': False,
                 'pre_moderated': False,
                 'type': 'commentsection',
-                'unique_id': 'http://xml.zeit.de/online/2007/01/Somalia',
                 'visible': False}, result_comments)
         self.assertTrue(IPublishInfo(article).published)
 
@@ -170,7 +168,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_fbnt = result['facebooknewstab']
             self.assertEqual(
-                {'path': '/online/2007/01/Somalia'},
+                {},
                 result_fbnt)
         self.assertTrue(IPublishInfo(article).published)
 
@@ -268,7 +266,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertEqual(
                 ['body', 'checksum', 'hasAudio', 'headline', 'publishDate',
                  'section', 'series', 'subtitle', 'supertitle', 'tags',
-                 'teaser', 'url', 'uuid'],
+                 'teaser'],
                 sorted(result_sb.keys()))
         self.assertTrue(IPublishInfo(article).published)
 
@@ -368,9 +366,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             tags=['Testtag', 'Testtag2', 'Testtag3'],
             teaser=(
                 'Ist genug Brot und Kuchen gebacken, '
-                'bleibt endlich wieder Zeit, zu kochen.'),
-            url='http://localhost/live-prefix/zeit-magazin/wochenmarkt/rezept',
-            uuid='16e82986-cdc0-492d-84e8-267d09b4ab53')
+                'bleibt endlich wieder Zeit, zu kochen.'))
 
     def test_speechbert_payload_access_free(self):
         article = ICMSContent(

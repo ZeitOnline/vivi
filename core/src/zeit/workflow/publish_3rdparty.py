@@ -33,11 +33,8 @@ class AuthorDashboard(grok.Adapter):
 
 
 class BigQueryMixin:
-    PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
-
     def publish_json(self):
-        path = self.context.uniqueId.removeprefix(self.PREFIX)
-        return {'path': path}
+        return {}
 
     def retract_json(self):
         return self.publish_json()
@@ -69,16 +66,10 @@ class VideoBigQuery(grok.Adapter, BigQueryMixin):
 
 class CommentsMixin:
     def publish_json(self):
-        # the uuid and unique_id are required in the payload,
-        # since the publisher should have no logic in that regard,
-        # we duplicate the two here
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
         return {
             'comments_allowed': self.context.commentsAllowed,
             'pre_moderated': self.context.commentsPremoderate,
             'type': 'commentsection',
-            'uuid': uuid.shortened,
-            'unique_id': self.context.uniqueId,
             'visible': self.context.commentSectionEnable}
 
     def retract_json(self):
@@ -109,8 +100,6 @@ class FacebookNewstab(grok.Adapter):
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('facebooknewstab')
 
-    PREFIX = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
-
     def publish_json(self):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow') or {}
@@ -137,8 +126,7 @@ class FacebookNewstab(grok.Adapter):
             if date_first_released < facebooknewstab_startdate:
                 # ignore resources before the cut off date
                 return
-        path = self.context.uniqueId.removeprefix(self.PREFIX)
-        return {'path': path}
+        return {}
 
     def retract_json(self):
         return self.publish_json()
@@ -198,9 +186,6 @@ class Speechbert(grok.Adapter):
         return f'{prefix}{variant_url}'
 
     def _json(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.cms') or {}
-        uuid = zeit.cms.content.interfaces.IUUID(self.context)
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(
             self.context)
         payload = dict(
@@ -219,9 +204,7 @@ class Speechbert(grok.Adapter):
             supertitle=self.context.supertitle,
             tags=[x.label for x in self.context.keywords],
             teaser=self.context.teaserText,
-            url=self.context.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE, config['live-prefix']),
-            uuid=uuid.shortened)
+        )
         if self.context.access != 'free':
             payload['access'] = self.context.access
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
@@ -242,11 +225,7 @@ class Speechbert(grok.Adapter):
     def retract_json(self):
         if self.ignore('retract'):
             return
-        return {
-            # Can we simplify this protocol? uuid is already passed in toplevel
-            # so we should not have to repeat it here.
-            'uuid': zeit.cms.content.interfaces.IUUID(self.context).shortened
-        }
+        return {}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
