@@ -8,6 +8,7 @@ import lxml
 import requests
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.cp.blocks.rss
 import zeit.content.cp.blocks.teaser
@@ -228,12 +229,15 @@ class CustomContentQuery(ElasticsearchContentQuery):
 
     def _make_condition(self, item):
         typ, operator, value = self.serialize(self.context, item)
-        fieldname = self.ES_FIELD_NAMES.get(typ)
-        if not fieldname:
-            fieldname = self._fieldname_from_property(typ)
-        return {'term': {fieldname: value}}
+        return {'term': {self._fieldname(typ): value}}
 
-    def _fieldname_from_property(self, typ):
+    @classmethod
+    def _fieldname(cls, typ):
+        fieldname = cls.ES_FIELD_NAMES.get(typ)
+        return fieldname if fieldname else cls._fieldname_from_property(typ)
+
+    @classmethod
+    def _fieldname_from_property(cls, typ):
         # XXX Generalize the class?
         prop = getattr(zeit.content.article.article.Article, typ)
         if not isinstance(prop, zeit.cms.content.dav.DAVProperty):
