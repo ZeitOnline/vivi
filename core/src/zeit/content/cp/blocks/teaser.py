@@ -4,8 +4,7 @@ import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.property
 import zeit.cms.interfaces
-import zeit.cms.syndication.feed
-import zeit.cms.syndication.interfaces
+import zeit.content.cp.feed
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
@@ -47,12 +46,12 @@ class Layoutable:
 
 @zope.interface.implementer_only(
     zeit.content.cp.interfaces.ITeaserBlock,
-    zeit.cms.syndication.interfaces.IFeed,
+    zeit.content.cp.interfaces.IFeed,
     zope.location.interfaces.IContained)
 class TeaserBlock(
         Layoutable,
         zeit.content.cp.blocks.block.Block,
-        zeit.cms.syndication.feed.ContentList):
+        zeit.content.cp.feed.ContentList):
 
     type = 'teaser'
 

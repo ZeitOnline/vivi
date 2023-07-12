@@ -292,7 +292,6 @@
   <include package="zeit.cms.checkout.browser" />
   <include package="zeit.cms.repository.browser" />
   <include package="zeit.cms.workingcopy.browser"  />
-  <include package="zeit.cms.syndication.browser" />
   <include package="zeit.cms.clipboard.browser" />
   <include package="zeit.cms.content.browser" />
   <include package="zeit.cms.related.browser" />

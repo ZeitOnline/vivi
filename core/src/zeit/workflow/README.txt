@@ -509,7 +509,7 @@ all the named adapters:
 >>> deps = zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 >>> deps
-[<zeit.cms.syndication.feed.Feed...>]
+[<zeit.content.cp.feed.Feed...>]
 >>> len(deps)
 1
 >>> deps[0].uniqueId
@@ -630,10 +630,10 @@ Add the reverse dependency:
 ...             return (somalia,)
 ...         return ()
 ...
->>> import zeit.cms.syndication.interfaces
+>>> import zeit.content.cp.interfaces
 >>> gsm.registerAdapter(
 ...     FeedSomalia,
-...     (zeit.cms.syndication.interfaces.IFeed,),
+...     (zeit.content.cp.interfaces.IFeed,),
 ...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 
@@ -681,7 +681,7 @@ Let somalia also depend on the /2007 folder:
 ...             return (repository['2007'],)
 ...         return ()
 ...
->>> import zeit.cms.syndication.interfaces
+>>> import zeit.content.cp.interfaces
 >>> gsm.registerAdapter(
 ...     SomaliaFolder,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
@@ -691,7 +691,7 @@ Let somalia also depend on the /2007 folder:
 >>> zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 [<zeit.cms.repository.folder.Folder...>,
- <zeit.cms.syndication.feed.Feed...>]
+ <zeit.content.cp.feed.Feed...>]
 
 2007 is not published:
 
@@ -740,7 +740,7 @@ Remove the test adapters:
 
 >>> gsm.unregisterAdapter(
 ...     FeedSomalia,
-...     (zeit.cms.syndication.interfaces.IFeed,),
+...     (zeit.content.cp.interfaces.IFeed,),
 ...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 True

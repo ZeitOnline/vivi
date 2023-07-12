@@ -24,7 +24,6 @@
   <include package=".checkout"  />
   <include package=".repository" />
   <include package=".workingcopy" />
-  <include package=".syndication" />
   <include package=".clipboard" />
   <include package=".locking" />
   <include package=".workflow" />

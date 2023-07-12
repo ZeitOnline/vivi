@@ -1,4 +1,3 @@
-import lxml.etree
 import zeit.content.link.link
 import zeit.content.link.testing
 import zope.app.appsetup
@@ -45,32 +44,6 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         b.getLink('Checkin').click()
         self.assertFalse('There were errors' in b.contents)
         self.assertTrue('/2006/gocept.link' in b.url)
-
-    def test_syndicate_link_object(self):
-        self.create_link_object()
-        b = self.browser
-        b.open('http://localhost/++skin++cms/repository/politik.feed')
-        b.getLink('Remember as syndication target').click()
-        b.open('http://localhost/repository/online/2007/01/gocept.link')
-        b.getLink('Syndicate').click()
-        checkbox = b.getControl(
-            name='selection_column'
-                 '.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
-        checkbox.value = True
-        b.getControl('Syndicate').click()
-        b.open('http://localhost/++skin++cms/repository/politik.feed')
-        b.getLink('Checkout').click()
-        b.getLink('Source').click()
-        xml = b.getControl(name='form.xml').value
-        block = lxml.etree.fromstring(xml).xpath('//block')[0]
-        self.assertEqual('http://gocept.com',
-                         block.get('{http://namespaces.zeit.de/CMS/link}href'))
-        self.assertEqual('http://xml.zeit.de/online/2007/01/gocept.link',
-                         block.get('href'))
-        self.assertEqual('Politik',
-                         block.get('ressort'))
-        self.assertEqual('gocept homepage',
-                         block.find('title').text)
 
     def test_checks_for_invalid_hostnames(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')

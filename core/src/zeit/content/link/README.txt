@@ -62,8 +62,8 @@ Create a channel and insert the link:
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 
->>> import zeit.cms.syndication.feed
->>> feed = zeit.cms.syndication.feed.Feed()
+>>> import zeit.content.cp.feed
+>>> feed =  zeit.content.cp.feed.Feed()
 >>> link.uniqueId = 'http://xml.zeit.de/link'
 >>> feed.insert(0, link)
 
