@@ -10,7 +10,6 @@ import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.field
@@ -531,7 +530,98 @@ class IntChoice(zope.schema.Choice):
         return super().fromUnicode(value)
 
 
-class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
+class IEntry(zope.interface.Interface):
+    """An entry in a feed."""
+
+    pinned = zope.schema.Bool(
+        title=_('Pinned'))
+
+    hidden = zope.schema.Bool(
+        title=_('Hidden on HP'))
+
+    big_layout = zope.schema.Bool(
+        title=_('Big layout'))
+
+    hidden_relateds = zope.schema.Bool(
+        title=_('Hidden relateds'))
+
+
+class IReadFeed(zope.interface.Interface):
+    """Feed read interface."""
+
+    title = zope.schema.TextLine(title=_("Title"))
+    object_limit = zope.schema.Int(
+        title=_("Limit amount"),
+        description=_("limit-amount-description"),
+        default=50,
+        min=1,
+        required=False)
+
+    def __len__():
+        """Return amount of objects syndicated."""
+
+    def __iter__():
+        """Iterate over published content.
+
+        When content is pinned __iter__ is supposed to return pinned content
+        at the right position.
+
+        """
+
+    def __contains__(content):
+        """Return if content is syndicated in this channel."""
+
+    def getPosition(content):
+        """Returns the position of `content` in the feed.
+
+        Returns 1-based position of the content object in the feed or None if
+        the content is not syndicated in this feed.
+
+        """
+
+    def getMetadata(content):
+        """Returns IEntry instance corresponding to content."""
+
+
+class IWriteFeed(zope.interface.Interface):
+    """Feed write interface."""
+
+    def insert(position, content):
+        """Add `content` to self at position `position`."""
+
+    def append(content):
+        """Add `content` to self at end."""
+
+    def remove(content):
+        """Remove `content` from feed.
+
+        raises ValueError if `content` not in feed.
+
+        """
+
+    def updateOrder(order):
+        """Revise the order of keys, replacing the current ordering.
+
+        order is a list or a tuple containing the set of existing keys in
+        the new order. `order` must contain ``len(keys())`` items and cannot
+        contain duplicate keys.
+
+        Raises ``ValueError`` if order contains an invalid set of keys.
+        """
+
+    def updateMetadata(content):
+        """Update the metadata of a contained object.
+
+        Raises KeyError if the content is not syndicated in this feed.
+
+        """
+
+
+class IFeed(IReadFeed, IWriteFeed):
+    """Documents can be published into a feed."""
+
+
+class IReadTeaserBlock(IBlock, IReadFeed):
 
     layout = zope.schema.Choice(
         title=_("Layout"),
@@ -542,7 +632,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         default=True)
 
 
-class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
+class IWriteTeaserBlock(IWriteFeed):
 
     def update(other):
         """Copy content and properties from another ITeaserBlock."""

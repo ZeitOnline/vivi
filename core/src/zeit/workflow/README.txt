@@ -487,13 +487,13 @@ published together with the gallery automatically.
 Simple dependencies
 +++++++++++++++++++
 
-Let's assume the Somalia article has a dependency on the politik.feed. This
+Let's assume the Somalia article has a dependency on another article. This
 is done via a named adapter to IPublicationDependencies:
 
 >>> class SomaliaFeed(zeit.cms.workflow.dependency.DependencyBase):
 ...     def get_dependencies(self):
 ...         if self.context.uniqueId.endswith('Somalia'):
-...             return (repository['politik.feed'],)
+...             return (repository['2006']['49']['Zinsen'],)
 ...         return ()
 ...
 >>> gsm = zope.component.getGlobalSiteManager()
@@ -509,22 +509,22 @@ all the named adapters:
 >>> deps = zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 >>> deps
-[<zeit.cms.syndication.feed.Feed...>]
+[<zeit.cms.repository.unknown...>]
 >>> len(deps)
 1
 >>> deps[0].uniqueId
-'http://xml.zeit.de/politik.feed'
+'http://xml.zeit.de/2006/49/Zinsen'
 >>> feed = deps[0]
 
 Currently neither the article nor the image is published:
 
->>> workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
+>>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
 >>> workflow.published
 False
 >>> workflow.urgent = True
 >>> workflow.can_publish()
 'can-publish-success'
->>> feed_workflow = zeit.workflow.interfaces.IAssetWorkflow(feed)
+>>> feed_workflow = zeit.cms.workflow.interfaces.IPublishInfo(feed)
 >>> not not feed_workflow.published
 False
 
@@ -546,13 +546,13 @@ BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
 BeforePublishEvent
-    Object: http://xml.zeit.de/politik.feed
+    Object: http://xml.zeit.de/2006/49/Zinsen
     Master: http://xml.zeit.de/online/2007/01/Somalia
 PublishedEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
 PublishedEvent
-    Object: http://xml.zeit.de/politik.feed
+    Object: http://xml.zeit.de/2006/49/Zinsen
     Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> workflow.published
 True
@@ -562,7 +562,7 @@ True
 Of couse the feed as a log entry:
 
 >>> print_log(log.get_log(feed))
-http://xml.zeit.de/politik.feed
+http://xml.zeit.de/2006/49/Zinsen
      Published
 
 
@@ -604,13 +604,13 @@ BeforeRetractEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
 BeforeRetractEvent
-    Object: http://xml.zeit.de/politik.feed
+    Object: http://xml.zeit.de/2006/49/Zinsen
     Master: http://xml.zeit.de/online/2007/01/Somalia
 RetractedEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
 RetractedEvent
-    Object: http://xml.zeit.de/politik.feed
+    Object: http://xml.zeit.de/2006/49/Zinsen
     Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> feed_workflow.published
 False
@@ -630,10 +630,10 @@ Add the reverse dependency:
 ...             return (somalia,)
 ...         return ()
 ...
->>> import zeit.cms.syndication.interfaces
+>>> import zeit.content.cp.interfaces
 >>> gsm.registerAdapter(
 ...     FeedSomalia,
-...     (zeit.cms.syndication.interfaces.IFeed,),
+...     (zeit.content.cp.interfaces.IFeed,),
 ...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 
@@ -645,20 +645,20 @@ BeforePublishEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
 BeforePublishEvent
-    Object: http://xml.zeit.de/politik.feed
+    Object: http://xml.zeit.de/2006/49/Zinsen
     Master: http://xml.zeit.de/online/2007/01/Somalia
 PublishedEvent
     Object: http://xml.zeit.de/online/2007/01/Somalia
     Master: http://xml.zeit.de/online/2007/01/Somalia
 PublishedEvent
-    Object: http://xml.zeit.de/politik.feed
+    Object: http://xml.zeit.de/2006/49/Zinsen
     Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> print_log(log.get_log(feed))
-http://xml.zeit.de/politik.feed
+http://xml.zeit.de/2006/49/Zinsen
      Published
-http://xml.zeit.de/politik.feed
+http://xml.zeit.de/2006/49/Zinsen
      Retracted
-http://xml.zeit.de/politik.feed
+http://xml.zeit.de/2006/49/Zinsen
      Published
 
 >>> gsm.unregisterHandler(pr_handler,
@@ -681,7 +681,7 @@ Let somalia also depend on the /2007 folder:
 ...             return (repository['2007'],)
 ...         return ()
 ...
->>> import zeit.cms.syndication.interfaces
+>>> import zeit.content.cp.interfaces
 >>> gsm.registerAdapter(
 ...     SomaliaFolder,
 ...     (zeit.cms.repository.interfaces.IUnknownResource,),
@@ -690,8 +690,8 @@ Let somalia also depend on the /2007 folder:
 
 >>> zeit.cms.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
-[<zeit.cms.repository.folder.Folder...>,
- <zeit.cms.syndication.feed.Feed...>]
+[<zeit.cms.repository.unknown...>,
+ <zeit.cms.repository.folder.Folder...>]
 
 2007 is not published:
 
@@ -710,8 +710,8 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia
 ...publish.sh:
 publish test script
 work/online/2007/01/Somalia
+work/2006/49/Zinsen
 work/2007/
-work/politik.feed
 work/2007/01/
 work/2007/02/
 work/2007/03/
@@ -740,7 +740,7 @@ Remove the test adapters:
 
 >>> gsm.unregisterAdapter(
 ...     FeedSomalia,
-...     (zeit.cms.syndication.interfaces.IFeed,),
+...     (zeit.content.cp.interfaces.IFeed,),
 ...     zeit.cms.workflow.interfaces.IPublicationDependencies,
 ...     name='feed')
 True

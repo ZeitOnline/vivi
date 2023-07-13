@@ -31,7 +31,7 @@ The type change is a lightbox:
 We can select which type we want to 
 
 >>> browser.getControl(name='newtype').displayOptions
-['channel', 'channel_cp', 'collection', 'file', 'testcontenttype', 'unknown']
+['collection', 'file', 'testcontenttype', 'unknown']
 
 Just clicking "change" w/o selecting anything displays the form again:
 
@@ -46,7 +46,7 @@ Just clicking "change" w/o selecting anything displays the form again:
 
 Make it a channel. 
 
->>> browser.getControl(name='newtype').displayValue = ['channel_cp']
+>>> browser.getControl(name='newtype').displayValue = ['testcontenttype']
 >>> browser.getControl('Change type').click()
 >>> print(browser.contents)
 <div>
@@ -62,16 +62,6 @@ Make it a channel.
   </div>
 </div>
 
-
-Opening the channel will break horribly: 
-
->>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia')
-Traceback (most recent call last):
-    ...
-HTTPError: HTTP Error 500: Internal Server Error
-
-
 Verify the type in the connector:
 
 >>> import zope.component
@@ -79,4 +69,4 @@ Verify the type in the connector:
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> res = connector['http://xml.zeit.de/online/2007/01/Somalia']
 >>> res.type
-'channel_cp'
+'testcontenttype'

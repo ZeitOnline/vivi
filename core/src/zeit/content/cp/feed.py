@@ -1,15 +1,14 @@
-from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.redirect.interfaces import IRenameInfo
 import grokcore.component as grok
 import logging
 import lxml.etree
 import os.path
+import zeit.content.cp.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.redirect.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.cms.type
 import zope.interface
 import zope.location.location
@@ -178,7 +177,7 @@ class ContentList:
 
 
 @zope.interface.implementer(
-    zeit.cms.syndication.interfaces.IFeed,
+    zeit.content.cp.interfaces.IFeed,
     zeit.cms.interfaces.IAsset)
 class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
 
@@ -200,36 +199,7 @@ class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
         return lxml.etree.tostring(self.xml, pretty_print=True, encoding=str)
 
 
-class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
-
-    interface = zeit.cms.syndication.interfaces.IFeed
-    factory = Feed
-    type = 'channel'
-    title = _('Channel')
-    addform = 'zeit.cms.syndication.feed.Add'
-
-    def register_as_type(self, config):
-        return config.hasFeature('zeit.cms.decentral-syndication')
-
-
-@grok.adapter(zeit.cms.interfaces.ICMSContent, name='zeit.cms.syndication')
-@grok.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
-def feed_references(context):
-    feed = zeit.cms.syndication.interfaces.IFeed(context, None)
-    if not feed:
-        return None
-    return list(feed)
-
-
-@grok.subscribe(
-    zeit.cms.syndication.interfaces.IFeed,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def update_feed_metadata_on_checkin(context, event):
-    for item in context:
-        context.updateMetadata(item)
-
-
-@zope.interface.implementer(zeit.cms.syndication.interfaces.IEntry)
+@zope.interface.implementer(zeit.content.cp.interfaces.IEntry)
 class Entry:
     """An entry in the feed."""
 

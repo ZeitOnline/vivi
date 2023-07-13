@@ -52,8 +52,7 @@ Descent to the repository:
   <Files>
     ...
     <File size="0" name="testcontent (testcontent)"
-          url="http://localhost/repository/testcontent"/>
-    ...
+          url="http://localhost/repository/testcontent"/>...
   </Files>
 </Connector>
 
@@ -88,11 +87,7 @@ something in there:
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
 ...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-...     'add_to=New+Clip&unique_id=http://xml.zeit.de/wirtschaft.feed')
->>> browser.open(
-...     'http://localhost/++skin++cms/workingcopy/zope.user/'
-...     'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-...     'add_to=New+Clip&unique_id=http://xml.zeit.de/politik.feed')
+...     'add_to=New+Clip&unique_id=http://xml.zeit.de/online/2007/01/Somalia')
 
 
 Let's have a look how the clipboard looks now:
@@ -128,10 +123,8 @@ Our clip is listed! Decent:
   <Folders>
   </Folders>
   <Files>
-    <File size="0" name="politik.feed (Politik)"
-          url="http://localhost/repository/politik.feed"/>
-    <File size="0" name="wirtschaft.feed (Wirtschaft)"
-          url="http://localhost/repository/wirtschaft.feed"/>
+    <File size="0" name="Somalia (Somalia)"
+          url="http://localhost/repository/online/2007/01/Somalia"/>
   </Files>
 </Connector>
 

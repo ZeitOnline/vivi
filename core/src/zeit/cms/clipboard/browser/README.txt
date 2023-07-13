@@ -36,21 +36,21 @@ The clipboard is displayed as a tree. Initially it's empty:
 ...
 
 
-Open the drag pane of the wirtschaft.feed:
+Open the drag pane of a content ojbect:
 
 >>> ajax = Browser(layer['wsgi_app'])
 >>> ajax.login('user', 'userpw')
->>> ajax.open(browser.url + '/wirtschaft.feed/@@drag-pane.html')
+>>> ajax.open(browser.url + '/online/2007/01/Somalia/@@drag-pane.html')
 >>> print(ajax.contents)
-<div class="Text">Wirtschaft</div>
-<div class="UniqueId">http://xml.zeit.de/wirtschaft.feed</div>
+<div class="Text">Somalia</div>
+<div class="UniqueId">http://xml.zeit.de/online/2007/01/Somalia</div>
 
 We assume, that we drag the pane over the Clipboard:
 
 >>> ajax.handleErrors = False
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-...           'add_to=&unique_id=http://xml.zeit.de/wirtschaft.feed')
+...           'add_to=&unique_id=http://xml.zeit.de/online/2007/01/Somalia')
 >>> print(ajax.contents)
   <ul>
     <li class="Root..." uniqueid="">
@@ -63,10 +63,10 @@ We assume, that we drag the pane over the Clipboard:
       </a>
       </p>
       <ul>
-        <li class="NotRoot type-channel" uniqueid="wirtschaft.feed">
+        <li class="NotRoot type-unknown" uniqueid="Somalia">
           <p>
-            <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
-            <span class="uniqueId">...wirtschaft.feed</span>
+            <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/Somalia">Somalia</a>
+            <span class="uniqueId">...Somalia</span>
             <a title="Remove" class="deleteLink context-action"...>
                <img alt="Delete" ... />
                <span class="action-title">Remove</span>
@@ -78,12 +78,12 @@ We assume, that we drag the pane over the Clipboard:
  </ul>
 
 
-Assume we drop the object `Queerdax` on the wirtschaft.feed. `Querdax` will be
-added *after* the feed:
+Assume we drop the object `Queerdax` on the `Somalia` object. `Querdax` will be
+added *after* the previous object:
 
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContent?'
-...           'add_to=wirtschaft.feed&'
+...           'add_to=Somalia&'
 ...           'unique_id=http://xml.zeit.de/online/2007/01/Querdax')
 >>> print(ajax.contents)
     <ul>
@@ -94,10 +94,10 @@ added *after* the feed:
           <a title="Remove" ...
         </p>
         <ul>
-          <li class="NotRoot type-channel" uniqueid="wirtschaft.feed">
+          <li class="NotRoot type-unknown" uniqueid="Somalia">
             <p>
-              <a href="...wirtschaft.feed">Wirtschaft</a>
-              <span class="uniqueId">...wirtschaft.feed</span>
+              <a href="...Somalia">Somalia</a>
+              <span class="uniqueId">...Somalia</span>
               <a title="Remove" ...
             </p>
           </li>
@@ -117,41 +117,40 @@ Reload first the page, to get the test in sync with the "ajax":
 
 >>> browser.reload()
 
-Let's click the link in the tree. We'll be redirect to the wirtschaft.feed
-view:
+Let's click the link in the tree. We'll be redirect to the object's main view:
 
->>> browser.getLink('Wirtschaft').click()
+>>> browser.getLink('Somalia').click()
 >>> browser.url
-'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
 
 
-The link Wirtschaft calls the default view of the clipboard entry:
+The clipboard link calls the default view of the clipboard entry:
 
->>> browser.getLink('Wirtschaft').url
-'http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed'
+>>> browser.getLink('Somalia', index=1).url
+'http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/Somalia'
 
 The link in the listing pane, however, refers to @@view of the clipboard entry,
 which also redirects to the referenced object.
 
->>> browser.open('%s/@@view.html' % browser.getLink('Wirtschaft').url)
+>>> browser.open('%s/@@view.html' % browser.getLink('Somalia', index=1).url)
 >>> browser.url
-'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
 
 And there also is an @@edit.html for clipboard entries, which redirects to
 the referenced object, too:
 
->>> browser.open('%s/@@edit.html' % browser.getLink('Wirtschaft').url)
+>>> browser.open('%s/@@edit.html' % browser.getLink('Somalia', index=1).url)
 >>> browser.url
-'http://localhost/++skin++cms/repository/wirtschaft.feed/@@view.html'
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
 
 We can also get the unique id from an entry:  XXX why do we need this?
 
 >>> ajax.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
-...     'zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed'
+...     'zeit.cms.clipboard.clipboard.Clipboard/Somalia'
 ...     '/@@ajax.get_unique_id')
 >>> print(ajax.contents)
-http://xml.zeit.de/wirtschaft.feed
+http://xml.zeit.de/online/2007/01/Somalia
 
 
 Adding Clips
@@ -180,10 +179,10 @@ element of the root node:
       <span class="uniqueId">...</span>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
         <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="uniqueId">...wirtschaft.feed</span>
+          <a href="...Somalia">Somalia</a>
+          <span class="uniqueId">...Somalia</span>
           ...
         </li>
         <li class="NotRoot..." uniqueid="Querdax">
@@ -215,10 +214,10 @@ Let's add another clip:
       <span class="uniqueId">...</span>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="uniqueId">...wirtschaft.feed</span>
+          <a href="...Somalia">Somalia</a>
+          <span class="uniqueId">...Somalia</span>
           ...
         </li>
         <li class="NotRoot..." uniqueid="Querdax">
@@ -260,9 +259,9 @@ expanded:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
         <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...Somalia">Somalia</a>
           ...
         </li>
         <li action="expand" class="NotRoot..." uniqueid="New Clip">
@@ -298,9 +297,9 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...Somalia">Somalia</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -332,9 +331,9 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...Somalia">Somalia</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -374,9 +373,9 @@ We can of course also move clips into clips:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...Somalia">Somalia</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -421,9 +420,9 @@ the Querdax entry we've moved into New Clip above:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...Somalia">Somalia</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -457,10 +456,10 @@ in the clipboard also has its icon:
 <table class="contentListing hasMetadata">
     ...
     <td>
-      Wirtschaft
+      Somalia
     </td>
     <td>
-      <span class="filename">wirtschaft.feed</span>
+      <span class="filename">Somalia</span>
     ...
 
 
@@ -471,7 +470,7 @@ verify this is working:
 >>> browser.open(browser.url + '?sort_on%3Atokens=modified')
 
 When a referenced object is deleted, the clip will become an "invalid
-reference". Delete "wirtschaft.feed":
+reference".
 
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
@@ -480,7 +479,7 @@ reference". Delete "wirtschaft.feed":
 >>> repository = zope.component.getUtility(IRepository)
 >>> import transaction
 
->>> del repository['wirtschaft.feed']
+>>> del repository['online']['2007']['01']['Somalia']
 >>> transaction.commit()
 
 Let's have a look at the sidebar:
@@ -493,9 +492,9 @@ Let's have a look at the sidebar:
       <li class="Root..." uniqueid="">
         ...
   <ul>
-      <li class="NotRoot..." uniqueid="wirtschaft.feed">
+      <li class="NotRoot..." uniqueid="Somalia">
         <p>
-        <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
+        <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/Somalia">Somalia</a>
         ...
 
 
@@ -546,9 +545,9 @@ Reload the whole page and verify the title change:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...Somalia">Somalia</a>
           ...
         </li>
         <li action="collapse" class="NotRoot..." uniqueid="New Clip">
@@ -607,9 +606,9 @@ Open "New clip", we have a delete link there:
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot..." uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="Somalia">
           <p>
-          <a href="...wirtschaft.feed">Wirtschaft</a>
+          <a href="...Somalia">Somalia</a>
           ...
         </li>
       </ul>

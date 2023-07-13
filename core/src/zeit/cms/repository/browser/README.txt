@@ -127,7 +127,6 @@ name. Without filter everything is displayed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              '@@get_object_browser')
->>> import pdb; pdb.foo = True
 >>> print(browser.contents)
   <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
@@ -153,13 +152,9 @@ name. Without filter everything is displayed:
      </td>
      ...
      <td>
-       Politik
+       ...testcontent...
      </td>
      ...
-     <td>
-       Wirtschaft
-     </td>
-    ...
 
 
 Let's filter for folders:
@@ -192,7 +187,7 @@ Let's filter for folders:
      </td>
     ...
 
->>> 'Politik' in browser.contents
+>>> 'testcontent' in browser.contents
 False
 
 When there are no suitable objects, we'll get a message:

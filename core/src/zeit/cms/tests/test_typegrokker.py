@@ -20,9 +20,9 @@ class TestTypeDeclaration(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_adapt_to_declaration(self):
         content = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/politik.feed')
+            'http://xml.zeit.de/testcontent')
         type_decl = zeit.cms.interfaces.ITypeDeclaration(content)
-        self.assertEqual('channel', type_decl.type)
+        self.assertEqual('testcontenttype', type_decl.type)
 
     def test_lookup_by_type(self):
         type_decl = zope.component.getUtility(

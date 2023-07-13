@@ -1,7 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import MAX_PUBLISH_DATE
 import zc.form.field
-import zeit.cms.syndication.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.workflow.source
 import zope.app.security.vocabulary
