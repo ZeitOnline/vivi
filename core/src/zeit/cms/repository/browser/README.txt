@@ -127,7 +127,6 @@ name. Without filter everything is displayed:
 
 >>> browser.open('http://localhost/++skin++cms/repository/'
 ...              '@@get_object_browser')
->>> import pdb; pdb.foo = True
 >>> print(browser.contents)
   <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
