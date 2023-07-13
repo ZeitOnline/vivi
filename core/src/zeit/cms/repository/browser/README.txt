@@ -152,13 +152,9 @@ name. Without filter everything is displayed:
      </td>
      ...
      <td>
-       Politik
+       ...testcontent...
      </td>
      ...
-     <td>
-       Wirtschaft
-     </td>
-    ...
 
 
 Let's filter for folders:
@@ -191,7 +187,7 @@ Let's filter for folders:
      </td>
     ...
 
->>> 'Politik' in browser.contents
+>>> 'testcontent' in browser.contents
 False
 
 When there are no suitable objects, we'll get a message:

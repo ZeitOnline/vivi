@@ -284,8 +284,6 @@ unique id:
 
 >>> step = zeit.wysiwyg.html.URLStep(article, None)
 
->>> step._url_to_id('http://127.0.0.1/repository/wirtschaft.feed')
-'http://xml.zeit.de/wirtschaft.feed'
 >>> step._url_to_id('http://127.0.0.1/repository/online/2007/01/Somalia')
 'http://xml.zeit.de/online/2007/01/Somalia'
 
@@ -304,8 +302,6 @@ The url is also just returned if it is completely unrelated:
 
 The method `_id_to_url` handles the other way round:
 
->>> step._id_to_url('http://xml.zeit.de/wirtschaft.feed')
-'http://127.0.0.1/repository/wirtschaft.feed'
 >>> step._id_to_url('http://xml.zeit.de/online/2007/01/Somalia')
 'http://127.0.0.1/repository/online/2007/01/Somalia'
 
@@ -661,19 +657,19 @@ Make sure this works also when the url starts with the repository url:
   </body>
 </article>
 
-When a non-image resource is referenced a simpele <image> tag is generated,
+When a non-image resource is referenced a simple <image> tag is generated,
 too:
 
 >>> converter.from_html(article.xml['body'], '''\
 ...     <p>Fuer menschliche</p>
-...     <p><img src="http://127.0.0.1/repository/politik.feed"/></p>
+...     <p><img src="http://127.0.0.1/repository/testcontent"/></p>
 ...     <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
   <body>
     <p>Fuer menschliche</p>
-    <image src="http://127.0.0.1/repository/politik.feed"/>
+    <image src="http://127.0.0.1/repository/testcontent"/>
     <p>Selbst wenn </p>
   </body>
 </article>

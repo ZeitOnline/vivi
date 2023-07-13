@@ -95,7 +95,8 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
         hook = zeit.cms.checkout.webhook.Hook(None)
         hook.add_exclude('type', 'testcontenttype')
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
-        self.assertFalse(hook.should_exclude(self.repository['politik.feed']))
+        self.assertFalse(hook.should_exclude(
+            self.repository['online']['2007']['01']['Somalia']))
 
     def test_match_product(self):
         hook = zeit.cms.checkout.webhook.Hook(None)

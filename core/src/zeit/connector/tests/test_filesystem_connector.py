@@ -19,7 +19,7 @@ class FilesystemConnectorTest(zeit.connector.testing.FilesystemConnectorTest):
 class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
 
     def test_minimal_properties_if_neither_metadata_head_nor_file(self):
-        feed = self.connector['http://xml.zeit.de/politik.feed']
+        feed = self.connector['http://xml.zeit.de/2006/DSC00109_3.JPG']
         self.assertEqual(
             [('type', 'http://namespaces.zeit.de/CMS/meta')],
             sorted(feed.properties))

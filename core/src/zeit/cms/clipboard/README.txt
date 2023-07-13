@@ -43,7 +43,7 @@ Let's get a content object from the repository and add it:
 >>> import zope.component
 >>> from zeit.cms.repository.interfaces import IRepository
 >>> repository = zope.component.getUtility(IRepository)
->>> content = repository['politik.feed']
+>>> content = repository['testcontent']
 
 Just adding doesn't work:
 
