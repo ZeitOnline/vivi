@@ -294,20 +294,6 @@ class PublishRetractTask:
         timer.mark('Unlocked %s' % obj.uniqueId)
         return obj
 
-    def _format_json(obj, method):
-        uuid = zeit.cms.content.interfaces.IUUID(obj)
-        json = {'uuid': uuid.shortened, 'uniqueId': obj.uniqueId}
-        for name, adapter in zope.component.getAdapters(
-                (obj,), zeit.workflow.interfaces.IPublisherData):
-            if not name:
-                continue
-            data = getattr(adapter, f"{method}_json")()
-            # only add data if the adapter returned some
-            # TODO should we log when we got no data?
-            if data is not None:
-                json[name] = data
-        return json
-
     def call_publish(self, to_publish_list):
         publisher = zope.component.getUtility(
             zeit.cms.workflow.interfaces.IPublisher)
