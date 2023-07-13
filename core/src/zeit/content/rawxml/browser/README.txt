@@ -70,22 +70,3 @@ There is also a default view:
 >>> browser.open('http://localhost/++skin++cms/repository/rawxml')
 >>> print(browser.title.strip())
 This is raw feed foo – View Raw XML
-
-Let's syndicate. Add a channel to the targets first:
-
->>> bookmark = browser.url
->>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
->>> browser.getLink('Remember as syndication target').click()
->>> browser.open(bookmark)
->>> browser.getLink('Syndicate').click()
->>> checkbox = browser.getControl(
-...     name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
->>> checkbox.value = True
->>> browser.getControl('Syndicate').click()
->>> print(browser.contents)
-<?xml ...
-    <div id="messages" class="haveMessages">
-      <ul>
-        <li class="message">"rawxml" has been syndicated to politik.feed</li>
-      </ul>
-    ...
