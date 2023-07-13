@@ -59,7 +59,7 @@ After checking in we see the read/only view:
     <title>... View Raw XML </title>
     ...
     <div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;block...&gt;</span>
-      <span class="nt">&lt;feed/&gt;</span>
+      ...<span class="nt">&lt;feed/&gt;</span>
         <span class="nt">&lt;/block&gt;</span>
 ...
 >>> print(browser.url)

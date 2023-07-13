@@ -44,7 +44,8 @@ After checking in we see the changes in the source view:
 testcontent – View source code
 >>> print(browser.contents)
 <?xml ...
-<div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;testtype...&gt;</span>
-  <span class="nt">&lt;head&gt;</span> <span class="nt">&lt;foo/&gt;</span>
+<div class="widget"><div class="pygments"><pre><span></span><span class="nt">&lt;testtype...&gt;</span>...
+  ...<span class="nt">&lt;head&gt;</span>
+  ...<span class="nt">&lt;foo/&gt;</span>
 ...
 
