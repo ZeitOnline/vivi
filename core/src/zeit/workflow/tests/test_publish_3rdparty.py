@@ -1,9 +1,8 @@
 from unittest import mock
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
+from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 from zeit.content.image.testing import create_image_group_with_master_image
 import pytest
 import requests_mock
@@ -16,6 +15,7 @@ import zeit.content.author.author
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
+import zeit.workflow.publisher
 import zeit.workflow.publish_3rdparty
 import zeit.workflow.testing
 import zope.app.appsetup.product
@@ -31,6 +31,9 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
         self.representation = self.patch.start()
         super().setUp()
+        self.gsm = zope.component.getGlobalSiteManager()
+        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(),
+                                 IPublisher)
 
     def tearDown(self):
         self.patch.stop()
@@ -40,7 +43,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.caplog = caplog
 
     def test_ignore_3rdparty_list_is_respected(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
@@ -72,7 +74,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article_2).published)
 
     def test_authordashboard_is_notified(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
@@ -86,7 +87,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_bigquery_is_published(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
@@ -124,7 +124,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             name="bigquery") is not None
 
     def test_comments_are_published(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
@@ -161,7 +160,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             name="comments") is not None
 
     def test_facebooknewstab_is_published(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
@@ -177,7 +175,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_facebooknewstab_skipped_date_first_released(self):
-        FEATURE_TOGGLES.set('new_publisher')
         # this article has date_first_published set to an old date
         article = ICMSContent(
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
@@ -203,7 +200,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             assert 'facebooknewstab' in result
 
     def test_facebooknewstab_skipped_product_id(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -231,7 +227,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             assert 'facebooknewstab' in result
 
     def test_facebooknewstab_skipped_ressort(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -261,7 +256,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             assert 'facebooknewstab' in result
 
     def test_speechbert_is_published(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)

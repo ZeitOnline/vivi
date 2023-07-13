@@ -139,7 +139,6 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 ...
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia
 Publishing http://xml.zeit.de/online/2007/01/Somalia
-...
 Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 
@@ -163,7 +162,6 @@ Revoked...
 End executing tasks...
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia
 Publishing http://xml.zeit.de/online/2007/01/Somalia
-...
 Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 
@@ -229,7 +227,6 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
         self.assertEllipsis("""...
 Running job {0.workflow.retract_job_id} for http://xml.zeit.de/online/2007/01/Somalia
 Retracting http://xml.zeit.de/online/2007/01/Somalia
-...
 Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
                             self.log.getvalue())
 

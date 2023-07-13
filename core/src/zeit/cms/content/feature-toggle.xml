@@ -6,7 +6,6 @@
   <content_caching>true</content_caching>
   <embed_cmp_thirdparty>true</embed_cmp_thirdparty>
   <breakingnews_with_channel>true</breakingnews_with_channel>
-  <new_publisher>false</new_publisher>
   <push_airship_eu>true</push_airship_eu>
   <push_new_articles_ua_author_tag>true</push_new_articles_ua_author_tag>
   <reference_index>true</reference_index>

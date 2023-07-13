@@ -1,10 +1,10 @@
 from unittest import mock
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
+from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 import requests_mock
 import zeit.content.article.testing
+import zeit.workflow.publisher
 import zeit.workflow.testing
 import zope.component
 
@@ -16,13 +16,15 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
         self.representation = self.patch.start()
         super().setUp()
+        self.gsm = zope.component.getGlobalSiteManager()
+        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(),
+                                 IPublisher)
 
     def tearDown(self):
         self.patch.stop()
         super().tearDown()
 
     def test_ignore_3rdparty_list_is_respected(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
@@ -54,7 +56,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertFalse(IPublishInfo(article_2).published)
 
     def test_authordashboard_is_ignored_during_retraction(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
@@ -68,7 +69,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertFalse(IPublishInfo(article).published)
 
     def test_bigquery_is_retracted(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
@@ -85,7 +85,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertFalse(IPublishInfo(article).published)
 
     def test_comments_are_ignored_during_retraction(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
@@ -99,7 +98,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertFalse(IPublishInfo(article).published)
 
     def test_facebooknewstab_is_retracted(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
@@ -116,7 +114,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertFalse(IPublishInfo(article).published)
 
     def test_speechbert_is_retracted(self):
-        FEATURE_TOGGLES.set('new_publisher')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True

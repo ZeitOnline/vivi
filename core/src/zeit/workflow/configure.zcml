@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:grok="http://namespaces.zope.org/grok">
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
 
   <grok:grok package="." exclude="browser json xmlrpc" />
 
@@ -59,5 +60,7 @@
 
   <!-- Publish -->
   <adapter factory=".publish.Publish" />
+  <utility factory=".publisher.Publisher" zcml:condition="not-have zeit.cms.testing" />
+  <utility factory=".publisher.MockPublisher" zcml:condition="have zeit.cms.testing" />
 
 </configure>

@@ -1,8 +1,6 @@
 # coding: utf8
 from gocept.selenium.wd_selenese import split_locator
 from selenium.webdriver.common.keys import Keys
-from unittest import mock
-import celery.result
 import lxml.cssselect
 import transaction
 import unittest
@@ -440,15 +438,6 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
             s.waitForElementPresent(
                 '//div[@class="teaserTitle" and text() = "c%s teaser"]' % i)
 
-    def test_publish_should_show_error_message(self):
-        s = self.selenium
-        self.open_centerpage()
-        s.click('xpath=//a[@title="Publish"]')
-        s.waitForElementPresent('css=div.lightbox')
-        s.waitForElementPresent('publish.errors')
-        s.assertTextPresent(
-            'Cannot publish since preconditions for publishing are not met.')
-
     def test_editor_should_be_reloaded_after_publishing(self):
         s = self.selenium
         self.open_centerpage()
@@ -458,22 +447,6 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent('css=div.lightbox')
         s.waitForPageToLoad()
         s.waitForElementPresent('css=div.landing-zone')
-
-    def test_publish_failure_should_be_displayed(self):
-        # See zeit.workflow.browser.publish.FlashPublishErrors
-        with mock.patch('celery.result.AsyncResult') as result:
-            result.return_value = celery.result.EagerResult(
-                'eager', RuntimeError('provoked'), celery.states.FAILURE)
-            s = self.selenium
-            self.open_centerpage()
-            self._fill_lead()
-            s.click('xpath=//a[@title="Publish"]')
-            s.waitForElementPresent('css=div.lightbox')
-            # There were validation warnings, but we want to publish anyway
-            s.click('xpath=//a[contains(., "Publish anyway")]')
-            s.waitForPageToLoad()
-            s.waitForElementPresent('css=li.error')
-            s.verifyText('css=li.error', 'provoked')
 
 
 class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
