@@ -275,12 +275,12 @@ Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
 class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
-    error = "Error during publish/retract: PublishError: Error"
+    error = "Error during publish/retract: PublishError: provoked"
 
     def setUp(self):
         self.publisher = mock.patch('zeit.workflow.publisher.MockPublisher.request')
         self.mocker = self.publisher.start()
-        self.mocker.side_effect = zeit.workflow.publisher.PublishError("Error")
+        self.mocker.side_effect = zeit.workflow.publisher.PublishError('provoked')
         super().setUp()
 
     def tearDown(self):
@@ -300,8 +300,7 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             publish.get()
         transaction.begin()
 
-        self.assertEqual(self.error,
-                         str(err.exception))
+        self.assertIn('provoked', str(err.exception))
         self.assertIn(
             self.error,
             [zope.i18n.interpolate(m, m.mapping)
@@ -310,28 +309,40 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
     def test_error_during_publish_multiple_is_written_to_objectlog(self):
         c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
         c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        c3 = ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
         i1 = IPublishInfo(c1)
         i2 = IPublishInfo(c2)
+        i3 = IPublishInfo(c3)
         self.assertFalse(i1.published)
         self.assertFalse(i2.published)
+        self.assertFalse(i3.published)
         i1.urgent = True
         i2.urgent = True
+        i3.urgent = True
 
-        publish = IPublish(c1).publish_multiple([c1, c2])
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.producer'):
+            zeit.cms.checkout.interfaces.ICheckoutManager(c3).checkout()
+            transaction.commit()
+        zeit.cms.testing.create_interaction('zope.user')
+
+        publish = IPublish(c1).publish_multiple([c1, c2, c3])
         transaction.commit()
 
         with self.assertRaises(Exception) as err:
             publish.get()
         transaction.begin()
 
-        self.assertEqual(self.error,
-                         str(err.exception))
+        self.assertIn('provoked', str(err.exception))
         self.assertIn(
             self.error,
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c1)])
         self.assertIn(
             self.error,
             [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
+        self.assertIn(
+            'LockingError', [zope.i18n.interpolate(m, m.mapping)
+                             for m in get_object_log(c3)][-1])
 
 
 class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
@@ -363,7 +374,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch(
-                'zeit.workflow.publish.PublishTask.call_publish') as publish:
+                'zeit.workflow.publisher.Publisher.request') as publish:
             IPublish(self.repository).publish_multiple([], background=False)
             self.assertFalse(publish.called)
 

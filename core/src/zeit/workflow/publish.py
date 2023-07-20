@@ -294,16 +294,6 @@ class PublishRetractTask:
         timer.mark('Unlocked %s' % obj.uniqueId)
         return obj
 
-    def call_publish(self, to_publish_list):
-        publisher = zope.component.getUtility(
-            zeit.cms.workflow.interfaces.IPublisher)
-        publisher.request(to_publish_list, 'publish')
-
-    def call_retract(self, to_retract_list):
-        publisher = zope.component.getUtility(
-            zeit.cms.workflow.interfaces.IPublisher)
-        publisher.request(to_retract_list, 'retract')
-
 
 class PublishError(Exception):
     pass
@@ -336,12 +326,21 @@ class PublishTask(PublishRetractTask):
 
         to_publish = []
         for obj in published:
-            deps = []
-            self.recurse(self.collect, obj, deps)
-            to_publish.extend(deps)
+            try:
+                deps = []
+                self.recurse(self.collect, obj, deps)
+                to_publish.extend(deps)
+            except Exception as e:
+                errors.append((obj, e))
 
-        if to_publish:
-            self.call_publish(to_publish)
+        try:
+            if to_publish:
+                publisher = zope.component.getUtility(
+                    zeit.cms.workflow.interfaces.IPublisher)
+                publisher.request(to_publish, 'publish')
+        except Exception as e:
+            for obj in published:
+                errors.append((obj, e))
 
         for obj in published:
             try:
@@ -414,12 +413,21 @@ class RetractTask(PublishRetractTask):
 
         to_retract = []
         for obj in retracted:
-            deps = []
-            self.recurse(self.collect, obj, deps)
-            to_retract.extend(reversed(deps))
+            try:
+                deps = []
+                self.recurse(self.collect, obj, deps)
+                to_retract.extend(reversed(deps))
+            except Exception as e:
+                errors.append((obj, e))
 
-        if to_retract:
-            self.call_retract(to_retract)
+        try:
+            if to_retract:
+                publisher = zope.component.getUtility(
+                    zeit.cms.workflow.interfaces.IPublisher)
+                publisher.request(to_retract, 'retract')
+        except Exception as e:
+            for obj in retracted:
+                errors.append((obj, e))
 
         for obj in retracted:
             try:
