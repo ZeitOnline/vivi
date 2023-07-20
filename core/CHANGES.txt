@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.28.0 (2023-07-20)
+-------------------
+
+- ZO-3262: Set target for RSS feed links (wiwo parquet)
+
+
+MAINT:
+- Move request timeout handling into zeit.cms instead of zeit.retresco
+
+
 5.27.7 (2023-07-11)
 -------------------
 

@@ -1,1 +1,0 @@
-Move request timeout handling into zeit.cms instead of zeit.retresco
