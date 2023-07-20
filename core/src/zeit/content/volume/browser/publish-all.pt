@@ -2,8 +2,7 @@
 <h1 i18n:translate="">Publish</h1>
 
 <ol id="worklist">
-  <!-- param: action, param2: objectlog -->
-  <li action="start_job" cms:param="publish-all" cms:param2="True" i18n:translate="">Publishing volume content</li>
+  <li action="start_job" cms:param="publish-all" i18n:translate="">Publishing volume content</li>
   <li action="reload" i18n:translate="">Reloading</li>
 </ol>
 

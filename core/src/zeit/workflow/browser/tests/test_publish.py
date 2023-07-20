@@ -64,12 +64,13 @@ class TestPublish(
         s = self.selenium
         with mock.patch(
                 'zeit.workflow.publisher.MockPublisher.request') as publish:
-            publish.side_effect = RuntimeError('provoked')
+            publish.side_effect = zeit.workflow.publisher.PublisherError(
+                'testing', 678, [])
             s.click('link=Publish')
             s.waitForElementPresent('css=li.error')
             s.assertText(
                 'css=li.error',
-                'Error during publish/retract: RuntimeError: provoked')
+                'Error during publish/retract: : PublishError: testing returned 678')
 
     def test_opening_dialog_from_folder_view_points_to_content(self):
         # Regression VIV-452

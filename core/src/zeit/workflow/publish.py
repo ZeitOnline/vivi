@@ -1,9 +1,11 @@
 from datetime import datetime
+from zeit.cms.content.interfaces import IUUID
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import celery.result
 import celery.states
+import json
 import logging
 import pytz
 import threading
@@ -16,6 +18,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.objectlog.interfaces
+import zeit.workflow.publisher
 import zope.app.appsetup.product
 import zope.component
 import zope.event
@@ -58,7 +61,7 @@ class Publish:
             logger.warning('Not starting a publishing task, because no objects'
                            ' to publish were given')
             return
-        ids = []
+        ids = [self.context.uniqueId]
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.log(obj, _('Collective Publication of ${count} objects',
@@ -74,7 +77,7 @@ class Publish:
             logger.warning('Not starting a retract task, because no objects'
                            ' to retract were given')
             return
-        ids = []
+        ids = [self.context.uniqueId]
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.log(obj, _('Collective Retraction of ${count} objects',
@@ -162,6 +165,8 @@ class PublishRetractTask:
                     to_log.append((obj, submessage))
                     all_errors.append((obj, '%s: %s' % (
                         error.__class__.__name__, errormessage)))
+                if len(all_errors) == 1:
+                    all_errors = all_errors[0][1]
                 message = _(messageid, mapping={
                     'exc': '', 'message': str(all_errors)})
             else:
@@ -179,6 +184,30 @@ class PublishRetractTask:
             timer_logger.debug('Timings:\n%s', timer)
             dummy, total, timer_message = timer.get_timings()[-1]
             logger.info('%s (%2.4fs)' % (timer_message, total))
+
+    def _assign_publisher_errors_to_objects(self, exc, objects):
+        errors = []
+        msg = f'{exc.url} returned {exc.status}'
+        if not exc.errors:
+            e = PublishError(msg)
+            for obj in objects:
+                errors.append((obj, e))
+        elif len(exc.errors) == 1 and not exc.errors[0].get('source'):
+            e = PublishError.from_detail(msg, exc.errors[0])
+            for obj in objects:
+                errors.append((obj, e))
+        else:
+            errors.extend(self._assign_publisher_error_details(exc, objects))
+        return errors
+
+    def _assign_publisher_error_details(self, exc, objects):
+        details = json.dumps(exc.errors)
+        e = PublishError(
+            f'{exc.url} returned {exc.status}, Details: {details}')
+        errors = []
+        for obj in objects:
+            errors.append((obj, e))
+        return errors
 
     def _log_messages(self, objs_and_messages):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -296,7 +325,15 @@ class PublishRetractTask:
 
 
 class PublishError(Exception):
-    pass
+
+    @classmethod
+    def from_detail(cls, message, error):
+        msg = f'{message}: {error.get("title", "Unknown Error")}'
+        if error.get('status'):
+            msg += f' ({error["status"]})'
+        if error.get('detail'):
+            msg += f', Details: {error["detail"]}'
+        return cls(msg)
 
 
 class PublishTask(PublishRetractTask):
@@ -338,6 +375,9 @@ class PublishTask(PublishRetractTask):
                 publisher = zope.component.getUtility(
                     zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, 'publish')
+        except zeit.workflow.publisher.PublisherError as e:
+            errors.extend(self._assign_publisher_errors_to_objects(
+                e, published))
         except Exception as e:
             for obj in published:
                 errors.append((obj, e))
@@ -425,6 +465,9 @@ class RetractTask(PublishRetractTask):
                 publisher = zope.component.getUtility(
                     zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_retract, 'retract')
+        except zeit.workflow.publisher.PublisherError as e:
+            errors.extend(self._assign_publisher_errors_to_objects(
+                e, retracted))
         except Exception as e:
             for obj in retracted:
                 errors.append((obj, e))
@@ -469,8 +512,11 @@ def RETRACT_TASK(self, ids):
     return RetractTask(self.request.id).run(ids)
 
 
-class MultiPublishTask(PublishTask):
-    """Publish multiple objects"""
+class MultiTask:
+
+    def run(self, ids):
+        self.context = zeit.cms.interfaces.ICMSContent(ids.pop(0), None)
+        return super().run(ids)
 
     def _run(self, objs):
         self._to_log = []
@@ -491,24 +537,35 @@ class MultiPublishTask(PublishTask):
     def log(self, obj, message):
         self._to_log.append((obj, message))
 
+    def _assign_publisher_error_details(self, exc, objects):
+        errors = []
+        msg = f'{exc.url} returned {exc.status}'
+        by_uuid = {IUUID(x).shortened: x for x in objects}
+        with_error = []
+        for error in exc.errors:
+            obj = by_uuid.get(error['source'].get('pointer'))
+            if obj is not None:
+                errors.append((obj, PublishError.from_detail(msg, error)))
+                with_error.append(obj.uniqueId)
+        if self.context is not None:
+            errors.append((self.context, PublishError(zope.i18n.translate(
+                _('Objects with errors: ${objects}',
+                  mapping={'objects': ', '.join(with_error)}),
+                target_language='de'))))
+        return errors
+
+
+class MultiPublishTask(MultiTask, PublishTask):
+    """Publish multiple objects"""
+
 
 @zeit.cms.celery.task(bind=True)
 def MULTI_PUBLISH_TASK(self, ids):
     return MultiPublishTask(self.request.id).run(ids)
 
 
-class MultiRetractTask(RetractTask):
+class MultiRetractTask(MultiTask, RetractTask):
     """Retract multiple objects"""
-
-    def _run(self, objs):
-        self._to_log = []
-        result = super()._run(objs)
-        # See MultiPublishTask for details.
-        raise z3c.celery.celery.Abort(
-            self._log_messages, self._to_log, message=result)
-
-    def log(self, obj, message):
-        self._to_log.append((obj, message))
 
 
 @zeit.cms.celery.task(bind=True)
