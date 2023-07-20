@@ -32,6 +32,8 @@ class RSSLink:
 
     authorships = ()
 
+    target = '_blank'
+
     @cachedproperty
     def title(self):
         title = self.xml.findtext('title')
