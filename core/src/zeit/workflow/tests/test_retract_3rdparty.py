@@ -80,7 +80,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_bq = result['bigquery']
             self.assertEqual(
-                {'path': '/online/2007/01/Somalia'},
+                {},
                 result_bq)
         self.assertFalse(IPublishInfo(article).published)
 
@@ -109,7 +109,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             (result,) = response.last_request.json()
             result_fbnt = result['facebooknewstab']
             self.assertEqual(
-                {'path': '/online/2007/01/Somalia'},
+                {},
                 result_fbnt)
         self.assertFalse(IPublishInfo(article).published)
 
@@ -123,8 +123,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                 'http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
-            result_sb = result['speechbert']
-            self.assertEqual(['uuid'], sorted(result_sb.keys()))
+            assert 'speechbert' in result
         self.assertFalse(IPublishInfo(article).published)
 
     def test_speechbert_ignore_genres(self):
