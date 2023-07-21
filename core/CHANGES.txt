@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.28.1 (2023-07-21)
+-------------------
+
+- ZO-1949: no need to post uuid and uniqueId generally and in service payload
+
+
 5.28.0 (2023-07-20)
 -------------------
 
