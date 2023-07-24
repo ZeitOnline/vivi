@@ -116,6 +116,10 @@ class Hook:
             return False
         return content.product and content.product.id == value
 
+    def _match_path_prefix(self, content, value):
+        path = content.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '/')
+        return path.startswith(value)
+
 
 class HookSource(zeit.cms.content.sources.SimpleXMLSource):
 

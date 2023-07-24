@@ -112,3 +112,10 @@ class WebhookExcludeTest(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(self.repository['testcontent']) as co:
             IAutomaticallyRenameable(co).renameable = True
         self.assertTrue(hook.should_exclude(self.repository['testcontent']))
+
+    def test_match_path_prefix(self):
+        hook = zeit.cms.checkout.webhook.Hook(None)
+        hook.add_exclude('path_prefix', '/online')
+        self.assertFalse(hook.should_exclude(self.repository['testcontent']))
+        self.assertTrue(hook.should_exclude(
+            self.repository['online']['2007']['01']['Somalia']))
