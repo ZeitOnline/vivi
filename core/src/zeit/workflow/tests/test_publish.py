@@ -2,11 +2,13 @@ from datetime import datetime
 from io import StringIO
 from unittest import mock
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.interfaces import IUUID
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 import gocept.testing.mock
+import json
 import logging
 import pytz
 import requests_mock
@@ -19,8 +21,8 @@ import zeit.content.article.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
-import zeit.workflow.testing
 import zeit.workflow.publisher
+import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
 import zope.i18n
@@ -204,6 +206,10 @@ def get_object_log(obj):
     return [x.message for x in log.get_log()]
 
 
+def translate_object_log(obj):
+    return [zope.i18n.interpolate(x, x.mapping) for x in get_object_log(obj)]
+
+
 class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
@@ -272,15 +278,71 @@ Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
         self.assertIn('Published', get_object_log(c2))
 
 
+class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
+
+    message = 'Error during publish/retract: PublishError: '
+
+    def setUp(self):
+        super().setUp()
+        self.patch = mock.patch('zeit.workflow.publisher.MockPublisher.request')
+        self.publisher = self.patch.start()
+
+        self.content = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(self.content).urgent = True
+
+        self.publisher.side_effect = zeit.workflow.publisher.PublisherError(
+            'testing', 500, [
+                {'status': 500, 'title': 'Subsystem', 'detail': 'Provoked',
+                 'source': {'pointer': IUUID(self.content).shortened}}])
+
+    def tearDown(self):
+        self.patch.stop()
+        super().tearDown()
+
+    def test_publisher_errors_are_written_to_objectlog(self):
+        with self.assertRaises(Exception):
+            IPublish(self.content).publish(background=False)
+        self.assertEqual(
+            'testing returned 500, Details: ' + json.dumps(
+                self.publisher.side_effect.errors),
+            translate_object_log(self.content)[-1].replace(self.message, ''))
+
+    def test_publisher_errors_multi_are_assigned_to_source_object(self):
+        main = ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
+        IPublishInfo(main).urgent = True
+        self.publisher.side_effect.errors.append(
+            {'title': 'Unrelated', 'source': {'pointer': IUUID(main).shortened}})
+        with self.assertRaises(Exception):
+            IPublish(main).publish_multiple(
+                [self.content, main], background=False)
+        log = translate_object_log(self.content)[-1].replace(self.message, '')
+        self.assertEqual(
+            'testing returned 500: Subsystem (500), Details: Provoked', log)
+        self.assertNotIn('Unrelated', log)
+
+    def test_publisher_errors_multi_writes_summary_on_original_object(self):
+        main = ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
+        IPublishInfo(main).urgent = True
+        self.publisher.side_effect.errors.append(
+            {'title': 'Unrelated', 'source': {'pointer': IUUID(main).shortened}})
+        with self.assertRaises(Exception):
+            IPublish(main).publish_multiple(
+                [self.content, main], background=False)
+        self.assertEqual(
+            f'Objects with errors: {self.content.uniqueId}, {main.uniqueId}',
+            translate_object_log(main)[-1].replace(self.message, ''))
+
+
 class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.workflow.testing.CELERY_LAYER
-    error = "Error during publish/retract: PublishError: Error"
+    error = "Error during publish/retract: PublishError: http://publisher.testing returned 678"
 
     def setUp(self):
         self.publisher = mock.patch('zeit.workflow.publisher.MockPublisher.request')
         self.mocker = self.publisher.start()
-        self.mocker.side_effect = zeit.workflow.publisher.PublishError("Error")
+        self.mocker.side_effect = zeit.workflow.publisher.PublisherError(
+            'http://publisher.testing', 678, [])
         super().setUp()
 
     def tearDown(self):
@@ -300,38 +362,40 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             publish.get()
         transaction.begin()
 
-        self.assertEqual(self.error,
-                         str(err.exception))
-        self.assertIn(
-            self.error,
-            [zope.i18n.interpolate(m, m.mapping)
-             for m in get_object_log(content)])
+        self.assertIn('678', str(err.exception))
+        self.assertIn(self.error, translate_object_log(content))
 
     def test_error_during_publish_multiple_is_written_to_objectlog(self):
         c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
         c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        c3 = ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
         i1 = IPublishInfo(c1)
         i2 = IPublishInfo(c2)
+        i3 = IPublishInfo(c3)
         self.assertFalse(i1.published)
         self.assertFalse(i2.published)
+        self.assertFalse(i3.published)
         i1.urgent = True
         i2.urgent = True
+        i3.urgent = True
 
-        publish = IPublish(c1).publish_multiple([c1, c2])
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.producer'):
+            zeit.cms.checkout.interfaces.ICheckoutManager(c3).checkout()
+            transaction.commit()
+        zeit.cms.testing.create_interaction('zope.user')
+
+        publish = IPublish(c1).publish_multiple([c1, c2, c3])
         transaction.commit()
 
         with self.assertRaises(Exception) as err:
             publish.get()
         transaction.begin()
 
-        self.assertEqual(self.error,
-                         str(err.exception))
-        self.assertIn(
-            self.error,
-            [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c1)])
-        self.assertIn(
-            self.error,
-            [zope.i18n.interpolate(m, m.mapping) for m in get_object_log(c2)])
+        self.assertIn('678', str(err.exception))
+        self.assertIn(self.error, translate_object_log(c1))
+        self.assertIn(self.error, translate_object_log(c2))
+        self.assertIn('LockingError', translate_object_log(c3)[-1])
 
 
 class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
@@ -358,12 +422,13 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
                 'http://xml.zeit.de/online/2007/01/Somalia'], background=False)
             ids = run.call_args[0][0]
             self.assertEqual([
+                'http://xml.zeit.de/',
                 'http://xml.zeit.de/testcontent',
                 'http://xml.zeit.de/online/2007/01/Somalia'], ids)
 
     def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch(
-                'zeit.workflow.publish.PublishTask.call_publish') as publish:
+                'zeit.workflow.publisher.Publisher.request') as publish:
             IPublish(self.repository).publish_multiple([], background=False)
             self.assertFalse(publish.called)
 
