@@ -1,19 +1,18 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 
 setup(
     name='vivi.core',
-    version='5.28.3.dev0',
+    version='5.29.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
     description="vivi core",
-    packages=find_packages('src'),
+    packages=find_namespace_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
     license='BSD',
-    namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'BTrees',
         'Jinja2 >= 2.11.0.dev0',
