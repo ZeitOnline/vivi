@@ -1,3 +1,4 @@
+import zeit.content.cp.blocks
 import zeit.content.cp.testing
 
 

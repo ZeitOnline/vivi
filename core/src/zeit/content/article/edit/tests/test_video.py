@@ -3,6 +3,7 @@ from unittest import mock
 import contextlib
 import pytz
 import unittest
+import zeit.content.article.edit.tests.test_reference
 import zeit.content.article.testing
 
 
