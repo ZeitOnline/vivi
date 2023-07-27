@@ -42,6 +42,8 @@ class TestTypeIdentifier(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual('bar', decl.type_identifier)
 
     def test_no_type_generates(self):
+        # XXX https://github.com/pytest-dev/pytest/issues/5147
+        from zeit.cms.tests.test_typegrokker import ITestInterface
         decl = zeit.cms.type.TypeDeclaration()
         decl.interface = zeit.cms.interfaces.ICMSContent
         self.assertEqual('zeit.cms.interfaces.ICMSContent',
@@ -51,6 +53,8 @@ class TestTypeIdentifier(zeit.cms.testing.ZeitCmsTestCase):
                          decl.type_identifier)
 
     def test_type_annotation_uses_type_identifier(self):
+        # XXX https://github.com/pytest-dev/pytest/issues/5147
+        from zeit.cms.tests.test_typegrokker import Declaration, ITestInterface
         grokcore.component.testing.grok_component('Declaration', Declaration)
         self.assertEqual('zeit.cms.tests.test_typegrokker.ITestInterface',
                          ITestInterface.getTaggedValue('zeit.cms.type'))
