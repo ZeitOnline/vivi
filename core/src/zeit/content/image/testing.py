@@ -1,7 +1,7 @@
 import gocept.httpserverlayer.static
 import gocept.selenium
 import os.path
-import pkg_resources
+import importlib.resources
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
@@ -20,7 +20,7 @@ product_config = """
     mdb-api-username mdbuser
     mdb-api-password mdbpass
 </product-config>
-""".format(here=pkg_resources.resource_filename(__name__, '.'))
+""".format(here=importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
@@ -40,13 +40,19 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
-def create_local_image(filename, path='browser/testdata/'):
+def fixture_bytes(filename, package=None, folder=None):
+    if not package:
+        package = 'zeit.content.image.browser'
+    if not folder:
+        folder = 'testdata'
+    f = importlib.resources.files(package) / folder / filename
+    return f.read_bytes()
+
+
+def create_local_image(filename, package=None, folder=None):
     image = zeit.content.image.image.LocalImage()
     with image.open('w') as out:
-        file_name = pkg_resources.resource_filename(
-            __name__, '%s%s' % (path, filename))
-        with open(file_name, 'rb') as fh:
-            out.write(fh.read())
+        out.write(fixture_bytes(filename, package, folder))
     image.__name__ = filename
     return image
 
@@ -70,6 +76,7 @@ def create_image_group_with_master_image(file_name=None):
         file_name = 'DSC00109_2.JPG'
         fh = repository['2006'][file_name].open()
     else:
+        file_name = str(file_name)
         try:
             fh = zeit.cms.interfaces.ICMSContent(file_name).open()
         except TypeError:

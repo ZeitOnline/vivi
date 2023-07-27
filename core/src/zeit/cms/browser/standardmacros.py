@@ -1,3 +1,4 @@
+import importlib.metadata
 import zeit.cms.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.resources
@@ -9,7 +10,6 @@ import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
 import zope.security.proxy
-import pkg_resources
 
 
 class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
@@ -66,6 +66,7 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
 
     @property
     def vivi_version(self):
-        if pkg_resources.get_distribution('vivi.core'):
-            return pkg_resources.get_distribution('vivi.core').version
-        return 'version not found'
+        try:
+            return importlib.metadata.version('vivi.core')
+        except Exception:
+            return 'version not found'

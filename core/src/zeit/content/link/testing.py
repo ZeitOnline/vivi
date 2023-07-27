@@ -1,4 +1,4 @@
-import pkg_resources
+import importlib.resources
 import plone.testing
 import zeit.cms.testing
 import zeit.push.testing
@@ -6,9 +6,9 @@ import zeit.push.testing
 
 product_config = """
 <product-config zeit.content.link>
-    source-blogs file://{base}/blog_source.xml
+    source-blogs file://{here}/blog_source.xml
 </product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
+""".format(here=importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(

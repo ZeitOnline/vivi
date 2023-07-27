@@ -1,6 +1,6 @@
 from zeit.campus.interfaces import IZCOSection, IZCOFolder
 import gocept.selenium
-import pkg_resources
+import importlib.resources
 import plone.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -14,9 +14,9 @@ import zope.interface
 
 product_config = """\
 <product-config zeit.campus>
-  article-stoa-source file://{base}/tests/article-stoa.xml
+  article-stoa-source file://{here}/tests/article-stoa.xml
 </product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
+""".format(here=importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(

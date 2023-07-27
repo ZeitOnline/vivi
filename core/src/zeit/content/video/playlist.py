@@ -1,6 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
-import pkg_resources
+import importlib.resources
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.content.reference
@@ -15,8 +15,8 @@ import zope.interface
     zeit.cms.interfaces.IAsset)
 class Playlist(zeit.cms.content.metadata.CommonMetadata):
 
-    default_template = pkg_resources.resource_string(
-        __name__, 'playlist-template.xml').decode('utf-8')
+    default_template = (importlib.resources.files(
+        __package__) / 'playlist-template.xml').read_text('utf-8')
 
     videos = zeit.cms.content.reference.MultiResource(
         '.body.videos.video', 'related')

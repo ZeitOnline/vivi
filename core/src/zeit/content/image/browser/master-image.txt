@@ -8,12 +8,10 @@ group:
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 
->>> import pkg_resources
+>>> from zeit.content.image.testing import fixture_bytes
 >>> def set_file_data(name):
 ...     browser.getControl(name='form.master_image_blobs.0.').add_file(
-...         pkg_resources.resource_string(
-...             'zeit.content.image.browser', 'testdata/%s' % name),
-...         'image/jpg', name)
+...         fixture_bytes(name), 'image/jpg', name)
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/')
 >>> menu = browser.getControl(name='add_menu')

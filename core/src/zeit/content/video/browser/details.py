@@ -1,5 +1,5 @@
 from zope.browserpage import ViewPageTemplateFile
-import pkg_resources
+import importlib.resources
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
@@ -7,8 +7,8 @@ import zeit.content.video.interfaces
 
 class Details(zeit.cms.browser.objectdetails.Details):
 
-    index = ViewPageTemplateFile(pkg_resources.resource_filename(
-        'zeit.content.video.browser', 'object-details-body.pt'))
+    index = ViewPageTemplateFile(str(importlib.resources.files(
+        __package__) / 'object-details-body.pt'))
 
     def __call__(self):
         return self.index()

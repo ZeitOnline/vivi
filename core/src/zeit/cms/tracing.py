@@ -1,9 +1,9 @@
 from cryptography.fernet import Fernet
 import contextlib
+import importlib.metadata
 import logging
 import opentelemetry.trace
 import os
-import pkg_resources
 import re
 import socket
 import time
@@ -111,7 +111,7 @@ def tracer_from_product_config():
 
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     provider = zeit.cms.tracing.OpenTelemetryTracerProvider(
-        'vivi', pkg_resources.get_distribution('vivi.core').version,
+        'vivi', importlib.metadata.version('vivi.core'),
         config['environment'], hostname, config['otlp-url'], headers={
             'x-honeycomb-team': config['honeycomb-apikey'],
             'x-honeycomb-dataset': config['honeycomb-dataset'],

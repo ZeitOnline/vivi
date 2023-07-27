@@ -1,6 +1,6 @@
 from unittest import mock
 import gocept.selenium
-import pkg_resources
+import importlib.resources
 import plone.testing
 import re
 import zeit.cms.tagging.interfaces
@@ -19,30 +19,30 @@ import zope.testing.renormalizing
 product_config = """
 <product-config zeit.content.article>
   zeit-comments-api-url https://comments.staging.zeit.de
-  book-recension-categories file://{base}/tests/recension_categories.xml
-  genre-url file://{base}/tests/article-genres.xml
-  image-display-mode-source file://{base}/edit/tests/image-display-modes.xml
-  legacy-display-mode-source file://{base}/edit/tests/legacy-display-modes.xml
-  image-variant-name-source file://{base}/edit/tests/image-variant-names.xml
-  legacy-variant-name-source file://{base}/edit/tests/legacy-variant-names.xml
-  video-layout-source file://{base}/edit/tests/video-layouts.xml
-  infobox-layout-source file://{base}/edit/tests/infobox-layouts.xml
-  template-source file://{base}/edit/tests/templates.xml
-  module-source file://{base}/edit/tests/modules.xml
-  header-module-source file://{base}/edit/tests/header-modules.xml
+  book-recension-categories file://{here}/tests/recension_categories.xml
+  genre-url file://{here}/tests/article-genres.xml
+  image-display-mode-source file://{here}/edit/tests/image-display-modes.xml
+  legacy-display-mode-source file://{here}/edit/tests/legacy-display-modes.xml
+  image-variant-name-source file://{here}/edit/tests/image-variant-names.xml
+  legacy-variant-name-source file://{here}/edit/tests/legacy-variant-names.xml
+  video-layout-source file://{here}/edit/tests/video-layouts.xml
+  infobox-layout-source file://{here}/edit/tests/infobox-layouts.xml
+  template-source file://{here}/edit/tests/templates.xml
+  module-source file://{here}/edit/tests/modules.xml
+  header-module-source file://{here}/edit/tests/header-modules.xml
   topicbox-teaser-amount 5
-  citation-layout-source file://{base}/edit/tests/citation-layouts.xml
-  box-layout-source file://{base}/edit/tests/box-layouts.xml
-  puzzleforms-source file://{base}/edit/tests/puzzleforms.xml
-  topicpage-filter-source file://{base}/tests/topicpage-esqueries.json
-  config-base-url file://{base}/tests/
+  citation-layout-source file://{here}/edit/tests/citation-layouts.xml
+  box-layout-source file://{here}/edit/tests/box-layouts.xml
+  puzzleforms-source file://{here}/edit/tests/puzzleforms.xml
+  topicpage-filter-source file://{here}/tests/topicpage-esqueries.json
+  config-here-url file://{here}/tests/
   tagesschau-api-url-post https://ard-tagesschau/post
   tagesschau-api-url-post-sync https://ard-tagesschau/post/sync
   tagesschau-api-url-get https://ard-tagesschau/get
   tagesschau-sig-uri XYZ
   tagesschau-api-key 1a2b3c4d5e
 </product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
+""".format(here=importlib.resources.files(__package__))
 
 
 checker = zope.testing.renormalizing.RENormalizing([

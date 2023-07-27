@@ -20,7 +20,7 @@ class QueryTest(FunctionalTestCase):
 
     def test_query(self):
         import zeit.find.search
-        self.layer.set_result(__name__, 'data/obama.json')
+        self.layer.set_result(__package__, 'data/obama.json')
         elastic = getUtility(ICMSSearch)
         q = zeit.find.search.query('Obama')
         result = elastic.search(q)

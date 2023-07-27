@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 import ZODB
 import ast
 import grokcore.component as grok
-import pkg_resources
+import importlib.resources
 import re
 import zodburi
 import zope.app.appsetup.appsetup
@@ -40,7 +40,7 @@ def maybe_convert_egg_url(url):
     if not url.startswith('egg://'):
         return url
     u = urlparse(url)
-    return 'file://' + pkg_resources.resource_filename(u.netloc, u.path[1:])
+    return 'file://%s' % (importlib.resources.files(u.netloc) / u.path[1:])
 
 
 class ZCMLLoaded:

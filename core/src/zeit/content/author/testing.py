@@ -1,5 +1,5 @@
 from unittest import mock
-import pkg_resources
+import importlib.resources
 import plone.testing
 import zeit.cms.testing
 import zeit.find.testing
@@ -9,13 +9,13 @@ import zope.component
 product_config = """
 <product-config zeit.content.author>
   author-folder /foo/bar/authors
-  biography-questions file://{fixtures}/tests/biography-questions.xml
-  roles file://{fixtures}/tests/roles.xml
+  biography-questions file://{here}/tests/biography-questions.xml
+  roles file://{here}/tests/roles.xml
   sso-api-url http://meine.fake/api/1
   sso-user vivi@zeit.de
   sso-password password
 </product-config>
-""".format(fixtures=pkg_resources.resource_filename(__name__, '.'))
+""".format(here=importlib.resources.files(__package__))
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
     zeit.find.testing.CONFIG_LAYER,))

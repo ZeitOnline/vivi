@@ -2,7 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 import html
 import json
 import logging
-import pkg_resources
+import importlib.resources
 import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
@@ -130,8 +130,7 @@ class EditBox(zeit.cms.browser.form.WidgetCSSMixin,
 
     template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
     form = zope.app.pagetemplate.ViewPageTemplateFile(
-        'subpageform.pt',
-        pkg_resources.resource_filename('zeit.cms.browser', ''))
+        'subpageform.pt', str(importlib.resources.files('zeit.cms.browser')))
     close = False
     form_fields = NotImplemented
 

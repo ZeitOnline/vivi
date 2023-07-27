@@ -1,6 +1,6 @@
 from zeit.edit.interfaces import IRuleGlobs
 from zeit.edit.rule import Rule
-import pkg_resources
+import importlib.resources
 import pyramid_dogpile_cache2
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
@@ -100,8 +100,8 @@ class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def _set_rules(self, filename):
         zope.app.appsetup.product._configs['zeit.edit']['rules-url'] = (
-            'file://' + pkg_resources.resource_filename(
-                'zeit.content.cp.tests.fixtures', filename))
+            'file://%s' % (importlib.resources.files(
+                __package__) / 'fixtures' / filename))
         pyramid_dogpile_cache2.clear()
         self.rm._rules[:] = []
 

@@ -1,7 +1,7 @@
 # coding: utf-8
 from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
-import pkg_resources
+import importlib.resources
 import plone.testing
 import transaction
 import zeit.cms.repository.folder
@@ -43,8 +43,8 @@ def create_dynamic_folder(package, files):
     repository['data'] = folder
     for name in files:
         folder[name] = PersistentUnknownResource(
-            data=pkg_resources.resource_string(
-                package, path + name).decode('latin-1'))
+            data=(importlib.resources.files(package) / path / name).read_text(
+                'latin-1'))
 
     dynamic = RepositoryDynamicFolder()
     dynamic.config_file = folder['config.xml']

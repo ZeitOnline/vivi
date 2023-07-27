@@ -1,6 +1,6 @@
 # coding: utf-8
 import gocept.selenium
-import pkg_resources
+import importlib.resources
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing
@@ -17,7 +17,7 @@ product_config = """
     access-control-webtrekk-password bar
     access-control-webtrekk-customerId 123
 </product-config>
-""".format(here=pkg_resources.resource_filename(__name__, '.'))
+""".format(here=importlib.resources.files(__package__))
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
     zeit.content.cp.testing.CONFIG_LAYER,

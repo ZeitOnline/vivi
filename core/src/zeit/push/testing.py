@@ -1,7 +1,7 @@
 import gocept.selenium
 import hvac
 import logging
-import pkg_resources
+import importlib.resources
 import plone.testing
 import urllib.parse
 import zeit.cms.testing
@@ -48,8 +48,8 @@ product_config = """\
   push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
   homepage-banner-uniqueid http://xml.zeit.de/banner
 </product-config>
-""".format(fixtures=pkg_resources.resource_filename(
-    __name__, 'tests/fixtures'))
+""".format(
+    fixtures='%s/tests/fixtures' % importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
@@ -116,8 +116,8 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
 
     def create_template(self, text=None, name='template.json'):
         if not text:
-            text = pkg_resources.resource_string(
-                __name__, 'tests/fixtures/payloadtemplate.json')
+            text = (importlib.resources.files(__package__) /
+                    'tests/fixtures/payloadtemplate.json').read_text('utf-8')
         with zeit.cms.testing.site(self['zodbApp']):
             with zeit.cms.testing.interaction():
                 cfg = zope.app.appsetup.product.getProductConfiguration(
@@ -136,8 +136,8 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
     def testSetUp(self):
         self.create_template('', 'foo.json')
         self.create_template('', 'eilmeldung.json')
-        self.create_template(pkg_resources.resource_string(
-            __name__, 'tests/fixtures/authors.json'),
+        self.create_template((importlib.resources.files(
+            __package__) / 'tests/fixtures/authors.json').read_text('utf-8'),
             'authors.json')
 
 

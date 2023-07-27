@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 import gocept.lxml.objectify
-import pkg_resources
+import importlib.resources
 import pyramid_dogpile_cache2
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -188,8 +188,8 @@ class FeatureToggleTest(zeit.cms.testing.ZeitCmsTestCase):
         toggles = zeit.cms.content.sources.FeatureToggleSource()(None)
         toggles.factory.config_url = 'toggle'
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        config['toggle'] = 'file://' + pkg_resources.resource_filename(
-            'zeit.cms.content', 'feature-toggle-grouped.xml')
+        config['toggle'] = ('file://%s/feature-toggle-grouped.xml' %
+                            importlib.resources.files('zeit.cms.content'))
         self.assertFalse(toggles.find('example'))
         toggles.set('example')
         self.assertTrue(toggles.find('example'))

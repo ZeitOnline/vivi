@@ -1,4 +1,4 @@
-import pkg_resources
+import importlib.resources
 import zeit.content.image.testing
 import shutil
 import requests
@@ -8,9 +8,8 @@ from zeit.content.image import image
 
 class TestImageServing(zeit.content.image.testing.StaticBrowserTestCase):
     def setUp(self):
-        image_dir = pkg_resources.resource_filename(
-            "zeit.content.image.browser", "testdata"
-        )
+        image_dir = importlib.resources.files(
+            "zeit.content.image.browser") / "testdata"
         shutil.copytree(image_dir, path.join(self.layer["documentroot"], "testdata"))
 
     def test_image_server(self):

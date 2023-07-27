@@ -3,7 +3,7 @@ from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import PIL.Image
-import pkg_resources
+import importlib.resources
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
@@ -76,8 +76,8 @@ class ImageView(zeit.cms.browser.view.Base):
 
 class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
 
-    template = ViewPageTemplateFile(pkg_resources.resource_filename(
-        'zeit.cms.browser', 'object-details-heading.pt'))
+    template = ViewPageTemplateFile(str((importlib.resources.files(
+        'zeit.cms.browser') / 'object-details-heading.pt')))
 
     def __init__(self, context, request):
         super().__init__(context.target, request)

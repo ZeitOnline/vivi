@@ -1,7 +1,7 @@
 from unittest import mock
 import gocept.selenium
 import json
-import pkg_resources
+import importlib.resources
 import plone.testing
 import zeit.cms.testing
 import zeit.content.image.testing
@@ -37,7 +37,8 @@ class Layer(plone.testing.Layer):
         del self.search.client.search
 
     def set_result(self, package, filename):
-        value = pkg_resources.resource_string(package, filename)
+        value = (
+            importlib.resources.files(package) / filename).read_text('utf-8')
         self.search.client.search.return_value = json.loads(value)
 
 

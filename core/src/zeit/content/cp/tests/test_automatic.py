@@ -4,7 +4,7 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
 import json
 import lxml.etree
-import pkg_resources
+import importlib.resources
 import requests_mock
 import transaction
 import zeit.cms.content.interfaces
@@ -837,8 +837,8 @@ class AutomaticRSSTest(zeit.content.cp.testing.FunctionalTestCase):
             zeit.retresco.interfaces.IElasticsearch)
 
     def feed_xml(self):
-        url = pkg_resources.resource_filename(
-            'zeit.content.cp', './tests/fixtures/feed_data.xml')
+        url = str((importlib.resources.files(
+            __package__) / 'fixtures/feed_data.xml'))
         return lxml.etree.parse(url)
 
     def mocked_rss_query(self, area):

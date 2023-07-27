@@ -1,16 +1,16 @@
 # coding: utf8
 import gocept.selenium
-import pkg_resources
+import importlib.resources
 import zeit.cms.testing
 import zeit.content.image.testing
 
 
 product_config = """
 <product-config zeit.crop>
-    scale-source file://{base}/scales.xml
-    color-source file://{base}/colors.xml
+    scale-source file://{here}/scales.xml
+    color-source file://{here}/colors.xml
 </product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
+""".format(here=importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(

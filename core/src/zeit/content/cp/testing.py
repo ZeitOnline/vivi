@@ -1,6 +1,6 @@
 from unittest import mock
 import gocept.selenium
-import pkg_resources
+import importlib.resources
 import plone.testing
 import re
 import transaction
@@ -34,15 +34,15 @@ product_config = """
     area-color-themes-source file://{fixtures}/area-color-themes.xml
     reach-service-source file://{fixtures}/reach-services.xml
 </product-config>
-""".format(fixtures=pkg_resources.resource_filename(
-    __name__, 'tests/fixtures'))
+""".format(
+    fixtures='%s/tests/fixtures' % importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
     patches={'zeit.edit': {
-        'rules-url': 'file://%s/example_rules.py' %
-        pkg_resources.resource_filename(__name__, 'tests/fixtures')},
+        'rules-url': 'file://%s/tests/fixtures/example_rules.py' %
+        importlib.resources.files(__package__)},
         'zeit.retresco': {'topicpage-prefix': '/2007'},
     }, bases=(
         zeit.content.image.testing.CONFIG_LAYER,
@@ -61,8 +61,8 @@ class CPTemplateLayer(plone.testing.Layer):
     def setUp(self):
         self['cp-template-patch'] = mock.patch(
             'zeit.content.cp.centerpage.CenterPage.default_template',
-            new=pkg_resources.resource_string(
-                __name__, './tests/fixtures/cp-template.xml').decode('utf-8'))
+            new=(importlib.resources.files(__package__) /
+                 'tests/fixtures/cp-template.xml').read_text('utf-8'))
         self['cp-template-patch'].start()
 
     def tearDown(self):

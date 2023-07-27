@@ -1,6 +1,6 @@
 from unittest import mock
 import gocept.httpserverlayer.custom
-import pkg_resources
+import importlib.resources
 import time
 import unittest
 import zeit.cms.checkout.helper
@@ -147,9 +147,10 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        wsdl = pkg_resources.resource_string(__name__, 'pixelService.wsdl')
-        wsdl = wsdl.decode().replace('__PORT__', str(HTTP_LAYER['http_port']))
-        self.wfile.write(wsdl.encode())
+        wsdl = (importlib.resources.files(__package__) /
+                'pixelService.wsdl').read_text('utf-8')
+        wsdl = wsdl.replace('__PORT__', str(HTTP_LAYER['http_port']))
+        self.wfile.write(wsdl.encode('utf-8'))
 
     def do_POST(self):
         self.send_response(500)

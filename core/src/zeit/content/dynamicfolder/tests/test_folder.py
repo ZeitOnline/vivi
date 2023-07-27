@@ -5,9 +5,9 @@ from zeit.cms.content.interfaces import IUUID
 from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.rawxml.rawxml import RawXML
+import importlib.resources
 import jinja2
 import lxml.etree
-import pkg_resources
 import transaction
 import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
@@ -171,9 +171,9 @@ class TestDynamicFolder(
     def test_works_with_raxml_template(self):
         # These get an xml declaration in their serialization, so we must not
         # process them as unicode, else lxml complains.
-        self.repository['data']['template.xml'] = RawXML(
-            pkg_resources.resource_stream(
-                __name__, 'fixtures/dynamic-centerpages/template.xml'))
+        with (importlib.resources.files(__package__) /
+             'fixtures/dynamic-centerpages/template.xml').open() as f:
+            self.repository['data']['template.xml'] = RawXML(f)
         with self.assertNothingRaised():
             self.folder['xanten']
 
@@ -181,9 +181,9 @@ class TestDynamicFolder(
         # These don't get an xml declaration in their serialization, but
         # luckily(?) lxml doesn't care if we use unicode or utf-8 in that case.
         self.repository['data']['template.xml'] = PersistentUnknownResource(
-            data=pkg_resources.resource_string(
-                __name__, 'fixtures/dynamic-centerpages/template.xml').decode(
-                'latin-1'))
+            data=(importlib.resources.files(__package__) /
+                  'fixtures/dynamic-centerpages/template.xml').read_text(
+                      'latin-1'))
         with self.assertNothingRaised():
             self.folder['xanten']
 

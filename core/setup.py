@@ -49,7 +49,6 @@ setup(
         'pytz',
         'requests',
         'requests_file',
-        'setuptools',
         'sqlalchemy>=2.0.0.dev0',
         'transaction',
         'tweepy>=4.5.0',

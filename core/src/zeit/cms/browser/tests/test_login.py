@@ -1,7 +1,7 @@
 from zope.pluggableauth.plugins.principalfolder import InternalPrincipal
 from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
 import jwt
-import pkg_resources
+import importlib.resources
 import plone.testing
 import urllib.error
 import urllib.parse
@@ -110,7 +110,8 @@ class SSOTest(zeit.cms.testing.BrowserTestCase):
     def jwt_decode(self, value):
         return jwt.decode(
             value.encode('ascii'),
-            pkg_resources.resource_string('zeit.cms.tests', 'sso-public.pem'),
+            (importlib.resources.files('zeit.cms.tests') /
+             'sso-public.pem').read_text('ascii'),
             algorithms='RS256')
 
     def test_unauthenticated_redirects_to_loginform(self):
