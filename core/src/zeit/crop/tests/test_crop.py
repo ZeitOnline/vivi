@@ -1,33 +1,12 @@
-# coding: utf8
 import PIL.Image
 import pkg_resources
 import unittest
 import zeit.cms.testing
 import zeit.content.image.testing
-import zeit.imp.interfaces
-import zeit.imp.mask
-import zeit.imp.source
-import zope.interface.verify
-
-
-product_config = """
-<product-config zeit.imp>
-    scale-source file://{base}/scales.xml
-    color-source file://{base}/colors.xml
-</product-config>
-""".format(base=pkg_resources.resource_filename(__name__, ''))
-
-
-CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.content.image.testing.CONFIG_LAYER,))
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
-WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
-
-
-class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
-    layer = WSGI_LAYER
+import zeit.crop.interfaces
+import zeit.crop.mask
+import zeit.crop.source
+import zeit.crop.testing
 
 
 class TestLayerMask(unittest.TestCase):
@@ -56,7 +35,7 @@ class TestLayerMask(unittest.TestCase):
 
     def test_mask_should_have_correct_size(self):
         # Create a 20x30 mask in an 150x100 image
-        mask = zeit.imp.mask.Mask((10, 7), (6, 3), cross_size=0)
+        mask = zeit.crop.mask.Mask((10, 7), (6, 3), cross_size=0)
         expected = ['xxxxxxxxxx',
                     'xxxxxxxxxx',
                     'xx      xx',
@@ -67,8 +46,8 @@ class TestLayerMask(unittest.TestCase):
         self.assert_mask(expected, mask)
 
     def test_border_should_be_inside_given_mask_size(self):
-        mask = zeit.imp.mask.Mask((20, 20), (10, 8), border=(0, 0, 0),
-                                  cross_size=0)
+        mask = zeit.crop.mask.Mask((20, 20), (10, 8), border=(0, 0, 0),
+                                   cross_size=0)
         expected = ['xxxxxxxxxxxxxxxxxxxx',
                     'xxxxxxxxxxxxxxxxxxxx',
                     'xxxxxxxxxxxxxxxxxxxx',
@@ -92,14 +71,14 @@ class TestLayerMask(unittest.TestCase):
         self.assert_mask(expected, mask)
 
     def test_given_border_colour_should_be_used(self):
-        mask = zeit.imp.mask.Mask((100, 100), (100, 100), border=(255, 0, 0))
+        mask = zeit.crop.mask.Mask((100, 100), (100, 100), border=(255, 0, 0))
         with mask.open('r') as f:
             image = PIL.Image.open(f)
             image.load()
         self.assertEqual((255, 0, 0, 255), image.getpixel((0, 0)))
 
     def test_rect_box_should_match_given_mask_size(self):
-        mask = zeit.imp.mask.Mask((150, 100), (20, 30))
+        mask = zeit.crop.mask.Mask((150, 100), (20, 30))
         (x1, y1), (x2, y2) = mask._get_rect_box()
         # There is a rather missleading comment in the PIL documentation which
         # indicates that we need to pass 1px less than the expected size:
@@ -109,41 +88,13 @@ class TestLayerMask(unittest.TestCase):
         self.assertEqual(29, y2 - y1)
 
 
-class TestSources(zeit.cms.testing.FunctionalTestCase):
-
-    layer = ZOPE_LAYER
-
-    def test_scale_source(self):
-        source = zeit.imp.source.ScaleSource()(None)
-        scales = list(source)
-        self.assertEqual(7, len(scales))
-        scale = scales[0]
-        zope.interface.verify.verifyObject(
-            zeit.imp.interfaces.IPossibleScale, scale)
-        self.assertEqual('450x200', scale.name)
-        self.assertEqual('450', scale.width)
-        self.assertEqual('200', scale.height)
-        self.assertEqual('Aufmacher groß (450×200)', scale.title)
-
-    def test_color_source(self):
-        source = zeit.imp.source.ColorSource()(None)
-        values = list(source)
-        self.assertEqual(3, len(values))
-        value = values[1]
-        zope.interface.verify.verifyObject(zeit.imp.interfaces.IColor, value)
-        self.assertEqual('schwarzer Rahmen (1 Pixel)', value.title)
-        self.assertEqual('#000000', value.color)
-
-
-class TestCrop(zeit.cms.testing.FunctionalTestCase):
-
-    layer = ZOPE_LAYER
+class TestCrop(zeit.crop.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
         self.group = (
             zeit.content.image.testing.create_image_group_with_master_image())
-        self.crop = zeit.imp.interfaces.ICropper(self.group)
+        self.crop = zeit.crop.interfaces.ICropper(self.group)
 
     def get_histogram(self, image):
         histogram = image.histogram()
@@ -202,7 +153,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
 
     def test_store(self):
         self.crop.crop(200, 200, 0, 0, 200, 200)
-        image = zeit.imp.interfaces.IStorer(self.group).store(
+        image = zeit.crop.interfaces.IStorer(self.group).store(
             'foo', self.crop.pil_image)
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertIn('group-foo.jpg', self.group)
@@ -232,7 +183,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
                 pkg_resources.resource_filename(
                     __name__, 'testdata/grayscale.jpg')))
         # The following used to fail with TypeError: an integer is required
-        crop = zeit.imp.interfaces.ICropper(self.group)
+        crop = zeit.crop.interfaces.ICropper(self.group)
         crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
 
     def test_cmyk_converted_to_rgb(self):
@@ -240,7 +191,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
             zeit.content.image.testing.create_image_group_with_master_image(
                 pkg_resources.resource_filename(
                     __name__, 'testdata/cmyk.jpg')))
-        crop = zeit.imp.interfaces.ICropper(self.group)
+        crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
@@ -249,7 +200,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
             zeit.content.image.testing.create_image_group_with_master_image(
                 pkg_resources.resource_filename(
                     __name__, 'testdata/palette.gif')))
-        crop = zeit.imp.interfaces.ICropper(self.group)
+        crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
@@ -258,16 +209,8 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
             zeit.content.image.testing.create_image_group_with_master_image(
                 pkg_resources.resource_filename(
                     __name__, 'testdata/transparent.png')))
-        crop = zeit.imp.interfaces.ICropper(self.group)
+        crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGBA', image.mode)
         # Check that the alpha channel survives the cropping intact.
         self.assertEqual((183, 255, 159, 64), image.getpixel((100, 25)))
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestLayerMask))
-    suite.addTest(unittest.makeSuite(TestSources))
-    suite.addTest(unittest.makeSuite(TestCrop))
-    return suite

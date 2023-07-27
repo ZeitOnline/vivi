@@ -47,7 +47,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'entry-text.txt',
-        'imp.txt',
+        'crop.txt',
         'ticket.txt',
         'upload.txt',
         layer=zeit.content.gallery.testing.WSGI_LAYER))

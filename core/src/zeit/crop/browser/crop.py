@@ -3,8 +3,8 @@ import json
 import transaction
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
-import zeit.imp.browser.interfaces
-import zeit.imp.source
+import zeit.crop.browser.interfaces
+import zeit.crop.source
 import zope.app.pagetemplate
 import zope.cachedescriptors.property
 
@@ -29,10 +29,10 @@ class ImpBase(zeit.cms.browser.view.Base):
         return self.image.getImageSize()[1]
 
     def scales(self):
-        return zeit.imp.source.ScaleSource()(self.context)
+        return zeit.crop.source.ScaleSource()(self.context)
 
     def colors(self):
-        return zeit.imp.source.ColorSource()(self.context)
+        return zeit.crop.source.ColorSource()(self.context)
 
 
 class Imp(ImpBase):
@@ -43,7 +43,7 @@ class Imp(ImpBase):
         try:
             return zeit.content.image.interfaces.IMasterImage(self.context)
         except TypeError:
-            raise zeit.imp.browser.interfaces.NoMasterImageError()
+            raise zeit.crop.browser.interfaces.NoMasterImageError()
 
 
 class ImageBar(zeit.cms.browser.view.Base):

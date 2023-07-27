@@ -1,9 +1,9 @@
 import zeit.cms.testing
-import zeit.imp.tests
+import zeit.crop.testing
 
 
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        package='zeit.imp.browser',
-        layer=zeit.imp.tests.WSGI_LAYER)
+        package='zeit.crop.browser',
+        layer=zeit.crop.testing.WSGI_LAYER)

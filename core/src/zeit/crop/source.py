@@ -1,16 +1,16 @@
 import zeit.cms.content.sources
-import zeit.imp.interfaces
+import zeit.crop.interfaces
 import zope.interface
 
 
-@zope.interface.implementer(zeit.imp.interfaces.IPossibleScale)
+@zope.interface.implementer(zeit.crop.interfaces.IPossibleScale)
 class PossibleScale:
     pass
 
 
 class ScaleSource(zeit.cms.content.sources.XMLSource):
 
-    product_configuration = 'zeit.imp'
+    product_configuration = 'zeit.crop'
     config_url = 'scale-source'
     default_filename = 'scales.xml'
 
@@ -26,14 +26,14 @@ class ScaleSource(zeit.cms.content.sources.XMLSource):
                 yield scale
 
 
-@zope.interface.implementer(zeit.imp.interfaces.IColor)
+@zope.interface.implementer(zeit.crop.interfaces.IColor)
 class Color:
     pass
 
 
 class ColorSource(zeit.cms.content.sources.XMLSource):
 
-    product_configuration = 'zeit.imp'
+    product_configuration = 'zeit.crop'
     config_url = 'color-source'
     default_filename = 'imp-colors.xml'
 

@@ -1,12 +1,12 @@
 import zeit.content.image.image
 import zeit.content.image.interfaces
-import zeit.imp.interfaces
+import zeit.crop.interfaces
 import zope.component
 import zope.interface
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IRepositoryImageGroup)
-@zope.interface.implementer(zeit.imp.interfaces.IStorer)
+@zope.interface.implementer(zeit.crop.interfaces.IStorer)
 class ImageGroupStorer:
 
     def __init__(self, context):

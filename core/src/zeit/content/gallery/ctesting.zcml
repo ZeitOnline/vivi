@@ -12,7 +12,7 @@
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
 
-  <include package="zeit.imp" />
-  <include package="zeit.imp.browser" />
+  <include package="zeit.crop" />
+  <include package="zeit.crop.browser" />
 
 </configure>

@@ -77,7 +77,7 @@
 
   <!-- IMP -->
 
-  <adapter factory=".imp.cropper_for_gallery" />
-  <adapter factory=".imp.GalleryStorer" />
+  <adapter factory=".crop.cropper_for_gallery" />
+  <adapter factory=".crop.GalleryStorer" />
 
 </configure>

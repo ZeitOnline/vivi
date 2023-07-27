@@ -1,20 +1,20 @@
 import os.path
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
-import zeit.imp.interfaces
+import zeit.crop.interfaces
 import zope.component
 import zope.interface
 import zope.schema.interfaces
 
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-@zope.interface.implementer(zeit.imp.interfaces.ICropper)
+@zope.interface.implementer(zeit.crop.interfaces.ICropper)
 def cropper_for_gallery(context):
-    return zeit.imp.interfaces.ICropper(context.image)
+    return zeit.crop.interfaces.ICropper(context.image)
 
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
-@zope.interface.implementer(zeit.imp.interfaces.IStorer)
+@zope.interface.implementer(zeit.crop.interfaces.IStorer)
 class GalleryStorer:
 
     def __init__(self, context):

@@ -1,41 +1,12 @@
 # coding: utf8
 from selenium.webdriver.common.keys import Keys
-import gocept.selenium
 import unittest
 import zeit.cms.testing
 import zeit.content.image.testing
-import zeit.imp.tests
+import zeit.crop.testing
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(zeit.imp.tests.ZOPE_LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
-    name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(
-    name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
-
-
-class Selenium(zeit.cms.testing.SeleniumTestCase):
-
-    layer = WEBDRIVER_LAYER
-    window_width = 1100
-    window_height = 600
-
-    def setUp(self):
-        super().setUp()
-        self.create_group()
-        self.open_imp()
-
-    def create_group(self):
-        zeit.content.image.testing.create_image_group_with_master_image()
-
-    def open_imp(self):
-        self.open('/repository/group/@@imp.html')
-
-
-class SeleniumBasicTests(Selenium):
+class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
 
     def test_generic_load(self):
         self.selenium.assertTextPresent('450×200')
@@ -133,7 +104,7 @@ class SeleniumBasicTests(Selenium):
         """ % delta_y)
 
 
-class SeleniumCropTests(Selenium):
+class SeleniumCropTests(zeit.crop.testing.SeleniumTestCase):
 
     def test_crop_wo_mask(self):
         s = self.selenium
@@ -196,7 +167,7 @@ class SeleniumCropTests(Selenium):
         self.assertTrue(str(zoom).startswith('0.09'))
 
 
-class SeleniumMaskTests(Selenium):
+class SeleniumMaskTests(zeit.crop.testing.SeleniumTestCase):
 
     def test_input_fields_show_mask_size(self):
         s = self.selenium
@@ -310,7 +281,7 @@ class SeleniumMaskTests(Selenium):
         s.verifyEval('window.document.imp.get_crop_arguments().y2', '180')
 
 
-class ResizeTests(Selenium):
+class ResizeTests(zeit.crop.testing.SeleniumTestCase):
 
     window_width = 1000
     window_height = 800
@@ -394,7 +365,7 @@ class ResizeTests(Selenium):
             max_left, 'true')
 
 
-class FilterTests(Selenium):
+class FilterTests(zeit.crop.testing.SeleniumTestCase):
 
     def test_value_mapper(self):
         s = self.selenium
@@ -463,7 +434,7 @@ class FilterTests(Selenium):
             "window.document.imp.crop_arguments['filter.%s']" % name, '1')
 
 
-class ContentZoomTest(Selenium):
+class ContentZoomTest(zeit.crop.testing.SeleniumTestCase):
 
     def test_zoom(self):
         s = self.selenium

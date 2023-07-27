@@ -173,7 +173,7 @@
     for="zeit.content.gallery.interfaces.IGalleryEntry"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp.html"
-    class=".imp.Imp"
+    class=".crop.Imp"
     permission="zope.View"
     menu="zeit-context-views" title="Transform"
     />
@@ -182,7 +182,7 @@
     for="zeit.content.gallery.interfaces.IGalleryEntry"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-scaled"
-    class=".imp.ScaledImage"
+    class=".crop.ScaledImage"
     permission="zope.View"
     />
 
@@ -190,7 +190,7 @@
     for="zeit.content.gallery.interfaces.IGalleryEntry"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-crop"
-    class="zeit.imp.browser.scale.CropImage"
+    class="zeit.crop.browser.scale.CropImage"
     permission="zeit.AddContent"
     />
 
@@ -198,7 +198,7 @@
     for="zeit.content.gallery.interfaces.IGalleryEntry"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-image-bar"
-    class=".imp.ImageBar"
+    class=".crop.ImageBar"
     permission="zope.View"
     />
 

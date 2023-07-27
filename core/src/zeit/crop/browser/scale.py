@@ -4,7 +4,7 @@ import PIL.ImageColor
 import PIL.ImageDraw
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
-import zeit.imp.mask
+import zeit.crop.mask
 
 
 def parse_filter_args(request, crop):
@@ -27,7 +27,7 @@ class ScaledImage(zeit.cms.browser.view.Base):
 
     def get_scaled_image(self, image, width, height):
         width, height = int(width), int(height)
-        cropper = zeit.imp.interfaces.ICropper(image)
+        cropper = zeit.crop.interfaces.ICropper(image)
         cropper.downsample_filter = PIL.Image.Resampling.NEAREST
         parse_filter_args(self.request, cropper)
         pil_image = cropper.crop(width, height, 0, 0, width, height)
@@ -44,7 +44,7 @@ class MaskImage(zeit.cms.browser.view.Base):
 
     def __call__(self, image_width, image_height, mask_width, mask_height,
                  border):
-        image = zeit.imp.mask.Mask(
+        image = zeit.crop.mask.Mask(
             (int(image_width), int(image_height)),
             (int(mask_width), int(mask_height)),
             parse_border(border))
@@ -59,10 +59,10 @@ class CropImage(zeit.cms.browser.view.Base):
     def __call__(self, w, h, x1, y1, x2, y2, name, border=''):
         w, h = int(w), int(h)
         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-        cropper = zeit.imp.interfaces.ICropper(self.context)
+        cropper = zeit.crop.interfaces.ICropper(self.context)
         parse_filter_args(self.request, cropper)
         cropper.crop(w, h, x1, y1, x2, y2, parse_border(border))
-        image = zeit.imp.interfaces.IStorer(self.context).store(
+        image = zeit.crop.interfaces.IStorer(self.context).store(
             name, cropper.pil_image)
         return self.url(image)
 

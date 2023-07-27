@@ -9,7 +9,7 @@
     for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp.html"
-    class=".imp.Imp"
+    class=".crop.Imp"
     permission="zeit.imp.Use"
     />
 
@@ -59,7 +59,7 @@
     for="zeit.content.image.interfaces.IImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="imp-image-bar"
-    class=".imp.ImageBar"
+    class=".crop.ImageBar"
     permission="zeit.imp.Use"
     />
 

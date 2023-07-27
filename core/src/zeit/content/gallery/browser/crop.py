@@ -1,10 +1,10 @@
-import zeit.imp.browser.imp
 import zeit.content.gallery.interfaces
-import zeit.imp.browser.scale
+import zeit.crop.browser.crop
+import zeit.crop.browser.scale
 import zope.cachedescriptors.property
 
 
-class Imp(zeit.imp.browser.imp.ImpBase):
+class Imp(zeit.crop.browser.crop.ImpBase):
 
     def render(self):
         if self.context.is_crop_of:
@@ -45,14 +45,14 @@ class Imp(zeit.imp.browser.imp.ImpBase):
                 pass
 
 
-class ImageBar(zeit.imp.browser.imp.ImageBar):
+class ImageBar(zeit.crop.browser.crop.ImageBar):
 
     @property
     def images(self):
         return self.context.crops
 
 
-class ScaledImage(zeit.imp.browser.scale.ScaledImage):
+class ScaledImage(zeit.crop.browser.scale.ScaledImage):
 
     def __call__(self, width, height):
         return self.get_scaled_image(self.context.image, width, height)
