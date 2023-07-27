@@ -295,7 +295,7 @@ setup(
             'zeit_edit=zeit.edit.browser.resources:lib_css',
             'zeit_edit_js=zeit.edit.browser.resources:lib_js',
             'zeit_find=zeit.find.browser.resources:lib',
-            'zeit_imp=zeit.imp.browser.resources:lib',
+            'zeit_crop=zeit.crop.browser.resources:lib',
             'zeit_push=zeit.push.browser.resources:lib',
             'zeit_seo=zeit.seo.browser.resources:lib',
             'zeit_wochenmarkt=zeit.wochenmarkt.browser.resources:lib',

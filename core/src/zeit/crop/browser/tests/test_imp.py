@@ -8,13 +8,13 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.testing
-import zeit.imp.tests
+import zeit.crop.testing
 import zope.app.file.image
 import zope.component
 import zope.component.hooks
 
 
-class TestBase(zeit.imp.tests.BrowserTestCase):
+class TestBase(zeit.crop.testing.BrowserTestCase):
 
     image_path = 'http://localhost/++skin++cms/repository/group'
 

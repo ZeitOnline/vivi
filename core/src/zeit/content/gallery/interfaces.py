@@ -4,7 +4,7 @@ import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.content.gallery.source
 import zeit.content.image.interfaces
-import zeit.imp.source
+import zeit.crop.source
 import zeit.wysiwyg.interfaces
 import zope.container.interfaces
 import zope.schema
@@ -127,7 +127,7 @@ class IGalleryReference(zope.interface.Interface):
         source=gallerySource)
 
 
-class ScaleSource(zeit.imp.source.ScaleSource):
+class ScaleSource(zeit.crop.source.ScaleSource):
 
     product_configuration = 'zeit.content.gallery'
 

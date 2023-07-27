@@ -3,7 +3,7 @@ import PIL.ImageColor
 import PIL.ImageEnhance
 import PIL.ImageFile
 import zeit.content.image.interfaces
-import zeit.imp.interfaces
+import zeit.crop.interfaces
 import zope.component
 import zope.interface
 import zope.security.proxy
@@ -14,7 +14,7 @@ PIL.ImageFile.MAXBLOCK = 50000000
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
-@zope.interface.implementer(zeit.imp.interfaces.ICropper)
+@zope.interface.implementer(zeit.crop.interfaces.ICropper)
 class Cropper:
 
     filter_map = {
@@ -72,7 +72,7 @@ class Cropper:
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IRepositoryImageGroup)
-@zope.interface.implementer(zeit.imp.interfaces.ICropper)
+@zope.interface.implementer(zeit.crop.interfaces.ICropper)
 def cropper_for_imagegroup(context):
     image = zeit.content.image.interfaces.IMasterImage(context)
-    return zeit.imp.interfaces.ICropper(image)
+    return zeit.crop.interfaces.ICropper(image)

@@ -477,6 +477,8 @@ class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('css=div.mydetails')
 
     def test_remove_button_is_shown_even_upon_error_when_loading_details(self):
+        # XXX https://github.com/pytest-dev/pytest/issues/5147
+        from zeit.cms.browser.tests.test_widget import ObjectWidgetMyDetails
         ObjectWidgetMyDetails.raise_error = True
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/'

@@ -4,7 +4,7 @@
 
   <permission
     id="zeit.imp.Use"
-    title="Use IMP"
+    title="Use Image Manipulation Program"
     />
 
   <adapter factory=".crop.Cropper" />
