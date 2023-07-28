@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.0 (2023-07-28)
+-------------------
+
+MAINT:
+- Switch to PEP420 namespace packages
+
+
 5.28.2 (2023-07-24)
 -------------------
 
