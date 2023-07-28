@@ -1,7 +1,7 @@
 import elasticsearch
 import elasticsearch.connection
 import elasticsearch.transport
-import pkg_resources
+import importlib.metadata
 import requests.utils
 import zeit.cms.interfaces
 import zeit.retresco.interfaces
@@ -18,7 +18,7 @@ class Connection(elasticsearch.connection.RequestsHttpConnection):
     def _user_agent(self):
         return requests.utils.default_user_agent(
             'zeit.retresco-%s/python-requests' % (
-                pkg_resources.get_distribution('vivi.core').version))
+                importlib.metadata.version('vivi.core')))
 
 
 def TransportWithConnection(connection_class):

@@ -1,5 +1,6 @@
+from zeit.content.image.testing import create_image_group_with_master_image
 import PIL.Image
-import pkg_resources
+import importlib.resources
 import unittest
 import zeit.cms.testing
 import zeit.content.image.testing
@@ -7,6 +8,9 @@ import zeit.crop.interfaces
 import zeit.crop.mask
 import zeit.crop.source
 import zeit.crop.testing
+
+
+HERE = importlib.resources.files(__package__)
 
 
 class TestLayerMask(unittest.TestCase):
@@ -180,35 +184,28 @@ class TestCrop(zeit.crop.testing.FunctionalTestCase):
     def test_border_on_grayscale_image(self):
         self.group = (
             zeit.content.image.testing.create_image_group_with_master_image(
-                pkg_resources.resource_filename(
-                    __name__, 'testdata/grayscale.jpg')))
+                HERE / 'testdata/grayscale.jpg'))
         # The following used to fail with TypeError: an integer is required
         crop = zeit.crop.interfaces.ICropper(self.group)
         crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
 
     def test_cmyk_converted_to_rgb(self):
-        self.group = (
-            zeit.content.image.testing.create_image_group_with_master_image(
-                pkg_resources.resource_filename(
-                    __name__, 'testdata/cmyk.jpg')))
+        self.group = create_image_group_with_master_image(
+            HERE / 'testdata/cmyk.jpg')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
     def test_palette_converted_to_rgb(self):
-        self.group = (
-            zeit.content.image.testing.create_image_group_with_master_image(
-                pkg_resources.resource_filename(
-                    __name__, 'testdata/palette.gif')))
+        self.group = create_image_group_with_master_image(
+            HERE / 'testdata/palette.gif')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
     def test_png_converted_to_rgba(self):
-        self.group = (
-            zeit.content.image.testing.create_image_group_with_master_image(
-                pkg_resources.resource_filename(
-                    __name__, 'testdata/transparent.png')))
+        self.group = create_image_group_with_master_image(
+            HERE / 'testdata/transparent.png')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGBA', image.mode)

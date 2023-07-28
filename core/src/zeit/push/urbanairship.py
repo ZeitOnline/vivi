@@ -6,7 +6,7 @@ import bugsnag
 import grokcore.component as grok
 import json
 import logging
-import pkg_resources
+import importlib.resources
 import pytz
 import re
 import requests
@@ -256,8 +256,8 @@ def print_payload_documentation():
         'type': 'mobile',
         'title': 'Message title'}
 
-    template_text = pkg_resources.resource_string(
-        __name__, 'tests/fixtures/payloadtemplate.json').decode('utf-8')
+    template_text = (importlib.resources.files(__package__) /
+                     'tests/fixtures/payloadtemplate.json').read_text('utf-8')
 
     print("""\
 Um ein neues Pushtemplate zu erstellen muss unter

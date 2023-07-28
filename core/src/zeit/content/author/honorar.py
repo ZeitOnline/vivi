@@ -1,9 +1,9 @@
 from zeit.cms.interfaces import CONFIG_CACHE
 import base64
 import datetime
+import importlib.metadata
 import json
 import logging
-import pkg_resources
 import requests
 import requests.exceptions
 import requests.utils
@@ -92,7 +92,7 @@ class Honorar:
                 'Authorization': 'Bearer %s' % auth_token,
                 'User-Agent': requests.utils.default_user_agent(
                     'zeit.content.author-%s/python-requests' % (
-                        pkg_resources.get_distribution('vivi.core').version))
+                        importlib.metadata.version('vivi.core')))
             }, **kw)
             r.raise_for_status()
             return r.json()

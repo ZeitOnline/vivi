@@ -2,10 +2,10 @@ from opentelemetry.instrumentation.utils import http_status_to_status_code
 from opentelemetry.trace.status import Status
 import base64
 import http.client
+import importlib.metadata
 import logging
 import lxml.etree
 import mimetypes
-import pkg_resources
 import re
 import socket
 import sys
@@ -18,8 +18,7 @@ DEBUG_CONNECTION = False
 
 XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
 try:
-    USER_AGENT = 'zeit.connector/' + pkg_resources.get_distribution(
-        'vivi.core').version
+    USER_AGENT = 'zeit.connector/' + importlib.metadata.version('vivi.core')
 except Exception:
     USER_AGENT = 'zeit.connector/unknown'
 

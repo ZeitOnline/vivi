@@ -1,16 +1,16 @@
 import collections
-import pkg_resources
+import importlib.resources
 import zeit.cms.testing
 import zeit.wochenmarkt.categories
 import zeit.wochenmarkt.ingredients
 
+
 product_config = """\
 <product-config zeit.wochenmarkt>
-  categories-url file://{base}/tests/fixtures/categories.xml
-  ingredients-url file://{base}/tests/fixtures/ingredients.xml
+  categories-url file://{here}/tests/fixtures/categories.xml
+  ingredients-url file://{here}/tests/fixtures/ingredients.xml
 </product-config>
-""".format(
-    base=pkg_resources.resource_filename(__name__, ''))
+""".format(here=importlib.resources.files(__package__))
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config, bases=(zeit.cms.testing.CONFIG_LAYER,))

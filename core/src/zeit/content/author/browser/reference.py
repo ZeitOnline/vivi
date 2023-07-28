@@ -1,6 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zope.browserpage import ViewPageTemplateFile
-import pkg_resources
+import importlib.resources
 import zeit.cms.browser.objectdetails
 import zeit.edit.browser.form
 import zope.formlib.form
@@ -9,8 +9,8 @@ import zope.formlib.interfaces
 
 class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
 
-    template = ViewPageTemplateFile(pkg_resources.resource_filename(
-        'zeit.cms.browser', 'object-details-heading.pt'))
+    template = ViewPageTemplateFile(str((importlib.resources.files(
+        'zeit.cms.browser') / 'object-details-heading.pt')))
 
     def __init__(self, context, request):
         super().__init__(context.target, request)

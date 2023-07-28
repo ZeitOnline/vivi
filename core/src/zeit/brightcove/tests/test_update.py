@@ -4,7 +4,7 @@ from unittest import mock
 from zeit.brightcove.update import import_video, import_playlist
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
-import pkg_resources
+import importlib.resources
 import pytz
 import shutil
 import transaction
@@ -241,9 +241,8 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
 
     def setUp(self):
         super().setUp()
-        image_dir = pkg_resources.resource_filename(
-            "zeit.content.image.browser", "testdata"
-        )
+        image_dir = importlib.resources.files(
+            "zeit.content.image.browser") / "testdata"
         shutil.copytree(image_dir, path.join(self.layer["documentroot"], "testdata"))
 
     def test_download_teaser_image__still_success(self):

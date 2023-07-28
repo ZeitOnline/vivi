@@ -1,10 +1,10 @@
-import pkg_resources
+import importlib.resources
 import zeit.cms.testing
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({
-    'vendors': 'file://' + pkg_resources.resource_filename(
-        __name__, 'tests/fixtures/vendors.xml')
+    'vendors': 'file://{here}/tests/fixtures/vendors.xml'.format(
+        here=importlib.resources.files(__package__))
 }, bases=(zeit.cms.testing.CONFIG_LAYER,))
 
 

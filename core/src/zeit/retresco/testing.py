@@ -1,7 +1,7 @@
 from io import StringIO
 from unittest import mock
 import json
-import pkg_resources
+import importlib.resources
 import plone.testing
 import zeit.cms.content.interfaces
 import zeit.cms.testcontenttype.testcontenttype
@@ -27,11 +27,11 @@ product_config = """
     elasticsearch-connection-class zeit.retresco.search.Connection
     topic-redirect-prefix http://www.zeit.de
     index-principal zope.user
-    kpi-fields file://%(base)s/tests/kpi.xml
-    topicpages-source file://%(base)s/tests/topicpages.xml
+    kpi-fields file://%(here)s/tests/kpi.xml
+    topicpages-source file://%(here)s/tests/topicpages.xml
     topicpage-prefix /thema
 </product-config>
-""" % {'base': pkg_resources.resource_filename(__name__, '')}
+""" % {'here': importlib.resources.files(__package__)}
 
 
 class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
@@ -61,10 +61,9 @@ class ElasticsearchMockLayer(plone.testing.Layer):
         self['elasticsearch_mocker'] = mock.patch(
             'elasticsearch.client.Elasticsearch.search')
         self['elasticsearch'] = self['elasticsearch_mocker'].start()
-        filename = pkg_resources.resource_filename(
-            'zeit.retresco.tests', 'elasticsearch_result.json')
-        with open(filename) as response:
-            self['elasticsearch'].return_value = json.load(response)
+        response = (importlib.resources.files('zeit.retresco.tests') /
+                    'elasticsearch_result.json').read_text('utf-8')
+        self['elasticsearch'].return_value = json.loads(response)
 
     def tearDown(self):
         del self['elasticsearch']

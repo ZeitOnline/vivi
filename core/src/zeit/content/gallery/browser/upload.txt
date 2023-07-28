@@ -50,7 +50,7 @@ There is a javascript action:
 
 Construct a POST which looks like a post which the Flash movie would generate:
 
->>> import pkg_resources
+>>> import importlib.resources
 >>> post_data_template = b"""\
 ... ------------Ij5Ij5KM7ei4GI3ae
 ... Content-Disposition: form-data; name="Filename"
@@ -80,8 +80,8 @@ Construct a POST which looks like a post which the Flash movie would generate:
 
 After calling POSTing, a new image has been added to the folder:
 
->>> post_data = post_data_template % (pkg_resources.resource_string(
-...     'zeit.content.gallery.browser', 'testdata/01.jpg'))
+>>> post_data = post_data_template % (importlib.resources.files(
+...     'zeit.content.gallery.browser') / 'testdata/01.jpg').read_bytes()
 >>> browser.post('@@upload-image', post_data, content_type)
 >>> print(browser.contents)
 {}

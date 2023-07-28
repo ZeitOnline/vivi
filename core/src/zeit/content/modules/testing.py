@@ -1,5 +1,5 @@
 import collections
-import pkg_resources
+import importlib.resources
 import zeit.cmp.testing
 import zeit.cms.content.add
 import zeit.cms.testing
@@ -11,14 +11,14 @@ import zeit.wochenmarkt.testing
 
 product_config = """\
 <product-config zeit.content.modules>
-  jobticker-source file://{base}/tests/fixtures/jobticker.xml
-  subject-source file://{base}/tests/fixtures/mail-subjects.xml
-  embed-provider-source file://{base}/tests/fixtures/embed-providers.xml
-  newsletter-source file://{base}/tests/fixtures/newsletter.xml
-  recipe-metadata-source file://{base}/tests/fixtures/recipe-metadata.xml
-  podigee-providers-source file://{base}/tests/fixtures/podigee-providers.xml
+  jobticker-source file://{here}/tests/fixtures/jobticker.xml
+  subject-source file://{here}/tests/fixtures/mail-subjects.xml
+  embed-provider-source file://{here}/tests/fixtures/embed-providers.xml
+  newsletter-source file://{here}/tests/fixtures/newsletter.xml
+  recipe-metadata-source file://{here}/tests/fixtures/recipe-metadata.xml
+  podigee-providers-source file://{here}/tests/fixtures/podigee-providers.xml
 </product-config>
-""".format(base=pkg_resources.resource_filename(__name__, '.'))
+""".format(here=importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(

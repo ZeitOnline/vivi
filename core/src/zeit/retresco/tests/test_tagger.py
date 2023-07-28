@@ -14,6 +14,7 @@ import zeit.connector.interfaces
 import zeit.retresco.testing
 import zope.component
 import zope.interface
+import zope.interface.verify
 import zope.lifecycleevent
 
 try:

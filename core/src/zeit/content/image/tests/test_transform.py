@@ -2,7 +2,7 @@ from pprint import pformat
 from zeit.content.image.variant import Variant
 import PIL.Image
 import PIL.ImageDraw
-import pkg_resources
+import importlib.resources
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 
@@ -150,8 +150,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
         # generated during setUp
         self.group = (
             zeit.content.image.testing.create_image_group_with_master_image(
-                file_name=pkg_resources.resource_filename(
-                    __name__, 'Black-White.PNG')))
+                importlib.resources.files(__package__) / 'Black-White.PNG'))
 
         # Set zoom < 1, which would usually result in cropping,
         # also set brightness to test image enhancements
@@ -193,7 +192,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_variant_fill_color_is_ignored_if_image_has_no_alpha(self):
         img = zeit.content.image.testing.create_local_image(
-            'Opaque.PNG', 'tests/')
+            'Opaque.PNG', 'zeit.content.image', 'tests')
         transform = zeit.content.image.interfaces.ITransform(img)
         variant = Variant(
             id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
@@ -211,7 +210,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_variant_fill_color_is_applied_if_image_has_alpha_channel(self):
         img = zeit.content.image.testing.create_local_image(
-            'Frame.PNG', 'tests/')
+            'Frame.PNG', 'zeit.content.image', 'tests')
         transform = zeit.content.image.interfaces.ITransform(img)
         variant = Variant(
             id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')

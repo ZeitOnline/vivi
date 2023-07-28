@@ -1,7 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import pkg_resources
+import importlib.resources
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
@@ -45,8 +45,8 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
     zeit.cms.interfaces.IAsset)
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
-    default_template = pkg_resources.resource_string(
-        __name__, 'video-template.xml').decode('utf-8')
+    default_template = (importlib.resources.files(
+        __package__) / 'video-template.xml').read_text('utf-8')
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,

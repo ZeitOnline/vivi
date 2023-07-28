@@ -5,9 +5,9 @@ from js.select2 import select2_de
 from js.underscore import underscore
 from js.vanderlee_colorpicker import colorpicker
 import fanstatic
+import importlib.resources
 import js.jqueryui
 import os.path
-import pkg_resources
 import sys
 
 
@@ -65,14 +65,14 @@ jqueryui = fanstatic.Group([js.jqueryui.jqueryui, jqueryui_theme])
 register(jqueryui)
 
 zc_table = Library(
-    'zc.table', pkg_resources.resource_filename('zc.table', 'resources'))
+    'zc.table', str((importlib.resources.files('zc.table') / 'resources')))
 zc_table_js = fanstatic.Resource(zc_table, 'sorting.js')
 register(zc_table_js)
 
 
 zc_datetimewidget = Library(
-    'zc.datetimewidget', pkg_resources.resource_filename(
-        'zc.datetimewidget', 'resources'))
+    'zc.datetimewidget', str((importlib.resources.files(
+        'zc.datetimewidget') / 'resources')))
 datetime_css = fanstatic.Resource(zc_datetimewidget, 'calendar-system.css')
 datetime_calendar_js = fanstatic.Resource(zc_datetimewidget, 'calendar.js')
 datetime_calendar_setup_js = fanstatic.Resource(

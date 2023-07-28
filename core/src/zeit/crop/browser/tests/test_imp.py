@@ -1,8 +1,8 @@
 from urllib.parse import urlencode
 from io import BytesIO
 import PIL.Image
+import importlib.resources
 import json
-import pkg_resources
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -12,6 +12,9 @@ import zeit.crop.testing
 import zope.app.file.image
 import zope.component
 import zope.component.hooks
+
+
+HERE = importlib.resources.files(__package__)
 
 
 class TestBase(zeit.crop.testing.BrowserTestCase):
@@ -39,8 +42,7 @@ class ImageBarTest(TestBase):
     def test_other_images(self):
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as f:
-            f.write(pkg_resources.resource_string(
-                __name__, 'testdata/01.jpg'))
+            f.write((HERE / 'testdata/01.jpg').read_bytes())
         self.repository['group']['foo-240x120.jpg'] = image
         self.assertAPI([{
             'url':
@@ -51,8 +53,7 @@ class ImageBarTest(TestBase):
         # Another image
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as f:
-            f.write(pkg_resources.resource_string(
-                __name__, 'testdata/02.jpg'))
+            f.write((HERE / 'testdata/02.jpg').read_bytes())
         self.repository['group']['foo-artikel.jpg'] = image
         transaction.commit()
         self.assertAPI([

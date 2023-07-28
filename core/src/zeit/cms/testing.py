@@ -23,7 +23,7 @@ import lxml.cssselect
 import lxml.etree
 import lxml.html
 import os
-import pkg_resources
+import importlib.resources
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
@@ -160,8 +160,10 @@ class ZCMLLayer(plone.testing.Layer):
                  name='ZCMLLayer', module=None, bases=()):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
+        package, _ = module.rsplit('.', 1)
         if not config_file.startswith('/'):
-            config_file = pkg_resources.resource_filename(module, config_file)
+            config_file = str((
+                importlib.resources.files(package) / config_file))
         self.config_file = config_file
         self.features = features
         super().__init__(
@@ -483,17 +485,17 @@ cms_product_config = """\
 <product-config zeit.cms>
   environment testing
 
-  source-access file://{base}/content/access.xml
-  source-serie file://{base}/content/serie.xml
-  source-ressorts file://{base}/content/ressorts.xml
-  source-keyword file://{base}/content/zeit-ontologie-prism.xml
-  source-products file://{base}/content/products.xml
-  source-badges file://{base}/asset/badges.xml
-  source-channels file://{base}/content/ressorts.xml
-  source-printressorts file://{base}/content/print-ressorts.xml
-  source-manual file://{base}/content/manual.xml
+  source-access file://{here}/content/access.xml
+  source-serie file://{here}/content/serie.xml
+  source-ressorts file://{here}/content/ressorts.xml
+  source-keyword file://{here}/content/zeit-ontologie-prism.xml
+  source-products file://{here}/content/products.xml
+  source-badges file://{here}/asset/badges.xml
+  source-channels file://{here}/content/ressorts.xml
+  source-printressorts file://{here}/content/print-ressorts.xml
+  source-manual file://{here}/content/manual.xml
 
-  config-retractlog file://{base}/retractlog/retractlog.xml
+  config-retractlog file://{here}/retractlog/retractlog.xml
 
   checkout-lock-timeout 3600
   checkout-lock-timeout-temporary 30
@@ -510,26 +512,25 @@ cms_product_config = """\
   cache-expiration-feature 15
   cache-expiration-newsimport 1
   cache-expiration-dav 0
-  feature-toggle-source file://{base}/content/feature-toggle.xml
+  feature-toggle-source file://{here}/content/feature-toggle.xml
 
   sso-cookie-name-prefix my_sso_
   sso-cookie-domain
   sso-expiration 300
   sso-algorithm RS256
-  sso-private-key-file {base}/tests/sso-private.pem
+  sso-private-key-file {here}/tests/sso-private.pem
 
   source-api-mapping product=zeit.cms.content.sources.ProductSource
   # We just need a dummy XML file
-  checkin-webhook-config file://{base}/content/access.xml
+  checkin-webhook-config file://{here}/content/access.xml
 </product-config>
-""".format(
-    base=pkg_resources.resource_filename(__name__, ''))
+""".format(here=importlib.resources.files(__package__))
 
 
 CONFIG_LAYER = ProductConfigLayer(
     cms_product_config, patches={'zeit.connector': {
-        'repository-path': pkg_resources.resource_filename(
-            'zeit.connector', 'testcontent')
+        'repository-path': str((importlib.resources.files(
+            'zeit.connector') / 'testcontent'))
     }})
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))

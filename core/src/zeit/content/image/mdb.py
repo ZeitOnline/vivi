@@ -1,17 +1,16 @@
 from io import BytesIO
 import base64
+import importlib.metadata
 import lxml.etree
 import os.path
 import pendulum
-import pkg_resources
 import re
 import requests
 import zeit.content.image.interfaces
 import zope.interface
 
 
-USER_AGENT = 'zeit.content.image/' + pkg_resources.get_distribution(
-    'vivi.core').version
+USER_AGENT = 'zeit.content.image/' + importlib.metadata.version('vivi.core')
 XML_TAGS = re.compile('</?[^>]*>')
 FILE_NAME_ATTRIBUTE = re.compile(' name="([^"]*)"')
 
@@ -96,8 +95,8 @@ class FakeMDB(MDB):
             filename = 'mdb-meta.xml'
         return requests_mock.create_response(
             requests.Request(url='http://example.invalid'),
-            content=pkg_resources.resource_string(
-                __name__, 'tests/fixtures/%s' % filename))
+            content=(importlib.resources.files(
+                __package__) / 'tests/fixtures' / filename).read_bytes())
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
