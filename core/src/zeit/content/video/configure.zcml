@@ -58,6 +58,12 @@
   </class>
 
   <utility
+    provides="zeit.cms.content.interfaces.ICMSContentSource"
+    component=".interfaces.videoSource"
+    name="video"
+    />
+
+  <utility
     component=".interfaces.videoOrPlaylistSource"
     name="video-or-playlist"
     />

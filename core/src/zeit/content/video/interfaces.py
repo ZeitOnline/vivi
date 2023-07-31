@@ -94,6 +94,9 @@ class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = (IVideo,)
 
 
+videoSource = VideoSource()
+
+
 class IPlaylist(IVideoContent):
 
     videos = zope.schema.Tuple(
@@ -104,7 +107,7 @@ class IPlaylist(IVideoContent):
         unique=False,
         value_type=zope.schema.Choice(
             title=_('Videos in the playlist'),
-            source=VideoSource()))
+            source=videoSource))
 
 
 class PlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
