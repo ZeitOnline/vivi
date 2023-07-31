@@ -50,13 +50,6 @@
     permission="zope.View"
     />
 
-  <browser:defaultView
-    for="..interfaces.IAuthor"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    />
-
-
   <browser:icon
     for="..interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSStyles"

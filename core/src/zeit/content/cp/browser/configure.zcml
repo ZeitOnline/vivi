@@ -71,12 +71,6 @@
     class=".form.SEOView"
     />
 
-  <browser:defaultView
-    for="..interfaces.ICenterPage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    />
-
   <browser:page
     for="..interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

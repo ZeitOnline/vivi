@@ -7,18 +7,12 @@
 
   <grok:grok package="." />
 
-  <browser:page
-    name="view.html"
+  <gocept:pagelet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.cms.content.browser.form.DispatchToViewOrEdit"
+    name="view.html"
+    class="zeit.edit.browser.editor.Editor"
     permission="zope.View"
-    />
-
-  <browser:defaultView
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
     />
 
   <browser:viewlet

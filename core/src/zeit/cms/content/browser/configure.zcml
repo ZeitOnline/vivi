@@ -10,6 +10,19 @@
 
   <include file="template.zcml" />
 
+  <browser:defaultView
+    for="zeit.cms.repository.interfaces.IDAVContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="index.html"
+    />
+  <browser:page
+    name="index.html"
+    for="zeit.cms.repository.interfaces.IDAVContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.DispatchToViewOrEdit"
+    permission="zope.View"
+    />
+
   <!-- XML tree editing widget -->
   <adapter
     for="zeit.cms.content.field.IXMLTree

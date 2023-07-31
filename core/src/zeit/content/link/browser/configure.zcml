@@ -38,11 +38,6 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
-  <browser:defaultView
-    for="zeit.content.link.interfaces.ILink"
-    name="view.html"
-    />
-
   <browser:page
     for="zeit.content.link.interfaces.ILink"
     name="metadata_preview"

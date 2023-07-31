@@ -39,12 +39,6 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
-  <browser:defaultView
-    for="zeit.content.rawxml.interfaces.IRawXML"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    />
-
   <browser:icon
     for="zeit.content.rawxml.interfaces.IRawXML"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
