@@ -48,9 +48,9 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.login('producer', 'producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/testing')
-        link = browser.getLink(url='@@delete.html')
-        url = link.url.split("'")[1]        # embedded in lightbox javascript
-        browser.open(url)
+        with self.assertRaises(LinkNotFoundError):
+            browser.getLink(url='@@delete.html')
+        browser.open('@@delete.html')
         with self.assertRaises(LookupError):
             browser.getControl('Delete')    # 'Delete' button is missing
 
@@ -63,8 +63,8 @@ class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):
         browser.login('producer', 'producerpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/online')
-        link = browser.getLink(url='@@delete.html')
-        url = link.url.split("'")[1]        # embedded in lightbox javascript
-        browser.open(url)
+        with self.assertRaises(LinkNotFoundError):
+            browser.getLink(url='@@delete.html')
+        browser.open('@@delete.html')
         with self.assertRaises(LookupError):
             browser.getControl('Delete')    # 'Delete' button is missing

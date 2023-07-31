@@ -64,7 +64,12 @@ class DeleteContent(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def can_be_deleted(self):
         if IFolder.providedBy(self.context):
-            for item in self.context.values():
-                if IFolder.providedBy(item) or IPublishInfo(item).published:
-                    return False
+            return folder_can_be_deleted(self.context)
         return True
+
+
+def folder_can_be_deleted(folder):
+    for item in folder.values():
+        if IFolder.providedBy(item) or IPublishInfo(item).published:
+            return False
+    return True
