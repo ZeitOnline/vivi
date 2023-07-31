@@ -163,6 +163,14 @@
     />
   <grant
     principal="zope.producer"
+    permission="zeit.cms.folder.Publish"
+    />
+  <grant
+    principal="zope.producer"
+    permission="zeit.cms.folder.Retract"
+    />
+  <grant
+    principal="zope.producer"
     permission="zeit.content.cp.Delete"
     />
   <grant

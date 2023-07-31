@@ -142,6 +142,16 @@
     />
 
   <permission
+    id="zeit.cms.folder.Publish"
+    title="Publish Folder objects"
+    />
+
+  <permission
+    id="zeit.cms.folder.Retract"
+    title="Retract Folder objects"
+    />
+
+  <permission
     id="zeit.content.author.Add"
     title="Add Author objects"
     />

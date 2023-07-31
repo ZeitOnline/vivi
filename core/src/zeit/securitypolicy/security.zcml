@@ -157,6 +157,14 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.cms.folder.Publish"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.cms.folder.Retract"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.content.cp.Retract"
     />
   <grant
