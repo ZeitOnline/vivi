@@ -11,7 +11,7 @@
     name="view.html"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.DispatchToViewOrEdit"
+    class="zeit.cms.content.browser.form.DispatchToViewOrEdit"
     permission="zope.View"
     />
 
