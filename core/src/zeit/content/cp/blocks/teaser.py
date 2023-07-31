@@ -64,10 +64,24 @@ class TeaserBlock(
         # overriden so that super.insert() and updateOrder() work
         return self.xml
 
+    @property
+    def references(self):
+        try:
+            return next(iter(self))
+        except StopIteration:
+            return None
+
+    @references.setter
+    def references(self, value):
+        for key in self.keys():
+            self._remove_by_id(key)
+        self.append(value)
+
     TEASERBLOCK_FIELDS = (
         set(zope.schema.getFieldNames(
             zeit.content.cp.interfaces.ITeaserBlock)) -
-        set(zeit.cms.content.interfaces.IXMLRepresentation)
+        set(zeit.cms.content.interfaces.IXMLRepresentation) -
+        set(['references'])
     )
 
     def update(self, other):

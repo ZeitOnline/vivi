@@ -73,11 +73,6 @@
 }
 
 
-.edit-bar > .edit-teaser-link {
-  background-image: url('edit-teaserlist-contents.png');
-  margin-right: 0.5em;
-}
-
 .edit-bar > .toggle-visible-link {
   float: right;
   padding-right: 0.5em;
@@ -345,43 +340,6 @@
 background:transparent url(close.png) no-repeat 0 0 !important;
 margin-top: 4px;
 
-}
-
-/* Teaser list editing */
-
-.teaser-list-edit-box > ol {
-  list-style: none;
-  padding: 0;
-}
-
-.teaser-list-edit-box > ol > li {
-  clear: both;
-  display: block;
-  height: 1.1em;
-  padding: 0.4em 0.5em;
-}
-
-.teaser-list-edit-box > ol > li.even {
-  background-color: #f2f2f2;
-}
-
-.teaser-list-edit-box > ol > li > div {
-  cursor: move;
-}
-
-.teaser-list-edit-box .url-input,
-.teaser-list-edit-box .close-lightbox {
-  /* align with li items */
-  margin-left: 1em;
-  margin-right: 1em;
-}
-
-.url-input a.button.configure_search {
-  margin-right: 0px;
-}
-
-.url-input input {
-  width: 90%;
 }
 
 .close-lightbox {
