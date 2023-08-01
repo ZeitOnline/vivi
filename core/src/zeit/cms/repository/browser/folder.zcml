@@ -119,4 +119,45 @@
     name="edit.html"
     />
 
+  <!-- restrict permissions for publish and retract
+       (XXX copy&paste from the original ZCML location) -->
+
+  <browser:viewlet
+    name="Publish"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    class="zeit.workflow.browser.publish.PublishMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.cms.folder.Publish"
+    icon="/@@/zeit.cms/icons/page_white_lightning.png"
+    />
+  <configure package="zeit.workflow.browser">
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="publish.html"
+    template="publish.pt"
+    permission="zeit.cms.folder.Publish"
+    />
+  </configure>
+
+  <browser:viewlet
+    name="Retract"
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.workflow.browser.publish.RetractMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.cms.folder.Retract"
+    icon="/@@/zeit.cms/icons/retract_topmenu.png"
+    />
+  <configure package="zeit.workflow.browser">
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="retract.html"
+    template="retract.pt"
+    permission="zeit.cms.folder.Retract"
+    />
+  </configure>
+
 </configure>
