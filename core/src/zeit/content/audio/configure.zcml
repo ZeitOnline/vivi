@@ -16,4 +16,20 @@
       />
   </class>
 
+  <adapter
+    factory=".reference.Audios"
+    provides=".interfaces.IAudios"
+    />
+
+  <class class=".reference.Audios">
+    <require
+      interface=".interfaces.IAudios"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAudios"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

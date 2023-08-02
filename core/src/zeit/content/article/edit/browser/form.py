@@ -16,6 +16,7 @@ import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.video.interfaces
+import zeit.content.audio.interfaces
 import zeit.edit.browser.form
 import zeit.workflow.interfaces
 import zope.formlib.form
@@ -525,3 +526,21 @@ class ChannelSelector(zeit.edit.browser.form.InlineForm):
     def handle_edit_action(self, action, data):
         """Once you override one action, you lose *all* inherited ones."""
         super().handle_edit_action.success(data)
+
+
+class AudioForms(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Audio')
+
+
+class Audio(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'audio'
+    undo_description = _('edit audio')
+    form_fields = FormFields(zeit.content.audio.interfaces.IAudios)
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super().__call__()
