@@ -83,6 +83,7 @@ class SearchForm(JSONView):
         'advertisement',
         'animation',
         'article',
+        'audio',
         'author',
         'centerpage-2009',
         'embed',
