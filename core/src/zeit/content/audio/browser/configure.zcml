@@ -1,0 +1,53 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.Add"
+    name="zeit.content.audio.Add"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="Audio"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IAudio"
+    class=".form.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IAudio"
+    class=".form.Display"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.IAudio"
+    action="@@view.html"
+    menu="zeit-context-views"
+    title="View metadata"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:defaultView
+    for="..interfaces.IAudio"
+    name="view.html"
+    />
+
+  <browser:icon
+    for="..interfaces.IAudio"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/audio.png"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    />
+
+</configure>
