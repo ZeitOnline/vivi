@@ -1,0 +1,12 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    name="simplecast_webhook"
+    class=".webhook.Notification"
+    permission="zope.Public"
+    />
+
+</configure>
