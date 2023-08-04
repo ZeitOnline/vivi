@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.3 (2023-08-04)
+-------------------
+
+- ZO-2997: Redirect from repository to workingcopy if one exists for all content types
+
+
 5.29.2 (2023-08-04)
 -------------------
 
