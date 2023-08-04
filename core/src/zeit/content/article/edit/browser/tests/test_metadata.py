@@ -127,13 +127,13 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
             list(self.tagger().updateOrder.call_args[0][0]))
 
 
-class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
+class CommentsTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=options-b.year')
-        self.selenium.click('css=#edit-form-metadata .fold-link')
+        self.selenium.click('css=#edit-form-comments .fold-link')
 
     def test_comments_allowed_toggled_when_comments_section_is_toggled(self):
         s = self.selenium

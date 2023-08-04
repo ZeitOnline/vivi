@@ -96,10 +96,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['commentsAllowed'], DOCUMENT_SCHEMA_NS, 'comments')
 
-    commentsRebrush = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['commentsRebrush'], DOCUMENT_SCHEMA_NS,
-        'comments_rebrush')
-
     commentSectionEnable = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['commentSectionEnable'],
         DOCUMENT_SCHEMA_NS, 'show_commentthread')

@@ -300,7 +300,12 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-form', 'options-audio-speechbert')
 
 
-class MetadataComments(zeit.edit.browser.form.InlineForm):
+class CommentsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Comments')
+
+
+class Comments(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-comments'
@@ -311,8 +316,8 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
         fields = ('commentSectionEnable',)
         if self.context.commentSectionEnable:
             fields += (
-                'commentsAllowed', 'commentsPremoderate', 'commentsRebrush')
-        return FormFields(ICommonMetadata).select(*fields)
+                'commentsAllowed', 'commentsPremoderate', 'comments_sorting')
+        return FormFields(IArticle).select(*fields)
 
 
 class OptionsAudioSpeechbert(zeit.edit.browser.form.InlineForm):
@@ -417,8 +422,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-a'
     undo_description = _('edit options')
-    form_fields = FormFields(IArticle).select(
-        'serie', 'comments_sorting')
+    form_fields = FormFields(IArticle).select('serie')
 
 
 class OptionsB(zeit.edit.browser.form.InlineForm):

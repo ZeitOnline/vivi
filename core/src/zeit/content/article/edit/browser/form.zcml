@@ -292,9 +292,20 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MetadataForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.metadata-comments"
+    name="comments"
+    class=".form.CommentsFormGroup"
+    permission="zope.View"
+    weight="17"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.CommentsFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.comments"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="50"
@@ -303,8 +314,8 @@
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.metadata-comments"
-    class=".form.MetadataComments"
+    name="edit.form.comments"
+    class=".form.Comments"
     permission="zope.View"
     />
 

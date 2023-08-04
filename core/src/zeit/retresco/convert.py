@@ -126,6 +126,7 @@ class CMSContent(Converter):
         ('document', 'breaking_news'),
         ('document', 'DailyNL'),
         ('document', 'comments_api_v2'),
+        ('document', 'comments_rebrush'),
         ('document', 'countings'),
         ('document', 'export_cds'),
         ('document', 'foldable'),
