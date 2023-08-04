@@ -1,0 +1,35 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
+
+  <class class=".audio.Audio">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IAudio"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAudio"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".reference.Audios"
+    provides=".interfaces.IAudios"
+    />
+
+  <class class=".reference.Audios">
+    <require
+      interface=".interfaces.IAudios"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAudios"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>
