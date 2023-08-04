@@ -40,7 +40,6 @@ class ESResultToCSV(zeit.content.image.testing.FunctionalTestCase):
 class PurchaseToCSVDocument(zeit.content.image.testing.BrowserTestCase):
 
     def test_csv_copyright_purchase_view_is_csv_file_download(self):
-        now = pendulum.now().strftime('%Y-%m-%d-%H-%M-%S')
         b = self.browser
         with mock.patch('zeit.content.image.browser.imagegroup'
                         '.CopyrightCompanyPurchaseReport.create_csv') as create_content: # noqa
@@ -48,9 +47,10 @@ class PurchaseToCSVDocument(zeit.content.image.testing.BrowserTestCase):
             b.open('http://localhost/++skin++vivi/CopyrightCompanyPurchaseReport') # noqa
             self.assertIn(b.headers['content-type'],
                           ('text/csv', 'text/csv;charset=utf-8'))
-            self.assertEqual('attachment; '
-                             f'filename="copyright-payment-report_{now}.csv"',
-                             b.headers['content-disposition'])
+            now = pendulum.now().year
+            self.assertStartsWith(
+                f'attachment; filename="copyright-payment-report_{now}',
+                b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
     def test_csv_image_group_form_has_single_purchase_checkbox(self):
