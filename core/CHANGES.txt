@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.2 (2023-08-04)
+-------------------
+
+- ZO-3175: Move comment options into their own form group
+
+- ZO-3576: Add Audioobjekt
+
+- ZO-3578: Add Simplecast webhook(s)
+
+
 5.29.1 (2023-08-02)
 -------------------
 
