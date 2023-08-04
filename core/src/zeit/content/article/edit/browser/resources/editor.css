@@ -1296,11 +1296,16 @@
 
 .type-article #edit-form-status .fieldtype-checkbox,
 .type-article #edit-form-metadata .fieldtype-checkbox,
+.type-article #edit-form-comments .fieldtype-checkbox,
 .type-article #edit-form-misc .fieldtype-checkbox,
 .type-article #edit-form-workflow .fieldtype-checkbox {
   float: left;
   margin-bottom: 3px;
   padding-bottom: 0;
+}
+
+.type-article #edit-form-comments .fieldname-comments_sorting {
+    clear: left;
 }
 
 .type-article #edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
