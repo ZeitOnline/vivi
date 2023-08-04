@@ -316,8 +316,7 @@ class Comments(zeit.edit.browser.form.InlineForm):
         fields = ('commentSectionEnable',)
         if self.context.commentSectionEnable:
             fields += (
-                'commentsAllowed', 'commentsPremoderate', 'commentsRebrush',
-                'comments_sorting')
+                'commentsAllowed', 'commentsPremoderate', 'comments_sorting')
         return FormFields(IArticle).select(*fields)
 
 
