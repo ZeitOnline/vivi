@@ -3,12 +3,6 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
-  <browser:defaultView
-    for="..interfaces.IExampleContentType"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    />
-
   <browser:view
     name="view.html"
     for="..interfaces.IExampleContentType"

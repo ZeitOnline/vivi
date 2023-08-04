@@ -58,10 +58,6 @@
     permission="zeit.cms.admin.View"
     />
 
-   <browser:defaultView
-     for="..interfaces.IVolume"
-     name="view.html"
-     />
     <browser:page
       for="..interfaces.IVolume"
       name="toc.csv"

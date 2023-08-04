@@ -22,12 +22,6 @@
      permission="zope.View"
      />
 
-  <browser:defaultView
-    for="..interfaces.IVideo"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    />
-
  <browser:icon
     for="..interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -58,12 +52,6 @@
     name="view.html"
     class=".video.PlaylistDisplayForm"
     permission="zope.View"
-    />
-
-  <browser:defaultView
-    for="..interfaces.IPlaylist"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
     />
 
   <browser:icon

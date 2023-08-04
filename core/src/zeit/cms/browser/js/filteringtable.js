@@ -101,8 +101,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
         if (!base_url) {
             return;
         }
-        var view_url = base_url + '/@@view.html';
-        document.location = view_url;
+        document.location = base_url;
     },
 
     get_base_url: function(event) {

@@ -36,11 +36,6 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
-  <browser:defaultView
-    for="..interfaces.IAnimation"
-    name="view.html"
-    />
-
   <browser:icon
     for="..interfaces.IAnimation"
     name="zmi_icon"

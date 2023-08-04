@@ -45,12 +45,6 @@
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
-  <browser:defaultView
-    for="zeit.content.portraitbox.interfaces.IPortraitbox"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    />
-
   <browser:page
     for="..interfaces.IPortraitbox"
     permission="zope.View"

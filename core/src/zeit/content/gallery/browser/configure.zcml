@@ -22,12 +22,6 @@
     permission="zope.View"
     />
 
-  <browser:defaultView
-    for="..interfaces.IGallery"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="index.html"
-    />
-
   <browser:page
     for="..interfaces.IGallery"
     permission="zope.View"

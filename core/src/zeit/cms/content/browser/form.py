@@ -1,3 +1,4 @@
+from zeit.cms.checkout.interfaces import ILocalContent
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import zeit.cms.browser.form
@@ -67,3 +68,32 @@ class CommonMetadataEditForm(CommonMetadataFormBase,
 class CommonMetadataDisplayForm(CommonMetadataFormBase,
                                 zeit.cms.browser.form.DisplayForm):
     """Display form which contains the common metadata."""
+
+
+class DispatchToViewOrEdit(zeit.cms.browser.view.Base):
+
+    display_view = 'view.html'
+    edit_view = 'edit.html'
+
+    def __call__(self):
+        in_repository = not ILocalContent.providedBy(self.context)
+        if in_repository:
+            viewname = self.display_view
+            existing_checkout = self._find_checked_out()
+            if existing_checkout is not None:
+                return self.redirect(
+                    self.url(existing_checkout, self.edit_view))
+        else:
+            viewname = self.edit_view
+
+        view = zope.component.getMultiAdapter(
+            (self.context, self.request), name=viewname)
+        return view()
+
+    def _find_checked_out(self):
+        for item in zeit.cms.checkout.interfaces.IWorkingcopy(None).values():
+            if not zeit.cms.interfaces.ICMSContent.providedBy(item):
+                continue
+            if item.uniqueId == self.context.uniqueId:
+                return item
+        return None

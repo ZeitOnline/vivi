@@ -99,11 +99,6 @@
     class=".image.Image"
     />
 
-  <browser:defaultView
-    for="zeit.content.image.interfaces.IImage"
-    name="view.html"
-    />
-
   <browser:page
     name="metadata-preview"
     for="zeit.content.image.interfaces.IImage"
@@ -227,14 +222,14 @@
   </configure>
 
   <browser:page
-    name="index.html"
+    name="default.html"
     for="..interfaces.IRepositoryImageGroup"
     class=".imagegroup.DefaultView"
     permission="zope.View"
     />
 
   <browser:defaultView
-    name="index.html"
+    name="default.html"
     for="..interfaces.IRepositoryImageGroup"
     />
 
