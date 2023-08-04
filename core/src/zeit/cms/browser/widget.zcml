@@ -66,7 +66,7 @@
     for="
     zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.ICMSContentSource
-    .interfaces.IGlobalSearchLayer"
+    .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IInputWidget"
     factory=".widget.DropObjectWidget"
     permission="zope.Public"
@@ -88,7 +88,7 @@
     for="
     zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.AuthorSource
-    .interfaces.IGlobalSearchLayer"
+    .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IInputWidget"
     factory=".widget.DropObjectWidget"
     permission="zope.Public"
@@ -110,7 +110,7 @@
     for="
     zeit.cms.content.interfaces.ReferenceField
     zeit.cms.content.interfaces.ICMSContentSource
-    .interfaces.IGlobalSearchLayer"
+    .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IInputWidget"
     factory=".widget.ReferenceWidget"
     permission="zope.Public"
@@ -132,7 +132,7 @@
     for="
     zope.schema.interfaces.ITuple
     zeit.cms.content.interfaces.ICMSContentSource
-    .interfaces.IGlobalSearchLayer"
+    .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IInputWidget"
     factory=".widget.ObjectSequenceWidget"
     permission="zope.Public"

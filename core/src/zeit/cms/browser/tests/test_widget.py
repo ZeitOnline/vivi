@@ -149,15 +149,12 @@ class TestObjectSequenceWidgetIntegration(
                 source=zeit.cms.content.contentsource.cmsContentSource))
 
     def get_widget(self, field=None):
-        import zeit.cms.browser.interfaces
         import zope.app.form.browser.interfaces
         import zope.interface
         import zope.publisher.browser
         if field is None:
             field = self.get_field()
         request = zope.publisher.browser.TestRequest()
-        zope.interface.alsoProvides(
-            request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         widget = zope.component.getMultiAdapter(
             (field, request),
             zope.app.form.browser.interfaces.IInputWidget)
@@ -614,14 +611,11 @@ class TestDropObjectWidgetIntegration(
 
     def test_widget_should_be_available_with_search(self):
         from zeit.cms.browser.widget import DropObjectWidget
-        import zeit.cms.browser.interfaces
         import zope.app.form.browser.interfaces
         import zope.interface
         import zope.publisher.browser
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
-        zope.interface.alsoProvides(
-            request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         widget = zope.component.getMultiAdapter(
             (choice, request),
             zope.app.form.browser.interfaces.IInputWidget)
@@ -784,7 +778,6 @@ class TestObjectSequenceDisplayWidgetIntegration(
                 source=zeit.cms.content.contentsource.cmsContentSource))
 
     def get_widget(self):
-        import zeit.cms.browser.interfaces
         import zope.formlib.interfaces
         import zope.interface
         import zope.publisher.browser
@@ -843,7 +836,6 @@ class TestDropObjectDisplayWidgetIntegration(
             source=zeit.cms.content.contentsource.cmsContentSource)
 
     def get_widget(self):
-        import zeit.cms.browser.interfaces
         import zope.formlib.interfaces
         import zope.interface
         import zope.publisher.browser

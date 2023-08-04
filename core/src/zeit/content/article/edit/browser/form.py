@@ -8,7 +8,6 @@ from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.image.interfaces import IImageGroup
 from zeit.workflow.publishinfo import id_to_principal
-import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
@@ -89,11 +88,6 @@ class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(IArticle).select(
         'main_image', 'main_image_variant_name')
 
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super().__call__()
-
     def _success_handler(self):
         # even though the image is not displayed in the body area,
         # the body still needs to be updated so it knows the (possibly) new
@@ -166,11 +160,6 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
         self.widgets['related'].detail_view_name = '@@related-details'
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super().__call__()
 
 
 class StatusForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -343,11 +332,6 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     css_class = 'teaser-image'
     form_fields = FormFields(
         zeit.content.image.interfaces.IImages).select('image')
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super().__call__()
 
     def setUpWidgets(self, *args, **kw):
         try:
@@ -543,8 +527,3 @@ class Audio(zeit.edit.browser.form.InlineForm):
     prefix = 'audio'
     undo_description = _('edit audio')
     form_fields = FormFields(zeit.content.audio.interfaces.IAudios)
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super().__call__()

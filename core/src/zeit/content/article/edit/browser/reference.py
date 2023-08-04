@@ -6,7 +6,6 @@ from zeit.content.image.interfaces import IImageGroup, INFOGRAPHIC_DISPLAY_TYPE
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.form
 import zope.formlib.form
-import zope.interface
 
 
 class EditBase(zeit.edit.browser.form.InlineForm):
@@ -23,11 +22,6 @@ class EditBase(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return '%s.%s' % (self.__class__.__name__, self.context.__name__)
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super().__call__()
 
 
 class EditImage(EditBase):

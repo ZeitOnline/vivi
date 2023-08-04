@@ -45,11 +45,6 @@ class Mobile(zeit.push.browser.form.MobileBase,
     FormFieldsFactory = FormFields
     form_fields = FormFieldsFactory()
 
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super().__call__()
-
     @property
     def mobile_form_fields(self):
         fields = self.FormFieldsFactory(IAuthorPush)
