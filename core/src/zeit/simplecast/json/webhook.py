@@ -13,4 +13,4 @@ class Notification:
     def __call__(self):
         body = self.request.bodyStream.read(
             int(self.request['CONTENT_LENGTH']))
-        log.debug(body)
+        log.info(body)
