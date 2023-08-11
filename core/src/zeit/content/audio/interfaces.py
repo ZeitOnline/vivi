@@ -18,3 +18,11 @@ class IAudios(zope.interface.Interface):
     items = zope.schema.Tuple(
         title=_("Audios"),
         value_type=zope.schema.Choice(source=AudioSource()))
+
+
+class ISimplecast(zope.interface.Interface):
+
+    def get_episode(episode_id):
+        """
+        Request information about the episode from the simplecast API
+        """
