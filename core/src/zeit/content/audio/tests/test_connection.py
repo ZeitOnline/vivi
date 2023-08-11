@@ -13,6 +13,24 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
             f'https://testapi.simplecast.com/episodes/{episode_id}', json=self.json)
         simplecast = zope.component.getUtility(
             zeit.content.audio.interfaces.ISimplecast)
-        (url, duration) = simplecast.get_episode(episode_id)
-        assert url == 'https://injector.simplecastaudio.com/5678/episodes/1234/audio/128/default.mp3?awCollectionId=5678&awEpisodeId=1234'
-        assert duration == 666
+        with m_simple:
+            (url, duration) = simplecast.get_episode(episode_id)
+            assert url == (
+                'https://injector.simplecastaudio.com/5678/episodes/'
+                '1234/audio/128/default.mp3?awCollectionId=5678'
+                '&awEpisodeId=1234')
+            assert duration == 666
+
+    def test_episode_not_found_breaks(self):
+        m_simple = requests_mock.Mocker()
+        episode_id = '1234'
+        m_simple.get(
+            f'https://testapi.simplecast.com/episodes/{episode_id}',
+            json={},
+            status_code=404)
+        simplecast = zope.component.getUtility(
+            zeit.content.audio.interfaces.ISimplecast)
+
+        with m_simple:
+            with self.assertRaises(KeyError):
+                simplecast.get_episode(episode_id)
