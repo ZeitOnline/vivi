@@ -85,7 +85,7 @@ class IAuthor(zope.interface.Interface,
         title=_('Community-Profile URL'), required=False)
 
     ssoid = zope.schema.Int(
-        title=_('SSO-Id'), required=False, min=10, max=9999999)
+        title=_('SSO-Id'), required=False, min=10, max=99999999)
 
     sso_connect = zope.schema.Bool(
         title=_('Connect with SSO-Account'),

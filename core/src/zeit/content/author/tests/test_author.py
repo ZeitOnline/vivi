@@ -9,6 +9,7 @@ import requests_mock
 import urllib.parse
 import zeit.cms.interfaces
 import zeit.content.author.author
+import zeit.content.author.interfaces
 import zeit.content.author.testing
 import zeit.find.interfaces
 import zope.event
@@ -33,6 +34,14 @@ class AuthorTest(zeit.content.author.testing.FunctionalTestCase):
 
             search.return_value.hits = NONZERO
             self.assertTrue(Author.exists('William', 'Shakespeare'))
+
+    def test_author_id_is_not_too_big_validation(self):
+        # ZO-3671
+        author = zeit.content.author.author.Author()
+        author.ssoid = 10044347
+        errors = zope.schema.getValidationErrors(zeit.content.author.interfaces.IAuthor, author)
+        ssoid_errors = [i for i in errors if i[0] == "ssoid"]
+        assert not ssoid_errors, "Validation error for 'ssoid' should not exist"
 
 
 class FreetextCopyTest(zeit.content.author.testing.FunctionalTestCase):
