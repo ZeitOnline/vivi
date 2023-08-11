@@ -1,8 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
 import zope.interface
 import zeit.cms.interfaces
-import zeit.cms.content
+import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
+import zeit.cms.type
 import zeit.content.audio.interfaces
 
 
