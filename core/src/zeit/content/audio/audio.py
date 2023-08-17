@@ -1,8 +1,9 @@
 from zeit.cms.i18n import MessageFactory as _
 import zope.interface
 import zeit.cms.interfaces
-import zeit.cms.content
+import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
+import zeit.cms.type
 import zeit.content.audio.interfaces
 
 
@@ -15,6 +16,14 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
     title = zeit.cms.content.dav.DAVProperty(
         zeit.content.audio.interfaces.IAudio['title'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
+
+    episodeId = zeit.cms.content.dav.DAVProperty(
+        zeit.content.audio.interfaces.IAudio['episodeId'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'Episode Id')
+
+    url = zeit.cms.content.dav.DAVProperty(
+        zeit.content.audio.interfaces.IAudio['url'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'url')
 
 
 class AudioType(zeit.cms.type.XMLContentTypeDeclaration):
