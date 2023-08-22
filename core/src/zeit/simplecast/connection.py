@@ -1,14 +1,16 @@
-import logging
+from zeit.connector.search import SearchVar
+
 import grokcore.component as grok
+import logging
 import pendulum
 import requests
 import zope.app.appsetup.product
-
-from zeit.connector.search import SearchVar
+import zope.component
 
 import zeit.cms.repository.interfaces
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
+
 
 log = logging.getLogger(__name__)
 
@@ -72,3 +74,18 @@ class Simplecast(grok.GlobalUtility):
                 result[0][0], episode_id, error
             )
             return None
+
+
+@grok.implementer(zeit.simplecast.interfaces.IConnector)
+class Connector(grok.Adapter):
+
+    grok.context(zeit.content.audio.interfaces.IAudio)
+
+    def request(self, context):
+        simplecast = zope.component.getUtility(
+            zeit.simplecast.interfaces.ISimplecast)
+        (url, duration, title) = simplecast.get_episode(context.episodeId)
+        context = zope.security.proxy.removeSecurityProxy(context)
+        context.title = title
+        context.url = url
+        context.duration = duration

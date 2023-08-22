@@ -201,6 +201,10 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.audio.SimplecastRequest"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.content.author.Add"
     />
   <grant

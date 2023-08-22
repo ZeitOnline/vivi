@@ -1,5 +1,6 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
@@ -49,5 +50,33 @@
     file="resources/audio.png"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
+
+  <gocept:pagelet
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="simplecast.html"
+    class=".connection.Status"
+    template="simplecast.pt"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Simplecast"
+    action="@@simplecast.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:page
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="simplecast-request"
+    class=".connection.Request"
+    permission="zope.Public"
+    />
+
 
 </configure>

@@ -1,0 +1,14 @@
+<tal:block>
+<h3>Podcast episode</h3>
+<p>Title <tal:x replace="view/context/title"/></p>
+<p>Episode Id <tal:x replace="view/context/episode_id"/></p>
+<p>Url <tal:x replace="view/context/url"/></p>
+</tal:block>
+
+<tal:block condition="python: view.has_permission('zeit.audio.SimplecastRequest')">
+<p>
+<form method="GET" action="@@simplecast-request">
+  <input type="submit" value="Request episode data" />
+</form>
+</p>
+</tal:block>

@@ -32,4 +32,8 @@
       />
   </class>
 
+  <permission
+    id="zeit.audio.SimplecastRequest"
+    title="Request podcast data from simplecast"
+    />
 </configure>

@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import zope.formlib
 import gocept.form
+import zeit.cms.browser.form
 import zeit.content.audio.interfaces
 import zeit.content.audio.audio
 
