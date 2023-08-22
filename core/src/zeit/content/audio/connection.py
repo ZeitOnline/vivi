@@ -20,9 +20,10 @@ class Simplecast(grok.GlobalUtility):
     def get_episode(self, episode_id):
         response = self._request('GET', f'episodes/{episode_id}')
         try:
+            title = response.json()['title']
             url = response.json()['audio_file_url']
             duration = response.json()['duration']
-            return url, duration
+            return url, duration, title
         except KeyError:
             log.error('Episode information is not available.')
             raise
