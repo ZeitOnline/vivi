@@ -14,6 +14,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 JSON = {
     "title": "Cat Jokes Pawdcast",
@@ -29,6 +30,21 @@ JSON = {
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZOPE_LAYER
+
+    @property
+    def json(self):
+        return JSON
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = WSGI_LAYER
+
+    def make_audio(self):
+        audio = zeit.content.audio.audio.Audio()
+        audio.title = 'Cats'
+        audio.episodeId = '1234'
+        self.repository['cats'] = audio
 
     @property
     def json(self):
