@@ -19,7 +19,7 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
 
     episodeId = zeit.cms.content.dav.DAVProperty(
         zeit.content.audio.interfaces.IAudio['episodeId'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'Episode Id')
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'episode_id')
 
     url = zeit.cms.content.dav.DAVProperty(
         zeit.content.audio.interfaces.IAudio['url'],

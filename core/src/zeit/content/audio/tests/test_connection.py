@@ -14,7 +14,7 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
         simplecast = zope.component.getUtility(
             zeit.content.audio.interfaces.ISimplecast)
         with m_simple:
-            (url, duration) = simplecast.get_episode(episode_id)
+            (url, duration, title) = simplecast.get_episode(episode_id)
             assert url == (
                 'https://injector.simplecastaudio.com/5678/episodes/'
                 '1234/audio/128/default.mp3?awCollectionId=5678'
