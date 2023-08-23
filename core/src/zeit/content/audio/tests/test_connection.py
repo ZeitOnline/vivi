@@ -3,6 +3,16 @@ import zope.component
 import zeit.content.audio.audio
 import zeit.content.audio.testing
 
+JSON = {
+    "title": "Cat Jokes Pawdcast",
+    "id": "1234",
+    "audio_file_url": (
+        "https://injector.simplecastaudio.com/5678/episodes/1234/audio"
+        "/128/default.mp3?awCollectionId=5678&awEpisodeId=1234"),
+    "ad_free_audio_file_url": None,
+    "duration": 666,
+}
+
 
 class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
 
@@ -10,7 +20,7 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
         m_simple = requests_mock.Mocker()
         episode_id = '1234'
         m_simple.get(
-            f'https://testapi.simplecast.com/episodes/{episode_id}', json=self.json)
+            f'https://api.simplecast.com/episodes/{episode_id}', json=JSON)
         simplecast = zope.component.getUtility(
             zeit.content.audio.interfaces.ISimplecast)
         with m_simple:
@@ -25,7 +35,7 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
         m_simple = requests_mock.Mocker()
         episode_id = '1234'
         m_simple.get(
-            f'https://testapi.simplecast.com/episodes/{episode_id}',
+            f'https://api.simplecast.com/episodes/{episode_id}',
             json={},
             status_code=404)
         simplecast = zope.component.getUtility(
