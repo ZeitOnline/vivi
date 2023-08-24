@@ -2,7 +2,7 @@ import json
 import logging
 import zope.app.appsetup.product
 import zeit.content.audio.audio
-import zeit.content.audio.interfaces
+import zeit.simplecast.interfaces
 import zeit.cms.checkout.helper
 import zope.component
 
@@ -33,7 +33,7 @@ class Notification:
         body = json.loads(body)
 
         simplecast = zope.component.getUtility(
-            zeit.content.audio.interfaces.ISimplecast)
+            zeit.simplecast.interfaces.ISimplecast)
 
         if body.get('event') == 'episode-create':
             info = simplecast.fetch_episode(body.get('element_id'))

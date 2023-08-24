@@ -1,7 +1,7 @@
 import requests_mock
 import zope.component
-import zeit.content.audio.audio
-import zeit.content.audio.testing
+import zeit.simplecast.interfaces
+import zeit.simplecast.testing
 
 JSON = {
     "title": "Cat Jokes Pawdcast",
@@ -14,7 +14,7 @@ JSON = {
 }
 
 
-class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
+class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
 
     def test_audio_has_url(self):
         m_simple = requests_mock.Mocker()
@@ -22,7 +22,7 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
         m_simple.get(
             f'https://testapi.simplecast.com/episodes/{episode_id}', json=JSON)
         simplecast = zope.component.getUtility(
-            zeit.content.audio.interfaces.ISimplecast)
+            zeit.simplecast.interfaces.ISimplecast)
         with m_simple:
             (url, duration, title) = simplecast.get_episode(episode_id)
             assert url == (
@@ -39,7 +39,7 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
             json={},
             status_code=404)
         simplecast = zope.component.getUtility(
-            zeit.content.audio.interfaces.ISimplecast)
+            zeit.simplecast.interfaces.ISimplecast)
 
         with m_simple:
             with self.assertRaises(KeyError):

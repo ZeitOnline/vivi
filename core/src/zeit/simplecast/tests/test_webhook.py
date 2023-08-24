@@ -3,7 +3,7 @@ import json
 import requests_mock
 
 import zeit.content.audio.audio
-import zeit.content.audio.testing
+import zeit.simplecast.testing
 import zeit.simplecast.json.webhook
 import zeit.cms.repository.folder
 
@@ -56,7 +56,7 @@ def episode_info():
     }
 
 
-class TestWebHook(zeit.content.audio.testing.BrowserTestCase):
+class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
     def test_webhook_environment(self):
         notification = zeit.simplecast.json.webhook.Notification()
         self.assertEqual(notification.environment, "testing")
