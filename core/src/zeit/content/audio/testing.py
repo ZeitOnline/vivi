@@ -3,7 +3,7 @@ import zeit.cms.testing
 
 product_config = """\
 <product-config zeit.content.audio>
-  simplecast-url https://api.simplecast.com/
+  simplecast-url https://testapi.simplecast.com/
   simplecast-token TkQvZUd2MHRnR0UybFhsgTfs
 </product-config>
 """

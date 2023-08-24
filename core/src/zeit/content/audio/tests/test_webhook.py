@@ -34,7 +34,7 @@ def episode_delete():
 
 
 def episode_url():
-    return f'https://api.simplecast.com/episodes/{episode_id()}'
+    return f'https://testapi.simplecast.com/episodes/{episode_id()}'
 
 
 def episode_info():

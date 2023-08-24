@@ -20,7 +20,7 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
         m_simple = requests_mock.Mocker()
         episode_id = '1234'
         m_simple.get(
-            f'https://api.simplecast.com/episodes/{episode_id}', json=JSON)
+            f'https://testapi.simplecast.com/episodes/{episode_id}', json=JSON)
         simplecast = zope.component.getUtility(
             zeit.content.audio.interfaces.ISimplecast)
         with m_simple:
@@ -35,7 +35,7 @@ class TestSimplecastAPI(zeit.content.audio.testing.FunctionalTestCase):
         m_simple = requests_mock.Mocker()
         episode_id = '1234'
         m_simple.get(
-            f'https://api.simplecast.com/episodes/{episode_id}',
+            f'https://testapi.simplecast.com/episodes/{episode_id}',
             json={},
             status_code=404)
         simplecast = zope.component.getUtility(
