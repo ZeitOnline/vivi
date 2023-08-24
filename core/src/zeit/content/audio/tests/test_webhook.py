@@ -89,25 +89,15 @@ class TestWebHook(zeit.content.audio.testing.BrowserTestCase):
                          json.dumps(episode_create()),
                          'application/x-javascript')
 
-        repository = self.repository
-
-        self.assertTrue(repository.has_key('audios'))  # noqa
-        self.assertTrue(repository['audios'].has_key(  # noqa
-                        episode_id()))
-
-        episode = repository['audios'][episode_id()]
+        container = zeit.content.audio.audio.audio_container()
+        episode = container[episode_id()]
         self.assertEqual(episode.title, 'Episode 42')
         self.assertEqual(episode.episodeId, episode_id())
         self.assertEqual(episode.url, episode_info()['audio_file_url'])
 
     def test_update_episode(self):
-        repository = self.repository
-
-        if 'audios' not in repository:
-            repository['audios'] = zeit.cms.repository.folder.Folder()
-
-        zeit.content.audio.audio.add_audio(
-            repository['audios'], episode_info())
+        container = zeit.content.audio.audio.audio_container(create=True)
+        zeit.content.audio.audio.add_audio(container, episode_info())
 
         info = episode_info()
         info['title'] = 'New title'
@@ -121,21 +111,16 @@ class TestWebHook(zeit.content.audio.testing.BrowserTestCase):
                          json.dumps(episode_update()),
                          'application/x-javascript')
 
-        episode = repository['audios'][episode_id()]
+        episode = container[episode_id()]
         self.assertEqual(episode.title, 'New title')
 
     def test_delete_episode(self):
-        repository = self.repository
-
-        if 'audios' not in repository:
-            repository['audios'] = zeit.cms.repository.folder.Folder()
-
-        zeit.content.audio.audio.add_audio(
-            repository['audios'], episode_info())
+        container = zeit.content.audio.audio.audio_container(create=True)
+        zeit.content.audio.audio.add_audio(container, episode_info())
 
         browser = self.browser
         browser.post('http://localhost/@@simplecast_webhook',
                      json.dumps(episode_delete()),
                      'application/x-javascript')
 
-        self.assertNotIn(episode_id(), self.repository['audios'])
+        self.assertNotIn(episode_id(), container)

@@ -3,7 +3,6 @@ import logging
 import zope.app.appsetup.product
 import zeit.content.audio.audio
 import zeit.content.audio.interfaces
-import zeit.cms.repository.folder
 import zeit.cms.checkout.helper
 import zope.component
 
@@ -36,27 +35,21 @@ class Notification:
         simplecast = zope.component.getUtility(
             zeit.content.audio.interfaces.ISimplecast)
 
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
         if body.get('event') == 'episode-create':
             info = simplecast.fetch_episode(body.get('element_id'))
-
-            if 'audios' not in repository:
-                repository['audios'] = zeit.cms.repository.folder.Folder()
-
-            zeit.content.audio.audio.add_audio(
-                repository['audios'], info)
+            container = zeit.content.audio.audio.audio_container(create=True)
+            zeit.content.audio.audio.add_audio(container, info)
 
         elif body.get('event') == 'episode-update':
             info = simplecast.fetch_episode(body.get('element_id'))
-
-            if 'audios' in repository:
+            container = zeit.content.audio.audio.audio_container()
+            if container is not None:
                 with zeit.cms.checkout.helper.checked_out(
-                        repository['audios'][info['id']]) as episode:
-                    episode.title = info['title']
-                    episode.url = info['audio_file_url']
+                        container[body.get('element_id')]) as episode:
+                    episode.update(info)
 
         elif body.get('event') == 'episode-delete':
-            if 'audios' in repository:
-                del repository['audios'][body.get('element_id')]
+            container = zeit.content.audio.audio.audio_container()
+            if container is not None:
+                zeit.content.audio.audio.remove_audio(
+                    container[body.get('element_id')])

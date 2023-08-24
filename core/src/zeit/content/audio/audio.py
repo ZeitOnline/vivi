@@ -28,14 +28,34 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.audio.interfaces.IAudio['url'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'url')
 
+    def update(self, info):
+        self.title = info['title']
+        self.url = info['audio_file_url']
+
+
+def audio_container(create=False):
+    container_id = 'audio'
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    if container_id in repository:
+        return repository[container_id]
+    if create:
+        repository[container_id] = zeit.cms.repository.folder.Folder()
+        return repository[container_id]
+
 
 def add_audio(container, info):
     audio = Audio()
-    audio.title = info['title']
     audio.episodeId = info['id']
-    audio.url = info['audio_file_url']
-    container[audio.episodeId] = audio
+    audio.update(info)
+    container[info['id']] = audio
     return audio
+
+
+def remove_audio(context):
+    del context.__parent__[context.__name__]
+    context.__parent__ = None
+    return context
 
 
 class AudioType(zeit.cms.type.XMLContentTypeDeclaration):
