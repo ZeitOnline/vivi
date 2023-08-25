@@ -34,7 +34,7 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
 
 
 def audio_container(create=False):
-    container_id = 'audio'
+    container_id = 'podcast-audio'
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     if container_id in repository:
