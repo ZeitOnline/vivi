@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.6 (2023-08-25)
+-------------------
+
+- ZO-3576: Ensure audio works
+
+- ZO-3661: Connect to simplecast api
+
+- ZO-3662: Create/update/delete Audio objects via webhook
+
+
 5.29.5 (2023-08-11)
 -------------------
 
