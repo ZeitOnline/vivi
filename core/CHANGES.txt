@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.7 (2023-08-25)
+-------------------
+
+- ZO-3718: Save podcast episodes in new folder
+
+
 5.29.6 (2023-08-25)
 -------------------
 
