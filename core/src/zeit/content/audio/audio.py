@@ -24,8 +24,8 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.audio.interfaces.IAudio['title'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
 
-    episodeId = zeit.cms.content.dav.DAVProperty(
-        zeit.content.audio.interfaces.IAudio['episodeId'],
+    episode_id = zeit.cms.content.dav.DAVProperty(
+        zeit.content.audio.interfaces.IAudio['episode_id'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'episode_id')
 
     url = zeit.cms.content.dav.DAVProperty(
@@ -53,7 +53,7 @@ def audio_container(create=False):
 def add_audio(container, info):
     log.info('Add audio %s', info['id'])
     audio = Audio()
-    audio.episodeId = info['id']
+    audio.episode_id = info['id']
     audio.update(info)
     container[info['id']] = audio
     return audio

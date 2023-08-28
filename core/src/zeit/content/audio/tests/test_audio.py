@@ -9,10 +9,10 @@ class TestAudio(zeit.content.audio.testing.FunctionalTestCase):
         audio = zeit.content.audio.audio.Audio()
         audio.title = 'foo'
         audio.url = 'https://foo.bah/1234/episode-mp3'
-        audio.episodeId = '12-34'
+        audio.episode_id = '12-34'
         self.assertEqual(audio.title, 'foo')
         self.assertEqual(audio.url, 'https://foo.bah/1234/episode-mp3')
-        self.assertEqual(audio.episodeId, '12-34')
+        self.assertEqual(audio.episode_id, '12-34')
 
     def test_audio_is_saved_in_container(self):
         repository = zope.component.getUtility(
