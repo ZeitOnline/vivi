@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.8 (2023-08-28)
+-------------------
+
+- ZO-3662: Update event names
+
+
 5.29.7 (2023-08-25)
 -------------------
 
