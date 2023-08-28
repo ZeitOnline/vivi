@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.9 (2023-08-28)
+-------------------
+
+- ZO-3662: Add more logging
+
+
 5.29.8 (2023-08-28)
 -------------------
 
