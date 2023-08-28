@@ -31,16 +31,20 @@ class Notification:
         log.info(body)
 
         body = json.loads(body)
+        log.info(body)
 
         simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
+        log.info('Simplecast utility %s', simplecast)
 
         if body.get('event') == 'episode_created':
+            log.info('Create episode from simplecast request.')
             info = simplecast.fetch_episode(body.get('element_id'))
             container = zeit.content.audio.audio.audio_container(create=True)
             zeit.content.audio.audio.add_audio(container, info)
 
         elif body.get('event') == 'episode_updated':
+            log.info('Update episode from simplecast request.')
             info = simplecast.fetch_episode(body.get('element_id'))
             container = zeit.content.audio.audio.audio_container()
             if container is not None:
@@ -49,7 +53,10 @@ class Notification:
                     episode.update(info)
 
         elif body.get('event') == 'episode_deleted':
+            log.info('Delete episode from simplecast request.')
             container = zeit.content.audio.audio.audio_container()
             if container is not None:
                 zeit.content.audio.audio.remove_audio(
                     container[body.get('element_id')])
+        else:
+            log.info('No episode processed.')
