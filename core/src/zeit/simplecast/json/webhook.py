@@ -30,7 +30,7 @@ class Notification:
             int(self.request['CONTENT_LENGTH']))
         log.info(body)
 
-        body = json.loads(body)
+        body = json.loads(body).get('data')
         log.info(body)
 
         simplecast = zope.component.getUtility(
@@ -39,17 +39,17 @@ class Notification:
 
         if body.get('event') == 'episode_created':
             log.info('Create episode from simplecast request.')
-            info = simplecast.fetch_episode(body.get('element_id'))
+            info = simplecast.fetch_episode(body.get('episode_id'))
             container = zeit.content.audio.audio.audio_container(create=True)
             zeit.content.audio.audio.add_audio(container, info)
 
         elif body.get('event') == 'episode_updated':
             log.info('Update episode from simplecast request.')
-            info = simplecast.fetch_episode(body.get('element_id'))
+            info = simplecast.fetch_episode(body.get('episode_id'))
             container = zeit.content.audio.audio.audio_container()
             if container is not None:
                 with zeit.cms.checkout.helper.checked_out(
-                        container[body.get('element_id')]) as episode:
+                        container[body.get('episode_id')]) as episode:
                     episode.update(info)
 
         elif body.get('event') == 'episode_deleted':
@@ -57,6 +57,6 @@ class Notification:
             container = zeit.content.audio.audio.audio_container()
             if container is not None:
                 zeit.content.audio.audio.remove_audio(
-                    container[body.get('element_id')])
+                    container[body.get('episode_id')])
         else:
             log.info('No episode processed.')
