@@ -58,3 +58,5 @@ class Notification:
             if container is not None:
                 zeit.content.audio.audio.remove_audio(
                     container[body.get('element_id')])
+        else:
+            log.info('No episode processed.')
