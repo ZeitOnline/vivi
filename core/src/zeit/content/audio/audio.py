@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+import logging
 import zope.interface
 import zope.component
 import zeit.cms.interfaces
@@ -8,6 +9,9 @@ import zeit.cms.repository.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.type
 import zeit.content.audio.interfaces
+
+
+log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(
@@ -38,13 +42,16 @@ def audio_container(create=False):
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     if container_id in repository:
+        log.info('Container %s found', container_id)
         return repository[container_id]
     if create:
+        log.info('Container %s created', container_id)
         repository[container_id] = zeit.cms.repository.folder.Folder()
         return repository[container_id]
 
 
 def add_audio(container, info):
+    log.info('Add audio %s', info['id'])
     audio = Audio()
     audio.episodeId = info['id']
     audio.update(info)
@@ -53,6 +60,7 @@ def add_audio(container, info):
 
 
 def remove_audio(context):
+    log.info('Remove audio %s', context.__name__)
     del context.__parent__[context.__name__]
     context.__parent__ = None
     return context
