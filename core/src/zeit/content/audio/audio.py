@@ -20,17 +20,10 @@ log = logging.getLogger(__name__)
 class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
     default_template = '<audio><head/><body/></audio>'
 
-    title = zeit.cms.content.dav.DAVProperty(
-        zeit.content.audio.interfaces.IAudio['title'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
-
-    episode_id = zeit.cms.content.dav.DAVProperty(
-        zeit.content.audio.interfaces.IAudio['episode_id'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'episode_id')
-
-    url = zeit.cms.content.dav.DAVProperty(
-        zeit.content.audio.interfaces.IAudio['url'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'url')
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.audio.interfaces.IAudio,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('title', 'episode_id', 'url'))
 
     def update(self, info):
         self.title = info['title']
