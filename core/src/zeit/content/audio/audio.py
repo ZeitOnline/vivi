@@ -22,7 +22,7 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.audio.interfaces.IAudio,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'http://namespaces.zeit.de/CMS/audio',
         ('title', 'episode_id', 'url'))
 
     def update(self, info):
