@@ -14,21 +14,21 @@ def episode_id():
 
 def episode_create():
     return {
-        'event': 'episode-create',
+        'event': 'episode_created',
         'element_id': episode_id(),
     }
 
 
 def episode_update():
     return {
-        'event': 'episode-update',
+        'event': 'episode_updated',
         'element_id': episode_id(),
     }
 
 
 def episode_delete():
     return {
-        'event': 'episode-delete',
+        'event': 'episode_deleted',
         'element_id': episode_id(),
     }
 
