@@ -1,8 +1,9 @@
 import zeit.cms.testing
-import zeit.content.rawxml.tests
+import zeit.workflow.testing
 
 
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.content.rawxml.tests.WSGI_LAYER)
+        package='zeit.workflow.xmlrpc',
+        layer=zeit.workflow.testing.WSGI_LAYER)

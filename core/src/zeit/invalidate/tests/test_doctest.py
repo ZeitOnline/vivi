@@ -1,9 +1,9 @@
 import zeit.cms.testing
-import zeit.workflow.testing
+import zeit.invalidate.testing
 
 
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.workflow.testing.WSGI_LAYER
-    )
+        package='zeit.invalidate',
+        layer=zeit.invalidate.testing.WSGI_LAYER)
