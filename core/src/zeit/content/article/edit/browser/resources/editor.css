@@ -909,6 +909,11 @@
   top: 95px;
 }
 
+.type-article .fieldtype-text.error div.empty {
+  position: inherit;
+  left: auto;
+}
+
 .type-article #edit-form-filename fieldset.table .fieldname-rename_to.error .label span.error {
   margin-top: 23px;
 }
@@ -941,6 +946,10 @@
   clear: left;
   float: left;
   margin-right: 0.5em;
+}
+
+.type-article dl.errors dd {
+  margin-top: auto;
 }
 
 
@@ -1783,6 +1792,15 @@
 
 
 /* social media */
+.type-article #form-social {
+  display: flex;
+  flex-flow: column;
+}
+
+.type-article #form-mobile {
+  display: flex;
+  flex-flow: column;
+}
 
 .type-article #form-social .field.fieldname-facebook_main_text .label,
 .type-article #form-social .field.fieldname-facebook_magazin_text .label,
@@ -1793,13 +1811,7 @@
 .type-article #form-social .field.fieldname-twitter_print_text .label,
 .type-article #form-mobile .field.fieldname-mobile_text .label,
 .type-article #form-mobile .field.fieldname-mobile_image .label {
-   display: none;
-}
-
-.type-article #form-mobile .field.fieldname-mobile_payload_template .label,
-.type-article #form-mobile .field.fieldname-mobile_title .label {
-  /* Counteract float left */
-  clear: both;
+  display: none;
 }
 
 .type-article #social\.short_text,
@@ -1844,19 +1856,25 @@
 
 /* XXX We should use <fieldset>, but we'd have to combine the templates of
    zeit.edit.browser.form.InlineForm and gocept.form.grouped which is hard */
+.type-article #form-social .field.fieldname-facebook_main_text,
+.type-article #form-social .field.fieldname-facebook_magazin_text,
+.type-article #form-social .field.fieldname-facebook_campus_text,
+.type-article #form-social .field.fieldname-facebook_zett_text,
 .type-article #form-social .field.fieldname-short_text,
 .type-article #form-social .field.fieldname-twitter_ressort_text,
 .type-article #form-social .field.fieldname-twitter_print_text {
     border-top: 1px solid #d5dee7;
     clear: both;
     display: flow-root;
-    margin-top: 1em;
     margin-bottom: 0;
-    padding-top: 1em;
+    padding-top: 0.5em;
     padding-bottom: 0;
 }
 
-.type-article #form-social .field.fieldname-facebook_main_text:before ,
+.type-article #form-social .field.fieldname-facebook_main_text:before,
+.type-article #form-social .field.fieldname-facebook_magazin_text:before,
+.type-article #form-social .field.fieldname-facebook_campus_text:before,
+.type-article #form-social .field.fieldname-facebook_zett_text:before,
 .type-article #form-social .field.fieldname-short_text:before ,
 .type-article #form-social .field.fieldname-twitter_ressort_text:before ,
 .type-article #form-social .field.fieldname-twitter_print_text:before {
@@ -1866,6 +1884,7 @@
 }
 
 .type-article #form-social .field.fieldname-facebook_main_enabled,
+.type-article #form-social .field.fieldname-facebook_zett_enabled,
 .type-article #form-social .field.fieldname-twitter_main_enabled {
     clear: both;
     display: flow-root;
@@ -1873,6 +1892,9 @@
 
 .type-article #form-social .field.fieldname-facebook_main_text:before {
     content: "Facebook";
+}
+.type-article #form-social .field.fieldname-facebook_zett_text:before {
+  content: "Facebook ze.tt";
 }
 .type-article #form-social .field.fieldname-short_text:before {
     content: "Twitter";
