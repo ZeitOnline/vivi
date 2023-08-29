@@ -192,6 +192,7 @@ def validate_article(context, event):
     interfaces = [
         zeit.content.article.interfaces.IArticle,
         zeit.content.image.interfaces.IImages,
+        zeit.push.interfaces.IAccountData,
     ]
     for iface in interfaces:
         err = zope.schema.getValidationErrors(iface, iface(context)) or []

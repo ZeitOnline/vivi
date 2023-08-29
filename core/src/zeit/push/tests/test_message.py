@@ -3,6 +3,7 @@ from zeit.cms.workflow.interfaces import IPublish
 import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
+import zope.schema
 
 
 class MessageTest(zeit.push.testing.TestCase):
@@ -103,3 +104,18 @@ class MessageTest(zeit.push.testing.TestCase):
             'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
             'title': 'mobile title', 'uses_image': False, 'variant': 'manual',
             'payload_template': 'eilmeldung.json'},), push.message_config)
+
+    def test_accountdata_validation_raises_error(self):
+        content = self.create_content('mytext')
+        data = zeit.push.interfaces.IAccountData(content)
+        data.facebook_main_enabled = True
+        errors = zope.schema.getSchemaValidationErrors(
+            zeit.push.interfaces.IAccountData, data)
+        assert errors == [
+            ('facebook_main_text',
+             zope.schema.interfaces.RequiredMissing('facebook_main_text'))]
+
+        data.facebook_main_enabled = False
+        errors = zope.schema.getSchemaValidationErrors(
+            zeit.push.interfaces.IAccountData, data)
+        assert not errors
