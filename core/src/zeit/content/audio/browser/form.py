@@ -9,7 +9,7 @@ class Base:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.audio.interfaces.IAudio).select(
-            'title', 'episodeId', 'url')
+            'title', 'episode_id', 'url')
 
     field_groups = (
         gocept.form.grouped.RemainingFields(

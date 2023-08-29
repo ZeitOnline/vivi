@@ -7,7 +7,7 @@ import zeit.cms.content.contentsource
 
 class IAudio(zeit.cms.content.interfaces.IXMLContent):
     title = zope.schema.TextLine(title=_("Title"), required=False)
-    episodeId = zope.schema.TextLine(title=_("Episode Id"))
+    episode_id = zope.schema.TextLine(title=_("Episode Id"))
     url = zope.schema.URI(title=_("Url"), required=False)
 
 

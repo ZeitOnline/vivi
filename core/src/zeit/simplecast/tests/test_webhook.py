@@ -98,7 +98,7 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         container = zeit.content.audio.audio.audio_container()
         episode = container[episode_id()]
         self.assertEqual(episode.title, 'Episode 42')
-        self.assertEqual(episode.episodeId, episode_id())
+        self.assertEqual(episode.episode_id, episode_id())
         self.assertEqual(episode.url, episode_info()['audio_file_url'])
 
     def test_update_episode(self):
