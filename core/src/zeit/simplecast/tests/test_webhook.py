@@ -14,23 +14,29 @@ def episode_id():
 
 def episode_create():
     return {
-        'event': 'episode_created',
-        'element_id': episode_id(),
-    }
+        "sent_at": "2023-08-28 13:32:11.967735Z",
+        "data": {
+            "message": "A new episode has been created. The new episode id is: `b44b1838-4ff4-4c29-ba1c-9c4f4b863eac`",
+            "href": "localhost/testapi/episodes/b44b1838-4ff4-4c29-ba1c-9c4f4b863eac",
+            "event": "episode_created",
+            "episode_id": episode_id()}}
 
 
 def episode_update():
     return {
-        'event': 'episode_updated',
-        'element_id': episode_id(),
-    }
+        "sent_at": "2023-08-28 13:32:12.553408Z",
+        "data": {
+            "message": "An episode has been updated. The episode id is: `b44b1838-4ff4-4c29-ba1c-9c4f4b863eac`",
+            "href": "localhost/testapi/episodes/b44b1838-4ff4-4c29-ba1c-9c4f4b863eac",
+            "event": "episode_updated",
+            "episode_id": episode_id()}}
 
 
 def episode_delete():
     return {
-        'event': 'episode_deleted',
-        'element_id': episode_id(),
-    }
+        'data': {
+            'event': 'episode_deleted',
+            'episode_id': episode_id()}}
 
 
 def episode_url():
