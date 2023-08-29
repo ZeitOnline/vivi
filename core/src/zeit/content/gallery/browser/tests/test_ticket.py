@@ -39,16 +39,3 @@ class TestTicketAuthorization(unittest.TestCase):
         self.assertEqual(unpacked[0], self.rnd)
         self.assertNotEqual(unpacked[1], self.hash_)
         self.assertEqual(unpacked[2], self.principal)
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestTicketAuthorization))
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt',
-        'entry-text.txt',
-        'crop.txt',
-        'ticket.txt',
-        'upload.txt',
-        layer=zeit.content.gallery.testing.WSGI_LAYER))
-    return suite
