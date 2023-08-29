@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.10 (2023-08-29)
+--------------------
+
+- ZO-3662: Use correct dict entries
+
+
 5.29.9 (2023-08-28)
 -------------------
 
