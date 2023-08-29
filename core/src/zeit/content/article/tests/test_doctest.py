@@ -1,13 +1,10 @@
-import unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+    return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'recension.txt',
         package='zeit.content.article',
-        layer=zeit.content.article.testing.LAYER))
-    return suite
+        layer=zeit.content.article.testing.LAYER)
