@@ -5,6 +5,5 @@ import zeit.workflow.testing
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'indicator.txt',
-        package='zeit.workflow.browser',
+        package='zeit.workflow.xmlrpc',
         layer=zeit.workflow.testing.WSGI_LAYER)

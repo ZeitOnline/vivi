@@ -1,10 +1,9 @@
 import zeit.cms.testing
+import zeit.seo.testing
 
 
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'cache.txt',
-        'preference.txt',
-        'file.txt',
-        package='zeit.cms.repository')
+        package='zeit.seo',
+        layer=zeit.seo.testing.WSGI_LAYER)

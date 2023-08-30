@@ -1,4 +1,3 @@
-import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -19,12 +18,9 @@ def create_content(root):
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.content.cp.testing.FunctionalDocFileSuite(
+    return zeit.content.cp.testing.FunctionalDocFileSuite(
         'cpextra.txt',
         'teaser.txt',
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
-        layer=zeit.content.cp.testing.WSGI_LAYER
-    ))
-    return suite
+        layer=zeit.content.cp.testing.WSGI_LAYER)
