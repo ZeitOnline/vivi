@@ -63,6 +63,17 @@ class LocalTeaserBlock(
     def remove(self, content):
         self._reference = None
 
+    @property
+    def references(self):
+        try:
+            return next(iter(self))
+        except StopIteration:
+            return None
+
+    @references.setter
+    def references(self, value):
+        self._reference = value
+
     # IFeed for completeness
 
     def keys(self):
