@@ -27,8 +27,3 @@ class SocialBase(zeit.push.browser.form.SocialBase):
             super().social_form_fields +
             self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
                 *self.magazin_fields))
-
-    def setUpWidgets(self, *args, **kw):
-        super().setUpWidgets(*args, **kw)
-        if self.request.form.get('%s.facebook_magazin_enabled' % self.prefix):
-            self._set_widget_required('facebook_magazin_text')

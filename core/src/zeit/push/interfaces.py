@@ -309,20 +309,25 @@ class PayloadTemplateSource(zeit.cms.content.sources.FolderItemSource):
 PAYLOAD_TEMPLATE_SOURCE = PayloadTemplateSource()
 
 
-class ToggleDependentText(zope.schema.Text):
-    """Text field value is required if ``dependent_field`` has value."""
+class ToggleDependentField:
+    """Field value is required if ``dependent_field`` has value."""
 
-    #: Name of field that controls whether this field is required
-    dependent_field = None
-
-    def __init__(self, dependent_field=None, **kw):
+    def __init__(self, dependent_field, **kw):
+        super().__init__(**kw)
         self.dependent_field = dependent_field
-        super(ToggleDependentText, self).__init__(**kw)
 
     def validate(self, value):
-        super(ToggleDependentText, self).validate(value)
+        super().validate(value)
         if not value and getattr(self.context, self.dependent_field):
             raise zope.schema.interfaces.RequiredMissing(self.__name__)
+
+
+class ToggleDependentChoice(ToggleDependentField, zope.schema.Choice):
+    pass
+
+
+class ToggleDependentText(ToggleDependentField, zope.schema.Text):
+    pass
 
 
 class IAccountData(zope.interface.Interface):
@@ -365,10 +370,11 @@ class IAccountData(zope.interface.Interface):
         dependent_field='twitter_ressort_enabled')
     twitter_ressort_enabled = zope.schema.Bool(
         title=_('Enable Twitter Ressort'), required=False)
-    twitter_ressort = zope.schema.Choice(
+    twitter_ressort = ToggleDependentChoice(
         title=_('Additional Twitter'),
         source=twitterAccountSource,
-        required=False)
+        required=False,
+        dependent_field='twitter_ressort_enabled')
     twitter_print_text = ToggleDependentText(
         title=_('Print Tweet'),
         required=False,
@@ -379,24 +385,27 @@ class IAccountData(zope.interface.Interface):
 
     mobile_title = zope.schema.TextLine(
         title=_('Mobile title'), required=False)
-    mobile_text = zope.schema.TextLine(
+    mobile_text = ToggleDependentText(
         title=_('Mobile text'),
-        required=False)
+        required=False,
+        dependent_field='mobile_enabled')
     mobile_enabled = zope.schema.Bool(
         title=_('Enable mobile push'), required=False)
 
     mobile_uses_image = zope.schema.Bool(
         title=_('Mobile push with image'), required=False)
-    mobile_image = zope.schema.Choice(
+    mobile_image = ToggleDependentChoice(
         title=_('Mobile image'),
         description=_("Drag an image group here"),
         source=zeit.content.image.interfaces.imageGroupSource,
-        required=False)
+        required=False,
+        dependent_field='mobile_uses_image')
     mobile_buttons = zope.schema.Choice(
         title=_('Mobile buttons'),
         source=MOBILE_BUTTONS_SOURCE,
         required=False)
-    mobile_payload_template = zope.schema.Choice(
+    mobile_payload_template = ToggleDependentChoice(
         title=_('Payload Template'),
         source=PAYLOAD_TEMPLATE_SOURCE,
-        required=False)
+        required=False,
+        dependent_field='mobile_enabled')
