@@ -36,7 +36,7 @@ teasers in the lead area:
   </div>
   ...
 
-When a teaser is dragged on the teaser block, it is added as the first teaser:
+When a teaser is dragged on the teaser block, it replaces the current teaser:
 
 >>> import lxml.cssselect
 >>> browser.open(contents_url)
@@ -64,12 +64,6 @@ When a teaser is dragged on the teaser block, it is added as the first teaser:
     <div class="teaserText"></div>
     <span class="uniqueId">http://xml.zeit.de/c1</span>
   </div>
-  <div class="teaser">...
-    <div class="supertitle"></div>
-    <div class="teaserTitle"></div>
-    <div class="teaserText"></div>
-    <span class="uniqueId">http://xml.zeit.de/testcontent</span>
-  </div>
   ...
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
@@ -82,125 +76,6 @@ afterwards:
 >>> browser.open(url)
 >>> browser.open(contents_url)
 
-
-
-Edit the teaser block
-+++++++++++++++++++++
-
-The teaser block can be edited:
-
->>> browser.getLink('Edit teaser list').click()
->>> lightbox_url = browser.url
->>> print(browser.contents)
-<div class="lightbox-full teaser-list-edit-box">
-  <ol id="teaser-list-edit-box-sorter"
-      cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-<GUID>">
-    <li class="action-content-droppable...index=0...
-    <li class="edit-bar teaser"
-        cms:uniqueid="http://xml.zeit.de/online/2007/01/Somalia">
-        ...
-      <div title="http://xml.zeit.de/online/2007/01/Somalia">Rückkehr der Warlords</div>
-    </li>
-    <li class="action-content-droppable...index=1...
-    <li class="edit-bar teaser"
-        cms:uniqueid="http://xml.zeit.de/c1">
-        <a class="edit-object-link"
-           title="Open in new window" target="_blank"
-           href="http://localhost/++skin++cms/repository/c1/@@view.html">
-          <span class="action-title">Open in new window</span>
-        </a>
-        <a class="delete-link" title="Delete"
-          ...
-           href="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
-          <span class="action-title">Delete</span>
-        </a>
-        <div title="http://xml.zeit.de/c1">c1 teaser</div>
-      </li>
-      <li class="action-content-droppable...index=2...
-      <li class="edit-bar teaser"
-          cms:uniqueid="http://xml.zeit.de/testcontent">
-          ...
-        <div title="http://xml.zeit.de/testcontent"></div>
-      </li>
-    <li class="action-content-droppable...index=3...
-  </ol>
-  ...
-</div>
-...
-
-
-Sorting
--------
-
-Sorting works by passing the order of keys as a JSON encoded list to the
-updateOrder view:
-
->>> import json
->>> zeit.content.cp.centerpage._test_helper_cp_changed = False
->>> order = ['http://xml.zeit.de/testcontent', 'http://xml.zeit.de/c1',
-...          'http://xml.zeit.de/online/2007/01/Somalia']
->>> url = lightbox_url.replace('teaser.edit-contents', 'updateOrder')
->>> browser.open(url + '?keys=' + json.dumps(order))
->>> zeit.content.cp.centerpage._test_helper_cp_changed
-True
->>> browser.open(lightbox_url)
->>> print(browser.contents)
-<div...
-    <li ... cms:uniqueid="http://xml.zeit.de/testcontent">
-        ...
-    <li ... cms:uniqueid="http://xml.zeit.de/c1">
-        ...
-
-Sort another time:
-
->>> order = ['http://xml.zeit.de/c1', 'http://xml.zeit.de/testcontent',
-...          'http://xml.zeit.de/online/2007/01/Somalia']
->>> url = lightbox_url.replace('teaser.edit-contents', 'updateOrder')
->>> browser.open(url + '?keys=' + json.dumps(order))
-
-
-Deleting entries
-----------------
-
-Delete the second entry:
-
->>> browser.open(lightbox_url)
->>> zeit.content.cp.centerpage._test_helper_cp_changed = False
->>> browser.getLink('Delete', index=1).click()
->>> zeit.content.cp.centerpage._test_helper_cp_changed
-True
->>> browser.open(lightbox_url)
->>> print(browser.contents)
-<div class="lightbox-full teaser-list-edit-box">
-  <ol id="teaser-list-edit-box-sorter"
-      cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-<GUID>">
-    <li class="action-content-droppable...
-    <li class="edit-bar teaser" ...
-        ...
-      <div...>Rückkehr der Warlords</div>
-    </li>
-    <li class="action-content-droppable...
-  </ol>
-...
-
-The cp contents also has changed of course:
-
->>> browser.open(contents_url)
->>> print(browser.contents)
-<div ...
-<div...class="...block type-teaser... id="id-<GUID>">
-  <div class="block-inner">...
-    <div class="teaser-contents action-content-droppable buttons"
-         cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop">
-     ...
-  <div class="teaser">...
-    <div class="supertitle"></div>
-    <div class="teaserTitle">c1 teaser</div>
-    <div class="teaserText"></div>
-    ...
-  </div>
-</div>
-...
 
 
 Layouts
