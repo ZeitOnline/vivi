@@ -148,6 +148,8 @@ def use_span(module, *args, **kw):
 
 
 def anonymize(value):
+    if not value:
+        return ''
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     key = config.get('honeycomb-personal-data-key')
     if not key:  # Better to send irreversibly encrypted data than cleartext.
