@@ -16,6 +16,7 @@ class Notification:
     webhook in the Simplecast API, and _they_ will call it each time a
     podcast or episode is added/changed/deleted.
     """
+    background = True  # Set/patch this to False in tests
 
     @property
     def environment(self):
@@ -25,7 +26,7 @@ class Notification:
     def __call__(self):
         # XXX Do nothing in production until we know how to tell
         # notifications apart
-        if self.environment not in ('staging', 'testing'):
+        if self.environment not in ('staging', 'testing', 'local'):
             return
 
         body = self.request.bodyStream.read(
@@ -34,9 +35,15 @@ class Notification:
 
         body = json.loads(body).get('data')
 
-        # SIMPLECAST_WEBHOOK_TASK.apply_async(body)
-        result = SIMPLECAST_WEBHOOK_TASK(body)
-        celery.result.EagerResult('eager', result, celery.states.SUCCESS)
+        self.execute_task(
+            body, queue='simplecast', background=self.background)
+
+    def execute_task(self, body, queue, background):
+        if background:
+            SIMPLECAST_WEBHOOK_TASK.apply_async(body, queue=queue)
+        else:
+            result = SIMPLECAST_WEBHOOK_TASK(body)
+            celery.result.EagerResult('eager', result, celery.states.SUCCESS)
 
 
 @zeit.cms.celery.task
