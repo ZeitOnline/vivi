@@ -18,17 +18,6 @@ class Simplecast(grok.GlobalUtility):
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
 
-    def get_episode(self, episode_id):
-        response = self._request('GET', f'episodes/{episode_id}')
-        try:
-            title = response.json()['title']
-            url = response.json()['audio_file_url']
-            duration = response.json()['duration']
-            return url, duration, title
-        except KeyError:
-            log.error('Episode information is not available.')
-            raise
-
     def _request(self, verb, path):
         url = f'{self.api_url}{path}'
         headers = {'Authorization': self.api_token}

@@ -17,34 +17,17 @@ JSON = {
 
 class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
 
-    def test_audio_has_url(self):
+    def test_simplecast_yields_episode_info(self):
         m_simple = requests_mock.Mocker()
-        episode_id = '1234'
+        episode_id = "1234"
         m_simple.get(
-            f'https://testapi.simplecast.com/episodes/{episode_id}', json=JSON)
+            f"https://testapi.simplecast.com/episodes/{episode_id}",
+            json=JSON)
         simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
         with m_simple:
-            (url, duration, title) = simplecast.get_episode(episode_id)
-            assert url == (
-                'https://injector.simplecastaudio.com/5678/episodes/'
-                '1234/audio/128/default.mp3?awCollectionId=5678'
-                '&awEpisodeId=1234')
-            assert duration == 666
-
-    def test_episode_not_found_breaks(self):
-        m_simple = requests_mock.Mocker()
-        episode_id = '1234'
-        m_simple.get(
-            f'https://testapi.simplecast.com/episodes/{episode_id}',
-            json={},
-            status_code=404)
-        simplecast = zope.component.getUtility(
-            zeit.simplecast.interfaces.ISimplecast)
-
-        with m_simple:
-            with self.assertRaises(KeyError):
-                simplecast.get_episode(episode_id)
+            result = simplecast.fetch_episode(episode_id)
+            self.assertEqual(result, JSON)
 
     def test_simplecast_gets_podcast_folder(self):
         simplecast = zope.component.getUtility(
