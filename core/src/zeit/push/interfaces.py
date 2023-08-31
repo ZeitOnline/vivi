@@ -385,10 +385,9 @@ class IAccountData(zope.interface.Interface):
 
     mobile_title = zope.schema.TextLine(
         title=_('Mobile title'), required=False)
-    mobile_text = ToggleDependentText(
+    mobile_text = zope.schema.Text(
         title=_('Mobile text'),
-        required=False,
-        dependent_field='mobile_enabled')
+        required=False)
     mobile_enabled = zope.schema.Bool(
         title=_('Enable mobile push'), required=False)
 
