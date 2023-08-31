@@ -329,7 +329,7 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(main).publish_multiple(
                 [self.content, main], background=False)
         self.assertEqual(
-            f'Objects with errors: {self.content.uniqueId}, {main.uniqueId}',
+            f'Objects with errors: {main.uniqueId}, {self.content.uniqueId}',
             translate_object_log(main)[-1].replace(self.message, ''))
 
 
@@ -396,6 +396,12 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         self.assertIn(self.error, translate_object_log(c1))
         self.assertIn(self.error, translate_object_log(c2))
         self.assertIn('LockingError', translate_object_log(c3)[-1])
+        self.assertIn(
+            'Objects with errors: '
+            'http://xml.zeit.de/online/2007/01/Flugsicherheit, '
+            'http://xml.zeit.de/online/2007/01/Querdax, '
+            'http://xml.zeit.de/online/2007/01/Saarland',
+            translate_object_log(c1))
 
 
 class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
@@ -433,6 +439,8 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertFalse(publish.called)
 
     def test_error_in_one_item_continues_with_other_items(self):
+        context = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Querdax')
         c1 = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         c2 = zeit.cms.interfaces.ICMSContent(
@@ -452,7 +460,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
              zeit.cms.workflow.interfaces.IPublishedEvent))
 
         with self.assertRaises(RuntimeError):
-            IPublish(self.repository).publish_multiple(
+            IPublish(context).publish_multiple(
                 [c1, c2], background=False)
 
         # PublishedEvent still happens for c2, even though c1 raised
