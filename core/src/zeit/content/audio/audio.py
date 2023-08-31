@@ -30,20 +30,6 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
         self.url = info['audio_file_url']
 
 
-def audio_container(create=False):
-    container_id = 'podcast-audio'
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
-    if container_id in repository:
-        log.info('Container %s found', container_id)
-        return repository[container_id]
-    if create:
-        log.info('Container %s created', container_id)
-        repository[container_id] = zeit.cms.repository.folder.Folder()
-        return repository[container_id]
-    return None
-
-
 def add_audio(container, info):
     log.info('Add audio %s', info['id'])
     audio = Audio()

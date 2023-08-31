@@ -40,13 +40,13 @@ class Notification:
         if body.get('event') == 'episode_created':
             log.info('Create episode from simplecast request.')
             info = simplecast.fetch_episode(body.get('episode_id'))
-            container = zeit.content.audio.audio.audio_container(create=True)
+            container = simplecast.folder(info['created_at'])
             zeit.content.audio.audio.add_audio(container, info)
 
         elif body.get('event') == 'episode_updated':
             log.info('Update episode from simplecast request.')
             info = simplecast.fetch_episode(body.get('episode_id'))
-            container = zeit.content.audio.audio.audio_container()
+            container = simplecast.folder(info['created_at'])
             if container is not None:
                 with zeit.cms.checkout.helper.checked_out(
                         container[body.get('episode_id')]) as episode:
@@ -54,7 +54,7 @@ class Notification:
 
         elif body.get('event') == 'episode_deleted':
             log.info('Delete episode from simplecast request.')
-            container = zeit.content.audio.audio.audio_container()
+            container = simplecast.folder(info['created_at'])
             if container is not None:
                 zeit.content.audio.audio.remove_audio(
                     container[body.get('episode_id')])

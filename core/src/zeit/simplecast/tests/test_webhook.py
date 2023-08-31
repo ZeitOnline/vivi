@@ -1,6 +1,7 @@
 import pytest
 import json
 import requests_mock
+import zope.component
 
 import zeit.content.audio.audio
 import zeit.simplecast.testing
@@ -59,6 +60,7 @@ def episode_info():
             "b44b1838-4ff4-4c29-ba1c-9c4f4b863eac/audio/"
             "2123a65c-e415-4640-b1f1-108d3029a856/default_tc.mp3"),
         "duration": 663,
+        "created_at": "2023-08-31T13:51:00-01:00",
     }
 
 
@@ -95,14 +97,18 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
                          json.dumps(episode_create()),
                          'application/x-javascript')
 
-        container = zeit.content.audio.audio.audio_container()
+        simplecast = zope.component.getUtility(
+            zeit.simplecast.interfaces.ISimplecast)
+        container = simplecast.folder(episode_info()['created_at'])
         episode = container[episode_id()]
         self.assertEqual(episode.title, 'Episode 42')
         self.assertEqual(episode.episode_id, episode_id())
         self.assertEqual(episode.url, episode_info()['audio_file_url'])
 
     def test_update_episode(self):
-        container = zeit.content.audio.audio.audio_container(create=True)
+        simplecast = zope.component.getUtility(
+            zeit.simplecast.interfaces.ISimplecast)
+        container = simplecast.folder(episode_info()['created_at'])
         zeit.content.audio.audio.add_audio(container, episode_info())
 
         info = episode_info()
@@ -121,7 +127,9 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         self.assertEqual(episode.title, 'New title')
 
     def test_delete_episode(self):
-        container = zeit.content.audio.audio.audio_container(create=True)
+        simplecast = zope.component.getUtility(
+            zeit.simplecast.interfaces.ISimplecast)
+        container = simplecast.folder(episode_info()['created_at'])
         zeit.content.audio.audio.add_audio(container, episode_info())
 
         browser = self.browser
