@@ -50,16 +50,20 @@ class Notification:
                 with zeit.cms.checkout.helper.checked_out(
                         container[body.get('episode_id')]) as episode:
                     episode.update(info)
-                    log.info('Audio %s successfully updated.', episode.uniqueId)
+                    log.info(
+                        'Audio %s successfully updated.', episode.uniqueId)
 
         elif body.get('event') == 'episode_deleted':
             log.info('Delete episode from simplecast request.')
-            container = simplecast.folder(info['created_at'])
-            if container is not None:
-                uniqueId = container[body.get('episode_id')].uniqueId
-                zeit.content.audio.audio.remove_audio(
-                    container[body.get('episode_id')])
+            audio = simplecast.find_existing_episode(body.get('episode_id'))
+            if audio:
+                uniqueId = audio.uniqueId
+                zeit.content.audio.audio.remove_audio(audio)
                 log.info('Audio %s successfully deleted.', uniqueId)
+            else:
+                log.warning(
+                    'No podcast episode %s found. No episode deleted.',
+                    body.get('episode_id'))
 
         else:
             log.info('No episode processed.')

@@ -34,3 +34,26 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
             zeit.simplecast.interfaces.ISimplecast)
         container = simplecast.folder(JSON["created_at"])
         self.assertEqual(container, self.repository["podcasts"]["2023-08"])
+
+    def test_find_episode_from_connector(self):
+        """After an `episode_deleted` event, information about the
+        episode can not be fetched from the simplecast api anymore, yields 404
+        """
+        simplecast = zope.component.getUtility(
+            zeit.simplecast.interfaces.ISimplecast)
+        episode = simplecast.find_existing_episode(self.episode_info["id"])
+        self.assertFalse(episode)
+
+        container = simplecast.folder("2023-08-31T13:51:00-01:00")
+        zeit.content.audio.audio.add_audio(
+            container, self.episode_info)
+
+        self.repository.connector.search_result = [(
+            'http://xml.zeit.de/podcasts/2023-08/'
+            'b44b1838-4ff4-4c29-ba1c-9c4f4b863eac')]
+
+        episode = simplecast.find_existing_episode(self.episode_info["id"])
+        self.assertTrue(
+            zeit.content.audio.interfaces.IAudio.providedBy(episode))
+        self.assertEqual(self.episode_info["title"], episode.title)
+        self.assertEqual(self.episode_info["audio_file_url"], episode.url)

@@ -41,8 +41,16 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
     episode_info = EPISODE_INFO
 
+    def setUp(self):
+        super().setUp()
+        self.repository.connector.search_result = []
+
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
     layer = WSGI_LAYER
     episode_info = EPISODE_INFO
+
+    def setUp(self):
+        super().setUp()
+        self.repository.connector.search_result = []

@@ -3,10 +3,16 @@ import grokcore.component as grok
 import requests
 import zope.app.appsetup.product
 
+from zeit.connector.search import SearchVar
+
 import zeit.cms.repository.interfaces
+import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 
 log = logging.getLogger(__name__)
+
+
+AUDIO_ID = SearchVar('episode_id', zeit.content.audio.audio.AUDIO_SCHEMA_NS)
 
 
 @grok.implementer(zeit.simplecast.interfaces.ISimplecast)
@@ -46,3 +52,21 @@ class Simplecast(grok.GlobalUtility):
         if yyyy_mm not in repository[podcasts]:
             repository[podcasts][yyyy_mm] = zeit.cms.repository.folder.Folder()
         return repository[podcasts][yyyy_mm]
+
+    def find_existing_episode(self, episode_id):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        result = list(connector.search(
+            [AUDIO_ID], (AUDIO_ID == str(episode_id))))
+        if not result:
+            return
+        try:
+            content = zeit.cms.interfaces.ICMSContent(result[0][0])
+            log.debug('Audio %s found for %s.', content.uniqueId, episode_id)
+            return content
+        except TypeError as error:
+            log.error(
+                'Audio %s found for %s. But not found in DAV: %s',
+                result[0][0], episode_id, error
+            )
+            return

@@ -13,6 +13,8 @@ import zeit.content.audio.interfaces
 
 log = logging.getLogger(__name__)
 
+AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
+
 
 @zope.interface.implementer(
     zeit.content.audio.interfaces.IAudio,
@@ -22,7 +24,7 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.audio.interfaces.IAudio,
-        'http://namespaces.zeit.de/CMS/audio',
+        AUDIO_SCHEMA_NS,
         ('title', 'episode_id', 'url'))
 
     def update(self, info):
