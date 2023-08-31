@@ -44,26 +44,6 @@ def episode_url():
     return f'https://testapi.simplecast.com/episodes/{episode_id()}'
 
 
-def episode_info():
-    return {
-        "title": "Episode 42",
-        "id": "b44b1838-4ff4-4c29-ba1c-9c4f4b863eac",
-        "audio_file_url": (
-            "https://injector.simplecastaudio.com/"
-            "04b0bba3-e114-4d7a-bf27-c398dcff13fd/episodes/"
-            "b44b1838-4ff4-4c29-ba1c-9c4f4b863eac/audio/128/default.mp3"
-            "?awCollectionId=04b0bba3-e114-4d7a-bf27-c398dcff13fd"
-            "&awEpisodeId=b44b1838-4ff4-4c29-ba1c-9c4f4b863eac"),
-        "ad_free_audio_file_url": (
-            "https://cdn.simplecast.com/audio/"
-            "04b0bba3-e114-4d7a-bf27-c398dcff13fd/episodes/"
-            "b44b1838-4ff4-4c29-ba1c-9c4f4b863eac/audio/"
-            "2123a65c-e415-4640-b1f1-108d3029a856/default_tc.mp3"),
-        "duration": 663,
-        "created_at": "2023-08-31T13:51:00-01:00",
-    }
-
-
 class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
     def test_webhook_environment(self):
         notification = zeit.simplecast.json.webhook.Notification()
@@ -77,7 +57,7 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         self.caplog.clear()
 
         mocker = requests_mock.Mocker()
-        mocker.get(episode_url(), json=episode_info())
+        mocker.get(episode_url(), json=self.episode_info)
 
         with mocker:
             browser = self.browser
@@ -89,7 +69,7 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
 
     def test_create_episode(self):
         mocker = requests_mock.Mocker()
-        mocker.get(episode_url(), json=episode_info())
+        mocker.get(episode_url(), json=self.episode_info)
 
         with mocker:
             browser = self.browser
@@ -99,19 +79,19 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
 
         simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
-        container = simplecast.folder(episode_info()['created_at'])
+        container = simplecast.folder(self.episode_info['created_at'])
         episode = container[episode_id()]
         self.assertEqual(episode.title, 'Episode 42')
         self.assertEqual(episode.episode_id, episode_id())
-        self.assertEqual(episode.url, episode_info()['audio_file_url'])
+        self.assertEqual(episode.url, self.episode_info['audio_file_url'])
 
     def test_update_episode(self):
         simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
-        container = simplecast.folder(episode_info()['created_at'])
-        zeit.content.audio.audio.add_audio(container, episode_info())
+        container = simplecast.folder(self.episode_info['created_at'])
+        zeit.content.audio.audio.add_audio(container, self.episode_info)
 
-        info = episode_info()
+        info = self.episode_info
         info['title'] = 'New title'
 
         mocker = requests_mock.Mocker()
@@ -129,8 +109,8 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
     def test_delete_episode(self):
         simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
-        container = simplecast.folder(episode_info()['created_at'])
-        zeit.content.audio.audio.add_audio(container, episode_info())
+        container = simplecast.folder(self.episode_info['created_at'])
+        zeit.content.audio.audio.add_audio(container, self.episode_info)
 
         browser = self.browser
         browser.post('http://localhost/@@simplecast_webhook',

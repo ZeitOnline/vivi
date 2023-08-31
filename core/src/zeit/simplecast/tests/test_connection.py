@@ -33,4 +33,4 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
         container = simplecast.folder(JSON["created_at"])
-        self.assertEqual(container, self.repository['podcasts']['2023-08'])
+        self.assertEqual(container, self.repository["podcasts"]["2023-08"])
