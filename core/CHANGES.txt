@@ -3,6 +3,23 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.11 (2023-08-31)
+--------------------
+
+- ZO-215: Switch teaser block UI to single referenced content instead of list
+
+- ZO-3629: Log all errors (e.g. locking, not just publisher) on multi publish origin
+
+- ZO-3708: add social push messages to article validation
+
+
+FIX:
+- Improve layout for error messages
+
+  - now the box and the arrow below point directly at the widget
+  - when more than one message appears, the message no longer shifts
+
+
 5.29.10 (2023-08-29)
 --------------------
 
