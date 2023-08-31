@@ -123,6 +123,7 @@ class PublishRetractTask:
 
     def __init__(self, jobid):
         self.jobid = jobid
+        self.context = None  # extension point for MultiTask
 
     def run(self, ids):
         """Run task in worker."""
@@ -150,6 +151,7 @@ class PublishRetractTask:
             if isinstance(e, MultiPublishError):
                 to_log = []
                 all_errors = []
+                with_error = []
                 for obj, error in e.args[0]:
                     # Like zeit.cms.browser.error.ErrorView.message
                     args = getattr(error, 'args', None)
@@ -163,6 +165,7 @@ class PublishRetractTask:
                         'exc': error.__class__.__name__,
                         'message': errormessage})
                     to_log.append((obj, submessage))
+                    with_error.append(obj.uniqueId)
                     all_errors.append((obj, '%s: %s' % (
                         error.__class__.__name__, errormessage)))
                 if len(all_errors) == 1:
@@ -173,6 +176,12 @@ class PublishRetractTask:
                 message = _(messageid, mapping={
                     'exc': e.__class__.__name__, 'message': str(e)})
                 to_log = [(obj, message) for obj in objs]
+                with_error = [obj.uniqueId for obj in objs]
+
+            if self.context is not None:
+                to_log.append((self.context, _(
+                    'Objects with errors: ${objects}',
+                    mapping={'objects': ', '.join(sorted(with_error))})))
 
             raise z3c.celery.celery.HandleAfterAbort(
                 self._log_messages, to_log,
@@ -541,17 +550,10 @@ class MultiTask:
         errors = []
         msg = f'{exc.url} returned {exc.status}'
         by_uuid = {IUUID(x).shortened: x for x in objects}
-        with_error = []
         for error in exc.errors:
             obj = by_uuid.get(error['source'].get('pointer'))
             if obj is not None:
                 errors.append((obj, PublishError.from_detail(msg, error)))
-                with_error.append(obj.uniqueId)
-        if self.context is not None:
-            errors.append((self.context, PublishError(zope.i18n.translate(
-                _('Objects with errors: ${objects}',
-                  mapping={'objects': ', '.join(with_error)}),
-                target_language='de'))))
         return errors
 
 

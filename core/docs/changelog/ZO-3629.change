@@ -1,0 +1,1 @@
+ZO-3629: Log all errors (e.g. locking, not just publisher) on multi publish origin
