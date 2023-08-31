@@ -645,7 +645,7 @@ class IWriteTeaserBlock(IWriteFeed):
 
 
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
-    """A list of teasers."""
+    """This module references a content object."""
 
 
 class IReadLocalTeaserBlock(IReadTeaserBlock):
