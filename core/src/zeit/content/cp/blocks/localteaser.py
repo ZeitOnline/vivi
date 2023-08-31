@@ -36,9 +36,6 @@ class LocalTeaserBlock(
     _teaserTitle_local = ObjectPathProperty('.local_title')
     _teaserText_local = ObjectPathProperty('.local_teasertext')
 
-    # We don't actually want teaser modules to be a list anymore (see ZO-215),
-    # and it doesn't make sense in combination with local overrides anyway,
-    # so we're only supporting referencing one content object here.
     _reference = zeit.cms.content.reference.SingleResource('.block', 'teaser')
 
     image = zeit.cms.content.reference.SingleResource('.local_image', 'image')
@@ -62,6 +59,17 @@ class LocalTeaserBlock(
 
     def remove(self, content):
         self._reference = None
+
+    @property
+    def references(self):
+        try:
+            return next(iter(self))
+        except StopIteration:
+            return None
+
+    @references.setter
+    def references(self, value):
+        self._reference = value
 
     # IFeed for completeness
 

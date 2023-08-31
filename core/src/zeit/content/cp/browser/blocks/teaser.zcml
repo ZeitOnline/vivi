@@ -51,34 +51,6 @@
     permission="zeit.EditContent"
     />
 
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="edit-contents"
-    template="layout.teaser.edit-contents.pt"
-    permission="zeit.EditContent"
-    weight="5"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="teaser.edit-contents"
-    class=".teaser.EditContents"
-    template="teaser.edit-contents.pt"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="updateOrder"
-    class=".teaser.UpdateOrder"
-    permission="zeit.EditContent"
-    />
-
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -88,14 +60,6 @@
     />
 
   <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="delete"
-    class=".teaser.Delete"
-    permission="zeit.EditContent"
-    />
 
   <!-- Quote Teaser -->
   <!-- Name of the adapter has to be a layout id. See

@@ -623,6 +623,12 @@ class IFeed(IReadFeed, IWriteFeed):
 
 class IReadTeaserBlock(IBlock, IReadFeed):
 
+    references = zope.schema.Choice(
+        title=_('Referenced content'),
+        description=_("Drag content here"),
+        source=zeit.cms.content.contentsource.cmsContentSource,
+        required=False)
+
     layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBlockLayoutSource())
@@ -639,7 +645,7 @@ class IWriteTeaserBlock(IWriteFeed):
 
 
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
-    """A list of teasers."""
+    """This module references a content object."""
 
 
 class IReadLocalTeaserBlock(IReadTeaserBlock):

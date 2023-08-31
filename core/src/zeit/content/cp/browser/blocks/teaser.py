@@ -205,48 +205,13 @@ class Drop(zeit.edit.browser.view.Action):
     """Drop a content object on a teaserblock."""
 
     uniqueId = zeit.edit.browser.view.Form('uniqueId')
-    index = zeit.edit.browser.view.Form('index', json=True, default=0)
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        self.context.insert(self.index, content)
+        self.context.references = content
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.reload()
-
-
-class EditContents(zeit.cms.browser.view.Base):
-    """Edit the teaser list."""
-
-    @zope.cachedescriptors.property.Lazy
-    def teasers(self):
-        teasers = []
-        for content in self.context:
-            metadata = zeit.cms.content.interfaces.ICommonMetadata(
-                content, None)
-            url = None
-            if metadata is None:
-                editable = False
-                title = content.uniqueId
-            else:
-                editable = True
-                title = metadata.teaserTitle
-                try:
-                    url = self.url(content)
-                except TypeError:
-                    # For example, IXMLTeaser cannot be viewed that way.
-                    pass
-            teasers.append(dict(
-                css_class='edit-bar teaser',
-                deletable=True,
-                editable=editable,
-                teaserTitle=title,
-                uniqueId=content.uniqueId,
-                url=url,
-                viewable=bool(url),
-            ))
-
-        return teasers
 
 
 class ChangeLayout(zeit.edit.browser.view.Action):
@@ -272,26 +237,3 @@ class ChangeLayout(zeit.edit.browser.view.Action):
 @zope.interface.implementer(zeit.cms.browser.interfaces.IEditViewName)
 def teaserEditViewName(context):
     return 'edit-teaser.html'
-
-
-class UpdateOrder(zeit.edit.browser.view.Action):
-
-    keys = zeit.edit.browser.view.Form('keys', json=True)
-
-    def update(self):
-        self.context.updateOrder(self.keys)
-        zope.event.notify(
-            zope.lifecycleevent.ObjectModifiedEvent(self.context))
-
-
-class Delete(zeit.edit.browser.view.Action):
-    """Delete item from TeaserBlock."""
-
-    uniqueId = zeit.edit.browser.view.Form('uniqueId')
-
-    def update(self):
-        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        self.context.remove(content)
-        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-            self.context))
-        self.reload()

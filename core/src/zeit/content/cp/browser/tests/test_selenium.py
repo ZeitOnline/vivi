@@ -1,6 +1,5 @@
 # coding: utf8
 from gocept.selenium.wd_selenese import split_locator
-from selenium.webdriver.common.keys import Keys
 import lxml.cssselect
 import transaction
 import unittest
@@ -99,122 +98,6 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
             '//li[@uniqueid="Clip/testcontent"]',
             'css=div.type-teaser')
         s.waitForElementPresent('css=div.supertitle')
-
-    def test_delete(self):
-        s = self.selenium
-        self.create_filled_teaserlist()
-        teaser_block_with_c2 = (
-            '//div[contains(@class, "type-teaser")]'
-            '//div[@class="teaserTitle" and text() = "c2 teaser"]')
-        s.waitForElementPresent(teaser_block_with_c2)
-
-        s.click('link=Edit teaser list')
-        s.waitForElementPresent('css=div.teaser-list-edit-box')
-
-        s.verifyXpathCount(
-            '//div[@class="lightbox"]//a[@class="delete-link"]', 3)
-        s.click(
-            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
-            'a[@class="delete-link"]')
-        s.waitForXpathCount(
-            '//div[@class="lightbox"]//a[@class="delete-link"]', 2)
-
-        # When closing the lightbox the c2 teaser goes away
-        s.click('css=a.CloseButton')
-        s.waitForElementNotPresent(teaser_block_with_c2)
-
-    def test_sort_teaser_contents(self):
-        s = self.selenium
-        self.create_content_and_fill_clipboard()
-        self.create_teaserlist()
-
-        # Drag object to the teaser bar in "wrong order"
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser', '10,150')
-        s.waitForElementPresent(
-            '//div[@class="teaserTitle" and text() = "c1 teaser"]')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser', '10,150')
-        s.waitForElementPresent(
-            '//div[@class="teaserTitle" and text() = "c2 teaser"]')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser', '10,150')
-        s.waitForElementPresent(
-            '//div[@class="teaserTitle" and text() = "c3 teaser"]')
-
-        # Edit the teaser list and reorder
-        s.click('link=Edit teaser list')
-        s.waitForElementPresent('css=div.teaser-list-edit-box')
-
-        # Get the height of the first row and drag it 2.75 times the height so
-        # it overlaps the third row. The initial order is 3, 2, 1. After drag
-        # it is 2, 1, 3.
-        def li(text, following_sibling=False):
-            path = ('//div[@class="lightbox"]//li[contains(string(.), "%s")]' %
-                    text)
-            if following_sibling:
-                path += '/following-sibling::li[1]'
-            return path
-
-        height = s.getElementHeight(li('c3'))
-        height_landing = s.getElementHeight(li('c3', True))
-
-        delta_y = (height + height_landing) * 2.75
-        s.mouseDown(li('c3'))
-        s.mouseMoveAt(li('c3'), '0,5')
-        s.mouseMoveAt(li('c3'), '0,%s' % int(delta_y))
-        s.mouseUp(li('c3'))
-
-        s.waitForElementPresent('css=div.teaser-list-edit-box')
-        s.waitForOrdered(li('c2', True), li('c1'))
-        s.waitForOrdered(li('c1', True), li('c3'))
-
-        # Drag the c1 node .75 up; the resulting order is 1, 2, 3
-        delta_y = (height + height_landing) * -0.75
-        s.mouseDown(li('c1'))
-        s.mouseMoveAt(li('c1'), '0,5')
-        s.mouseMoveAt(li('c1'), '0,%s' % int(delta_y))
-        s.mouseUp(li('c1'))
-
-        s.waitForElementPresent('css=div.teaser-list-edit-box')
-        s.waitForOrdered(li('c1', True), li('c2'))
-        s.verifyOrdered(li('c2', True), li('c3'))
-
-    def test_edit_box_drop_of_content(self):
-        self.create_content_and_fill_clipboard()
-        self.create_teaserlist()
-        s = self.selenium
-        s.click('link=Edit teaser list')
-        s.waitForElementPresent('css=.lightbox .landing-zone')
-
-        # There is a landing zone
-        s.verifyElementNotPresent('css=.lightbox li.edit-bar')
-        s.assertCssCount('css=.lightbox li.landing-zone', 1)
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=.lightbox .landing-zone', '10,10')
-        s.waitForElementPresent('css=.lightbox li.edit-bar')
-
-        # Now, there are two landing zones
-        s.assertCssCount('css=.lightbox li.landing-zone', 2)
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]',
-            'css=.lightbox .landing-zone:first-child', '10,10')
-        s.waitForCssCount('css=.lightbox li.edit-bar', 2)
-        s.assertCssCount('css=.lightbox li.landing-zone', 3)
-
-    def test_edit_box_url_input(self):
-        self.create_teaserlist()
-        s = self.selenium
-        s.click('link=Edit teaser list')
-        s.waitForElementPresent('css=.url-input input')
-        s.type('css=.url-input input', 'http://xml.zeit.de/testcontent')
-        s.keyPress('css=.url-input input', Keys.TAB)
-        s.waitForElementPresent('css=.lightbox li.edit-bar')
-        s.assertCssCount('css=.lightbox li.landing-zone', 2)
 
     def test_toggle_visible(self):
         self.open_centerpage()
@@ -447,30 +330,3 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent('css=div.lightbox')
         s.waitForPageToLoad()
         s.waitForElementPresent('css=div.landing-zone')
-
-
-class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
-
-    def test_source_removed_when_dropped_to_cp(self):
-        self.create_filled_teaserlist()
-        s = self.selenium
-        s.dragAndDropToObject(
-            'css=.teaser-list > .teaser',
-            'css=.landing-zone.action-cp-module-droppable', '10,10')
-        s.waitForText('css=#lead .block.type-teaser .teaser-list',
-                      '*c1 teaser*')
-        s.verifyNotText('css=#lead .block.type-teaser .teaser-list',
-                        '*c2 teaser*')
-        # Verify the removal in the source:
-        s.waitForNotText(
-            'css=#informatives .block.type-teaser .teaser-list', '*c1 teaser*')
-
-    def test_source_not_removed_when_not_dropped_to_cp(self):
-        s = self.selenium
-        self.create_filled_teaserlist()
-        s.dragAndDropToObject(
-            'css=.teaser-list > .teaser',
-            '//li[@uniqueid="Clip"]')
-        s.waitForText('//li[@uniqueid="Clip"]', '*c1*c1*')
-        # Verify text still in the drag source:
-        s.verifyText('css=.teaser-list > .teaser', '*c1 teaser*')

@@ -227,23 +227,3 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
         self.open('/')
         s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
-
-    def create_filled_teaserlist(self):
-        s = self.selenium
-        self.create_content_and_fill_clipboard()
-        self.create_teaserlist()
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser', '10,150')
-        s.waitForElementPresent(
-            '//div[@class="teaserTitle" and text() = "c3 teaser"]')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser', '10,150')
-        s.waitForElementPresent(
-            '//div[@class="teaserTitle" and text() = "c2 teaser"]')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser', '10,150')
-        s.waitForElementPresent(
-            '//div[@class="teaserTitle" and text() = "c1 teaser"]')
