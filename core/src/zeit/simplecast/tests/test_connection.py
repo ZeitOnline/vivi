@@ -10,6 +10,7 @@ JSON = {
         "https://injector.simplecastaudio.com/5678/episodes/1234/audio"
         "/128/default.mp3?awCollectionId=5678&awEpisodeId=1234"),
     "ad_free_audio_file_url": None,
+    "created_at": "2023-08-31T13:51:00-01:00",
     "duration": 666,
 }
 
@@ -44,3 +45,9 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         with m_simple:
             with self.assertRaises(KeyError):
                 simplecast.get_episode(episode_id)
+
+    def test_simplecast_gets_podcast_folder(self):
+        simplecast = zope.component.getUtility(
+            zeit.simplecast.interfaces.ISimplecast)
+        container = simplecast.folder(JSON["created_at"])
+        self.assertEqual(container, self.repository['podcasts']['2023-08'])
