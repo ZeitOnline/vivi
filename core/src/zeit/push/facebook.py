@@ -37,11 +37,7 @@ class Message(zeit.push.message.Message):
 
     @property
     def text(self):
-        text = self.config.get('override_text')
-        if not text:  # BBB
-            self.get_text_from = 'long_text'
-            text = super().text
-        return text
+        return self.config.get('override_text')
 
     @property
     def url(self):

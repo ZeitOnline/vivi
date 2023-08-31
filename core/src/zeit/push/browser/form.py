@@ -1,4 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.push.interfaces import ToggleDependentField
+
 import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.testcontenttype.interfaces
@@ -9,6 +11,17 @@ import zope.formlib.form
 class Base(zeit.cms.browser.form.CharlimitMixin):
 
     FormFieldsFactory = zope.formlib.form.FormFields
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        self._validate_dependency_constraints()
+
+    def _validate_dependency_constraints(self):
+        for widget in self.widgets:
+            if isinstance(widget.context, ToggleDependentField):
+                field_name = f'{self.prefix}.{widget.context.dependent_field}'
+                if self.request.form.get(field_name):
+                    self._set_widget_required(widget.context.getName())
 
     def _set_widget_required(self, name):
         field = self.widgets[name].context
@@ -51,11 +64,6 @@ class SocialBase(Base):
         self.set_charlimit('short_text')
         self.set_charlimit('twitter_print_text')
         self.set_charlimit('twitter_ressort_text')
-        if self.request.form.get('%s.facebook_main_enabled' % self.prefix):
-            self._set_widget_required('facebook_main_text')
-        if self.request.form.get('%s.twitter_ressort_enabled' % self.prefix):
-            self._set_widget_required('twitter_ressort')
-            self._set_widget_required('twitter_ressort_text')
 
 
 class MobileBase(Base):
@@ -81,11 +89,6 @@ class MobileBase(Base):
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
-        if self.request.form.get('%s.mobile_enabled' % self.prefix):
-            self._set_widget_required('mobile_text')
-            self._set_widget_required('mobile_payload_template')
-        if self.request.form.get('%s.mobile_uses_image' % self.prefix):
-            self._set_widget_required('mobile_image')
         if hasattr(self.widgets['mobile_text'], 'extra'):
             # i.e. we're not in read-only mode
             self.widgets['mobile_text'].extra += (

@@ -1,0 +1,4 @@
+Improve layout for error messages
+
+- now the box and the arrow below point directly at the widget
+- when more than one message appears, the message no longer shifts

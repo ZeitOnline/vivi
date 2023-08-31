@@ -2,6 +2,7 @@
 .field.fieldname-twitter_ressort_enabled,
 .field.fieldname-twitter_print_enabled,
 .field.fieldname-facebook_main_enabled,
+.field.fieldname-facebook_zett_enabled,
 .field.fieldname-facebook_magazin_enabled {
     float: left;
 }
