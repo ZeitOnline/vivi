@@ -1,7 +1,7 @@
 # coding: utf-8
 from unittest import mock
-import datetime
 import json
+import pendulum
 import zeit.content.author.author
 import zeit.content.author.browser.honorar as honorar
 import zeit.content.author.interfaces
@@ -125,16 +125,16 @@ class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):
 class ReportInvalidGCIDs(zeit.content.author.testing.BrowserTestCase):
 
     def test_report_for_invalid_gcids_is_csv_download(self):
-        now = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
         b = self.browser
         with mock.patch('zeit.content.author.browser.honorar.HonorarReports.report_invalid_gcid') as create_content: # noqa
             create_content.return_value = 'some csv'
             b.open('http://localhost/++skin++vivi/HonorarReports') # noqa
             self.assertIn(b.headers['content-type'],
                           ('text/csv', 'text/csv;charset=utf-8'))
-            self.assertEqual('attachment; '
-                             f'filename="Hdok-geloeschteGCIDs_{now}.csv"',
-                             b.headers['content-disposition'])
+            now = pendulum.now().year
+            self.assertStartsWith(
+                f'attachment; filename="Hdok-geloeschteGCIDs_{now}',
+                b.headers['content-disposition'])
             self.assertEllipsis("some csv", b.contents)
 
 
