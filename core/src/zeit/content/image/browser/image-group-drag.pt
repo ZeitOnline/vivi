@@ -1,5 +1,5 @@
 <tal:block>
-  <img 
+  <img
     tal:repeat="image python:context.values()"
     tal:replace="structure image/@@thumbnail/tag | nothing" />
 

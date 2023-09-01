@@ -6,7 +6,7 @@ There is a general way to list folders as all listings should look the same.
 
 Create a browser first:
 
->>> from zeit.cms.testing import Browser 
+>>> from zeit.cms.testing import Browser
 >>> browser = Browser(layer['wsgi_app'])
 >>> browser.login('user', 'userpw')
 

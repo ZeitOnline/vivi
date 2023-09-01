@@ -10,11 +10,11 @@
     <a href="repository"
       tal:attributes="href view/repository/@@absolute_url">
         Dateiverwaltung
-    </a> 
+    </a>
   </h1>
-  
+
   <div id="navtreecontents" class="PanelContent Tree">
-    
+
   </div>
   <script type="text/javascript"
     tal:content="string:

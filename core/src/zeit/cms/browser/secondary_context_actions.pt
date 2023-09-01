@@ -2,7 +2,7 @@
   tal:define="actions view/items"
   tal:condition="actions"
   tal:attributes="class view/css">
-  <a title="Additional actions" 
+  <a title="Additional actions"
     tal:attributes="href string:javascript:zeit.cms.menu.toggle('${view/menu_id}')"
     i18n:attributes="title">
     <img alt="actionmenuicon"

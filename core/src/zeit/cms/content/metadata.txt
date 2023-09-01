@@ -72,7 +72,7 @@ Channels
 None handling
 +++++++++++++
 
-Setting 
+Setting
 
 >>> content.byline = None
 >>> content.byline is None

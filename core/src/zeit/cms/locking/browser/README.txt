@@ -46,7 +46,7 @@ Open the lightbox. The object is currently not locked:
     <input type="submit" id="form.actions.lock" name="form.actions.lock" value="Lock" class="button" />
   </div>
   ...
-        
+
 
 
 When we lock we'll see the relevant information:
@@ -97,7 +97,7 @@ We can now unlock Somalia:
         ...<input class="checkboxType" id="...
         ...
 
-Make sure the unlock message was sent to the user:      
+Make sure the unlock message was sent to the user:
 
 >>> browser.open(url)
 >>> print(browser.contents)
@@ -145,7 +145,7 @@ Login in as zmgr and steal the lock:
         ...
 
 
-Make sure the unlock message was sent to the user:      
+Make sure the unlock message was sent to the user:
 
 >>> mgr.open(url)
 >>> print(mgr.contents)

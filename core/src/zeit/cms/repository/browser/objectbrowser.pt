@@ -7,7 +7,7 @@
   <h1 tal:content="python:context.uniqueId">
     http://xml.zeit.de/
   </h1>
-  
+
   <div id="popup-navtree" class="Tree"
     tal:content="structure tree_view">
     Navigation tree
@@ -37,7 +37,7 @@
       new zeit.cms.repository.ObjectBrowser(self);
       return result;
     });
-    })();  
+    })();
   "></script>
-  
+
 </tal:block>

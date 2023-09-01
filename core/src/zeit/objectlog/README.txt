@@ -190,7 +190,7 @@ Make sure the log-terms do not break when the principal is deleted:
 
 >>> request.setPrincipal(zope.security.testing.Principal('not.there'))
 >>> content_log.log('not-there-log')
->>> term = terms.getTerm(list(source)[-1]) 
+>>> term = terms.getTerm(list(source)[-1])
 >>> zope.i18n.translate(term.title)
 '2008 5 27  11:14:46  [not.there]: not-there-log'
 
@@ -217,7 +217,7 @@ What is the peferred time zone? Register an adapter from request to ITZInfo:
 
 When we get the title'well have the "corrected" date:
 
->>> term = terms.getTerm(list(source)[0]) 
+>>> term = terms.getTerm(list(source)[0])
 >>> zope.i18n.translate(term.title).startswith('2008 6 21  14:00')
 True
 

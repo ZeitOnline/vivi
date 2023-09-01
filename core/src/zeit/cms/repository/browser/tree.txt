@@ -3,7 +3,7 @@ Navigation Tree
 ===============
 
 Create a browser first:
-    
+
 >>> import zeit.cms.testing
 >>> browser = zeit.cms.testing.Browser(layer['wsgi_app'])
 >>> browser.login('producer', 'producerpw')

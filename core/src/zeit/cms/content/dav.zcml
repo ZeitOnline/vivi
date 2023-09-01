@@ -3,12 +3,12 @@
   <!-- webdav Property converters -->
 
   <adapter factory=".dav.UnicodeProperty" />
-  <adapter factory=".dav.ChoiceProperty" /> 
+  <adapter factory=".dav.ChoiceProperty" />
   <adapter factory=".dav.ChoicePropertyWithIterableSource" />
   <adapter factory=".dav.ChoicePropertyWithObjectSource" />
   <adapter factory=".dav.ChoicePropertyWithPrincipalSource" />
-  <adapter factory=".dav.ChoicePropertyWithIterableVocabulary" /> 
-  <adapter factory=".dav.BoolProperty" /> 
+  <adapter factory=".dav.ChoicePropertyWithIterableVocabulary" />
+  <adapter factory=".dav.BoolProperty" />
   <adapter factory=".dav.DatetimeProperty" />
   <adapter factory=".dav.DateProperty" />
   <adapter factory=".dav.CollectionProperty" />

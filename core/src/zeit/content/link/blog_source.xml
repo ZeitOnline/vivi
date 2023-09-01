@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
   Die hier eingetragenen Daten werden verwendet,
-  um bei Teasern/Links auf Blog-Artikel den Format-Hinweis 
+  um bei Teasern/Links auf Blog-Artikel den Format-Hinweis
   &#187;Blog&#171; gefolgt vom Namen des Blogs auszugeben.
-  
+
   Einige Hinweise zur Verwendung:
-  
-    url: bitte immer ohne abschlie&#223;enden Slash eintragen. 
+
+    url: bitte immer ohne abschlie&#223;enden Slash eintragen.
     name: wird genutzt, um den Namen des Blogs am Teaser auszugeben.
-          kann frei vergeben werden und muss nicht mit dem Wordpress-Titel 
+          kann frei vergeben werden und muss nicht mit dem Wordpress-Titel
           des Blogs identisch sein
  -->
 <blogs>

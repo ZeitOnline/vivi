@@ -2,7 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser">
 
-  <adapter factory=".xml.form_template" name="xmledit_form"/> 
+  <adapter factory=".xml.form_template" name="xmledit_form"/>
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.IXMLBlock"

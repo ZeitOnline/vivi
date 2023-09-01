@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:schema="http://vgwort.de/1.0/PixelService/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://vgwort.de/1.0/PixelService" targetNamespace="http://vgwort.de/1.0/PixelService">
   <wsdl:types>
     <xsd:schema xmlns:vgw="http://vgwort.de/1.0/PixelService/xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://vgwort.de/1.0/PixelService/xsd">
-    
+
     <!-- MESSAGE DEFINITIONS -->
     <xsd:element name="orderPixelRequest">
         <xsd:complexType>
@@ -10,7 +10,7 @@
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
-    
+
     <xsd:element name="orderPixelResponse">
         <xsd:complexType>
             <xsd:sequence>
@@ -20,7 +20,7 @@
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
-    
+
     <xsd:element name="orderPixelFault">
     	<xsd:complexType>
 	        <xsd:complexContent>
@@ -32,53 +32,53 @@
 	        </xsd:complexContent>
         </xsd:complexType>
     </xsd:element>
-    
-    
-    <!-- COMPLEX DATATYPES -->    
+
+
+    <!-- COMPLEX DATATYPES -->
     <xsd:complexType name="Pixels">
         <xsd:sequence>
             <xsd:element maxOccurs="unbounded" name="pixel" type="vgw:Pixel"/>
         </xsd:sequence>
     </xsd:complexType>
-    
+
     <xsd:complexType name="Pixel">
         <xsd:attribute name="publicIdentificationId" type="vgw:pixelIDType"/>
         <xsd:attribute name="privateIdentificationId" type="vgw:pixelIDType"/>
     </xsd:complexType>
-    
+
     <xsd:complexType name="tomFault">
 		<xsd:sequence>
-			<xsd:element name="errorcode" type="xsd:int"/> 
+			<xsd:element name="errorcode" type="xsd:int"/>
 			<xsd:element name="errormsg" type="xsd:string"/>
-		</xsd:sequence>		
- 	</xsd:complexType>   	
-    
-    
+		</xsd:sequence>
+ 	</xsd:complexType>
+
+
     <!-- SIMPLE DATATYPES -->
 	<xsd:simpleType name="pixelIDType">
 		<xsd:restriction base="xsd:string">
 			<xsd:pattern value="[0-9A-Fa-f]{32}"/>
 		</xsd:restriction>
 	</xsd:simpleType>
-	
+
 	<xsd:simpleType name="int_0-Max">
     	<xsd:restriction base="xsd:int">
     		<xsd:minInclusive value="0"/>
     	</xsd:restriction>
    	</xsd:simpleType>
-   	
+
    	<xsd:simpleType name="int_1-Max">
     	<xsd:restriction base="xsd:int">
     		<xsd:minExclusive value="0"/>
     	</xsd:restriction>
    	</xsd:simpleType>
-   	
+
    	<xsd:simpleType name="stringDateType">
 		<xsd:restriction base="xsd:string">
 	    	<xsd:pattern value="[0-9]{12}"/>
 		</xsd:restriction>
     </xsd:simpleType>
-    
+
 </xsd:schema>
   </wsdl:types>
   <wsdl:message name="orderPixelFault">

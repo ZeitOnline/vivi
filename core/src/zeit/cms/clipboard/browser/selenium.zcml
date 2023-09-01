@@ -3,7 +3,7 @@
   <adapter
     factory=".selenium.TestClipboard"
     name="zeit.cms.clipboard.TestClipboard"
-    permission="zope.Public" 
+    permission="zope.Public"
     />
 
 </configure>

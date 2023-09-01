@@ -55,7 +55,7 @@ table.gallery td {
 
 table.gallery tr.layout-hidden {
   display:none;
-}  
+}
 
 table.gallery td div.handle {
   background-color: #F2F2F2;
@@ -63,14 +63,14 @@ table.gallery td div.handle {
   padding: 0.3em;
   padding-left: 0.5em;
   overflow:hidden;
-}  
+}
 
 table.gallery td div.box {
   border: 1px solid #BBBBBB;
   border-top: 0px solid black;
   padding:1em;
   overflow:hidden;
-}  
+}
 
 table.gallery td div.box div.image {
   width:150px;
@@ -78,7 +78,7 @@ table.gallery td div.box div.image {
 }
 
 table.gallery td div.box div.content {
-} 
+}
 
 table.gallery .caption {
   padding-bottom: 1em;

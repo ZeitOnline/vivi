@@ -96,7 +96,7 @@ Folders have a metadata page which shows the folder contents:
     <ul class="folder-contents">
     </ul>
     ...
-    
+
 
 Popup file browser
 ==================

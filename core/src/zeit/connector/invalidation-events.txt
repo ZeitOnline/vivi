@@ -47,9 +47,9 @@ peep.
 
 When an object changes the invalidaton will also tell the connector to reload:
 
->>> result = conn.put(connector._id2loc(inv), 
+>>> result = conn.put(connector._id2loc(inv),
 ...                   'Mary had a little lamb.', 'text/plain')
->>> result = conn.put(connector._id2loc(inv2), 
+>>> result = conn.put(connector._id2loc(inv2),
 ...                   'Mary had a little ogre.', 'text/plain')
 >>> connector[inv].data.read()
 b'pop.'

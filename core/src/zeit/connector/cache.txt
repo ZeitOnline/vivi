@@ -189,7 +189,7 @@ Create data which is larger than that:
 
 >>> large_data = 'Large' + ('Data' * BUFFER_SIZE)
 >>> large_data = bytes(large_data.encode('utf-8'))
->>> 
+>>>
 >>> f = cache.setData('some-id', properties, BytesIO(large_data))
 >>> f.read() == large_data
 True

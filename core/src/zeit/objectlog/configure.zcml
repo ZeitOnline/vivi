@@ -5,7 +5,7 @@
 
   <include package="zope.i18n" file="meta.zcml" />
 
-  <utility 
+  <utility
     name="zeit.objectlog"
     provides="zope.generations.interfaces.ISchemaManager"
     component=".generation.manager"

@@ -21,7 +21,7 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">04</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
     <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">36</attribute>
-    
+
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>

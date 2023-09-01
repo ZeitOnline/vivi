@@ -224,7 +224,7 @@ Locking with timeout:
 >>> import pytz
 >>> res.id = 'http://xml.zeit.de/testing/edge6'
 >>> connector.add(res)
->>> connector.lock(res.id, 'zope.user', 
+>>> connector.lock(res.id, 'zope.user',
 ...     datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=120))
 'opaquelocktoken:...'
 >>> connector.locked(res.id)

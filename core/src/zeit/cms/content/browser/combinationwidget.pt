@@ -6,7 +6,7 @@
         <tal:block condition="not: widget/invert_label">
 
           <td class="label">
-            <label 
+            <label
               tal:attributes="
               for widget/name;
               title hint">
@@ -33,7 +33,7 @@
       <td class="field" tal:define="error widget/error">
         <div class="widget"><tal:block replace="structure widget">
             <input type="text" /></tal:block>
-          <span 
+          <span
             tal:condition="widget/invert_label" i18n:translate=""
             tal:content="label">label</span>
         </div>

@@ -1,8 +1,8 @@
 <metal:use-macro use-macro="context/@@standard_macros/page">
   <tal:block metal:fill-slot="body"
     tal:define="context_url context/@@absolute_url">
-    <metal:content-listing 
+    <metal:content-listing
       use-macro="context/@@standard_macros/content-listing">
-    </metal:content-listing> 
+    </metal:content-listing>
   </tal:block>
 </metal:use-macro>

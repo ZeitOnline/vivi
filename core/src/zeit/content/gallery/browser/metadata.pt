@@ -1,7 +1,7 @@
 <metal:macro use-macro="context/@@standard_macros/metadata-preview">
   <metal:data fill-slot="preview">
 
-    <div class="image-group-image-preview" 
+    <div class="image-group-image-preview"
       tal:repeat="entry context/values">
       <img tal:replace="structure entry/image/@@thumbnail/tag" />
     </div>

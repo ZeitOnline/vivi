@@ -11,7 +11,7 @@
       factory="zope.app.form.browser.source.SourceMultiCheckBoxWidget"
       permission="zope.Public"
       />
-  
+
   <adapter
     for="zope.schema.interfaces.IChoice
     zeit.cms.content.interfaces.ICMSContentSource

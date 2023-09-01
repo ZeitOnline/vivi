@@ -2,7 +2,7 @@
 Working Copy
 ============
 
-The working copy is the area of the CMS where users actually edit content. 
+The working copy is the area of the CMS where users actually edit content.
 
 First we register the location utility:
 

@@ -145,7 +145,7 @@ True and False:
 >>> converter.fromProperty('yes')
 True
 >>> converter.fromProperty('no')
-False 
+False
 
 Other values result in in just the value:
 
@@ -442,7 +442,7 @@ None is represented as an empty stirng:
 Collection of TextLine
 ++++++++++++++++++++++
 
-Collections of TextLine are serialised with a semicolon as separator. 
+Collections of TextLine are serialised with a semicolon as separator.
 
 >>> field = zope.schema.Tuple(
 ...     value_type=zope.schema.TextLine(),

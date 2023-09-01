@@ -19,7 +19,7 @@
           <div tal:define="image_view nocall:item/image/@@view.html">
             <span tal:replace="image_view/width" />x<span tal:replace="image_view/height" />
           </div>
-        </div> 
+        </div>
       </div>
     </div>
   </metal:data>

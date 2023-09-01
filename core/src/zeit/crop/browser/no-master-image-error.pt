@@ -6,7 +6,7 @@
     <div class="error" i18n:translate="no-master-image-help">
       <span i18n:name="checkout">
         <a href="@@checkout"
-          i18n:translate="">Checkout</a> 
+          i18n:translate="">Checkout</a>
       </span>
       the image group and choose one.
     </div>

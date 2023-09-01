@@ -21,7 +21,7 @@ on parallel delete on which the server just stops putting out XML.
 ...     global thread_counter
 ...     lock.acquire()
 ...     thread_counter += 1
-...     nr = thread_counter 
+...     nr = thread_counter
 ...     lock.release()
 ...     id = base_id + str(nr)
 ...     res = Resource(id,

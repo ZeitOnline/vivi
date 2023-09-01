@@ -27,15 +27,15 @@
     />
   <unauthenticatedGroup
     id="zope.Anybody"
-    title="Unauthenticated Users" 
+    title="Unauthenticated Users"
     />
   <authenticatedGroup
     id="zope.Authenticated"
-    title="Authenticated Users" 
+    title="Authenticated Users"
     />
   <everybodyGroup
     id="zope.Everybody"
-    title="All Users" 
+    title="All Users"
     />
 
   <principal
@@ -192,7 +192,7 @@
   <grant
     principal="zope.producer"
     permission="zeit.MaterializeContent"
-    /> 
+    />
 
   <!-- SEO grants -->
 

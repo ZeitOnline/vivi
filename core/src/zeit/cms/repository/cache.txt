@@ -40,7 +40,7 @@ On transaction boundaries this cache is deleted:
 
 >>> repository['online']._v_local_unique_map
 Traceback (most recent call last):
-    ...    
+    ...
 AttributeError: 'Folder' object has no attribute '_v_local_unique_map'
 
 Let's fill the cache again and try abort:
@@ -62,5 +62,5 @@ Let's fill the cache again and try abort:
 
 >>> repository['online']._v_local_unique_map
 Traceback (most recent call last):
-    ...    
+    ...
 AttributeError: 'Folder' object has no attribute '_v_local_unique_map'

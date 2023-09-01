@@ -48,7 +48,7 @@
   <browser:page
     for="..interfaces.IPortraitbox"
     permission="zope.View"
-    template="metadata.pt" 
+    template="metadata.pt"
     name="metadata_preview"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />

@@ -19,7 +19,7 @@ yet. So let's open our workingcopy. It doesn't contain any documents, yet:
 <!DOCTYPE ...
 No edited documents...
 
- 
+
 Adding content to the working copy works by checking them out. Let's view the
 repository and checkout a document:
 
@@ -171,7 +171,7 @@ the first. Checkout two documents:
 Object browser
 ==============
 
-When the objectbrowser asks for the default location of a content object in the 
+When the objectbrowser asks for the default location of a content object in the
 working copy, the answer is relayed to the object in the repository.
 
 There is no default location for the working copy itself:

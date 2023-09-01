@@ -8,7 +8,7 @@
 .recension div.recensionheader {
   margin: 0px;
   background: #F8F9FD;
-  height: 25px; 
+  height: 25px;
   line-height: 25px;
   border-radius: 5px 5px 0px 0px;
   padding-left: 1em;
@@ -92,7 +92,7 @@ form.recensions td.field {
   width: 250px;
 }
 
-form.recensions td.field input.textType, 
+form.recensions td.field input.textType,
 form.recensions td.field #form\.year {
   width: 200px;
 }

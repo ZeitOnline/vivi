@@ -44,7 +44,7 @@ function _MakeTokenRegex(meta_left, meta_right) {
       '\n?)', 'g');  // global for use with .exec()
 }
 
-// 
+//
 // Formatters
 //
 
@@ -86,7 +86,7 @@ function _ScopedContext(context, options) {
   var stack = [{context: context, name: null, index: -1}];
   var undefined_str = options.undefined_str;
 
-  if (options.log === undefined) { 
+  if (options.log === undefined) {
     options.log = function(s) {};
   }
   if (options.repr === undefined) {
@@ -155,7 +155,7 @@ function _ScopedContext(context, options) {
           result.push({name: entry.name, index: -1});
         } else {
           result.push({name: null, index: entry.index - 1});
-        } 
+        }
       }
       return result;
     },
@@ -270,7 +270,7 @@ function _DoSubstitute(statement, context, callback) {
 
 
 var _lookup_helper = function(context, name) {
-  if (name == '@') { 
+  if (name == '@') {
     return context.CursorValue();
   } else {
     return context.Lookup(name);
@@ -326,7 +326,7 @@ function _DoRepeatedSection(args, context, callback) {
     // Execute the statements in the block for every item in the list.
     // Execute the alternate block on every iteration except the last.  Each
     // item could be an atom (string, integer, etc.) or a dictionary.
-    
+
     var last_index = items.length - 1;
     var statements = block.Statements();
     var alt_statements = block.Statements('alternate');
@@ -363,7 +363,7 @@ function _Compile(template_str, options) {
   // that an error is raised if no formatter is specified.
   var default_formatter;
   if (options.default_formatter === undefined) {
-    default_formatter = 'str'; 
+    default_formatter = 'str';
   } else {
     default_formatter = options.default_formatter;
   }
@@ -531,7 +531,7 @@ var EmptyHooks = function() {
     transformData: function(data_dict) {
       return data_dict;
     },
-    beforeSection: function(path, lookup, write, name) {     
+    beforeSection: function(path, lookup, write, name) {
     },
     beforeRepeatedSection: function(path ,lookup, write, name, index) {
     }
@@ -564,7 +564,7 @@ var HtmlIdHooks = function() {
        write('<div class="json-template-path" style="display:none" id="' + path + '"></div>');
      },
      beforeRepeatedSection: function(path, lookup, write, name, index) {
-       path = serialize_path(path); 
+       path = serialize_path(path);
        write('<div class="json-template-path" style="display:none" id="' + path + '"></div>');
      }
   };
@@ -592,7 +592,7 @@ var get_lookup = function(data_dict, path, undefined_str) {
     var parts = steps[i].split('|');
     if (parts.length >= 2) {
       var key = parts[0];
-      var indexes = parts.slice(1); 
+      var indexes = parts.slice(1);
     } else {
       var key = parts[0];
       var indexes = [];
@@ -611,13 +611,13 @@ var get_lookup = function(data_dict, path, undefined_str) {
     return _lookup_helper(context, name);
   };
 };
- 
+
 var get_node_lookup = function(data_dict, node, undefined_str) {
   var parent = node;
   while (parent !== null) {
     var sibling = parent;
     while (sibling !== null) {
-      if (sibling.getAttribute !== undefined && 
+      if (sibling.getAttribute !== undefined &&
           sibling.getAttribute('class') == 'json-template-path') {
         var path = sibling.getAttribute('id');
         return get_lookup(data_dict, path, undefined_str);
@@ -642,13 +642,13 @@ var MultiHooks = function(hooks_objects) {
     },
     beforeSection: function(path, lookup, write, name) {
        var i;
-       for (i = 0; i < hooks_objects.length; i++) { 
+       for (i = 0; i < hooks_objects.length; i++) {
           hooks_objects[i].beforeSection(path, lookup, write, name);
        }
     },
     beforeRepeatedSection: function(path, lookup, write, name, index) {
        var i;
-       for (i = 0; i < hooks_objects.length; i++) { 
+       for (i = 0; i < hooks_objects.length; i++) {
           hooks_objects[i].beforeRepeatedSection(path, lookup, write, name, index);
        }
     }
@@ -676,7 +676,7 @@ function Template(template_str, options) {
 
   return  {
     render: function(data_dict, callback) {
-      data_dict = options.hooks.transformData(data_dict); 
+      data_dict = options.hooks.transformData(data_dict);
       var context = _ScopedContext(data_dict, options);
       _Execute(program.Statements(), context, callback);
     },

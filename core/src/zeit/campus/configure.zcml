@@ -96,5 +96,5 @@
       permission="zope.View"
       />
   </class>
-  
+
 </configure>

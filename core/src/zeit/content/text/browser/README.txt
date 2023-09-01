@@ -47,9 +47,9 @@ Check in (note that the contents is preformatted):
  ...
         <div class="widget"><pre>Fü</pre></div>
         ...
- 
 
-Check out: 
+
+Check out:
 
 >>> browser.getLink('Checkout').click()
 >>> print(browser.contents)

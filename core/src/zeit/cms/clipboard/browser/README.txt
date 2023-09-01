@@ -202,7 +202,7 @@ element of the root node:
 
 
 Let's add another clip:
-  
+
 >>> ajax.open('http://localhost/++skin++cms/workingcopy/zope.user/'
 ...           'zeit.cms.clipboard.clipboard.Clipboard/@@addContainer?'
 ...           'title=Second+Clip')
@@ -242,7 +242,7 @@ Let's add another clip:
 
 
 
-Moving 
+Moving
 ======
 
 We can now move things around. This also works via ajax. Move the `Querdax`
@@ -347,7 +347,7 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
               <a href="...Querdax">Querdax</a>
               ...
             </li>
-          </ul>  
+          </ul>
         </li>
         <li action="expand" class="NotRoot..." uniqueid="Second Clip">
           <p>
@@ -394,7 +394,7 @@ We can of course also move clips into clips:
               <a href="...">Second Clip</a>
               ...
             </li>
-          </ul>  
+          </ul>
         </li>
       </ul>
    </li>
@@ -436,7 +436,7 @@ the Querdax entry we've moved into New Clip above:
               <a href="...">Second Clip</a>
               ...
             </li>
-          </ul>  
+          </ul>
         </li>
       </ul>
    </li>
@@ -525,7 +525,7 @@ When the form loads the current name is filled in:
 Rename "New Clip" to "Wirtschaft clip":
 
 >>> ajax.getControl('New clip name').value = 'Wirtschaft clip'
->>> ajax.getControl('Rename').click() 
+>>> ajax.getControl('Rename').click()
 >>> 'There were errors' in ajax.contents
 False
 
@@ -561,7 +561,7 @@ Reload the whole page and verify the title change:
               <a href="...">Second Clip</a>
               ...
             </li>
-          </ul>  
+          </ul>
         </li>
       </ul>
    </li>
@@ -572,7 +572,7 @@ On the clipboard itself there is no rename action:
 
 >>> browser.getLink('Clipboard').click()
 >>> 'Rename' in [
-...     node.get('title') for node in 
+...     node.get('title') for node in
 ...     browser.xpath('//*[@class="context-actions"]//a')]
 False
 
@@ -583,7 +583,7 @@ On the clipboard itself there is now "Delete" link:
 
 >>> browser.getLink('Clipboard').click()
 >>> 'Delete' in [
-...     node.get('title') for node in 
+...     node.get('title') for node in
 ...     browser.xpath('//*[@class="context-actions"]//a')]
 False
 
@@ -592,7 +592,7 @@ Open "New clip", we have a delete link there:
 >>> browser.open(browser.url + '/New%20Clip')
 >>> link = browser.getLink('Delete')
 >>> link
-<Link text='Delete' 
+<Link text='Delete'
     url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@delete-clip'>
 >>> link.click()
 >>> print(browser.contents)

@@ -18,7 +18,7 @@
 
   <div id="LightboxClipboardExplain"
     i18n:translate="clipboard-paste-explain">
-    Choose an entry from your clipboard which you would like to copy to 
+    Choose an entry from your clipboard which you would like to copy to
     <span tal:replace="view/uniqueId" i18n:name="paste-into-id" />.
   </div>
 

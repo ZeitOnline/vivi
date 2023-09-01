@@ -42,7 +42,7 @@ The gallery is now noted in the webdav properties of `content`:
 >>> pprint.pprint(dict(properties))
 {('artbox_gallery', 'http://namespaces.zeit.de/CMS/document'): 'http://xml.zeit.de/gallery',
  ('date-last-modified', 'http://namespaces.zeit.de/CMS/document'): '...'}
- 
+
 
 The browse location of a gallery reference depends on the adapted object and
 yields the container the object is in:
@@ -66,7 +66,7 @@ The gallery source is a utility:
 ...     'gallery'].source.name
 >>> name
 'zeit.content.gallery'
->>> zope.component.getUtility( 
+>>> zope.component.getUtility(
 ...     zeit.cms.content.interfaces.ICMSContentSource, name)
 <zeit.content.gallery.interfaces.GallerySource...>
 

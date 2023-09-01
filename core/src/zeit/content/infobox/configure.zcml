@@ -17,7 +17,7 @@
   </class>
 
   <!-- reference -->
-  <utility 
+  <utility
     component=".interfaces.infoboxSource"
     name="zeit.content.infobox"
     />

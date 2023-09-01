@@ -3,11 +3,11 @@
     <div class="teaser-title"
       title="Teaser"
       tal:content="context/teaserTitle">
-      Teaser Title 
+      Teaser Title
     </div>
     <div class="link-url">
       <a href="#"
-        tal:attributes="href context/url" 
+        tal:attributes="href context/url"
         tal:content="context/url">
         http://
       </a>

@@ -54,7 +54,7 @@ TODO!
 Language autodetection
 ----------------------
 
-If the global variable `LANG` is not set, this modules tries to autodetect the 
+If the global variable `LANG` is not set, this modules tries to autodetect the
 user language using the  `navigator.userLanguage`, `navigator.browserLanguage`
 and `navigator.language` properties, on that order.
 
@@ -751,9 +751,9 @@ Class UI.AsyncArrayTableModel
 -----------------------------
 
 Inherits from :mochiref:`UI.ArrayTableModel`. Adds AJAX capabilities to array
-table models, enabling them to retrieve the backing array from a 
+table models, enabling them to retrieve the backing array from a
 Asyncronous HTTP request that returs a JSON_ array. Optionally, you can provide
-a mapping function to traslate the HTTP JSON response to a array of flat 
+a mapping function to traslate the HTTP JSON response to a array of flat
 objects.
 
 .. _JSON: http://www.json.org
@@ -2123,7 +2123,7 @@ Properties
 :mochidef:`UI.Table.prototype.selectedRow`:
 
     The index of the currently selected row. -1 if no row is selected.
-    **Read-Only**, use the :mochiref:`UI.Table.prototype.selectRow(rowIndex)` 
+    **Read-Only**, use the :mochiref:`UI.Table.prototype.selectRow(rowIndex)`
     method to change it.
 
 Signals
@@ -2163,8 +2163,8 @@ Signals
 
     Fired when a row is about to be rendered. This may be because a new row has
     been added, or simply because the entire table is being rendered. A <tr> DOM
-    element and the row index on the model is passed as parameter to the slots. 
-    As the element is a mutable DOM object, slots can use this signal to manipulate 
+    element and the row index on the model is passed as parameter to the slots.
+    As the element is a mutable DOM object, slots can use this signal to manipulate
     the rendered rows contents.
 
 ***/
@@ -2366,7 +2366,7 @@ UI.Table.prototype = update(new UI.Widget(), {
         } else {
 	    this._selectedTR = null;
 	}
-        this.selectedRow = rowIndex;	
+        this.selectedRow = rowIndex;
         signal(this, 'rowSelected', rowIndex);
     },
     //rowIndex is the index in the model of the row, not the index in the tbody
@@ -2627,18 +2627,18 @@ TODO: Fix the redundancy in steps and valueMapperFunctions!
     Creates a slider wrapping the <div> element $(`element`). `steps` and
     `valueMapperFunctions` are the initial  values for the properties
     :mochiref:`UI.Slider.prototype.steps` and
-    :mochiref:`UI.Slider.prototype.valueMapperFunctions`. 
+    :mochiref:`UI.Slider.prototype.valueMapperFunctions`.
     But if valueMapperFunctions is null the initial value will be
     :mochiref:`UI.Slider.ValueMappers.range(0, 100, 1)`.
-    The `linkedInput` is passed to the 
+    The `linkedInput` is passed to the
     :mochiref:`UI.Slider.prototype.linkWithInput` method.
-    
+
 
 :mochidef:`UI.Slider(element, minValue=0, maxValue=100, linkedInput=null)`:
 
     Compability with UI4W 0.5.x. And it's a simpler way to write this::
 
-        new UI.Slider(elements, maxValue - minValue + 1, 
+        new UI.Slider(elements, maxValue - minValue + 1,
                       [partial(operator.add, minValue),
                        partial(operator.add, -minValue)]
                       linkedInput)
@@ -2655,35 +2655,35 @@ Properties
 :mochidef:`UI.Slider.prototype.maxValue`:
 
     Compatibility with UI4W 0.5.x.
-    The minimum and maximum value for the slider value range. 
+    The minimum and maximum value for the slider value range.
     **Deprecated**.
 
 :mochidef:`UI.Slider.prototype.value`:
 
     The current slider value. **Read-Only**, use the
-    :mochiref:`UI.Slider.prototype.setValue(value)` method to change this 
+    :mochiref:`UI.Slider.prototype.setValue(value)` method to change this
     property.
 
 :mochidef:`UI.Slider.prototype.step`:
 
     The current slider value. **Read-Only**, use the
-    :mochiref:`UI.Slider.prototype.setStep(value)` method to change this 
+    :mochiref:`UI.Slider.prototype.setStep(value)` method to change this
     property.
 
 :mochidef:`UI.Slider.prototype.valueMapperFunctions`:
 
     Array of two functions, used to map slider 'steps' to meaningful values.
     The first function should receive a step value and return the slider value.
-    The second is the inverse of that, receiving a value and returning the 
+    The second is the inverse of that, receiving a value and returning the
     corresponding step.
 
-    There are some useful generators to this pair of function in 
+    There are some useful generators to this pair of function in
     mochiref:`UI.Slider.ValueMappers`.
 
 
 :mochidef:`UI.Slider.prototype.draggable`:
 
-    The Draggable::UI.Draggable instance used by the slider. 
+    The Draggable::UI.Draggable instance used by the slider.
     *Use with caution*. **Read-Only**.
 
 :mochidef:`UI.Slider.prototypr.tipFormatter`:
@@ -2704,18 +2704,18 @@ Signals
 
 UI.Slider = function(element, steps, valueMapperFunctions, linkedInput) {
     // Compatibility code: In revisions prior to 240, the signature of this
-    // constructor is (element, minValue, maxValue, linkedInput). 
+    // constructor is (element, minValue, maxValue, linkedInput).
     // So we need to detect when the old constructor is being called.
     // This is done checking for the valueMapperFunctions type: If it's a
     // number, the constructor is being called as the old one.
-    // This is not perfect, as according to the docs of the old API, 
+    // This is not perfect, as according to the docs of the old API,
     // maxValue could be null while minValue isn't. And that case is not
     // covered here.
     if (typeof(valueMapperFunctions) == "number") {
         this.minValue = steps;
         this.maxValue = valueMapperFunctions;
         steps = this.maxValue - this.minValue + 1;
-        valueMapperFunctions = [partial(operator.add, this.minValue), 
+        valueMapperFunctions = [partial(operator.add, this.minValue),
                                 partial(operator.add, this.minValue)];
     } else {
         //Old fields that has no sense when not in compatibility mode
@@ -2730,7 +2730,7 @@ UI.Slider = function(element, steps, valueMapperFunctions, linkedInput) {
         this.element = DIV({'style': {'width': '100px'}});
     }
     this.steps = steps || 101;
-    this.valueMapperFunctions = valueMapperFunctions || 
+    this.valueMapperFunctions = valueMapperFunctions ||
                                 UI.Slider.ValueMappers.range(0, 100, 1);
     this.step = 0;
     this.value = valueMapperFunctions[0](0); //Minimum value
@@ -2778,7 +2778,7 @@ UI.Slider.prototype = update(new UI.Widget(), {
         }
         this.setStep(Math.round((left / this._maxLeft) * (this.steps - 1)),
                      false); // Updates the step without moving the slider again
-        
+
     },
 
     //Called when the user clicks the slider
@@ -2795,15 +2795,15 @@ UI.Slider.prototype = update(new UI.Widget(), {
     Moves the slider to the position corresponding to the step `step` .
 
     By default, the slider should be moved when the current
-    step is changed  progamatically. 
-    
+    step is changed  progamatically.
+
     [The only known exception is the when setStep is used internally by
-    _updateValue, which is called when the slider has been moved manually 
+    _updateValue, which is called when the slider has been moved manually
     by the user]
 ***/
     'setStep': function(step, /*optional*/ moveSlider) {
         if (isUndefinedOrNull(moveSlider)) {
-            moveSlider = true; 
+            moveSlider = true;
         }
         if (step > this.steps - 1) {
             step = this.steps - 1;
@@ -2816,10 +2816,10 @@ UI.Slider.prototype = update(new UI.Widget(), {
         if (moveSlider) {
             var left = Math.round(((step) / (this.steps - 1)) *
                                   this._maxLeft);
-            
-            this.draggable.element.style.left = left + "px"; 
+
+            this.draggable.element.style.left = left + "px";
         }
-        
+
         this.step = parseInt(step, 10);
         var oldValue = this.value;
         this.value = this.valueMapperFunctions[0](this.step);
@@ -2852,7 +2852,7 @@ UI.Slider.prototype = update(new UI.Widget(), {
         var pos = elementPosition(this.draggable.element);
         var tipDim = elementDimensions(this._valueTip);
         pos.y -= (tipDim.h + 5)
-        setElementPosition(this._valueTip, pos);        
+        setElementPosition(this._valueTip, pos);
     },
 
     '_hideValueTip': function() {
@@ -2920,7 +2920,7 @@ UI.Slider.ValueMappers = {
         var toValue = function(step) {
             return (minValue + (step * by));
         };
-        var toStep = function(value) { 
+        var toStep = function(value) {
             return ((value - minValue) / by);
         };
         return [toValue, toStep];
@@ -2955,17 +2955,17 @@ Automatic widget construction details
 Sliders are tipically constructed via HTML, using simple divs to declare them::
 
     <div class="uislider" ui:minValue="<number>" ui:maxValue="<number>"
-         ui:step="<number>" ui:input="<string-with-an-input-id>" 
+         ui:step="<number>" ui:input="<string-with-an-input-id>"
          style="width:<number>px"></div>
 
 `<div class="uislider">` elements may include the `ui:minValue`, `ui:maxValue,
 `ui:step` special attributes indicating the range for the slider values.
 
-Alternatively, the `ui:values` can specify a strict list of values for the 
+Alternatively, the `ui:values` can specify a strict list of values for the
 slider, as shown below::
 
     <div class="uislider" ui:values="<array-of-values>"
-         ui:input="<string-with-an-input-id>" 
+         ui:input="<string-with-an-input-id>"
          style="width:<number>px"></div>
 
 
@@ -2977,7 +2977,7 @@ can be given on the style attributes (as in the example), or via CSS.
 Anyway, after the document is loaded, the slider must have a width.
 ***/
 UI.Slider._fromElement = function(element) {
-    var minValue = parseFloat(getNodeAttribute(element, 'ui:minvalue') || "0", 
+    var minValue = parseFloat(getNodeAttribute(element, 'ui:minvalue') || "0",
                             10);
     var maxValue = parseFloat(getNodeAttribute(element, 'ui:maxvalue') || "100",
                             10);
@@ -2992,7 +2992,7 @@ UI.Slider._fromElement = function(element) {
         mapperFunctions = UI.Slider.ValueMappers.values.apply(window, values);
     } else {
         steps = Math.floor((maxValue - minValue) / step) + 1;
-        mapperFunctions = UI.Slider.ValueMappers.range(minValue, 
+        mapperFunctions = UI.Slider.ValueMappers.range(minValue,
                                                        maxValue, step);
     }
     var slider = new UI.Slider(element, steps, mapperFunctions);
@@ -4110,7 +4110,7 @@ Properties
 
 ***/
 
-UI._slideUp = function(el){slideUp(el, {'queue': {'position': 'break', 
+UI._slideUp = function(el){slideUp(el, {'queue': {'position': 'break',
                                                   'scope': el.id}})};
 UI._slideDown = function(el){slideDown(el, {'queue': {'position': 'break',
                                                       'scope': el.id}})};
@@ -4136,7 +4136,7 @@ UI.Accordion = function(element, multiple) {
     forEach(this.elements, function(el) {
         var content = DIV({'class': 'uiaccordioncontent'});
         //Ids are used later as effect scopes
-        content.id = 'uiaccordioncontent_' + Math.random(); 
+        content.id = 'uiaccordioncontent_' + Math.random();
         hideElement(content);
         addElementClass(el, 'uiaccordiontitle');
         var childElements = filter(elementNode, el.childNodes);
@@ -4320,12 +4320,12 @@ Synopsis
 
     <table class="uicalendar" ui:month="8" ui:year="2006">
     </table>
- 
+
 
 Description
 ===========
 
-UI.Calendar is, at the same time, a simple HTML date picker widget and a 
+UI.Calendar is, at the same time, a simple HTML date picker widget and a
 container very useful for displaying date-based information.
 
 Dependencies
@@ -4341,7 +4341,7 @@ Overview
 
 [TODO]
 
-[Calendar months goes from 1 = January to 12 = December. Note the difference 
+[Calendar months goes from 1 = January to 12 = December. Note the difference
 with Date.prototype.getMonth() wich start counting from 0.
 
 On the other hands, days of week ranges from 0 to 6. ]
@@ -4363,8 +4363,8 @@ Inherits from :mochiref:`Widget::UI.Widget`.
 
 :mochidef:`UI.Calendar(element, year=null, month=null)`
 
-    Creates a Calendar, wrapping the `element` DOM table element. If `year` 
-    *and* `month` are provided, the calendar start showing that month of that 
+    Creates a Calendar, wrapping the `element` DOM table element. If `year`
+    *and* `month` are provided, the calendar start showing that month of that
     year.
 
 Properties
@@ -4375,7 +4375,7 @@ Properties
     The div element wrapped by the form. **Read-only**
 
 :mochidef:`UI.Calendar.prototype.year`:
-   
+
     The year shown on the calendar. **Read-only**
 
 :mochidef:`UI.Calendar.prototype.month`:
@@ -4387,8 +4387,8 @@ Properties
     The first day of the week. [FIXME doc]
 
 :mochidef:`UI.Calendar.prototype.showHeader`
-   
-    Whether the calendar header (month name, year, etc) should be visible or 
+
+    Whether the calendar header (month name, year, etc) should be visible or
     not.
 
 Signals
@@ -4435,29 +4435,29 @@ Static variables
 :mochidef:`UI.Calendar.dayNames`, mochidef:`UI.Calendar.dayShortNames`:
 
     Arrays of strings containing the long and short names of the days of the
-    week.    
+    week.
 
 ***/
 
-UI.Calendar.dayShortNames = [_('Sun'), _('Mon'), _('Thu'), _('Wed'), 
+UI.Calendar.dayShortNames = [_('Sun'), _('Mon'), _('Thu'), _('Wed'),
                              _('Tue'), _('Fri'), _('Sat')];
 
-UI.Calendar.dayNames = [_('Sunday'), _('Monday'), _('Thursday'), 
-                        _('Wednesday'), _('Tursday'), _('Friday'), 
+UI.Calendar.dayNames = [_('Sunday'), _('Monday'), _('Thursday'),
+                        _('Wednesday'), _('Tursday'), _('Friday'),
                         _('Saturday')];
 
 /***
 :mochidef:`UI.Calendar.monthNames`:
-    
+
     Array of strings containing the month names.
 ***/
 UI.Calendar.monthNames = [_('January'), _('February'), _('March'), _('April'),
-                          _('May'), _('June'), _('July'), _('August'), 
-                          _('September'), _('October'), _('November'), 
+                          _('May'), _('June'), _('July'), _('August'),
+                          _('September'), _('October'), _('November'),
                           _('December')];
 
 /***
-:mochidef:`UI.Calendar.monthDaysNormalYear`, 
+:mochidef:`UI.Calendar.monthDaysNormalYear`,
 :mochidef:`UI.Calendar.monthDaysLeapYear`:
 
     Arrays of integers containing the number of days per month in normal and
@@ -4465,9 +4465,9 @@ UI.Calendar.monthNames = [_('January'), _('February'), _('March'), _('April'),
 
 ***/
 
-UI.Calendar.monthDaysNormalYear =  [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 
+UI.Calendar.monthDaysNormalYear =  [31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
                                     30, 31];
-UI.Calendar.monthDaysLeapYear =  [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 
+UI.Calendar.monthDaysLeapYear =  [31, 29, 31, 30, 31, 30, 31, 31, 30, 31,
                                   30, 31];
 
 UI.Calendar.SUNDAY = 0;
@@ -4491,9 +4491,9 @@ UI.Calendar._monthDays = function(year) {
 };
 
 UI.Calendar._january1st = function(year) {
-    return (year + 
-            parseInt((year - 1) / 4) - 
-            parseInt((year - 1) / 100) + 
+    return (year +
+            parseInt((year - 1) / 4) -
+            parseInt((year - 1) / 100) +
             parseInt((year - 1) / 400)) % 7;
 };
 
@@ -4517,7 +4517,7 @@ UI.Calendar._monthWeeks = function(year, month, weekStartDay) {
 };
 
 UI.Calendar._day = function(date, firstDayOfWeek) {
-    return (7 + date.getDay() - firstDayOfWeek) % 7;    
+    return (7 + date.getDay() - firstDayOfWeek) % 7;
 };
 
 
@@ -4529,7 +4529,7 @@ UI.Calendar._toPaddedEuroDate = function(d) {
 
 UI.Calendar.prototype = update(new UI.Widget(), {
     'draw': function() {
-	var day = -1 * ((7 + UI.Calendar._month1st(this.year, this.month) - 
+	var day = -1 * ((7 + UI.Calendar._month1st(this.year, this.month) -
                          this.firstDayOfWeek) % 7);
 	var headerRow = TR();
         for (var i = 0; i < 7; i++) {
@@ -4540,7 +4540,7 @@ UI.Calendar.prototype = update(new UI.Widget(), {
         }
         var header = THEAD(null, headerRow);
         var body = TBODY();
-        var weeks = UI.Calendar._monthWeeks(this.year, this.month, 
+        var weeks = UI.Calendar._monthWeeks(this.year, this.month,
                                             this.firstDayOfWeek);
         var lastDay = UI.Calendar._monthDays(this.year)[this.month - 1];
         for (var i = 0; i < weeks; i++) {
@@ -4553,31 +4553,31 @@ UI.Calendar.prototype = update(new UI.Widget(), {
                     addElementClass(numDiv, 'daynumber');
                     var contentDiv = DIV(null);
                     addElementClass(contentDiv, 'daycontent');
-                    td = TD(null, numDiv, contentDiv); 
+                    td = TD(null, numDiv, contentDiv);
                 } else {
                     td = TD();
                     ++day;
                 }
                 addElementClass(td, 'date_' + this.year + '_' +
                                      this.month + '_' + day);
-                addElementClass(td, 
+                addElementClass(td,
                                 'weekday' + ((j + this.firstDayOfWeek) % 7));
                 tr.appendChild(td);
             }
-            body.appendChild(tr);        
+            body.appendChild(tr);
         }
         var tableElements = [];
         if (this.showHeader) {
 	    var prevMonth = SPAN({'class': 'uicalendar_prevmonth'}, "< ");
-	    var nextMonth = SPAN({'class': 'uicalendar_nextmonth'}, " >"); 
-	    var monthName = SPAN({'class': 'uicalendar_monthname'}, 
+	    var nextMonth = SPAN({'class': 'uicalendar_nextmonth'}, " >");
+	    var monthName = SPAN({'class': 'uicalendar_monthname'},
 				 this.monthName() + " " +
 				 this.year)
-		
+
 	    connect(prevMonth, 'onclick', this, 'prevMonth');
 	    connect(nextMonth, 'onclick', this, 'nextMonth');
 	    //TODO: Disconnect this on the next redraw
-	    var caption = createDOM('CAPTION', null, 
+	    var caption = createDOM('CAPTION', null,
 				    prevMonth, monthName, nextMonth);
 	    tableElements[tableElements.length] = caption;
         }
@@ -4591,7 +4591,7 @@ UI.Calendar.prototype = update(new UI.Widget(), {
         signal(this, 'drawn');
 
     },
-    
+
     'contentForDate': function(date) {
         var td = this.cellForDate(date);
         if(!td) {
@@ -4608,13 +4608,13 @@ UI.Calendar.prototype = update(new UI.Widget(), {
     'cellsForDateRange': function(startDate, endDate) {
         if (startDate.getFullYear() > this.year ||
             endDate.getFullYear() < this.year ||
-            (startDate.getFullYear() == this.year && 
-             startDate.getMonth() + 1 > this.month) || 
-            (endDate.getFullYear() == this.year && 
+            (startDate.getFullYear() == this.year &&
+             startDate.getMonth() + 1 > this.month) ||
+            (endDate.getFullYear() == this.year &&
              endDate.getMonth() + 1 < this.month)){
 		 logDebug("cellsForDateRange: range out of month");
             return [];
-	} 
+	}
         if (startDate.getFullYear() < this.year ||
             (startDate.getFullYear() == this.year &&
              startDate.getMonth() + 1 < this.month)) {
@@ -4627,17 +4627,17 @@ UI.Calendar.prototype = update(new UI.Widget(), {
             var lastMonthDay = UI.Calendar._monthDays(this.year)[this.month];
 	    endDate = new Date(this.year, this.month - 1, lastMonthDaty);
         }
-        var firstDay = UI.Calendar._month1st(startDate.getFullYear(), 
+        var firstDay = UI.Calendar._month1st(startDate.getFullYear(),
                                              startDate.getMonth() + 1);
         firstDay = (7 + firstDay - this.firstDayOfWeek) % 7;
 	var startDay = firstDay + startDate.getDate() - 1;
         var endDay = firstDay + endDate.getDate() - 1;
         var cal = this;
         return map(function(d) {
-	   return cal.table.tBodies[0].rows[parseInt(d / 7)].cells[d % 7];        
+	   return cal.table.tBodies[0].rows[parseInt(d / 7)].cells[d % 7];
         }, range(startDay, endDay + 1));
     },
-    
+
     'addDateClass': function(date, cssClass) {
         addElementClass(this.cellForDate(date), cssClass);
     },
@@ -4647,18 +4647,18 @@ UI.Calendar.prototype = update(new UI.Widget(), {
             addElementClass(c, cssClass);
         });
     },
-    
+
     'removeDateClass': function(date, cssClass) {
         removeElementClass(this.cellForDate(date), cssClass);
     },
- 
+
     'nextMonth': function() {
         var d = new Date(this.year, this.month , 1);
         this.year = d.getFullYear();
         this.month = d.getMonth() + 1;
         this.draw();
     },
-    
+
     'prevMonth': function() {
         var d = new Date(this.year, this.month - 2, 1);
         this.year = d.getFullYear();
@@ -4699,11 +4699,11 @@ UI.Calendar._fromElement = function(el) {
     } else {
 	year = now.getFullYear();
     }
-    var month = getNodeAttribute(el, "ui:month"); 
+    var month = getNodeAttribute(el, "ui:month");
     if (!isUndefinedOrNull(month)) {
         //Support for relative months
 	if (/^[\+-]/.test(month)) {
-	    var monthDate = new Date(year, 
+	    var monthDate = new Date(year,
 				     now.getMonth() + parseInt(month, 10),
 				     1);
 	    month = monthDate.getMonth() + 1;
@@ -4759,21 +4759,21 @@ Synopsis
         <div>Hello World!</div>
         <a href="javascript:w$('samplebox').hide()">Hide this dialog</a>
     </div>
- 
+
 
 Description
 ===========
 
-UI.LightBox is a adaptatation of `Mochi Lightbox`_, wich in turn is a port of the 
+UI.LightBox is a adaptatation of `Mochi Lightbox`_, wich in turn is a port of the
 `Lightbox Gone Wild` to MochiKit.
 
 .. _`Mochi Lightbox`: http://projects.frogyz.com.ar/mochi-lightbox/
 .. _`LightBox Gone Wild`: http://particletree.com/features/lightbox-gone-wild/
 
-It basically provides a nice way to show modal dialogs, shadowing and 
-disabling  the entire page while displaying a centered div. 
-It differs from Mochi Lightbox on not requiring lightbox contents being a 
-separate HTML fragment document. That allows more flexibility, as widgets or 
+It basically provides a nice way to show modal dialogs, shadowing and
+disabling  the entire page while displaying a centered div.
+It differs from Mochi Lightbox on not requiring lightbox contents being a
+separate HTML fragment document. That allows more flexibility, as widgets or
 other dynamic contents could be placed onto the lightbox.
 
 Dependencies
@@ -4805,7 +4805,7 @@ Inherits from :mochiref:`Widget::UI.Widget`.
 
 :mochidef:`UI.LightBox(element)`
 
-    Creates a Lightbox, corresponding to the `element` DOM div element. 
+    Creates a Lightbox, corresponding to the `element` DOM div element.
 
 Properties
 ~~~~~~~~~~
@@ -4854,8 +4854,8 @@ UI.LightBox._initialize = function() {
 UI.LightBox.prototype = update(new UI.Widget(), {
     _stopEvent : function(e) {
       e.stop();
-    },  
-    
+    },
+
     show : function() {
 	if (computedStyle('uilightbox_box', 'position') != 'fixed') {
             //IE and who-knows-if-some-other-browser-too don't knows about
@@ -4869,19 +4869,19 @@ UI.LightBox.prototype = update(new UI.Widget(), {
 	showElement('uilightbox_overlay');
 	showElement('uilightbox_box');
     },
-    
-    //Workarounds and/or non ported(but working without Prototype) stuff 
+
+    //Workarounds and/or non ported(but working without Prototype) stuff
     getScroll: function(){
 	if (self.pageYOffset) {
 	    this.yPos = self.pageYOffset;
 	} else if (document.documentElement && document.documentElement.scrollTop){
-	    this.yPos = document.documentElement.scrollTop; 
+	    this.yPos = document.documentElement.scrollTop;
 	} else if (document.body) {
 	    this.yPos = document.body.scrollTop;
 	}
     },
     setScroll: function(x, y){
-	window.scrollTo(x, y); 
+	window.scrollTo(x, y);
     },
 
     // Ie requires height to 100% and overflow hidden or else you can scroll down past the lightbox
@@ -4889,20 +4889,20 @@ UI.LightBox.prototype = update(new UI.Widget(), {
     	bod = document.getElementsByTagName('body')[0];
     	bod.style.height = height;
     	bod.style.overflow = overflow;
-    
+
     	htm = document.getElementsByTagName('html')[0];
     	htm.style.height = height;
-    	htm.style.overflow = overflow; 
+    	htm.style.overflow = overflow;
     },
-    
+
     // In IE, select elements hover on top of the lightbox
     hideSelects: function(visibility){
     	selects = document.getElementsByTagName('select');
     	for(i = 0; i < selects.length; i++) {
     		selects[i].style.visibility = visibility;
     	}
-    },    
-    
+    },
+
     hide: function() {
 	if (computedStyle('uilightbox_box', 'position') != 'fixed') {
             //IE and who-knows-if-other-browser-too don't knows about

@@ -23,7 +23,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
 
     get_upload_url: function(ticket) {
         var context = context_url.substr(application_url.length);
-        var url = application_url + '/++ticket++' + ticket + context + 
+        var url = application_url + '/++ticket++' + ticket + context +
             '/@@upload-image';
         return url;
     },
@@ -31,7 +31,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
     init_uploader: function(ticket) {
         var self = this;
         self.swfupload = new SWFUpload({
-            flash_url: self.options.resource_base_url 
+            flash_url: self.options.resource_base_url
                   + '/SWFUpload/Flash/swfupload.swf',
             upload_url: self.get_upload_url(ticket),
             http_success: [201],
@@ -42,7 +42,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
             button_height: 18,
 	    button_text: 'Bilder hochladen',
 	    button_text_left_padding: 40,
-            button_image_url: self.options.resource_base_url + 
+            button_image_url: self.options.resource_base_url +
                 '/upload-icon.png',
             button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
 
@@ -84,7 +84,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
     get_id: function(file) {
         return 'file-' + file.id;
     },
-    
+
     set_progress: function(file, progress) {
         var self = this;
         var div = $(self.get_id(file));
@@ -136,7 +136,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
         var id = self.get_id(file);
         var filename_contents = file.name + ' (' + file.size + ' Bytes)';
         self.lightbox.content_box.appendChild(
-            DIV({'id': id, 'class': 'upload'}, 
+            DIV({'id': id, 'class': 'upload'},
                 DIV({'class': 'filename'}, filename_contents),
                 DIV({'class': 'progress'}, '0')));
         return true;

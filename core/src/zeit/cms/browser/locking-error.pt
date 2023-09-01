@@ -5,7 +5,7 @@
     <h1 i18n:translate="">An error is occoured</h1>
     <div class="error"
       i18n:translate="">
-      The action you were trying to do could not be finished because the 
+      The action you were trying to do could not be finished because the
       resource
       <span class="unique-id" tal:content="python:context.uniqueId"
         i18n:name="resource-id">http://xml.zeit.de/asdf</span> was locked.

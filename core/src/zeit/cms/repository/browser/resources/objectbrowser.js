@@ -45,9 +45,9 @@ zeit.cms.repository.ObjectBrowser = gocept.Class.extend({
             self.lightbox_form,
             'zeit.cms.ObjectReferenceWidget.selected', unique_id);
     },
-    
+
     handle_click: function(event) {
-        var self = this; 
+        var self = this;
         var stop = true;
         log('click');
         if (event.target().nodeName == 'A') {

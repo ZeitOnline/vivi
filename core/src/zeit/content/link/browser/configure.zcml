@@ -2,7 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
-  
+
   <adapter factory=".link.LinkListRepresentation" />
 
   <browser:page

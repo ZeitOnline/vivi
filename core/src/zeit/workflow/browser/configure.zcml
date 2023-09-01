@@ -7,7 +7,7 @@
 
   <!-- Register a multiplexer which returns the actual object on
   IRepositoryContent. The workflow_form_factory then does another lookup for
-  IEditorialContent or IAsset or what ever. 
+  IEditorialContent or IAsset or what ever.
   -->
   <adapter
     for="zeit.cms.repository.interfaces.IRepositoryContent

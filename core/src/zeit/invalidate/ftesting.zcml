@@ -13,7 +13,7 @@
 
   <grant
     principal="zope.invalidate"
-    permission="zeit.invalidate.InvalidateResources" 
+    permission="zeit.invalidate.InvalidateResources"
     />
 
   <include package="zeit.invalidate" />

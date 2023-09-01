@@ -1,7 +1,7 @@
 <tal:block
   define="context_url context/@@absolute_url">
 
-  <metal:content-listing 
+  <metal:content-listing
     use-macro="context/@@standard_macros/content-listing">
-  </metal:content-listing> 
+  </metal:content-listing>
 </tal:block>

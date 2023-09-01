@@ -74,7 +74,7 @@ The mime type is available via the ``mimeType`` attribute
 LocalFile
 ---------
 
-The LocalFile actually stores data. 
+The LocalFile actually stores data.
 
 
 >>> local = zeit.cms.repository.file.LocalFile(

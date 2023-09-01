@@ -8,7 +8,7 @@
     title view/title"
     i18n:attributes="title">
     <img tal:replace="structure view/img_tag" />
-    <span class="action-title" 
+    <span class="action-title"
       tal:content="view/title" i18n:translate="">Title</span>
   </a>
   <script language="javascript" tal:content="string:

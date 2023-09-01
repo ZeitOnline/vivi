@@ -8,4 +8,4 @@
   new zeit.content.gallery.Uploader({
     resource_base_url: '${request/getApplicationURL}/fanstatic/zeit.content.gallery',
   });
-  "></script> 
+  "></script>
