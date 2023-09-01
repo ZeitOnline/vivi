@@ -177,7 +177,6 @@ setup(
             'pygraphviz',  # to render linesman results
             'pytest<7.1.0.dev0',  # github.com/pytest-dev/pytest/issues/9765
             'pytest-cov',
-            'pytest-flake8',
             'pytest-remove-stale-bytecode',
             'pytest-rerunfailures',
             'pytest-sugar',
