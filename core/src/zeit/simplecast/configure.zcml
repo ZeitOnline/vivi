@@ -6,4 +6,9 @@
 
   <grok:grok package="." />
 
+  <permission
+    id="zeit.simplecast.audio.Edit"
+    title="Edit simplecast audios"
+    />
+
 </configure>
