@@ -16,7 +16,7 @@ class DAVError(Exception):
 
 
 class DAVNoFileError(DAVError):
-    """Exception raised if a DAVFile specific method is invoked on a collection.
+    """Exception raised if a DAVFile specific method is invoked on a collection
     """
 
 

@@ -187,10 +187,10 @@ def get_remote_image(url, timeout=2):
     try:
         response = requests.get(url, stream=True, timeout=timeout)
     except Exception:
-        return
+        return None
     if not response.ok:
         response.close()
-        return
+        return None
     image = LocalImage()
     image.__name__ = os.path.basename(urllib.parse.urlsplit(url).path)
     with image.open('w') as fh:

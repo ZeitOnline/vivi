@@ -50,4 +50,4 @@ def content(context):  # noqa
 def layout(context):
     return context.layout
 
-# layout(Interface) is defined in zeit.content.cp.rule
+# Note that layout(Interface) is defined in zeit.content.cp.rule

@@ -71,16 +71,14 @@ class Lookup(zeit.cms.browser.view.Base):
 
     def GET(self):
         if not self.results:
-            self.redirect_to_addform(self.create_parameters)
-            return
-
+            return self.redirect_to_addform(self.create_parameters)
         # Render template to display selection
         return super().__call__()
 
     def redirect_to_addform(self, params):
         addform = self.url(
             self.context, '@@zeit.content.author.add_contextfree')
-        self.redirect(addform + '?' + params)
+        return self.redirect(addform + '?' + params)
 
     def POST(self):
         if 'action-import' in self.request.form:

@@ -73,7 +73,7 @@ class InvalidReferenceListRepresentation:
     @property
     def title(self):
         title = _("Broken reference to ${uniqueId}",
-                  mapping=dict(uniqueId=self.uniqueId))
+                  mapping={'uniqueId': self.uniqueId})
         return zope.i18n.translate(title, context=self.request)
 
 

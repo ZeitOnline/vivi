@@ -30,19 +30,19 @@ def from_product_config():
                          config['elasticsearch-index'])
 
 
-field_map = dict(
-    authors='payload.document.author',
-    author_type='payload.xml.status',
-    access='payload.document.access',
-    product_id='payload.workflow.product-id',
-    published='payload.vivi.publish_status',
-    raw_tags='body',
-    serie='payload.document.serie',
-    topic='payload.document.ressort',
-    types='doc_type',
-    volume='payload.document.volume',
-    year='payload.document.year',
-)
+field_map = {
+    'authors': 'payload.document.author',
+    'author_type': 'payload.xml.status',
+    'access': 'payload.document.access',
+    'product_id': 'payload.workflow.product-id',
+    'published': 'payload.vivi.publish_status',
+    'raw_tags': 'body',
+    'serie': 'payload.document.serie',
+    'topic': 'payload.document.ressort',
+    'types': 'doc_type',
+    'volume': 'payload.document.volume',
+    'year': 'payload.document.year',
+}
 
 
 rtr_fields = (
@@ -80,31 +80,31 @@ def query(fulltext=None, **conditions):
     """
     must = []
     filters = []
-    clauses = dict()
+    clauses = {}
     fields = conditions.pop('fields', [])
     # handle fulltext
     if fulltext:
-        must.append(dict(query_string=dict(
-            query=fulltext, fields=fields,
-            default_operator='AND')))
+        must.append({'query_string': {
+            'query': fulltext, 'fields': fields,
+            'default_operator': 'AND'}})
     # handle from_, until
     from_ = conditions.pop('from_', None)
     until = conditions.pop('until', None)
     if from_ is not None or until is not None:
-        filters.append(dict(range={
+        filters.append({'range': {
             'payload.document.last-semantic-change':
-            zeit.retresco.search.date_range(from_, until)}))
+            zeit.retresco.search.date_range(from_, until)}})
     # handle show_news
     if not conditions.pop('show_news', True):
         clauses['must_not'] = [
-            dict(match={'payload.document.ressort': 'News'})] + [
-                dict(match={'payload.workflow.product-id': pid})
+            {'match': {'payload.document.ressort': 'News'}}] + [
+                {'match': {'payload.workflow.product-id': pid}}
                 for pid in ('News', 'afp', 'SID', 'dpa-hamburg')]
     # handle "keywords" (by querying all `rtr_*` fields)
     keyword = conditions.pop('keywords', None)
     if keyword is not None:
-        filters.append(dict(bool=dict(should=[
-            dict(match={field: keyword}) for field in rtr_fields])))
+        filters.append({'bool': {'should': [
+            {'match': {field: keyword}} for field in rtr_fields]}})
     # handle autocomplete queries as prefix matches
     autocomplete = conditions.pop('autocomplete', None)
     if autocomplete is not None:
@@ -112,19 +112,19 @@ def query(fulltext=None, **conditions):
         # payload.vivi.autocomplete by the ES mapping, so this hopefully should
         # be somewhat generically applicable (even though we currently only use
         # it for IAuthor objects).
-        must.append(dict(match_phrase_prefix={
-            'payload.vivi.autocomplete': autocomplete}))
+        must.append({'match_phrase_prefix': {
+            'payload.vivi.autocomplete': autocomplete}})
     # handle remaining fields
     for field, value in conditions.items():
         if value in (None, [], ()):
             continue
-        elif field not in field_map:
+        if field not in field_map:
             raise ValueError('unsupported search condition {}', field)
-        elif isinstance(value, (list, tuple)):
-            filters.append(dict(bool=dict(should=[
-                dict(match={field_map[field]: v}) for v in value])))
+        if isinstance(value, (list, tuple)):
+            filters.append({'bool': {'should': [
+                {'match': {field_map[field]: v}} for v in value]}})
         else:
-            filters.append(dict(match={field_map[field]: value}))
+            filters.append({'match': {field_map[field]: value}})
     # construct either bool or simple query
     if must:
         clauses['must'] = must
@@ -135,9 +135,9 @@ def query(fulltext=None, **conditions):
         if len(subclause) == 1:
             qry = subclause[0]
         else:
-            qry = dict(bool=clauses)
+            qry = {'bool': clauses}
     elif clauses:
-        qry = dict(bool=clauses)
+        qry = {'bool': clauses}
     else:
-        qry = dict(match_all=dict())
-    return dict(query=qry)
+        qry = {'match_all': {}}
+    return {'query': qry}

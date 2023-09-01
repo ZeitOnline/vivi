@@ -89,10 +89,9 @@ class Content:
     def _get_teaser_image_xml(self):
         image = self._tms_payload_head.get('teaser_image')
         if not image:
-            return
+            return None
 
         E = lxml.objectify.E
-
         # See zeit.content.image.imagegroup.XMLReference
         image = E.image(**{'base-id': image})
         fill_color = self._tms_payload_head.get('teaser_image_fill_color')

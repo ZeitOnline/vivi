@@ -107,15 +107,16 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         self.repository[name] = content
         return content
 
-    def create_and_checkout_centerpage(self, name='cp', contents=[]):
+    def create_and_checkout_centerpage(self, name='cp', contents=None):
         transaction.abort()
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         repository[name] = zeit.content.cp.centerpage.CenterPage()
         cp = zeit.cms.checkout.interfaces.ICheckoutManager(
             repository[name]).checkout()
-        for content in contents:
-            cp['lead'].create_item('teaser').append(content)
+        if contents:
+            for content in contents:
+                cp['lead'].create_item('teaser').append(content)
         transaction.commit()
         return cp
 

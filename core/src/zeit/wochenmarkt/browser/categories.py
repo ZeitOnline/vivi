@@ -19,8 +19,7 @@ class RecipeCategoriesSearch(zeit.cms.browser.view.JSON):
             categories = recipeCategoriesSource.factory.search(term)
         else:
             categories = []
-        return [dict(label=x.name, value=x.code)
-                for x in categories]
+        return [{'label': x.name, 'value': x.code} for x in categories]
 
 
 @grok.adapter(

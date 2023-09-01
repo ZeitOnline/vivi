@@ -16,20 +16,20 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     def do_POST(self):
         length = int(self.headers['content-length'])
-        self.posts_received.append(dict(
-            path=self.path,
-            data=self.rfile.read(length),
-            headers=self.headers,
-        ))
+        self.posts_received.append({
+            'path': self.path,
+            'data': self.rfile.read(length),
+            'headers': self.headers,
+        })
         self.send_response(self.post_response_code)
         self.end_headers()
         self.wfile.write(self.post_response_body)
 
     def do_GET(self):
-        self.gets_received.append(dict(
-            path=self.path,
-            headers=self.headers,
-        ))
+        self.gets_received.append({
+            'path': self.path,
+            'headers': self.headers,
+        })
         self.send_response(self.get_response_code)
         for key, value in self.get_headers.items():
             self.send_header(key, value)

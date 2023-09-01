@@ -48,10 +48,10 @@ class TypeChange(zeit.cms.browser.view.Base):
                 zeit.cms.browser.interfaces.IListRepresentation)
             if list_repr is None:
                 continue
-            self.adapters.append(dict(
-                resource_type=name,
-                content=adapter,
-                list_repr=list_repr))
+            self.adapters.append({
+                'resource_type': name,
+                'content': adapter,
+                'list_repr': list_repr})
         self.adapters.sort(key=lambda d: d['resource_type'])
 
     def __call__(self):

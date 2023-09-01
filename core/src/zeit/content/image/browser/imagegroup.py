@@ -354,7 +354,7 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
         return file_content
 
     def create_imagegroup_list(self):
-        csv_rows = list()
+        csv_rows = []
         csv_rows.append([
             _('publish_date'), _('image_number'), _('copyright infos'),
             _('internal link')])
@@ -392,7 +392,7 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
                     {"term": {"payload.image.single_purchase": True}}
                 ]}}}
         results = es.search(query, rows=10000)
-        imgroups = list()
+        imgroups = []
         for result in results:
             imgroups.append(zeit.retresco.interfaces.ITMSContent(result))
         return imgroups

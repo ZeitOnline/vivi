@@ -230,6 +230,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 image.set('src', new_id)
                 self._p_changed = True
                 return block
+        return None
 
     def _list_all_keys(self):
         return (str(x) for x in self._entries_container.xpath('block/@name'))
@@ -247,14 +248,14 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
                 break
 
         if not unique_id:
-            return
+            return None
 
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         try:
             image = repository.getContent(unique_id)
         except KeyError:
-            return
+            return None
         return image.__parent__
 
 

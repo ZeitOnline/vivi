@@ -11,6 +11,4 @@ class ImageBrowser:
             if not zeit.content.image.interfaces.IImage.providedBy(obj):
                 continue
             metadata = zeit.content.image.interfaces.IImageMetadata(obj)
-            yield dict(
-                image=obj,
-                metadata=metadata)
+            yield {'image': obj, 'metadata': metadata}

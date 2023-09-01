@@ -43,7 +43,7 @@ class Rename(zeit.cms.browser.lightbox.Form, RenameGuards):
         'rename-box.pt')
 
     def get_data(self):
-        return dict(new_name=self.context.__name__)
+        return {'new_name': self.context.__name__}
 
     @zope.formlib.form.action(_('Rename'))
     def rename(self, action, data):
@@ -58,8 +58,8 @@ class Rename(zeit.cms.browser.lightbox.Form, RenameGuards):
         # Changing the context also properly sets nextURL.
         self.context = container[new_name]
         self.send_message(_('Renamed "${old_name}" to "${new_name}"',
-                            mapping=dict(old_name=old_name,
-                                         new_name=new_name)))
+                            mapping={'old_name': old_name,
+                                     'new_name': new_name}))
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem, RenameGuards):

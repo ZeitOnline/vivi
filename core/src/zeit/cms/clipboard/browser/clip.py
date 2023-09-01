@@ -45,7 +45,7 @@ class DeleteClip(zeit.cms.browser.view.Base):
         title = self.context.title
         del parent[self.context.__name__]
         self.send_message(_('"${name}" was removed from the clipboard.',
-                            mapping=dict(name=title)))
+                            mapping={'name': title}))
         self.redirect(self.url(parent))
         return ''
 
@@ -84,7 +84,7 @@ class Rename(zeit.cms.browser.lightbox.Form):
         return self.url(self.context)
 
     def get_data(self):
-        return dict(new_name=self.context.title)
+        return {'new_name': self.context.title}
 
     @zope.formlib.form.action(_('Rename'))
     def rename(self, action, data):
@@ -92,6 +92,6 @@ class Rename(zeit.cms.browser.lightbox.Form):
         new_name = data['new_name']
 
         self.context.title = new_name
-        self.send_message(_('"${old_name}" was renamed to "${new_name}".',
-                            mapping=dict(old_name=old_name,
-                                         new_name=new_name)))
+        self.send_message(_(
+            '"${old_name}" was renamed to "${new_name}".',
+            mapping={'old_name': old_name, 'new_name': new_name}))

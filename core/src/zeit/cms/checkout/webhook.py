@@ -74,10 +74,9 @@ class Hook:
         except requests.exceptions.HTTPError as err:
             if getattr(err.response, 'status_code', 500) < 500:
                 raise
-            else:
-                log.warning('Webhook %s returned error, retrying',
-                            self.url, exc_info=True)
-                raise TechnicalError()
+            log.warning('Webhook %s returned error, retrying',
+                        self.url, exc_info=True)
+            raise TechnicalError()
         except requests.exceptions.RequestException:
             log.warning('Webhook %s returned error, retrying',
                         self.url, exc_info=True)

@@ -24,7 +24,8 @@ class ContentCache:
             self.size = int(size)
             self.check = int(check) if check is not None else self.size / 5
             self.connector = connector
-            self.cache = defaultdict(lambda: dict(used=0, mtimes={}, data={}))
+            self.cache = defaultdict(
+                lambda: {'used': 0, 'mtimes': {}, 'data': {}})
             self.hits = self.misses = 0
             log.info('initialized content cache (size %s)', size)
             return self.cache
@@ -72,18 +73,18 @@ class ContentCache:
     @property
     def usage(self):
         cache = self.cache
-        stats = (dict(uid=uid, used=cache[uid]['used']) for uid in cache)
+        stats = ({'uid': uid, 'used': cache[uid]['used']} for uid in cache)
         return sorted(stats, key=itemgetter('used'))
 
     def info(self):
         cache = self.cache
         usage = {info['uid']: info['used'] for info in reversed(self.usage)}
-        return dict(
-            size=self.size,
-            count=len(cache),
-            hits=self.hits,
-            misses=self.misses,
-            usage=usage)
+        return {
+            'size': self.size,
+            'count': len(cache),
+            'hits': self.hits,
+            'misses': self.misses,
+            'usage': usage}
 
 
 __cache = ContentCache()

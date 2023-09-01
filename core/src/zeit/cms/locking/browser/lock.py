@@ -42,11 +42,10 @@ class Lock(zeit.cms.browser.lightbox.Form):
         if zeit.cms.locking.interfaces.ILockInfo.providedBy(lockinfo):
             locked_until = lockinfo.locked_until
 
-        return dict(
-            locked=lockable.locked(),
-            locker=lockable.locker(),
-            locked_until=locked_until,
-        )
+        return {
+            'locked': lockable.locked(),
+            'locker': lockable.locker(),
+            'locked_until': locked_until}
 
     @zope.formlib.form.action(_('Steal lock'), condition=_stealable)
     def steal(self, action, data):
@@ -55,23 +54,23 @@ class Lock(zeit.cms.browser.lightbox.Form):
         self.lockable.lock()
         self.send_message(
             _('The lock on "${name}" has been stolen from "${old_locker}".',
-              mapping=dict(
-                  name=self.context.__name__,
-                  old_locker=old_locker)))
+              mapping={
+                  'name': self.context.__name__,
+                  'old_locker': old_locker}))
 
     @zope.formlib.form.action(_('Lock'), condition=_lockable)
     def lock(self, action, data):
         self.lockable.lock()
         self.send_message(
             _('"${name}" has been locked.',
-              mapping=dict(name=self.context.__name__)))
+              mapping={'name': self.context.__name__}))
 
     @zope.formlib.form.action(_('Unlock'), condition=_unlockable)
     def unlock(self, action, data):
         self.lockable.unlock()
         self.send_message(
             _('"${name}" has been unlocked.',
-              mapping=dict(name=self.context.__name__)))
+              mapping={'name': self.context.__name__}))
 
     @zope.cachedescriptors.property.Lazy
     def lockable(self):
@@ -115,8 +114,7 @@ def get_locking_indicator(context, request):
             locker = authentication.getPrincipal(locker).title
         except zope.app.security.interfaces.PrincipalLookupError:
             pass
-        title = _('Locked by ${user}',
-                  mapping=dict(user=lockable.locker()))
+        title = _('Locked by ${user}', mapping={'user': lockable.locker()})
     else:
         img = 'lock-open'
         title = _('Not locked')
@@ -173,9 +171,9 @@ class API:
 
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 class DummyContent:
-    """Helper so we don't have to resolve ICMSContent, since ILockStorage uses a
-    ICMSContent-based API, even though it only uses the uniqueId (to pass it to
-    IConnector).
+    """Helper so we don't have to resolve ICMSContent, since ILockStorage uses
+    a ICMSContent-based API, even though it only uses the uniqueId (to pass it
+    to IConnector).
     """
 
     def __init__(self, uniqueId):

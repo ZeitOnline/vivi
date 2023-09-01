@@ -83,6 +83,7 @@ class Paragraph:
         if self.request.interaction.checkPermission(
                 'zeit.EditContent', self.context):
             return "zeit.content.article.Editable"
+        return None
 
     @property
     def text(self):
@@ -107,8 +108,8 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
         if content is None:
             raise ValueError(
-                _('The object "${name}" does not exist.', mapping=dict(
-                    name=self.uniqueId)))
+                _('The object "${name}" does not exist.', mapping={
+                    'name': self.uniqueId}))
         position = self.get_position_from_order(self.container.keys())
         self.block = zope.component.queryMultiAdapter(
             (self.container, content, position),
@@ -116,8 +117,7 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
         if self.block is None:
             raise ValueError(
                 _('Could not create block for "${name}", because I '
-                  "don't know which one.", mapping=dict(
-                      name=self.uniqueId)))
+                  "don't know which one.", mapping={'name': self.uniqueId}))
 
     def validate_params(self):
         pass
@@ -327,7 +327,7 @@ class VideoTagesschau(zeit.edit.browser.form.InlineForm):
         try:
             api = zope.component.getUtility(
                 zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
-            recommendations = list()
+            recommendations = []
             for recom in api.request_videos(article)['recommendations']:
                 recommendations.append(Video(**{
                     'id': recom.get('program_id'),

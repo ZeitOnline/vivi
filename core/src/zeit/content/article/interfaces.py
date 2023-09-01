@@ -47,13 +47,13 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('Textlength'),
         required=False)
 
-    # DEPRECATED (xslt)
+    # DEPRECATED xslt
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False,
         required=False)
 
-    # DEPRECATED (xslt)
+    # DEPRECATED xslt
     artbox_thema = zope.schema.Bool(
         title=_('First related as box'),
         default=False,

@@ -86,7 +86,7 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
         img = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/foeoe.jpg')
-        assert(img.getImageSize()) == (2250, 4000)
+        self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_resizes_too_large_image_on_upload_height(self):
         b = self.browser
@@ -107,4 +107,4 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
         img = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/baer.jpg')
-        assert(img.getImageSize()) == (4000, 2250)
+        self.assertEqual((4000, 2250), img.getImageSize())

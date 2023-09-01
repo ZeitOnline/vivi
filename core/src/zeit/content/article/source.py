@@ -32,8 +32,9 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
             return self.factory.findNode(name, 'byline')
 
         def audio(self, name):
-            if name:
-                return self.factory.findNode(name, 'audio')
+            if not name:
+                return None
+            return self.factory.findNode(name, 'audio')
 
         def feedback(self, name):
             return self.factory.findNode(name, 'feedback')
@@ -93,6 +94,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
             defaults = header.get('default_for').split(' ')
             if self._provides_default(context, defaults):
                 return (str(template.get('name')), str(header.get('name')))
+            return None
 
     def _get_generic_default(self):
         generic_default = self._get_tree().xpath('//*[@default_for="*"]')
@@ -129,6 +131,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
         default_header = self._get_default_header(context, template[0])
         if default_header:
             return default_header[1]
+        return None
 
 
 ARTICLE_TEMPLATE_SOURCE = ArticleTemplateSource()

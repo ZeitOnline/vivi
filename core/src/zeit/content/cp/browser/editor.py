@@ -21,6 +21,7 @@ class Editor(zeit.edit.browser.editor.Editor):
     def form_css_class(self):
         if not self.has_permission('zeit.content.cp.EditArea'):
             return 'create-area-forbidden'
+        return None
 
     def has_permission(self, permission):
         return self.request.interaction.checkPermission(
@@ -33,7 +34,7 @@ class Editor(zeit.edit.browser.editor.Editor):
         if validation_class:
             css_class.append(validation_class)
         css_class = ' '.join(css_class)
-        return dict(class_=css_class, messages=validation_messages)
+        return {'class_': css_class, 'messages': validation_messages}
 
 
 class ToggleBooleanBase(zeit.edit.browser.view.Action):

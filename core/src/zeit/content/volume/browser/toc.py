@@ -256,18 +256,15 @@ class Toc(zeit.cms.browser.view.Base):
         :param toc_data: The Toc data as ordered dict.
         :return: unicode - csv content
         """
-        file_content = ''
         out = StringIO()
         try:
             writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
             for toc_element in self._generate_csv_rows(toc_data):
 
-                writer.writerow([val for val in toc_element])
-
-            file_content = out.getvalue()
+                writer.writerow(val for val in toc_element)
+            return out.getvalue()
         finally:
             out.close()
-            return file_content
 
     def _generate_csv_rows(self, toc_entries):
         """

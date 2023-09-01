@@ -66,7 +66,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         if not self.schema_url:
             # Send this to "Meldung"
             log.info('No schema url provided', exc_info=True)
-            return
+            return None
         try:
             response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)

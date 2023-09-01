@@ -104,7 +104,7 @@ class Configuration:
     count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', IConfiguration['count'])
 
-    # automatic_type=centerpage
+    # For automatic_type=centerpage
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
 
     @property
@@ -116,21 +116,21 @@ class Configuration:
         self._referenced_cp = value
 
     for name, default in {
-            # automatic_type=topicpage
+            # For automatic_type=topicpage
             'referenced_topicpage': False,
             'topicpage_filter': False,
             'topicpage_order': False,
-            # automatic_type=related-topics
+            # For automatic_type=related-topics
             'related_topicpage': False,
-            # automatic_type=custom
+            # For automatic_type=custom
             'query_order': True,
-            # automatic_type=elasticsearch-query
+            # For automatic_type=elasticsearch-query
             'elasticsearch_raw_query': False,
             'elasticsearch_raw_order': True,
             'is_complete_query': True,
-            # automatic_type=topicpagelist
+            # For automatic_type=topicpagelist
             'topicpagelist_order': True,
-            # automatic_type=reach
+            # For automatic_type=reach
             'reach_service': True,
             'reach_section': False,
             'reach_access': False,
@@ -139,10 +139,10 @@ class Configuration:
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
             '.%s' % name, IConfiguration[name], use_default=default)
 
-    # automatic_type=custom
+    # For automatic_type=custom
     query = CustomQueryProperty()
 
-    # automatic_type=rss-feed
+    # For automatic_type=rss-feed
     rss_feed = zeit.cms.content.property.DAVConverterWrapper(
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
         IConfiguration['rss_feed'])

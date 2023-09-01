@@ -141,10 +141,10 @@ class ITracer(zope.interface.Interface):
     """Wrapper around opentelemetry.trace.Tracer, see there for the full
     method signatures and usage."""
 
-    def start_span(name, attributes={}):
+    def start_span(name, attributes=None):
         pass
 
-    def start_as_current_span(name, attributes={}):
+    def start_as_current_span(name, attributes=None):
         pass
 
 

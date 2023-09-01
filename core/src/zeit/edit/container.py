@@ -222,7 +222,7 @@ class Base(zeit.edit.block.Element,
 
     def filter_values(self, *interfaces):
         for child in self.values():
-            if any([x.providedBy(child) for x in interfaces]):
+            if any(x.providedBy(child) for x in interfaces):
                 yield child
 
     def find_first(self, interface):
@@ -253,12 +253,10 @@ class TypeOnAttributeContainer(Base):
 
     _find_item = lxml.etree.XPath(
         './*[@cms:__name__ = $name]',
-        namespaces=dict(
-            cms='http://namespaces.zeit.de/CMS/cp'))
+        namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'})
     _get_keys = lxml.etree.XPath(
         './*/@cms:__name__',
-        namespaces=dict(
-            cms='http://namespaces.zeit.de/CMS/cp'))
+        namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'})
 
     def _get_element_type(self, xml_node):
         return xml_node.get(

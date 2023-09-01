@@ -162,7 +162,8 @@ class Covers(grok.Adapter):
 
     def __setattr__(self, name, value):
         if not name.startswith('cover_'):
-            return super().__setattr__(name, value)
+            super().__setattr__(name, value)
+            return
         name = name.replace('cover_', '', 1)
         product, cover = name.split('_')
         self.context.set_cover(cover, product, value)

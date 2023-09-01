@@ -25,7 +25,7 @@ def webDAVPropertiesFactory():
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 def webdavproperties_to_cms_content(context):
     if not zope.location.interfaces.ILocation.providedBy(context):
-        return
+        return None
     return zeit.cms.interfaces.ICMSContent(context.__parent__, None)
 
 

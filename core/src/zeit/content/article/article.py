@@ -424,7 +424,7 @@ def calculate_checksum(context, event):
         context, zeit.workflow.interfaces.IPublisherData, name='speechbert')
     if speechbert.ignore('publish'):
         return
-    checksum = hashlib.md5()
+    checksum = hashlib.md5(usedforsecurity=False)
     body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode(
         'utf-8')
     checksum.update(body)

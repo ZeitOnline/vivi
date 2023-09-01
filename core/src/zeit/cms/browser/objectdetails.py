@@ -39,11 +39,13 @@ class Details(zeit.cms.browser.view.Base):
             return self.common_metadata.teaserTitle
         if self.list_repr is not None:
             return self.list_repr.title
+        return None
 
     @property
     def teaser_text(self):
         if self.common_metadata is not NO_METADATA:
             return self.common_metadata.teaserText
+        return None
 
     @property
     def preview_url(self):
@@ -69,7 +71,7 @@ class Details(zeit.cms.browser.view.Base):
         thumbnail = zope.component.queryMultiAdapter(
             (self.context, self.request), name='thumbnail')
         if thumbnail is None:
-            return
+            return None
         return self.url('@@thumbnail')
 
     @zope.cachedescriptors.property.Lazy
@@ -77,39 +79,40 @@ class Details(zeit.cms.browser.view.Base):
         thumbnail = zope.component.queryMultiAdapter(
             (self.context, self.request), name='thumbnail_large')
         if thumbnail is None:
-            return
+            return None
         return self.url('@@thumbnail_large')
 
     @property
     def author(self):
         if self.common_metadata is NO_METADATA:
-            return
+            return None
         if self.common_metadata.authorships:
             author = self.common_metadata.authorships[0].target
             if author is not None:
                 return author.display_name
         elif self.common_metadata.authors:
             return self.common_metadata.authors[0]
+        return None
 
     @property
     def volume(self):
         year = self.common_metadata.year
         vol = self.common_metadata.volume
         if year is None:
-            return
+            return None
         return (vol and '%s/%s' % (vol, year)) or '%s' % (year)
 
     @property
     def display_metadata(self):
         lsc = zeit.cms.content.interfaces.ISemanticChange(
             self.context).last_semantic_change
-        entries = dict(
-            teaser_title=self.teaser_title,
-            created=lsc and lsc.strftime('%d.%m.%Y'),
-            ressort=self.common_metadata.ressort,
-            author=self.author,
-            volume=self.volume,
-        )
+        entries = {
+            'teaser_title': self.teaser_title,
+            'created': lsc and lsc.strftime('%d.%m.%Y'),
+            'ressort': self.common_metadata.ressort,
+            'author': self.author,
+            'volume': self.volume,
+        }
         sorted_entries = []
         for key in ['teaser_title', 'created', 'ressort', 'author', 'volume']:
             if entries[key]:
@@ -129,5 +132,5 @@ class Details(zeit.cms.browser.view.Base):
     @property
     def type_declaration(self):
         no_type = type(
-            'NoTypeDeclaration', (object,), dict(type_identifier='unknown'))
+            'NoTypeDeclaration', (object,), {'type_identifier': 'unknown'})
         return zeit.cms.interfaces.ITypeDeclaration(self.context, no_type)

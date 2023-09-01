@@ -49,6 +49,7 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
             found = {key: item.get(key, self.MISSING) for key in query}
             if found == query:
                 return item
+        return None
 
     def set(self, query, **values):
         config = list(self.message_config)

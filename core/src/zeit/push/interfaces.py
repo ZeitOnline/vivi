@@ -301,7 +301,7 @@ class PayloadTemplateSource(zeit.cms.content.sources.FolderItemSource):
             return json.loads(result)['default_title']
         except Exception:
             log.debug(
-                'No default title for %s', getattr(value, '__name__'),
+                'No default title for %s', value.__name__,
                 exc_info=True)
             return ''
 

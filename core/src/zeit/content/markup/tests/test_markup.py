@@ -42,7 +42,7 @@ class MarkupTest(zeit.content.markup.testing.FunctionalTestCase):
         markup = zeit.content.markup.markup.Markup()
         self.repository['markup'] = markup
         with checked_out(self.repository['markup']) as co:
-            co.text = ' '.join([letter for letter in string.ascii_lowercase])
+            co.text = ' '.join(string.ascii_lowercase)
 
         self.assertEqual(
             'a b c d e f g h i j ...',

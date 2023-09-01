@@ -92,7 +92,7 @@ class SecurityPolicyXLSSheetCase:
                     zope.component.hooks.setSite(site)
                 continue
             path_with_skin = 'http://localhost/++skin++%s%s' % (skin, path)
-            path_with_skin = path_with_skin % dict(username=self.username)
+            path_with_skin = path_with_skin % {'username': self.username}
 
             if form:
                 self.browser.post(

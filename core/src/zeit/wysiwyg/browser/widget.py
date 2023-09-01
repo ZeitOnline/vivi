@@ -23,14 +23,14 @@ class FckEditorWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
     def __call__(self, *args, **kw):
         gocept.fckeditor.resources.fckeditor.need()
-        data = dict(
-            field_name=self.name,
-            gocept_fckeditor=zeit.cms.browser.view.resource_url(
+        data = {
+            'field_name': self.name,
+            'gocept_fckeditor': zeit.cms.browser.view.resource_url(
                 self.request, 'gocept.fckeditor', ''),
             # Need a Zope resource so it evaluates TAL
             # (to need() more resources)
-            zeit_wysiwyg=zope.component.getAdapter(
+            'zeit_wysiwyg': zope.component.getAdapter(
                 self.request, name='zeit.wysiwyg')(),
-            application_url=self.request.getApplicationURL()
-        )
+            'application_url': self.request.getApplicationURL()
+        }
         return super().__call__() + TEMPLATE % data

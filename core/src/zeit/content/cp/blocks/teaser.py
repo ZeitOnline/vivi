@@ -81,7 +81,7 @@ class TeaserBlock(
         set(zope.schema.getFieldNames(
             zeit.content.cp.interfaces.ITeaserBlock)) -
         set(zeit.cms.content.interfaces.IXMLRepresentation) -
-        set(['references'])
+        {'references'}
     )
 
     def update(self, other):

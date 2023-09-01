@@ -23,9 +23,7 @@ class Manager:
         result = []
         for name, utility in sorted(zope.component.getUtilitiesFor(
                 zeit.cms.content.interfaces.ITemplateManager)):
-            result.append(dict(
-                name=name,
-                manager=utility))
+            result.append({'name': name, 'manager': utility})
         return result
 
 
@@ -77,10 +75,10 @@ class Properties:
         if 'dav.save' in self.request:
             data = zip(self.request['name'], self.request['namespace'],
                        self.request['value'])
-            new_properties = dict(
-                ((item[0], item[1]), item[2])
+            new_properties = {
+                (item[0], item[1]): item[2]
                 for item in data
-                if item[0] and item[1])
+                if item[0] and item[1]}
             properties = zeit.connector.interfaces.IWebDAVWriteProperties(
                 self.context)
             properties.update(new_properties)
@@ -90,9 +88,9 @@ class Properties:
         properties = zeit.connector.interfaces.IWebDAVReadProperties(
             self.context)
         return [
-            dict(namespace=item[0][1],
-                 name=item[0][0],
-                 value=item[1])
+            {'namespace': item[0][1],
+             'name': item[0][0],
+             'value': item[1]}
             for item in properties.items()]
 
 

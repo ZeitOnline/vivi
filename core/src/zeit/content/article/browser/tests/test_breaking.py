@@ -19,7 +19,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.catalog = zeit.cms.testing.TestCatalog()
         domain.addCatalog(self.catalog)
 
-        for name, notifier in zope.component.getUtilitiesFor(
+        for _name, notifier in zope.component.getUtilitiesFor(
                 zeit.push.interfaces.IPushNotifier):
             notifier.reset()
 

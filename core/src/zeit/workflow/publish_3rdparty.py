@@ -103,20 +103,20 @@ class FacebookNewstab(grok.Adapter):
     def publish_json(self):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow') or {}
-        ignore_ressorts = set(
+        ignore_ressorts = {
             x.strip().lower()
             for x in config.get(
-                'facebooknewstab-ignore-ressorts', '').split(','))
+                'facebooknewstab-ignore-ressorts', '').split(',')}
         ressort = self.context.ressort
         if ressort.lower() in ignore_ressorts:
-            return
+            return None
         product_id = self.context.product.id
-        ignore_products = set(
+        ignore_products = {
             x.strip().lower()
             for x in config.get(
-                'facebooknewstab-ignore-products', '').split(','))
+                'facebooknewstab-ignore-products', '').split(',')}
         if product_id.lower() in ignore_products:
-            return
+            return None
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         date_first_released = info.date_first_released
         facebooknewstab_startdate = datetime.datetime.strptime(
@@ -124,8 +124,8 @@ class FacebookNewstab(grok.Adapter):
             "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
         if date_first_released is not None:
             if date_first_released < facebooknewstab_startdate:
-                # ignore resources before the cut off date
-                return
+                # Ignore resources before the cut off date.
+                return None
         return {}
 
     def retract_json(self):
@@ -176,35 +176,36 @@ class Speechbert(grok.Adapter):
     def get_image(self):
         image = zeit.content.image.interfaces.IImages(self.context).image
         if not image:
-            return
+            return None
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms') or {}
         prefix = config.get('image-live-prefix', '').strip('/')
         variant_url = image.variant_url('')  # ZO-2856: no slug
         if not variant_url:
-            return
+            return None
         return f'{prefix}{variant_url}'
 
     def _json(self):
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(
             self.context)
-        payload = dict(
-            authors=[x.target.display_name for x in self.context.authorships
-                     if not x.role],
-            body=self.get_body(),
-            checksum=checksum.checksum,
-            channels=' '.join([x for x in chain(*self.context.channels) if x]),
-            genre=self.context.genre,
-            hasAudio='true' if self.context.audio_speechbert else 'false',
-            headline=self.context.title,
-            image=self.get_image(),
-            section=self.context.ressort,
-            subsection=self.context.sub_ressort,
-            subtitle=self.context.subtitle,
-            supertitle=self.context.supertitle,
-            tags=[x.label for x in self.context.keywords],
-            teaser=self.context.teaserText,
-        )
+        payload = {
+            'authors': [x.target.display_name for x in self.context.authorships
+                        if not x.role],
+            'body': self.get_body(),
+            'checksum': checksum.checksum,
+            'channels': ' '.join([
+                x for x in chain(*self.context.channels) if x]),
+            'genre': self.context.genre,
+            'hasAudio': 'true' if self.context.audio_speechbert else 'false',
+            'headline': self.context.title,
+            'image': self.get_image(),
+            'section': self.context.ressort,
+            'subsection': self.context.sub_ressort,
+            'subtitle': self.context.subtitle,
+            'supertitle': self.context.supertitle,
+            'tags': [x.label for x in self.context.keywords],
+            'teaser': self.context.teaserText,
+        }
         if self.context.access != 'free':
             payload['access'] = self.context.access
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
@@ -219,12 +220,12 @@ class Speechbert(grok.Adapter):
 
     def publish_json(self):
         if self.ignore('publish'):
-            return
+            return None
         return self._json()
 
     def retract_json(self):
         if self.ignore('retract'):
-            return
+            return None
         return {}
 
 
@@ -247,12 +248,12 @@ class TMS(grok.Adapter):
 
     def publish_json(self):
         if self.ignore():
-            return
+            return None
         return {'wait': self.wait_for_index_update()}
 
     def retract_json(self):
         if self.ignore():
-            return
+            return None
         return {}
 
 

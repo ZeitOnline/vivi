@@ -13,12 +13,12 @@ class CannotEncode(zope.schema.ValidationError):
         text, encoding, e = self.args
         return _('Could not encode charachters ${start}-${end} to ${encoding} '
                  '(${characters}): ${reason}',
-                 mapping=dict(
-                     start=e.start,
-                     end=e.end,
-                     encoding=encoding,
-                     characters=text[e.start:e.end],
-                     reason=e.reason))
+                 mapping={
+                     'start': e.start,
+                     'end': e.end,
+                     'encoding': encoding,
+                     'characters': text[e.start:e.end],
+                     'reason': e.reason})
 
     def __repr__(self):
         return '<%s %s>' % (self.__class__.__name__, self.args[2])

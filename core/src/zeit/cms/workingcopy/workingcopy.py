@@ -121,15 +121,15 @@ def workingcopy_for_current_principal(ignored):
     try:
         interaction = zope.security.management.getInteraction()
     except zope.security.interfaces.NoInteraction:
-        return
+        return None
     principal = None
     for p in interaction.participations:
         if principal is None:
             principal = p.principal
         else:
-            return
+            return None
     if principal is None:
-        return
+        return None
     return zeit.cms.workingcopy.interfaces.IWorkingcopy(principal, None)
 
 

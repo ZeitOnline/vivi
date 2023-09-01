@@ -30,7 +30,7 @@ class Region(zeit.content.cp.blocks.block.VisibleMixin,
 
     _find_item = lxml.etree.XPath(
         './*[@area = $name or @cms:__name__ = $name]',
-        namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
+        namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'})
 
     type = 'region'
 
@@ -169,12 +169,13 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def image(self):
         if self._image:
             return self._image
-        if self.referenced_cp is not None:
-            images = zeit.content.image.interfaces.IImages(
-                self.referenced_cp, None)
-            if images is None:
-                return None
-            return images.image
+        if self.referenced_cp is None:
+            return None
+        images = zeit.content.image.interfaces.IImages(
+            self.referenced_cp, None)
+        if images is None:
+            return None
+        return images.image
 
     @image.setter
     def image(self, value):
@@ -209,6 +210,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         area_config = zeit.content.cp.layout.AREA_CONFIGS(None).find(self.kind)
         if area_config:
             return area_config.title
+        return None
 
     @property
     def overflow_into(self):

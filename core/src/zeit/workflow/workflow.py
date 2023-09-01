@@ -54,9 +54,9 @@ def log_workflow_changes(workflow, event):
 
     content = workflow.context
     message = _('${name}: ${new_value}',
-                mapping=dict(name=event.field.title,
-                             old_value=event.old_value,
-                             new_value=event.new_value))
+                mapping={'name': event.field.title,
+                         'old_value': event.old_value,
+                         'new_value': event.new_value})
 
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.log(content, message)

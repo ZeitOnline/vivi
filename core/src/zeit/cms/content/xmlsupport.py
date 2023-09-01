@@ -67,6 +67,7 @@ class Persistent:
         persistent = self.__get_persistent()
         if persistent is not None:
             return persistent._p_jar
+        return None
 
     def __get_persistent(self):
         parent = getattr(self, '__parent__', None)
@@ -254,7 +255,7 @@ class XMLReferenceUpdater:
         __traceback_info__ = (self.context.uniqueId,)
         context = self.target_iface(self.context, None)
         if context is None:
-            return
+            return None
         # XXX It would be cleaner to pass suppress_errors as a parameter to
         # update_with_context, but then all subclasses would need to be changed
         # to offer the new signature.

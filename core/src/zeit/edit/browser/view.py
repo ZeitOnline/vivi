@@ -96,14 +96,14 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
             None, 'reload', element.__name__, self.url(element, '@@contents'))
 
     def signal(self, when, name, *args):
-        signal = dict(args=args, name=name, when=when)
+        signal = {'args': args, 'name': name, 'when': when}
         # Guard to avoid duplicate signals, e.g. reloading the container twice
         if signal not in self.signals:
             self.signals.append(signal)
 
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/json')
-        return json.dumps(dict(signals=self.signals, data=self.data))
+        return json.dumps({'signals': self.signals, 'data': self.data})
 
     def __call__(self):
         self.update()
@@ -199,8 +199,8 @@ class ErrorPreventingViewletManager(
         try:
             return viewlet.render()
         except Exception as e:
-            mapping = dict(name=viewlet.__name__, exc_type=type(e).__name__,
-                           exc_msg=str(e))
+            mapping = {'name': viewlet.__name__, 'exc_type': type(e).__name__,
+                       'exc_msg': str(e)}
             error_msg = _(
                 "There was an error rendering ${name}: ${exc_type} ${exc_msg}",
                 mapping=mapping)

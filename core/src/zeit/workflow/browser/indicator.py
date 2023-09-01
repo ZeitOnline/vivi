@@ -35,7 +35,7 @@ class ContentStatus(zope.viewlet.viewlet.ViewletBase):
                                               context=self.request)[0]
             long_title = zope.i18n.translate(
                 _('${title}: ${state}',
-                  mapping=dict(title=field.title, state=value_title)),
+                  mapping={'title': field.title, 'state': value_title}),
                 context=self.request)
 
             class_ = self.get_class(value)

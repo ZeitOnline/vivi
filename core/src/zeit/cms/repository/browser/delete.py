@@ -48,8 +48,7 @@ class DeleteContent(zeit.cms.browser.view.Base):
     def icon(self):
         icon = zope.component.queryMultiAdapter(
             (self.context, self.request), name="zmi_icon")
-        if icon:
-            return icon()
+        return icon() if icon else None
 
     @zope.cachedescriptors.property.Lazy
     def unique_id(self):

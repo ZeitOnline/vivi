@@ -37,8 +37,9 @@ class RSSLink:
     @cachedproperty
     def title(self):
         title = self.xml.findtext('title')
-        if title is not None:
-            return title.strip()
+        if title is None:
+            return None
+        return title.strip()
 
     @cachedproperty
     def teaserTitle(self):  # NOQA
@@ -47,8 +48,9 @@ class RSSLink:
     @cachedproperty
     def supertitle(self):
         supertitle = self.xml.findtext('category')
-        if supertitle is not None:
-            return supertitle.strip()
+        if supertitle is None:
+            return None
+        return supertitle.strip()
 
     @cachedproperty
     def teaserSupertitle(self):  # NOQA
@@ -65,22 +67,22 @@ class RSSLink:
     @cachedproperty
     def url(self):
         link = self.xml.findtext('link')
-        if link:
-            return link.strip()
+        if link is None:
+            return None
+        return link.strip()
 
     @cachedproperty
     def image_url(self):
         enclosure = self.xml.find('enclosure')
-        if enclosure is not None:
-            return enclosure.get('url')
+        if enclosure is None:
+            return None
+        return enclosure.get('url')
 
     @cachedproperty
     def is_ad(self):
-        nsmap = dict(
-            dc="http://purl.org/dc/elements/1.1/")
-        dc_type = self.xml.find('dc:type', namespaces=nsmap)
-
-        if dc_type is not None and getattr(dc_type, 'text') == 'native-ad':
+        dc_type = self.xml.find(
+            'dc:type', namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
+        if dc_type is not None and dc_type.text == 'native-ad':
             return True
         return False
 
@@ -94,4 +96,4 @@ def no_uuid(context):
 @grok.adapter(IRSSLink)
 @grok.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def no_dav_props(context):
-    return dict()
+    return {}

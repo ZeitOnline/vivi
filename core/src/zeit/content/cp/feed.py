@@ -100,6 +100,7 @@ class ContentList:
         for id, key in enumerate(self.keys()):
             if key == content_id:
                 return id + 1
+        return None
 
     def updateMetadata(
             self, content, skip_missing=False, suppress_errors=False):
@@ -134,9 +135,9 @@ class ContentList:
                 for entry in self.iterentries()}
 
     def pin_map(self):
-        return dict((id, content.uniqueId)
-                    for id, content in enumerate(self)
-                    if self.getMetadata(content).pinned)
+        return {id: content.uniqueId
+                for id, content in enumerate(self)
+                if self.getMetadata(content).pinned}
 
     def restorePinning(self, pin_map):
         items = list(self.keys())

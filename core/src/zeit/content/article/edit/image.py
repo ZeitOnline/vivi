@@ -18,7 +18,7 @@ class ImageReferenceProperty(
         zeit.cms.content.reference.SingleReferenceProperty):
 
     ATTRIBUTES = (
-        set(['__name__']) |
+        {'__name__'} |
         set(zeit.content.article.edit.interfaces.IImage) -
         set(zeit.content.article.edit.interfaces.IReference))
 

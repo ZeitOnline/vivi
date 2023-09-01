@@ -1,6 +1,6 @@
 from datetime import datetime
-from pytest import raises
 from zeit.find.search import query
+import pytest
 
 
 def test_simple_queries():
@@ -84,7 +84,7 @@ def test_combined_queries():
 
 
 def test_erroneous_queries():
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         assert query(foo='bar')
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         assert query(filer_terms='foo')     # no longer supported

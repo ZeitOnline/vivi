@@ -60,7 +60,7 @@ class Publish:
         if not objects:
             logger.warning('Not starting a publishing task, because no objects'
                            ' to publish were given')
-            return
+            return None
         ids = [self.context.uniqueId]
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
@@ -76,7 +76,7 @@ class Publish:
         if not objects:
             logger.warning('Not starting a retract task, because no objects'
                            ' to retract were given')
-            return
+            return None
         ids = [self.context.uniqueId]
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
@@ -317,8 +317,7 @@ class PublishRetractTask:
                       mapping={
                           'name': obj.uniqueId,
                           'user': lockable.locker()}))
-            else:
-                lockable.lock(timeout=240)
+            lockable.lock(timeout=240)
         timer.mark('Locked %s' % obj.uniqueId)
         return obj
 

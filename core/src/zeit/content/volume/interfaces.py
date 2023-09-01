@@ -169,7 +169,7 @@ class AccessControlConfig(zeit.cms.content.sources.CachedXMLBase):
         try:
             return getattr(self._get_tree(), name).text
         except Exception:
-            return
+            return None
 
 
 ACCESS_CONTROL_CONFIG = AccessControlConfig()

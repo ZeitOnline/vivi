@@ -41,6 +41,7 @@ def audio_container(create=False):
         log.info('Container %s created', container_id)
         repository[container_id] = zeit.cms.repository.folder.Folder()
         return repository[container_id]
+    return None
 
 
 def add_audio(container, info):

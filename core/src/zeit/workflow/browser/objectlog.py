@@ -26,16 +26,16 @@ class ObjectLog:
         groups = {}
         for entry in entries:
             groups.setdefault(entry.time.date(), []).append(entry)
-        for date, entries in reversed(sorted(groups.items())):
+        for date, entries in sorted(groups.items(), reverse=True):
             items = []
-            for entry in reversed(sorted(entries, key=lambda x: x.time)):
+            for entry in sorted(entries, key=lambda x: x.time, reverse=True):
                 principal = id_to_principal(entry.principal)
-                items.append(dict(
-                    display_time=entry.time.astimezone(
+                items.append({
+                    'display_time': entry.time.astimezone(
                         request_timezone).strftime('%H:%M'),
-                    entry=entry,
-                    principal=principal))
-            yield dict(entries=items, display_date=date.strftime('%d.%m.%Y'))
+                    'entry': entry,
+                    'principal': principal})
+            yield {'entries': items, 'display_date': date.strftime('%d.%m.%Y')}
 
     def __call__(self):
         return super().__call__()

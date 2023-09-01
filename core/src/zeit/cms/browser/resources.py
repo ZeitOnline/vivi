@@ -18,8 +18,7 @@ backend = Group([])
 
 
 def register(resource):
-    depends = backend.depends.union(
-        set([resource]))
+    depends = backend.depends.union({resource})
     for dep in depends:
         backend.resources.update(dep.resources)
 

@@ -57,7 +57,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
             'reload', element.__name__, self.url(element, '@@contents'))
 
     def signal(self, name, *args):
-        self._signals.append(dict(name=name, args=args))
+        self._signals.append({'name': name, 'args': args})
 
     @property
     def signals(self):

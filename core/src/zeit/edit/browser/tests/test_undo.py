@@ -11,7 +11,7 @@ class HistoryTest(unittest.TestCase):
         h.url = mock.Mock()
         with mock.patch('zeit.edit.interfaces.IUndo') as undo:
             undo().history = [
-                dict(description='', tid=b'\x03\x8f\xa2\x8f\xf7\x99v\xaa')]
+                {'description': '', 'tid': b'\x03\x8f\xa2\x8f\xf7\x99v\xaa'}]
             result = h.json()
         self.assertEqual('A4%2Bij/eZdqo%3D', result['history'][0]['tid'])
 

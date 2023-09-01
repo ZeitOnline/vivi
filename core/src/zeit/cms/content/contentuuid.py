@@ -18,9 +18,10 @@ class Shortenable:
 
     @property
     def shortened(self):
+        if not self.id:
+            return None
         # Cut off the rather useless 'urn:uuid:' prefix
-        if self.id:
-            return self.id.strip('{}').replace('urn:uuid:', '')
+        return self.id.strip('{}').replace('urn:uuid:', '')
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

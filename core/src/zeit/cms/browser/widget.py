@@ -218,6 +218,7 @@ def find_commonmetadata(context):
     nested_context = getattr(context, 'context', None)
     if zeit.cms.content.interfaces.ICommonMetadata.providedBy(nested_context):
         return nested_context
+    return None
 
 
 class ObjectSequenceWidget(
@@ -365,7 +366,7 @@ class ContentNotFoundError(zope.formlib.interfaces.ConversionError):
 
     def __init__(self, uniqueId, request):
         msg = _("The object '${id}' could not be found.",
-                mapping=dict(id=uniqueId))
+                mapping={'id': uniqueId})
         msg = zope.i18n.translate(msg, context=request)
         super().__init__(msg)
 
@@ -374,7 +375,7 @@ class WrongContentTypeError(zope.formlib.interfaces.ConversionError):
 
     def __init__(self, uniqueId, accepted_types, request):
         msg = _("'${id}' does not have an accepted type (${types}).",
-                mapping=dict(id=uniqueId, types=', '.join(accepted_types)))
+                mapping={'id': uniqueId, 'types': ', '.join(accepted_types)})
         msg = zope.i18n.translate(msg, context=request)
         super().__init__(msg)
 
@@ -517,18 +518,17 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
 
     def __call__(self):
         html = super().__call__()
-        week = DATETIME_WIDGET_ADDITIONAL % dict(
-            field=self.name,
-            label="1W",
-            css_class="week",
-            increase="date.setDate(date.getDate() + 7)")
-        month = DATETIME_WIDGET_ADDITIONAL % dict(
-            field=self.name,
-            label="1M",
-            css_class="month",
-            increase="date.setMonth(date.getMonth() + 1)")
-        infty = DATETIME_WIDGET_INFTY % dict(
-            field=self.name)
+        week = DATETIME_WIDGET_ADDITIONAL % {
+            'field': self.name,
+            'label': "1W",
+            'css_class': "week",
+            'increase': "date.setDate(date.getDate() + 7)"}
+        month = DATETIME_WIDGET_ADDITIONAL % {
+            'field': self.name,
+            'label': "1M",
+            'css_class': "month",
+            'increase': "date.setMonth(date.getMonth() + 1)"}
+        infty = DATETIME_WIDGET_INFTY % {'field': self.name}
         return ('<div class="dateTimeWidget">' +
                 html + week + month + infty +
                 '</div>')
@@ -560,7 +560,7 @@ def CheckboxDisplayWidget(context, request):
 def rst2html(text):
     return docutils.core.publish_parts(
         text, writer_name='html',
-        settings_overrides=dict(report_level=5))['fragment']
+        settings_overrides={'report_level': 5})['fragment']
 
 
 def html2rst(text):

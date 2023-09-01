@@ -16,7 +16,7 @@ class Display(zeit.cms.browser.view.Base):
     @property
     def image_url(self):
         if not self.context.image:
-            return
+            return None
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         config = zope.app.appsetup.product.getProductConfiguration(

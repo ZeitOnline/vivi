@@ -36,7 +36,7 @@ class PythonScript(zeit.content.text.text.Text, EvalExecHelper):
         globs = self._globals(globals())
         globs['context'] = kw
         try:
-            eval(code, globs)
+            eval(code, globs)  # noqa
         except Break:
             pass
         return self._v_result

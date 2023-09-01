@@ -255,7 +255,7 @@ class VariantTraverser:
         return result
 
     def parse_params(self, url):
-        result = dict()
+        result = {}
         params = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
 
         if 'width' in params and 'height' in params:
@@ -278,10 +278,7 @@ class VariantTraverser:
         variant = self._parse_variant_by_size(url)
         if variant is not None:
             return variant
-
-        variant = self._parse_variant_by_name(url)
-        if variant is not None:
-            return variant
+        return self._parse_variant_by_name(url)
 
     def _parse_variant_by_name(self, url):
         """Select the biggest Variant among those with the given name.
@@ -338,7 +335,7 @@ class VariantTraverser:
     def _parse_fill(self, url):
         """If url contains `__blue`, retrieve fill as `0000ff` else None"""
         for segment in url.split('__')[1:]:
-            for seg in set([segment, '#' + segment]):
+            for seg in {segment, '#' + segment}:
                 try:
                     fill = PIL.ImageColor.getrgb(seg)
                     return ''.join(format(i, '02x') for i in fill)
@@ -505,6 +502,7 @@ def find_master_image(context):
     for image in context.values():  # BBB
         if zeit.content.image.interfaces.IImage.providedBy(image):
             return image
+    return None
 
 
 EXTERNAL_ID_PATTERN = re.compile(r'^[^\d]*([\d]+)[^\d]*$')
@@ -619,10 +617,10 @@ def refresh_thumbnail_source(context, event):
             context):
         return
     thumbnails = zeit.content.image.interfaces.IThumbnails(context)
-    for name, image in context.items():
+    for name, _image in context.items():
         if name.startswith(thumbnails.SOURCE_IMAGE_PREFIX):
             del context[name]
-    for view, name in context.master_images:
+    for _view, name in context.master_images:
         thumbnails.source_image(context[name])
 
 

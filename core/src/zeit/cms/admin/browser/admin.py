@@ -23,7 +23,7 @@ class EditFormCI(zeit.cms.browser.form.EditForm):
 
     def __init__(self, context, request):
         super().__init__(context, request)
-        for name, entry in zope.component.getAdapters(
+        for _name, entry in zope.component.getAdapters(
                 (context,), zeit.cms.admin.interfaces.IAdditionalFields):
             iface, fields = entry
             self.form_fields += zope.formlib.form.Fields(iface).select(*fields)
@@ -45,7 +45,7 @@ class EditFormCO(zeit.cms.browser.form.EditForm):
 
     def __init__(self, context, request):
         super().__init__(context, request)
-        for name, entry in zope.component.getAdapters(
+        for _name, entry in zope.component.getAdapters(
                 (context,), zeit.cms.admin.interfaces.IAdditionalFieldsCO):
             iface, fields = entry
             self.form_fields += zope.formlib.form.Fields(iface).select(*fields)

@@ -158,17 +158,12 @@ class VideoTagesschau(zeit.content.article.edit.block.Block):
 
     @staticmethod
     def _deserialize(node):
-        nodes = dict()
-        for attribute in VIDEO_ATTRIBUTES:
-            nodes[attribute] = node.get(attribute)
+        nodes = {x: node.get(x) for x in VIDEO_ATTRIBUTES}
         return Video(**nodes)
 
     @staticmethod
     def _serialize(video):
-        nodes = dict()
-        for attribute in VIDEO_ATTRIBUTES:
-            nodes[attribute] = getattr(video, attribute)
-        # NOTE: I was surprised that this works:
+        nodes = {x: getattr(video, x) for x in VIDEO_ATTRIBUTES}
         return E.video(**nodes)
 
 

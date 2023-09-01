@@ -76,7 +76,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(expected, got.read())
         got.close()
 
-    @pytest.mark.xfail
+    @pytest.mark.xfail()
     def test_blob_conflict_resolution(self):
         size = zeit.connector.cache.Body.BUFFER_SIZE
         body = BytesIO(b'body' * size)

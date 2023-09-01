@@ -69,6 +69,7 @@ class Block(VisibleMixin, zeit.edit.block.SimpleElement):
             self.type)
         if module_config:
             return module_config.title
+        return None
 
 
 class BlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):

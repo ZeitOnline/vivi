@@ -226,7 +226,7 @@ class ContractCopyMove:
         transaction.commit()
         items = self.listCollection('http://xml.zeit.de/testing')
         self.assertEqual(['source', 'target'], sorted([x[0] for x in items]))
-        for name, id in items:
+        for _name, id in items:
             res = self.connector[id]
             self.assertEqual('testing', res.type)
             self.assertEqual(id, res.id)
@@ -347,7 +347,7 @@ class ContractMock(
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
-    # copy_inherited_functions(ContractSearch, locals())
+    # nyi copy_inherited_functions(ContractSearch, locals())
 
 
 class ContractSQL(
@@ -358,6 +358,6 @@ class ContractSQL(
         zeit.connector.testing.SQLTest):
 
     copy_inherited_functions(ContractReadWrite, locals())
-    # copy_inherited_functions(ContractCopyMove, locals())
-    # copy_inherited_functions(ContractLock, locals())
+    # nyi copy_inherited_functions(ContractCopyMove, locals())
+    # nyi copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())

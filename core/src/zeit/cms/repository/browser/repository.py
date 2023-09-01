@@ -43,7 +43,7 @@ class HTMLTree(zope.viewlet.viewlet.ViewletBase,
         preferences = zeit.cms.repository.interfaces.IUserPreferences(
             zeit.cms.workingcopy.interfaces.IWorkingcopy(
                 self.request.principal))
-        hash_ = hashlib.md5()
+        hash_ = hashlib.md5(usedforsecurity=False)
         for container in preferences.get_hidden_containers():
             hash_.update(container.encode('utf-8'))
         hash_.update('TREE'.encode('utf-8'))
@@ -132,14 +132,14 @@ class HiddenCollections(zeit.cms.browser.view.Base):
         self.add_to_preference()
         self.send_message(
             _('"${name}" is now hidden from the navigation tree.',
-              mapping=dict(name=self.context.__name__)))
+              mapping={'name': self.context.__name__}))
         return self.redirect()
 
     def show_collection(self):
         self.remove_from_preference()
         self.send_message(
             _('"${name}" is now shown in the navigation tree.',
-              mapping=dict(name=self.context.__name__)))
+              mapping={'name': self.context.__name__}))
         return self.redirect()
 
     def redirect(self):
@@ -168,7 +168,7 @@ class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
         obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
         if obj is None:
             msg = _("The object '${id}' could not be found.",
-                    mapping=dict(id=unique_id))
+                    mapping={'id': unique_id})
             return '<div class="error">%s</div>' % zope.i18n.translate(
                 msg, context=self.request)
         self.request.response.setHeader(

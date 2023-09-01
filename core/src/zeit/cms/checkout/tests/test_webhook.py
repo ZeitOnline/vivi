@@ -32,7 +32,7 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
             self.layer['http_port'])
         self.patch = mock.patch(
             'zeit.cms.checkout.webhook.HookSource._get_tree',
-            new=lambda x: lxml.objectify.fromstring(self.config))
+            side_effect=lambda: lxml.objectify.fromstring(self.config))
         self.patch.start()
         source = zeit.cms.checkout.webhook.HOOKS.factory
         # XXX Have to pass the instance because of zc.factory init shenanigans.

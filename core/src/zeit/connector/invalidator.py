@@ -106,3 +106,4 @@ def invalidate_whole_cache():
     finished = invalidator()
     if finished:
         return gocept.runner.Exit
+    return None

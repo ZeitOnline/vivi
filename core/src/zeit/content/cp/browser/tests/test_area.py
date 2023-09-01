@@ -305,7 +305,7 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
         self.make_one()
         s.waitForCssCount('css=.type-region', count + 1)
 
-    @pytest.mark.xfail
+    @pytest.mark.xfail()
     def test_creating_configured_region_sets_kind_on_region(self):
         self.open_centerpage()
         self.make_one()

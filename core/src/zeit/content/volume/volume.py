@@ -61,6 +61,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         for value in source:
             if value.id == self._product_id:
                 return value
+        return None
 
     @product.setter
     def product(self, value):
@@ -168,6 +169,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
             # Recursive call of this function with the main product ID
             return self.get_cover(
                 cover_id, self.product.id, use_fallback=False)
+        return None
 
     def set_cover(self, cover_id, product_id, imagegroup):
         if not self._is_valid_cover_id_and_product_id(cover_id, product_id):
@@ -300,8 +302,7 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         if zeit.cms.workflow.interfaces.IPublishInfo(content).published:
             return False
         # content has to provide one of interfaces defined above
-        return any([interface.providedBy(content) for interface
-                    in self.assets_to_publish])
+        return any(x.providedBy(content) for x in self.assets_to_publish)
 
 
 class VolumeType(zeit.cms.type.XMLContentTypeDeclaration):

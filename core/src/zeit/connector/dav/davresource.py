@@ -144,8 +144,8 @@ class DAVPropstat:
                 "Malformed PROPSTAT respones: more than one activlock found!")
         if lockinfo_nodes:
             context = lockinfo_nodes[0]
-            # :fixme: the following would be prominent calls for
-            # find_first_child(...)
+            # :fixme: the following would be prominent calls
+            # for find_first_child(...)
             try:
                 linfo['owner'] = context.xpath(
                     'D:owner', namespaces={'D': 'DAV:'})[0].text.strip()
@@ -193,7 +193,6 @@ class DAVResponse:
                 'No href found in node %s!' % res_node.nodePath())
         url_node = href_nodes[0]
         self.url = unquote(url_node.text.strip())
-        # self.url = url_node.text.strip()
         status_nodes = _find_child(res_node, 'status')
         if status_nodes:  # FIXME: What when more than one?
             # may raise exception
@@ -407,7 +406,7 @@ class DAVResource:
         response = result.get_response(self.path)
         names = response.get_all_properties().keys()
         d = {}
-        for name, ns in names:
+        for _name, ns in names:
             d[ns] = None
         return d.keys()
 
@@ -600,7 +599,7 @@ class DAVResource:
         return li.copy()
 
     def _propfind(self, depth=0):
-        """Query all properties for this resource and return a DAVResult instance.
+        """Query all properties for this resource, return a DAVResult instance.
         """
         hdrs = {}
         # if we have a locktoken, supply it
@@ -678,7 +677,7 @@ class DAVCollection(DAVResource):
         if self.auto_request or not self._result:
             self.update()
         result = self._result
-        for url, e in result.responses.items():
+        for url, _ in result.responses.items():
             if url == self.path:
                 continue
             ret.append(url)
@@ -693,7 +692,7 @@ class DAVCollection(DAVResource):
         # for all (except ourself) responses get the href element
         # and create the appropiate instance for it
         result = self._result
-        for url, e in result.responses.items():
+        for url, _ in result.responses.items():
             if url == self.path:
                 continue
             if url == self.path:

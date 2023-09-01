@@ -75,7 +75,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
                        unittest.TestCase):
 

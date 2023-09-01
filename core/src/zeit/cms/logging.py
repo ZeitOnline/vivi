@@ -4,9 +4,9 @@ import re
 
 
 def configure(config):
-    """Calls logging.config.dictConfig(), after transforming the input dictionary
-    from a flat list of keys with dotted names into nested dicts (with some
-    small added syntactic sugar). Example input:
+    """Calls logging.config.dictConfig(), after transforming the input
+    dictionary from a flat list of keys with dotted names into nested dicts
+    (with some small added syntactic sugar). Example input:
 
     root.level: INFO
     # comma-separated handlers are converted to list

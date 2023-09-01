@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 class LiveProperties(collections.abc.MutableMapping):
     """Webdav properties which are updated upon change."""
 
-    live_properties = dict()
+    live_properties = {}
 
     def __init__(self, context):
         self.context = context

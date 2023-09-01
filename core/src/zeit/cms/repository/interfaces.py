@@ -183,7 +183,7 @@ def valid_name(value):
     container = context.__parent__
     if value in container:
         raise AlreadyExists(
-            _('"${name}" already exists.', mapping=dict(name=value)))
+            _('"${name}" already exists.', mapping={'name': value}))
     return True
 
 

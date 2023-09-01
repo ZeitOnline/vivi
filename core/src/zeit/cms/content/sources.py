@@ -317,9 +317,9 @@ class ParentChildSource(XMLSource):
         child_nodes = reduce(
             operator.add, [
                 node.findall(self.child_tag) for node in parent_nodes])
-        result = set([str(node.get(self.attribute))
-                      for node in child_nodes
-                      if self.isAvailable(node, context)])
+        result = {str(node.get(self.attribute))
+                  for node in child_nodes
+                  if self.isAvailable(node, context)}
         return result
 
     def getTitle(self, context, value):
@@ -362,7 +362,7 @@ class ParentChildSource(XMLSource):
                 value=parent_value))
         if not nodes:
             return None
-        # assert len(nodes) == 1
+        # XXX assert len(nodes) == 1
         return nodes
 
     def _get_parent_value(self, context):
@@ -490,8 +490,7 @@ FEATURE_TOGGLES = FeatureToggleSource()(None)
 
 
 def unicode_or_none(value):
-    if value:
-        return str(value)
+    return str(value) if value else None
 
 
 class Serie(AllowedBase):
@@ -636,10 +635,8 @@ class CMSContentTypeSource(
         zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     def _values(self):
-        return {
-            name: interface for name, interface in
-            zope.component.getUtilitiesFor(zeit.cms.interfaces.ICMSContentType)
-        }
+        return dict(zope.component.getUtilitiesFor(
+            zeit.cms.interfaces.ICMSContentType))
 
     def getTitle(self, context, value):
         return value.queryTaggedValue('zeit.cms.title') or str(value)
@@ -657,9 +654,8 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
         import zeit.cms.content.interfaces  # break circular import
         types = (
             list(super().getValues(context)) +
-            list(interface for name, interface in
-                 zope.component.getUtilitiesFor(
-                     zeit.cms.content.interfaces.IAddableContent)))
+            [interface for name, interface in zope.component.getUtilitiesFor(
+                zeit.cms.content.interfaces.IAddableContent)])
         by_title = {
             # XXX Hard-code language, since we don't have a request here.
             zope.i18n.translate(

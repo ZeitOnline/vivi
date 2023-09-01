@@ -40,7 +40,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         content_sub = ExampleContentType()
         content_sub.uniqueId = 'xzy://bla/fasel/sub'
         event = zope.lifecycleevent.ObjectAddedEvent(content)
-        for ignored in zope.component.subscribers((content_sub, event), None):
+        for _ in zope.component.subscribers((content_sub, event), None):
             pass
         self.assertFalse(self.tms.index.called)
 
@@ -265,7 +265,7 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
             'http://xml.zeit.de/testing/',
             enrich=True, publish=True)
         self.assertEqual(
-            dict(enrich=True, update_keywords=True, publish=True),
+            dict(enrich=True, update_keywords=True, publish=True),  # noqa
             self.index.call_args[1])
 
 

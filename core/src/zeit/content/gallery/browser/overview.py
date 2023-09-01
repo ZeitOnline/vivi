@@ -21,17 +21,18 @@ class Overview(zeit.cms.browser.view.Base):
             self.context.updateOrder(self.request.get('images'))
         entries = []
         for entry in self.context.values():
-            entries.append(dict(
-                __name__=entry.__name__,
-                caption=entry.caption,
-                css_class='layout-%s' % entry.layout if entry.layout else '',
-                image=entry.image,
-                layout=self.get_entry_layout(entry),
-                text=self.get_text(entry),
-                thumbnail=entry.thumbnail,
-                title=entry.title,
-                url=self.url(entry),
-            ))
+            entries.append({
+                '__name__': entry.__name__,
+                'caption': entry.caption,
+                'css_class': 'layout-%s' % (
+                    entry.layout if entry.layout else ''),
+                'image': entry.image,
+                'layout': self.get_entry_layout(entry),
+                'text': self.get_text(entry),
+                'thumbnail': entry.thumbnail,
+                'title': entry.title,
+                'url': self.url(entry),
+            })
         self.entries = entries
 
     def get_text(self, entry):

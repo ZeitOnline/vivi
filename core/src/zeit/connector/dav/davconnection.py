@@ -25,14 +25,14 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             zeit.connector.dav.interfaces.DAVBadRequestError
     }
 
-    def lock(self, url, owner=None, depth=0, timeout=None, headers={}):
+    def lock(self, url, owner=None, depth=0, timeout=None, headers=None):
         r = self.get_result(
             'lock', (http.client.OK,),
             url, owner=owner, depth=depth, timeout=timeout,
             extra_hdrs=headers)
         return r.lock_token
 
-    def unlock(self, url, locktoken, headers={}):
+    def unlock(self, url, locktoken, headers=None):
         r = self.get_result(
             'unlock', (http.client.NO_CONTENT,),
             url, locktoken, extra_hdrs=headers)

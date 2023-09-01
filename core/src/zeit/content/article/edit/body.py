@@ -159,7 +159,7 @@ MODULES = ModuleSource()
 # repository
 _find_name_attributes = lxml.etree.XPath(
     '//*[@cms:__name__]',
-    namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
+    namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'})
 
 
 @grok.subscribe(
@@ -232,3 +232,4 @@ class BreakingNewsBody(grok.Adapter):
             if zeit.content.article.edit.interfaces.IParagraph.providedBy(
                     block):
                 return block
+        return None

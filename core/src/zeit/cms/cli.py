@@ -28,8 +28,8 @@ def zope_shell():
     if len(sys.argv) > 1:
         sys.argv[:] = sys.argv[1:]
         globs['__file__'] = sys.argv[0]
-        exec(compile(open(sys.argv[0], "rb").read(), sys.argv[0], 'exec'),
-             globs)
+        exec(compile(  # noqa
+            open(sys.argv[0], "rb").read(), sys.argv[0], 'exec'), globs)
         sys.exit()
     else:
         zope.component.hooks.setSite(globs['root'])

@@ -23,8 +23,9 @@ class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
     @property
     def date_last_modified(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context, None)
-        if dc is not None:
-            return dc.modified
+        if dc is None:
+            return None
+        return dc.modified
 
 
 @zope.component.adapter(

@@ -258,8 +258,8 @@ class BelowAreaSource(
     def getTitle(self, context, value):
         # XXX Hard-code language, since we don't have a request here.
         return zope.i18n.translate(
-            _("${kind} area ${title}", mapping=dict(
-                kind=value.kind, title=value.title or _("no title"))),
+            _("${kind} area ${title}", mapping={
+                'kind': value.kind, 'title': value.title or _("no title")}),
             target_language='de')
 
     def getToken(self, context, value):

@@ -73,8 +73,7 @@ class VGWortWebService:
                 code = int(code.text) if code is not None else 0
                 if code >= 100:
                     raise zeit.vgwort.interfaces.TechnicalError(message)
-                else:
-                    raise zeit.vgwort.interfaces.WebServiceError(message)
+                raise zeit.vgwort.interfaces.WebServiceError(message)
             except zeep.exceptions.ValidationError as e:
                 raise zeit.vgwort.interfaces.WebServiceError(e.message)
             except zeep.exceptions.TransportError as e:

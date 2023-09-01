@@ -105,7 +105,7 @@ class HTMLConverter:
         result = []
         tree = zope.security.proxy.removeSecurityProxy(tree)
         for adapter in self._steps('to_html'):
-            xp = getattr(adapter, 'xpath_xml')
+            xp = adapter.xpath_xml
             if xp is SKIP:
                 continue
             for node in tree.xpath(xp):
@@ -275,7 +275,7 @@ class TagReplaceStep(ConversionStep):
     xml_html_tags = {
         'intertitle': 'h3',
     }
-    html_xml_tags = dict((value, key) for key, value in xml_html_tags.items())
+    html_xml_tags = {value: key for key, value in xml_html_tags.items()}
     assert len(html_xml_tags) == len(xml_html_tags)
 
     def __init__(self, context, converter):

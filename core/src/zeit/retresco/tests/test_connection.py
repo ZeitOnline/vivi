@@ -250,7 +250,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('keyword', result[0].entity_type)
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
     level = 2
@@ -261,7 +261,7 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.tms = zeit.retresco.connection.TMS(
-            primary=dict(url=os.environ['ZEIT_RETRESCO_URL']))
+            primary={'url': os.environ['ZEIT_RETRESCO_URL']})
         self.article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(self.article):
@@ -324,11 +324,11 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
         with mock.patch(
                 'zeit.retresco.connection.TMS.get_all_topicpages',
-                new=lambda x: iter([{
+                return_value=[{
                     'id': 'berlin',
                     'title': 'Berlin',
                     'topic_type': 'location',
-                    'redirect': '/thema/hamburg'}])):
+                    'redirect': '/thema/hamburg'}]):
             zeit.retresco.connection._update_topiclist()
 
         topics = self.repository['topics']

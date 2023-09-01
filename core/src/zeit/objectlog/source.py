@@ -38,11 +38,11 @@ class LogEntrySource(
         message = zope.i18n.translate(value.message, context=request)
 
         title = _("${time} [${principal}]: ${message}",
-                  mapping=dict(
-                      time=time,
-                      principal_id=value.principal,
-                      principal=principal,
-                      message=message))
+                  mapping={
+                      'time': time,
+                      'principal_id': value.principal,
+                      'principal': principal,
+                      'message': message})
 
         return super().createTerm(
             context, source, value, title, token, request)

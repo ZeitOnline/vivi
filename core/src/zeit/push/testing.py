@@ -25,8 +25,8 @@ class PushNotifier:
 
     def send(self, text, link, **kw):
         self.calls.append((text, link, kw))
-        log.info('PushNotifier.send(%s)', dict(
-            text=text, link=link, kw=kw))
+        log.info(
+            'PushNotifier.send(%s)', {'text': text, 'link': link, 'kw': kw})
 
 
 product_config = """\

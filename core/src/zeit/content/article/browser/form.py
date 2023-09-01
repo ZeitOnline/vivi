@@ -84,26 +84,23 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
             self.request.principal)
         entry = clipboard.get(value)
         if entry is None:
-            return
+            return None
         if len(entry.items()) != 1:
-            return
+            return None
         if not zeit.content.author.interfaces.IAuthor.providedBy(
                 entry.items()[0][1].references):
-            return
+            return None
         return entry.items()[0][1].references
 
     def _author_adapted_from_value(self, value):
-        try:
-            return zeit.cms.interfaces.ICMSContent(value)
-        except TypeError:
-            return
+        return zeit.cms.interfaces.ICMSContent(value, None)
 
     def _get_source_value(self, article, fieldname):
         token = self.request.form.get('form.%s' % fieldname)
         source = zeit.content.article.interfaces.IArticle[fieldname].source
         source = source(article)
         if not token:
-            return
+            return None
         terms = zope.component.getMultiAdapter(
             (source, self.request), zope.browser.interfaces.ITerms)
         return terms.getValue(token)

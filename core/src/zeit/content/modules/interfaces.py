@@ -226,7 +226,7 @@ class RecipeMetadataSource(zeit.cms.content.sources.SearchableXMLSource):
 
     def getNodes(self):
         tree = self._get_tree()
-        return [node for node in tree.xpath(self.xpath)]
+        return tree.xpath(self.xpath)
 
 
 class RecipeUnitsSource(RecipeMetadataSource):

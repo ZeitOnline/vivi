@@ -45,7 +45,7 @@ class DAVServerLayer(plone.testing.Layer):
         self['dav_url'] = 'http://localhost:%s/cms/' % dav
         self['query_url'] = 'http://localhost:%s' % query
         self.wait_for_http(self['dav_url'])
-        # self.wait_for_http(self['query_url'])
+        # We can get away without self.wait_for_http(self['query_url'])
         zope.component.provideUtility(
             zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer)
         TBC = zeit.connector.connector.TransactionBoundCachingConnector
@@ -81,7 +81,7 @@ class DAVServerLayer(plone.testing.Layer):
     def testTearDown(self):
         transaction.abort()
         connector = self['connector']
-        for name, uid in connector.listCollection(
+        for _name, uid in connector.listCollection(
                 'http://xml.zeit.de/testing'):
             try:
                 connector.unlock(uid)
@@ -317,7 +317,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    def get_resource(self, name, body=b'', properties={},
+    def get_resource(self, name, body=b'', properties=None,
                      contentType='text/plain'):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
@@ -329,7 +329,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
             contentType=contentType)
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 class ConnectorTest(TestCase):
 
     layer = REAL_CONNECTOR_LAYER
@@ -374,7 +374,7 @@ def list_tree(connector, base, level=0):
     result = []
     if level == 0:
         result.append(base)
-    for name, uid in sorted(connector.listCollection(base)):
+    for _name, uid in sorted(connector.listCollection(base)):
         result.append('%s %s' % (uid, connector[uid].type))
         if uid.endswith('/'):
             result.extend(list_tree(connector, uid, level + 1))

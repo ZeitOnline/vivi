@@ -59,8 +59,7 @@ class BaseListRepresentation:
     @property
     def type(self):
         type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context, None)
-        if type_decl:
-            return type_decl.type_identifier
+        return type_decl.type_identifier if type_decl else None
 
 
 class CommonListRepresentation(BaseListRepresentation):
