@@ -29,8 +29,7 @@ class Connection:
             status = e.response.status_code
             if status < 500:
                 raise zeit.push.interfaces.WebServiceError(str(e))
-            else:
-                raise zeit.push.interfaces.TechnicalError(str(e))
+            raise zeit.push.interfaces.TechnicalError(str(e))
         finally:
             api.session.close()
 

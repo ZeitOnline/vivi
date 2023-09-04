@@ -7,7 +7,7 @@
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="volume">52</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="year">2006</attribute>
     <attribute ns="http://namespaces.zeit.de/QPS/attributes" name="page">40</attribute>
-    
+
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Drösser</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>

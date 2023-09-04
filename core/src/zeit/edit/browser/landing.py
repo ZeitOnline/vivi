@@ -89,7 +89,7 @@ class LandingZone(ReloadContainerAction, OrderMixin):
         self.validate_block_params()
         self.create_block()
         self.undo_description = _(
-            "add '${type}' block", mapping=dict(type=self.block.type))
+            "add '${type}' block", mapping={'type': self.block.type})
         self.initialize_block()
         self.signal('after-reload', 'added', self.block.__name__)
 
@@ -150,7 +150,7 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
             return
         self.move_block()
         self.undo_description = _(
-            "move '${type}' block", mapping=dict(type=self.block.type))
+            "move '${type}' block", mapping={'type': self.block.type})
 
     @property
     def move_to_same_position(self):

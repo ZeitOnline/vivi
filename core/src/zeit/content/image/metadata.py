@@ -39,7 +39,7 @@ class ImageMetadata:
     def copyright(self):
         value = self._copyrights
         if not value:
-            return
+            return None
         # Migration for exactly one copyright (ZON-4106)
         if type(value[0]) is tuple:
             value = value[0]
@@ -88,7 +88,7 @@ def metadata_for_image(image):
             group_metadata = zeit.content.image.interfaces.IImageMetadata(
                 parent)
             if zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(image):
-                for name, field in zope.schema.getFieldsInOrder(
+                for name, _field in zope.schema.getFieldsInOrder(
                         zeit.content.image.interfaces.IImageMetadata):
                     value = getattr(group_metadata, name, None)
                     setattr(metadata, name, value)

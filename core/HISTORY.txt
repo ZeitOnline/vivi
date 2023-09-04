@@ -5104,7 +5104,7 @@ retracting).
 1.19.3 (2009-10-08)
 -------------------
 
-- Don't raise a PreconditionFailedError when the body of the stored resource 
+- Don't raise a PreconditionFailedError when the body of the stored resource
   matches the to-be-written body. This is to support ZODB conflict errors
   without DAV having transactions.
 
@@ -5491,7 +5491,7 @@ retracting).
 -----------------
 
 - Better lock handling: always look for definete information on the server
-  before locking/unlocking or doing anything with a lock. 
+  before locking/unlocking or doing anything with a lock.
 - Removed the live searching tests.
 
 0.16 (2008-05-13)
@@ -5697,7 +5697,7 @@ zeit.content.article changes
 3.38.5 (2018-08-06)
 -------------------
 
-- ZON-4773: Change default Liveblog version to 3 
+- ZON-4773: Change default Liveblog version to 3
 
 
 3.38.4 (2018-06-08)
@@ -11797,7 +11797,7 @@ zeit.content.volume changes
 ------------------
 
 - ZON-3810: Publish boxes of articles as well, if the content of the volume is
-  published 
+  published
 
 - ZON-3951: Make date_digital_published required
 
@@ -12335,7 +12335,7 @@ zeit.find changes
 3.0.7 (2019-01-30)
 ------------------
 
-- BUG-1049: Replace type filter "text" with the new "embed" 
+- BUG-1049: Replace type filter "text" with the new "embed"
 
 
 3.0.6 (2019-01-14)
@@ -12360,7 +12360,7 @@ zeit.find changes
 3.0.3 (2018-12-18)
 ------------------
 
-- BUG-1001: Remove z-index from resetbutton 
+- BUG-1001: Remove z-index from resetbutton
 
 
 3.0.2 (2018-09-03)
@@ -13045,7 +13045,7 @@ zeit.magazin changes
 1.4.3 (2017-05-22)
 ------------------
 
-- ZON-3917 remove bigshare button checkbox 
+- ZON-3917 remove bigshare button checkbox
 
 
 1.4.2 (2016-09-26)
@@ -14963,7 +14963,7 @@ zeit.vgwort changes
 ------------------
 
 - ZON-4455: Ignore errors during report and continue, instead of crashing
-  
+
 - ZON-4455: Don't try to report during API maintenance windows
 
 

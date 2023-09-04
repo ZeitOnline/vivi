@@ -39,7 +39,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.patch.stop()
 
     @pytest.fixture(autouse=True)
-    def caplog(self, caplog):
+    def _caplog(self, caplog):
         self.caplog = caplog
 
     def test_ignore_3rdparty_list_is_respected(self):
@@ -324,7 +324,7 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.repository[key] = author
 
     @pytest.fixture(autouse=True)
-    def monkeypatch(self, monkeypatch):
+    def _monkeypatch(self, monkeypatch):
         monkeypatch.setattr(
             zeit.workflow.publish_3rdparty.Speechbert,
             'ignore',
@@ -347,26 +347,26 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         del payload['body']  # not relevant in this test
-        assert payload == dict(
-            access='abo',
-            authors=['Eva Biringer'],
-            channels='zeit-magazin essen-trinken',
-            genre='rezept-vorstellung',
-            hasAudio='true',
-            headline='Vier Rezepte für eine Herdplatte',
-            image='http://localhost/img-live-prefix/group/',
-            lastModified='2020-04-14T09:19:59.618155+00:00',
-            publishDate='2020-04-14T09:19:59.618155+00:00',
-            section='zeit-magazin',
-            subsection='essen-trinken',
-            subtitle=(
+        assert payload == {
+            'access': 'abo',
+            'authors': ['Eva Biringer'],
+            'channels': 'zeit-magazin essen-trinken',
+            'genre': 'rezept-vorstellung',
+            'hasAudio': 'true',
+            'headline': 'Vier Rezepte für eine Herdplatte',
+            'image': 'http://localhost/img-live-prefix/group/',
+            'lastModified': '2020-04-14T09:19:59.618155+00:00',
+            'publishDate': '2020-04-14T09:19:59.618155+00:00',
+            'section': 'zeit-magazin',
+            'subsection': 'essen-trinken',
+            'subtitle': (
                 'Ist genug Brot und Kuchen gebacken, bleibt endlich wieder '
                 'Zeit, zu kochen. Mit diesen One-Pot-Gerichten können Sie den '
                 'Zuckerschock vom Osterwochenende kontern.'),
-            tags=['Testtag', 'Testtag2', 'Testtag3'],
-            teaser=(
+            'tags': ['Testtag', 'Testtag2', 'Testtag3'],
+            'teaser': (
                 'Ist genug Brot und Kuchen gebacken, '
-                'bleibt endlich wieder Zeit, zu kochen.'))
+                'bleibt endlich wieder Zeit, zu kochen.')}
 
     def test_speechbert_payload_access_free(self):
         article = ICMSContent(

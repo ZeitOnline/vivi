@@ -14,13 +14,13 @@ class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
     def test_crop_mask(self):
         s = self.selenium
 
-        # s.comment('After clicking on the mask choice the image is loaded')
+        # After clicking on the mask choice the image is loaded
         self.click_label('450×200')
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=')
 
-        # s.comment('The border will be passed')
+        # The border will be passed
         self.click_label("grauer Rahmen")
         s.verifyAttribute(
             'id=imp-mask-image@src',
@@ -50,14 +50,14 @@ class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
     def test_mask_string_parse(self):
         s = self.selenium
 
-        # s.comment('Simple dimensions')
+        # Simple dimensions
         s.runScript(
             'window.document.imp.set_mask("500x200/500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.name', '"500x200"')
 
-        # s.comment('The dimensions can be variable, indicated by a ?')
+        # The dimensions can be variable, indicated by a ?
         s.runScript(
             'window.document.imp.set_mask("art-200/?500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
@@ -75,7 +75,7 @@ class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
 
     def test_zoom_slider(self):
         s = self.selenium
-        # s.comment('Zooming works with a slider')
+        # Zooming works with a slider
         s.verifyEval('window.document.imp.zoom>1', 'false')
         s.clickAt('id=imp-zoom-slider', '500,0')
         s.waitForEval('window.document.imp.zoom>1', 'true')
@@ -109,7 +109,7 @@ class SeleniumCropTests(zeit.crop.testing.SeleniumTestCase):
     def test_crop_wo_mask(self):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
-        # s.comment('Nothing happens when the crop button is clicked.')
+        # Nothing happens when the crop button is clicked.
         s.click('id=imp-action-crop')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
@@ -120,9 +120,9 @@ class SeleniumCropTests(zeit.crop.testing.SeleniumTestCase):
         s.dragAndDrop('id=imp-mask', '-30,-100')
         self.click_label('450×200')
         s.click('id=imp-action-crop')
-        # s.comment('After cropping the image is inserted in the image bar')
+        # After cropping the image is inserted in the image bar
         s.waitForElementPresent('css=#imp-image-bar > div')
-        # s.comment('The label is marked as "cropped"')
+        # The label is marked as "cropped"
         s.verifyElementPresent('css=label.cropped')
 
     def test_crop_outside_mask(self):
@@ -202,7 +202,7 @@ class SeleniumMaskTests(zeit.crop.testing.SeleniumTestCase):
         s = self.selenium
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
-        for i in range(3):
+        for _ in range(3):
             s.keyPress('mask-h', Keys.BACKSPACE)
         s.type('name=mask-h', '280')
         s.keyPress('mask-h', Keys.RETURN)

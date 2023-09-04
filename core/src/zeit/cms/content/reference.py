@@ -142,6 +142,7 @@ class ReferenceProperty:
         for name in dir(class_):
             if getattr(class_, name, None) is self:
                 return name
+        return None
 
     def _reference_nodes(self, instance):
         try:
@@ -446,9 +447,9 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     @property
     def uniqueId(self):
-        return '%s?%s' % (ID_PREFIX, urllib.parse.urlencode(dict(
-            source=self.__parent__.uniqueId, attribute=self.attribute,
-            target=self.target_unique_id)))
+        return '%s?%s' % (ID_PREFIX, urllib.parse.urlencode({
+            'source': self.__parent__.uniqueId, 'attribute': self.attribute,
+            'target': self.target_unique_id}))
 
     def __eq__(self, other):
         return (self.__class__ == other.__class__ and

@@ -24,7 +24,7 @@ class Materialize(zeit.cms.browser.view.Base):
         zeit.content.dynamicfolder.materialize.materialize_content(
             self.context)
         next_url = self.url(self.context, '@@view.html')
-        return'<span class="nextURL">%s</span>' % next_url
+        return '<span class="nextURL">%s</span>' % next_url
 
     @zope.cachedescriptors.property.Lazy
     def container_title(self):

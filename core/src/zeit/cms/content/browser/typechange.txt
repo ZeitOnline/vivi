@@ -28,7 +28,7 @@ The type change is a lightbox:
   ...
 
 
-We can select which type we want to 
+We can select which type we want to
 
 >>> browser.getControl(name='newtype').displayOptions
 ['collection', 'file', 'testcontenttype', 'unknown']
@@ -44,7 +44,7 @@ Just clicking "change" w/o selecting anything displays the form again:
   </h1>
   ...
 
-Make it a channel. 
+Make it a channel.
 
 >>> browser.getControl(name='newtype').displayValue = ['testcontenttype']
 >>> browser.getControl('Change type').click()

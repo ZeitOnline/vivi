@@ -79,7 +79,7 @@ will redirect to this URL:
     ...
    <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/Somalia-krieg/@@view.html</span>
     ...
-    
+
 
 When we open the url of the renamed object now, to verify that it actually was
 renamed. There is also a message that the content was renamed:

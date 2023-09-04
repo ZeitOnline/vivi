@@ -10,7 +10,7 @@ class CPExtraView:
     @property
     def cpextra_title(self):
         if not self.context.cpextra:
-            return
+            return None
         source = zeit.content.cp.interfaces.ICPExtraBlock['cpextra'].source(
             self.context)
         terms = zope.component.getMultiAdapter(

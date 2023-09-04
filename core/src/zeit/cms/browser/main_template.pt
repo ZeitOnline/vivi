@@ -3,7 +3,7 @@
 
   <metal:macro define-macro="error-page"><!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml"
       tal:define="favicon string:${request/getApplicationURL}/fanstatic/zeit.cms/icons/favicon.png">
       <head>
@@ -27,7 +27,7 @@
   <metal:macro define-macro="page"><?xml version="1.0"?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml"
       tal:define="view_title options/title|view/title|string:Zeit CMS;
       context_title context/@@standard_macros/context_title;
@@ -78,18 +78,18 @@
               <span class="breadcrumb-separator"
                     tal:condition="not:repeat/item/end">
                 →
-              </span> 
+              </span>
             </li>
           </ul>
           <ul id="main-navigation"
               tal:content="structure provider:zeit.cms.GlobalViews">
             </ul>
 
-            <div class="GlobalInformation" 
+            <div class="GlobalInformation"
                  tal:content="structure provider:zeit.cms.GlobalInformation" />
         </div>
 
-        <div id="sidebar" 
+        <div id="sidebar"
              tal:define="sidebar provider:zeit.cms.Sidebar"
              tal:condition="sidebar"
              tal:attributes="class sidebar_css"
@@ -114,7 +114,7 @@
             ">
           </script>
 
-        
+
           <div id="visualContentWrapper"
             tal:attributes="class sidebar_css">
 
@@ -132,8 +132,8 @@
       </body>
     </html>
   </metal:macro>
-  
-  
+
+
   <metal:macro define-macro="context-views-and-actions">
 
     <div class="contextViewsAndActions">
@@ -187,14 +187,14 @@
         </select>
 
     </div>
-        
+
         <div id="tableFilter">
           Filter: <input name="tableFilter" type="text" value="" />
         </div>
 
-  
+
       <div id="topcontent">
-        
+
           <table
             tal:condition="view/content"
             tal:replace="structure view/contentTable">
@@ -214,7 +214,7 @@
 
   <metal:macro define-macro="render_form_widget">
     <tal:block repeat="widget widgets">
-      <div class="field" 
+      <div class="field"
         tal:define="hint widget/hint"
         tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
 

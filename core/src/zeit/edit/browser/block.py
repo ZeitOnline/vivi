@@ -36,7 +36,7 @@ class Add(zeit.edit.browser.view.Action):
     def update(self):
         self.undo_description = _(
             "add '${type}' block",
-            mapping=dict(type=self.type))
+            mapping={'type': self.type})
         factory = zope.component.getAdapter(
             self.context, zeit.edit.interfaces.IElementFactory,
             name=self.type)
@@ -52,7 +52,7 @@ class Delete(zeit.edit.browser.view.Action):
     def update(self):
         self.undo_description = _(
             "delete '${type}' block",
-            mapping=dict(type=self.context[self.key].type))
+            mapping={'type': self.context[self.key].type})
         del self.context[self.key]
         self.signal('before-reload', 'deleted', self.key)
         self.reload()

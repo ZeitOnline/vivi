@@ -20,8 +20,7 @@ class WhitelistSearch(zeit.cms.browser.view.JSON):
             results = self.whitelist.search(term)
         else:
             results = []
-        return [dict(label=result.title, value=result.uniqueId)
-                for result in results]
+        return [{'label': x.title, 'value': x.uniqueId} for x in results]
 
 
 @grok.adapter(
@@ -43,8 +42,7 @@ class LocationSearch(zeit.cms.browser.view.JSON):
             tags = zeit.cms.tagging.source.locationSource.factory.search(term)
         else:
             tags = []
-        return [dict(label=x.label, value=x.uniqueId)
-                for x in tags]
+        return [{'label': x.label, 'value': x.uniqueId} for x in tags]
 
 
 @grok.adapter(

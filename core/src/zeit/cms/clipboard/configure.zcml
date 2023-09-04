@@ -15,29 +15,29 @@
   <class class=".clipboard.Clipboard">
     <require
       interface=".interfaces.IClipboard"
-      permission="zope.ManageContent" /> 
+      permission="zope.ManageContent" />
   </class>
   <adapter factory=".clipboard.ClipboardNameChooser" />
-  
+
   <!-- Entry -->
   <class class=".entry.Entry">
     <implements
       interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
       interface=".interfaces.IObjectReference"
-      permission="zope.View" /> 
+      permission="zope.View" />
     <require
       set_schema=".interfaces.IObjectReference"
-      permission="zope.ManageContent" /> 
+      permission="zope.ManageContent" />
     <require
       interface="zope.location.interfaces.IContained"
-      permission="zope.View" /> 
+      permission="zope.View" />
   </class>
-  
+
   <class class=".entry.Clip">
     <require
         permission="zope.View"
-        interface="zope.container.interfaces.IReadContainer" 
+        interface="zope.container.interfaces.IReadContainer"
         />
     <require
         permission="zope.ManageContent"

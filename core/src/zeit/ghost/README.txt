@@ -107,7 +107,7 @@ Create a little helper function to easily see what is a ghost and what not:
 ...     for name in workingcopy:
 ...         if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
 ...             workingcopy[name]):
-...             typ = "Ghost  : " 
+...             typ = "Ghost  : "
 ...         else:
 ...             typ = "Content: "
 ...         print(typ + name)

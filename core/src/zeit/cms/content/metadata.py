@@ -166,8 +166,8 @@ def log_access_change(context, event):
             access_new_translation = ICommonMetadata[
                 'access'].source.factory.getTitle(context, context.access)
             log.log(context, _("Access changed from \"${old}\" to \"${new}\"",
-                               mapping=dict(old=access_old_translation,
-                                            new=access_new_translation)))
+                               mapping={'old': access_old_translation,
+                                        'new': access_new_translation}))
         break
     else:
         return

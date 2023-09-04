@@ -46,7 +46,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase,
 <tag uuid="uid-berlin">Berlin</tag>
 """)
         tagger = Tagger(content)
-        self.assertEqual(set(['☃Berlin', '☃Karen Duve']), set(tagger))
+        self.assertEqual({'☃Berlin', '☃Karen Duve'}, set(tagger))
 
     def test_len_should_return_amount_of_tags(self):
         content = create_testcontent()

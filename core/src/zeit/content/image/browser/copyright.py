@@ -38,7 +38,7 @@ class Form(zeit.cms.browser.lightbox.Form):
 
         self.send_message(
             _('Copyright changed for: ${changes}',
-              mapping=dict(changes=', '.join(changed))))
+              mapping={'changes': ', '.join(changed)}))
 
     @staticmethod
     def set_copyright(obj, copyright):

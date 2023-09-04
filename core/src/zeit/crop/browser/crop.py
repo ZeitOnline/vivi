@@ -54,10 +54,10 @@ class ImageBar(zeit.cms.browser.view.Base):
             scale_name = image.__name__.replace(
                 self.context.__name__ + '-', '', 1)
             scale_name = scale_name.rsplit('.', 1)[0]
-            result.append(dict(
-                url=self.url(image),
-                name=image.__name__,
-                scale_name=scale_name))
+            result.append({
+                'url': self.url(image),
+                'name': image.__name__,
+                'scale_name': scale_name})
         return json.dumps(result)
 
     @property

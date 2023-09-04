@@ -6,7 +6,7 @@ import unittest
 import zeit.brightcove.connection
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 class APIIntegration(unittest.TestCase):
 
     level = 2

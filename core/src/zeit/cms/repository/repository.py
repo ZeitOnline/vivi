@@ -312,7 +312,7 @@ class Repository(persistent.Persistent, Container):
             raise zeit.cms.repository.interfaces.ConflictError(
                 content.uniqueId,
                 _('There was a conflict while adding ${name}',
-                  mapping=dict(name=content.uniqueId)))
+                  mapping={'name': content.uniqueId}))
 
     @property
     def repository(self):
@@ -356,7 +356,7 @@ def deny_edit_permissions_in_repository_on_startup(event):
 def deny_edit_permissions_in_repository(repository):
     perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(
         repository)
-    for perm_id, perm in zope.component.getUtilitiesFor(
+    for perm_id, _perm in zope.component.getUtilitiesFor(
             zeit.cms.interfaces.IEditPermission):
         perms.denyPermissionToPrincipal(perm_id, 'zope.Everybody')
 

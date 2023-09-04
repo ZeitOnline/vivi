@@ -74,5 +74,5 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     def filter_values(self, *interfaces):
         # XXX copy&paste from zeit.edit.container.Base.filter_values
         for child in self.values():
-            if any([x.providedBy(child) for x in interfaces]):
+            if any(x.providedBy(child) for x in interfaces):
                 yield child

@@ -3,6 +3,7 @@ from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
 import datetime
+import functools
 import grokcore.component as grok
 import logging
 import pytz
@@ -187,5 +188,6 @@ def retract_overdue_objects():
             tms.delete_id(item['doc_id'])
         else:
             publish = zeit.cms.workflow.interfaces.IPublish(content)
+            retract = functools.partial(publish.retract, background=False)
             log.info('Retracting %s', content)
-            wait_for_commit(lambda: publish.retract(background=False))
+            wait_for_commit(retract)

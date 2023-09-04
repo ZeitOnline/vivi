@@ -42,11 +42,11 @@ class EditLayout:
             css_class = [layout.id]
             if layout == self.context.layout:
                 css_class.append('selected')
-            result.append(dict(
-                css_class=' '.join(css_class),
-                title=layout.title,
-                token=terms.getTerm(layout).token,
-            ))
+            result.append({
+                'css_class': ' '.join(css_class),
+                'title': layout.title,
+                'token': terms.getTerm(layout).token,
+            })
         return result
 
 
@@ -109,9 +109,7 @@ class Display(zeit.cms.browser.view.Base):
             if i == 0:
                 self.header_image = self.get_image(content)
 
-            self.teasers.append(dict(
-                texts=texts,
-                uniqueId=content.uniqueId))
+            self.teasers.append({'texts': texts, 'uniqueId': content.uniqueId})
 
     def get_image(self, content, image_pattern=None):
         if image_pattern is None:
@@ -162,7 +160,7 @@ def default_teaser_representation(content, request):
         value = getattr(metadata, name)
         if not value and fallback:
             value = getattr(metadata, fallback)
-        return dict(css_class=css_class, content=value)
+        return {'css_class': css_class, 'content': value}
 
     texts = []
     metadata = zeit.cms.content.interfaces.ICommonMetadata(
@@ -194,11 +192,11 @@ def quote_teaser_representation(content, request):
         zeit.content.article.edit.interfaces.ICitation)
     if not (article and citation):
         return default_teaser_representation(content, request)
-    texts = list()
-    texts.append(dict(css_class='supertitle', content=_('')))
-    texts.append(dict(css_class='teaserTitle', content=_('Zitat:')))
-    texts.append(dict(css_class='teaserText', content=_(citation.text)))
-    return texts
+    return [
+        {'css_class': 'supertitle', 'content': _('')},
+        {'css_class': 'teaserTitle', 'content': _('Zitat:')},
+        {'css_class': 'teaserText', 'content': _(citation.text)},
+    ]
 
 
 class Drop(zeit.edit.browser.view.Action):

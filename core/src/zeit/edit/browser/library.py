@@ -17,7 +17,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
     template = 'block_factories.jsont'
 
     def json(self):
-        return dict(factories=self.list_block_types())
+        return {'factories': self.list_block_types()}
 
     def list_block_types(self):
         types = collections.OrderedDict()
@@ -27,14 +27,14 @@ class BlockFactories(zeit.cms.browser.view.JSON):
                 if not self.resource_exists(image):
                     image = 'module-default-image.png'
                 image = self.resource_url(image)
-                types[item['name']] = dict(
-                    css=['module', 'represents-content-object'],
-                    image=image,
-                    title=zope.i18n.translate(
+                types[item['name']] = {
+                    'css': ['module', 'represents-content-object'],
+                    'image': image,
+                    'title': zope.i18n.translate(
                         item['title'], context=self.request),
-                    type=item['type'],
-                    params=json.dumps(item['params']),
-                )
+                    'type': item['type'],
+                    'params': json.dumps(item['params']),
+                }
             types[item['name']]['css'].append(item['library_name'] + '-module')
         for type_ in types.values():
             type_['css'] = ' '.join(type_['css'])

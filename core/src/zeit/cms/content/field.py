@@ -64,7 +64,7 @@ def located(obj, parent, name):
     obj_ = zope.security.proxy.removeSecurityProxy(obj)
     obj_ = zope.location.location.LocationProxy(
         obj_, parent, name)
-    if type(obj) == zope.security.proxy.Proxy:
+    if type(obj) is zope.security.proxy.Proxy:
         return zope.security.checker.ProxyFactory(obj_)
     return obj_
 
@@ -91,7 +91,7 @@ def apply_default_values(context, interface, set_none=False):
         if field.readonly:
             continue
         __traceback_info__ = (name,)
-        default = getattr(field, 'default')
+        default = field.default
         # don't set None values (#9406)
         if default is None and not set_none:
             continue

@@ -262,11 +262,8 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
     def test_download_teaser_image_error_produces_empty_group(self):
         zeit.brightcove.update.download_teaser_image(
             self.repository,
-            dict(
-                id="foo",
-                images=dict(
-                    thumbnail=dict(src="foo"))),
-            "thumbnail")
+            {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}},
+            'thumbnail')
         group = self.repository['foo-thumbnail']
         assert group.master_image is None
 
@@ -277,11 +274,8 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
             patched.side_effect = zope.app.locking.interfaces.LockingError()
             assert zeit.brightcove.update.download_teaser_image(
                 self.repository,
-                dict(
-                    id="foo",
-                    images=dict(
-                        thumbnail=dict(src="foo"))),
-                "thumbnail") is None
+                {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}},
+                'thumbnail') is None
 
     def test_download_teaser_image_error_uses_existing(self):
         from zeit.content.image.testing import create_image_group_with_master_image
@@ -290,11 +284,8 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         existing.stamped = 'this'
         new = zeit.brightcove.update.download_teaser_image(
             self.repository,
-            dict(
-                id="foo",
-                images=dict(
-                    thumbnail=dict(src="foo"))),
-            "thumbnail")
+            {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}},
+            'thumbnail')
         assert new.stamped == 'this'
 
     def test_update_teaser_image_still_success(self):

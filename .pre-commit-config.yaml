@@ -1,0 +1,12 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: debug-statements
+  - id: trailing-whitespace
+- repo: https://github.com/pycqa/flake8
+  rev: "5.0.4"
+  hooks:
+  - id: flake8
+    additional_dependencies:
+    - flake8-awesome

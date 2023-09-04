@@ -50,7 +50,7 @@ The connector needs the ResourceCache, so we register it:
 >>> import zeit.connector.interfaces
 >>>
 >>> site_manager.registerAdapter(
-...     resourceCacheFactory, 
+...     resourceCacheFactory,
 ...     (ISite,),
 ...     zeit.connector.interfaces.IResourceCache)
 

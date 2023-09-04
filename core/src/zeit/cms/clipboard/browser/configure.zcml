@@ -1,4 +1,4 @@
-<configure 
+<configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:z3c="http://namespaces.zope.org/z3c"
@@ -6,7 +6,7 @@
   i18n_domain="zeit.cms">
 
   <adapter factory=".entry.entryListRepresentationFactory" />
-  <adapter 
+  <adapter
     factory=".entry.entry_icon"
     name="zmi_icon"/>
   <adapter factory=".clip.ClipListRepresentation" />
@@ -36,17 +36,17 @@
     permission="zope.ManageContent"
     allowed_interface="zeit.cms.browser.interfaces.ITree">
 
-    <browser:page 
+    <browser:page
       name="addContent"
       attribute="addContent"
       />
 
-    <browser:page 
+    <browser:page
       name="addContainer"
       attribute="addContainer"
       />
 
-    <browser:page 
+    <browser:page
       name="moveContent"
       attribute="moveContent"
       />
@@ -201,6 +201,6 @@
     weight="110"
     lightbox="@@insert_from_clipboard.lightbox"
     />
-  
+
 
 </configure>

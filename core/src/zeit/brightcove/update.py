@@ -139,6 +139,7 @@ class import_video(import_base):
             log.info('Deactivating %s', self.bcobj)
             if IPublishInfo(self.cmsobj).published:
                 IPublish(self.cmsobj).retract(background=False)
+        return False
 
 
 BC_IMG_KEYS = {
@@ -215,6 +216,7 @@ class import_playlist(import_base):
             return False
         self._update()
         IPublish(self.cmsobj).publish(background=False)
+        return False
 
     def _add(self):
         log.info('Adding %s', self.bcobj)
@@ -234,7 +236,7 @@ class import_playlist(import_base):
         """
         playlists = zeit.brightcove.convert.Playlist.find_all()
         for item in playlists:
-            yield lambda: cls(item)
+            yield lambda: cls(item)  # noqa
         yield lambda: cls.delete_except(playlists)
 
     @classmethod
@@ -246,7 +248,7 @@ class import_playlist(import_base):
             return
         folder = zeit.brightcove.convert.playlist_location(None)
         cms_names = set(folder.keys())
-        bc_names = set(x.id for x in known)
+        bc_names = {x.id for x in known}
         for name in cms_names - bc_names:
             log.info('Deleting <Playlist id=%s>', name)
             cmsobj = folder[name]

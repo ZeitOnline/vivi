@@ -31,12 +31,12 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
     @property
     def blog(self):
         if not self.url:
-            return
+            return None
         source = zeit.content.link.interfaces.ILink['blog'].source(self)
-
         for blog in source:
             if blog.url in self.url:
                 return blog
+        return None
 
     @property
     def title(self):

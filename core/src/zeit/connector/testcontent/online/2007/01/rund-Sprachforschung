@@ -43,7 +43,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Unkontrolliertes Sprudeln</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">dehne</attribute>
-  
+
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>

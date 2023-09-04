@@ -1,4 +1,4 @@
-VGWort 
+VGWort
 ======
 
 Tokens management
@@ -161,6 +161,6 @@ Reset marker:
 ...     *old_implements)
 
 
-Restore random-nes: 
+Restore random-nes:
 
 >>> random.seed()

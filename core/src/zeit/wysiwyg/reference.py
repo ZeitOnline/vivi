@@ -10,5 +10,5 @@ import zope.interface
 def html_references(context):
     html_content = zeit.wysiwyg.interfaces.IHTMLContent(context, None)
     if html_content is None:
-        return
+        return None
     return html_content.references

@@ -38,15 +38,15 @@ class SearchForm(JSONView):
 
     def json(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
-        return dict(
-            access=self.get_source(metadata_if['access'].source,
-                                   'access', 'access_title'),
-            products=self.products,
-            ressorts=self.get_source(metadata_if['ressort'].source,
-                                     'ressort', 'ressort_name'),
-            series=self.series,
-            types=self.types,
-        )
+        return {
+            'access': self.get_source(metadata_if['access'].source,
+                                      'access', 'access_title'),
+            'products': self.products,
+            'ressorts': self.get_source(metadata_if['ressort'].source,
+                                        'ressort', 'ressort_name'),
+            'series': self.series,
+            'types': self.types,
+        }
 
     def get_source(self, source, value_name, title_name):
         # XXX wrong if some of these sources should become context-dependent
@@ -434,23 +434,23 @@ def search_form(request):
     types = request.get('types', [])
     if 'embed' in types:
         types.append('text')  # BBB ZON-2932
-    return dict(
-        access=access,
-        authors=authors,
-        from_=from_,
-        fulltext=fulltext,
-        keywords=keywords,
-        raw_tags=raw_tags,
-        product_id=product_id,
-        published=published,
-        serie=serie,
-        show_news=show_news,
-        topic=topic,
-        types=types,
-        until=until,
-        volume=volume,
-        year=year,
-    )
+    return {
+        'access': access,
+        'authors': authors,
+        'from_': from_,
+        'fulltext': fulltext,
+        'keywords': keywords,
+        'raw_tags': raw_tags,
+        'product_id': product_id,
+        'published': published,
+        'serie': serie,
+        'show_news': show_news,
+        'topic': topic,
+        'types': types,
+        'until': until,
+        'volume': volume,
+        'year': year,
+    }
 
 
 def form_query(request, filter_terms=None):

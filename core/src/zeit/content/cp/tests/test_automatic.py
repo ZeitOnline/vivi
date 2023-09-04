@@ -135,7 +135,7 @@ class AutomaticAreaElasticsearchTest(
                 {'term': {'payload.zeit__DOT__content__DOT__gallery.type':
                           'inline'}}
             ]}}, 'sort': [{'payload.document.date_first_released': 'desc'}]},),
-                dict(start=0, rows=1, include_payload=False)),
+                {'start': 0, 'rows': 1, 'include_payload': False}),
             self.elasticsearch.search.call_args)
 
     def test_builds_query_from_conditions(self):
@@ -692,7 +692,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         for n in range(30):
             url = 'teaser-{}'.format(n)
             self.create_content(url, url)
-            results.append(dict(url='/' + url, doc_type='testcontenttype'))
+            results.append({'url': '/' + url, 'doc_type': 'testcontenttype'})
         tms.get_topicpage_documents.return_value = results
 
         def resolve_tmscontent(self, doc):

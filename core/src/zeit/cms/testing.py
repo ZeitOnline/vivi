@@ -448,12 +448,12 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     def do_GET(self):
         length = int(self.headers.get('content-length', 0))
-        self.requests.append(dict(
-            verb=self.command,
-            path=self.path,
-            headers=self.headers,
-            body=self.rfile.read(length).decode('utf-8') if length else None,
-        ))
+        self.requests.append({
+            'verb': self.command,
+            'path': self.path,
+            'headers': self.headers,
+            'body': self.rfile.read(length).decode('utf-8') if length else None,
+        })
         self.send_response(self._next('response_code'))
         for key, value in self._next('response_headers').items():
             self.send_header(key, value)
@@ -752,7 +752,7 @@ gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = (
     selenium_teardown_authcache)
 
 
-@pytest.mark.selenium
+@pytest.mark.selenium()
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCase):
 
@@ -1011,20 +1011,22 @@ class Browser(zope.testbrowser.browser.Browser):
         """Return an lxml.html.HtmlElement instance of the response body."""
         if self._document is not None:
             return self._document
-        if self.contents is not None:
-            if self.xml_strict:
-                self._document = lxml.etree.fromstring(self.contents)
-            else:
-                self._document = lxml.html.document_fromstring(
-                    self.contents, parser=self.HTML_PARSER)
-            return self._document
+        if self.contents is None:
+            return None
+        if self.xml_strict:
+            self._document = lxml.etree.fromstring(self.contents)
+        else:
+            self._document = lxml.html.document_fromstring(
+                self.contents, parser=self.HTML_PARSER)
+        return self._document
 
     def xpath(self, selector, **kw):
         """Return a list of lxml.HTMLElement instances that match a given
         XPath selector.
         """
-        if self.document is not None:
-            return self.document.xpath(selector, **kw)
+        if self.document is None:
+            return None
+        return self.document.xpath(selector, **kw)
 
     def cssselect(self, selector, **kw):
         return self.xpath(lxml.cssselect.CSSSelector(selector).path, **kw)
@@ -1123,8 +1125,7 @@ original = datetime.datetime
 class FreezeMeta(type):
 
     def __instancecheck__(self, instance):
-        if type(instance) == original or type(instance) == Freeze:
-            return True
+        return type(instance) is original or type(instance) is Freeze
 
 
 class Freeze(datetime.datetime, metaclass=FreezeMeta):

@@ -53,7 +53,7 @@ class Topicbox(zeit.content.article.edit.block.Block,
     third_reference = zeit.cms.content.reference.SingleResource(
         '.third_reference', 'related')
 
-    # automatic_type=preconfigured-query
+    # For automatic_type=preconfigured-query
     preconfigured_query = zeit.cms.content.property.ObjectPathProperty(
         '.preconfigured_query',
         zeit.content.article.edit.interfaces.ITopicbox['preconfigured_query'])
@@ -96,6 +96,7 @@ class Topicbox(zeit.content.article.edit.block.Block,
         if zeit.content.cp.interfaces.ICenterPage.providedBy(
                 self.first_reference):
             return self.first_reference
+        return None
 
     @cached_on_content('topicbox_values')
     def values(self):

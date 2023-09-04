@@ -84,11 +84,11 @@ class CropTest(TestBase):
 
     def test_crop_returns_image_url(self):
         self.browser.post(
-            self.image_path + '/@@imp-crop', urlencode(dict(
-                w='1200', h='749',
-                x1='400', y1='100',
-                x2='800', y2='300',
-                name='400x200')))
+            self.image_path + '/@@imp-crop', urlencode({
+                'w': '1200', 'h': '749',
+                'x1': '400', 'y1': '100',
+                'x2': '800', 'y2': '300',
+                'name': '400x200'}))
         # The image name contains the parent name, the given name and .jpg
         self.assertEqual(
             'http://localhost/++skin++cms/repository/group/group-400x200.jpg',

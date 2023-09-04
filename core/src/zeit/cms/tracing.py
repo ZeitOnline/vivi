@@ -82,9 +82,9 @@ class DelayedInitializationTracer(Tracer):
 
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
 def default_tracer():
-    """Clients may also call get_tracer() themselves, even at import time before
-    the TracerProvider is configured, as opentelemetry-api has a proxy system
-    that delegates to the real TracerProvider when start_span is called.
+    """Clients may also call get_tracer() themselves, even at import time
+    before the TracerProvider is configured, as opentelemetry-api has a proxy
+    system that delegates to the real TracerProvider when start_span is called.
     (If no TracerProvider is configured, opentelemetry-api automatically
     provides a noop implementation, which is handy e.g. for tests)
 

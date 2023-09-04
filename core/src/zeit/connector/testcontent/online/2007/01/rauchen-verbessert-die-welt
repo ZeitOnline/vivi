@@ -45,7 +45,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Heilender Tabak</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">gero</attribute>
     <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">10</attribute>
-  
+
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>

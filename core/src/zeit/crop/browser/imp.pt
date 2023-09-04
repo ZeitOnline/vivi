@@ -1,4 +1,4 @@
-<tal:block 
+<tal:block
   i18n:domain="zeit.cms"
   tal:define="metadata context/@@metadata">
 
@@ -38,10 +38,10 @@
       </div>
 
       <div class="widget mask-size">
-        <input 
+        <input
           disabled="disabled" class="mask-size" type="text"
-          name="mask-w" value="" /> × 
-        <input 
+          name="mask-w" value="" /> ×
+        <input
           disabled="disabled" class="mask-size" type="text"
           name="mask-h" value="" />
       </div>

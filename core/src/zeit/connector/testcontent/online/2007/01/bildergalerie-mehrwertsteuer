@@ -43,7 +43,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Griff ins Portemonnaie</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">kpm</attribute>
-  
+
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
@@ -102,7 +102,7 @@ Bei der nächsten Runde versucht die SPD gar nicht erst, die Machtfrage zu stelle
         <block>
           <title>Peer Steinbrück</title>
           <text>Am 1. Januar 2007 tritt nun die siebte Erhöhung der Mehrwertsteuer in der Geschichte des Landes in Kraft. Die Große Koalition braucht die Mehreinnahmen für die Haushaltskonsolidierung und zur Senkung der Lohnnebenkosten. Für Finanzminister Peer Steinbrück (SPD) ist die Anhebung - wie für fast alle seine Vorgänger mit Ausnahme von Hans Eichel - unverzichtbar, für die Opposition Gift. Die FDP spricht von "ökonomischem Unsinn", die Linkspartei sorgt sich um die kleinen Leute. Auch von &#8222;Wahlbetrug&#8220; ist wieder die Rede, schließlich hatte die SPD im Bundestagswahlkampf eine höhere Mehrwertsteuer kategorisch ausgeschlossen. <br/>&#13;
-Alles schon mal da gewesen. Jedes Argument ist ein historischer Wiedergänger - und wird nichts daran ändern, dass auch künftige Regierungen die Mehrwertsteuer erhöhen werden. Immer wieder. Denn selbst mit 19 Prozent ist sie im europäischen Vergleich niedrig. Da bleibt noch Spielraum nach oben. 
+Alles schon mal da gewesen. Jedes Argument ist ein historischer Wiedergänger - und wird nichts daran ändern, dass auch künftige Regierungen die Mehrwertsteuer erhöhen werden. Immer wieder. Denn selbst mit 19 Prozent ist sie im europäischen Vergleich niedrig. Da bleibt noch Spielraum nach oben.
 </text>
           <image expires="2100-01-01" src="/cms/work/bilder/2007/01/aktuell/bildergalerien/mehrwertsteuer-galerie/07.jpg" width="380" align="left"><copyright>© Andreas Rentz/Getty Images</copyright> BILD </image>
         </block>

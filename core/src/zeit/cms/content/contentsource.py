@@ -52,7 +52,7 @@ class CMSContentSource:
         else:
             assert issubclass(self.check_interfaces,
                               zope.interface.interfaces.IInterface)
-            for name, interface in zope.component.getUtilitiesFor(
+            for _name, interface in zope.component.getUtilitiesFor(
                     self.check_interfaces):
                 check.append(interface)
         return check
@@ -101,6 +101,7 @@ class ChoicePropertyWithCMSContentSource:
         content = zeit.cms.interfaces.ICMSContent(value, None)
         if content in self.source:
             return content
+        return None
 
     def toProperty(self, value):
         return value.uniqueId

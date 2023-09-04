@@ -34,12 +34,12 @@ class WorkflowFormTest(zeit.workflow.testing.BrowserTestCase):
 
     # XXX we don't have a test content which is an asset available (#12013),
     # and using an ImageGroup is too much ZCML hassle
-    # def test_publish_asset(self):
-    #     b = self.browser
-    #     b.open('http://localhost/++skin++vivi/repository/testasset'
-    #            '/@@workflow.html')
-    #     b.getControl('Save state and publish now').click()
-    #     self.assertEllipsis('...Publication scheduled...', b.contents)
+    # | def test_publish_asset(self):
+    # |    b = self.browser
+    # |    b.open('http://localhost/++skin++vivi/repository/testasset'
+    # |           '/@@workflow.html')
+    # |    b.getControl('Save state and publish now').click()
+    # |    self.assertEllipsis('...Publication scheduled...', b.contents)
 
 
 class ValidatingWorkflowFormTest(

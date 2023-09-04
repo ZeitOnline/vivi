@@ -76,9 +76,9 @@ class SaveTextTest(TextViewHelper,
         view = self.get_view()
         view.request.form['paragraphs'] = ['id-2', 'id-3']
         view.request.form['text'] = [
-            dict(factory='p', text='Hinter'),
-            dict(factory='p', text='den'),
-            dict(factory='p', text='Wortbergen')]
+            {'factory': 'p', 'text': 'Hinter'},
+            {'factory': 'p', 'text': 'den'},
+            {'factory': 'p', 'text': 'Wortbergen'}]
         view.update()
         self.assertEqual(['id-7', 'id-8', 'id-9', 'id-4', 'id-5', 'id-6'],
                          view.context.keys())
@@ -87,9 +87,9 @@ class SaveTextTest(TextViewHelper,
         view = self.get_view()
         view.request.form['paragraphs'] = []
         view.request.form['text'] = [
-            dict(factory='p', text='Hinter'),
-            dict(factory='p', text='den'),
-            dict(factory='p', text='Wortbergen')]
+            {'factory': 'p', 'text': 'Hinter'},
+            {'factory': 'p', 'text': 'den'},
+            {'factory': 'p', 'text': 'Wortbergen'}]
         view.update()
         self.assertEqual(
             ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'],
@@ -99,9 +99,9 @@ class SaveTextTest(TextViewHelper,
         view = self.get_view()
         view.request.form['paragraphs'] = []
         view.request.form['text'] = [
-            dict(factory='p', text='Hinter'),
-            dict(factory='p', text='den'),
-            dict(factory='p', text='Wortbergen')]
+            {'factory': 'p', 'text': 'Hinter'},
+            {'factory': 'p', 'text': 'den'},
+            {'factory': 'p', 'text': 'Wortbergen'}]
         view.update()
         self.assertEqual(
             ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'],
@@ -117,8 +117,7 @@ class SaveTextTest(TextViewHelper,
     def test_unknown_factories_are_mapped_to_p(self):
         view = self.get_view()
         view.request.form['paragraphs'] = ['id-2', 'id-3']
-        view.request.form['text'] = [
-            dict(factory='iaminvalid', text='Hinter')]
+        view.request.form['text'] = [{'factory': 'iaminvalid', 'text': 'Hinter'}]
         view.update()
         self.assertEqual('p', view.context['id-7'].type)
 
@@ -142,9 +141,9 @@ class AutoSaveTextTest(TextViewHelper,
         view = self.get_view('')
         view.request.form['paragraphs'] = []
         view.request.form['text'] = [
-            dict(factory='p', text='Hinter'),
-            dict(factory='p', text='den'),
-            dict(factory='p', text='Wortbergen')]
+            {'factory': 'p', 'text': 'Hinter'},
+            {'factory': 'p', 'text': 'den'},
+            {'factory': 'p', 'text': 'Wortbergen'}]
         view.update()
         result = json.loads(view.render())
         self.assertEqual(['id-2', 'id-3', 'id-4'], result['data']['new_ids'])

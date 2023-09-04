@@ -16,7 +16,7 @@
   </class>
 
 
-  <utility 
+  <utility
     name="zeit.connector"
     provides="zope.generations.interfaces.ISchemaManager"
     component=".generation.manager"

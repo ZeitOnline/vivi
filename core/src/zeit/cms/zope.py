@@ -60,7 +60,7 @@ def _load_zcml(filename, features=(), package=None):
     # Modelled after zope.app.appsetup:config
     zope.component.hooks.setHooks()
     context = zope.configuration.config.ConfigurationMachine()
-    setattr(zope.app.appsetup.appsetup, '__config_context', context)
+    setattr(zope.app.appsetup.appsetup, '__config_context', context)  # noqa
     for x in features:
         context.provideFeature(x)
     zope.configuration.xmlconfig.registerCommonDirectives(context)

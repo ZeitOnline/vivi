@@ -24,7 +24,7 @@
                   i18n:attributes="title"
                   i18n:translate="">
                     <span class="action-title">Show Image</span>
-            </a> 
+            </a>
           </div>
           <div class="box">
             <div class="image">
@@ -49,18 +49,18 @@
                 Caption
               </div>
           </div>
-          <div class="content">     
+          <div class="content">
               <div class="title"
                 tal:condition="entry/title"
                 tal:content="entry/title">
                 Title
               </div>
-             
+
               <div class="text"
                  tal:content="structure entry/text">
                 Text
               </div>
-            </div> 
+            </div>
             <div style="height:1px;clear:left;width:100%;line-height:1px;color:white;">x
                  xxxxxxxxxxxxxxxx xxxxxxxxxxxxx
                 xxxxxxxxxxxxxxxx xxxxxxxxxxxxx

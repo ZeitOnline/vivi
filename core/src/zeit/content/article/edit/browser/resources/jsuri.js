@@ -13,7 +13,7 @@
  *
  * Date: Mon Nov 14 20:06:34 2011 -0800
  */
-    
+
 
 var Query = function (queryString) {
 
@@ -160,7 +160,7 @@ var Query = function (queryString) {
         deleteParam: deleteParam,
         addParam: addParam,
         replaceParam: replaceParam,
-        
+
         toString: toString
     };
 };
@@ -448,7 +448,7 @@ var Uri = function (uriString) {
         path: path,
         query: query,
         anchor: anchor,
-        
+
         setProtocol: setProtocol,
         setHasAuthorityPrefix: setHasAuthorityPrefix,
         setUserInfo: setUserInfo,
@@ -457,13 +457,13 @@ var Uri = function (uriString) {
         setPath: setPath,
         setQuery: setQuery,
         setAnchor: setAnchor,
-        
+
         getQueryParamValue: getQueryParamValue,
         getQueryParamValues: getQueryParamValues,
         deleteQueryParam: deleteQueryParam,
         addQueryParam: addQueryParam,
         replaceQueryParam: replaceQueryParam,
-        
+
         toString: toString,
         clone: clone
     };

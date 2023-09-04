@@ -4,6 +4,6 @@
    i18n:domain="zeit.cms"
    i18n:translate=""
    tal:attributes="cms:create-block-url string:${context/@@absolute_url}/drop-module">
-   
+
   Click here to choose the block type.
 </a>

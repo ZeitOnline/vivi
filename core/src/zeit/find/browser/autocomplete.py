@@ -22,11 +22,9 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         else:
             results = []
         return [
-            dict(label=(result.get('title') or
-                        result.get('teaser') or
-                        result['url']),
-                 value=zeit.cms.interfaces.ID_NAMESPACE[:-1] + result['url'])
-            for result in results]
+            {'label': x.get('title') or x.get('teaser') or x['url'],
+             'value': zeit.cms.interfaces.ID_NAMESPACE[:-1] + x['url']}
+            for x in results]
 
 
 @grok.adapter(

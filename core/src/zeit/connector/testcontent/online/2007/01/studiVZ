@@ -43,7 +43,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Bildung</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Holtzbrinck kauft studiVZ</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">geil</attribute>
-  
+
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>

@@ -18,7 +18,7 @@ class Traverser(grok.Adapter):
     def traverse(self, name, furtherPath):
         if name == self.body_name:
             body = self.body_interface(self.context, None)
-            if body is not None:
+            if body is not None:  # noqa
                 return body
         else:
             # XXX zope.component does not offer an API to get the next adapter

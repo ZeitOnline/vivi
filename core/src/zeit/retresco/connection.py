@@ -351,14 +351,14 @@ def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
     prefix = 'primary-' if 'primary-base-url' in config else ''
     return TMS(
-        primary=dict(
-            url=config.get('{}base-url'.format(prefix)),
-            username=config.get('{}username'.format(prefix)),
-            password=config.get('{}password'.format(prefix))),
-        secondary=dict(
-            url=config.get('secondary-base-url'),
-            username=config.get('secondary-username'),
-            password=config.get('secondary-password')))
+        primary={
+            'url': config.get(f'{prefix}base-url'),
+            'username': config.get(f'{prefix}username'),
+            'password': config.get(f'{prefix}password')},
+        secondary={
+            'url': config.get('secondary-base-url'),
+            'username': config.get('secondary-username'),
+            'password': config.get('secondary-password')})
 
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(

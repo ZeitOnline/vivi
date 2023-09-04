@@ -1,6 +1,6 @@
 <metal:use-macro use-macro="context/@@standard_macros/page">
   <tal:block metal:fill-slot="body">
-    <metal:content-listing 
+    <metal:content-listing
       use-macro="context/@@standard_macros/content-listing"/>
   </tal:block>
 </metal:use-macro>

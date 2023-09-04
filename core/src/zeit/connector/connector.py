@@ -86,9 +86,11 @@ class Connector:
 
     long_name = 'DAV connector'
 
-    def __init__(self, roots={}, prefix='http://xml.zeit.de/'):
+    def __init__(self, roots=None, prefix='http://xml.zeit.de/'):
         # NOTE: roots['default'] should be defined
         # "extra" roots, a dict. ATM only xroots['search']
+        if roots is None:
+            roots = {}
         self._roots = roots
         self._prefix = prefix
         self.connections = threading.local()
@@ -192,7 +194,7 @@ class Connector:
 
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
-            return
+            return None
         id = self._loc2id(urllib.parse.urljoin(
             self._roots['default'], dav_response.path))
         child_ids = self.child_name_cache[id] = [

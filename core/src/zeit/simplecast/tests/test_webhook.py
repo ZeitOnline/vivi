@@ -68,7 +68,7 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         self.assertEqual(notification.environment, "testing")
 
     @pytest.fixture(autouse=True)
-    def caplog(self, caplog):
+    def _caplog(self, caplog):
         self.caplog = caplog
 
     def test_body_result(self):

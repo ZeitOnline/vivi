@@ -131,9 +131,8 @@ class AccountData(grok.Adapter):
     @facebook_main_enabled.setter
     def facebook_main_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.MAIN_ACCOUNT),
-            enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT},
+                      enabled=value)
 
     # We cannot use the key ``text``, since the first positional parameter of
     # IPushNotifier.send() is also called text, which causes TypeError.
@@ -146,9 +145,8 @@ class AccountData(grok.Adapter):
     @facebook_main_text.setter
     def facebook_main_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.MAIN_ACCOUNT),
-            override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT},
+                      override_text=value)
 
     @property
     def facebook_magazin_enabled(self):
@@ -160,9 +158,8 @@ class AccountData(grok.Adapter):
     @facebook_magazin_enabled.setter
     def facebook_magazin_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.MAGAZIN_ACCOUNT),
-            enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT},
+                      enabled=value)
 
     @property
     def facebook_magazin_text(self):
@@ -174,9 +171,8 @@ class AccountData(grok.Adapter):
     @facebook_magazin_text.setter
     def facebook_magazin_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.MAGAZIN_ACCOUNT),
-            override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT},
+                      override_text=value)
 
     @property
     def facebook_campus_enabled(self):
@@ -187,9 +183,8 @@ class AccountData(grok.Adapter):
     @facebook_campus_enabled.setter
     def facebook_campus_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.CAMPUS_ACCOUNT),
-            enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT},
+                      enabled=value)
 
     @property
     def facebook_campus_text(self):
@@ -201,9 +196,8 @@ class AccountData(grok.Adapter):
     @facebook_campus_text.setter
     def facebook_campus_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.CAMPUS_ACCOUNT),
-            override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT},
+                      override_text=value)
 
     @property
     def facebook_zett_enabled(self):
@@ -214,9 +208,8 @@ class AccountData(grok.Adapter):
     @facebook_zett_enabled.setter
     def facebook_zett_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.ZETT_ACCOUNT),
-            enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT},
+                      enabled=value)
 
     @property
     def facebook_zett_text(self):
@@ -228,9 +221,8 @@ class AccountData(grok.Adapter):
     @facebook_zett_text.setter
     def facebook_zett_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set(dict(
-            type='facebook', account=source.ZETT_ACCOUNT),
-            override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT},
+                      override_text=value)
 
     @property
     def twitter_main_enabled(self):
@@ -241,9 +233,8 @@ class AccountData(grok.Adapter):
     @twitter_main_enabled.setter
     def twitter_main_enabled(self, value):
         source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set(dict(
-            type='twitter', account=source.MAIN_ACCOUNT),
-            enabled=value)
+        self.push.set({'type': 'twitter', 'account': source.MAIN_ACCOUNT},
+                      enabled=value)
 
     @property
     def twitter_ressort_text(self):
@@ -251,8 +242,8 @@ class AccountData(grok.Adapter):
 
     @twitter_ressort_text.setter
     def twitter_ressort_text(self, value):
-        self.push.set(
-            dict(type='twitter', variant='ressort'), override_text=value)
+        self.push.set({'type': 'twitter', 'variant': 'ressort'},
+                      override_text=value)
 
     @property
     def twitter_ressort(self):
@@ -266,8 +257,7 @@ class AccountData(grok.Adapter):
         if service and 'variant' not in service:
             self.push.delete(service)
             enabled = service.get('enabled')
-        self.push.set(
-            dict(type='twitter', variant='ressort'), account=value)
+        self.push.set({'type': 'twitter', 'variant': 'ressort'}, account=value)
         if enabled is not None:
             self.twitter_ressort_enabled = enabled
 
@@ -283,8 +273,7 @@ class AccountData(grok.Adapter):
         if service and 'variant' not in service:
             self.push.delete(service)
             account = service.get('account')
-        self.push.set(
-            dict(type='twitter', variant='ressort'), enabled=value)
+        self.push.set({'type': 'twitter', 'variant': 'ressort'}, enabled=value)
         if account is not None:
             self.twitter_ressort = account
 
@@ -310,9 +299,8 @@ class AccountData(grok.Adapter):
     @twitter_print_enabled.setter
     def twitter_print_enabled(self, value):
         source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set(dict(
-            type='twitter', account=source.PRINT_ACCOUNT),
-            enabled=value)
+        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT},
+                      enabled=value)
 
     @property
     def twitter_print_text(self):
@@ -323,9 +311,8 @@ class AccountData(grok.Adapter):
     @twitter_print_text.setter
     def twitter_print_text(self, value):
         source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set(
-            dict(type='twitter', account=source.PRINT_ACCOUNT),
-            override_text=value)
+        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT},
+                      override_text=value)
 
     @property
     def mobile_enabled(self):
@@ -409,6 +396,7 @@ class AccountData(grok.Adapter):
         service = self.push.get(type='mobile')
         if service and not service.get('variant'):
             return service
+        return None
 
     def _set_mobile_service(self, **kw):
         service = self._mobile_service
@@ -418,4 +406,4 @@ class AccountData(grok.Adapter):
             for key, value in service.items():
                 if key not in kw:
                     kw[key] = value
-        self.push.set(dict(type='mobile', variant='manual'), **kw)
+        self.push.set({'type': 'mobile', 'variant': 'manual'}, **kw)

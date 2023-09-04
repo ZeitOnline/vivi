@@ -49,6 +49,7 @@ class RecipeCategories:
             categories = [RecipeCategory.from_xml(x) for x in (
                 instance.xml.xpath('./head/recipe_categories/category'))]
             return tuple(c for c in categories if c is not None)
+        return None
 
     def __set__(self, instance, value):
         recipe_categories = instance.xml.xpath('./head/recipe_categories')

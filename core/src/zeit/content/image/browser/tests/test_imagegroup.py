@@ -89,7 +89,7 @@ class ImageGroupBrowserTest(
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/imagegroup/shoppingmeile-4001x2251px.jpg')
-        assert(img.getImageSize()) == (4000, 2250)
+        self.assertEqual((4000, 2250), img.getImageSize())
 
     def test_resize_too_large_images_before_upload_height(self):
         self.add_imagegroup()
@@ -97,7 +97,7 @@ class ImageGroupBrowserTest(
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg')
-        assert(img.getImageSize()) == (2250, 4000)
+        self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_resize_too_large_secondary_images_before_upload_height(self):
         self.add_imagegroup()
@@ -107,7 +107,7 @@ class ImageGroupBrowserTest(
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg')
-        assert(img.getImageSize()) == (2250, 4000)
+        self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_traversing_thumbnail_yields_images(self):
         create_image_group_with_master_image()

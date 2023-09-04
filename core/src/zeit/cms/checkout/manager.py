@@ -41,8 +41,8 @@ class CheckoutManager:
                 lockable.locked() and not lockable.ownLock()):
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId,
-                _('The content object is locked by ${name}.', mapping=dict(
-                    name=lockable.locker())))
+                _('The content object is locked by ${name}.', mapping={
+                    'name': lockable.locker()}))
         if zeit.cms.workingcopy.interfaces.ILocalContent(
                 self.context, None) is None:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(

@@ -17,7 +17,7 @@ class FileBrowser(zeit.cms.browser.view.Base,
         objects = [self.repository, self.clipboard]
         if 'bilder' in self.repository:
             objects.append(self.repository['bilder'])
-        return dict((obj.__name__, obj) for obj in objects)
+        return {obj.__name__: obj for obj in objects}
 
     @zope.cachedescriptors.property.Lazy
     def current_folder(self):
@@ -62,11 +62,11 @@ class FileBrowser(zeit.cms.browser.view.Base,
                 unique_id = list_repr.url()
                 id_and_title = '%s (%s)' % (name, title)
 
-            yield dict(
-                id=name,
-                title=title,
-                uniqueId=unique_id,
-                id_and_title=id_and_title)
+            yield {
+                'id': name,
+                'title': title,
+                'uniqueId': unique_id,
+                'id_and_title': id_and_title}
 
     def get_list_repr(self, obj):
         return zope.component.queryMultiAdapter(

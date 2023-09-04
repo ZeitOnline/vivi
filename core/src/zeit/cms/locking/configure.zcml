@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <utility 
+  <utility
     provides="zope.app.locking.interfaces.ILockStorage"
     factory=".locking.LockStorage" />
 
@@ -10,7 +10,7 @@
     <require permission="zope.View"
       attributes="principal_id created timeout locked_until" />
     <require permission="zope.View"
-      interface="zope.interface.common.mapping.IEnumerableMapping" 
+      interface="zope.interface.common.mapping.IEnumerableMapping"
       />
     <require permission="zope.View"
       interface="zope.interface.common.mapping.IWriteMapping"

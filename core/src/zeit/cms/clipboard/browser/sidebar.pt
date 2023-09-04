@@ -15,9 +15,9 @@
       Clipboard
     </a>
   </h1>
- 
+
   <div class="PanelContent" id="ClipboardPanelContent">
-    <div id="clipboardcontents" class="Tree" 
+    <div id="clipboardcontents" class="Tree"
       tal:content="structure tree_view">
         Tree
     </div>
@@ -44,6 +44,6 @@
         ">
     </script>
 
-  </div> 
+  </div>
 </div>
 

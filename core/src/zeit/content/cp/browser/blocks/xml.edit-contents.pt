@@ -21,7 +21,7 @@
           <label tal:attributes="for widget/name">
             <span i18n:translate="" tal:content="widget/label">label</span>
             <span class="annotation" tal:condition="widget/required">(Pflichtfeld)</span>
-          </label>  
+          </label>
           <div class="hint" tal:content="widget/hint"/>
           <div tal:condition="widget/error" class="error">
             <span tal:replace="structure widget/error">error</span>

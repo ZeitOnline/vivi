@@ -50,14 +50,14 @@ class ContentLandingZone(zeit.edit.browser.landing.LandingZone):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
         if content is None:
             raise ValueError(
-                _('The object "${name}" does not exist.', mapping=dict(
-                    name=self.uniqueId)))
+                _('The object "${name}" does not exist.', mapping={
+                    'name': self.uniqueId}))
         # XXX Gnarly edge case. The JS-based drag/drop handlers can only
         # differentiate by content-type, and don't have more details.
         if IGallery.providedBy(content) and content.type == 'inline':
             raise ValueError(
                 _('Gallery "${name}" with type inline is not allowed here.',
-                  mapping=dict(name=self.uniqueId)))
+                  mapping={'name': self.uniqueId}))
         position = self.get_position_from_order(self.container.keys())
         self.block = zope.component.getMultiAdapter(
             (self.container, content, position),

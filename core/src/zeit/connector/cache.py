@@ -470,7 +470,7 @@ class ChildNames(zc.set.Set):
         if not FEATURE_TOGGLES.find('dav_cache_delete_childname_on_conflict'):
             raise ZODB.POSException.ConflictError()
         log.info('Emptying %s due to ConflictError', newstate)
-        old['_data'] = set([zeit.connector.interfaces.DeleteProperty])
+        old['_data'] = {zeit.connector.interfaces.DeleteProperty}
         return old
 
     def __iter__(self):

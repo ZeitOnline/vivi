@@ -173,7 +173,7 @@ class Connector(zeit.connector.filesystem.Connector):
     def __delitem__(self, id):
         id = self._get_cannonical_id(id)
         self[id]  # may raise KeyError
-        for name, uid in self.listCollection(id):
+        for _name, uid in self.listCollection(id):
             del self[uid]
         self._deleted.add(id)
         self._data.pop(id, None)
@@ -238,10 +238,6 @@ class Connector(zeit.connector.filesystem.Connector):
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         id = self._get_cannonical_id(id)
-        # locked_by, locked_until = self.locked(id)
-        # if locked_by is not None and locked_by != principal:
-        #    raise zeit.cms.interfaces.LockingError(
-        #        "%s is already locked." % id)
         self._locked[id] = (principal, until, True)
 
     def unlock(self, id, locktoken=None):

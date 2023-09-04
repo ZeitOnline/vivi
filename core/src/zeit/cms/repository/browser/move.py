@@ -26,10 +26,10 @@ def valid_name(value):
             zeit.cms.interfaces.ID_NAMESPACE + path[1:])
     except TypeError:
         raise zeit.cms.repository.interfaces.NotFound(
-            _('"${name}" not found.', mapping=dict(name=path)))
+            _('"${name}" not found.', mapping={'name': path}))
     if filename in container:
         raise zeit.cms.repository.interfaces.AlreadyExists(
-            _('"${name}" already exists.', mapping=dict(name=value)))
+            _('"${name}" already exists.', mapping={'name': value}))
     return True
 
 
@@ -67,8 +67,8 @@ class Move(zeit.cms.browser.lightbox.Form,
         # Changing the context also properly sets nextURL.
         self.context = container[new_name]
         self.send_message(_('Renamed "${old_name}" to "${new_name}"',
-                            mapping=dict(old_name=old_id,
-                                         new_name=self.context.uniqueId)))
+                            mapping={'old_name': old_id,
+                                     'new_name': self.context.uniqueId}))
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem,

@@ -673,10 +673,10 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
 ...                  <a href="fooo">link</a>
 ...               </text>
-...               <image expires="2007-04-09" src="/cms/work/2006/DSC00109_2.JPG" 
+...               <image expires="2007-04-09" src="/cms/work/2006/DSC00109_2.JPG"
 ...                     width="380" align="left">
 ...                 <copyright>© Martin Rose/Getty Images</copyright>
-...                 BILD 
+...                 BILD
 ...               </image>
 ...             </block>
 ...             <block>
@@ -775,10 +775,10 @@ Let's make sure this also works, when the image urls are not starting wich
 ...               <text>
 ...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
 ...               </text>
-...               <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG" 
+...               <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG"
 ...                     width="380" align="left">
 ...                 <copyright>© Martin Rose/Getty Images</copyright>
-...                 BILD 
+...                 BILD
 ...               </image>
 ...             </block>
 ...             <block>

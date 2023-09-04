@@ -66,7 +66,7 @@ class TMSRepresentation(grok.Adapter):
     )
 
     def _validate(self, data):
-        return all([data.get(x) for x in self.REQUIRED_FIELDS])
+        return all(data.get(x) for x in self.REQUIRED_FIELDS)
 
 
 @grok.implementer(zeit.retresco.interfaces.ITMSRepresentation)

@@ -19,7 +19,7 @@
   <adapter factory=".portraitbox.PortraitboxHTMLContent" />
 
   <!-- reference -->
-  <utility 
+  <utility
     component=".interfaces.portraitboxSource"
     name="zeit.content.portraitbox"
     />

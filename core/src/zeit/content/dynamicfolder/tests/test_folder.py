@@ -36,12 +36,12 @@ class TestContainerMethodsRespectVirtualChildren(
     def test_folder_keys_contains_children_defined_in_xml_config(self):
         self.assertEqual(
             ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'],
-            sorted(list(iter(self.folder))))
+            sorted(iter(self.folder)))
 
     def test_folder_iter_contains_children_defined_in_xml_config(self):
         self.assertEqual(
             ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'],
-            sorted(list(iter(self.folder))))
+            sorted(iter(self.folder)))
 
     def test_folder_getitem_returns_child_with_basic_info_set(self):
         child = self.folder['xanten']
@@ -244,8 +244,8 @@ class TestDynamicFolder(
         # Would be nice to check these, for completeness, but mock IPublish
         # does not handle IPublicationDependencies, so we have
         # `test_publishes_folder_with_config_and_template` instead.
-        # self.assertIn('http://xml.zeit.de/data/config.xml', calls)
-        # self.assertIn('http://xml.zeit.de/data/template.xml', calls)
+        # | self.assertIn('http://xml.zeit.de/data/config.xml', calls)
+        # | self.assertIn('http://xml.zeit.de/data/template.xml', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/art-déco', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/xaernten', calls)
         self.assertNotIn('http://xml.zeit.de/dynamicfolder/xanten', calls)

@@ -2,7 +2,7 @@
 Locking
 =======
 
-The acutual locking is done via WebDAV. 
+The acutual locking is done via WebDAV.
 
 
 Setup
@@ -31,8 +31,8 @@ Mock a connector:
 ...         return zeit.connector.resource.Resource(
 ...             key, 'aname', 'type', None,
 ...             properties={('getlastmodified', 'DAV:'): mod})
-...             
-... 
+...
+...
 >>> import zope.component
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> connector = Connector()

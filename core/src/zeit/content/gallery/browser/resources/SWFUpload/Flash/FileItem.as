@@ -11,14 +11,14 @@ package {
 		public var index:Number = -1;
 		public var file_status:int = 0;
 		private var js_object:Object;
-		
+
 		public static var FILE_STATUS_QUEUED:int		= -1;
 		public static var FILE_STATUS_IN_PROGRESS:int	= -2;
 		public static var FILE_STATUS_ERROR:int			= -3;
 		public static var FILE_STATUS_SUCCESS:int		= -4;
 		public static var FILE_STATUS_CANCELLED:int		= -5;
 		public static var FILE_STATUS_NEW:int			= -6;	// This file status should never be sent to JavaScript
-		
+
 		public function FileItem(file_reference:FileReference, control_id:String, index:Number)
 		{
 			this.postObject = {};
@@ -26,13 +26,13 @@ package {
 			this.id = control_id + "_" + (FileItem.file_id_sequence++);
 			this.file_status = FileItem.FILE_STATUS_NEW;
 			this.index = index;
-			
+
 			this.js_object = {
 				id: this.id,
 				index: this.index,
 				post: this.GetPostObject()
 			};
-			
+
 			// Cleanly attempt to retrieve the FileReference info
 			// this can fail and so is wrapped in try..catch
 			try {
@@ -44,18 +44,18 @@ package {
 			} catch (ex:Error) {
 				this.file_status = FileItem.FILE_STATUS_ERROR;
 			}
-			
+
 			this.js_object.filestatus = this.file_status;
 		}
-		
+
 		public function AddParam(name:String, value:String):void {
 			this.postObject[name] = value;
 		}
-		
+
 		public function RemoveParam(name:String):void {
 			delete this.postObject[name];
 		}
-		
+
 		public function GetPostObject(escape:Boolean = false):Object {
 			if (escape) {
 				var escapedPostObject:Object = { };
@@ -70,19 +70,19 @@ package {
 				return this.postObject;
 			}
 		}
-		
+
 		// Create the simply file object that is passed to the browser
 		public function ToJavaScriptObject():Object {
 			this.js_object.filestatus = this.file_status;
 			this.js_object.post = this.GetPostObject(true);
-		
+
 			return this.js_object;
 		}
-		
+
 		public function toString():String {
 			return "FileItem - ID: " + this.id;
 		}
-		
+
 		/*
 		// The purpose of this function is to escape the property names so when Flash
 		// passes them back to javascript they can be interpretted correctly.
@@ -107,6 +107,6 @@ package {
 		public static function EscapeCharacter():String {
 			return "$" + ("0000" + arguments[0].charCodeAt(0).toString(16)).substr(-4, 4);
 		}
-		
+
 	}
 }

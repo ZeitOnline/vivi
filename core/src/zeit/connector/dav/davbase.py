@@ -48,7 +48,7 @@ class HTTPBasicAuthCon:
         self._strict = strict
         self._realms = {}
         self._user = ''
-        self._passwd = ''
+        self._passwd = ''  # noqa
         self._realm = None
         self.additional_headers = {}
         # Actually connect
@@ -117,11 +117,7 @@ class HTTPBasicAuthCon:
         if extra_hdrs:
             headers.update(extra_hdrs)
         if self._resp is not None and not self._resp.isclosed():
-            assert False, "Response left"
-            # In production the assert will be optimized away.
-            logger.error("Response left!")
-            logger.error(self._resp.read())
-            self._resp = None
+            raise AssertionError('Response left')
         if self._authon:
             # short cut to avoid useless requests
             raw = "%s:%s" % self.get_auth(self._realm)

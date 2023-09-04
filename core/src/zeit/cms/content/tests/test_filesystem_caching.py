@@ -105,24 +105,24 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         assert 'http://xml.zeit.de/2007/01/Miami' not in cache
 
     def test_cache_info(self):
-        assert caching.info() == dict(
-            size=5, count=0, hits=0, misses=0, usage={})
+        assert caching.info() == {
+            'size': 5, 'count': 0, 'hits': 0, 'misses': 0, 'usage': {}}
         ICMSContent('http://xml.zeit.de/2006/49/Young')
         ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
         ICMSContent('http://xml.zeit.de/2007/01/Macher')
-        assert caching.info() == dict(
-            size=5, count=3, hits=0, misses=3, usage={
+        assert caching.info() == {
+            'size': 5, 'count': 3, 'hits': 0, 'misses': 3, 'usage': {
                 'http://xml.zeit.de/2006/49/Young': 1,
                 'http://xml.zeit.de/2006/52/Stimmts': 1,
                 'http://xml.zeit.de/2007/01/Macher': 1,
-            })
+            }}
         ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
         ICMSContent('http://xml.zeit.de/2007/01/Macher')
         ICMSContent('http://xml.zeit.de/2007/02/Vita')
-        assert caching.info() == dict(
-            size=5, count=4, hits=2, misses=4, usage={
+        assert caching.info() == {
+            'size': 5, 'count': 4, 'hits': 2, 'misses': 4, 'usage': {
                 'http://xml.zeit.de/2006/49/Young': 1,
                 'http://xml.zeit.de/2006/52/Stimmts': 2,
                 'http://xml.zeit.de/2007/01/Macher': 2,
                 'http://xml.zeit.de/2007/02/Vita': 1,
-            })
+            }}

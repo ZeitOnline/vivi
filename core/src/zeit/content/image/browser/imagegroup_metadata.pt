@@ -5,7 +5,7 @@
       Title
     </div>
 
-    <div class="image-group-image-preview" 
+    <div class="image-group-image-preview"
       tal:repeat="image view/images">
       <img tal:replace="structure image/@@thumbnail/tag" />
     </div>

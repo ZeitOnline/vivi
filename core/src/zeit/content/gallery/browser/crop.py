@@ -38,11 +38,12 @@ class Imp(zeit.crop.browser.crop.ImpBase):
         index = [e.__name__ for e in self.original_entries].index(
             self.context.__name__)
         new_index = index + offset
-        if new_index >= 0:
-            try:
-                return self.original_entries[new_index]
-            except KeyError:
-                pass
+        if new_index < 0:
+            return None
+        try:
+            return self.original_entries[new_index]
+        except KeyError:
+            pass
 
 
 class ImageBar(zeit.crop.browser.crop.ImageBar):

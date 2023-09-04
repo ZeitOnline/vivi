@@ -23,11 +23,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <label for="avid" tal:condition="audio"
           i18n:translate="">Audio Id</label>
           <input
-            id="avid" type="text" 
+            id="avid" type="text"
             tal:attributes="class python:'object-reference' if kind =='video' else ''"
             />
-        <input 
-          name="browseObjects" type="button" value="…" 
+        <input
+          name="browseObjects" type="button" value="…"
           tal:condition="video"
           />
       </div>

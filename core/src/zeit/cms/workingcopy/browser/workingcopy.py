@@ -41,13 +41,13 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase):
                 css_class.append('type-' + list_repr.type)
             if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj):
                 css_class.append('reference')
-            result.append(dict(
-                css_class=' '.join(css_class),
-                obj=obj,
-                title=list_repr.title or list_repr.__name__,
-                uniqueId=list_repr.uniqueId,
-                url=list_repr.url,
-            ))
+            result.append({
+                'css_class': ' '.join(css_class),
+                'obj': obj,
+                'title': list_repr.title or list_repr.__name__,
+                'uniqueId': list_repr.uniqueId,
+                'url': list_repr.url,
+            })
         return result
 
 

@@ -21,7 +21,7 @@ class Checkout(zeit.cms.browser.view.Base):
         try:
             checked_out = self.manager.checkout()
             self.send_message(_('"${name}" has been checked out.',
-                                mapping=dict(name=self.context.__name__)))
+                                mapping={'name': self.context.__name__}))
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             # if the failure is because the object is already checked out,
             # we'll just use that one instead of complaining
@@ -34,7 +34,7 @@ class Checkout(zeit.cms.browser.view.Base):
             if checked_out is None:
                 raise
             self.send_message(_('"${name}" was already checked out.',
-                                mapping=dict(name=self.context.__name__)))
+                                mapping={'name': self.context.__name__}))
 
         new_view = None
         came_from = self.request.form.get('came_from')
@@ -77,10 +77,10 @@ class CheckinAndRedirect:
             if ignore_conflicts:
                 self.send_message(
                     _('"${name}" has been checked in. Conflicts were ignored.',
-                      mapping=dict(name=checked_in.__name__)))
+                      mapping={'name': checked_in.__name__}))
             else:
                 self.send_message(_('"${name}" has been checked in.',
-                                    mapping=dict(name=checked_in.__name__)))
+                                    mapping={'name': checked_in.__name__}))
             return self._handle_checked_in(checked_in)
 
     def _handle_checked_in(self, checked_in):
@@ -105,7 +105,7 @@ class CheckinAndRedirect:
             raise zeit.cms.repository.interfaces.ConflictError(
                 self.context.uniqueId,
                 _('There was a conflict while adding ${name}',
-                  mapping=dict(name=self.context.uniqueId)))
+                  mapping={'name': self.context.uniqueId}))
         view = zope.component.getMultiAdapter(
             (self.context, self.request),
             zope.browser.interfaces.IBrowserView,
@@ -160,11 +160,11 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
     def render(self):
         if ('checkin' in self.request.form or
                 'checkin-correction' in self.request.form):
-            self.checkin()
+            return self.checkin()
         elif 'delete' in self.request.form:
-            self.delete()
+            return self.delete()
         elif 'cancel' in self.request.form:
-            self.cancel()
+            return self.cancel()
         else:
             return super().render()
 
@@ -173,22 +173,22 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
             semantic_change = 'true'
         else:
             semantic_change = self.request.get('semantic_change', '')
-        self.redirect(self.url(
-            self.context, '@@checkin?%s' % urllib.parse.urlencode(dict(
-                came_from=self.request.get('came_from', ''),
-                ignore_conflicts='true',
-                semantic_change=semantic_change,
-            ))))
+        return self.redirect(self.url(
+            self.context, '@@checkin?%s' % urllib.parse.urlencode({
+                'came_from': self.request.get('came_from', ''),
+                'ignore_conflicts': 'true',
+                'semantic_change': semantic_change,
+            })))
 
     def delete(self):
         target = self.obj_in_repository
         if target is None:
             target = self.context.__parent__
         del self.context.__parent__[self.context.__name__]
-        self.redirect(self.url(target))
+        return self.redirect(self.url(target))
 
     def cancel(self):
-        self.redirect(self.url(
+        return self.redirect(self.url(
             self.context, '@@' + self.request.get('came_from', '')))
 
 

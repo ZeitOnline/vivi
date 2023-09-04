@@ -152,7 +152,7 @@ Returning location for <Content object at 0x...>
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
-         id="field.reference" name="field.reference" 
+         id="field.reference" name="field.reference"
          value="http://xml.zeit.de/content" />
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"
@@ -241,7 +241,7 @@ Returning location for <Content object at 0x...>
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
-         id="field.reference" name="field.reference" 
+         id="field.reference" name="field.reference"
          value="http://xml.zeit.de/foo" />
   <input title="Choose object" class="browse-objects" type="button" name="browseObjects" value="…" />
   <input title="Show object" class="show-referenced-object"

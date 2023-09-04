@@ -139,7 +139,7 @@ def update_image_reference_on_checkin(context, event):
 def image_references(context):
     images = zeit.content.image.interfaces.IImages(context, None)
     if images is None:
-        return
+        return None
     image = images.image
     if image is None:
         return ()

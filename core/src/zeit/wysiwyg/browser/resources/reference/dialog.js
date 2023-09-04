@@ -192,7 +192,7 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
                 alert("Could not load images.");
             }
         );
-        
+
     },
 
 });

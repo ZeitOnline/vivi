@@ -17,7 +17,7 @@
     tal:attributes="href string:${context/@@absolute_url}/@@raw">
     <img tal:replace="structure context/@@preview/tag" />
   </a>
-  
+
   <ol class="image-copyright">
     <li tal:define="copyright view/copyright" tal:condition="view/copyright">
       <span tal:replace="copyright/copyright">ZEIT</span> /

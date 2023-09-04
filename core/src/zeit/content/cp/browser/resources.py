@@ -48,7 +48,7 @@ class RemoteURLResource(fanstatic.core.Renderable, fanstatic.core.Dependable):
         self.library = library
         self.url = url
         # Conform to fanstatic.core.Resource API
-        self.resources = set([self])
+        self.resources = {self}
         self.order, self.renderer = fanstatic.core.inclusion_renderers['.css']
         self.relpath = os.path.basename(url)
 

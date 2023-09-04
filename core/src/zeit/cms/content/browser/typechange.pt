@@ -18,7 +18,7 @@
         tal:attributes="action request/URL">
         <tal:repeat repeat="item view/adapters">
           <label>
-            <input type="radio" name="newtype" 
+            <input type="radio" name="newtype"
               tal:attributes="value item/resource_type"/>
             <img tal:replace="structure item/content/@@zmi_icon | nothing"/>
             <span tal:content="item/resource_type" />
@@ -26,7 +26,7 @@
           <br/>
         </tal:repeat>
         <div class="form-controls">
-          <input type="submit" class="button" 
+          <input type="submit" class="button"
             name="form.actions.changetype" value="Change type"
             i18n:attributes="value" />
         </div>

@@ -35,7 +35,5 @@ class Insert(zeit.cms.browser.view.Base):
         new_obj = self.context[new_name]
         self.send_message(
             _('${source} was copied to ${target}.',
-              mapping=dict(
-                  source=unique_id,
-                  target=new_obj.uniqueId)))
+              mapping={'source': unique_id, 'target': new_obj.uniqueId}))
         self.redirect(self.url(new_obj))

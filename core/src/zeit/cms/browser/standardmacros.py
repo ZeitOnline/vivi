@@ -36,7 +36,7 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
     @property
     def type_declaration(self):
         no_type = type(
-            'NoTypeDeclaration', (object,), dict(type_identifier='unknown'))
+            'NoTypeDeclaration', (object,), {'type_identifier': 'unknown'})
         return zeit.cms.interfaces.ITypeDeclaration(self.context, no_type)
 
     @property

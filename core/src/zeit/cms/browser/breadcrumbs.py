@@ -34,28 +34,23 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
             ressort_id = 'http://xml.zeit.de/%s' % (context.ressort.lower())
             url = self.cms_url(ressort_id)
             if url:
-                result.append(dict(
-                    title=context.ressort,
-                    url=url,
-                    uniqueId=None))
+                result.append({
+                    'title': context.ressort,
+                    'url': url, 'uniqueId': None})
 
         if context.sub_ressort:
             sub_ressort_id = '%s/%s' % (
                 ressort_id, context.sub_ressort.lower())
             url = self.cms_url(sub_ressort_id)
             if url:
-                result.append(dict(
-                    title=context.sub_ressort,
-                    url=url,
-                    uniqueId=None))
+                result.append({
+                    'title': context.sub_ressort,
+                    'url': url, 'uniqueId': None})
 
         name = self.content_name(context)
         url = self.url(context)
         unique_id = getattr(context, 'uniqueId', None)
-        result.append(dict(
-            title=name,
-            url=url,
-            uniqueId=unique_id))
+        result.append({'title': name, 'url': url, 'uniqueId': unique_id})
 
         return result
 
@@ -77,10 +72,8 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
                 break
             title = self.content_name(item)
             uniqueId = getattr(item, 'uniqueId', None)
-            result.append(
-                dict(title=title,
-                     url=self.url(item),
-                     uniqueId=uniqueId))
+            result.append({
+                'title': title, 'url': self.url(item), 'uniqueId': uniqueId})
 
         result.reverse()
         return result

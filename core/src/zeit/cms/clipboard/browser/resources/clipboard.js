@@ -92,7 +92,7 @@ zeit.cms.Clipboard = Class.extend({
                 alert("Could not finish drop: " + repr(MochiKit.Base.items(error.req)))
                 return error
             });
-        
+
     },
 
     handleBeforeTreeChange: function(event) {
@@ -129,7 +129,7 @@ zeit.cms.Clipboard = Class.extend({
         var d = doSimpleXMLHttpRequest(
             this.base_url + '/@@addContainer', {
                 'title': title});
-        d.addCallbacks( 
+        d.addCallbacks(
             function(result) {
                 dnd.tree.replaceTree(result.responseText);
                 dnd.hideAddBox();

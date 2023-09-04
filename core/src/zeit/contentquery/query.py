@@ -86,6 +86,8 @@ class ElasticsearchContentQuery(ContentQuery):
 
             return sort_orders
 
+        return None
+
     def __call__(self):
         self.total_hits = 0
         result = []

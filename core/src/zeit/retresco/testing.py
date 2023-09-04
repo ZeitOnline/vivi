@@ -80,7 +80,7 @@ class TMSMockLayer(plone.testing.Layer):
         registry = zope.component.getGlobalSiteManager()
         self['old_tms'] = registry.queryUtility(zeit.retresco.interfaces.ITMS)
         self['tms_mock'] = mock.Mock()
-        self['tms_mock'].primary = dict(url='http://tms.example.com')
+        self['tms_mock'].primary = {'url': 'http://tms.example.com'}
         self['tms_mock'].get_article_topiclinks.return_value = []
         registry.registerUtility(
             self['tms_mock'], zeit.retresco.interfaces.ITMS)

@@ -70,13 +70,13 @@
   <browser:page
     for="zeit.cms.content.interfaces.ICommonMetadata"
     permission="zope.View"
-    template="common_metadata_preview.pt" 
+    template="common_metadata_preview.pt"
     name="metadata_preview"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
 
   <adapter factory=".commonmetadata.CommonMetadataListRepresentation" />
-  
+
   <!-- Type change -->
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"

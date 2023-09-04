@@ -275,7 +275,8 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
         self.context = context
         self.update(self.parse(context.xml))
         self[self.ID_PROPERTY] = '{%s}' % uuid.UUID(
-            hashlib.md5(context.uniqueId.encode('utf-8')).hexdigest()).urn
+            hashlib.md5(context.uniqueId.encode('utf-8'),
+                        usedforsecurity=False).hexdigest()).urn
 
     # XXX zeit.cms.content.xmlsupport.PropertyToXMLAttribute violates
     # the contract by assuming that IWebDAVProperties of IRepositoryContent

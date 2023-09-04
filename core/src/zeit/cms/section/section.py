@@ -77,6 +77,7 @@ def find_folder_section(context):
     for iface in zope.interface.providedBy(candidate):
         if issubclass(iface, ISection):
             return iface
+    return None
 
 
 def parent_folder(content):

@@ -107,9 +107,9 @@ class DynamicCombinationWidget(
             except (TypeError, AttributeError):
                 value = missing_value
             # patched
-            # else:
-            #     if len_value != len(field.fields):
-            #         value = missing_value
+            # | else:
+            # |    if len_value != len(field.fields):
+            # |        value = missing_value
         if value is not missing_value:
             hasInput = self.hasInput()
             for w, v in map(lambda *args: args, self.widgets, value):
@@ -138,7 +138,7 @@ class DynamicCombinationWidget(
             try:
                 val = w.getInputValue()
             except zope.formlib.interfaces.WidgetInputError as e:
-                if isinstance(getattr(e, 'errors'),
+                if isinstance(getattr(e, 'errors'),  # noqa
                               zope.schema.interfaces.RequiredMissing):
                     required_errors.append((w, e))
                 else:
@@ -154,7 +154,7 @@ class DynamicCombinationWidget(
         if field.required or any or errors:
             errors.extend(required_errors)
         else:  # remove the required errors in the sub widgets
-            for w, e in required_errors:
+            for w, _e in required_errors:
                 w.error = lambda: None
         if errors:
             if len(errors) == 1:

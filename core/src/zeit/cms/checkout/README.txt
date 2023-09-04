@@ -128,7 +128,7 @@ Checking in
 ===========
 
 Checking in means removing an object from the working copy and "putting it
-back" into the repository. 
+back" into the repository.
 
 Get the object we cecked out above from the working copy and modify it:
 
@@ -180,7 +180,7 @@ we can check it out again:
 True
 >>> manager = ICheckinManager(content)
 >>> manager.canCheckin
-False 
+False
 >>> import zope.app.locking.interfaces
 >>> lockable = zope.app.locking.interfaces.ILockable(content)
 >>> lockable.locked()

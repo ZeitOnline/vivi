@@ -12,13 +12,13 @@
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class="zope.app.folder.folder.Folder" />
   </class>
-  
+
   <adapter factory=".workingcopy.principalAdapter" />
   <adapter factory=".workingcopy.workingcopy_for_current_principal" />
 
   <!-- traversing  workingcopy location -->
- 
-  <adapter 
+
+  <adapter
     factory="z3c.traverser.traverser.PluggableTraverser"
     for=".interfaces.IWorkingcopyLocation
          zope.publisher.interfaces.IPublisherRequest"
@@ -30,10 +30,10 @@
          zope.publisher.interfaces.IPublisherRequest"
     provides="z3c.traverser.interfaces.ITraverserPlugin"
      />
-  
+
   <!-- traversing workingcopies -->
 
-  <adapter 
+  <adapter
     factory="z3c.traverser.traverser.PluggableTraverser"
     for=".interfaces.IWorkingcopy
          zope.publisher.interfaces.IPublisherRequest"

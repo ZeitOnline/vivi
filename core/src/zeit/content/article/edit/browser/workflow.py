@@ -96,7 +96,7 @@ class CheckinErrors:
             title = field.title
             if isinstance(title, zope.i18n.Message):
                 title = zope.i18n.translate(title, context=self.request)
-            result.append(dict(name=title, snippet=view.snippet()))
+            result.append({'name': title, 'snippet': view.snippet()})
         return result
 
 

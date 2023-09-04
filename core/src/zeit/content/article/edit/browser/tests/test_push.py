@@ -72,8 +72,7 @@ class MobileFormTest(zeit.content.article.testing.BrowserTestCase):
             '...<div class="output">Author push enabled...', b.contents)
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        push.set(
-            dict(type='mobile', variant='automatic-author'), enabled=True)
+        push.set({'type': 'mobile', 'variant': 'automatic-author'}, enabled=True)
         self.open_form()
         self.assertEllipsis(
             '...<div class="output">Author push enabled...', b.contents)

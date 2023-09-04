@@ -3,7 +3,7 @@
   <tal:messages tal:define="messages view/messages">
 
     <div id="messages_toggle"
-         class="staticErrorText" 
+         class="staticErrorText"
          tal:attributes="class view/css_class"
          i18n:translate="notices_label">
         Notices
@@ -20,9 +20,9 @@
       </ul>
 
       <p id="messages_counter" tal:condition="messages" i18n:translate="">
-          Hides automatically 
+          Hides automatically
       </p>
-      <div class="hideText" tal:condition="messages" 
+      <div class="hideText" tal:condition="messages"
            i18n:translate="">
         hide
       </div>

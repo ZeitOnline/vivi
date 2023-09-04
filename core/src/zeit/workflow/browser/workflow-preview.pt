@@ -2,7 +2,7 @@
   <table>
     <tbody>
       <tr tal:repeat="widget view/widgets">
-        <th 
+        <th
           i18n:translate=""
           tal:content="widget/label">
           Edited
@@ -11,6 +11,6 @@
           yes
         </td>
       </tr>
-    </tbody> 
+    </tbody>
   </table>
 </div>

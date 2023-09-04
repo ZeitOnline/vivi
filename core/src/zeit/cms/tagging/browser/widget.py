@@ -101,11 +101,9 @@ class UpdateTags(zeit.cms.browser.view.JSON):
         tagger = zeit.cms.tagging.interfaces.ITagger(self.context)
         tagger.update()
         zope.lifecycleevent.modified(self.context)
-        return dict(tags=[
-            dict(code=tag.uniqueId,
-                 label=tag.title,
-                 pinned=tag.pinned)
-            for tag in tagger.values()])
+        return {'tags': [
+            {'code': tag.uniqueId, 'label': tag.title, 'pinned': tag.pinned}
+            for tag in tagger.values()]}
 
 
 class TagsWithTopicpages(zeit.cms.browser.view.JSON):

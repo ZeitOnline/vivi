@@ -10,7 +10,7 @@
     <div class="recension"
       tal:condition="view/recensions"
       tal:repeat="recension view/recensions">
-  
+
       <div class="recensionheader">
         <span i18n:translate="">Bibliography</span>
         <span tal:content="repeat/recension/number">0</span>
@@ -37,7 +37,7 @@
 				[edit]
 			  </a>
 			</span>
-		</tal:con>	
+		</tal:con>
       </div>
 
       <div class="recensionbody">

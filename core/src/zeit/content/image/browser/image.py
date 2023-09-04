@@ -63,15 +63,15 @@ class ImageView(zeit.cms.browser.view.Base):
     @property
     def copyright(self):
         if not self.metadata.copyright:
-            return
+            return None
         copyright, company, company_text, url, nofollow = (
             self.metadata.copyright)
-        return dict(
-            copyright=copyright,
-            company=company,
-            company_text=company_text,
-            url=url,
-            nofollow=nofollow)
+        return {
+            'copyright': copyright,
+            'company': company,
+            'company_text': company_text,
+            'url': url,
+            'nofollow': nofollow}
 
 
 class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):

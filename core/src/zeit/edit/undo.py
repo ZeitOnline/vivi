@@ -42,7 +42,7 @@ class Undo(grok.Adapter):
                 continue
             description = entry['description'].replace(
                 UNDOABLE_TRANSACTION, '', 1)
-            result.append(dict(tid=entry['tid'], description=description))
+            result.append({'tid': entry['tid'], 'description': description})
         return result
 
     def revert(self, tid):

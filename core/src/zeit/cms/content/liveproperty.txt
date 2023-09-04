@@ -104,7 +104,7 @@ Duplicate writes
 When a live property is set to the value it currently has, there is no WebDAV
 request:
 
->>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector) 
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 >>> change_properties = connector.changeProperties
 >>> def printing_change_props(id, properties):
 ...     print('Change: %s %s' % (id, properties))

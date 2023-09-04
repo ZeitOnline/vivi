@@ -26,15 +26,15 @@
     />
   <unauthenticatedGroup
     id="zope.Anybody"
-    title="Unauthenticated Users" 
+    title="Unauthenticated Users"
     />
   <authenticatedGroup
     id="zope.Authenticated"
-    title="Authenticated Users" 
+    title="Authenticated Users"
     />
   <everybodyGroup
     id="zope.Everybody"
-    title="All Users" 
+    title="All Users"
     />
 
   <!-- Principal grants -->
@@ -223,7 +223,7 @@
   <grant
     role="zeit.Producer"
     permission="zeit.MaterializeContent"
-    /> 
+    />
 
 
   <!-- CvD grants -->

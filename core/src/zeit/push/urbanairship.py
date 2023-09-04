@@ -96,11 +96,10 @@ class Connection:
                     'Semantic error during push to %s with payload %s',
                     base_url, push, exc_info=True)
                 raise zeit.push.interfaces.WebServiceError(str(e))
-            else:
-                log.error(
-                    'Technical error during push to %s with payload %s',
-                    base_url, push, exc_info=True)
-                raise zeit.push.interfaces.TechnicalError(str(e))
+            log.error(
+                'Technical error during push to %s with payload %s',
+                base_url, push, exc_info=True)
+            raise zeit.push.interfaces.TechnicalError(str(e))
 
 
 class Message(zeit.push.message.Message):

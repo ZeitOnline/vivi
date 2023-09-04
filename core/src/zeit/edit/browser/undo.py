@@ -40,8 +40,8 @@ class Revert(zeit.edit.browser.view.Action):
         for entry in undo.history:
             if entry['tid'] == tid:
                 self.undo_description = _(
-                    'revert up to "${action}"', mapping=dict(
-                        action=entry['description']))
+                    'revert up to "${action}"',
+                    mapping={'action': entry['description']})
                 break
 
         undo.revert(tid)

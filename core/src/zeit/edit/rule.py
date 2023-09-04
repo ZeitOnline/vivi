@@ -59,7 +59,7 @@ class Rule:
         )
 
         try:
-            eval(self.code, globs)
+            eval(self.code, globs)  # noqa
         except Break:
             pass
         except ZODB.POSException.ConflictError:
