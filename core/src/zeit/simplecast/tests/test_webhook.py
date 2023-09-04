@@ -63,7 +63,7 @@ def episode_info():
 
 
 @pytest.fixture(autouse=True)
-def make_task_run_in_foreground(monkeypatch):
+def _make_task_run_in_foreground(monkeypatch):
     monkeypatch.setattr(
         zeit.simplecast.json.webhook.Notification, "background", False)
 
