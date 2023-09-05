@@ -64,6 +64,8 @@ class SocialBase(Base):
         self.set_charlimit('short_text')
         self.set_charlimit('twitter_print_text')
         self.set_charlimit('twitter_ressort_text')
+        if self.request.form.get('%s.twitter_main_enabled' % self.prefix):
+            self._set_widget_required('short_text')
 
 
 class MobileBase(Base):
