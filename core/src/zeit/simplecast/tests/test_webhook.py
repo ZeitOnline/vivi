@@ -52,14 +52,21 @@ def episode_url():
     return f'https://testapi.simplecast.com/episodes/{episode_id()}'
 
 
+@pytest.fixture(autouse=True)
+def _make_task_run_in_foreground(monkeypatch):
+    monkeypatch.setattr(
+        zeit.simplecast.json.webhook.Notification, "background", False)
+
+
 class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
-    def test_webhook_environment(self):
-        notification = zeit.simplecast.json.webhook.Notification()
-        self.assertEqual(notification.environment, "testing")
 
     @pytest.fixture(autouse=True)
     def _caplog(self, caplog):
         self.caplog = caplog
+
+    def test_webhook_environment(self):
+        notification = zeit.simplecast.json.webhook.Notification()
+        self.assertEqual(notification.environment, "testing")
 
     def test_body_result(self):
         self.caplog.clear()
