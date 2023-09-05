@@ -8,7 +8,6 @@ import zeit.push.facebook
 import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
-import requests
 
 
 class FacebookTest(zeit.push.testing.TestCase):
@@ -25,10 +24,6 @@ class FacebookTest(zeit.push.testing.TestCase):
         self.api = fb.graph.api(self.access_token)
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
-
-        URL = 'https://graph.facebook.com?access_token=' + self.access_token
-        self.current_api_version = float(
-            requests.head(URL).headers['facebook-api-version'][1:])
 
     # Only relevant for the test_send_posts_status test
     def tearDown(self):
