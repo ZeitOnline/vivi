@@ -204,7 +204,7 @@ class Connector:
                 data.seek(0)
                 with zeit.cms.tracing.use_span(
                         __name__ + '.tracing', 'gcs', attributes={
-                        'db.operation': 'upload', 'id': id,
+                        'db.operation': 'upload', 'id': props.id,
                         'size': str(size)}):
                     blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
             else:
@@ -237,7 +237,7 @@ class Connector:
             blob = self.bucket.blob(props.id)
             with zeit.cms.tracing.use_span(
                     __name__ + '.tracing', 'gcs', attributes={
-                    'db.operation': 'delete', 'id': id}):
+                    'db.operation': 'delete', 'id': props.id}):
                 try:
                     blob.delete()
                 except google.api_core.exceptions.NotFound:
