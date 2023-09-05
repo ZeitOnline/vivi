@@ -1,3 +1,5 @@
+import celery.result
+import celery.states
 import json
 import logging
 import zope.app.appsetup.product
@@ -14,6 +16,14 @@ class Notification:
     webhook in the Simplecast API, and _they_ will call it each time a
     podcast or episode is added/changed/deleted.
     """
+
+    background = True  # Set/patch this to False in tests
+
+    @property
+    def _principal(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.simplecast')
+        return config['principal']
 
     @property
     def environment(self):
@@ -32,38 +42,53 @@ class Notification:
 
         body = json.loads(body).get('data')
 
-        simplecast = zope.component.getUtility(
-            zeit.simplecast.interfaces.ISimplecast)
+        self.execute_task(
+            body, queue='simplecast', background=self.background)
 
-        if body.get('event') == 'episode_created':
-            log.info('Create episode from simplecast request.')
-            info = simplecast.fetch_episode(body.get('episode_id'))
-            container = simplecast.folder(info['created_at'])
-            audio = zeit.content.audio.audio.add_audio(container, info)
-            log.info('Audio %s successfully created.', audio.uniqueId)
-
-        elif body.get('event') == 'episode_updated':
-            log.info('Update episode from simplecast request.')
-            info = simplecast.fetch_episode(body.get('episode_id'))
-            container = simplecast.folder(info['created_at'])
-            if container is not None:
-                with zeit.cms.checkout.helper.checked_out(
-                        container[body.get('episode_id')]) as episode:
-                    episode.update(info)
-                    log.info(
-                        'Audio %s successfully updated.', episode.uniqueId)
-
-        elif body.get('event') == 'episode_deleted':
-            log.info('Delete episode from simplecast request.')
-            audio = simplecast.find_existing_episode(body.get('episode_id'))
-            if audio:
-                uniqueId = audio.uniqueId
-                zeit.content.audio.audio.remove_audio(audio)
-                log.info('Audio %s successfully deleted.', uniqueId)
-            else:
-                log.warning(
-                    'No podcast episode %s found. No episode deleted.',
-                    body.get('episode_id'))
-
+    def execute_task(self, body, queue, background):
+        if background:
+            SIMPLECAST_WEBHOOK_TASK.delay(
+                body, queue=queue, _principal_id_=self._principal)
         else:
             log.info('No episode processed.')
+            result = SIMPLECAST_WEBHOOK_TASK(body)
+            celery.result.EagerResult('eager', result, celery.states.SUCCESS)
+
+
+@zeit.cms.celery.task
+def SIMPLECAST_WEBHOOK_TASK(body):
+    simplecast = zope.component.getUtility(
+        zeit.simplecast.interfaces.ISimplecast)
+
+    if body.get('event') == 'episode_created':
+        log.info('Create episode from simplecast request.')
+        info = simplecast.fetch_episode(body.get('episode_id'))
+        container = simplecast.folder(info['created_at'])
+        audio = zeit.content.audio.audio.add_audio(container, info)
+        log.info('Audio %s successfully created.', audio.uniqueId)
+
+    elif body.get('event') == 'episode_updated':
+        log.info('Update episode from simplecast request.')
+        info = simplecast.fetch_episode(body.get('episode_id'))
+        container = simplecast.folder(info['created_at'])
+        if container is not None:
+            with zeit.cms.checkout.helper.checked_out(
+                    container[body.get('episode_id')]) as episode:
+                episode.update(info)
+                log.info(
+                    'Audio %s successfully updated.', episode.uniqueId)
+
+    elif body.get('event') == 'episode_deleted':
+        log.info('Delete episode from simplecast request.')
+        audio = simplecast.find_existing_episode(body.get('episode_id'))
+        if audio:
+            uniqueId = audio.uniqueId
+            zeit.content.audio.audio.remove_audio(audio)
+            log.info('Audio %s successfully deleted.', uniqueId)
+        else:
+            log.warning(
+                'No podcast episode %s found. No episode deleted.',
+                body.get('episode_id'))
+
+    else:
+        log.info('No episode processed.')
