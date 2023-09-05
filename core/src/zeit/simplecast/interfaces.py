@@ -3,7 +3,5 @@ import zope.interface
 
 class ISimplecast(zope.interface.Interface):
 
-    def get_episode(episode_id):
-        """
-        Request information about the episode from the simplecast API
-        """
+    def fetch_episode(self, episode_id):
+        """Request epiosde data from simplecast, return json body"""

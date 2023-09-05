@@ -1,10 +1,19 @@
 import logging
-import requests
 import grokcore.component as grok
+import pendulum
+import requests
 import zope.app.appsetup.product
+
+from zeit.connector.search import SearchVar
+
+import zeit.cms.repository.interfaces
+import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 
 log = logging.getLogger(__name__)
+
+
+AUDIO_ID = SearchVar('episode_id', zeit.content.audio.audio.AUDIO_SCHEMA_NS)
 
 
 @grok.implementer(zeit.simplecast.interfaces.ISimplecast)
@@ -15,17 +24,6 @@ class Simplecast(grok.GlobalUtility):
             'zeit.simplecast')
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
-
-    def get_episode(self, episode_id):
-        response = self._request('GET', f'episodes/{episode_id}')
-        try:
-            title = response.json()['title']
-            url = response.json()['audio_file_url']
-            duration = response.json()['duration']
-            return url, duration, title
-        except KeyError:
-            log.error('Episode information is not available.')
-            raise
 
     def _request(self, verb, path):
         url = f'{self.api_url}{path}'
@@ -41,3 +39,36 @@ class Simplecast(grok.GlobalUtility):
 
     def fetch_episode(self, episode_id):
         return self._request('GET', f'episodes/{episode_id}').json()
+
+    def folder(self, episode_create_at):
+        """Podcast should end up in this folder by default"""
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.simplecast')
+        podcasts = config['podcast-folder']
+        date_created = pendulum.parse(episode_create_at)
+        yyyy_mm = date_created.strftime('%Y-%m')
+        if podcasts not in repository:
+            repository[podcasts] = zeit.cms.repository.folder.Folder()
+        if yyyy_mm not in repository[podcasts]:
+            repository[podcasts][yyyy_mm] = zeit.cms.repository.folder.Folder()
+        return repository[podcasts][yyyy_mm]
+
+    def find_existing_episode(self, episode_id):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        result = list(connector.search(
+            [AUDIO_ID], (AUDIO_ID == str(episode_id))))
+        if not result:
+            return None
+        try:
+            content = zeit.cms.interfaces.ICMSContent(result[0][0])
+            log.debug('Audio %s found for %s.', content.uniqueId, episode_id)
+            return content
+        except TypeError as error:
+            log.error(
+                'Audio %s found for %s. But not found in DAV: %s',
+                result[0][0], episode_id, error
+            )
+            return None

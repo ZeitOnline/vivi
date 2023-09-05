@@ -13,6 +13,8 @@ import zeit.content.audio.interfaces
 
 log = logging.getLogger(__name__)
 
+AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
+
 
 @zope.interface.implementer(
     zeit.content.audio.interfaces.IAudio,
@@ -22,26 +24,12 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.audio.interfaces.IAudio,
-        'http://namespaces.zeit.de/CMS/audio',
+        AUDIO_SCHEMA_NS,
         ('title', 'episode_id', 'url'))
 
     def update(self, info):
         self.title = info['title']
         self.url = info['audio_file_url']
-
-
-def audio_container(create=False):
-    container_id = 'podcast-audio'
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
-    if container_id in repository:
-        log.info('Container %s found', container_id)
-        return repository[container_id]
-    if create:
-        log.info('Container %s created', container_id)
-        repository[container_id] = zeit.cms.repository.folder.Folder()
-        return repository[container_id]
-    return None
 
 
 def add_audio(container, info):

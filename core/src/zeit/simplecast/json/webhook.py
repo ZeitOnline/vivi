@@ -31,32 +31,39 @@ class Notification:
         log.info(body)
 
         body = json.loads(body).get('data')
-        log.info(body)
 
         simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
-        log.info('Simplecast utility %s', simplecast)
 
         if body.get('event') == 'episode_created':
             log.info('Create episode from simplecast request.')
             info = simplecast.fetch_episode(body.get('episode_id'))
-            container = zeit.content.audio.audio.audio_container(create=True)
-            zeit.content.audio.audio.add_audio(container, info)
+            container = simplecast.folder(info['created_at'])
+            audio = zeit.content.audio.audio.add_audio(container, info)
+            log.info('Audio %s successfully created.', audio.uniqueId)
 
         elif body.get('event') == 'episode_updated':
             log.info('Update episode from simplecast request.')
             info = simplecast.fetch_episode(body.get('episode_id'))
-            container = zeit.content.audio.audio.audio_container()
+            container = simplecast.folder(info['created_at'])
             if container is not None:
                 with zeit.cms.checkout.helper.checked_out(
                         container[body.get('episode_id')]) as episode:
                     episode.update(info)
+                    log.info(
+                        'Audio %s successfully updated.', episode.uniqueId)
 
         elif body.get('event') == 'episode_deleted':
             log.info('Delete episode from simplecast request.')
-            container = zeit.content.audio.audio.audio_container()
-            if container is not None:
-                zeit.content.audio.audio.remove_audio(
-                    container[body.get('episode_id')])
+            audio = simplecast.find_existing_episode(body.get('episode_id'))
+            if audio:
+                uniqueId = audio.uniqueId
+                zeit.content.audio.audio.remove_audio(audio)
+                log.info('Audio %s successfully deleted.', uniqueId)
+            else:
+                log.warning(
+                    'No podcast episode %s found. No episode deleted.',
+                    body.get('episode_id'))
+
         else:
             log.info('No episode processed.')
