@@ -1,7 +1,6 @@
 # coding: utf-8
 from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import fb
 import os
 import time
 import zeit.push.facebook
@@ -15,55 +14,49 @@ class FacebookTest(zeit.push.testing.TestCase):
     level = 2
 
     def setUp(self):
+        super().setUp()
         # Page access token for
         # <https://www.facebook.com/pages/Vivi-Test/721128357931123>,
         # created on 2014-07-16, expires in about 60 days, recreate with
         # ./work/maintenancejobs/bin/facebook-access-token
         self.access_token = os.environ['ZEIT_PUSH_FACEBOOK_ACCESS_TOKEN']
 
-        self.api = fb.graph.api(self.access_token)
+        self.api = zeit.push.facebook.Connection(
+            os.environ['ZEIT_PUSH_FACEBOOK_URL'])
         # repr keeps all digits  while str would cut them.
         self.nugget = repr(time.time())
 
     # Only relevant for the test_send_posts_status test
     def tearDown(self):
-        for status in self.api.get_object(
-                cat='single', id='me', fields=['feed'])['feed']['data']:
-            if 'message' in status and self.nugget in status['message']:
-                self.api.delete(id=status['id'])
-        self.api.con.close()
+        for status in self.api._request(
+                'GET', '/me/feed', self.access_token)['data']:
+            if self.nugget in status.get('message', ''):
+                self.api._request(
+                    'DELETE', f'/{status["id"]}', self.access_token)
+        super().tearDown()
 
     def test_send_posts_status(self):
-        facebook = zeit.push.facebook.Connection()
         with mock.patch(
              'zeit.push.interfaces.FacebookAccountSource.access_token') as tok:
             tok.return_value = self.access_token
-            facebook.send(
+            self.api.send(
                 'zeit.push.tests.faceboök %s' % self.nugget,
                 'http://example.com', account='fb-test')
 
-        for status in self.api.get_object(
-                cat='single', id='me', fields=['feed'])['feed']['data']:
-
+        for status in self.api._request(
+                'GET', '/me/feed', self.access_token)['data']:
             if self.nugget in status['message']:
-                post_id = status['id']
-
-                fields = ['message', 'attachments']
-                status = self.api.get_object(
-                    cat='single', id=post_id, fields=fields)
-
-                self.assertIn('example.com', status[
-                    'attachments']['data'][0]['target']['url'])
-
                 self.assertIn('faceboök', status['message'])
+                link = self.api._request(
+                    'GET', f'/{status["id"]}/attachments', self.access_token)
+                self.assertIn('example.com', link['data'][0]['target']['url'])
                 break
         else:
             self.fail('Status was not posted')
 
     def test_errors_should_raise(self):
-        facebook = zeit.push.facebook.Connection()
         with self.assertRaises(zeit.push.interfaces.TechnicalError) as e:
-            facebook.send('foo', '', account='fb_ressort_deutschland')
+            self.api.send('foo', '', account='fb_ressort_deutschland')
         self.assertIn('Invalid OAuth access token', str(e.exception))
 
 

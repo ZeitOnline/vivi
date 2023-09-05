@@ -25,7 +25,6 @@ setup(
         'collective.monkeypatcher',
         'commentjson',
         'elasticsearch >=7.16.0, <8.0.0',
-        'fb',
         'filetype',
         'gocept.cache >= 2.1',
         # XXX Should move to [ui], but is entrenched

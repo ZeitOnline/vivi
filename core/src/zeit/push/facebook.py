@@ -1,7 +1,6 @@
 # coding: utf-8
 from zeit.push.interfaces import facebookAccountSource
 import argparse
-import fb
 import grokcore.component as grok
 import logging
 import requests
@@ -17,18 +16,41 @@ log = logging.getLogger(__name__)
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Connection:
 
+    def __init__(self, url):
+        self.url = url
+
     def send(self, text, link, **kw):
         account = kw['account']
         access_token = facebookAccountSource.factory.access_token(account)
-
         log.debug('Sending %s, %s to %s', text, link, account)
-        fb_api = fb.graph.api(access_token)
-        result = fb_api.publish(
-            cat='feed', id='me', message=text.encode('utf-8'), link=link)
-        fb_api.con.close()
-        if 'error' in result:
-            # XXX Don't know how to differentiate technical and semantic errors
-            raise zeit.push.interfaces.TechnicalError(str(result['error']))
+        self._request('POST', '/me/feed', access_token, params={
+            'message': text.encode('utf-8'), 'link': link})
+
+    def _request(self, method, path, access_token, **kw):
+        kw.setdefault('params', {})['access_token'] = access_token
+        http = requests.Session()
+        try:
+            func = getattr(http, method.lower())
+            r = func(self.url + path, **kw)
+            if not r.ok:
+                r.reason = '%s (%s)' % (r.reason, r.text)
+            r.raise_for_status()
+
+            data = r.json()
+            if 'error' in data:
+                # XXX Don't know how to differentiate technical/semantic errors
+                raise zeit.push.interfaces.TechnicalError(str(data['error']))
+            return data
+        except requests.exceptions.RequestException as e:
+            raise zeit.push.interfaces.TechnicalError(str(e))
+        finally:
+            http.close()
+
+
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
+def from_product_config():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    return Connection(config['facebook-base-url'].rstrip('/'))
 
 
 class Message(zeit.push.message.Message):
@@ -128,9 +150,12 @@ def create_access_token(argv=None):
     #
     # Note: Since we used a long-lived user token, the page token will be
     # long-lived (~60 days), too.
-    user = fb.graph.api(long_lived_user_token)
-    accounts = user.get_object(cat='single', id='me', fields=['accounts'])
-    page_token = [x['access_token'] for x in accounts['accounts']['data']
+    r = requests.get('https://graph.facebook.com/me/accounts',
+                     params={'access_token': long_lived_user_token})
+    if 'error' in r.text:
+        print(r.text)
+        raise SystemExit(1)
+    page_token = [x['access_token'] for x in r.json()['data']
                   if x['name'] == options.page_name][0]
 
     print('Das Page Token für %s ist: %s' % (options.page_name, page_token))
