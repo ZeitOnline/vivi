@@ -1,5 +1,6 @@
 import logging
 import grokcore.component as grok
+import pendulum
 import requests
 import zope.app.appsetup.product
 
@@ -43,10 +44,11 @@ class Simplecast(grok.GlobalUtility):
         """Podcast should end up in this folder by default"""
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        podcasts = 'podcasts'
-        # Select year and month from string instead of parsing YYYY-MM with
-        # pendulum and converting it back to the correct format
-        yyyy_mm = episode_create_at[0:7]
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.simplecast')
+        podcasts = config['podcast-folder']
+        date_created = pendulum.parse(episode_create_at)
+        yyyy_mm = date_created.strftime('%Y-%m')
         if podcasts not in repository:
             repository[podcasts] = zeit.cms.repository.folder.Folder()
         if yyyy_mm not in repository[podcasts]:
@@ -59,7 +61,7 @@ class Simplecast(grok.GlobalUtility):
         result = list(connector.search(
             [AUDIO_ID], (AUDIO_ID == str(episode_id))))
         if not result:
-            return
+            return None
         try:
             content = zeit.cms.interfaces.ICMSContent(result[0][0])
             log.debug('Audio %s found for %s.', content.uniqueId, episode_id)
@@ -69,4 +71,4 @@ class Simplecast(grok.GlobalUtility):
                 'Audio %s found for %s. But not found in DAV: %s',
                 result[0][0], episode_id, error
             )
-            return
+            return None

@@ -5,6 +5,7 @@ product_config = """\
 <product-config zeit.simplecast>
   simplecast-url https://testapi.simplecast.com/
   simplecast-token TkQvZUd2MHRnR0UybFhsgTfs
+  podcast-folder podcasts
 </product-config>
 """
 
