@@ -40,7 +40,7 @@ class Notification:
 
     def execute_task(self, body, queue, background):
         if background:
-            SIMPLECAST_WEBHOOK_TASK.apply_async(body, queue=queue)
+            SIMPLECAST_WEBHOOK_TASK.apply_async((body,), queue=queue)
         else:
             result = SIMPLECAST_WEBHOOK_TASK(body)
             celery.result.EagerResult('eager', result, celery.states.SUCCESS)
