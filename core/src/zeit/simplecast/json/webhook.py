@@ -1,5 +1,3 @@
-import celery.result
-import celery.states
 import json
 import logging
 import zope.app.appsetup.product
@@ -16,8 +14,6 @@ class Notification:
     webhook in the Simplecast API, and _they_ will call it each time a
     podcast or episode is added/changed/deleted.
     """
-
-    background = True  # Set/patch this to False in tests
 
     @property
     def _principal(self):
@@ -45,15 +41,11 @@ class Notification:
         event = body.get('event')
 
         self.execute_task(
-            event=event, episode_id=episode_id, background=self.background)
+            event=event, episode_id=episode_id)
 
-    def execute_task(self, event, episode_id, background):
-        if background:
-            SIMPLECAST_WEBHOOK_TASK.delay(
-                event, episode_id, _principal_id_=self._principal)
-        else:
-            result = SIMPLECAST_WEBHOOK_TASK(event, episode_id)
-            celery.result.EagerResult('eager', result, celery.states.SUCCESS)
+    def execute_task(self, event, episode_id):
+        SIMPLECAST_WEBHOOK_TASK.delay(
+            event, episode_id, _principal_id_=self._principal)
 
 
 @zeit.cms.celery.task(queue='simplecast')
