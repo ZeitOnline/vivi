@@ -81,7 +81,7 @@ class ZEOInstrumentor(BaseInstrumentor):
 def apply_samplerate(*args, **kw):
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     zeo = logging.getLogger(__name__)
-    if random.randint(1, 100) <= int(config.get('samplerate-zeo', 0)):
+    if random.random() <= 1 / int(config.get('samplerate-zeo', 1)):
         zeo.setLevel(logging.DEBUG)
     else:
         zeo.setLevel(logging.NOTSET)
