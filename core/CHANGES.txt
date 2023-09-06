@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.14 (2023-09-06)
+--------------------
+
+- ZO-3744: Move simplecast webhook duties to celery tasks
+
+
 5.29.13 (2023-09-06)
 --------------------
 
