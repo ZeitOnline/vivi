@@ -262,9 +262,8 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
                            self.attribute,
                            xml.sax.saxutils.quoteattr(value)))
         if not nodes:
-            return (None, None)
-        node = nodes[0]
-        return node.get('token')
+            return 'invalid'
+        return nodes[0].get('token')
 
 
 facebookAccountSource = FacebookAccountSource()
