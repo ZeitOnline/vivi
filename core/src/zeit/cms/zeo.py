@@ -41,7 +41,7 @@ class ZEOInstrumentor(BaseInstrumentor):
                         'zeit.cms')
                     with tracer.start_as_current_span(
                             'ZEO ' + operation, attributes={
-                                'type': 'client', 'db.transaction': tid,
+                                'span.kind': 'client', 'db.transaction': tid,
                                 'SampleRate': config['samplerate-zeo']}):
                         return wrapped_call(method, *args, **kw)
                 else:
