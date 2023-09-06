@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.12 (2023-09-06)
+--------------------
+
+- ZO-3578: Simplecast audios are automatically saved in the correct folder
+
+- ZO-3758: Allow configuring facebook graph api version
+
+
+FIX:
+- ZO-3438: correct id type for opentelemetry span to avoid errormessages in logs
+
+
 5.29.11 (2023-08-31)
 --------------------
 

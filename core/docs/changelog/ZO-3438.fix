@@ -1,1 +1,0 @@
-ZO-3438: correct id type for opentelemetry span to avoid errormessages in logs
