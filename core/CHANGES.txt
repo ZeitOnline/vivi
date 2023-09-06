@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.13 (2023-09-06)
+--------------------
+
+- ZO-3758: Remove fb library remnants
+
+
 5.29.12 (2023-09-06)
 --------------------
 
