@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-import fb
 import gocept.form.grouped
 import requests
 import urllib.parse
@@ -92,11 +91,13 @@ class GenerateToken(zeit.cms.browser.view.Base):
         #
         # Note: Since we used a long-lived user token, the page token will be
         # long-lived (~60 days), too.
-        user = fb.graph.api(long_lived_user_token)
-        accounts = user.get_object(cat='single', id='me', fields=['accounts'])
-        self.page_token = [
-            x['access_token'] for x in accounts['accounts']['data']
-            if x['name'] == self.settings['page_name']][0]
+        r = requests.get('https://graph.facebook.com/me/accounts',
+                         params={'access_token': long_lived_user_token})
+        if 'error' in r.text:
+            print(r.text)
+            raise SystemExit(1)
+        self.page_token = [x['access_token'] for x in r.json()['data']
+                           if x['name'] == self.settings['page_name']][0]
 
         return super().__call__()
 
