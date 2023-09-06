@@ -6,6 +6,7 @@ product_config = """\
   simplecast-url https://testapi.simplecast.com/
   simplecast-token TkQvZUd2MHRnR0UybFhsgTfs
   podcast-folder podcasts
+  principal zope.simplecast
 </product-config>
 """
 
