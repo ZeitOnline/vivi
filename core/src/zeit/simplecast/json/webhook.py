@@ -3,7 +3,6 @@ import logging
 import zope.app.appsetup.product
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
-import zeit.cms.checkout.helper
 import zope.component
 
 log = logging.getLogger(__name__)
@@ -55,33 +54,15 @@ def SIMPLECAST_WEBHOOK_TASK(event, episode_id):
 
     if event == 'episode_created':
         log.info('Create episode from simplecast request.')
-        info = simplecast.fetch_episode(episode_id)
-        container = simplecast.folder(info['created_at'])
-        audio = zeit.content.audio.audio.add_audio(container, info)
-        log.info('Audio %s successfully created.', audio.uniqueId)
+        simplecast.create_episode(episode_id)
 
     elif event == 'episode_updated':
         log.info('Update episode from simplecast request.')
-        info = simplecast.fetch_episode(episode_id)
-        container = simplecast.folder(info['created_at'])
-        if container is not None:
-            with zeit.cms.checkout.helper.checked_out(
-                    container[episode_id]) as episode:
-                episode.update(info)
-                log.info(
-                    'Audio %s successfully updated.', episode.uniqueId)
+        simplecast.update_episode(episode_id)
 
     elif event == 'episode_deleted':
         log.info('Delete episode from simplecast request.')
-        audio = simplecast.find_existing_episode(episode_id)
-        if audio:
-            uniqueId = audio.uniqueId
-            zeit.content.audio.audio.remove_audio(audio)
-            log.info('Audio %s successfully deleted.', uniqueId)
-        else:
-            log.warning(
-                'No podcast episode %s found. No episode deleted.',
-                episode_id)
+        simplecast.delete_episode(episode_id)
 
     else:
         log.info('No episode processed.')
