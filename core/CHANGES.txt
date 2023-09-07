@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.29.15 (2023-09-07)
+--------------------
+
+- ZO-215: Add a content landing zone to the edit tab of local-teaser
+
+
 5.29.14 (2023-09-06)
 --------------------
 
