@@ -1,7 +1,6 @@
 from cryptography.fernet import Fernet
 import contextlib
 import importlib.metadata
-import logging
 import opentelemetry.trace
 import os
 import re
@@ -133,9 +132,12 @@ def stdout_tracer():
 
 
 def start_span(module, *args, **kw):
-    if logging.getLogger(module).isEnabledFor(logging.DEBUG):
+    samplerate = opentelemetry.context.get_value(module)
+    if samplerate:
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-        return tracer.start_span(*args, **kw)
+        span = tracer.start_span(*args, **kw)
+        span.set_attribute('SampleRate', samplerate)
+        return span
     else:
         return opentelemetry.trace.INVALID_SPAN
 

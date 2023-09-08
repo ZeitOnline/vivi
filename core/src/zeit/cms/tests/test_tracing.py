@@ -24,6 +24,12 @@ class TracerSmokeTest(zeit.cms.testing.ZeitCmsTestCase):
         with self.assertNothingRaised():
             zeit.cms.tracing.default_tracer()
 
-    def test_start_span_yields_nonrecording_according_to_loglevel(self):
+    def test_start_span_yields_nonrecording_according_to_context(self):
         span = zeit.cms.tracing.start_span('test.tracing', 'example')
         self.assertIsInstance(span, opentelemetry.trace.NonRecordingSpan)
+
+        context = opentelemetry.context.set_value('test.tracing', 42)
+        token = opentelemetry.context.attach(context)
+        span = zeit.cms.tracing.start_span('test.tracing', 'example')
+        self.assertEqual(42, span.attributes['SampleRate'])
+        opentelemetry.context.detach(token)
