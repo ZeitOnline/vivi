@@ -128,7 +128,8 @@ class Message(zeit.push.message.Message):
             'zon_link': self.url,
             'app_link': self.app_link,
             'image': self.image_url,
-            'author_push_uuids': self.author_push_uuids
+            'author_push_uuids': self.author_push_uuids,
+            'uuid': zeit.cms.content.interfaces.IUUID(self.context).shortened
         })
         return result
 
