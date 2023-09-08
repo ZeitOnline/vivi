@@ -81,6 +81,8 @@ class ZEOInstrumentor(BaseInstrumentor):
 def apply_samplerate(*args, **kw):
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     zeo = logging.getLogger(__name__)
+    # XXX It would be cleaner to use the otel context to transmit this
+    # information, but that's mechanically difficult due to attach/detach API.
     if random.random() <= 1 / int(config.get('samplerate-zeo', 1)):
         zeo.setLevel(logging.DEBUG)
     else:
