@@ -43,7 +43,8 @@
           "url": "{{zon_link}}?utm_campaign=eilmeldung&utm_content=zeitde_andpush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.andpush.link.x"
         },
         "priority": 2,
-        "title": "ZEIT ONLINE {{title}}"
+        "title": "ZEIT ONLINE {{title}}",
+        "uuid": "{{uuid if uuid is not none}}"
       }
     }
   },
@@ -74,7 +75,8 @@
           "url": "{{zon_link}}?utm_campaign=eilmeldung&utm_content=zeitde_iospush_link_x&utm_medium=fix&utm_source=push_zonaudev_int&wt_zmc=fix.int.zonaudev.push.eilmeldung.zeitde.iospush.link.x"
         },
         "sound": "chime.aiff",
-        "title": "{{article.title}}"
+        "title": "{{article.title}}",
+        "uuid": "{{uuid if uuid is not none}}"
       }
     }
   },

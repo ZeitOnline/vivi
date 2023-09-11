@@ -52,6 +52,9 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 self.assertEqual(
                     'Rückkehr der Warlords',
                     android['notification']['android']['extra']['headline'])
+                self.assertEqual(
+                    '4850d936-a3b7-4ff0-8434-57d26ca7521b',
+                    android['notification']['android']['uuid'])
 
                 ios = push.call_args[0][0][1]
                 self.assertEqual(['ios'], ios['device_types'])
@@ -65,6 +68,9 @@ class ConnectionTest(zeit.push.testing.TestCase):
                 self.assertEqual(
                     'Rückkehr der Warlords',
                     ios['notification']['ios']['title'])
+                self.assertEqual(
+                    '4850d936-a3b7-4ff0-8434-57d26ca7521b',
+                    ios['notification']['ios']['uuid'])
 
                 open_slack = push.call_args[0][0][2]
                 self.assertEqual(['open::slack'], open_slack['device_types'])
