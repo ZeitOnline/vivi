@@ -6,6 +6,7 @@ import zope.app.appsetup.product
 
 from zeit.connector.search import SearchVar
 
+import zeit.cms.checkout.helper
 import zeit.cms.repository.interfaces
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
@@ -72,3 +73,30 @@ class Simplecast(grok.GlobalUtility):
                 result[0][0], episode_id, error
             )
             return None
+
+    def create_episode(self, episode_id):
+        info = self.fetch_episode(episode_id)
+        container = self.folder(info['created_at'])
+        audio = zeit.content.audio.audio.add_audio(container, info)
+        log.info('Audio %s successfully created.', audio.uniqueId)
+
+    def update_episode(self, episode_id):
+        info = self.fetch_episode(episode_id)
+        container = self.folder(info['created_at'])
+        if container is not None:
+            with zeit.cms.checkout.helper.checked_out(
+                    container[episode_id]) as episode:
+                episode.update(info)
+                log.info(
+                    'Audio %s successfully updated.', episode.uniqueId)
+
+    def delete_episode(self, episode_id):
+        audio = self.find_existing_episode(episode_id)
+        if audio:
+            unique_id = audio.uniqueId
+            zeit.content.audio.audio.remove_audio(audio)
+            log.info('Audio %s successfully deleted.', unique_id)
+        else:
+            log.warning(
+                'No podcast episode %s found. No episode deleted.',
+                episode_id)
