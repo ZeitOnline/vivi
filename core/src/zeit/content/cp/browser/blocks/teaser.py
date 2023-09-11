@@ -51,6 +51,8 @@ class EditLayout:
 class EditCommon(zeit.content.cp.browser.view.EditBox):
 
     form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ITeaserBlock).select('references') +
         zeit.content.cp.browser.blocks.block.EditCommon.form_fields +
         zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ITeaserBlock).select(
