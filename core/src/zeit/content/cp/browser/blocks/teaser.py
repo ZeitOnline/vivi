@@ -1,7 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import grokcore.component as grok
-import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
@@ -50,30 +48,16 @@ class EditLayout:
         return result
 
 
-# XXX this cobbles together just enough to combine SubPageForm and GroupedForm
-class EditCommon(
-        zope.formlib.form.SubPageEditForm,
-        zeit.cms.browser.form.WidgetCSSMixin,
-        gocept.form.grouped.EditForm):
+class EditCommon(zeit.content.cp.browser.view.EditBox):
 
     form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ITeaserBlock).select('references') +
         zeit.content.cp.browser.blocks.block.EditCommon.form_fields +
         zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ITeaserBlock).select(
                 'force_mobile_image')
     )
-    widget_groups = ()
-    field_groups = (
-        gocept.form.grouped.RemainingFields(_(''), css_class='fullWidth'),
-    )
-
-    close = False
-
-    template = zope.browserpage.ViewPageTemplateFile('teaser.edit-common.pt')
-
-    @property
-    def form(self):
-        return ''  # our template uses the grouped-form macros instead
 
     def __call__(self):
         zope.interface.alsoProvides(
