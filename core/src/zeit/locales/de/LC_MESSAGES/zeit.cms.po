@@ -3292,7 +3292,7 @@ msgstr "limit-amount-description"
 
 #: zeit/content/cp/interfaces.py:627
 msgid "Referenced content"
-msgstr "Teaser bearbeiten"
+msgstr "Teaser"
 
 #: zeit/content/cp/interfaces.py:628
 msgid "Drag content here"
