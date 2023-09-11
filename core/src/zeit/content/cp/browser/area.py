@@ -171,7 +171,7 @@ class DynamicCombinationWidget(
         return values
 
 
-class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
+class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IArea).select(
@@ -215,12 +215,14 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
              ('reach_service', 'reach_section', 'reach_access', 'reach_age')),
     )
 
-    template = zope.browserpage.ViewPageTemplateFile(
-        'blocks/teaser.edit-common.pt')
-
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
         self.widgets['automatic'].reversed = False
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super().__call__()
 
 
 class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
