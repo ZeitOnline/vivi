@@ -99,6 +99,27 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
             'css=div.type-teaser')
         s.waitForElementPresent('css=div.supertitle')
 
+    def test_delete_content(self):
+        s = self.selenium
+        self.create_content_and_fill_clipboard()
+        self.create_teaserlist()
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/c1"]',
+            'css=div.type-teaser', '10,150')
+        s.waitForElementPresent(
+            '//div[@class="teaserTitle" and text() = "c1 teaser"]')
+
+        s.click('css=.type-teaser a.common-link')
+        s.waitForElementPresent('css=.edit-common-box')
+        s.waitForElementPresent('css=.object-details')
+        s.mouseMove('css=.object-details')
+        s.click('css=a[rel=remove]')
+        s.click('id=form.actions.apply')
+
+        s.click('css=a.CloseButton')
+        s.waitForElementNotPresent(
+            '//div[@class="teaserTitle" and text() = "c1 teaser"]')
+
     def test_toggle_visible(self):
         self.open_centerpage()
         s = self.selenium

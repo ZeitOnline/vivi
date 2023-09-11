@@ -75,7 +75,8 @@ class TeaserBlock(
     def references(self, value):
         for key in self.keys():
             self._remove_by_id(key)
-        self.append(value)
+        if value is not None:
+            self.append(value)
 
     TEASERBLOCK_FIELDS = (
         set(zope.schema.getFieldNames(
