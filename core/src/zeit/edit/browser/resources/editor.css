@@ -256,10 +256,10 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 #cp-content .lightbox .landing-zone {
   border: 1px solid #a6cc17;
-  height: 0.5em;
-  padding: 0;
-  margin: 0 1em;
+  height: auto;
+  padding:0;
   visibility: hidden;
+  text-align: center;
 }
 
 #cp-content .lightbox .landing-zone.droppable-active {
@@ -267,8 +267,6 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 #cp-content .lightbox .landing-zone.visible {
-  margin-top: 1em;
-  height: 1em;
   padding: 1em;
 }
 
