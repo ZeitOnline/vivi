@@ -26,11 +26,14 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.content.audio.interfaces.IAudio,
         AUDIO_SCHEMA_NS, (
             'title',
-            'serie',
             'image',
             'episode_id',
             'url',
             'duration',
+            'description',
+            # XXX Very temporary fix until we add podcast series object
+            'serie',
+            'serie_subtitle',
             'distribution_channels'))
 
     def update(self, info):

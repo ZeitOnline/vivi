@@ -8,10 +8,13 @@ import zeit.cms.content.contentsource
 class IAudio(zeit.cms.content.interfaces.IXMLContent):
     title = zope.schema.TextLine(title=_("Title"), required=False)
     serie = zope.schema.TextLine(title=_("Serie"), required=False)
+    serie_subtitle = zope.schema.TextLine(
+        title=_("Serie subtitle"), required=False)
     image = zope.schema.URI(title=_('Remote image URL'), required=False)
     episode_id = zope.schema.TextLine(title=_("Episode Id"))
     url = zope.schema.URI(title=_("Url"), required=False)
     duration = zope.schema.Int(title=_("Duration"), required=False)
+    description = zope.schema.Text(title=_("Description"), required=False)
     distribution_channels = zope.schema.Dict(
         title="Distribution channels",
         required=False,

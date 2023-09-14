@@ -10,7 +10,14 @@ class Base:
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.audio.interfaces.IAudio).select(
-            'title', 'serie', 'episode_id', 'url', 'image', 'duration').omit(
+            'title',
+            'serie',
+            'serie_subtitle',
+            'episode_id',
+            'url',
+            'image',
+            'duration',
+            'description').omit(
             'distribution_channels')
 
     field_groups = (
