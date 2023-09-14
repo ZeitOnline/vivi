@@ -24,8 +24,14 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.audio.interfaces.IAudio,
-        AUDIO_SCHEMA_NS,
-        ('title', 'serie', 'image', 'episode_id', 'url', 'duration'))
+        AUDIO_SCHEMA_NS, (
+            'title',
+            'serie',
+            'image',
+            'episode_id',
+            'url',
+            'duration',
+            'distribution_channels'))
 
     def update(self, info):
         self.title = info['title']
