@@ -9,6 +9,7 @@ class TestAudio(zeit.content.audio.testing.FunctionalTestCase):
         audio.title = 'foo'
         audio.url = 'https://foo.bah/1234/episode-mp3'
         audio.episode_id = '12-34'
+        audio.episode_nr = 2
         audio.serie = 'was gibts'
         audio.serie_subtitle = 'noch'
         audio.duration = 123
@@ -19,6 +20,7 @@ class TestAudio(zeit.content.audio.testing.FunctionalTestCase):
         self.assertEqual(audio.url, 'https://foo.bah/1234/episode-mp3')
         self.assertEqual(audio.episode_id, '12-34')
         self.assertEqual(audio.duration, 123)
+        self.assertEqual(audio.episode_nr, 2)
         self.assertEqual(audio.image, 'https://test-ing.com/test-image')
         self.assertEqual(audio.serie, 'was gibts')
         self.assertEqual(audio.serie_subtitle, 'noch')

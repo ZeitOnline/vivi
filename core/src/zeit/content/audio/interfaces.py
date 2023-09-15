@@ -14,6 +14,7 @@ class IAudio(zeit.cms.content.interfaces.IXMLContent):
     episode_id = zope.schema.TextLine(title=_("Episode Id"))
     url = zope.schema.URI(title=_("Url"), required=False)
     duration = zope.schema.Int(title=_("Duration"), required=False)
+    episode_nr = zope.schema.Int(title=_("Episode Nr"), required=False)
     description = zope.schema.Text(title=_("Description"), required=False)
     distribution_channels = zope.schema.Dict(
         title="Distribution channels",

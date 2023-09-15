@@ -28,6 +28,7 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
             'title',
             'image',
             'episode_id',
+            'episode_nr',
             'url',
             'duration',
             'description',

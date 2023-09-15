@@ -14,6 +14,7 @@ class Base:
             'serie',
             'serie_subtitle',
             'episode_id',
+            'episode_nr',
             'url',
             'image',
             'duration',
