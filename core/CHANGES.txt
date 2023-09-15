@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.30.4 (2023-09-15)
+-------------------
+
+- ZO-3771: Add series subtitle and description to audio object
+
+
 5.30.3 (2023-09-14)
 -------------------
 
