@@ -80,7 +80,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     });
 
     zeit.edit.drop.registerContentHandler({
-        accept: ['type-audio', 'type-author',
+        accept: ['type-audio', 'type-animation', 'type-author',
                  'type-image', 'type-image-group',
                  'type-gallery', 'type-video',
                  'type-infobox', 'type-portraitbox',
