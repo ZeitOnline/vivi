@@ -9,6 +9,7 @@ import zope.interface
 
 import zeit.cms.content.dav
 import zeit.cms.content.property
+import zeit.cms.content.interfaces
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -37,6 +38,10 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
             'duration',
             'audio_type'))
 
+    def __getattr__(self, name):
+        if name in zeit.cms.content.interfaces.ICommonMetadata:
+            return zeit.cms.content.interfaces.ICommonMetadata[name].default
+        raise AttributeError(name)
 
 @zope.interface.implementer(IPodcastEpisodeInfo)
 class PodcastEpisodeInfo(zeit.cms.content.dav.DAVPropertiesAdapter):

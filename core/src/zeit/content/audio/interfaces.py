@@ -19,7 +19,8 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     }
 
 
-class IAudio(zeit.cms.content.interfaces.IXMLContent):
+class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
+             zeit.cms.content.interfaces.IXMLContent):
     """
     Basic playable audio containing minimum required information
     for ZEIT audio players.

@@ -8,6 +8,7 @@ import zeit.cms.testing
 import zeit.content.audio.interfaces
 import zeit.content.audio.audio
 import zeit.content.audio.testing
+import zope.interface.verify
 
 
 class PodcastSourceTest(zeit.content.audio.testing.FunctionalTestCase):
@@ -25,3 +26,10 @@ class PodcastSourceTest(zeit.content.audio.testing.FunctionalTestCase):
             'cat-jokes-pawdcast', 'Cat Jokes Pawdcast', 'c3161c7d',
             'A podcast of cat jokes', distribution_channels)
         assert values[0] == podcast
+
+    def test_audio_provides_ICommonMetadata(self):
+        audio = zeit.content.audio.audio.Audio()
+        zope.interface.verify.verifyObject(
+            zeit.cms.content.interfaces.ICommonMetadata, audio)
+        # Returns default values for not applicable properties
+        self.assertEqual((), audio.authorships)
