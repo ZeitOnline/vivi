@@ -11,6 +11,7 @@ import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.content.article.interfaces
 import zeit.content.article.source
+import zeit.content.audio.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
@@ -329,6 +330,14 @@ class IVolume(IReference):
         description=_("Drag a volume here"),
         source=zeit.content.volume.interfaces.VOLUME_SOURCE,
         required=False)
+
+
+class IAudio(IBlock):
+
+    references = zope.schema.Choice(
+        title=_("Drag an audio here"),
+        source=zeit.content.audio.interfaces.AudioSource(),
+    )
 
 
 def validate_rawxml(xml):

@@ -871,6 +871,7 @@
 .type-article #edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-infobox .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-author .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-audio .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-video .field.fieldname-video .label {
   display:none;
 }
@@ -1070,6 +1071,7 @@
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -715px transparent;
 }
 
+.type-article .module-icon-audio,
 .type-article .module-icon-podcast,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -776px transparent;

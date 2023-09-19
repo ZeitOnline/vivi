@@ -197,3 +197,17 @@ def update_reference_metadata(article, event):
         elif block.references is not None:
             # Re-assigning the old value updates xml metadata
             block.references = block.references
+
+
+class SingleResource(zeit.cms.content.reference.SingleResource):
+
+    def __set__(self, instance, value):
+        saved_attributes = {name: getattr(instance, name) for name in [
+            '__name__',
+        ]}
+
+        super().__set__(instance, value)
+
+        for name, val in saved_attributes.items():
+            setattr(instance, name, val)
+        instance._p_changed = True

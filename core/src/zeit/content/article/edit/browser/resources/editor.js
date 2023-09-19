@@ -80,10 +80,11 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     });
 
     zeit.edit.drop.registerContentHandler({
-        accept: ['type-image', 'type-image-group',
+        accept: ['type-audio', 'type-author',
+                 'type-image', 'type-image-group',
                  'type-gallery', 'type-video',
                  'type-infobox', 'type-portraitbox',
-                 'type-author', 'type-text', 'type-embed',
+                 'type-text', 'type-embed',
                  'type-volume'],
         activated_by: 'action-article-body-content-droppable'
     });

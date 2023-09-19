@@ -346,6 +346,24 @@
     permission="zope.View"
     />
 
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-audio"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-audio"
+    class=".reference.EditAudio"
+    permission="zope.View"
+    />
+
   <browser:page
     for="zeit.content.article.edit.interfaces.IVolume"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -811,6 +829,10 @@
   </class>
 
   <class class="..volume.Volume">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..audio.Audio">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
