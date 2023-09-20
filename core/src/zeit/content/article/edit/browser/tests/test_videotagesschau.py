@@ -101,13 +101,11 @@ MOCKDEFAULT = '''
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'videotagesschau'
-
     def test_api_call_result_renders_correct_select_form(self):
         api = zope.component.getUtility(
             zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
         api.request_videos.return_value = json.loads(MOCKDEFAULT)
-        article = self.get_article(with_empty_block=True)
+        article = self.get_article(with_block='videotagesschau')
         brwsr = self.browser
         brwsr.open(
             'editable-body/blockname/@@edit-videotagesschau?show_form=1')
@@ -132,7 +130,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         api = zope.component.getUtility(
             zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
         api.request_videos.return_value = json.loads(MOCKDEFAULTEMPTY)
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='videotagesschau')
         brwsr = self.browser
         brwsr.open(
             'editable-body/blockname/@@edit-videotagesschau?show_form=1')
@@ -146,7 +144,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         api = zope.component.getUtility(
             zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
         api.request_videos.return_value = json.loads(MOCKDEFAULTBROKEN)
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='videotagesschau')
         brwsr = self.browser
         brwsr.open(
             'editable-body/blockname/@@edit-videotagesschau?show_form=1')
@@ -161,7 +159,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
             zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
         api.request_videos.return_value = json.loads(
             MOCKDEFAULTEMPTYUNIMPORTANT)
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='videotagesschau')
         brwsr = self.browser
         brwsr.open(
             'editable-body/blockname/@@edit-videotagesschau?show_form=1')
@@ -173,7 +171,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         api = zope.component.getUtility(
             zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
         api.request_videos.return_value = json.loads(MOCKDEFAULTEMPTYIMPORTANT)
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='videotagesschau')
         brwsr = self.browser
         brwsr.open(
             'editable-body/blockname/@@edit-videotagesschau?show_form=1')

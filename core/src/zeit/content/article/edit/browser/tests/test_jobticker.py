@@ -6,10 +6,8 @@ import zeit.content.article.testing
 class JobTickerTest(
         zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'jobboxticker'
-
     def test_jobticker_can_be_edited(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='jobboxticker')
         b = self.browser
         b.open('editable-body/blockname/@@edit-jobticker?show_form=1')
         self.assertEqual(

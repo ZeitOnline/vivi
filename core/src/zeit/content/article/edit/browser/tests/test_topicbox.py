@@ -4,8 +4,6 @@ import zeit.content.article.article
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'topicbox'
-
     def setUp(self):
         super().setUp()
         self.create_content()
@@ -17,7 +15,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.repository['bar'] = zeit.content.article.article.Article()
 
     def test_topicbox_source_manual_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='topicbox')
         b = self.browser
         b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
         b.getControl('Title').value = 'Foo'
@@ -44,7 +42,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual('Baz', b.getControl('Linktext').value)
 
     def test_topicbox_source_centerpage_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='topicbox')
         b = self.browser
         b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
         b.getControl('Title').value = 'Centerpage-Foo'
@@ -67,7 +65,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
             b.getControl('Get teasers from CenterPage').value)
 
     def test_topicbox_source_topicpage_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='topicbox')
         b = self.browser
         b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
         b.getControl('Title').value = 'Topicpage-Foo'
@@ -90,7 +88,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(['videos'], b.getControl('Topicpage filter').value)
 
     def test_topicbox_source_elasticsearch_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='topicbox')
         b = self.browser
         b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
         b.getControl('Title').value = 'ES-Foo'
@@ -115,7 +113,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual('asc', b.getControl('Sort order').value)
 
     def test_topicbox_source_related_api_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='topicbox')
         b = self.browser
         b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
         b.getControl('Title').value = 'Related-Foo'
@@ -138,7 +136,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(['videos'], b.getControl('Topicpage filter').value)
 
     def test_topicbox_source_config_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='topicbox')
         b = self.browser
         b.open('editable-body/blockname/@@edit-topicbox?show_form=1')
         b.getControl('Title').value = 'Config-Foo'

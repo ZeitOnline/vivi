@@ -3,10 +3,8 @@ import zeit.content.article.edit.browser.testing
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'citation'
-
     def test_inline_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='citation')
         b = self.browser
         b.open('editable-body/blockname/@@edit-citation?show_form=1')
         b.getControl('Citation', index=0).value = 'fooooo'

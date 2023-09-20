@@ -6,10 +6,8 @@ import zeit.content.article.edit.browser.testing
 class RecipeListTest(
         zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'recipelist'
-
     def test_servings_should_be_validated(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='recipelist')
         b = self.browser
         b.open('editable-body/blockname/@@edit-recipelist?show_form=1')
 

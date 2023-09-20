@@ -3,10 +3,8 @@ import zeit.content.article.edit.browser.testing
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'mail'
-
     def test_inline_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='mail')
         b = self.browser
         b.open('editable-body/blockname/@@edit-mail?show_form=1')
         b.getControl('Recipient').value = 'test@localhost'

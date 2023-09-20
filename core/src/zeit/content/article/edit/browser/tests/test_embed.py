@@ -3,10 +3,8 @@ import zeit.content.article.edit.browser.testing
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'embed'
-
     def test_inline_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='embed')
         b = self.browser
         b.open('editable-body/blockname/@@edit-embed?show_form=1')
         b.getControl('Embed URL').value = 'https://twitter.com/foo/status/123'
@@ -17,7 +15,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
             b.getControl('Embed URL').value)
 
     def test_domain_must_be_included_in_supported_list(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='embed')
         b = self.browser
         b.open('editable-body/blockname/@@edit-embed?show_form=1')
         b.getControl('Embed URL').value = 'http://invalid.com/'
@@ -25,7 +23,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEllipsis('...Unsupported embed domain...', b.contents)
 
     def test_shows_manual_link(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='embed')
         b = self.browser
         b.open('editable-body/blockname/@@edit-embed?show_form=1')
         b.reload()

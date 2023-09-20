@@ -3,10 +3,8 @@ import zeit.content.article.edit.browser.testing
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'liveblog'
-
     def test_inline_form_saves_default_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='liveblog')
         b = self.browser
         b.open('editable-body/blockname/@@edit-liveblog?show_form=1')
         b.getControl('Liveblog id').value = 'bloggy'
@@ -19,7 +17,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertTrue(b.getControl('Collapse preceding content').selected)
 
     def test_inline_form_saves_values_including_version(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='liveblog')
         b = self.browser
         b.open('editable-body/blockname/@@edit-liveblog?show_form=1')
         b.getControl('Liveblog id').value = 'bloggy'
