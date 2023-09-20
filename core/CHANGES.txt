@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.31.0 (2023-09-20)
+-------------------
+
+- ZO-3844: Move audio form below teaser form
+
+- ZO-3845: Add audio module for article body
+
+
 5.30.4 (2023-09-15)
 -------------------
 
