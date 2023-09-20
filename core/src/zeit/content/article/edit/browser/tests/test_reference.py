@@ -31,7 +31,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Variant Name').displayValue = ['Square 1:1']
         b.getControl('Animation').displayValue = ['Fade in']
         b.getControl('Apply').click()
-        b.open('@@edit-image?show_form=1')  # XXX
+        b.reload()
         self.assertEqual(
             ['Float'], b.getControl('Display Mode').displayValue)
         self.assertEqual(
@@ -239,10 +239,10 @@ class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.open('editable-body/blockname/@@edit-video?show_form=1')
         b.getControl('Layout').displayValue = ['large']
         b.getControl('Apply').click()
+        b.reload()
         # Locate the layout widget by name here since we have several forms
         # with a "Layout" field so we couldn't be sure we have wired the
         # correct one just by looking at this one, common label.
-        b.open('@@edit-video?show_form=1')
         layout = b.getControl(name='EditVideo.blockname.layout')
         self.assertEqual(['large'], layout.displayValue)
 
@@ -370,10 +370,10 @@ class PortraitboxForm(
         b.open('editable-body/blockname/@@edit-portraitbox?show_form=1')
         b.getControl('First and last name').value = 'local'
         b.getControl('Apply').click()
-        b.open('@@edit-portraitbox?show_form=1')
+        b.reload()
         self.assertEqual('local', b.getControl('First and last name').value)
         b.getControl(name='EditPortraitbox.blockname.references').value = (
             'http://xml.zeit.de/portrait')
         b.getControl('Apply').click()
-        b.open('@@edit-portraitbox?show_form=1')
+        b.reload()
         self.assertEqual('My Name', b.getControl('First and last name').value)

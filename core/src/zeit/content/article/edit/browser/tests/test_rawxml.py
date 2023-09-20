@@ -15,7 +15,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 </raw>
 """
         b.getControl('Apply').click()
-        b.open('@@edit-rawxml?show_form=1')
+        b.reload()
         self.assertEllipsis("""\
 <raw...xmlns:ns0="http://namespaces.zeit.de/CMS/cp"...ns0:__name__="blockname"...>
   <foo> </foo>

@@ -16,5 +16,5 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
             'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
         b.getControl(name='EditAudio.blockname.references').value = audio.uniqueId
         b.getControl('Apply').click()
-        b.open('@@edit-%s?show_form=1' % self.block_type)  # XXX
+        b.reload()
         self.assertEllipsis('...%s...' % audio.uniqueId, b.contents)

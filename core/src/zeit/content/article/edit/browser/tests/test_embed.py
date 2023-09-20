@@ -8,11 +8,10 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_inline_form_saves_values(self):
         self.get_article(with_empty_block=True)
         b = self.browser
-        b.open(
-            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        b.open('editable-body/blockname/@@edit-embed?show_form=1')
         b.getControl('Embed URL').value = 'https://twitter.com/foo/status/123'
         b.getControl('Apply').click()
-        b.open('@@edit-%s?show_form=1' % self.block_type)  # XXX
+        b.reload()
         self.assertEqual(
             'https://twitter.com/foo/status/123',
             b.getControl('Embed URL').value)
@@ -20,8 +19,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_domain_must_be_included_in_supported_list(self):
         self.get_article(with_empty_block=True)
         b = self.browser
-        b.open(
-            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        b.open('editable-body/blockname/@@edit-embed?show_form=1')
         b.getControl('Embed URL').value = 'http://invalid.com/'
         b.getControl('Apply').click()
         self.assertEllipsis('...Unsupported embed domain...', b.contents)
@@ -29,8 +27,8 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_shows_manual_link(self):
         self.get_article(with_empty_block=True)
         b = self.browser
-        b.open(
-            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        b.open('editable-body/blockname/@@edit-embed?show_form=1')
+        b.reload()
         self.assertEllipsis(
             '...href="http://example.com/embed">Manual-Link</a>...',
             b.contents)

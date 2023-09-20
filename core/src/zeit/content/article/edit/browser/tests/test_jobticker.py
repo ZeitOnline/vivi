@@ -23,7 +23,7 @@ class JobTickerTest(
             ['(nothing selected)'], b.getControl('Jobbox ticker').displayValue)
         b.getControl('Jobbox ticker').displayValue = ['Homepage']
         b.getControl('Apply').click()
-        b.open('@@edit-jobticker?show_form=1')
+        b.reload()
         self.assertEqual(
             ['Homepage'], b.getControl('Jobbox ticker').displayValue)
 

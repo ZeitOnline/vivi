@@ -12,7 +12,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.getControl('Citation', index=0).value = 'fooooo'
         b.getControl('Attribution', index=0).value = 'John Doe'
         b.getControl('Apply').click()
-        b.open('@@edit-citation?show_form=1')  # XXX
+        b.reload()
         self.assertEqual(
             'John Doe', b.getControl('Attribution', index=0).value)
 

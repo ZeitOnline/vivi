@@ -11,39 +11,30 @@ class RecipeListTest(
     def test_servings_should_be_validated(self):
         self.get_article(with_empty_block=True)
         b = self.browser
-        b.open(
-            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        b.open('editable-body/blockname/@@edit-recipelist?show_form=1')
 
         # Should accept a number
         b.getControl('Servings').value = 4
         b.getControl('Apply').click()
-        self.assertNotEllipsis(
-            '...<span class="error">...',
-            b.contents)
+        self.assertNotEllipsis('...<span class="error">...', b.contents)
 
         # Should accept an empty value
-        b.open('@@edit-%s?show_form=1' % self.block_type)
+        b.reload()
         b.getControl('Servings').value = ''
         b.getControl('Apply').click()
-        self.assertNotEllipsis(
-            '...<span class="error">...',
-            b.contents)
+        self.assertNotEllipsis('...<span class="error">...', b.contents)
 
         # Should NOT accept zero
-        b.open('@@edit-%s?show_form=1' % self.block_type)
+        b.reload()
         b.getControl('Servings').value = 0
         b.getControl('Apply').click()
-        self.assertEllipsis(
-            '...Value must be number or range...',
-            b.contents)
+        self.assertEllipsis('...Value must be number or range...', b.contents)
 
         # Should NOT accept a string
-        b.open('@@edit-%s?show_form=1' % self.block_type)
+        b.reload()
         b.getControl('Servings').value = 'notanumber'
         b.getControl('Apply').click()
-        self.assertEllipsis(
-            '...Value must be number or range...',
-            b.contents)
+        self.assertEllipsis('...Value must be number or range...', b.contents)
 
 
 class FormLoader(
