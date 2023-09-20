@@ -6,8 +6,6 @@ import zope.security.management
 
 class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
 
-    block_type = NotImplemented
-
     def setUp(self):
         super().setUp()
         browser = self.browser
@@ -17,14 +15,14 @@ class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
         browser.open('@@contents')
         self.contents_url = browser.url
 
-    def get_article(self, with_empty_block=False):
+    def get_article(self, with_block=None):
         article = self.getRootFolder()[
             'workingcopy']['zope.user']['Somalia']
         for p in article.xml.xpath('//division/*'):
             p.getparent().remove(p)
-        if with_empty_block:
-            article.xml.body.division[self.block_type] = ''
-            article.xml.body.division[self.block_type].set(
+        if with_block:
+            article.xml.body.division[with_block] = ''
+            article.xml.body.division[with_block].set(
                 '{http://namespaces.zeit.de/CMS/cp}__name__', 'blockname')
         article._p_changed = True
         transaction.commit()

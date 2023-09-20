@@ -1,6 +1,7 @@
 <modules>
   <module id="adplace">Ad-Place</module>
   <module id="author">Autorenbox</module>
+  <module id="audio">Audio</module>
   <module id="box">Box</module>
   <module id="cardstack">Kartenstapel</module>
   <module id="citation">Zitat</module>

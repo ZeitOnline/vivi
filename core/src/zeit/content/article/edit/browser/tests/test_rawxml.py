@@ -3,10 +3,8 @@ import zeit.content.article.edit.browser.testing
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'raw'
-
     def test_inline_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='raw')
         b = self.browser
         b.open('editable-body/blockname/@@edit-rawxml?show_form=1')
         b.getControl('XML source').value = """\
@@ -15,7 +13,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 </raw>
 """
         b.getControl('Apply').click()
-        b.open('@@edit-rawxml?show_form=1')
+        b.reload()
         self.assertEllipsis("""\
 <raw...xmlns:ns0="http://namespaces.zeit.de/CMS/cp"...ns0:__name__="blockname"...>
   <foo> </foo>
@@ -23,7 +21,7 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 """, b.getControl('XML source').value)
 
     def test_xml_is_validated_root_must_be_raw_element(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='raw')
         b = self.browser
         b.open('editable-body/blockname/@@edit-rawxml?show_form=1')
         b.getControl('XML source').value = '<foo />'

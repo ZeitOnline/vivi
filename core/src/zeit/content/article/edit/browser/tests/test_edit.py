@@ -344,7 +344,7 @@ class TestLinkEditing(
         zeit.content.article.edit.browser.testing.EditorTestCase):
 
     window_width = 1600
-    window_height = 1000
+    window_height = 1200
 
     def setUp(self):
         super().setUp()

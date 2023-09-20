@@ -3,16 +3,13 @@ import zeit.content.article.edit.browser.testing
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'liveblog'
-
     def test_inline_form_saves_default_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='liveblog')
         b = self.browser
-        b.open(
-            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        b.open('editable-body/blockname/@@edit-liveblog?show_form=1')
         b.getControl('Liveblog id').value = 'bloggy'
         b.getControl('Apply').click()
-        b.open('@@edit-%s?show_form=1' % self.block_type)  # XXX
+        b.reload()
         self.assertEqual('bloggy', b.getControl('Liveblog id').value)
         self.assertEqual(
             ['3'],
@@ -20,15 +17,14 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertTrue(b.getControl('Collapse preceding content').selected)
 
     def test_inline_form_saves_values_including_version(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='liveblog')
         b = self.browser
-        b.open(
-            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        b.open('editable-body/blockname/@@edit-liveblog?show_form=1')
         b.getControl('Liveblog id').value = 'bloggy'
         b.getControl('Liveblog version').displayValue = ['3']
         b.getControl('Collapse preceding content').selected = False
         b.getControl('Apply').click()
-        b.open('@@edit-%s?show_form=1' % self.block_type)
+        b.reload()
         self.assertEqual('bloggy', b.getControl('Liveblog id').value)
         self.assertEqual(['3'], b.getControl('Liveblog version').displayValue)
         self.assertFalse(b.getControl('Collapse preceding content').selected)

@@ -7,23 +7,14 @@ class JobTickerTest(
         zeit.content.article.edit.browser.testing.BrowserTestCase):
 
     def test_jobticker_can_be_edited(self):
-        article = zeit.content.article.testing.create_article()
-        self.repository['article'] = article
-        co = zeit.cms.checkout.interfaces.ICheckoutManager(
-            self.repository['article']).checkout()
-        body = zeit.content.article.edit.interfaces.IEditableBody(co)
-        block = body.create_item('jobboxticker')
-        block.__name__ = 'blockname'
-
+        self.get_article(with_block='jobboxticker')
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/workingcopy/zope.user/article'
-            '/editable-body/blockname/@@edit-jobticker?show_form=1')
+        b.open('editable-body/blockname/@@edit-jobticker?show_form=1')
         self.assertEqual(
             ['(nothing selected)'], b.getControl('Jobbox ticker').displayValue)
         b.getControl('Jobbox ticker').displayValue = ['Homepage']
         b.getControl('Apply').click()
-        b.open('@@edit-jobticker?show_form=1')
+        b.reload()
         self.assertEqual(
             ['Homepage'], b.getControl('Jobbox ticker').displayValue)
 

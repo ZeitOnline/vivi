@@ -3,16 +3,13 @@ import zeit.content.article.edit.browser.testing
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'puzzleform'
-
     def test_puzzle_inline_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='puzzleform')
         b = self.browser
-        b.open(
-            'editable-body/blockname/@@edit-%s?show_form=1' % self.block_type)
+        b.open('editable-body/blockname/@@edit-puzzleform?show_form=1')
         b.getControl('Puzzle').displayValue = ['Scrabble']
         b.getControl('Year').value = '2099'
         b.getControl('Apply').click()
-        b.open('@@edit-%s?show_form=1' % self.block_type)  # XXX
+        b.reload()
         self.assertEqual(['Scrabble'], b.getControl('Puzzle').displayValue)
         self.assertEqual('2099', b.getControl('Year').value)

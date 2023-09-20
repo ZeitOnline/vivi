@@ -16,6 +16,8 @@
   <include package="zeit.content.infobox" file="ctesting.zcml" />
   <include package="zeit.content.animation" />
   <include package="zeit.content.animation.browser" />
+  <include package="zeit.content.audio" />
+  <include package="zeit.content.audio.browser" />
   <include package="zeit.content.portraitbox" file="ctesting.zcml" />
   <include package="zeit.content.rawxml" />
   <include package="zeit.content.video" file="ctesting.zcml" />

@@ -117,3 +117,9 @@ class EditVolume(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IVolume
     undo_description = _('edit volume block')
+
+
+class EditAudio(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IAudio
+    undo_description = _('edit audio block')

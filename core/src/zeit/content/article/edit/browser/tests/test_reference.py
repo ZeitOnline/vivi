@@ -21,17 +21,15 @@ def add_to_clipboard(obj, name):
 
 class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'image'
-
     def test_inline_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='image')
         b = self.browser
         b.open('editable-body/blockname/@@edit-image?show_form=1')
         b.getControl('Display Mode').displayValue = ['Float']
         b.getControl('Variant Name').displayValue = ['Square 1:1']
         b.getControl('Animation').displayValue = ['Fade in']
         b.getControl('Apply').click()
-        b.open('@@edit-image?show_form=1')  # XXX
+        b.reload()
         self.assertEqual(
             ['Float'], b.getControl('Display Mode').displayValue)
         self.assertEqual(
@@ -47,7 +45,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_setting_image_reference_also_sets_manual_flag(self):
         # so that the copying mechanism from IImages knows to leave the block
         # alone
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='image')
         b = self.browser
         b.open('editable-body/blockname/@@edit-image?show_form=1')
         image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
@@ -56,7 +54,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertTrue(self.get_image_block().set_manually)
 
     def test_removing_image_reference_removes_manual_flag(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='image')
         b = self.browser
         b.open('editable-body/blockname/@@edit-image?show_form=1')
         b.getControl(name='EditImage.blockname.references').value = ''
@@ -231,18 +229,16 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'video'
-
     def test_inline_form_saves_values(self):
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='video')
         b = self.browser
         b.open('editable-body/blockname/@@edit-video?show_form=1')
         b.getControl('Layout').displayValue = ['large']
         b.getControl('Apply').click()
+        b.reload()
         # Locate the layout widget by name here since we have several forms
         # with a "Layout" field so we couldn't be sure we have wired the
         # correct one just by looking at this one, common label.
-        b.open('@@edit-video?show_form=1')
         layout = b.getControl(name='EditVideo.blockname.layout')
         self.assertEqual(['large'], layout.displayValue)
 
@@ -359,21 +355,19 @@ class VolumeEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 class PortraitboxForm(
         zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    block_type = 'portraitbox'
-
     def test_setting_reference_clears_local_values(self):
         box = zeit.content.portraitbox.portraitbox.Portraitbox()
         box.name = 'My Name'
         self.repository['portrait'] = box
-        self.get_article(with_empty_block=True)
+        self.get_article(with_block='portraitbox')
         b = self.browser
         b.open('editable-body/blockname/@@edit-portraitbox?show_form=1')
         b.getControl('First and last name').value = 'local'
         b.getControl('Apply').click()
-        b.open('@@edit-portraitbox?show_form=1')
+        b.reload()
         self.assertEqual('local', b.getControl('First and last name').value)
         b.getControl(name='EditPortraitbox.blockname.references').value = (
             'http://xml.zeit.de/portrait')
         b.getControl('Apply').click()
-        b.open('@@edit-portraitbox?show_form=1')
+        b.reload()
         self.assertEqual('My Name', b.getControl('First and last name').value)

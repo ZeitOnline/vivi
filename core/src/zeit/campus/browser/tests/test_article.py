@@ -20,7 +20,7 @@ class StudyCourseTest(zeit.campus.testing.BrowserTestCase):
             ['Sonstiges'], b.getControl('Study course').displayValue)
         b.getControl('Study course').displayValue = ['Mathematik']
         b.getControl('Apply').click()
-        b.open('@@edit-studycourse?show_form=1')
+        b.reload()
         self.assertEqual(
             ['Mathematik'], b.getControl('Study course').displayValue)
 
@@ -30,10 +30,6 @@ class FacebookTest(zeit.campus.testing.BrowserTestCase):
     def get_article(self):
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
         return list(wc.values())[0]
-
-    def open_form(self):
-        # XXX A simple browser.reload() does not work, why?
-        self.browser
 
     def test_smoke_form_submit_stores_values(self):
         article = zeit.content.article.testing.create_article()

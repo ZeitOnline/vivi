@@ -562,7 +562,7 @@
     name="audio"
     class=".form.AudioForms"
     permission="zope.View"
-    weight="60"
+    weight="30"
     />
 
   <browser:viewlet
