@@ -5,17 +5,6 @@ import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 import zeit.simplecast.testing
 
-JSON = {
-    "title": "Cat Jokes Pawdcast",
-    "id": "1234",
-    "audio_file_url": (
-        "https://injector.simplecastaudio.com/5678/episodes/1234/audio"
-        "/128/default.mp3?awCollectionId=5678&awEpisodeId=1234"),
-    "ad_free_audio_file_url": None,
-    "created_at": "2023-08-31T13:51:00-01:00",
-    "duration": 666,
-}
-
 
 class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
 
@@ -38,58 +27,38 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         episode_id = "1234"
         m_simple.get(
             f"https://testapi.simplecast.com/episodes/{episode_id}",
-            json=JSON)
+            json=self.episode_info)
         with m_simple:
             result = self.simplecast.fetch_episode(
                 episode_id)
-            self.assertEqual(result, JSON)
+            self.assertEqual(result, self.episode_info)
 
     def test_simplecast_gets_podcast_folder(self):
-        container = self.simplecast.folder(JSON["created_at"])
+        container = self.simplecast.folder(self.episode_info["created_at"])
         self.assertEqual(container, self.repository["podcasts"]["2023-08"])
-
-    def test_find_episode_from_connector(self):
-        """After an `episode_deleted` event, information about the
-        episode can not be fetched from the simplecast api anymore, yields 404
-        """
-        episode = self.simplecast.find_existing_episode(
-            self.episode_info["id"])
-        self.assertFalse(episode)
-
-        container = self.simplecast.folder("2023-08-31T13:51:00-01:00")
-        zeit.content.audio.audio.add_audio(
-            container, self.episode_info)
-
-        self.repository.connector.search_result = [(
-            'http://xml.zeit.de/podcasts/2023-08/'
-            'b44b1838-4ff4-4c29-ba1c-9c4f4b863eac')]
-
-        episode = self.simplecast.find_existing_episode(
-            self.episode_info["id"])
-        self.assertTrue(
-            zeit.content.audio.interfaces.IAudio.providedBy(episode))
-        self.assertEqual(self.episode_info["title"], episode.title)
-        self.assertEqual(self.episode_info["audio_file_url"], episode.url)
 
     def test_create_episode(self):
         m_simple = requests_mock.Mocker()
         episode_id = '1234'
         m_simple.get(
             f"https://testapi.simplecast.com/episodes/{episode_id}",
-            json=JSON)
+            json=self.episode_info)
         with m_simple:
             self.simplecast.create_episode(episode_id)
         episode = self.repository['podcasts']['2023-08'][episode_id]
         self.assertEqual('Cat Jokes Pawdcast', episode.title)
-        self.assertEqual(episode_id, episode.episode_id)
+        self.assertEqual(episode_id, episode.external_id)
+        self.assertEqual(
+            'Cat Jokes Pawdcast',
+            zeit.content.audio.interfaces.IPodcastEpisodeInfo(episode).podcast.title)
 
     def test_update_episode(self):
         episode_id = '1234'
-        self.create_audio(JSON)
+        self.create_audio(self.episode_info)
         self.assertEqual(
             'Cat Jokes Pawdcast',
             self.repository['podcasts']['2023-08'][episode_id].title)
-        json = JSON
+        json = self.episode_info.copy()
         json['title'] = "Cat Jokes Pawdcast - Folge 2"
         m_simple = requests_mock.Mocker()
         episode_id = '1234'
@@ -97,7 +66,7 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
             'http://xml.zeit.de/podcasts/2023-08/1234')]
         m_simple.get(
             f"https://testapi.simplecast.com/episodes/{episode_id}",
-            json=JSON)
+            json=json)
         with m_simple:
             self.simplecast.update_episode(episode_id)
         episode = self.repository['podcasts']['2023-08'][episode_id]
@@ -105,7 +74,7 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
 
     def test_delete_episode(self):
         episode_id = '1234'
-        self.create_audio(JSON)
+        self.create_audio(self.episode_info)
         self.assertTrue(
             zeit.content.audio.interfaces.IAudio.providedBy(
                 self.repository['podcasts']['2023-08'][episode_id]))

@@ -1,10 +1,12 @@
+from zeit.connector.search import SearchVar
+from zeit.content.audio.interfaces import (
+    IAudio, IPodcastEpisodeInfo)
 import logging
+
 import grokcore.component as grok
 import pendulum
 import requests
 import zope.app.appsetup.product
-
-from zeit.connector.search import SearchVar
 
 import zeit.cms.checkout.helper
 import zeit.cms.repository.interfaces
@@ -13,12 +15,26 @@ import zeit.simplecast.interfaces
 
 log = logging.getLogger(__name__)
 
-
-AUDIO_ID = SearchVar('episode_id', zeit.content.audio.audio.AUDIO_SCHEMA_NS)
+AUDIO_ID = SearchVar('external_id', zeit.content.audio.audio.AUDIO_SCHEMA_NS)
 
 
 @grok.implementer(zeit.simplecast.interfaces.ISimplecast)
 class Simplecast(grok.GlobalUtility):
+
+    #: lazy mapping between audio interfaces (key) and simplecast api (value)
+    _properties = {
+        IAudio: {
+            'title': 'title',
+            'url': 'audio_file_url',
+            'duration': 'duration',
+            'external_id': 'id',
+        },
+        IPodcastEpisodeInfo: {
+            'episode_nr': 'number',
+            'summary': 'description',
+            'notes': 'long_description',
+        }
+    }
 
     def __init__(self):
         config = zope.app.appsetup.product.getProductConfiguration(
@@ -65,37 +81,50 @@ class Simplecast(grok.GlobalUtility):
             return None
         try:
             content = zeit.cms.interfaces.ICMSContent(result[0][0])
-            log.debug('Audio %s found for %s.', content.uniqueId, episode_id)
+            log.debug('Podcast %s found for %s.', content.uniqueId, episode_id)
             return content
         except TypeError as error:
             log.error(
-                'Audio %s found for %s. But not found in DAV: %s',
+                'Podcast %s found for %s. But not found in DAV: %s',
                 result[0][0], episode_id, error
             )
             return None
 
+    def _update_properties(self, episode_data, audio):
+        for iface, properties in self._properties.items():
+            obj = iface(audio)
+            for vivi, simplecast in properties.items():
+                setattr(obj, vivi, episode_data[simplecast])
+
+        IPodcastEpisodeInfo(audio).podcast = \
+            IPodcastEpisodeInfo['podcast'].source(None).find_by_property(
+                'external_id', episode_data['podcast']['id'])
+
     def create_episode(self, episode_id):
-        info = self.fetch_episode(episode_id)
-        container = self.folder(info['created_at'])
-        audio = zeit.content.audio.audio.add_audio(container, info)
-        log.info('Audio %s successfully created.', audio.uniqueId)
+        episode_data = self.fetch_episode(episode_id)
+        container = self.folder(episode_data['created_at'])
+        audio = zeit.content.audio.audio.Audio()
+        self._update_properties(episode_data, audio)
+        container[episode_id] = audio
+        log.info('Podcast %s successfully created.', audio.uniqueId)
 
     def update_episode(self, episode_id):
-        info = self.fetch_episode(episode_id)
-        container = self.folder(info['created_at'])
+        episode_data = self.fetch_episode(episode_id)
+        container = self.folder(episode_data['created_at'])
         if container is not None:
             with zeit.cms.checkout.helper.checked_out(
                     container[episode_id]) as episode:
-                episode.update(info)
+                self._update_properties(episode_data, episode)
                 log.info(
-                    'Audio %s successfully updated.', episode.uniqueId)
+                    'Podcast %s successfully updated.', episode.uniqueId)
 
     def delete_episode(self, episode_id):
         audio = self.find_existing_episode(episode_id)
         if audio:
             unique_id = audio.uniqueId
-            zeit.content.audio.audio.remove_audio(audio)
-            log.info('Audio %s successfully deleted.', unique_id)
+            del audio.__parent__[audio.__name__]
+            self.__parent__ = None
+            log.info('Podcast %s successfully deleted.', unique_id)
         else:
             log.warning(
                 'No podcast episode %s found. No episode deleted.',

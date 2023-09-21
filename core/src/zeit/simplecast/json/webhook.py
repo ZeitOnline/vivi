@@ -1,9 +1,13 @@
 import json
 import logging
+
 import zope.app.appsetup.product
+import zope.component
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
+
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
-import zope.component
 
 log = logging.getLogger(__name__)
 
@@ -20,15 +24,8 @@ class Notification:
             'zeit.simplecast')
         return config['principal']
 
-    @property
-    def environment(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        return config['environment']
-
     def __call__(self):
-        # XXX Do nothing in production until we know how to tell
-        # notifications apart
-        if self.environment not in ('staging', 'testing'):
+        if not FEATURE_TOGGLES.find('simplecast_webhook'):
             return
 
         body = self.request.bodyStream.read(
@@ -51,18 +48,13 @@ class Notification:
 def SIMPLECAST_WEBHOOK_TASK(event, episode_id):
     simplecast = zope.component.getUtility(
         zeit.simplecast.interfaces.ISimplecast)
-
-    if event == 'episode_created':
-        log.info('Create episode from simplecast request.')
-        simplecast.create_episode(episode_id)
-
-    elif event == 'episode_updated':
-        log.info('Update episode from simplecast request.')
-        simplecast.update_episode(episode_id)
-
-    elif event == 'episode_deleted':
-        log.info('Delete episode from simplecast request.')
-        simplecast.delete_episode(episode_id)
-
-    else:
-        log.info('No episode processed.')
+    log.info('Received %s simplecast request.', event)
+    match event:
+        case 'episode_created':
+            simplecast.create_episode(episode_id)
+        case 'episode_updated':
+            simplecast.update_episode(episode_id)
+        case 'episode_deleted':
+            simplecast.delete_episode(episode_id)
+        case _:
+            log.info('Event %s not handled.', event)
