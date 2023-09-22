@@ -33,7 +33,6 @@ class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
     audio_type = zope.schema.Choice(
         title=_('Typ'),
         readonly=True,
-        default='podcast',
         source=AudioTypeSource())
 
 
@@ -107,18 +106,16 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
         title=_('Podcast Serie'),
         source=PodcastSource(),
         readonly=True)
-    # XXX reference image group instead of URL
-    image = zope.schema.URI(
-        title=_('Remote Image URL'),
-        readonly=True)
     episode_nr = zope.schema.Int(
         title=_('Episode No'),
         readonly=True)
     summary = zope.schema.Text(
         title=_('Episode Summary'),
+        required=False,
         readonly=True)
     notes = zope.schema.Text(
         title=_('Episode Notes'),
+        required=False,
         readonly=True)
 
 

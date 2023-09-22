@@ -1,19 +1,16 @@
 import zeit.content.audio.testing
 
 
-class TestAudio(zeit.content.audio.testing.BrowserTestCase):
-
-    def open(self, tail):
-        self.browser.open('http://localhost/++skin++vivi/repository' + tail)
+class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
 
     def add_audio(self):
         self.browser.getControl('File name').value = 'test-audio'
+        self.browser.getControl('Typ').displayValue = 'Podcast'
         self.browser.getControl('Title').value = 'Cats episode'
         self.browser.getControl(label="URL", index=0).value = 'http://example.com/cats.mp3'
         self.browser.getControl('Duration').value = 123
         # Podcast specific fields
         self.browser.getControl('Podcast', index=1).value = ['cat-jokes-pawdcast']
-        self.browser.getControl('Remote Image URL').value = 'http://example.com/image.jpg'
         self.browser.getControl('Episode No').value = '1'
         self.browser.getControl('Episode Summary').value = 'summary'
         self.browser.getControl('Episode Notes').value = 'notes'
@@ -22,7 +19,7 @@ class TestAudio(zeit.content.audio.testing.BrowserTestCase):
 
     def test_add_form(self):
         browser = self.browser
-        self.open('/online/2007/01')
+        browser.open('/repository/online/2007/01')
         menu = browser.getControl(name='add_menu')
         menu.displayValue = ['Audio']
         browser.open(menu.value[0])
@@ -39,8 +36,6 @@ class TestAudio(zeit.content.audio.testing.BrowserTestCase):
             <div class="widget">Podcast</div>...
             <label for="form.podcast">...
             <div class="widget">Cat Jokes Pawdcast</div>...
-            <label for="form.image">...
-            <div class="widget"><a href="http://example.com/image.jpg">http://example.com/image.jpg</a></div>...
             <label for="form.episode_nr">...
             <div class="widget">1</div>...
             <label for="form.summary">...

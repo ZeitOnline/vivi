@@ -957,6 +957,11 @@ class Browser(zope.testbrowser.browser.Browser):
     def __init__(self, wsgi_app):
         super().__init__(wsgi_app=wsgi_app)
 
+    def open(self, url, *args, **kw):
+        if url.startswith('/'):
+            url = 'http://localhost/++skin++vivi' + url
+        return super().open(url, *args, **kw)
+
     def login(self, username, password):
         auth = base64.b64encode(
             ('%s:%s' % (username, password)).encode('utf-8')).decode('ascii')

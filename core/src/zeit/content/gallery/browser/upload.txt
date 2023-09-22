@@ -15,7 +15,7 @@ image to the gallery.
 
 Create the gallery:
 
->>> browser.open('/++skin++cms/repository')
+>>> browser.open('/repository')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Gallery']
 >>> browser.open(menu.value[0])
@@ -42,7 +42,7 @@ There is a javascript action:
 </li>
 <script languagae="javascript">
   new zeit.content.gallery.Uploader({
-    resource_base_url: 'http://localhost/++skin++cms/fanstatic/zeit.content.gallery',
+    resource_base_url: 'http://localhost/++skin++vivi/fanstatic/zeit.content.gallery',
   });
   </script>
   ...
@@ -90,7 +90,7 @@ Status: 201 Created
 Cache-Control: no-cache
 Content-Length: 2
 Content-Type: text/json...
-Location: http://localhost/++skin++cms/repository/image-folder/a-new-file.jpg/@@view.html
+Location: http://localhost/++skin++vivi/repository/image-folder/a-new-file.jpg/@@view.html
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 
 >>> browser.open(folder_url)

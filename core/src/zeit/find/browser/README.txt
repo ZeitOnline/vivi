@@ -24,7 +24,7 @@ There is one main HTML view defined, which loads all the JavaScript and the
 JSON template to setup the search UI. See the selenium tests for more details
 on the UI itself:
 
->>> browser.open('http://localhost:8080/++skin++cms/find')
+>>> browser.open('http://localhost/++skin++vivi/find')
 >>> print(browser.contents)
 <html>
   ...
@@ -40,7 +40,7 @@ on the UI itself:
 
 The index of the CMS (ISite) is a search whyen using the vivi skin:
 
->>> browser.open('http://localhost:8080/++skin++vivi/')
+>>> browser.open('http://localhost/++skin++vivi/')
 >>> print(browser.contents)
 <...
     var search = new zeit.find.Search(...
@@ -59,7 +59,7 @@ Search form
 The `search_form` view returns the template URL for the search form and the
 data for dropdowns/selects:
 
->>> browser.open('http://localhost:8080/++skin++cms/search_form')
+>>> browser.open('http://localhost/++skin++vivi/search_form')
 >>> print(browser.headers)
 Status: 200 Ok
 Content-Length: ...
@@ -72,7 +72,7 @@ Content-Type: text/json...
  'products': [{'product_id': 'ZEI', 'product_name': 'Die Zeit'},...
  'ressorts': [{'ressort': 'Deutschland', 'ressort_name': 'Deutschland'},...
  'series': [{'serie': '-', 'serie_title': '-'},...
- 'template_url': 'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_form.jsont',
+ 'template_url': 'http://localhost/++skin++vivi/fanstatic/zeit.find/search_form.jsont',
  'types': [{'title': 'Image Group', 'type': 'image-group'}]}
 
 
@@ -96,10 +96,10 @@ Adding a content object as a favorite requires the call of the
 `toggle_favorited` view with the uniqueId of the object:
 
 >>> browser.open(
-...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'http://localhost/++skin++vivi/toggle_favorited?'
 ...     'uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
 >>> browser.open(
-...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'http://localhost/++skin++vivi/toggle_favorited?'
 ...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
 
 It returns the css class for the favorite star:
@@ -116,10 +116,10 @@ The clipboard now has a clip "Favoriten" with one entry:
 Calling the toggle view again removes the object from the favorites:
 
 >>> browser.open(
-...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'http://localhost/++skin++vivi/toggle_favorited?'
 ...     'uniqueId=http://xml.zeit.de/online/2007/01/Somalia')
 >>> browser.open(
-...     'http://localhost:8080/++skin++cms/toggle_favorited?'
+...     'http://localhost/++skin++vivi/toggle_favorited?'
 ...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> pprint.pprint(json.loads(browser.contents))
 {'favorited_css_class': 'toggle_favorited not_favorited',...
@@ -137,21 +137,21 @@ The search view returns all data for rendering the result:
 
 >>> import zeit.find.testing
 >>> zeit.find.testing.LAYER.set_result('zeit.find.tests', 'data/obama.json')
->>> browser.open('/++skin++cms/search_result?title=Obama')
+>>> browser.open('/search_result?title=Obama')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
-{'results': [{'application_url': 'http://localhost:8080/++skin++cms',
+{'results': [{'application_url': 'http://localhost/++skin++vivi',
               ...
-              'graphical_preview_url': 'http://localhost:8080/++skin++cms/repository/.../thumbnail',
+              'graphical_preview_url': 'http://localhost/++skin++vivi/repository/.../thumbnail',
              ...
- 'template_url': 'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/fanstatic/zeit.find/search_result.jsont'}
+ 'template_url': 'http://localhost/++skin++vivi/++noop++a12dffa9629480a5cafd9df8a674891e/fanstatic/zeit.find/search_result.jsont'}
 
 Favorites are marked in the search result as well:
 
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
  'favorited': False,
  'favorited_css_class': 'toggle_favorited not_favorited',
  ...
@@ -159,12 +159,12 @@ Favorites are marked in the search result as well:
 Toggle favorite and search again:
 
 >>> browser.open(first_result['favorite_url'])
->>> browser.open('/++skin++cms/search_result?fulltext=Obama')
+>>> browser.open('/search_result?fulltext=Obama')
 >>> result = json.loads(browser.contents)
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
  'favorited': True,
  'favorited_css_class': 'toggle_favorited favorited',
  ...
@@ -172,19 +172,19 @@ Toggle favorite and search again:
 This also works if there is a Clip in the favorites:
 
 >>> clipboard['Favoriten']['Clip'] = zeit.cms.clipboard.entry.Clip('Clip')
->>> browser.open('/++skin++cms/search_result?fulltext=Obama')
+>>> browser.open('/search_result?fulltext=Obama')
 >>> result = json.loads(browser.contents)
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ 'favorite_url': 'http://localhost/++skin++vivi/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
  'favorited': True,
  'favorited_css_class': 'toggle_favorited favorited',
  ...
 
 The last query parameters are available:
 
->>> browser.open('/++skin++cms/zeit.find.last-query')
+>>> browser.open('/zeit.find.last-query')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
 {...

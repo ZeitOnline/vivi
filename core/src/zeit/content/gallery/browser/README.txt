@@ -160,7 +160,7 @@ So let's change the sorting:
 The default view while editing a gallery is the overview page:
 
 >>> bookmark = browser.url
->>> browser.open('/++skin++cms/workingcopy/zope.user/island')
+>>> browser.open('/workingcopy/zope.user/island')
 >>> print(browser.title.strip())
 Auf den Spuren der Elfen – Overview
 >>> import lxml.cssselect
@@ -320,7 +320,7 @@ There is also a metdata preview showing the images:
 
 The default view while a gallery is checked in, is the metadata page:
 
->>> browser.open('/++skin++cms/repository/online/2007/01/island')
+>>> browser.open('/repository/online/2007/01/island')
 >>> print(browser.title.strip())
 Auf den Spuren der Elfen – View gallery metadata
 >>> nodes = lxml.cssselect.CSSSelector(
