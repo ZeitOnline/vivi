@@ -1,9 +1,12 @@
+from opentelemetry.instrumentation.utils import http_status_to_status_code
+from opentelemetry.trace.status import Status
 from zeit.connector.search import SearchVar
 from zeit.content.audio.interfaces import (
     IAudio, IPodcastEpisodeInfo)
 import logging
 
 import grokcore.component as grok
+import opentelemetry.propagate
 import pendulum
 import requests
 import zope.app.appsetup.product
@@ -36,26 +39,50 @@ class Simplecast(grok.GlobalUtility):
         }
     }
 
-    def __init__(self):
+    def __init__(self, timeout=None):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.simplecast')
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
+        self.timeout = timeout or config.get('timeout', 1)
+        self.tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        self.identifier = config.get('identifier', 'simplecast')
 
-    def _request(self, verb, path):
+    def record_trace(self, span, status_code, body):
+        span.set_attribute('http.status_code', status_code)
+        span.set_attribute('http.content', body)
+        span.set_status(Status(http_status_to_status_code(status_code)))
+
+    def _request(self, request, body=None, params=None):
+        opentelemetry.propagate.inject(params.setdefault('headers', {}))
+        verb, path = request.split(' ')
         url = f'{self.api_url}{path}'
-        headers = {'Authorization': self.api_token}
-        response = requests.request(verb.lower(), url, headers=headers)
-        if response.status_code == 404:
-            log.error((
-                'We could not find the podcast you are looking for, %s.'
-                'Path: %s'),
-                response.status_code, path)
-
-        return response
+        with self.tracer.start_as_current_span(self.identifier) as span:
+            span.set_attributes({'http.url': url, 'http.method': verb})
+            try:
+                response = requests.request(
+                    verb.lower(), url, json=body, params=params,
+                    headers={'Authorization': self.api_token},
+                    timeout=self.timeout)
+                response.raise_for_status()
+            except requests.exceptions.RequestException as err:
+                status_code = getattr(err.response, 'status_code', 599)
+                response.text = getattr(err.response, 'text', '<no message>')
+                log.error(
+                    '%s returned %s', request, status_code, exc_info=True)
+                raise
+            except requests.exceptions.JSONDecodeError:
+                status_code = 599
+                log.error(
+                    '%s returned invalid json %r', request, response.text)
+                raise
+            finally:
+                self.record_trace(
+                    span, status_code, response.text)
+            return response.json()
 
     def fetch_episode(self, episode_id):
-        return self._request('GET', f'episodes/{episode_id}').json()
+        return self._request(f'GET episodes/{episode_id}')
 
     def folder(self, episode_create_at):
         """Podcast should end up in this folder by default"""
