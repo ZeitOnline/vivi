@@ -16,6 +16,24 @@
       />
   </class>
 
+  <class class=".audio.PodcastEpisodeInfo">
+    <require
+      interface=".interfaces.IPodcastEpisodeInfo"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IPodcastEpisodeInfo"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".interfaces.Podcast">
+    <require
+      interface=".interfaces.IPodcast"
+      permission="zope.View"
+    />
+  </class>
+
   <adapter
     factory=".reference.Audios"
     provides=".interfaces.IAudios"

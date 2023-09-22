@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Sep 19 15:13:37 2023\n"
+"POT-Creation-Date: Thu Sep 21 17:47:40 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.3\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -246,7 +246,7 @@ msgstr "Autor"
 #: zeit/content/article/edit/interfaces.py:515
 #: zeit/content/article/edit/interfaces.py:698
 #: zeit/content/article/interfaces.py:189
-#: zeit/content/article/interfaces.py:255 zeit/content/audio/interfaces.py:9
+#: zeit/content/article/interfaces.py:255 zeit/content/audio/interfaces.py:28
 #: zeit/content/author/interfaces.py:36 zeit/content/cp/interfaces.py:208
 #: zeit/content/cp/interfaces.py:347 zeit/content/cp/interfaces.py:493
 #: zeit/content/cp/interfaces.py:552 zeit/content/gallery/interfaces.py:91
@@ -536,7 +536,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/animation/browser/form.py:37
-#: zeit/content/audio/browser/form.py:40 zeit/content/cp/browser/form.py:54
+#: zeit/content/audio/browser/form.py:51 zeit/content/cp/browser/form.py:54
 #: zeit/content/markup/browser/form.py:34
 #: zeit/content/video/browser/video.py:40
 msgid "Navigation"
@@ -551,7 +551,7 @@ msgstr "Kopf"
 
 #: zeit/cms/content/browser/form.py:21
 #: zeit/content/advertisement/browser/form.py:18
-#: zeit/content/audio/browser/form.py:26 zeit/content/cp/browser/form.py:17
+#: zeit/content/audio/browser/form.py:21 zeit/content/cp/browser/form.py:17
 #: zeit/content/gallery/browser/form.py:27
 #: zeit/content/image/browser/form.py:21
 #: zeit/content/infobox/browser/form.py:25
@@ -733,7 +733,7 @@ msgstr "Verfügbarkeit"
 msgid "Recipe Categories"
 msgstr "Rezeptkategorien"
 
-#: zeit/cms/content/interfaces.py:166 zeit/content/audio/interfaces.py:10
+#: zeit/cms/content/interfaces.py:166
 msgid "Serie"
 msgstr "Serie"
 
@@ -888,7 +888,7 @@ msgstr "Cachezeit Browser"
 msgid "Caching time server"
 msgstr "Cachezeit Fastly"
 
-#: zeit/cms/content/interfaces.py:725 zeit/content/audio/interfaces.py:13
+#: zeit/cms/content/interfaces.py:725
 msgid "Remote image URL"
 msgstr "Remote Bild URL"
 
@@ -1658,7 +1658,7 @@ msgid "Adplace block"
 msgstr "Ad-Place"
 
 #: zeit/content/article/edit/audio.py:23
-#: zeit/content/article/edit/browser/form.py:537 zeit/content/audio/audio.py:64
+#: zeit/content/article/edit/browser/form.py:537 zeit/content/audio/audio.py:66
 #: zeit/content/audio/browser/configure.zcml:6
 msgid "Audio"
 msgstr "Audio"
@@ -2305,6 +2305,7 @@ msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:429
 #: zeit/content/article/edit/interfaces.py:445
+#: zeit/content/audio/interfaces.py:30
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2591,35 +2592,67 @@ msgstr "ältester zuerst"
 msgid "highlights"
 msgstr "highlights"
 
-#: zeit/content/audio/browser/form.py:32
+#: zeit/content/audio/browser/form.py:36
+msgid "Podcast Episode Info"
+msgstr "Podcastfolge"
+
+#: zeit/content/audio/browser/form.py:43
 msgid "Add audio"
 msgstr "Audio hinzufügen"
 
-#: zeit/content/audio/interfaces.py:12
-msgid "Serie subtitle"
-msgstr "Serien-Untertitel"
+#: zeit/content/audio/browser/form.py:57
+msgid "Edit audio"
+msgstr "Audio bearbeiten"
 
-#: zeit/content/audio/interfaces.py:14
-msgid "Episode Id"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:15
-msgid "Url"
-msgstr ""
+#: zeit/content/audio/browser/form.py:63
+msgid "View audio"
+msgstr "Audio anzeigen"
 
 #: zeit/content/audio/interfaces.py:16
+msgid "Podcast"
+msgstr "Podcast"
+
+#: zeit/content/audio/interfaces.py:17
+msgid "Text to Speech"
+msgstr "Text to Speech"
+
+#: zeit/content/audio/interfaces.py:18
+msgid "Premium Audio"
+msgstr "Premium Audio"
+
+#: zeit/content/audio/interfaces.py:29
+msgid "External Id"
+msgstr "Externe ID"
+
+#: zeit/content/audio/interfaces.py:31
 msgid "Duration"
 msgstr "Laufzeit"
 
-#: zeit/content/audio/interfaces.py:17
-msgid "Episode Nr"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:18 zeit/content/cp/interfaces.py:139
-msgid "Description"
-msgstr "Beschreibung"
-
 #: zeit/content/audio/interfaces.py:33
+msgid "Typ"
+msgstr "Typ"
+
+#: zeit/content/audio/interfaces.py:107
+msgid "Podcast Serie"
+msgstr "Podcast"
+
+#: zeit/content/audio/interfaces.py:111
+msgid "Remote Image URL"
+msgstr "Bild URL"
+
+#: zeit/content/audio/interfaces.py:114
+msgid "Episode No"
+msgstr "Nummer der Folge"
+
+#: zeit/content/audio/interfaces.py:117
+msgid "Episode Summary"
+msgstr "Zusammenfassung der Folge"
+
+#: zeit/content/audio/interfaces.py:120
+msgid "Episode Notes"
+msgstr "Beschreibung der Folge"
+
+#: zeit/content/audio/interfaces.py:131
 msgid "Audios"
 msgstr "Audios"
 
@@ -3176,6 +3209,10 @@ msgstr "Navi-Themen Titel"
 #: zeit/content/cp/interfaces.py:135
 msgid "Titel"
 msgstr "Überschrift"
+
+#: zeit/content/cp/interfaces.py:139
+msgid "Description"
+msgstr "Beschreibung"
 
 #: zeit/content/cp/interfaces.py:193 zeit/content/cp/interfaces.py:217
 #: zeit/content/cp/interfaces.py:331
@@ -5081,6 +5118,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Serie subtitle"
+#~ msgstr "Serien-Untertitel"
 
 #~ msgid "Use Comments 'rebrush'"
 #~ msgstr "Comments-Rebrush verwenden"

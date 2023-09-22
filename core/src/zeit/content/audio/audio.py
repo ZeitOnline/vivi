@@ -1,12 +1,18 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
+
 import logging
-import zope.interface
+
+import grokcore.component as grok
 import zope.component
-import zeit.cms.interfaces
+import zope.interface
+
 import zeit.cms.content.dav
+import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
-import zeit.cms.repository.interfaces
+import zeit.cms.interfaces
 import zeit.cms.repository.folder
+import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.audio.interfaces
 
@@ -17,7 +23,7 @@ AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
 
 
 @zope.interface.implementer(
-    zeit.content.audio.interfaces.IAudio,
+    IAudio,
     zeit.cms.interfaces.IAsset)
 class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
     default_template = '<audio><head/><body/></audio>'
@@ -25,41 +31,37 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
     zeit.cms.content.dav.mapProperties(
         zeit.content.audio.interfaces.IAudio,
         AUDIO_SCHEMA_NS, (
+            'external_id',
             'title',
-            'image',
-            'episode_id',
-            'episode_nr',
             'url',
             'duration',
-            'description',
-            # XXX Very temporary fix until we add podcast series object
-            'serie',
-            'serie_subtitle',
-            'distribution_channels'))
-
-    def update(self, info):
-        self.title = info['title']
-        self.url = info['audio_file_url']
+            'audio_type'))
 
 
-def add_audio(container, info):
-    log.info('Add audio %s', info['id'])
-    audio = Audio()
-    audio.episode_id = info['id']
-    audio.update(info)
-    container[info['id']] = audio
-    return audio
+@zope.interface.implementer(IPodcastEpisodeInfo)
+class PodcastEpisodeInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 
+    grok.context(IAudio)
 
-def remove_audio(context):
-    log.info('Remove audio %s', context.__name__)
-    del context.__parent__[context.__name__]
-    context.__parent__ = None
-    return context
+    zeit.cms.content.dav.mapProperties(
+        IPodcastEpisodeInfo,
+        AUDIO_SCHEMA_NS, (
+            'podcast',
+            'image',
+            'episode_nr'))
+
+    summary = zeit.cms.content.property.ObjectPathProperty(
+        '.summary', IPodcastEpisodeInfo['summary'])
+    notes = zeit.cms.content.property.ObjectPathProperty(
+        '.notes', IPodcastEpisodeInfo['notes'])
+
+    def __init__(self, context):
+        self.xml = context.xml
+        self.context = context
 
 
 class AudioType(zeit.cms.type.XMLContentTypeDeclaration):
     factory = Audio
-    interface = zeit.content.audio.interfaces.IAudio
+    interface = IAudio
     title = _('Audio')
     type = 'audio'  # Wert für {http://namespaces.zeit.de/CMS/meta}type
