@@ -3,9 +3,6 @@ import zeit.content.audio.testing
 
 class TestAudio(zeit.content.audio.testing.BrowserTestCase):
 
-    def open(self, tail):
-        self.browser.open('http://localhost/++skin++vivi/repository' + tail)
-
     def add_audio(self):
         self.browser.getControl('File name').value = 'test-audio'
         self.browser.getControl('Title').value = 'Cats episode'
@@ -22,7 +19,7 @@ class TestAudio(zeit.content.audio.testing.BrowserTestCase):
 
     def test_add_form(self):
         browser = self.browser
-        self.open('/online/2007/01')
+        browser.open('/repository/online/2007/01')
         menu = browser.getControl(name='add_menu')
         menu.displayValue = ['Audio']
         browser.open(menu.value[0])

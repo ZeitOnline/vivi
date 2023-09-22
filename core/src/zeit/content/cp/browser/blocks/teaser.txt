@@ -93,7 +93,7 @@ We create a new centerpage with a content type from the repository:
 
 Then we need to create a test 'article' to be included in this CenterPage:
 
->>> browser.open('/++skin++cms/repository/testcontent')
+>>> browser.open('/repository/testcontent')
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Teaser title').value = 'Foreign teaser'
 >>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'

@@ -90,7 +90,7 @@ are __name__ attributes:
 
 After checkin they're gone:
 
->>> browser.open('/++skin++vivi/workingcopy/zope.user/Somalia/@@checkin')
+>>> browser.open('/workingcopy/zope.user/Somalia/@@checkin')
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
