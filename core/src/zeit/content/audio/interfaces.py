@@ -112,9 +112,11 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
         readonly=True)
     summary = zope.schema.Text(
         title=_('Episode Summary'),
+        required=False,
         readonly=True)
     notes = zope.schema.Text(
         title=_('Episode Notes'),
+        required=False,
         readonly=True)
 
 
