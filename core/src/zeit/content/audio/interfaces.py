@@ -19,7 +19,8 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     }
 
 
-class IAudio(zeit.cms.content.interfaces.IXMLContent):
+class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
+             zeit.cms.content.interfaces.IXMLContent):
     """
     Basic playable audio containing minimum required information
     for ZEIT audio players.
@@ -104,7 +105,8 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
     """Additional Audioinformation for podcast episodes."""
     podcast = zope.schema.Choice(
         title=_('Podcast Serie'),
-        source=PodcastSource())
+        source=PodcastSource(),
+        readonly=True)
     # XXX reference image group instead of URL
     image = zope.schema.URI(
         title=_('Remote Image URL'),

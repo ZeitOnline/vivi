@@ -37,7 +37,6 @@ class AutomaticTeaserBlock(
     def __getattr__(self, name):
         if name in zeit.content.cp.interfaces.ITeaserBlock:
             return zeit.content.cp.interfaces.ITeaserBlock[name].default
-            return zeit.content.cp.interfaces.ITeaserBlock[name].default
         raise AttributeError(name)
 
     @property
