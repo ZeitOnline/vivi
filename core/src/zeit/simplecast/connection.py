@@ -8,9 +8,12 @@ import grokcore.component as grok
 import pendulum
 import requests
 import zope.app.appsetup.product
+import zope.component
 
 import zeit.cms.checkout.helper
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 
@@ -38,27 +41,48 @@ class Simplecast(grok.GlobalUtility):
         }
     }
 
-    def __init__(self):
+    def __init__(self, timeout=None):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.simplecast')
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
+        self.timeout = timeout or config.get('timeout', 1)
+        self.identifier = config.get('identifier', 'simplecast')
 
-    def _request(self, verb, path):
+    def _request(self, request):
+        verb, path = request.split(' ')
         url = f'{self.api_url}{path}'
-        headers = {'Authorization': self.api_token}
-        response = requests.request(verb.lower(), url, headers=headers)
-        if response.status_code == 404:
-            log.error((
-                'We could not find the podcast you are looking for, %s.'
-                'Path: %s'),
-                response.status_code, path)
 
-        return response
+        with zeit.cms.tracing.use_span(self.identifier) as span:
+            span.set_attributes({'http.url': url, 'http.method': verb})
+            status_code = None
+            try:
+                response = requests.request(
+                    verb.lower(), url,
+                    headers={'Authorization': self.api_token},
+                    timeout=self.timeout)
+                status_code = response.status_code
+                response_text = response.text
+                response.raise_for_status()
+                json = response.json()
+            except requests.exceptions.JSONDecodeError as err:
+                response_text = f"Invalid Json {err}: {response.text}"
+                raise
+            except requests.exceptions.RequestException as err:
+                if not status_code:
+                    status_code = getattr(err.response, 'status_code', 599)
+                response_text = getattr(err.response, 'text', str(err))
+                log.error(
+                    '%s returned %s', request, status_code, exc_info=True)
+                raise
+            finally:
+                zeit.cms.tracing.record_span(span, status_code, response_text)
+
+            return json
 
     def _fetch_episode(self, episode_id):
         """Request episode data from simplecast, return json body"""
-        return self._request('GET', f'episodes/{episode_id}').json()
+        return self._request(f'GET episodes/{episode_id}')
 
     def folder(self, episode_create_at):
         """Podcast should end up in this folder by default"""
