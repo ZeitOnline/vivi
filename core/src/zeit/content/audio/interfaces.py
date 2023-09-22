@@ -105,7 +105,8 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
     """Additional Audioinformation for podcast episodes."""
     podcast = zope.schema.Choice(
         title=_('Podcast Serie'),
-        source=PodcastSource())
+        source=PodcastSource(),
+        readonly=True)
     # XXX reference image group instead of URL
     image = zope.schema.URI(
         title=_('Remote Image URL'),

@@ -14,17 +14,20 @@ class Base:
             'title',
             'url',
             'duration',
-            'audio_type')
+            'audio_type') + \
+        zope.formlib.form.FormFields(
+            zeit.content.audio.interfaces.IAudio).select('__name__')
 
-    field_groups = (
-        gocept.form.grouped.Fields(
-            _("Audio"),
-            ('title', 'url', 'duration', 'audio_type',),
-            css_class='wide-widgets column-left'),)
+    audio_fields = gocept.form.grouped.Fields(
+        _("Audio"),
+        ('title', 'url', 'duration', 'audio_type',),
+        css_class='wide-widgets column-left')
+
+    field_groups = (audio_fields,)
 
 
-class PodcastInfo:
-    form_fields = zope.formlib.form.FormFields(
+class PodcastForm:
+    form_fields = Base.form_fields + zope.formlib.form.FormFields(
         zeit.content.audio.interfaces.IPodcastEpisodeInfo).select(
             'podcast',
             'image',
@@ -32,36 +35,33 @@ class PodcastInfo:
             'summary',
             'notes')
 
+    podcast_fields = gocept.form.grouped.Fields(
+        _('Podcast Episode Info'),
+        ('podcast', 'image', 'episode_nr', 'summary', 'notes'),
+        'wide-widgets column-left')
+
     field_groups = (
         gocept.form.grouped.Fields(
-            _('Podcast Episode Info'),
-            ('podcast', 'image', 'episode_nr', 'summary', 'notes'),
-            'wide-widgets column-left'),)
+            _('Navigation'), ('__name__',),
+            css_class='wide-widgets column-right'),
+        Base.audio_fields,
+        podcast_fields
+    )
 
 
-class Add(Base, zeit.cms.browser.form.AddForm):
+class Add(PodcastForm, zeit.cms.browser.form.AddForm):
 
     title = _('Add audio')
     factory = zeit.content.audio.audio.Audio
-    form_fields = Base.form_fields + PodcastInfo.form_fields + \
-        zope.formlib.form.FormFields(
-            zeit.content.audio.interfaces.IAudio).select('__name__')
-
-    field_groups = (
-        (gocept.form.grouped.Fields(
-            _('Navigation'), ('__name__',),
-            css_class='wide-widgets column-right'),)
-        + Base.field_groups + PodcastInfo.field_groups)
 
 
-class Edit(Base, zeit.cms.browser.form.EditForm):
+class Edit(PodcastForm, zeit.cms.browser.form.EditForm):
 
     title = _('Edit audio')
-    form_fields = Base.form_fields.omit('__name__')
+    form_fields = PodcastForm.form_fields.omit('__name__')
 
 
-class Display(Base, zeit.cms.browser.form.DisplayForm):
+class Display(PodcastForm, zeit.cms.browser.form.DisplayForm):
 
     title = _('View audio')
-    form_fields = Base.form_fields.omit('__name__') + PodcastInfo.form_fields
     for_display = True
