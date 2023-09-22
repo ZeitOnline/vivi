@@ -5,6 +5,7 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
 
     def add_audio(self):
         self.browser.getControl('File name').value = 'test-audio'
+        self.browser.getControl('Typ').displayValue = 'Podcast'
         self.browser.getControl('Title').value = 'Cats episode'
         self.browser.getControl(label="URL", index=0).value = 'http://example.com/cats.mp3'
         self.browser.getControl('Duration').value = 123

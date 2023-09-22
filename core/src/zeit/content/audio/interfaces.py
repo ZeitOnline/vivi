@@ -33,7 +33,6 @@ class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
     audio_type = zope.schema.Choice(
         title=_('Typ'),
         readonly=True,
-        default='podcast',
         source=AudioTypeSource())
 
 

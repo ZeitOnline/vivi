@@ -104,6 +104,7 @@ class Simplecast(grok.GlobalUtility):
         episode_data = self.fetch_episode(episode_id)
         container = self.folder(episode_data['created_at'])
         audio = zeit.content.audio.audio.Audio()
+        audio.audio_type = 'podcast'
         self._update_properties(episode_data, audio)
         container[episode_id] = audio
         log.info('Podcast %s successfully created.', audio.uniqueId)

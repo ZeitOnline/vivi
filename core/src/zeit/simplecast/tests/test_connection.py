@@ -46,6 +46,7 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         with m_simple:
             self.simplecast.create_episode(episode_id)
         episode = self.repository['podcasts']['2023-08'][episode_id]
+        self.assertEqual('podcast', episode.audio_type)
         self.assertEqual('Cat Jokes Pawdcast', episode.title)
         self.assertEqual(episode_id, episode.external_id)
         self.assertEqual(
