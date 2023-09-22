@@ -57,7 +57,6 @@ class PodcastEpisodeInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
         IPodcastEpisodeInfo,
         AUDIO_SCHEMA_NS, (
             'podcast',
-            'image',
             'episode_nr'))
 
     summary = zeit.cms.content.property.ObjectPathProperty(

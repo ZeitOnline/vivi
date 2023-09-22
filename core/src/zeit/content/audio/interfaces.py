@@ -107,10 +107,6 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
         title=_('Podcast Serie'),
         source=PodcastSource(),
         readonly=True)
-    # XXX reference image group instead of URL
-    image = zope.schema.URI(
-        title=_('Remote Image URL'),
-        readonly=True)
     episode_nr = zope.schema.Int(
         title=_('Episode No'),
         readonly=True)
