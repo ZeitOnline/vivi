@@ -10,7 +10,7 @@ import zope.interface
 import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.content.interfaces
-import zeit.cms.content.xmlsupport
+import zeit.cms.content.metadata
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
@@ -26,22 +26,16 @@ AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
 @zope.interface.implementer(
     IAudio,
     zeit.cms.interfaces.IAsset)
-class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
+class Audio(zeit.cms.content.metadata.CommonMetadata):
     default_template = '<audio><head/><body/></audio>'
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.audio.interfaces.IAudio,
         AUDIO_SCHEMA_NS, (
             'external_id',
-            'title',
             'url',
             'duration',
             'audio_type'))
-
-    def __getattr__(self, name):
-        if name in zeit.cms.content.interfaces.ICommonMetadata:
-            return zeit.cms.content.interfaces.ICommonMetadata[name].default
-        raise AttributeError(name)
 
     @property
     def teaserTitle(self):  # @@object-details expects this
