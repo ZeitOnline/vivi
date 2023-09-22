@@ -43,6 +43,10 @@ class Audio(zeit.cms.content.xmlsupport.XMLContentBase):
             return zeit.cms.content.interfaces.ICommonMetadata[name].default
         raise AttributeError(name)
 
+    @property
+    def teaserTitle(self):  # @@object-details expects this
+        return self.title
+
 
 @zope.interface.implementer(IPodcastEpisodeInfo)
 class PodcastEpisodeInfo(zeit.cms.content.dav.DAVPropertiesAdapter):

@@ -1,7 +1,7 @@
 import zeit.content.audio.testing
 
 
-class TestAudio(zeit.content.audio.testing.BrowserTestCase):
+class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
 
     def add_audio(self):
         self.browser.getControl('File name').value = 'test-audio'
