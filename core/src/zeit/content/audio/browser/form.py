@@ -30,6 +30,7 @@ class PodcastForm:
     form_fields = Base.form_fields + zope.formlib.form.FormFields(
         zeit.content.audio.interfaces.IPodcastEpisodeInfo).select(
             'podcast',
+            'image',
             'episode_nr',
             'summary',
             'notes')
