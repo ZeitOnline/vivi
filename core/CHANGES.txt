@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.31.2 (2023-09-25)
+-------------------
+
+- ZO-3771: Set audio_type during import
+
+- ZO-3821: Display title in audio object details
+
+
 5.31.1 (2023-09-22)
 -------------------
 
