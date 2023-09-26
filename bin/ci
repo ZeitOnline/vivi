@@ -63,11 +63,12 @@ case $COMMAND in
 
         set +e
         shift
-        $DEPLOYMENT/bin/test -v -p no:sugar -m 'not selenium' \
-            --cov=. --junitxml=report.xml "$@"
+        $DEPLOYMENT/bin/test -n 6 -m 'not selenium' -r a \
+            --cov=. --cov-report= \
+            --junitxml=report.xml "$@"
         TEST_RESULT=$?
 
-        $DEPLOYMENT/bin/test -v -p no:sugar -m 'selenium' \
+        $DEPLOYMENT/bin/test -n 4 -m 'selenium' -r aR \
             --cov=. --junitxml=report_selenium.xml \
             --cov-append --cov-report=html --cov-report=xml \
             --reruns=3 --reruns-delay=1 "$@"

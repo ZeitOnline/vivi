@@ -66,11 +66,15 @@ class VGWortWebService:
                     raise zeit.vgwort.interfaces.TechnicalError(result)
                 return result
             except zeep.exceptions.Fault as e:
-                node = e.detail.getchildren()[0]
-                message = node.find('{%s}errormsg' % self.namespace)
+                if e.detail is not None:
+                    node = e.detail.getchildren()[0]
+                    message = node.find('{%s}errormsg' % self.namespace)
+                    code = node.find('{%s}errorcode' % self.namespace)
+                    code = int(code.text) if code is not None else 0
+                else:
+                    message = None
+                    code = 999
                 message = message.text if message is not None else 'unknown'
-                code = node.find('{%s}errorcode' % self.namespace)
-                code = int(code.text) if code is not None else 0
                 if code >= 100:
                     raise zeit.vgwort.interfaces.TechnicalError(message)
                 raise zeit.vgwort.interfaces.WebServiceError(message)
