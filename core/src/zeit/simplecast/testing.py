@@ -1,6 +1,15 @@
 import zeit.cms.testing
 import zeit.content.audio.testing
 
+from opentelemetry.sdk import trace
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+    InMemorySpanExporter,
+)
+from _pytest.monkeypatch import MonkeyPatch
+import pytest
+import zope.component
+
 
 product_config = """\
 <product-config zeit.simplecast>
@@ -66,3 +75,36 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.repository.connector.search_result = []
+
+
+@pytest.fixture()
+def captrace(span_processor):
+    tracer_provider = trace.TracerProvider()
+    tracer_provider.add_span_processor(span_processor)
+
+    tracer = tracer_provider.get_tracer(__name__)
+    zope.component.provideUtility(tracer, zeit.cms.interfaces.ITracer)
+
+    return TracingHelper(tracer, span_processor)
+
+
+class TracingHelper:
+    def __init__(self, tracer, span_processor):
+        self.tracer = tracer
+        self.span_processor = span_processor
+
+    @property
+    def spans(self):
+        return self.span_processor.span_exporter.get_finished_spans()
+
+    def by_name(self, name):
+        for span in self.spans:
+            if span.name == name:
+                return span
+        raise AssertionError(f"Did not find span with name {name}")
+
+    def by_attr(self, key, value):
+        for span in self.spans:
+            if span.attributes.get(key) == value:
+                return span
+        raise AssertionError(f"Did not find span with attrs {key}={value}")

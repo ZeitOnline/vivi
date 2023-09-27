@@ -10,9 +10,12 @@ import opentelemetry.propagate
 import pendulum
 import requests
 import zope.app.appsetup.product
+import zope.component
 
 import zeit.cms.checkout.helper
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 
@@ -45,7 +48,6 @@ class Simplecast(grok.GlobalUtility):
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
         self.timeout = timeout or config.get('timeout', 1)
-        self.tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         self.identifier = config.get('identifier', 'simplecast')
 
     def record_trace(self, span, status_code, body):
@@ -53,33 +55,39 @@ class Simplecast(grok.GlobalUtility):
         span.set_attribute('http.content', body)
         span.set_status(Status(http_status_to_status_code(status_code)))
 
-    def _request(self, request, body=None, params=None):
-        opentelemetry.propagate.inject(params.setdefault('headers', {}))
+    def _request(self, request, body=None, **kwargs):
+        opentelemetry.propagate.inject(kwargs.setdefault('headers', {}))
         verb, path = request.split(' ')
         url = f'{self.api_url}{path}'
-        with self.tracer.start_as_current_span(self.identifier) as span:
+        json = None
+        with zeit.cms.tracing.use_span(self.identifier) as span:
             span.set_attributes({'http.url': url, 'http.method': verb})
             try:
                 response = requests.request(
-                    verb.lower(), url, json=body, params=params,
+                    verb.lower(), url, json=body, params=kwargs,
                     headers={'Authorization': self.api_token},
                     timeout=self.timeout)
+                status_code = response.status_code
+                response_text = response.text
                 response.raise_for_status()
+                json = response.json()
+            except requests.exceptions.JSONDecodeError as err:
+                if not status_code:
+                    status_code = getattr(err.response, 'status_code', 599)
+                response_text = f"Invalid Json {err}: {response.text}"
+                raise
             except requests.exceptions.RequestException as err:
-                status_code = getattr(err.response, 'status_code', 599)
-                response.text = getattr(err.response, 'text', '<no message>')
+                if not status_code:
+                    status_code = getattr(err.response, 'status_code', 599)
+                response_text = getattr(err.response, 'text', str(err))
                 log.error(
                     '%s returned %s', request, status_code, exc_info=True)
                 raise
-            except requests.exceptions.JSONDecodeError:
-                status_code = 599
-                log.error(
-                    '%s returned invalid json %r', request, response.text)
-                raise
             finally:
                 self.record_trace(
-                    span, status_code, response.text)
-            return response.json()
+                    span, status_code, response_text)
+
+            return json
 
     def fetch_episode(self, episode_id):
         return self._request(f'GET episodes/{episode_id}')
