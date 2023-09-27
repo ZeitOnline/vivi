@@ -1,3 +1,4 @@
+from zeit.cms.workflow.interfaces import IPublish
 from zeit.connector.search import SearchVar
 from zeit.content.audio.interfaces import (
     IAudio, IPodcastEpisodeInfo)
@@ -132,4 +133,18 @@ class Simplecast(grok.GlobalUtility):
         else:
             log.warning(
                 'No podcast episode %s found. No episode deleted.',
+                episode_id)
+
+    def publish_episode(self, episode_id):
+        # XXX good idea or will the publish
+        # event trigger update event before?
+        self.update_episode(episode_id)
+        audio = self._find_existing_episode(episode_id)
+        if audio:
+            IPublish(audio).publish(background=False)
+            log.info('Podcast Episode %s successfully published.',
+                     audio.uniqueId)
+        else:
+            log.warning(
+                'No podcast episode %s found. Unable to publish episode.',
                 episode_id)

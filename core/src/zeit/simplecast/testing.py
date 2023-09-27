@@ -1,5 +1,6 @@
 import zeit.cms.testing
 import zeit.content.audio.testing
+import zeit.workflow.testing
 
 
 product_config = """\
@@ -41,7 +42,7 @@ EPISODE_200 = {
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
-    bases=(zeit.content.audio.testing.CONFIG_LAYER,))
+    bases=(zeit.content.audio.testing.CONFIG_LAYER, zeit.workflow.testing.CONFIG_LAYER))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     bases=(CONFIG_LAYER,))

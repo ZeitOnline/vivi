@@ -50,4 +50,30 @@
       />
   </class>
 
+  <!-- Audio workflow -->
+  <adapter factory=".workflow.dispatch_workflow_via_audio_type"
+    provides="zeit.workflow.interfaces.IAssetWorkflow"
+    trusted="yes"
+    />
+
+  <class class=".workflow.AudioWorkflow">
+    <require
+      permission="zope.View" interface="zeit.workflow.interfaces.IAssetWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema="zeit.workflow.interfaces.IAssetWorkflow"
+      />
+  </class>
+
+  <class class=".workflow.PodcastWorkflow">
+    <require
+      permission="zope.View" interface="zeit.workflow.interfaces.IAssetWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema="zeit.workflow.interfaces.IAssetWorkflow"
+      />
+  </class>
+
 </configure>
