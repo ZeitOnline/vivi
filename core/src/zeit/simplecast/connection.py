@@ -1,5 +1,3 @@
-from opentelemetry.instrumentation.utils import http_status_to_status_code
-from opentelemetry.trace.status import Status
 from zeit.connector.search import SearchVar
 from zeit.content.audio.interfaces import (
     IAudio, IPodcastEpisodeInfo)
@@ -22,6 +20,8 @@ import zeit.simplecast.interfaces
 log = logging.getLogger(__name__)
 
 AUDIO_ID = SearchVar('external_id', zeit.content.audio.audio.AUDIO_SCHEMA_NS)
+
+
 
 
 @grok.implementer(zeit.simplecast.interfaces.ISimplecast)
@@ -50,16 +50,11 @@ class Simplecast(grok.GlobalUtility):
         self.timeout = timeout or config.get('timeout', 1)
         self.identifier = config.get('identifier', 'simplecast')
 
-    def record_trace(self, span, status_code, body):
-        span.set_attribute('http.status_code', status_code)
-        span.set_attribute('http.content', body)
-        span.set_status(Status(http_status_to_status_code(status_code)))
-
     def _request(self, request, body=None, **kwargs):
         opentelemetry.propagate.inject(kwargs.setdefault('headers', {}))
         verb, path = request.split(' ')
         url = f'{self.api_url}{path}'
-        json = None
+
         with zeit.cms.tracing.use_span(self.identifier) as span:
             span.set_attributes({'http.url': url, 'http.method': verb})
             try:
@@ -72,8 +67,6 @@ class Simplecast(grok.GlobalUtility):
                 response.raise_for_status()
                 json = response.json()
             except requests.exceptions.JSONDecodeError as err:
-                if not status_code:
-                    status_code = getattr(err.response, 'status_code', 599)
                 response_text = f"Invalid Json {err}: {response.text}"
                 raise
             except requests.exceptions.RequestException as err:
@@ -84,8 +77,7 @@ class Simplecast(grok.GlobalUtility):
                     '%s returned %s', request, status_code, exc_info=True)
                 raise
             finally:
-                self.record_trace(
-                    span, status_code, response_text)
+                zeit.cms.tracing.record_span(span, status_code, response_text)
 
             return json
 
