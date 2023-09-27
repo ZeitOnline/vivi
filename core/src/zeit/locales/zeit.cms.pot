@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Sep 21 17:47:40 2023\n"
+"POT-Creation-Date: Wed Sep 27 08:45:36 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -273,7 +273,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:698
 #: zeit/content/article/interfaces.py:189
 #: zeit/content/article/interfaces.py:255
-#: zeit/content/audio/interfaces.py:28
+#: zeit/content/audio/interfaces.py:29
 #: zeit/content/author/interfaces.py:36
 #: zeit/content/cp/interfaces.py:208
 #: zeit/content/cp/interfaces.py:347
@@ -562,7 +562,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/animation/browser/form.py:37
-#: zeit/content/audio/browser/form.py:51
+#: zeit/content/audio/browser/form.py:44
 #: zeit/content/cp/browser/form.py:54
 #: zeit/content/markup/browser/form.py:34
 #: zeit/content/video/browser/video.py:40
@@ -579,7 +579,6 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:21
 #: zeit/content/advertisement/browser/form.py:18
-#: zeit/content/audio/browser/form.py:21
 #: zeit/content/cp/browser/form.py:17
 #: zeit/content/gallery/browser/form.py:27
 #: zeit/content/image/browser/form.py:21
@@ -1703,8 +1702,9 @@ msgstr ""
 
 #: zeit/content/article/edit/audio.py:23
 #: zeit/content/article/edit/browser/form.py:537
-#: zeit/content/audio/audio.py:66
+#: zeit/content/audio/audio.py:70
 #: zeit/content/audio/browser/configure.zcml:6
+#: zeit/content/audio/browser/form.py:22
 msgid "Audio"
 msgstr ""
 
@@ -2365,7 +2365,7 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:429
 #: zeit/content/article/edit/interfaces.py:445
-#: zeit/content/audio/interfaces.py:30
+#: zeit/content/audio/interfaces.py:31
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2660,19 +2660,19 @@ msgstr ""
 msgid "highlights"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:36
+#: zeit/content/audio/browser/form.py:38
 msgid "Podcast Episode Info"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:43
+#: zeit/content/audio/browser/form.py:53
 msgid "Add audio"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:57
+#: zeit/content/audio/browser/form.py:59
 msgid "Edit audio"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:63
+#: zeit/content/audio/browser/form.py:65
 msgid "View audio"
 msgstr ""
 
@@ -2688,40 +2688,48 @@ msgstr ""
 msgid "Premium Audio"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:29
+#: zeit/content/audio/interfaces.py:30
 msgid "External Id"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:31
+#: zeit/content/audio/interfaces.py:32
 msgid "Duration"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:33
+#: zeit/content/audio/interfaces.py:34
 msgid "Typ"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:107
+#: zeit/content/audio/interfaces.py:106
 msgid "Podcast Serie"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:111
-msgid "Remote Image URL"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:114
+#: zeit/content/audio/interfaces.py:110
 msgid "Episode No"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:117
+#: zeit/content/audio/interfaces.py:113
 msgid "Episode Summary"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:120
+#: zeit/content/audio/interfaces.py:117
 msgid "Episode Notes"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:131
+#: zeit/content/audio/interfaces.py:121
+msgid "Is Published"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:133
 msgid "Audios"
+msgstr ""
+
+#: zeit/content/audio/workflow.py:21
+msgid "Could not publish %s. Audio URL is missing"
+msgstr ""
+
+#: zeit/content/audio/workflow.py:35
+msgid "Could not publish %s. Podcast Episode is not published by Provider"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:30

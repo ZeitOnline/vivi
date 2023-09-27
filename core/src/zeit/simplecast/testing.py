@@ -1,5 +1,6 @@
 import zeit.cms.testing
 import zeit.content.audio.testing
+import zeit.workflow.testing
 
 
 product_config = """\
@@ -19,6 +20,7 @@ EPISODE_200 = {
     "long_description": "lorem ipsum dolor sit amet",
     "number": 2,
     "title": "Cat Jokes Pawdcast",
+    "is_published": True,
     "audio_file_url": (
         "https://injector.simplecastaudio.com/"
         "04b0bba3-e114-4d7a-bf27-c398dcff13fd/episodes/"
@@ -40,7 +42,7 @@ EPISODE_200 = {
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
-    bases=(zeit.content.audio.testing.CONFIG_LAYER,))
+    bases=(zeit.content.audio.testing.CONFIG_LAYER, zeit.workflow.testing.CONFIG_LAYER))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     bases=(CONFIG_LAYER,))
