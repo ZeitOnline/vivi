@@ -55,7 +55,8 @@ class Simplecast(grok.GlobalUtility):
 
         return response
 
-    def fetch_episode(self, episode_id):
+    def _fetch_episode(self, episode_id):
+        """Request episode data from simplecast, return json body"""
         return self._request('GET', f'episodes/{episode_id}').json()
 
     def folder(self, episode_create_at):
@@ -73,7 +74,7 @@ class Simplecast(grok.GlobalUtility):
             repository[podcasts][yyyy_mm] = zeit.cms.repository.folder.Folder()
         return repository[podcasts][yyyy_mm]
 
-    def find_existing_episode(self, episode_id):
+    def _find_existing_episode(self, episode_id):
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         result = list(connector.search(
@@ -86,7 +87,7 @@ class Simplecast(grok.GlobalUtility):
             return content
         except TypeError as error:
             log.error(
-                'Podcast %s found for %s. But not found in DAV: %s',
+                'Podcast Episode %s found for %s. But not found in DAV: %s',
                 result[0][0], episode_id, error
             )
             return None
@@ -102,31 +103,32 @@ class Simplecast(grok.GlobalUtility):
                 'external_id', episode_data['podcast']['id'])
 
     def create_episode(self, episode_id):
-        episode_data = self.fetch_episode(episode_id)
+        episode_data = self._fetch_episode(episode_id)
         container = self.folder(episode_data['created_at'])
         audio = zeit.content.audio.audio.Audio()
         audio.audio_type = 'podcast'
         self._update_properties(episode_data, audio)
         container[episode_id] = audio
-        log.info('Podcast %s successfully created.', audio.uniqueId)
+        log.info('Podcast Episode %s successfully created.', audio.uniqueId)
 
     def update_episode(self, episode_id):
-        episode_data = self.fetch_episode(episode_id)
+        episode_data = self._fetch_episode(episode_id)
         container = self.folder(episode_data['created_at'])
         if container is not None:
             with zeit.cms.checkout.helper.checked_out(
                     container[episode_id]) as episode:
                 self._update_properties(episode_data, episode)
                 log.info(
-                    'Podcast %s successfully updated.', episode.uniqueId)
+                    'Podcast Episode %s successfully updated.',
+                    episode.uniqueId)
 
     def delete_episode(self, episode_id):
-        audio = self.find_existing_episode(episode_id)
+        audio = self._find_existing_episode(episode_id)
         if audio:
             unique_id = audio.uniqueId
             del audio.__parent__[audio.__name__]
             self.__parent__ = None
-            log.info('Podcast %s successfully deleted.', unique_id)
+            log.info('Podcast Episode %s successfully deleted.', unique_id)
         else:
             log.warning(
                 'No podcast episode %s found. No episode deleted.',

@@ -1,3 +1,4 @@
+from unittest import mock
 import requests_mock
 import zope.component
 import zeit.cms.repository.folder
@@ -9,13 +10,10 @@ import zeit.simplecast.testing
 class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
 
     def create_audio(self, json):
-        audio = zeit.content.audio.audio.Audio()
-        audio.title = json['title']
-        audio.episode_id = json['id']
-        audio.url = json['audio_file_url']
-        self.repository['podcasts'] = zeit.cms.repository.folder.Folder()
-        self.repository['podcasts']['2023-08'] = zeit.cms.repository.folder.Folder()
-        self.repository['podcasts']['2023-08'][audio.episode_id] = audio
+        with mock.patch.object(self.simplecast, '_fetch_episode') as request:
+            request.return_value = json
+            self.simplecast.create_episode(json['id'])
+        self.repository.connector.search_result = [(f'http://xml.zeit.de/podcasts/2023-08/{json["id"]}')]
 
     def setUp(self):
         super().setUp()

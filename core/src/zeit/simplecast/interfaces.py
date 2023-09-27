@@ -3,5 +3,14 @@ import zope.interface
 
 class ISimplecast(zope.interface.Interface):
 
-    def fetch_episode(self, episode_id):
-        """Request episode data from simplecast, return json body"""
+    def publish_episode(self, episode_id: str):
+        """Publish episode with given id"""
+
+    def create_episode(self, episode_id: str):
+        """Create episode with given id"""
+
+    def update_episode(self, episode_id: str):
+        """Update episode data with given id"""
+
+    def delete_episode(self, episode_id: str):
+        """Delete episode with given id"""
