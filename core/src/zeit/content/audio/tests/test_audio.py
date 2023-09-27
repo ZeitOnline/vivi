@@ -24,7 +24,7 @@ class PodcastSourceTest(zeit.content.audio.testing.FunctionalTestCase):
         }
         podcast = Podcast(
             'cat-jokes-pawdcast', 'Cat Jokes Pawdcast', 'c3161c7d',
-            'A podcast of cat jokes', distribution_channels)
+            'A podcast of cat jokes', distribution_channels, 'asdf-1234')
         assert values[0] == podcast
 
     def test_audio_provides_ICommonMetadata(self):

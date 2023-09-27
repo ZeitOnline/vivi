@@ -48,13 +48,15 @@ class IPodcast(zope.interface.Interface):
 class Podcast(zeit.cms.content.sources.AllowedBase):
 
     def __init__(
-            self, id, title,
-            external_id, subtitle, distribution_channels=None):
+            self, id, title, external_id, subtitle,
+            distribution_channels=None, podigee_id=None):
         super().__init__(id, title, available=None)
         self.external_id = external_id
         self.subtitle = subtitle
         #: mapping of distribution channel (itunes, spotify, etc.) to url
         self.distribution_channels = distribution_channels
+        # For parallel use of podcast hosts
+        self.podigee_id = podigee_id
 
 
 class PodcastSource(zeit.cms.content.sources.ObjectSource,
@@ -89,7 +91,8 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource,
             node.get(self.attribute),
             node.get('title'),
             node.get('external_id'),
-            node.get('subtitle'))
+            node.get('subtitle'),
+            podigee_id=node.get('podigee_id'))
         podcast.distribution_channels = distribution_channels
         return podcast
 
