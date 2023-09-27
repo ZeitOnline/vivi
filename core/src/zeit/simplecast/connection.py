@@ -33,6 +33,7 @@ class Simplecast(grok.GlobalUtility):
             'episode_nr': 'number',
             'summary': 'description',
             'notes': 'long_description',
+            'is_published': 'is_published',
         }
     }
 

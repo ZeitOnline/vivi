@@ -19,6 +19,7 @@ EPISODE_200 = {
     "long_description": "lorem ipsum dolor sit amet",
     "number": 2,
     "title": "Cat Jokes Pawdcast",
+    "is_published": True,
     "audio_file_url": (
         "https://injector.simplecastaudio.com/"
         "04b0bba3-e114-4d7a-bf27-c398dcff13fd/episodes/"

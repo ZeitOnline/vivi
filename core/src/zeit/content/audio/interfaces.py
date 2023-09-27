@@ -117,6 +117,10 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
         title=_('Episode Notes'),
         required=False,
         readonly=True)
+    is_published = zope.schema.Bool(
+        title=_('Is Published'),
+        readonly=True,
+        default=False)
 
 
 class AudioSource(zeit.cms.content.contentsource.CMSContentSource):
