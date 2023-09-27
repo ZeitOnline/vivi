@@ -6,6 +6,7 @@ import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 
+import zeit.cms.celery
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 
