@@ -190,5 +190,37 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         assert isinstance(workflow, AudioWorkflow)
         assert workflow.can_publish() == zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
 
-    def test_deleted_podcast_should_be_retracted(self):
-        pass
+    @requests_mock.Mocker()
+    def test_retract(self, m):
+        self.create_audio(self.episode_info)
+        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+
+        m.get(f"https://testapi.simplecast.com/episodes/{self.episode_info['id']}",
+              json=self.episode_info)
+        self.simplecast.publish_episode(self.episode_info["id"])
+        assert workflow.published
+
+        self.simplecast.retract_episode(self.episode_info["id"])
+        assert IPodcastEpisodeInfo(content).is_published is False, 'retract should set is_published to False'
+
+        assert not workflow.published
+
+    @requests_mock.Mocker()
+    def test_deleted_podcast_should_be_retracted(self, m):
+        self.create_audio(self.episode_info)
+        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+
+        m.get(f"https://testapi.simplecast.com/episodes/{self.episode_info['id']}",
+              json=self.episode_info)
+        self.simplecast.publish_episode(self.episode_info["id"])
+        assert workflow.published
+
+        retract = mock.Mock()
+        zope.component.getGlobalSiteManager().registerHandler(
+            retract, (zeit.cms.workflow.interfaces.IRetractedEvent,))
+
+        self.simplecast.delete_episode(self.episode_info["id"])
+        self.assertEqual(True, retract.called)
+        assert not workflow.published

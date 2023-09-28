@@ -94,3 +94,13 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
                 json.dumps(event),
                 'application/x-javascript')
             publish.assert_called_with(episode_id())
+
+    def test_unpublish_episode(self):
+        event = webhook_event('episode_unpublished')
+        with mock.patch(
+                'zeit.simplecast.connection.Simplecast.retract_episode') as retract:
+            self.browser.post(
+                'http://localhost/@@simplecast_webhook',
+                json.dumps(event),
+                'application/x-javascript')
+            retract.assert_called_with(episode_id())

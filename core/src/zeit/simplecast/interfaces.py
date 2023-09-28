@@ -6,6 +6,9 @@ class ISimplecast(zope.interface.Interface):
     def publish_episode(self, episode_id: str):
         """Publish episode with given id"""
 
+    def retract_episode(self, episode_id: str):
+        """Retract episode with given id"""
+
     def create_episode(self, episode_id: str):
         """Create episode with given id"""
 

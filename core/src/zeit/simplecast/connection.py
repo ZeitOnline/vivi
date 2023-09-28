@@ -1,4 +1,4 @@
-from zeit.cms.workflow.interfaces import IPublish
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
 from zeit.content.audio.interfaces import (
     IAudio, IPodcastEpisodeInfo)
@@ -150,6 +150,8 @@ class Simplecast(grok.GlobalUtility):
     def delete_episode(self, episode_id):
         audio = self._find_existing_episode(episode_id)
         if audio:
+            if IPublishInfo(audio).published:
+                IPublish(audio).retract(background=False)
             unique_id = audio.uniqueId
             del audio.__parent__[audio.__name__]
             self.__parent__ = None
@@ -171,4 +173,18 @@ class Simplecast(grok.GlobalUtility):
         else:
             log.warning(
                 'No podcast episode %s found. Unable to publish episode.',
+                episode_id)
+
+    def retract_episode(self, episode_id):
+        audio = self._find_existing_episode(episode_id)
+        if audio and IPublishInfo(audio).published:
+            with zeit.cms.checkout.helper.checked_out(
+                    audio, semantic_change=None, events=False) as co:
+                IPodcastEpisodeInfo(co).is_published = False
+            IPublish(audio).retract(background=False)
+            log.info('Podcast Episode %s successfully retracted.',
+                     audio.uniqueId)
+        else:
+            log.warning(
+                'No podcast episode %s found. Unable to retract episode.',
                 episode_id)

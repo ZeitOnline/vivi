@@ -59,5 +59,7 @@ def SIMPLECAST_WEBHOOK_TASK(event, episode_id):
             simplecast.delete_episode(episode_id)
         case 'episode_published':
             simplecast.publish_episode(episode_id)
+        case 'episode_unpublished':
+            simplecast.retract_episode(episode_id)
         case _:
             log.info('Event %s not handled.', event)
