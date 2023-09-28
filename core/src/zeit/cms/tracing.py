@@ -9,6 +9,9 @@ import time
 import zeit.cms.interfaces
 import zope.interface
 
+from opentelemetry.instrumentation.utils import http_status_to_status_code
+from opentelemetry.trace.status import Status
+
 try:
     from opentelemetry.sdk.trace import Tracer, TracerProvider
     from opentelemetry.sdk.trace.export import BatchSpanProcessor
@@ -147,6 +150,12 @@ def use_span(module, *args, **kw):
     span = start_span(module, *args, **kw)
     with opentelemetry.trace.use_span(span, end_on_exit=True) as span:
         yield span
+
+
+def record_span(span, status_code, body):
+    span.set_attribute('http.status_code', status_code)
+    span.set_attribute('http.content', body)
+    span.set_status(Status(http_status_to_status_code(status_code)))
 
 
 def anonymize(value):

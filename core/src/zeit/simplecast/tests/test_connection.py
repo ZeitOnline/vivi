@@ -6,6 +6,7 @@ from zeit.content.audio.workflow import AudioWorkflow, PodcastWorkflow
 import pytest
 
 import requests_mock
+import requests
 import zope.component
 
 import zeit.cms.repository.folder
@@ -29,6 +30,50 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         super().setUp()
         self.simplecast = zope.component.getUtility(
             zeit.simplecast.interfaces.ISimplecast)
+        self.trace_patch = mock.patch('zeit.cms.tracing.record_span')
+        self.trace_mock = self.trace_patch.start()
+
+    def tearDown(self):
+        super().tearDown()
+        self.trace_patch.stop()
+
+    @requests_mock.Mocker()
+    def test_simplecast_request_exceptions_are_handled(self, m):
+        episode_id = '1234'
+        with self.assertRaises(requests.exceptions.RequestException):
+            m.get(
+                f'https://testapi.simplecast.com/episodes/{episode_id}',
+                status_code=500,
+                text='an error occurred')
+            self.simplecast._fetch_episode(episode_id)
+        args, _ = self.trace_mock.call_args_list[0]
+        self.assertEqual(500, args[1])
+        self.assertEqual('an error occurred', args[2])
+
+    @requests_mock.Mocker()
+    def test_simplecast_request_timeout_exceptions_are_handled(self, m):
+        episode_id = '1234'
+        with self.assertRaises(requests.exceptions.Timeout):
+            m.get(
+                f'https://testapi.simplecast.com/episodes/{episode_id}',
+                exc=requests.exceptions.ConnectTimeout)
+            self.simplecast._fetch_episode(episode_id)
+        args, _ = self.trace_mock.call_args_list[0]
+        self.assertEqual(599, args[1])
+        self.assertEqual('', args[2])
+
+    @requests_mock.Mocker()
+    def test_simplecast_request_json_errors_are_handled(self, m):
+        episode_id = '1234'
+        with self.assertRaises(requests.exceptions.JSONDecodeError):
+            m.get(
+                f'https://testapi.simplecast.com/episodes/{episode_id}',
+                text="no json")
+            self.simplecast._fetch_episode(episode_id)
+        args, _ = self.trace_mock.call_args_list[0]
+        self.assertEqual(200, args[1])
+        self.assertEqual('Invalid Json Expecting value: '
+                         'line 1 column 1 (char 0): no json', args[2])
 
     def test_simplecast_yields_episode_info(self):
         m_simple = requests_mock.Mocker()
