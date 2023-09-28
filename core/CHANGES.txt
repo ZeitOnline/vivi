@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.31.3 (2023-09-28)
+-------------------
+
+- MAINT: Run tests on multiple cores.
+
+- ZO-3822: implement publish for audio objects
+
+- ZO-3851: refactor simplecast requests
+
+- ZO-3933: podigee_id attribute to podcast source, ensure parallel operation of podcast hosts
+
+
 5.31.2 (2023-09-25)
 -------------------
 
