@@ -23,7 +23,7 @@ class PodcastSourceTest(zeit.content.audio.testing.FunctionalTestCase):
             'google': 'http://example.com/google'
         }
         podcast = Podcast(
-            'cat-jokes-pawdcast', 'Cat Jokes Pawdcast', 'c3161c7d',
+            'cat-jokes-pawdcast', 'Cat Jokes Pawdcast', '1234',
             'A podcast of cat jokes', distribution_channels, 'asdf-1234')
         assert values[0] == podcast
 

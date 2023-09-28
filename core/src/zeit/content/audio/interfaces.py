@@ -58,6 +58,16 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         # For parallel use of podcast hosts
         self.podigee_id = podigee_id
 
+    def __eq__(self, other):
+        return (
+            zope.security.proxy.isinstance(other, self.__class__) and
+            self.id == other.id and
+            self.title == other.title and
+            self.external_id == other.external_id and
+            self.subtitle == other.subtitle and
+            self.distribution_channels == other.distribution_channels and
+            self.podigee_id == other.podigee_id)
+
 
 class PodcastSource(zeit.cms.content.sources.ObjectSource,
                     zeit.cms.content.sources.XMLSource):
