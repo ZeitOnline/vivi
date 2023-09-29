@@ -10,3 +10,8 @@ repos:
   - id: flake8
     additional_dependencies:
     - flake8-awesome
+-   repo: https://github.com/ZeitOnline/zeit-git-hooks
+    rev: "1.0.0"
+    hooks:
+    -   id: check-added-changelog
+        args: ["--ignore", ".keep"]
