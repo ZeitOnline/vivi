@@ -427,7 +427,12 @@
 }
 
 .type-article .editable-area > .landing-zone {
-  height: 4px;
+  height: 2px;
+  transition: height 0.3s ease-in-out;
+}
+
+.type-article .editable-area>.landing-zone.droppable-active {
+  height: 20px;
 }
 
 .type-article .charcount.charalert {
@@ -1794,7 +1799,6 @@
   color: lightslategray;
   float: left;
   display: block;
-  vertical-align: middle;
   line-height: 1.9rem;
   margin-right: 10px;
 }
