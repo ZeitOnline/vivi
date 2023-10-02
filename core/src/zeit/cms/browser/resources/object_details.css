@@ -213,3 +213,35 @@
 .object-reference.error {
     width: 100%;
 }
+
+.object-details .container {
+  display: flex;
+  flex-direction: column;
+}
+
+.object-details .row {
+  display: flex;
+  align-items: baseline;
+}
+
+.object-details dt {
+  font-weight: bold;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 7ch;
+}
+
+.object-details dd {
+  font-weight: lighter;
+}
+
+.object-details .actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.5rem;
+}
+
+.object-link.open-audio a {
+  background-image: url('icons/audioplayer-play.svg');
+  background-size: 15px;
+}

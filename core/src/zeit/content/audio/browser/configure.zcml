@@ -50,4 +50,12 @@
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     />
 
+  <browser:page
+    for="..interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    class=".details.Details"
+    permission="zope.View"
+    />
+
 </configure>
