@@ -5,6 +5,7 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish
 from zope.lifecycleevent import ObjectCreatedEvent
 import os
+import pytest
 import pytz
 import requests_mock
 import unittest
@@ -306,6 +307,7 @@ class AuthorpushTest(IntegrationTest):
         self.assertEqual(calls[1][2].get('payload_template'), 'authors.json')
 
 
+@pytest.mark.integration()
 class PushTest(zeit.push.testing.TestCase):
 
     level = 2
