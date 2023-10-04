@@ -1,9 +1,15 @@
+from datetime import datetime
+
 import zeit.content.audio.testing
 
 
 class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
 
     def add_audio(self):
+        self.browser.open('/repository/online/2007/01')
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Audio']
+        self.browser.open(menu.value[0])
         self.browser.getControl('File name').value = 'test-audio'
         self.browser.getControl('Typ').displayValue = 'Podcast'
         self.browser.getControl('Title').value = 'Cats episode'
@@ -18,13 +24,8 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         assert 'There were errors' not in self.browser.contents
 
     def test_add_form(self):
-        browser = self.browser
-        browser.open('/repository/online/2007/01')
-        menu = browser.getControl(name='add_menu')
-        menu.displayValue = ['Audio']
-        browser.open(menu.value[0])
         self.add_audio()
-        browser.getLink('Checkin').click()
+        self.browser.getLink('Checkin').click()
         self.assertEllipsis("""...
             <label for="form.title">...
             <div class="widget">Cats episode</div>...
@@ -42,4 +43,4 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
             <div class="widget">summary</div>...
             <label for="form.notes">...
             <div class="widget">notes</div>...
-            """, browser.contents)
+            """, self.browser.contents)
