@@ -3,6 +3,7 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import gocept.testing.assertion
 import os
 import plone.testing.zca
+import pytest
 import time
 import unittest
 import zeit.push.interfaces
@@ -12,6 +13,7 @@ import zope.component
 
 
 @unittest.skip('Twitter API v2 is currently very flaky')
+@pytest.mark.integration()
 class TwitterTest(unittest.TestCase, gocept.testing.assertion.String):
 
     level = 2

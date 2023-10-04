@@ -2,6 +2,7 @@
 from unittest import mock
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import os
+import pytest
 import time
 import zeit.push.facebook
 import zeit.push.interfaces
@@ -9,6 +10,7 @@ import zeit.push.testing
 import zope.component
 
 
+@pytest.mark.integration()
 class FacebookTest(zeit.push.testing.TestCase):
 
     level = 2

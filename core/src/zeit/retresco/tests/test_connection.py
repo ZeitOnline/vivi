@@ -250,7 +250,7 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('keyword', result[0].entity_type)
 
 
-@pytest.mark.slow()
+@pytest.mark.integration()
 class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
     level = 2

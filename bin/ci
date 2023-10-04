@@ -26,7 +26,7 @@ case $COMMAND in
         pre-commit run --all-files --show-diff-on-failure
         prepare_credentials staging  # for docker pull dav-server
         bin/ci setup-batou
-        bin/ci test-app-run
+        bin/ci test-app-run "$@"
     ;;
     setup-batou)
         if [ ! -d $DEPLOYMENT ]; then
@@ -51,6 +51,8 @@ case $COMMAND in
         ln -sfT $WORKSPACE $DEPLOYMENT/work/source/vivi
     ;;
     test-app-run)
+        shift
+
         cd $WORKSPACE
         rm -f report*.xml coverage.xml cobertura.xml
         cd $DEPLOYMENT/work/source
@@ -61,9 +63,15 @@ case $COMMAND in
 
         export GOCEPT_SELENIUM_JUNIT_ATTACH=True
 
+        if [[ "$1" = "integration" ]]; then
+            shift
+            not_selenium='not selenium'
+        else
+            not_selenium='not selenium and not integration'
+        fi
+
         set +e
-        shift
-        $DEPLOYMENT/bin/test -n 6 -m 'not selenium' -r a \
+        $DEPLOYMENT/bin/test -n 6 -m "$not_selenium" -r a \
             --cov=. --cov-report= \
             --junitxml=report.xml "$@"
         TEST_RESULT=$?
