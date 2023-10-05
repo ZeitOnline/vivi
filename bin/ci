@@ -23,7 +23,9 @@ DEPLOYMENT=$WORKSPACE/../$(basename $WORKSPACE)-deployment
 COMMAND=${1:-test-app}
 case $COMMAND in
     test-app)
-        shift
+        if [[ -n "$1" ]]; then
+            shift
+        fi
         pre-commit run --all-files --show-diff-on-failure
         prepare_credentials staging  # for docker pull dav-server
         bin/ci setup-batou
