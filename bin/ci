@@ -74,13 +74,13 @@ case $COMMAND in
         set +e
         $DEPLOYMENT/bin/test -n 6 -m "$not_selenium" -r a \
             --cov=. --cov-report= \
-            --junitxml=report.xml "$@"
+            --junitxml=report.xml
         TEST_RESULT=$?
 
         $DEPLOYMENT/bin/test -n 4 -m 'selenium' -r aR \
             --cov=. --junitxml=report_selenium.xml \
             --cov-append --cov-report=html --cov-report=xml \
-            --reruns=3 --reruns-delay=1 "$@"
+            --reruns=3 --reruns-delay=1
         SELENIUM_RESULT=$?
         if [ "$TEST_RESULT" = "0" ]; then
             TEST_RESULT=$SELENIUM_RESULT
