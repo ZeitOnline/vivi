@@ -29,11 +29,6 @@
   color:white
 }
 
-.type-article .object-details-heading span.publish-state {
-  background-position: 15px auto;
-  padding-left:25px;
-}
-
 .type-article .content-icon.type-article img {
   display: none;
 }
@@ -1359,10 +1354,6 @@
 
 .type-article #edit-form-teaser .inline-form .object-details img {
   float: left;
-}
-
-.type-article #edit-form-teaser .inline-form .object-details span.publish-state {
-  padding-top: 15px;
 }
 
 .type-article #edit-form-teaser .inline-form .object-details ul.metadata {
