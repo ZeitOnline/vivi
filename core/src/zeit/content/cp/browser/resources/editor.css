@@ -550,6 +550,7 @@ buttons, we only can get a different label if we override it here. */
 .type-centerpage-2009 .landing-zone.droppable-active {
   background: none;
   border: 1px solid transparent;
+  transition: height 0.3s ease-in-out;
 }
 
 /* XXX Had to copy all rules from zeit.cms:cms.css */

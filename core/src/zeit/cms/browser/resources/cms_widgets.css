@@ -473,7 +473,6 @@ table.properties textarea {
   color: #fff;
   cursor: pointer;
   display: none;
-  font-family: arial,serif;
   font-size: 14px;
   height: 18px;
   margin-right: 16px;
@@ -492,6 +491,9 @@ table.properties textarea {
   margin-top: 0;
 }
 
+.drop-object-widget .object-reference .type-animation~a[rel="remove"],
+.drop-object-widget .object-reference .type-audio~a[rel="remove"],
+.drop-object-widget .object-reference .type-embed~a[rel="remove"],
 .drop-object-widget .object-reference .type-infobox ~ a[rel="remove"],
 .drop-object-widget .object-reference .type-portraitbox ~ a[rel="remove"] {
   margin-top: 5px;

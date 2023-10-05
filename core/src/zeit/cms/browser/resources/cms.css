@@ -807,21 +807,22 @@ li.busy {
 }
 
 .publish-state {
-    padding-top:15px;
-    padding-left:20px;
-    background: url("./icons/icons_sprites.png") no-repeat 15px -1581px;
+    background: url("./icons/icons_sprites.png") no-repeat 15px -1582px;
+    height: 25px;
+    width: 25px;
+    background-repeat: no-repeat;
 }
 
 .publish-state.published {
-    background-position: 7px -1581px;
+    background-position: 7px -1582px;
 }
 
 .publish-state.not-published {
-    background-position: 7px -1670px;
+    background-position: 7px -1672px;
 }
 
 .publish-state.published-with-changes {
-    background-position: 7px -1611px;
+    background-position: 7px -1612px;
 }
 
 /* error page */

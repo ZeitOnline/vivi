@@ -29,11 +29,6 @@
   color:white
 }
 
-.type-article .object-details-heading span.publish-state {
-  background-position: 15px auto;
-  padding-left:25px;
-}
-
 .type-article .content-icon.type-article img {
   display: none;
 }
@@ -427,7 +422,12 @@
 }
 
 .type-article .editable-area > .landing-zone {
-  height: 4px;
+  height: 2px;
+  transition: height 0.3s ease-in-out;
+}
+
+.type-article .editable-area>.landing-zone.droppable-active {
+  height: 20px;
 }
 
 .type-article .charcount.charalert {
@@ -1053,32 +1053,17 @@
   vertical-align: middle;
 }
 
-.type-article .module-icon-video,
-.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
+.type-article .module-icon-video {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -654px transparent;
 }
 
-.type-article .module-icon-image,
-.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
+.type-article .module-icon-image{
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -835px transparent;
 }
 
-.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -896px transparen;t
-}
-
-.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -715px transparent;
-}
-
 .type-article .module-icon-audio,
-.type-article .module-icon-podcast,
-.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
+.type-article .module-icon-podcast {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -776px transparent;
-}
-
-.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
-  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -955px transparent;
 }
 
 .type-article .editable-area .module-icon-image {
@@ -1100,25 +1085,6 @@
 
 .type-article .editable-area .module-icon-gallery {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
-}
-
-
-.type-article label[for^="asset-badges"] .checkboxType {
-  margin-left:3px;
-}
-
-.type-article #form-asset-badges .field {
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.type-article #form-asset-badges .widget {
-  margin-left: -4px;
-  margin-top: 1px;
-}
-
-.type-article #form-asset-badges .value label {
-  padding-top: 0;
 }
 
 /* Decrease distance between two product-management-formas a and b  */
@@ -1388,10 +1354,6 @@
 
 .type-article #edit-form-teaser .inline-form .object-details img {
   float: left;
-}
-
-.type-article #edit-form-teaser .inline-form .object-details span.publish-state {
-  padding-top: 15px;
 }
 
 .type-article #edit-form-teaser .inline-form .object-details ul.metadata {
@@ -1828,7 +1790,6 @@
   color: lightslategray;
   float: left;
   display: block;
-  vertical-align: middle;
   line-height: 1.9rem;
   margin-right: 10px;
 }
