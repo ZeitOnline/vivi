@@ -31,7 +31,7 @@ class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
     url = zope.schema.URI(title=_('URL'), required=False)
     duration = zope.schema.Int(title=_('Duration'), required=False)
     audio_type = zope.schema.Choice(
-        title=_('Typ'),
+        title=_('Type'),
         readonly=True,
         source=AudioTypeSource())
 
