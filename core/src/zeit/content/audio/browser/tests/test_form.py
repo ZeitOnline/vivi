@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import zeit.content.audio.testing
 
 
@@ -11,7 +9,7 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         menu.displayValue = ['Audio']
         self.browser.open(menu.value[0])
         self.browser.getControl('File name').value = 'test-audio'
-        self.browser.getControl('Typ').displayValue = 'Podcast'
+        self.browser.getControl('Type').displayValue = 'Podcast'
         self.browser.getControl('Title').value = 'Cats episode'
         self.browser.getControl(label="URL", index=0).value = 'http://example.com/cats.mp3'
         self.browser.getControl('Duration').value = 123

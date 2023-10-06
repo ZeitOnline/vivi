@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 27 08:45:36 2023\n"
+"POT-Creation-Date: Fri Oct  6 08:16:50 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -123,6 +123,8 @@ msgstr "Zuerst veröffentlicht am"
 #: zeit/cms/browser/menu-context-actions.pt:16
 #: zeit/cms/browser/menu-context-views.pt:8 zeit/cms/browser/sourceedit.pt:16
 #: zeit/cms/browser/sourceedit.pt:39
+#: zeit/content/audio/browser/object-details-body.pt:7
+#: zeit/content/audio/browser/object-details-body.pt:11
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
@@ -323,6 +325,7 @@ msgstr "Vivi-Handbuch"
 
 #: zeit/cms/browser/menu.py:94 zeit/cms/browser/object-details-body.pt:13
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:14
+#: zeit/content/audio/browser/object-details-body.pt:24
 msgid "CMS"
 msgstr "CMS"
 
@@ -869,7 +872,7 @@ msgstr "Datum / Uhrzeit aktualisieren"
 msgid "Memo"
 msgstr "Memo"
 
-#: zeit/cms/content/interfaces.py:639
+#: zeit/cms/content/interfaces.py:639 zeit/content/audio/interfaces.py:34
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Type"
@@ -2608,6 +2611,10 @@ msgstr "Audio bearbeiten"
 msgid "View audio"
 msgstr "Audio anzeigen"
 
+#: zeit/content/audio/browser/object-details-body.pt:20
+msgid "Play"
+msgstr "Abspielen"
+
 #: zeit/content/audio/interfaces.py:16
 msgid "Podcast"
 msgstr "Podcast"
@@ -2628,31 +2635,27 @@ msgstr "Externe ID"
 msgid "Duration"
 msgstr "Laufzeit"
 
-#: zeit/content/audio/interfaces.py:34
-msgid "Typ"
-msgstr "Typ"
-
-#: zeit/content/audio/interfaces.py:106
+#: zeit/content/audio/interfaces.py:119
 msgid "Podcast Serie"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:110
+#: zeit/content/audio/interfaces.py:123
 msgid "Episode No"
 msgstr "Nummer der Folge"
 
-#: zeit/content/audio/interfaces.py:113
+#: zeit/content/audio/interfaces.py:126
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:117
+#: zeit/content/audio/interfaces.py:130
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:121
+#: zeit/content/audio/interfaces.py:134
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:133
+#: zeit/content/audio/interfaces.py:146
 msgid "Audios"
 msgstr "Audios"
 
@@ -5128,6 +5131,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Typ"
+#~ msgstr "Typ"
 
 #~ msgid "Remote Image URL"
 #~ msgstr "Bild URL"

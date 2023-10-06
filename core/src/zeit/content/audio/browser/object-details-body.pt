@@ -3,15 +3,15 @@
     <div class="container">
         <dl>
             <div class="row" tal:condition="view/duration">
-                <dt >Duration:</dt>
-                <dd i18n:translate="" tal:content="view/duration"></dd>
+                <dt i18n:translate="">Duration</dt>
+                <dd tal:content="view/duration"></dd>
             </div>
             <div class="row" tal:condition="view/audio_type">
-                <dt >Type:</dt>
+                <dt i18n:translate="">Type</dt>
                 <dd i18n:translate="" tal:content="view/audio_type"></dd>
             </div>
             <div class="row" tal:condition="view/podcast">
-                <dt >Podcast:</dt>
+                <dt>Podcast</dt>
                 <dd tal:content="view/podcast"></dd>
             </div>
         </dl>

@@ -20,11 +20,11 @@ class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
         b.open('/repository/audio/@@object-details')
         self.assert_ellipsis(
             f'...<li class="teaser_title" title="{audio.title}">{audio.title}</li>...'
-            '...<dt>Duration:</dt>...'
+            '...<dt>Duration</dt>...'
             '...<dd>2:03</dd>...'
-            '...<dt>Type:</dt>...'
-            '...<dd>Podcast</dd>...'
-            '...<dt>Podcast:</dt>...'
+            '...<dt>Type</dt>...'
+            '...<dd>podcast</dd>...'
+            '...<dt>Podcast</dt>...'
             '...<dd>Cat Jokes Pawdcast</dd>...'
             f'...<a target="_blank" href="{audio.url}">Play</a>...',
             b.contents

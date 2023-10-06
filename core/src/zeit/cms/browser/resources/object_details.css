@@ -231,6 +231,11 @@
   width: 7ch;
 }
 
+/* less translations, then we dont need to translate type and type: */
+.object-details dt:after {
+  content: ":";
+}
+
 .object-details dd {
   font-weight: lighter;
 }

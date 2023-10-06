@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Wed Sep 27 08:45:36 2023\n"
+"POT-Creation-Date: Fri Oct  6 08:16:50 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -135,6 +135,8 @@ msgstr ""
 #: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/sourceedit.pt:16
 #: zeit/cms/browser/sourceedit.pt:39
+#: zeit/content/audio/browser/object-details-body.pt:7
+#: zeit/content/audio/browser/object-details-body.pt:11
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
@@ -356,6 +358,7 @@ msgstr ""
 #: zeit/cms/browser/menu.py:94
 #: zeit/cms/browser/object-details-body.pt:13
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:14
+#: zeit/content/audio/browser/object-details-body.pt:24
 msgid "CMS"
 msgstr ""
 
@@ -912,6 +915,7 @@ msgid "Memo"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:639
+#: zeit/content/audio/interfaces.py:34
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Type"
@@ -2676,6 +2680,10 @@ msgstr ""
 msgid "View audio"
 msgstr ""
 
+#: zeit/content/audio/browser/object-details-body.pt:20
+msgid "Play"
+msgstr ""
+
 #: zeit/content/audio/interfaces.py:16
 msgid "Podcast"
 msgstr ""
@@ -2696,31 +2704,27 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:34
-msgid "Typ"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:106
+#: zeit/content/audio/interfaces.py:119
 msgid "Podcast Serie"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:110
+#: zeit/content/audio/interfaces.py:123
 msgid "Episode No"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:113
+#: zeit/content/audio/interfaces.py:126
 msgid "Episode Summary"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:117
+#: zeit/content/audio/interfaces.py:130
 msgid "Episode Notes"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:121
+#: zeit/content/audio/interfaces.py:134
 msgid "Is Published"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:133
+#: zeit/content/audio/interfaces.py:146
 msgid "Audios"
 msgstr ""
 
