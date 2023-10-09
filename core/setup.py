@@ -174,7 +174,7 @@ setup(
             'opentelemetry-sdk',
             'plone.testing[zca,zodb]',
             'pygraphviz',  # to render linesman results
-            'pytest<7.1.0.dev0',  # github.com/pytest-dev/pytest/issues/9765
+            'pytest',
             'pytest-cov',
             'pytest-remove-stale-bytecode',
             'pytest-rerunfailures',
