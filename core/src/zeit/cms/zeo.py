@@ -10,7 +10,7 @@ import zope.app.appsetup.product
 class ZEOInstrumentor(BaseInstrumentor):
 
     def instrumentation_dependencies(self):
-        return ("ZEO ~= 5.0",)
+        return ("ZEO ~= 5.4",)
 
     def _instrument(self, **kw):
         tracer = opentelemetry.trace.get_tracer(
@@ -21,7 +21,7 @@ class ZEOInstrumentor(BaseInstrumentor):
         @functools.wraps(wrapped_setup_delegation)
         def instrumented_setup_delegation(self, *args, **kw):
             wrapped_setup_delegation(self, *args, **kw)
-            wrapped_call = self._ClientRunner__call
+            wrapped_call = self.io_call
 
             def instrumented_call(method, *args, **kw):
                 operation = method.__name__.removesuffix('_threadsafe')
@@ -47,7 +47,7 @@ class ZEOInstrumentor(BaseInstrumentor):
                 else:
                     return wrapped_call(method, *args, **kw)
 
-            self._ClientRunner__call = instrumented_call
+            self.io_call = instrumented_call
 
         instrumented_setup_delegation.otel_zeo_instrumented = True
         ClientRunner.setup_delegation = instrumented_setup_delegation
