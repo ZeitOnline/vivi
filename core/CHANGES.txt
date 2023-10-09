@@ -3,6 +3,26 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.31.4 (2023-10-09)
+-------------------
+
+- ZO-3822: implement retract for audio objects
+
+- ZO-3846: show details about the audio element inside the article
+
+
+FIX:
+- Increase size for article landing zone
+
+- align details heading and publish state vertically
+
+- move 'remove'-button for object references to prevent preview and cms button being on top of each other
+
+
+MAINT:
+- Update dependencies
+
+
 5.31.3 (2023-09-28)
 -------------------
 
