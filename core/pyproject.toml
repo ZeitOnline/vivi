@@ -307,7 +307,6 @@ path = "src/zeit/cms/__init__.py"
 only-include = ["src"]
 exclude = [
     "src/zeit/connector/testcontent/**",
-    "**/tests/**",
 ]
 
 [tool.hatch.build.targets.wheel]
