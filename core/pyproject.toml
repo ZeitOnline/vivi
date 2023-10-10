@@ -202,14 +202,14 @@ deploy = [
 
 zon = [
     "gocept.form==0.8.0+py3",
-    "gocept.lxml==0.3.0+py3.1",
+    "gocept.lxml==0.3.0+py3.1",  # https://github.com/ZeitOnline/gocept.lxml/tree/py3
     "zope.app.locking==3.5.0+py3.1",
-    "zope.xmlpickle==4.0.0+py3k1",
+    "zope.xmlpickle==4.0.0+py3k1",  # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
     # We created our own py310 wheels on devpi.zeit.de for these:
-    # lxml==4.2.3
+    # lxml==4.2.3  # ZO-1328
     # perfmetrics==3.2.0.post0
-    # zope.interface==5.4.0
-    # zope.hookable==5.1.0
+    # zope.interface==5.4.0  # ZO-1580
+    # zope.hookable==5.1.0   # ZO-1580
 ]
 deploy-zon = [
     "linesman==0.3.2+py3.3",
@@ -219,10 +219,10 @@ test-zon = [
     "gocept.jasmine==0.7+py3.2",
 ]
 ui-zon = [
-    "gocept.fckeditor==2.6.4.1.post3+py3.3",
+    "gocept.fckeditor==2.6.4.1.post3+py3.3",  # https://github.com/ZeitOnline/gocept.fckeditor/tree/py3
     "gocept.mochikit==1.4.2.5+py3",
     "js.jqueryui==1.10.3+tooltip",
-    "z3c.noop==1.0+py3.2",
+    "z3c.noop==1.0+py3.2",  # https://github.com/ZeitOnline/z3c.noop
     "z3c.menu.simple==0.6.0+py3.3",
     "zc.datetimewidget==0.8.0+py3.2",
 ]
