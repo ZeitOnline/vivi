@@ -430,3 +430,15 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         IPublish(article).publish()
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
         assert not checksum.checksum
+
+
+class ArticleAccess(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_free_is_treated_as_dynamic_according_to_toggle(self):
+        article = self.repository['article'] = self.get_article()
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.access = 'free'
+        article = self.repository['article']
+        self.assertEqual('free', article.access)
+        FEATURE_TOGGLES.set('access_treat_free_as_dynamic')
+        self.assertEqual('dynamic', article.access)
