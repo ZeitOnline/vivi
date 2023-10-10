@@ -1,5 +1,6 @@
 import json
 import logging
+import opentelemetry.trace
 
 import zope.app.appsetup.product
 import zope.component
@@ -7,6 +8,7 @@ import zope.component
 from zeit.cms.content.sources import FEATURE_TOGGLES
 
 import zeit.cms.celery
+import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 
@@ -32,13 +34,15 @@ class Notification:
         body = self.request.bodyStream.read(
             int(self.request['CONTENT_LENGTH']))
         log.info(body)
-
         body = json.loads(body).get('data')
         episode_id = body.get('episode_id')
         event = body.get('event')
 
         self.execute_task(
             event=event, episode_id=episode_id)
+
+        current_span = opentelemetry.trace.get_current_span()
+        current_span.set_attributes({'http.body': body})
 
     def execute_task(self, event, episode_id):
         SIMPLECAST_WEBHOOK_TASK.delay(
