@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.33.0 (2023-10-10)
+-------------------
+
+- ZO-1939: Send properties and body as json to bigquery, when toggle 'publish_bigquery_json' is set
+
+
 5.32.1 (2023-10-10)
 -------------------
 
