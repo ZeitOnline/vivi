@@ -48,7 +48,7 @@ class BigQueryMixin:
             k: v for k, v in tms.items() if k.startswith('rtr_')}
         return {
             'properties': properties,
-            'body': badgerfish(self.context.xml.body),
+            'body': badgerfish(self.context.xml.body)['body'],
         }
 
     def retract_json(self):

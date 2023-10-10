@@ -514,6 +514,13 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertEqual({'rtr_locations': [], 'rtr_keywords': ['one', 'two']},
                          data['properties']['tagging'])
 
+    def test_converts_body_to_badgerfish_json(self):
+        self.article.xml.body = lxml.etree.XML(
+            '<body><division><p>one</p><p>two</p></division></body>')
+        data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
+        self.assertEqual({'division': {'p': [{'$': 'one'}, {'$': 'two'}]}},
+                         data['body'])
+
 
 class BadgerfishTest(unittest.TestCase):
 
