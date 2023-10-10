@@ -1,4 +1,5 @@
 from itertools import chain
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import datetime
 import grokcore.component as grok
 import logging
@@ -33,11 +34,35 @@ class AuthorDashboard(grok.Adapter):
 
 
 class BigQueryMixin:
+
     def publish_json(self):
-        return {}
+        if not FEATURE_TOGGLES.find('publish_bigquery_json'):
+            return {}
+        tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)()
+        if tms is None:
+            return None
+        properties = tms.get('payload', {})
+        properties.setdefault('meta', {})['url'] = self.context.uniqueId
+        properties['tagging'] = {
+            k: v for k, v in tms.items() if k.startswith('rtr_')}
+        return {
+            'properties': properties,
+            'body': badgerfish(self.context.xml.body),
+        }
 
     def retract_json(self):
-        return self.publish_json()
+        if not FEATURE_TOGGLES.find('publish_bigquery_json'):
+            return {}
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        return {'properties': {
+            'meta': {'url': self.context.uniqueId},
+            'document': {'uuid': uuid.id},
+        }}
+
+
+def badgerfish(xml):
+    """See http://www.sklar.com/badgerfish/"""
+    return {}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)

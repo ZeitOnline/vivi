@@ -1,6 +1,6 @@
 from unittest import mock
-
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 from zeit.content.image.testing import create_image_group_with_master_image
@@ -15,8 +15,8 @@ import zeit.content.author.author
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
-import zeit.workflow.publisher
 import zeit.workflow.publish_3rdparty
+import zeit.workflow.publisher
 import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
@@ -473,3 +473,41 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             name='tms')
         payload = data_factory.publish_json()
         assert payload is None
+
+
+class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.TMS_MOCK_LAYER
+
+    def setUp(self):
+        super().setUp()
+        FEATURE_TOGGLES.set('publish_bigquery_json')
+        self.layer.representation().return_value = {
+            'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}}
+        with checked_out(self.repository['testcontent']):
+            pass  # XXX trigger uuid generation
+        self.article = self.repository['testcontent']
+        zope.interface.alsoProvides(
+            self.article, zeit.content.article.interfaces.IArticle)
+
+    def test_includes_uniqueid_under_meta(self):
+        data = zope.component.getAdapter(
+            self.article, zeit.workflow.interfaces.IPublisherData,
+            name='bigquery')
+        for action in ['publish', 'retract']:
+            d = getattr(data, f'{action}_json')()
+            self.assertEqual(
+                'http://xml.zeit.de/testcontent',
+                d['properties']['meta']['url'])
+            self.assertStartsWith(
+                '{urn:uuid:', d['properties']['document']['uuid'])
+
+    def test_moves_rtr_keywords_under_tagging(self):
+        self.layer.representation().return_value = {
+            'rtr_locations': [],
+            'rtr_keywords': ['one', 'two'],
+            'title': 'ignored',
+        }
+        data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
+        self.assertEqual({'rtr_locations': [], 'rtr_keywords': ['one', 'two']},
+                         data['properties']['tagging'])
