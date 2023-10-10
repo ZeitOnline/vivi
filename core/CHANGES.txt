@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.32.0 (2023-10-10)
+-------------------
+
+- ZO-3960: Apply free/dynamic access toggle only to articles
+
+
 5.31.6 (2023-10-10)
 -------------------
 
