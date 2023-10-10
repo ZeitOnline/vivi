@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.32.1 (2023-10-10)
+-------------------
+
+- ZO-3978: Include test config files in release, since zeit.web uses them
+
+
 5.32.0 (2023-10-10)
 -------------------
 
