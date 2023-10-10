@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.31.6 (2023-10-10)
+-------------------
+
+- ZO-3824: add http.body of simplecast webhook to tracing
+
+
 5.31.5 (2023-10-09)
 -------------------
 
