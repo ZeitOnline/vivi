@@ -550,3 +550,11 @@ class BadgerfishTest(unittest.TestCase):
         self.assertEqual(
             {'a': {'@b': 'c'}},
             self.badgerfish('<a xmlns:x="x" x:b="c" />'))
+
+    def test_mixed_content_becomes_dollar(self):
+        self.assertEqual(
+            {'a': {'$': 'before child'}},
+            self.badgerfish('<a>before <b>child</b></a>'))
+        self.assertEqual(
+            {'a': {'$': 'before child after'}},
+            self.badgerfish('<a>before <b>child</b> after</a>'))

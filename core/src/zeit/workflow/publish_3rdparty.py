@@ -64,16 +64,25 @@ class BigQueryMixin:
 def badgerfish(node):
     """Adapted from http://www.sklar.com/badgerfish/, with changes:
     * 7.-9. namespaces are simply removed from both tag and attribute names
+    * Nodes with mixed content (text and child tags) only return the collected
+      text and no child nodes
     """
     result = {}
+    children = list(node.iterchildren())
 
     if node.text:
-        result['$'] = node.text
+        if not children:
+            result['$'] = node.text
+        else:
+            result['$'] = ' '.join(
+                [x.strip() for x in node.xpath('.//text()')])
+            children = []
+
     for key, value in node.attrib.items():
         key = lxml.etree.QName(key).localname
         result[f'@{key}'] = value
 
-    for child in node.iterchildren():
+    for child in children:
         child_tag = lxml.etree.QName(child.tag).localname
         sub = badgerfish(child)[child_tag]
         existing = result.get(child_tag)
