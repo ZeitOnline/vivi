@@ -1,5 +1,6 @@
 from io import StringIO
 from zeit.cms.content.cache import writeabledict
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
@@ -52,6 +53,16 @@ ARTICLE_TEMPLATE = """\
 </article>"""
 
 
+class ToggleableAccess(zeit.cms.content.dav.DAVProperty):
+
+    def __get__(self, instance, class_, properties=None):
+        value = super().__get__(instance, class_, properties)
+        if FEATURE_TOGGLES.find(
+                'access_treat_free_as_dynamic') and value == 'free':
+            return 'dynamic'
+        return value
+
+
 @zope.interface.implementer(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.interfaces.IEditorialContent)
@@ -74,6 +85,10 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
          'template', 'header_layout', 'header_color',
          'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
          'comments_sorting'))
+
+    access = ToggleableAccess(
+        ICommonMetadata['access'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'access', use_default=True)
 
     has_audio = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['has_audio'],

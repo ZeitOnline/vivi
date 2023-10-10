@@ -1,4 +1,3 @@
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
@@ -10,16 +9,6 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.tagging.tag
 import zeit.wochenmarkt.categories
 import zope.interface
-
-
-class ToggleableAccess(zeit.cms.content.dav.DAVProperty):
-
-    def __get__(self, instance, class_, properties=None):
-        value = super().__get__(instance, class_, properties)
-        if FEATURE_TOGGLES.find(
-                'access_treat_free_as_dynamic') and value == 'free':
-            return 'dynamic'
-        return value
 
 
 @zope.interface.implementer(ICommonMetadata)
@@ -48,13 +37,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     ))
 
     zeit.cms.content.dav.mapProperties(ICommonMetadata, DOCUMENT_SCHEMA_NS, (
+        'access',
         'banner_outer',
         'channels',
     ), use_default=True)
-
-    access = ToggleableAccess(
-        ICommonMetadata['access'], DOCUMENT_SCHEMA_NS, 'access',
-        use_default=True)
 
     authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author')
