@@ -1,11 +1,13 @@
 from unittest import mock
-
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 from zeit.content.image.testing import create_image_group_with_master_image
+import lxml.etree
 import pytest
 import requests_mock
+import unittest
 import zeit.cms.related.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
@@ -15,8 +17,8 @@ import zeit.content.author.author
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
-import zeit.workflow.publisher
 import zeit.workflow.publish_3rdparty
+import zeit.workflow.publisher
 import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
@@ -473,3 +475,93 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             name='tms')
         payload = data_factory.publish_json()
         assert payload is None
+
+
+class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.TMS_MOCK_LAYER
+
+    def setUp(self):
+        super().setUp()
+        FEATURE_TOGGLES.set('publish_bigquery_json')
+        self.layer.representation().return_value = {
+            'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}}
+        with checked_out(self.repository['testcontent']):
+            pass  # XXX trigger uuid generation
+        self.article = self.repository['testcontent']
+        zope.interface.alsoProvides(
+            self.article, zeit.content.article.interfaces.IArticle)
+
+    def test_includes_uniqueid_under_meta(self):
+        data = zope.component.getAdapter(
+            self.article, zeit.workflow.interfaces.IPublisherData,
+            name='bigquery')
+        for action in ['publish', 'retract']:
+            d = getattr(data, f'{action}_json')()
+            self.assertEqual(
+                'http://xml.zeit.de/testcontent',
+                d['properties']['meta']['url'])
+            self.assertStartsWith(
+                '{urn:uuid:', d['properties']['document']['uuid'])
+
+    def test_moves_rtr_keywords_under_tagging(self):
+        self.layer.representation().return_value = {
+            'rtr_locations': [],
+            'rtr_keywords': ['one', 'two'],
+            'title': 'ignored',
+        }
+        data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
+        self.assertEqual({'rtr_locations': [], 'rtr_keywords': ['one', 'two']},
+                         data['properties']['tagging'])
+
+    def test_converts_body_to_badgerfish_json(self):
+        self.article.xml.body = lxml.etree.XML(
+            '<body><division><p>one</p><p>two</p></division></body>')
+        data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
+        self.assertEqual({'division': {'p': [{'$': 'one'}, {'$': 'two'}]}},
+                         data['body'])
+
+
+class BadgerfishTest(unittest.TestCase):
+
+    def badgerfish(self, text):
+        return zeit.workflow.publish_3rdparty.badgerfish(lxml.etree.XML(text))
+
+    def test_text_becomes_dollar(self):
+        self.assertEqual(
+            {'a': {'$': 'b'}},
+            self.badgerfish('<a>b</a>'))
+
+    def test_children_become_nested_dict(self):
+        self.assertEqual(
+            {'a': {'b': {'$': 'c'},
+                   'd': {'$': 'e'}}},
+            self.badgerfish('<a><b>c</b><d>e</d></a>'))
+
+    def test_children_same_name_become_list(self):
+        self.assertEqual(
+            {'a': {'b': [{'$': 'c'}, {'$': 'd'}]}},
+            self.badgerfish('<a><b>c</b><b>d</b></a>'))
+
+    def test_attributes_become_prefixed_with_at(self):
+        self.assertEqual(
+            {'a': {'$': 'b', '@c': 'd'}},
+            self.badgerfish('<a c="d">b</a>'))
+
+    def test_namespace_is_removed_from_tag(self):
+        self.assertEqual(
+            {'a': {}},
+            self.badgerfish('<x:a xmlns:x="x" />'))
+
+    def test_namespace_is_removed_from_attribute(self):
+        self.assertEqual(
+            {'a': {'@b': 'c'}},
+            self.badgerfish('<a xmlns:x="x" x:b="c" />'))
+
+    def test_mixed_content_becomes_dollar(self):
+        self.assertEqual(
+            {'a': {'$': 'before child'}},
+            self.badgerfish('<a>before <b>child</b></a>'))
+        self.assertEqual(
+            {'a': {'$': 'before child after'}},
+            self.badgerfish('<a>before <b>child</b> after</a>'))

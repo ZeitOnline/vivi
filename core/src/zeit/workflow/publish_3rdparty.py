@@ -1,7 +1,9 @@
 from itertools import chain
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import datetime
 import grokcore.component as grok
 import logging
+import lxml.etree
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -33,11 +35,65 @@ class AuthorDashboard(grok.Adapter):
 
 
 class BigQueryMixin:
+
     def publish_json(self):
-        return {}
+        if not FEATURE_TOGGLES.find('publish_bigquery_json'):
+            return {}
+        tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)()
+        if tms is None:
+            return None
+        properties = tms.get('payload', {})
+        properties.setdefault('meta', {})['url'] = self.context.uniqueId
+        properties['tagging'] = {
+            k: v for k, v in tms.items() if k.startswith('rtr_')}
+        return {
+            'properties': properties,
+            'body': badgerfish(self.context.xml.body)['body'],
+        }
 
     def retract_json(self):
-        return self.publish_json()
+        if not FEATURE_TOGGLES.find('publish_bigquery_json'):
+            return {}
+        uuid = zeit.cms.content.interfaces.IUUID(self.context)
+        return {'properties': {
+            'meta': {'url': self.context.uniqueId},
+            'document': {'uuid': uuid.id},
+        }}
+
+
+def badgerfish(node):
+    """Adapted from http://www.sklar.com/badgerfish/, with changes:
+    * 7.-9. namespaces are simply removed from both tag and attribute names
+    * Nodes with mixed content (text and child tags) only return the collected
+      text and no child nodes
+    """
+    result = {}
+    children = list(node.iterchildren())
+
+    if node.text:
+        if not children:
+            result['$'] = node.text
+        else:
+            result['$'] = ' '.join(
+                [x.strip() for x in node.xpath('.//text()')])
+            children = []
+
+    for key, value in node.attrib.items():
+        key = lxml.etree.QName(key).localname
+        result[f'@{key}'] = value
+
+    for child in children:
+        child_tag = lxml.etree.QName(child.tag).localname
+        sub = badgerfish(child)[child_tag]
+        existing = result.get(child_tag)
+        if existing is None:
+            result[child_tag] = sub
+        elif isinstance(existing, list):
+            existing.append(sub)
+        else:
+            result[child.tag] = [existing, sub]
+
+    return {lxml.etree.QName(node.tag).localname: result}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
