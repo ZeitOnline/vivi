@@ -3,6 +3,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 import datetime
 import grokcore.component as grok
 import logging
+import lxml.etree
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -60,9 +61,30 @@ class BigQueryMixin:
         }}
 
 
-def badgerfish(xml):
-    """See http://www.sklar.com/badgerfish/"""
-    return {}
+def badgerfish(node):
+    """Adapted from http://www.sklar.com/badgerfish/, with changes:
+    * 7.-9. namespaces are simply removed from both tag and attribute names
+    """
+    result = {}
+
+    if node.text:
+        result['$'] = node.text
+    for key, value in node.attrib.items():
+        key = lxml.etree.QName(key).localname
+        result[f'@{key}'] = value
+
+    for child in node.iterchildren():
+        child_tag = lxml.etree.QName(child.tag).localname
+        sub = badgerfish(child)[child_tag]
+        existing = result.get(child_tag)
+        if existing is None:
+            result[child_tag] = sub
+        elif isinstance(existing, list):
+            existing.append(sub)
+        else:
+            result[child.tag] = [existing, sub]
+
+    return {lxml.etree.QName(node.tag).localname: result}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)

@@ -4,8 +4,10 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 from zeit.content.image.testing import create_image_group_with_master_image
+import lxml.etree
 import pytest
 import requests_mock
+import unittest
 import zeit.cms.related.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
@@ -511,3 +513,40 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
         self.assertEqual({'rtr_locations': [], 'rtr_keywords': ['one', 'two']},
                          data['properties']['tagging'])
+
+
+class BadgerfishTest(unittest.TestCase):
+
+    def badgerfish(self, text):
+        return zeit.workflow.publish_3rdparty.badgerfish(lxml.etree.XML(text))
+
+    def test_text_becomes_dollar(self):
+        self.assertEqual(
+            {'a': {'$': 'b'}},
+            self.badgerfish('<a>b</a>'))
+
+    def test_children_become_nested_dict(self):
+        self.assertEqual(
+            {'a': {'b': {'$': 'c'},
+                   'd': {'$': 'e'}}},
+            self.badgerfish('<a><b>c</b><d>e</d></a>'))
+
+    def test_children_same_name_become_list(self):
+        self.assertEqual(
+            {'a': {'b': [{'$': 'c'}, {'$': 'd'}]}},
+            self.badgerfish('<a><b>c</b><b>d</b></a>'))
+
+    def test_attributes_become_prefixed_with_at(self):
+        self.assertEqual(
+            {'a': {'$': 'b', '@c': 'd'}},
+            self.badgerfish('<a c="d">b</a>'))
+
+    def test_namespace_is_removed_from_tag(self):
+        self.assertEqual(
+            {'a': {}},
+            self.badgerfish('<x:a xmlns:x="x" />'))
+
+    def test_namespace_is_removed_from_attribute(self):
+        self.assertEqual(
+            {'a': {'@b': 'c'}},
+            self.badgerfish('<a xmlns:x="x" x:b="c" />'))
