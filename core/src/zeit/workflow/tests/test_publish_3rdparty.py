@@ -560,8 +560,11 @@ class BadgerfishTest(unittest.TestCase):
 
     def test_mixed_content_becomes_dollar(self):
         self.assertEqual(
+            {'a': {'$': 'before child after'}},
+            self.badgerfish('<a>before <b>child</b> after</a>'))
+        self.assertEqual(
             {'a': {'$': 'before child'}},
             self.badgerfish('<a>before <b>child</b></a>'))
         self.assertEqual(
-            {'a': {'$': 'before child after'}},
-            self.badgerfish('<a>before <b>child</b> after</a>'))
+            {'a': {'$': 'child after'}},
+            self.badgerfish('<a><b>child</b> after</a>'))
