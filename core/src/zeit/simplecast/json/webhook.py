@@ -34,9 +34,9 @@ class Notification:
         body = self.request.bodyStream.read(
             int(self.request['CONTENT_LENGTH']))
         log.info(body)
-        body = json.loads(body).get('data')
-        episode_id = body.get('episode_id')
-        event = body.get('event')
+        data = json.loads(body).get('data')
+        episode_id = data.get('episode_id')
+        event = data.get('event')
 
         self.execute_task(
             event=event, episode_id=episode_id)

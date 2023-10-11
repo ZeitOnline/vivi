@@ -108,11 +108,11 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
     def test_webhook_body_is_traced(self):
         # only exemplary for `episode_updated`
         event = webhook_event('episode_updated')
-        with (mock.patch(
-                'opentelemetry.trace.get_current_span') as cs,
+        with (zeit.cms.testing.captrace() as trace,
                 mock.patch('zeit.simplecast.connection.Simplecast.update_episode')):
             self.browser.post(
                 'http://localhost/@@simplecast_webhook',
                 json.dumps(event),
                 'application/x-javascript')
-            self.assertEllipsis("...set_attributes({'http.body': {'message': 'An episode...set_attribute('enduser.id'...", str(cs.mock_calls)) # noqa
+            span = trace['POST /@@simplecast_webhook']
+            self.assertEqual(json.dumps(event), span.attributes['http.body'])
