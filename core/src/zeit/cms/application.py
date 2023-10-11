@@ -106,6 +106,11 @@ def clear_fanstatic(app, global_conf, **local_conf):
 
 class BrowserRequest(zope.publisher.browser.BrowserRequest):
 
+    def _HTTPRequest__deduceServerURL(self):
+        if self._environ.get('wsgi.url_scheme') == 'https':  # See repoze.vhm
+            self._environ['SERVER_PORT_SECURE'] = '1'
+        return super()._HTTPRequest__deduceServerURL()
+
     def _parseCookies(self, text, result=None):
         """Upstream uses python stdlib SimpleCookie, which returns a completely
         empty result when one cookie contains a non-ASCII character.
