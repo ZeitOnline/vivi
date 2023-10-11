@@ -684,10 +684,6 @@ pre {
   color: #33aa00;
 }
 
-.publish-state {
-  vertical-align: middle;
-}
-
 .workflow-column {
   white-space: nowrap;
   letter-spacing: -0.15em;
@@ -696,6 +692,10 @@ pre {
 
 .workflow-column span{
  margin-right: 1px;
+}
+
+.workflow-column .publish-state {
+    display: inline-block;
 }
 
 .tab-content {
