@@ -1,3 +1,4 @@
+from zeit.cms.testing import set_tracer_provider
 import opentelemetry.trace
 import zeit.cms.testing
 import zeit.cms.tracing
@@ -7,20 +8,16 @@ class TracerSmokeTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super().setUp()
-        self.set_tracer_provider(opentelemetry.sdk.trace.TracerProvider())
+        set_tracer_provider(opentelemetry.sdk.trace.TracerProvider())
 
     def tearDown(self):
-        self.set_tracer_provider(None)
+        set_tracer_provider(None)
         super().tearDown()
-
-    def set_tracer_provider(self, provider):
-        opentelemetry.trace._TRACER_PROVIDER_SET_ONCE._done = False  # sigh
-        opentelemetry.trace.set_tracer_provider(provider)
 
     def test_otlp_tracer_can_be_instantiated(self):
         provider = zeit.cms.tracing.OpenTelemetryTracerProvider(
             'zeit.cms', 'testing', 'testing', 'localhost', 'localhost:1234')
-        opentelemetry.trace.set_tracer_provider(provider)
+        set_tracer_provider(provider)
         with self.assertNothingRaised():
             zeit.cms.tracing.default_tracer()
 
