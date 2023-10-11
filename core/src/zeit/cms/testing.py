@@ -346,6 +346,8 @@ class WSGILayer(plone.testing.Layer):
             self['zope_app'], [('fanstatic', 'egg:fanstatic#fanstatic')],
             {'fanstatic.' + key: value for key, value
              in zeit.cms.application.FANSTATIC_SETTINGS.items()})
+        self['wsgi_app'] = zeit.cms.application.OpenTelemetryMiddleware(
+            self['wsgi_app'])
 
     def testSetUp(self):
         # Switch database to the currently active DemoStorage.
