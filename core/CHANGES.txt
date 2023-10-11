@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.36.0 (2023-10-11)
+-------------------
+
+- ZO-147: Support repoze.vhm instead of requiring vh traverser
+
+
 5.35.0 (2023-10-11)
 -------------------
 
