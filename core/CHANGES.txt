@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.37.0 (2023-10-12)
+-------------------
+
+- ZO-3987: Create ZODB connection only after fork
+
+
 5.36.0 (2023-10-11)
 -------------------
 
