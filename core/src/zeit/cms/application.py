@@ -41,12 +41,12 @@ FANSTATIC_SETTINGS = {
 class Application:
 
     pipeline = [
-        ('slowlog', 'egg:slowlog#slowlog'),
-        ('bugsnag', 'egg:vivi.core#bugsnag'),
+        ('slowlog', 'call:slowlog.wsgi:make_slowlog'),
+        ('bugsnag', 'call:zeit.cms.bugsnag:bugsnag_filter'),
         # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
         # have it run first, before vhm applies any wsgi environ changes.
-        ('fanstatic', 'egg:fanstatic#fanstatic'),
-        ('vhm', 'egg:repoze.vhm#vhm_xheaders'),
+        ('fanstatic', 'call:fanstatic:make_fanstatic'),
+        ('vhm', 'call:repoze.vhm.middleware:make_filter')
     ]
 
     def __call__(self, global_conf=None, **local_conf):
@@ -75,7 +75,8 @@ class Application:
             ] + pipeline
         if settings.get('use_linesman'):
             pipeline = [
-                ('linesman', 'egg:linesman#profiler'),
+                ('linesman',
+                 'call:linesman.middleware:profiler_filter_app_factory'),
             ] + pipeline
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(

@@ -254,12 +254,6 @@ vgwort-report = "zeit.vgwort.report:report_new_documents"
 vivi-metrics = "zeit.retresco.metrics:collect"
 zopeshell = "zeit.cms.cli:zope_shell"
 
-[project.entry-points."paste.app_factory"]
-main = "zeit.cms.application:APPLICATION"
-
-[project.entry-points."paste.filter_factory"]
-bugsnag = "zeit.cms.bugsnag:bugsnag_filter"
-
 [project.entry-points."fanstatic.libraries"]
 zeit_addcentral = "zeit.addcentral.resources:lib"
 zeit_campus = "zeit.campus.browser.resources:lib"

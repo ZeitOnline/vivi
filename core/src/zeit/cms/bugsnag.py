@@ -36,15 +36,11 @@ class BugsnagMiddleware:
         notification.add_tab('environment', dict(request.environ))
 
 
-# bugsnag itself does not provide a paste filter factory
-def bugsnag_filter(global_conf, **local_conf):
+def bugsnag_filter(app, global_conf, **local_conf):
     user_from_ip = ast.literal_eval(
         local_conf.get('set_user_id_to_client_ip', 'True'))
     configure(local_conf)
-
-    def bugsnag_filter(app):
-        return BugsnagMiddleware(app, user_from_ip)
-    return bugsnag_filter
+    return BugsnagMiddleware(app, user_from_ip)
 
 
 def configure(conf):
