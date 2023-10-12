@@ -47,13 +47,13 @@ class Simplecast(grok.GlobalUtility):
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
         self.timeout = timeout or config.get('timeout', 1)
-        self.identifier = config.get('identifier', 'simplecast')
 
     def _request(self, request):
         verb, path = request.split(' ')
         url = f'{self.api_url}{path}'
 
-        with zeit.cms.tracing.use_span(self.identifier) as span:
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span('simplecast') as span:
             span.set_attributes({'http.url': url, 'http.method': verb})
             status_code = None
             try:

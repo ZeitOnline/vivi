@@ -10,7 +10,10 @@ import re
 import socket
 import sys
 import urllib.parse
+import zeit.cms.interfaces
 import zeit.cms.tracing
+import zope.component
+
 
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
 DEBUG_REQUEST = False
@@ -297,8 +300,8 @@ class DAVBase:
                     body))
         # that's HTTPxxxAuthCon.request, called via DAVConnection
         logger.debug('%s %s', method, url)
-        with zeit.cms.tracing.use_span(
-                __name__ + '.tracing', 'DAV %s' % method, attributes={
+        tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
+        with tracer.start_as_current_span('DAV %s' % method, attributes={
                 'http.url': url, 'http.method': method}) as span:
             self.request(method, url, body, extra_hdrs)
             try:
