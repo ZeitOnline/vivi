@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.38.0 (2023-10-12)
+-------------------
+
+MAINT:
+- Unconditionally record DAV spans
+
+
 5.37.0 (2023-10-12)
 -------------------
 
