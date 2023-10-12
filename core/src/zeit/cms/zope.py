@@ -83,6 +83,29 @@ def create_zodb_database(uri):
     return db
 
 
+class DelayedInitZODB:
+    """A ZODB.DB shim that performs the actual initialization and storage
+    creation only when open() is called, instead of directly in __init__().
+
+    This supports using gunicorn.preload_app, thereby having to load ZCML only
+    once, before forking the worker processes, which is a substantial
+    performance benefit. The delayed init then creates the ZEO connection
+    only afterwards (since it is not fork-safe).
+
+    We can get away with not proxying any other methods, because all of Zope
+    only ever uses IDatabase.open() and nothing else.
+    """
+
+    def __init__(self, uri):
+        self.uri = uri
+
+    def open(self, *args, **kw):
+        db = zope.component.queryUtility(ZODB.interfaces.IDatabase)
+        if db is None:
+            db = create_zodb_database(self.uri)
+        return db.open(*args, **kw)
+
+
 @grok.subscribe(ZCMLLoaded)
 def configure_dogpile_cache(event):
     import pyramid_dogpile_cache2
