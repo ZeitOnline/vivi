@@ -4,6 +4,7 @@ from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import fanstatic
 import grokcore.component as grok
+import logging
 import opentelemetry.instrumentation.wsgi
 import opentelemetry.trace
 import os
@@ -19,6 +20,9 @@ import zope.app.wsgi
 import zope.app.wsgi.paste
 import zope.component.hooks
 import zope.publisher.browser
+
+
+log = logging.getLogger(__name__)
 
 
 FANSTATIC_SETTINGS = {
@@ -49,6 +53,7 @@ class Application:
         settings = os.environ.copy()
         settings.update(local_conf)
         zeit.cms.cli.configure(settings)
+        log.info('Configuring ZCA')
         zeit.cms.zope.configure_product_config(settings)
         zeit.cms.zope.load_zcml(settings)
         db = zeit.cms.zope.DelayedInitZODB(settings['zodbconn.uri'])
@@ -60,6 +65,7 @@ class Application:
         for key, value in FANSTATIC_SETTINGS.items():
             settings['fanstatic.' + key] = value
 
+        log.info('Configuring WSGI')
         pipeline = self.pipeline
         if debug:
             settings['debugger.evalex'] = True
