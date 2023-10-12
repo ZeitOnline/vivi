@@ -51,6 +51,7 @@ class PodcastEpisodeInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
         IPodcastEpisodeInfo,
         AUDIO_SCHEMA_NS, (
             'podcast',
+            'podcast_id',
             'episode_nr',
             'is_published',))
 

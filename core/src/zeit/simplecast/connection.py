@@ -123,7 +123,10 @@ class Simplecast(grok.GlobalUtility):
             for vivi, simplecast in properties.items():
                 setattr(obj, vivi, episode_data[simplecast])
 
-        IPodcastEpisodeInfo(audio).podcast = \
+        podcast_id = episode_data['podcast']['id']
+        info = IPodcastEpisodeInfo(audio)
+        info.podcast_id = podcast_id
+        info.podcast = \
             IPodcastEpisodeInfo['podcast'].source(None).find_by_property(
                 'external_id', episode_data['podcast']['id'])
 

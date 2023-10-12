@@ -119,6 +119,10 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
         title=_('Podcast Serie'),
         source=PodcastSource(),
         readonly=True)
+    podcast_id = zope.schema.TextLine(
+        title=_('External Podcast Id'),
+        required=False,
+        readonly=True)
     episode_nr = zope.schema.Int(
         title=_('Episode No'),
         readonly=True)
