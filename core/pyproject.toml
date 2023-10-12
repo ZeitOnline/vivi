@@ -189,6 +189,8 @@ deploy = [
     "flower",
     "grpcio-status",  # warning instead of required by google-api-core
     "gunicorn",
+    "gunicorn_environmentconfig",
+    "gunicorn_worker_healthcheck",
     "linesman",
     "opentelemetry-exporter-otlp-proto-grpc",
     "opentelemetry-sdk",
