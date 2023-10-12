@@ -45,7 +45,7 @@ class Application:
         ('vhm', 'egg:repoze.vhm#vhm_xheaders'),
     ]
 
-    def __call__(self, global_conf, **local_conf):
+    def __call__(self, global_conf=None, **local_conf):
         settings = os.environ.copy()
         settings.update(local_conf)
         zeit.cms.cli.configure(settings)
