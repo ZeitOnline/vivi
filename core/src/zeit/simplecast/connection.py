@@ -1,7 +1,3 @@
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-from zeit.connector.search import SearchVar
-from zeit.content.audio.interfaces import (
-    IAudio, IPodcastEpisodeInfo)
 import logging
 
 import grokcore.component as grok
@@ -10,12 +6,17 @@ import requests
 import zope.app.appsetup.product
 import zope.component
 
+from zeit.cms.content.interfaces import ISemanticChange
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.connector.search import SearchVar
+from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
 import zeit.cms.checkout.helper
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
+
 
 log = logging.getLogger(__name__)
 
@@ -130,6 +131,9 @@ class Simplecast(grok.GlobalUtility):
         info.podcast = \
             IPodcastEpisodeInfo['podcast'].source(None).find_by_property(
                 'external_id', episode_data['podcast']['id'])
+
+        ISemanticChange(audio).last_semantic_change = pendulum.parse(
+            episode_data['updated_at'])
 
     def create_episode(self, episode_id):
         episode_data = self._fetch_episode(episode_id)

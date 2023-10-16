@@ -62,6 +62,15 @@ BROKEN = Counter('vivi_articles_with_missing_tms_authors', {
     ]}},
     '_source': ['url', 'payload.head.authors'],
 }, 'external')
+KPI_FIELDS = zeit.retresco.interfaces.KPIFieldSource()
+KPI = Gauge('tms_highest_kpi_value', lambda kpi: {
+    'query': {'bool': {'filter': [
+        {'term': {'doc_type': 'article'}},
+        {'range': {'payload.document.date_first_released': {'gt': 'now-1d'}}}
+    ]}},
+    '_source': list(KPI_FIELDS.values()),
+    'sort': [{kpi: 'desc'}]
+}, 'external', labelnames=['field'])
 FB_TOKEN_EXPIRES = Gauge(
     'vivi_facebook_token_expires_timestamp_seconds', labelnames=['account'])
 
@@ -104,6 +113,15 @@ def collect():
             if id and id not in tms:
                 log.warn('%s: author %s not found in TMS', content, id)
                 BROKEN.labels(environment).inc()
+
+    for name, tms in KPI_FIELDS.items():
+        result = elastic[KPI.es].search(KPI.query(tms), rows=1)
+        try:
+            row = result[0]
+        except IndexError:
+            pass
+        else:
+            KPI.labels(environment, name).set(row.get(tms, 0))
 
     http = requests.Session()
     for account in facebookAccountSource(None):

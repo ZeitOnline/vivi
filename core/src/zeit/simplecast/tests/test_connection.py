@@ -1,20 +1,19 @@
 from unittest import mock
 
-from zeit.content.audio.interfaces import IPodcastEpisodeInfo, IAudio
-from zeit.content.audio.workflow import AudioWorkflow, PodcastWorkflow
-
+import pendulum
 import pytest
-
 import requests_mock
 import requests
 import zope.component
 
+from zeit.cms.content.interfaces import ISemanticChange
+from zeit.content.audio.interfaces import IPodcastEpisodeInfo, IAudio
+from zeit.content.audio.workflow import AudioWorkflow, PodcastWorkflow
 import zeit.cms.repository.folder
+import zeit.cms.workflow.interfaces
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
 import zeit.simplecast.testing
-
-import zeit.cms.workflow.interfaces
 import zeit.workflow.asset
 
 
@@ -124,6 +123,9 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
             self.simplecast.update_episode(episode_id)
         episode = self.repository['podcasts']['2023-08'][episode_id]
         self.assertEqual('Cat Jokes Pawdcast - Folge 2', episode.title)
+        self.assertEqual(
+            pendulum.datetime(2020, 7, 13, 14, 21, 39, tz='UTC'),
+            ISemanticChange(episode).last_semantic_change)
 
     def test_delete_episode(self):
         episode_id = self.episode_info["id"]
