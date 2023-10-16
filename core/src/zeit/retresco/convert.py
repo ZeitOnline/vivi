@@ -1,5 +1,6 @@
 from datetime import datetime
 from zeit.cms.interfaces import ITypeDeclaration
+from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
@@ -254,6 +255,8 @@ class PublishInfo(Converter):
         tms_date = self.context.date_last_published_semantic
         if not tms_date:
             tms_date = self.context.date_first_released
+        if not tms_date:
+            tms_date = ISemanticChange(self.content).last_semantic_change
         # This field is required by TMS, so always fill with *something*.
         if not tms_date:
             tms_date = MIN_DATE
