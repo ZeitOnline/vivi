@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.41.0 (2023-10-16)
+-------------------
+
+- ZO-3996: Import simplecast updated timestamp as last_semantic_change
+
+
 5.40.0 (2023-10-16)
 -------------------
 
