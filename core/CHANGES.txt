@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.40.0 (2023-10-16)
+-------------------
+
+- ZO-4017: Collect metric for available kpi values in TMS
+
+
 5.39.0 (2023-10-12)
 -------------------
 
