@@ -167,6 +167,16 @@
     />
 
   <permission
+    id="zeit.content.audio.Retract"
+    title="Retract Audio objects"
+    />
+
+  <permission
+    id="zeit.content.audio.Delete"
+    title="Delete Audio objects"
+    />
+
+  <permission
     id="zeit.content.text.AddEmbed"
     title="Add Embed objects"
     />

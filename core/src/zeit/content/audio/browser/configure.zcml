@@ -58,4 +58,47 @@
     permission="zope.View"
     />
 
+  <!-- restrict permissions for retract and delete -->
+  <!-- retract -->
+  <browser:viewlet
+    name="Retract"
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class="zeit.workflow.browser.publish.RetractMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.content.audio.Retract"
+    icon="/@@/zeit.cms/icons/retract_topmenu.png"
+    />
+  <configure package="zeit.workflow.browser">
+  <browser:page
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="retract.html"
+    template="retract.pt"
+    permission="zeit.content.audio.Retract"
+    />
+  </configure>
+  <!-- delete -->
+  <browser:viewlet
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="Delete"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    class="zeit.cms.repository.browser.menu.Delete"
+    permission="zeit.content.audio.Delete"
+    icon="/@@/zeit.cms/icons/delete.png"
+    lightbox="@@delete.html"
+    weight="500"
+    />
+  <configure package="zeit.cms.repository.browser">
+  <browser:page
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="delete.html"
+    class=".delete.DeleteContent"
+    template="delete.pt"
+    permission="zeit.content.audio.Delete"
+    />
+  </configure>
+
 </configure>
