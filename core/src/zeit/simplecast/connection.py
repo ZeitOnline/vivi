@@ -119,6 +119,7 @@ class Simplecast(grok.GlobalUtility):
             return None
 
     def _update_properties(self, episode_data, audio):
+        audio.audio_type = 'podcast'
         for iface, properties in self._properties.items():
             obj = iface(audio)
             for vivi, simplecast in properties.items():
@@ -138,7 +139,6 @@ class Simplecast(grok.GlobalUtility):
         episode_data = self._fetch_episode(episode_id)
         container = self.folder(episode_data['created_at'])
         audio = zeit.content.audio.audio.Audio()
-        audio.audio_type = 'podcast'
         self._update_properties(episode_data, audio)
         container[episode_id] = audio
         log.info('Podcast Episode %s successfully created.', audio.uniqueId)
