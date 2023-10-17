@@ -1,11 +1,13 @@
-from zeit.content.audio.interfaces import Podcast
+from zope.testbrowser.browser import LinkNotFoundError
+
 from zeit.content.audio.audio import Audio, PodcastEpisodeInfo
+from zeit.content.audio.interfaces import Podcast
 import zeit.content.audio.testing
 
 
 class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
 
-    def test_displays_details(self):
+    def create_audio(self):
         audio = Audio()
         audio.title = 'mytitle'
         audio.url = 'http://example.com/cats.mp3'
@@ -16,6 +18,10 @@ class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
         PodcastEpisodeInfo(audio).podcast = podcast
 
         self.repository['audio'] = audio
+        return audio
+
+    def test_displays_details(self):
+        audio = self.create_audio()
         b = self.browser
         b.open('/repository/audio/@@object-details')
         self.assert_ellipsis(
@@ -44,3 +50,10 @@ class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
         assert 'Duration:' not in b.contents, 'Duration should not be displayed without duration set'
         assert 'open-audio object-link' not in b.contents, 'Play should not be displayed without url'
         assert 'Podcast:' not in b.contents, 'Podcast should not be displayed without audio_type set to podcast'
+
+    def test_cannot_delete_if_permissions_missing(self):
+        self.create_audio()
+        b = self.browser
+        b.open('/repository/audio')
+        with self.assertRaises(LinkNotFoundError):
+            assert not b.getLink(url="@@delete.html")
