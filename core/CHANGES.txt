@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.43.0 (2023-10-17)
+-------------------
+
+- ZO-3997: restrict retract and delete permissions for audio
+
+
 5.42.0 (2023-10-17)
 -------------------
 
