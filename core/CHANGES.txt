@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.42.0 (2023-10-17)
+-------------------
+
+- ZO-3846: ensure podcast episode type is always 'podcast'
+
+
 5.41.0 (2023-10-16)
 -------------------
 
