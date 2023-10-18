@@ -23,7 +23,7 @@ class ConnectionTest(zeit.push.testing.TestCase):
     def setUp(self):
         super().setUp()
         self.api = zeit.push.urbanairship.Connection(
-            None, None, None, None, None, None, expire_interval=3600)
+            None, None, None, expire_interval=3600)
         self.message = zeit.push.urbanairship.Message(
             ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
         self.message.config = {
@@ -321,7 +321,6 @@ class PushTest(zeit.push.testing.TestCase):
             os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'],
             os.environ['ZEIT_PUSH_URBANAIRSHIP_APPLICATION_KEY'],
             os.environ['ZEIT_PUSH_URBANAIRSHIP_MASTER_SECRET'],
-            None, None, None,
             expire_interval=1)
 
     @unittest.skip('UA has too tight validation, nonsense requests fail')
@@ -333,7 +332,7 @@ class PushTest(zeit.push.testing.TestCase):
     def test_invalid_credentials_should_raise(self):
         invalid_connection = zeit.push.urbanairship.Connection(
             os.environ['ZEIT_PUSH_URBANAIRSHIP_BASE_URL'],
-            'invalid', 'invalid', None, None, None, expire_interval=1)
+            'invalid', 'invalid', expire_interval=1)
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             invalid_connection.send('any', 'any', message=self.message)
 
