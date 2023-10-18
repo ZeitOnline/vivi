@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.45.0 (2023-10-18)
+-------------------
+
+MAINT:
+- Remove obsolete feature toggle push_airship_com/eu, eu is the production default for quite some time now
+
+
 5.44.0 (2023-10-18)
 -------------------
 
