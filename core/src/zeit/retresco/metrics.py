@@ -124,8 +124,8 @@ def collect():
             KPI.labels(environment, name).set(row.get(tms, 0))
 
     http = requests.Session()
-    for account in list(facebookAccountSource(None)) + [
-            facebookAccountSource.main_account()]:
+    accounts = facebookAccountSource(None)
+    for account in list(accounts) + [accounts.MAIN_ACCOUNT]:
         token = facebookAccountSource.factory.access_token(account)
         r = http.get('https://graph.facebook.com/debug_token',
                      params={'input_token': token, 'access_token': token})
