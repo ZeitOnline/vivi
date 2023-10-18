@@ -12,12 +12,6 @@ log = logging.getLogger(__name__)
 
 
 @grok.implementer(zeit.sourcepoint.interfaces.IJavaScript)
-def sourcepoint_from_product_config():
-    return zeit.sourcepoint.javascript.JavaScript.from_product_config(
-        'sourcepoint')
-
-
-@grok.implementer(zeit.sourcepoint.interfaces.IJavaScript)
 def addefend_from_product_config():
     return zeit.sourcepoint.javascript.JavaScript.from_product_config(
         'addefend')
@@ -27,7 +21,7 @@ def addefend_from_product_config():
     'zeit.sourcepoint', 'update-principal'))
 def update():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--source', type=str, default='sourcepoint')
+    parser.add_argument('--source', type=str)
     options = parser.parse_args()
     log.info(f'Checking {options.source} JS')
     store = zope.component.getUtility(
@@ -40,7 +34,7 @@ def update():
 def sweep():
     parser = argparse.ArgumentParser()
     parser.add_argument('--keep', type=int, default=10)
-    parser.add_argument('--source', type=str, default='sourcepoint')
+    parser.add_argument('--source', type=str)
     options = parser.parse_args()
     log.info(f'Sweep {options.source} start')
     store = zope.component.getUtility(

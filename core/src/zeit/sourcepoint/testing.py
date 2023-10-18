@@ -8,11 +8,7 @@ product_config = """\
 <product-config zeit.sourcepoint>
   addefend-url http://example.com
   addefend-javascript-folder http://xml.zeit.de/addefend/
-  addefend-filename addefend_script
-  sourcepoint-url http://example.com
-  sourcepoint-javascript-folder http://xml.zeit.de/sourcepoint/
-  sourcepoint-headers {'authorization': 'Token mytoken'}
-  sourcepoint-filename msg
+  addefend-filename adf
 </product-config>
 """
 

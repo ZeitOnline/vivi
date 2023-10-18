@@ -1,8 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope">
   <utility
-    name="sourcepoint"
-    factory=".connection.sourcepoint_from_product_config" />
-  <utility
     name="addefend"
     factory=".connection.addefend_from_product_config" />
 </configure>
