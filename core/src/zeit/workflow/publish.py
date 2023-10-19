@@ -153,6 +153,7 @@ class PublishRetractTask:
                 all_errors = []
                 with_error = []
                 for obj, error in e.args[0]:
+                    logger.error('Nested error', exc_info=error)
                     # Like zeit.cms.browser.error.ErrorView.message
                     args = getattr(error, 'args', None)
                     if args:
