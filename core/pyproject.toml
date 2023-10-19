@@ -23,7 +23,7 @@ dependencies = [
     "gocept.runner>0.5.3",
     "google-cloud-storage>=2.1.0.dev0",
     "grokcore.component",
-    "lxml==4.2.3",  # ZO-859
+    "lxml==4.9.1",  # ZO-859
     "martian",
     "markdown",
     "markdownify",
@@ -208,7 +208,7 @@ zon = [
     "zope.app.locking==3.5.0+py3.1",
     "zope.xmlpickle==4.0.0+py3k1",  # https://github.com/ZeitOnline/zope.xmlpickle/tree/py3
     # We created our own py310 wheels on devpi.zeit.de for these:
-    # lxml==4.2.3  # ZO-1328
+    # lxml==4.9.1  # ZO-1328
     # perfmetrics==3.2.0.post0  # ZO-1577
     # zope.interface==5.4.0  # ZO-1580
     # zope.hookable==5.1.0   # ZO-1580
