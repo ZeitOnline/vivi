@@ -293,6 +293,8 @@ False
 Now publish the folder:
 
 >>> workflow.urgent = True
+>>> for i in container.values():
+...     zeit.cms.workflow.interfaces.IPublishInfo(i).urgent = True
 >>> job_id = publish.publish(background=False)
 >>> workflow.published
 True
@@ -308,7 +310,9 @@ This is also logged:
 >>> result = log.get_log(container['eta-zapatero'])
 >>> print_log(result)
 http://xml.zeit.de/online/2007/01/eta-zapatero
-     Published
+    Urgent: yes
+http://xml.zeit.de/online/2007/01/eta-zapatero
+    Published
 
 
 Retracting is also possible recursivly:
@@ -329,9 +333,11 @@ This is also logged:
 >>> result = log.get_log(container['eta-zapatero'])
 >>> print_log(result)
 http://xml.zeit.de/online/2007/01/eta-zapatero
-     Published
+    Urgent: yes
 http://xml.zeit.de/online/2007/01/eta-zapatero
-     Retracted
+    Published
+http://xml.zeit.de/online/2007/01/eta-zapatero
+    Retracted
 
 Dependencies
 ============
@@ -381,6 +387,7 @@ False
 >>> workflow.can_publish()
 'can-publish-success'
 >>> feed_workflow = zeit.cms.workflow.interfaces.IPublishInfo(feed)
+>>> feed_workflow.urgent = True
 >>> not not feed_workflow.published
 False
 
@@ -418,6 +425,8 @@ True
 Of couse the feed as a log entry:
 
 >>> print_log(log.get_log(feed))
+http://xml.zeit.de/2006/49/Zinsen
+     Urgent: yes
 http://xml.zeit.de/2006/49/Zinsen
      Published
 
@@ -498,11 +507,13 @@ PublishedEvent
     Master: http://xml.zeit.de/online/2007/01/Somalia
 >>> print_log(log.get_log(feed))
 http://xml.zeit.de/2006/49/Zinsen
-     Published
+    Urgent: yes
 http://xml.zeit.de/2006/49/Zinsen
-     Retracted
+    Published
 http://xml.zeit.de/2006/49/Zinsen
-     Published
+    Retracted
+http://xml.zeit.de/2006/49/Zinsen
+    Published
 
 >>> gsm.unregisterHandler(pr_handler,
 ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))

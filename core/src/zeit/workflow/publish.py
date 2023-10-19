@@ -355,14 +355,8 @@ class PublishTask(PublishRetractTask):
         errors = []
         published = []
         for obj in objs:
-            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
-            if info.can_publish() == CAN_PUBLISH_ERROR:
-                logger.error("Could not publish %s" % obj.uniqueId)
-                self.log(
-                    obj,
-                    _("Could not publish because conditions not satisifed."))
-                continue
             try:
+                obj = self.recurse(self.can_publish, obj)
                 obj = self.recurse(self.lock, obj, obj)
                 obj = self.recurse(self.before_publish, obj, obj)
             except Exception as e:
@@ -403,9 +397,21 @@ class PublishTask(PublishRetractTask):
 
         return "Published."
 
+    def can_publish(self, obj):
+        """at least check if the object can be published before
+        setting published to True"""
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        if info.can_publish() == CAN_PUBLISH_ERROR:
+            errors = []
+            for error_message in info.error_messages:
+                errors.append(zope.i18n.translate(
+                    error_message, target_language='de'))
+            raise zeit.cms.workflow.interfaces.PublishingError(
+                ', '.join(errors))
+        return obj
+
     def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""
-
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
         info.date_last_published = datetime.now(pytz.UTC)
