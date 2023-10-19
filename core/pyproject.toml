@@ -23,7 +23,7 @@ dependencies = [
     "gocept.runner>0.5.3",
     "google-cloud-storage>=2.1.0.dev0",
     "grokcore.component",
-    "lxml>=2.0.2",
+    "lxml==4.2.3",  # ZO-859
     "martian",
     "markdown",
     "markdownify",
