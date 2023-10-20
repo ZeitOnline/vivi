@@ -8,7 +8,7 @@ import zeit.push.urbanairship
 class ConnectionTest(zeit.push.testing.TestCase):
 
     def test_posts_data_as_json(self):
-        api = zeit.push.grafana.Connection('', '')
+        api = zeit.push.grafana.Connection('http://example.com', '')
         message = zeit.push.urbanairship.Message(
             ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
         message.config = {

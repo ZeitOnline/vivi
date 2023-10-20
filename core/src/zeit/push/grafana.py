@@ -1,6 +1,10 @@
+import logging
 import requests
 import zeit.push.interfaces
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
@@ -12,7 +16,10 @@ class Connection:
         self.apikey = apikey
 
     def send(self, text, link, **kw):
+        if not self.base_url:
+            return
         template = kw.get('payload_template', '').replace('.json', '')
+        log.debug('Sending push to %s: %s', self.base_url, link)
         requests.post(
             self.base_url + '/api/annotations',
             headers={'Authorization': 'Bearer %s' % self.apikey},
