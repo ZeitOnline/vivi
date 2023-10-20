@@ -36,6 +36,7 @@ dependencies = [
     "prometheus-client",
     "pyramid_dogpile_cache2",
     "pytz",
+    "pyyaml",
     "requests",
     "requests_file",
     "sqlalchemy>=2.0.0.dev0",
@@ -185,6 +186,7 @@ test = [
 ]
 
 deploy = [
+    "celery_redis_prometheus",
     "fluent-logger",
     "flower",
     "grpcio-status",  # warning instead of required by google-api-core
@@ -192,7 +194,7 @@ deploy = [
     "gunicorn_environmentconfig",
     "gunicorn_worker_healthcheck",
     "linesman",
-    "opentelemetry-exporter-otlp-proto-grpc",
+    "opentelemetry-exporter-otlp",
     "opentelemetry-sdk",
     "pastescript",
     "psycopg2-binary",
