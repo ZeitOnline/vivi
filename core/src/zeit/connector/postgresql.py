@@ -279,7 +279,7 @@ class Connector:
         if (len(attrlist) == 1 and attrlist[0].name == 'uuid'
                 and attrlist[0].namespace == DOCUMENT_SCHEMA_NS):
             # Sorely needed performance optimization.
-            uuid = expr.operands[-1]
+            uuid = expr.operands[-1].replace('urn:uuid:', '')
             result = self.session.execute(
                 select(Paths.parent_path, Paths.name).filter_by(id=uuid))
             for item in result:
