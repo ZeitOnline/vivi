@@ -96,7 +96,6 @@ ui = [
     "fanstatic",
     "gocept.fckeditor[fanstatic]",
     "gocept.pagelet",
-    "guppy3",
     "js.backbone",
     "js.cropper",
     "js.handlebars",
