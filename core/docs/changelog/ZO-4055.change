@@ -1,1 +1,0 @@
-ZO-4055: Log stack trace of nested publish errors, don't swallow them inside MulitPublishError

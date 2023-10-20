@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.46.0 (2023-10-20)
+-------------------
+
+- ZO-4055: Log stack trace of nested publish errors, don't swallow them inside MulitPublishError
+
+
 5.45.0 (2023-10-18)
 -------------------
 
