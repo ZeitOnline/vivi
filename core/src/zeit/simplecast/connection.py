@@ -144,15 +144,16 @@ class Simplecast(grok.GlobalUtility):
         log.info('Podcast Episode %s successfully created.', audio.uniqueId)
 
     def update_episode(self, episode_id):
+        audio = self._find_existing_episode(episode_id)
+        if not audio:
+            self.create_episode(episode_id)
+            return
         episode_data = self._fetch_episode(episode_id)
-        container = self.folder(episode_data['created_at'])
-        if container is not None:
-            with zeit.cms.checkout.helper.checked_out(
-                    container[episode_id]) as episode:
-                self._update_properties(episode_data, episode)
-                log.info(
-                    'Podcast Episode %s successfully updated.',
-                    episode.uniqueId)
+        with zeit.cms.checkout.helper.checked_out(audio) as episode:
+            self._update_properties(episode_data, episode)
+            log.info(
+                'Podcast Episode %s successfully updated.',
+                episode.uniqueId)
 
     def delete_episode(self, episode_id):
         audio = self._find_existing_episode(episode_id)

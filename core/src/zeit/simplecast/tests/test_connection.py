@@ -90,13 +90,19 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         self.assertEqual(container, self.repository["podcasts"]["2023-08"])
 
     def test_create_episode(self):
+        self._test_create_episode(self.simplecast.create_episode)
+
+    def test_create_episode_with_update(self):
+        self._test_create_episode(self.simplecast.update_episode)
+
+    def _test_create_episode(self, episode_method):
         m_simple = requests_mock.Mocker()
         episode_id = self.episode_info["id"]
         m_simple.get(
             f"https://testapi.simplecast.com/episodes/{episode_id}",
             json=self.episode_info)
         with m_simple:
-            self.simplecast.create_episode(episode_id)
+            episode_method(episode_id)
         episode = self.repository['podcasts']['2023-08'][episode_id]
         self.assertEqual('podcast', episode.audio_type)
         self.assertEqual('Cat Jokes Pawdcast', episode.title)
