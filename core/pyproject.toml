@@ -4,36 +4,34 @@ authors = [{ name = "Zeit Online", email = "zon-backend@zeit.de" }]
 dynamic = ["version"]
 
 dependencies = [
-    "BTrees",
-    "Jinja2 >= 2.11.0.dev0",
-    "Pillow",
-    "PyJWT>=2.0.0",
-    "cryptography",  # so pyjwt can offer RSA
-    "ZODB",
     "beautifulsoup4",
+    "btrees",
     "bugsnag",
     "collective.monkeypatcher",
     "commentjson",
+    "cryptography",  # so pyjwt can offer rsa
     "elasticsearch >=7.16.0, <8.0.0",
     "filetype",
     "gocept.cache >= 2.1",
-    # XXX Should move to [ui], but is entrenched
-    "gocept.form[formlib]>=0.7.5",
+    "gocept.form[formlib]>=0.7.5",  # XXX Should be [ui], but is entrenched
     "gocept.lxml>=0.2.1",
     "gocept.runner>0.5.3",
     "google-cloud-storage>=2.1.0.dev0",
     "grokcore.component",
+    "jinja2 >= 2.11.0.dev0",
     "lxml==4.2.3",  # ZO-859
-    "martian",
     "markdown",
     "markdownify",
-    "opentelemetry-api>=1.11.1",
-    "opentelemetry-api",
-    "opentelemetry-instrumentation-sqlalchemy>=0.38b0",
+    "martian",
     "openapi-schema-validator",
+    "opentelemetry-api",
+    "opentelemetry-api>=1.11.1",
+    "opentelemetry-instrumentation-sqlalchemy>=0.38b0",
     "pendulum>=2.0.0.dev0",
     "persistent",
+    "pillow",
     "prometheus-client",
+    "pyjwt>=2.0.0",
     "pyramid_dogpile_cache2",
     "pytz",
     "pyyaml",
@@ -47,11 +45,11 @@ dependencies = [
     "z3c.celery >= 1.2.0.dev0",  # XXX Should be [ui], but is entrenched
     "z3c.traverser",  # XXX Should be [ui], but is entrenched
     "zc.form",  # Should be [ui], but it also contains schema fields
-    "zope.deferredimport",  # undeclared by zc.form
     "zc.queue",
     "zc.relation",
     "zc.set",
     "zc.sourcefactory",
+    "zodb",
     "zodburi",
     "zope.annotation",
     "zope.app.appsetup",
@@ -64,6 +62,7 @@ dependencies = [
     "zope.component",
     "zope.container>=3.8.1",
     "zope.copypastemove",
+    "zope.deferredimport",  # undeclared by zc.form
     "zope.dottedname",
     "zope.dublincore",
     "zope.event",
@@ -75,28 +74,23 @@ dependencies = [
     "zope.interface",
     "zope.lifecycleevent",
     "zope.location>=3.4.0b2",
+    "zope.principalannotation",  # XXX Should be [ui], but ZODB contains persistent objects
     "zope.proxy",
-    # XXX Should be [ui], but ZODB contains persistent objects
-    "zope.principalannotation",
-    # XXX Should move to [ui], but is entrenched
-    "zope.publisher >= 6.0.0.dev0",
+    "zope.publisher >= 6.0.0.dev0",  # XXX Should be [ui], but is entrenched
     "zope.schema",
     "zope.security",
     "zope.securitypolicy",
     "zope.site",
     "zope.sqlalchemy",
-    "zope.traversing",  # XXX Should move to [ui], but is entrenched
+    "zope.traversing",  # XXX Should be [ui], but is entrenched
     "zope.xmlpickle",
 ]
 
 [project.optional-dependencies]
 ui = [
-    "Pygments",
-    "ZConfig",
     "celery >= 4.0",
     "celery_longterm_scheduler",
     "celery_redis_sync",
-    "redis",
     "cssutils",
     "docutils",
     "fanstatic",
@@ -116,13 +110,16 @@ ui = [
     "opentelemetry-instrumentation-celery",
     "opentelemetry-instrumentation-requests",
     "opentelemetry-instrumentation-wsgi",
+    "pygments",
     "pypandoc",
+    "redis",
     "repoze.vhm",
     "z3c.flashmessage",
     "z3c.menu.simple>=0.5.1",
     "z3c.noop",
     "zc.datetimewidget",
     "zc.table",
+    "zconfig",
     "zeep",
     "zope.app.authentication",
     "zope.app.basicskin",  # undeclared by zope.app.preference
@@ -139,8 +136,8 @@ ui = [
     "zope.authentication",
     "zope.browser",
     "zope.browserpage",
-    "zope.configuration",
     "zope.componentvocabulary",
+    "zope.configuration",
     "zope.error",
     "zope.formlib",
     "zope.login",
@@ -160,7 +157,6 @@ test = [
     "gocept.jslint>=0.2",
     "gocept.pytestlayer",
     "gocept.selenium<7.1",
-    "selenium<4",  # ZO-681
     "gocept.testing>=1.4.0.dev0",
     "hvac",
     "opentelemetry-exporter-otlp",
@@ -174,6 +170,7 @@ test = [
     "pytest-timeout",
     "pytest-xdist",
     "requests-mock",
+    "selenium<4",  # ZO-681
     "waitress",
     "webtest",
     "xlrd",
@@ -187,8 +184,8 @@ test = [
 
 deploy = [
     "celery_redis_prometheus",
-    "fluent-logger",
     "flower",
+    "fluent-logger",
     "grpcio-status",  # warning instead of required by google-api-core
     "gunicorn",
     "gunicorn_environmentconfig",
