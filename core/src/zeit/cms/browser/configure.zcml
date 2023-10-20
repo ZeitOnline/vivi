@@ -413,16 +413,7 @@
     permission="zope.View"
     />
 
-
-  <!-- debugging support -->
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    name="debug-refcount"
-    class=".debug.Refcount"
-    template="debug-refcount.pt"
-    permission="zope.ManageApplication"
-    />
-
+  <!-- testing -->
   <gocept:pagelet
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

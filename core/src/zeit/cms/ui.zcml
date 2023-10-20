@@ -50,7 +50,6 @@
 
   <!-- Additional packages -->
 
-  <include package="zope.applicationcontrol" />
   <include package="zope.dublincore" />
   <include package="zope.formlib" />
 
