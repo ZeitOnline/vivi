@@ -202,6 +202,8 @@ deploy = [
     "repoze.vhm",
     "slowlog",
     "waitress",
+    "zeit.ldap",
+    "zeit.newsimport",
 ]
 
 zon = [
