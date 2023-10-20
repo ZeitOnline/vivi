@@ -167,7 +167,6 @@ test = [
     "pytest-cov",
     "pytest-remove-stale-bytecode",
     "pytest-rerunfailures",
-    "pytest-timeout",
     "pytest-xdist",
     "requests-mock",
     "selenium<4",  # ZO-681
