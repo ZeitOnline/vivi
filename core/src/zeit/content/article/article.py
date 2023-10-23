@@ -445,3 +445,23 @@ def calculate_checksum(context, event):
     checksum.update(body)
     article = zeit.content.article.interfaces.ISpeechbertChecksum(context)
     article.checksum = checksum.hexdigest()
+
+
+class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
+    """Articles should always work with published Audio
+
+    Spoiler: Podcasts publishing is dependend on the
+    podcasts provider. Therefore we cannot publish with
+    the article, but we get the error message and prevent
+    the article from being published.
+    """
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('zeit.content.article')
+
+    retract_dependencies = False
+
+    def get_dependencies(self):
+        audios = zeit.content.audio.interfaces.IAudios(self.context, None)
+        if audios:
+            return audios.items
+        return ()

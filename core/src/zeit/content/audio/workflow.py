@@ -18,8 +18,8 @@ class AudioWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
             return status
         if not self.context.url:
             self.error_messages = (
-                _('Could not publish %s.'
-                  ' Audio URL is missing' % self.context.uniqueId),)
+                _('Could not publish ${name}. Audio URL is missing',
+                  mapping={'name': self.context.uniqueId}),)
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
 
@@ -32,8 +32,9 @@ class PodcastWorkflow(AudioWorkflow):
             return status
         if not IPodcastEpisodeInfo(self.context).is_published:
             self.error_messages = (
-                _('Could not publish %s. Podcast Episode is '
-                  'not published by Provider' % self.context.uniqueId),)
+                _('Could not publish ${name}. Podcast Episode is '
+                  'not published by Provider',
+                  mapping={'name': self.context.uniqueId}),)
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
 
