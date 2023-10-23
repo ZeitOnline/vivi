@@ -19,7 +19,7 @@ dependencies = [
     "google-cloud-storage>=2.1.0.dev0",
     "grokcore.component",
     "jinja2 >= 2.11.0.dev0",
-    "lxml==4.2.3",  # ZO-859
+    "lxml",
     "markdown",
     "markdownify",
     "martian",
@@ -105,6 +105,7 @@ ui = [
     "js.select2",
     "js.underscore",
     "js.vanderlee_colorpicker",
+    "lxml==4.2.3",  # ZO-859
     "opentelemetry-instrumentation",
     "opentelemetry-instrumentation-celery",
     "opentelemetry-instrumentation-requests",
