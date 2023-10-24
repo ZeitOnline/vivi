@@ -198,6 +198,7 @@ deploy = [
     "pastescript",
     "psycopg2-binary",
     "python-json-logger",
+    "relstorage",
     "repoze.vhm",
     "slowlog",
     "waitress",
