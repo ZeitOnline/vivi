@@ -307,6 +307,17 @@ class ContractSearch:
         result = list(self.connector.search([var], var == 'bar'))
         assert result == [('http://xml.zeit.de/testing/bar', 'bar')]
 
+    def test_search_uuid(self):
+        uuid = '{urn:uuid:deadbeef-dead-dead-dead-beefbeefbeef}'
+        namespace = self.NS.replace('/testing', '/document')
+        from zeit.connector.search import SearchVar
+        self.add_resource(
+            'foo', body='mybody', properties={('uuid', namespace): uuid})
+        var = SearchVar('uuid', namespace)
+        result = list(self.connector.search([var], var == uuid))
+        shortened = uuid.replace('urn:uuid:', '')
+        assert result == [('http://xml.zeit.de/testing/foo', shortened)]
+
     def test_search_and_operator(self):
         from zeit.connector.search import SearchVar
         self.add_resource(
