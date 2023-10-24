@@ -24,6 +24,18 @@ Resource('library.js', depends=[
     editor_css,  # noqa
 ])
 
+Resource('teaser.js', depends=[
+    zeit.cms.browser.resources.base,
+    zeit.cms.browser.resources.dnd_js,
+    zeit.edit.browser.resources.context_js,
+    zeit.edit.browser.resources.edit_js,
+    zeit.edit.browser.resources.drop_js,
+    zeit.edit.browser.resources.json_js,
+    editor_js,  # noqa
+    editor_css,  # noqa
+])
+
+
 Resource('area.js', depends=[
     zeit.cms.browser.resources.base,
 ])
