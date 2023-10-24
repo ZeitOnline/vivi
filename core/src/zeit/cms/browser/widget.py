@@ -707,3 +707,35 @@ def TupleSequenceWidget(field, source, request):
     ignored = None
     return zope.formlib.sequencewidget.TupleSequenceWidget(
         field, ignored, request)
+
+
+class DurationDisplayWidget(zope.formlib.widget.DisplayWidget):
+    """Display widget for :py:class:`zeit.cms.content.field.DurationField`.
+    """
+
+    def __call__(self):
+        if self._renderedValueSet():
+            value = self._data
+        else:
+            value = self.context.default
+        if value == self.context.missing_value:
+            return ''
+
+        return readable_duration(value)
+
+
+def readable_duration(value):
+    """Converts seconds to human readable format 'hh:mm:ss'.
+
+    e.g.:
+    - int 160 -> str '2:40'
+    - int 7200 -> str '2:00:00'
+    """
+    if not value or value < 0:
+        return ''
+    hours, remainder = divmod(value, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    if hours > 0:
+        return f'{hours:02d}:{minutes:02d}:{seconds:02d}'
+    else:
+        return f'{minutes:02d}:{seconds:02d}'
