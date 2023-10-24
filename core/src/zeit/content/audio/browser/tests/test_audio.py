@@ -27,7 +27,7 @@ class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
         self.assert_ellipsis(
             f'...<li class="teaser_title" title="{audio.title}">{audio.title}</li>...'
             '...<dt>Duration</dt>...'
-            '...<dd>2:03</dd>...'
+            '...<dd>02:03</dd>...'
             '...<dt>Type</dt>...'
             '...<dd>podcast</dd>...'
             '...<dt>Podcast</dt>...'
@@ -57,3 +57,19 @@ class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
         b.open('/repository/audio')
         with self.assertRaises(LinkNotFoundError):
             assert not b.getLink(url="@@delete.html")
+
+    def test_duration(self):
+        test_cases = [
+            (1500, "25:00"),
+            (7512, "02:05:12"),
+        ]
+        audio = self.create_audio()
+        for duration, expected in test_cases:
+            audio.duration = duration
+            self.repository['audio'] = audio
+            b = self.browser
+            b.open('/repository/audio/@@object-details')
+            self.assert_ellipsis(
+                f'...<dd>{expected}</dd>...',
+                b.contents
+            )
