@@ -1,9 +1,11 @@
 # coding: utf8
 from unittest import mock
 from selenium.webdriver.common.keys import Keys
+from zeit.cms.browser.widget import DurationDisplayWidget
 from zeit.cms.browser.widget import ObjectSequenceDisplayWidget
 from zeit.cms.browser.widget import ObjectSequenceWidget
 from zeit.cms.browser.widget import ReferenceSequenceWidget
+from zeit.cms.content.field import DurationField
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import contextlib
 import os
@@ -1078,3 +1080,27 @@ class TestSourceQueryViewIntegration(zeit.cms.testing.ZeitCmsTestCase):
         with self.assertNothingRaised():
             zope.component.getMultiAdapter(
                 (source, request), zope.formlib.interfaces.ISourceQueryView)
+
+
+class DurationDisplayWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
+        field = DurationField(required=False)
+        field.__name__ = 'foo'
+        self.widget = DurationDisplayWidget(field, self.request)
+
+    def test_into_readable_format(self):
+        self.widget.setRenderedValue(7501)
+        self.assertEqual('02:05:01', self.widget())
+
+    def test_respects_missing_context(self):
+        field = DurationField(required=False)
+        field.__name__ = 'foo'
+        DurationDisplayWidget(field, None)
+        self.assertEqual('', self.widget())
+
+    def test_respects_missing_value(self):
+        self.assertEqual('', self.widget())

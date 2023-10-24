@@ -106,4 +106,12 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="zeit.cms.content.field.DurationField
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.IDisplayWidget"
+    factory="zeit.cms.browser.widget.DurationDisplayWidget"
+    permission="zope.Public"
+    />
+
 </configure>
