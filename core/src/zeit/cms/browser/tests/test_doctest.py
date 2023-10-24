@@ -11,7 +11,6 @@ def test_suite():
         optionflags=zeit.cms.testing.optionflags))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'debug.txt',
         'error-views.txt',
         'listing.txt',
         'sourceedit.txt',

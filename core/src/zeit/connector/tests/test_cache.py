@@ -23,7 +23,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         self.properties2 = {('getetag', 'DAV:'): 'etag2'}
         self.uniqueId = 'föö'
         self.key = zeit.connector.cache.get_storage_key(self.uniqueId)
-        self.BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
+        self.BUFFER_SIZE = zeit.connector.cache.Body().BUFFER_SIZE
 
     def test_etag_migration(self):
         self.cache._etags = BTrees.family64.OO.BTree()
@@ -78,8 +78,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
 
     @pytest.mark.xfail()
     def test_blob_conflict_resolution(self):
-        size = zeit.connector.cache.Body.BUFFER_SIZE
-        body = BytesIO(b'body' * size)
+        body = BytesIO(b'body' * self.BUFFER_SIZE)
 
         def store():
             transaction.abort()

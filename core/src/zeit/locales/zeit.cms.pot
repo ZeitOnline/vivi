@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Oct  6 08:16:50 2023\n"
+"POT-Creation-Date: Fri Oct 20 14:58:48 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -135,7 +135,6 @@ msgstr ""
 #: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/sourceedit.pt:16
 #: zeit/cms/browser/sourceedit.pt:39
-#: zeit/content/audio/browser/object-details-body.pt:7
 #: zeit/content/audio/browser/object-details-body.pt:11
 #: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
@@ -915,6 +914,7 @@ msgid "Memo"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:639
+#: zeit/content/audio/browser/object-details-body.pt:10
 #: zeit/content/audio/interfaces.py:34
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:58
@@ -941,7 +941,7 @@ msgstr ""
 msgid "Remote timestamp URL"
 msgstr ""
 
-#: zeit/cms/content/metadata.py:168
+#: zeit/cms/content/metadata.py:154
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
@@ -1170,14 +1170,22 @@ msgid "Delete Author objects"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:169
-msgid "Add Embed objects"
+msgid "Retract Audio objects"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:174
-msgid "Edit Embed objects"
+msgid "Delete Audio objects"
 msgstr ""
 
 #: zeit/cms/permissions.zcml:179
+msgid "Add Embed objects"
+msgstr ""
+
+#: zeit/cms/permissions.zcml:184
+msgid "Edit Embed objects"
+msgstr ""
+
+#: zeit/cms/permissions.zcml:189
 msgid "Materialize dynamic folder content"
 msgstr ""
 
@@ -1423,7 +1431,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:428
+#: zeit/workflow/publish.py:434
 #: zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr ""
@@ -1610,7 +1618,7 @@ msgstr ""
 
 #: zeit/content/animation/browser/form.py:21
 #: zeit/content/animation/interfaces.py:27
-#: zeit/content/article/article.py:182
+#: zeit/content/article/article.py:197
 #: zeit/content/article/browser/configure.zcml:74
 #: zeit/content/article/edit/browser/form.py:61
 msgid "Article"
@@ -1706,7 +1714,7 @@ msgstr ""
 
 #: zeit/content/article/edit/audio.py:23
 #: zeit/content/article/edit/browser/form.py:537
-#: zeit/content/audio/audio.py:70
+#: zeit/content/audio/audio.py:71
 #: zeit/content/audio/browser/configure.zcml:6
 #: zeit/content/audio/browser/form.py:22
 msgid "Audio"
@@ -2680,6 +2688,11 @@ msgstr ""
 msgid "View audio"
 msgstr ""
 
+#: zeit/content/audio/browser/object-details-body.pt:6
+#: zeit/content/audio/interfaces.py:32
+msgid "Duration"
+msgstr ""
+
 #: zeit/content/audio/browser/object-details-body.pt:20
 msgid "Play"
 msgstr ""
@@ -2700,40 +2713,40 @@ msgstr ""
 msgid "External Id"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:32
-msgid "Duration"
-msgstr ""
-
 #: zeit/content/audio/interfaces.py:119
 msgid "Podcast Serie"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:123
+msgid "External Podcast Id"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:127
 msgid "Episode No"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:126
+#: zeit/content/audio/interfaces.py:130
 msgid "Episode Summary"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:130
+#: zeit/content/audio/interfaces.py:134
 msgid "Episode Notes"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:134
+#: zeit/content/audio/interfaces.py:138
 msgid "Is Published"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:146
+#: zeit/content/audio/interfaces.py:150
 msgid "Audios"
 msgstr ""
 
 #: zeit/content/audio/workflow.py:21
-msgid "Could not publish %s. Audio URL is missing"
+msgid "Could not publish ${name}. Audio URL is missing"
 msgstr ""
 
 #: zeit/content/audio/workflow.py:35
-msgid "Could not publish %s. Podcast Episode is not published by Provider"
+msgid "Could not publish ${name}. Podcast Episode is not published by Provider"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:30
@@ -5061,19 +5074,21 @@ msgstr ""
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:182
+#: zeit/workflow/publish.py:165
+#: zeit/workflow/publish.py:174
+#: zeit/workflow/publish.py:177
+msgid "Error during publish/retract: ${exc}: ${message}"
+msgstr ""
+
+#: zeit/workflow/publish.py:183
 msgid "Objects with errors: ${objects}"
 msgstr ""
 
-#: zeit/workflow/publish.py:316
+#: zeit/workflow/publish.py:317
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:362
-msgid "Could not publish because conditions not satisifed."
-msgstr ""
-
-#: zeit/workflow/publish.py:501
+#: zeit/workflow/publish.py:507
 msgid "Retracted"
 msgstr ""
 

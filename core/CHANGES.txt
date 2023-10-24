@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.47.0 (2023-10-24)
+-------------------
+
+- ZO-3998: Check if publish dependencies can be published before publishing them
+
+- ZO-4019: Simplecast event 'Update Episode' can create a new episode if the episode does not exist
+
+- ZO-4057: Make DAV body cache blob threshold configurable
+
+
 5.46.0 (2023-10-20)
 -------------------
 

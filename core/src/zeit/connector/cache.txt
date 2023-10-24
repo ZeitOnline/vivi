@@ -182,7 +182,7 @@ Large data handling
 For large objects we store a blob. What a large object is, is determined by the
 buffer size:
 
->>> BUFFER_SIZE = zeit.connector.cache.Body.BUFFER_SIZE
+>>> BUFFER_SIZE = zeit.connector.cache.Body().BUFFER_SIZE
 
 Create data which is larger than that:
 

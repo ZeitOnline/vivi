@@ -45,7 +45,9 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
         # can_publish was already checked in IPublish.publish(), we make sure
         # the state has not changed by the time the actual publish task runs.
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        zeit.workflow.publish.PUBLISH_TASK([article.uniqueId])
+        with self.assertRaises(Exception) as info:
+            zeit.workflow.publish.PUBLISH_TASK([article.uniqueId])
+            assert 'PublishError' in str(info.exception)
         self.assertEqual(False, IPublishInfo(article).published)
 
 
@@ -126,6 +128,9 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         with checked_out(content) as co:
             IRelatedContent(co).related = tuple(self.related)
+        for item in self.related:
+            info = IPublishInfo(item)
+            info.urgent = True
 
         BEFORE_PUBLISH = datetime.now(pytz.UTC)
         self.publish(content)
@@ -139,7 +144,9 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
         for i in range(3):
             with checked_out(content[i]) as co:
                 IRelatedContent(co).related = (content[i + 1],)
-
+        for item in self.related:
+            info = IPublishInfo(item)
+            info.urgent = True
         BEFORE_PUBLISH = datetime.now(pytz.UTC)
         self.publish(content[0])
 
