@@ -2,6 +2,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 
 import zeit.cms.content.contentsource
+import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zope.interface
 import zope.schema
@@ -29,7 +30,8 @@ class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
     title = zope.schema.TextLine(title=_('Title'))
     external_id = zope.schema.TextLine(title=_('External Id'))
     url = zope.schema.URI(title=_('URL'), required=False)
-    duration = zope.schema.Int(title=_('Duration'), required=False)
+    duration = zeit.cms.content.field.DurationField(
+        title=_('Duration'), min=0, required=False)
     audio_type = zope.schema.Choice(
         title=_('Type'),
         readonly=True,

@@ -82,6 +82,10 @@ class Markdown(zope.schema.Text):
     pass
 
 
+class DurationField(zope.schema.Int):
+    """A field containing a duration in seconds."""
+
+
 EMPTY = object()
 
 

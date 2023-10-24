@@ -16,22 +16,14 @@ class Details(zeit.cms.browser.objectdetails.Details):
     def __call__(self):
         return self.index()
 
-    def _readable_duration(self):
-        """Returns duration in human readable format.
-        From value 160 to to str '2:40'
-        """
-        if not isinstance(self.context.duration, int):
-            return None
-        minutes, seconds = divmod(self.context.duration, 60)
-        return f"{minutes}:{seconds:02d}"
-
     @property
     def url(self):
         return self.context.url
 
     @property
     def duration(self):
-        return self._readable_duration()
+        return zeit.cms.browser.widget.readable_duration(
+            self.context.duration)
 
     @property
     def audio_type(self):
