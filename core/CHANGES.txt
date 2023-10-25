@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.50.0 (2023-10-25)
+-------------------
+
+- ZO-4081: Support packing relstorage via zodburi
+
+- ZO-4091: Implement tracing for RelStorage
+
+
 5.49.0 (2023-10-25)
 -------------------
 
