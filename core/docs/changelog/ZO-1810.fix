@@ -1,1 +1,0 @@
-ZO-1810: Remove `urn:uuid:` prefix before passing UUIDs to PostgreSQL

@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.48.0 (2023-10-25)
+-------------------
+
+- ZO-3999: display audio duration in format hh:mm:ss on object details page
+
+- ZO-4063: Restore dragging content from teaser module to clipboard
+
+
+FIX:
+- ZO-1810: Remove `urn:uuid:` prefix before passing UUIDs to PostgreSQL
+
+
 5.47.0 (2023-10-24)
 -------------------
 
