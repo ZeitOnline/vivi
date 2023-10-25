@@ -307,6 +307,18 @@ class ContractSearch:
         result = list(self.connector.search([var], var == 'bar'))
         assert result == [('http://xml.zeit.de/testing/bar', 'bar')]
 
+    def test_search_uuid(self):
+        uuid = '{urn:uuid:deadbeef-dead-dead-dead-beefbeefbeef}'
+        namespace = self.NS.replace('/testing', '/document')
+        from zeit.connector.search import SearchVar
+        self.add_resource(
+            'foo', body='mybody', properties={('uuid', namespace): uuid})
+        var = SearchVar('uuid', namespace)
+        result = list(self.connector.search([var], var == uuid))
+        if self.shortened_uuid:
+            uuid = uuid.replace('urn:uuid:', '')
+        assert result == [('http://xml.zeit.de/testing/foo', uuid)]
+
     def test_search_and_operator(self):
         from zeit.connector.search import SearchVar
         self.add_resource(
@@ -330,6 +342,8 @@ class ContractDAV(
         ContractLock,
         ContractSearch,
         zeit.connector.testing.ConnectorTest):
+
+    shortened_uuid = False
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
@@ -356,6 +370,8 @@ class ContractSQL(
         # ContractLock,
         ContractSearch,
         zeit.connector.testing.SQLTest):
+
+    shortened_uuid = True
 
     copy_inherited_functions(ContractReadWrite, locals())
     # nyi copy_inherited_functions(ContractCopyMove, locals())
