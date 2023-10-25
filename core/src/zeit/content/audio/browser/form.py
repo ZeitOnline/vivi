@@ -3,6 +3,7 @@ import gocept.form.grouped
 import zope.formlib
 
 import zeit.cms.browser.form
+import zeit.workflow.browser.form
 import zeit.content.audio.audio
 import zeit.content.audio.interfaces
 
@@ -64,3 +65,24 @@ class Display(PodcastForm, zeit.cms.browser.form.DisplayForm):
 
     title = _('View audio')
     for_display = True
+
+
+@zope.component.adapter(
+    zeit.content.audio.interfaces.IAudio,
+    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.interface.implementer(zeit.workflow.browser.interfaces.IWorkflowForm)
+class Workflow(zeit.workflow.browser.form.AssetWorkflow):
+    """Publishing for audio is controlled by external provider
+    therefore implement the Workflow without the actions.
+
+    We utilize a limitation of zope.formlib:
+    Once you list an @action in a subclass,
+    no actions are inherited from the base class.
+
+    Less actions equals less buttons.
+    """
+
+    @zope.formlib.form.action(_('Save state only'),
+                              name='save')
+    def handle_save_state(self, action, data):
+        super().handle_edit_action.success(data)

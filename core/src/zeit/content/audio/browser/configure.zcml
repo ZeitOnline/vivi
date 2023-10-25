@@ -58,7 +58,7 @@
     permission="zope.View"
     />
 
-  <!-- restrict permissions for retract and delete -->
+  <!-- restrict permissions for publish, retract and delete -->
   <!-- retract -->
   <browser:viewlet
     name="Retract"
@@ -69,6 +69,7 @@
     permission="zeit.content.audio.Retract"
     icon="/@@/zeit.cms/icons/retract_topmenu.png"
     />
+
   <configure package="zeit.workflow.browser">
   <browser:page
     for="zeit.content.audio.interfaces.IAudio"
@@ -78,6 +79,28 @@
     permission="zeit.content.audio.Retract"
     />
   </configure>
+
+  <!-- publish -->
+  <browser:viewlet
+    name="Publish"
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    class="zeit.workflow.browser.publish.PublishMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.content.audio.Publish"
+    icon="/@@/zeit.cms/icons/page_white_lightning.png"
+    />
+
+  <configure package="zeit.workflow.browser">
+  <browser:page
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="publish.html"
+    template="publish.pt"
+    permission="zeit.content.audio.Publish"
+    />
+  </configure>
+
   <!-- delete -->
   <browser:viewlet
     for="zeit.content.audio.interfaces.IAudio"
@@ -90,6 +113,7 @@
     lightbox="@@delete.html"
     weight="500"
     />
+
   <configure package="zeit.cms.repository.browser">
   <browser:page
     for="zeit.content.audio.interfaces.IAudio"
@@ -100,5 +124,10 @@
     permission="zeit.content.audio.Delete"
     />
   </configure>
+
+  <adapter
+    factory=".form.Workflow"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+  />
 
 </configure>
