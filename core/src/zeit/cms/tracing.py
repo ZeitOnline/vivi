@@ -104,6 +104,7 @@ def default_tracer():
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
 def tracer_from_product_config():
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
+    from zeit.cms.relstorage import RelStorageInstrumentor
     from zeit.cms.zeo import ZEOInstrumentor
     import zope.app.appsetup.product
 
@@ -122,6 +123,7 @@ def tracer_from_product_config():
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
     ZEOInstrumentor().instrument(tracer_provider=provider)
+    RelStorageInstrumentor().instrument(tracer_provider=provider)
 
     return default_tracer()
 
