@@ -45,7 +45,7 @@
 
   <utility factory=".tracing.tracer_from_product_config"
     zcml:condition="have zeit.cms.tracing.otlp"/>
-  <utility factory=".tracing.default_tracer"
+  <utility factory=".tracing.stdout_tracer"
     zcml:condition="not-have zeit.cms.tracing.otlp"/>
 
   <subscriber handler=".cleanup.clean_previous_interaction" />

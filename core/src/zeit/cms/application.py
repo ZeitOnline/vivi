@@ -164,8 +164,8 @@ def otel_request_hook(span, environ):
     if getattr(span, 'attributes', None) is None:
         return
     path = span.attributes.get('http.target', '').split('/')
-    if len(path) >= 2 and path[0] == 'workingcopy':
-        path[1] = anonymize(path[1])
+    if len(path) >= 3 and path[1] == 'workingcopy':
+        path[2] = anonymize(path[2])
         span.set_attribute('http.target', '/'.join(path))
 
 
