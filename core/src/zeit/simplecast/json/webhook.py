@@ -54,16 +54,11 @@ def SIMPLECAST_WEBHOOK_TASK(event, episode_id):
     simplecast = zope.component.getUtility(
         zeit.simplecast.interfaces.ISimplecast)
     log.info('Received %s simplecast request.', event)
-    match event:
-        case 'episode_created':
-            simplecast.create_episode(episode_id)
-        case 'episode_updated':
-            simplecast.update_episode(episode_id)
-        case 'episode_deleted':
-            simplecast.delete_episode(episode_id)
-        case 'episode_published':
-            simplecast.publish_episode(episode_id)
-        case 'episode_unpublished':
-            simplecast.retract_episode(episode_id)
-        case _:
-            log.info('Event %s not handled.', event)
+    synchronizing_events = (
+        'episode_created', 'episode_updated',
+        'episode_published', 'episode_unpublished',
+        'episode_deleted')
+    if event in synchronizing_events:
+        simplecast.synchronize_episode(episode_id)
+    else:
+        log.info('Event %s not handled.', event)
