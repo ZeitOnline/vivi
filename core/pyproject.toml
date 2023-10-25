@@ -296,6 +296,9 @@ zc_datetimewidget = "zeit.cms.browser.resources:zc_datetimewidget"
 [project.entry-points.pytest11]
 zeit_vivi = "zeit.pytest"
 
+[project.entry-points."zodburi.resolvers"]
+psql = "zeit.cms.relstorage:psql_resolver"
+
 
 [build-system]
 requires = ["hatchling"]
