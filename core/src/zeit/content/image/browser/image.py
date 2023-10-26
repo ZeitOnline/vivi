@@ -12,6 +12,7 @@ import zeit.cms.settings.interfaces
 import zeit.connector.interfaces
 import zeit.content.image.imagereference
 import zeit.content.image.interfaces
+import zeit.content.image.variant
 import zope.component
 import zope.file.download
 import zope.publisher.interfaces
@@ -117,21 +118,30 @@ class Scaled:
     @cachedproperty
     def scaled(self):
         try:
-            image = zeit.content.image.interfaces.ITransform(self.context)
+            transform = zeit.content.image.interfaces.ITransform(self.context)
         except TypeError:
             image = self.context
         else:
-            image = image.thumbnail(self.width, self.height, self.filter)
+            image = self._resize(transform)
             image.__name__ = self.__name__
         image_view = zope.component.getMultiAdapter(
             (image, self.request), name='raw')
         return image_view
 
+    def _resize(self, transform):
+        return transform.thumbnail(self.width, self.height, self.filter)
+
 
 class Preview(Scaled):
 
-    width = 500
-    height = 500
+    width = 600
+    height = 350
+    variant = zeit.content.image.variant.Variant(
+        id='preview', aspect_ratio='16:9', focus_x=0.5, focus_y=0.3, zoom=0)
+
+    def _resize(self, transform):
+        return transform.create_variant_image(
+            self.variant, (self.width, self.height))
 
 
 class MetadataPreview(Scaled):
