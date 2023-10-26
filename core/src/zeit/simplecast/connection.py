@@ -64,6 +64,10 @@ class Simplecast(grok.GlobalUtility):
                     timeout=self.timeout)
                 status_code = response.status_code
                 response_text = response.text
+                # 404 is a valid response
+                # will trigger delete if audio exist
+                if status_code == 404:
+                    return None
                 response.raise_for_status()
                 json = response.json()
             except requests.exceptions.JSONDecodeError as err:
@@ -135,64 +139,66 @@ class Simplecast(grok.GlobalUtility):
         ISemanticChange(audio).last_semantic_change = pendulum.parse(
             episode_data['updated_at'])
 
-    def create_episode(self, episode_id):
+    def synchronize_episode(self, episode_id):
+        audio = self._find_existing_episode(episode_id)
         episode_data = self._fetch_episode(episode_id)
+        if audio and episode_data:
+            self._update(audio, episode_data)
+        elif not audio and episode_data:
+            audio = self._create(episode_id, episode_data)
+        elif audio and not episode_data:
+            self._delete(audio)
+            return
+        elif not audio and not episode_data:
+            log.warning(
+                'No podcast episode %s in vivi and simplecast found.',
+                episode_id)
+            return
+
+        if self._publish_state_needs_sync(audio):
+            self._publish(audio)
+        elif self._retract_state_needs_sync(audio):
+            self._retract(audio)
+
+    def _retract_state_needs_sync(self, audio):
+        return (IPublishInfo(audio).published and
+                not IPodcastEpisodeInfo(audio).is_published)
+
+    def _publish_state_needs_sync(self, audio):
+        return (not IPublishInfo(audio).published and
+                IPodcastEpisodeInfo(audio).is_published)
+
+    def _create(self, episode_id, episode_data):
         container = self.folder(episode_data['created_at'])
         audio = zeit.content.audio.audio.Audio()
         self._update_properties(episode_data, audio)
         container[episode_id] = audio
         log.info('Podcast Episode %s successfully created.', audio.uniqueId)
+        return container[episode_id]
 
-    def update_episode(self, episode_id):
-        audio = self._find_existing_episode(episode_id)
-        if not audio:
-            self.create_episode(episode_id)
-            return
-        episode_data = self._fetch_episode(episode_id)
+    def _update(self, audio, episode_data):
         with zeit.cms.checkout.helper.checked_out(audio) as episode:
             self._update_properties(episode_data, episode)
             log.info(
                 'Podcast Episode %s successfully updated.',
                 episode.uniqueId)
 
-    def delete_episode(self, episode_id):
-        audio = self._find_existing_episode(episode_id)
-        if audio:
-            if IPublishInfo(audio).published:
-                IPublish(audio).retract(background=False)
-            unique_id = audio.uniqueId
-            del audio.__parent__[audio.__name__]
-            self.__parent__ = None
-            log.info('Podcast Episode %s successfully deleted.', unique_id)
-        else:
-            log.warning(
-                'No podcast episode %s found. No episode deleted.',
-                episode_id)
+    def _publish(self, audio):
+        IPublish(audio).publish(background=False)
+        log.info('Podcast Episode %s successfully published.',
+                 audio.uniqueId)
 
-    def publish_episode(self, episode_id):
-        # XXX good idea or will the publish
-        # event trigger update event before?
-        self.update_episode(episode_id)
-        audio = self._find_existing_episode(episode_id)
-        if audio:
-            IPublish(audio).publish(background=False)
-            log.info('Podcast Episode %s successfully published.',
-                     audio.uniqueId)
-        else:
-            log.warning(
-                'No podcast episode %s found. Unable to publish episode.',
-                episode_id)
+    def _retract(self, audio):
+        with zeit.cms.checkout.helper.checked_out(
+                audio, semantic_change=None, events=False) as co:
+            IPodcastEpisodeInfo(co).is_published = False
+        IPublish(audio).retract(background=False)
+        log.info('Podcast Episode %s successfully retracted.',
+                 audio.uniqueId)
 
-    def retract_episode(self, episode_id):
-        audio = self._find_existing_episode(episode_id)
-        if audio and IPublishInfo(audio).published:
-            with zeit.cms.checkout.helper.checked_out(
-                    audio, semantic_change=None, events=False) as co:
-                IPodcastEpisodeInfo(co).is_published = False
-            IPublish(audio).retract(background=False)
-            log.info('Podcast Episode %s successfully retracted.',
-                     audio.uniqueId)
-        else:
-            log.warning(
-                'No podcast episode %s found. Unable to retract episode.',
-                episode_id)
+    def _delete(self, audio):
+        self._retract(audio)
+        unique_id = audio.uniqueId
+        del audio.__parent__[audio.__name__]
+        self.__parent__ = None
+        log.info('Podcast Episode %s successfully deleted.', unique_id)
