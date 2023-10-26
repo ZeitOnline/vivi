@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Oct 20 14:58:48 2023\n"
+"POT-Creation-Date: Thu Oct 26 09:34:09 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,12 +22,12 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3\n"
+"X-Generator: Poedit 3.4\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
 #: zeit/content/article/edit/browser/recension-list.pt:93
-#: zeit/edit/browser/view.py:159
+#: zeit/edit/browser/view.py:123
 msgid "Add"
 msgstr "Inhalte hinzufügen…"
 
@@ -38,14 +38,6 @@ msgstr "Edit brightcove videos"
 #: zeit/campus/article.py:51
 msgid "Study Course block"
 msgstr "Studiengang-Orientierungsangebot"
-
-#: zeit/campus/browser/article.py:15
-msgid "edit topic page"
-msgstr "Link zur Themenseite bearbeiten"
-
-#: zeit/campus/browser/article.py:32
-msgid "edit study course"
-msgstr "STOA bearbeiten"
 
 #: zeit/campus/browser/infobox.py:23 zeit/content/infobox/browser/form.py:72
 msgid "Add infobox"
@@ -198,12 +190,12 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: zeit/cms/browser/form.py:301 zeit/cms/repository/browser/file.py:106
-#: zeit/content/article/edit/browser/edit.py:319
-#: zeit/content/article/edit/browser/form.py:529
-#: zeit/content/article/edit/browser/push.py:61
-#: zeit/content/article/edit/browser/reference.py:56
+#: zeit/content/article/edit/browser/edit.py:310
+#: zeit/content/article/edit/browser/form.py:503
+#: zeit/content/article/edit/browser/push.py:59
+#: zeit/content/article/edit/browser/reference.py:55
 #: zeit/content/cp/browser/view.py:11 zeit/content/image/browser/form.py:100
-#: zeit/edit/browser/form.py:66 zeit/edit/browser/view.py:137
+#: zeit/edit/browser/form.py:65 zeit/edit/browser/view.py:103
 #: zeit/seo/browser/form.py:33
 msgid "Apply"
 msgstr "Speichern"
@@ -235,7 +227,7 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:273 zeit/content/article/edit/interfaces.py:320
 #: zeit/content/article/interfaces.py:187 zeit/content/author/author.py:119
-#: zeit/content/author/browser/form.py:224
+#: zeit/content/author/browser/form.py:223
 msgid "Author"
 msgstr "Autor"
 
@@ -247,7 +239,7 @@ msgstr "Autor"
 #: zeit/content/article/edit/interfaces.py:515
 #: zeit/content/article/edit/interfaces.py:698
 #: zeit/content/article/interfaces.py:189
-#: zeit/content/article/interfaces.py:255 zeit/content/audio/interfaces.py:29
+#: zeit/content/article/interfaces.py:255 zeit/content/audio/interfaces.py:30
 #: zeit/content/author/interfaces.py:36 zeit/content/cp/interfaces.py:208
 #: zeit/content/cp/interfaces.py:347 zeit/content/cp/interfaces.py:493
 #: zeit/content/cp/interfaces.py:552 zeit/content/gallery/interfaces.py:91
@@ -538,7 +530,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/animation/browser/form.py:37
-#: zeit/content/audio/browser/form.py:44 zeit/content/cp/browser/form.py:54
+#: zeit/content/audio/browser/form.py:45 zeit/content/cp/browser/form.py:54
 #: zeit/content/markup/browser/form.py:34
 #: zeit/content/video/browser/video.py:40
 msgid "Navigation"
@@ -562,7 +554,7 @@ msgid "Texts"
 msgstr "Texte"
 
 #: zeit/cms/content/browser/form.py:26 zeit/content/article/browser/form.py:36
-#: zeit/content/article/edit/browser/form.py:417
+#: zeit/content/article/edit/browser/form.py:399
 #: zeit/content/cp/browser/form.py:42 zeit/content/link/browser/form.py:29
 #: zeit/content/video/browser/video.py:44
 msgid "Options"
@@ -574,7 +566,7 @@ msgid "Authors"
 msgstr "Autoren"
 
 #: zeit/cms/content/browser/form.py:35
-#: zeit/content/article/edit/browser/form.py:502
+#: zeit/content/article/edit/browser/form.py:477
 #: zeit/content/cp/browser/form.py:49
 msgid "Run in channel"
 msgstr "Automatisch platzieren"
@@ -873,7 +865,7 @@ msgstr "Memo"
 
 #: zeit/cms/content/interfaces.py:639
 #: zeit/content/audio/browser/object-details-body.pt:10
-#: zeit/content/audio/interfaces.py:34
+#: zeit/content/audio/interfaces.py:36
 #: zeit/content/image/browser/image_view.pt:6
 #: zeit/content/volume/browser/toc_listing.py:58
 msgid "Type"
@@ -1141,14 +1133,18 @@ msgid "Delete Audio objects"
 msgstr "Audio löschen"
 
 #: zeit/cms/permissions.zcml:179
+msgid "Publish Audio objects"
+msgstr "Audio-Objekte veröffentlichen"
+
+#: zeit/cms/permissions.zcml:184
 msgid "Add Embed objects"
 msgstr "Embed-Objekt hinzufügen"
 
-#: zeit/cms/permissions.zcml:184
+#: zeit/cms/permissions.zcml:189
 msgid "Edit Embed objects"
 msgstr "Embed-Objekt hinzufügen"
 
-#: zeit/cms/permissions.zcml:189
+#: zeit/cms/permissions.zcml:194
 msgid "Materialize dynamic folder content"
 msgstr "Ordner materialisieren"
 
@@ -1390,12 +1386,12 @@ msgid "Too few keywords given."
 msgstr "Bitte mindestens 3 Schlagworte vergeben"
 
 #: zeit/cms/tagging/interfaces.py:91
-#: zeit/content/article/edit/browser/form.py:107
+#: zeit/content/article/edit/browser/form.py:104
 msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:49
-#: zeit/workflow/publish.py:434 zeit/workflow/publishinfo.py:50
+#: zeit/workflow/publish.py:435 zeit/workflow/publishinfo.py:50
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1577,12 +1573,12 @@ msgstr "Metadaten anzeigen"
 #: zeit/content/animation/browser/form.py:21
 #: zeit/content/animation/interfaces.py:27 zeit/content/article/article.py:197
 #: zeit/content/article/browser/configure.zcml:74
-#: zeit/content/article/edit/browser/form.py:61
+#: zeit/content/article/edit/browser/form.py:60
 msgid "Article"
 msgstr "Artikel"
 
 #: zeit/content/animation/browser/form.py:23
-#: zeit/content/article/edit/browser/form.py:335
+#: zeit/content/article/edit/browser/form.py:321
 #: zeit/content/link/browser/form.py:24
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
@@ -1669,9 +1665,9 @@ msgid "Adplace block"
 msgstr "Ad-Place"
 
 #: zeit/content/article/edit/audio.py:23
-#: zeit/content/article/edit/browser/form.py:537 zeit/content/audio/audio.py:71
+#: zeit/content/article/edit/browser/form.py:511 zeit/content/audio/audio.py:71
 #: zeit/content/audio/browser/configure.zcml:6
-#: zeit/content/audio/browser/form.py:22
+#: zeit/content/audio/browser/form.py:23
 msgid "Audio"
 msgstr "Audio"
 
@@ -1699,122 +1695,26 @@ msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 msgid "not published"
 msgstr "Nicht veröffentlicht"
 
-#: zeit/content/article/edit/browser/edit.py:35
-msgid "auto-save body text"
-msgstr "Artikeltext bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:76
-msgid "edit body text"
-msgstr "Artikeltext bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:111
+#: zeit/content/article/edit/browser/edit.py:108
 #: zeit/content/cp/browser/landing.py:53
 msgid "The object \"${name}\" does not exist."
 msgstr "Das Objekt »${name}« konnte nicht gefunden werden."
 
-#: zeit/content/article/edit/browser/edit.py:119
+#: zeit/content/article/edit/browser/edit.py:116
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr "Kann für \"${name}\" keinen Block anlegen, weil ich nicht weiß welchen"
 
-#: zeit/content/article/edit/browser/edit.py:237
-msgid "edit XML block"
-msgstr "XML bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:252
-msgid "edit raw text block"
-msgstr "Embed-Code bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:267
-msgid "edit embed block"
-msgstr "Embedblock bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:280
-msgid "edit citation block"
-msgstr "Zitat Block bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:293
-msgid "edit comment citation block"
-msgstr "Kommentar-Block bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:312
-msgid "edit video tagesschau block"
-msgstr "ARD-Modul bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:323
+#: zeit/content/article/edit/browser/edit.py:314
 msgid "generate-video-recommendation"
 msgstr "Videoempfehlung generieren"
 
-#: zeit/content/article/edit/browser/edit.py:358
-#: zeit/content/article/edit/browser/edit.py:363
+#: zeit/content/article/edit/browser/edit.py:349
+#: zeit/content/article/edit/browser/edit.py:354
 #: zeit/content/author/browser/form.py:153
 #: zeit/content/author/browser/honorar.py:52
 #: zeit/content/volume/browser/form.py:126
 msgid "There were errors"
 msgstr "Fehler aufgetreten"
-
-#: zeit/content/article/edit/browser/edit.py:372
-msgid "edit puzzle form block"
-msgstr "Rätselformular bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:385
-msgid "edit liveblog block"
-msgstr "Liveblog-Block bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:395
-msgid "edit tickaroo liveblog"
-msgstr "Liveblog-Block bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:407
-msgid "edit cardstack block"
-msgstr "Kartenstapel-Block bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:420
-msgid "edit quiz block"
-msgstr "Quizblock bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:433
-msgid "edit podcast block"
-msgstr "Podcast-Block bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:443
-msgid "edit box block"
-msgstr "Box-Modul bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:468
-msgid "edit adplace block"
-msgstr "Ad-Place-Block bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:481
-msgid "edit page break"
-msgstr "Seitenumbruch bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:508
-msgid "edit jobbox ticker"
-msgstr "Jobticker bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:524
-msgid "edit mail block"
-msgstr "Mail-Formular bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:559
-msgid "edit topic box"
-msgstr "Themenbox bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:575
-msgid "edit newsletter signup"
-msgstr "Newsletter-Anmeldung bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:594
-msgid "edit recipe list"
-msgstr "Rezeptliste bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:616
-msgid "edit ingredientdice block"
-msgstr "Zutatenwürfel bearbeiten"
-
-#: zeit/content/article/edit/browser/edit.py:631
-msgid "edit animation block"
-msgstr "Animation Block bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.reference.pt:12
 msgid "Drag content to embed."
@@ -1824,121 +1724,38 @@ msgstr "Ziehen Sie Inhalte hierher um einen Teaser hinzuzufügen."
 msgid "No content referenced."
 msgstr "Kein Inhalt referenziert."
 
-#: zeit/content/article/edit/browser/form.py:52
-msgid "edit memo"
-msgstr "Memo bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:70
-msgid "edit article content head"
-msgstr "Kopf des Artikelinhalts bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:88
-msgid "edit article content main image"
-msgstr "Artikelbild bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:114
-msgid "edit keywords"
-msgstr "Schlagworte bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:121
+#: zeit/content/article/edit/browser/form.py:117
 msgid "Filename"
 msgstr "Dateiname"
 
-#: zeit/content/article/edit/browser/form.py:133
-msgid "edit new filename"
-msgstr "Neuer Dateiname"
-
-#: zeit/content/article/edit/browser/form.py:153
+#: zeit/content/article/edit/browser/form.py:148
 msgid "Internal links"
 msgstr "Mehr zum Thema (Relateds)"
 
-#: zeit/content/article/edit/browser/form.py:160
-#: zeit/magazin/browser/article.py:14
-msgid "edit internal links"
-msgstr "Relateds bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:178
+#: zeit/content/article/edit/browser/form.py:172
 #: zeit/content/cp/browser/workflow.py:29 zeit/workflow/browser/form.py:124
 #: zeit/workflow/browser/form.py:157 zeit/workflow/browser/form.py:187
 msgid "Status"
 msgstr "Status"
 
-#: zeit/content/article/edit/browser/form.py:219
+#: zeit/content/article/edit/browser/form.py:213
 #: zeit/content/image/browser/configure.zcml:236
 #: zeit/content/image/browser/configure.zcml:270
 #: zeit/content/link/browser/form.py:18
 msgid "Metadata"
 msgstr "Metadaten"
 
-#: zeit/content/article/edit/browser/form.py:226
-#: zeit/content/article/edit/browser/form.py:247
-#: zeit/content/article/edit/browser/form.py:255
-#: zeit/content/article/edit/browser/form.py:271
-#: zeit/content/article/edit/browser/form.py:295
-#: zeit/content/article/edit/browser/form.py:312
-msgid "edit metadata"
-msgstr "Metadaten bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:284
-msgid "edit access"
-msgstr "Verfügbarkeit bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:305
+#: zeit/content/article/edit/browser/form.py:293
 msgid "Comments"
 msgstr "Kommentare"
 
-#: zeit/content/article/edit/browser/form.py:327
-msgid "edit audio_speechbert"
-msgstr "Speechbert bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:342
-msgid "edit teaser image"
-msgstr "Teaser-Bild bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:381
-msgid "edit teaser supertitle"
-msgstr "Teaser-Spitzmarke bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:394
-msgid "edit teaser title"
-msgstr "Teaser-Titel bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:407
-msgid "edit teaser text"
-msgstr "Teaser-Text bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:424
-#: zeit/content/article/edit/browser/form.py:432
-#: zeit/content/article/edit/browser/form.py:450
-#: zeit/content/article/edit/browser/form.py:459
-#: zeit/content/article/edit/browser/form.py:469
-#: zeit/content/article/edit/browser/template.py:12
-msgid "edit options"
-msgstr "Optionen bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:457
+#: zeit/content/article/edit/browser/form.py:436
 msgid "Product management"
 msgstr "Produktmangement"
 
-#: zeit/content/article/edit/browser/form.py:467
+#: zeit/content/article/edit/browser/form.py:445
 msgid "Interactive"
 msgstr "Interaktiv"
-
-#: zeit/content/article/edit/browser/form.py:479
-msgid "edit misc product management"
-msgstr "Diverse Produktmanagement Angaben bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:487
-msgid "edit recipe categories"
-msgstr "Rezeptkategorien bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:509
-msgid "select channel"
-msgstr "Channel bearbeiten"
-
-#: zeit/content/article/edit/browser/form.py:544
-msgid "edit audio"
-msgstr "Audio bearbeiten"
 
 #: zeit/content/article/edit/browser/interfaces.py:18
 msgid "No tagesschau video recommendation found."
@@ -1952,19 +1769,11 @@ msgstr "Es gab einen Fehler beim Abrufen der Videoempfehlungen."
 msgid "Social media"
 msgstr "Social Media und Apps"
 
-#: zeit/content/article/edit/browser/push.py:21
-msgid "edit social media"
-msgstr "Social Media bearbeiten"
-
-#: zeit/content/article/edit/browser/push.py:35 zeit/push/browser/form.py:72
+#: zeit/content/article/edit/browser/push.py:34 zeit/push/browser/form.py:72
 msgid "Mobile apps"
 msgstr "Push/Eilmeldung"
 
-#: zeit/content/article/edit/browser/push.py:43
-msgid "edit mobile apps"
-msgstr "Push bearbeiten"
-
-#: zeit/content/article/edit/browser/push.py:74
+#: zeit/content/article/edit/browser/push.py:72
 msgid "Author push enabled"
 msgstr "Der Artikel wird an Nutzer gepusht, die dem Autor folgen."
 
@@ -2021,49 +1830,9 @@ msgstr "Rezensionsinformationen bearbeiten"
 msgid "Raw data"
 msgstr "Quelltext"
 
-#: zeit/content/article/edit/browser/recension.py:80
-msgid "edit recension"
-msgstr "Rezension bearbeiten"
-
-#: zeit/content/article/edit/browser/recension.py:93
+#: zeit/content/article/edit/browser/recension.py:92
 msgid "Add book information"
 msgstr "Rezensionsinformationen hinzufügen"
-
-#: zeit/content/article/edit/browser/recension.py:96
-msgid "add recension"
-msgstr "Rezension hinzufügen"
-
-#: zeit/content/article/edit/browser/reference.py:37
-msgid "edit image block"
-msgstr "Videoblock bearbeiten"
-
-#: zeit/content/article/edit/browser/reference.py:71
-msgid "edit gallery block"
-msgstr "Bildergalerie bearbeiten"
-
-#: zeit/content/article/edit/browser/reference.py:82
-msgid "edit portraitbox block"
-msgstr "Porträtbox bearbeiten"
-
-#: zeit/content/article/edit/browser/reference.py:96
-msgid "edit infobox block"
-msgstr "Infoblock bearbeiten"
-
-#: zeit/content/article/edit/browser/reference.py:103
-msgid "edit video block"
-msgstr "Video-Modul bearbeiten"
-
-#: zeit/content/article/edit/browser/reference.py:109
-msgid "edit author block"
-msgstr "Autorenbox bearbeiten"
-
-#: zeit/content/article/edit/browser/reference.py:119
-msgid "edit volume block"
-msgstr "Ausgabenblock bearbeiten"
-
-#: zeit/content/article/edit/browser/reference.py:125
-msgid "edit audio block"
-msgstr "Audioblock bearbeiten"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:2
 #: zeit/content/cp/browser/publish.pt:2
@@ -2124,18 +1893,10 @@ msgstr "Depublizieren"
 msgid "Workflow time"
 msgstr "Veröffentlichungszeit"
 
-#: zeit/content/article/edit/browser/workflow.py:24
-msgid "edit workflow time"
-msgstr "Workflow-Daten bearbeiten"
-
-#: zeit/content/article/edit/browser/workflow.py:32
+#: zeit/content/article/edit/browser/workflow.py:31
 #: zeit/workflow/browser/form.py:78 zeit/workflow/browser/menu.py:10
 msgid "Workflow"
 msgstr "Workflowstatus"
-
-#: zeit/content/article/edit/browser/workflow.py:41
-msgid "edit workflow status"
-msgstr "Workflow-Status bearbeiten"
 
 #: zeit/content/article/edit/cardstack.py:23
 #: zeit/content/cp/blocks/cardstack.py:28
@@ -2317,7 +2078,7 @@ msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:429
 #: zeit/content/article/edit/interfaces.py:445
-#: zeit/content/audio/interfaces.py:31
+#: zeit/content/audio/interfaces.py:32
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2604,24 +2365,29 @@ msgstr "ältester zuerst"
 msgid "highlights"
 msgstr "highlights"
 
-#: zeit/content/audio/browser/form.py:38
+#: zeit/content/audio/browser/form.py:39
 msgid "Podcast Episode Info"
 msgstr "Podcastfolge"
 
-#: zeit/content/audio/browser/form.py:53
+#: zeit/content/audio/browser/form.py:54
 msgid "Add audio"
 msgstr "Audio hinzufügen"
 
-#: zeit/content/audio/browser/form.py:59
+#: zeit/content/audio/browser/form.py:60
 msgid "Edit audio"
 msgstr "Audio bearbeiten"
 
-#: zeit/content/audio/browser/form.py:65
+#: zeit/content/audio/browser/form.py:66
 msgid "View audio"
 msgstr "Audio anzeigen"
 
+#: zeit/content/audio/browser/form.py:85 zeit/content/cp/browser/workflow.py:50
+#: zeit/workflow/browser/form.py:94
+msgid "Save state only"
+msgstr "Nur Status speichern"
+
 #: zeit/content/audio/browser/object-details-body.pt:6
-#: zeit/content/audio/interfaces.py:32
+#: zeit/content/audio/interfaces.py:34
 msgid "Duration"
 msgstr "Laufzeit"
 
@@ -2629,47 +2395,47 @@ msgstr "Laufzeit"
 msgid "Play"
 msgstr "Abspielen"
 
-#: zeit/content/audio/interfaces.py:16
+#: zeit/content/audio/interfaces.py:17
 msgid "Podcast"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:17
+#: zeit/content/audio/interfaces.py:18
 msgid "Text to Speech"
 msgstr "Text to Speech"
 
-#: zeit/content/audio/interfaces.py:18
+#: zeit/content/audio/interfaces.py:19
 msgid "Premium Audio"
 msgstr "Premium Audio"
 
-#: zeit/content/audio/interfaces.py:30
+#: zeit/content/audio/interfaces.py:31
 msgid "External Id"
 msgstr "Externe ID"
 
-#: zeit/content/audio/interfaces.py:119
+#: zeit/content/audio/interfaces.py:121
 msgid "Podcast Serie"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:123
+#: zeit/content/audio/interfaces.py:125
 msgid "External Podcast Id"
 msgstr "Externe Podcast ID"
 
-#: zeit/content/audio/interfaces.py:127
+#: zeit/content/audio/interfaces.py:129
 msgid "Episode No"
 msgstr "Nummer der Folge"
 
-#: zeit/content/audio/interfaces.py:130
+#: zeit/content/audio/interfaces.py:132
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:134
+#: zeit/content/audio/interfaces.py:136
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:138
+#: zeit/content/audio/interfaces.py:140
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:150
+#: zeit/content/audio/interfaces.py:152
 msgid "Audios"
 msgstr "Audios"
 
@@ -2709,10 +2475,6 @@ msgstr "Autor bearbeiten"
 #: zeit/content/author/browser/honorar.py:25
 msgid "Add duplicate author"
 msgstr "Zweiten Autor dieses Namens hinzufügen"
-
-#: zeit/content/author/browser/form.py:213
-msgid "edit author location"
-msgstr "Autor/Ort bearbeiten"
 
 #: zeit/content/author/browser/honorar-duplicate.pt:4
 msgid "Author exists"
@@ -2768,10 +2530,6 @@ msgstr ""
 "Ein Autor dieses Namens gibt es bereits. Soll ein Autor gleichen Namens "
 "angelegt werden, wählen Sie \"Zweiten Autor dieses Namens hinzufügen\" und "
 "speichern Sie erneut."
-
-#: zeit/content/author/browser/reference.py:25
-msgid "edit author biography"
-msgstr "Autor/Kurzbio bearbeiten"
 
 #: zeit/content/author/interfaces.py:20
 msgid "Code contains invalid characters"
@@ -3124,10 +2882,6 @@ msgstr "Einstellungen"
 #: zeit/workflow/browser/form.py:166 zeit/workflow/browser/form.py:191
 msgid "Log"
 msgstr "Log"
-
-#: zeit/content/cp/browser/workflow.py:50 zeit/workflow/browser/form.py:94
-msgid "Save state only"
-msgstr "Nur Status speichern"
 
 #: zeit/content/cp/browser/workflow.py:56 zeit/workflow/browser/form.py:99
 msgid "Save state and publish now"
@@ -3680,11 +3434,7 @@ msgstr "Das Bild wurde von ${size} auf ${max_size} verkleinert."
 msgid "Add image"
 msgstr "Bild hinzufügen"
 
-#: zeit/content/image/browser/form.py:126
-msgid "edit image"
-msgstr "Bild bearbeiten"
-
-#: zeit/content/image/browser/image.py:46
+#: zeit/content/image/browser/image.py:47
 msgid "View image"
 msgstr "Bild zeigen"
 
@@ -4353,10 +4103,6 @@ msgstr "Ausgabe anzeigen"
 msgid "Publishing volume content"
 msgstr "Sammelveröffentlichung"
 
-#: zeit/content/volume/browser/reference.py:16
-msgid "edit volume teaser text"
-msgstr "Teaser-Text bearbeiten"
-
 #: zeit/content/volume/browser/toc-listing.pt:5
 msgid "Filter Content-Type"
 msgstr "Content-Typ"
@@ -4575,36 +4321,16 @@ msgstr "Das Ressort wird ignoriert, wenn der Filter gesetzt ist."
 msgid "Reach Age (days)"
 msgstr "Alter (in Tagen)"
 
-#: zeit/edit/browser/block.py:37 zeit/edit/browser/landing.py:91
-msgid "add '${type}' block"
-msgstr "'${type}'-Block hinzufügen"
-
-#: zeit/edit/browser/block.py:53
-msgid "delete '${type}' block"
-msgstr "'${type}'-Block entfernen"
-
-#: zeit/edit/browser/block.py:76
+#: zeit/edit/browser/block.py:70
 msgid "Unknown block"
 msgstr "Unbekanntes Modul"
-
-#: zeit/edit/browser/container.py:12 zeit/edit/browser/container.py:23
-msgid "change block order"
-msgstr "Module umordnen"
-
-#: zeit/edit/browser/landing.py:152
-msgid "move '${type}' block"
-msgstr "'${type}'-Block verschieben"
 
 #: zeit/edit/browser/layout.fold.pt:2 zeit/edit/browser/layout.fold.pt:6
 #: zeit/edit/browser/layout.foldable-forms.pt:7
 msgid "Fold"
 msgstr "Ausklappen"
 
-#: zeit/edit/browser/undo.py:42
-msgid "revert up to \"${action}\""
-msgstr "Rückgängig machen bis \"${action}\""
-
-#: zeit/edit/browser/view.py:204
+#: zeit/edit/browser/view.py:167
 msgid "There was an error rendering ${name}: ${exc_type} ${exc_msg}"
 msgstr "Fehler beim Laden von ${name}: ${exc_type} ${exc_msg}"
 
@@ -4612,7 +4338,7 @@ msgstr "Fehler beim Laden von ${name}: ${exc_type} ${exc_msg}"
 msgid "Block type"
 msgstr "Block-Typ"
 
-#: zeit/edit/interfaces.py:183
+#: zeit/edit/interfaces.py:167
 msgid "Given name {name} is not unique inside parent {parent}."
 msgstr "Der Name {name} ist nicht eindeutig in {parent}."
 
@@ -5019,11 +4745,6 @@ msgstr "Sammelveröffentlichung (${count} Objekte)"
 msgid "Collective Retraction of ${count} objects"
 msgstr "Sammeldepublizierung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:165 zeit/workflow/publish.py:174
-#: zeit/workflow/publish.py:177
-msgid "Error during publish/retract: ${exc}: ${message}"
-msgstr "Fehler beim Veröffentlichen/Depublizieren: ${exc}: ${message}"
-
 #: zeit/workflow/publish.py:183
 msgid "Objects with errors: ${objects}"
 msgstr "Inhalte mit Fehlern: ${objects}"
@@ -5032,7 +4753,7 @@ msgstr "Inhalte mit Fehlern: ${objects}"
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:507
+#: zeit/workflow/publish.py:508
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -5146,6 +4867,210 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "edit topic page"
+#~ msgstr "Link zur Themenseite bearbeiten"
+
+#~ msgid "edit study course"
+#~ msgstr "STOA bearbeiten"
+
+#~ msgid "auto-save body text"
+#~ msgstr "Artikeltext bearbeiten"
+
+#~ msgid "edit body text"
+#~ msgstr "Artikeltext bearbeiten"
+
+#~ msgid "edit XML block"
+#~ msgstr "XML bearbeiten"
+
+#~ msgid "edit raw text block"
+#~ msgstr "Embed-Code bearbeiten"
+
+#~ msgid "edit embed block"
+#~ msgstr "Embedblock bearbeiten"
+
+#~ msgid "edit citation block"
+#~ msgstr "Zitat Block bearbeiten"
+
+#~ msgid "edit comment citation block"
+#~ msgstr "Kommentar-Block bearbeiten"
+
+#~ msgid "edit video tagesschau block"
+#~ msgstr "ARD-Modul bearbeiten"
+
+#~ msgid "edit puzzle form block"
+#~ msgstr "Rätselformular bearbeiten"
+
+#~ msgid "edit liveblog block"
+#~ msgstr "Liveblog-Block bearbeiten"
+
+#~ msgid "edit tickaroo liveblog"
+#~ msgstr "Liveblog-Block bearbeiten"
+
+#~ msgid "edit cardstack block"
+#~ msgstr "Kartenstapel-Block bearbeiten"
+
+#~ msgid "edit quiz block"
+#~ msgstr "Quizblock bearbeiten"
+
+#~ msgid "edit podcast block"
+#~ msgstr "Podcast-Block bearbeiten"
+
+#~ msgid "edit box block"
+#~ msgstr "Box-Modul bearbeiten"
+
+#~ msgid "edit adplace block"
+#~ msgstr "Ad-Place-Block bearbeiten"
+
+#~ msgid "edit page break"
+#~ msgstr "Seitenumbruch bearbeiten"
+
+#~ msgid "edit jobbox ticker"
+#~ msgstr "Jobticker bearbeiten"
+
+#~ msgid "edit mail block"
+#~ msgstr "Mail-Formular bearbeiten"
+
+#~ msgid "edit topic box"
+#~ msgstr "Themenbox bearbeiten"
+
+#~ msgid "edit newsletter signup"
+#~ msgstr "Newsletter-Anmeldung bearbeiten"
+
+#~ msgid "edit recipe list"
+#~ msgstr "Rezeptliste bearbeiten"
+
+#~ msgid "edit ingredientdice block"
+#~ msgstr "Zutatenwürfel bearbeiten"
+
+#~ msgid "edit animation block"
+#~ msgstr "Animation Block bearbeiten"
+
+#~ msgid "edit memo"
+#~ msgstr "Memo bearbeiten"
+
+#~ msgid "edit article content head"
+#~ msgstr "Kopf des Artikelinhalts bearbeiten"
+
+#~ msgid "edit article content main image"
+#~ msgstr "Artikelbild bearbeiten"
+
+#~ msgid "edit keywords"
+#~ msgstr "Schlagworte bearbeiten"
+
+#~ msgid "edit new filename"
+#~ msgstr "Neuer Dateiname"
+
+#~ msgid "edit internal links"
+#~ msgstr "Relateds bearbeiten"
+
+#~ msgid "edit metadata"
+#~ msgstr "Metadaten bearbeiten"
+
+#~ msgid "edit access"
+#~ msgstr "Verfügbarkeit bearbeiten"
+
+#~ msgid "edit audio_speechbert"
+#~ msgstr "Speechbert bearbeiten"
+
+#~ msgid "edit teaser image"
+#~ msgstr "Teaser-Bild bearbeiten"
+
+#~ msgid "edit teaser supertitle"
+#~ msgstr "Teaser-Spitzmarke bearbeiten"
+
+#~ msgid "edit teaser title"
+#~ msgstr "Teaser-Titel bearbeiten"
+
+#~ msgid "edit teaser text"
+#~ msgstr "Teaser-Text bearbeiten"
+
+#~ msgid "edit options"
+#~ msgstr "Optionen bearbeiten"
+
+#~ msgid "edit misc product management"
+#~ msgstr "Diverse Produktmanagement Angaben bearbeiten"
+
+#~ msgid "edit recipe categories"
+#~ msgstr "Rezeptkategorien bearbeiten"
+
+#~ msgid "select channel"
+#~ msgstr "Channel bearbeiten"
+
+#~ msgid "edit audio"
+#~ msgstr "Audio bearbeiten"
+
+#~ msgid "edit social media"
+#~ msgstr "Social Media bearbeiten"
+
+#~ msgid "edit mobile apps"
+#~ msgstr "Push bearbeiten"
+
+#~ msgid "edit recension"
+#~ msgstr "Rezension bearbeiten"
+
+#~ msgid "add recension"
+#~ msgstr "Rezension hinzufügen"
+
+#~ msgid "edit image block"
+#~ msgstr "Videoblock bearbeiten"
+
+#~ msgid "edit gallery block"
+#~ msgstr "Bildergalerie bearbeiten"
+
+#~ msgid "edit portraitbox block"
+#~ msgstr "Porträtbox bearbeiten"
+
+#~ msgid "edit infobox block"
+#~ msgstr "Infoblock bearbeiten"
+
+#~ msgid "edit video block"
+#~ msgstr "Video-Modul bearbeiten"
+
+#~ msgid "edit author block"
+#~ msgstr "Autorenbox bearbeiten"
+
+#~ msgid "edit volume block"
+#~ msgstr "Ausgabenblock bearbeiten"
+
+#~ msgid "edit audio block"
+#~ msgstr "Audioblock bearbeiten"
+
+#~ msgid "edit workflow time"
+#~ msgstr "Workflow-Daten bearbeiten"
+
+#~ msgid "edit workflow status"
+#~ msgstr "Workflow-Status bearbeiten"
+
+#~ msgid "edit author location"
+#~ msgstr "Autor/Ort bearbeiten"
+
+#~ msgid "edit author biography"
+#~ msgstr "Autor/Kurzbio bearbeiten"
+
+#~ msgid "edit image"
+#~ msgstr "Bild bearbeiten"
+
+#~ msgid "edit volume teaser text"
+#~ msgstr "Teaser-Text bearbeiten"
+
+#~ msgid "add '${type}' block"
+#~ msgstr "'${type}'-Block hinzufügen"
+
+#~ msgid "delete '${type}' block"
+#~ msgstr "'${type}'-Block entfernen"
+
+#~ msgid "change block order"
+#~ msgstr "Module umordnen"
+
+#~ msgid "move '${type}' block"
+#~ msgstr "'${type}'-Block verschieben"
+
+#~ msgid "revert up to \"${action}\""
+#~ msgstr "Rückgängig machen bis \"${action}\""
+
+#~ msgid "Error during publish/retract: ${exc}: ${message}"
+#~ msgstr "Fehler beim Veröffentlichen/Depublizieren: ${exc}: ${message}"
 
 #~ msgid "Could not publish because conditions not satisifed."
 #~ msgstr ""

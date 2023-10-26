@@ -39,7 +39,6 @@ FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
 class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
                  zeit.cms.browser.form.PlaceholderMixin,
                  zope.formlib.form.SubPageEditForm,
-                 zeit.edit.browser.view.UndoableMixin,
                  zeit.cms.browser.view.Base):
 
     template = zope.browserpage.ViewPageTemplateFile('inlineform.pt')
@@ -68,7 +67,6 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
         return self.success_handler(action, data)
 
     def success_handler(self, action, data, errors=None):
-        self.mark_transaction_undoable()
         self._success_handler()
         return super().handle_edit_action.success(data)
 

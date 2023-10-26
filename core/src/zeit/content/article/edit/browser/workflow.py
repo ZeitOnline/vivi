@@ -21,7 +21,6 @@ class Timebased(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'timebased'
-    undo_description = _('edit workflow time')
     form_fields = zope.formlib.form.FormFields(
         zeit.workflow.interfaces.IContentWorkflow).select('release_period')
 
@@ -38,7 +37,6 @@ class Publish(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'publish'
-    undo_description = _('edit workflow status')
 
     @property
     def form_fields(self):

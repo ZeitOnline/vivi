@@ -123,7 +123,6 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
 class EditReference(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    undo_description = _('edit image')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.interfaces.IImageReference,

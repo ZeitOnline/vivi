@@ -18,7 +18,6 @@ class Social(zeit.push.browser.form.SocialBase,
 
     legend = _('')
     prefix = 'social'
-    undo_description = _('edit social media')
 
     FormFieldsFactory = FormFields
     form_fields = FormFieldsFactory()
@@ -40,7 +39,6 @@ class Mobile(zeit.push.browser.form.MobileBase,
 
     legend = _('')
     prefix = 'mobile'
-    undo_description = _('edit mobile apps')
 
     FormFieldsFactory = FormFields
     form_fields = FormFieldsFactory()

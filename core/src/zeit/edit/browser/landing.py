@@ -1,4 +1,3 @@
-from zeit.cms.i18n import MessageFactory as _
 from zope.formlib.form import NoInputData
 import zeit.cms.browser.form
 import zeit.edit.browser.view
@@ -88,8 +87,6 @@ class LandingZone(ReloadContainerAction, OrderMixin):
         self.validate_order_params()
         self.validate_block_params()
         self.create_block()
-        self.undo_description = _(
-            "add '${type}' block", mapping={'type': self.block.type})
         self.initialize_block()
         self.signal('after-reload', 'added', self.block.__name__)
 
@@ -149,8 +146,6 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
             self.reload(self.container)
             return
         self.move_block()
-        self.undo_description = _(
-            "move '${type}' block", mapping={'type': self.block.type})
 
     @property
     def move_to_same_position(self):
