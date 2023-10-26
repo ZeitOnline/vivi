@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.52.0 (2023-10-26)
+-------------------
+
+- ZO-3997: Audio object form without publish or retract actions
+
+- ZO-4033: Adjust module heights for pembed, topicbox
+
+- ZO-4051: Remove undo functionality from cp+article editor
+
+- ZO-4096: sync publish state even if episode is just added
+
+
 5.51.0 (2023-10-26)
 -------------------
 
