@@ -6,27 +6,17 @@ zeit.content.cp.TeaserDrag = zeit.edit.context.ContentActionBase.extend({
     connect: function() {
         var self = this;
         jQuery('div.block.type-teaser').each(function(i, teaser) {
-            var text =
-                MochiKit.DOM.getFirstElementByTagAndClassName(
-                    'div', 'teaser', teaser);
+            var text = MochiKit.DOM.getFirstElementByTagAndClassName(
+                'div', 'teaser', teaser);
             if (isNull(text)) {
                 return;
             }
-            var image = jQuery('.teaser-contents > img', teaser);
-            if (image.length) {
-                image = image[0];
-            } else {
-                image = null;
-            }
-            text.removeFromBlock = teaser.id;
+            var block_inner = MochiKit.DOM.getFirstElementByTagAndClassName(
+                'div', 'block-inner', teaser);
             self.dnd_objects.push(
                 zeit.cms.createDraggableContentObject(text, {
-                    scroll: 'cp-content-inner'
-                }));
-            self.dnd_objects.push(
-                zeit.cms.createDraggableContentObject(text, {
-                    handle: image,
-                    scroll: 'cp-content-inner'
+                    scroll: 'cp-content-inner',
+                    handle: block_inner
                 }));
         });
 
