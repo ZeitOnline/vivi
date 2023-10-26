@@ -1,4 +1,3 @@
-from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.browser.form import FormFields
 import zeit.campus.browser.social
 import zeit.cms.browser.interfaces
@@ -12,7 +11,6 @@ class Topic(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'topic'
-    undo_description = _('edit topic page')
     form_fields = FormFields(
         zeit.campus.interfaces.ITopic)
 
@@ -29,7 +27,6 @@ class Topic(zeit.edit.browser.form.InlineForm):
 class StudyCourse(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    undo_description = _('edit study course')
     form_fields = zope.formlib.form.FormFields(
         zeit.campus.interfaces.IStudyCourse).select('course')
 

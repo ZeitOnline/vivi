@@ -49,7 +49,6 @@ class Memo(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'memo'
-    undo_description = _('edit memo')
     form_fields = FormFields(zeit.cms.content.interfaces.IMemo).select('memo')
     form_fields['memo'].custom_widget = RestructuredTextWidget
     css_class = 'memo'
@@ -67,7 +66,6 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm,
 
     legend = _('')
     prefix = 'article-content-head'
-    undo_description = _('edit article content head')
     form_fields = FormFields(ICommonMetadata).select(
         'supertitle', 'title', 'subtitle')
 
@@ -85,7 +83,6 @@ class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'article-content-main-image'
-    undo_description = _('edit article content main image')
     form_fields = FormFields(IArticle).select(
         'main_image', 'main_image_variant_name')
 
@@ -111,7 +108,6 @@ class Keywords(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'keywords'
-    undo_description = _('edit keywords')
     css_class = 'keywords'
     form_fields = FormFields(IArticle).select('keywords')
 
@@ -130,7 +126,6 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'new-filename'
-    undo_description = _('edit new filename')
     css_class = 'table'
 
     @property
@@ -157,7 +152,6 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'internallinks'
-    undo_description = _('edit internal links')
     form_fields = FormFields(zeit.cms.related.interfaces.IRelatedContent)
     form_fields += FormFields(
         zeit.content.article.interfaces.IArticleMetadata
@@ -223,7 +217,6 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-a'
-    undo_description = _('edit metadata')
     form_fields = FormFields(ICommonMetadata).select('ressort', 'sub_ressort')
 
     def render(self):
@@ -244,7 +237,6 @@ class MetadataB(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-b'
-    undo_description = _('edit metadata')
     form_fields = FormFields(ICommonMetadata).select('product', 'copyrights')
 
 
@@ -252,7 +244,6 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-c'
-    undo_description = _('edit metadata')
     form_fields = FormFields(ICommonMetadata).select('authorships')
 
     def setUpWidgets(self, *args, **kw):
@@ -268,7 +259,6 @@ class MetadataAgency(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-agency'
-    undo_description = _('edit metadata')
     form_fields = FormFields()
 
     def __init__(self, context, request):
@@ -281,7 +271,6 @@ class MetadataAccess(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-access'
-    undo_description = _('edit access')
     form_fields = FormFields(ICommonMetadata).select('access')
 
     def _success_handler(self):
@@ -292,7 +281,6 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-genre'
-    undo_description = _('edit metadata')
     form_fields = FormFields(IArticle).select('genre')
 
     def _success_handler(self):
@@ -309,7 +297,6 @@ class Comments(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-comments'
-    undo_description = _('edit metadata')
 
     @property
     def form_fields(self):
@@ -324,7 +311,6 @@ class OptionsAudioSpeechbert(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'options-audio-speechbert'
-    undo_description = _('edit audio_speechbert')
     form_fields = FormFields(IArticle).select('audio_speechbert')
     css_class = 'audio-speechbert'
 
@@ -339,7 +325,6 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'teaser-image'
-    undo_description = _('edit teaser image')
     css_class = 'teaser-image'
     form_fields = FormFields(
         zeit.content.image.interfaces.IImages).select('image')
@@ -378,7 +363,6 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
 
     legend = _('')
     prefix = 'teaser-supertitle'
-    undo_description = _('edit teaser supertitle')
     form_fields = FormFields(ICommonMetadata).select('teaserSupertitle')
 
     def setUpWidgets(self, *args, **kw):
@@ -391,7 +375,6 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm,
 
     legend = _('')
     prefix = 'teaser-title'
-    undo_description = _('edit teaser title')
     form_fields = FormFields(ICommonMetadata).select('teaserTitle')
 
     def setUpWidgets(self, *args, **kw):
@@ -404,7 +387,6 @@ class TeaserText(zeit.edit.browser.form.InlineForm,
 
     legend = _('')
     prefix = 'teaser-text'
-    undo_description = _('edit teaser text')
     form_fields = FormFields(ICommonMetadata).select('teaserText')
 
     def setUpWidgets(self, *args, **kw):
@@ -421,7 +403,6 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'options-a'
-    undo_description = _('edit options')
     form_fields = FormFields(IArticle).select('serie')
 
 
@@ -429,7 +410,6 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'options-b'
-    undo_description = _('edit options')
     form_fields = FormFields(ICommonMetadata).select(
         'year', 'volume', 'page', 'printRessort', 'byline')
 
@@ -447,7 +427,6 @@ class OptionsC(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'options-c'
-    undo_description = _('edit options')
     form_fields = FormFields(ICommonMetadata).select(
         'deeplink_url', 'color_scheme')
 
@@ -456,7 +435,6 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 
     legend = _('Product management')
     prefix = 'options-productmanagement'
-    undo_description = _('edit options')
     form_fields = FormFields(ICommonMetadata).select(
         'cap_title', 'banner_id', 'vg_wort_id',
         'advertisement_title', 'advertisement_text')
@@ -466,7 +444,6 @@ class OptionsInteractive(zeit.edit.browser.form.InlineForm):
 
     legend = _('Interactive')
     prefix = 'options-interactive'
-    undo_description = _('edit options')
     form_fields = FormFields(IRemoteMetadata).select(
         'remote_image', 'remote_timestamp'
     )
@@ -476,7 +453,6 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'misc-product-management-b'
-    undo_description = _('edit misc product management')
     form_fields = FormFields(ICommonMetadata).select('overscrolling')
 
 
@@ -484,7 +460,6 @@ class RecipeCategories(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'recipe-categories'
-    undo_description = _('edit recipe categories')
     css_class = 'recipe-categories'
     form_fields = FormFields(IArticle).select('recipe_categories')
     recipe_genres = ['rezept', 'rezept-vorstellung']
@@ -506,7 +481,6 @@ class ChannelSelector(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'channel-selector'
-    undo_description = _('select channel')
     form_fields = FormFields(ICommonMetadata).select('channels')
 
     def render(self):
@@ -541,7 +515,6 @@ class Audio(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'audio'
-    undo_description = _('edit audio')
     form_fields = FormFields(zeit.content.audio.interfaces.IAudios)
 
     def __call__(self):

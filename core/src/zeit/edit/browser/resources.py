@@ -56,9 +56,3 @@ SplitDirResource('library.js', depends=[
     drop_js,  # noqa
     editor_css,  # noqa
 ])
-
-SplitDirResource('undo.js', depends=[
-    zeit.cms.browser.resources.base,
-    zeit.cms.browser.resources.view_js,
-    editor_css,  # noqa
-])

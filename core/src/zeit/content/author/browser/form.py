@@ -210,7 +210,6 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 class EditReference(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    undo_description = _('edit author location')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.author.interfaces.IAuthorReference,

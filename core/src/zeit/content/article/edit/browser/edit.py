@@ -32,8 +32,6 @@ class Empty:
 
 class AutoSaveText(zeit.edit.browser.view.Action):
 
-    undo_description = _('auto-save body text')
-
     text = zeit.edit.browser.view.Form('text')
     paragraphs = zeit.edit.browser.view.Form('paragraphs')
 
@@ -72,8 +70,7 @@ class AutoSaveText(zeit.edit.browser.view.Action):
 
 
 class SaveText(AutoSaveText):
-
-    undo_description = _('edit body text')
+    pass
 
 
 class Paragraph:
@@ -234,7 +231,6 @@ class EditRawXML(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IRawXML).omit(
             '__name__', '__parent__')
-    undo_description = _('edit XML block')
 
     @property
     def prefix(self):
@@ -249,7 +245,6 @@ class EditRawText(
     _form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IRawText).select('text_reference')
     _omit_fields = list(zeit.edit.interfaces.IBlock)
-    undo_description = _('edit raw text block')
 
     @property
     def prefix(self):
@@ -264,7 +259,6 @@ class EditEmbed(
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IEmbed).omit(
             '__name__', '__parent__', 'xml')
-    undo_description = _('edit embed block')
 
     @property
     def prefix(self):
@@ -277,7 +271,6 @@ class EditCitation(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICitation).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit citation block')
 
     @property
     def prefix(self):
@@ -290,7 +283,6 @@ class EditCitationComment(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICitationComment).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit comment citation block')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
@@ -309,7 +301,6 @@ class VideoTagesschau(zeit.edit.browser.form.InlineForm):
     legend = None
     video = zeit.content.article.edit.interfaces.IVideoTagesschau
     form_fields = zope.formlib.form.FormFields(video).select('tagesschauvideo')
-    undo_description = _('edit video tagesschau block')
 
     @property
     def prefix(self):
@@ -369,7 +360,6 @@ class EditPuzzleForm(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IPuzzleForm).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit puzzle form block')
 
     @property
     def prefix(self):
@@ -382,7 +372,6 @@ class EditLiveblog(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ILiveblog).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit liveblog block')
 
     @property
     def prefix(self):
@@ -392,7 +381,6 @@ class EditLiveblog(zeit.edit.browser.form.InlineForm):
 class EditTickarooLiveblog(zeit.edit.browser.form.InlineForm):
 
     legend = None
-    undo_description = _('edit tickaroo liveblog')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.modules.interfaces.ITickarooLiveblog).omit(
             *list(zeit.edit.interfaces.IBlock))
@@ -404,7 +392,6 @@ class EditCardstack(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICardstack).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit cardstack block')
 
     @property
     def prefix(self):
@@ -417,7 +404,6 @@ class EditQuiz(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IQuiz).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit quiz block')
 
     @property
     def prefix(self):
@@ -430,7 +416,6 @@ class EditPodcast(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IPodcast).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit podcast block')
 
     @property
     def prefix(self):
@@ -440,7 +425,6 @@ class EditPodcast(zeit.edit.browser.form.InlineForm):
 class EditBox(zeit.edit.browser.form.InlineForm):
 
     legend = None
-    undo_description = _('edit box block')
     _form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IBox,
         zeit.content.image.interfaces.IImages)
@@ -465,7 +449,6 @@ class EditAdplace(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IAdplace).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit adplace block')
 
     @property
     def prefix(self):
@@ -478,7 +461,6 @@ class EditDivision(zeit.edit.browser.form.InlineForm,
     legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IDivision).select('teaser')
-    undo_description = _('edit page break')
 
     @property
     def prefix(self):
@@ -505,7 +487,6 @@ class DoubleQuotes:
 class EditJobTicker(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    undo_description = _('edit jobbox ticker')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IJobTicker).select(
             'feed')
@@ -521,7 +502,6 @@ class EditMail(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IMail).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit mail block')
 
     @property
     def prefix(self):
@@ -556,8 +536,6 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
 
         return form_fields
 
-    undo_description = _('edit topic box')
-
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
         self.set_charlimit('title')
@@ -572,7 +550,6 @@ class EditTopicbox(zeit.edit.browser.form.InlineForm,
 class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    undo_description = _('edit newsletter signup')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.modules.interfaces.INewsletterSignup).omit(
             *list(zeit.edit.interfaces.IBlock))
@@ -591,7 +568,6 @@ class EditNewsletterSignup(zeit.edit.browser.form.InlineForm):
 class EditRecipeList(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    undo_description = _('edit recipe list')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.modules.interfaces.IRecipeList).omit(
             *list(zeit.edit.interfaces.IBlock))
@@ -613,7 +589,6 @@ class EditIngredientDice(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IIngredientDice).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit ingredientdice block')
 
     @property
     def prefix(self):
@@ -628,7 +603,6 @@ class EditAnimation(
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IAnimation).omit(
             *list(zeit.edit.interfaces.IBlock))
-    undo_description = _('edit animation block')
 
     @property
     def prefix(self):

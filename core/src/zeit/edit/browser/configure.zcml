@@ -175,24 +175,6 @@
     permission="zeit.EditContent"
     />
 
-  <!-- undo -->
-
-  <browser:view
-    for="zeit.cms.content.interfaces.IXMLContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="undo-history"
-    class=".undo.History"
-    permission="zeit.EditContent"
-    />
-
-  <browser:view
-    for="zeit.cms.content.interfaces.IXMLContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="revert"
-    class=".undo.Revert"
-    permission="zeit.EditContent"
-    />
-
   <!-- forms -->
 
   <browser:page

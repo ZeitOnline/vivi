@@ -34,7 +34,6 @@ class EditImage(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IImage
     fields = ('references', 'display_mode', 'variant_name', 'animation')
-    undo_description = _('edit image block')
 
     @property
     def form_fields(self):
@@ -68,7 +67,6 @@ class EditImage(EditBase):
 class EditGallery(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IGallery
-    undo_description = _('edit gallery block')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
@@ -79,7 +77,6 @@ class EditPortraitbox(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IPortraitbox
     fields = ('references', 'name', 'text')
-    undo_description = _('edit portraitbox block')
 
     @property
     def form_fields(self):
@@ -93,20 +90,17 @@ class EditInfobox(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IInfobox
     fields = ('references', 'layout')
-    undo_description = _('edit infobox block')
 
 
 class EditVideo(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IVideo
     fields = ('video', 'layout')
-    undo_description = _('edit video block')
 
 
 class EditAuthor(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IAuthor
-    undo_description = _('edit author block')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
@@ -116,10 +110,8 @@ class EditAuthor(EditBase):
 class EditVolume(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IVolume
-    undo_description = _('edit volume block')
 
 
 class EditAudio(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IAudio
-    undo_description = _('edit audio block')

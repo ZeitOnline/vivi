@@ -77,7 +77,6 @@ class Edit(FormBase, zeit.edit.browser.view.EditBox):
         gocept.form.grouped.RemainingFields(
             _('Raw data'),
             css_class='fullWidth'),)
-    undo_description = _('edit recension')
 
 
 class Remove(zeit.edit.browser.view.Action):
@@ -93,7 +92,6 @@ class Add(FormBase, zeit.edit.browser.view.AddBox):
     title = _('Add book information')
     form_fields = FormBase.form_fields.omit('raw_data')
     factory = zeit.content.article.recension.BookRecension
-    undo_description = _('add recension')
 
     def add(self, obj):
         self.context.append(obj)

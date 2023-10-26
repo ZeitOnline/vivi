@@ -1,4 +1,3 @@
-from zeit.cms.i18n import MessageFactory as _
 from zope.browserpage import ViewPageTemplateFile
 import importlib.resources
 import zeit.cms.browser.objectdetails
@@ -22,7 +21,6 @@ class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
 class Edit(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    undo_description = _('edit author biography')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.author.interfaces.IAuthorBioReference,

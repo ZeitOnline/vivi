@@ -9,7 +9,6 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'options-template'
-    undo_description = _('edit options')
     form_fields = FormFields(
         zeit.content.article.interfaces.IArticle).select(
         'template', 'header_layout', 'header_color')

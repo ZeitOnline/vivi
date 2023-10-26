@@ -1,4 +1,3 @@
-from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.objectdetails
 import zeit.cms.browser.view
 import zeit.cms.repository.interfaces
@@ -13,7 +12,6 @@ class EditReference(zeit.edit.browser.form.InlineForm):
     """Display the additional field `teaserText` for references."""
 
     legend = ''
-    undo_description = _('edit volume teaser text')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.volume.interfaces.IVolumeReference,
