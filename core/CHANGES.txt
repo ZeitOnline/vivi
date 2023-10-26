@@ -6,7 +6,7 @@ vivi.core changes
 5.53.0 (2023-10-26)
 -------------------
 
-- ZO-4033: Use whole teaser module insides as draggable
+- ZO-4063: Use whole teaser module insides as draggable
 
 
 5.52.0 (2023-10-26)
