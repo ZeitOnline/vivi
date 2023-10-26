@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.54.0 (2023-10-26)
+-------------------
+
+- ZO-4033: Repair folding of article modules
+
+
 5.53.0 (2023-10-26)
 -------------------
 
