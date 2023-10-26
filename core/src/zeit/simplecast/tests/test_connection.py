@@ -109,6 +109,27 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
             pendulum.datetime(2020, 7, 13, 14, 21, 39, tz='UTC'),
             ISemanticChange(episode).last_semantic_change)
 
+    def test_should_skip_update_for_already_locked_object(self):
+        episode_id = self.episode_info["id"]
+        self.create_audio(self.episode_info)
+        json = self.episode_info.copy()
+        json['title'] = "Cat Jokes Pawdcast - Folge 2"
+        m_simple = requests_mock.Mocker()
+        m_simple.get(
+            f"https://testapi.simplecast.com/episodes/{episode_id}",
+            json=json)
+
+        episode = self.repository['podcasts']['2023-08'][episode_id]
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.producer'):
+            zeit.cms.checkout.interfaces.ICheckoutManager(episode).checkout()
+        zeit.cms.testing.create_interaction('zope.user')
+
+        with m_simple:
+            self.simplecast.synchronize_episode(episode_id)
+        episode = self.repository['podcasts']['2023-08'][episode_id]
+        self.assertNotEqual(json['title'], episode.title)
+
     @requests_mock.Mocker()
     def test_publish(self, m):
         simplecast_resp = self.episode_info.copy()

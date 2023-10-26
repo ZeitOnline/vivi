@@ -53,7 +53,7 @@ class Notification:
 def SIMPLECAST_WEBHOOK_TASK(event, episode_id):
     simplecast = zope.component.getUtility(
         zeit.simplecast.interfaces.ISimplecast)
-    log.info('Received %s simplecast request.', event)
+    log.info('Received %s simplecast request for %s.', event, episode_id)
     synchronizing_events = (
         'episode_created', 'episode_updated',
         'episode_published', 'episode_unpublished',
