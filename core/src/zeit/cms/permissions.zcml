@@ -177,6 +177,11 @@
     />
 
   <permission
+    id="zeit.content.audio.Publish"
+    title="Publish Audio objects"
+    />
+
+  <permission
     id="zeit.content.text.AddEmbed"
     title="Add Embed objects"
     />

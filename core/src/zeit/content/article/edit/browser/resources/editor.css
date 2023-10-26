@@ -2037,3 +2037,117 @@
 .type-article .block.type-videotagesschau .widget .value input[type="radio"] {
     margin-left: -20px;
 }
+
+
+/* prevent scroll jump when adding/removing modules */
+.type-article .block.type-adplace .block-inner {
+    height: 90px;
+}
+
+.type-article .block.type-audio .block-inner {
+    height: 230px;
+}
+
+.type-article .block.type-author .block-inner {
+    height: 200px;
+}
+
+.type-article .block.type-box .block-inner {
+    height: 400px;
+}
+
+.type-article .block.type-citation .block-inner {
+    height: 270px;
+}
+
+.type-article .block.type-citation_comment .block-inner {
+    height: 220px;
+}
+
+.type-article .block.type-divison .block-inner {
+    height: 150px;
+}
+
+.type-article .block.type-embed .block-inner {
+    height: 100px;
+}
+
+.type-article .block.type-gallery .block-inner {
+    height: 480px;
+}
+
+.type-article .block.type-image .block-inner {
+    height: 800px;
+}
+
+.type-article .block.type-infobox .block-inner {
+    height: 200px;
+}
+
+.type-article .block.type-ingredientdice .block-inner {
+    height: 50px;
+}
+
+.type-article .block.type-jobboxticker .block-inner {
+    height: 90px;
+}
+
+.type-article .block.type-mail .block-inner {
+    height: 370px;
+}
+
+.type-article .block.type-newslettersignup .block-inner {
+    height: 180px;
+}
+
+.type-article .block.type-podcast .block-inner {
+    height: 130px;
+}
+
+.type-article .block.type-portraitbox .block-inner {
+    height: 300px;
+}
+
+.type-article .block.type-puzzleform .block-inner {
+    height: 140px;
+}
+
+/* .type-article .block.type-raw .block-inner
+   is obsolete and can not be added anymore, see ZO-5487
+*/
+
+.type-article .block.type-rawtext .block-inner {
+    height: 400px;
+}
+
+.type-article .block.type-recipelist .block-inner {
+    height: 520px;
+}
+
+.type-article .block.type-quiz .block-inner {
+    height: 100px;
+}
+
+.type-article .block.type-studycourse .block-inner {
+    height: 90px;
+}
+
+.type-article .block.type-tickaroo_liveblog .block-inner {
+    height: 240px;
+}
+
+.type-article .block.type-topicbox .block-inner {
+    height: 460px;
+}
+
+.type-article .block.type-video .block-inner {
+    height: 320px;
+}
+
+.type-article .block.type-videotagesschau .block-inner {
+    height: 140px;
+}
+
+.type-article .block.type-volume .block-inner {
+    height: 370px;
+}
