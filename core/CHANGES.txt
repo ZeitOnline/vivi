@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.53.0 (2023-10-26)
+-------------------
+
+- ZO-4033: Use whole teaser module insides as draggable
+
+
 5.52.0 (2023-10-26)
 -------------------
 
