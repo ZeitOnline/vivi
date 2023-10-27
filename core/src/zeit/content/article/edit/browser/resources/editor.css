@@ -2051,7 +2051,7 @@
 }
 
 .type-article .block.type-audio .block-inner {
-    height: 230px;
+    height: 280px;
 }
 
 .type-article .block.type-author .block-inner {
@@ -2071,7 +2071,7 @@
 }
 
 .type-article .block.type-division .block-inner {
-    height: 150px;
+    height: 160px;
 }
 
 .type-article .block.type-embed .block-inner {
@@ -2143,7 +2143,7 @@
 }
 
 .type-article .block.type-topicbox .block-inner {
-    height: 600px;
+    height: 620px;
 }
 
 .type-article .block.type-video .block-inner {
