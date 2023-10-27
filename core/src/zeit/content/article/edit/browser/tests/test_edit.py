@@ -649,11 +649,16 @@ class TestFolding(
     def assert_foldable(self, block):
         s = self.selenium
         self.create_block(block)
-        s.assertElementNotPresent('css=.block.type-{0}.folded'.format(block))
-        s.click('css=.block.type-{0} .edit-bar .fold-link'.format(block))
-        s.waitForElementPresent('css=.block.type-{0}.folded'.format(block))
-        s.click('css=.block.type-{0} .edit-bar .fold-link'.format(block))
-        s.waitForElementNotPresent('css=.block.type-{0}.folded'.format(block))
+        s.assertElementNotPresent(f'css=.block.type-{block}.folded')
+        s.click(f'css=.block.type-{block} .edit-bar .fold-link')
+        s.waitForElementPresent(f'css=.block.type-{block}.folded')
+        # It's not actually straightforward to check "the contents are hidden"
+        self.assertLess(
+            s.getElementHeight(f'css=.block.type-{block} .block-inner'), 50)
+        s.click(f'css=.block.type-{block} .edit-bar .fold-link')
+        s.waitForElementNotPresent(f'css=.block.type-{block}.folded')
+        self.assertGreater(
+            s.getElementHeight(f'css=.block.type-{block} .block-inner'), 50)
 
     @unittest.skip(
         'We would need to bypass the first hidden image block (main image), '
