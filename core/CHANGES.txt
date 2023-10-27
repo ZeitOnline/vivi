@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.55.0 (2023-10-27)
+-------------------
+
+- ZO-4033: Make all modules scrollable
+
+- ZO-4037: Only inflate the current landing zone in article, just like in cp editor
+
+
 5.54.0 (2023-10-26)
 -------------------
 
