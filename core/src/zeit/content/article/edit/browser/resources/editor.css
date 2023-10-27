@@ -498,7 +498,8 @@
   background-color: yellow;
 }
 
-.type-article #editable-body .block-inner {
+/* needed for rte toolbar */
+.type-article .block.editing .block-inner {
   overflow: visible;
 }
 
@@ -2041,6 +2042,10 @@
 
 
 /* prevent scroll jump when adding/removing modules */
+.type-article .block .block-inner {
+    overflow-y: auto;
+}
+
 .type-article .block.type-adplace .block-inner {
     height: 90px;
 }
@@ -2119,9 +2124,6 @@
 
 .type-article .block.type-rawtext .block-inner {
     height: 400px;
-}
-.type-article #editable-body .block.type-rawtext .block-inner {
-    overflow-y: scroll;
 }
 
 .type-article .block.type-recipelist .block-inner {
