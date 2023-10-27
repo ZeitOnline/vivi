@@ -423,11 +423,11 @@
 }
 
 .type-article .editable-area > .landing-zone {
-  height: 2px;
+  height: 4px;
   transition: height 0.3s ease-in-out;
 }
 
-.type-article .editable-area>.landing-zone.droppable-active {
+.type-article .editable-area>.landing-zone.hover-content {
   height: 20px;
 }
 
