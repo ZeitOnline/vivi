@@ -178,6 +178,11 @@ class Simplecast(grok.GlobalUtility):
 
     def _update(self, audio, episode_data):
         with zeit.cms.checkout.helper.checked_out(audio) as episode:
+            if not episode:
+                log.error('Unable to update %s. Could not checkout!',
+                          audio.uniqueId)
+                return
+
             self._update_properties(episode_data, episode)
             log.info(
                 'Podcast Episode %s successfully updated.',
