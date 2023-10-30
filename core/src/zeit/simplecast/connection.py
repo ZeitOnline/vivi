@@ -47,7 +47,7 @@ class Simplecast(grok.GlobalUtility):
             'zeit.simplecast')
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
-        self.timeout = timeout or config.get('timeout', 1)
+        self.timeout = timeout or int(config.get('timeout', 1))
 
     def _request(self, request):
         verb, path = request.split(' ')
