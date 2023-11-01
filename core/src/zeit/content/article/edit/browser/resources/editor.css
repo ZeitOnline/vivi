@@ -423,11 +423,11 @@
 }
 
 .type-article .editable-area > .landing-zone {
-  height: 2px;
+  height: 4px;
   transition: height 0.3s ease-in-out;
 }
 
-.type-article .editable-area>.landing-zone.droppable-active {
+.type-article .editable-area>.landing-zone.hover-content {
   height: 20px;
 }
 
@@ -498,7 +498,8 @@
   background-color: yellow;
 }
 
-.type-article #editable-body .block-inner {
+/* needed for rte toolbar */
+.type-article .block.editing .block-inner {
   overflow: visible;
 }
 
@@ -2041,12 +2042,16 @@
 
 
 /* prevent scroll jump when adding/removing modules */
+.type-article .block .block-inner {
+    overflow-y: auto;
+}
+
 .type-article .block.type-adplace .block-inner {
     height: 90px;
 }
 
 .type-article .block.type-audio .block-inner {
-    height: 230px;
+    height: 280px;
 }
 
 .type-article .block.type-author .block-inner {
@@ -2065,8 +2070,8 @@
     height: 220px;
 }
 
-.type-article .block.type-divison .block-inner {
-    height: 150px;
+.type-article .block.type-division .block-inner {
+    height: 160px;
 }
 
 .type-article .block.type-embed .block-inner {
@@ -2120,9 +2125,6 @@
 .type-article .block.type-rawtext .block-inner {
     height: 400px;
 }
-.type-article #editable-body .block.type-rawtext .block-inner {
-    overflow-y: scroll;
-}
 
 .type-article .block.type-recipelist .block-inner {
     height: 520px;
@@ -2141,7 +2143,7 @@
 }
 
 .type-article .block.type-topicbox .block-inner {
-    height: 600px;
+    height: 620px;
 }
 
 .type-article .block.type-video .block-inner {

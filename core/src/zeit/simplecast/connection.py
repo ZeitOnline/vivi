@@ -47,7 +47,7 @@ class Simplecast(grok.GlobalUtility):
             'zeit.simplecast')
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
-        self.timeout = timeout or config.get('timeout', 1)
+        self.timeout = timeout or int(config.get('timeout', 1))
 
     def _request(self, request):
         verb, path = request.split(' ')
@@ -178,6 +178,11 @@ class Simplecast(grok.GlobalUtility):
 
     def _update(self, audio, episode_data):
         with zeit.cms.checkout.helper.checked_out(audio) as episode:
+            if not episode:
+                log.error('Unable to update %s. Could not checkout!',
+                          audio.uniqueId)
+                return
+
             self._update_properties(episode_data, episode)
             log.info(
                 'Podcast Episode %s successfully updated.',
