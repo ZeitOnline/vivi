@@ -35,17 +35,17 @@
   </class>
 
   <adapter
-    factory=".reference.Audios"
-    provides=".interfaces.IAudios"
+    factory=".reference.AudioReferences"
+    provides=".interfaces.IAudioReferences"
     />
 
-  <class class=".reference.Audios">
+  <class class=".reference.AudioReferences">
     <require
-      interface=".interfaces.IAudios"
+      interface=".interfaces.IAudioReferences"
       permission="zope.View"
       />
     <require
-      set_schema=".interfaces.IAudios"
+      set_schema=".interfaces.IAudioReferences"
       permission="zeit.EditContent"
       />
   </class>

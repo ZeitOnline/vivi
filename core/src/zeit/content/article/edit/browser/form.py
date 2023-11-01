@@ -515,7 +515,7 @@ class Audio(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'audio'
-    form_fields = FormFields(zeit.content.audio.interfaces.IAudios)
+    form_fields = FormFields(zeit.content.audio.interfaces.IAudioReferences)
 
     def __call__(self):
         zope.interface.alsoProvides(

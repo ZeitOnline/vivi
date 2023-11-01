@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Oct 26 09:34:09 2023\n"
+"POT-Creation-Date: Wed Nov  1 14:28:06 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.3\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -2436,8 +2436,8 @@ msgid "Is Published"
 msgstr "Veröffentlicht"
 
 #: zeit/content/audio/interfaces.py:152
-msgid "Audios"
-msgstr "Audios"
+msgid "AudioReferences"
+msgstr "Audioreferenzen"
 
 #: zeit/content/audio/workflow.py:21
 msgid "Could not publish ${name}. Audio URL is missing"

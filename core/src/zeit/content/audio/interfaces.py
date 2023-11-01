@@ -147,7 +147,7 @@ class AudioSource(zeit.cms.content.contentsource.CMSContentSource):
     check_interfaces = (IAudio,)
 
 
-class IAudios(zope.interface.Interface):
+class IAudioReferences(zope.interface.Interface):
     items = zope.schema.Tuple(
-        title=_('Audios'),
+        title=_('AudioReferences'),
         value_type=zope.schema.Choice(source=AudioSource()))
