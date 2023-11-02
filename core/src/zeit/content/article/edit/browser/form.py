@@ -521,3 +521,6 @@ class Audio(zeit.edit.browser.form.InlineForm):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
+
+    def _success_handler(self):
+        self.signal('reload-inline-form', 'options-template')

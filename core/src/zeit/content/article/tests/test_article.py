@@ -12,6 +12,7 @@ import zeit.cms.section.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zeit.content.audio.interfaces
 import zeit.content.image.imagegroup
 import zeit.edit.interfaces
 import zeit.edit.rule
@@ -442,3 +443,17 @@ class ArticleAccess(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('free', article.access)
         FEATURE_TOGGLES.set('access_treat_free_as_dynamic')
         self.assertEqual('dynamic', article.access)
+
+
+class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_article_with_audio_references_is_podcast(self):
+        article = self.repository['article'] = self.get_article()
+        audio = zeit.content.audio.audio.Audio()
+        audio.title = 'Test podcast episode'
+        audio.url = 'https://simplecast.example/episode/1'
+        self.repository['audio'] = audio
+        with checked_out(article) as co:
+            audios = zeit.content.audio.interfaces.IAudioReferences
+            audios(co).items = (self.repository['audio'],)
+        assert self.repository['article'].header_layout == 'podcast'
