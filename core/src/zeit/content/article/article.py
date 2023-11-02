@@ -35,6 +35,8 @@ import zope.dublincore.interfaces
 import zope.index.text.interfaces
 import zope.interface
 import zope.security.proxy
+import zeit.content.audio.interfaces
+
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
 # supertitle+title+subtitle are here since their order is important for XSLT,
@@ -352,6 +354,18 @@ def set_default_header_when_template_is_changed(context, event):
     source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE(context)
     header_layout = source.factory.get_default_header(context)
     context.header_layout = header_layout if header_layout else None
+
+
+@grok.subscribe(
+    zeit.content.audio.interfaces.IAudioReferences,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def set_podcast_header_when_article_has_podcast_audio(reference, event):
+    if not reference.items:
+        return
+    if not zeit.content.article.interfaces.IArticle.providedBy(
+            reference.context):
+        return
+    reference.context.header_layout = 'podcast'
 
 
 @grok.subscribe(
