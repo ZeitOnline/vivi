@@ -461,7 +461,8 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
     retract_dependencies = False
 
     def get_dependencies(self):
-        audios = zeit.content.audio.interfaces.IAudios(self.context, None)
-        if audios:
-            return audios.items
+        audio_refs = zeit.content.audio.interfaces.IAudioReferences(
+            self.context, None)
+        if audio_refs:
+            return audio_refs.items
         return ()

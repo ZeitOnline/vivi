@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Oct 26 09:34:09 2023\n"
+"POT-Creation-Date: Wed Nov  1 14:28:06 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2505,7 +2505,7 @@ msgid "Is Published"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:152
-msgid "Audios"
+msgid "AudioReferences"
 msgstr ""
 
 #: zeit/content/audio/workflow.py:21
