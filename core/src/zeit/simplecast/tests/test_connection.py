@@ -17,7 +17,7 @@ import zeit.simplecast.testing
 import zeit.workflow.asset
 
 
-class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
+class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
 
     def create_audio(self, json):
         with mock.patch.object(self.simplecast, '_fetch_episode') as request:
@@ -237,3 +237,26 @@ class TestSimplecastAPI(zeit.simplecast.testing.FunctionalTestCase):
         zope.component.getGlobalSiteManager().registerHandler(
             retract, (zeit.cms.workflow.interfaces.IRetractedEvent,))
         self.assertFalse(retract.called)
+
+
+class TestSimplecastExternalAPI:
+
+    def test_simplecast_get_episodes_response(self):
+        # DIE ZEIT: Hinter der Geschichte - Per WhatsApp in die Antarktis
+        response = requests.get('https://api.simplecast.com/episodes/338dfff7-e878-4312-b519-40387be19a54')
+        assert response.status_code == 200
+        body = response.json()
+        expected_items = {
+            'title': 'Per WhatsApp in die Antarktis',
+            'audio_file_url': 'https://zeitonline.simplecastaudio.com/f6642392-cca5-412a-9ff0-a5b9ba1f1717/episodes/338dfff7-e878-4312-b519-40387be19a54/audio/128/default.mp3?awCollectionId=f6642392-cca5-412a-9ff0-a5b9ba1f1717&awEpisodeId=338dfff7-e878-4312-b519-40387be19a54',
+            'duration': 1278,
+            'id': '338dfff7-e878-4312-b519-40387be19a54',
+            'number': 253,
+            'description': 'Die Polarforscherin Stefanie Arndt befindet sich gerade für 100 Tage am Südpol – und beantwortet dort fast täglich Kinderfragen. Katrin Hörnlein, die verantwortliche Redakteurin im Ressort »Junge Leser« der ZEIT, sammelt diese Fragen und schickt sie in die Antarktis. Dort antwortet Stefanie Arndt per WhatsApp-Sprachnachricht. So entsteht eine Art Forschungstagebuch in der ZEIT und dem Magazin ZEIT Leo, an dem die jungen Leserinnen und Leser mitrecherchieren. Im Podcast »Hinter der Geschichte« berichtet Katrin Hörnlein von diesem Projekt. Stefanie Arndt meldet sich zwischendurch per Sprachnachricht und erzählt von der endlosen Weite der Eislandschaft, von Pinguinen und davon, wie dick ihr Schlafanzug ist.',
+            'long_description': '\nDie Polarforscherin Stefanie Arndt befindet sich gerade für 100 Tage am Südpol – und beantwortet dort fast täglich Kinderfragen. Katrin Hörnlein, die verantwortliche Redakteurin im Ressort »Junge Leser« der ZEIT, sammelt diese Fragen und schickt sie in die Antarktis. Dort antwortet Stefanie Arndt per WhatsApp-Sprachnachricht. So entsteht eine Art Forschungstagebuch in der ZEIT und dem Magazin ZEIT Leo, an dem die jungen Leserinnen und Leser mitrecherchieren. Im Podcast »Hinter der Geschichte« berichtet Katrin Hörnlein von diesem Projekt. Stefanie Arndt meldet sich zwischendurch per Sprachnachricht und erzählt von der endlosen Weite der Eislandschaft, von Pinguinen und davon, wie dick ihr Schlafanzug ist.',
+            'is_published': True,
+            'updated_at': '2023-10-26T07:08:32Z'
+        }
+        for key, value in expected_items.items():
+            assert body[key] == value, f'Simplecast Response for {key} is not what we expected!'
+        assert body['podcast']['id'] == 'f6642392-cca5-412a-9ff0-a5b9ba1f1717'
