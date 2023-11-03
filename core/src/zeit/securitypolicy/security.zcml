@@ -177,10 +177,6 @@
     />
   <grant
     role="zeit.Producer"
-    permission="zeit.content.cp.EditOverflow"
-    />
-  <grant
-    role="zeit.Producer"
     permission="zeit.cms.admin.View"
     />
   <grant
