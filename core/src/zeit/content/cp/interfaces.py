@@ -4,7 +4,6 @@ import collections
 import fractions
 import json
 import logging
-import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
@@ -238,34 +237,6 @@ class IRegion(
     zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
 
 
-class BelowAreaSource(
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-    """All IAreas of this CenterPage below the current one."""
-
-    def getValues(self, context):
-        cp = zeit.content.cp.interfaces.ICenterPage(context)
-        areas = []
-        below = False
-        for region in cp.values():
-            for area in region.values():
-                if area == context:
-                    below = True
-                    continue
-                if below:
-                    areas.append(area)
-        return areas
-
-    def getTitle(self, context, value):
-        # XXX Hard-code language, since we don't have a request here.
-        return zope.i18n.translate(
-            _("${kind} area ${title}", mapping={
-                'kind': value.kind, 'title': value.title or _("no title")}),
-            target_language='de')
-
-    def getToken(self, context, value):
-        return value.__name__
-
-
 class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
 
     values = collections.OrderedDict([
@@ -361,15 +332,6 @@ class IReadArea(
         description=_("Drag an image group here"),
         required=False,
         source=zeit.content.image.interfaces.imageGroupSource)
-
-    block_max = zope.schema.Int(
-        title=_("Maximum block count"),
-        required=False)
-
-    overflow_into = zope.schema.Choice(
-        title=_("Overflow into"),
-        source=BelowAreaSource(),
-        required=False)
 
     apply_teaser_layouts_automatically = zope.schema.Bool(
         title=_('Apply teaser layouts automatically?'),

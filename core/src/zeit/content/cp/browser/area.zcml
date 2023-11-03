@@ -163,14 +163,6 @@
   <browser:page
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-overflow"
-    class=".area.EditOverflow"
-    permission="zeit.content.cp.EditOverflow"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="change-layout"
     class=".area.ChangeLayout"
     permission="zeit.EditContent"
@@ -229,17 +221,6 @@
     template="layout.block.edit-automatic.pt"
     permission="zeit.EditContent"
     weight="0"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="overflow-box"
-    template="layout.block.edit-overflow.pt"
-    permission="zeit.content.cp.EditOverflow"
-    weight="3"
     />
 
   <browser:viewlet

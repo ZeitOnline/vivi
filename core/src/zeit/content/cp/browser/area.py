@@ -50,13 +50,6 @@ class EditCommon(zeit.content.cp.browser.view.EditBox):
         'background_color')
 
 
-class EditOverflow(zeit.content.cp.browser.view.EditBox):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IArea).select(
-            'block_max', 'overflow_into')
-
-
 class DynamicCombinationWidget(
         zeit.cms.content.browser.widget.CombinationWidget):
     """Determines which further subwidgets to render according to the value of

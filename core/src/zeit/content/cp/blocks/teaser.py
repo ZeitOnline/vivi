@@ -175,19 +175,6 @@ def apply_layout_for_added(context, event):
     if not area.apply_teaser_layouts_automatically:
         return
 
-    # XXX The overflow_blocks handler also listens to the IObjectAddedEvent and
-    # may have removed this item from the container. Since overflow_blocks
-    # retrieves the item via a getitem access, it is newly created from the XML
-    # node. That means `context is not context.__parent__[context.__name__]`.
-    # Since it is not the same object, changes to the newly created object will
-    # not be reflected in the context given to event handlers. So we need a
-    # guard here to check if overflow_blocks has removed the item and skip the
-    # method in case it has. (Modifying __parent__ of context does not seem
-    # like a good idea, hell might break loose. So lets just forget about this
-    # possiblity.)
-    if context.__name__ not in area.keys():
-        return
-
     if area.keys().index(context.__name__) == 0:
         context.layout = area.first_teaser_layout
     else:
@@ -199,12 +186,6 @@ def apply_layout_for_added(context, event):
     zeit.edit.interfaces.IOrderUpdatedEvent)
 def set_layout_to_default_when_moved_down_from_first_position(area, event):
     if not area.apply_teaser_layouts_automatically:
-        return
-
-    # XXX The overflow_blocks handler listens to the IObjectAddedEvent and may
-    # have removed this item from the container. In that case we have to do
-    # nothing, since checking the layout is handled by the new container.
-    if event.old_order[0] not in area.keys():
         return
 
     previously_first = area[event.old_order[0]]
