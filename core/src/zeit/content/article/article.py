@@ -35,6 +35,8 @@ import zope.dublincore.interfaces
 import zope.index.text.interfaces
 import zope.interface
 import zope.security.proxy
+import zeit.content.audio.interfaces
+
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
 # supertitle+title+subtitle are here since their order is important for XSLT,
@@ -355,6 +357,18 @@ def set_default_header_when_template_is_changed(context, event):
 
 
 @grok.subscribe(
+    zeit.content.audio.interfaces.IAudioReferences,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def set_podcast_header_when_article_has_podcast_audio(reference, event):
+    if not reference.items:
+        return
+    if not zeit.content.article.interfaces.IArticle.providedBy(
+            reference.context):
+        return
+    reference.context.header_layout = 'podcast'
+
+
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def ensure_block_ids(context, event):
@@ -461,7 +475,8 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
     retract_dependencies = False
 
     def get_dependencies(self):
-        audios = zeit.content.audio.interfaces.IAudios(self.context, None)
-        if audios:
-            return audios.items
+        audio_refs = zeit.content.audio.interfaces.IAudioReferences(
+            self.context, None)
+        if audio_refs:
+            return audio_refs.items
         return ()
