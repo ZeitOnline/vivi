@@ -42,7 +42,6 @@ else:
     import bugsnag
     import kombu
     import opentelemetry.trace
-    import prometheus_client
     import zeit.cms.zeo
     import zeit.cms.zope
     import zope.app.appsetup.appsetup
@@ -82,10 +81,6 @@ else:
             db = zeit.cms.zope.create_zodb_database(
                 conf['SETTINGS']['zodbconn.uri'])
             conf['ZODB'] = db  # see z3c.celery.TransactionAwareTask
-
-            port = int(os.environ.get('CELERY_PROMETHEUS_PORT', 0))
-            if port:
-                prometheus_client.start_http_server(port)
 
         def on_worker_process_shutdown(self):
             if 'ZODB' in self.app.conf:
