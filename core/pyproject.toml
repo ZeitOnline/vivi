@@ -185,7 +185,7 @@ test = [
 ]
 
 deploy = [
-    "celery-redis-prometheus>=1.5.0.dev0",
+    "celery_redis_prometheus",
     "flower",
     "fluent-logger",
     "grpcio-status",  # warning instead of required by google-api-core
@@ -194,7 +194,6 @@ deploy = [
     "gunicorn_worker_healthcheck",
     "linesman",
     "opentelemetry-exporter-otlp",
-    "opentelemetry-exporter-prometheus",
     "opentelemetry-sdk",
     "pastescript",
     "psycopg2-binary",

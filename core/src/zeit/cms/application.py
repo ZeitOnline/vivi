@@ -8,8 +8,6 @@ import logging
 import opentelemetry.instrumentation.wsgi
 import opentelemetry.trace
 import os
-import prometheus_client
-import urllib.parse
 import webob.cookies
 import wsgiref.util
 import zeit.cms.cli
@@ -45,7 +43,6 @@ class Application:
     pipeline = [
         ('slowlog', 'call:slowlog.wsgi:make_slowlog'),
         ('bugsnag', 'call:zeit.cms.bugsnag:bugsnag_filter'),
-        ('prometheus', 'call:zeit.cms.application:prometheus_filter'),
         # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
         # have it run first, before vhm applies any wsgi environ changes.
         ('fanstatic', 'call:fanstatic:make_fanstatic'),
@@ -141,27 +138,6 @@ class BrowserRequest(zope.publisher.browser.BrowserRequest):
 grok.global_utility(
     BrowserRequest.factory,
     zope.app.publication.interfaces.IBrowserRequestFactory)
-
-
-# Need to use a middleware so the URL can be exactly `/metrics`;
-# Zope only would give us `/@@metrics`, and the legacy chef-based discovery
-# does not support configuring the path, sigh.
-class MetricsMiddleware:
-
-    def __init__(self, wsgi):
-        self.wsgi = wsgi
-        self.metrics = prometheus_client.make_wsgi_app()
-
-    def __call__(self, environ, start_response):
-        url = wsgiref.util.request_uri(environ)
-        url = urllib.parse.urlparse(url)
-        if url.path != '/metrics':
-            return self.wsgi(environ, start_response)
-        return self.metrics(environ, start_response)
-
-
-def prometheus_filter(app, global_conf, **local_conf):
-    return MetricsMiddleware(app)
 
 
 class OpenTelemetryMiddleware(
