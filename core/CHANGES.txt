@@ -3,6 +3,26 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.58.0 (2023-11-03)
+-------------------
+
+- ZO-4130: Revert "Merge pull request #546 from ZeitOnline/ZO-3967"
+
+
+5.57.0 (2023-11-03)
+-------------------
+
+- ZO-3904: Audio reference gives article podcast type
+
+- ZO-3967: Expose otel metrics for prometheus
+
+
+MAINT:
+- ZO-3967: add test for regular conformity check of simplecast response we get
+
+- IAudios renamed to IAudioReferences
+
+
 5.56.0 (2023-10-30)
 -------------------
 
