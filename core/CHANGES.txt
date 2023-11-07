@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.60.0 (2023-11-07)
+-------------------
+
+- ZO-4145: Shrink teaser drag handle so it does not include the edit bar
+
+
 5.59.0 (2023-11-07)
 -------------------
 
