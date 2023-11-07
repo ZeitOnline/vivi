@@ -12,7 +12,7 @@ zeit.content.cp.TeaserDrag = zeit.edit.context.ContentActionBase.extend({
                 return;
             }
             var block_inner = MochiKit.DOM.getFirstElementByTagAndClassName(
-                'div', 'block-inner', teaser);
+                'div', 'teaser-contents', teaser);
             self.dnd_objects.push(
                 zeit.cms.createDraggableContentObject(text, {
                     scroll: 'cp-content-inner',
