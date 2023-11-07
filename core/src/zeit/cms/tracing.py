@@ -103,10 +103,15 @@ def default_tracer():
 
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
 def tracer_from_product_config():
+    from opentelemetry.sdk.metrics import MeterProvider
+    from opentelemetry.exporter.prometheus import PrometheusMetricReader
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
     from zeit.cms.relstorage import RelStorageInstrumentor
     from zeit.cms.zeo import ZEOInstrumentor
     import zope.app.appsetup.product
+
+    provider = MeterProvider([PrometheusMetricReader(prefix='')])
+    opentelemetry.metrics.set_meter_provider(provider)
 
     hostname = socket.gethostname()
     # We don't want the FQDN and date suffix.
