@@ -168,11 +168,6 @@
     title="Edit Area"
     />
 
-  <permission
-    id="zeit.content.cp.EditOverflow"
-    title="Edit Article Flow"
-    />
-
   <class class=".centerpage.CpSEO">
     <require
       interface=".interfaces.ICpSEO"

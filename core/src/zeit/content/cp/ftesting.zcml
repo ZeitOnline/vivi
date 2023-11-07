@@ -26,10 +26,4 @@
     permission="zeit.content.cp.EditArea"
     />
 
-  <!-- Allow test user to setup Artikel Flow -->
-  <grant
-    principal="zope.Authenticated"
-    permission="zeit.content.cp.EditOverflow"
-    />
-
 </configure>

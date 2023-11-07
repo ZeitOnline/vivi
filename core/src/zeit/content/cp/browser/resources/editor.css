@@ -491,11 +491,6 @@ margin-top: 4px;
   margin-bottom: 0px;
 }
 
-
-#content .lightbox .edit-common-box input[name="form.block_max"] {
-  width: 2em;
-}
-
 .color-source-widget option {
   width: auto;
 }
