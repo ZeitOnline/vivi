@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.61.0 (2023-11-08)
+-------------------
+
+- ZO-3812: remove unused feature 'Fläche verknüpfen'
+
+- ZO-3967: Work around opentelemetry histogram bug
+
+
 5.60.0 (2023-11-07)
 -------------------
 
