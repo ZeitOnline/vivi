@@ -1,3 +1,4 @@
+# flake8: noqa: E800
 from math import inf
 
 from opentelemetry.sdk.metrics._internal.point import HistogramDataPoint
@@ -6,9 +7,11 @@ from opentelemetry.sdk.metrics._internal.aggregation import (
 
 
 def collect(self, aggregation_temporality, collection_start_nano):
+    """Patched to work around open-telemetry/opentelemetry-python#3089"""
+
     with self._lock:
-        if not any(self._bucket_counts):
-            return None
+        # if not any(self._bucket_counts):  # patched
+        #     return None
 
         bucket_counts = self._bucket_counts
         start_time_unix_nano = self._start_time_unix_nano
@@ -33,6 +36,10 @@ def collect(self, aggregation_temporality, collection_start_nano):
         min=min_,
         max=max_,
     )
+
+    if not any(bucket_counts):  # patched
+        self._previous_point = None
+        return current_point
 
     if self._previous_point is None or (
         self._instrument_temporality is aggregation_temporality
