@@ -83,7 +83,7 @@ class Application:
             ] + pipeline
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(
-            app, ExcludeList(['/@@health-check$']),
+            app, ExcludeList(['/@@health-check$', '/metrics$']),
             request_hook=otel_request_hook)
         return app
 
