@@ -16,6 +16,9 @@
             </div>
         </dl>
         <div class="actions">
+            <div class="open-audio-dashboard object-link" tal:condition="view/dashboard_link">
+                <a tal:attributes="href view/dashboard_link" i18n:translate="" target="_blank">Dashboard</a>
+            </div>
             <div class="open-audio object-link" tal:condition="view/url">
                 <a tal:attributes="href view/url" i18n:translate="" target="_blank">Play</a>
             </div>

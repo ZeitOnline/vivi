@@ -39,7 +39,8 @@ class PodcastForm:
             'episode_nr',
             'url_ad_free',
             'summary',
-            'notes')
+            'notes',
+            'dashboard_link',)
 
     podcast_fields = gocept.form.grouped.Fields(
         _('Podcast Episode Info'),
@@ -53,7 +54,7 @@ class PodcastForm:
 
     field_groups = (
         gocept.form.grouped.Fields(
-            _('Navigation'), ('__name__',),
+            _('Navigation'), ('__name__', 'dashboard_link'),
             css_class='wide-widgets column-right'),
         Base.audio_fields,
         audio_file_fields,

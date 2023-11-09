@@ -40,6 +40,7 @@ class Simplecast(grok.GlobalUtility):
             'summary': 'description',
             'notes': 'long_description',
             'is_published': 'is_published',
+            'dashboard_link': 'dashboard_link',
         }
     }
 

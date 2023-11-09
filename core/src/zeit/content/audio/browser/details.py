@@ -35,3 +35,7 @@ class Details(zeit.cms.browser.objectdetails.Details):
             if podcast:
                 return podcast.title
         return None
+
+    def dashboard_link(self):
+        link = IPodcastEpisodeInfo(self.context).dashboard_link
+        return link

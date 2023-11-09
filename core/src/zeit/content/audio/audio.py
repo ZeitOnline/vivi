@@ -54,7 +54,8 @@ class PodcastEpisodeInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
             'podcast_id',
             'episode_nr',
             'url_ad_free',
-            'is_published',))
+            'is_published',
+            'dashboard_link',))
 
     summary = zeit.cms.content.property.ObjectPathProperty(
         '.summary', IPodcastEpisodeInfo['summary'])

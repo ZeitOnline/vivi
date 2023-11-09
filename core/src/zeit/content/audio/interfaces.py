@@ -144,6 +144,9 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
         title=_('Is Published'),
         readonly=True,
         default=False)
+    dashboard_link = zope.schema.URI(
+        title=_('Dashboard Link'),
+        required=False)
 
 
 class AudioSource(zeit.cms.content.contentsource.CMSContentSource):
