@@ -21,10 +21,15 @@ class Base:
 
     audio_fields = gocept.form.grouped.Fields(
         _("Audio"),
-        ('title', 'url', 'duration', 'audio_type',),
+        ('title', 'duration', 'audio_type',),
         css_class='wide-widgets column-left')
 
-    field_groups = (audio_fields,)
+    audio_file_fields = gocept.form.grouped.Fields(
+        _("Audio file"),
+        ('url',),
+        css_class='wide-widgets column-left')
+
+    field_groups = (audio_fields, audio_file_fields)
 
 
 class PodcastForm:
@@ -32,6 +37,7 @@ class PodcastForm:
         zeit.content.audio.interfaces.IPodcastEpisodeInfo).select(
             'podcast',
             'episode_nr',
+            'url_ad_free',
             'summary',
             'notes')
 
@@ -40,11 +46,17 @@ class PodcastForm:
         ('podcast', 'image', 'episode_nr', 'summary', 'notes'),
         'wide-widgets column-left')
 
+    audio_file_fields = gocept.form.grouped.Fields(
+        _("Audio file"),
+        ('url', 'url_ad_free',),
+        css_class='wide-widgets column-left')
+
     field_groups = (
         gocept.form.grouped.Fields(
             _('Navigation'), ('__name__',),
             css_class='wide-widgets column-right'),
         Base.audio_fields,
+        audio_file_fields,
         podcast_fields
     )
 

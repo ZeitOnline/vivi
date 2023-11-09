@@ -128,6 +128,10 @@ class IPodcastEpisodeInfo(zope.interface.Interface):
     episode_nr = zope.schema.Int(
         title=_('Episode No'),
         readonly=True)
+    url_ad_free = zope.schema.URI(
+        title=_('URL ad-free'),
+        readonly=True,
+        required=False)
     summary = zope.schema.Text(
         title=_('Episode Summary'),
         required=False,

@@ -36,6 +36,7 @@ class Simplecast(grok.GlobalUtility):
         },
         IPodcastEpisodeInfo: {
             'episode_nr': 'number',
+            'url_ad_free': 'ad_free_audio_file_url',
             'summary': 'description',
             'notes': 'long_description',
             'is_published': 'is_published',
