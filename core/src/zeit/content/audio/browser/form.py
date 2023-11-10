@@ -79,6 +79,13 @@ class Display(PodcastForm, zeit.cms.browser.form.DisplayForm):
     title = _('View audio')
     for_display = True
 
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        if self.widgets['dashboard_link']:
+            self.widgets['dashboard_link'].linkTarget = (
+                zeit.content.audio.interfaces.IPodcastEpisodeInfo(
+                    self.context).dashboard_link)
+
 
 @zope.component.adapter(
     zeit.content.audio.interfaces.IAudio,
