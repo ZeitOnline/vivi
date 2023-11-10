@@ -373,6 +373,17 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
 
     context.header_layout = 'podcast'
 
+    main_audio = audio.items[0]
+    if main_audio.audio_type == 'podcast':
+        if not context.title:
+            context.title = main_audio.title
+        episode = zeit.content.audio.interfaces.IPodcastEpisodeInfo(main_audio)
+        if not context.teaserText:
+            context.teaserText = episode.summary
+        # article image reserves first position
+        if len(context.body.keys()) <= 1:
+            context.body.create_item('p').text = episode.notes
+
 
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle,
