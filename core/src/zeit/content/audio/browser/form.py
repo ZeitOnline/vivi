@@ -21,10 +21,15 @@ class Base:
 
     audio_fields = gocept.form.grouped.Fields(
         _("Audio"),
-        ('title', 'url', 'duration', 'audio_type',),
+        ('title', 'duration', 'audio_type',),
         css_class='wide-widgets column-left')
 
-    field_groups = (audio_fields,)
+    audio_file_fields = gocept.form.grouped.Fields(
+        _("Audio file"),
+        ('url',),
+        css_class='wide-widgets column-left')
+
+    field_groups = (audio_fields, audio_file_fields)
 
 
 class PodcastForm:
@@ -32,19 +37,27 @@ class PodcastForm:
         zeit.content.audio.interfaces.IPodcastEpisodeInfo).select(
             'podcast',
             'episode_nr',
+            'url_ad_free',
             'summary',
-            'notes')
+            'notes',
+            'dashboard_link',)
 
     podcast_fields = gocept.form.grouped.Fields(
         _('Podcast Episode Info'),
         ('podcast', 'image', 'episode_nr', 'summary', 'notes'),
         'wide-widgets column-left')
 
+    audio_file_fields = gocept.form.grouped.Fields(
+        _("Audio file"),
+        ('url', 'url_ad_free',),
+        css_class='wide-widgets column-left')
+
     field_groups = (
         gocept.form.grouped.Fields(
-            _('Navigation'), ('__name__',),
+            _('Navigation'), ('__name__', 'dashboard_link'),
             css_class='wide-widgets column-right'),
         Base.audio_fields,
+        audio_file_fields,
         podcast_fields
     )
 
@@ -65,6 +78,13 @@ class Display(PodcastForm, zeit.cms.browser.form.DisplayForm):
 
     title = _('View audio')
     for_display = True
+
+    def setUpWidgets(self, *args, **kw):
+        super().setUpWidgets(*args, **kw)
+        if self.widgets['dashboard_link']:
+            self.widgets['dashboard_link'].linkTarget = (
+                zeit.content.audio.interfaces.IPodcastEpisodeInfo(
+                    self.context).dashboard_link)
 
 
 @zope.component.adapter(

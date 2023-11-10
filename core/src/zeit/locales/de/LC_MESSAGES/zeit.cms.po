@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Nov  6 07:38:15 2023\n"
+"POT-Creation-Date: Fri Nov 10 11:15:55 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:33
 #: zeit/cms/browser/form.py:225 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -316,7 +316,7 @@ msgstr "Vivi-Handbuch"
 
 #: zeit/cms/browser/menu.py:94 zeit/cms/browser/object-details-body.pt:13
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:14
-#: zeit/content/audio/browser/object-details-body.pt:24
+#: zeit/content/audio/browser/object-details-body.pt:27
 msgid "CMS"
 msgstr "CMS"
 
@@ -530,7 +530,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/animation/browser/form.py:37
-#: zeit/content/audio/browser/form.py:45 zeit/content/cp/browser/form.py:54
+#: zeit/content/audio/browser/form.py:57 zeit/content/cp/browser/form.py:54
 #: zeit/content/markup/browser/form.py:34
 #: zeit/content/video/browser/video.py:40
 msgid "Navigation"
@@ -1665,7 +1665,7 @@ msgid "Adplace block"
 msgstr "Ad-Place"
 
 #: zeit/content/article/edit/audio.py:23
-#: zeit/content/article/edit/browser/form.py:511 zeit/content/audio/audio.py:71
+#: zeit/content/article/edit/browser/form.py:511 zeit/content/audio/audio.py:73
 #: zeit/content/audio/browser/configure.zcml:6
 #: zeit/content/audio/browser/form.py:23
 msgid "Audio"
@@ -2365,23 +2365,27 @@ msgstr "ältester zuerst"
 msgid "highlights"
 msgstr "highlights"
 
-#: zeit/content/audio/browser/form.py:39
+#: zeit/content/audio/browser/form.py:28 zeit/content/audio/browser/form.py:51
+msgid "Audio file"
+msgstr "Audio Datei"
+
+#: zeit/content/audio/browser/form.py:46
 msgid "Podcast Episode Info"
 msgstr "Podcastfolge"
 
-#: zeit/content/audio/browser/form.py:54
+#: zeit/content/audio/browser/form.py:67
 msgid "Add audio"
 msgstr "Audio hinzufügen"
 
-#: zeit/content/audio/browser/form.py:60
+#: zeit/content/audio/browser/form.py:73
 msgid "Edit audio"
 msgstr "Audio bearbeiten"
 
-#: zeit/content/audio/browser/form.py:66
+#: zeit/content/audio/browser/form.py:79
 msgid "View audio"
 msgstr "Audio anzeigen"
 
-#: zeit/content/audio/browser/form.py:85 zeit/content/cp/browser/workflow.py:50
+#: zeit/content/audio/browser/form.py:98 zeit/content/cp/browser/workflow.py:50
 #: zeit/workflow/browser/form.py:94
 msgid "Save state only"
 msgstr "Nur Status speichern"
@@ -2392,6 +2396,10 @@ msgid "Duration"
 msgstr "Laufzeit"
 
 #: zeit/content/audio/browser/object-details-body.pt:20
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: zeit/content/audio/browser/object-details-body.pt:23
 msgid "Play"
 msgstr "Abspielen"
 
@@ -2424,18 +2432,26 @@ msgid "Episode No"
 msgstr "Nummer der Folge"
 
 #: zeit/content/audio/interfaces.py:132
+msgid "URL ad-free"
+msgstr "Ad-free URL"
+
+#: zeit/content/audio/interfaces.py:136
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:136
+#: zeit/content/audio/interfaces.py:140
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:140
+#: zeit/content/audio/interfaces.py:144
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:152
+#: zeit/content/audio/interfaces.py:148
+msgid "Dashboard Link"
+msgstr "Dashboard Link"
+
+#: zeit/content/audio/interfaces.py:159
 msgid "AudioReferences"
 msgstr "Audioreferenzen"
 

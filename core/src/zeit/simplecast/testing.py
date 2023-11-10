@@ -39,6 +39,11 @@ EPISODE_200 = {
         "title": "Cat Jokes Pawdcast",
         "status": "published",
     },
+    "dashboard_link": (
+        "https://dashboard.simplecast.com/"
+        "accounts/cf104b97-1579-49fb-a545-05f7e578a594/"
+        "shows/60989a9e-80b6-4f17-979a-fc949043cf6b/"
+        "episodes/8e73a60a-87c9-4b6b-8f92-96152cc4b315"),
 }
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(

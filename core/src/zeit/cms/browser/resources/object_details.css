@@ -250,3 +250,8 @@
   background-image: url('icons/audioplayer-play.svg');
   background-size: 15px;
 }
+
+.object-link.open-audio-dashboard a {
+  background-image: url('icons/simplecast-icon.svg');
+  background-size: 15px;
+}

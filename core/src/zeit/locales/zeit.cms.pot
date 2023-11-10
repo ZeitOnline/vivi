@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Nov  6 07:38:15 2023\n"
+"POT-Creation-Date: Fri Nov 10 11:15:55 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -349,7 +349,7 @@ msgstr ""
 #: zeit/cms/browser/menu.py:94
 #: zeit/cms/browser/object-details-body.pt:13
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:14
-#: zeit/content/audio/browser/object-details-body.pt:24
+#: zeit/content/audio/browser/object-details-body.pt:27
 msgid "CMS"
 msgstr ""
 
@@ -556,7 +556,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/animation/browser/form.py:37
-#: zeit/content/audio/browser/form.py:45
+#: zeit/content/audio/browser/form.py:57
 #: zeit/content/cp/browser/form.py:54
 #: zeit/content/markup/browser/form.py:34
 #: zeit/content/video/browser/video.py:40
@@ -1710,7 +1710,7 @@ msgstr ""
 
 #: zeit/content/article/edit/audio.py:23
 #: zeit/content/article/edit/browser/form.py:511
-#: zeit/content/audio/audio.py:71
+#: zeit/content/audio/audio.py:73
 #: zeit/content/audio/browser/configure.zcml:6
 #: zeit/content/audio/browser/form.py:23
 msgid "Audio"
@@ -2433,23 +2433,28 @@ msgstr ""
 msgid "highlights"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:39
+#: zeit/content/audio/browser/form.py:28
+#: zeit/content/audio/browser/form.py:51
+msgid "Audio file"
+msgstr ""
+
+#: zeit/content/audio/browser/form.py:46
 msgid "Podcast Episode Info"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:54
+#: zeit/content/audio/browser/form.py:67
 msgid "Add audio"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:60
+#: zeit/content/audio/browser/form.py:73
 msgid "Edit audio"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:66
+#: zeit/content/audio/browser/form.py:79
 msgid "View audio"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:85
+#: zeit/content/audio/browser/form.py:98
 #: zeit/content/cp/browser/workflow.py:50
 #: zeit/workflow/browser/form.py:94
 msgid "Save state only"
@@ -2461,6 +2466,10 @@ msgid "Duration"
 msgstr ""
 
 #: zeit/content/audio/browser/object-details-body.pt:20
+msgid "Dashboard"
+msgstr ""
+
+#: zeit/content/audio/browser/object-details-body.pt:23
 msgid "Play"
 msgstr ""
 
@@ -2493,18 +2502,26 @@ msgid "Episode No"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:132
-msgid "Episode Summary"
+msgid "URL ad-free"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:136
-msgid "Episode Notes"
+msgid "Episode Summary"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:140
+msgid "Episode Notes"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:144
 msgid "Is Published"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:152
+#: zeit/content/audio/interfaces.py:148
+msgid "Dashboard Link"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:159
 msgid "AudioReferences"
 msgstr ""
 
