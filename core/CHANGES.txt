@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.62.0 (2023-11-13)
+-------------------
+
+- ZO-3688: Save ad-free podcast link to audio object
+
+- ZO-4071: Save simplecast dashboard link to audio object
+
+
 5.61.0 (2023-11-08)
 -------------------
 
