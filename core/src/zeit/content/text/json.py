@@ -1,9 +1,11 @@
 import logging
 
+from referencing.jsonschema import DRAFT202012
 import commentjson
 import grokcore.component as grok
 import jsonschema
 import openapi_schema_validator
+import referencing
 import requests
 import requests_file
 import yaml
@@ -66,9 +68,18 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         try:
             response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)
-            ref_resolver = jsonschema.validators.RefResolver.from_schema(schema)
+            definitions = schema['components']['schemas']
+            registry = referencing.Registry().with_resources(
+                [
+                    (
+                        f'#/components/schemas/{k}',
+                        referencing.Resource.from_contents(v, default_specification=DRAFT202012),
+                    )
+                    for k, v in definitions.items()
+                ]
+            )
             response.close()
-            return schema, ref_resolver
+            return schema, registry
         except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             message = f'{self.schema_url} returned {status}'
@@ -76,7 +87,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             raise zeit.content.text.interfaces.SchemaValidationError(message)
 
     def validate(self):
-        schema, ref_resolver = self._get()
+        schema, registry = self._get()
         if not schema:
             return
         if self._valid_field_name(schema):
@@ -84,7 +95,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
                 openapi_schema_validator.validate(
                     self.context.data,
                     schema['components']['schemas'][self.field_name],
-                    resolver=ref_resolver,
+                    registry=registry,
                 )
             except jsonschema.exceptions.ValidationError as error:
                 raise zeit.content.text.interfaces.SchemaValidationError(str(error))
