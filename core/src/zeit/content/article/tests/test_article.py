@@ -325,12 +325,6 @@ class DefaultTemplateByContentType(
             self.assertEqual('default', article.header_layout)
 
 
-def notify_modified(article, field):
-    zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-        article, zope.lifecycleevent.Attributes(
-            zeit.cms.content.interfaces.ICommonMetadata, field)))
-
-
 class ArticleXMLReferenceUpdate(
         zeit.content.article.testing.FunctionalTestCase):
 
@@ -456,4 +450,6 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(article) as co:
             audios = zeit.content.audio.interfaces.IAudioReferences
             audios(co).items = (self.repository['audio'],)
-        assert self.repository['article'].header_layout == 'podcast'
+            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+                co, zope.lifecycleevent.Attributes(audios, 'items')))
+            self.assertEqual('podcast', co.header_layout)
