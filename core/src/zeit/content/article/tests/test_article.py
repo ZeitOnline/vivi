@@ -325,12 +325,6 @@ class DefaultTemplateByContentType(
             self.assertEqual('default', article.header_layout)
 
 
-def notify_modified(article, field):
-    zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-        article, zope.lifecycleevent.Attributes(
-            zeit.cms.content.interfaces.ICommonMetadata, field)))
-
-
 class ArticleXMLReferenceUpdate(
         zeit.content.article.testing.FunctionalTestCase):
 
