@@ -357,15 +357,21 @@ def set_default_header_when_template_is_changed(context, event):
 
 
 @grok.subscribe(
-    zeit.content.audio.interfaces.IAudioReferences,
+    zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
-def set_podcast_header_when_article_has_podcast_audio(reference, event):
-    if not reference.items:
+def set_podcast_header_when_article_has_podcast_audio(context, event):
+    for desc in event.descriptions:
+        if (desc.interface is zeit.content.audio.interfaces.IAudioReferences
+                and 'items' in desc.attributes):
+            break
+    else:
         return
-    if not zeit.content.article.interfaces.IArticle.providedBy(
-            reference.context):
+
+    audio = zeit.content.audio.interfaces.IAudioReferences(context)
+    if not audio.items:
         return
-    reference.context.header_layout = 'podcast'
+
+    context.header_layout = 'podcast'
 
 
 @grok.subscribe(
