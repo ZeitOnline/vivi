@@ -1,5 +1,8 @@
+from prometheus_client.parser import text_string_to_metric_families as prometheus
 import importlib.metadata
 import packaging.requirements
+import urllib.error
+import zeit.cms.testing
 
 
 def test_pip_check_for_all_extras():
@@ -13,3 +16,25 @@ def test_pip_check_for_all_extras():
     for req in requirements:
         installed = importlib.metadata.distribution(req.name)
         assert req.specifier.contains(installed.version, prereleases=True)
+
+
+class Prometheus(zeit.cms.testing.ZeitCmsBrowserTestCase):
+
+    def test_prometheus_metrics_are_exposed(self):
+        b = self.browser
+
+        def check():
+            b.open('http://localhost/metrics')
+            assert b.headers.get('status') == '200 OK'
+            metrics = [x.name for x in prometheus(b.contents)]
+            assert 'http_server_duration_ms' in metrics
+
+        for _ in range(2):  # Hopefully cover bootstrapping cases
+            with self.assertRaises(urllib.error.HTTPError) as info:
+                b.open('http://localhost/nonexistent')
+                assert info.exception.status == 404
+
+            check()
+
+        # Ensure that the metric does not disappear when there are no measurements
+        check()

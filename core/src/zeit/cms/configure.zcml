@@ -48,6 +48,9 @@
   <utility factory=".tracing.default_tracer"
     zcml:condition="not-have zeit.cms.tracing.otlp"/>
 
+  <utility factory=".tracing.prometheus_metrics"
+    zcml:condition="have zeit.cms.tracing.prometheus"/>
+
   <subscriber handler=".cleanup.clean_previous_interaction" />
 
   <!-- lxml security settings -->
