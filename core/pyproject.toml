@@ -163,7 +163,7 @@ test = [
     "opentelemetry-exporter-otlp",
     "opentelemetry-sdk",
     "packaging",
-    "plone.testing[zca,zodb]",
+    "plone.testing[zca,zodb] < 9.0.0.dev0",  # plone/plone.testing#86
     "pygraphviz",  # to render linesman results
     "pytest",
     "pytest-cov",
