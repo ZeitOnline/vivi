@@ -1,12 +1,18 @@
 # flake8: noqa: E800
 from math import inf
+from typing import Optional
 
 from opentelemetry.sdk.metrics._internal.point import HistogramDataPoint
+from opentelemetry.sdk.metrics._internal.aggregation import _DataPointVarT
 from opentelemetry.sdk.metrics._internal.aggregation import (
-    AggregationTemporality)
+    AggregationTemporality, _ExplicitBucketHistogramAggregation)
 
 
-def collect(self, aggregation_temporality, collection_start_nano):
+def collect(
+    self,
+    collection_aggregation_temporality: AggregationTemporality,
+    collection_start_nano: int,
+) -> Optional[_DataPointVarT]:
     """Patched to work around open-telemetry/opentelemetry-python#3089"""
 
     with self._lock:
@@ -42,7 +48,8 @@ def collect(self, aggregation_temporality, collection_start_nano):
         return current_point
 
     if self._previous_point is None or (
-        self._instrument_temporality is aggregation_temporality
+        self._instrument_aggregation_temporality
+        is collection_aggregation_temporality
     ):
         self._previous_point = current_point
         return current_point
@@ -50,7 +57,10 @@ def collect(self, aggregation_temporality, collection_start_nano):
     max_ = current_point.max
     min_ = current_point.min
 
-    if aggregation_temporality is AggregationTemporality.CUMULATIVE:
+    if (
+        collection_aggregation_temporality
+        is AggregationTemporality.CUMULATIVE
+    ):
         start_time_unix_nano = self._previous_point.start_time_unix_nano
         sum_ = current_point.sum + self._previous_point.sum
         # Only update min/max on delta -> cumulative
@@ -87,3 +97,5 @@ def collect(self, aggregation_temporality, collection_start_nano):
     )
     self._previous_point = current_point
     return current_point
+
+_ExplicitBucketHistogramAggregation.collect = collect
