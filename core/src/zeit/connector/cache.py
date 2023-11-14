@@ -66,7 +66,7 @@ class Body(persistent.Persistent):
     @property
     def BUFFER_SIZE(self):
         config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.connector')
+            'zeit.connector') or {}
         return int(config.get('body-cache-blob-threshold', 10 * 1024))
 
     def open(self, mode='r'):
