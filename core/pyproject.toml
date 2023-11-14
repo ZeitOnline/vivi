@@ -10,7 +10,7 @@ dependencies = [
     "collective.monkeypatcher",
     "commentjson",
     "cryptography",  # so pyjwt can offer rsa
-    "elasticsearch >=7.16.0, <8.0.0",
+    "elasticsearch >=7.16.0, <8.0.0",  # ZO-2516
     "filetype",
     "gocept.cache >= 2.1",
     "gocept.form[formlib]>=0.7.5",  # XXX Should be [ui], but is entrenched
@@ -157,7 +157,7 @@ test = [
     "gocept.jasmine",
     "gocept.jslint>=0.2",
     "gocept.pytestlayer",
-    "gocept.selenium<7.1",
+    "gocept.selenium<7.1",  # ZO-3157
     "gocept.testing>=1.4.0.dev0",
     "hvac",
     "opentelemetry-exporter-otlp",
@@ -171,7 +171,7 @@ test = [
     "pytest-rerunfailures",
     "pytest-xdist",
     "requests-mock",
-    "selenium<4",  # ZO-681
+    "selenium<4",  # ZO-3157
     "waitress",
     "webtest",
     "xlrd",
