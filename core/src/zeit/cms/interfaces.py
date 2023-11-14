@@ -148,6 +148,10 @@ class ITracer(zope.interface.Interface):
         pass
 
 
+class IMetrics(zope.interface.Interface):
+    """Marker interface to register opentelemetry metrics provider."""
+
+
 def normalize_filename(filename):
     # NOTE: The master version of the algorithm is implemented in JS in
     # zeit.cms.browser.js:filename.js, keep in sync!
