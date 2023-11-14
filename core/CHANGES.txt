@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.63.0 (2023-11-14)
+-------------------
+
+- ZO-4057: Handle configuration defensively, e.g. for publisher
+
+
 5.62.0 (2023-11-13)
 -------------------
 
