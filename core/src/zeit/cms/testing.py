@@ -345,10 +345,11 @@ class WSGILayer(plone.testing.Layer):
     def setUp(self):
         self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(
             self['zodbDB-layer'])
-        self['wsgi_app'] = zeit.cms.wsgi.wsgi_pipeline(
-            self['zope_app'], [('fanstatic', 'egg:fanstatic#fanstatic')],
-            {'fanstatic.' + key: value for key, value
-             in zeit.cms.application.FANSTATIC_SETTINGS.items()})
+        self['wsgi_app'] = zeit.cms.wsgi.wsgi_pipeline(self['zope_app'], [
+            ('prometheus', 'call:zeit.cms.application:prometheus_filter'),
+            ('fanstatic', 'call:fanstatic:make_fanstatic'),
+        ], {'fanstatic.' + key: value for key, value
+            in zeit.cms.application.FANSTATIC_SETTINGS.items()})
         self['wsgi_app'] = zeit.cms.application.OpenTelemetryMiddleware(
             self['wsgi_app'])
 
