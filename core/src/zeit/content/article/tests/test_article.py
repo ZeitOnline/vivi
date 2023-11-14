@@ -467,6 +467,15 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         self.audio, self.info = self._create_audio()
         self.repository['audio'] = self.audio
 
+    def test_remove_audio_from_article(self):
+        self.repository['article'] = self.article
+        with checked_out(self.article) as co:
+            audios = zeit.content.audio.interfaces.IAudioReferences
+            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+                co, zope.lifecycleevent.Attributes(audios, 'items')))
+        # without items, no changes
+        assert 'podcast' != self.article.header_layout
+
     def test_podcast_updates_article_information(self):
         self._add_audio_to_article()
 
