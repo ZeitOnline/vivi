@@ -463,7 +463,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         super().setUp()
         self.article = self.get_article()
         self.article.title = ''
-        self.article.body.create_item('p').text = 'Placeholder'
+        self.article.body.create_item('image')
         self.audio, self.info = self._create_audio()
         self.repository['audio'] = self.audio
 
@@ -520,5 +520,4 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert 'podcast' == self.article.header_layout
         assert self.audio.title != self.article.title
         assert self.info.summary != self.article.teaserText
-        assert len(self.article.body.values()) == 1, 'Without audio, body should only contain "Placeholder"'
-        assert self.info.notes != self.article.body.values()[0].text
+        assert len(self.article.body.values()) == 1, 'Without audio, body should only contain "main image block"'

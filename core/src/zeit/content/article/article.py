@@ -381,8 +381,9 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
         if not context.teaserText:
             context.teaserText = episode.summary
         # article image reserves first position
-        if len(context.body.keys()) <= 1:
-            context.body.create_item('p').text = episode.notes
+        body = context.body
+        if not body or (len(body.keys()) == 1 and context.main_image_block):
+            body.create_item('p').text = episode.notes
 
 
 @grok.subscribe(
