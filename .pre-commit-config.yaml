@@ -4,9 +4,10 @@ repos:
   hooks:
   - id: debug-statements
   - id: trailing-whitespace
-- repo: https://github.com/pycqa/flake8
-  rev: "5.0.4"
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.1.4
   hooks:
-  - id: flake8
-    additional_dependencies:
-    - flake8-awesome
+  - id: ruff
+    args: [--fix, --exit-non-zero-on-fix]
+    types_or: [python, pyi]
+  - id: ruff-format
