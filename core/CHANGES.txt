@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.65.0 (2023-11-15)
+-------------------
+
+- ZO-3764: article title, teasertext and body automatically edited if audio is added
+
+
 5.64.0 (2023-11-14)
 -------------------
 
