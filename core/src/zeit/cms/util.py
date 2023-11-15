@@ -2,7 +2,6 @@ from io import BytesIO
 
 
 class MemoryFile:
-
     def __init__(self, value=None):
         # XXX Even though the signature is BytesIO.__init__([initial_bytes]),
         # it behaves differently when passed no argument.

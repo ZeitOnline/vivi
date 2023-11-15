@@ -5,14 +5,11 @@ import zeit.cms.testing
 
 
 class ClipboardTest(zeit.cms.testing.ZeitCmsTestCase):
-
     def setUp(self):
         super().setUp()
-        self.clipboard = zeit.cms.clipboard.interfaces.IClipboard(
-            self.principal)
+        self.clipboard = zeit.cms.clipboard.interfaces.IClipboard(self.principal)
         UNUSED_REQUEST = None
-        self.view = zeit.cms.clipboard.browser.clipboard.Tree(
-            self.clipboard, UNUSED_REQUEST)
+        self.view = zeit.cms.clipboard.browser.clipboard.Tree(self.clipboard, UNUSED_REQUEST)
 
     def test_get_type_of_content_object(self):
         folder = self.clipboard.addClip('Favoriten')

@@ -3,7 +3,6 @@ import zeit.content.audio.audio
 
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
-
     def test_inline_form_saves_values(self):
         audio = zeit.content.audio.audio.Audio()
         audio.title = 'My Audio'

@@ -16,9 +16,7 @@ import zeit.cms.repository.interfaces
 
 @zope.component.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 @zope.interface.implementer(zeit.cms.repository.interfaces.IUserPreferences)
-class UserPreferences(persistent.Persistent,
-                      zope.container.contained.Contained):
-
+class UserPreferences(persistent.Persistent, zope.container.contained.Contained):
     default_shown_containers = (
         'http://xml.zeit.de/repository/2007',
         'http://xml.zeit.de/repository/2008',
@@ -54,8 +52,7 @@ class UserPreferences(persistent.Persistent,
     def _set_default_hidden_containers(self):
         hidden = set()
         shown = set()
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         for unique_id in self.default_shown_containers:
             try:
                 container = repository.getContent(unique_id)

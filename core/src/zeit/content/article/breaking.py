@@ -8,13 +8,13 @@ import zeit.push.banner
 
 @grok.implementer(zeit.content.article.interfaces.IBreakingNews)
 class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     grok.context(zeit.content.article.interfaces.IArticle)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IBreakingNews,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('is_breaking',))
+        ('is_breaking',),
+    )
 
     # XXX IBreakingNews is supposed to be a specialized IArticle, so we should
     # proxy all attributes we don't have to self.context, but that's hard to do

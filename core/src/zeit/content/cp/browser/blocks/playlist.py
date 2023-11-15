@@ -9,10 +9,9 @@ import zope.lifecycleevent
 
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IPlaylistBlock).omit(
-            *list(zeit.content.cp.interfaces.IBlock))
+    form_fields = zope.formlib.form.Fields(zeit.content.cp.interfaces.IPlaylistBlock).omit(
+        *list(zeit.content.cp.interfaces.IBlock)
+    )
 
 
 class DropPlaylist(zeit.edit.browser.view.Action):
@@ -23,8 +22,7 @@ class DropPlaylist(zeit.edit.browser.view.Action):
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         if not zeit.content.video.interfaces.IPlaylist.providedBy(content):
-            raise ValueError(
-                _("Only playlists can be dropped on a playlist block."))
+            raise ValueError(_('Only playlists can be dropped on a playlist block.'))
         self.context.referenced_playlist = content
         zope.lifecycleevent.modified(self.context)
         self.reload()

@@ -20,23 +20,21 @@ import zope.security.proxy
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class XMLRepresentationBase:
-
     #: XML string with which to initalize new objects. Define in subclass.
     default_template = None
 
     def __init__(self, xml_source=None):
         if xml_source is None:
             if self.default_template is None:
-                raise NotImplementedError(
-                    "default_template needs to be set in subclasses")
+                raise NotImplementedError('default_template needs to be set in subclasses')
             xml_source = StringIO(self.default_template)
         self.xml = gocept.lxml.objectify.fromfile(xml_source)
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLContent)
-class XMLContentBase(zeit.cms.repository.repository.ContentBase,
-                     XMLRepresentationBase,
-                     persistent.Persistent):
+class XMLContentBase(
+    zeit.cms.repository.repository.ContentBase, XMLRepresentationBase, persistent.Persistent
+):
     """Base class for XML content."""
 
 
@@ -78,10 +76,8 @@ class Persistent:
             parent = parent.__parent__
 
 
-@zope.interface.implementer(
-    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+@zope.interface.implementer(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 class SynchronisingDAVPropertyToXMLEvent:
-
     vetoed = False
 
     def __init__(self, namespace, name, value):
@@ -91,23 +87,20 @@ class SynchronisingDAVPropertyToXMLEvent:
         self.vetoed = True
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_dav(event):
     if event.namespace == 'DAV:':
         event.veto()
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_internal(event):
     if event.namespace == 'INTERNAL':
         event.veto()
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
-@zope.interface.implementer(
-    zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser)
+@zope.interface.implementer(zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser)
 class PropertyToXMLAttribute:
     """Attribute nodes reside in the head."""
 
@@ -119,9 +112,9 @@ class PropertyToXMLAttribute:
 
         # Set the date-last-modified to now
         try:
-            dav_properties[('date-last-modified',
-                            zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)] = (
-                                datetime.datetime.now(pytz.UTC).isoformat())
+            dav_properties[
+                ('date-last-modified', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
+            ] = datetime.datetime.now(pytz.UTC).isoformat()
         except zope.security.interfaces.Forbidden:
             # Don't do this for live properties.
             pass
@@ -129,16 +122,14 @@ class PropertyToXMLAttribute:
         self.properties = dict(dav_properties)
 
         # Now get the current live-properties
-        repository = zope.component.queryUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
         if repository is not None and context.uniqueId:
             try:
                 repository_content = repository.getContent(context.uniqueId)
             except KeyError:
                 pass
             else:
-                live_properties = zeit.connector.interfaces.IWebDAVProperties(
-                    repository_content)
+                live_properties = zeit.connector.interfaces.IWebDAVProperties(repository_content)
                 for key, value in live_properties.items():
                     if not live_properties.is_writeable_on_checkin(*key):
                         self.properties[key] = value
@@ -155,14 +146,13 @@ class PropertyToXMLAttribute:
         self.path.setattr(self.context.xml, [])
 
         # Now, set each property to xml, sort them to get a consistent xml
-        for ((name, namespace), value) in sorted(self.properties.items()):
+        for (name, namespace), value in sorted(self.properties.items()):
             if value is zeit.connector.interfaces.DeleteProperty:
                 continue
             self.addAttribute(namespace, name, value)
 
     def addAttribute(self, namespace, name, value):
-        sync_event = SynchronisingDAVPropertyToXMLEvent(
-            namespace, name, value)
+        sync_event = SynchronisingDAVPropertyToXMLEvent(namespace, name, value)
         zope.event.notify(sync_event)
         if sync_event.vetoed:
             return
@@ -174,8 +164,7 @@ class PropertyToXMLAttribute:
 
     def delAttribute(self, namespace, name):
         root = self.context.xml
-        xpath = '//head/attribute[@ns="%s" and @name="%s"]' % (
-            namespace, name)
+        xpath = '//head/attribute[@ns="%s" and @name="%s"]' % (namespace, name)
         for node in root.xpath(xpath):
             parent = node.getparent()
             parent.remove(node)
@@ -183,7 +172,8 @@ class PropertyToXMLAttribute:
 
 @zope.component.adapter(
     zeit.cms.content.interfaces.IDAVPropertiesInXML,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent,
+)
 def map_dav_property_to_xml(context, event):
     """Copy dav properties to XML if possible."""
     # Checking ILocalContent.providedBy(context) would be semantically nicer,
@@ -195,20 +185,21 @@ def map_dav_property_to_xml(context, event):
     # Remove security proxy: If the user was allowed to change the property
     # (via setattr) *we* copy that to the xml, regardles of the security.
     content = zope.security.proxy.removeSecurityProxy(
-        zeit.cms.content.interfaces.IXMLRepresentation(context))
+        zeit.cms.content.interfaces.IXMLRepresentation(context)
+    )
     sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
     sync.set(event.property_namespace, event.property_name, event.new_value)
 
 
 @zope.component.adapter(
     zeit.cms.content.interfaces.IDAVPropertiesInXML,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent,
+)
 def map_dav_properties_to_xml_before_checkin(context, event):
-    """Copy over all DAV properties to the xml before checkin.
-
-    """
+    """Copy over all DAV properties to the xml before checkin."""
     content = zope.security.proxy.removeSecurityProxy(
-        zeit.cms.content.interfaces.IXMLRepresentation(context))
+        zeit.cms.content.interfaces.IXMLRepresentation(context)
+    )
     sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
     sync.sync()
 
@@ -223,22 +214,21 @@ COMMON_NAMESPACES = {
 
 @grok.subscribe(
     zeit.cms.content.interfaces.IXMLRepresentation,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+    zeit.cms.repository.interfaces.IBeforeObjectAddEvent,
+)
 def cleanup_lxml(context, event):
     unwrapped = zope.security.proxy.removeSecurityProxy(context)
     # Keeping common ns prefixes simplifies the workingcopy xml; without them,
     # lxml.objectify would add them to lots of child nodes.
     lxml.etree.cleanup_namespaces(
-        unwrapped.xml, top_nsmap=COMMON_NAMESPACES,
-        keep_ns_prefixes=COMMON_NAMESPACES.keys())
-    lxml.objectify.deannotate(
-        unwrapped.xml, pytype=True, xsi_nil=True, xsi=False)
+        unwrapped.xml, top_nsmap=COMMON_NAMESPACES, keep_ns_prefixes=COMMON_NAMESPACES.keys()
+    )
+    lxml.objectify.deannotate(unwrapped.xml, pytype=True, xsi_nil=True, xsi=False)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 class XMLReferenceUpdater:
-
     target_iface = None
     suppress_errors = False
 
@@ -268,9 +258,11 @@ class XMLReferenceUpdaterRunner(XMLReferenceUpdater):
 
     def update(self, xml_node, suppress_errors=False):
         """Update xml_node with data from the content object."""
-        for name, updater in sorted(zope.component.getAdapters(
-                (self.context,),
-                zeit.cms.content.interfaces.IXMLReferenceUpdater)):
+        for name, updater in sorted(
+            zope.component.getAdapters(
+                (self.context,), zeit.cms.content.interfaces.IXMLReferenceUpdater
+            )
+        ):
             if not name:
                 # The unnamed adapter is the one which runs all the named
                 # adapters, i.e. this one.

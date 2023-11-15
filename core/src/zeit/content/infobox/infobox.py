@@ -9,16 +9,14 @@ import zeit.content.infobox.interfaces
 import zope.interface
 
 
-@zope.interface.implementer(
-    zeit.content.infobox.interfaces.IInfobox,
-    zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(zeit.content.infobox.interfaces.IInfobox, zeit.cms.interfaces.IAsset)
 class Infobox(zeit.cms.content.metadata.CommonMetadata):
-
     default_template = (
         '<container layout="artbox" label="info" '
         'xmlns:py="http://codespeak.net/lxml/objectify/pytype" '
         'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '
-        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />')
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />'
+    )
 
     supertitle = zeit.cms.content.property.ObjectPathProperty('.supertitle')
 
@@ -32,8 +30,8 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
             elif text_node.text:
                 # There is text which is not wrapped into a node. Wrap it.
                 text_node = lxml.objectify.E.text(
-                    lxml.objectify.E.p(text_node.text,
-                                       *text_node.getchildren()))
+                    lxml.objectify.E.p(text_node.text, *text_node.getchildren())
+                )
             text = self.html_converter.to_html(text_node)
             result.append((str(node['title']), text))
         return tuple(result)
@@ -45,9 +43,7 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
         for title, text in value:
             text_node = lxml.objectify.E.text()
             self.html_converter.from_html(text_node, text)
-            self.xml.append(lxml.objectify.E.block(
-                lxml.objectify.E.title(title),
-                text_node))
+            self.xml.append(lxml.objectify.E.block(lxml.objectify.E.title(title), text_node))
         self._p_changed = True
 
     @property
@@ -56,7 +52,6 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
 
 
 class InfoboxType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Infobox
     interface = zeit.content.infobox.interfaces.IInfobox
     type = 'infobox'
@@ -65,8 +60,8 @@ class InfoboxType(zeit.cms.type.XMLContentTypeDeclaration):
 
 @grok.implementer(zeit.content.infobox.interfaces.IDebate)
 class Debate(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     action_url = zeit.cms.content.dav.DAVProperty(
         zeit.content.infobox.interfaces.IDebate['action_url'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'debate_action_url')
+        'debate_action_url',
+    )

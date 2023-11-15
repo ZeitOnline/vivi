@@ -18,7 +18,6 @@ HERE = importlib.resources.files(__package__)
 
 
 class TestBase(zeit.crop.testing.BrowserTestCase):
-
     image_path = 'http://localhost/++skin++cms/repository/group'
 
     def setUp(self):
@@ -28,7 +27,6 @@ class TestBase(zeit.crop.testing.BrowserTestCase):
 
 
 class ImageBarTest(TestBase):
-
     def get_image_bar_data(self):
         self.browser.open(self.image_path + '/@@imp-image-bar')
         return json.loads(self.browser.contents)
@@ -44,11 +42,15 @@ class ImageBarTest(TestBase):
         with image.open('w') as f:
             f.write((HERE / 'testdata/01.jpg').read_bytes())
         self.repository['group']['foo-240x120.jpg'] = image
-        self.assertAPI([{
-            'url':
-            'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
-            'name': 'foo-240x120.jpg',
-            'scale_name': 'foo-240x120'}])
+        self.assertAPI(
+            [
+                {
+                    'url': 'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
+                    'name': 'foo-240x120.jpg',
+                    'scale_name': 'foo-240x120',
+                }
+            ]
+        )
 
         # Another image
         image = zeit.content.image.image.LocalImage()
@@ -56,56 +58,72 @@ class ImageBarTest(TestBase):
             f.write((HERE / 'testdata/02.jpg').read_bytes())
         self.repository['group']['foo-artikel.jpg'] = image
         transaction.commit()
-        self.assertAPI([
-            {'url':
-             'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
-             'name': 'foo-240x120.jpg',
-             'scale_name': 'foo-240x120'},
-            {'url':
-             'http://localhost/++skin++cms/repository/group/foo-artikel.jpg',
-             'name': 'foo-artikel.jpg',
-             'scale_name': 'foo-artikel'}])
+        self.assertAPI(
+            [
+                {
+                    'url': 'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
+                    'name': 'foo-240x120.jpg',
+                    'scale_name': 'foo-240x120',
+                },
+                {
+                    'url': 'http://localhost/++skin++cms/repository/group/foo-artikel.jpg',
+                    'name': 'foo-artikel.jpg',
+                    'scale_name': 'foo-artikel',
+                },
+            ]
+        )
 
 
 class CropTest(TestBase):
-
     def get_image_data(self, **form):
         self.browser.post(
-            self.image_path + '/@@imp-crop', urlencode(dict(
-                w='1000', h='500',
-                x1='400', y1='100',
-                x2='800', y2='300',
-                name='400x200', **form)))
+            self.image_path + '/@@imp-crop',
+            urlencode(
+                dict(
+                    w='1000',
+                    h='500',
+                    x1='400',
+                    y1='100',
+                    x2='800',
+                    y2='300',
+                    name='400x200',
+                    **form,
+                )
+            ),
+        )
         path = self.browser.contents.replace('http://localhost', '', 1)
-        self.assertEqual(
-            '/++skin++cms/repository/group/group-400x200.jpg', path)
+        self.assertEqual('/++skin++cms/repository/group/group-400x200.jpg', path)
         self.browser.open(path + '/@@raw')
         return self.browser.contents
 
     def test_crop_returns_image_url(self):
         self.browser.post(
-            self.image_path + '/@@imp-crop', urlencode({
-                'w': '1200', 'h': '749',
-                'x1': '400', 'y1': '100',
-                'x2': '800', 'y2': '300',
-                'name': '400x200'}))
+            self.image_path + '/@@imp-crop',
+            urlencode(
+                {
+                    'w': '1200',
+                    'h': '749',
+                    'x1': '400',
+                    'y1': '100',
+                    'x2': '800',
+                    'y2': '300',
+                    'name': '400x200',
+                }
+            ),
+        )
         # The image name contains the parent name, the given name and .jpg
         self.assertEqual(
-            'http://localhost/++skin++cms/repository/group/group-400x200.jpg',
-            self.browser.contents)
+            'http://localhost/++skin++cms/repository/group/group-400x200.jpg', self.browser.contents
+        )
 
     def test_crop_size(self):
         image_data = self.get_image_data()
-        self.assertEqual(
-            ('image/jpeg', 400, 200),
-            zope.app.file.image.getImageInfo(image_data))
+        self.assertEqual(('image/jpeg', 400, 200), zope.app.file.image.getImageInfo(image_data))
 
     def test_crop_border(self):
         image_data = self.get_image_data(border='#000000')
         # A border does not change the image size, the border is *inside*
-        self.assertEqual(
-            ('image/jpeg', 400, 200),
-            zope.app.file.image.getImageInfo(image_data))
+        self.assertEqual(('image/jpeg', 400, 200), zope.app.file.image.getImageInfo(image_data))
 
         image = PIL.Image.open(BytesIO(image_data))
         # Verify some pixels around the border, they're all black:
@@ -123,8 +141,7 @@ class CropTest(TestBase):
     def looks_black(self, img, x, y):
         # The pixels are not really black because we've got a jpeg.
         color = img.getpixel((x, y))
-        self.assertTrue(
-            sum(color) < 70, "fail %s, %s sum%s > 70" % (x, y, color))
+        self.assertTrue(sum(color) < 70, 'fail %s, %s sum%s > 70' % (x, y, color))
 
     def test_filters_applied(self):
         # Test that the image is different with and without a filter applied

@@ -4,15 +4,13 @@ import zeit.content.cp.testing
 
 
 class TestNewsletter(zeit.content.cp.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('newslettersignup')
         self.repository['centerpage'] = self.centerpage
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')
         b.open('contents')
         self.content_url = b.url
 
@@ -20,9 +18,7 @@ class TestNewsletter(zeit.content.cp.testing.BrowserTestCase):
         b = self.browser
         block_type = 'newslettersignup'
         self.assertEqual(1, b.contents.count('type-{}'.format(block_type)))
-        b.open('informatives/@@landing-zone-drop-module?block_type={}'.format(
-            block_type
-        ))
+        b.open('informatives/@@landing-zone-drop-module?block_type={}'.format(block_type))
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-{}'.format(block_type)))
 
@@ -38,5 +34,4 @@ class TestNewsletter(zeit.content.cp.testing.BrowserTestCase):
         b.open(self.content_url)
         self.assertEllipsis('...Z+/Abonnenten...', b.contents)
         b.getLink('Edit block properties', index=0).click()
-        self.assertEqual(
-            ['Z+/Abonnenten'], b.getControl('Newsletter Signup').displayValue)
+        self.assertEqual(['Z+/Abonnenten'], b.getControl('Newsletter Signup').displayValue)

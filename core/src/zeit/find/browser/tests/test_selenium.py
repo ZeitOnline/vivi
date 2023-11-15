@@ -5,17 +5,16 @@ import zeit.find.testing
 
 
 class TestSearch(zeit.cms.testing.SeleniumTestCase):
-
     layer = zeit.find.testing.SELENIUM_LAYER
     skin = 'vivi'
 
     def setUp(self):
         super().setUp()
-        zeit.find.testing.LAYER.set_result(
-            'zeit.find.tests', 'data/obama.json')
+        zeit.find.testing.LAYER.set_result('zeit.find.tests', 'data/obama.json')
         self.types_patch = mock.patch(
             'zeit.find.browser.find.SearchForm.CONTENT_TYPES',
-            new=['collection', 'file', 'image', 'testcontenttype', 'unknown'])
+            new=['collection', 'file', 'image', 'testcontenttype', 'unknown'],
+        )
         self.types_patch.start()
         self.open('/find')
         self.selenium.waitForElementPresent('css=div.teaser_title')
@@ -51,7 +50,8 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
     def test_last_query_should_be_saved(self):
         zeit.find.testing.LAYER.search.client.search.return_value = {
-            'hits': {'hits': [], 'total': 0}}
+            'hits': {'hits': [], 'total': 0}
+        }
         s = self.selenium
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search')

@@ -47,8 +47,7 @@ RESOURCE_TYPE_PROPERTY = zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY
 # Highest possible datetime value. We use datetime-with-timezone everywhere.
 # The MAXYEAR-1 is there to protect us from passing this bound when
 # transforming into some local time
-TIME_ETERNITY = datetime.datetime(
-    datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC)
+TIME_ETERNITY = datetime.datetime(datetime.MAXYEAR - 1, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.UTC)
 
 
 class DAVUnexpectedResultError(zeit.connector.dav.interfaces.DAVError):
@@ -81,7 +80,7 @@ class CannonicalId(str):
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
     """Connect to the CMS backend.
-       WebDAV implementation based on pydavclient
+    WebDAV implementation based on pydavclient
     """
 
     long_name = 'DAV connector'
@@ -127,14 +126,14 @@ class Connector:
             delattr(self.connections, root)
 
     def listCollection(self, id):
-        """List the filenames of a collection identified by <id> (see[8]). """
-        __traceback_info__ = (id, )
+        """List the filenames of a collection identified by <id> (see[8])."""
+        __traceback_info__ = (id,)
         id = self._get_cannonical_id(id)
         for child_id in self._get_resource_child_ids(id):
             yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
 
     def _get_resource_type(self, id):
-        __traceback_info__ = (id, )
+        __traceback_info__ = (id,)
         properties = self._get_resource_properties(id)
         r_type = properties.get(RESOURCE_TYPE_PROPERTY)
         if r_type is None:
@@ -150,14 +149,14 @@ class Connector:
         return r_type
 
     def _get_resource_properties(self, id):
-        __traceback_info__ = (id, )
+        __traceback_info__ = (id,)
         properties = None
         try:
             properties = self.property_cache[id]
         except KeyError:
             pass
         if properties is None:
-            logger.debug("Getting properties from dav: %s" % id)
+            logger.debug('Getting properties from dav: %s' % id)
             davres = self._get_dav_resource(id)
             if davres._result is None:
                 davres.update()
@@ -183,8 +182,7 @@ class Connector:
         for path, response in dav_result._result.responses.items():
             # response_id will be the canonical id, i.e. collections end with a
             # slash (/)
-            response_id = self._loc2id(urllib.parse.urljoin(
-                self._roots['default'], path))
+            response_id = self._loc2id(urllib.parse.urljoin(self._roots['default'], path))
             properties = response.get_all_properties()
             cached_properties = dict(cache.get(response_id, {}))
             cached_properties.pop(('cached-time', 'INTERNAL'), None)
@@ -195,24 +193,23 @@ class Connector:
     def _update_child_id_cache(self, dav_response):
         if not dav_response.is_collection():
             return None
-        id = self._loc2id(urllib.parse.urljoin(
-            self._roots['default'], dav_response.path))
+        id = self._loc2id(urllib.parse.urljoin(self._roots['default'], dav_response.path))
         child_ids = self.child_name_cache[id] = [
-            self._loc2id(urllib.parse.urljoin(
-                self._roots['default'], path))
-            for path in dav_response.get_child_names()]
+            self._loc2id(urllib.parse.urljoin(self._roots['default'], path))
+            for path in dav_response.get_child_names()
+        ]
         return child_ids
 
     def _get_resource_body(self, id):
         """Return body of resource."""
-        __traceback_info__ = (id, )
+        __traceback_info__ = (id,)
         properties = self._get_resource_properties(id)
         data = None
         if properties.get(('getlastmodified', 'DAV:')):
             try:
                 data = self.body_cache.getData(id, properties)
             except KeyError:
-                logger.debug("Getting body from dav: %s" % id)
+                logger.debug('Getting body from dav: %s' % id)
                 response = self._get_dav_resource(id).get()
                 data = self.body_cache.setData(id, properties, response)
                 if not response.isclosed():
@@ -225,25 +222,26 @@ class Connector:
 
     def __getitem__(self, id):
         """Return the resource identified by `id`."""
-        __traceback_info__ = (id, )
+        __traceback_info__ = (id,)
         id = self._get_cannonical_id(id)
         try:
-            content_type = self._get_resource_properties(id).get(
-                ('getcontenttype', 'DAV:'))
-        except (zeit.connector.dav.interfaces.DAVNotFoundError,
-                zeit.connector.dav.interfaces.DAVBadRequestError):
-            raise KeyError(
-                "The resource %r does not exist." % str(id))
+            content_type = self._get_resource_properties(id).get(('getcontenttype', 'DAV:'))
+        except (
+            zeit.connector.dav.interfaces.DAVNotFoundError,
+            zeit.connector.dav.interfaces.DAVBadRequestError,
+        ):
+            raise KeyError('The resource %r does not exist.' % str(id))
         return zeit.connector.resource.CachedResource(
-            str(id), self._id_splitlast(id)[1].rstrip('/'),
+            str(id),
+            self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(id),
             lambda: self._get_resource_properties(id),
             lambda: self._get_resource_body(id),
-            contentType=content_type)
+            contentType=content_type,
+        )
 
     def __setitem__(self, id, object):
-        """Add the given `object` to the document store under the given name.
-        """
+        """Add the given `object` to the document store under the given name."""
         id = self._get_cannonical_id(id)
         resource = zeit.connector.interfaces.IResource(object)
         resource.id = id  # override
@@ -277,38 +275,34 @@ class Connector:
 
     def copy(self, old_id, new_id):
         """Copy the resource old_id to new_id."""
-        self._copy_or_move('copy', zeit.connector.interfaces.CopyError,
-                           old_id, new_id)
+        self._copy_or_move('copy', zeit.connector.interfaces.CopyError, old_id, new_id)
 
     def move(self, old_id, new_id):
-        """Move the resource with id `old_id` to `new_id`.
-        """
-        self._copy_or_move('move', zeit.connector.interfaces.MoveError,
-                           old_id, new_id,
-                           resolve_conflicts=True)
+        """Move the resource with id `old_id` to `new_id`."""
+        self._copy_or_move(
+            'move', zeit.connector.interfaces.MoveError, old_id, new_id, resolve_conflicts=True
+        )
 
-    def _copy_or_move(self, method_name, exception, old_id, new_id,
-                      resolve_conflicts=False):
+    def _copy_or_move(self, method_name, exception, old_id, new_id, resolve_conflicts=False):
         source = self[old_id]  # Makes sure source exists.
         if self._is_descendant(new_id, old_id):
-            raise exception(
-                old_id,
-                'Could not copy or move %s to a decendant of itself.' % old_id)
+            raise exception(old_id, 'Could not copy or move %s to a decendant of itself.' % old_id)
 
         logger.debug('copy: %s to %s' % (old_id, new_id))
         if self._get_cannonical_id(new_id) in self:
             target = self[new_id]
             # The target already exists. It's possible that there was a
             # conflict. For non-directories verify body.
-            if not (resolve_conflicts and
-                    'httpd/unix-directory' not in (source.contentType,
-                                                   target.contentType) and
-                    source.data.read() == self[new_id].data.read()):
+            if not (
+                resolve_conflicts
+                and 'httpd/unix-directory' not in (source.contentType, target.contentType)
+                and source.data.read() == self[new_id].data.read()
+            ):
                 raise exception(
                     old_id,
-                    "Could not copy or move %s to %s, "
-                    "because target alread exists." % (
-                        old_id, new_id))
+                    'Could not copy or move %s to %s, '
+                    'because target alread exists.' % (old_id, new_id),
+                )
         # Make old_id and new_id canonical. Use the canonical old_id to deduct
         # the canonical new_id:
         old_id = self._get_cannonical_id(old_id)
@@ -317,7 +311,7 @@ class Connector:
                 new_id += '/'
         else:
             if new_id.endswith('/'):
-                new_id = new_id[:len(new_id) - 1]
+                new_id = new_id[: len(new_id) - 1]
         old_loc = self._id2loc(old_id)
         new_loc = self._id2loc(new_id)
 
@@ -331,8 +325,8 @@ class Connector:
             self.changeProperties(new_id, source.properties)
             for name, child_id in self.listCollection(old_id):
                 self._copy_or_move(
-                    method_name, exception,
-                    child_id, urllib.parse.urljoin(new_id, name))
+                    method_name, exception, child_id, urllib.parse.urljoin(new_id, name)
+                )
             if method_name == 'move':
                 del self[old_id]
         else:
@@ -358,7 +352,7 @@ class Connector:
         """
         path1 = urllib.parse.urlsplit(id1)[2].split('/')
         path2 = urllib.parse.urlsplit(id2)[2].split('/')
-        return (len(path2) <= len(path1) and path2 == path1[:len(path2)])
+        return len(path2) <= len(path1) and path2 == path1[: len(path2)]
 
     def changeProperties(self, id, properties, locktoken=None):
         id = self._get_cannonical_id(id)
@@ -366,13 +360,11 @@ class Connector:
             locktoken = self._get_my_locktoken(id)
         davres = self._get_dav_resource(id)
         properties = dict(properties)
-        properties[('cached-time', 'INTERNAL')] = (
-            zeit.connector.interfaces.DeleteProperty)
+        properties[('cached-time', 'INTERNAL')] = zeit.connector.interfaces.DeleteProperty
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         davres.change_properties(
-            properties,
-            delmark=zeit.connector.interfaces.DeleteProperty,
-            locktoken=locktoken)
+            properties, delmark=zeit.connector.interfaces.DeleteProperty, locktoken=locktoken
+        )
 
         # Update property cache
         del properties[('cached-time', 'INTERNAL')]
@@ -391,13 +383,11 @@ class Connector:
         try:
             # NOTE: _timeout() returns None for timeouts too long. This blends
             #       with DAVConnection, which converts None to 'Infinite'.
-            token = self.get_connection().lock(url,
-                                               owner=principal,
-                                               depth=0,
-                                               timeout=_abs2timeout(until))
+            token = self.get_connection().lock(
+                url, owner=principal, depth=0, timeout=_abs2timeout(until)
+            )
         except zeit.connector.dav.interfaces.DAVLockedError:
-            raise zeit.connector.interfaces.LockingError(
-                id, "%s is already locked." % id)
+            raise zeit.connector.interfaces.LockingError(id, '%s is already locked.' % id)
         # Just pass-on other exceptions. It's more informative
 
         self._invalidate_cache(id)
@@ -431,8 +421,10 @@ class Connector:
             # Let's see if the principal is one we know.
             try:
                 import zope.authentication.interfaces  # UI-only dependency
+
                 authentication = zope.component.queryUtility(
-                    zope.authentication.interfaces.IAuthentication)
+                    zope.authentication.interfaces.IAuthentication
+                )
             except ImportError:
                 authentication = None
             if authentication is not None:
@@ -454,8 +446,8 @@ class Connector:
 
     def search(self, attrlist, expr):
         """Search repository behind this connector according to <expr>.
-           For each match return the values of the attributes
-           specified in attrlist
+        For each match return the values of the attributes
+        specified in attrlist
         """
         # Collect "result" vars as bindings "into" expression:
         for at in attrlist:
@@ -466,31 +458,27 @@ class Connector:
         if isinstance(expr, str):
             expr = expr.encode('utf8')
         conn = self.get_connection('search')
-        response = conn.search(
-            self._roots.get('search', self._roots['default']),
-            body=expr)
+        response = conn.search(self._roots.get('search', self._roots['default']), body=expr)
         davres = zeit.connector.dav.davresource.DAVResult(response)
         if davres.has_errors():
             raise zeit.connector.dav.interfaces.DAVError(
-                davres.status, davres.reason, '/', davres.body, response)
+                davres.status, davres.reason, '/', davres.body, response
+            )
         for url, resp in davres.responses.items():
             try:
-                id = self._loc2id(urllib.parse.urljoin(
-                    self._roots['default'], url))
+                id = self._loc2id(urllib.parse.urljoin(self._roots['default'], url))
             except ValueError:
                 # Search returns documents which are outside the root, ignore
                 continue
             props = resp.get_all_properties()
-            yield tuple([id] + [
-                props[(a.name, a.namespace)] for a in attrlist])
+            yield tuple([id] + [props[(a.name, a.namespace)] for a in attrlist])
 
     def _get_my_locktoken(self, id):
         locker, until, myself = self.locked(id)
 
         if (locker or until) and not myself:
             __traceback_info__ = (id, locker, until)
-            raise zeit.connector.interfaces.LockedByOtherSystemError(
-                id, locker, until)
+            raise zeit.connector.interfaces.LockedByOtherSystemError(id, locker, until)
         try:
             davlock = self._get_dav_lock(id)
         except KeyError:
@@ -499,35 +487,33 @@ class Connector:
 
     def _id2loc(self, id):
         """Transform an id to a location, e.g.
-             http://xml.zeit.de/2006/12/ -->
-             http://zip4.zeit.de:9999/cms/work/2006/12/
-           Just a textual transformation: replace _prefix with _root"""
+          http://xml.zeit.de/2006/12/ -->
+          http://zip4.zeit.de:9999/cms/work/2006/12/
+        Just a textual transformation: replace _prefix with _root"""
         if not id.startswith(self._prefix):
-            raise ValueError("Bad id %r (prefix is %r)" % (id, self._prefix))
-        path = id[len(self._prefix):]
+            raise ValueError('Bad id %r (prefix is %r)' % (id, self._prefix))
+        path = id[len(self._prefix) :]
         return self._roots['default'] + path
 
     def _loc2id(self, loc):
         """Transform a location to an id, e.g.
-             http://zip4.zeit.de:9999/cms/work/2006/12/ -->
-             http://xml.zeit.de/2006/12/
-           Just a textual transformation: replace _root with _prefix"""
+          http://zip4.zeit.de:9999/cms/work/2006/12/ -->
+          http://xml.zeit.de/2006/12/
+        Just a textual transformation: replace _root with _prefix"""
         root = self._roots['default']
         if not loc.startswith(root):
-            raise ValueError("Bad location %r (root is %r)" % (loc, root))
-        path = loc[len(root):]
+            raise ValueError('Bad location %r (root is %r)' % (loc, root))
+        path = loc[len(root) :]
         return self._prefix + path
 
     def _internal_add(self, id, resource, verify_etag=True):
-        """The grunt work of __setitem__() and add()
-        """
+        """The grunt work of __setitem__() and add()"""
         if id.rstrip('/') == ID_NAMESPACE.rstrip('/'):
             raise KeyError('Cannot write to root object')
         self._invalidate_cache(id)
         locktoken = self._get_my_locktoken(id)
-        autolock = (locktoken is None)
-        iscoll = (resource.type == 'collection' or
-                  resource.contentType == 'httpd/unix-directory')
+        autolock = locktoken is None
+        iscoll = resource.type == 'collection' or resource.contentType == 'httpd/unix-directory'
         if iscoll and not id.endswith('/'):
             id = id + '/'
 
@@ -539,9 +525,9 @@ class Connector:
                 self._add_collection(id)
 
         if autolock:
-            locktoken = self.lock(id, "AUTOLOCK",
-                                  datetime.datetime.now(pytz.UTC) +
-                                  datetime.timedelta(seconds=60))
+            locktoken = self.lock(
+                id, 'AUTOLOCK', datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=60)
+            )
         try:
             if not iscoll:  # We are a file resource:
                 if hasattr(resource.data, 'seek'):
@@ -556,16 +542,19 @@ class Connector:
                 conn = self.get_connection()
 
                 headers = {}
-                uuid = resource.properties.get(
-                    zeit.connector.interfaces.UUID_PROPERTY)
+                uuid = resource.properties.get(zeit.connector.interfaces.UUID_PROPERTY)
                 if uuid:
                     headers['Zeit-DocID'] = uuid
 
                 try:
-                    conn.put(self._id2loc(id), data,
-                             mime_type=resource.contentType,
-                             locktoken=locktoken, etag=etag,
-                             extra_headers=headers)
+                    conn.put(
+                        self._id2loc(id),
+                        data,
+                        mime_type=resource.contentType,
+                        locktoken=locktoken,
+                        etag=etag,
+                        extra_headers=headers,
+                    )
                 except zeit.connector.dav.interfaces.PreconditionFailedError:
                     if self[id].data.read() != data:
                         raise
@@ -593,11 +582,10 @@ class Connector:
 
     def _check_dav_resource(self, id):
         """Check whether resource <id> exists.
-           Issue a head request and return not None when found.
+        Issue a head request and return not None when found.
         """
         url = self._id2loc(id)
-        hresp = zeit.connector.dav.davresource.DAVResource(
-            url, conn=self.get_connection()).head()
+        hresp = zeit.connector.dav.davresource.DAVResource(url, conn=self.get_connection()).head()
         if not hresp:
             return False
         hresp.read()
@@ -607,8 +595,7 @@ class Connector:
         elif st == http.client.NOT_FOUND:
             return False
         else:
-            raise DAVUnexpectedResultError(
-                'Unexpected result code for %s: %d' % (url, st))
+            raise DAVUnexpectedResultError('Unexpected result code for %s: %d' % (url, st))
 
     def _get_dav_resource(self, id):
         """returns resource corresponding to <id>"""
@@ -651,13 +638,11 @@ class Connector:
                     # Better too much than not enough
                     timeout = TIME_ETERNITY
                 else:
-                    reftime = self[id].properties.get(
-                        ('cached-time', 'INTERNAL'))
+                    reftime = self[id].properties.get(('cached-time', 'INTERNAL'))
                     if not isinstance(reftime, datetime.datetime):
                         # XXX untested
                         reftime = datetime.datetime.now(pytz.UTC)
-                    timeout = reftime + datetime.timedelta(
-                        seconds=int(m.group(1)))
+                    timeout = reftime + datetime.timedelta(seconds=int(m.group(1)))
                 davlock['timeout'] = timeout
 
             davlock['locktoken'] = str(lockinfo_node.locktoken.href)
@@ -669,7 +654,7 @@ class Connector:
             try:
                 del cache[id]
             except KeyError:
-                logger.debug("%s not in %s" % (id, cache))
+                logger.debug('%s not in %s' % (id, cache))
 
     def _invalidate_cache(self, id):
         # Make an indirection here to allow zopeconnector to use events.
@@ -698,15 +683,13 @@ class Connector:
 
             # Remove no longer existing child entries from property_cache
             IPersistentCache = zeit.connector.interfaces.IPersistentCache
-            if id.endswith('/') and IPersistentCache.providedBy(
-                    self.property_cache):
+            if id.endswith('/') and IPersistentCache.providedBy(self.property_cache):
                 end = id[:-1] + chr(ord('/') + 1)
                 for key in self.property_cache.keys(min=id, max=end):
                     if key not in self.child_name_cache:
                         del self.property_cache[key]
         else:
-            self._remove_from_caches(id, [self.property_cache,
-                                          self.child_name_cache])
+            self._remove_from_caches(id, [self.property_cache, self.child_name_cache])
 
         # Update our parent's child_name_cache
         parent, name = self._id_splitlast(id)
@@ -744,7 +727,8 @@ class Connector:
         if self.property_cache.get(id) is not None:
             return CannonicalId(id)
         dav_resource = zeit.connector.dav.davresource.DAVResource(
-            self._id2loc(id), conn=self.get_connection())
+            self._id2loc(id), conn=self.get_connection()
+        )
         response = dav_resource.head()
         response.read()
         if response.status == 301:
@@ -776,28 +760,28 @@ class Connector:
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
         import zope.app.appsetup.product
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.connector')
-        return cls({
-            'default': config['document-store'],
-            'search': config['document-store-search']})
+
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector')
+        return cls({'default': config['document-store'], 'search': config['document-store-search']})
 
 
 factory = Connector.factory  # zope.dottedname does not support classmethods
 
 
 class TransactionBoundCachingConnector(Connector):
-
     long_name = '(Transaction-bound) DAV connector'
 
     body_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_body_cache', zeit.connector.cache.ResourceCache)
+        '_v_body_cache', zeit.connector.cache.ResourceCache
+    )
 
     property_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_property_cache', zeit.connector.cache.PropertyCache)
+        '_v_property_cache', zeit.connector.cache.PropertyCache
+    )
 
     child_name_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_child_name_cache', zeit.connector.cache.ChildNameCache)
+        '_v_child_name_cache', zeit.connector.cache.ChildNameCache
+    )
 
 
 tbc_factory = TransactionBoundCachingConnector.factory

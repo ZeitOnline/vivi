@@ -23,19 +23,15 @@ log = logging.getLogger(__name__)
 AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
 
 
-@zope.interface.implementer(
-    IAudio,
-    zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(IAudio, zeit.cms.interfaces.IAsset)
 class Audio(zeit.cms.content.metadata.CommonMetadata):
     default_template = '<audio><head/><body/></audio>'
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.audio.interfaces.IAudio,
-        AUDIO_SCHEMA_NS, (
-            'external_id',
-            'url',
-            'duration',
-            'audio_type'))
+        AUDIO_SCHEMA_NS,
+        ('external_id', 'url', 'duration', 'audio_type'),
+    )
 
     @property
     def teaserTitle(self):  # @@object-details expects this
@@ -44,23 +40,25 @@ class Audio(zeit.cms.content.metadata.CommonMetadata):
 
 @zope.interface.implementer(IPodcastEpisodeInfo)
 class PodcastEpisodeInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     grok.context(IAudio)
 
     zeit.cms.content.dav.mapProperties(
         IPodcastEpisodeInfo,
-        AUDIO_SCHEMA_NS, (
+        AUDIO_SCHEMA_NS,
+        (
             'podcast',
             'podcast_id',
             'episode_nr',
             'url_ad_free',
             'is_published',
-            'dashboard_link',))
+            'dashboard_link',
+        ),
+    )
 
     summary = zeit.cms.content.property.ObjectPathProperty(
-        '.summary', IPodcastEpisodeInfo['summary'])
-    notes = zeit.cms.content.property.ObjectPathProperty(
-        '.notes', IPodcastEpisodeInfo['notes'])
+        '.summary', IPodcastEpisodeInfo['summary']
+    )
+    notes = zeit.cms.content.property.ObjectPathProperty('.notes', IPodcastEpisodeInfo['notes'])
 
     def __init__(self, context):
         self.xml = context.xml

@@ -40,34 +40,37 @@ class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):
         super().__set__(instance, items)
 
 
-@zope.interface.implementer(
-    zeit.content.video.interfaces.IVideo,
-    zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(zeit.content.video.interfaces.IVideo, zeit.cms.interfaces.IAsset)
 class Video(zeit.cms.content.metadata.CommonMetadata):
-
-    default_template = (importlib.resources.files(
-        __package__) / 'video-template.xml').read_text('utf-8')
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.video.interfaces.IVideo,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'expires', 'video_still_copyright'))
+    default_template = (importlib.resources.files(__package__) / 'video-template.xml').read_text(
+        'utf-8'
+    )
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_advertisement',), use_default=True)
+        ('has_recensions', 'expires', 'video_still_copyright'),
+    )
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.video.interfaces.IVideo,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('has_advertisement',),
+        use_default=True,
+    )
 
     type = zeit.cms.content.dav.DAVProperty(
-        zeit.content.video.interfaces.IVideo['type'],
-        'http://namespaces.zeit.de/CMS/video', 'type')
+        zeit.content.video.interfaces.IVideo['type'], 'http://namespaces.zeit.de/CMS/video', 'type'
+    )
 
     id_prefix = 'vid'
 
     external_id = zeit.cms.content.dav.DAVProperty(
         zeit.content.video.interfaces.IVideo['external_id'],
         # BBB This field used to be injected into here from zeit.brightcove
-        'http://namespaces.zeit.de/CMS/brightcove', 'id')
+        'http://namespaces.zeit.de/CMS/brightcove',
+        'id',
+    )
 
     @property
     def renditions(self):
@@ -86,8 +89,7 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 
     @cachedproperty
     def _player_data(self):
-        player = zope.component.getUtility(
-            zeit.content.video.interfaces.IPlayer)
+        player = zope.component.getUtility(zeit.content.video.interfaces.IPlayer)
         return player.get_video(self.external_id)
 
     @property
@@ -96,13 +98,15 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 
     authorships = AuthorshipsProperty(
         str(zeit.cms.content.metadata.CommonMetadata.authorships.path),
-        zeit.cms.content.metadata.CommonMetadata.authorships.xml_reference_name
+        zeit.cms.content.metadata.CommonMetadata.authorships.xml_reference_name,
     )
 
     # Override from CommonMetadata to change the source
     serie = zeit.cms.content.dav.DAVProperty(
         zeit.content.video.interfaces.IVideo['serie'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'serie')
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'serie',
+    )
 
     @property
     def seo_slug(self):
@@ -113,25 +117,21 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 @zope.component.adapter(zeit.content.video.interfaces.IVideo)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class VideoImage(zeit.cms.related.related.RelatedBase):
-
-    image = zeit.cms.content.reference.SingleResource(
-        '.body.video_still', 'image')
+    image = zeit.cms.content.reference.SingleResource('.body.video_still', 'image')
 
     fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.body.video_still', 'fill_color',
-        zeit.content.image.interfaces.IImages['fill_color'])
+        '.body.video_still', 'fill_color', zeit.content.image.interfaces.IImages['fill_color']
+    )
 
 
 @zope.interface.implementer(zeit.content.video.interfaces.IVideoRendition)
-class VideoRendition():
-
+class VideoRendition:
     frame_width = 0
     url = None
     video_duration = 0
 
 
 class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
-
     title = _('Video')
     interface = zeit.content.video.interfaces.IVideo
     addform = zeit.cms.type.SKIP_ADD
@@ -140,21 +140,20 @@ class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
 
 
 class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
-
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('zeit.content.video')
 
     def get_dependencies(self):
-        relations = zope.component.getUtility(
-            zeit.cms.relation.interfaces.IRelations)
-        dependencies = [x for x in relations.get_relations(self.context)
-                        if zeit.content.video.interfaces.
-                        IPlaylist.providedBy(x)]
+        relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
+        dependencies = [
+            x
+            for x in relations.get_relations(self.context)
+            if zeit.content.video.interfaces.IPlaylist.providedBy(x)
+        ]
         return dependencies
 
 
 class DependenciesImages(zeit.cms.workflow.dependency.DependencyBase):
-
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('zeit.content.video.still')
 

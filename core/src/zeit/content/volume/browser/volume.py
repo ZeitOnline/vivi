@@ -4,13 +4,10 @@ import zope.publisher.interfaces
 
 
 @grok.implementer(zeit.cms.browser.interfaces.IListRepresentation)
-class VolumeListRepresentation(
-        grok.MultiAdapter,
-        zeit.cms.browser.listing.BaseListRepresentation):
-
+class VolumeListRepresentation(grok.MultiAdapter, zeit.cms.browser.listing.BaseListRepresentation):
     grok.adapts(
-        zeit.content.volume.interfaces.IVolume,
-        zope.publisher.interfaces.IPublicationRequest)
+        zeit.content.volume.interfaces.IVolume, zope.publisher.interfaces.IPublicationRequest
+    )
 
     ressort = page = author = ''
 

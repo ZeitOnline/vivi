@@ -7,36 +7,28 @@ import zope.interface
 import zope.schema
 
 
-class IContainer(zeit.edit.interfaces.IArea,
-                 zeit.edit.interfaces.IBlock):
+class IContainer(zeit.edit.interfaces.IArea, zeit.edit.interfaces.IBlock):
     pass
 
 
 class IBlock(zeit.edit.interfaces.IBlock):
-
     example_amount = zope.schema.Int()
 
     @zope.interface.invariant
     def check_name_is_not_empty(data):
         if not data.__name__:
-            raise zeit.cms.interfaces.ValidationError(
-                'The __name__ cannot be empty!')
+            raise zeit.cms.interfaces.ValidationError('The __name__ cannot be empty!')
 
 
 @grok.implementer(IContainer)
-class Container(zeit.edit.container.TypeOnAttributeContainer,
-                grok.MultiAdapter):
-
+class Container(zeit.edit.container.TypeOnAttributeContainer, grok.MultiAdapter):
     grok.provides(IContainer)
-    grok.adapts(
-        IContainer,
-        gocept.lxml.interfaces.IObjectified)
+    grok.adapts(IContainer, gocept.lxml.interfaces.IObjectified)
     type = 'container'
     grok.name(type)
 
 
 class ContainerFactory(zeit.edit.block.TypeOnAttributeElementFactory):
-
     grok.context(IContainer)
     produces = Container
     title = 'Container'
@@ -44,14 +36,12 @@ class ContainerFactory(zeit.edit.block.TypeOnAttributeElementFactory):
 
 @grok.implementer(IBlock)
 class Block(zeit.edit.block.SimpleElement, grok.MultiAdapter):
-
     area = IContainer
     grok.provides(IBlock)
     type = 'block'
 
 
 class BlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
-
     grok.context(IContainer)
     produces = Block
     title = 'Block'

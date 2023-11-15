@@ -6,4 +6,5 @@ generation = 2
 
 
 manager = zope.generations.generations.SchemaManager(
-    minimum_generation, generation, "zeit.brightcove.generation")
+    minimum_generation, generation, 'zeit.brightcove.generation'
+)

@@ -11,7 +11,6 @@ import zope.component.hooks
 
 
 class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
-
     def testSetUp(self):
         # Tweak pushGlobalRegistry so the registry does not have any bases,
         # otherwise zope.authentication.principal infloops because
@@ -28,22 +27,18 @@ class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
         plone.testing.zca.popGlobalRegistry()
 
 
-ZCML_LAYER = ZCMLLayer(bases=(
-    zeit.brightcove.testing.CONFIG_LAYER,
-    zeit.retresco.testing.CONFIG_LAYER))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(
-    ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
+ZCML_LAYER = ZCMLLayer(
+    bases=(zeit.brightcove.testing.CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER)
+)
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, zeit.retresco.testing.TMS_MOCK_LAYER))
 
 
 class SecurityPolicyLayer(plone.testing.Layer):
-
     defaultBases = (ZOPE_LAYER,)
 
     def testSetUp(self):
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
-        prop = connector._get_properties(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        prop = connector._get_properties('http://xml.zeit.de/online/2007/01/Somalia')
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
 
 
@@ -55,14 +50,11 @@ def make_xls_test(*args):
     # Since pytest picks up all descendants of unittest.TestCase, we must mix
     # that in here instead of directly having XLSSheetCase inherit from
     # FunctionalTestCaseCommon.
-    case = type(
-        'SecurityPolicyXLSSheetCase',
-        (SecurityPolicyXLSSheetCase, FunctionalTestCase), {})
+    case = type('SecurityPolicyXLSSheetCase', (SecurityPolicyXLSSheetCase, FunctionalTestCase), {})
     return case(*args)
 
 
 class SecurityPolicyXLSSheetCase:
-
     layer = WSGI_LAYER
 
     def __init__(self, username, cases, description):
@@ -98,20 +90,21 @@ class SecurityPolicyXLSSheetCase:
                 self.browser.post(
                     path_with_skin,
                     # XXX pass variables in explicitly
-                    urllib.parse.urlencode(eval(form)))
+                    urllib.parse.urlencode(eval(form)),
+                )
             else:
                 self.browser.open(path_with_skin)
 
             status, msg = self.browser.headers['Status'].split(' ', 1)
             self.assertEqual(
-                (int(status) < 400), expected,
-                '%s: %s (expected <400: %s)\n%s' % (
-                    path, status, bool(expected), self.browser.contents))
+                (int(status) < 400),
+                expected,
+                '%s: %s (expected <400: %s)\n%s'
+                % (path, status, bool(expected), self.browser.contents),
+            )
 
     def __str__(self):
-        return '%s (%s.%s)' % (
-            self.description,
-            self.__class__.__module__, self.__class__.__name__)
+        return '%s (%s.%s)' % (self.description, self.__class__.__module__, self.__class__.__name__)
 
     @property
     def connector(self):  # for eval()

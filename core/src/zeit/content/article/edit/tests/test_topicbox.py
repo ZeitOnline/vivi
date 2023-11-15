@@ -8,7 +8,6 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
 
 class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
-
     layer = zeit.content.article.testing.MOCK_LAYER
 
     def setUp(self):
@@ -17,14 +16,11 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.repository['art2'] = zeit.content.article.article.Article()
         self.repository['art3'] = zeit.content.article.article.Article()
         self.repository['video'] = zeit.content.video.video.Video()
-        self.elastic = zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch)
+        self.elastic = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
         self.tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        result = zeit.cms.interfaces.Result([
-            {'url': '/art1'},
-            {'url': '/video'},
-            {'url': '/art2'},
-            {'url': '/art3'}])
+        result = zeit.cms.interfaces.Result(
+            [{'url': '/art1'}, {'url': '/video'}, {'url': '/art2'}, {'url': '/art3'}]
+        )
         result.hits = 4
         self.elastic.search.return_value = result
         self.tms.get_topicpage_documents.return_value = result
@@ -33,6 +29,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
     def get_topicbox(self):
         from zeit.content.article.edit.topicbox import Topicbox
         import lxml.objectify
+
         box = Topicbox(None, lxml.objectify.E.topicbox())
         self.repository['art'] = zeit.content.article.article.Article()
         box.__parent__ = self.repository['art']
@@ -40,6 +37,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
     def get_cp(self, content=None):
         import zeit.content.cp.centerpage
+
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         if content:
             region = self.repository['cp'].create_item('region')
@@ -52,10 +50,14 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
     def test_topicbox_values_does_not_contain_empty_reference(self):
         box = self.get_topicbox()
         box.automatic_type = 'manual'
-        article = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/online/2007/01/Somalia")
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         box.first_reference = article
-        self.assertEqual([article, ], box.values())
+        self.assertEqual(
+            [
+                article,
+            ],
+            box.values(),
+        )
 
     def test_empty_referenced_cp_has_no_values(self):
         box = self.get_topicbox()
@@ -72,14 +74,22 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         art = zeit.content.article.interfaces.IArticle(box)
         cp = self.get_cp(content=[self.repository['foo'], art])
         box.first_reference = cp
-        self.assertEqual([self.repository['foo'], ], box.values())
+        self.assertEqual(
+            [
+                self.repository['foo'],
+            ],
+            box.values(),
+        )
 
     def test_box_uses_cp_content(self):
         box = self.get_topicbox()
         box.automatic_type = 'manual'
-        article = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/online/2007/01/Somalia")
-        cp = self.get_cp(content=[article, ])
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        cp = self.get_cp(
+            content=[
+                article,
+            ]
+        )
         box.first_reference = cp
         self.assertEqual([article], box.values())
 
@@ -103,8 +113,14 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         cp = self.get_cp(content=[self.repository['foo']])
         box.first_reference = cp
         box.second_reference = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/online/2007/01/Somalia")
-        self.assertEqual([self.repository['foo'], ], box.values())
+            'http://xml.zeit.de/online/2007/01/Somalia'
+        )
+        self.assertEqual(
+            [
+                self.repository['foo'],
+            ],
+            box.values(),
+        )
 
     def test_topicbox_defaults_to_automatic_type_centerpage(self):
         box = self.get_topicbox()
@@ -112,10 +128,13 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
     def test_topicbox_source_centerpage(self):
         box = self.get_topicbox()
-        box.referenced_cp = self.get_cp(content=[
-            self.repository['art1'],
-            self.repository['art2'],
-            self.repository['art3'], ])
+        box.referenced_cp = self.get_cp(
+            content=[
+                self.repository['art1'],
+                self.repository['art2'],
+                self.repository['art3'],
+            ]
+        )
         values = box.values()
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)
@@ -150,13 +169,11 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.automatic_type = 'preconfigured-query'
         box.preconfigured_query = 'esquery1'
         contentquery = zope.component.getAdapter(
-            box,
-            zeit.contentquery.interfaces.IContentQuery,
-            name=box.automatic_type)
+            box, zeit.contentquery.interfaces.IContentQuery, name=box.automatic_type
+        )
         query = contentquery.query
         values = box.values()
-        self.assertEqual(
-            {'query': {'query': {'term': {'doc_type': 'TESTTYPE'}}}}, query)
+        self.assertEqual({'query': {'query': {'term': {'doc_type': 'TESTTYPE'}}}}, query)
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/video', values[1].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[2].uniqueId)
@@ -166,9 +183,8 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         box.automatic_type = 'preconfigured-query'
         box.preconfigured_query = 'esquery2'
         contentquery = zope.component.getAdapter(
-            box,
-            zeit.contentquery.interfaces.IContentQuery,
-            name=box.automatic_type)
+            box, zeit.contentquery.interfaces.IContentQuery, name=box.automatic_type
+        )
         query = contentquery.query
         values = box.values()
         self.assertEqual({'query': {'term': {'doc_type': 'TESTTYPE2'}}}, query)
@@ -178,11 +194,14 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
     def test_topicbox_values_deduplication(self):
         box = self.get_topicbox()
-        box.referenced_cp = self.get_cp(content=[
-            self.repository['art1'],
-            self.repository['art2'],
-            self.repository['art2'],
-            self.repository['art3'], ])
+        box.referenced_cp = self.get_cp(
+            content=[
+                self.repository['art1'],
+                self.repository['art2'],
+                self.repository['art2'],
+                self.repository['art3'],
+            ]
+        )
         values = box.values()
         self.assertEqual('http://xml.zeit.de/art1', values[0].uniqueId)
         self.assertEqual('http://xml.zeit.de/art2', values[1].uniqueId)

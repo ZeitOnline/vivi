@@ -6,15 +6,9 @@ import zope.schema
 class IGlobalSettings(zope.interface.Interface):
     """Global CMS settings."""
 
-    default_year = zope.schema.Int(
-        title=_("Default year"),
-        min=1900,
-        max=2100)
+    default_year = zope.schema.Int(title=_('Default year'), min=1900, max=2100)
 
-    default_volume = zope.schema.Int(
-        title=_("Default volume"),
-        min=1,
-        max=54)
+    default_volume = zope.schema.Int(title=_('Default volume'), min=1, max=54)
 
     def get_working_directory(template):
         """Return the collection which is the main working directory.

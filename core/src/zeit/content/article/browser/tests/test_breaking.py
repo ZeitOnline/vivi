@@ -10,21 +10,17 @@ import zope.i18n.translationdomain
 
 
 class TestAdding(zeit.content.article.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
-        zope.component.getGlobalSiteManager().registerUtility(
-            domain, name='zeit.cms')
+        zope.component.getGlobalSiteManager().registerUtility(domain, name='zeit.cms')
         self.catalog = zeit.cms.testing.TestCatalog()
         domain.addCatalog(self.catalog)
 
-        for _name, notifier in zope.component.getUtilitiesFor(
-                zeit.push.interfaces.IPushNotifier):
+        for _name, notifier in zope.component.getUtilitiesFor(zeit.push.interfaces.IPushNotifier):
             notifier.reset()
 
-        self.browser.open(
-            'http://localhost:8080/++skin++vivi/repository/online/2007/01/')
+        self.browser.open('http://localhost:8080/++skin++vivi/repository/online/2007/01/')
 
     def create_breakingnews(self):
         b = self.browser
@@ -55,12 +51,11 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.fill_in_required_values()
         self.browser.getControl('Publish and push').click()
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
-        self.assertEqual(
-            True, zeit.content.article.interfaces.IBreakingNews(
-                article).is_breaking)
+        self.assertEqual(True, zeit.content.article.interfaces.IBreakingNews(article).is_breaking)
         self.assertEllipsis(
             '...<attribute...name="is_breaking">yes</attribute>...',
-            zeit.cms.testing.xmltotext(article.xml))
+            zeit.cms.testing.xmltotext(article.xml),
+        )
 
     def test_publish_sends_push_messages(self):
         # This tests the integration with zeit.push, but not the actual push
@@ -72,21 +67,21 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
         self.assertEqual(True, IPublishInfo(article).published)
         for service in ['homepage', 'urbanairship', 'twitter', 'facebook']:
-            notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name=service)
+            notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
             self.assertEqual(1, len(notifier.calls))
             self.assertEqual(article.title, notifier.calls[0][0])
 
         urbanairship = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='urbanairship')
+            zeit.push.interfaces.IPushNotifier, name='urbanairship'
+        )
         self.assertEqual(
-            'eilmeldung.json',
-            urbanairship.calls[0][2]['message'].config['payload_template'])
-        facebook = zope.component.getUtility(
-            zeit.push.interfaces.IPushNotifier, name='facebook')
+            'eilmeldung.json', urbanairship.calls[0][2]['message'].config['payload_template']
+        )
+        facebook = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name='facebook')
         self.assertEqual(
             zeit.push.facebook.facebookAccountSource(None).MAIN_ACCOUNT,
-            facebook.calls[0][2]['account'])
+            facebook.calls[0][2]['account'],
+        )
 
     def test_banners_and_mobile_are_disabled_after_publish(self):
         # The breaking news is a normal article, so it has the normal social
@@ -102,11 +97,16 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'mobile', 'enabled': False, 'title': 'Default title',
-             'variant': 'manual', 'payload_template': 'eilmeldung.json'},
-            push.message_config)
-        self.assertIn(
-            {'type': 'homepage', 'enabled': False}, push.message_config)
+            {
+                'type': 'mobile',
+                'enabled': False,
+                'title': 'Default title',
+                'variant': 'manual',
+                'payload_template': 'eilmeldung.json',
+            },
+            push.message_config,
+        )
+        self.assertIn({'type': 'homepage', 'enabled': False}, push.message_config)
 
     def test_setting_body_text_creates_paragraph(self):
         self.create_breakingnews()
@@ -138,12 +138,16 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin,
             # XXX Why do we have to duplicate the skin information?
-            environ={'SERVER_URL': 'http://localhost/++skin++vivi'})
+            environ={'SERVER_URL': 'http://localhost/++skin++vivi'},
+        )
         adder = zeit.cms.content.add.ContentAdder(
             request,
             type_=zeit.content.article.interfaces.IBreakingNews,
-            ressort='Deutschland', sub_ressort='Meinung',
-            year='2018', month='01')
+            ressort='Deutschland',
+            sub_ressort='Meinung',
+            year='2018',
+            month='01',
+        )
         b = self.browser
         b.open(adder())
         self.assertEqual(['Deutschland'], b.getControl('Channel').displayValue)
@@ -151,36 +155,33 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         b.getControl('Title').value = 'Mytitle'
         b.getControl('File name').value = 'foo'
         self.browser.getControl('Publish and push').click()
-        article = ICMSContent(
-            'http://xml.zeit.de/deutschland/meinung/2018-01/foo')
+        article = ICMSContent('http://xml.zeit.de/deutschland/meinung/2018-01/foo')
         self.assertEqual((('Deutschland', 'Meinung'),), article.channels)
 
 
 class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
-
     def setUp(self):
         # We cannot retrieve the state of eager results, so fake them here, as
         # publishing itself is tested elsewhere.
-        mocker = mock.patch('celery.result.AsyncResult.state',
-                            new_callable=mock.PropertyMock,
-                            return_value='SUCCESS')
+        mocker = mock.patch(
+            'celery.result.AsyncResult.state',
+            new_callable=mock.PropertyMock,
+            return_value='SUCCESS',
+        )
         mocker.start()
         self.addCleanup(mocker.stop)
         super().setUp()
         banner_config = zeit.content.rawxml.rawxml.RawXML()
         banner_config.xml = lxml.etree.fromstring(
-            '<xml><article_id>'
-            'http://xml.zeit.de/online/2007/01/Somalia'
-            '</article_id></xml>')
+            '<xml><article_id>' 'http://xml.zeit.de/online/2007/01/Somalia' '</article_id></xml>'
+        )
         self.repository['banner'] = banner_config
         IPublish(self.repository['banner']).publish(background=False)
 
         # Make Somalia breaking news, so the retract section is shown.
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         with zeit.cms.checkout.helper.checked_out(article) as co:
-            zeit.content.article.interfaces.IBreakingNews(
-                co).is_breaking = True
+            zeit.content.article.interfaces.IBreakingNews(co).is_breaking = True
 
         transaction.commit()
 
@@ -188,8 +189,7 @@ class RetractBannerTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia')
         s = self.selenium
         s.waitForElementPresent('id=breaking-retract')
-        s.assertElementPresent(
-            'css=#breaking-retract .publish-state.published')
+        s.assertElementPresent('css=#breaking-retract .publish-state.published')
         s.click('id=breaking-retract-banner')
         s.waitForElementPresent('css=.lightbox')
         # Retract happens...

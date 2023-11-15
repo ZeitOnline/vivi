@@ -22,14 +22,15 @@ def valid_name(value):
         return False
 
     try:
-        container = zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE + path[1:])
+        container = zeit.cms.interfaces.ICMSContent(zeit.cms.interfaces.ID_NAMESPACE + path[1:])
     except TypeError:
         raise zeit.cms.repository.interfaces.NotFound(
-            _('"${name}" not found.', mapping={'name': path}))
+            _('"${name}" not found.', mapping={'name': path})
+        )
     if filename in container:
         raise zeit.cms.repository.interfaces.AlreadyExists(
-            _('"${name}" already exists.', mapping={'name': value}))
+            _('"${name}" already exists.', mapping={'name': value})
+        )
     return True
 
 
@@ -37,19 +38,13 @@ def valid_name(value):
 
 
 class IMoveSchema(zope.interface.Interface):
-
-    new_name = zope.schema.TextLine(
-        title=_('New path'),
-        constraint=valid_name)
+    new_name = zope.schema.TextLine(title=_('New path'), constraint=valid_name)
 
 
-class Move(zeit.cms.browser.lightbox.Form,
-           zeit.cms.repository.browser.rename.RenameGuards):
-
+class Move(zeit.cms.browser.lightbox.Form, zeit.cms.repository.browser.rename.RenameGuards):
     form_fields = zope.formlib.form.FormFields(IMoveSchema)
 
-    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-        'move.pt')
+    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile('move.pt')
 
     def get_data(self):
         return {'new_name': urlparse(self.context.uniqueId).path}
@@ -59,25 +54,29 @@ class Move(zeit.cms.browser.lightbox.Form,
         old_id = self.context.uniqueId
         path = os.path.dirname(data['new_name'])
         new_name = os.path.basename(data['new_name'])
-        container = zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE + path[1:])
+        container = zeit.cms.interfaces.ICMSContent(zeit.cms.interfaces.ID_NAMESPACE + path[1:])
         mover = zope.copypastemove.interfaces.IObjectMover(self.context)
         mover.moveTo(container, new_name)
 
         # Changing the context also properly sets nextURL.
         self.context = container[new_name]
-        self.send_message(_('Renamed "${old_name}" to "${new_name}"',
-                            mapping={'old_name': old_id,
-                                     'new_name': self.context.uniqueId}))
+        self.send_message(
+            _(
+                'Renamed "${old_name}" to "${new_name}"',
+                mapping={'old_name': old_id, 'new_name': self.context.uniqueId},
+            )
+        )
 
 
-class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem,
-               zeit.cms.repository.browser.rename.RenameGuards):
-
+class MenuItem(
+    zeit.cms.browser.menu.LightboxActionMenuItem, zeit.cms.repository.browser.rename.RenameGuards
+):
     title = _('Move')
 
     def render(self):
-        if (zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
-                self.context) and not self.is_folder_with_content):
+        if (
+            zeit.cms.repository.interfaces.IRepositoryContent.providedBy(self.context)
+            and not self.is_folder_with_content
+        ):
             return super().render()
         return ''

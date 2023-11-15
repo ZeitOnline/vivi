@@ -6,18 +6,15 @@ import zeit.content.author.testing
 
 
 class PropertyMock(mock.Mock):
-
     def __get__(self, instance, owner):
         return self()
 
 
 class FormTest(zeit.content.author.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.author_exists = mock.Mock()
-        self.patch = mock.patch(
-            'zeit.content.author.author.Author.exists', self.author_exists)
+        self.patch = mock.patch('zeit.content.author.author.Author.exists', self.author_exists)
         self.author_exists.return_value = False
         self.patch.start()
 
@@ -38,10 +35,13 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         self.open('/@@zeit.content.author.add_contextfree')
         self.assertNotIn('Add duplicate author', b.contents)
         self.add_william(vgwort_id='9876')
-        self.assertEllipsis("""\
+        self.assertEllipsis(
+            """\
             ...There were errors...
             ...An author with the given name already exists...
-            """, b.contents)
+            """,
+            b.contents,
+        )
         # No new author has been created in DAV so far.
         self.assertEqual(1, len(self.repository['foo']['bar']['authors']['S']))
 
@@ -52,15 +52,20 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         # the existing one.
         self.assertEqual(
             'http://localhost/++skin++vivi/repository/foo/bar/authors/S/'
-            'William_Shakespeare-2/index/@@view.html', b.url)
-        self.assertEllipsis("""...
+            'William_Shakespeare-2/index/@@view.html',
+            b.url,
+        )
+        self.assertEllipsis(
+            """...
             <label for="form.firstname">...
             <div class="widget">William</div>...
             <label for="form.lastname">...
             <div class="widget">Shakespeare</div>...
             <label for="form.vgwortid">...
             <div class="widget">9876</div>...
-            """, b.contents)
+            """,
+            b.contents,
+        )
 
     def add_william(self, browser=None, vgwort_id='12345'):
         b = self.browser if browser is None else browser
@@ -88,14 +93,17 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl('Email address').value = 'wil.i.am@shakespeare.name'
         self.add_william(b)
         b.getLink('Checkin').click()
-        self.assertEllipsis("""...
+        self.assertEllipsis(
+            """...
             <label for="form.firstname">...
             <div class="widget">William</div>...
             <label for="form.lastname">...
             <div class="widget">Shakespeare</div>...
             <label for="form.vgwortid">...
             <div class="widget">12345</div>...
-            """, b.contents)
+            """,
+            b.contents,
+        )
         b.getLink('Checkout').click()
         b.getControl('VG-Wort ID').value = 'flub'
         b.getControl('Apply').click()
@@ -113,15 +121,20 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         self.add_william()
         self.assertEqual(
             'http://localhost/++skin++vivi/repository/foo/bar/authors/S/'
-            'William_Shakespeare/index/@@view.html', b.url)
-        self.assertEllipsis("""...
+            'William_Shakespeare/index/@@view.html',
+            b.url,
+        )
+        self.assertEllipsis(
+            """...
             <label for="form.firstname">...
             <div class="widget">William</div>...
             <label for="form.lastname">...
             <div class="widget">Shakespeare</div>...
             <label for="form.vgwortid">...
             <div class="widget">12345</div>...
-            """, b.contents)
+            """,
+            b.contents,
+        )
 
     def test_folder_name_validation(self):
         b = self.browser
@@ -130,18 +143,23 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         self.add_joerg()
         self.assertEqual(
             'http://localhost/++skin++vivi/repository/foo/bar/authors/M/'
-            'Joerg_Muessig-von/index/@@view.html', b.url)
+            'Joerg_Muessig-von/index/@@view.html',
+            b.url,
+        )
 
     def test_folder_listing_after_adding_author(self):
         b = self.browser
         self.open('/@@zeit.content.author.add_contextfree')
         self.add_william()
         self.open('/repository/foo/bar/authors/S/William_Shakespeare/')
-        self.assertEllipsis("""...
+        self.assertEllipsis(
+            """...
             <td>
               William Shakespeare
             </td>...
-            """, b.contents)
+            """,
+            b.contents,
+        )
 
     @unittest.skip('needs to use Selenium to control ObjectSequenceWidget')
     def test_security_smoke_test(self):
@@ -150,12 +168,12 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         b.getLink('Checkout').click()
         b.getControl('Add Authors', index=0).click()
 
-        b.getControl(name='form.authorships.0.').value = (
-            'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index')
+        b.getControl(
+            name='form.authorships.0.'
+        ).value = 'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
-        self.assertEllipsis(
-            '..."testcontent" has been checked in...', b.contents)
+        self.assertEllipsis('..."testcontent" has been checked in...', b.contents)
 
     def test_invalid_vgwortcode_shows_error_message(self):
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])
@@ -168,8 +186,7 @@ class FormTest(zeit.content.author.testing.BrowserTestCase):
         b.getControl('Email address').value = 'wil.i.am@shakespeare.name'
         b.getControl('VG-Wort Code').value = '4711'
         self.add_william(b)
-        self.assertEllipsis(
-            '...Code contains invalid characters...', b.contents)
+        self.assertEllipsis('...Code contains invalid characters...', b.contents)
 
     def test_stores_biography_questions(self):
         b = zeit.cms.testing.Browser(self.layer['wsgi_app'])

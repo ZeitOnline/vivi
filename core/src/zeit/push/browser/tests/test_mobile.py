@@ -2,7 +2,6 @@ import zeit.push.testing
 
 
 class FindTitleIntegration(zeit.push.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         self.open('/repository/testcontent/@@checkout')
@@ -17,17 +16,18 @@ class FindTitleIntegration(zeit.push.testing.SeleniumTestCase):
 
 
 class FindTitleTest(zeit.push.testing.BrowserTestCase):
-
     def test_retrieves_default_from_rendered_template(self):
-        self.layer['create_template']("""\
+        self.layer['create_template'](
+            """\
         {
           "default_title": "My title",
           {% if True %}
           "stuff": "{{article.title}}"
           {% endif %}
         }
-        """, 'template.json')
+        """,
+            'template.json',
+        )
         b = self.browser
-        b.open('http://localhost/++skin++vivi'
-               '/zeit.push.payload_template_title?q=template.json')
+        b.open('http://localhost/++skin++vivi' '/zeit.push.payload_template_title?q=template.json')
         self.assertEqual('My title', b.contents)

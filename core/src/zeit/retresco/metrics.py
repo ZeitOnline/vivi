@@ -17,17 +17,18 @@ log = logging.getLogger(__name__)
 
 
 class Metric:
-
     def __init__(self, name, query=None, es=None, **kw):
         labels = ['environment']
         for x in kw.pop('labelnames', ()):
             labels.append(x)
-        kw.update({
-            'name': name,
-            'documentation': '',
-            'labelnames': labels,
-            'registry': REGISTRY,
-        })
+        kw.update(
+            {
+                'name': name,
+                'documentation': '',
+                'labelnames': labels,
+                'registry': REGISTRY,
+            }
+        )
         super().__init__(**kw)
         self.query = query
         self.es = es
@@ -42,37 +43,65 @@ class Counter(Metric, prometheus_client.Counter):
 
 
 IMPORTERS = [
-    Gauge('vivi_recent_news_published_total', [
-        {'term': {'payload.workflow.product-id': 'News'}},
-        {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
-    ], 'external'),
-    Gauge('vivi_recent_videos_published_total', [
-        {'term': {'doc_type': 'video'}},
-        {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
-    ], 'external'),
-    Gauge('vivi_recent_vgwort_reported_total', [
-        {'range': {'payload.vgwort.reported_on': {'gt': 'now-1h'}}},
-    ], 'internal'),
+    Gauge(
+        'vivi_recent_news_published_total',
+        [
+            {'term': {'payload.workflow.product-id': 'News'}},
+            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+        ],
+        'external',
+    ),
+    Gauge(
+        'vivi_recent_videos_published_total',
+        [
+            {'term': {'doc_type': 'video'}},
+            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+        ],
+        'external',
+    ),
+    Gauge(
+        'vivi_recent_vgwort_reported_total',
+        [
+            {'range': {'payload.vgwort.reported_on': {'gt': 'now-1h'}}},
+        ],
+        'internal',
+    ),
 ]
 TOKEN_COUNT = Gauge('vivi_available_vgwort_tokens_total')
-BROKEN = Counter('vivi_articles_with_missing_tms_authors', {
-    'query': {'bool': {'filter': [
-        {'term': {'doc_type': 'article'}},
-        {'range': {'payload.document.date_first_released': {'gt': 'now-30m'}}}
-    ]}},
-    '_source': ['url', 'payload.head.authors'],
-}, 'external')
+BROKEN = Counter(
+    'vivi_articles_with_missing_tms_authors',
+    {
+        'query': {
+            'bool': {
+                'filter': [
+                    {'term': {'doc_type': 'article'}},
+                    {'range': {'payload.document.date_first_released': {'gt': 'now-30m'}}},
+                ]
+            }
+        },
+        '_source': ['url', 'payload.head.authors'],
+    },
+    'external',
+)
 KPI_FIELDS = zeit.retresco.interfaces.KPIFieldSource()
-KPI = Gauge('tms_highest_kpi_value', lambda kpi: {
-    'query': {'bool': {'filter': [
-        {'term': {'doc_type': 'article'}},
-        {'range': {'payload.document.date_first_released': {'gt': 'now-1d'}}}
-    ]}},
-    '_source': list(KPI_FIELDS.values()),
-    'sort': [{kpi: 'desc'}]
-}, 'external', labelnames=['field'])
-FB_TOKEN_EXPIRES = Gauge(
-    'vivi_facebook_token_expires_timestamp_seconds', labelnames=['account'])
+KPI = Gauge(
+    'tms_highest_kpi_value',
+    lambda kpi: {
+        'query': {
+            'bool': {
+                'filter': [
+                    {'term': {'doc_type': 'article'}},
+                    {'range': {'payload.document.date_first_released': {'gt': 'now-1d'}}},
+                ]
+            }
+        },
+        '_source': list(KPI_FIELDS.values()),
+        'sort': [{kpi: 'desc'}],
+    },
+    'external',
+    labelnames=['field'],
+)
+FB_TOKEN_EXPIRES = Gauge('vivi_facebook_token_expires_timestamp_seconds', labelnames=['account'])
 
 
 @zeit.cms.cli.runner()
@@ -89,10 +118,8 @@ def collect():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     environment = config['environment']
     elastic = {
-        'external': zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch),
-        'internal': zope.component.getUtility(
-            zeit.find.interfaces.ICMSSearch),
+        'external': zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch),
+        'internal': zope.component.getUtility(zeit.find.interfaces.ICMSSearch),
     }
     for metric in IMPORTERS:
         query = {'query': {'bool': {'filter': metric.query}}}
@@ -127,8 +154,10 @@ def collect():
     accounts = facebookAccountSource(None)
     for account in list(accounts) + [accounts.MAIN_ACCOUNT]:
         token = facebookAccountSource.factory.access_token(account)
-        r = http.get('https://graph.facebook.com/debug_token',
-                     params={'input_token': token, 'access_token': token})
+        r = http.get(
+            'https://graph.facebook.com/debug_token',
+            params={'input_token': token, 'access_token': token},
+        )
         try:
             r.raise_for_status()
             expires = r.json()['data']['data_access_expires_at']
@@ -140,5 +169,4 @@ def collect():
     if not options.pushgateway:
         print(prometheus_client.generate_latest(REGISTRY).decode('utf-8'))
     else:
-        prometheus_client.push_to_gateway(
-            options.pushgateway, job=__name__, registry=REGISTRY)
+        prometheus_client.push_to_gateway(options.pushgateway, job=__name__, registry=REGISTRY)

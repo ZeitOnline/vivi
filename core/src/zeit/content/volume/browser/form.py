@@ -16,24 +16,21 @@ import zope.schema
 
 @zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
 class DuplicateVolumeWarning(Exception):
-
     def doc(self):
         return _('A volume with the given name already exists.')
 
 
 class Base:
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.volume.interfaces.IVolume).select(
-            'product', 'year', 'volume',
-            'date_digital_published', 'teaserText')
+    form_fields = zope.formlib.form.FormFields(zeit.content.volume.interfaces.IVolume).select(
+        'product', 'year', 'volume', 'date_digital_published', 'teaserText'
+    )
 
     field_groups = (
         gocept.form.grouped.Fields(
             _('Volume'),
-            ('product', 'year', 'volume',
-             'date_digital_published', 'teaserText'),
-            css_class='column-left'),
+            ('product', 'year', 'volume', 'date_digital_published', 'teaserText'),
+            css_class='column-left',
+        ),
     )
 
     def __init__(self, context, request):
@@ -48,29 +45,28 @@ class Base:
 
         """
         super().__init__(context, request)
-        covers = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(
-            self.context)
+        covers = zeit.content.volume.interfaces.VOLUME_COVER_SOURCE(self.context)
         # In the Addform there is no volume object. Thus we have to wait for
         # it to be created.
         if getattr(self.context, 'product', None) is not None:
-            for product in (
-                    [self.context.product] +
-                    self.context.product.dependent_products):
+            for product in [self.context.product] + self.context.product.dependent_products:
                 fieldnames = []
                 for name in covers:
                     field = zope.schema.Choice(
-                        title=covers.title(name), required=False,
-                        source=zeit.content.image.interfaces.imageGroupSource)
+                        title=covers.title(name),
+                        required=False,
+                        source=zeit.content.image.interfaces.imageGroupSource,
+                    )
                     field.__name__ = 'cover_%s_%s' % (product.id, name)
                     field.interface = ICovers
                     self.form_fields += zope.formlib.form.FormFields(field)
                     fieldnames.append(field.__name__)
-                self.field_groups += (gocept.form.grouped.Fields(
-                    product.title, fieldnames, css_class='column-right'),)
+                self.field_groups += (
+                    gocept.form.grouped.Fields(product.title, fieldnames, css_class='column-right'),
+                )
 
 
 class Add(Base, zeit.cms.browser.form.AddForm):
-
     title = _('Add volume')
     factory = zeit.content.volume.volume.Volume
 
@@ -89,17 +85,14 @@ class Add(Base, zeit.cms.browser.form.AddForm):
         folder[filename] = volume
 
         # XXX copy&paste from superclass
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(
-            folder[filename], None)
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(folder[filename], None)
         if manager is not None and manager.canCheckout:
             self._created_object = manager.checkout()
             self._checked_out = True
 
-        cp_template = zeit.cms.interfaces.ICMSContent(
-            volume.product.cp_template, None)
+        cp_template = zeit.cms.interfaces.ICMSContent(volume.product.cp_template, None)
         if zeit.content.text.interfaces.IPythonScript.providedBy(cp_template):
-            folder, filename = self._create_folder(
-                volume, volume.product.centerpage)
+            folder, filename = self._create_folder(volume, volume.product.centerpage)
             if folder is None:
                 return
             folder[filename] = cp_template(volume=volume)
@@ -130,12 +123,10 @@ class Add(Base, zeit.cms.browser.form.AddForm):
 
 
 class Edit(Base, zeit.cms.browser.form.EditForm):
-
     title = _('Edit volume')
 
 
 class Display(Base, zeit.cms.browser.form.DisplayForm):
-
     title = _('View volume')
 
 
@@ -149,7 +140,6 @@ class ICovers(zope.interface.Interface):
 
 @grok.implementer(ICovers)
 class Covers(grok.Adapter):
-
     grok.context(zeit.content.volume.interfaces.IVolume)
 
     def __getattr__(self, name):

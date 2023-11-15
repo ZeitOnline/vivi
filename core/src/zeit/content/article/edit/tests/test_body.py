@@ -14,14 +14,12 @@ import zope.schema
 
 
 class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
         fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
-        self.patches.add(
-            'zeit.edit.container.Base._generate_block_id', fake_uuid)
+        self.patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)
 
     def tearDown(self):
         self.patches.reset()
@@ -29,15 +27,12 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def get_body(self, body=None):
         if not body:
-            body = ("<division><p>Para1</p><p/></division>"
-                    "<division><p>Para2</p><p/></division>")
+            body = '<division><p>Para1</p><p/></division>' '<division><p>Para2</p><p/></division>'
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.objectify.XML(
-            '<body>%s</body>' % body)
+        article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
         for division in article.xml.body.findall('division'):
             division.set('type', 'page')
-        return zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
+        return zeit.content.article.edit.body.EditableBody(article, article.xml.body)
 
     def test_keys_contain_division_contents(self):
         body = self.get_body()
@@ -76,23 +71,17 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(['id-4', 'id-3', 'id-5', 'id-6'], body.keys())
 
     def test_articles_without_division_should_be_migrated(self):
-        body = self.get_body(
-            '<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
+        body = self.get_body('<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
         self.assertEqual(['id-2', 'id-3'], body.keys())
-        self.assertEqual(
-            ['foo', 'division'],
-            [child.tag for child in body.xml.iterchildren()])
-        self.assertEqual(
-            ['p', 'p'],
-            [child.tag for child in body.xml.division.iterchildren()])
+        self.assertEqual(['foo', 'division'], [child.tag for child in body.xml.iterchildren()])
+        self.assertEqual(['p', 'p'], [child.tag for child in body.xml.division.iterchildren()])
         self.assertEqual(
             ['I have no division', 'Only paras'],
-            [str(child) for child
-             in body.xml.division.iterchildren()])
+            [str(child) for child in body.xml.division.iterchildren()],
+        )
 
     def test_adding_to_articles_without_division_should_migrate(self):
-        body = self.get_body(
-            '<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
+        body = self.get_body('<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
         ob = mock.Mock()
         ob.__name__ = None
         ob.__parent__ = None
@@ -101,8 +90,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         # XXX assertion?!
 
     def test_nested_elements_should_be_ignored(self):
-        body = self.get_body(
-            '<division><p>I have <p>another para</p> in me</p></division>')
+        body = self.get_body('<division><p>I have <p>another para</p> in me</p></division>')
         self.assertEqual(['id-2'], body.keys())
 
     def test_adding_division_should_add_on_toplevel(self):
@@ -121,8 +109,8 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
         def find_id_attributes():
             return body.xml.xpath(
-                '//*[@ns:__name__]',
-                namespaces={'ns': 'http://namespaces.zeit.de/CMS/cp'})
+                '//*[@ns:__name__]', namespaces={'ns': 'http://namespaces.zeit.de/CMS/cp'}
+            )
 
         self.assertFalse(find_id_attributes())
         body.values()
@@ -132,9 +120,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_values_returns_same_blocks_as_keys(self):
         body = self.get_body()
-        self.assertEqual(
-            [x.xml for x in body.values()],
-            [body[x].xml for x in body.keys()])
+        self.assertEqual([x.xml for x in body.values()], [body[x].xml for x in body.keys()])
 
     def test_ignores_xml_comments(self):
         body = self.get_body('<division><p>foo</p><!-- comment --></division>')
@@ -142,7 +128,6 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
 
 class TestCleaner(unittest.TestCase):
-
     def get_article(self):
         return zeit.content.article.article.Article()
 
@@ -158,6 +143,7 @@ class TestCleaner(unittest.TestCase):
 
     def clean(self, obj):
         from zeit.content.article.edit.body import remove_name_attributes
+
         remove_name_attributes(obj, mock.sentinel.event)
 
     def test_should_remove_name_attributes(self):
@@ -172,26 +158,22 @@ class TestCleaner(unittest.TestCase):
         art.xml.body.division = ''
         self.set_key(art.xml.body.division, 'divname')
         self.clean(art)
-        self.assertNotIn(
-            'namespaces.zeit.de/CMS/cp', zeit.cms.testing.xmltotext(art.xml))
+        self.assertNotIn('namespaces.zeit.de/CMS/cp', zeit.cms.testing.xmltotext(art.xml))
 
 
 class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
-
     def test_children_should_return_elements(self):
         body = '<division type="page"><p>Para1</p><p>Para2</p></division>'
         article = zeit.content.article.article.Article()
         article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
-        body = zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
         validator = zeit.edit.interfaces.IValidator(article)
         self.assertEqual(
-            [x.__name__ for x in body.values()],
-            [x.__name__ for x in validator.children])
+            [x.__name__ for x in body.values()], [x.__name__ for x in validator.children]
+        )
 
 
 class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
-
     def test_validation_errors_should_veto_checkin(self):
         self.repository['article'] = zeit.content.article.article.Article()
         manager = ICheckoutManager(self.repository['article'])
@@ -200,8 +182,8 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertFalse(manager.canCheckin)
         errors = dict(manager.last_validation_error)
         self.assertIsInstance(
-            errors[zeit.content.article.interfaces.IArticle['title']],
-            zope.schema.ValidationError)
+            errors[zeit.content.article.interfaces.IArticle['title']], zope.schema.ValidationError
+        )
 
     def test_security_proxied_fields_should_be_validated_correctly(self):
         self.repository['article'] = zeit.content.article.article.Article()
@@ -218,13 +200,12 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = zeit.content.article.article.Article()
         manager = ICheckoutManager(self.repository['article'])
         co = manager.checkout()
-        zeit.cms.content.field.apply_default_values(
-            co, zeit.content.article.interfaces.IArticle)
+        zeit.cms.content.field.apply_default_values(co, zeit.content.article.interfaces.IArticle)
         img = zeit.content.image.interfaces.IImages(co)
         img.fill_color = '#xxxxxx'
         manager = ICheckinManager(co)
         self.assertFalse(manager.canCheckin)
         errors = dict(manager.last_validation_error)
         self.assertIsInstance(
-            errors[zeit.content.image.interfaces.IImages['fill_color']],
-            zope.schema.ValidationError)
+            errors[zeit.content.image.interfaces.IImages['fill_color']], zope.schema.ValidationError
+        )

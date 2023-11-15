@@ -8,15 +8,14 @@ import zeit.edit.interfaces
 # XXX Should we inherit from TeaserBlock?
 @grok.implementer(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
 class AutomaticTeaserBlock(
-        zeit.content.cp.blocks.teaser.Layoutable,
-        zeit.content.cp.blocks.block.Block):
-
+    zeit.content.cp.blocks.teaser.Layoutable, zeit.content.cp.blocks.block.Block
+):
     type = 'auto-teaser'
 
     # XXX copy&paste from TeaserBlock
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
-            'force_mobile_image'])
+        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image']
+    )
 
     volatile = True  # Override to use default=True
 
@@ -72,7 +71,6 @@ class AutomaticTeaserBlock(
 
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):
-
     produces = AutomaticTeaserBlock
     title = None
 

@@ -23,41 +23,39 @@ class Notification:
 
     @property
     def _principal(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.simplecast')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
         return config['principal']
 
     def __call__(self):
         if not FEATURE_TOGGLES.find('simplecast_webhook'):
             return
 
-        body = self.request.bodyStream.read(
-            int(self.request['CONTENT_LENGTH']))
+        body = self.request.bodyStream.read(int(self.request['CONTENT_LENGTH']))
         log.info(body)
         data = json.loads(body).get('data')
         episode_id = data.get('episode_id')
         event = data.get('event')
 
-        self.execute_task(
-            event=event, episode_id=episode_id)
+        self.execute_task(event=event, episode_id=episode_id)
 
         current_span = opentelemetry.trace.get_current_span()
         current_span.set_attributes({'http.body': body})
 
     def execute_task(self, event, episode_id):
-        SIMPLECAST_WEBHOOK_TASK.delay(
-            event, episode_id, _principal_id_=self._principal)
+        SIMPLECAST_WEBHOOK_TASK.delay(event, episode_id, _principal_id_=self._principal)
 
 
 @zeit.cms.celery.task(queue='simplecast')
 def SIMPLECAST_WEBHOOK_TASK(event, episode_id):
-    simplecast = zope.component.getUtility(
-        zeit.simplecast.interfaces.ISimplecast)
+    simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
     log.info('Received %s simplecast request for %s.', event, episode_id)
     synchronizing_events = (
-        'episode_created', 'episode_updated',
-        'episode_published', 'episode_unpublished',
-        'episode_deleted')
+        'episode_created',
+        'episode_updated',
+        'episode_published',
+        'episode_unpublished',
+        'episode_deleted',
+    )
     if event in synchronizing_events:
         simplecast.synchronize_episode(episode_id)
     else:

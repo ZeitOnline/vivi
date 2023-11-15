@@ -7,4 +7,5 @@ def test_suite():
         'README.txt',
         'recension.txt',
         package='zeit.content.article',
-        layer=zeit.content.article.testing.LAYER)
+        layer=zeit.content.article.testing.LAYER,
+    )

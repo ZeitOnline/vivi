@@ -5,7 +5,6 @@ import zope.component
 
 
 class View:
-
     def get_excerpt(self):
         data = self.context.data.strip()
         if len(data) < 100:
@@ -13,32 +12,28 @@ class View:
         return data[:100] + '…'
 
     def get_properties(self):
-        properties = zeit.connector.interfaces.IWebDAVReadProperties(
-            self.context)
+        properties = zeit.connector.interfaces.IWebDAVReadProperties(self.context)
         return pprint.pformat(dict(properties))
 
 
 class Edit:
-
     def __call__(self):
         context_url = zope.component.getMultiAdapter(
-            (self.context, self.request),
-            name='absolute_url')()
-        self.request.response.redirect(
-            context_url + '/@@view.html')
+            (self.context, self.request), name='absolute_url'
+        )()
+        self.request.response.redirect(context_url + '/@@view.html')
         return ''
 
 
 class Metadata:
-
     @property
     def dav_resource_type(self):
         return zeit.cms.interfaces.IWebDAVReadProperties(self.context).get(
-            ('type', 'http://namespaces.zeit.de/CMS/meta'))
+            ('type', 'http://namespaces.zeit.de/CMS/meta')
+        )
 
 
 class DragPane:
-
     @property
     def uniqueId(self):
         return self.context.uniqueId

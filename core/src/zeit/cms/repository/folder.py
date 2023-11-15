@@ -16,7 +16,6 @@ class Folder(zeit.cms.repository.repository.Container):
 
 
 class FolderType(zeit.cms.type.TypeDeclaration):
-
     interface = zeit.cms.repository.interfaces.IFolder
     type = 'collection'
     title = _('Folder')
@@ -44,7 +43,6 @@ def folder_sort_key(context):
 
 
 class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
-
     grok.context(zeit.cms.repository.interfaces.ICollection)
     grok.name('zeit.cms.repository.folder')
 

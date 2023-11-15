@@ -4,14 +4,12 @@ import zope.interface.verify
 
 
 class TestSources(zeit.crop.testing.FunctionalTestCase):
-
     def test_scale_source(self):
         source = zeit.crop.source.ScaleSource()(None)
         scales = list(source)
         self.assertEqual(7, len(scales))
         scale = scales[0]
-        zope.interface.verify.verifyObject(
-            zeit.crop.interfaces.IPossibleScale, scale)
+        zope.interface.verify.verifyObject(zeit.crop.interfaces.IPossibleScale, scale)
         self.assertEqual('450x200', scale.name)
         self.assertEqual('450', scale.width)
         self.assertEqual('200', scale.height)

@@ -16,7 +16,6 @@ PIL.ImageFile.MAXBLOCK = 50000000
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.crop.interfaces.ICropper)
 class Cropper:
-
     filter_map = {
         'color': PIL.ImageEnhance.Color,
         'brightness': PIL.ImageEnhance.Brightness,

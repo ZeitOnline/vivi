@@ -2,7 +2,6 @@ import zeit.content.article.edit.browser.testing
 
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
-
     def test_inline_form_saves_values(self):
         self.get_article(with_block='cardstack')
         b = self.browser

@@ -2,7 +2,6 @@ import zeit.cms.testing
 
 
 class TestClipboard(zeit.cms.testing.SeleniumTestCase):
-
     layer = zeit.cms.testing.WEBDRIVER_LAYER
     window_height = 800
 
@@ -23,6 +22,5 @@ class TestClipboard(zeit.cms.testing.SeleniumTestCase):
         s.click('jquery=td:contains(testcontent)')
         s.waitForElementPresent('css=div#bottomcontent > div')
         s.pause(500)
-        s.dragAndDropToObject(
-            'jquery=td:contains(testcontent)', '//li[@uniqueid="Clip"]')
+        s.dragAndDropToObject('jquery=td:contains(testcontent)', '//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip/testcontent"]')

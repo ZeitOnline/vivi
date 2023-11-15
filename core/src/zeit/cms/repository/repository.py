@@ -49,8 +49,10 @@ class ContentBase(zope.container.contained.Contained):
 
     def __repr__(self):
         return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.uniqueId or '(unknown)')
+            self.__class__.__module__,
+            self.__class__.__name__,
+            self.uniqueId or '(unknown)',
+        )
 
     # Support the performance optimization in Repository.getContent()
     # by optionally resolving our parent ourselves.
@@ -72,8 +74,7 @@ class ContentBase(zope.container.contained.Contained):
         parent_id = os.path.dirname(unique_id)
         parent_id = parent_id.rstrip('/') + '/'
 
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         # "root" edge case part 1a: We use the repository itself as the '/'
         # folder, it serves as the traversal root for DAV content
         if parent_id == repository.uniqueId:
@@ -95,7 +96,8 @@ class Container(ContentBase):
     """The container represents webdav collections."""
 
     _local_unique_map_data = gocept.cache.property.TransactionBoundCache(
-        '_v_local_unique_map', dict)
+        '_v_local_unique_map', dict
+    )
 
     # Container interface
 
@@ -104,26 +106,25 @@ class Container(ContentBase):
         return sorted(self._local_unique_map.keys())
 
     def __iter__(self):
-        '''See interface `IReadContainer`'''
+        """See interface `IReadContainer`"""
         return iter(self.keys())
 
     def __getitem__(self, key):
-        '''See interface `IReadContainer`'''
+        """See interface `IReadContainer`"""
         unique_id = self._get_id_for_name(key)
         __traceback_info__ = (key, unique_id)
         content = self.repository._getContent(unique_id)
-        return zope.container.contained.contained(
-            content, self, content.__name__)
+        return zope.container.contained.contained(content, self, content.__name__)
 
     def get(self, key, default=None):
-        '''See interface `IReadContainer`'''
+        """See interface `IReadContainer`"""
         try:
             return self[key]
         except KeyError:
             return default
 
     def values(self):
-        '''See interface `IReadContainer`'''
+        """See interface `IReadContainer`"""
         for key in self.keys():
             try:
                 yield self[key]
@@ -133,21 +134,21 @@ class Container(ContentBase):
                 continue
 
     def __len__(self):
-        '''See interface `IReadContainer`'''
+        """See interface `IReadContainer`"""
         return len(self._local_unique_map)
 
     def items(self):
-        '''See interface `IReadContainer`'''
+        """See interface `IReadContainer`"""
         return list(zip(list(self.keys()), list(self.values())))
 
     def __contains__(self, key):
-        '''See interface `IReadContainer`'''
+        """See interface `IReadContainer`"""
         return key in self._local_unique_map
 
     has_key = __contains__
 
     def __setitem__(self, name, object):
-        '''See interface `IWriteContainer`'''
+        """See interface `IWriteContainer`"""
         # We need to store oldparent before changing object.uniqueId, since
         # ContentBase otherwise may start calculating a wrong value.
         oldparent = object.__parent__
@@ -167,13 +168,13 @@ class Container(ContentBase):
             self.repository.addContent(object)
         elif oldparent:
             # As the object has a parent we assume that it should be moved.
-            log.info("Moving %s to %s" % (object.uniqueId, new_id))
+            log.info('Moving %s to %s' % (object.uniqueId, new_id))
             self.connector.move(object.uniqueId, new_id)
             object.uniqueId = new_id
             event = True
         else:
             # As the object has no parent we assume that it should be copied.
-            log.info("Copying %s to %s" % (object.uniqueId, new_id))
+            log.info('Copying %s to %s' % (object.uniqueId, new_id))
             self.connector.copy(object.uniqueId, new_id)
             event = True
 
@@ -184,20 +185,17 @@ class Container(ContentBase):
             object.__parent__ = self
             object.__name__ = name
             if oldparent is None or oldname is None:
-                event = zope.lifecycleevent.ObjectAddedEvent(
-                    object, self, name)
+                event = zope.lifecycleevent.ObjectAddedEvent(object, self, name)
             else:
-                event = zope.lifecycleevent.ObjectMovedEvent(
-                    object, oldparent, oldname, self, name)
+                event = zope.lifecycleevent.ObjectMovedEvent(object, oldparent, oldname, self, name)
             zope.event.notify(event)
 
     def __delitem__(self, name):
-        '''See interface `IWriteContainer`'''
+        """See interface `IWriteContainer`"""
 
         obj = self[name]
 
-        zope.event.notify(
-            zeit.cms.repository.interfaces.BeforeObjectRemovedEvent(obj))
+        zope.event.notify(zeit.cms.repository.interfaces.BeforeObjectRemovedEvent(obj))
 
         id = self._get_id_for_name(name)
         del self.connector[id]
@@ -211,8 +209,7 @@ class Container(ContentBase):
 
     @property
     def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     def _get_id_for_name(self, name):
         if self.uniqueId.endswith('/'):
@@ -225,8 +222,7 @@ class Container(ContentBase):
     def _local_unique_map(self):
         __traceback_info__ = (self.uniqueId,)
         if not self._local_unique_map_data:
-            self._local_unique_map_data.update(
-                self.connector.listCollection(self.uniqueId))
+            self._local_unique_map_data.update(self.connector.listCollection(self.uniqueId))
         return self._local_unique_map_data
 
 
@@ -235,7 +231,8 @@ class Container(ContentBase):
     zeit.cms.repository.interfaces.IFolder,
     zeit.cms.repository.interfaces.IRepositoryContent,
     zeit.cms.section.interfaces.IZONSection,
-    zope.annotation.interfaces.IAttributeAnnotatable)
+    zope.annotation.interfaces.IAttributeAnnotatable,
+)
 class Repository(persistent.Persistent, Container):
     """Access the webdav repository."""
 
@@ -257,11 +254,10 @@ class Repository(persistent.Persistent, Container):
 
     def getContent(self, unique_id):
         if not isinstance(unique_id, str):
-            raise TypeError("unique_id: string expected, got %s" %
-                            type(unique_id))
+            raise TypeError('unique_id: string expected, got %s' % type(unique_id))
         unique_id = self._get_normalized_unique_id(unique_id)
         if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
-            raise ValueError("The id %r is invalid." % unique_id)
+            raise ValueError('The id %r is invalid.' % unique_id)
         if unique_id == self.uniqueId:  # "root" edge case part 1b
             return self
 
@@ -280,8 +276,7 @@ class Repository(persistent.Persistent, Container):
             if path.startswith('/'):
                 path = path[1:]
             try:
-                content = zope.traversing.interfaces.ITraverser(
-                    self).traverse(path)
+                content = zope.traversing.interfaces.ITraverser(self).traverse(path)
             except zope.traversing.interfaces.TraversalError:
                 raise KeyError(unique_id)
         return content
@@ -296,23 +291,20 @@ class Repository(persistent.Persistent, Container):
         return content
 
     def _add_marker_interfaces(self, content):  # Extension point for zeit.web
-        zope.interface.alsoProvides(
-            content, zeit.cms.repository.interfaces.IRepositoryContent)
+        zope.interface.alsoProvides(content, zeit.cms.repository.interfaces.IRepositoryContent)
 
     def addContent(self, content, ignore_conflicts=False):
-        zope.event.notify(
-            zeit.cms.repository.interfaces.BeforeObjectAddEvent(content))
+        zope.event.notify(zeit.cms.repository.interfaces.BeforeObjectAddEvent(content))
         resource = zeit.cms.interfaces.IResource(content)
         if resource.id is None:
-            raise ValueError("Objects to be added to the repository need a "
-                             "unique id.")
+            raise ValueError('Objects to be added to the repository need a ' 'unique id.')
         try:
             self.connector.add(resource, verify_etag=not ignore_conflicts)
         except zeit.connector.dav.interfaces.PreconditionFailedError:
             raise zeit.cms.repository.interfaces.ConflictError(
                 content.uniqueId,
-                _('There was a conflict while adding ${name}',
-                  mapping={'name': content.uniqueId}))
+                _('There was a conflict while adding ${name}', mapping={'name': content.uniqueId}),
+            )
 
     @property
     def repository(self):
@@ -327,8 +319,7 @@ class Repository(persistent.Persistent, Container):
 
     def _get_normalized_unique_id(self, unique_id):
         if unique_id.startswith('/cms/work/'):
-            return unique_id.replace('/cms/work/',
-                                     zeit.cms.interfaces.ID_NAMESPACE)
+            return unique_id.replace('/cms/work/', zeit.cms.interfaces.ID_NAMESPACE)
         return unique_id
 
 
@@ -338,8 +329,9 @@ def repositoryFactory():
     return repository
 
 
-@zope.component.adapter(zeit.cms.repository.interfaces.IRepository,
-                        zope.lifecycleevent.IObjectAddedEvent)
+@zope.component.adapter(
+    zeit.cms.repository.interfaces.IRepository, zope.lifecycleevent.IObjectAddedEvent
+)
 def initializeRepository(repository, event):
     repository._initalizied = True
 
@@ -347,17 +339,14 @@ def initializeRepository(repository, event):
 @zope.component.adapter(zope.processlifetime.IDatabaseOpenedWithRoot)
 def deny_edit_permissions_in_repository_on_startup(event):
     root = event.database.open().root()
-    root_folder = root[
-        zope.app.publication.zopepublication.ZopePublication.root_name]
+    root_folder = root[zope.app.publication.zopepublication.ZopePublication.root_name]
     repository = root_folder['repository']
     deny_edit_permissions_in_repository(repository)
 
 
 def deny_edit_permissions_in_repository(repository):
-    perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(
-        repository)
-    for perm_id, _perm in zope.component.getUtilitiesFor(
-            zeit.cms.interfaces.IEditPermission):
+    perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(repository)
+    for perm_id, _perm in zope.component.getUtilitiesFor(zeit.cms.interfaces.IEditPermission):
         perms.denyPermissionToPrincipal(perm_id, 'zope.Everybody')
 
 
@@ -370,14 +359,13 @@ def cmscontentFactory(context):
     the name of the resource type.
 
     """
+
     def adapter(type):
-        return zope.component.queryAdapter(
-            context, zeit.cms.interfaces.ICMSContent, type)
+        return zope.component.queryAdapter(context, zeit.cms.interfaces.ICMSContent, type)
 
     content = adapter(context.type)
     if content is None:
-        cms_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.cms')
+        cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         default_type = None
         if cms_config:
             default_type = cms_config.get('default-type')
@@ -388,16 +376,13 @@ def cmscontentFactory(context):
     if content is not None:
         content.uniqueId = context.id
 
-    zope.event.notify(
-        zeit.cms.repository.interfaces.AfterObjectConstructedEvent(content,
-                                                                   context))
+    zope.event.notify(zeit.cms.repository.interfaces.AfterObjectConstructedEvent(content, context))
     return content
 
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
 def invalidate_content_cache(event):
-    repository = zope.component.queryUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
     if repository is not None:
         repository._content.pop(event.id, None)
 
@@ -405,13 +390,11 @@ def invalidate_content_cache(event):
 @grok.adapter(str, name=zeit.cms.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_content(uniqueId):
-    repository = zope.component.queryUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
     try:
         return repository.getContent(uniqueId)
     except (ValueError, KeyError):
-        lookup = zope.component.getUtility(
-            zeit.cms.redirect.interfaces.ILookup)
+        lookup = zope.component.getUtility(zeit.cms.redirect.interfaces.ILookup)
         new_id = lookup.find(uniqueId)
         if new_id:
             return zeit.cms.interfaces.ICMSContent(new_id, None)
@@ -422,8 +405,7 @@ def unique_id_to_content(uniqueId):
 @grok.adapter(str, name=zeit.cms.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSWCContent)
 def unique_id_to_wc_or_repository(uniqueId):
-    wc = zope.component.queryAdapter(
-        None, zeit.cms.workingcopy.interfaces.IWorkingcopy)
+    wc = zope.component.queryAdapter(None, zeit.cms.workingcopy.interfaces.IWorkingcopy)
     wc_values = wc.values() if wc is not None else []
     obj = None
     for obj in wc_values:

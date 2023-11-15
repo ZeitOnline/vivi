@@ -26,7 +26,6 @@ def override_example(context):
 
 
 class LocalTeaserTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
@@ -35,8 +34,7 @@ class LocalTeaserTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_local_teaser_also_provides_content_interfaces(self):
         self.module.append(self.repository['testcontent'])
         content = list(self.module)[0]
-        self.assertIn(
-            ICommonMetadata, list(zope.interface.providedBy(content)))
+        self.assertIn(ICommonMetadata, list(zope.interface.providedBy(content)))
 
     def test_override_interface_is_more_specific_than_content_interfaces(self):
         zca = zope.component.getSiteManager()

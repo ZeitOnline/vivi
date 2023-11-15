@@ -12,25 +12,23 @@ class IZTTSection(zeit.cms.section.interfaces.ISection):
     pass
 
 
-class IZTTContent(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.section.interfaces.ISectionMarker):
+class IZTTContent(zeit.cms.interfaces.ICMSContent, zeit.cms.section.interfaces.ISectionMarker):
     pass
 
 
 class IZTTFolder(
-        zeit.cms.repository.interfaces.IFolder,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.cms.repository.interfaces.IFolder, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZTTArticle(
-        zeit.content.article.interfaces.IArticle,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.article.interfaces.IArticle, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZTTCenterPage(
-        zeit.content.cp.interfaces.ICenterPage,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.cp.interfaces.ICenterPage, zeit.cms.section.interfaces.ISectionMarker
+):
     pass

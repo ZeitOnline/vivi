@@ -3,10 +3,9 @@ import zeit.edit.container
 
 
 class TypeOnTagContainer(zeit.edit.container.Base):
-
     _find_item = lxml.etree.XPath(
-        './/*[@cms:__name__ = $name]',
-        namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'})
+        './/*[@cms:__name__ = $name]', namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'}
+    )
 
     def _get_element_type(self, xml_node):
         return xml_node.tag

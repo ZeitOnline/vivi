@@ -7,22 +7,17 @@ import zope.formlib.form
 
 
 class FormBase:
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.text.interfaces.IText)
+    form_fields = zope.formlib.form.FormFields(zeit.content.text.interfaces.IText)
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
-
     title = _('Add plain text')
     factory = zeit.content.text.text.Text
 
 
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
-
     title = _('Edit plain text')
 
 
 class Display(FormBase, zeit.cms.browser.form.DisplayForm):
-
     title = _('View plain text')

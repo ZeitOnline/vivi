@@ -8,8 +8,7 @@ import zope.component.hooks
 
 def update(root):
     """Adds access time to property and child name cache."""
-    ifaces = [zeit.connector.interfaces.IPropertyCache,
-              zeit.connector.interfaces.IChildNameCache]
+    ifaces = [zeit.connector.interfaces.IPropertyCache, zeit.connector.interfaces.IChildNameCache]
     for iface in ifaces:
         cache = zope.component.getUtility(iface)
         zeit.connector.cache.AccessTimes.__init__(cache)

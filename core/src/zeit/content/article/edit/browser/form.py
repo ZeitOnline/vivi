@@ -24,15 +24,12 @@ import zope.formlib.interfaces
 
 
 class FormFields(zope.formlib.form.FormFields):
-
     def __init__(self, *args, **kw):
-        kw.setdefault(
-            'render_context', zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
+        kw.setdefault('render_context', zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
         super().__init__(*args, **kw)
 
 
 class Heading:
-
     def render(self):
         # workaround until the title is synchronized to the heading (#11255)
         if IAutomaticallyRenameable(self.context).renameable:
@@ -41,12 +38,10 @@ class Heading:
 
 
 class MemoFormGroup(zeit.edit.browser.form.FormGroup):
-
     title = ''
 
 
 class Memo(zeit.edit.browser.form.InlineForm):
-
     legend = ''
     prefix = 'memo'
     form_fields = FormFields(zeit.cms.content.interfaces.IMemo).select('memo')
@@ -61,13 +56,10 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     folded_workingcopy = False
 
 
-class ArticleContentHead(zeit.edit.browser.form.InlineForm,
-                         zeit.cms.browser.form.CharlimitMixin):
-
+class ArticleContentHead(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):
     legend = _('')
     prefix = 'article-content-head'
-    form_fields = FormFields(ICommonMetadata).select(
-        'supertitle', 'title', 'subtitle')
+    form_fields = FormFields(ICommonMetadata).select('supertitle', 'title', 'subtitle')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
@@ -80,32 +72,26 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm,
 
 
 class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'article-content-main-image'
-    form_fields = FormFields(IArticle).select(
-        'main_image', 'main_image_variant_name')
+    form_fields = FormFields(IArticle).select('main_image', 'main_image_variant_name')
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
     def _success_handler(self):
         # even though the image is not displayed in the body area,
         # the body still needs to be updated so it knows the (possibly) new
         # UUID of the image block
-        self.signal(
-            'reload', 'editable-body', self.url(self.context.body, 'contents'))
+        self.signal('reload', 'editable-body', self.url(self.context.body, 'contents'))
 
 
 class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Keywords')
 
 
 class Keywords(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'keywords'
     css_class = 'keywords'
@@ -113,7 +99,6 @@ class Keywords(zeit.edit.browser.form.InlineForm):
 
 
 class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Filename')
 
     def render(self):
@@ -123,7 +108,6 @@ class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class NewFilename(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'new-filename'
     css_class = 'table'
@@ -133,10 +117,9 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
         form_fields = FormFields(
             zeit.cms.interfaces.ICMSContent,
             zeit.cms.repository.interfaces.IAutomaticallyRenameable,
-            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-                '__name__', 'rename_to')
-        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-                self.context).renameable:
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
+        ).select('__name__', 'rename_to')
+        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(self.context).renameable:
             form_fields = form_fields.omit('__name__')
         else:
             form_fields = form_fields.omit('rename_to')
@@ -144,47 +127,41 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
 
 
 class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Internal links')
 
 
 class InternalLinks(zeit.edit.browser.form.InlineForm):
-
     legend = ''
     prefix = 'internallinks'
     form_fields = FormFields(zeit.cms.related.interfaces.IRelatedContent)
-    form_fields += FormFields(
-        zeit.content.article.interfaces.IArticleMetadata
-    ).select('hide_ligatus_recommendations', 'prevent_ligatus_indexing')
+    form_fields += FormFields(zeit.content.article.interfaces.IArticleMetadata).select(
+        'hide_ligatus_recommendations', 'prevent_ligatus_indexing'
+    )
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
         self.widgets['related'].detail_view_name = '@@related-details'
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
 
 class StatusForms(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Status')
 
 
 class WorkflowStatusDisplay(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
-    form_fields = FormFields(
-        zeit.workflow.interfaces.IContentWorkflow).select(
-            'edited', 'corrected', 'seo_optimized')
+    form_fields = FormFields(zeit.workflow.interfaces.IContentWorkflow).select(
+        'edited', 'corrected', 'seo_optimized'
+    )
     form_fields['edited'].custom_widget = CheckboxDisplayWidget
     form_fields['corrected'].custom_widget = CheckboxDisplayWidget
     form_fields['seo_optimized'].custom_widget = CheckboxDisplayWidget
 
 
 class LastPublished:
-
     @property
     def publishinfo(self):
         return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
@@ -214,7 +191,6 @@ class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class MetadataA(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'metadata-a'
     form_fields = FormFields(ICommonMetadata).select('ressort', 'sub_ressort')
@@ -225,7 +201,8 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
             result += (
                 '<script type="text/javascript">'
                 '    zeit.cms.configure_ressort_dropdown("%s.");'
-                '</script>') % (self.prefix,)
+                '</script>'
+            ) % (self.prefix,)
         return result
 
     def _success_handler(self):
@@ -234,14 +211,12 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
 
 
 class MetadataB(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'metadata-b'
     form_fields = FormFields(ICommonMetadata).select('product', 'copyrights')
 
 
 class MetadataC(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'metadata-c'
     form_fields = FormFields(ICommonMetadata).select('authorships')
@@ -256,7 +231,6 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
 
 
 class MetadataAgency(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'metadata-agency'
     form_fields = FormFields()
@@ -268,7 +242,6 @@ class MetadataAgency(zeit.edit.browser.form.InlineForm):
 
 
 class MetadataAccess(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'metadata-access'
     form_fields = FormFields(ICommonMetadata).select('access')
@@ -278,7 +251,6 @@ class MetadataAccess(zeit.edit.browser.form.InlineForm):
 
 
 class MetadataGenre(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'metadata-genre'
     form_fields = FormFields(IArticle).select('genre')
@@ -289,12 +261,10 @@ class MetadataGenre(zeit.edit.browser.form.InlineForm):
 
 
 class CommentsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Comments')
 
 
 class Comments(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'metadata-comments'
 
@@ -302,13 +272,11 @@ class Comments(zeit.edit.browser.form.InlineForm):
     def form_fields(self):
         fields = ('commentSectionEnable',)
         if self.context.commentSectionEnable:
-            fields += (
-                'commentsAllowed', 'commentsPremoderate', 'comments_sorting')
+            fields += ('commentsAllowed', 'commentsPremoderate', 'comments_sorting')
         return FormFields(IArticle).select(*fields)
 
 
 class OptionsAudioSpeechbert(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'options-audio-speechbert'
     form_fields = FormFields(IArticle).select('audio_speechbert')
@@ -322,28 +290,27 @@ class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class TeaserImage(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'teaser-image'
     css_class = 'teaser-image'
-    form_fields = FormFields(
-        zeit.content.image.interfaces.IImages).select('image')
+    form_fields = FormFields(zeit.content.image.interfaces.IImages).select('image')
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
     def setUpWidgets(self, *args, **kw):
         try:
             master = zeit.content.image.interfaces.IMasterImage(
-                zeit.content.image.interfaces.IImages(self.context).image)
-            if master.format == 'PNG' and (
-                    self.form_fields.get('fill_color') is None):
-                self.form_fields += FormFields(
-                    zeit.content.image.interfaces.IImages).select('fill_color')
-                self.form_fields['fill_color'].custom_widget = (
-                    zeit.cms.browser.widget.ColorpickerWidget)
+                zeit.content.image.interfaces.IImages(self.context).image
+            )
+            if master.format == 'PNG' and (self.form_fields.get('fill_color') is None):
+                self.form_fields += FormFields(zeit.content.image.interfaces.IImages).select(
+                    'fill_color'
+                )
+                self.form_fields[
+                    'fill_color'
+                ].custom_widget = zeit.cms.browser.widget.ColorpickerWidget
         except TypeError:
             self.form_fields = self.form_fields.omit('fill_color')
         super().setUpWidgets(*args, **kw)
@@ -354,13 +321,10 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-form', 'mobile')
         # XXX it would be nicer if we didn't need to know the reload URL here
         # (e.g. write it onto the DOM element)
-        self.signal(
-            'reload', 'editable-body', self.url(self.context.body, 'contents'))
+        self.signal('reload', 'editable-body', self.url(self.context.body, 'contents'))
 
 
-class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
-                       zeit.cms.browser.form.CharlimitMixin):
-
+class TeaserSupertitle(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):
     legend = _('')
     prefix = 'teaser-supertitle'
     form_fields = FormFields(ICommonMetadata).select('teaserSupertitle')
@@ -370,9 +334,7 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
         self.set_charlimit('teaserSupertitle')
 
 
-class TeaserTitle(zeit.edit.browser.form.InlineForm,
-                  zeit.cms.browser.form.CharlimitMixin):
-
+class TeaserTitle(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):
     legend = _('')
     prefix = 'teaser-title'
     form_fields = FormFields(ICommonMetadata).select('teaserTitle')
@@ -382,9 +344,7 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm,
         self.set_charlimit('teaserTitle')
 
 
-class TeaserText(zeit.edit.browser.form.InlineForm,
-                 zeit.cms.browser.form.CharlimitMixin):
-
+class TeaserText(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):
     legend = _('')
     prefix = 'teaser-text'
     form_fields = FormFields(ICommonMetadata).select('teaserText')
@@ -395,23 +355,21 @@ class TeaserText(zeit.edit.browser.form.InlineForm,
 
 
 class OptionFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Options')
 
 
 class OptionsA(zeit.edit.browser.form.InlineForm):
-
     legend = ''
     prefix = 'options-a'
     form_fields = FormFields(IArticle).select('serie')
 
 
 class OptionsB(zeit.edit.browser.form.InlineForm):
-
     legend = ''
     prefix = 'options-b'
     form_fields = FormFields(ICommonMetadata).select(
-        'year', 'volume', 'page', 'printRessort', 'byline')
+        'year', 'volume', 'page', 'printRessort', 'byline'
+    )
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
@@ -424,40 +382,32 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
 
 
 class OptionsC(zeit.edit.browser.form.InlineForm):
-
     legend = ''
     prefix = 'options-c'
-    form_fields = FormFields(ICommonMetadata).select(
-        'deeplink_url', 'color_scheme')
+    form_fields = FormFields(ICommonMetadata).select('deeplink_url', 'color_scheme')
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
-
     legend = _('Product management')
     prefix = 'options-productmanagement'
     form_fields = FormFields(ICommonMetadata).select(
-        'cap_title', 'banner_id', 'vg_wort_id',
-        'advertisement_title', 'advertisement_text')
-
-
-class OptionsInteractive(zeit.edit.browser.form.InlineForm):
-
-    legend = _('Interactive')
-    prefix = 'options-interactive'
-    form_fields = FormFields(IRemoteMetadata).select(
-        'remote_image', 'remote_timestamp'
+        'cap_title', 'banner_id', 'vg_wort_id', 'advertisement_title', 'advertisement_text'
     )
 
 
-class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
+class OptionsInteractive(zeit.edit.browser.form.InlineForm):
+    legend = _('Interactive')
+    prefix = 'options-interactive'
+    form_fields = FormFields(IRemoteMetadata).select('remote_image', 'remote_timestamp')
 
+
+class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'misc-product-management-b'
     form_fields = FormFields(ICommonMetadata).select('overscrolling')
 
 
 class RecipeCategories(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'recipe-categories'
     css_class = 'recipe-categories'
@@ -473,12 +423,10 @@ class RecipeCategories(zeit.edit.browser.form.InlineForm):
 
 
 class ChannelFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Run in channel')
 
 
 class ChannelSelector(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'channel-selector'
     form_fields = FormFields(ICommonMetadata).select('channels')
@@ -499,32 +447,27 @@ class ChannelSelector(zeit.edit.browser.form.InlineForm):
         since there is no other event for the inline form to do that."""
         super().handle_edit_action.success(data)
 
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         """Once you override one action, you lose *all* inherited ones."""
         super().handle_edit_action.success(data)
 
 
 class AudioForms(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Audio')
 
 
 class Audio(zeit.edit.browser.form.InlineForm):
-
     legend = ''
     prefix = 'audio'
     form_fields = FormFields(zeit.content.audio.interfaces.IAudioReferences)
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
     def _success_handler(self):
-        self.signal("reload-inline-form", "options-template")
-        self.signal("reload-inline-form", "article-content-head")
-        self.signal("reload-inline-form", "teaser-text")
-        self.signal("reload", "editable-body", self.url(
-            self.context.body, "contents"))
+        self.signal('reload-inline-form', 'options-template')
+        self.signal('reload-inline-form', 'article-content-head')
+        self.signal('reload-inline-form', 'teaser-text')
+        self.signal('reload', 'editable-body', self.url(self.context.body, 'contents'))

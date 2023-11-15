@@ -8,21 +8,19 @@ import zope.component
 import zope.interface
 
 
-NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
+NAMESPACE = 'http://namespaces.zeit.de/CMS/tagging'
 KEYWORD_PROPERTY = ('testtags', NAMESPACE)
 
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IDAVContent)
 @zope.interface.implementer(zeit.cms.tagging.interfaces.ITagger)
 class DummyTagger:
-
     def __init__(self, context):
         self.context = context
 
     @property
     def whitelist(self):
-        return zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        return zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
 
     @property
     def dav_properties(self):
@@ -64,8 +62,8 @@ class DummyTagger:
         order = list(order)  # people are fond of passing in generators
         if set(order) != set(self.keys()):
             raise ValueError(
-                'Must pass in the same keys already present %r, not %r'
-                % (self.keys(), order))
+                'Must pass in the same keys already present %r, not %r' % (self.keys(), order)
+            )
         self.dav_properties[KEYWORD_PROPERTY] = '|'.join(order)
 
     def update(self):
@@ -83,7 +81,6 @@ class DummyTagger:
 
 @zope.interface.implementer(zeit.cms.tagging.interfaces.IWhitelist)
 class DummyWhitelist:
-
     tags = [
         'Testtag',
         'Testtag2',
@@ -97,13 +94,13 @@ class DummyWhitelist:
 
     def search(self, term):
         term = term.lower()
-        return [Tag(label, self.entity_type)
-                for label in self.tags if term in label.lower()]
+        return [Tag(label, self.entity_type) for label in self.tags if term in label.lower()]
 
     def locations(self, term):
         term = term.lower()
-        return [Tag(label, self.entity_type)
-                for label in self.location_tags if term in label.lower()]
+        return [
+            Tag(label, self.entity_type) for label in self.location_tags if term in label.lower()
+        ]
 
     def get(self, tag_id):
         label = tag_id.replace('test%s' % Tag.SEPARATOR, '')
@@ -113,7 +110,6 @@ class DummyWhitelist:
 
 
 class FakeTags(collections.OrderedDict):
-
     def __init__(self):
         super().__init__()
         self.updateOrder = mock.Mock()
@@ -148,12 +144,10 @@ class FakeTags(collections.OrderedDict):
     def links(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         live_prefix = config['live-prefix']
-        return {x.uniqueId: live_prefix + x.link
-                for x in self.values() if x.link}
+        return {x.uniqueId: live_prefix + x.link for x in self.values() if x.link}
 
     def to_xml(self):
-        node = lxml.objectify.E.tags(*[
-            lxml.objectify.E.tag(x.label) for x in self.values()])
+        node = lxml.objectify.E.tags(*[lxml.objectify.E.tag(x.label) for x in self.values()])
         return node
 
 
@@ -169,20 +163,19 @@ class TaggingHelper:
         self.tagger = patcher.start()
         self.tagger.return_value = tags
 
-        whitelist = zope.component.queryUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        whitelist = zope.component.queryUtility(zeit.cms.tagging.interfaces.IWhitelist)
         if whitelist is not None:  # only when ZCML is loaded
             original_tags = whitelist.tags
             whitelist.tags = list(labels)
 
             def restore_original_tags_on_whitelist():
                 whitelist.tags = original_tags
+
             self.addCleanup(restore_original_tags_on_whitelist)
         return tags
 
     def add_keyword_by_autocomplete(self, text, form_prefix='form'):
-        self.add_by_autocomplete(
-            text, 'id=%s.keywords.add' % form_prefix)
+        self.add_by_autocomplete(text, 'id=%s.keywords.add' % form_prefix)
 
     def add_topicpage_link(self, tag):
         tag.link = 'thema/%s' % tag.label.lower()

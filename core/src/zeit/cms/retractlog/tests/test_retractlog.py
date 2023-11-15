@@ -5,7 +5,6 @@ import zeit.cms.retractlog.retractlog
 
 
 class RetractLogTest(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_start_job_retracts_urls(self):
         self.repository['foo'] = ExampleContentType()
         self.repository['bar'] = ExampleContentType()
@@ -14,7 +13,5 @@ class RetractLogTest(zeit.cms.testing.ZeitCmsTestCase):
         job = zeit.cms.retractlog.retractlog.Job()
         job.urls = ['http://xml.zeit.de/foo', 'http://xml.zeit.de/bar']
         job.start()
-        self.assertFalse(
-            IPublishInfo(self.repository['foo']).published)
-        self.assertFalse(
-            IPublishInfo(self.repository['bar']).published)
+        self.assertFalse(IPublishInfo(self.repository['foo']).published)
+        self.assertFalse(IPublishInfo(self.repository['bar']).published)

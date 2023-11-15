@@ -18,24 +18,25 @@ try:
     from opentelemetry.sdk.trace.export import ConsoleSpanExporter
     from opentelemetry.sdk.resources import Resource
     from opentelemetry.sdk.util.instrumentation import InstrumentationScope
-    from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
-        OTLPSpanExporter)
+    from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 except ImportError:
     TracerProvider = object
     Tracer = object
 
 
 class OpenTelemetryTracerProvider(TracerProvider):
-
-    def __init__(self, service_name, service_version, environment, hostname,
-                 otlp_url, headers=None):
+    def __init__(
+        self, service_name, service_version, environment, hostname, otlp_url, headers=None
+    ):
         # see <specification/resource/semantic_conventions/README.md>
-        resource = Resource.create({
-            'service.name': service_name,
-            'service.version': service_version,
-            'service.namespace': environment,
-            'service.instance.id': hostname,
-        })
+        resource = Resource.create(
+            {
+                'service.name': service_name,
+                'service.version': service_version,
+                'service.namespace': environment,
+                'service.instance.id': hostname,
+            }
+        )
         super().__init__(resource=resource)
 
         self.otlp_url = otlp_url
@@ -45,10 +46,14 @@ class OpenTelemetryTracerProvider(TracerProvider):
     def initialize(self):
         """Defer starting thread *after* gunicorn has forked its workers."""
         self.add_span_processor(
-            BatchSpanProcessor(OTLPSpanExporter(
-                endpoint=self.otlp_url,
-                insecure=not self.otlp_url.startswith('https'),
-                headers=self.headers)))
+            BatchSpanProcessor(
+                OTLPSpanExporter(
+                    endpoint=self.otlp_url,
+                    insecure=not self.otlp_url.startswith('https'),
+                    headers=self.headers,
+                )
+            )
+        )
         self.initialized = True
 
     # Even though TracerProvider declares kwargs,
@@ -61,14 +66,16 @@ class OpenTelemetryTracerProvider(TracerProvider):
 
 
 class DelayedInitializationTracer(Tracer):
-
     def __init__(self, provider, name, version, schema_url):
         super().__init__(
-            provider.sampler, provider.resource,
-            provider._active_span_processor, provider.id_generator,
+            provider.sampler,
+            provider.resource,
+            provider._active_span_processor,
+            provider.id_generator,
             None,  # InstrumentationInfo was replaced by InstrumentationScope
             provider._span_limits,
-            InstrumentationScope(name, version, schema_url))
+            InstrumentationScope(name, version, schema_url),
+        )
         self.provider = provider
 
     def start_as_current_span(self, *args, **kw):
@@ -114,11 +121,16 @@ def tracer_from_product_config():
 
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     provider = zeit.cms.tracing.OpenTelemetryTracerProvider(
-        'vivi', importlib.metadata.version('vivi.core'),
-        config['environment'], hostname, config['otlp-url'], headers={
+        'vivi',
+        importlib.metadata.version('vivi.core'),
+        config['environment'],
+        hostname,
+        config['otlp-url'],
+        headers={
             'x-honeycomb-team': config['honeycomb-apikey'],
             'x-honeycomb-dataset': config['honeycomb-dataset'],
-        })
+        },
+    )
     opentelemetry.trace.set_tracer_provider(provider)
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
@@ -140,6 +152,7 @@ def stdout_tracer():
 def prometheus_metrics():
     from opentelemetry.sdk.metrics import MeterProvider
     from opentelemetry.exporter.prometheus import PrometheusMetricReader
+
     provider = MeterProvider([PrometheusMetricReader(prefix='')])
     opentelemetry.metrics.set_meter_provider(provider)
 
@@ -185,5 +198,4 @@ def anonymize(value):
         iv = iv.encode('utf-8')
     else:
         iv = os.urandom(16)
-    return Fernet(key)._encrypt_from_parts(
-        value.encode('utf-8'), ts, iv).decode('ascii')
+    return Fernet(key)._encrypt_from_parts(value.encode('utf-8'), ts, iv).decode('ascii')

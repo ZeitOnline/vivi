@@ -6,7 +6,6 @@ import zope.lifecycleevent
 
 
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
@@ -94,9 +93,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.create_item('markup')
         lead.count = 2
         lead.automatic = True
-        self.assertEqual(
-            ['markup', 'auto-teaser', 'auto-teaser'],
-            [x.type for x in lead.values()])
+        self.assertEqual(['markup', 'auto-teaser', 'auto-teaser'], [x.type for x in lead.values()])
 
     def test_reducing_automatic_count_does_not_delete_manual_content(self):
         lead = self.repository['cp']['lead']
@@ -168,9 +165,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         teaser3.volatile = True
 
         lead.automatic = True
-        self.assertEqual(
-            ['auto-teaser', 'teaser', 'auto-teaser'],
-            [x.type for x in lead.values()])
+        self.assertEqual(['auto-teaser', 'teaser', 'auto-teaser'], [x.type for x in lead.values()])
 
     def test_enabling_automatic_does_not_break_on_updateOrder(self):
         """update_autopilot handler might interfere and creates new blocks"""
@@ -184,6 +179,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_disabling_automatic_keeps_order_of_teasers(self):
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+
         self.repository['t1'] = ExampleContentType()
         self.repository['t2'] = ExampleContentType()
 
@@ -199,7 +195,6 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
 
 class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
@@ -212,8 +207,9 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['other'] = other
         self.area.referenced_cp = self.repository['other']
         zope.lifecycleevent.modified(
-            self.area, zope.lifecycleevent.Attributes(
-                zeit.content.cp.interfaces.IArea, 'referenced_cp'))
+            self.area,
+            zope.lifecycleevent.Attributes(zeit.content.cp.interfaces.IArea, 'referenced_cp'),
+        )
 
     def test_attributes_from_referenced_cp_are_copied(self):
         self.assertEqual('referenced', self.area.title)
@@ -228,13 +224,13 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.title = 'local'
         self.assertEqual('local', self.area.title)
         zope.lifecycleevent.modified(
-            self.area, zope.lifecycleevent.Attributes(
-                zeit.content.cp.interfaces.IArea, 'referenced_cp'))
+            self.area,
+            zope.lifecycleevent.Attributes(zeit.content.cp.interfaces.IArea, 'referenced_cp'),
+        )
         self.assertEqual('local', self.area.title)
 
     def test_read_more_url_is_generated_from_cp(self):
-        self.assertEqual('http://localhost/live-prefix/other',
-                         self.area.read_more_url)
+        self.assertEqual('http://localhost/live-prefix/other', self.area.read_more_url)
 
     def test_topiclink_values_from_referenced_cp_are_used(self):
         self.assertEqual('foo', self.area.topiclink_label_1)
@@ -259,20 +255,18 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
 
 
 class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
     def test_serializes_via_dav_converter(self):
         area = self.repository['cp']['lead']
-        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(
-            None)
+        source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         autotest = source.find('Autotest')
         area.query = (('serie', 'eq', autotest),)
         lxml.objectify.deannotate(area.xml, cleanup_namespaces=True)
         self.assertEllipsis(
-            '<query...><condition...type="serie"...>Autotest'
-            '</condition></query>',
-            lxml.etree.tostring(area.xml.query, encoding=str))
+            '<query...><condition...type="serie"...>Autotest' '</condition></query>',
+            lxml.etree.tostring(area.xml.query, encoding=str),
+        )
         self.assertEqual((('serie', 'eq', autotest),), area.query)

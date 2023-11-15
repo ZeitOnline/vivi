@@ -10,21 +10,21 @@ import zope.interface
 
 
 class Connection(elasticsearch.connection.RequestsHttpConnection):
-
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
         self.session.headers['User-Agent'] = self._user_agent()
 
     def _user_agent(self):
         return requests.utils.default_user_agent(
-            'zeit.retresco-%s/python-requests' % (
-                importlib.metadata.version('vivi.core')))
+            'zeit.retresco-%s/python-requests' % (importlib.metadata.version('vivi.core'))
+        )
 
 
 def TransportWithConnection(connection_class):
     def factory(*args, **kw):
         kw['connection_class'] = connection_class
         return elasticsearch.transport.Transport(*args, **kw)
+
     return factory
 
 
@@ -34,7 +34,8 @@ class Elasticsearch:
 
     def __init__(self, url, index, connection_class=Connection):
         self.client = elasticsearch.Elasticsearch(
-            [url], transport_class=TransportWithConnection(connection_class))
+            [url], transport_class=TransportWithConnection(connection_class)
+        )
         self.index = index
 
     def search(self, query, start=0, rows=25, include_payload=False):
@@ -53,8 +54,8 @@ class Elasticsearch:
         if '_source' in query:
             if include_payload:
                 raise ValueError(
-                    'Cannot include payload with specified source: %s' %
-                    (query['_source'],))
+                    'Cannot include payload with specified source: %s' % (query['_source'],)
+                )
         else:
             query['_source'] = ['url', 'doc_type', 'doc_id']
             if include_payload:
@@ -66,10 +67,8 @@ class Elasticsearch:
             query['track_total_hits'] = True
 
         __traceback_info__ = (self.index, query)
-        response = self.client.search(
-            index=self.index, from_=start, size=rows, **query)
-        result = zeit.cms.interfaces.Result(
-            [x['_source'] for x in response['hits']['hits']])
+        response = self.client.search(index=self.index, from_=start, size=rows, **query)
+        result = zeit.cms.interfaces.Result([x['_source'] for x in response['hits']['hits']])
         if isinstance(response['hits']['total'], int):  # BBB ES-2.x
             result.hits = response['hits']['total']
         else:
@@ -102,6 +101,7 @@ def from_product_config():
     """Get the utility configured with data from the product config."""
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
     return Elasticsearch(
-        config['elasticsearch-url'], config['elasticsearch-index'],
-        zope.dottedname.resolve.resolve(
-            config['elasticsearch-connection-class']))
+        config['elasticsearch-url'],
+        config['elasticsearch-index'],
+        zope.dottedname.resolve.resolve(config['elasticsearch-connection-class']),
+    )

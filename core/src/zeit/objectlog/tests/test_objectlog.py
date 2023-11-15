@@ -6,7 +6,6 @@ import zope.component
 
 
 class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.content = zeit.objectlog.testing.Content()

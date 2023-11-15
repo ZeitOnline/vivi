@@ -24,72 +24,61 @@ class PublishingError(Exception):
 
 
 class IModified(zope.interface.Interface):
-
     last_modified_by = zope.schema.Choice(
         title=_('Last modified by'),
         required=False,
         readonly=True,
-        source=zope.app.security.vocabulary.PrincipalSource())
+        source=zope.app.security.vocabulary.PrincipalSource(),
+    )
 
     date_last_modified = zope.schema.Datetime(
-        title=_('Date last modified'),
-        required=False,
-        readonly=True)
+        title=_('Date last modified'), required=False, readonly=True
+    )
 
     date_last_checkout = zope.schema.Datetime(
-        title=_('Date last checked out'),
-        required=False,
-        readonly=True)
+        title=_('Date last checked out'), required=False, readonly=True
+    )
 
 
 class IPublishInfo(zope.interface.Interface):
     """Information about published objects."""
 
-    published = zope.schema.Bool(
-        title=_('Published'),
-        readonly=True,
-        default=False)
+    published = zope.schema.Bool(title=_('Published'), readonly=True, default=False)
 
     date_last_published = zope.schema.Datetime(
-        title=_('Date last published'),
-        required=False,
-        default=None,
-        readonly=True)
+        title=_('Date last published'), required=False, default=None, readonly=True
+    )
 
     date_last_published_semantic = zope.schema.Datetime(
-        title=_('Last published with semantic change'),
-        required=False,
-        default=None,
-        readonly=True)
+        title=_('Last published with semantic change'), required=False, default=None, readonly=True
+    )
 
     date_first_released = zope.schema.Datetime(
-        title=_('Date first released'),
-        required=False,
-        readonly=True)
+        title=_('Date first released'), required=False, readonly=True
+    )
 
     date_print_published = zope.schema.Datetime(
-        title=_('Date of print publication'),
-        required=False)
+        title=_('Date of print publication'), required=False
+    )
 
     last_published_by = zope.schema.TextLine(
-        title=_('Last published by'),
-        required=False,
-        readonly=True)
+        title=_('Last published by'), required=False, readonly=True
+    )
 
     locked = zope.schema.Bool(
         title=_('Publish lock?'),
         description=_('Please retract first'),
         required=False,
-        default=False)
+        default=False,
+    )
 
-    lock_reason = zope.schema.Text(
-        title=_('Publish lock reason'),
-        required=False)
+    lock_reason = zope.schema.Text(title=_('Publish lock reason'), required=False)
 
     error_messages = zope.schema.List(
         title='List of warning and error messages.',
         readonly=True,
-        value_type=zope.schema.TextLine())
+        value_type=zope.schema.TextLine(),
+    )
 
     def can_publish():
         """Return whether the object can be published right now.
@@ -100,12 +89,12 @@ class IPublishInfo(zope.interface.Interface):
 
 
 class IPublicationStatus(zope.interface.Interface):
-
     published = zope.schema.Choice(
         title=_('Publication state'),
         readonly=True,
         default='published',
-        values=('published', 'not-published', 'published-with-changes'))
+        values=('published', 'not-published', 'published-with-changes'),
+    )
 
 
 PRIORITY_HOMEPAGE = 'publish_homepage'
@@ -179,14 +168,16 @@ class IPublicationDependencies(zope.interface.Interface):
     def get_dependencies():
         """Return a sequence of all dependent objects.
 
-    The sequence contains all objects which need to be published along with the
-    adapted object. Dependent containers will be published recursively.
-    """
+        The sequence contains all objects which need to be published along with the
+        adapted object. Dependent containers will be published recursively.
+        """
 
-    retract_dependencies = zope.interface.Attribute("""\
+    retract_dependencies = zope.interface.Attribute(
+        """\
         If True, retract dependent objects along with the adapted object.
         Usually we cannot know whether an object is used by someone else and
-        thus can't retract it, but in some cases this decision can be made.""")
+        thus can't retract it, but in some cases this decision can be made."""
+    )
 
 
 class IWithMasterObjectEvent(zope.interface.interfaces.IObjectEvent):
@@ -194,7 +185,8 @@ class IWithMasterObjectEvent(zope.interface.interfaces.IObjectEvent):
 
     master = zope.schema.Choice(
         title='The master object of this event.',
-        source=zeit.cms.content.contentsource.cmsContentSource)
+        source=zeit.cms.content.contentsource.cmsContentSource,
+    )
 
 
 class IBeforePublishEvent(IWithMasterObjectEvent):
@@ -219,7 +211,6 @@ class IRetractedEvent(IWithMasterObjectEvent):
 
 @zope.interface.implementer(IWithMasterObjectEvent)
 class WithMasterObjectEvent(zope.interface.interfaces.ObjectEvent):
-
     def __init__(self, obj, master):
         super().__init__(obj)
         self.master = master

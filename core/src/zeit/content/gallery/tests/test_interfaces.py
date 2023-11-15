@@ -5,12 +5,10 @@ import zeit.content.gallery.testing
 
 
 class TestGallerySource(
-        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-        zeit.content.gallery.testing.FunctionalTestCase):
-
+    zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+    zeit.content.gallery.testing.FunctionalTestCase,
+):
     source = zeit.content.gallery.interfaces.gallerySource
     expected_types = ['gallery']
 
-    copy_inherited_functions(
-        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-        locals())
+    copy_inherited_functions(zeit.cms.content.tests.test_contentsource.ContentSourceBase, locals())

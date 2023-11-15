@@ -14,34 +14,23 @@ import zope.interface
 import zope.security.proxy
 
 
-@zope.component.adapter(
-    zeit.cms.repository.interfaces.IFile,
-    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.component.adapter(zeit.cms.repository.interfaces.IFile, zeit.cms.browser.interfaces.ICMSLayer)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
-    author = title = subtitle = byline = ressort = volume = page = year = \
-        searchableText = None
+    author = title = subtitle = byline = ressort = volume = page = year = searchableText = None
 
 
 class FileView:
-
     title = _('View file')
 
 
 class IFileEditSchema(zope.interface.Interface):
+    __name__ = zope.schema.TextLine(title=_('File name'), required=False)
 
-    __name__ = zope.schema.TextLine(
-        title=_('File name'),
-        required=False)
-
-    blob = zope.schema.Object(
-        zope.interface.Interface,
-        title=_('Upload new file'))
+    blob = zope.schema.Object(zope.interface.Interface, title=_('Upload new file'))
 
 
 class BlobWidget(zope.app.form.browser.FileWidget):
-
     def _toFieldValue(self, input):
         if input is None or input == '':
             return self.context.missing_value
@@ -49,8 +38,7 @@ class BlobWidget(zope.app.form.browser.FileWidget):
             input.seek
             input.read
         except AttributeError as e:
-            raise zope.formlib.interfaces.ConversionError(
-                _('Form input is not a file object'), e)
+            raise zope.formlib.interfaces.ConversionError(_('Form input is not a file object'), e)
         else:
             if getattr(input, 'filename', ''):
                 return input
@@ -59,15 +47,13 @@ class BlobWidget(zope.app.form.browser.FileWidget):
 
 
 class FormBase:
-
     form_fields = zope.formlib.form.FormFields(IFileEditSchema)
     form_fields['blob'].custom_widget = BlobWidget
 
     BUFFER_SIZE = 10240
 
     def update_file(self, file, data):
-        target = zope.security.proxy.removeSecurityProxy(
-            file.open('w'))
+        target = zope.security.proxy.removeSecurityProxy(file.open('w'))
         s = data.read(self.BUFFER_SIZE)
         while s:
             target.write(s)
@@ -77,9 +63,7 @@ class FormBase:
         file.mimeType = data.headers['content-type']
 
 
-class AddForm(FormBase,
-              zeit.cms.browser.form.AddForm):
-
+class AddForm(FormBase, zeit.cms.browser.form.AddForm):
     title = _('Add file')
     factory = zeit.cms.repository.file.LocalFile
 
@@ -94,14 +78,12 @@ class AddForm(FormBase,
         return file
 
 
-class EditForm(FormBase,
-               zeit.cms.browser.form.FormBase,
-               gocept.form.grouped.Form):
-
+class EditForm(FormBase, zeit.cms.browser.form.FormBase, gocept.form.grouped.Form):
     form_fields = FormBase.form_fields.omit('__name__')
     title = _('Edit file')
     template = zope.app.pagetemplate.ViewPageTemplateFile(
-        os.path.join(os.path.dirname(__file__), 'file_edit.pt'))
+        os.path.join(os.path.dirname(__file__), 'file_edit.pt')
+    )
 
     @zope.formlib.form.action(_('Apply'))
     def handle_apply(self, action, data):

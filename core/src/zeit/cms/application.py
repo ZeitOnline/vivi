@@ -41,7 +41,6 @@ FANSTATIC_SETTINGS = {
 
 
 class Application:
-
     pipeline = [
         ('slowlog', 'call:slowlog.wsgi:make_slowlog'),
         ('bugsnag', 'call:zeit.cms.bugsnag:bugsnag_filter'),
@@ -49,7 +48,7 @@ class Application:
         # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
         # have it run first, before vhm applies any wsgi environ changes.
         ('fanstatic', 'call:fanstatic:make_fanstatic'),
-        ('vhm', 'call:repoze.vhm.middleware:make_filter')
+        ('vhm', 'call:repoze.vhm.middleware:make_filter'),
     ]
 
     def __call__(self, global_conf=None, **local_conf):
@@ -63,7 +62,8 @@ class Application:
 
         debug = zope.app.wsgi.paste.asbool(settings.get('debug'))
         app = zope.app.wsgi.WSGIPublisherApplication(
-            db, HTTPPublicationRequestFactory, handle_errors=not debug)
+            db, HTTPPublicationRequestFactory, handle_errors=not debug
+        )
 
         for key, value in FANSTATIC_SETTINGS.items():
             settings['fanstatic.' + key] = value
@@ -78,13 +78,12 @@ class Application:
             ] + pipeline
         if settings.get('use_linesman'):
             pipeline = [
-                ('linesman',
-                 'call:linesman.middleware:profiler_filter_app_factory'),
+                ('linesman', 'call:linesman.middleware:profiler_filter_app_factory'),
             ] + pipeline
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(
-            app, ExcludeList(['/@@health-check$', '/metrics$']),
-            request_hook=otel_request_hook)
+            app, ExcludeList(['/@@health-check$', '/metrics$']), request_hook=otel_request_hook
+        )
         return app
 
 
@@ -93,6 +92,7 @@ APPLICATION = Application()
 
 def werkzeug_debugger(app, global_conf, **local_conf):
     import werkzeug.debug
+
     return werkzeug.debug.DebuggedApplication(app, **local_conf)
 
 
@@ -117,7 +117,6 @@ def clear_fanstatic(app, global_conf, **local_conf):
 
 
 class BrowserRequest(zope.publisher.browser.BrowserRequest):
-
     def _HTTPRequest__deduceServerURL(self):
         if self._environ.get('wsgi.url_scheme') == 'https':  # See repoze.vhm
             self._environ['SERVER_PORT_SECURE'] = '1'
@@ -138,16 +137,13 @@ class BrowserRequest(zope.publisher.browser.BrowserRequest):
         return cls
 
 
-grok.global_utility(
-    BrowserRequest.factory,
-    zope.app.publication.interfaces.IBrowserRequestFactory)
+grok.global_utility(BrowserRequest.factory, zope.app.publication.interfaces.IBrowserRequestFactory)
 
 
 # Need to use a middleware so the URL can be exactly `/metrics`;
 # Zope only would give us `/@@metrics`, and the legacy chef-based discovery
 # does not support configuring the path, sigh.
 class MetricsMiddleware:
-
     def __init__(self, wsgi):
         self.wsgi = wsgi
         self.metrics = prometheus_client.make_wsgi_app()
@@ -164,8 +160,7 @@ def prometheus_filter(app, global_conf, **local_conf):
     return MetricsMiddleware(app)
 
 
-class OpenTelemetryMiddleware(
-        opentelemetry.instrumentation.wsgi.OpenTelemetryMiddleware):
+class OpenTelemetryMiddleware(opentelemetry.instrumentation.wsgi.OpenTelemetryMiddleware):
     """Port excluded_urls feature from opentelemetry-instrumentation-asgi"""
 
     def __init__(self, wsgi, excluded_urls=None, *args, **kw):

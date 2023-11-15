@@ -5,14 +5,11 @@ import zope.component
 
 
 class RecensionTest(zeit.content.article.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         repository['article'] = zeit.content.article.article.Article()
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(
-            repository['article'])
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(repository['article'])
         self.article = manager.checkout()
         transaction.commit()
 
@@ -27,8 +24,7 @@ class RecensionTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertFalse(self.article._p_changed)
 
     def test_accessing_recension_should_not_write(self):
-        recensions = zeit.content.article.interfaces.IBookRecensionContainer(
-            self.article)
+        recensions = zeit.content.article.interfaces.IBookRecensionContainer(self.article)
         recensions.append(zeit.content.article.recension.BookRecension())
         self.article._p_changed = False
         self.assertFalse(self.article._p_changed)

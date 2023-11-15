@@ -4,8 +4,7 @@ import zope.component
 
 
 def update(root):
-    repository = zope.component.getUtility(
-        zeit.brightcove.interfaces.IRepository)
+    repository = zope.component.getUtility(zeit.brightcove.interfaces.IRepository)
     for key, value in repository.items():
         value.__name__ = key
         value.__parent__ = repository

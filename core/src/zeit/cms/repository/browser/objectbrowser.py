@@ -10,23 +10,21 @@ import zope.location.interfaces
 
 
 @zope.component.adapter(
-    zeit.cms.repository.interfaces.IFolder,
-    zeit.cms.content.interfaces.ICMSContentSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.cms.repository.interfaces.IFolder, zeit.cms.content.interfaces.ICMSContentSource
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def folder_default_browse_location(context, source):
     return context
 
 
 @zope.component.adapter(
-    zope.location.interfaces.IContained,
-    zeit.cms.content.interfaces.ICMSContentSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zope.location.interfaces.IContained, zeit.cms.content.interfaces.ICMSContentSource
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def content_default_browse_location(context, source):
     return zope.component.queryMultiAdapter(
-        (context.__parent__, source),
-        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+        (context.__parent__, source), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
+    )
 
 
 class ObjectBrowser(zeit.cms.browser.listing.Listing):
@@ -47,20 +45,18 @@ class ObjectBrowser(zeit.cms.browser.listing.Listing):
         if not source_name:
             return None
         return zope.component.getUtility(
-            zeit.cms.content.interfaces.ICMSContentSource,
-            name=source_name)
+            zeit.cms.content.interfaces.ICMSContentSource, name=source_name
+        )
 
 
 class BrowsingLocation(zeit.cms.browser.view.Base):
-
     def __call__(self, type_filter):
         source = zope.component.getUtility(
-            zeit.cms.content.interfaces.ICMSContentSource,
-            name=type_filter)
+            zeit.cms.content.interfaces.ICMSContentSource, name=type_filter
+        )
         location = zope.component.queryMultiAdapter(
-            (self.context, source),
-            zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+            (self.context, source), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
+        )
 
-        self.redirect(self.url(
-            location, '@@get_object_browser?type_filter=%s' % type_filter))
+        self.redirect(self.url(location, '@@get_object_browser?type_filter=%s' % type_filter))
         return ''

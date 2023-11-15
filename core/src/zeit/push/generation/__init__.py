@@ -4,4 +4,5 @@ minimum_generation = 0
 generation = 0
 
 manager = zope.generations.generations.SchemaManager(
-    minimum_generation, generation, "zeit.push.generation")
+    minimum_generation, generation, 'zeit.push.generation'
+)

@@ -30,8 +30,7 @@ class ContentList:
     ``uniqueId``.
     """
 
-    object_limit = zeit.cms.content.property.ObjectPathProperty(
-        '.object_limit')
+    object_limit = zeit.cms.content.property.ObjectPathProperty('.object_limit')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -54,8 +53,7 @@ class ContentList:
         while self.object_limit and len(self) > self.object_limit:
             last = list(self.keys())[-1]
             self._remove_by_id(last)
-        self.updateMetadata(
-            content, skip_missing=True, suppress_errors=suppress_errors)
+        self.updateMetadata(content, skip_missing=True, suppress_errors=suppress_errors)
         self.restorePinning(pin_map)
         self._p_changed = True
 
@@ -71,8 +69,7 @@ class ContentList:
     def updateOrder(self, order):
         entries = self.entry_map
         if set(order) != set(entries.keys()):
-            raise ValueError("The order argument must contain the same "
-                             "keys as the feed.")
+            raise ValueError('The order argument must contain the same ' 'keys as the feed.')
         ordered = []
         for id in order:
             ordered.append(entries[id])
@@ -102,10 +99,8 @@ class ContentList:
                 return id + 1
         return None
 
-    def updateMetadata(
-            self, content, skip_missing=False, suppress_errors=False):
-        possible_ids = set((
-            content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
+    def updateMetadata(self, content, skip_missing=False, suppress_errors=False):
+        possible_ids = set((content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
         for id in possible_ids:
             entry = self.entry_map.get(id)
             if entry is not None:
@@ -120,8 +115,7 @@ class ContentList:
         updater.update(entry, suppress_errors)
 
     def getMetadata(self, content):
-        return zope.location.location.located(
-            Entry(self.entry_map[content.uniqueId]), self)
+        return zope.location.location.located(Entry(self.entry_map[content.uniqueId]), self)
 
     # helpers and internal API:
 
@@ -131,13 +125,14 @@ class ContentList:
     @property
     def entry_map(self):
         # BBB Before uniqueId was introduced, href was authoritative.
-        return {entry.get('uniqueId') or entry.get('href'): entry
-                for entry in self.iterentries()}
+        return {entry.get('uniqueId') or entry.get('href'): entry for entry in self.iterentries()}
 
     def pin_map(self):
-        return {id: content.uniqueId
-                for id, content in enumerate(self)
-                if self.getMetadata(content).pinned}
+        return {
+            id: content.uniqueId
+            for id, content in enumerate(self)
+            if self.getMetadata(content).pinned
+        }
 
     def restorePinning(self, pin_map):
         items = list(self.keys())
@@ -157,12 +152,12 @@ class ContentList:
 
     @property
     def entries(self):
-        __traceback_info__ = (self.uniqueId, )
+        __traceback_info__ = (self.uniqueId,)
         try:
             return self.xml['container']
         except AttributeError:
-            log.error("Invalid channel XML format", exc_info=True)
-            raise RuntimeError("Invalid channel XML format.")
+            log.error('Invalid channel XML format', exc_info=True)
+            raise RuntimeError('Invalid channel XML format.')
 
     def _remove_by_id(self, unique_id):
         for entry in self.iterentries():
@@ -177,11 +172,8 @@ class ContentList:
             raise ValueError("'%s' not in feed." % unique_id)
 
 
-@zope.interface.implementer(
-    zeit.content.cp.interfaces.IFeed,
-    zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(zeit.content.cp.interfaces.IFeed, zeit.cms.interfaces.IAsset)
 class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
-
     title = zeit.cms.content.property.ObjectPathProperty('.title')
 
     default_template = """\
@@ -251,8 +243,8 @@ class Entry:
 
 
 @zope.interface.implementer(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.content.interfaces.ICommonMetadata)
+    zeit.cms.interfaces.ICMSContent, zeit.cms.content.interfaces.ICommonMetadata
+)
 class FakeEntry:
     """Entry which does not reference an object in the CMS."""
 
@@ -266,7 +258,6 @@ class FakeEntry:
 
 @grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 class FakeXMLReferenceUpdater(grok.Adapter):
-
     grok.context(FakeEntry)
 
     def update(self, node, suppress_errors=False):
@@ -275,7 +266,6 @@ class FakeXMLReferenceUpdater(grok.Adapter):
 
 @grok.implementer(zeit.cms.redirect.interfaces.IRenameInfo)
 class FakeRenameInfo(grok.Adapter):
-
     grok.context(FakeEntry)
 
     previous_uniqueIds = ()
@@ -283,5 +273,4 @@ class FakeRenameInfo(grok.Adapter):
 
 @zope.interface.implementer_only(zeit.connector.interfaces.IWebDAVProperties)
 class FakeWebDAVProperties(grok.Adapter, dict):
-
     grok.context(FakeEntry)

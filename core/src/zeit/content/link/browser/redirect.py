@@ -14,18 +14,15 @@ import zope.schema
 
 
 class ISchema(zope.interface.Interface):
-
     target = zope.schema.TextLine(
-        title=_('Redirect path'),
-        constraint=zeit.cms.repository.browser.move.valid_name)
+        title=_('Redirect path'), constraint=zeit.cms.repository.browser.move.valid_name
+    )
 
 
 class Redirect(zeit.cms.browser.lightbox.Form):
-
     form_fields = zope.formlib.form.FormFields(ISchema)
 
-    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-        'redirect.pt')
+    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile('redirect.pt')
 
     def get_data(self):
         target = self.context.uniqueId
@@ -41,8 +38,7 @@ class Redirect(zeit.cms.browser.lightbox.Form):
     def link(self, action, data):
         path = os.path.dirname(data['target'])
         name = os.path.basename(data['target'])
-        container = zeit.cms.interfaces.ICMSContent(
-            zeit.cms.interfaces.ID_NAMESPACE + path[1:])
+        container = zeit.cms.interfaces.ICMSContent(zeit.cms.interfaces.ID_NAMESPACE + path[1:])
         container[name] = Link()
         link = container[name]
 
@@ -50,7 +46,8 @@ class Redirect(zeit.cms.browser.lightbox.Form):
         with checked_out(link, temporary=False) as target:
             self.copy_values(self.context, target)
             target.url = self.context.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE, config['live-prefix'])
+                zeit.cms.interfaces.ID_NAMESPACE, config['live-prefix']
+            )
         self.adjust_workflow(self.context, link)
         self.context = link  # also sets nextURL
 
@@ -70,11 +67,9 @@ class Redirect(zeit.cms.browser.lightbox.Form):
         source_pub = IPublishInfo(source)
         target_pub = IAdjustSemanticPublish(target)
         target_pub.adjust_first_released = source_pub.date_first_released
-        target_pub.adjust_semantic_publish = (
-            source_pub.date_last_published_semantic)
+        target_pub.adjust_semantic_publish = source_pub.date_last_published_semantic
         IPublishInfo(target).urgent = True
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
-
     title = _('Create redirect')

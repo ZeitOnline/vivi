@@ -4,7 +4,6 @@ import zeit.cms.workflow.interfaces
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
-
     weight = -1
     lightbox = '@@publish.html'
 

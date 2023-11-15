@@ -11,37 +11,31 @@ import zope.security.proxy
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='author')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    node = lxml.objectify.E.author(
-        href=context.uniqueId, hdok=context.honorar_id or '')
+    node = lxml.objectify.E.author(href=context.uniqueId, hdok=context.honorar_id or '')
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(node)
     return node
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
     target_iface = zeit.content.author.interfaces.IAuthor
 
     def update_with_context(self, node, context):
         node.display_name = context.display_name
 
 
-class AuthorshipXMLReferenceUpdater(
-        zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
+class AuthorshipXMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     target_iface = zeit.cms.content.interfaces.ICommonMetadata
 
     def update_with_context(self, node, context):
         for author in node.findall('author'):
             node.remove(author)
         for reference in context.authorships:
-            node.append(copy.copy(zope.security.proxy.getObject(
-                reference.xml)))
+            node.append(copy.copy(zope.security.proxy.getObject(reference.xml)))
         # BBB The ``author`` attribute is deprecated in favor of the <author>
         # tags, but XSLT and mobile still use it.
         try:
-            legacy_author = ';'.join(
-                [x.target.display_name for x in context.authorships])
+            legacy_author = ';'.join([x.target.display_name for x in context.authorships])
             node.attrib.pop('author', None)
             if context.authorships:
                 node.set('author', legacy_author)
@@ -54,7 +48,6 @@ class AuthorshipXMLReferenceUpdater(
 
 @grok.implementer(zeit.content.author.interfaces.IAuthorReference)
 class Reference(zeit.cms.content.reference.Reference):
-
     grok.provides(zeit.content.author.interfaces.IAuthorReference)
     grok.name('author')
 
@@ -73,10 +66,7 @@ def XMLRelatedReference(context):
 
 @grok.implementer(zeit.content.author.interfaces.IAuthorBioReference)
 class RelatedReference(zeit.cms.content.reference.Reference):
-
-    grok.adapts(
-        zeit.content.article.edit.interfaces.IAuthor,
-        gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.article.edit.interfaces.IAuthor, gocept.lxml.interfaces.IObjectified)
     grok.provides(zeit.cms.content.interfaces.IReference)
     grok.name('related')
 

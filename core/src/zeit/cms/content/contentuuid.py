@@ -15,7 +15,6 @@ log = logging.getLogger(__name__)
 
 
 class Shortenable:
-
     @property
     def shortened(self):
         if not self.id:
@@ -27,17 +26,15 @@ class Shortenable:
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
 class ContentUUID(Shortenable):
-
     id = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.IUUID['id'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'uuid')
+        zeit.cms.content.interfaces.IUUID['id'], zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'uuid'
+    )
 
     def __init__(self, context):
         self.context = context
 
     def __str__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__, self.id)
+        return '<%s.%s %s>' % (self.__class__.__module__, self.__class__.__name__, self.id)
 
 
 @zope.component.adapter(ContentUUID)
@@ -49,7 +46,6 @@ def properties(context):
 @zope.component.adapter(str)
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
 class SimpleUUID(Shortenable):
-
     def __init__(self, context):
         self.id = context
 
@@ -63,17 +59,14 @@ def uuid_to_content(uuid):
     return zeit.cms.interfaces.ICMSContent(unique_id, None)
 
 
-UUID = zeit.connector.search.SearchVar(
-    'uuid', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
+UUID = zeit.connector.search.SearchVar('uuid', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
 
 
 def resolve_uuid(uuid):
-    connector = zope.component.getUtility(
-        zeit.connector.interfaces.IConnector)
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     result = list(connector.search([UUID], UUID == uuid.id))
     if not result:
         return None
     if len(result) > 1:
-        log.critical('There are %s objects for uuid %s. Using first one.' % (
-            len(result), uuid))
+        log.critical('There are %s objects for uuid %s. Using first one.' % (len(result), uuid))
     return result[0][0]

@@ -23,7 +23,6 @@ def click(selenium, locator):
 
 
 class TextViewHelper:
-
     view_class = NotImplemented
 
     def setUp(self):
@@ -31,8 +30,7 @@ class TextViewHelper:
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
         fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
-        self.patches.add(
-            'zeit.edit.container.Base._generate_block_id', fake_uuid)
+        self.patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)
 
     def tearDown(self):
         self.patches.reset()
@@ -40,15 +38,15 @@ class TextViewHelper:
 
     def get_view(self, body=None):
         if body is None:
-            body = ("<division><p>Para 1</p><p>Para 2</p></division>"
-                    "<division><p>Para 3</p><p>Para 4</p></division>")
+            body = (
+                '<division><p>Para 1</p><p>Para 2</p></division>'
+                '<division><p>Para 3</p><p>Para 4</p></division>'
+            )
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.objectify.XML(
-            '<body>%s</body>' % body)
+        article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
         for division in article.xml.body.findall('division'):
             division.set('type', 'page')
-        body = zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
         body.keys()  # force uuid generation
         view = self.view_class()
         view.context = body
@@ -58,15 +56,12 @@ class TextViewHelper:
         return view
 
 
-class SaveTextTest(TextViewHelper,
-                   zeit.content.article.testing.FunctionalTestCase):
-
+class SaveTextTest(TextViewHelper, zeit.content.article.testing.FunctionalTestCase):
     view_class = SaveText
 
     def test_update_should_remove_given_paragrahs(self):
         view = self.get_view()
-        self.assertEqual(
-            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6'], view.context.keys())
+        self.assertEqual(['id-2', 'id-3', 'id-4', 'id-5', 'id-6'], view.context.keys())
         view.request.form['paragraphs'] = ['id-5', 'id-6']
         view.request.form['text'] = []
         view.update()
@@ -78,10 +73,10 @@ class SaveTextTest(TextViewHelper,
         view.request.form['text'] = [
             {'factory': 'p', 'text': 'Hinter'},
             {'factory': 'p', 'text': 'den'},
-            {'factory': 'p', 'text': 'Wortbergen'}]
+            {'factory': 'p', 'text': 'Wortbergen'},
+        ]
         view.update()
-        self.assertEqual(['id-7', 'id-8', 'id-9', 'id-4', 'id-5', 'id-6'],
-                         view.context.keys())
+        self.assertEqual(['id-7', 'id-8', 'id-9', 'id-4', 'id-5', 'id-6'], view.context.keys())
 
     def test_update_should_append_when_no_paragraphs_are_replaced(self):
         view = self.get_view()
@@ -89,11 +84,12 @@ class SaveTextTest(TextViewHelper,
         view.request.form['text'] = [
             {'factory': 'p', 'text': 'Hinter'},
             {'factory': 'p', 'text': 'den'},
-            {'factory': 'p', 'text': 'Wortbergen'}]
+            {'factory': 'p', 'text': 'Wortbergen'},
+        ]
         view.update()
         self.assertEqual(
-            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'],
-            view.context.keys())
+            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'], view.context.keys()
+        )
 
     def test_update_should_remove_empty_paragraphs(self):
         view = self.get_view()
@@ -101,11 +97,12 @@ class SaveTextTest(TextViewHelper,
         view.request.form['text'] = [
             {'factory': 'p', 'text': 'Hinter'},
             {'factory': 'p', 'text': 'den'},
-            {'factory': 'p', 'text': 'Wortbergen'}]
+            {'factory': 'p', 'text': 'Wortbergen'},
+        ]
         view.update()
         self.assertEqual(
-            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'],
-            view.context.keys())
+            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'], view.context.keys()
+        )
 
     def test_update_should_not_trigger_reload_of_body(self):
         view = self.get_view()
@@ -124,17 +121,18 @@ class SaveTextTest(TextViewHelper,
     def test_wild_html_should_be_munged_into_paragraph(self):
         view = self.get_view()
         view.request.form['paragraphs'] = ['id-2', 'id-3']
-        view.request.form['text'] = [{'text': '\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n',  # noqa
-                                      'factory': 'div'},
-                                     {'text': '\n<a><strong></strong></a>',
-                                      'factory': 'p'}]
+        view.request.form['text'] = [
+            {
+                'text': '\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n',  # noqa
+                'factory': 'div',
+            },
+            {'text': '\n<a><strong></strong></a>', 'factory': 'p'},
+        ]
         view.update()
         self.assertEqual('p', view.context['id-7'].type)
 
 
-class AutoSaveTextTest(TextViewHelper,
-                       zeit.content.article.testing.FunctionalTestCase):
-
+class AutoSaveTextTest(TextViewHelper, zeit.content.article.testing.FunctionalTestCase):
     view_class = AutoSaveText
 
     def test_autosave_returns_list_of_new_paragraph_ids(self):
@@ -143,15 +141,14 @@ class AutoSaveTextTest(TextViewHelper,
         view.request.form['text'] = [
             {'factory': 'p', 'text': 'Hinter'},
             {'factory': 'p', 'text': 'den'},
-            {'factory': 'p', 'text': 'Wortbergen'}]
+            {'factory': 'p', 'text': 'Wortbergen'},
+        ]
         view.update()
         result = json.loads(view.render())
         self.assertEqual(['id-2', 'id-3', 'id-4'], result['data']['new_ids'])
 
 
-class TestTextEditing(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class TestTextEditing(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
@@ -161,11 +158,10 @@ class TestTextEditing(
         s.assertElementNotPresent('css=.block.type-p')
         s.waitForNotVisible('css=.message')
         s.click('link=Struktur')
-        s.waitForElementPresent(
-            'jquery=#article-modules .module:contains(Video)')
+        s.waitForElementPresent('jquery=#article-modules .module:contains(Video)')
         s.assertElementNotPresent(
-            '//*[@id="article-modules"]//*'
-            '[contains(@class, "module") and contains(., "<p>")]')
+            '//*[@id="article-modules"]//*' '[contains(@class, "module") and contains(., "<p>")]'
+        )
 
     def test_clicking_empty_paragraph_at_end_should_create_paragraph(self):
         s = self.selenium
@@ -174,8 +170,7 @@ class TestTextEditing(
         s.click('css=.create-paragraph')
         s.waitForElementPresent('css=.block.type-p')
 
-    @unittest.skip(
-        'Selenium is not fast enough to click twice before the editor reloads')
+    @unittest.skip('Selenium is not fast enough to click twice before the editor reloads')
     def test_clicking_empty_paragraph_twice_is_not_possible(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
@@ -201,8 +196,7 @@ class TestTextEditing(
         s = self.selenium
         self.create("<h4 class='title'>blubbel</h4>")
         s.assertElementPresent('css=.block.type-p h4.title')
-        self.execute(
-            'window.jQuery(".block.type-p .editable").trigger("keyup")')
+        self.execute('window.jQuery(".block.type-p .editable").trigger("keyup")')
         s.assertElementNotPresent('css=.block.type-p h4.title')
 
     @unittest.skip('Triggering keyup does not work')
@@ -210,8 +204,7 @@ class TestTextEditing(
         s = self.selenium
         self.create("<h4 style='display: inline'>blubbel</h4>")
         s.assertElementPresent('jquery=.block.type-p h4[style]')
-        self.execute(
-            'window.jQuery(".block.type-p .editable").trigger("keyup")')
+        self.execute('window.jQuery(".block.type-p .editable").trigger("keyup")')
         s.assertElementNotPresent('jquery=.block.type-p h4[style]')
 
     def test_consequent_paragraphs_should_be_editable_together(self):
@@ -231,20 +224,23 @@ class TestTextEditing(
         s.click('xpath=//a[@href="formatBlock/h3"]')
         s.keyPress('css=.block.type-p .editable h3', Keys.RETURN)
         s.type('css=.block.type-p .editable h3', 'Second paragraph.')
-        s.waitForElementPresent(
-            'jquery=.editable p:contains(Second paragraph)')
+        s.waitForElementPresent('jquery=.editable p:contains(Second paragraph)')
 
     def select_text(self):
         s = self.selenium
-        self.create('<p>I want to link something</p>'
-                    '<p>And I need distance<p>'
-                    '<p>from the bottom landing zone<p>')
-        self.execute("""(function() {
+        self.create(
+            '<p>I want to link something</p>'
+            '<p>And I need distance<p>'
+            '<p>from the bottom landing zone<p>'
+        )
+        self.execute(
+            """(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
             range.setEnd(p.firstChild, 14);
-        })();""")
+        })();"""
+        )
         s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
 
     def test_editing_should_end_on_content_drag(self):
@@ -264,8 +260,10 @@ class TestTextEditing(
         # Saved, no longer ediable
         s.waitForElementNotPresent('css=.block.type-p.editing')
 
-    @unittest.skip('wait for gocept.selenium to implement element positions '
-                   'and for webdriver to allow clicking inside a paragraph')
+    @unittest.skip(
+        'wait for gocept.selenium to implement element positions '
+        'and for webdriver to allow clicking inside a paragraph'
+    )
     def test_toolbar_moves_only_vertically(self):
         s = self.selenium
         self.create('<p>foo</p><p>bar</p>')
@@ -283,15 +281,12 @@ class TestTextEditing(
         self.assertEqual(x, s.getElementPositionLeft(toolbar))
 
     @unittest.skip('webdriver cannot click according to a character position')
-    def test_click_in_paragraph_starts_editing_and_places_cursor_exactly_there(
-            self):
+    def test_click_in_paragraph_starts_editing_and_places_cursor_exactly_there(self):
         pass
 
 
 @unittest.skip('Sending arrow keys does not work')
-class TestEditingMultipleParagraphs(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class TestEditingMultipleParagraphs(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         from zeit.cms.checkout.helper import checked_out
@@ -301,13 +296,15 @@ class TestEditingMultipleParagraphs(
         wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
         self.repository['article'] = Article()
         with checked_out(self.repository['article']) as co:
-            zeit.cms.content.field.apply_default_values(
-                co, IArticle)
+            zeit.cms.content.field.apply_default_values(co, IArticle)
             co.year = 2010
             co.ressort = 'International'
             co.title = 'foo'
             co.keywords = (
-                wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)
+                wl.get('Testtag'),
+                wl.get('Testtag2'),
+                wl.get('Testtag3'),
+            )
             paragraph = co.body.create_item('p')
             paragraph.text = 'foo'
             co.body.create_item('image')
@@ -315,34 +312,29 @@ class TestEditingMultipleParagraphs(
             paragraph.text = 'bar'
         self.open('/repository/article/@@checkout')
 
-    def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(
-            self):
+    def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(self):
         s = self.selenium
         second_p = (
             '//*[contains(@class, "block") and contains(@class, "type-p")][2]'
-            '//*[contains(@class, "editable")]/p')
+            '//*[contains(@class, "editable")]/p'
+        )
         s.waitForElementPresent(second_p)
         s.click(second_p)
         s.keyDown(second_p, Keys.ARROW_UP)
         s.keyUp(second_p, Keys.ARROW_UP)
-        self.wait_for_condition(
-            'window.getSelection().getRangeAt(0).startOffset == 3')
+        self.wait_for_condition('window.getSelection().getRangeAt(0).startOffset == 3')
 
-    def test_arrow_down_moves_across_non_text_block_and_places_cursor_at_start(
-            self):
+    def test_arrow_down_moves_across_non_text_block_and_places_cursor_at_start(self):
         s = self.selenium
         first_p = 'css=.block.type-p .editable p'
         s.waitForElementPresent(first_p)
         s.click(first_p)
         s.keyDown(first_p, Keys.ARROW_DOWN)
         s.keyUp(first_p, Keys.ARROW_DOWN)
-        self.wait_for_condition(
-            'window.getSelection().getRangeAt(0).startOffset == 0')
+        self.wait_for_condition('window.getSelection().getRangeAt(0).startOffset == 0')
 
 
-class TestLinkEditing(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class TestLinkEditing(zeit.content.article.edit.browser.testing.EditorTestCase):
     window_width = 1600
     window_height = 1200
 
@@ -352,28 +344,34 @@ class TestLinkEditing(
 
     def select_text(self):
         s = self.selenium
-        self.create('<p>I want to link something</p>'
-                    '<p>And I need distance<p>'
-                    '<p>from the bottom landing zone<p>')
-        self.execute("""(function() {
+        self.create(
+            '<p>I want to link something</p>'
+            '<p>And I need distance<p>'
+            '<p>from the bottom landing zone<p>'
+        )
+        self.execute(
+            """(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
             range.setEnd(p.firstChild, 14);
-        })();""")
+        })();"""
+        )
         s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
 
     def select_link(self, additional='', href='http://example.com/'):
         s = self.selenium
         self.create(
-            '<p>I want to <a href="{1}" {0}>link</a> something</p>'.format(
-                additional, href))
-        self.execute("""(function() {
+            '<p>I want to <a href="{1}" {0}>link</a> something</p>'.format(additional, href)
+        )
+        self.execute(
+            """(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p, 1);
             range.setEnd(p, 2);
-        })();""")
+        })();"""
+        )
         s.assertElementPresent('xpath=//a[@href="{0}"]'.format(href))
 
     def test_links_should_be_addable(self):
@@ -402,24 +400,21 @@ class TestLinkEditing(
         s.select('css=.link_input select[name=target]', 'label=Neues Fenster')
         s.type('css=.link_input input[name=href]', 'http://example.com/')
         s.click('css=.link_input button[name=insert_link_ok]')
-        s.waitForElementPresent(
-            'xpath=//a[@href="http://example.com/" and @target="_blank"]')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/" and @target="_blank"]')
 
     def test_edit_on_link_should_set_href_in_input(self):
         s = self.selenium
         self.select_link()
         click(s, 'xpath=//a[@href="insert_link"]')
         s.waitForVisible('css=.link_input input[name=href]')
-        s.assertValue(
-            'css=.link_input input[name=href]', 'http://example.com/')
+        s.assertValue('css=.link_input input[name=href]', 'http://example.com/')
 
     def test_edit_on_link_should_set_target_to_select(self):
         s = self.selenium
         self.select_link(additional='target="_blank"')
         click(s, 'xpath=//a[@href="insert_link"]')
         s.waitForVisible('css=.link_input input[name=href]')
-        s.assertSelectedLabel(
-            'css=.link_input select[name=target]', 'Neues Fenster')
+        s.assertSelectedLabel('css=.link_input select[name=target]', 'Neues Fenster')
 
     def test_target_colorbox_should_set_class_attribute(self):
         s = self.selenium
@@ -428,16 +423,14 @@ class TestLinkEditing(
         s.waitForVisible('css=.link_input input[name=href]')
         s.select('css=.link_input select[name=target]', 'label=Colorbox')
         s.click('css=.link_input button[name=insert_link_ok]')
-        s.waitForElementPresent(
-            'xpath=//a[@href="http://example.com/" and @class="colorbox"]')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/" and @class="colorbox"]')
 
     def test_edit_link_on_colorbox_should_set_target(self):
         s = self.selenium
         self.select_link(additional='class="colorbox"')
         click(s, 'xpath=//a[@href="insert_link"]')
         s.waitForVisible('css=.link_input input[name=href]')
-        s.assertSelectedLabel(
-            'css=.link_input select[name=target]', 'Colorbox')
+        s.assertSelectedLabel('css=.link_input select[name=target]', 'Colorbox')
 
     def test_edit_should_highlight_link_being_edited(self):
         s = self.selenium
@@ -458,10 +451,12 @@ class TestLinkEditing(
         click(s, 'xpath=//a[@href="insert_link"]')
         s.waitForElementPresent('css=.editable a')
         s.click('css=.link_input button[name=insert_link_cancel]')
-        result = s.getEval("""(function(s) {
+        result = s.getEval(
+            """(function(s) {
             var range = window.getSelection().getRangeAt(0);
             return range.startContainer.childNodes[range.startOffset].data
-        })(this);""")
+        })(this);"""
+        )
         self.assertEqual('link', result)
 
     @unittest.skip('FF34 loses editable focus after OK button is clicked')
@@ -472,10 +467,12 @@ class TestLinkEditing(
         s.type('css=.link_input input[name=href]', 'http://example.com/')
         s.click('css=.link_input button[name=insert_link_ok]')
         s.waitForElementPresent('xpath=//a[@href="http://example.com/"]')
-        result = s.getEval("""(function(s) {
+        result = s.getEval(
+            """(function(s) {
             var range = window.getSelection().getRangeAt(0);
             return range.startContainer.childNodes[range.startOffset].nodeName;
-        })(this);""")
+        })(this);"""
+        )
         self.assertEqual('A', result)
 
     @unittest.skip('FF34 loses editable focus after cancel button is clicked')
@@ -484,10 +481,12 @@ class TestLinkEditing(
         self.select_link()
         click(s, 'xpath=//a[@href="insert_link"]')
         s.click('css=.link_input button[name=insert_link_cancel]')
-        result = s.getEval("""(function(s) {
+        result = s.getEval(
+            """(function(s) {
             var range = window.getSelection().getRangeAt(0);
             return range.startContainer.childNodes[range.startOffset].nodeName;
-        })(this);""")
+        })(this);"""
+        )
         self.assertEqual('A', result)
 
     def test_cancel_should_not_insert_link(self):
@@ -505,12 +504,9 @@ class TestLinkEditing(
         click(s, 'xpath=//a[@href="insert_link"]')
         # We need to scroll the inner "frame" to top, otherwise dragging will
         # get confused:
-        self.execute(
-            "document.getElementById('cp-content-inner').scrollTop = 0;")
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/testcontent"]', 'css=.link_input')
-        s.assertValue('css=.link_input input[name=href]',
-                      'http://www.zeit.de/testcontent')
+        self.execute("document.getElementById('cp-content-inner').scrollTop = 0;")
+        s.dragAndDropToObject('//li[@uniqueid="Clip/testcontent"]', 'css=.link_input')
+        s.assertValue('css=.link_input input[name=href]', 'http://www.zeit.de/testcontent')
 
     def test_drag_while_dialog_open_should_not_end_edit(self):
         self.add_testcontent_to_clipboard()
@@ -553,8 +549,7 @@ class TestLinkEditing(
         self.select_link(href='mailto:foo@example.com')
         click(s, 'xpath=//a[@href="insert_link"]')
         s.waitForVisible('css=.link_input select[name=service]')
-        s.assertSelectedLabel(
-            'css=.link_input select[name=service]', 'E-Mail')
+        s.assertSelectedLabel('css=.link_input select[name=service]', 'E-Mail')
         s.assertValue('css=.link_input input[name=mailto]', 'foo@example.com')
         s.assertValue('css=.link_input input[name=subject]', '')
 
@@ -564,8 +559,7 @@ class TestLinkEditing(
         self.select_link(href='mailto:foo@example.com?subject=b%C3%A4r')
         click(s, 'xpath=//a[@href="insert_link"]')
         s.waitForVisible('css=.link_input select[name=service]')
-        s.assertSelectedLabel(
-            'css=.link_input select[name=service]', 'E-Mail')
+        s.assertSelectedLabel('css=.link_input select[name=service]', 'E-Mail')
         s.assertValue('css=.link_input input[name=mailto]', 'foo@example.com')
         s.assertValue('css=.link_input input[name=subject]', 'bär')
 
@@ -590,8 +584,7 @@ class TestLinkEditing(
         s.type('css=.link_input input[name=mailto]', 'foo@example.com')
         s.type('css=.link_input input[name=subject]', 'bär')
         s.keyDown('css=.link_input input[name=mailto]', Keys.ENTER)
-        s.waitForElementPresent(
-            'xpath=//a[@href="mailto:foo@example.com?subject=b%C3%A4r"]')
+        s.waitForElementPresent('xpath=//a[@href="mailto:foo@example.com?subject=b%C3%A4r"]')
 
     def test_checking_nofollow_sets_rel_attribute(self):
         s = self.selenium
@@ -600,8 +593,7 @@ class TestLinkEditing(
         s.waitForVisible('css=.link_input input[name=href]')
         s.click('css=.link_input input[name=nofollow]')
         s.click('css=.link_input button[name=insert_link_ok]')
-        s.waitForElementPresent(
-            'xpath=//a[@href="http://example.com/" and @rel="nofollow"]')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/" and @rel="nofollow"]')
 
     def test_rel_nofollow_checks_checkbox(self):
         s = self.selenium
@@ -617,21 +609,24 @@ class TestLinkEditing(
         s.waitForVisible('css=.link_input input[name=href]')
         s.click('css=.link_input input[name=nofollow]')
         s.click('css=.link_input button[name=insert_link_ok]')
-        s.waitForElementPresent(
-            'xpath=//a[@href="http://example.com/" and not(@rel)]')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/" and not(@rel)]')
 
     def test_selecting_across_tags_inserts_multiple_link_tags(self):
         s = self.selenium
-        self.create('<p>I want to link <b>some bold text</b></p>'
-                    '<p>And I need distance<p>'
-                    '<p>from the bottom landing zone<p>')
-        self.execute("""(function() {
+        self.create(
+            '<p>I want to link <b>some bold text</b></p>'
+            '<p>And I need distance<p>'
+            '<p>from the bottom landing zone<p>'
+        )
+        self.execute(
+            """(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
             var b = window.jQuery('.block.type-p .editable b')[0];
             range.setEnd(b.firstChild, 9);
-        })();""")
+        })();"""
+        )
         click(s, 'xpath=//a[@href="insert_link"]')
         s.waitForVisible('css=.link_input input[name=href]')
         s.type('css=.link_input input[name=href]', 'http://example.com/')
@@ -639,9 +634,7 @@ class TestLinkEditing(
         s.waitForXpathCount('//a[@href="http://example.com/"]', 2)
 
 
-class TestFolding(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class TestFolding(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
@@ -653,16 +646,15 @@ class TestFolding(
         s.click(f'css=.block.type-{block} .edit-bar .fold-link')
         s.waitForElementPresent(f'css=.block.type-{block}.folded')
         # It's not actually straightforward to check "the contents are hidden"
-        self.assertLess(
-            s.getElementHeight(f'css=.block.type-{block} .block-inner'), 50)
+        self.assertLess(s.getElementHeight(f'css=.block.type-{block} .block-inner'), 50)
         s.click(f'css=.block.type-{block} .edit-bar .fold-link')
         s.waitForElementNotPresent(f'css=.block.type-{block}.folded')
-        self.assertGreater(
-            s.getElementHeight(f'css=.block.type-{block} .block-inner'), 50)
+        self.assertGreater(s.getElementHeight(f'css=.block.type-{block} .block-inner'), 50)
 
     @unittest.skip(
         'We would need to bypass the first hidden image block (main image), '
-        'but writing that down is not worth the hassle')
+        'but writing that down is not worth the hassle'
+    )
     def test_image_should_be_foldable(self):
         self.assert_foldable('image')
 
@@ -701,9 +693,7 @@ class TestFolding(
         s.waitForElementPresent('css=.block.type-video.folded')
 
 
-class TestDivision(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class TestDivision(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
@@ -714,11 +704,12 @@ class TestDivision(
         s.waitForElementPresent('link=Struktur')
         s.waitForNotVisible('css=.message')
         s.click('link=Struktur')
-        s.waitForElementPresent(
-            'css=#article-modules .module[cms\\:block_type=division]')
+        s.waitForElementPresent('css=#article-modules .module[cms\\:block_type=division]')
         s.dragAndDropToObject(
             'css=#article-modules .module[cms\\:block_type=division]',
-            'css=#editable-body > .landing-zone', '10,10')
+            'css=#editable-body > .landing-zone',
+            '10,10',
+        )
         s.waitForElementPresent('css=.block.type-division')
 
     def test_division_should_have_editable_teaser(self):
@@ -734,9 +725,7 @@ class TestDivision(
         s.assertValue('css=.type-division textarea', 'Division teaser')
 
 
-class TestLimitedInput(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class TestLimitedInput(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
@@ -758,9 +747,7 @@ class TestLimitedInput(
         s.assertText('xpath=//span[@class="charlimit"]', '147 Zeichen')
 
 
-class TestCountedInput(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class TestCountedInput(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
@@ -789,43 +776,38 @@ class TestCountedInput(
         s.assertText('xpath=//span[@class="charcount"]', '0 Zeichen')
 
 
-class AutoSaveIntegration(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class AutoSaveIntegration(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
-        self.wait_for_dotted_name("zeit.content.article.Editable")
-        self.execute(
-            "zeit.content.article.Editable.prototype.autosave_interval = 0.2;")
+        self.wait_for_dotted_name('zeit.content.article.Editable')
+        self.execute('zeit.content.article.Editable.prototype.autosave_interval = 0.2;')
 
     def assert_paragraphs(self, *contents):
         transaction.abort()
         wc = self.getRootFolder()['workingcopy']['zope.user']
         article = next(wc.values())
-        self.assertEqual(
-            contents, tuple(el.text for el in article.xml.xpath('//p')))
+        self.assertEqual(contents, tuple(el.text for el in article.xml.xpath('//p')))
 
     def test_text_is_saved_correctly_by_autosave_and_normal_save_after(self):
         self.create('<p>foo</p><p>bar</p>')
         self.wait_for_condition(
-            "window.jQuery('.block.type-p .editable')[0]"
-            ".editable.edited_paragraphs.length == 2")
+            "window.jQuery('.block.type-p .editable')[0]" '.editable.edited_paragraphs.length == 2'
+        )
         self.assert_paragraphs('foo', 'bar')
         self.save()
         self.assert_paragraphs('foo', 'bar')
 
 
-class DirtySaveVersusPersistTests(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class DirtySaveVersusPersistTests(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
-        self.wait_for_dotted_name("zeit.content.article.Editable")
+        self.wait_for_dotted_name('zeit.content.article.Editable')
         self.execute(
-            "zeit.content.article.Editable.prototype.persist = function () { "
-            "  zeit.edit.persist_called = true; }")
+            'zeit.content.article.Editable.prototype.persist = function () { '
+            '  zeit.edit.persist_called = true; }'
+        )
 
     def save(self):
         # Override self.save() as the superclass expects that save is working
@@ -836,33 +818,30 @@ class DirtySaveVersusPersistTests(
         self.create('<p>foo</p><p>bar</p>')
         self.mark_dirty(status=False)
         self.save()
-        self.assertEqual(None, self.eval("zeit.edit.persist_called"))
+        self.assertEqual(None, self.eval('zeit.edit.persist_called'))
 
     def test_save_on_server_if_dirty(self):
         self.create('<p>foo</p><p>bar</p>')
         self.mark_dirty(status=True)
         self.save()
-        self.assertEqual(True, self.eval("zeit.edit.persist_called"))
+        self.assertEqual(True, self.eval('zeit.edit.persist_called'))
 
     def test_toolbar_actions_mark_editor_as_dirty(self):
         self.create('<p>foo</p><p>bar</p>')
         self.mark_dirty(status=False)
         click(self.selenium, 'link=H3')
-        self.assertEqual(True, self.eval(self.get_js_editable() + ".dirty"))
+        self.assertEqual(True, self.eval(self.get_js_editable() + '.dirty'))
 
     def test_dirty_flag_persists_on_movement_keypress(self):
         self.create('<p>foo</p><p>bar</p>')
         self.mark_dirty(status=True)
-        self.selenium.keyPress(
-            'css=.block.type-p .editable p', Keys.ARROW_LEFT)
+        self.selenium.keyPress('css=.block.type-p .editable p', Keys.ARROW_LEFT)
         self.save()
-        self.assertEqual(True, self.eval("zeit.edit.persist_called"))
+        self.assertEqual(True, self.eval('zeit.edit.persist_called'))
 
 
 @unittest.skip("no typeKeys 'til webdriver")
-class BackButtonPreventionTest(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class BackButtonPreventionTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_backspace_somewhere_does_not_cause_back_button(self):
         pass
 

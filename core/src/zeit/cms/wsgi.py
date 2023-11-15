@@ -58,14 +58,15 @@ def wsgi_pipeline(app, pipeline, settings):
     """
     for item in reversed(pipeline):
         name, factory = item
-        loader = paste.deploy.loadwsgi.loadcontext(
-            paste.deploy.loadwsgi.FILTER, factory)
+        loader = paste.deploy.loadwsgi.loadcontext(paste.deploy.loadwsgi.FILTER, factory)
         if factory.startswith('call'):
             loader.protocol = 'paste.filter_app_factory'
         prefix = name + '.'
         loader.local_conf = {
-            key.replace(prefix, '', 1): value for key, value in
-            settings.items() if key.startswith(prefix)}
+            key.replace(prefix, '', 1): value
+            for key, value in settings.items()
+            if key.startswith(prefix)
+        }
         try:
             app = loader.create()(app)
         except Exception:

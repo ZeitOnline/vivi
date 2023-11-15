@@ -17,29 +17,23 @@ import zope.publisher.interfaces
 
 
 class FormBase:
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.text.interfaces.IJSON).omit('encoding')
+    form_fields = zope.formlib.form.FormFields(zeit.content.text.interfaces.IJSON).omit('encoding')
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
-
     title = _('Add JSON file')
     factory = zeit.content.text.json.JSON
 
 
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
-
     title = _('Edit JSON file')
 
 
 class Display(FormBase, zeit.cms.browser.form.DisplayForm):
-
     title = _('View JSON file')
 
 
 class JSONInputWidget(zope.formlib.textwidgets.TextAreaWidget):
-
     def _toFieldValue(self, input):
         value = super()._toFieldValue(input)
         try:
@@ -50,7 +44,6 @@ class JSONInputWidget(zope.formlib.textwidgets.TextAreaWidget):
 
 
 class JSONDisplayWidget(zope.formlib.widget.DisplayWidget):
-
     def __call__(self):
         if self._renderedValueSet():
             content = self._data
@@ -59,18 +52,17 @@ class JSONDisplayWidget(zope.formlib.widget.DisplayWidget):
         if not content:
             return ''
         return pygments.highlight(
-            content, pygments.lexers.JsonLexer(),
-            pygments.formatters.HtmlFormatter(cssclass='pygments'))
+            content,
+            pygments.lexers.JsonLexer(),
+            pygments.formatters.HtmlFormatter(cssclass='pygments'),
+        )
 
 
 class Validate(zeit.cms.browser.form.EditForm):
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.text.interfaces.IValidationSchema)
+    form_fields = zope.formlib.form.FormFields(zeit.content.text.interfaces.IValidationSchema)
 
 
 class ValidationError:
-
     def __call__(self):
         self.request.response.setStatus(412)
         return super().__call__()

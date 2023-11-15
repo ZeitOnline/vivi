@@ -30,7 +30,6 @@ def webdavproperties_to_cms_content(context):
 
 
 class NullTarget:
-
     def start(self, tag, attrib):
         pass
 
@@ -54,16 +53,15 @@ def xml_source(context):
     # Remove proxy so lxml can serialize
     xml = zope.security.proxy.removeSecurityProxy(context.xml)
     serialized = lxml.etree.tostring(
-        xml.getroottree(), encoding='UTF-8', xml_declaration=True,
-        pretty_print=True)
+        xml.getroottree(), encoding='UTF-8', xml_declaration=True, pretty_print=True
+    )
     # XXX We're seeing memory corruption errors from lxml (BUG-194). This is a
     # safetybelt, so we at least don't put non-wellformed XML into DAV.
     null_parser = lxml.etree.XMLParser(target=NullTarget())
     try:
         lxml.etree.fromstring(serialized, parser=null_parser)
     except Exception:
-        logger.error('Serializing %s yielded invalid XML:\n%s',
-                     context.uniqueId, serialized)
+        logger.error('Serializing %s yielded invalid XML:\n%s', context.uniqueId, serialized)
         raise
     return serialized
 

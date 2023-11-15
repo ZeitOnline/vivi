@@ -13,9 +13,9 @@ log = logging.getLogger(__name__)
 
 
 def _stealable(form, action):
-    return (form.lockable.isLockedOut() and
-            form.request.interaction.checkPermission(
-                'zeit.ManageLocks', form.context))
+    return form.lockable.isLockedOut() and form.request.interaction.checkPermission(
+        'zeit.ManageLocks', form.context
+    )
 
 
 def _unlockable(form, action):
@@ -27,11 +27,9 @@ def _lockable(form, action):
 
 
 class Lock(zeit.cms.browser.lightbox.Form):
+    title = _('Locks')
 
-    title = _("Locks")
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.cms.locking.browser.interfaces.ILockFormSchema)
+    form_fields = zope.formlib.form.Fields(zeit.cms.locking.browser.interfaces.ILockFormSchema)
     display_only = True
 
     def get_data(self):
@@ -45,7 +43,8 @@ class Lock(zeit.cms.browser.lightbox.Form):
         return {
             'locked': lockable.locked(),
             'locker': lockable.locker(),
-            'locked_until': locked_until}
+            'locked_until': locked_until,
+        }
 
     @zope.formlib.form.action(_('Steal lock'), condition=_stealable)
     def steal(self, action, data):
@@ -53,24 +52,23 @@ class Lock(zeit.cms.browser.lightbox.Form):
         self.lockable.breaklock()
         self.lockable.lock()
         self.send_message(
-            _('The lock on "${name}" has been stolen from "${old_locker}".',
-              mapping={
-                  'name': self.context.__name__,
-                  'old_locker': old_locker}))
+            _(
+                'The lock on "${name}" has been stolen from "${old_locker}".',
+                mapping={'name': self.context.__name__, 'old_locker': old_locker},
+            )
+        )
 
     @zope.formlib.form.action(_('Lock'), condition=_lockable)
     def lock(self, action, data):
         self.lockable.lock()
-        self.send_message(
-            _('"${name}" has been locked.',
-              mapping={'name': self.context.__name__}))
+        self.send_message(_('"${name}" has been locked.', mapping={'name': self.context.__name__}))
 
     @zope.formlib.form.action(_('Unlock'), condition=_unlockable)
     def unlock(self, action, data):
         self.lockable.unlock()
         self.send_message(
-            _('"${name}" has been unlocked.',
-              mapping={'name': self.context.__name__}))
+            _('"${name}" has been unlocked.', mapping={'name': self.context.__name__})
+        )
 
     @zope.cachedescriptors.property.Lazy
     def lockable(self):
@@ -78,13 +76,12 @@ class Lock(zeit.cms.browser.lightbox.Form):
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
-
     title = _('Manage lock')
 
     def img_tag(self):
         return zope.component.queryMultiAdapter(
-            (self.context, self.request),
-            name='get_locking_indicator')
+            (self.context, self.request), name='get_locking_indicator'
+        )
 
     @zope.cachedescriptors.property.Lazy
     def lockable(self):
@@ -107,8 +104,7 @@ def get_locking_indicator(context, request):
         title = _('Locked by you')
     elif locked:
         img = 'lock-closed'
-        authentication = zope.component.getUtility(
-            zope.app.security.interfaces.IAuthentication)
+        authentication = zope.component.getUtility(zope.app.security.interfaces.IAuthentication)
         locker = lockable.locker()
         try:
             locker = authentication.getPrincipal(locker).title
@@ -120,23 +116,24 @@ def get_locking_indicator(context, request):
         title = _('Not locked')
     title = zope.i18n.translate(title, context=request)
     return '<img src="%s" title="%s" class="%s" />' % (
-        zeit.cms.browser.view.resource_url(
-            request, 'zeit.cms', 'icons/%s.png' % img), title, img)
+        zeit.cms.browser.view.resource_url(request, 'zeit.cms', 'icons/%s.png' % img),
+        title,
+        img,
+    )
 
 
 def get_locking_indicator_for_listing(context, request):
-    return zope.component.getMultiAdapter(
-        (context.context, request), name='get_locking_indicator')
+    return zope.component.getMultiAdapter((context.context, request), name='get_locking_indicator')
 
 
 class API:
-
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
 
         if 'uuid' in self.request.form:
             uniqueId = zeit.cms.content.contentuuid.resolve_uuid(
-                zeit.cms.content.interfaces.IUUID(self.request.form['uuid']))
+                zeit.cms.content.interfaces.IUUID(self.request.form['uuid'])
+            )
         elif 'irid' in self.request.form:
             uniqueId = resolve_article_id(self.request.form['irid'])
         elif 'uniqueId' in self.request.form:  # mostly for convenience/tests
@@ -146,22 +143,19 @@ class API:
                 uniqueId = None
         else:
             self.request.response.setStatus(400)
-            return json.dumps(
-                {'message': 'GET parameter uniqueId uuid or irid is required'})
+            return json.dumps({'message': 'GET parameter uniqueId uuid or irid is required'})
         if not uniqueId:
             self.request.response.setStatus(404)
             return json.dumps({'message': 'Content not found'})
 
-        storage = zope.component.getUtility(
-            zope.app.locking.interfaces.ILockStorage)
+        storage = zope.component.getUtility(zope.app.locking.interfaces.ILockStorage)
         lock = storage.getLock(DummyContent(uniqueId))
         if lock is not None:
             self.request.response.setStatus(409)
             result = {
                 'locked': True,
                 'owner': lock.principal_id,
-                'until': (lock.locked_until.isoformat()
-                          if lock.locked_until else None),
+                'until': (lock.locked_until.isoformat() if lock.locked_until else None),
             }
         else:
             result = {'locked': False, 'owner': None, 'until': None}
@@ -180,17 +174,14 @@ class DummyContent:
         self.uniqueId = uniqueId
 
 
-ARTICLEID = zeit.connector.search.SearchVar(
-    'article_id', 'http://namespaces.zeit.de/CMS/interred')
+ARTICLEID = zeit.connector.search.SearchVar('article_id', 'http://namespaces.zeit.de/CMS/interred')
 
 
 def resolve_article_id(irid):
-    connector = zope.component.getUtility(
-        zeit.connector.interfaces.IConnector)
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     result = list(connector.search([ARTICLEID], ARTICLEID == irid))
     if not result:
         return None
     if len(result) > 1:
-        log.critical('There are %s objects for irid %s. Using first one.' % (
-            len(result), irid))
+        log.critical('There are %s objects for irid %s. Using first one.' % (len(result), irid))
     return result[0][0]

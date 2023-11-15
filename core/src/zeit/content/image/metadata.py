@@ -11,29 +11,33 @@ import zope.schema
 
 @zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)
 class ImageMetadata:
-
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('alt', 'caption', 'links_to', 'nofollow', 'origin', 'mdb_id',
-            'single_purchase'))
+        ('alt', 'caption', 'links_to', 'nofollow', 'origin', 'mdb_id', 'single_purchase'),
+    )
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
-        ('title',))
+        ('title',),
+    )
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('external_id',), writeable=WRITEABLE_ALWAYS)
+        ('external_id',),
+        writeable=WRITEABLE_ALWAYS,
+    )
 
     # XXX Since ZON-4106 there should only be one copyright and the api has
     # been adjusted to 'copyright'. For bw-compat reasons the DAV property is
     # still called 'copyrights'
     _copyrights = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageMetadata['copyright'],
-        'http://namespaces.zeit.de/CMS/document', 'copyrights',
-        use_default=True)
+        'http://namespaces.zeit.de/CMS/document',
+        'copyrights',
+        use_default=True,
+    )
 
     @property
     def copyright(self):
@@ -58,7 +62,8 @@ class ImageMetadata:
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/meta',
-        ('acquire_metadata',))
+        ('acquire_metadata',),
+    )
 
     def __init__(self, context):
         self.context = context
@@ -67,8 +72,7 @@ class ImageMetadata:
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 @zope.component.adapter(ImageMetadata)
 def metadata_webdav_properties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(
-        context.context)
+    return zeit.connector.interfaces.IWebDAVProperties(context.context)
 
 
 @grok.implementer(zeit.content.image.interfaces.IImageMetadata)
@@ -78,18 +82,17 @@ def metadata_for_image(image):
     # Be sure to get the image in the repository
     parent = None
     if image.uniqueId:
-        image_in_repository = parent = zeit.cms.interfaces.ICMSContent(
-            image.uniqueId, None)
+        image_in_repository = parent = zeit.cms.interfaces.ICMSContent(image.uniqueId, None)
         if image_in_repository is not None:
             parent = image_in_repository.__parent__
     if zeit.content.image.interfaces.IImageGroup.providedBy(parent):
         # The image *is* in an image group.
         if metadata.acquire_metadata is None or metadata.acquire_metadata:
-            group_metadata = zeit.content.image.interfaces.IImageMetadata(
-                parent)
+            group_metadata = zeit.content.image.interfaces.IImageMetadata(parent)
             if zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(image):
                 for name, _field in zope.schema.getFieldsInOrder(
-                        zeit.content.image.interfaces.IImageMetadata):
+                    zeit.content.image.interfaces.IImageMetadata
+                ):
                     value = getattr(group_metadata, name, None)
                     setattr(metadata, name, value)
                 metadata.acquire_metadata = False
@@ -107,7 +110,6 @@ def metadata_for_synthetic(context):
 
 
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
     target_iface = zeit.content.image.interfaces.IImageMetadata
 
     def update_with_context(self, entry, context):

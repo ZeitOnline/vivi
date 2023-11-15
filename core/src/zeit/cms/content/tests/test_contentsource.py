@@ -4,20 +4,14 @@ import zeit.cms.content.contentsource
 
 
 class ContentSourceBase:
-
     source = zeit.cms.content.contentsource.CMSContentSource()
-    expected_types = [
-        'channel', 'collection', 'file', 'testcontenttype', 'unknown']
+    expected_types = ['channel', 'collection', 'file', 'testcontenttype', 'unknown']
 
     def test_get_check_types(self):
-        self.assertEqual(
-            self.expected_types,
-            sorted(self.source.get_check_types()))
+        self.assertEqual(self.expected_types, sorted(self.source.get_check_types()))
 
 
-class FolderSourceTest(ContentSourceBase,
-                       zeit.cms.testing.ZeitCmsTestCase):
-
+class FolderSourceTest(ContentSourceBase, zeit.cms.testing.ZeitCmsTestCase):
     source = zeit.cms.content.contentsource.FolderSource()
     expected_types = ['collection']
 

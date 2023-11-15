@@ -13,24 +13,23 @@ def create_ghost(content, workingcopy=None):
         workingcopy = zeit.cms.checkout.interfaces.IWorkingcopy(None)
     _remove_excessive_ghosts(workingcopy)
     entry = zeit.cms.clipboard.entry.Entry(content)
-    zope.interface.directlyProvides(
-        entry, zeit.ghost.interfaces.IGhost)
+    zope.interface.directlyProvides(entry, zeit.ghost.interfaces.IGhost)
     chooser = zope.container.interfaces.INameChooser(workingcopy)
     name = chooser.chooseName(content.__name__, entry)
     workingcopy[name] = entry
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent
+)
 def add_ghost_after_checkin(context, event):
     """Add a ghost for the checked in object."""
     create_ghost(context, event.workingcopy)
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+)
 def remove_ghost_after_checkout(context, event):
     """Remove ghost of checked out object, if any."""
     workingcopy = event.workingcopy
@@ -40,8 +39,7 @@ def remove_ghost_after_checkout(context, event):
         # Make a list before iterating because the loop is modifying the
         # workingcopy
         content = workingcopy[name]
-        if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
-                content):
+        if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(content):
             continue
         referenced = content.references
         if referenced is None or unique_id == content.references.uniqueId:
@@ -52,8 +50,8 @@ TARGET_WORKINGCOPY_SIZE = 7
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+)
 def remove_excessive_ghosts(context, event):
     _remove_excessive_ghosts(event.workingcopy)
 
@@ -69,8 +67,10 @@ def _remove_excessive_ghosts(workingcopy):
 def remove_oldest_ghost(workingcopy):
     """Remove the oldest ghost in the workingcopy, if any."""
     ghosts = [
-        content for content in workingcopy.values()
-        if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(content)]
+        content
+        for content in workingcopy.values()
+        if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(content)
+    ]
     if not ghosts:
         return False
     del workingcopy[ghosts[-1].__name__]

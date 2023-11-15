@@ -8,7 +8,6 @@ log = logging.getLogger(__name__)
 
 
 class FindTitle:
-
     def __call__(self):
         name = self.request.form.get('q')
         if not name:
@@ -19,14 +18,11 @@ class FindTitle:
 
 
 class PreviewPayload:
-
     @cachedproperty
     def message(self):
         # We need to talk to private API
-        push = zope.security.proxy.getObject(
-            zeit.push.interfaces.IPushMessages(self.context))
-        return push._create_message(
-            'mobile', self.context, push.get(type='mobile'))
+        push = zope.security.proxy.getObject(zeit.push.interfaces.IPushMessages(self.context))
+        return push._create_message('mobile', self.context, push.get(type='mobile'))
 
     @cachedproperty
     def rendered(self):
@@ -43,6 +39,5 @@ class PreviewPayload:
         try:
             self.message.validate_template(self.rendered)
         except Exception as e:
-            e.traceback = zeit.cms.browser.error.getFormattedException(
-                sys.exc_info())
+            e.traceback = zeit.cms.browser.error.getFormattedException(sys.exc_info())
             return e

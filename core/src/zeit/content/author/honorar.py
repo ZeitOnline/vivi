@@ -18,7 +18,6 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 class Honorar:
-
     def __init__(self, url_hdok, url_blacklist, username, password):
         self.urls = {'hdok': url_hdok, 'blacklist': url_blacklist}
         self.username = username
@@ -32,7 +31,9 @@ class Honorar:
         gcid, vorname, nachname, titel (and some others)
         """
         result = self._request(
-            'POST /layouts/RESTautorenStamm/_find', db='hdok', json={
+            'POST /layouts/RESTautorenStamm/_find',
+            db='hdok',
+            json={
                 'query': [
                     {'nameGesamtSuchtext': query},
                     {'typ': '4', 'omit': 'true'},
@@ -40,7 +41,8 @@ class Honorar:
                 ],
                 'sort': [{'fieldName': 'nameGesamt', 'sortOrder': 'ascend'}],
                 'limit': str(count),
-            })
+            },
+        )
         return [x['fieldData'] for x in result['response']['data']]
 
     def create(self, data):
@@ -56,10 +58,10 @@ class Honorar:
         # Bypass HDok's duplicate detection, since we already perform that.
         data['anlage'] = 'setzen'
         result = self._request(
-            'GET /layouts/leer/records/1', db='hdok', params={
-                'script': 'restNeuAutor',
-                'script.param': b64encode(json.dumps(data))
-            })
+            'GET /layouts/leer/records/1',
+            db='hdok',
+            params={'script': 'restNeuAutor', 'script.param': b64encode(json.dumps(data))},
+        )
         try:
             data = json.loads(result['response']['scriptResult'])
             return data['gcid']
@@ -67,17 +69,18 @@ class Honorar:
             raise RuntimeError('Invalid HDok gcid result: %s' % result)
 
     def invalid_gcids(self, days_ago):
-        timestamp = '>=' + (datetime.datetime.today() -
-                            datetime.timedelta(days=days_ago)).strftime(
-                                '%m/%d/%Y %H:%M:%S')
+        timestamp = '>=' + (datetime.datetime.today() - datetime.timedelta(days=days_ago)).strftime(
+            '%m/%d/%Y %H:%M:%S'
+        )
         result = self._request(
-            'POST /layouts/blacklist/_find', db='blacklist', json={
-                'query': [{
-                    'geloeschtGCID': '*',
-                    'ts': timestamp
-                }],
-                'limit': '1000000', 'offset': '1'
-            })
+            'POST /layouts/blacklist/_find',
+            db='blacklist',
+            json={
+                'query': [{'geloeschtGCID': '*', 'ts': timestamp}],
+                'limit': '1000000',
+                'offset': '1',
+            },
+        )
         return [x['fieldData'] for x in result['response']['data']]
 
     def _request(self, request, db, retries=0, **kw):
@@ -88,12 +91,17 @@ class Honorar:
         auth_token = self.auth_token(db)
         method = getattr(requests, verb.lower())
         try:
-            r = method(self.urls[db] + path, headers={
-                'Authorization': 'Bearer %s' % auth_token,
-                'User-Agent': requests.utils.default_user_agent(
-                    'zeit.content.author-%s/python-requests' % (
-                        importlib.metadata.version('vivi.core')))
-            }, **kw)
+            r = method(
+                self.urls[db] + path,
+                headers={
+                    'Authorization': 'Bearer %s' % auth_token,
+                    'User-Agent': requests.utils.default_user_agent(
+                        'zeit.content.author-%s/python-requests'
+                        % (importlib.metadata.version('vivi.core'))
+                    ),
+                },
+                **kw,
+            )
             r.raise_for_status()
             return r.json()
         except requests.exceptions.HTTPError as err:
@@ -119,9 +127,11 @@ class Honorar:
 
     @CONFIG_CACHE.cache_on_arguments()
     def auth_token(self, db):
-        r = requests.post(self.urls[db] + '/sessions',
-                          auth=(self.username, self.password),
-                          headers={'Content-Type': 'application/json'})
+        r = requests.post(
+            self.urls[db] + '/sessions',
+            auth=(self.username, self.password),
+            headers={'Content-Type': 'application/json'},
+        )
         r.raise_for_status()
         return r.headers.get('X-FM-Data-Access-Token')
 
@@ -132,21 +142,21 @@ def b64encode(text):
 
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.author')
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.author')
     return Honorar(
         config['honorar-url-hdok'],
         config['honorar-url-blacklist'],
         config['honorar-username'],
-        config['honorar-password'])
+        config['honorar-password'],
+    )
 
 
 @zope.interface.implementer(zeit.content.author.interfaces.IHonorar)
 def MockHonorar():
     from unittest import mock  # testing dependency
+
     honorar = mock.Mock()
-    zope.interface.alsoProvides(
-        honorar, zeit.content.author.interfaces.IHonorar)
+    zope.interface.alsoProvides(honorar, zeit.content.author.interfaces.IHonorar)
     honorar.search.return_value = []
     honorar.create.return_value = 'mock-honorar-id'
     return honorar

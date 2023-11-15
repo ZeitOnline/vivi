@@ -7,7 +7,6 @@ import zope.security.proxy
 
 
 class PersistentTest(unittest.TestCase):
-
     def setUp(self):
         self.p = zeit.cms.content.xmlsupport.Persistent()
 
@@ -48,15 +47,14 @@ class PersistentTest(unittest.TestCase):
     def test_p_jar_not_settable(self):
         def set_jar():
             self.p._p_jar = mock.Mock()
+
         self.assertRaises(AttributeError, set_jar)
 
 
 class LivePropertyXMLSync(zeit.cms.testing.ZeitCmsTestCase):
-
     def setUp(self):
         super().setUp()
-        manager = zope.component.getUtility(
-            zeit.cms.content.interfaces.ILivePropertyManager)
+        manager = zope.component.getUtility(zeit.cms.content.interfaces.ILivePropertyManager)
         manager.register_live_property('foo', 'bar', WRITEABLE_ALWAYS)
 
     def test_always_writeable_writes_workingcopy_value_to_xml(self):

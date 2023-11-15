@@ -36,8 +36,7 @@ class ObjectPathProperty:
         if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
             try:
                 if node.text is not None:
-                    return self.field.bind(instance).fromUnicode(
-                        str(node.text))
+                    return self.field.bind(instance).fromUnicode(str(node.text))
             except zope.schema.interfaces.ValidationError:
                 # Fall back to not using the field when the validaion fails.
                 pass
@@ -58,8 +57,7 @@ class ObjectPathProperty:
             # of the xml-tree.
             node = instance.xml
             parent = node.getparent()
-            new_node = lxml.objectify.E.root(
-                getattr(lxml.objectify.E, node.tag)(value))[node.tag]
+            new_node = lxml.objectify.E.root(getattr(lxml.objectify.E, node.tag)(value))[node.tag]
             lxml.objectify.deannotate(new_node)
             parent.replace(node, new_node)
             instance.xml = new_node
@@ -89,8 +87,9 @@ class ObjectPathProperty:
 class Structure(ObjectPathProperty):
     """Structure identified by object path."""
 
-    remove_namespaces = lxml.etree.XSLT(lxml.etree.XML(
-        """\
+    remove_namespaces = lxml.etree.XSLT(
+        lxml.etree.XML(
+            """\
         <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
          <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -108,14 +107,15 @@ class Structure(ObjectPathProperty):
               </xsl:element>
           </xsl:template>
         </xsl:stylesheet>
-    """))
+    """
+        )
+    )
 
     def __get__(self, instance, class_):
         node = self.getNode(instance)
         if node is None:
             return self.field.missing_value if self.field else None
-        node = lxml.objectify.fromstring(
-            str(self.remove_namespaces(node)))
+        node = lxml.objectify.fromstring(str(self.remove_namespaces(node)))
         result = [xml.sax.saxutils.escape(str(node))]
         for child in node.iterchildren():
             lxml.objectify.deannotate(child)
@@ -174,7 +174,6 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
 
 
 class MultiPropertyBase:
-
     def __init__(self, path, result_type=tuple, sorted=lambda x: x):
         self.path = lxml.objectify.ObjectPath(path)
         self.result_type = result_type
@@ -201,21 +200,18 @@ class MultiPropertyBase:
             entry.getparent().remove(entry)
         # Add new nodes:
         value = self.sorted(value)
-        self.path.setattr(tree, [self._node_factory(entry, tree)
-                                 for entry in value])
+        self.path.setattr(tree, [self._node_factory(entry, tree) for entry in value])
         if value:
-            lxml.objectify.deannotate(
-                self.path.find(instance.xml).getparent())
+            lxml.objectify.deannotate(self.path.find(instance.xml).getparent())
 
     def _element_factory(self, node, tree):
-        raise NotImplementedError("Implemented in sub classes.")
+        raise NotImplementedError('Implemented in sub classes.')
 
     def _node_factory(self, entry, tree):
-        raise NotImplementedError("Implemented in sub classes.")
+        raise NotImplementedError('Implemented in sub classes.')
 
 
 class SimpleMultiProperty(MultiPropertyBase):
-
     def _element_factory(self, node, tree):
         return str(node)
 
@@ -224,16 +220,14 @@ class SimpleMultiProperty(MultiPropertyBase):
 
 
 class SingleResource(ObjectPathProperty):
-
     def __init__(self, path, xml_reference_name=None, attributes=None):
         super().__init__(path)
         if (xml_reference_name is None) ^ (attributes is None):
             raise ValueError(
-                "Either both `xml_reference_name` and `attributes` or neither"
-                " must be given.")
+                'Either both `xml_reference_name` and `attributes` or neither' ' must be given.'
+            )
         if attributes is not None and not isinstance(attributes, tuple):
-            raise ValueError("`attributes` must be tuple, got %s" %
-                             type(attributes))
+            raise ValueError('`attributes` must be tuple, got %s' % type(attributes))
         self.xml_reference_name = xml_reference_name
         self.attributes = attributes
 
@@ -258,9 +252,8 @@ class SingleResource(ObjectPathProperty):
         else:
             if self.xml_reference_name:
                 node = zope.component.getAdapter(
-                    value,
-                    zeit.cms.content.interfaces.IXMLReference,
-                    name=self.xml_reference_name)
+                    value, zeit.cms.content.interfaces.IXMLReference, name=self.xml_reference_name
+                )
             else:
                 node = value.uniqueId
         super().__set__(instance, node)
@@ -275,6 +268,7 @@ def mapAttributes(*names):
     def get_mapper(name):
         def mapper(self):
             return getattr(self.context, name)
+
         return property(mapper)
 
     for name in names:
@@ -305,5 +299,5 @@ class DAVConverterWrapper:
     def get_converter(self, instance):
         field = self.field.bind(instance)
         return zope.component.getMultiAdapter(
-            (field, self.DUMMY_PROPERTIES),
-            zeit.cms.content.interfaces.IDAVPropertyConverter)
+            (field, self.DUMMY_PROPERTIES), zeit.cms.content.interfaces.IDAVPropertyConverter
+        )

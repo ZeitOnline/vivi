@@ -18,21 +18,18 @@ import zope.schema.interfaces
 
 
 class IngredientsWidget(
-        grok.MultiAdapter,
-        zope.formlib.widget.SimpleInputWidget,
-        zeit.cms.browser.view.Base):
-    """Widget to edit ingredients on context.
-
-    """
+    grok.MultiAdapter, zope.formlib.widget.SimpleInputWidget, zeit.cms.browser.view.Base
+):
+    """Widget to edit ingredients on context."""
 
     grok.adapts(
         zope.schema.interfaces.ITuple,
         zeit.wochenmarkt.interfaces.IIngredientsSource,
-        zeit.cms.browser.interfaces.ICMSLayer)
+        zeit.cms.browser.interfaces.ICMSLayer,
+    )
     grok.provides(zope.formlib.interfaces.IInputWidget)
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'ingredients_widget.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('ingredients_widget.pt')
 
     def __init__(self, context, source, request):
         super().__init__(context, request)
@@ -43,47 +40,51 @@ class IngredientsWidget(
 
     @property
     def autocomplete_source_url(self):
-        return self.url(
-            zope.component.hooks.getSite(), '@@ingredients_find')
+        return self.url(zope.component.hooks.getSite(), '@@ingredients_find')
 
     @property
     def uuid(self):
         return zeit.cms.content.interfaces.IUUID(self.context.context).id
 
     def _toFormValue(self, value):
-        return json.dumps([{
-            'code': x.code, 'label': x.label,
-            'amount': x.amount, 'unit': x.unit,
-            'details': x.details
-        } for x in value or ()])
+        return json.dumps(
+            [
+                {
+                    'code': x.code,
+                    'label': x.label,
+                    'amount': x.amount,
+                    'unit': x.unit,
+                    'details': x.details,
+                }
+                for x in value or ()
+            ]
+        )
 
     def _toFieldValue(self, value):
         data = json.loads(value)
-        return tuple([
-            Ingredient(
-                x['code'], x['label'],
-                amount=x['amount'],
-                unit=x['unit'],
-                details=x['details']
-            ) for x in data])
+        return tuple(
+            [
+                Ingredient(
+                    x['code'], x['label'], amount=x['amount'], unit=x['unit'], details=x['details']
+                )
+                for x in data
+            ]
+        )
 
 
 class RecipeCategoriesWidget(
-        grok.MultiAdapter,
-        zope.formlib.widget.SimpleInputWidget,
-        zeit.cms.browser.view.Base):
-    """Widget to edit recipe categories on context.
-
-    """
+    grok.MultiAdapter, zope.formlib.widget.SimpleInputWidget, zeit.cms.browser.view.Base
+):
+    """Widget to edit recipe categories on context."""
 
     grok.adapts(
         zope.schema.interfaces.ITuple,
         zeit.wochenmarkt.interfaces.IRecipeCategoriesSource,
-        zeit.cms.browser.interfaces.ICMSLayer)
+        zeit.cms.browser.interfaces.ICMSLayer,
+    )
     grok.provides(zope.formlib.interfaces.IInputWidget)
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'categories_widget.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('categories_widget.pt')
 
     def __init__(self, context, source, request):
         super().__init__(context, request)
@@ -94,41 +95,34 @@ class RecipeCategoriesWidget(
 
     @property
     def autocomplete_source_url(self):
-        return self.url(
-            zope.component.hooks.getSite(), '@@recipe_categories_find')
+        return self.url(zope.component.hooks.getSite(), '@@recipe_categories_find')
 
     @property
     def uuid(self):
         return zeit.cms.content.interfaces.IUUID(self.context.context).id
 
     def _toFormValue(self, value):
-        return json.dumps([{
-            'code': x.code, 'label': x.name
-        } for x in value or ()])
+        return json.dumps([{'code': x.code, 'label': x.name} for x in value or ()])
 
     def _toFieldValue(self, value):
         data = json.loads(value)
-        return tuple([
-            RecipeCategory(x['code'], x['label']) for x in data])
+        return tuple([RecipeCategory(x['code'], x['label']) for x in data])
 
 
-class DisplayWidget(grok.MultiAdapter,
-                    zope.formlib.itemswidgets.ItemsWidgetBase):
-
+class DisplayWidget(grok.MultiAdapter, zope.formlib.itemswidgets.ItemsWidgetBase):
     grok.adapts(
         zope.schema.interfaces.ITuple,
         zeit.wochenmarkt.interfaces.IRecipeCategoriesSource,
-        zeit.cms.browser.interfaces.ICMSLayer)
+        zeit.cms.browser.interfaces.ICMSLayer,
+    )
     grok.provides(zope.formlib.interfaces.IDisplayWidget)
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'display-recipe-categories.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('display-recipe-categories.pt')
 
     def __init__(self, field, source, request):
         super().__init__(
-            field,
-            zope.formlib.source.IterableSourceVocabulary(source, request),
-            request)
+            field, zope.formlib.source.IterableSourceVocabulary(source, request), request
+        )
 
     def __call__(self):
         return self.template()

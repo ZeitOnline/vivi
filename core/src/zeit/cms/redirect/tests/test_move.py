@@ -8,7 +8,6 @@ import zope.copypastemove.interfaces
 
 
 class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_renaming_referenced_obj_updates_uniqueId_in_referencing_obj(self):
         self.repository['2007']['article'] = ExampleContentType()
         article = self.repository['2007']['article']
@@ -16,26 +15,23 @@ class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(self.repository['referencing']) as co:
             IRelatedContent(co).related = (article,)
 
-        zope.copypastemove.interfaces.IObjectMover(article).moveTo(
-            self.repository, 'changed')
+        zope.copypastemove.interfaces.IObjectMover(article).moveTo(self.repository, 'changed')
         referencing = self.repository['referencing']
         with mock.patch('zeit.cms.redirect.interfaces.ILookup') as lookup:
             self.assertEqual(
                 ['http://xml.zeit.de/changed'],
-                [x.uniqueId for x in IRelatedContent(referencing).related])
+                [x.uniqueId for x in IRelatedContent(referencing).related],
+            )
             self.assertFalse(lookup().find.called)
-        self.assertIn(
-            'http://xml.zeit.de/changed',
-            zeit.cms.testing.xmltotext(referencing.xml))
+        self.assertIn('http://xml.zeit.de/changed', zeit.cms.testing.xmltotext(referencing.xml))
 
     def test_rename_stores_old_name_on_dav_property(self):
         self.repository['article'] = ExampleContentType()
-        zope.copypastemove.interfaces.IObjectMover(
-            self.repository['article']).moveTo(self.repository, 'changed')
+        zope.copypastemove.interfaces.IObjectMover(self.repository['article']).moveTo(
+            self.repository, 'changed'
+        )
         article = self.repository['changed']
-        self.assertEqual(
-            ('http://xml.zeit.de/article',),
-            IRenameInfo(article).previous_uniqueIds)
+        self.assertEqual(('http://xml.zeit.de/article',), IRenameInfo(article).previous_uniqueIds)
 
     def test_renameinfo_has_security_declaration(self):
         # Since the IObjectMover for IRepository is a trusted adapter,

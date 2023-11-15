@@ -5,7 +5,6 @@ import zeit.content.article.edit.interfaces
 
 @grok.implementer(zeit.content.article.edit.interfaces.IFindReplace)
 class FindReplace(grok.Adapter):
-
     grok.context(zeit.content.article.edit.interfaces.IEditableBody)
 
     def replace_all(self, find, replace):

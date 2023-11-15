@@ -11,9 +11,7 @@ import zope.publisher.browser
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.clipboard.interfaces.IObjectReference)
-class Entry(zope.container.contained.Contained,
-            persistent.Persistent):
-
+class Entry(zope.container.contained.Contained, persistent.Persistent):
     title = None
     content_type = None
 
@@ -27,15 +25,15 @@ class Entry(zope.container.contained.Contained,
     @references.setter
     def references(self, references):
         if not zeit.cms.interfaces.ICMSContent.providedBy(references):
-            raise TypeError("Referenced object must provide ICMSContent.")
+            raise TypeError('Referenced object must provide ICMSContent.')
         uid = references.uniqueId
         if not uid:
-            raise ValueError("Referenced object must have a uniqueid.")
+            raise ValueError('Referenced object must have a uniqueid.')
         self._value = uid
 
         list_repr = zope.component.queryMultiAdapter(
-            (references, self._request),
-            zeit.cms.browser.interfaces.IListRepresentation)
+            (references, self._request), zeit.cms.browser.interfaces.IListRepresentation
+        )
         if list_repr is not None and list_repr.title:
             self.title = list_repr.title
         self.content_type = zeit.cms.type.get_type(references) or ''
@@ -44,8 +42,7 @@ class Entry(zope.container.contained.Contained,
     def referenced_unique_id(self):
         return self._value
 
-    _request = zope.publisher.browser.TestRequest(
-        skin=zeit.cms.browser.interfaces.ICMSLayer)
+    _request = zope.publisher.browser.TestRequest(skin=zeit.cms.browser.interfaces.ICMSLayer)
 
 
 @zope.component.adapter(zeit.cms.clipboard.interfaces.IClipboardEntry)
@@ -56,7 +53,6 @@ def entry_to_clipboard(context):
 
 @zope.interface.implementer(zeit.cms.clipboard.interfaces.IClip)
 class Clip(zope.container.ordered.OrderedContainer):
-
     def __init__(self, title):
         super().__init__()
         self.title = title

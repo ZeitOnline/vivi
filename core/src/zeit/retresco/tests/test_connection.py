@@ -20,11 +20,9 @@ import zope.component
 
 
 class TMSTest(zeit.retresco.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        patcher = mock.patch(
-            'zeit.retresco.convert.TMSRepresentation._validate')
+        patcher = mock.patch('zeit.retresco.convert.TMSRepresentation._validate')
         validate = patcher.start()
         validate.return_value = True
         self.addCleanup(patcher.stop)
@@ -36,41 +34,58 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
             tagger.set_pinned(tagger.pinned + (tag.code,))
 
     def test_extract_keywords_converts_response_to_tag_objects(self):
-        self.layer['request_handler'].response_body = json.dumps({
-            'rtr_persons': ['Merkel', 'Obama'],
-            'rtr_locations': ['Berlin', 'Washington'],
-        })
+        self.layer['request_handler'].response_body = json.dumps(
+            {
+                'rtr_persons': ['Merkel', 'Obama'],
+                'rtr_locations': ['Berlin', 'Washington'],
+            }
+        )
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = tms.extract_keywords(self.repository['testcontent'])
-        self.assertEqual(['Berlin', 'Merkel', 'Obama', 'Washington'],
-                         sorted([x.label for x in result]))
+        self.assertEqual(
+            ['Berlin', 'Merkel', 'Obama', 'Washington'], sorted([x.label for x in result])
+        )
 
     def test_get_keywords_returns_a_list_of_tag_objects(self):
-        self.layer['request_handler'].response_body = json.dumps({
-            "entities": [{"entity_id": "e8ed9435b876196564bb86599009456cbb2aa",
-                          "doc_count": 3,
-                          "entity_name": "Schmerz",
-                          "entity_type": "keyword"},
-                         {"entity_id": "bf87d9ce8457a96fe2de1eac6d9614aa462ba",
-                          "doc_count": 1,
-                          "entity_name": "Walter Schmögner",
-                          "entity_type": "person"}],
-            "num_found": 2})
+        self.layer['request_handler'].response_body = json.dumps(
+            {
+                'entities': [
+                    {
+                        'entity_id': 'e8ed9435b876196564bb86599009456cbb2aa',
+                        'doc_count': 3,
+                        'entity_name': 'Schmerz',
+                        'entity_type': 'keyword',
+                    },
+                    {
+                        'entity_id': 'bf87d9ce8457a96fe2de1eac6d9614aa462ba',
+                        'doc_count': 1,
+                        'entity_name': 'Walter Schmögner',
+                        'entity_type': 'person',
+                    },
+                ],
+                'num_found': 2,
+            }
+        )
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = list(tms.get_keywords('Sch'))
         self.assertEqual(2, len(result))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
-        self.assertEqual(['Schmerz', 'Walter Schmögner'],
-                         [x.label for x in result])
+        self.assertEqual(['Schmerz', 'Walter Schmögner'], [x.label for x in result])
 
     def test_get_locations_returns_a_list_of_tag_objects(self):
-        self.layer['request_handler'].response_body = json.dumps({
-            "entities": [{
-                "entity_id": "f1ec6233309adee0384d1b82962c2a074babe7a2",
-                "doc_count": 1,
-                "entity_name": "Kroatien",
-                "entity_type": "location"}],
-            "num_found": 1})
+        self.layer['request_handler'].response_body = json.dumps(
+            {
+                'entities': [
+                    {
+                        'entity_id': 'f1ec6233309adee0384d1b82962c2a074babe7a2',
+                        'doc_count': 1,
+                        'entity_name': 'Kroatien',
+                        'entity_type': 'location',
+                    }
+                ],
+                'num_found': 1,
+            }
+        )
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = list(tms.get_locations('Kro'))
         self.assertTrue(zeit.cms.tagging.interfaces.ITag.providedBy(result[0]))
@@ -79,10 +94,9 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
     def test_get_locations_filters_by_entity_type_location(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         with mock.patch.object(tms, '_request') as request:
-            request.return_value = {"entities": [], "num_found": 0}
+            request.return_value = {'entities': [], 'num_found': 0}
             list(tms.get_locations(''))
-            self.assertEqual({'q': '', 'item_type': 'location'},
-                             request.call_args[1]['params'])
+            self.assertEqual({'q': '', 'item_type': 'location'}, request.call_args[1]['params'])
 
     def test_raises_technical_error_for_5xx(self):
         self.layer['request_handler'].response_code = 500
@@ -104,8 +118,9 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
     def test_tms_returns_enriched_article_body(self):
         with checked_out(self.repository['testcontent']):
             pass  # Trigger mock connector uuid creation
-        self.layer['request_handler'].response_body = json.dumps({
-            'body': '<body>lorem ipsum</body>'})
+        self.layer['request_handler'].response_body = json.dumps(
+            {'body': '<body>lorem ipsum</body>'}
+        )
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = tms.get_article_body(self.repository['testcontent'])
         self.assertEqual('<body>lorem ipsum</body>', result)
@@ -130,16 +145,20 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_get_topicpages_dicts_have_id_and_title(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        self.layer['request_handler'].response_body = json.dumps({
-            'num_found': 1,
-            'docs': [{
-                'url': '/thema/mytopic',
-                'doc_id': 'mytopic',
-                'query_terms': ['Berlin', 'Washington'],
-                'title': 'Mytopic',
-                # lots of fields of the actual response omitted.
-            }],
-        })
+        self.layer['request_handler'].response_body = json.dumps(
+            {
+                'num_found': 1,
+                'docs': [
+                    {
+                        'url': '/thema/mytopic',
+                        'doc_id': 'mytopic',
+                        'query_terms': ['Berlin', 'Washington'],
+                        'title': 'Mytopic',
+                        # lots of fields of the actual response omitted.
+                    }
+                ],
+            }
+        )
         result = tms.get_topicpages()
         self.assertEqual(1, result.hits)
         self.assertEqual('mytopic', result[0]['id'])
@@ -168,44 +187,76 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         self.add_tag(tagger, 'Clinton', 'person', False)
         dav_tagger = zeit.connector.interfaces.IWebDAVProperties(tagger)
 
-        self.layer['request_handler'].response_body = json.dumps({
-            'entity_links': [
-                # already linked: still shown
-                {'key': 'Merkel', 'key_type': 'person', 'score': "10.0",
-                 'status': 'linked', 'link': '/thema/merkel'},
-                # pinned: comes first
-                {'key': 'Obama', 'key_type': 'person', 'score': "8.0",
-                 'status': 'not_linked', 'link': '/thema/obama'},
-                # not pinned: after pinned ones, by score
-                {'key': 'Clinton', 'key_type': 'person', 'score': "6.0",
-                 'status': 'not_linked', 'link': '/thema/clinton'},
-                # not in CMS list: after pinned ones, by score
-                {'key': 'Berlin', 'key_type': 'location', 'score': "5.0",
-                 'status': 'not_linked', 'link': '/thema/berlin'},
-                # no link: ignored
-                {'key': 'Washington', 'key_type': 'location', 'score': "3.0",
-                 'status': 'not_linked', 'link': None},
-                # pinned: comes first
-                {'key': 'New York', 'key_type': 'location', 'score': "1.0",
-                 'status': 'not_linked', 'link': '/thema/newyork'},
-            ],
-            'doc_type': 'article',
-            'payload': {
-                'tagging': {
-                    name: value for (name, ns), value in dav_tagger.items()
-                    if ns == 'http://namespaces.zeit.de/CMS/tagging'
-                }
-            },
-        })
+        self.layer['request_handler'].response_body = json.dumps(
+            {
+                'entity_links': [
+                    # already linked: still shown
+                    {
+                        'key': 'Merkel',
+                        'key_type': 'person',
+                        'score': '10.0',
+                        'status': 'linked',
+                        'link': '/thema/merkel',
+                    },
+                    # pinned: comes first
+                    {
+                        'key': 'Obama',
+                        'key_type': 'person',
+                        'score': '8.0',
+                        'status': 'not_linked',
+                        'link': '/thema/obama',
+                    },
+                    # not pinned: after pinned ones, by score
+                    {
+                        'key': 'Clinton',
+                        'key_type': 'person',
+                        'score': '6.0',
+                        'status': 'not_linked',
+                        'link': '/thema/clinton',
+                    },
+                    # not in CMS list: after pinned ones, by score
+                    {
+                        'key': 'Berlin',
+                        'key_type': 'location',
+                        'score': '5.0',
+                        'status': 'not_linked',
+                        'link': '/thema/berlin',
+                    },
+                    # no link: ignored
+                    {
+                        'key': 'Washington',
+                        'key_type': 'location',
+                        'score': '3.0',
+                        'status': 'not_linked',
+                        'link': None,
+                    },
+                    # pinned: comes first
+                    {
+                        'key': 'New York',
+                        'key_type': 'location',
+                        'score': '1.0',
+                        'status': 'not_linked',
+                        'link': '/thema/newyork',
+                    },
+                ],
+                'doc_type': 'article',
+                'payload': {
+                    'tagging': {
+                        name: value
+                        for (name, ns), value in dav_tagger.items()
+                        if ns == 'http://namespaces.zeit.de/CMS/tagging'
+                    }
+                },
+            }
+        )
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
         result = tms.get_article_topiclinks(self.repository['testcontent'])
         self.assertEqual(
-            ['New York', 'Obama', 'Merkel', 'Clinton', 'Berlin'],
-            [x.label for x in result])
+            ['New York', 'Obama', 'Merkel', 'Clinton', 'Berlin'], [x.label for x in result]
+        )
         self.assertEqual('thema/newyork', result[0].link)
 
-    def test_get_article_topiclinks_uses_published_content_endpoint_as_default(
-            self):
+    def test_get_article_topiclinks_uses_published_content_endpoint_as_default(self):
         with checked_out(self.repository['testcontent']):
             pass  # Trigger mock connector uuid creation
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -213,38 +264,47 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
         # First requests will be enrich and index
         content = self.repository['testcontent']
         uuid = zeit.cms.content.interfaces.IUUID(content).id
-        self.assertEqual(['{} {}'.format(r['verb'], urllib.parse.unquote(
-            r['path'])) for r in self.layer['request_handler'].requests], [
-            'GET /content/{}'.format(uuid),
-            'POST /enrich?in-text-linked',
-            'POST /another-tms/enrich?in-text-linked',
-            'PUT /content/{}'.format(uuid),
-            'PUT /another-tms/content/{}'.format(uuid),
-            'GET /in-text-linked-documents/{}'.format(uuid),
-        ])
+        self.assertEqual(
+            [
+                '{} {}'.format(r['verb'], urllib.parse.unquote(r['path']))
+                for r in self.layer['request_handler'].requests
+            ],
+            [
+                'GET /content/{}'.format(uuid),
+                'POST /enrich?in-text-linked',
+                'POST /another-tms/enrich?in-text-linked',
+                'PUT /content/{}'.format(uuid),
+                'PUT /another-tms/content/{}'.format(uuid),
+                'GET /in-text-linked-documents/{}'.format(uuid),
+            ],
+        )
 
     def test_get_article_topiclinks_uses_preview_endpoint_if_param_set(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        tms.get_article_topiclinks(self.repository['testcontent'],
-                                   published=False)
-        self.assertEqual('/in-text-linked-documents-preview',
-                         self.layer['request_handler'].requests[0].get('path'))
+        tms.get_article_topiclinks(self.repository['testcontent'], published=False)
+        self.assertEqual(
+            '/in-text-linked-documents-preview',
+            self.layer['request_handler'].requests[0].get('path'),
+        )
 
     def test_get_content_containing_topicpages_returns_list_of_tags(self):
         tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-        self.layer['request_handler'].response_body = json.dumps({
-            'num_found': 1,
-            'docs': [{
-                "doc_id": "arbeit",
-                "name": "Arbeit",
-                "title": "arbeit",
-                "topic_type": "keyword",
-                "url": "/thema/arbeit"
-                # lots of fields of the actual response omitted.
-            }],
-        })
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        self.layer['request_handler'].response_body = json.dumps(
+            {
+                'num_found': 1,
+                'docs': [
+                    {
+                        'doc_id': 'arbeit',
+                        'name': 'Arbeit',
+                        'title': 'arbeit',
+                        'topic_type': 'keyword',
+                        'url': '/thema/arbeit',
+                        # lots of fields of the actual response omitted.
+                    }
+                ],
+            }
+        )
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         result = tms.get_content_containing_topicpages(article)
         self.assertEqual('Arbeit', result[0].label)
         self.assertEqual('keyword', result[0].entity_type)
@@ -252,7 +312,6 @@ class TMSTest(zeit.retresco.testing.FunctionalTestCase):
 
 @pytest.mark.integration()
 class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
-
     level = 2
 
     # NOTE: enrich against tms.staging.zeit.de is notoriously flaky (sigh),
@@ -260,10 +319,8 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
-        self.tms = zeit.retresco.connection.TMS(
-            primary={'url': os.environ['ZEIT_RETRESCO_URL']})
-        self.article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        self.tms = zeit.retresco.connection.TMS(primary={'url': os.environ['ZEIT_RETRESCO_URL']})
+        self.article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(self.article):
             # Trigger mock connector uuid creation.
             # This also serves as test isolation, since we get a random uuid
@@ -272,16 +329,14 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
     def tearDown(self):
         try:
-            self.tms.delete_id(
-                zeit.cms.content.interfaces.IUUID(self.article).id)
+            self.tms.delete_id(zeit.cms.content.interfaces.IUUID(self.article).id)
         except Exception as e:
             print(e)
         super().tearDown()
 
     def test_enrich_returns_keywords(self):
         keywords = self.tms.extract_keywords(self.article)
-        self.assertIn(
-            zeit.cms.tagging.tag.Tag('Somalia', 'location'), keywords)
+        self.assertIn(zeit.cms.tagging.tag.Tag('Somalia', 'location'), keywords)
 
     def test_get_topicpages_has_expected_fields(self):
         pages = self.tms.get_topicpages()
@@ -310,25 +365,27 @@ class IntegrationTest(zeit.retresco.testing.FunctionalTestCase):
 
 
 class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
-
     def test_updates_configured_content_and_publishes(self):
         self.repository['topics'] = zeit.content.rawxml.rawxml.RawXML()
         text = zeit.content.text.text.Text()
         text.text = ''
         self.repository['redirects'] = text
 
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.retresco')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
         config['topiclist'] = 'http://xml.zeit.de/topics'
         config['topic-redirect-id'] = 'http://xml.zeit.de/redirects'
 
         with mock.patch(
-                'zeit.retresco.connection.TMS.get_all_topicpages',
-                return_value=[{
+            'zeit.retresco.connection.TMS.get_all_topicpages',
+            return_value=[
+                {
                     'id': 'berlin',
                     'title': 'Berlin',
                     'topic_type': 'location',
-                    'redirect': '/thema/hamburg'}]):
+                    'redirect': '/thema/hamburg',
+                }
+            ],
+        ):
             zeit.retresco.connection._update_topiclist()
 
         topics = self.repository['topics']
@@ -338,12 +395,14 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertIn('hamburg', redirects.text)
 
     def test_topiclist_produces_xml(self):
-        pages = [{
-            'id': 'berlin',
-            'title': 'Berlin',
-            'topic_type': 'location',
-            'kpi_1': 42,
-        }]
+        pages = [
+            {
+                'id': 'berlin',
+                'title': 'Berlin',
+                'topic_type': 'location',
+                'kpi_1': 42,
+            }
+        ]
         xml = zeit.retresco.connection._build_topic_xml(pages)
         self.assertEqual('topics', xml.tag)
         topics = xml.xpath('//topic')
@@ -353,22 +412,25 @@ class TopiclistUpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('location', topics[0].get('type'))
 
     def test_topiclist_excludes_pages_with_redirect(self):
-        pages = [{
-            'id': 'berlin',
-            'title': 'Berlin',
-            'topic_type': 'location',
-            'redirect': '/thema/hamburg'
-        }]
+        pages = [
+            {
+                'id': 'berlin',
+                'title': 'Berlin',
+                'topic_type': 'location',
+                'redirect': '/thema/hamburg',
+            }
+        ]
         xml = zeit.retresco.connection._build_topic_xml(pages)
         self.assertEqual([], xml.xpath('//topic'))
 
     def test_redirects_include_pages_with_redirect(self):
-        pages = [{
-            'id': 'berlin',
-            'title': 'Berlin',
-            'topic_type': 'location',
-            'redirect': '/thema/hamburg'
-        }]
+        pages = [
+            {
+                'id': 'berlin',
+                'title': 'Berlin',
+                'topic_type': 'location',
+                'redirect': '/thema/hamburg',
+            }
+        ]
         text = zeit.retresco.connection._build_topic_redirects(pages)
-        self.assertEllipsis(
-            '.../thema/berlin = http://www.zeit.de/thema/hamburg\n', text)
+        self.assertEllipsis('.../thema/berlin = http://www.zeit.de/thema/hamburg\n', text)

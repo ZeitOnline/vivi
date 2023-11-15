@@ -6,7 +6,6 @@ import zope.component
 
 
 class Status:
-
     @cachedproperty
     def reported_on(self):
         return self._format_date(self.info.reported_on)
@@ -50,16 +49,13 @@ class Status:
         return self.request.locale.dates.getFormatter('dateTime', 'medium')
 
     def has_permission(self, permission):
-        return self.request.interaction.checkPermission(
-            permission, self.context)
+        return self.request.interaction.checkPermission(permission, self.context)
 
 
 class Retry(zeit.cms.browser.view.Base):
-
     def __call__(self):
         if self.request.method != 'POST':
             return 405, 'Only POST supported'
-        source = zope.component.getUtility(
-            zeit.vgwort.interfaces.IReportableContentSource)
+        source = zope.component.getUtility(zeit.vgwort.interfaces.IReportableContentSource)
         source.mark_todo(zope.security.proxy.getObject(self.context))
         return self.redirect(self.url('vgwort.html'))

@@ -3,7 +3,6 @@ import zeit.content.article.testing
 
 
 class Memo(zeit.content.article.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')

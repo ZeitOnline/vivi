@@ -8,14 +8,19 @@ import zeit.connector.testing
 
 
 class SQLConnectorTest(zeit.connector.testing.SQLTest):
-
     def test_serializes_properties_as_json(self):
-        res = self.get_resource('foo', b'mybody', {
-            ('uuid', 'http://namespaces.zeit.de/CMS/document'):
-            '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}',
-            ('foo', 'http://namespaces.zeit.de/CMS/one'): 'foo',
-            ('bar', 'http://namespaces.zeit.de/CMS/two'): 'bar',
-        })
+        res = self.get_resource(
+            'foo',
+            b'mybody',
+            {
+                (
+                    'uuid',
+                    'http://namespaces.zeit.de/CMS/document',
+                ): '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}',
+                ('foo', 'http://namespaces.zeit.de/CMS/one'): 'foo',
+                ('bar', 'http://namespaces.zeit.de/CMS/two'): 'bar',
+            },
+        )
         self.connector.add(res)
         props = self.connector._get_properties(res.id)
         self.assertEqual('foo', props.path.name)
@@ -23,12 +28,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual('testing', props.type)
         self.assertEqual(False, props.is_collection)
         self.assertEqual('deadbeaf-c5aa-4232-837a-ae6701270436', props.id)
-        self.assertEqual({
-            'document': {
-                'uuid': '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}'},
-            'one': {'foo': 'foo'},
-            'two': {'bar': 'bar'},
-        }, props.unsorted)
+        self.assertEqual(
+            {
+                'document': {'uuid': '{urn:uuid:deadbeaf-c5aa-4232-837a-ae6701270436}'},
+                'one': {'foo': 'foo'},
+                'two': {'bar': 'bar'},
+            },
+            props.unsorted,
+        )
 
     def test_stores_body_in_gcs_for_configured_binary_content_types(self):
         res = self.get_resource('foo', b'mybody')
@@ -48,18 +55,24 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(b'', res.data.read())
 
     def test_injects_uuid_and_type_into_dav_properties(self):
-        res = self.get_resource('foo', b'mybody', {
-            ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
-        })
+        res = self.get_resource(
+            'foo',
+            b'mybody',
+            {
+                ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
+            },
+        )
         self.connector.add(res)
         props = self.connector._get_properties(res.id)
         davprops = props.to_webdav()
-        self.assertEqual({
-            ('uuid', 'http://namespaces.zeit.de/CMS/document'):
-            '{urn:uuid:%s}' % props.id,
-            ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testing',
-            ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
-        }, davprops)
+        self.assertEqual(
+            {
+                ('uuid', 'http://namespaces.zeit.de/CMS/document'): '{urn:uuid:%s}' % props.id,
+                ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testing',
+                ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
+            },
+            davprops,
+        )
 
     def test_provides_last_updated_column(self):
         # Properly we would test that the value of the last_updated column
@@ -75,12 +88,18 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_determines_size_for_gcs_upload(self):
         body = b'mybody'
         for res in [
-                Resource(
-                    'http://xml.zeit.de/testing/foo', 'foo', 'file',
-                    BytesIO(body), {}, 'text/plain'),
-                WriteableCachedResource(
-                    'http://xml.zeit.de/testing/foo', 'foo', 'file',
-                    lambda: {}, lambda: BytesIO(body), 'text/plain')]:
+            Resource(
+                'http://xml.zeit.de/testing/foo', 'foo', 'file', BytesIO(body), {}, 'text/plain'
+            ),
+            WriteableCachedResource(
+                'http://xml.zeit.de/testing/foo',
+                'foo',
+                'file',
+                lambda: {},
+                lambda: BytesIO(body),
+                'text/plain',
+            ),
+        ]:
             self.connector.add(res)
             props = self.connector._get_properties(res.id)
             blob = self.connector.bucket.blob(props.id)
@@ -108,15 +127,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
 
     def test_delete_removes_rows_from_all_tables(self):
         from zeit.connector.postgresql import Paths, Properties
+
         res = self.get_resource('foo', b'mybody')
         self.connector.add(res)
         props = self.connector._get_properties(res.id)
         uuid = props.id
         del self.connector[res.id]
         transaction.commit()
-        self.assertEqual(
-            None,
-            self.connector.session.get(Paths, self.connector._pathkey(res.id)))
+        self.assertEqual(None, self.connector.session.get(Paths, self.connector._pathkey(res.id)))
         self.assertEqual(None, self.connector.session.get(Properties, uuid))
 
     def test_search_for_uuid_uses_indexed_column(self):

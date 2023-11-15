@@ -14,7 +14,6 @@ import zope.formlib.widgets
 
 
 class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
-
     @property
     def css_class(self):
         classes = super().css_class
@@ -23,13 +22,13 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
 
 
 class AreaViewletManager(ViewletManager):
-
     @property
     def css_class(self):
         classes = super().css_class
 
-        if not zeit.content.cp.interfaces.\
-                automatic_area_can_read_teasers_automatically(self.context):
+        if not zeit.content.cp.interfaces.automatic_area_can_read_teasers_automatically(
+            self.context
+        ):
             automatic = 'block-automatic-not-possible'
         else:
             if self.context.automatic:
@@ -41,17 +40,23 @@ class AreaViewletManager(ViewletManager):
 
 
 class EditCommon(zeit.content.cp.browser.view.EditBox):
+    form_fields = zope.formlib.form.Fields(zeit.content.cp.interfaces.IArea).select(
+        'supertitle',
+        'title',
+        'read_more',
+        'read_more_url',
+        'image',
+        'topiclink_label_1',
+        'topiclink_url_1',
+        'topiclink_label_2',
+        'topiclink_url_2',
+        'topiclink_label_3',
+        'topiclink_url_3',
+        'background_color',
+    )
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IArea).select(
-        'supertitle', 'title', 'read_more', 'read_more_url', 'image',
-        'topiclink_label_1', 'topiclink_url_1', 'topiclink_label_2',
-        'topiclink_url_2', 'topiclink_label_3', 'topiclink_url_3',
-        'background_color')
 
-
-class DynamicCombinationWidget(
-        zeit.cms.content.browser.widget.CombinationWidget):
+class DynamicCombinationWidget(zeit.cms.content.browser.widget.CombinationWidget):
     """Determines which further subwidgets to render according to the value of
     the first subwidget.
     """
@@ -73,9 +78,8 @@ class DynamicCombinationWidget(
         return result
 
     def _create_widget(self, field):
-        widget = zope.component.getMultiAdapter(
-            (field, self.request), self.widget_interface)
-        widget.setPrefix(self.name + ".")
+        widget = zope.component.getMultiAdapter((field, self.request), self.widget_interface)
+        widget.setPrefix(self.name + '.')
         return widget
 
     def setRenderedValue(self, value):
@@ -131,8 +135,10 @@ class DynamicCombinationWidget(
             try:
                 val = w.getInputValue()
             except zope.formlib.interfaces.WidgetInputError as e:
-                if isinstance(getattr(e, 'errors'),  # noqa
-                              zope.schema.interfaces.RequiredMissing):
+                if isinstance(
+                    getattr(e, 'errors'),  # noqa
+                    zope.schema.interfaces.RequiredMissing,
+                ):
                     required_errors.append((w, e))
                 else:
                     errors.append((w, e))
@@ -155,7 +161,8 @@ class DynamicCombinationWidget(
             else:
                 errors = [e for widget, e in errors]
             self._error = zope.formlib.interfaces.WidgetInputError(
-                self.context.__name__, self.label, errors)
+                self.context.__name__, self.label, errors
+            )
             values = missing_value
         elif not any:
             values = missing_value
@@ -165,47 +172,53 @@ class DynamicCombinationWidget(
 
 
 class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.IArea).select(
-            'count', 'query', 'query_order',
-            'elasticsearch_raw_query', 'elasticsearch_raw_order',
-            'is_complete_query',
-            'automatic', 'automatic_type',
-            'hide_dupes', 'consider_for_dupes',
-            'referenced_cp',
-            'referenced_topicpage', 'topicpage_filter', 'topicpage_order',
-            'topicpagelist_order',
-            'related_topicpage',
-            'rss_feed',
-            'reach_service', 'reach_section', 'reach_access', 'reach_age')
+    form_fields = zope.formlib.form.FormFields(zeit.content.cp.interfaces.IArea).select(
+        'count',
+        'query',
+        'query_order',
+        'elasticsearch_raw_query',
+        'elasticsearch_raw_order',
+        'is_complete_query',
+        'automatic',
+        'automatic_type',
+        'hide_dupes',
+        'consider_for_dupes',
+        'referenced_cp',
+        'referenced_topicpage',
+        'topicpage_filter',
+        'topicpage_order',
+        'topicpagelist_order',
+        'related_topicpage',
+        'rss_feed',
+        'reach_service',
+        'reach_section',
+        'reach_access',
+        'reach_age',
+    )
 
     field_groups = (
         # XXX Kludgy: ``automatic`` must come after ``count``, since setting
         # automatic to True needs to know the teaser count. Thus, we order the
         # form_fields accordingly, and alter the _display_ order here.
         gocept.form.grouped.Fields(
-            '', ('automatic_type', 'automatic', 'count',
-                 'hide_dupes', 'consider_for_dupes')),
+            '', ('automatic_type', 'automatic', 'count', 'hide_dupes', 'consider_for_dupes')
+        ),
+        gocept.form.grouped.Fields(_('automatic-area-type-centerpage'), ('referenced_cp',)),
+        gocept.form.grouped.Fields(_('automatic-area-type-rss-feed'), ('rss_feed',)),
+        gocept.form.grouped.Fields(_('automatic-area-type-custom'), ('query', 'query_order')),
         gocept.form.grouped.Fields(
-            _('automatic-area-type-centerpage'), ('referenced_cp',)),
-        gocept.form.grouped.Fields(
-            _('automatic-area-type-rss-feed'), ('rss_feed',)),
-        gocept.form.grouped.Fields(
-            _('automatic-area-type-custom'), ('query', 'query_order')),
-        gocept.form.grouped.Fields(
-            _('automatic-area-type-topicpage'), (
-                'referenced_topicpage', 'topicpage_filter',
-                'topicpage_order')),
+            _('automatic-area-type-topicpage'),
+            ('referenced_topicpage', 'topicpage_filter', 'topicpage_order'),
+        ),
         gocept.form.grouped.Fields(
             _('automatic-area-type-elasticsearch-query'),
-             ('elasticsearch_raw_query', 'is_complete_query',
-              'elasticsearch_raw_order')),
-        gocept.form.grouped.Fields(
-            _('automatic-area-type-related-topics'), ('related_topicpage', )),
+            ('elasticsearch_raw_query', 'is_complete_query', 'elasticsearch_raw_order'),
+        ),
+        gocept.form.grouped.Fields(_('automatic-area-type-related-topics'), ('related_topicpage',)),
         gocept.form.grouped.Fields(
             _('automatic-area-type-reach'),
-             ('reach_service', 'reach_section', 'reach_access', 'reach_age')),
+            ('reach_service', 'reach_section', 'reach_access', 'reach_age'),
+        ),
     )
 
     def setUpWidgets(self, *args, **kw):
@@ -213,18 +226,15 @@ class EditAutomatic(zeit.content.cp.browser.view.GroupedSubpageForm):
         self.widgets['automatic'].reversed = False
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
 
 class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
-
     interface = zeit.content.cp.interfaces.IArea
 
 
 class SchematicPreview:
-
     prefix = 'http://xml.zeit.de/data/cp-area-schemas/{}.svg'
 
     def areas(self):
@@ -232,8 +242,7 @@ class SchematicPreview:
         return region.values()
 
     def preview(self, area):
-        content = zeit.cms.interfaces.ICMSContent(
-            self.prefix.format(area.kind))
+        content = zeit.cms.interfaces.ICMSContent(self.prefix.format(area.kind))
         return content.open().read()
 
     def css_class(self, area):
@@ -244,6 +253,5 @@ class SchematicPreview:
 
 
 class Fold(zeit.cms.browser.view.Base):
-
     def title(self):
         return ''  # Already covered by layout.element.title.pt

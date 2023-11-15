@@ -11,7 +11,6 @@ import zope.security.proxy
 
 
 class TestContainer(unittest.TestCase):
-
     def get_container(self):
         parent = mock.Mock()
         parent._p_changed = False
@@ -26,6 +25,7 @@ class TestContainer(unittest.TestCase):
 
             def _get_keys(self, node):
                 return []
+
         return Container(parent, mock.Mock())
 
     def test_delitem_should_set_p_changed(self):
@@ -48,34 +48,33 @@ class TestContainer(unittest.TestCase):
 
 
 class UnknownBlockTest(zeit.edit.testing.FunctionalTestCase):
-
     def test_no_factory_for_node_returns_UnknownBlock(self):
-        xml = lxml.objectify.fromstring("""
+        xml = lxml.objectify.fromstring(
+            """
         <container xmlns:cp="http://namespaces.zeit.de/CMS/cp">
           <block cp:type="block" cp:__name__="foo"/>
           <something cp:__name__="bar"/>
         </container>
-        """)
+        """
+        )
         container = zeit.edit.tests.fixture.Container(mock.Mock(), xml)
-        self.assertTrue(zeit.edit.interfaces.IUnknownBlock.providedBy(
-            container['bar']))
+        self.assertTrue(zeit.edit.interfaces.IUnknownBlock.providedBy(container['bar']))
 
 
 class ContainerTest(zeit.edit.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.context = mock.Mock()
         zope.interface.alsoProvides(self.context, IPersistent)
         self.container = zeit.edit.tests.fixture.Container(
-            self.context, lxml.objectify.fromstring('<container/>'))
+            self.context, lxml.objectify.fromstring('<container/>')
+        )
 
     def test_slice(self):
         blocks = [self.container.create_item('block') for i in range(4)]
         expected = [blocks[0], blocks[1]]
         expected = [x.__name__ for x in expected]
-        actual = [x.__name__ for x in self.container.slice(
-            blocks[0].__name__, blocks[1].__name__)]
+        actual = [x.__name__ for x in self.container.slice(blocks[0].__name__, blocks[1].__name__)]
         self.assertEqual(expected, actual)
 
     def test_get_recursive_finds_item_in_self(self):
@@ -90,11 +89,12 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
     def test_moving_item_between_containers_sends_event(self):
         check_move = mock.Mock()
         zope.component.getGlobalSiteManager().registerHandler(
-            check_move, (zeit.edit.interfaces.IBlock,
-                         zope.lifecycleevent.IObjectMovedEvent))
+            check_move, (zeit.edit.interfaces.IBlock, zope.lifecycleevent.IObjectMovedEvent)
+        )
         block = self.container.create_item('block')
         other = zeit.edit.tests.fixture.Container(
-            self.context, lxml.objectify.fromstring('<container/>'))
+            self.context, lxml.objectify.fromstring('<container/>')
+        )
         del self.container[block.__name__]
         other.add(block)
         self.assertTrue(check_move.called)
@@ -103,8 +103,7 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
         # Annoying mechanics gymnastics to check that security works.
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
         self.container.__parent__ = wc
-        other = zeit.edit.tests.fixture.Container(
-            wc, lxml.objectify.fromstring('<container/>'))
+        other = zeit.edit.tests.fixture.Container(wc, lxml.objectify.fromstring('<container/>'))
         block = self.container.create_item('block')
         del self.container[block.__name__]
         wrapped = zope.security.proxy.ProxyFactory(block)

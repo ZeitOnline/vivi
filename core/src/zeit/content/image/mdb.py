@@ -17,7 +17,6 @@ FILE_NAME_ATTRIBUTE = re.compile(' name="([^"]*)"')
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
 class MDB:
-
     def __init__(self, url, username, password):
         self.url = url
         self.username = username
@@ -42,8 +41,9 @@ class MDB:
             'expires': expires,
         }
 
-        nodes = (data.xpath('//mediadata_content[@type="text"]') +
-                 data.xpath('//mdb_content[@type="text"]'))
+        nodes = data.xpath('//mediadata_content[@type="text"]') + data.xpath(
+            '//mdb_content[@type="text"]'
+        )
         for node in nodes:
             value = node.find('data')
             if value is None:
@@ -64,8 +64,7 @@ class MDB:
         result = BytesIO(body)
         result.filename = FILE_NAME_ATTRIBUTE.search(response).group(1)
         result.mdb_id = mdb_id
-        result.headers = {'content-type': 'image/%s' % os.path.splitext(
-            result.filename)[1].lower()}
+        result.headers = {'content-type': 'image/%s' % os.path.splitext(result.filename)[1].lower()}
         return result
 
     def _request(self, request, **kw):
@@ -83,27 +82,25 @@ class MDB:
 
 
 class FakeMDB(MDB):
-
     def __init__(self, *args):
         pass
 
     def _request(self, request, **kw):
         import requests_mock  # test-only dependency
+
         if request.endswith('file'):
             filename = 'mdb-body.xml'
         else:
             filename = 'mdb-meta.xml'
         return requests_mock.create_response(
             requests.Request(url='http://example.invalid'),
-            content=(importlib.resources.files(
-                __package__) / 'tests/fixtures' / filename).read_bytes())
+            content=(
+                importlib.resources.files(__package__) / 'tests/fixtures' / filename
+            ).read_bytes(),
+        )
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IMDB)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.image')
-    return MDB(
-        config['mdb-api-url'],
-        config['mdb-api-username'],
-        config['mdb-api-password'])
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image')
+    return MDB(config['mdb-api-url'], config['mdb-api-username'], config['mdb-api-password'])

@@ -15,14 +15,14 @@ def add_image(browser, name):
     menu.displayValue = ['Image (single)']
     browser.open(menu.value[0])
     file_control = browser.getControl(name='form.blob')
-    file_control.add_file((importlib.resources.files(
-        __package__) / f'testdata/{name}').read_bytes(), 'image/jpeg', name)
-    browser.getControl(name='form.copyright.combination_00').value = (
-        'ZEIT ONLINE')
-    browser.getControl(name='form.copyright.combination_01').displayValue = (
-        ['dpa'])
-    browser.getControl(name='form.copyright.combination_03').value = (
-        'http://www.zeit.de/')
+    file_control.add_file(
+        (importlib.resources.files(__package__) / f'testdata/{name}').read_bytes(),
+        'image/jpeg',
+        name,
+    )
+    browser.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+    browser.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
+    browser.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
     browser.getControl(name='form.actions.add').click()
     browser.getLink('Checkin').click()
     url = browser.url

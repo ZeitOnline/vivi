@@ -3,7 +3,6 @@ import zope.app.appsetup.product
 
 
 class HealthCheck:
-
     def __call__(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         stopfile = config.get('stopfile')

@@ -7,4 +7,5 @@ def test_suite():
         'typechange.txt',
         'widget.txt',
         'widget-subnav.txt',
-        package='zeit.cms.content.browser')
+        package='zeit.cms.content.browser',
+    )

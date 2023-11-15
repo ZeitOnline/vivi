@@ -5,9 +5,8 @@ import zope.component.hooks
 
 
 class TestPublish(
-        zeit.workflow.testing.FakeValidatingWorkflowMixin,
-        zeit.workflow.testing.SeleniumTestCase):
-
+    zeit.workflow.testing.FakeValidatingWorkflowMixin, zeit.workflow.testing.SeleniumTestCase
+):
     def setUp(self):
         super().setUp()
         self.open('/repository/testcontent')
@@ -15,6 +14,7 @@ class TestPublish(
     def prepare_content(self, id='http://xml.zeit.de/testcontent'):
         from zeit.workflow.interfaces import IContentWorkflow
         import zeit.cms.interfaces
+
         content = zeit.cms.interfaces.ICMSContent(id)
         IContentWorkflow(content).urgent = True
 
@@ -30,8 +30,7 @@ class TestPublish(
     def test_non_publishable_should_render_error(self):
         s = self.selenium
         s.click('link=Publish')
-        s.waitForTextPresent(
-            'Cannot publish since preconditions for publishing are not met.')
+        s.waitForTextPresent('Cannot publish since preconditions for publishing are not met.')
 
     def test_publishable_content_should_be_published(self):
         self.prepare_content()
@@ -62,20 +61,19 @@ class TestPublish(
     def test_error_during_publish_should_be_messaged(self):
         self.prepare_content()
         s = self.selenium
-        with mock.patch(
-                'zeit.workflow.publisher.MockPublisher.request') as publish:
-            publish.side_effect = zeit.workflow.publisher.PublisherError(
-                'testing', 678, [])
+        with mock.patch('zeit.workflow.publisher.MockPublisher.request') as publish:
+            publish.side_effect = zeit.workflow.publisher.PublisherError('testing', 678, [])
             s.click('link=Publish')
             s.waitForElementPresent('css=li.error')
             s.assertText(
-                'css=li.error',
-                'Error during publish/retract: : PublishError: testing returned 678')
+                'css=li.error', 'Error during publish/retract: : PublishError: testing returned 678'
+            )
 
     def test_opening_dialog_from_folder_view_points_to_content(self):
         # Regression VIV-452
         from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+
         zope.component.hooks.setSite(self.getRootFolder())
         self.repository['other'] = ExampleContentType()
         self.prepare_content('http://xml.zeit.de/other')
@@ -94,13 +92,11 @@ class TestPublish(
         s.waitForElementPresent('css=li.busy[action=start_job]')
         s.waitForElementNotPresent('css=li.busy[action=start_job]')
         s.waitForPageToLoad()
-        self.assertFalse(
-            IPublishInfo(self.repository['testcontent']).published)
+        self.assertFalse(IPublishInfo(self.repository['testcontent']).published)
         self.assertTrue(IPublishInfo(self.repository['other']).published)
 
 
 class TestRetract(zeit.workflow.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         self.publish_info.published = True
@@ -108,8 +104,7 @@ class TestRetract(zeit.workflow.testing.SeleniumTestCase):
 
     @property
     def publish_info(self):
-        content = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/testcontent')
+        content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         return zeit.cms.workflow.interfaces.IPublishInfo(content)
 
     def test_action_should_not_be_available_on_unpublished_content(self):
@@ -134,15 +129,13 @@ class TestRetract(zeit.workflow.testing.SeleniumTestCase):
 
 
 class TestPublishValidationMessages(
-        zeit.workflow.testing.FakeValidatingWorkflowMixin,
-        zeit.workflow.testing.BrowserTestCase):
-
+    zeit.workflow.testing.FakeValidatingWorkflowMixin, zeit.workflow.testing.BrowserTestCase
+):
     def test_publish_with_validation_error_displays_message(self):
         self.register_workflow_with_error()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent'
-               '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
         self.assertEllipsis('...Cannot publish...', b.contents)
         self.assertEllipsis('...Validation Error Message...', b.contents)
 
@@ -150,8 +143,7 @@ class TestPublishValidationMessages(
         self.register_workflow_with_warning()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent'
-               '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
         self.assertEllipsis('...Cannot publish...', b.contents)
         self.assertEllipsis('...Validation Warning Message...', b.contents)
 
@@ -159,14 +151,12 @@ class TestPublishValidationMessages(
         self.register_workflow_with_warning()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent'
-               '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
         self.assertEllipsis('...Publish anyway...', b.contents)
 
     def test_publish_with_errors_should_not_offer_force_publish(self):
         self.register_workflow_with_error()
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent'
-               '/@@publish.html')
+        b.open('http://localhost/++skin++vivi/repository/testcontent' '/@@publish.html')
         self.assertNotIn('Publish anyway', b.contents)

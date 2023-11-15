@@ -13,14 +13,12 @@ MARKER = object()
 
 
 class Breadcrumbs(zeit.cms.browser.view.Base):
-
     @zope.cachedescriptors.property.Lazy
     def get_breadcrumbs(self):
         """Returns a list of dicts with title and URL."""
         if self._use_common_metadata:
             try:
-                metadata = zeit.cms.content.interfaces.ICommonMetadata(
-                    self.context)
+                metadata = zeit.cms.content.interfaces.ICommonMetadata(self.context)
             except TypeError:
                 pass
             else:
@@ -34,18 +32,13 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
             ressort_id = 'http://xml.zeit.de/%s' % (context.ressort.lower())
             url = self.cms_url(ressort_id)
             if url:
-                result.append({
-                    'title': context.ressort,
-                    'url': url, 'uniqueId': None})
+                result.append({'title': context.ressort, 'url': url, 'uniqueId': None})
 
         if context.sub_ressort:
-            sub_ressort_id = '%s/%s' % (
-                ressort_id, context.sub_ressort.lower())
+            sub_ressort_id = '%s/%s' % (ressort_id, context.sub_ressort.lower())
             url = self.cms_url(sub_ressort_id)
             if url:
-                result.append({
-                    'title': context.sub_ressort,
-                    'url': url, 'uniqueId': None})
+                result.append({'title': context.sub_ressort, 'url': url, 'uniqueId': None})
 
         name = self.content_name(context)
         url = self.url(context)
@@ -56,8 +49,10 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
     def get_breadcrumbs_from_path(self, context):
         has_parents = True
-        if (zeit.cms.checkout.interfaces.ILocalContent.providedBy(context) and
-                self._use_common_metadata):
+        if (
+            zeit.cms.checkout.interfaces.ILocalContent.providedBy(context)
+            and self._use_common_metadata
+        ):
             try:
                 context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
             except TypeError:
@@ -72,8 +67,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
                 break
             title = self.content_name(item)
             uniqueId = getattr(item, 'uniqueId', None)
-            result.append({
-                'title': title, 'url': self.url(item), 'uniqueId': uniqueId})
+            result.append({'title': title, 'url': self.url(item), 'uniqueId': uniqueId})
 
         result.reverse()
         return result
@@ -86,8 +80,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
     def content_name(self, content):
         try:
-            if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-                    content).renameable:
+            if zeit.cms.repository.interfaces.IAutomaticallyRenameable(content).renameable:
                 return _('(new)')
         except TypeError:
             pass
@@ -95,8 +88,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
     @zope.cachedescriptors.property.Lazy
     def _use_common_metadata(self):
-        cms_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.cms')
+        cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         return (
-            cms_config and cms_config.get(
-                'breadcrumbs-use-common-metadata', '').lower() == 'true')
+            cms_config and cms_config.get('breadcrumbs-use-common-metadata', '').lower() == 'true'
+        )

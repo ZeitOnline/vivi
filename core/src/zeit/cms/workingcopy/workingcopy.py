@@ -37,9 +37,9 @@ class Workingcopy(zope.container.btree.BTreeContainer):
 
     def __setitem__(self, key, item):
         if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(item):
-            raise ValueError("Must provide ILocalContent")
+            raise ValueError('Must provide ILocalContent')
         super().__setitem__(key, item)
-        self._order += (key, )
+        self._order += (key,)
 
     def __delitem__(self, key):
         super().__delitem__(key)
@@ -52,8 +52,7 @@ class Workingcopy(zope.container.btree.BTreeContainer):
             self._order = tuple(order)
 
 
-@zope.interface.implementer(
-    zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+@zope.interface.implementer(zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
 class WorkingcopyLocation(zope.container.btree.BTreeContainer):
     """Location for working copies of all users."""
 
@@ -69,18 +68,14 @@ class WorkingcopyLocation(zope.container.btree.BTreeContainer):
         except KeyError:
             # User doesn't have a working copy yet, create one
             result = self[principal_id] = Workingcopy()
-            perms = (
-                zope.securitypolicy.interfaces.IPrincipalPermissionManager(
-                    result))
+            perms = zope.securitypolicy.interfaces.IPrincipalPermissionManager(result)
             perms.grantPermissionToPrincipal('zeit.EditContent', principal_id)
 
-            prm = zope.securitypolicy.interfaces.IPrincipalRoleManager(
-                result)
+            prm = zope.securitypolicy.interfaces.IPrincipalRoleManager(result)
             prm.assignRoleToPrincipal('zeit.Owner', principal_id)
 
             try:
-                dc = zope.dublincore.interfaces.IDCDescriptiveProperties(
-                    result)
+                dc = zope.dublincore.interfaces.IDCDescriptiveProperties(result)
             except TypeError:
                 pass
             else:
@@ -99,17 +94,16 @@ class WorkingcopyLocation(zope.container.btree.BTreeContainer):
             if principal is None:
                 principal = p.principal
             else:
-                raise ValueError("Multiple principals found")
+                raise ValueError('Multiple principals found')
         if principal is None:
-            raise ValueError("No principal found")
+            raise ValueError('No principal found')
         return principal
 
 
 @zope.component.adapter(zope.security.interfaces.IPrincipal)
 @zope.interface.implementer(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 def principalAdapter(context):
-    location = zope.component.getUtility(
-        zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+    location = zope.component.getUtility(zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
     return location.getWorkingcopyFor(context)
 
 
@@ -142,11 +136,9 @@ class WorkingcopyTraverser:
         self.request = request
 
     def publishTraverse(self, request, name):
-        auth = zope.component.getUtility(
-            zope.app.security.interfaces.IAuthentication)
+        auth = zope.component.getUtility(zope.app.security.interfaces.IAuthentication)
         try:
             principal = auth.getPrincipal(name)
         except zope.app.security.interfaces.PrincipalLookupError:
-            raise zope.publisher.interfaces.NotFound(
-                self.context, name, request)
+            raise zope.publisher.interfaces.NotFound(self.context, name, request)
         return zeit.cms.workingcopy.interfaces.IWorkingcopy(principal)

@@ -7,7 +7,6 @@ import zope.component
 
 
 class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_changes(self):
         content = self.repository['testcontent']
         self.assertEqual(self.repository, content.__parent__)
@@ -28,19 +27,16 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual('', self.repository['testcontent'].title)
 
     def test_checkout_helper_on_locked_doesnt_do_anyting(self):
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         connector.lock('http://xml.zeit.de/testcontent', 'frodo', None)
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['testcontent']) as co:
+        with zeit.cms.checkout.helper.checked_out(self.repository['testcontent']) as co:
             self.assertTrue(co is None)
 
     def test_semantic_change(self):
         content = self.repository['testcontent']
         sc = zeit.cms.content.interfaces.ISemanticChange(content)
         self.assertTrue(sc.last_semantic_change is None)
-        with zeit.cms.checkout.helper.checked_out(
-                content, semantic_change=True):
+        with zeit.cms.checkout.helper.checked_out(content, semantic_change=True):
             pass
         self.assertFalse(sc.last_semantic_change is None)
 
@@ -51,8 +47,8 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
         def set_title_and_return_false(co):
             co.title = 'foo'
             return False
-        zeit.cms.checkout.helper.with_checked_out(
-            content, set_title_and_return_false)
+
+        zeit.cms.checkout.helper.with_checked_out(content, set_title_and_return_false)
         self.assertEqual('', self.repository['testcontent'].title)
 
     def test_ignore_conflict(self):
@@ -64,14 +60,10 @@ class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
         def cycle_without_ignore_raises():
             with zeit.cms.checkout.helper.checked_out(content) as co:
                 # Change the etag to provoke a conflict
-                zeit.connector.interfaces.IWebDAVProperties(co)[
-                    ('getetag', 'DAV:')] = 'foo'
-        self.assertRaises(
-            zeit.cms.repository.interfaces.ConflictError,
-            cycle_without_ignore_raises)
-        with zeit.cms.checkout.helper.checked_out(content,
-                                                  ignore_conflicts=True) as co:
+                zeit.connector.interfaces.IWebDAVProperties(co)[('getetag', 'DAV:')] = 'foo'
+
+        self.assertRaises(zeit.cms.repository.interfaces.ConflictError, cycle_without_ignore_raises)
+        with zeit.cms.checkout.helper.checked_out(content, ignore_conflicts=True) as co:
             # Change the etag to provoke a conflict. No exception will be
             # raised due to ignore_conflicts=True
-            zeit.connector.interfaces.IWebDAVProperties(co)[
-                ('getetag', 'DAV:')] = 'foo'
+            zeit.connector.interfaces.IWebDAVProperties(co)[('getetag', 'DAV:')] = 'foo'

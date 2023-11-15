@@ -7,7 +7,6 @@ ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = ZOPE_LAYER
 
 

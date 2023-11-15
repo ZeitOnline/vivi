@@ -9,7 +9,6 @@ class PossibleScale:
 
 
 class ScaleSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.crop'
     config_url = 'scale-source'
     default_filename = 'scales.xml'
@@ -32,7 +31,6 @@ class Color:
 
 
 class ColorSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.crop'
     config_url = 'color-source'
     default_filename = 'imp-colors.xml'

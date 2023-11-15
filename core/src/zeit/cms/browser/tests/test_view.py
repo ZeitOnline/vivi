@@ -4,15 +4,16 @@ import zeit.cms.testing
 
 
 class TestJSON(unittest.TestCase):
-
     def test_dict_result_should_pop_template(self):
         from zeit.cms.browser.view import JSON
 
         class View(JSON):
             def json(self):
                 return result
+
             resource_url = mock.Mock()
             resource_url.return_value = 'mocked template'
+
         result = {'template': 'bla'}
         view = View()
         view.request = mock.Mock()
@@ -25,6 +26,7 @@ class TestJSON(unittest.TestCase):
         class View(JSON):
             def json(self):
                 return result
+
         result = [1, 2, 3]
         view = View()
         view.request = mock.Mock()
@@ -34,13 +36,11 @@ class TestJSON(unittest.TestCase):
 
 
 class FragmentReady(zeit.cms.testing.SeleniumTestCase):
-
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super().setUp()
-        self.open(
-            '/@@/zeit.cms.browser.tests.fixtures/fragmentready.html')
+        self.open('/@@/zeit.cms.browser.tests.fixtures/fragmentready.html')
 
     def test_event_is_fired_on_document_and_contains_actual_dom_element(self):
         self.execute('window.jQuery("#example").trigger_fragment_ready();')

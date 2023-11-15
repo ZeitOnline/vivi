@@ -13,26 +13,26 @@ import zope.lifecycleevent
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
-    zeit.cms.testing.RecordingRequestHandler,
-    name='HTTPLayer', module=__name__)
+    zeit.cms.testing.RecordingRequestHandler, name='HTTPLayer', module=__name__
+)
 
 LAYER = plone.testing.Layer(
-    bases=(HTTP_LAYER, zeit.content.author.testing.ZOPE_LAYER),
-    name='HDokLayer', module=__name__)
+    bases=(HTTP_LAYER, zeit.content.author.testing.ZOPE_LAYER), name='HDokLayer', module=__name__
+)
 
 
 class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
-
     layer = LAYER
     EMPTY_SEARCH_RESULT = json.dumps({'response': {'data': ''}})
-    CREATE_RESULT = json.dumps({'response': {
-        'scriptResult': json.dumps({'anlage': 'ok', 'gcid': 'myid'})}})
+    CREATE_RESULT = json.dumps(
+        {'response': {'scriptResult': json.dumps({'anlage': 'ok', 'gcid': 'myid'})}}
+    )
 
     def setUp(self):
         super().setUp()
         self.api = zeit.content.author.honorar.Honorar(
-            'http://localhost:%s' % self.layer['http_port'],
-            'fake-invalid-url', 'user', 'pass')
+            'http://localhost:%s' % self.layer['http_port'], 'fake-invalid-url', 'user', 'pass'
+        )
         self.auth_token_patch = mock.patch.object(self.api, 'auth_token')
         token = self.auth_token_patch.start()
         token.return_value = 'token'
@@ -70,14 +70,12 @@ class HDokIntegration(zeit.cms.testing.FunctionalTestCase):
 
 
 class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
-
     def test_creates_author_in_hdok_if_no_external_id(self):
         author = zeit.content.author.author.Author()
         author.firstname = 'William'
         author.lastname = 'Shakespeare'
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
-        api = zope.component.getUtility(
-            zeit.content.author.interfaces.IHonorar)
+        api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         self.assertTrue(api.create.called)
         self.assertEqual('mock-honorar-id', author.honorar_id)
 
@@ -87,14 +85,12 @@ class HonorarIDTest(zeit.content.author.testing.FunctionalTestCase):
         author.lastname = 'Shakespeare'
         author.honorar_id = 'manual-id'
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(author))
-        api = zope.component.getUtility(
-            zeit.content.author.interfaces.IHonorar)
+        api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         self.assertFalse(api.create.called)
         self.assertEqual('manual-id', author.honorar_id)
 
     def test_does_not_create_hdok_on_retract(self):
-        api = zope.component.getUtility(
-            zeit.content.author.interfaces.IHonorar)
+        api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
         author = zeit.content.author.author.Author()
         author.firstname = 'William'
         author.lastname = 'Shakespeare'

@@ -9,15 +9,15 @@ import zeit.content.modules.testing
 
 
 class RecipeListTest(
-        zeit.content.modules.testing.FunctionalTestCase,
-        zeit.content.modules.testing.IngredientsHelper):
-
+    zeit.content.modules.testing.FunctionalTestCase, zeit.content.modules.testing.IngredientsHelper
+):
     def setUp(self):
         super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.recipelist.RecipeList(
-            self.context, lxml.objectify.XML('<container/>'))
+            self.context, lxml.objectify.XML('<container/>')
+        )
 
     def get_content(self):
         from zeit.content.modules.recipelist import RecipeList
@@ -26,6 +26,7 @@ class RecipeListTest(
         class Content:
             xml = objectify.fromstring('<recipelist/>')
             recipe_list = RecipeList(self.context, xml)
+
         return Content().recipe_list
 
     def test_title_should_be_stored_in_xml(self):
@@ -37,15 +38,13 @@ class RecipeListTest(
         banana = ingredients['banana']
         milk = ingredients['milk']
         self.module.ingredients = [banana, milk]
-        self.assertEqual(['banana', 'milk'], (
-            [x.code for x in self.module.ingredients]))
+        self.assertEqual(['banana', 'milk'], ([x.code for x in self.module.ingredients]))
 
     def test_set_should_allow_duplicate_ingredients(self):
         ingredients = self.setup_ingredients('banana')
         banana = ingredients['banana']
         self.module.ingredients = [banana, banana]
-        self.assertEqual(['banana', 'banana'], (
-            [x.code for x in self.module.ingredients]))
+        self.assertEqual(['banana', 'banana'], ([x.code for x in self.module.ingredients]))
 
     def test_set_should_write_ingredients_to_xml_head(self):
         ingredients = self.setup_ingredients('banana', 'milk')
@@ -110,16 +109,14 @@ class RecipeListTest(
             validate_servings('1-a')
 
     def test_ingredients_should_receive_properties_from_whitelist(self):
-        node = lxml.objectify.XML(
-            '<ingredient code="banana" amount="1" unit="kg"/>')
+        node = lxml.objectify.XML('<ingredient code="banana" amount="1" unit="kg"/>')
         ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.label == 'Banane'
         assert ingredient.plural == 'Bananen'
 
     def test_missing_xml_attributes_should_have_empty_string_as_default(self):
-        node = lxml.objectify.XML(
-            '<ingredient code="banana" amount="1" unit="kg"/>')
+        node = lxml.objectify.XML('<ingredient code="banana" amount="1" unit="kg"/>')
         ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.details == ''  # not provided as xml attribute

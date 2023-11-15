@@ -25,20 +25,14 @@ def create_video():
         'updated_at': '2017-05-16T08:24:55.916Z',
         'state': 'ACTIVE',
         'custom_fields': {},
-        "images": {
-            "poster": {
-                "src": "nosuchhost"
-            }
-        },
+        'images': {'poster': {'src': 'nosuchhost'}},
     }
     return bc
 
 
 class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
-
     def test_new_video_should_be_added_to_cms(self):
-        self.assertEqual(
-            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
+        self.assertEqual(None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
         import_video(create_video())
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid')
         self.assertEqual('title', video.title)
@@ -66,8 +60,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual('changed', video.title)
         lsc = zeit.cms.content.interfaces.ISemanticChange(video)
         self.assertEqual(
-            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC),
-            lsc.last_semantic_change)
+            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC), lsc.last_semantic_change
+        )
 
     def test_should_publish_after_update(self):
         bc = create_video()
@@ -84,7 +78,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         import_video(bc)  # Create CMS object
         publish = mock.Mock()
         zope.component.getGlobalSiteManager().registerHandler(
-            publish, (zeit.cms.workflow.interfaces.IPublishedEvent,))
+            publish, (zeit.cms.workflow.interfaces.IPublishedEvent,)
+        )
         import_video(bc)
         self.assertEqual(2, publish.call_count)  # video + still
 
@@ -104,13 +99,11 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual(info.date_last_published, last_published)
 
     def test_ignored_video_should_not_be_added_to_cms(self):
-        self.assertEqual(
-            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
+        self.assertEqual(None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
         bc = create_video()
         bc.data['custom_fields']['ignore_for_update'] = '1'
         import_video(bc)
-        self.assertEqual(
-            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
+        self.assertEqual(None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
 
     def test_ignored_video_should_not_be_updated_in_cms(self):
         bc = create_video()
@@ -146,7 +139,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         bc.data['state'] = 'INACTIVE'
         retract = mock.Mock()
         zope.component.getGlobalSiteManager().registerHandler(
-            retract, (zeit.cms.workflow.interfaces.IRetractedEvent,))
+            retract, (zeit.cms.workflow.interfaces.IRetractedEvent,)
+        )
         import_video(bc)
         self.assertEqual(True, retract.called)
 
@@ -157,7 +151,8 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
         retract = mock.Mock()
         zope.component.getGlobalSiteManager().registerHandler(
-            retract, (zeit.cms.workflow.interfaces.IRetractedEvent,))
+            retract, (zeit.cms.workflow.interfaces.IRetractedEvent,)
+        )
         import_video(deleted)
         self.assertEqual(True, retract.called)
 
@@ -169,9 +164,9 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         info_still = zeit.cms.workflow.interfaces.IPublishInfo(still)
         self.assertEqual(True, info_video.published)
         self.assertEqual(True, info_still.published)
-        zeit.cms.workflow.interfaces.IPublish(
-            self.repository['video']['2017-05']['myvid']).retract(
-            background=False)
+        zeit.cms.workflow.interfaces.IPublish(self.repository['video']['2017-05']['myvid']).retract(
+            background=False
+        )
         self.assertEqual(False, info_video.published)
         self.assertEqual(False, info_still.published)
 
@@ -179,20 +174,15 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         bc = create_video()
         import_video(bc)
         video = ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None)
-        still = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still/',
-                            None)
+        still = ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still/', None)
         assert video is not None
         assert still is not None
         deleted = zeit.brightcove.convert.DeletedVideo(bc.id, video)
         import_video(deleted)
         # XXX manual transaction.commit() to avoid running into a vivi bug
         transaction.commit()
-        self.assertEqual(None,
-                         ICMSContent('http://xml.zeit.de/video/2017-05/myvid',
-                                     None))
-        self.assertEqual(
-            None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still/',
-                              None))
+        self.assertEqual(None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid', None))
+        self.assertEqual(None, ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still/', None))
 
     def test_images_of_deleted_video_should_be_retracted(self):
         bc = create_video()
@@ -238,15 +228,13 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
 
 
 class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
-
     def setUp(self):
         super().setUp()
-        image_dir = importlib.resources.files(
-            "zeit.content.image.browser") / "testdata"
-        shutil.copytree(image_dir, path.join(self.layer["documentroot"], "testdata"))
+        image_dir = importlib.resources.files('zeit.content.image.browser') / 'testdata'
+        shutil.copytree(image_dir, path.join(self.layer['documentroot'], 'testdata'))
 
     def test_download_teaser_image__still_success(self):
-        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        src = 'http://{0.layer[http_address]}/testdata/opernball.jpg'.format(self)
         bc = create_video()
         bc.data['images']['poster']['src'] = src
         import_video(bc)
@@ -257,45 +245,48 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         self.assertEqual(
             True,
             zeit.cms.workflow.interfaces.IPublishInfo(
-                ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still')).published)
+                ICMSContent('http://xml.zeit.de/video/2017-05/myvid-still')
+            ).published,
+        )
 
     def test_download_teaser_image_error_produces_empty_group(self):
         zeit.brightcove.update.download_teaser_image(
-            self.repository,
-            {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}},
-            'thumbnail')
+            self.repository, {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}}, 'thumbnail'
+        )
         group = self.repository['foo-thumbnail']
         assert group.master_image is None
 
     def test_download_teaser_for_locked_image_ignored(self):
-        with mock.patch(
-            'zeit.content.image.imagegroup.ImageGroup.from_image'
-        ) as patched:
+        with mock.patch('zeit.content.image.imagegroup.ImageGroup.from_image') as patched:
             patched.side_effect = zope.app.locking.interfaces.LockingError()
-            assert zeit.brightcove.update.download_teaser_image(
-                self.repository,
-                {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}},
-                'thumbnail') is None
+            assert (
+                zeit.brightcove.update.download_teaser_image(
+                    self.repository,
+                    {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}},
+                    'thumbnail',
+                )
+                is None
+            )
 
     def test_download_teaser_image_error_uses_existing(self):
         from zeit.content.image.testing import create_image_group_with_master_image
+
         self.repository['foo-thumbnail'] = create_image_group_with_master_image()
         existing = self.repository['foo-thumbnail']
         existing.stamped = 'this'
         new = zeit.brightcove.update.download_teaser_image(
-            self.repository,
-            {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}},
-            'thumbnail')
+            self.repository, {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}}, 'thumbnail'
+        )
         assert new.stamped == 'this'
 
     def test_update_teaser_image_still_success(self):
-        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        src = 'http://{0.layer[http_address]}/testdata/opernball.jpg'.format(self)
         bc = create_video()
         bc.data['images']['poster']['src'] = src
         imported = import_video(bc)
         img = zeit.content.image.interfaces.IImages(imported.cmsobj)
         assert img.image.master_image == 'opernball.jpg'
-        new_src = "http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg".format(self)
+        new_src = 'http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg'.format(self)
         bc.data['images']['poster']['src'] = new_src
         # importing it again triggers update:
         reimported = import_video(bc)
@@ -304,7 +295,8 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
 
     def test_update_teaser_image_preserves_override(self):
         from zeit.content.image.testing import create_image_group_with_master_image
-        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+
+        src = 'http://{0.layer[http_address]}/testdata/opernball.jpg'.format(self)
         # video is created via BC import
         bc = create_video()
         bc.data['images']['poster']['src'] = src
@@ -317,16 +309,19 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
         img = zeit.content.image.interfaces.IImages(video)
         assert img.image.master_image == 'master-image.jpg'
         # now an update from brightcove still updates the automatically created image group:
-        new_src = "http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg".format(self)
+        new_src = 'http://{0.layer[http_address]}/testdata/obama-clinton-120x120.jpg'.format(self)
         bc.data['images']['poster']['src'] = new_src
         reimported = import_video(bc)
-        assert self.repository['video']['2017-05']['myvid-still'].master_image == 'obama-clinton-120x120.jpg'
+        assert (
+            self.repository['video']['2017-05']['myvid-still'].master_image
+            == 'obama-clinton-120x120.jpg'
+        )
         # but it does not change the reference of the video to the custom imagegroup
         img = zeit.content.image.interfaces.IImages(reimported.cmsobj)
         assert img.image.master_image == 'master-image.jpg'
 
     def test_update_teaser_image_sets_reference_if_vivi_has_none(self):
-        src = "http://{0.layer[http_address]}/testdata/opernball.jpg".format(self)
+        src = 'http://{0.layer[http_address]}/testdata/opernball.jpg'.format(self)
         bc = create_video()
         bc.data['images']['poster']['src'] = src
         import_video(bc)
@@ -345,7 +340,6 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
 
 
 class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
-
     def create_playlist(self):
         bc = zeit.brightcove.convert.Playlist()
         bc.data = {
@@ -356,8 +350,7 @@ class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
         return bc
 
     def test_new_playlist_should_be_added_to_cms(self):
-        self.assertEqual(
-            None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
+        self.assertEqual(None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
         import_playlist(self.create_playlist())
         playlist = ICMSContent('http://xml.zeit.de/video/playlist/mypls')
         self.assertEqual('title', playlist.title)
@@ -384,8 +377,8 @@ class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
         self.assertEqual('changed', playlist.title)
         lsc = zeit.cms.content.interfaces.ISemanticChange(playlist)
         self.assertEqual(
-            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC),
-            lsc.last_semantic_change)
+            datetime(2017, 5, 16, 8, 24, 55, 916000, tzinfo=pytz.UTC), lsc.last_semantic_change
+        )
         self.assertGreater(info.date_last_published, last_published)
 
     def test_unknown_playlist_should_be_deleted(self):
@@ -396,19 +389,15 @@ class ImportPlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
         import_playlist(other)
 
         import_playlist.delete_except([other])
-        self.assertEqual(
-            None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
-        self.assertNotEqual(
-            None, ICMSContent('http://xml.zeit.de/video/playlist/other', None))
+        self.assertEqual(None, ICMSContent('http://xml.zeit.de/video/playlist/mypls', None))
+        self.assertNotEqual(None, ICMSContent('http://xml.zeit.de/video/playlist/other', None))
 
 
 class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.repository['myvid'] = zeit.content.video.video.Video()
-        self.request_patch = mock.patch(
-            'zeit.brightcove.connection.CMSAPI._request')
+        self.request_patch = mock.patch('zeit.brightcove.connection.CMSAPI._request')
         self.request = self.request_patch.start()
 
     def tearDown(self):
@@ -417,16 +406,15 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_video_changes_are_written_to_brightcove_on_checkin(self):
         with zeit.cms.checkout.helper.checked_out(
-                self.repository['myvid'], semantic_change=True) as co:
+            self.repository['myvid'], semantic_change=True
+        ) as co:
             co.title = 'local change'
         transaction.commit()
         self.assertEqual(1, self.request.call_count)
-        self.assertEqual(
-            'local change', self.request.call_args[1]['body']['name'])
+        self.assertEqual('local change', self.request.call_args[1]['body']['name'])
 
     def test_changes_are_not_written_during_publish(self):
-        zeit.cms.workflow.interfaces.IPublish(
-            self.repository['myvid']).publish(background=False)
+        zeit.cms.workflow.interfaces.IPublish(self.repository['myvid']).publish(background=False)
         self.assertEqual(False, self.request.called)
 
     def test_changes_are_written_on_commit(self):
@@ -447,8 +435,7 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
     def test_playlist_is_published_on_checkin(self):
         self.repository['playlist'] = zeit.content.video.playlist.Playlist()
         playlist = self.repository['playlist']
-        zeit.cms.workflow.interfaces.IPublish(playlist).publish(
-            background=False)
+        zeit.cms.workflow.interfaces.IPublish(playlist).publish(background=False)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         last_published = info.date_last_published
 

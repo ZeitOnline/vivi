@@ -88,8 +88,7 @@ class ITMS(zope.interface.Interface):
         almost all cases.
         """
 
-    def get_topicpage_documents(
-            id, start=0, rows=25, filter=None, sort_by=None):
+    def get_topicpage_documents(id, start=0, rows=25, filter=None, sort_by=None):
         """Returns an zeit.cms.interfaces.IResult that contains dicts
         with metadata of the content contained in the given TMS topic page.
         The dicts have the following keys:
@@ -224,9 +223,7 @@ class IElasticsearch(zope.interface.Interface):
         """
 
 
-class KPIFieldSource(zeit.cms.content.sources.CachedXMLBase,
-                     collections.UserDict):
-
+class KPIFieldSource(zeit.cms.content.sources.CachedXMLBase, collections.UserDict):
     product_configuration = 'zeit.retresco'
     config_url = 'kpi-fields'
     default_filename = 'topicpage-kpi.xml'
@@ -242,5 +239,4 @@ class KPIFieldSource(zeit.cms.content.sources.CachedXMLBase,
     @CONFIG_CACHE.cache_on_arguments()
     def _data(self):
         tree = self._get_tree()
-        return {node.get('id'): node.get('tms_id')
-                for node in tree.iterchildren('*')}
+        return {node.get('id'): node.get('tms_id') for node in tree.iterchildren('*')}

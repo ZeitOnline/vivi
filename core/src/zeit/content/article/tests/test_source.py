@@ -2,7 +2,6 @@ import zeit.content.article.testing
 
 
 class GenreTest(zeit.content.article.testing.FunctionalTestCase):
-
     def test_find_byline(self):
         source = zeit.content.article.interfaces.IArticle['genre'].source(None)
         self.assertEqual(None, source.byline('nonexistent'))
@@ -19,5 +18,4 @@ class GenreTest(zeit.content.article.testing.FunctionalTestCase):
         source = zeit.content.article.interfaces.IArticle['genre'].source(None)
         self.assertEqual(None, source.feedback('nonexistent'))
         self.assertEqual(None, source.feedback('nachricht'))
-        self.assertEqual(
-            'Hat Ihnen diese Glosse gefallen?', source.feedback('glosse'))
+        self.assertEqual('Hat Ihnen diese Glosse gefallen?', source.feedback('glosse'))

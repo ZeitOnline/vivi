@@ -7,12 +7,10 @@ class ITestInterface(zope.interface.Interface):
 
 
 class Decl1(zeit.cms.type.TypeDeclaration):
-
     type = 'foo'
     interface = ITestInterface
 
 
 class Decl2(zeit.cms.type.TypeDeclaration):
-
     type = 'foo'
     interface = ITestInterface

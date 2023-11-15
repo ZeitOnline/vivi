@@ -3,9 +3,7 @@ import json
 import zeit.content.article.edit.browser.testing
 
 
-class RecipeListTest(
-        zeit.content.article.edit.browser.testing.BrowserTestCase):
-
+class RecipeListTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
     def test_servings_should_be_validated(self):
         self.get_article(with_block='recipelist')
         b = self.browser
@@ -36,15 +34,16 @@ class RecipeListTest(
 
 
 class FormLoader(
-        zeit.content.article.edit.browser.testing.EditorTestCase,
-        zeit.content.article.edit.browser.testing.RecipeListHelper):
-
+    zeit.content.article.edit.browser.testing.EditorTestCase,
+    zeit.content.article.edit.browser.testing.RecipeListHelper,
+):
     def test_recipelist_form_is_loaded(self):
         s = self.selenium
         self.add_article()
         self.create_block('recipelist')
-        s.assertElementPresent('css=.block.type-recipelist .inline-form '
-                               '.field.fieldname-ingredients')
+        s.assertElementPresent(
+            'css=.block.type-recipelist .inline-form ' '.field.fieldname-ingredients'
+        )
 
     def test_ingredients_should_be_organized_through_recipelist(self):
         s = self.selenium
@@ -62,15 +61,15 @@ class FormLoader(
         s.click('css=ul.ui-autocomplete li')
         self.assertEqual(s.getCssCount('css=li.ingredient__item'), 2)
         s.assertText(
-            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
-            'Bandnudeln')
+            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]', 'Bandnudeln'
+        )
 
         # Reorder ingredients
         s.dragAndDrop('css=.ingredient__label', '0,50')
         s.waitForVisible('css=li.ingredient__item')
         s.assertText(
-            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]',
-            'Brathähnchen')
+            '//li[@class="ingredient__item"][2]/a[@class="ingredient__label"]', 'Brathähnchen'
+        )
 
         # Delete ingredient
         s.click('css=li.ingredient__item span.delete')
@@ -83,24 +82,21 @@ class FormLoader(
         # Should accept numbers
         s.type('css=input.ingredient__amount', '2')
         # Lose focus to save new value
-        s.runScript(
-            'document.querySelector("input.ingredient__amount").blur()')
+        s.runScript('document.querySelector("input.ingredient__amount").blur()')
         # Give it some time to exchange widget with new value
         s.waitForCssCount('css=.dirty', 0)
         s.assertAttribute('css=input.ingredient__amount@value', '2')
 
         # Should not accept letters
         s.type('css=input.ingredient__amount', 'oans')
-        s.runScript(
-            'document.querySelector("input.ingredient__amount").blur()')
+        s.runScript('document.querySelector("input.ingredient__amount").blur()')
         s.waitForCssCount('css=.dirty', 0)
         # Fallback to previous value
         s.assertAttribute('css=input.ingredient__amount@value', '2')
 
         # Should accept empty value
         s.clear('css=input.ingredient__amount')
-        s.runScript(
-            'document.querySelector("input.ingredient__amount").blur()')
+        s.runScript('document.querySelector("input.ingredient__amount").blur()')
         s.waitForCssCount('css=.dirty', 0)
         s.assertAttribute('css=input.ingredient__amount@value', '')
 
@@ -109,11 +105,9 @@ class FormLoader(
         self.setup_ingredient()
 
         s.type('css=input.ingredient__amount', '2')
-        s.runScript(
-            'document.querySelector("input.ingredient__amount").blur()')
+        s.runScript('document.querySelector("input.ingredient__amount").blur()')
         s.waitForCssCount('css=.dirty', 0)
-        ingredient_data = json.loads(
-            s.getAttribute('css=.ingredients-widget input@value'))[0]
+        ingredient_data = json.loads(s.getAttribute('css=.ingredients-widget input@value'))[0]
         assert ingredient_data.get('code') == 'brathaehnchen'
         assert ingredient_data.get('label') == 'Brathähnchen'
         assert ingredient_data.get('amount') == '2'
@@ -158,8 +152,7 @@ class FormLoader(
         s.assertCssCount('css=.ingredient__unit option', 3)
 
         # Stored in JSON
-        ingredient_data = json.loads(
-            s.getAttribute('css=.ingredients-widget input@value'))[0]
+        ingredient_data = json.loads(s.getAttribute('css=.ingredients-widget input@value'))[0]
         assert ingredient_data.get('code') == 'brathaehnchen'
         assert ingredient_data.get('unit') == 'stueck'
 
@@ -172,12 +165,13 @@ class FormLoader(
         title_content = (
             'window.getComputedStyle(document.querySelector('
             '".type-recipelist .fieldname-title"), ":before"'
-            ').getPropertyValue("content")')
+            ').getPropertyValue("content")'
+        )
 
         title_field = '.type-recipelist .fieldname-title input'
 
         # Show notification if no title has been set
-        assert "Bitte trag einen Rezeptnamen" in s.getEval(title_content)
+        assert 'Bitte trag einen Rezeptnamen' in s.getEval(title_content)
 
         # After setting the title, the notification should disappear
         s.type('css=' + title_field, 'bananabread')

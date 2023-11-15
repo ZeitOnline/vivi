@@ -12,7 +12,6 @@ def test_suite():
         'resource.txt',
         'search-ft.txt',
         'uuid.txt',
-
         'longrunning.txt',
         # 'stressing.txt',
         layer=zeit.connector.testing.REAL_CONNECTOR_LAYER,

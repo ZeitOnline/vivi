@@ -10,28 +10,24 @@ import zope.interface
 
 
 class EditBase(zeit.edit.browser.form.InlineForm):
-
     interface = NotImplemented
     fields = ('references',)
     legend = None
 
     @property
     def form_fields(self):
-        return zope.formlib.form.FormFields(
-            self.interface).select(*self.fields)
+        return zope.formlib.form.FormFields(self.interface).select(*self.fields)
 
     @property
     def prefix(self):
         return '%s.%s' % (self.__class__.__name__, self.context.__name__)
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
 
 class EditImage(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IImage
     fields = ('references', 'display_mode', 'variant_name', 'animation')
 
@@ -39,10 +35,12 @@ class EditImage(EditBase):
     def form_fields(self):
         """Omit Variant for Infographics, since Friedbert will use Original"""
         form_fields = super().form_fields
-        if (self.context.references and self.context.references.target and
-                IImageGroup.providedBy(self.context.references.target) and
-                self.context.references.target.display_type ==
-                INFOGRAPHIC_DISPLAY_TYPE):
+        if (
+            self.context.references
+            and self.context.references.target
+            and IImageGroup.providedBy(self.context.references.target)
+            and self.context.references.target.display_type == INFOGRAPHIC_DISPLAY_TYPE
+        ):
             return form_fields.omit('variant_name')
         if not FEATURE_TOGGLES.find('article_image_animation'):
             return form_fields.omit('animation')
@@ -65,7 +63,6 @@ class EditImage(EditBase):
 
 
 class EditGallery(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IGallery
 
     def setUpWidgets(self, *args, **kw):
@@ -74,32 +71,27 @@ class EditGallery(EditBase):
 
 
 class EditPortraitbox(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IPortraitbox
     fields = ('references', 'name', 'text')
 
     @property
     def form_fields(self):
         form_fields = super().form_fields
-        form_fields[
-            'text'].custom_widget = zeit.cms.browser.widget.MarkdownWidget
+        form_fields['text'].custom_widget = zeit.cms.browser.widget.MarkdownWidget
         return form_fields
 
 
 class EditInfobox(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IInfobox
     fields = ('references', 'layout')
 
 
 class EditVideo(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IVideo
     fields = ('video', 'layout')
 
 
 class EditAuthor(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IAuthor
 
     def setUpWidgets(self, *args, **kw):
@@ -108,10 +100,8 @@ class EditAuthor(EditBase):
 
 
 class EditVolume(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IVolume
 
 
 class EditAudio(EditBase):
-
     interface = zeit.content.article.edit.interfaces.IAudio

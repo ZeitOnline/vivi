@@ -3,19 +3,19 @@ import zeit.content.cp.centerpage
 
 
 class TestMarkup(zeit.content.cp.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('markup')
         self.repository['centerpage'] = self.centerpage
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')
         b.open('contents')
         self.content_url = b.url
-        self.xml_url = 'http://localhost/++skin++vivi/workingcopy/zope.user/' \
-                       'centerpage/@@xml_source_edit.html'
+        self.xml_url = (
+            'http://localhost/++skin++vivi/workingcopy/zope.user/'
+            'centerpage/@@xml_source_edit.html'
+        )
 
     def test_can_create_markup_module_via_drag_n_drop_from_sidebar(self):
         b = self.browser

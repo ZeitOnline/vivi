@@ -1,4 +1,3 @@
-
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -8,8 +7,8 @@ import zope.formlib.namedtemplate
 
 
 form_template = zope.formlib.namedtemplate.NamedTemplateImplementation(
-    zope.app.pagetemplate.ViewPageTemplateFile('sourceedit.pt'),
-    zope.formlib.interfaces.IPageForm)
+    zope.app.pagetemplate.ViewPageTemplateFile('sourceedit.pt'), zope.formlib.interfaces.IPageForm
+)
 
 
 class TextEditForm(zope.formlib.form.EditForm):
@@ -17,15 +16,12 @@ class TextEditForm(zope.formlib.form.EditForm):
 
     template = zope.formlib.namedtemplate.NamedTemplate('sourceedit_form')
 
-    form_fields = zope.formlib.form.Fields(
-        zeit.cms.content.interfaces.ITextContent).select('data')
+    form_fields = zope.formlib.form.Fields(zeit.cms.content.interfaces.ITextContent).select('data')
 
 
 class XMLBaseForm:
-
     template = zope.formlib.namedtemplate.NamedTemplate('sourceedit_form')
-    form_fields = zope.formlib.form.Fields(
-        zeit.cms.content.interfaces.IXMLContent).select('xml')
+    form_fields = zope.formlib.form.Fields(zeit.cms.content.interfaces.IXMLContent).select('xml')
 
 
 class XMLEditForm(XMLBaseForm, zope.formlib.form.EditForm):
@@ -35,7 +31,6 @@ class XMLEditForm(XMLBaseForm, zope.formlib.form.EditForm):
 
 
 class XMLDisplayForm(XMLBaseForm, zope.formlib.form.DisplayForm):
-
     title = _('View source code')
 
 

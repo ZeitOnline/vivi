@@ -7,12 +7,10 @@ import zope.component
 
 
 class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        self.elastic = zope.component.getUtility(
-            zeit.retresco.interfaces.IElasticsearch)
+        self.elastic = zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
 
     def test_materialize_creates_normal_teaser_block(self):
         self.repository['t1'] = ExampleContentType()
@@ -24,7 +22,8 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic_type = 'query'
 
         self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/t1'}, {'url': '/t2'}])
+            [{'url': '/t1'}, {'url': '/t2'}]
+        )
         self.elastic.search.return_value.hits = 2
         lead.values()[0].materialize()
 
@@ -37,7 +36,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_automatic_teaser_block_uses_first_default_teaser_definition(self):
         """There are two defaults defined for the duo are in layout.xml and the
-         first one should be used"""
+        first one should be used"""
         self.repository['t1'] = ExampleContentType()
         cp = self.repository['cp']
         duo_region = cp['feature'].create_item('area')
@@ -46,8 +45,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         duo_region.automatic = True
         duo_region.automatic_type = 'query'
 
-        self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/t1'}])
+        self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/t1'}])
         self.elastic.search.return_value.hits = 1
         teaser = duo_region.values()[0]
         self.assertEqual('two-side-by-side', teaser.layout.id)
@@ -61,8 +59,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         region.automatic = True
         region.automatic_type = 'query'
 
-        self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/t1'}])
+        self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/t1'}])
         self.elastic.search.return_value.hits = 1
         teaser = region.values()[0]
         self.assertFalse(teaser.force_mobile_image)

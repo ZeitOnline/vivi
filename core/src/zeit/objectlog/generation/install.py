@@ -8,8 +8,7 @@ import zope.generations.utility
 def install(root):
     site_manager = zope.component.getSiteManager()
     site_manager['objectlog'] = log = zeit.objectlog.objectlog.ObjectLog()
-    site_manager.registerUtility(
-        log, zeit.objectlog.interfaces.IObjectLog)
+    site_manager.registerUtility(log, zeit.objectlog.interfaces.IObjectLog)
 
 
 def evolve(context):

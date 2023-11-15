@@ -12,24 +12,22 @@ import zope.interface
 
 @zope.interface.implementer(zeit.campus.interfaces.ITopic)
 class Topic(zeit.cms.related.related.RelatedBase):
-
-    page = zeit.cms.content.reference.SingleResource(
-        '.head.topic', 'related')
+    page = zeit.cms.content.reference.SingleResource('.head.topic', 'related')
 
     label = zeit.cms.content.property.ObjectPathProperty(
-        '.head.topic.label',
-        zeit.campus.interfaces.ITopic['label'])
+        '.head.topic.label', zeit.campus.interfaces.ITopic['label']
+    )
 
 
 @grok.implementer(zeit.campus.interfaces.IStudyCourse)
 class StudyCourse(zeit.edit.block.SimpleElement):
-
     area = zeit.content.article.edit.interfaces.IEditableBody
     type = 'studycourse'
 
     _course = zeit.cms.content.property.DAVConverterWrapper(
-        zeit.cms.content.property.ObjectPathAttributeProperty(
-            '.', 'id'), zeit.campus.interfaces.IStudyCourse['course'])
+        zeit.cms.content.property.ObjectPathAttributeProperty('.', 'id'),
+        zeit.campus.interfaces.IStudyCourse['course'],
+    )
 
     @property
     def course(self):
@@ -46,6 +44,5 @@ class StudyCourse(zeit.edit.block.SimpleElement):
 
 
 class StudyCourseBlockFactory(zeit.content.article.edit.block.BlockFactory):
-
     produces = StudyCourse
     title = _('Study Course block')

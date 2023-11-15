@@ -5,8 +5,8 @@
 def pytest_addoption(parser):
     try:
         parser.addoption(
-            '--visible', action='store_true',
-            default=False, help='Show browser when running tests')
+            '--visible', action='store_true', default=False, help='Show browser when running tests'
+        )
     except ValueError as e:
         if 'already added' in str(e):
             pass
@@ -16,10 +16,11 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     config.addinivalue_line(
+        'markers', 'integration: Thirdparty integration tests are not run by default.'
+    )
+    config.addinivalue_line(
         'markers',
-        'integration: Thirdparty integration tests are not run by default.')
-    config.addinivalue_line(
-        'markers', 'slow: This is a non-unit test and thus is not run by '
-        'default. Use ``-m slow`` to run these, or ``-m 1`` to run all tests.')
-    config.addinivalue_line(
-        'markers', 'selenium: Selenium tests are not run by default.')
+        'slow: This is a non-unit test and thus is not run by '
+        'default. Use ``-m slow`` to run these, or ``-m 1`` to run all tests.',
+    )
+    config.addinivalue_line('markers', 'selenium: Selenium tests are not run by default.')

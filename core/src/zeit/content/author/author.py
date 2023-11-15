@@ -23,14 +23,9 @@ import zope.lifecycleevent
 import zope.security.proxy
 
 
-@zope.interface.implementer(
-    zeit.content.author.interfaces.IAuthor,
-    zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(zeit.content.author.interfaces.IAuthor, zeit.cms.interfaces.IAsset)
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
-
-    default_template = (
-        '<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        '</author>')
+    default_template = '<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">' '</author>'
 
     for name in [
         'additional_contact_title',
@@ -74,28 +69,45 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     ]:
         locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
 
-    community_profile = zeit.cms.content.property.ObjectPathProperty(
-        '.communityprofile')
+    community_profile = zeit.cms.content.property.ObjectPathProperty('.communityprofile')
 
-    favourite_content = zeit.cms.content.reference.MultiResource(
-        '.favourites.reference', 'related')
+    favourite_content = zeit.cms.content.reference.MultiResource('.favourites.reference', 'related')
 
     @classmethod
     def exists(cls, firstname, lastname):
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        return bool(elastic.search({'query': {'bool': {'filter': [
-            {'term': {'doc_type': 'author'}},
-            {'term': {'payload.xml.firstname': firstname}},
-            {'term': {'payload.xml.lastname': lastname}},
-        ]}}}).hits)
+        return bool(
+            elastic.search(
+                {
+                    'query': {
+                        'bool': {
+                            'filter': [
+                                {'term': {'doc_type': 'author'}},
+                                {'term': {'payload.xml.firstname': firstname}},
+                                {'term': {'payload.xml.lastname': lastname}},
+                            ]
+                        }
+                    }
+                }
+            ).hits
+        )
 
     @classmethod
     def find_by_honorar_id(cls, honorar_id):
         elastic = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-        result = elastic.search({'query': {'bool': {'filter': [
-            {'term': {'doc_type': 'author'}},
-            {'term': {'payload.xml.honorar_id': honorar_id}},
-        ]}}, '_source': ['url', 'payload.xml']})
+        result = elastic.search(
+            {
+                'query': {
+                    'bool': {
+                        'filter': [
+                            {'term': {'doc_type': 'author'}},
+                            {'term': {'payload.xml.honorar_id': honorar_id}},
+                        ]
+                    }
+                },
+                '_source': ['url', 'payload.xml'],
+            }
+        )
         return None if not result.hits else result[0]
 
     @property
@@ -108,11 +120,11 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         return zeit.content.image.interfaces.IImages(self).image
 
     is_author = zeit.cms.content.property.ObjectPathProperty(
-        '.is_author', IAuthor['is_author'], use_default=True)
+        '.is_author', IAuthor['is_author'], use_default=True
+    )
 
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Author
     interface = zeit.content.author.interfaces.IAuthor
     type = 'author'
@@ -123,17 +135,16 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 @zope.component.adapter(zeit.content.author.interfaces.IAuthor)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
 class AuthorImages(zeit.cms.related.related.RelatedBase):
-
     image = zeit.cms.content.reference.SingleResource('.image_group', 'image')
 
     fill_color = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.image_group', 'fill_color',
-        zeit.content.image.interfaces.IImages['fill_color'])
+        '.image_group', 'fill_color', zeit.content.image.interfaces.IImages['fill_color']
+    )
 
 
 @grok.subscribe(
-    zeit.content.author.interfaces.IAuthor,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+    zeit.content.author.interfaces.IAuthor, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
+)
 def update_display_name(obj, event):
     if obj.entered_display_name:
         obj.display_name = obj.entered_display_name
@@ -142,8 +153,8 @@ def update_display_name(obj, event):
 
 
 @grok.subscribe(
-    zeit.content.author.interfaces.IAuthor,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+    zeit.content.author.interfaces.IAuthor, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
+)
 def set_ssoid(obj, event):
     if obj.email and obj.sso_connect:
         ssoid = request_acs(obj.email)
@@ -153,13 +164,14 @@ def set_ssoid(obj, event):
         obj.ssoid = None
 
 
-@grok.subscribe(
-    zeit.content.author.interfaces.IAuthor,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(zeit.content.author.interfaces.IAuthor, zope.lifecycleevent.IObjectModifiedEvent)
 def update_ssoid(context, event):
     for desc in event.descriptions:
-        if (desc.interface is zeit.cms.content.interfaces.ICommonMetadata and
-                'sso_connect' or 'email' in desc.attributes):
+        if (
+            desc.interface is zeit.cms.content.interfaces.ICommonMetadata
+            and 'sso_connect'
+            or 'email' in desc.attributes
+        ):
             if context.sso_connect and context.email:
                 ssoid = request_acs(context.email)
                 if ssoid:
@@ -170,10 +182,8 @@ def update_ssoid(context, event):
 
 
 def request_acs(email):
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.author')
-    url = config['sso-api-url'] + '/users/' + urllib.parse.quote(
-        email.encode('utf8'))
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.author')
+    url = config['sso-api-url'] + '/users/' + urllib.parse.quote(email.encode('utf8'))
     auth = (config['sso-user'], config['sso-password'])
     try:
         r = requests.get(url, auth=auth)
@@ -189,20 +199,21 @@ def update_author_freetext(content):
 
 
 @grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zope.lifecycleevent.IObjectModifiedEvent)
+    zeit.cms.content.interfaces.ICommonMetadata, zope.lifecycleevent.IObjectModifiedEvent
+)
 def update_freetext_on_change(context, event):
     if event.descriptions:
         for description in event.descriptions:
-            if (issubclass(description.interface,
-                zeit.cms.content.interfaces.ICommonMetadata) and
-                    'authorships' in description.attributes):
+            if (
+                issubclass(description.interface, zeit.cms.content.interfaces.ICommonMetadata)
+                and 'authorships' in description.attributes
+            ):
                 update_author_freetext(context)
 
 
 @grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    zope.lifecycleevent.IObjectCreatedEvent)
+    zeit.cms.content.interfaces.ICommonMetadata, zope.lifecycleevent.IObjectCreatedEvent
+)
 def update_freetext_on_add(context, event):
     # ObjectCopied inherits from ObjectCreated
     if zeit.cms.repository.interfaces.IRepositoryContent.providedBy(context):
@@ -211,17 +222,15 @@ def update_freetext_on_add(context, event):
 
 
 @grok.subscribe(
-    zeit.content.author.interfaces.IAuthor,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.content.author.interfaces.IAuthor, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
 def create_honorar_on_checkin(context, event):
     if event.publishing:  # Prevent creating hdok entries during retract.
         return
     _create_honorar_entry(context)
 
 
-@grok.subscribe(
-    zeit.content.author.interfaces.IAuthor,
-    zope.lifecycleevent.IObjectCreatedEvent)
+@grok.subscribe(zeit.content.author.interfaces.IAuthor, zope.lifecycleevent.IObjectCreatedEvent)
 def create_honorar_on_add(context, event):
     _create_honorar_entry(context)
 
@@ -230,11 +239,13 @@ def _create_honorar_entry(author):
     if author.honorar_id:
         return
     api = zope.component.getUtility(zeit.content.author.interfaces.IHonorar)
-    author.honorar_id = api.create({
-        'vorname': author.firstname,
-        'nachname': author.lastname,
-        'anlageAssetId': author.uniqueId,
-    })
+    author.honorar_id = api.create(
+        {
+            'vorname': author.firstname,
+            'nachname': author.lastname,
+            'anlageAssetId': author.uniqueId,
+        }
+    )
 
 
 class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
@@ -254,42 +265,32 @@ class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
         return result
 
 
-@grok.adapter(
-    zeit.cms.content.interfaces.ICommonMetadata,
-    name='zeit.content.author')
-@grok.implementer(
-    zeit.cms.relation.interfaces.IReferenceProvider)
+@grok.adapter(zeit.cms.content.interfaces.ICommonMetadata, name='zeit.content.author')
+@grok.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def references(context):
     return [x.target for x in context.authorships]
 
 
-@grok.adapter(
-    zeit.content.author.interfaces.IAuthor,
-    zeit.cms.content.interfaces.IContentAdder)
+@grok.adapter(zeit.content.author.interfaces.IAuthor, zeit.cms.content.interfaces.IContentAdder)
 @grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 def author_location(type_, adder):
-    return zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
 
 @grok.implementer(zeit.content.author.interfaces.IBiographyQuestions)
 class BiographyQuestions(
-        grok.Adapter,
-        collections.abc.MutableMapping,
-        zeit.cms.content.xmlsupport.Persistent):
-
+    grok.Adapter, collections.abc.MutableMapping, zeit.cms.content.xmlsupport.Persistent
+):
     grok.context(zeit.content.author.interfaces.IAuthor)
 
     def __init__(self, context):
         object.__setattr__(self, 'context', context)
-        object.__setattr__(self, 'xml', zope.security.proxy.getObject(
-            context.xml))
+        object.__setattr__(self, 'xml', zope.security.proxy.getObject(context.xml))
         object.__setattr__(self, '__parent__', context)
 
     def __getitem__(self, key):
         node = self.xml.xpath('//question[@id="%s"]' % key)
-        return Question(
-            key, self.title(key), str(node[0]) if node else None)
+        return Question(key, self.title(key), str(node[0]) if node else None)
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('//question[@id="%s"]' % key)
@@ -314,8 +315,7 @@ class BiographyQuestions(
         raise NotImplementedError()
 
     def title(self, key):
-        return zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(
-            self).title(key)
+        return zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(self).title(key)
 
     # Attribute-style access to answers is meant only for zope.formlib.
     # This works without an explicit security declaration, since we are not
@@ -331,7 +331,6 @@ class BiographyQuestions(
 
 @zope.interface.implementer(zeit.content.author.interfaces.IQuestion)
 class Question:
-
     def __init__(self, id, title, answer):
         self.id = id
         self.title = title

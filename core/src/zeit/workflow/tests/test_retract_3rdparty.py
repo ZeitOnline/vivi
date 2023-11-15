@@ -17,8 +17,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
-        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(),
-                                 IPublisher)
+        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(), IPublisher)
 
     def tearDown(self):
         self.patch.stop()
@@ -33,19 +32,15 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article_2).published = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = [
-                'speechbert', 'facebooknewstab']
-            response = rmock.post(
-                'http://localhost:8060/test/retract', status_code=200)
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert', 'facebooknewstab']
+            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=True)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' not in result
             assert 'speechbert' not in result
             assert 'bigquery' in result
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = [
-                'speechbert']
-            response = rmock.post(
-                'http://localhost:8060/test/retract', status_code=200)
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
+            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article_2).retract(background=False)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
@@ -61,8 +56,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/retract', status_code=200)
+            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             assert 'authordashboard' not in result
@@ -74,14 +68,11 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/retract', status_code=200)
+            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             result_bq = result['bigquery']
-            self.assertEqual(
-                {},
-                result_bq)
+            self.assertEqual({}, result_bq)
         self.assertFalse(IPublishInfo(article).published)
 
     def test_comments_are_ignored_during_retraction(self):
@@ -90,8 +81,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/retract', status_code=200)
+            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             assert 'comments' not in result
@@ -103,14 +93,11 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/retract', status_code=200)
+            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             result_fbnt = result['facebooknewstab']
-            self.assertEqual(
-                {},
-                result_fbnt)
+            self.assertEqual({}, result_fbnt)
         self.assertFalse(IPublishInfo(article).published)
 
     def test_speechbert_is_retracted(self):
@@ -119,45 +106,37 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/retract', status_code=200)
+            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             assert 'speechbert' in result
         self.assertFalse(IPublishInfo(article).published)
 
     def test_speechbert_ignore_genres(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         config['speechbert-ignore-genres'] = 'rezept-vorstellung'
         data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
+            article, zeit.workflow.interfaces.IPublisherData, name='speechbert'
+        )
         # for retraction this is NOT ignored
         assert data_factory.retract_json() is not None
 
     def test_speechbert_ignore_templates(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         config['speechbert-ignore-templates'] = 'article'
         data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name="speechbert")
+            article, zeit.workflow.interfaces.IPublisherData, name='speechbert'
+        )
         # for retraction this is NOT ignored
         assert data_factory.retract_json() is not None
 
     def test_tms_retract_article(self):
         article = self.repository['testcontent']
         data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name='tms')
+            article, zeit.workflow.interfaces.IPublisherData, name='tms'
+        )
         payload = data_factory.retract_json()
         assert payload == {}
 
@@ -165,8 +144,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         self.representation().return_value = None
         data_factory = zope.component.getAdapter(
-            content,
-            zeit.workflow.interfaces.IPublisherData,
-            name='tms')
+            content, zeit.workflow.interfaces.IPublisherData, name='tms'
+        )
         payload = data_factory.retract_json()
         assert payload is None

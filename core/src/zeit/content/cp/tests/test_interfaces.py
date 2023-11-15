@@ -5,10 +5,7 @@ import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 
 
-class AreaValidationTest(
-        unittest.TestCase,
-        gocept.testing.assertion.Exceptions):
-
+class AreaValidationTest(unittest.TestCase, gocept.testing.assertion.Exceptions):
     def setUp(self):
         super().setUp()
         self.interface = zeit.content.cp.interfaces.IArea
@@ -34,9 +31,7 @@ class AreaValidationTest(
         self.area.elasticsearch_raw_query = None
         with self.assertRaises(zeit.cms.interfaces.ValidationError) as err:
             self.interface.validateInvariants(self.area)
-        self.assertIn(
-            'Automatic area with teaser from elasticsearch query',
-            str(err.exception))
+        self.assertIn('Automatic area with teaser from elasticsearch query', str(err.exception))
 
     def test_elasticsearch_raw_query_requires_valid_json(self):
         self.area.automatic_type = 'elasticsearch-query'
@@ -46,8 +41,5 @@ class AreaValidationTest(
 
 
 class TopicpageFilterSourceTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def test_parses_filter_json(self):
-        self.assertEqual(
-            ['videos'],
-            list(zeit.contentquery.interfaces.TopicpageFilterSource()))
+        self.assertEqual(['videos'], list(zeit.contentquery.interfaces.TopicpageFilterSource()))

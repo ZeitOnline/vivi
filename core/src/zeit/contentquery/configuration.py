@@ -13,7 +13,7 @@ class CustomQueryProperty:
         self.mapping = mapping
 
     def __get__(self, context, class_):
-        """ Allows value mapping via dictionary."""
+        """Allows value mapping via dictionary."""
         if not hasattr(context.xml, 'query'):
             return ()
         result = []
@@ -70,17 +70,17 @@ class CustomQueryProperty:
         field = field.bind(ICMSContent(context))
         props = zeit.cms.content.property.DAVConverterWrapper.DUMMY_PROPERTIES
         return zope.component.getMultiAdapter(
-            (field, props),
-            zeit.cms.content.interfaces.IDAVPropertyConverter)
+            (field, props), zeit.cms.content.interfaces.IDAVPropertyConverter
+        )
 
 
 @zope.interface.implementer(IConfiguration)
 class Configuration:
-
     # Subclasses probably will need to override this, to specify their matching
     # schema field, since usually the available type values differ.
     _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'automatic_type', IConfiguration['automatic_type'])
+        '.', 'automatic_type', IConfiguration['automatic_type']
+    )
 
     _automatic_type_bbb = {}
 
@@ -94,15 +94,18 @@ class Configuration:
         self._automatic_type = value
 
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', IConfiguration['hide_dupes'], use_default=True)
+        '.', 'hide-dupes', IConfiguration['hide_dupes'], use_default=True
+    )
     consider_for_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'consider-dupes', IConfiguration['hide_dupes'], use_default=True)
+        '.', 'consider-dupes', IConfiguration['hide_dupes'], use_default=True
+    )
 
     existing_teasers = NotImplemented
 
     start = 0  # Extension point for zeit.web to do pagination
     count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', IConfiguration['count'])
+        '.', 'count', IConfiguration['count']
+    )
 
     # For automatic_type=centerpage
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
@@ -116,28 +119,29 @@ class Configuration:
         self._referenced_cp = value
 
     for name, default in {
-            # For automatic_type=topicpage
-            'referenced_topicpage': False,
-            'topicpage_filter': False,
-            'topicpage_order': False,
-            # For automatic_type=related-topics
-            'related_topicpage': False,
-            # For automatic_type=custom
-            'query_order': True,
-            # For automatic_type=elasticsearch-query
-            'elasticsearch_raw_query': False,
-            'elasticsearch_raw_order': True,
-            'is_complete_query': True,
-            # For automatic_type=topicpagelist
-            'topicpagelist_order': True,
-            # For automatic_type=reach
-            'reach_service': True,
-            'reach_section': False,
-            'reach_access': False,
-            'reach_age': False,
+        # For automatic_type=topicpage
+        'referenced_topicpage': False,
+        'topicpage_filter': False,
+        'topicpage_order': False,
+        # For automatic_type=related-topics
+        'related_topicpage': False,
+        # For automatic_type=custom
+        'query_order': True,
+        # For automatic_type=elasticsearch-query
+        'elasticsearch_raw_query': False,
+        'elasticsearch_raw_order': True,
+        'is_complete_query': True,
+        # For automatic_type=topicpagelist
+        'topicpagelist_order': True,
+        # For automatic_type=reach
+        'reach_service': True,
+        'reach_section': False,
+        'reach_access': False,
+        'reach_age': False,
     }.items():
         locals()[name] = zeit.cms.content.property.ObjectPathProperty(
-            '.%s' % name, IConfiguration[name], use_default=default)
+            '.%s' % name, IConfiguration[name], use_default=default
+        )
 
     # For automatic_type=custom
     query = CustomQueryProperty()
@@ -145,4 +149,5 @@ class Configuration:
     # For automatic_type=rss-feed
     rss_feed = zeit.cms.content.property.DAVConverterWrapper(
         zeit.cms.content.property.ObjectPathAttributeProperty('.', 'rss_feed'),
-        IConfiguration['rss_feed'])
+        IConfiguration['rss_feed'],
+    )

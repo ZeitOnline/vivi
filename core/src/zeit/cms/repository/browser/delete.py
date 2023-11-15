@@ -1,4 +1,3 @@
-
 import zope.component
 import zope.cachedescriptors.property
 
@@ -11,7 +10,6 @@ from zeit.cms.workflow.interfaces import IPublishInfo
 
 
 class DeleteContent(zeit.cms.browser.view.Base):
-
     nextURL = None
 
     def __call__(self, *args, **kwargs):
@@ -40,14 +38,13 @@ class DeleteContent(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def title(self):
         list_repr = zope.component.queryMultiAdapter(
-            (self.context, self.request),
-            zeit.cms.browser.interfaces.IListRepresentation)
+            (self.context, self.request), zeit.cms.browser.interfaces.IListRepresentation
+        )
         return list_repr.title
 
     @zope.cachedescriptors.property.Lazy
     def icon(self):
-        icon = zope.component.queryMultiAdapter(
-            (self.context, self.request), name="zmi_icon")
+        icon = zope.component.queryMultiAdapter((self.context, self.request), name='zmi_icon')
         return icon() if icon else None
 
     @zope.cachedescriptors.property.Lazy

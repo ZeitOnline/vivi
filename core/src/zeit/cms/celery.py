@@ -22,6 +22,7 @@ except ImportError:
         if args:
             return args[0]
         else:
+
             class Callable:
                 def __init__(self, *args, **kwargs):
                     self.args = args
@@ -66,8 +67,10 @@ else:
             zeit.cms.zope.load_zcml(self.app.conf['SETTINGS'])
             prefix = 'bugsnag.'
             bugsnag_conf = {
-                key.replace(prefix, '', 1): value for key, value in
-                self.app.conf['SETTINGS'].items() if key.startswith(prefix)}
+                key.replace(prefix, '', 1): value
+                for key, value in self.app.conf['SETTINGS'].items()
+                if key.startswith(prefix)
+            }
             zeit.cms.bugsnag.configure(bugsnag_conf)
 
             if self.app.conf.get('worker_pool') == 'solo':
@@ -79,8 +82,7 @@ else:
             thread-global locks are copied to each worker, causing deadlock.
             """
             conf = self.app.conf
-            db = zeit.cms.zope.create_zodb_database(
-                conf['SETTINGS']['zodbconn.uri'])
+            db = zeit.cms.zope.create_zodb_database(conf['SETTINGS']['zodbconn.uri'])
             conf['ZODB'] = db  # see z3c.celery.TransactionAwareTask
 
             port = int(os.environ.get('CELERY_PROMETHEUS_PORT', 0))
@@ -126,8 +128,7 @@ else:
 
             return conf
 
-    class Task(z3c.celery.celery.TransactionAwareTask,
-               celery_longterm_scheduler.Task):
+    class Task(z3c.celery.celery.TransactionAwareTask, celery_longterm_scheduler.Task):
         """Combines transactions and proper scheduling.
 
         Note: the order is important so that scheduling jobs also only happens
@@ -147,21 +148,27 @@ else:
 
     @celery.signals.task_failure.connect
     def on_task_failure(**kw):
-        log.error('Task %s (%s) failed',
-                  kw.get('sender', '<unknown task>'),
-                  kw.get('task_id', ''),
-                  exc_info=kw.get('exception'))
+        log.error(
+            'Task %s (%s) failed',
+            kw.get('sender', '<unknown task>'),
+            kw.get('task_id', ''),
+            exc_info=kw.get('exception'),
+        )
         bugsnag.notify(
-            kw['exception'], traceback=kw['traceback'],
+            kw['exception'],
+            traceback=kw['traceback'],
             context=kw['sender'].name,
-            extra_data={'task_id': kw['task_id'],
-                        'args': kw['args'], 'kw': kw['kwargs']})
+            extra_data={'task_id': kw['task_id'], 'args': kw['args'], 'kw': kw['kwargs']},
+        )
 
     CELERY = celery.Celery(
-        __name__, task_cls=Task, loader=ZopeLoader,
+        __name__,
+        task_cls=Task,
+        loader=ZopeLoader,
         # Disable argument type checking, it seems broken. Tasks complain about
         # celery-internal kwargs passed to them, etc.
-        strict_typing=False)
+        strict_typing=False,
+    )
     # XXX The whole "default app" concept seems a bit murky. However, under
     # waitress this is necessary, otherwise the polling publish dialog tries
     # talking to an unconfigured Celery app. (With gunicorn it works ootb.)
@@ -171,5 +178,4 @@ else:
     task = CELERY.task
 
     CeleryInstrumentor().instrument()
-    celery.signals.task_prerun.connect(
-        zeit.cms.zeo.apply_samplerate, weak=False)
+    celery.signals.task_prerun.connect(zeit.cms.zeo.apply_samplerate, weak=False)

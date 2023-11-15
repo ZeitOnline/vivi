@@ -53,8 +53,7 @@ class HTMLConverter:
 
         result = []
         for child in tree.iterchildren():
-            result.append(lxml.etree.tostring(
-                child, pretty_print=True, encoding=str))
+            result.append(lxml.etree.tostring(child, pretty_print=True, encoding=str))
         return ''.join(result)
 
     def from_html(self, tree, value):
@@ -81,8 +80,12 @@ class HTMLConverter:
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
     def _steps(self, direction):
-        steps = [adapter for name, adapter in zope.component.getAdapters(
-            (self.context, self), zeit.wysiwyg.interfaces.IConversionStep)]
+        steps = [
+            adapter
+            for name, adapter in zope.component.getAdapters(
+                (self.context, self), zeit.wysiwyg.interfaces.IConversionStep
+            )
+        ]
         steps = sorted(steps, key=lambda x: getattr(x, 'order_' + direction))
         return steps
 
@@ -127,8 +130,11 @@ class HTMLConverter:
     def covered_xpath(self):
         """return an xpath query that matches all nodes for which there is a
         ConversionStep registered."""
-        xpath = [s.xpath_xml for s in self._steps('to_html')
-                 if s.xpath_xml is not SKIP and s.xpath_xml != '.']
+        xpath = [
+            s.xpath_xml
+            for s in self._steps('to_html')
+            if s.xpath_xml is not SKIP and s.xpath_xml != '.'
+        ]
         return '|'.join(xpath)
 
     def _copy(self, tree):
@@ -164,8 +170,7 @@ class HTMLConverter:
 SKIP = object()
 
 
-@zope.component.adapter(
-    zope.interface.Interface, zeit.wysiwyg.interfaces.IHTMLConverter)
+@zope.component.adapter(zope.interface.Interface, zeit.wysiwyg.interfaces.IHTMLConverter)
 @zope.interface.implementer(zeit.wysiwyg.interfaces.IConversionStep)
 class ConversionStep:
     """Encapsulates one step of XML<-->HTML conversion.
@@ -194,32 +199,27 @@ class ConversionStep:
     def __init__(self, context, converter):
         self.context = context
         self.converter = converter
-        self.request = (
-            zope.security.management.getInteraction().participations[0])
+        self.request = zope.security.management.getInteraction().participations[0]
 
     # override in subclass
     xpath_xml = SKIP
     xpath_html = SKIP
 
     def to_html(self, node):
-        raise NotImplementedError(
-            "when specifiyng xpath_xml, to_html() must be implemented")
+        raise NotImplementedError('when specifiyng xpath_xml, to_html() must be implemented')
 
     def to_xml(self, node):
-        raise NotImplementedError(
-            "when specifiyng xpath_html, to_xml() must be implemented")
+        raise NotImplementedError('when specifiyng xpath_html, to_xml() must be implemented')
 
     def references(self, node):
         return []
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     def url(self, obj):
-        return zope.component.getMultiAdapter(
-            (obj, self.request), name='absolute_url')()
+        return zope.component.getMultiAdapter((obj, self.request), name='absolute_url')()
 
     def datetime_to_html(self, dt_string):
         dt = ''
@@ -280,8 +280,7 @@ class TagReplaceStep(ConversionStep):
 
     def __init__(self, context, converter):
         super().__init__(context, converter)
-        self.xpath_xml = '|'.join(['.//%s' % tag for tag
-                                   in self.xml_html_tags.keys()])
+        self.xpath_xml = '|'.join(['.//%s' % tag for tag in self.xml_html_tags.keys()])
 
     def to_html(self, node):
         new_tag = self.xml_html_tags.get(node.tag)
@@ -312,8 +311,7 @@ class PassThroughStep(ConversionStep):
 
 
 class TableStep(ConversionStep):
-    """Clean up <table>s.
-    """
+    """Clean up <table>s."""
 
     xpath_xml = './/table'
     xpath_html = './/table'
@@ -326,8 +324,7 @@ class TableStep(ConversionStep):
             del node.attrib[name]
 
 
-ContentOnlyElements = (
-    lxml.etree._Comment, lxml.etree._ProcessingInstruction, lxml.etree._Entity)
+ContentOnlyElements = (lxml.etree._Comment, lxml.etree._ProcessingInstruction, lxml.etree._Entity)
 
 
 class NormalizeToplevelStep(ConversionStep):
@@ -363,7 +360,6 @@ class NestedParagraphsStep(ConversionStep):
 
 
 class ImageStructureStep(ConversionStep):
-
     def _convert(self, node):
         # Hacky support for linked images (#10033)
         if node.getparent().tag == 'a':
@@ -394,7 +390,6 @@ class ImageStructureStep(ConversionStep):
 
 
 class HTMLImageStructureStep(ImageStructureStep):
-
     xpath_html = './*//img'
     order_to_xml = -2
 
@@ -406,7 +401,6 @@ class HTMLImageStructureStep(ImageStructureStep):
 
 
 class XMLImageStructureStep(ImageStructureStep):
-
     xpath_xml = './*//image'
     order_to_html = -2
 
@@ -426,8 +420,7 @@ class ImageStep(ConversionStep):
     def to_html(self, node):
         unique_id = node.get('src', '')
         if unique_id.startswith('/cms/work/'):
-            unique_id = unique_id.replace(
-                '/cms/work/', zeit.cms.interfaces.ID_NAMESPACE)
+            unique_id = unique_id.replace('/cms/work/', zeit.cms.interfaces.ID_NAMESPACE)
         url = unique_id
         if unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
             try:
@@ -455,9 +448,9 @@ class ImageStep(ConversionStep):
 
         new_node = None
         if url and url.startswith(repository_url):
-            unique_id = url.replace(
-                repository_url, zeit.cms.interfaces.ID_NAMESPACE, 1).replace(
-                    '/@@raw', '')
+            unique_id = url.replace(repository_url, zeit.cms.interfaces.ID_NAMESPACE, 1).replace(
+                '/@@raw', ''
+            )
             try:
                 image = self.repository.getContent(unique_id)
             except KeyError:
@@ -465,8 +458,8 @@ class ImageStep(ConversionStep):
                 pass
             else:
                 new_node = zope.component.queryAdapter(
-                    image, zeit.cms.content.interfaces.IXMLReference,
-                    name='image')
+                    image, zeit.cms.content.interfaces.IXMLReference, name='image'
+                )
 
         if new_node is None:
             # An XML reference could not be created because the object could
@@ -504,9 +497,8 @@ class URLStep(ConversionStep):
         repository_url = self.url(self.repository)
         if not url.startswith(repository_url):
             return url
-        path = url[len(repository_url) + 1:]
-        obj = zope.traversing.interfaces.ITraverser(self.repository).traverse(
-            path, None)
+        path = url[len(repository_url) + 1 :]
+        obj = zope.traversing.interfaces.ITraverser(self.repository).traverse(path, None)
         if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
             return url
         return obj.uniqueId
@@ -526,8 +518,7 @@ class AudioStep(ConversionStep):
     """Make editable."""
 
     xpath_xml = './/audio'
-    xpath_html = ('.//*[contains(@class, "inline-element") and '
-                  'contains(@class, "audio")]')
+    xpath_html = './/*[contains(@class, "inline-element") and ' 'contains(@class, "audio")]'
 
     def to_html(self, node):
         id_ = node.get('audioID')
@@ -535,7 +526,8 @@ class AudioStep(ConversionStep):
         new_node = lxml.builder.E.div(
             lxml.builder.E.div(id_, **{'class': 'audioId'}),
             lxml.builder.E.div(expires, **{'class': 'expires'}),
-            **{'class': 'inline-element audio'})
+            **{'class': 'inline-element audio'},
+        )
         return new_node
 
     def to_xml(self, node):
@@ -556,8 +548,7 @@ class VideoStep(ConversionStep):
     """Make <video> editable."""
 
     xpath_xml = './/video'
-    xpath_html = ('.//*[contains(@class, "inline-element") and '
-                  'contains(@class, "video")]')
+    xpath_html = './/*[contains(@class, "inline-element") and ' 'contains(@class, "video")]'
 
     def to_html(self, node):
         id1 = node.get('href') or ''
@@ -570,7 +561,8 @@ class VideoStep(ConversionStep):
             lxml.builder.E.div(id2, **{'class': 'videoId2'}),
             lxml.builder.E.div(expires, **{'class': 'expires'}),
             lxml.builder.E.div(format, **{'class': 'format'}),
-            **{'class': 'inline-element video'})
+            **{'class': 'inline-element video'},
+        )
         return new_node
 
     def to_xml(self, node):
@@ -604,8 +596,8 @@ class VideoStep(ConversionStep):
         if nodes:
             format = nodes[0].text or ''
         new_node = lxml.builder.E.video(
-            href=id1 or '', href2=id2 or '',
-            expires=expires, format=format)
+            href=id1 or '', href2=id2 or '', expires=expires, format=format
+        )
         return new_node
 
     # XXX duplicated code in zeit.brightcove.asset
@@ -635,8 +627,7 @@ class VideoStep(ConversionStep):
 
 
 class RawXMLProtectStep(ConversionStep):
-    """Contents of <raw> must not be subjected to any other conversion steps.
-    """
+    """Contents of <raw> must not be subjected to any other conversion steps."""
 
     order_to_html = -50
     order_to_xml = -50
@@ -659,8 +650,7 @@ class RawXMLProtectStep(ConversionStep):
 
 
 class RawXMLUnprotectStep(ConversionStep):
-    """Contents of <raw> must not be subjected to any other conversion steps.
-    """
+    """Contents of <raw> must not be subjected to any other conversion steps."""
 
     order_to_html = 50
     order_to_xml = 50
@@ -692,11 +682,9 @@ class RawXMLStep(ConversionStep):
     def to_html(self, node):
         result = []
         for child in node.iterchildren():
-            result.append(lxml.etree.tostring(
-                child, pretty_print=True, encoding=str))
+            result.append(lxml.etree.tostring(child, pretty_print=True, encoding=str))
         text = '\n'.join(result)
-        new_node = lxml.builder.E.div(
-            text, **{'class': 'inline-element raw'})
+        new_node = lxml.builder.E.div(text, **{'class': 'inline-element raw'})
         return new_node
 
     def to_xml(self, node):
@@ -706,7 +694,6 @@ class RawXMLStep(ConversionStep):
 
 
 class ReferenceStep(ConversionStep):
-
     content_type = None  # override in subclass
 
     def __init__(self, context, converter):
@@ -718,7 +705,8 @@ class ReferenceStep(ConversionStep):
         href = node.get('href') or ''
         new_node = lxml.builder.E.div(
             lxml.builder.E.div(href, **{'class': 'href'}),
-            **{'class': 'inline-element %s' % self.content_type})
+            **{'class': 'inline-element %s' % self.content_type},
+        )
         return new_node
 
     def to_xml(self, node):
@@ -741,13 +729,11 @@ class ReferenceStep(ConversionStep):
 
 
 class PortraitboxStep(ReferenceStep):
-
     content_type = 'portraitbox'
 
     def to_html(self, node):
         new_node = super().to_html(node)
-        layout = lxml.builder.E.div(
-            node.get('layout') or '', **{'class': 'layout'})
+        layout = lxml.builder.E.div(node.get('layout') or '', **{'class': 'layout'})
         new_node.append(layout)
         return new_node
 
@@ -759,26 +745,19 @@ class PortraitboxStep(ReferenceStep):
 
 
 class InfoboxStep(ReferenceStep):
-
     content_type = 'infobox'
 
 
 class TimelineStep(ReferenceStep):
-
     content_type = 'timeline'
 
 
 class GalleryStep(ReferenceStep):
-
     content_type = 'gallery'
 
 
 class CitationStep(ConversionStep):
-
-    attributes = ['text', 'text2',
-                  'attribution', 'attribution2',
-                  'url', 'url2',
-                  'layout']
+    attributes = ['text', 'text2', 'attribution', 'attribution2', 'url', 'url2', 'layout']
 
     xpath_xml = './/citation'
     xpath_html = './/*[contains(@class, "citation")]'
@@ -786,10 +765,8 @@ class CitationStep(ConversionStep):
     def to_html(self, node):
         children = []
         for name in self.attributes:
-            children.append(lxml.builder.E.div(
-                node.get(name) or ' ', **{'class': name}))
-        new_node = lxml.builder.E.div(
-            *children, **{'class': 'inline-element citation'})
+            children.append(lxml.builder.E.div(node.get(name) or ' ', **{'class': name}))
+        new_node = lxml.builder.E.div(*children, **{'class': 'inline-element citation'})
         return new_node
 
     def to_xml(self, node):
@@ -846,4 +823,4 @@ class HTMLContentBase:
         return zeit.wysiwyg.interfaces.IHTMLConverter(self.context)
 
     def get_tree(self):
-        raise NotImplementedError("Implemented in subclass.")
+        raise NotImplementedError('Implemented in subclass.')

@@ -20,8 +20,7 @@ class BeforeObjectAddEvent(zope.interface.interfaces.ObjectEvent):
 class IAfterObjectConstructedEvent(zope.interface.interfaces.IObjectEvent):
     """An event sent after an ICMSContent is constructed from a resource."""
 
-    resource = zope.interface.Attribute(
-        'IResource the object was constructed from')
+    resource = zope.interface.Attribute('IResource the object was constructed from')
 
 
 @zope.interface.implementer(IAfterObjectConstructedEvent)
@@ -118,7 +117,7 @@ class IUnknownResource(IDAVContent):
 
     """
 
-    type = zope.interface.Attribute("Raw type info got from connector.")
+    type = zope.interface.Attribute('Raw type info got from connector.')
 
 
 class ICollection(zope.container.interfaces.IContainer):
@@ -155,19 +154,16 @@ class IUserPreferences(zope.interface.Interface):
         """Returen a set of hidden containers."""
 
 
-class IFile(IDAVContent,
-            zope.file.interfaces.IFile):
+class IFile(IDAVContent, zope.file.interfaces.IFile):
     """A file like object in the CMS."""
 
 
 class AlreadyExists(zope.schema.ValidationError):
-
     def doc(self):
         return self.args[0]
 
 
 class NotFound(zope.schema.ValidationError):
-
     def doc(self):
         return self.args[0]
 
@@ -182,8 +178,7 @@ def valid_name(value):
     context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
     container = context.__parent__
     if value in container:
-        raise AlreadyExists(
-            _('"${name}" already exists.', mapping={'name': value}))
+        raise AlreadyExists(_('"${name}" already exists.', mapping={'name': value}))
     return True
 
 
@@ -203,9 +198,8 @@ class IAutomaticallyRenameable(zope.interface.Interface):
 
     renameable = zope.schema.Bool(title='Object renameable?')
     rename_to = zope.schema.TextLine(
-        title=_("New file name"),
-        required=False,
-        constraint=valid_name)
+        title=_('New file name'), required=False, constraint=valid_name
+    )
 
     uniqueId = zope.interface.Attribute('Current uniqueId')
 

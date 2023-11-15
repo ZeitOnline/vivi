@@ -11,50 +11,50 @@ import zope.formlib.form
 
 
 class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
-
     field_groups = (
         gocept.form.grouped.Fields(
-            _("Image data"), (
-                '__name__', 'references', 'display_type'),
-            css_class='column-left image-form'),
+            _('Image data'),
+            ('__name__', 'references', 'display_type'),
+            css_class='column-left image-form',
+        ),
         gocept.form.grouped.RemainingFields(
-            _("Texts"),
-            css_class='column-right image-form wide-widgets'),
+            _('Texts'), css_class='column-right image-form wide-widgets'
+        ),
         gocept.form.grouped.Fields(
-            _("Image source"), (
-                'blob', 'master_image_blobs', 'master_images',
-                'mdb_blob'),
-            css_class='column-left image-form'),
+            _('Image source'),
+            ('blob', 'master_image_blobs', 'master_images', 'mdb_blob'),
+            css_class='column-left image-form',
+        ),
     )
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.image.interfaces.IImageMetadata,
-        zeit.content.image.interfaces.IReferences).omit(
-        'acquire_metadata', 'origin')
+        zeit.content.image.interfaces.IImageMetadata, zeit.content.image.interfaces.IReferences
+    ).omit('acquire_metadata', 'origin')
 
     def __init__(self, *args, **kw):
-        self.form_fields['blob'].custom_widget = (
-            zeit.cms.repository.browser.file.BlobWidget)
+        self.form_fields['blob'].custom_widget = zeit.cms.repository.browser.file.BlobWidget
         super().__init__(*args, **kw)
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
         self.widgets['blob'].extra = 'accept="%s"' % (
-            ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
+            ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES)
+        )
 
 
 class Resize:
-
     def reduceToMaxImageSize(self, image):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image')
         self.max_size = config.get('max-image-size', 4000)
         size = image.getImageSize()
         largest = max(size)
         if largest > self.max_size:
             self.send_message(
-                _('Image was resized, ${size} exceeds ${max_size}',
-                  mapping={'size': largest, 'max_size': self.max_size}))
+                _(
+                    'Image was resized, ${size} exceeds ${max_size}',
+                    mapping={'size': largest, 'max_size': self.max_size},
+                )
+            )
             if size.index(largest) == 0:
                 resize = {'width': self.max_size}
             else:
@@ -64,12 +64,11 @@ class Resize:
 
 
 class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, Resize):
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.image.browser.interfaces.IFileAddSchema
+    ) + ImageFormBase.form_fields.omit('references', 'external_id')
 
-    form_fields = (zope.formlib.form.FormFields(
-        zeit.content.image.browser.interfaces.IFileAddSchema) +
-        ImageFormBase.form_fields.omit('references', 'external_id'))
-
-    title = _("Add image")
+    title = _('Add image')
     factory = zeit.content.image.image.LocalImage
 
     def create(self, data):
@@ -87,17 +86,15 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm, Resize):
 
 
 class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
-
-    title = _("Edit image")
+    title = _('Edit image')
     form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.image.browser.interfaces.IFileEditSchema).omit(
-            '__name__') +
-        ImageFormBase.form_fields
+        zope.formlib.form.FormFields(zeit.content.image.browser.interfaces.IFileEditSchema).omit(
+            '__name__'
+        )
+        + ImageFormBase.form_fields
     )
 
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         blob = data.pop('blob')
         if blob:
@@ -111,25 +108,28 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
         blob = form_fields.get('blob')
         if blob:
             form_fields = form_fields.omit('blob')
-        widgets = super()._get_widgets(
-            form_fields, ignore_request)
+        widgets = super()._get_widgets(form_fields, ignore_request)
         if blob:
             widgets += zope.formlib.form.setUpWidgets(
-                [blob], self.prefix, self.context, self.request,
-                adapters=self.adapters, ignore_request=ignore_request)
+                [blob],
+                self.prefix,
+                self.context,
+                self.request,
+                adapters=self.adapters,
+                ignore_request=ignore_request,
+            )
         return widgets
 
 
 class EditReference(zeit.edit.browser.form.InlineForm):
-
     legend = ''
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.interfaces.IImageReference,
         # support read-only mode, see
         # zeit.content.article.edit.browser.form.FormFields
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-        'caption', 'title', 'alt')
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
+    ).select('caption', 'title', 'alt')
 
     @property
     def prefix(self):

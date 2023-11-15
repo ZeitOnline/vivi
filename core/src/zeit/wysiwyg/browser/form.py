@@ -5,15 +5,14 @@ import zope.formlib.form
 
 
 class EditForm(zeit.cms.browser.form.EditForm):
-
     template = zope.formlib.namedtemplate.NamedTemplate('sourceedit_form')
-    additional_information = (
-        zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-            'header.pt'))
+    additional_information = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
+        'header.pt'
+    )
 
     form_fields = zope.formlib.form.Fields(
-        zeit.wysiwyg.interfaces.IHTMLContent,
-        render_context=True)
+        zeit.wysiwyg.interfaces.IHTMLContent, render_context=True
+    )
 
     @property
     def metadata(self):

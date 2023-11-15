@@ -4,9 +4,9 @@ import zeit.content.article.testing
 
 
 class ParagraphTest(unittest.TestCase):
-
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import Paragraph
+
         body = lxml.objectify.E.body(lxml.objectify.XML('<p>%s</p>' % p))
         return Paragraph(None, body.p)
 
@@ -49,16 +49,15 @@ class ParagraphTest(unittest.TestCase):
     def test_setting_html_should_create_proper_xml(self):
         p = self.get_paragraph()
         p.text = 'I am <strong>strong</strong><br>I am the best.'
-        self.assertEqual('I am <strong>strong</strong><br/>I am the best.',
-                         p.text)
+        self.assertEqual('I am <strong>strong</strong><br/>I am the best.', p.text)
 
     def test_xml_part_of_larger_tree_should_be_updated_in_place(self):
         from zeit.content.article.edit.paragraph import Paragraph
+
         body = lxml.objectify.E.body(lxml.objectify.XML('<p>bar</p>'))
         p = Paragraph(None, body.p)
         p.text = 'foo'
-        self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement),
-                        type(p.xml))
+        self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement), type(p.xml))
 
     def test_setting_html_with_block_elements_should_keep_p_as_xml_tag(self):
         p = self.get_paragraph()
@@ -77,27 +76,23 @@ class ParagraphTest(unittest.TestCase):
         self.compare('I am <u>underlined</u>.', 'I am <u>underlined</u>.')
 
     def test_br_should_be_allowed(self):
-        self.compare('I am <br/>here and<br/>here.',
-                     'I am <br/>here and<br/>here.')
+        self.compare('I am <br/>here and<br/>here.', 'I am <br/>here and<br/>here.')
 
     def test_unknown_elements_should_be_removed(self):
-        self.compare('A <sub>subtext</sub> is filtered',
-                     'A subtext is filtered')
+        self.compare('A <sub>subtext</sub> is filtered', 'A subtext is filtered')
 
     def test_leading_spaces_are_preserved(self):
-        self.compare('<em> <a>foo</a> bar</em>',
-                     '<em> <a>foo</a> bar</em>')
+        self.compare('<em> <a>foo</a> bar</em>', '<em> <a>foo</a> bar</em>')
 
     def test_regression_after_beautiful_soup_update(self):
-        self.compare('<b>foo</b> bar baz',
-                     '<b>foo</b> bar baz')
+        self.compare('<b>foo</b> bar baz', '<b>foo</b> bar baz')
 
 
 class UnorderedListTest(ParagraphTest):
-
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import UnorderedList
         import lxml.objectify
+
         body = lxml.objectify.E.body(lxml.objectify.XML('<ul>%s</ul>' % p))
         return UnorderedList(None, body.ul)
 
@@ -115,51 +110,46 @@ class UnorderedListTest(ParagraphTest):
 
 
 class OrderedListTest(UnorderedListTest):
-
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import OrderedList
         import lxml.objectify
+
         body = lxml.objectify.E.body(lxml.objectify.XML('<ol>%s</ol>' % p))
         return OrderedList(None, body.ol)
 
 
 class IntertitleTest(ParagraphTest):
-
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import Intertitle
         import lxml.objectify
-        body = lxml.objectify.E.body(lxml.objectify.XML(
-            '<intertitle>%s</intertitle>' % p))
+
+        body = lxml.objectify.E.body(lxml.objectify.XML('<intertitle>%s</intertitle>' % p))
         return Intertitle(None, body.intertitle)
 
 
 class LegacyInitialParagraphTest(ParagraphTest):
-
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import LegacyInitialParagraph
         import lxml.objectify
-        body = lxml.objectify.E.body(lxml.objectify.XML(
-            '<initial>%s</initial>' % p))
+
+        body = lxml.objectify.E.body(lxml.objectify.XML('<initial>%s</initial>' % p))
         return LegacyInitialParagraph(None, body.initial)
 
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
-
     def assert_factory(self, name):
         import zeit.content.article.article
         import zeit.content.article.edit.interfaces
         import zeit.edit.interfaces
         import zope.component
+
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
-        factory = zope.component.getAdapter(
-            body, zeit.edit.interfaces.IElementFactory, name)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, name)
         # so they don't show up in the module library
         self.assertEqual(None, factory.title)
         block = factory()
-        self.assertTrue(
-            zeit.content.article.edit.interfaces.IParagraph.providedBy(block))
+        self.assertTrue(zeit.content.article.edit.interfaces.IParagraph.providedBy(block))
         self.assertEqual(name, block.xml.tag)
         self.assertEqual('division', block.xml.getparent().tag)
         return block

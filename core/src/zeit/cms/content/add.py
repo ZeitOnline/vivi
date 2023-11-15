@@ -10,10 +10,7 @@ import zope.interface
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IContentAdder)
 class ContentAdder:
-
-    def __init__(self, request,
-                 type_=None, ressort=None,
-                 sub_ressort=None, year=None, month=None):
+    def __init__(self, request, type_=None, ressort=None, sub_ressort=None, year=None, month=None):
         self.request = request
 
         self.type_ = type_
@@ -37,7 +34,8 @@ class ContentAdder:
         dummy = type('Provides_' + self.type_.__name__, (object,), {})()
         zope.interface.alsoProvides(dummy, self.type_)
         context = zope.component.getMultiAdapter(
-            (dummy, self), zeit.cms.content.interfaces.IAddLocation)
+            (dummy, self), zeit.cms.content.interfaces.IAddLocation
+        )
 
         params = {}
         for key in ['ressort', 'sub_ressort']:
@@ -47,34 +45,31 @@ class ContentAdder:
         return '%s/@@%s?%s' % (
             zope.traversing.browser.absoluteURL(context, self.request),
             self.type_.getTaggedValue('zeit.cms.addform'),
-            urllib.parse.urlencode(params))
+            urllib.parse.urlencode(params),
+        )
 
-    def _get_token(self, field,
-                   interface=zeit.cms.content.interfaces.IContentAdder):
+    def _get_token(self, field, interface=zeit.cms.content.interfaces.IContentAdder):
         field = interface[field]
         source = callable(field.source) and field.source(self) or field.source
         terms = zope.component.getMultiAdapter(
-            (source, self.request), zope.browser.interfaces.ITerms)
+            (source, self.request), zope.browser.interfaces.ITerms
+        )
         value = field.get(self)
         if not value:
             return None
         return terms.getTerm(value).token
 
 
-@grok.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.content.interfaces.IContentAdder)
+@grok.adapter(zeit.cms.interfaces.ICMSContent, zeit.cms.content.interfaces.IContentAdder)
 @grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 def ressort_year_folder(type_, adder):
     ressort = adder.ressort and adder.ressort.lower()
     sub_ressort = adder.sub_ressort and adder.sub_ressort.lower()
-    return find_or_create_folder(
-        ressort, sub_ressort, '%s-%02d' % (adder.year, int(adder.month)))
+    return find_or_create_folder(ressort, sub_ressort, '%s-%02d' % (adder.year, int(adder.month)))
 
 
 def find_or_create_folder(*path_elements):
-    repos = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repos = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     folder = repos
     for elem in path_elements:

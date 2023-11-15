@@ -10,14 +10,12 @@ class DAVError(Exception):
 
     def __init__(self, *args):
         if len(args) == 5:
-            self.status, self.reason, self.url, self.body, self.response = (
-                args)
+            self.status, self.reason, self.url, self.body, self.response = args
         super().__init__(*args)
 
 
 class DAVNoFileError(DAVError):
-    """Exception raised if a DAVFile specific method is invoked on a collection
-    """
+    """Exception raised if a DAVFile specific method is invoked on a collection"""
 
 
 class DAVNoCollectionError(DAVError):
@@ -27,13 +25,11 @@ class DAVNoCollectionError(DAVError):
 
 
 class DAVNotFoundError(DAVError):
-    """Exception raised if a resource or a property was not found.
-    """
+    """Exception raised if a resource or a property was not found."""
 
 
 class DAVBadRequestError(DAVError):
-    """Exception raised if the dav server received a malformed request.
-    """
+    """Exception raised if the dav server received a malformed request."""
 
 
 class DAVLockedError(DAVError):
@@ -51,10 +47,10 @@ class PreconditionFailedError(http.client.HTTPException):
 class DAVBadStatusLineError(DAVError):
     """Exception raised when we don't grok a status line
 
-       (that's one of those "HTTP/1.1 200 OK" thingies around there)
+    (that's one of those "HTTP/1.1 200 OK" thingies around there)
 
-       Note: This is different from httplib.BadStatusline as
-       DAVBadStatusLineError is raised when there is a bad status line *in* the
-       DAV *XML* response.
+    Note: This is different from httplib.BadStatusline as
+    DAVBadStatusLineError is raised when there is a bad status line *in* the
+    DAV *XML* response.
 
-       """
+    """

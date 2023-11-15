@@ -12,21 +12,21 @@ import zope.interface
 
 
 @zope.interface.implementer(
-    zeit.content.link.interfaces.ILink,
-    zeit.cms.interfaces.IEditorialContent)
+    zeit.content.link.interfaces.ILink, zeit.cms.interfaces.IEditorialContent
+)
 class Link(zeit.cms.content.metadata.CommonMetadata):
     """A type for managing links to non-local content."""
 
     default_template = (
-        '<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        '<head/><body/></link>')
+        '<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">' '<head/><body/></link>'
+    )
 
     url = zeit.cms.content.property.ObjectPathProperty('.body.url')
     target = zeit.cms.content.property.ObjectPathProperty('.body.target')
     nofollow = zeit.cms.content.property.ObjectPathProperty('.body.nofollow')
     status_code = zeit.cms.content.property.ObjectPathProperty(
-        '.body.status', zeit.content.link.interfaces.ILink['status_code'],
-        use_default=True)
+        '.body.status', zeit.content.link.interfaces.ILink['status_code'], use_default=True
+    )
 
     @property
     def blog(self):
@@ -48,7 +48,6 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
 
 
 class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Link
     interface = zeit.content.link.interfaces.ILink
     title = _('Link')
@@ -57,7 +56,6 @@ class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 
 @zope.component.adapter(zeit.content.link.interfaces.ILink)
 class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
     def update(self, entry, suppress_errors=False):
         url = self.context.url
         if not url:

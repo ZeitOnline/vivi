@@ -14,10 +14,8 @@ import zope.viewlet.viewlet
 
 
 class Repository:
-
     def __call__(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
 
 @grok.adapter(zeit.cms.repository.interfaces.IRepository)
@@ -26,8 +24,7 @@ def layer_for_repository(context):
     return zeit.cms.browser.interfaces.IRepositoryLayer
 
 
-class HTMLTree(zope.viewlet.viewlet.ViewletBase,
-               zeit.cms.browser.view.Base):
+class HTMLTree(zope.viewlet.viewlet.ViewletBase, zeit.cms.browser.view.Base):
     """view class for navtree"""
 
     def render(self):
@@ -35,28 +32,25 @@ class HTMLTree(zope.viewlet.viewlet.ViewletBase,
 
     @zope.cachedescriptors.property.Lazy
     def tree_view(self):
-        return zope.component.getMultiAdapter(
-            (self.repository, self.request), name='tree.html')
+        return zope.component.getMultiAdapter((self.repository, self.request), name='tree.html')
 
     @property
     def tree_url(self):
         preferences = zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(
-                self.request.principal))
+            zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
+        )
         hash_ = hashlib.md5(usedforsecurity=False)
         for container in preferences.get_hidden_containers():
             hash_.update(container.encode('utf-8'))
         hash_.update('TREE'.encode('utf-8'))
         for container in sorted(self.tree_view.treeState):
             hash_.update(container.encode('utf-8'))
-        return '%s/++noop++%s/@@tree.html' % (self.url(self.repository),
-                                              hash_.hexdigest())
+        return '%s/++noop++%s/@@tree.html' % (self.url(self.repository), hash_.hexdigest())
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
         """repository representing the root of the tree"""
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
 
 class Tree(zeit.cms.browser.tree.Tree):
@@ -71,24 +65,20 @@ class Tree(zeit.cms.browser.tree.Tree):
         return super().__call__()
 
     def listContainer(self, container):
-        for obj in sorted(container.values(),
-                          key=zeit.cms.content.interfaces.IContentSortKey):
+        for obj in sorted(container.values(), key=zeit.cms.content.interfaces.IContentSortKey):
             if not zeit.cms.repository.interfaces.ICollection.providedBy(obj):
                 continue
-            if (self.preferences.is_hidden(obj) and
-                    not self.selected(self.getUrl(obj))):
+            if self.preferences.is_hidden(obj) and not self.selected(self.getUrl(obj)):
                 continue
             yield obj
 
     @zope.cachedescriptors.property.Lazy
     def root(self):
         """repository representing the root of the tree"""
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     def isRoot(self, container):
-        return zeit.cms.repository.interfaces.IRepository.providedBy(
-            container)
+        return zeit.cms.repository.interfaces.IRepository.providedBy(container)
 
     def getUniqueId(self, object):
         if self.isRoot(object):
@@ -101,8 +91,8 @@ class Tree(zeit.cms.browser.tree.Tree):
             view_url = self.request.getURL()
 
         application_url = self.request.getApplicationURL()
-        view_path = view_url[len(application_url):].split('/')
-        path = url[len(application_url):].split('/')
+        view_path = view_url[len(application_url) :].split('/')
+        path = url[len(application_url) :].split('/')
 
         while view_path[-1].startswith('@@'):
             view_path.pop()
@@ -110,13 +100,13 @@ class Tree(zeit.cms.browser.tree.Tree):
         if path > view_path:
             return False
 
-        return view_path[:len(path)] == path
+        return view_path[: len(path)] == path
 
     @zope.cachedescriptors.property.Lazy
     def preferences(self):
         return zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(
-                self.request.principal))
+            zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
+        )
 
     def expanded(self, obj):
         if self.request.form.get('autoexpand-tree'):
@@ -127,19 +117,24 @@ class Tree(zeit.cms.browser.tree.Tree):
 
 
 class HiddenCollections(zeit.cms.browser.view.Base):
-
     def hide_collection(self):
         self.add_to_preference()
         self.send_message(
-            _('"${name}" is now hidden from the navigation tree.',
-              mapping={'name': self.context.__name__}))
+            _(
+                '"${name}" is now hidden from the navigation tree.',
+                mapping={'name': self.context.__name__},
+            )
+        )
         return self.redirect()
 
     def show_collection(self):
         self.remove_from_preference()
         self.send_message(
-            _('"${name}" is now shown in the navigation tree.',
-              mapping={'name': self.context.__name__}))
+            _(
+                '"${name}" is now shown in the navigation tree.',
+                mapping={'name': self.context.__name__},
+            )
+        )
         return self.redirect()
 
     def redirect(self):
@@ -158,20 +153,16 @@ class HiddenCollections(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def preferences(self):
         return zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(
-                self.request.principal))
+            zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
+        )
 
 
 class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
-
     def __call__(self, unique_id, view=''):
         obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
         if obj is None:
-            msg = _("The object '${id}' could not be found.",
-                    mapping={'id': unique_id})
-            return '<div class="error">%s</div>' % zope.i18n.translate(
-                msg, context=self.request)
-        self.request.response.setHeader(
-            'Cache-Control', 'no-cache')
+            msg = _("The object '${id}' could not be found.", mapping={'id': unique_id})
+            return '<div class="error">%s</div>' % zope.i18n.translate(msg, context=self.request)
+        self.request.response.setHeader('Cache-Control', 'no-cache')
         self.redirect(self.url(obj, view), status=301)
         return ''

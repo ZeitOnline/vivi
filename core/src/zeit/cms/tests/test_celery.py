@@ -9,7 +9,6 @@ def task_that_fails():
 
 
 class CelerySignalTests(zeit.cms.testing.FunctionalTestCase):
-
     layer = zeit.workflow.testing.CELERY_LAYER
 
     def run_task(self):
@@ -22,5 +21,4 @@ class CelerySignalTests(zeit.cms.testing.FunctionalTestCase):
         with self.assertLogs() as capture:
             self.run_task()
         log = '\n'.join(capture.output)
-        self.assertEllipsis(
-            '...ERROR:...task_that_fails...RuntimeError...', log)
+        self.assertEllipsis('...ERROR:...task_that_fails...RuntimeError...', log)

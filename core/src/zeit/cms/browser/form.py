@@ -109,7 +109,6 @@ class WidgetCSSMixin:
 
 
 class PlaceholderMixin:
-
     def _is_textwidget(self, widget):
         if not zope.formlib.interfaces.ISimpleInputWidget.providedBy(widget):
             return False
@@ -130,14 +129,13 @@ class PlaceholderMixin:
                 placeholder = field.queryTaggedValue('placeholder')
             if not placeholder:
                 placeholder = widget.label or ''
-            placeholder = zope.i18n.translate(
-                placeholder, context=self.request)
-            widget.extra = ((widget.extra + ' ' if widget.extra else '') +
-                            'placeholder="%s"' % placeholder)
+            placeholder = zope.i18n.translate(placeholder, context=self.request)
+            widget.extra = (
+                widget.extra + ' ' if widget.extra else ''
+            ) + 'placeholder="%s"' % placeholder
 
 
 class CharlimitMixin:
-
     def set_charlimit(self, field_name):
         widget = self.widgets[field_name]
         field = widget.context
@@ -148,7 +146,6 @@ class CharlimitMixin:
 
 
 class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
-
     widget_groups = ()
     template = zope.app.pagetemplate.ViewPageTemplateFile('grouped-form.pt')
 
@@ -167,12 +164,10 @@ class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
             for error in self.errors:
                 message = error.doc()
                 title = getattr(error, 'widget_title', None)  # duck typing
-                translated = zope.i18n.translate(
-                    message, context=self.request, default=message)
+                translated = zope.i18n.translate(message, context=self.request, default=message)
                 if title:
                     if isinstance(title, zope.i18n.Message):
-                        title = zope.i18n.translate(
-                            title, context=self.request)
+                        title = zope.i18n.translate(title, context=self.request)
                     message = '%s: %s' % (title, translated)
                 else:
                     message = translated
@@ -196,12 +191,11 @@ class AddFormBase:
     _checked_out = False
 
     def applyChanges(self, object, data):
-        return apply_changes_with_setattr(
-            object, self.form_fields, data, self.adapters)
+        return apply_changes_with_setattr(object, self.form_fields, data, self.adapters)
 
     def make_object(self):
         if self.factory is None:
-            raise ValueError("No factory specified.")
+            raise ValueError('No factory specified.')
         return self.factory()
 
     def setUpWidgets(self, ignore_request=False):
@@ -213,8 +207,8 @@ class AddFormBase:
 
     def _get_widgets(self, form_fields, ignore_request):
         return zope.formlib.form.setUpInputWidgets(
-            form_fields, self.prefix, self.new_object, self.request,
-            ignore_request=ignore_request)
+            form_fields, self.prefix, self.new_object, self.request, ignore_request=ignore_request
+        )
 
     def create(self, data):
         if not self.widgets_of_new_object:
@@ -222,8 +216,7 @@ class AddFormBase:
         self.applyChanges(self.new_object, data)
         return self.new_object
 
-    @zope.formlib.form.action(_("Add"),
-                              condition=zope.formlib.form.haveInputWidgets)
+    @zope.formlib.form.action(_('Add'), condition=zope.formlib.form.haveInputWidgets)
     def handle_add(self, action, data):
         self.createAndAdd(data)
 
@@ -238,8 +231,7 @@ class AddFormBase:
 
         # Check the document out right away (if possible).
         if self.checkout:
-            manager = zeit.cms.checkout.interfaces.ICheckoutManager(
-                container[name], None)
+            manager = zeit.cms.checkout.interfaces.ICheckoutManager(container[name], None)
             if manager is not None and manager.canCheckout:
                 object = manager.checkout()
                 self._checked_out = True
@@ -251,9 +243,10 @@ class AddFormBase:
         return self.url('@@' + self.cancel_next_view)
 
     @zope.formlib.form.action(
-        _("Cancel"),
+        _('Cancel'),
         validator=lambda *a: (),
-        condition=lambda form, action: form.cancel_next_view is not None)
+        condition=lambda form, action: form.cancel_next_view is not None,
+    )
     def cancel(self, action, data):
         url = self.cancelNextURL()
         self.request.response.redirect(url)
@@ -278,13 +271,12 @@ class AddForm(AddFormBase, FormBase, gocept.form.grouped.AddForm):
 class EditForm(FormBase, gocept.form.grouped.EditForm):
     """Edit form."""
 
-    title = _("Edit")
+    title = _('Edit')
     redirect_to_parent_after_edit = False
     redirect_to_view = None
 
     def nextURL(self):
-        if (not self.redirect_to_parent_after_edit and
-                not self.redirect_to_view):
+        if not self.redirect_to_parent_after_edit and not self.redirect_to_view:
             return None
 
         new_context = self.context
@@ -297,8 +289,7 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
 
         return self.url(new_context, view)
 
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         """Overwritten to use custom translation for Apply."""
         super().handle_edit_action.success(data)
@@ -307,4 +298,4 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
 class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
     """Display form."""
 
-    title = _("View")
+    title = _('View')

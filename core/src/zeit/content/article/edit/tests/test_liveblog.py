@@ -5,11 +5,9 @@ import zeit.edit.interfaces
 
 
 class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        self.repository[
-            'article'] = zeit.content.article.testing.create_article()
+        self.repository['article'] = zeit.content.article.testing.create_article()
         with checked_out(self.repository['article']) as co:
             co.body.create_item('liveblog')
             self.assertFalse(ISemanticChange(co).has_semantic_change)
@@ -27,10 +25,10 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
 
 
 class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
-
     def get_liveblog(self):
         from zeit.content.article.edit.liveblog import Liveblog
         import lxml.objectify
+
         liveblog = Liveblog(None, lxml.objectify.E.liveblog())
         return liveblog
 

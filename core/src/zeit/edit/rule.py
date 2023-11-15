@@ -34,13 +34,11 @@ class Break(Exception):
 
 
 class Status:
-
     status = None
     message = None
 
 
 class Rule:
-
     def __init__(self, code, line=None):
         self.source = code
         self.code = compile(code, '<string>', 'exec')
@@ -65,10 +63,11 @@ class Rule:
         except ZODB.POSException.ConflictError:
             raise
         except Exception:
-            log.error('Error while evaluating rule starting line %s\n'
-                      'Globals=%s' %
-                      (self.line if self.line else '<unknown>', globs),
-                      exc_info=True)
+            log.error(
+                'Error while evaluating rule starting line %s\n'
+                'Globals=%s' % (self.line if self.line else '<unknown>', globs),
+                exc_info=True,
+            )
 
         return status
 
@@ -98,8 +97,7 @@ class Rule:
 @grok.implementer(zeit.edit.interfaces.IRuleGlobs)
 def globs(context):
     globs = {}
-    for name, adapter in zope.component.getAdapters(
-            (context,), zeit.edit.interfaces.IRuleGlob):
+    for name, adapter in zope.component.getAdapters((context,), zeit.edit.interfaces.IRuleGlob):
         if not name:
             continue
         globs[name] = adapter
@@ -113,6 +111,7 @@ def glob(adapts):
     The glob applies for objects with the interface given in `adapts`.
 
     """
+
     def decorate(func):
         frame = sys._getframe(1)
         name = '__zeit_edit_globs__'
@@ -121,12 +120,12 @@ def glob(adapts):
             frame.f_locals[name] = globs = []
         globs.append((func, adapts))
         return func
+
     return decorate
 
 
 @grok.implementer(zeit.edit.interfaces.IRulesManager)
 class RulesManager(grok.GlobalUtility):
-
     def __init__(self):
         self._rules = []
 
@@ -224,7 +223,6 @@ class RecursiveValidator:
 
 
 class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
-
     @cachedproperty
     def validator(self):
         return zeit.edit.interfaces.IValidator(self.context)
@@ -235,9 +233,11 @@ class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
             return status
         if self.validator.status == ERROR:
             self.error_messages = (
-                _('Could not publish ${id} since it has validation errors.',
-                  mapping=self._error_mapping),) + tuple(
-                      self.validator.messages)
+                _(
+                    'Could not publish ${id} since it has validation errors.',
+                    mapping=self._error_mapping,
+                ),
+            ) + tuple(self.validator.messages)
             return CAN_PUBLISH_ERROR
         if self.validator.status == WARNING:
             self.error_messages = self.validator.messages
@@ -296,6 +296,7 @@ def is_published(context):
             # for the purposes of the validation rules
             return True
         return pi is not None and pi.published
+
     return is_published_inner
 
 
@@ -303,7 +304,7 @@ def is_published(context):
 def scheduled_for_publishing(context):
     def inner(obj):
         pi = zeit.cms.workflow.interfaces.IPublishInfo(obj, None)
-        if (pi is None or not ITimeBasedPublishing.providedBy(pi)):
+        if pi is None or not ITimeBasedPublishing.providedBy(pi):
             return False
         if not pi.release_period[0]:
             return False
@@ -311,4 +312,5 @@ def scheduled_for_publishing(context):
             now = datetime.now(pytz.UTC)
             return now <= pi.release_period[1]
         return True
+
     return inner

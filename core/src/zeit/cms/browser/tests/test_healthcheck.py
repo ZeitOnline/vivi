@@ -6,7 +6,6 @@ import zope.app.appsetup.product
 
 
 class HealthCheckTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
-
     check = 'http://localhost/++skin++vivi/@@health-check'
 
     def setUp(self):

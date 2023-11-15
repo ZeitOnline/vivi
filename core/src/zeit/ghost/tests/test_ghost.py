@@ -8,7 +8,6 @@ import zeit.ghost.testing
 
 
 class GhostbusterTest(zeit.ghost.testing.FunctionalTestCase):
-
     def test_removes_excessive_ghosts_on_checkout(self):
         self.repository['ghost-origin'] = ExampleContentType()
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
@@ -16,10 +15,8 @@ class GhostbusterTest(zeit.ghost.testing.FunctionalTestCase):
             with mock.patch('zeit.ghost.ghost._remove_excessive_ghosts'):
                 zeit.ghost.ghost.create_ghost(self.repository['ghost-origin'])
         self.assertEqual(zeit.ghost.ghost.TARGET_WORKINGCOPY_SIZE * 2, len(wc))
-        with checked_out(
-                self.repository['testcontent'], events=True, temporary=False):
-            self.assertEqual(
-                zeit.ghost.ghost.TARGET_WORKINGCOPY_SIZE, len(wc))
+        with checked_out(self.repository['testcontent'], events=True, temporary=False):
+            self.assertEqual(zeit.ghost.ghost.TARGET_WORKINGCOPY_SIZE, len(wc))
 
     def test_removes_excessive_ghosts_when_creating_ghosts(self):
         # This is important for ImageGroups, see VIV-489.

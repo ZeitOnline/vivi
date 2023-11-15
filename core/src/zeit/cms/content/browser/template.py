@@ -15,30 +15,28 @@ import zope.publisher.interfaces.browser
 
 
 class Manager:
-
-    title = _("Templates")
+    title = _('Templates')
 
     @zope.cachedescriptors.property.Lazy
     def template_managers(self):
         result = []
-        for name, utility in sorted(zope.component.getUtilitiesFor(
-                zeit.cms.content.interfaces.ITemplateManager)):
+        for name, utility in sorted(
+            zope.component.getUtilitiesFor(zeit.cms.content.interfaces.ITemplateManager)
+        ):
             result.append({'name': name, 'manager': utility})
         return result
 
 
 class Listing(zeit.cms.browser.listing.Listing):
-
-    title = _("Templates")
+    title = _('Templates')
     filter_interface = zope.interface.Interface
     css_class = 'contentListing'
 
     columns = (
-        zc.table.column.SelectionColumn(
-            idgetter=lambda item: item.__name__),
+        zc.table.column.SelectionColumn(idgetter=lambda item: item.__name__),
         zeit.cms.browser.column.LinkColumn(
-            title=_('Title'),
-            cell_formatter=lambda v, i, f: i.title),
+            title=_('Title'), cell_formatter=lambda v, i, f: i.title
+        ),
     )
 
     @property
@@ -47,14 +45,13 @@ class Listing(zeit.cms.browser.listing.Listing):
 
 
 class FormBase:
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ITemplate).select('title', 'xml')
+    form_fields = zope.formlib.form.FormFields(zeit.cms.content.interfaces.ITemplate).select(
+        'title', 'xml'
+    )
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
-
-    title = _("Add template")
+    title = _('Add template')
     factory = zeit.cms.content.template.Template
     next_view = 'webdav-properties.html'
 
@@ -63,78 +60,63 @@ class Add(FormBase, zeit.cms.browser.form.AddForm):
 
 
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
-
-    title = _("Edit template")
+    title = _('Edit template')
 
 
 class Properties:
-
-    title = _("Edit webdav properties")
+    title = _('Edit webdav properties')
 
     def update(self):
         if 'dav.save' in self.request:
-            data = zip(self.request['name'], self.request['namespace'],
-                       self.request['value'])
-            new_properties = {
-                (item[0], item[1]): item[2]
-                for item in data
-                if item[0] and item[1]}
-            properties = zeit.connector.interfaces.IWebDAVWriteProperties(
-                self.context)
+            data = zip(self.request['name'], self.request['namespace'], self.request['value'])
+            new_properties = {(item[0], item[1]): item[2] for item in data if item[0] and item[1]}
+            properties = zeit.connector.interfaces.IWebDAVWriteProperties(self.context)
             properties.update(new_properties)
 
     @property
     def content(self):
-        properties = zeit.connector.interfaces.IWebDAVReadProperties(
-            self.context)
+        properties = zeit.connector.interfaces.IWebDAVReadProperties(self.context)
         return [
-            {'namespace': item[0][1],
-             'name': item[0][0],
-             'value': item[1]}
-            for item in properties.items()]
+            {'namespace': item[0][1], 'name': item[0][0], 'value': item[1]}
+            for item in properties.items()
+        ]
 
 
 class ChooseTemplateForm(gocept.form.grouped.Form):
-    """Base class for template choose forms.
-    """
+    """Base class for template choose forms."""
 
-    title = _("Choose template")
+    title = _('Choose template')
     add_view = None
 
-    @zope.formlib.form.action(_("Continue"))
+    @zope.formlib.form.action(_('Continue'))
     def handle_choose_template(self, action, data):
         session = zope.session.interfaces.ISession(self.request)
         session[self.add_view]['template'] = data['template']
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request), name='absolute_url')
-        self.request.response.redirect(
-            '%s/@@%s' % (url, self.add_view))
+        url = zope.component.getMultiAdapter((self.context, self.request), name='absolute_url')
+        self.request.response.redirect('%s/@@%s' % (url, self.add_view))
 
 
 def TemplateChooserSchema(source_name):
-
     class ITemplateChooserSchema(zope.interface.Interface):
         """Schema to choose template."""
 
         template = zope.schema.Choice(
-            title=_("Template"),
+            title=_('Template'),
             required=False,
-            source=zeit.cms.content.template.BasicTemplateSource(source_name))
+            source=zeit.cms.content.template.BasicTemplateSource(source_name),
+        )
 
     return ITemplateChooserSchema
 
 
 @zope.component.adapter(zope.publisher.interfaces.browser.IBrowserPage)
-@zope.interface.implementer(
-    zeit.cms.content.browser.interfaces.ITemplateWidgetSetup)
+@zope.interface.implementer(zeit.cms.content.browser.interfaces.ITemplateWidgetSetup)
 class TemplateWidgetSetup:
-
     def __init__(self, context):
         self.context = context
         self.request = context.request
 
-    def setup_widgets(self, widgets, session_key, chooser_schema,
-                      ignore_request=False):
+    def setup_widgets(self, widgets, session_key, chooser_schema, ignore_request=False):
         session = zope.session.interfaces.ISession(self.request)
         template = session[session_key].get('template')
         if not ignore_request and template:
@@ -162,7 +144,6 @@ class TemplateWidgetSetup:
 
 
 class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
-
-    title = _("Templates")
+    title = _('Templates')
     viewURL = 'templates'
     pathitem = 'templates'

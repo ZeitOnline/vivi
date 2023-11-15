@@ -12,8 +12,8 @@ import zope.traversing.interfaces
 
 
 @zope.component.adapter(
-    zope.interface.Interface,
-    zope.publisher.interfaces.browser.IDefaultBrowserLayer)
+    zope.interface.Interface, zope.publisher.interfaces.browser.IDefaultBrowserLayer
+)
 @zope.interface.implementer(zope.traversing.interfaces.ITraversable)
 class TicketTraverser:
     """This traverser takes a ticket and authenticates the user.
@@ -27,8 +27,7 @@ class TicketTraverser:
         self.request = request
 
     def traverse(self, name, furtherPath):
-        auth = zope.component.getUtility(
-            zope.app.security.interfaces.IAuthentication)
+        auth = zope.component.getUtility(zope.app.security.interfaces.IAuthentication)
         rnd, hash_, principal = unpack(name)
         if not get_hash(rnd, principal) == name:
             raise zope.security.interfaces.Unauthorized
@@ -45,8 +44,7 @@ class TicketIssuer:
 
     def __call__(self):
         principal = self.request.principal
-        if zope.authentication.interfaces.IUnauthenticatedPrincipal.providedBy(
-                principal):
+        if zope.authentication.interfaces.IUnauthenticatedPrincipal.providedBy(principal):
             raise zope.security.interfaces.Unauthorized
         rnd = random.randint(-sys.maxsize, sys.maxsize)
         self.request.response.setHeader('Content-Type', 'text/plain')
@@ -56,8 +54,7 @@ class TicketIssuer:
 
 
 def get_hash(rnd, principal):
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.gallery')
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.gallery')
     secret = config['ticket-secret']
     ticket_hash = hashlib.sha224()
 
@@ -78,5 +75,5 @@ def pack(rnd, hash_, principal):
 def unpack(ticket):
     ticket = base64.urlsafe_b64decode(ticket.encode('ascii'))
     rnd, hash_ = struct.unpack_from(format, ticket)
-    principal = ticket[struct.calcsize(format):].decode('utf-8')
+    principal = ticket[struct.calcsize(format) :].decode('utf-8')
     return rnd, hash_, principal

@@ -13,12 +13,9 @@ HEADER_NAME = 'editable-header'
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IHeaderArea)
-class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
-                 grok.MultiAdapter):
-
+class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer, grok.MultiAdapter):
     grok.provides(zeit.content.article.edit.interfaces.IHeaderArea)
-    grok.adapts(zeit.content.article.interfaces.IArticle,
-                gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.article.interfaces.IArticle, gocept.lxml.interfaces.IObjectified)
 
     __name__ = HEADER_NAME
 
@@ -47,8 +44,7 @@ class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
         for child in self.xml.iterchildren('*'):
             element = self._get_element_for_node(child)
             if element is None:
-                element = self._get_element_for_node(
-                    child, zeit.edit.block.UnknownBlock.type)
+                element = self._get_element_for_node(child, zeit.edit.block.UnknownBlock.type)
             result.append(element)
         return result
 
@@ -59,16 +55,18 @@ class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer,
             return values[0]
         # XXX Kludgy emulation of things that should be in the header, but
         # aren't yet.
-        body = zeit.content.article.edit.interfaces.IEditableBody(
-            self.__parent__)
+        body = zeit.content.article.edit.interfaces.IEditableBody(self.__parent__)
         try:
             block = body[0]
         except KeyError:
             return None
-        if ((zeit.content.article.edit.interfaces.IVideo.providedBy(
-                block) and 'header' in (block.layout or '')) or
-            (zeit.content.article.edit.interfaces.IImage.providedBy(
-                block) and block.display_mode != 'float')):
+        if (
+            zeit.content.article.edit.interfaces.IVideo.providedBy(block)
+            and 'header' in (block.layout or '')
+        ) or (
+            zeit.content.article.edit.interfaces.IImage.providedBy(block)
+            and block.display_mode != 'float'
+        ):
             return block
         return None
 
@@ -86,13 +84,12 @@ def get_header_area(article):
         head.append(lxml.objectify.E.header())
     node = article.xml.xpath('//head/header')[0]
     return zope.component.queryMultiAdapter(
-        (article,
-         zope.security.proxy.removeSecurityProxy(node)),
-        zeit.content.article.edit.interfaces.IHeaderArea)
+        (article, zope.security.proxy.removeSecurityProxy(node)),
+        zeit.content.article.edit.interfaces.IHeaderArea,
+    )
 
 
 class ModuleSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.article'
     config_url = 'header-module-source'
     default_filename = 'article-header-modules.xml'
@@ -106,15 +103,13 @@ class ModuleSource(zeit.cms.content.sources.XMLSource):
 MODULES = ModuleSource()
 
 
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectModifiedEvent)
 def clear_header_module_if_not_allowed_by_template(context, event):
     IArticle = zeit.content.article.interfaces.IArticle
     for description in event.descriptions:
-        if (description.interface is IArticle and
-                ('template' in description.attributes or
-                 'header_layout' in description.attributes)):
+        if description.interface is IArticle and (
+            'template' in description.attributes or 'header_layout' in description.attributes
+        ):
             break
     else:
         return

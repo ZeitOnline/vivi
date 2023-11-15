@@ -12,7 +12,7 @@ import zeit.retresco.interfaces
 import zope.component
 
 
-NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
+NAMESPACE = 'http://namespaces.zeit.de/CMS/tagging'
 KEYWORD_PROPERTY = ('keywords', NAMESPACE)
 DISABLED_PROPERTY = ('disabled', NAMESPACE)
 DISABLED_SEPARATOR = '\x09'
@@ -22,8 +22,7 @@ PINNED_PROPERTY = ('pinned', NAMESPACE)
 # This is why we make the keyword property writeable.
 property_manager = zeit.cms.content.liveproperty.LiveProperties
 for prop in [KEYWORD_PROPERTY, DISABLED_PROPERTY, PINNED_PROPERTY]:
-    property_manager.register_live_property(
-        prop[0], prop[1], WRITEABLE_ALWAYS)
+    property_manager.register_live_property(prop[0], prop[1], WRITEABLE_ALWAYS)
 
 log = logging.getLogger(__name__)
 
@@ -50,8 +49,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __iter__(self):
         tags = self.to_xml()
-        return (Tag(x.text, x.get('type', '')).code
-                for x in tags.iterchildren())
+        return (Tag(x.text, x.get('type', '')).code for x in tags.iterchildren())
 
     def __len__(self):
         return len(list(self.__iter__()))
@@ -71,13 +69,11 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             root.append(tags)
         tags.append(self._serialize_tag(value))
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
-            tags.getroottree(), encoding=str)
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree(), encoding=str)
 
     def values(self):
         tags = self.to_xml()
-        return (self._create_tag(str(node), node.get('type', ''))
-                for node in tags.iterchildren())
+        return (self._create_tag(str(node), node.get('type', '')) for node in tags.iterchildren())
 
     def get(self, key, default=None):
         try:
@@ -98,8 +94,8 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         keys = list(keys)  # in case we've got a generator
         if set(keys) != set(self):
             raise ValueError(
-                'Must pass in the same keys already present %r, not %r'
-                % (list(self), keys))
+                'Must pass in the same keys already present %r, not %r' % (list(self), keys)
+            )
         orderd = []
         tags = self.to_xml()
         for key in keys:
@@ -108,15 +104,13 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
             tags.remove(tag)
         tags.extend(orderd)
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
-            tags.getroottree(), encoding=str)
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(tags.getroottree(), encoding=str)
 
     def __delitem__(self, key):
         node = self._find_tag_node(key)
         node.getparent().remove(node)
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
-            node.getroottree(), encoding=str)
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(node.getroottree(), encoding=str)
         self._disable(key)
 
     def set_pinned(self, keys):
@@ -162,8 +156,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         if tags is self.EMPTY_NODE:
             raise KeyError(key)
 
-        node = [x for x in tags.iterchildren()
-                if Tag(x.text, x.get('type', '')).code == key]
+        node = [x for x in tags.iterchildren() if Tag(x.text, x.get('type', '')).code == key]
         if not node:
             raise KeyError(key)
         return node[0]
@@ -187,8 +180,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         for code in self.pinned:
             try:
                 node = self._find_tag_node(code, xml)
-                result.append(self._create_tag(
-                    str(node), node.get('type', '')))
+                result.append(self._create_tag(str(node), node.get('type', '')))
             except KeyError:
                 pass
         return result
@@ -223,8 +215,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
                 new_tags.append(self._serialize_tag(tag))
 
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
-        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(
-            root.getroottree(), encoding=str)
+        dav[KEYWORD_PROPERTY] = lxml.etree.tostring(root.getroottree(), encoding=str)
         if clear_disabled:
             dav[DISABLED_PROPERTY] = ''
 

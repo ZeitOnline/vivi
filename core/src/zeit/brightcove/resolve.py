@@ -11,15 +11,12 @@ log = logging.getLogger(__name__)
 
 
 # Defined in zeit.content.video.video.Video.external_id
-BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
-    'id', 'http://namespaces.zeit.de/CMS/brightcove')
+BRIGHTCOVE_ID = zeit.connector.search.SearchVar('id', 'http://namespaces.zeit.de/CMS/brightcove')
 
 
 def resolve_video_id(video_id):
-    connector = zope.component.getUtility(
-        zeit.connector.interfaces.IConnector)
-    result = list(
-        connector.search([BRIGHTCOVE_ID], BRIGHTCOVE_ID == video_id))
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    result = list(connector.search([BRIGHTCOVE_ID], BRIGHTCOVE_ID == video_id))
     if not result:
         raise LookupError(video_id)
     if len(result) > 1:

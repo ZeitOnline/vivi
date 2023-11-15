@@ -7,7 +7,6 @@ import zope.formlib.form
 
 
 class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
-
     @property
     def css_class(self):
         classes = super().css_class
@@ -16,11 +15,9 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
 
 
 class EditCommon(zeit.content.cp.browser.view.EditBox):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IBlock).select(
-            'supertitle', 'title',
-            'read_more', 'read_more_url')
+    form_fields = zope.formlib.form.Fields(zeit.content.cp.interfaces.IBlock).select(
+        'supertitle', 'title', 'read_more', 'read_more_url'
+    )
 
 
 class SwitchType:
@@ -36,7 +33,8 @@ class SwitchType:
         index = order.index(self.toswitch.__name__)
         del self.parent[self.toswitch.__name__]
         factory = zope.component.getAdapter(
-            self.parent, zeit.edit.interfaces.IElementFactory, name=type)
+            self.parent, zeit.edit.interfaces.IElementFactory, name=type
+        )
         created = factory()
         order[index] = created.__name__
         self.parent.updateOrder(order)
@@ -44,7 +42,6 @@ class SwitchType:
 
 
 class Position:
-
     def update(self):
         area = self.context.__parent__
         if zeit.content.cp.interfaces.IArea.providedBy(area):

@@ -17,11 +17,9 @@ class CMSContentKeyReference:
         if object.uniqueId is None:
             raise zope.app.keyreference.interfaces.NotYet(object)
         # Special cases that keep piling up, sigh.
-        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            object, None)
+        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(object, None)
         if renameable and renameable.renameable and renameable.rename_to:
-            parent = zeit.cms.interfaces.ICMSContent(
-                object.uniqueId).__parent__
+            parent = zeit.cms.interfaces.ICMSContent(object.uniqueId).__parent__
             self.referenced_object = parent.uniqueId + renameable.rename_to
         else:
             self.referenced_object = object.uniqueId
@@ -42,6 +40,5 @@ class CMSContentKeyReference:
 
 
 class UniqueIdKeyReference(CMSContentKeyReference):
-
     def __init__(self, parent, name):
         self.referenced_object = parent.uniqueId + name

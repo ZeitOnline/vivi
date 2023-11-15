@@ -12,7 +12,6 @@ log = logging.getLogger(__name__)
 
 
 class UpdateKeywords:
-
     # A hopefully more correct version than zeit.cms.browser.view.JSON
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
@@ -25,19 +24,15 @@ class UpdateKeywords:
             return 405, 'Only POST supported'
 
         try:
-            body = self.request.bodyStream.read(
-                int(self.request['CONTENT_LENGTH']))
+            body = self.request.bodyStream.read(int(self.request['CONTENT_LENGTH']))
             doc_ids = json.loads(body)['doc_ids']
         except Exception:
-            message = (
-                'JSON body with parameter doc_ids (list of uuids) required')
+            message = 'JSON body with parameter doc_ids (list of uuids) required'
             return 400, message
 
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.retresco')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
         for doc_id in doc_ids:
-            update_async.delay(
-                doc_id, _principal_id_=config['index-principal'])
+            update_async.delay(doc_id, _principal_id_=config['index-principal'])
         return 200, 'OK'
 
 
@@ -45,12 +40,12 @@ class UpdateKeywords:
 def update_async(uuid):
     try:
         content = zeit.cms.content.contentuuid.uuid_to_content(
-            zeit.cms.content.interfaces.IUUID(uuid))
+            zeit.cms.content.interfaces.IUUID(uuid)
+        )
         if content is None:
             raise KeyError(uuid)
     except Exception:
         log.warning('TMS wants to update invalid id %s, ignored', uuid)
         return
     zeit.objectlog.interfaces.ILog(content).log(_('TMS reindex'))
-    zeit.retresco.update.index(
-        content, enrich=True, update_keywords=True, publish=True)
+    zeit.retresco.update.index(content, enrich=True, update_keywords=True, publish=True)

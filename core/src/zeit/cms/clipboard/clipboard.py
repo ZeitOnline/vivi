@@ -19,27 +19,22 @@ import zeit.cms.clipboard.interfaces
 @zope.component.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopy)
 @zope.interface.implementer(zeit.cms.clipboard.interfaces.IClipboard)
 class Clipboard(zope.container.ordered.OrderedContainer):
-
     title = 'Clipboard'
 
-    def addContent(self, reference_object, add_object,
-                   name=None, insert=False):
+    def addContent(self, reference_object, add_object, name=None, insert=False):
         """Add unique_id to obj."""
-        if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(
-                reference_object):
+        if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(reference_object):
             raise ValueError(
-                "`reference_object` does not provide IClipboardEntry (%r)" %
-                reference_object)
+                '`reference_object` does not provide IClipboardEntry (%r)' % reference_object
+            )
         if insert:
             container = reference_object
             position = 0
         else:
             container = reference_object.__parent__
-            position = list(container.keys()).index(
-                reference_object.__name__) + 1
+            position = list(container.keys()).index(reference_object.__name__) + 1
 
-        if not zope.container.interfaces.IOrderedContainer.providedBy(
-                container):
+        if not zope.container.interfaces.IOrderedContainer.providedBy(container):
             raise ValueError('`reference_object` must be a Clip to insert.')
 
         entry = zeit.cms.clipboard.interfaces.IClipboardEntry(add_object)
@@ -61,12 +56,11 @@ class Clipboard(zope.container.ordered.OrderedContainer):
 
     def moveObject(self, obj, new_container, insert=False):
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(obj):
-            raise TypeError("obj must provided IClipboardEntry. Got %r." % obj)
+            raise TypeError('obj must provided IClipboardEntry. Got %r.' % obj)
         if obj == new_container:
             return
         if obj in zope.traversing.api.getParents(new_container):
-            raise ValueError(
-                "`obj` must not be an ancestor of `new_container`.")
+            raise ValueError('`obj` must not be an ancestor of `new_container`.')
         old_container = obj.__parent__
         old_name = obj.__name__
         del old_container[old_name]
@@ -74,8 +68,7 @@ class Clipboard(zope.container.ordered.OrderedContainer):
 
     def __setitem__(self, key, value):
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(value):
-            raise ValueError("Can only contain IClipboardEntry objects. "
-                             "Got %r instead." % value)
+            raise ValueError('Can only contain IClipboardEntry objects. ' 'Got %r instead.' % value)
         super().__setitem__(key, value)
 
 
@@ -91,8 +84,8 @@ def principalAdapter(principal):
 
 
 @zope.component.adapter(
-    zeit.cms.workingcopy.interfaces.IWorkingcopy,
-    zope.publisher.interfaces.IPublisherRequest)
+    zeit.cms.workingcopy.interfaces.IWorkingcopy, zope.publisher.interfaces.IPublisherRequest
+)
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class WorkingcopyTraverser:
     """Traverses to clipboard through a workingcopy."""
@@ -102,8 +95,7 @@ class WorkingcopyTraverser:
         self.request = request
 
     def publishTraverse(self, request, name):
-        clipboard = zeit.cms.clipboard.interfaces.IClipboard(
-            self.context, None)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(self.context, None)
         if clipboard is not None and clipboard.__name__ == name:
             return clipboard
         raise zope.publisher.interfaces.NotFound(self.context, name, request)

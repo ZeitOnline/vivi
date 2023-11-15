@@ -3,7 +3,6 @@ import zeit.cms.browser.view
 
 
 class Images(zeit.cms.browser.view.JSON):
-
     def json(self):
         images = zeit.content.image.interfaces.IImages(self.context)
         result = []

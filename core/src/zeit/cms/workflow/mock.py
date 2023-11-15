@@ -20,52 +20,42 @@ class MockPublish:
     def _result(self):
         return celery.result.EagerResult('eager', None, celery.states.SUCCESS)
 
-    def publish(self, priority=PRIORITY_DEFAULT, background=True,
-                object=None, **kw):
+    def publish(self, priority=PRIORITY_DEFAULT, background=True, object=None, **kw):
         if object is not None:
             self.context = object
         self.context = zope.security.proxy.getObject(self.context)
-        can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
-            self.context).can_publish()
+        can_publish = zeit.cms.workflow.interfaces.IPublishInfo(self.context).can_publish()
         if can_publish == CAN_PUBLISH_ERROR:
-            raise zeit.cms.workflow.interfaces.PublishingError(
-                "Cannot publish.")
+            raise zeit.cms.workflow.interfaces.PublishingError('Cannot publish.')
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         info.published = True
         zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforePublishEvent(self.context,
-                                                            self.context))
-        print("Publishing: %s" % self.context.uniqueId)
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.PublishedEvent(self.context,
-                                                        self.context))
+            zeit.cms.workflow.interfaces.BeforePublishEvent(self.context, self.context)
+        )
+        print('Publishing: %s' % self.context.uniqueId)
+        zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(self.context, self.context))
         return self._result()
 
-    def retract(self, priority=PRIORITY_DEFAULT, background=True,
-                object=None, **kw):
+    def retract(self, priority=PRIORITY_DEFAULT, background=True, object=None, **kw):
         if object is not None:
             self.context = object
         self.context = zope.security.proxy.getObject(self.context)
         zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
-                                                            self.context))
-        print("Retracting: %s" % self.context.uniqueId)
+            zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context, self.context)
+        )
+        print('Retracting: %s' % self.context.uniqueId)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         info.published = False
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.RetractedEvent(self.context,
-                                                        self.context))
+        zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(self.context, self.context))
         return self._result()
 
-    def publish_multiple(
-            self, objects, priority=PRIORITY_LOW, background=True, **kw):
+    def publish_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.publish(priority, background, obj)
         return self._result()
 
-    def retract_multiple(
-            self, objects, priority=PRIORITY_LOW, background=True, **kw):
+    def retract_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.retract(priority, background, obj)
@@ -75,7 +65,6 @@ class MockPublish:
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 class MockPublishInfo:
-
     error_messages = ()
     date_print_published = None
     last_modified_by = 'testuser'
@@ -120,8 +109,8 @@ class MockPublishInfo:
 
     def can_publish(self):
         return _can_publish.get(
-            self.context.uniqueId,
-            zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS)
+            self.context.uniqueId, zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
+        )
 
     # Test support
 
@@ -146,6 +135,7 @@ def reset():
 
 try:
     import zope.testing.cleanup
+
     zope.testing.cleanup.addCleanUp(reset)
 except ImportError:
     pass

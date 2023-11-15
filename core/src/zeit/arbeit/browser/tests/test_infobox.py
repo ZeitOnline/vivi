@@ -3,7 +3,6 @@ import zeit.arbeit.testing
 
 
 class ZARInfoboxDebateTest(zeit.arbeit.testing.BrowserTestCase):
-
     def test_zar_infobox_has_debate_field(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/arbeit')
@@ -20,7 +19,6 @@ class ZARInfoboxDebateTest(zeit.arbeit.testing.BrowserTestCase):
         b.getControl('Debate action URL').value = 'mailto:foo@example.com'
         b.getControl(name='form.actions.apply').click()
         self.assertEndsWith('@@edit.html', b.url)
-        self.assertEqual(
-            'mailto:foo@example.com', b.getControl('Debate action URL').value)
+        self.assertEqual('mailto:foo@example.com', b.getControl('Debate action URL').value)
         b.getLink('Checkin').click()
         self.assertEllipsis('...mailto:foo@example.com...', b.contents)

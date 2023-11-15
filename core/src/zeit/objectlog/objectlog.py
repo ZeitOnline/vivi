@@ -34,7 +34,7 @@ class ObjectLog(persistent.Persistent):
             yield object_log[key]
 
     def log(self, object, message, mapping=None, timestamp=None):
-        logger.debug("Logging: %s %s %s" % (object, message, mapping))
+        logger.debug('Logging: %s %s %s' % (object, message, mapping))
         obj_key = zope.app.keyreference.interfaces.IKeyReference(object)
 
         object_log = self._object_log.get(obj_key)
@@ -54,7 +54,8 @@ class ObjectLog(persistent.Persistent):
             'If you see this in a test you tried to run something '
             'asynchronously but inline of the process. Do not do this! '
             'Either run the test inline synchronously (default) or as actual '
-            'end to end test using z3c.celery.layer.EndToEndLayer.')
+            'end to end test using z3c.celery.layer.EndToEndLayer.'
+        )
         transaction.savepoint(optimistic=True)
 
     def delete(self, object):
@@ -64,8 +65,7 @@ class ObjectLog(persistent.Persistent):
         self._object_log.pop(key, None)
 
     def clean(self, timedelta):
-        reference_time = int(10e6 * (
-            time.time() - timedelta.days * 3600 * 24 - timedelta.seconds))
+        reference_time = int(10e6 * (time.time() - timedelta.days * 3600 * 24 - timedelta.seconds))
         remove = []
         for key in self._object_log:
             log = self._object_log[key]
@@ -79,15 +79,12 @@ class ObjectLog(persistent.Persistent):
 
 @zope.interface.implementer(zeit.objectlog.interfaces.ILogEntry)
 class LogEntry(persistent.Persistent):
-
     def __init__(self, object, message, mapping, timestamp):
         self.time = timestamp or datetime.datetime.now(pytz.UTC)
-        self.object_reference = zope.app.keyreference.interfaces.IKeyReference(
-            object)
+        self.object_reference = zope.app.keyreference.interfaces.IKeyReference(object)
         self.message = message
         self.mapping = mapping
-        participations = (zope.security.management.getInteraction()
-                          .participations)
+        participations = zope.security.management.getInteraction().participations
         if participations and participations[0].principal:
             self.principal = participations[0].principal.id
         else:
@@ -100,7 +97,6 @@ class LogEntry(persistent.Persistent):
 @zope.component.adapter(zope.interface.Interface)
 @zope.interface.implementer(zeit.objectlog.interfaces.ILog)
 class Log:
-
     def __init__(self, context):
         self.context = context
 
@@ -115,8 +111,7 @@ class Log:
     @property
     def logs(self):
         entries = self.get_log()
-        processor = zeit.objectlog.interfaces.ILogProcessor(self.context,
-                                                            None)
+        processor = zeit.objectlog.interfaces.ILogProcessor(self.context, None)
         if processor is not None:
             entries = processor(entries)
         return tuple(reversed(tuple(entries)))

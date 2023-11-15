@@ -23,38 +23,28 @@ PRODUCT_SOURCE = ProductSource()
 
 
 class IVolume(zeit.cms.content.interfaces.IXMLContent):
-
     product = zope.schema.Choice(
-        title=_("Product id"),
+        title=_('Product id'),
         # XXX kludgy, we expect a product with this ID to be present in the XML
         # file. We only need to set an ID here, since to read the product we'll
         # ask the source anyway.
         default=zeit.cms.content.sources.Product('ZEI'),
-        source=PRODUCT_SOURCE)
+        source=PRODUCT_SOURCE,
+    )
 
-    year = zope.schema.Int(
-        title=_("Year"),
-        min=1900,
-        max=2100)
+    year = zope.schema.Int(title=_('Year'), min=1900, max=2100)
 
-    volume = zope.schema.Int(
-        title=_("Volume"),
-        min=1,
-        max=54)
+    volume = zope.schema.Int(title=_('Volume'), min=1, max=54)
 
-    teaserText = zope.schema.Text(
-        title=_("Volume text"),
-        required=False,
-        max_length=170)
+    teaserText = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
 
-    date_digital_published = zope.schema.Datetime(
-        title=_('Date of digital publication'))
+    date_digital_published = zope.schema.Datetime(title=_('Date of digital publication'))
 
     previous = zope.interface.Attribute(
-        'The previous IVolume object (by date_digital_published) or None')
+        'The previous IVolume object (by date_digital_published) or None'
+    )
 
-    next = zope.interface.Attribute(
-        'The next IVolume object (by date_digital_published) or None')
+    next = zope.interface.Attribute('The next IVolume object (by date_digital_published) or None')
 
     def fill_template(text):
         """Fill in a string template with the placeholders year=self.year
@@ -87,8 +77,9 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
         :return: [ICMSContent]
         """
 
-    def change_contents_access(access_from, access_to, published,
-                               exclude_performing_articles, dry_run):
+    def change_contents_access(
+        access_from, access_to, published, exclude_performing_articles, dry_run
+    ):
         """
         Change the access value, from access_from to access_to, for all
         content of this volume and returns the content. The changed content
@@ -111,11 +102,7 @@ class IVolume(zeit.cms.content.interfaces.IXMLContent):
 
 
 class IVolumeReference(zeit.cms.content.interfaces.IReference):
-
-    teaserText = zope.schema.Text(
-        title=_("Volume text"),
-        required=False,
-        max_length=170)
+    teaserText = zope.schema.Text(title=_('Volume text'), required=False, max_length=170)
 
 
 class ITocConnector(zope.interface.Interface):
@@ -126,7 +113,6 @@ class ITocConnector(zope.interface.Interface):
 
 
 class VolumeSource(zeit.cms.content.contentsource.CMSContentSource):
-
     check_interfaces = (IVolume,)
     name = 'volume'
 
@@ -135,9 +121,7 @@ VOLUME_SOURCE = VolumeSource()
 
 
 class VolumeCoverSource(zeit.cms.content.sources.XMLSource):
-
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
         def title(self, id):
             """Expose the `getTitle` function directly on the source class."""
             return self.factory.getTitle(self.context, id)
@@ -152,7 +136,6 @@ VOLUME_COVER_SOURCE = VolumeCoverSource()
 
 
 class AccessControlConfig(zeit.cms.content.sources.CachedXMLBase):
-
     product_configuration = 'zeit.content.volume'
     config_url = 'access-control-config'
     default_filename = 'volume_access_configuration.xml'

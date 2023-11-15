@@ -6,19 +6,22 @@ import zeit.push.urbanairship
 
 
 class ConnectionTest(zeit.push.testing.TestCase):
-
     def test_posts_data_as_json(self):
         api = zeit.push.grafana.Connection('http://example.com', '')
         message = zeit.push.urbanairship.Message(
-            ICMSContent("http://xml.zeit.de/online/2007/01/Somalia"))
+            ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        )
         message.config = {
             'payload_template': 'template.json',
             'override_text': 'foo',
-            'type': 'mobile'
+            'type': 'mobile',
         }
         with mock.patch('requests.post') as post:
             api.send(message.text, message.url, **message.config)
-            self.assertEqual({
-                'tags': ['push', 'www', 'template'],
-                'text': 'http://www.zeit.de/online/2007/01/Somalia'
-            }, post.call_args[1]['json'])
+            self.assertEqual(
+                {
+                    'tags': ['push', 'www', 'template'],
+                    'text': 'http://www.zeit.de/online/2007/01/Somalia',
+                },
+                post.call_args[1]['json'],
+            )

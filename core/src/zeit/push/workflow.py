@@ -14,17 +14,17 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.push.interfaces.IPushMessages)
 class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     zeit.cms.content.dav.mapProperties(
         zeit.push.interfaces.IPushMessages,
         zeit.workflow.interfaces.WORKFLOW_NS,
         ('message_config',),
-        writeable=WRITEABLE_ALWAYS, use_default=True)
+        writeable=WRITEABLE_ALWAYS,
+        use_default=True,
+    )
 
     zeit.cms.content.dav.mapProperties(
-        zeit.push.interfaces.IPushMessages,
-        zeit.workflow.interfaces.WORKFLOW_NS,
-        ('short_text',))
+        zeit.push.interfaces.IPushMessages, zeit.workflow.interfaces.WORKFLOW_NS, ('short_text',)
+    )
 
     @property
     def messages(self):
@@ -32,13 +32,11 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
         for config in self.message_config:
             if not config.get('enabled'):
                 continue
-            result.append(
-                self._create_message(config['type'], self.context, config))
+            result.append(self._create_message(config['type'], self.context, config))
         return result
 
     def _create_message(self, typ, content, config):
-        message = zope.component.getAdapter(
-            content, zeit.push.interfaces.IMessage, name=typ)
+        message = zope.component.getAdapter(content, zeit.push.interfaces.IMessage, name=typ)
         message.config = config
         return message
 
@@ -69,16 +67,13 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
         self.message_config = tuple(config)
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_push_properties(event):
     if event.name == 'message_config':
         event.veto()
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.workflow.interfaces.IPublishedEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
 def send_push_on_publish(context, event):
     """Send push notifications for each enabled service.
 
@@ -89,14 +84,17 @@ def send_push_on_publish(context, event):
     """
     push = zeit.push.interfaces.IPushMessages(context)
     for message in push.messages:
-        config = {key: value for key, value in message.config.items()
-                  if key not in ('type', 'enabled')}
+        config = {
+            key: value for key, value in message.config.items() if key not in ('type', 'enabled')
+        }
         config['text'] = message.text
         try:
             message.send()
         except Exception as e:
-            zeit.objectlog.interfaces.ILog(context).log(_(
-                'Error while sending ${type}: ${reason}',
-                mapping={'type': message.type.capitalize(), 'reason': str(e)}))
-            log.error('Error during push to %s with config %s',
-                      message.type, config, exc_info=True)
+            zeit.objectlog.interfaces.ILog(context).log(
+                _(
+                    'Error while sending ${type}: ${reason}',
+                    mapping={'type': message.type.capitalize(), 'reason': str(e)},
+                )
+            )
+            log.error('Error during push to %s with config %s', message.type, config, exc_info=True)

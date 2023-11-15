@@ -47,8 +47,7 @@ class LiveProperties(collections.abc.MutableMapping):
             raise zope.security.interfaces.Forbidden(key)
         if self.get(key, self) != value:  # use self as marker
             # Only call DAV when there actually is a change
-            self.connector.changeProperties(
-                self.context.uniqueId, {key: value})
+            self.connector.changeProperties(self.context.uniqueId, {key: value})
 
     def __delitem__(self, key):
         self[key] = DeleteProperty
@@ -82,9 +81,7 @@ class LiveProperties(collections.abc.MutableMapping):
         return writeable in [WRITEABLE_ON_CHECKIN, WRITEABLE_ALWAYS]
 
 
-@zope.component.adapter(
-    zope.interface.Interface,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+@zope.component.adapter(zope.interface.Interface, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def remove_live_properties(context, event):
     """Remove live properties from content.
 
@@ -96,8 +93,7 @@ def remove_live_properties(context, event):
     except TypeError:
         return
     log.info('BeforeCheckin: remove live properties from %s', context.uniqueId)
-    manager = zope.component.getUtility(
-        zeit.cms.content.interfaces.ILivePropertyManager)
+    manager = zope.component.getUtility(zeit.cms.content.interfaces.ILivePropertyManager)
     for live_property in manager.live_properties:
         if not manager.is_writeable_on_checkin(*live_property):
             properties.pop(live_property, None)

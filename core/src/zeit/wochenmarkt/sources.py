@@ -7,18 +7,16 @@ import zope.interface
 import zope.schema.interfaces
 
 
-class RecipeCategoriesSource(
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
+class RecipeCategoriesSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     check_interfaces = zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
     name = 'categories'
     addform = 'zeit.wochenmarkt.add_contextfree'
 
     @zope.interface.implementer(
         zeit.wochenmarkt.interfaces.IRecipeCategoriesSource,
-        zeit.cms.content.contentsource.IAutocompleteSource)
+        zeit.cms.content.contentsource.IAutocompleteSource,
+    )
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
         def get_check_types(self):
             """IAutocompleteSource, but not applicable for us"""
             return []
@@ -29,6 +27,7 @@ class RecipeCategoriesSource(
 
     def search(self, term):
         from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
+
         categories = zope.component.getUtility(IRecipeCategoriesWhitelist)
         return categories.search(term)
 
@@ -42,18 +41,16 @@ class RecipeCategoriesSource(
 recipeCategoriesSource = RecipeCategoriesSource()
 
 
-class IngredientsSource(
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
+class IngredientsSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     check_interfaces = zeit.wochenmarkt.interfaces.IIngredientsWhitelist
     name = 'ingredients'
     addform = 'zeit.wochenmarkt.add_contextfree'
 
     @zope.interface.implementer(
         zeit.wochenmarkt.interfaces.IIngredientsSource,
-        zeit.cms.content.contentsource.IAutocompleteSource)
+        zeit.cms.content.contentsource.IAutocompleteSource,
+    )
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
         def get_check_types(self):
             """IAutocompleteSource, but not applicable for us"""
             return []
@@ -64,6 +61,7 @@ class IngredientsSource(
 
     def search(self, term):
         from zeit.wochenmarkt.interfaces import IIngredientsWhitelist
+
         ingredients = zope.component.getUtility(IIngredientsWhitelist)
         return ingredients.search(term)
 

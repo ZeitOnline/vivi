@@ -16,43 +16,49 @@ import zope.schema
 
 
 class IPushServices(zope.interface.Interface):
-
-    mobile = zope.schema.Bool(
-        title=_('breaking-news-mobile'), required=False, default=True)
-    homepage = zope.schema.Bool(
-        title=_('breaking-news-homepage'), required=False, default=True)
-    social = zope.schema.Bool(
-        title=_('breaking-news-social'), required=False, default=True)
+    mobile = zope.schema.Bool(title=_('breaking-news-mobile'), required=False, default=True)
+    homepage = zope.schema.Bool(title=_('breaking-news-homepage'), required=False, default=True)
+    social = zope.schema.Bool(title=_('breaking-news-social'), required=False, default=True)
 
 
-class Add(zeit.cms.browser.form.AddForm,
-          zeit.cms.browser.form.CharlimitMixin):
-
+class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
     factory = zeit.content.article.article.Article
     next_view = 'do-publish'
 
     form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.article.interfaces.IArticle).select(
-                '__name__', 'ressort', 'sub_ressort', 'channels',
-                'commentsAllowed', 'commentsPremoderate') +
-        zope.formlib.form.FormFields(
-            zeit.content.article.interfaces.IBreakingNews).select('title') +
-        zope.formlib.form.FormFields(
-            zeit.content.article.edit.interfaces.IBreakingNewsBody) +
-        zope.formlib.form.FormFields(
-            IPushServices)
+        zope.formlib.form.FormFields(zeit.content.article.interfaces.IArticle).select(
+            '__name__',
+            'ressort',
+            'sub_ressort',
+            'channels',
+            'commentsAllowed',
+            'commentsPremoderate',
+        )
+        + zope.formlib.form.FormFields(zeit.content.article.interfaces.IBreakingNews).select(
+            'title'
+        )
+        + zope.formlib.form.FormFields(zeit.content.article.edit.interfaces.IBreakingNewsBody)
+        + zope.formlib.form.FormFields(IPushServices)
     )
 
     field_groups = (
-        gocept.form.grouped.Fields('', (
-            'title', '__name__', 'text',
-            'commentsAllowed', 'commentsPremoderate',
-            'homepage', 'mobile', 'social'),
-            css_class='wide-widgets column-left'),
-        gocept.form.grouped.Fields('', (
-            'ressort', 'sub_ressort', 'channels'),
-            css_class='column-right'),
+        gocept.form.grouped.Fields(
+            '',
+            (
+                'title',
+                '__name__',
+                'text',
+                'commentsAllowed',
+                'commentsPremoderate',
+                'homepage',
+                'mobile',
+                'social',
+            ),
+            css_class='wide-widgets column-left',
+        ),
+        gocept.form.grouped.Fields(
+            '', ('ressort', 'sub_ressort', 'channels'), css_class='column-right'
+        ),
     )
 
     def setUpWidgets(self, *args, **kw):
@@ -68,12 +74,10 @@ class Add(zeit.cms.browser.form.AddForm,
         self.widgets['__name__'].cssClass = 'breakingnews-filename'
         if not self.widgets['text'].hasInput():
             self.widgets['text'].setRenderedValue(
-                zope.i18n.translate(
-                    self.form_fields['text'].field.default,
-                    context=self.request))
+                zope.i18n.translate(self.form_fields['text'].field.default, context=self.request)
+            )
 
-    @zope.formlib.form.action(
-        _('Publish and push'), condition=zope.formlib.form.haveInputWidgets)
+    @zope.formlib.form.action(_('Publish and push'), condition=zope.formlib.form.haveInputWidgets)
     def handle_add(self, action, data):
         self.createAndAdd(data)
 
@@ -83,29 +87,39 @@ class Add(zeit.cms.browser.form.AddForm,
             source = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory
             # XXX hard-coded value
             template = source.find('eilmeldung.json')
-            message_config.append({
-                'type': 'mobile', 'enabled': True, 'variant': 'manual',
-                'title': source.getDefaultTitle(template),
-                'payload_template': template.__name__,
-            })
-        if data.pop('homepage', False):
             message_config.append(
-                {'type': 'homepage', 'enabled': True})
+                {
+                    'type': 'mobile',
+                    'enabled': True,
+                    'variant': 'manual',
+                    'title': source.getDefaultTitle(template),
+                    'payload_template': template.__name__,
+                }
+            )
+        if data.pop('homepage', False):
+            message_config.append({'type': 'homepage', 'enabled': True})
         if data.pop('social', False):
             message_config.append(
-                {'type': 'facebook', 'enabled': True,
-                 'override_text': data['title'],
-                 'account': zeit.push.interfaces.facebookAccountSource(
-                     self.context).MAIN_ACCOUNT})
+                {
+                    'type': 'facebook',
+                    'enabled': True,
+                    'override_text': data['title'],
+                    'account': zeit.push.interfaces.facebookAccountSource(
+                        self.context
+                    ).MAIN_ACCOUNT,
+                }
+            )
             message_config.append(
-                {'type': 'twitter', 'enabled': True,
-                 'account': zeit.push.interfaces.twitterAccountSource(
-                     self.context).MAIN_ACCOUNT})
+                {
+                    'type': 'twitter',
+                    'enabled': True,
+                    'account': zeit.push.interfaces.twitterAccountSource(self.context).MAIN_ACCOUNT,
+                }
+            )
 
         article = super().create(data)
         # XXX Duplicated from .form.AddAndCheckout
-        settings = zeit.cms.settings.interfaces.IGlobalSettings(
-            self.context)
+        settings = zeit.cms.settings.interfaces.IGlobalSettings(self.context)
         article.year = settings.default_year
         article.volume = settings.default_volume
 
@@ -128,21 +142,18 @@ class Add(zeit.cms.browser.form.AddForm,
 
     def add(self, object, container=None):
         super().add(object, container)
-        zeit.content.article.interfaces.IBreakingNews(
-            self._created_object).is_breaking = True
+        zeit.content.article.interfaces.IBreakingNews(self._created_object).is_breaking = True
         # We need to check out the new article so that AfterCheckout events are
         # run (which e.g. set default values of ICommonMetadata fields), but
         # the user won't want to edit anything right now, so we check in
         # immediately (and redirect to a view that triggers publishing).
-        self._created_object = ICheckinManager(
-            self._created_object).checkin()
+        self._created_object = ICheckinManager(self._created_object).checkin()
         self._checked_out = False
 
         IPublishInfo(self._created_object).urgent = True
 
 
 class Retract:
-
     @property
     def breakingnews(self):
         return zeit.content.article.interfaces.IBreakingNews(self.context)
@@ -161,6 +172,5 @@ class Retract:
 
     @property
     def banner(self):
-        banner = zope.component.getUtility(
-            zeit.push.interfaces.IBanner)
+        banner = zope.component.getUtility(zeit.push.interfaces.IBanner)
         return banner.xml_banner

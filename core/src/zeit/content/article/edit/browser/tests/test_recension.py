@@ -7,11 +7,10 @@ import zeit.content.article.testing
 
 
 class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
-
     def create_recension(self):
         with zeit.cms.checkout.helper.checked_out(
-            zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/online/2007/01/Somalia')) as co:
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        ) as co:
             recension = zeit.content.article.recension.BookRecension()
             recension.authors = ['William Shakespeare']
             recension.title = 'Hamlet'
@@ -28,8 +27,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
-        self.eval('document.querySelector("%s").scrollIntoView()' %
-                  fold.replace('css=', ''))
+        self.eval('document.querySelector("%s").scrollIntoView()' % fold.replace('css=', ''))
 
     def test_recensions_should_be_listed(self):
         self.create_recension()
@@ -68,8 +66,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         fold = 'css=#edit-form-recensions .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
-        self.eval('document.querySelector("%s").scrollIntoView()' %
-                  fold.replace('css=', ''))
+        self.eval('document.querySelector("%s").scrollIntoView()' % fold.replace('css=', ''))
         s.click('jquery=#recensions a:contains(Add new)')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.authors.0.', 'Lord Byron')

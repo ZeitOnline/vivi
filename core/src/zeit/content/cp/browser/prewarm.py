@@ -5,7 +5,6 @@ import zeit.content.cp.cache
 
 
 class Prewarm(zeit.cms.browser.view.Base):
-
     def __call__(self):
         zeit.content.cp.cache.prewarm_cache.delay(self.context.uniqueId)
         self.send_message(_('Prewarming, this might take some time'))
@@ -14,15 +13,12 @@ class Prewarm(zeit.cms.browser.view.Base):
 
 
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
-
     title = _('Prewarm cache')
 
 
 class PrewarmManual(zeit.cms.browser.view.Base):
-
     def __call__(self):
-        zeit.content.cp.cache.prewarm_cache.delay(
-            self.request.form['uniqueId'])
+        zeit.content.cp.cache.prewarm_cache.delay(self.request.form['uniqueId'])
         self.send_message(_('Prewarming, this might take some time'))
         self.redirect(self.url(self.context))
         return ''

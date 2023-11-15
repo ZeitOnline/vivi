@@ -12,12 +12,12 @@ import zope.app.appsetup.product
 
 
 class PsqlServiceResolver(Resolver):
-
     def __call__(self, parsed_uri, kw):
         def factory(options):
             from relstorage.adapters.postgresql import PostgreSQLAdapter
-            return PostgreSQLAdapter(
-                dsn='service=' + parsed_uri.hostname, options=options)
+
+            return PostgreSQLAdapter(dsn='service=' + parsed_uri.hostname, options=options)
+
         return factory, kw
 
 
@@ -40,15 +40,15 @@ class RelStorageInstrumentor(BaseInstrumentor):
     """
 
     def instrumentation_dependencies(self):
-        return ("relstorage ~= 3.5",)
+        return ('relstorage ~= 3.5',)
 
     def _instrument(self, **kw):
-        tracer = opentelemetry.trace.get_tracer(
-            __name__, tracer_provider=kw.get("tracer_provider"))
+        tracer = opentelemetry.trace.get_tracer(__name__, tracer_provider=kw.get('tracer_provider'))
 
         if not perfmetrics._util.PURE_PYTHON:
             logging.getLogger(__name__).warning(
-                'perfmetrics loaded C extensions, skipping instrumentation')
+                'perfmetrics loaded C extensions, skipping instrumentation'
+            )
             return
 
         wrapped_call = MetricImpl.__call__
@@ -57,13 +57,12 @@ class RelStorageInstrumentor(BaseInstrumentor):
         def instrumented_call(self, *args, **kw):
             # XXX Reuse zeo sampling, move it here when we remove zeo.
             if logging.getLogger('zeit.cms.zeo').isEnabledFor(logging.DEBUG):
-                config = zope.app.appsetup.product.getProductConfiguration(
-                    'zeit.cms')
+                config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
                 operation = self.stat_name or self._compute_stat(args)
                 with tracer.start_as_current_span(
-                        operation, attributes={
-                            'span.kind': 'client',
-                            'SampleRate': config['samplerate-zeo']}):
+                    operation,
+                    attributes={'span.kind': 'client', 'SampleRate': config['samplerate-zeo']},
+                ):
                     return wrapped_call(self, *args, **kw)
             else:
                 return wrapped_call(self, *args, **kw)

@@ -9,21 +9,17 @@ import zope.component
 import zope.interface
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(
-    zeit.content.image.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.image.testing.CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = ZOPE_LAYER
 
 
-@zope.component.adapter(
-    zeit.cms.testcontenttype.interfaces.IExampleContentType)
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
     def get_tree(self):
         return self.context.xml['body']
 

@@ -18,20 +18,18 @@ import zope.interface
 log = logging.getLogger(__name__)
 
 
-@zope.interface.implementer(
-    zeit.content.dynamicfolder.interfaces.ICloneArmy)
+@zope.interface.implementer(zeit.content.dynamicfolder.interfaces.ICloneArmy)
 class CloneArmy(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     activate = zeit.cms.content.dav.DAVProperty(
         zeit.content.dynamicfolder.interfaces.ICloneArmy['activate'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'materializeable',
-        writeable=WRITEABLE_ALWAYS
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'materializeable',
+        writeable=WRITEABLE_ALWAYS,
     )
 
 
 def materialize_content(folder):
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.dynamicfolder') or {}
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.dynamicfolder') or {}
     batch_size = config.get('materialized-publish-batch-size', 100)
 
     to_regenerate = []
@@ -59,8 +57,11 @@ def materialize_content(folder):
         materialize.delay(folder.uniqueId, to_materialize)
 
     zeit.objectlog.interfaces.ILog(folder).log(
-        _('Materialize ${materialize}, Regenerate ${regenerate}', mapping={
-            'materialize': materialize_count, 'regenerate': regenerate_count}))
+        _(
+            'Materialize ${materialize}, Regenerate ${regenerate}',
+            mapping={'materialize': materialize_count, 'regenerate': regenerate_count},
+        )
+    )
 
 
 @zeit.cms.celery.task(queue='manual')
@@ -71,7 +72,8 @@ def materialize(folder_id, keys):
         log.info('Materialize %s', content.uniqueId)
         _materialize(content)
     zeit.objectlog.interfaces.ILog(folder).log(
-        _('Materialized ${count}', mapping={'count': len(keys)}))
+        _('Materialized ${count}', mapping={'count': len(keys)})
+    )
 
 
 @zeit.cms.celery.task(queue='manual')
@@ -83,7 +85,8 @@ def regenerate(folder_id, keys):
         log.info('Regenerate %s', content.uniqueId)
         _materialize(content)
     zeit.objectlog.interfaces.ILog(folder).log(
-        _('Regenerated ${count}', mapping={'count': len(keys)}))
+        _('Regenerated ${count}', mapping={'count': len(keys)})
+    )
 
 
 def _materialize(content):
@@ -103,8 +106,7 @@ def _materialize(content):
 
 
 def publish_content(folder):
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.dynamicfolder') or {}
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.dynamicfolder') or {}
     batch_size = config.get('materialized-publish-batch-size', 100)
     publish = zeit.cms.workflow.interfaces.IPublish(folder)
     count = 0
@@ -123,4 +125,5 @@ def publish_content(folder):
     # This also handles any batch that may be remaining after the loop.
     publish.publish_multiple(objects, priority='manual')
     zeit.objectlog.interfaces.ILog(folder).log(
-        _('About to publish ${count} objects', mapping={'count': count}))
+        _('About to publish ${count} objects', mapping={'count': count})
+    )

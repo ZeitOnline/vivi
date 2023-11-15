@@ -9,18 +9,16 @@ import zope.security.proxy
 import zope.viewlet.manager
 
 
-class BlockViewletManager(
-        zeit.edit.browser.view.ErrorPreventingViewletManager):
-
+class BlockViewletManager(zeit.edit.browser.view.ErrorPreventingViewletManager):
     def __init__(self, context, request, view):
         super().__init__(context, request, view)
-        self.validation_class, self.validation_messages = (
-            zeit.edit.browser.view.validate(self.context))
+        self.validation_class, self.validation_messages = zeit.edit.browser.view.validate(
+            self.context
+        )
 
     @property
     def css_class(self):
-        classes = ['block', 'type-' + self.context.type,
-                   'represents-content-object']
+        classes = ['block', 'type-' + self.context.type, 'represents-content-object']
         for interface in zope.interface.providedBy(self.context):
             name = '%s.%s' % (interface.__module__, interface.__name__)
             classes.append(name.replace('.', '-'))
@@ -30,20 +28,18 @@ class BlockViewletManager(
 
 
 class Add(zeit.edit.browser.view.Action):
-
     type = zeit.edit.browser.view.Form('type')
 
     def update(self):
         factory = zope.component.getAdapter(
-            self.context, zeit.edit.interfaces.IElementFactory,
-            name=self.type)
+            self.context, zeit.edit.interfaces.IElementFactory, name=self.type
+        )
         created = factory()
         self.reload()
         self.signal('after-reload', 'added', created.__name__)
 
 
 class Delete(zeit.edit.browser.view.Action):
-
     key = zeit.edit.browser.view.Form('key')
 
     def update(self):
@@ -53,23 +49,23 @@ class Delete(zeit.edit.browser.view.Action):
 
 
 class View(zeit.cms.browser.view.Base):
-
     @property
     def factory(self):
         return zope.component.getAdapter(
             zeit.edit.interfaces.IArea(self.context),
             zeit.edit.interfaces.IElementFactory,
-            name=self.context.type)
+            name=self.context.type,
+        )
 
     def title(self):
         return self.factory.title
 
 
 class Unknown(zeit.cms.browser.view.Base):
-
     title = _('Unknown block')
 
     @property
     def xml(self):
         return lxml.etree.tostring(
-            zope.security.proxy.getObject(self.context.xml), pretty_print=True)
+            zope.security.proxy.getObject(self.context.xml), pretty_print=True
+        )

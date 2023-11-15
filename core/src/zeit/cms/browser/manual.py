@@ -9,7 +9,6 @@ import zope.interface
 
 
 class LinkSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.cms'
     config_url = 'source-manual'
     default_filename = 'vivi-handbuch.xml'
@@ -20,19 +19,16 @@ LINK_SOURCE = LinkSource()
 
 
 class LinkField(zope.schema.TextLine):
-
     def __init__(self):
         super().__init__(readonly=True)
 
 
 class ILink(zope.interface.Interface):
-
     manual_link = LinkField()
 
 
 @zope.interface.implementer(ILink)
 class DummyLink:
-
     manual_link = None
 
 
@@ -43,7 +39,6 @@ def satisfy_formlib(context):
 
 
 class LinkWidget(zope.formlib.widget.BrowserWidget):
-
     __call__ = ViewPageTemplateFile('manual.pt')
     # Must be set in setUpWidgets, because zope.formlib API provides no access
     # to the form from the widget, major sigh.
@@ -52,12 +47,12 @@ class LinkWidget(zope.formlib.widget.BrowserWidget):
     @property
     def href(self):
         terms = zope.component.getMultiAdapter(
-            (LINK_SOURCE(None), self.request), zope.browser.interfaces.ITerms)
+            (LINK_SOURCE(None), self.request), zope.browser.interfaces.ITerms
+        )
         return terms.getTerm(self.key).title
 
 
 class FormMixin:
-
     def __init__(self, context, request):
         super().__init__(context, request)
         self.form_fields += zope.formlib.form.FormFields(ILink)
@@ -66,5 +61,4 @@ class FormMixin:
         super().setUpWidgets(*args, **kwargs)
         # Skip the zope.metaconfigure baseclass synthesized by <browser:page>
         cls = self.__class__.__bases__[0]
-        self.widgets['manual_link'].key = '.'.join([
-            cls.__module__, cls.__name__])
+        self.widgets['manual_link'].key = '.'.join([cls.__module__, cls.__name__])

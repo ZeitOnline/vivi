@@ -49,8 +49,8 @@ class Connector(zeit.connector.filesystem.Connector):
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
         import zope.app.appsetup.product
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.connector') or {}
+
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
         connector = super().factory()
         connector.detect_mime_type = config.get('detect-mime-type', True)
         return connector
@@ -64,11 +64,12 @@ class Connector(zeit.connector.filesystem.Connector):
         self.search_result = self.search_result_default[:]
 
     def listCollection(self, id):
-        """List the filenames of a collection identified by path. """
+        """List the filenames of a collection identified by path."""
         return (
             (name, _id)
             for name, _id in super().listCollection(id)
-            if _id not in self._deleted and _id + '/' not in self._deleted)
+            if _id not in self._deleted and _id + '/' not in self._deleted
+        )
 
     def _get_collection_names(self, path):
         names = super()._get_collection_names(path)
@@ -98,8 +99,7 @@ class Connector(zeit.connector.filesystem.Connector):
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
         id = self._get_cannonical_id(id)
-        iscoll = (resource.type == 'collection' or
-                  resource.contentType == 'httpd/unix-directory')
+        iscoll = resource.type == 'collection' or resource.contentType == 'httpd/unix-directory'
         if iscoll and not id.endswith('/'):
             id = CannonicalId(id + '/')
         resource.id = str(id)  # override
@@ -113,16 +113,14 @@ class Connector(zeit.connector.filesystem.Connector):
             old_etag = None
         new_etag = resource.properties.get(('getetag', 'DAV:'))
         if new_etag and new_etag != old_etag:
-            if (id not in self or
-                    resource.data.read() != self[id].data.read()):
+            if id not in self or resource.data.read() != self[id].data.read():
                 raise zeit.connector.dav.interfaces.PreconditionFailedError()
 
         if id in self._deleted:
             self._deleted.remove(id)
 
         if not self._ignore_uuid_checks:
-            existing_uuid = (
-                id in self and self[id].properties.get(UUID_PROPERTY))
+            existing_uuid = id in self and self[id].properties.get(UUID_PROPERTY)
             new_uuid = resource.properties.get(UUID_PROPERTY)
             if not new_uuid:
                 if existing_uuid:
@@ -138,8 +136,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 if key == self._get_cannonical_id(resource.id):
                     continue
                 existing_uuid = self._properties[key].get(UUID_PROPERTY)
-                if (existing_uuid and existing_uuid ==
-                        resource.properties[UUID_PROPERTY]):
+                if existing_uuid and existing_uuid == resource.properties[UUID_PROPERTY]:
                     raise http.client.HTTPException(409, 'Conflict')
 
         # Just a very basic in-memory data storage for testing purposes.
@@ -147,28 +144,23 @@ class Connector(zeit.connector.filesystem.Connector):
         self._data[id] = resource.data.read()
         resource.data.close()
         path = self._path(id)
-        self._paths.setdefault(os.path.dirname(path), set()).add(
-            os.path.basename(path))
+        self._paths.setdefault(os.path.dirname(path), set()).add(os.path.basename(path))
 
-        resource.properties[
-            zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
+        resource.properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
         if resource.contentType == 'httpd/unix-directory':
             # XXX kludgy. We need to be able to differentiate directories,
             # so they get a trailing slash in their CanonicalId, but also
             # don't want to store random content types, so the filemagic
             # detetection e.g. for images takes over on the next read.
-            resource.properties[
-                ('getcontenttype', 'DAV:')] = resource.contentType
+            resource.properties[('getcontenttype', 'DAV:')] = resource.contentType
         resource.properties[('getlastmodified', 'DAV:')] = str(
-            datetime.datetime.now(pytz.UTC).strftime(
-                '%a, %d %b %Y %H:%M:%S GMT'))
-        resource.properties[('getetag', 'DAV:')] = repr(
-            time.time()) + repr(random.random())
+            datetime.datetime.now(pytz.UTC).strftime('%a, %d %b %Y %H:%M:%S GMT')
+        )
+        resource.properties[('getetag', 'DAV:')] = repr(time.time()) + repr(random.random())
 
         self._set_properties(id, resource.properties)
 
-        zope.event.notify(
-            zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
     def __delitem__(self, id):
         id = self._get_cannonical_id(id)
@@ -178,8 +170,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._deleted.add(id)
         self._data.pop(id, None)
         self._properties.pop(id, None)
-        zope.event.notify(
-            zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
     def add(self, object, verify_etag=True):
         resource = zeit.connector.interfaces.IResource(object)
@@ -215,20 +206,19 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def _prevent_overwrite(self, old_id, new_id, exception):
         if zeit.connector.connector.Connector._is_descendant(new_id, old_id):
-            raise exception(
-                old_id,
-                'Could not copy or move %s to a decendant of itself.' % old_id)
+            raise exception(old_id, 'Could not copy or move %s to a decendant of itself.' % old_id)
 
         if new_id in self:
             # The target already exists. It's possible that there was a
             # conflict. Verify body.
-            if ('httpd/unix-directory' in (self[old_id].contentType,
-                                           self[new_id].contentType) or
-                    self[old_id].data.read() != self[new_id].data.read()):
+            if (
+                'httpd/unix-directory' in (self[old_id].contentType, self[new_id].contentType)
+                or self[old_id].data.read() != self[new_id].data.read()
+            ):
                 raise exception(
                     old_id,
-                    "Could not move %s to %s, because target alread exists." %
-                    (old_id, new_id))
+                    'Could not move %s to %s, because target alread exists.' % (old_id, new_id),
+                )
 
     def changeProperties(self, id, properties):
         id = self._get_cannonical_id(id)
@@ -252,15 +242,16 @@ class Connector(zeit.connector.filesystem.Connector):
     search_result_default = [
         'http://xml.zeit.de/online/2007/01/Somalia',
         'http://xml.zeit.de/online/2007/01/Saarland',
-        'http://xml.zeit.de/2006/52/Stimmts']
+        'http://xml.zeit.de/2006/52/Stimmts',
+    ]
 
     def search(self, attributes, expression):
-        log.debug("Searching: %s", expression._render())
+        log.debug('Searching: %s', expression._render())
 
         unique_ids = self.search_result
 
         metadata = ('pm', '07') + len(attributes) * (None,)
-        metadata = metadata[:len(attributes)]
+        metadata = metadata[: len(attributes)]
 
         return ((unique_id,) + metadata for unique_id in unique_ids)
 
@@ -304,9 +295,12 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def _set_properties(self, id, properties):
         stored_properties = self._get_properties(id)
-        for ((name, namespace), value) in properties.items():
-            if (name.startswith('get') and name not in (
-                    'getlastmodified', 'getetag', 'getcontenttype')):
+        for (name, namespace), value in properties.items():
+            if name.startswith('get') and name not in (
+                'getlastmodified',
+                'getetag',
+                'getcontenttype',
+            ):
                 continue
             stored_properties[(name, namespace)] = value
             if value is zeit.connector.interfaces.DeleteProperty:
@@ -326,7 +320,7 @@ class TextPlain(filetype.Type):
     prefix = b'Mary had'
 
     def match(self, buf):
-        return buf[:len(self.prefix)] == self.prefix
+        return buf[: len(self.prefix)] == self.prefix
 
 
 filetype.TYPES.append(TextPlain('text/plain', '.txt'))

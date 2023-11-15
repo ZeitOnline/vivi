@@ -13,7 +13,6 @@ import zope.security.proxy
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.content.image.interfaces.ITransform)
 class ImageTransform:
-
     MAXIMUM_IMAGE_SIZE = 5000
 
     def __init__(self, context):
@@ -24,15 +23,15 @@ class ImageTransform:
                 self.image.load()
         except IOError:
             raise zeit.content.image.interfaces.ImageProcessingError(
-                "Cannot transform image %s" % context.__name__)
+                'Cannot transform image %s' % context.__name__
+            )
 
     def thumbnail(self, width, height, filter=PIL.Image.Resampling.LANCZOS):
         image = self.image.copy()
         image.thumbnail((width, height), filter)
         return self._construct_image(image)
 
-    def resize(self, width=None, height=None,
-               filter=PIL.Image.Resampling.LANCZOS):
+    def resize(self, width=None, height=None, filter=PIL.Image.Resampling.LANCZOS):
         if width is None and height is None:
             raise TypeError('Need at least one of width and height.')
 
@@ -48,8 +47,7 @@ class ImageTransform:
         image = self.image.resize((int(width), int(height)), filter)
         return self._construct_image(image)
 
-    def create_variant_image(
-            self, variant, size=None, fill_color=None, format=None):
+    def create_variant_image(self, variant, size=None, fill_color=None, format=None):
         """Create variant image from source image.
 
         Will crop the image according to the zoom, focus point and size. In
@@ -70,17 +68,13 @@ class ImageTransform:
 
         # Apply enhancements like brightness
         if variant.brightness is not None:
-            image = PIL.ImageEnhance.Brightness(image).enhance(
-                variant.brightness)
+            image = PIL.ImageEnhance.Brightness(image).enhance(variant.brightness)
         if variant.contrast is not None:
-            image = PIL.ImageEnhance.Contrast(image).enhance(
-                variant.contrast)
+            image = PIL.ImageEnhance.Contrast(image).enhance(variant.contrast)
         if variant.saturation is not None:
-            image = PIL.ImageEnhance.Color(image).enhance(
-                variant.saturation)
+            image = PIL.ImageEnhance.Color(image).enhance(variant.saturation)
         if variant.sharpness is not None:
-            image = PIL.ImageEnhance.Sharpness(image).enhance(
-                variant.sharpness)
+            image = PIL.ImageEnhance.Sharpness(image).enhance(variant.sharpness)
 
         # Optionally fill the background of transparent images
         if fill_color not in [None, 'None'] and self._color_mode == 'RGBA':
@@ -103,7 +97,7 @@ class ImageTransform:
 
         """
         source_width, source_height = self.image.size
-        if (source_width == 0 or source_height == 0):
+        if source_width == 0 or source_height == 0:
             return self.image
         zoomed_width = source_width
         zoomed_height = source_height
@@ -117,22 +111,22 @@ class ImageTransform:
             sh = source_height
             target_ratio = (float(sw) / float(sh)) if sh != 0 else 0
         target_width, target_height = self._fit_ratio_to_image(
-            zoomed_width, zoomed_height, target_ratio)
+            zoomed_width, zoomed_height, target_ratio
+        )
         if size:
             w, h = size
             if w > 0 and h > 0:
-                override_ratio = (float(w) / float(h))
+                override_ratio = float(w) / float(h)
                 target_width, target_height = self._fit_ratio_to_image(
-                    target_width, target_height, override_ratio)
+                    target_width, target_height, override_ratio
+                )
 
-        x, y = self._determine_crop_position(
-            variant, target_width, target_height)
-        image = self._crop(
-            self.image, x, y, x + target_width, y + target_height)
+        x, y = self._determine_crop_position(variant, target_width, target_height)
+        image = self._crop(self.image, x, y, x + target_width, y + target_height)
 
         if size:
             w, h = size
-            if (w == 0 or h == 0):
+            if w == 0 or h == 0:
                 return image
             if w > self.MAXIMUM_IMAGE_SIZE:
                 w = self.MAXIMUM_IMAGE_SIZE
@@ -196,8 +190,7 @@ class ImageTransform:
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.content.image.interfaces.IPersistentThumbnail)
 def persistent_thumbnail_factory(context):
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.image') or {}
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image') or {}
     method_name = config.get('thumbnail-method', 'thumbnail')
     width = config.get('thumbnail-width', 50)
     if width:
@@ -210,18 +203,15 @@ def persistent_thumbnail_factory(context):
     else:
         height = None
 
-    thumbnail_container = zeit.content.image.interfaces.IThumbnailFolder(
-        context)
+    thumbnail_container = zeit.content.image.interfaces.IThumbnailFolder(context)
     image_name = context.__name__
     if image_name not in thumbnail_container:
         transform = zeit.content.image.interfaces.ITransform(context)
         method = getattr(transform, method_name)
         thumbnail = method(width, height)
 
-        thumbnail_properties = (
-            zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail))
-        image_properties = zeit.connector.interfaces.IWebDAVReadProperties(
-            context)
+        thumbnail_properties = zeit.connector.interfaces.IWebDAVWriteProperties(thumbnail)
+        image_properties = zeit.connector.interfaces.IWebDAVReadProperties(context)
         for (name, namespace), value in image_properties.items():
             if namespace != 'DAV:':
                 thumbnail_properties[(name, namespace)] = value

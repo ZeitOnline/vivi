@@ -1,22 +1,23 @@
 # search.py
 # format a search spec as S-expression
 
-quotetable = (('"', '\\"'),
-              ('\n', '\\n'),
-              ('\t', '\\t'),
-              # add others as necessary
-              )
+quotetable = (
+    ('"', '\\"'),
+    ('\n', '\\n'),
+    ('\t', '\\t'),
+    # add others as necessary
+)
 
 
 def quotestring(str):
-    "Returns escaped and double-quoted string"
+    'Returns escaped and double-quoted string'
     for orig, target in quotetable:
         str = str.replace(orig, target)
     return '"' + str + '"'
 
 
 def render(x):
-    "Kludge: render a string or some special object"
+    'Kludge: render a string or some special object'
     if isinstance(x, SearchSymbol):  # FIXME more generic!
         return x._render()
     else:  # assume string
@@ -25,8 +26,9 @@ def render(x):
 
 class SearchExpr:
     """SearchExpr is the most-general class.
-       Its instances may be SearchTerms or arbitrarily
-       nested combinations of them, linked by Boolean operators"""
+    Its instances may be SearchTerms or arbitrarily
+    nested combinations of them, linked by Boolean operators"""
+
     def __init__(self, operator, *operands):
         self.operator = operator
         self.operands = operands
@@ -52,27 +54,34 @@ class SearchExpr:
 
     def _render(self):
         self._collect()
-        return '(:' + ' '.join(
-            [self.operator] + [o._render() for o in self.operands]) + ')'
+        return '(:' + ' '.join([self.operator] + [o._render() for o in self.operands]) + ')'
 
     def _pprint(self, prfix=''):
         self._collect()
-        return prfix + '(:' + self.operator + "\n" + \
-            '\n'.join([o._pprint(prfix + '  ') for o in self.operands]) + ')'
+        return (
+            prfix
+            + '(:'
+            + self.operator
+            + '\n'
+            + '\n'.join([o._pprint(prfix + '  ') for o in self.operands])
+            + ')'
+        )
 
 
 class SearchTerm(SearchExpr):
     """SearchTerm is the middle-tier.
-       An elementary predicate operating on SearchVars and values.
-       Think function taking predicates and returning boolean.
-       For some obscure oo reasons the possible predicates 'live'
-       in the class SearchVar"""
+    An elementary predicate operating on SearchVars and values.
+    Think function taking predicates and returning boolean.
+    For some obscure oo reasons the possible predicates 'live'
+    in the class SearchVar"""
+
     def _render(self):
         # NOTE: assumes operand[1..] to be "constants"
         return '(:%s %s %s)' % (
             self.operator,
             self.operands[0]._render(),
-            ' '.join([render(o) for o in self.operands[1:]]))
+            ' '.join([render(o) for o in self.operands[1:]]),
+        )
 
     def _pprint(self, prfix=''):
         return prfix + self._render()
@@ -84,8 +93,9 @@ class SearchTerm(SearchExpr):
 
 class SearchVar:
     """SearchVar is the lowest being in the hierarchy.
-       Others call this an atom. Basically, a qname, which
-       is basically a namespace name pair"""
+    Others call this an atom. Basically, a qname, which
+    is basically a namespace name pair"""
+
     def __init__(self, name, namespace):
         self.name = name
         self.namespace = namespace
@@ -113,8 +123,8 @@ class SearchVar:
 
 
 class SearchSymbol:
-    """SearchSymbol is a sibling of SearchVar, another atom
-    """
+    """SearchSymbol is a sibling of SearchVar, another atom"""
+
     def __init__(self, name):
         self.name = name
 

@@ -7,23 +7,20 @@ import zope.interface
 
 
 class NextRead(zeit.edit.browser.form.InlineForm):
-
     legend = ''
     prefix = 'nextread'
     form_fields = FormFields(
-        zeit.magazin.interfaces.INextRead,
-        zeit.magazin.interfaces.IRelatedLayout)
+        zeit.magazin.interfaces.INextRead, zeit.magazin.interfaces.IRelatedLayout
+    )
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
         self.widgets['nextread'].detail_view_name = '@@related-details'
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
 
-class Social(zeit.content.article.edit.browser.push.Social,
-             zeit.magazin.browser.social.SocialBase):
+class Social(zeit.content.article.edit.browser.push.Social, zeit.magazin.browser.social.SocialBase):
     pass

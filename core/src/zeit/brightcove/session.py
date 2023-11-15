@@ -18,7 +18,6 @@ _holder = threading.local()
 
 @zope.interface.implementer(zeit.brightcove.interfaces.ISession)
 class Session:
-
     def __init__(self):
         self.items = []
         self._needs_to_join = True
@@ -82,19 +81,20 @@ class APIDataManager:
 
     def sortKey(self):
         # Try to sort last, so that we vote last.
-        return "~zeit.brightcove:%f" % time.time()
+        return '~zeit.brightcove:%f' % time.time()
 
     def savepoint(self):
         return NoOpSavepoint()
 
     def __repr__(self):
         return '<%s.%s for %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            transaction.get())
+            self.__class__.__module__,
+            self.__class__.__name__,
+            transaction.get(),
+        )
 
 
 @zope.interface.implementer(transaction.interfaces.IDataManagerSavepoint)
 class NoOpSavepoint:
-
     def rollback(self):
         raise RuntimeError('Cannot rollback BC-API savepoints.')

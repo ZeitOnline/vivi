@@ -6,4 +6,5 @@ def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         layer=zeit.content.rawxml.testing.WSGI_LAYER,
-        package='zeit.content.rawxml.browser')
+        package='zeit.content.rawxml.browser',
+    )

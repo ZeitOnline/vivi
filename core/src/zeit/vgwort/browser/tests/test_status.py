@@ -6,7 +6,6 @@ import zeit.vgwort.testing
 
 
 class RetryReport(zeit.vgwort.testing.BrowserTestCase):
-
     layer = zeit.vgwort.testing.TMS_WSGI_LAYER
     login_as = 'producer:producerpw'
 
@@ -14,12 +13,10 @@ class RetryReport(zeit.vgwort.testing.BrowserTestCase):
         content = self.repository['testcontent']
         info = zeit.vgwort.interfaces.IReportInfo(content)
         info.reported_on = datetime(2017, 5, 22, tzinfo=pytz.UTC)
-        zeit.cms.workflow.interfaces.IPublishInfo(
-            content).date_first_released = info.reported_on
+        zeit.cms.workflow.interfaces.IPublishInfo(content).date_first_released = info.reported_on
 
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository'
-               '/testcontent/@@vgwort.html')
+        b.open('http://localhost/++skin++vivi/repository' '/testcontent/@@vgwort.html')
         self.assertEllipsis('...Meldung erfolgreich...', b.contents)
         b.getControl('Erneut melden').click()
         self.assertEllipsis('...Nicht gemeldet...', b.contents)

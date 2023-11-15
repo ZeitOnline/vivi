@@ -24,12 +24,11 @@ class Notification:
     """
 
     def __call__(self):
-        body = self.request.bodyStream.read(
-            int(self.request['CONTENT_LENGTH']))
+        body = self.request.bodyStream.read(int(self.request['CONTENT_LENGTH']))
         data = json.loads(body)
         if data.get('event') != 'video-change' or not data.get('video'):
             return
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.brightcove')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
         zeit.brightcove.update.import_video_async.delay(
-            data.get('video'), _principal_id_=config['index-principal'])
+            data.get('video'), _principal_id_=config['index-principal']
+        )

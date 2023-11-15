@@ -1,7 +1,6 @@
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.section.interfaces import (
-    ISection, ISectionMarker, IRessortSection)
+from zeit.cms.section.interfaces import ISection, ISectionMarker, IRessortSection
 import grokcore.component as grok
 import os.path
 import zeit.cms.interfaces
@@ -11,20 +10,17 @@ import zope.interface
 import zope.security.proxy
 
 
-@grok.subscribe(
-    ICMSContent, zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+@grok.subscribe(ICMSContent, zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
 def mark_section_content_on_add(context, event):
     apply_markers(context)
 
 
-@grok.subscribe(
-    ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+@grok.subscribe(ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def mark_section_content_on_checkout(context, event):
     apply_markers(context)
 
 
-@grok.subscribe(
-    ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+@grok.subscribe(ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def mark_section_content_on_checkin(context, event):
     apply_markers(context)
 
@@ -34,12 +30,13 @@ def apply_markers(content):
     # Dear Zope, why is ContainedProxy not a zope.proxy?
     content = zope.container.contained.getProxiedObject(content)
 
-    current_markers = [x for x in zope.interface.providedBy(content)
-                       if issubclass(x, ISectionMarker)]
+    current_markers = [
+        x for x in zope.interface.providedBy(content) if issubclass(x, ISectionMarker)
+    ]
     # Ressort markers take precedence over section markers (ZON-2507)
-    new_markers = (
-        get_markers_for_section(find_ressort_section(content), content) or
-        get_markers_for_section(find_folder_section(content), content))
+    new_markers = get_markers_for_section(
+        find_ressort_section(content), content
+    ) or get_markers_for_section(find_folder_section(content), content)
 
     if current_markers != new_markers:
         for iface in current_markers:
@@ -60,8 +57,8 @@ def find_ressort_section(context):
         return None
     sm = zope.component.getSiteManager()
     return sm.adapters.lookup(
-        (zope.interface.providedBy(context),), IRessortSection,
-        name=meta.ressort or '')
+        (zope.interface.providedBy(context),), IRessortSection, name=meta.ressort or ''
+    )
 
 
 def find_folder_section(context):
@@ -104,7 +101,6 @@ def get_markers_for_section(section, content):
     result = []
     # Content-type specific markers come first, so they are treated as more
     # specific than the generic markers in adapter lookups.
-    result.append(lookup(
-        (section,), ISectionMarker, name=zeit.cms.type.get_type(content)))
+    result.append(lookup((section,), ISectionMarker, name=zeit.cms.type.get_type(content)))
     result.append(lookup((section,), ISectionMarker))
     return [x for x in result if x]

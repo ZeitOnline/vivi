@@ -98,7 +98,6 @@ class VGWortWebService:
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IPixelService)
 class PixelService(VGWortWebService):
-
     service_path = '/services/1.0/pixelService.wsdl'
     namespace = 'http://vgwort.de/1.0/PixelService/xsd'
 
@@ -110,16 +109,13 @@ class PixelService(VGWortWebService):
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
 class MessageService(VGWortWebService):
-
     service_path = '/services/2.0/messageService.wsdl'
     namespace = 'http://vgwort.de/2.0/MessageService/xsd'
 
     def new_document(self, content):
-        content = zeit.cms.content.interfaces.ICommonMetadata(
-            content, None)
+        content = zeit.cms.content.interfaces.ICommonMetadata(content, None)
         if content is None:
-            raise zeit.vgwort.interfaces.WebServiceError(
-                'Artikel existiert nicht mehr.')
+            raise zeit.vgwort.interfaces.WebServiceError('Artikel existiert nicht mehr.')
         authors = []
         if content.authorships:
             ROLES = zeit.content.author.interfaces.ROLE_SOURCE(None)
@@ -131,15 +127,14 @@ class MessageService(VGWortWebService):
                     continue
                 try:
                     if author.vgwortcode:
-                        authors.append(
-                            self.create('Involved', code=author.vgwortcode))
-                    elif (author.firstname and author.lastname and
-                            author.firstname.strip() and
-                            author.lastname.strip()):
-                        params = {
-                            'firstName': author.firstname,
-                            'surName': author.lastname
-                        }
+                        authors.append(self.create('Involved', code=author.vgwortcode))
+                    elif (
+                        author.firstname
+                        and author.lastname
+                        and author.firstname.strip()
+                        and author.lastname.strip()
+                    ):
+                        params = {'firstName': author.firstname, 'surName': author.lastname}
                         if author.vgwortid:
                             params['cardNumber'] = author.vgwortid
                         authors.append(self.create('Involved', **params))
@@ -154,58 +149,62 @@ class MessageService(VGWortWebService):
                     # Need at least one space to split firstname and lastname
                     continue
                 involved = self.create(
-                    'Involved',
-                    firstName=' '.join(author[:-1]), surName=author[-1])
+                    'Involved', firstName=' '.join(author[:-1]), surName=author[-1]
+                )
                 authors.append(involved)
 
         for author in content.agencies:
             try:
                 if not author.vgwortcode:
                     continue
-                authors.append(
-                    self.create('Involved', code=author.vgwortcode))
+                authors.append(self.create('Involved', code=author.vgwortcode))
             except AttributeError:
                 log.warning('Ignoring agencies for %s', content, exc_info=True)
         if content.product and content.product.vgwortcode:
-            authors.append(self.create(
-                'Involved', code=content.product.vgwortcode))
+            authors.append(self.create('Involved', code=content.product.vgwortcode))
 
         if not authors:
-            raise zeit.vgwort.interfaces.WebServiceError(
-                'Kein Autor mit VG-Wort-Code gefunden.')
+            raise zeit.vgwort.interfaces.WebServiceError('Kein Autor mit VG-Wort-Code gefunden.')
 
         searchable = zope.index.text.interfaces.ISearchableText(content)
         text = self.create(
-            'MessageText', lyric=False, shorttext=content.title[:100],
-            text=self.create('Text', plainText='\n'.join(
-                searchable.getSearchableText()
-            ).encode('utf-8')))
+            'MessageText',
+            lyric=False,
+            shorttext=content.title[:100],
+            text=self.create(
+                'Text', plainText='\n'.join(searchable.getSearchableText()).encode('utf-8')
+            ),
+        )
 
-        public_url = content.uniqueId.replace(
-            'http://xml.zeit.de', 'http://www.zeit.de') + '/komplettansicht'
-        ranges = self.create('Webranges', webrange=[self.create(
-            'Webrange', url=public_url)])
+        public_url = (
+            content.uniqueId.replace('http://xml.zeit.de', 'http://www.zeit.de')
+            + '/komplettansicht'
+        )
+        ranges = self.create('Webranges', webrange=[self.create('Webrange', url=public_url)])
 
         token = zeit.vgwort.interfaces.IToken(content)
-        parties = self.create(
-            'Parties', authors=self.create('Authors', author=authors))
-        self.call('newMessage', parties, text, ranges,
-                  privateidentificationid=token.private_token,
-                  reproductionRight=True, distributionRight=True,
-                  publicAccessRight=True, otherRightsOfPublicReproduction=True,
-                  rightsGrantedConfirmation=True,
-                  withoutOwnParticipation=False)
+        parties = self.create('Parties', authors=self.create('Authors', author=authors))
+        self.call(
+            'newMessage',
+            parties,
+            text,
+            ranges,
+            privateidentificationid=token.private_token,
+            reproductionRight=True,
+            distributionRight=True,
+            publicAccessRight=True,
+            otherRightsOfPublicReproduction=True,
+            rightsGrantedConfirmation=True,
+            withoutOwnParticipation=False,
+        )
 
 
 def service_factory(TYPE):
     def factory():
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.vgwort')
-        return TYPE(config['vgwort-url'],
-                    config['username'],
-                    config['password'])
-    factory = zope.interface.implementer(
-        list(zope.interface.implementedBy(TYPE))[0])(factory)
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
+        return TYPE(config['vgwort-url'], config['username'], config['password'])
+
+    factory = zope.interface.implementer(list(zope.interface.implementedBy(TYPE))[0])(factory)
     return factory
 
 
@@ -215,7 +214,6 @@ real_message_service = service_factory(MessageService)
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IPixelService)
 class MockPixelService:
-
     def order_pixels(self, amount):
         offset = 100_000 + random.randint(1, 100) * 1000
         for i in range(amount):
@@ -225,7 +223,6 @@ class MockPixelService:
 
 @zope.interface.implementer(zeit.vgwort.interfaces.IMessageService)
 class MockMessageService:
-
     def __init__(self):
         self.reset()
 

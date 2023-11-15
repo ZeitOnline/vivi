@@ -5,14 +5,12 @@ import zeit.content.cp.testing
 
 
 class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         self.auto_teaser_title = 'Teaser Title Foo'
         teaser = self.create_content('t1', self.auto_teaser_title)
 
-        cp_with_teaser = self.create_and_checkout_centerpage(
-            'cp_with_teaser', contents=[teaser])
+        cp_with_teaser = self.create_and_checkout_centerpage('cp_with_teaser', contents=[teaser])
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.cp = self.create_and_checkout_centerpage('cp')
@@ -50,12 +48,10 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         sel.click('css=.block.type-auto-teaser .edit-link')
         sel.waitForElementPresent('css=.lightbox')
         sel.click('css=.two-side-by-side')
-        sel.waitForElementPresent(
-            'css=.teaser-contents.two-side-by-side .teaser-list')
+        sel.waitForElementPresent('css=.teaser-contents.two-side-by-side .teaser-list')
         sel.assertTextPresent(self.auto_teaser_title)
 
-    @unittest.skip('Since visible is not part of the form anymore,'
-                   ' we cannot observer anything')
+    @unittest.skip('Since visible is not part of the form anymore,' ' we cannot observer anything')
     def test_change_common_property_reloads_teaser(self):
         sel = self.selenium
         sel.assertTextPresent(self.auto_teaser_title)
@@ -72,10 +68,8 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         sel.assertTextPresent(self.auto_teaser_title)
 
     def test_adding_block_by_hand_removes_automatic_block_to_keep_count(self):
-        auto_teaser_selector = 'css=#{} .block.type-auto-teaser'.format(
-            self.area.__name__)
-        teaser_selector = 'css=#{} .block.type-teaser'.format(
-            self.area.__name__)
+        auto_teaser_selector = 'css=#{} .block.type-auto-teaser'.format(self.area.__name__)
+        teaser_selector = 'css=#{} .block.type-teaser'.format(self.area.__name__)
         self.selenium.waitForCssCount(auto_teaser_selector, 1)
         self.selenium.waitForCssCount(teaser_selector, 0)
         self.selenium.waitForTextPresent(self.auto_teaser_title)

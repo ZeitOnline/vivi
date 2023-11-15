@@ -8,10 +8,10 @@ import zope.publisher.interfaces.browser
 
 @zope.component.adapter(
     zeit.content.portraitbox.interfaces.IPortraitbox,
-    zope.publisher.interfaces.browser.IBrowserRequest)
+    zope.publisher.interfaces.browser.IBrowserRequest,
+)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
-
     author = ressort = page = volume = year = ''
 
     @property
@@ -22,35 +22,32 @@ class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.content.portraitbox.interfaces.PortraitboxSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.cms.interfaces.ICMSContent, zeit.content.portraitbox.interfaces.PortraitboxSource
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def content_browse_location(context, source):
     return zope.component.queryMultiAdapter(
-        (context.__parent__, source),
-        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+        (context.__parent__, source), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
+    )
 
 
 @zope.component.adapter(
     zeit.content.portraitbox.interfaces.IPortraitboxReference,
-    zeit.content.portraitbox.interfaces.PortraitboxSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.content.portraitbox.interfaces.PortraitboxSource,
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def reference_browse_location(context, source):
     return zope.component.queryMultiAdapter(
-        (context.__parent__, source),
-        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+        (context.__parent__, source), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
+    )
 
 
 @zope.component.adapter(
-    zeit.cms.repository.interfaces.IFolder,
-    zeit.content.portraitbox.interfaces.PortraitboxSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.cms.repository.interfaces.IFolder, zeit.content.portraitbox.interfaces.PortraitboxSource
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def folder_browse_location(context, source):
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     personen = repository.get('personen')
     if personen is not None:
         return personen

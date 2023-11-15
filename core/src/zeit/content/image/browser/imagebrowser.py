@@ -3,8 +3,7 @@ import zeit.content.image.interfaces
 
 
 class ImageBrowser:
-
-    title = _("Images")
+    title = _('Images')
 
     def images(self):
         for obj in self.context.values():

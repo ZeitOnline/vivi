@@ -1,4 +1,3 @@
-
 import zope.interface
 import zope.schema
 
@@ -7,7 +6,8 @@ class ICropper(zope.interface.Interface):
     """Crop master image in an image group."""
 
     downsample_filter = zope.interface.Attribute(
-        'Downsample filter to use: ANTIALIAS, NEAREST, ...')
+        'Downsample filter to use: ANTIALIAS, NEAREST, ...'
+    )
 
     def add_filter(name, factor):
         """Add a filter which is applied before crop.
@@ -17,7 +17,7 @@ class ICropper(zope.interface.Interface):
 
         raises ValueError if there is no filter for given name.
 
-    """
+        """
 
     def crop(w, h, x1, y1, x2, y2, border=None):
         """Crop master image from image group.
@@ -33,7 +33,6 @@ class ICropper(zope.interface.Interface):
 
 
 class IStorer(zope.interface.Interface):
-
     def store(name, pil_image):
         """Store a previously cropped image.
 
@@ -47,17 +46,12 @@ class IStorer(zope.interface.Interface):
 
 
 class IPossibleScale(zope.interface.Interface):
-
-    name = zope.interface.Attribute("Name in folder")
-    width = zope.interface.Attribute(
-        "Width, leading ? indicates variable width.")
-    height = zope.interface.Attribute(
-        "height, leading ? indicates variable height.")
+    name = zope.interface.Attribute('Name in folder')
+    width = zope.interface.Attribute('Width, leading ? indicates variable width.')
+    height = zope.interface.Attribute('height, leading ? indicates variable height.')
     title = zope.schema.TextLine(title='Title')
 
 
 class IColor(zope.interface.Interface):
-
     title = zope.schema.TextLine(title='Title')
-    color = zope.interface.Attribute(
-        'Color definition in the form #RRGGBB (hex, like html)')
+    color = zope.interface.Attribute('Color definition in the form #RRGGBB (hex, like html)')

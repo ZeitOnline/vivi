@@ -8,12 +8,10 @@ import zope.i18n
 
 
 class SortingMenu(zope.browsermenu.menu.BrowserMenu):
-
     def getMenuItems(self, object, request):
         result = super().getMenuItems(object, request)
         for item in result:
-            item['title-translated'] = zope.i18n.translate(
-                item['title'], context=request)
+            item['title-translated'] = zope.i18n.translate(item['title'], context=request)
         return sorted(result, key=lambda x: x['title-translated'])
 
 
@@ -24,8 +22,7 @@ class Delete(zeit.cms.browser.menu.LightboxActionMenuItem):
 
     @property
     def visible(self):
-        if (not IRepositoryContent.providedBy(self.context) or
-                IPublishInfo(self.context).published):
+        if not IRepositoryContent.providedBy(self.context) or IPublishInfo(self.context).published:
             return False
         if IFolder.providedBy(self.context):
             return folder_can_be_deleted(self.context)

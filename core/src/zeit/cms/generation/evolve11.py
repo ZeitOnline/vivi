@@ -5,10 +5,10 @@ import zope.error.interfaces
 
 
 def update(root):
-    current = zope.component.getUtility(
-        zope.error.interfaces.IErrorReportingUtility)
+    current = zope.component.getUtility(zope.error.interfaces.IErrorReportingUtility)
     zope.component.getSiteManager().unregisterUtility(
-        current, zope.error.interfaces.IErrorReportingUtility)
+        current, zope.error.interfaces.IErrorReportingUtility
+    )
     del current.__parent__[current.__name__]
     zeit.cms.generation.install.installErrorReportingUtility(root)
 

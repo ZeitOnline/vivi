@@ -15,7 +15,6 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Connection:
-
     def __init__(self, url):
         self.url = url
 
@@ -23,8 +22,9 @@ class Connection:
         account = kw['account']
         access_token = facebookAccountSource.factory.access_token(account)
         log.debug('Sending %s, %s to %s', text, link, account)
-        self._request('POST', '/me/feed', access_token, params={
-            'message': text.encode('utf-8'), 'link': link})
+        self._request(
+            'POST', '/me/feed', access_token, params={'message': text.encode('utf-8'), 'link': link}
+        )
 
     def _request(self, method, path, access_token, **kw):
         kw.setdefault('params', {})['access_token'] = access_token
@@ -54,7 +54,6 @@ def from_product_config():
 
 
 class Message(zeit.push.message.Message):
-
     grok.name('facebook')
 
     @property
@@ -78,13 +77,10 @@ class Message(zeit.push.message.Message):
 
 
 def create_access_token(argv=None):
-    parser = argparse.ArgumentParser(
-        description='Create Facebook access token')
-    parser.add_argument('--app-id', help='Application ID',
-                        default='638028906281625')
+    parser = argparse.ArgumentParser(description='Create Facebook access token')
+    parser.add_argument('--app-id', help='Application ID', default='638028906281625')
     parser.add_argument('--app-secret', help='Application Secret')
-    parser.add_argument('--page-name', help='Name of the page',
-                        default='ZEIT ONLINE')
+    parser.add_argument('--page-name', help='Name of the page', default='ZEIT ONLINE')
     options = parser.parse_args(argv)
     if not all([options.app_id, options.app_secret, options.page_name]):
         parser.print_help()
@@ -93,37 +89,40 @@ def create_access_token(argv=None):
 
     # Step 1: Get user token. <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#login>
-    scopes = ','.join([
-        'pages_read_engagement',
-        'pages_manage_posts',
-        'business_management',
-        'pages_manage_metadata',
-        'pages_show_list'
-    ])
-    login_url = ('https://www.facebook.com/dialog/oauth?' +
-                 urllib.parse.urlencode({
-                     'client_id': options.app_id,
-                     'redirect_uri': options.redirect_uri,
-                     'scope': scopes,
-                 }))
-    print('Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
-        login_url))
-    print(
-        'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
+    scopes = ','.join(
+        [
+            'pages_read_engagement',
+            'pages_manage_posts',
+            'business_management',
+            'pages_manage_metadata',
+            'pages_show_list',
+        ]
+    )
+    login_url = 'https://www.facebook.com/dialog/oauth?' + urllib.parse.urlencode(
+        {
+            'client_id': options.app_id,
+            'redirect_uri': options.redirect_uri,
+            'scope': scopes,
+        }
+    )
+    print('Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (login_url))
+    print('Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
     result_url = input('die neue URL bitte hier eingeben: ')
-    code = urllib.parse.parse_qs(
-        urllib.parse.urlparse(result_url).query)['code'][0]
+    code = urllib.parse.parse_qs(urllib.parse.urlparse(result_url).query)['code'][0]
 
     # Step 1b: Convert code to token <https://developers.facebook.com
     # /docs/facebook-login/manually-build-a-login-flow#confirm>
     r = requests.get(
-        'https://graph.facebook.com/oauth/access_token?' +
-        urllib.parse.urlencode({
-            'client_id': options.app_id,
-            'client_secret': options.app_secret,
-            'redirect_uri': options.redirect_uri,
-            'code': code,
-        }))
+        'https://graph.facebook.com/oauth/access_token?'
+        + urllib.parse.urlencode(
+            {
+                'client_id': options.app_id,
+                'client_secret': options.app_secret,
+                'redirect_uri': options.redirect_uri,
+                'code': code,
+            }
+        )
+    )
     if 'error' in r.text:
         print(r.text)
         raise SystemExit(1)
@@ -132,13 +131,16 @@ def create_access_token(argv=None):
     # Step 2: Exchange for long-lived token. <https://developers.facebook.com
     # /docs/facebook-login/access-tokens/#extending>
     r = requests.get(
-        'https://graph.facebook.com/oauth/access_token?' +
-        urllib.parse.urlencode({
-            'client_id': options.app_id,
-            'client_secret': options.app_secret,
-            'grant_type': 'fb_exchange_token',
-            'fb_exchange_token': short_lived_user_token,
-        }))
+        'https://graph.facebook.com/oauth/access_token?'
+        + urllib.parse.urlencode(
+            {
+                'client_id': options.app_id,
+                'client_secret': options.app_secret,
+                'grant_type': 'fb_exchange_token',
+                'fb_exchange_token': short_lived_user_token,
+            }
+        )
+    )
     if 'error' in r.text:
         print(r.text)
         raise SystemExit(1)
@@ -150,12 +152,12 @@ def create_access_token(argv=None):
     #
     # Note: Since we used a long-lived user token, the page token will be
     # long-lived (~60 days), too.
-    r = requests.get('https://graph.facebook.com/me/accounts',
-                     params={'access_token': long_lived_user_token})
+    r = requests.get(
+        'https://graph.facebook.com/me/accounts', params={'access_token': long_lived_user_token}
+    )
     if 'error' in r.text:
         print(r.text)
         raise SystemExit(1)
-    page_token = [x['access_token'] for x in r.json()['data']
-                  if x['name'] == options.page_name][0]
+    page_token = [x['access_token'] for x in r.json()['data'] if x['name'] == options.page_name][0]
 
     print('Das Page Token für %s ist: %s' % (options.page_name, page_token))

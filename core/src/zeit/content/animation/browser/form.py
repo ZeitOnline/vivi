@@ -12,30 +12,25 @@ import zope.interface
 
 
 class Base:
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.animation.interfaces.IAnimation
-    ).select("article", "images", "gallery", "video", "display_mode")
+    form_fields = zope.formlib.form.FormFields(zeit.content.animation.interfaces.IAnimation).select(
+        'article', 'images', 'gallery', 'video', 'display_mode'
+    )
 
     field_groups = (
-        gocept.form.grouped.RemainingFields(_("Article")),
-        gocept.form.grouped.Fields(
-            _("Teaser"), ("display_mode", "images", "gallery", "video")),
+        gocept.form.grouped.RemainingFields(_('Article')),
+        gocept.form.grouped.Fields(_('Teaser'), ('display_mode', 'images', 'gallery', 'video')),
     )
 
 
 class Add(Base, zeit.cms.browser.form.AddForm):
-
-    title = _("Add animated teaser")
+    title = _('Add animated teaser')
     factory = zeit.content.animation.animation.Animation
     form_fields = Base.form_fields + zope.formlib.form.FormFields(
         zeit.content.animation.interfaces.IAnimation
-    ).select("__name__")
+    ).select('__name__')
 
     field_groups = (
-        gocept.form.grouped.Fields(
-            _("Navigation"), ("__name__",), css_class="column-right"
-        ),
+        gocept.form.grouped.Fields(_('Navigation'), ('__name__',), css_class='column-right'),
     ) + Base.field_groups
 
 
@@ -48,11 +43,10 @@ class Display(Base, zeit.cms.browser.form.DisplayForm):
 
 
 @zope.component.adapter(
-    zeit.content.animation.interfaces.IAnimation,
-    zeit.cms.browser.interfaces.ICMSLayer)
+    zeit.content.animation.interfaces.IAnimation, zeit.cms.browser.interfaces.ICMSLayer
+)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class ListRepresentation(zeit.cms.browser.listing.CommonListRepresentation):
-
     @cachedproperty
     def title(self):
         return self.context.__name__

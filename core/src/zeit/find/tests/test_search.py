@@ -6,7 +6,6 @@ from zeit.find.testing import LAYER
 
 
 class TestElasticsearch(TestCase):
-
     layer = LAYER
 
     def test_cms_search_utility(self):
@@ -15,19 +14,19 @@ class TestElasticsearch(TestCase):
 
 
 class QueryTest(FunctionalTestCase):
-
     layer = LAYER
 
     def test_query(self):
         import zeit.find.search
+
         self.layer.set_result(__package__, 'data/obama.json')
         elastic = getUtility(ICMSSearch)
         q = zeit.find.search.query('Obama')
         result = elastic.search(q)
         self.assertEqual(37002, result.hits)
         self.assertEqual(
-            '/2018/25/donald-trump-golf-schummeln-golfplatz-weltpolitik',
-            result[-1]['url'])
+            '/2018/25/donald-trump-golf-schummeln-golfplatz-weltpolitik', result[-1]['url']
+        )
         req = self.layer.search.client.search
         self.assertEqual(1, req.call_count)
 

@@ -14,21 +14,22 @@ import zope.interface
 
 
 class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        self.old_implements = list(zope.interface.implementedBy(
-            zeit.cms.repository.unknown.PersistentUnknownResource))
+        self.old_implements = list(
+            zope.interface.implementedBy(zeit.cms.repository.unknown.PersistentUnknownResource)
+        )
         zope.interface.classImplementsOnly(
             zeit.cms.repository.unknown.PersistentUnknownResource,
             zeit.cms.interfaces.IAsset,
             zeit.cms.repository.interfaces.IUnknownResource,
-            zope.annotation.interfaces.IAttributeAnnotatable)
+            zope.annotation.interfaces.IAttributeAnnotatable,
+        )
 
     def tearDown(self):
         zope.interface.classImplementsOnly(
-            zeit.cms.repository.unknown.PersistentUnknownResource,
-            *self.old_implements)
+            zeit.cms.repository.unknown.PersistentUnknownResource, *self.old_implements
+        )
         super().tearDown()
 
     def test_asset_workflow(self):
@@ -54,7 +55,6 @@ class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):
 
 
 class ContentWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
-
     def test_content_in_blacklisted_folder_should_not_publish(self):
         self.repository['blacklist'] = zeit.cms.repository.folder.Folder()
         self.repository['blacklist']['content'] = ExampleContentType()
@@ -66,25 +66,25 @@ class ContentWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
         self.repository['blacklist'] = zeit.cms.repository.folder.Folder()
         self.repository['blacklist']['content'] = ExampleContentType()
         content = self.repository['blacklist']['content']
-        old_implements = list(zope.interface.implementedBy(
-            ExampleContentType))
+        old_implements = list(zope.interface.implementedBy(ExampleContentType))
         zope.interface.classImplementsOnly(
             ExampleContentType,
             zeit.cms.interfaces.IAsset,
-            zeit.cms.testcontenttype.interfaces.IExampleContentType)
+            zeit.cms.testcontenttype.interfaces.IExampleContentType,
+        )
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertEqual(CAN_PUBLISH_ERROR, workflow.can_publish())
         zope.interface.classImplementsOnly(ExampleContentType, *old_implements)
 
     def test_locked_content_should_not_publish(self):
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(
-            self.repository['testcontent'])
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(self.repository['testcontent'])
         workflow.urgent = True
         self.assertEqual(CAN_PUBLISH_SUCCESS, workflow.can_publish())
         workflow.locked = True
         self.assertEqual(CAN_PUBLISH_ERROR, workflow.can_publish())
 
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-        log_entries = [zope.i18n.translate(x.message)
-                       for x in log.get_log(self.repository['testcontent'])]
+        log_entries = [
+            zope.i18n.translate(x.message) for x in log.get_log(self.repository['testcontent'])
+        ]
         self.assertIn('Publish lock?: yes', log_entries)

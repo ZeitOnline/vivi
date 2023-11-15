@@ -26,7 +26,6 @@ import zope.i18n
 
 
 class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
-
     layer = zeit.content.article.testing.LAYER
 
     def setUp(self):
@@ -34,8 +33,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
-        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(),
-                                 IPublisher)
+        self.gsm.registerUtility(zeit.workflow.publisher.Publisher(), IPublisher)
 
     def tearDown(self):
         self.patch.stop()
@@ -53,19 +51,15 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article_2).published = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = [
-                'speechbert', 'facebooknewstab']
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert', 'facebooknewstab']
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=True)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' not in result
             assert 'speechbert' not in result
             assert 'authordashboard' in result
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = [
-                'speechbert']
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article_2).publish(background=False)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
@@ -80,8 +74,7 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_authordashboard = result['authordashboard']
@@ -93,14 +86,11 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_bq = result['bigquery']
-            self.assertEqual(
-                {},
-                result_bq)
+            self.assertEqual({}, result_bq)
         self.assertTrue(IPublishInfo(article).published)
 
     def test_bigquery_adapters_are_registered(self):
@@ -108,93 +98,112 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         import zeit.content.cp.centerpage
         import zeit.content.gallery.gallery
         import zeit.content.video.video
+
         article = zeit.content.article.article.Article()
-        assert zope.component.queryAdapter(
-            article, zeit.workflow.interfaces.IPublisherData,
-            name="bigquery") is not None
+        assert (
+            zope.component.queryAdapter(
+                article, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+            )
+            is not None
+        )
         centerpage = zeit.content.cp.centerpage.CenterPage()
-        assert zope.component.queryAdapter(
-            centerpage, zeit.workflow.interfaces.IPublisherData,
-            name="bigquery") is not None
+        assert (
+            zope.component.queryAdapter(
+                centerpage, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+            )
+            is not None
+        )
         gallery = zeit.content.gallery.gallery.Gallery()
-        assert zope.component.queryAdapter(
-            gallery, zeit.workflow.interfaces.IPublisherData,
-            name="bigquery") is not None
+        assert (
+            zope.component.queryAdapter(
+                gallery, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+            )
+            is not None
+        )
         video = zeit.content.video.video.Video()
-        assert zope.component.queryAdapter(
-            video, zeit.workflow.interfaces.IPublisherData,
-            name="bigquery") is not None
+        assert (
+            zope.component.queryAdapter(
+                video, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+            )
+            is not None
+        )
 
     def test_comments_are_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_comments = result['comments']
-            self.assertEqual({
-                'comments_allowed': False,
-                'pre_moderated': False,
-                'type': 'commentsection',
-                'visible': False}, result_comments)
+            self.assertEqual(
+                {
+                    'comments_allowed': False,
+                    'pre_moderated': False,
+                    'type': 'commentsection',
+                    'visible': False,
+                },
+                result_comments,
+            )
         self.assertTrue(IPublishInfo(article).published)
 
     def test_comments_adapters_are_registered(self):
         import zeit.content.article.article
         import zeit.content.gallery.gallery
         import zeit.content.video.video
+
         article = zeit.content.article.article.Article()
-        assert zope.component.queryAdapter(
-            article, zeit.workflow.interfaces.IPublisherData,
-            name="comments") is not None
+        assert (
+            zope.component.queryAdapter(
+                article, zeit.workflow.interfaces.IPublisherData, name='comments'
+            )
+            is not None
+        )
         gallery = zeit.content.gallery.gallery.Gallery()
-        assert zope.component.queryAdapter(
-            gallery, zeit.workflow.interfaces.IPublisherData,
-            name="comments") is not None
+        assert (
+            zope.component.queryAdapter(
+                gallery, zeit.workflow.interfaces.IPublisherData, name='comments'
+            )
+            is not None
+        )
         video = zeit.content.video.video.Video()
-        assert zope.component.queryAdapter(
-            video, zeit.workflow.interfaces.IPublisherData,
-            name="comments") is not None
+        assert (
+            zope.component.queryAdapter(
+                video, zeit.workflow.interfaces.IPublisherData, name='comments'
+            )
+            is not None
+        )
 
     def test_facebooknewstab_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_fbnt = result['facebooknewstab']
-            self.assertEqual(
-                {},
-                result_fbnt)
+            self.assertEqual({}, result_fbnt)
         self.assertTrue(IPublishInfo(article).published)
 
     def test_facebooknewstab_skipped_date_first_released(self):
         # this article has date_first_published set to an old date
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         IPublishInfo(article).urgent = True
         self.assertTrue(IPublishInfo(article).published)
         self.assertEqual(IPublishInfo(article).date_first_released.year, 2020)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' not in result
         # set it to something else and make sure nothing else caused the skip
         info = IPublishInfo(article)
-        info.date_first_released = info.date_first_released.replace(
-            year=2022)
+        info.date_first_released = info.date_first_released.replace(year=2022)
         self.assertEqual(IPublishInfo(article).date_first_released.year, 2022)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' in result
@@ -202,26 +211,23 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_facebooknewstab_skipped_product_id(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
-        self.assertEqual(article.product.id, "ZEDE")
+        self.assertEqual(article.product.id, 'ZEDE')
         # we add more products than needed for the test to make sure
         # the config parsing works correctly
-        config['facebooknewstab-ignore-products'] = "ADV, VAB, ZEDE"
+        config['facebooknewstab-ignore-products'] = 'ADV, VAB, ZEDE'
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' not in result
         # set it to something else and make sure nothing else caused the skip
         with checked_out(article) as co:
-            co.product = zeit.cms.content.sources.Product("ZTGS")
-        self.assertEqual(article.product.id, "ZTGS")
+            co.product = zeit.cms.content.sources.Product('ZTGS')
+        self.assertEqual(article.product.id, 'ZTGS')
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' in result
@@ -229,28 +235,24 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_facebooknewstab_skipped_ressort(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
-        self.assertEqual(article.ressort, "International")
+        self.assertEqual(article.ressort, 'International')
         # we add more products than needed for the test to make sure
         # the config parsing works correctly, that is also why there is
         # a space in front of International
-        config['facebooknewstab-ignore-ressorts'] = ",".join([
-            "Administratives", " International"])
+        config['facebooknewstab-ignore-ressorts'] = ','.join(['Administratives', ' International'])
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' not in result
         # set it to something else and make sure nothing else caused the skip
         with checked_out(article) as co:
-            co.ressort = "Politik"
-        self.assertEqual(article.ressort, "Politik")
+            co.ressort = 'Politik'
+        self.assertEqual(article.ressort, 'Politik')
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' in result
@@ -260,16 +262,26 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
-            response = rmock.post(
-                'http://localhost:8060/test/publish', status_code=200)
+            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_sb = result['speechbert']
             self.assertEqual(
-                ['body', 'checksum', 'hasAudio', 'headline', 'publishDate',
-                 'section', 'series', 'subtitle', 'supertitle', 'tags',
-                 'teaser'],
-                sorted(result_sb.keys()))
+                [
+                    'body',
+                    'checksum',
+                    'hasAudio',
+                    'headline',
+                    'publishDate',
+                    'section',
+                    'series',
+                    'subtitle',
+                    'supertitle',
+                    'tags',
+                    'teaser',
+                ],
+                sorted(result_sb.keys()),
+            )
         self.assertTrue(IPublishInfo(article).published)
 
     def test_speechbert_audiospeechbert(self):
@@ -278,10 +290,8 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         pass
 
     def test_speechbert_ignore_genres(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         config['speechbert-ignore-genres'] = 'rezept-vorstellung'
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is None
@@ -290,10 +300,8 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert json is not None
 
     def test_speechbert_ignore_templates(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         config['speechbert-ignore-templates'] = 'article'
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is None
@@ -307,16 +315,13 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         assert json is not None
         with checked_out(article) as co:
             co.product = zeit.cms.content.sources.Product(
-                id='dpaBY',
-                title='DPA Bayern',
-                show='source',
-                is_news=True)
+                id='dpaBY', title='DPA Bayern', show='source', is_news=True
+            )
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is None
 
 
 class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-
     layer = zeit.content.article.testing.LAYER
 
     def create_author(self, firstname, lastname, key):
@@ -327,26 +332,25 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     @pytest.fixture(autouse=True)
     def _monkeypatch(self, monkeypatch):
-        monkeypatch.setattr(
-            zeit.workflow.publish_3rdparty.Speechbert,
-            'ignore',
-            lambda s, m: False)
+        monkeypatch.setattr(zeit.workflow.publish_3rdparty.Speechbert, 'ignore', lambda s, m: False)
 
     def test_speechbert_payload(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         self.create_author('Eva', 'Biringer', 'author')
         with checked_out(article) as co:
             wl = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
             co.keywords = (
-                wl.get('Testtag'), wl.get('Testtag2'), wl.get('Testtag3'),)
+                wl.get('Testtag'),
+                wl.get('Testtag2'),
+                wl.get('Testtag3'),
+            )
             co.authorships = [co.authorships.create(self.repository['author'])]
             group = create_image_group_with_master_image(
-                file_name='http://xml.zeit.de/2016/DSC00109_2.PNG')
+                file_name='http://xml.zeit.de/2016/DSC00109_2.PNG'
+            )
             zeit.content.image.interfaces.IImages(co).image = group
 
-        article = ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         del payload['body']  # not relevant in this test
         assert payload == {
@@ -364,22 +368,22 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             'subtitle': (
                 'Ist genug Brot und Kuchen gebacken, bleibt endlich wieder '
                 'Zeit, zu kochen. Mit diesen One-Pot-Gerichten können Sie den '
-                'Zuckerschock vom Osterwochenende kontern.'),
+                'Zuckerschock vom Osterwochenende kontern.'
+            ),
             'tags': ['Testtag', 'Testtag2', 'Testtag3'],
             'teaser': (
-                'Ist genug Brot und Kuchen gebacken, '
-                'bleibt endlich wieder Zeit, zu kochen.')}
+                'Ist genug Brot und Kuchen gebacken, ' 'bleibt endlich wieder Zeit, zu kochen.'
+            ),
+        }
 
     def test_speechbert_payload_access_free(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.access == 'free'
         assert 'access' not in payload
 
     def test_speechbert_payload_multiple_authors(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
         with checked_out(article) as co:
             self.create_author('Marc-Uwe', 'Kling', 'a1')
             self.create_author('Bernd', 'Kissel', 'a2')
@@ -387,47 +391,40 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             co.authorships = [
                 co.authorships.create(self.repository['a1']),
                 co.authorships.create(self.repository['a2']),
-                co.authorships.create(self.repository['a3'])]
+                co.authorships.create(self.repository['a3']),
+            ]
             co.authorships[2].role = 'Illustration'
 
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/kaenguru-comics-folge-448')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
-        raw_authors = [(
-            author.target.display_name, author.role)
-            for author in article.authorships]
+        raw_authors = [(author.target.display_name, author.role) for author in article.authorships]
         assert raw_authors == [
             ('Marc-Uwe Kling', None),
             ('Bernd Kissel', None),
-            ('Julian Stahnke', 'Illustration')]
-        assert payload['authors'] == [
-            'Marc-Uwe Kling',
-            'Bernd Kissel']
+            ('Julian Stahnke', 'Illustration'),
+        ]
+        assert payload['authors'] == ['Marc-Uwe Kling', 'Bernd Kissel']
 
     def test_speechbert_payload_no_entry_if_attribute_none(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.channels == ()
         assert 'channels' not in payload
 
     def test_speechbert_payload_single_channel(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2022/08/trockenheit')
+        article = ICMSContent('http://xml.zeit.de/online/2022/08/trockenheit')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.channels == (('News', None),)
         assert payload['channels'] == 'News'
 
     def test_speechbert_payload_series(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.serie is not None
         assert payload['series'] == '-'
 
     def test_speechbert_payload_supertitle(self):
-        article = ICMSContent(
-            'http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/weissrussland-russland-gas')
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert article.supertitle == 'Geopolitik'
         assert payload['supertitle'] == 'Geopolitik'
@@ -438,31 +435,26 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         p.text = 'before <em>during</em> after'
         article = self.repository['article'] = article
         payload = zeit.workflow.testing.publish_json(article, 'speechbert')
-        assert payload['body'] == [
-            {'type': 'p', 'content': 'before during after'}]
+        assert payload['body'] == [{'type': 'p', 'content': 'before during after'}]
 
 
 class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-
     layer = zeit.workflow.testing.TMS_MOCK_LAYER
 
     def test_tms_wait_for_index_article(self):
         article = self.repository['testcontent']
-        zope.interface.alsoProvides(
-            article, zeit.content.article.interfaces.IArticle)
+        zope.interface.alsoProvides(article, zeit.content.article.interfaces.IArticle)
         data_factory = zope.component.getAdapter(
-            article,
-            zeit.workflow.interfaces.IPublisherData,
-            name='tms')
+            article, zeit.workflow.interfaces.IPublisherData, name='tms'
+        )
         payload = data_factory.publish_json()
         assert payload == {'wait': True}
 
     def test_tms_only_waits_for_articles(self):
         content = self.repository['testcontent']
         data_factory = zope.component.getAdapter(
-            content,
-            zeit.workflow.interfaces.IPublisherData,
-            name='tms')
+            content, zeit.workflow.interfaces.IPublisherData, name='tms'
+        )
         payload = data_factory.publish_json()
         assert payload == {'wait': False}
 
@@ -470,39 +462,34 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         self.layer.representation().return_value = None
         data_factory = zope.component.getAdapter(
-            content,
-            zeit.workflow.interfaces.IPublisherData,
-            name='tms')
+            content, zeit.workflow.interfaces.IPublisherData, name='tms'
+        )
         payload = data_factory.publish_json()
         assert payload is None
 
 
 class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-
     layer = zeit.workflow.testing.TMS_MOCK_LAYER
 
     def setUp(self):
         super().setUp()
         FEATURE_TOGGLES.set('publish_bigquery_json')
         self.layer.representation().return_value = {
-            'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}}
+            'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}
+        }
         with checked_out(self.repository['testcontent']):
             pass  # XXX trigger uuid generation
         self.article = self.repository['testcontent']
-        zope.interface.alsoProvides(
-            self.article, zeit.content.article.interfaces.IArticle)
+        zope.interface.alsoProvides(self.article, zeit.content.article.interfaces.IArticle)
 
     def test_includes_uniqueid_under_meta(self):
         data = zope.component.getAdapter(
-            self.article, zeit.workflow.interfaces.IPublisherData,
-            name='bigquery')
+            self.article, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+        )
         for action in ['publish', 'retract']:
             d = getattr(data, f'{action}_json')()
-            self.assertEqual(
-                'http://xml.zeit.de/testcontent',
-                d['properties']['meta']['url'])
-            self.assertStartsWith(
-                '{urn:uuid:', d['properties']['document']['uuid'])
+            self.assertEqual('http://xml.zeit.de/testcontent', d['properties']['meta']['url'])
+            self.assertStartsWith('{urn:uuid:', d['properties']['document']['uuid'])
 
     def test_moves_rtr_keywords_under_tagging(self):
         self.layer.representation().return_value = {
@@ -511,60 +498,49 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             'title': 'ignored',
         }
         data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
-        self.assertEqual({'rtr_locations': [], 'rtr_keywords': ['one', 'two']},
-                         data['properties']['tagging'])
+        self.assertEqual(
+            {'rtr_locations': [], 'rtr_keywords': ['one', 'two']}, data['properties']['tagging']
+        )
 
     def test_converts_body_to_badgerfish_json(self):
         self.article.xml.body = lxml.etree.XML(
-            '<body><division><p>one</p><p>two</p></division></body>')
+            '<body><division><p>one</p><p>two</p></division></body>'
+        )
         data = zeit.workflow.testing.publish_json(self.article, 'bigquery')
-        self.assertEqual({'division': {'p': [{'$': 'one'}, {'$': 'two'}]}},
-                         data['body'])
+        self.assertEqual({'division': {'p': [{'$': 'one'}, {'$': 'two'}]}}, data['body'])
 
 
 class BadgerfishTest(unittest.TestCase):
-
     def badgerfish(self, text):
         return zeit.workflow.publish_3rdparty.badgerfish(lxml.etree.XML(text))
 
     def test_text_becomes_dollar(self):
-        self.assertEqual(
-            {'a': {'$': 'b'}},
-            self.badgerfish('<a>b</a>'))
+        self.assertEqual({'a': {'$': 'b'}}, self.badgerfish('<a>b</a>'))
 
     def test_children_become_nested_dict(self):
         self.assertEqual(
-            {'a': {'b': {'$': 'c'},
-                   'd': {'$': 'e'}}},
-            self.badgerfish('<a><b>c</b><d>e</d></a>'))
+            {'a': {'b': {'$': 'c'}, 'd': {'$': 'e'}}}, self.badgerfish('<a><b>c</b><d>e</d></a>')
+        )
 
     def test_children_same_name_become_list(self):
         self.assertEqual(
-            {'a': {'b': [{'$': 'c'}, {'$': 'd'}]}},
-            self.badgerfish('<a><b>c</b><b>d</b></a>'))
+            {'a': {'b': [{'$': 'c'}, {'$': 'd'}]}}, self.badgerfish('<a><b>c</b><b>d</b></a>')
+        )
 
     def test_attributes_become_prefixed_with_at(self):
-        self.assertEqual(
-            {'a': {'$': 'b', '@c': 'd'}},
-            self.badgerfish('<a c="d">b</a>'))
+        self.assertEqual({'a': {'$': 'b', '@c': 'd'}}, self.badgerfish('<a c="d">b</a>'))
 
     def test_namespace_is_removed_from_tag(self):
-        self.assertEqual(
-            {'a': {}},
-            self.badgerfish('<x:a xmlns:x="x" />'))
+        self.assertEqual({'a': {}}, self.badgerfish('<x:a xmlns:x="x" />'))
 
     def test_namespace_is_removed_from_attribute(self):
-        self.assertEqual(
-            {'a': {'@b': 'c'}},
-            self.badgerfish('<a xmlns:x="x" x:b="c" />'))
+        self.assertEqual({'a': {'@b': 'c'}}, self.badgerfish('<a xmlns:x="x" x:b="c" />'))
 
     def test_mixed_content_becomes_dollar(self):
         self.assertEqual(
-            {'a': {'$': 'before child after'}},
-            self.badgerfish('<a>before <b>child</b> after</a>'))
+            {'a': {'$': 'before child after'}}, self.badgerfish('<a>before <b>child</b> after</a>')
+        )
         self.assertEqual(
-            {'a': {'$': 'before child'}},
-            self.badgerfish('<a>before <b>child</b></a>'))
-        self.assertEqual(
-            {'a': {'$': 'child after'}},
-            self.badgerfish('<a><b>child</b> after</a>'))
+            {'a': {'$': 'before child'}}, self.badgerfish('<a>before <b>child</b></a>')
+        )
+        self.assertEqual({'a': {'$': 'child after'}}, self.badgerfish('<a><b>child</b> after</a>'))

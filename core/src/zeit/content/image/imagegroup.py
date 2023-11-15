@@ -35,25 +35,26 @@ INVALID_SIZE = collections.namedtuple('InvalidSize', [])()
 
 @zope.interface.implementer(
     zeit.content.image.interfaces.IImageGroup,
-    zeit.cms.repository.interfaces.INonRecursiveCollection)
+    zeit.cms.repository.interfaces.INonRecursiveCollection,
+)
 class ImageGroupBase:
-
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
         IMAGE_NAMESPACE,
         ('display_type',),
-        use_default=True)
+        use_default=True,
+    )
 
     _master_images = zeit.cms.content.dav.DAVProperty(
-        zeit.content.image.interfaces.IImageGroup['master_images'],
-        IMAGE_NAMESPACE,
-        'master_images')
+        zeit.content.image.interfaces.IImageGroup['master_images'], IMAGE_NAMESPACE, 'master_images'
+    )
 
     _variants = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageGroup['variants'],
         IMAGE_NAMESPACE,
         'variants',
-        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE)
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
+    )
 
     @property
     def variants(self):
@@ -105,9 +106,16 @@ class ImageGroupBase:
         return image is not None
 
     def create_variant_image(
-            self, variant, url=None,
-            size=None, scale=None, fill=None, viewport=None, format=None,
-            source=None):
+        self,
+        variant,
+        url=None,
+        size=None,
+        scale=None,
+        fill=None,
+        viewport=None,
+        format=None,
+        source=None,
+    ):
         """Retrieve Variant and create an image according to options in URL.
         See VariantTraverser for allowed URLs.
         """
@@ -118,8 +126,7 @@ class ImageGroupBase:
         if scale and size and (0.5 <= scale <= 3.0):
             size = [int(ceil(x * scale)) for x in size]
         # Use the configured variant maximum size as a sanity bound.
-        if (size is None and
-                variant.max_width < sys.maxsize > variant.max_height):
+        if size is None and variant.max_width < sys.maxsize > variant.max_height:
             size = [variant.max_width, variant.max_height]
 
         # Our default transformation source should be the master image.
@@ -130,9 +137,9 @@ class ImageGroupBase:
 
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
         with tracer.start_as_current_span(
-                'zeit.content.image.imagegroup.create_variant',
-                attributes={'content': str(self), 'variant': variant.name,
-                            'viewport': viewport or ''}) as span:
+            'zeit.content.image.imagegroup.create_variant',
+            attributes={'content': str(self), 'variant': variant.name, 'viewport': viewport or ''},
+        ) as span:
             if size is not None:
                 span.set_attributes({'width': size[0], 'height': size[1]})
 
@@ -150,8 +157,7 @@ class ImageGroupBase:
 
         return image
 
-    def variant_url(self, name, width=None, height=None,
-                    fill_color=None, thumbnail=False):
+    def variant_url(self, name, width=None, height=None, fill_color=None, thumbnail=False):
         """Helper method to create URLs to Variant images."""
         path = urllib.parse.urlparse(self.uniqueId).path
         if path.endswith('/'):
@@ -162,7 +168,8 @@ class ImageGroupBase:
             url = '{path}/{name}'.format(path=path, name=name)
         else:
             url = '{path}/{name}__{width}x{height}'.format(
-                path=path, name=name, width=width, height=height)
+                path=path, name=name, width=width, height=height
+            )
         if fill_color not in [None, 'None']:
             url += '__{fill}'.format(fill=fill_color)
         return url
@@ -223,14 +230,11 @@ class VariantTraverser:
         # returns something wins. So we need to explicitly guard against other
         # plugins.
         if name in self.context:
-            raise zope.publisher.interfaces.NotFound(
-                self.context, name, request)
+            raise zope.publisher.interfaces.NotFound(self.context, name, request)
         try:
-            return self.context.create_variant_image(
-                **self.parse_url(name))
+            return self.context.create_variant_image(**self.parse_url(name))
         except KeyError:
-            raise zope.publisher.interfaces.NotFound(
-                self.context, name, request)
+            raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
     def parse_url(self, url):
         path = urllib.parse.urlsplit(url).path
@@ -259,9 +263,7 @@ class VariantTraverser:
         params = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
 
         if 'width' in params and 'height' in params:
-            result['size'] = [
-                int(params['width'][0]),
-                int(params['height'][0])]
+            result['size'] = [int(params['width'][0]), int(params['height'][0])]
         if 'scale' in params:
             result['scale'] = float(params['scale'][0])
         if 'fill' in params:
@@ -269,8 +271,7 @@ class VariantTraverser:
         if 'viewport' in params:
             result['viewport'] = params['viewport'][0]
         if 'variant' in params:
-            result['variant'] = self._parse_variant_by_name(
-                params['variant'][0])
+            result['variant'] = self._parse_variant_by_name(params['variant'][0])
         return result
 
     def _parse_variant(self, url):
@@ -364,21 +365,16 @@ class VariantTraverser:
         return None
 
 
-@zope.interface.implementer(
-    zeit.content.image.interfaces.IRepositoryImageGroup)
-class ImageGroup(ImageGroupBase,
-                 zeit.cms.repository.repository.Container):
-
+@zope.interface.implementer(zeit.content.image.interfaces.IRepositoryImageGroup)
+class ImageGroup(ImageGroupBase, zeit.cms.repository.repository.Container):
     def __getitem__(self, key):
         item = super().__getitem__(key)
         if key == self.master_image:
-            zope.interface.alsoProvides(
-                item, zeit.content.image.interfaces.IMasterImage)
+            zope.interface.alsoProvides(item, zeit.content.image.interfaces.IMasterImage)
         return item
 
 
 class ImageGroupType(zeit.cms.type.TypeDeclaration):
-
     interface = zeit.content.image.interfaces.IImageGroup
     interface_type = zeit.content.image.interfaces.IImageType
     type = 'image-group'
@@ -399,16 +395,12 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.ILocalImageGroup)
-class LocalImageGroup(ImageGroupBase,
-                      persistent.Persistent,
-                      zope.container.contained.Contained):
-
+class LocalImageGroup(ImageGroupBase, persistent.Persistent, zope.container.contained.Contained):
     def __getitem__(self, key):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         if key in repository:
             return repository[key]
-        return self.create_variant_image(
-            **VariantTraverser(self).parse_url(key))
+        return self.create_variant_image(**VariantTraverser(self).parse_url(key))
 
     # XXX Inheriting from UserDict.DictMixin would be much more sensible,
     # but that breaks browser/copyright.txt for reasons unknown. :-(
@@ -434,7 +426,9 @@ def local_image_group_factory(context):
     lig.__name__ = context.__name__
     zeit.connector.interfaces.IWebDAVWriteProperties(lig).update(
         zeit.connector.interfaces.IWebDAVReadProperties(
-            zope.security.proxy.removeSecurityProxy(context)))
+            zope.security.proxy.removeSecurityProxy(context)
+        )
+    )
     return lig
 
 
@@ -446,7 +440,6 @@ def find_repository_group(context):
 
 @grok.implementer(zope.location.interfaces.ISublocations)
 class RepositorySublocations(grok.Adapter):
-
     grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
 
     def sublocations(self):
@@ -457,7 +450,6 @@ class RepositorySublocations(grok.Adapter):
 
 @grok.implementer(zope.location.interfaces.ISublocations)
 class LocalSublocations(grok.Adapter):
-
     grok.context(zeit.content.image.interfaces.ILocalImageGroup)
 
     def sublocations(self):
@@ -508,12 +500,9 @@ def find_master_image(context):
 EXTERNAL_ID_PATTERN = re.compile(r'^[^\d]*([\d]+)[^\d]*$')
 
 
-@grok.subscribe(
-    zeit.content.image.interfaces.IImage,
-    zope.lifecycleevent.IObjectAddedEvent)
+@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectAddedEvent)
 def guess_external_id(context, event):
-    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-            context.__parent__):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(context.__parent__):
         return
     meta = zeit.content.image.interfaces.IImageMetadata(context.__parent__)
     if meta.external_id:
@@ -530,21 +519,18 @@ def guess_external_id(context, event):
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class ThumbnailTraverser:
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
     def publishTraverse(self, request, name):
         if name != Thumbnails.NAME:
-            raise zope.publisher.interfaces.NotFound(
-                self.context, name, request)
+            raise zope.publisher.interfaces.NotFound(self.context, name, request)
         return zeit.content.image.interfaces.IThumbnails(self.context)
 
 
 @grok.implementer(zeit.content.image.interfaces.IThumbnails)
 class Thumbnails(grok.Adapter):
-
     grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
 
     NAME = 'thumbnails'
@@ -556,8 +542,8 @@ class Thumbnails(grok.Adapter):
         if master_image is None:
             raise KeyError(key)
         return self.context.create_variant_image(
-            source=self.source_image(master_image),
-            **VariantTraverser(self.context).parse_url(key))
+            source=self.source_image(master_image), **VariantTraverser(self.context).parse_url(key)
+        )
 
     def source_image_name(self, master_image):
         return '%s-%s' % (self.SOURCE_IMAGE_PREFIX, master_image.__name__)
@@ -581,8 +567,9 @@ class Thumbnails(grok.Adapter):
             return master_image
 
     def _create_source_image(self, master_image):
-        image = zeit.content.image.interfaces.ITransform(
-            master_image).resize(width=self.THUMBNAIL_WIDTH)
+        image = zeit.content.image.interfaces.ITransform(master_image).resize(
+            width=self.THUMBNAIL_WIDTH
+        )
         self.context[self.source_image_name(master_image)] = image
         return self.context[self.source_image_name(master_image)]
 
@@ -595,13 +582,10 @@ class Thumbnails(grok.Adapter):
         return zeit.content.image.interfaces.IMasterImage(self.context, None)
 
 
-@grok.subscribe(
-    zeit.content.image.interfaces.IImage,
-    zope.lifecycleevent.IObjectAddedEvent)
+@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectAddedEvent)
 def create_thumbnail_source_on_add(context, event):
     group = context.__parent__
-    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-            group):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(group):
         return
     if group.master_image != context.__name__:
         return
@@ -610,11 +594,10 @@ def create_thumbnail_source_on_add(context, event):
 
 
 @grok.subscribe(
-    zeit.content.image.interfaces.IImageGroup,
-    zeit.cms.repository.interfaces.IObjectReloadedEvent)
+    zeit.content.image.interfaces.IImageGroup, zeit.cms.repository.interfaces.IObjectReloadedEvent
+)
 def refresh_thumbnail_source(context, event):
-    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-            context):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(context):
         return
     thumbnails = zeit.content.image.interfaces.IThumbnails(context)
     for name, _image in context.items():
@@ -624,13 +607,10 @@ def refresh_thumbnail_source(context, event):
         thumbnails.source_image(context[name])
 
 
-@grok.subscribe(
-    zeit.content.image.interfaces.IImage,
-    zope.lifecycleevent.IObjectRemovedEvent)
+@grok.subscribe(zeit.content.image.interfaces.IImage, zope.lifecycleevent.IObjectRemovedEvent)
 def remove_thumbnail_source_on_delete(context, event):
     group = context.__parent__
-    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-            group):
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(group):
         return
     thumbnails = zeit.content.image.interfaces.IThumbnails(group)
     thumbnail_name = thumbnails.source_image_name(context)
@@ -639,12 +619,14 @@ def remove_thumbnail_source_on_delete(context, event):
 
 
 class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
-
     grok.context(zeit.content.image.interfaces.IImageGroup)
     grok.name('zeit.cms.repository.folder')
 
     retract_dependencies = True
 
     def get_dependencies(self):
-        return [x for x in self.context.values()
-                if not x.__name__.startswith(Thumbnails.SOURCE_IMAGE_PREFIX)]
+        return [
+            x
+            for x in self.context.values()
+            if not x.__name__.startswith(Thumbnails.SOURCE_IMAGE_PREFIX)
+        ]

@@ -8,13 +8,11 @@ import grokcore.component as grok
 
 
 class IRSSLink(zeit.content.link.interfaces.ILink):
-
     image_url = zope.interface.Attribute('image_url')
 
 
 @zope.interface.implementer(IRSSLink)
 class RSSLink:
-
     def __init__(self, xml, feed=None):
         self.xml = xml
         self.__name__ = None
@@ -80,8 +78,7 @@ class RSSLink:
 
     @cachedproperty
     def is_ad(self):
-        dc_type = self.xml.find(
-            'dc:type', namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
+        dc_type = self.xml.find('dc:type', namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
         if dc_type is not None and dc_type.text == 'native-ad':
             return True
         return False

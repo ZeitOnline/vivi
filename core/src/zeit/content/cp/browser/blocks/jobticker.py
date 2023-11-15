@@ -5,7 +5,6 @@ import zeit.content.cp.browser.blocks.block
 
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IJobTickerBlock).omit(
-            *list(zeit.content.cp.interfaces.IBlock))
+    form_fields = zope.formlib.form.Fields(zeit.content.cp.interfaces.IJobTickerBlock).omit(
+        *list(zeit.content.cp.interfaces.IBlock)
+    )

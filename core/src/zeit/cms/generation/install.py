@@ -25,28 +25,40 @@ def installRelations():
         site_manager,
         zeit.cms.relation.relation.Relations,
         'relations',
-        zeit.cms.relation.interfaces.IRelations)
-    relations.add_index(
-        zeit.cms.relation.relation.referenced_by, multiple=True)
+        zeit.cms.relation.interfaces.IRelations,
+    )
+    relations.add_index(zeit.cms.relation.relation.referenced_by, multiple=True)
 
 
 def installErrorReportingUtility(root):
     zope.app.appsetup.bootstrap.addConfigureUtility(
-        root, zope.error.interfaces.IErrorReportingUtility, '',
-        zeit.cms.browser.error.ErrorReportingUtility)
+        root,
+        zope.error.interfaces.IErrorReportingUtility,
+        '',
+        zeit.cms.browser.error.ErrorReportingUtility,
+    )
 
 
 def install(root):
     installErrorReportingUtility(root)
     installLocalUtility(
-        root, zeit.cms.repository.repository.repositoryFactory,
-        'repository', zeit.cms.repository.interfaces.IRepository)
+        root,
+        zeit.cms.repository.repository.repositoryFactory,
+        'repository',
+        zeit.cms.repository.interfaces.IRepository,
+    )
     installLocalUtility(
-        root, zeit.cms.workingcopy.workingcopy.WorkingcopyLocation,
-        'workingcopy', zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+        root,
+        zeit.cms.workingcopy.workingcopy.WorkingcopyLocation,
+        'workingcopy',
+        zeit.cms.workingcopy.interfaces.IWorkingcopyLocation,
+    )
     installLocalUtility(
-        root, zeit.cms.content.template.TemplateManagerContainer,
-        'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
+        root,
+        zeit.cms.content.template.TemplateManagerContainer,
+        'templates',
+        zeit.cms.content.interfaces.ITemplateManagerContainer,
+    )
     root['retractlog'] = zeit.cms.retractlog.retractlog.RetractLog()
     installRelations()
 

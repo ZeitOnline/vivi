@@ -8,21 +8,17 @@ import zope.dublincore.interfaces
 
 @grok.implementer(zope.dublincore.interfaces.IDCTimes)
 class RepositoryDCTimes(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     grok.context(zeit.cms.repository.interfaces.IRepositoryContent)
 
     created = zeit.cms.content.dav.DAVProperty(
-        zope.dublincore.interfaces.IDCTimes['created'],
-        'DAV:',
-        'creationdate')
+        zope.dublincore.interfaces.IDCTimes['created'], 'DAV:', 'creationdate'
+    )
     modified = zeit.cms.content.dav.DAVProperty(
-        zope.dublincore.interfaces.IDCTimes['modified'],
-        'DAV:',
-        'getlastmodified')
+        zope.dublincore.interfaces.IDCTimes['modified'], 'DAV:', 'getlastmodified'
+    )
 
 
 class LocalDCTimes(RepositoryDCTimes):
-
     grok.context(zeit.cms.workingcopy.interfaces.ILocalContent)
 
     @property
@@ -31,8 +27,7 @@ class LocalDCTimes(RepositoryDCTimes):
         if ts is None:
             modified = super().modified
             if modified is None:
-                annotations = zope.annotation.interfaces.IAnnotations(
-                    self.context)
+                annotations = zope.annotation.interfaces.IAnnotations(self.context)
                 modified = annotations.get(__name__)
         else:
             modified = pendulum.from_timestamp(ts)

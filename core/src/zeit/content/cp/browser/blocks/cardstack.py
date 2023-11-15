@@ -29,19 +29,18 @@ class ColorSourceWidget(zope.formlib.source.SourceDropdownWidget):
 
     def _render_element(self, value, color_code, **kw):
         return zope.formlib.widget.renderElement(
-            'option', contents=color_code,
+            'option',
+            contents=color_code,
             value=value,
             cssClass=self.cssClass,
-            style="background-color: %s" % color_code,
-            **kw)
+            style='background-color: %s' % color_code,
+            **kw,
+        )
 
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
-
-    form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.ICardstackBlock).select(
-        'card_id',
-        'is_advertorial',
-        'cardstack_background_color')
+    form_fields = zope.formlib.form.Fields(zeit.content.cp.interfaces.ICardstackBlock).select(
+        'card_id', 'is_advertorial', 'cardstack_background_color'
+    )
 
     form_fields['cardstack_background_color'].custom_widget = ColorSourceWidget

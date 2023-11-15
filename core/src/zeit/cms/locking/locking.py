@@ -15,14 +15,12 @@ import zope.interface
 
 @zope.interface.implementer(zope.app.locking.interfaces.ILockStorage)
 class LockStorage:
-
     def getLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):
             # Non cms objects cannot have locks.
             return None
         try:
-            locked_by, locked_until, my_lock = self.connector.locked(
-                object.uniqueId)
+            locked_by, locked_until, my_lock = self.connector.locked(object.uniqueId)
         except (KeyError, ValueError):
             # resource does not exist -> no lock
             return None
@@ -31,17 +29,16 @@ class LockStorage:
         if locked_by is None:
             locked_by = 'zeit.cms.unknown-dav-locker'
         if not my_lock:
-            locked_by = "othersystem." + locked_by
+            locked_by = 'othersystem.' + locked_by
 
         return LockInfo(object, locked_by, locked_until)
 
     def setLock(self, object, lock):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):
             # Non cms objects cannot have locks.
-            raise ValueError("Non CMS objects cannot be locked.")
+            raise ValueError('Non CMS objects cannot be locked.')
         if lock.timeout:
-            until = datetime.datetime.fromtimestamp(
-                lock.created + lock.timeout, pytz.UTC)
+            until = datetime.datetime.fromtimestamp(lock.created + lock.timeout, pytz.UTC)
         else:
             until = None
         try:
@@ -50,11 +47,11 @@ class LockStorage:
             raise zope.app.locking.interfaces.LockingError(e.uniqueId, *e.args)
         # Now make sure the object *really* exists. In case we've create a null
         # resource lock, we unlock and raise an error
-        if not self.connector[object.uniqueId].properties.get(
-                ('getlastmodified', 'DAV:')):
+        if not self.connector[object.uniqueId].properties.get(('getlastmodified', 'DAV:')):
             self.delLock(object)
             raise zope.app.locking.interfaces.LockingError(
-                object.uniqueId, 'Object does not exist.')
+                object.uniqueId, 'Object does not exist.'
+            )
 
     def delLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):
@@ -72,7 +69,6 @@ class LockStorage:
 
 @zope.interface.implementer(zeit.cms.locking.interfaces.ILockInfo)
 class LockInfo(persistent.mapping.PersistentMapping):
-
     locked_until = None
 
     def __init__(self, target, principal_id, locked_until=None):
@@ -83,15 +79,14 @@ class LockInfo(persistent.mapping.PersistentMapping):
         self.locked_until = locked_until
         if isinstance(locked_until, datetime.datetime):
             delta = locked_until - datetime.datetime.now(pytz.UTC)
-            self.timeout = (delta.days * 86400 +
-                            delta.seconds +
-                            delta.microseconds * 1e-6)
+            self.timeout = delta.days * 86400 + delta.seconds + delta.microseconds * 1e-6
 
     def __repr__(self):
-        return "<%s.%s object at 0x%x>" % (
+        return '<%s.%s object at 0x%x>' % (
             self.__class__.__module__,
             self.__class__.__name__,
-            id(self))
+            id(self),
+        )
 
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)

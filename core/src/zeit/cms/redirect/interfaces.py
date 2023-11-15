@@ -17,8 +17,9 @@ class ILookup(zope.interface.Interface):
 
 
 class IRenameInfo(zope.interface.Interface):
-
     previous_uniqueIds = zope.schema.Tuple(
         title=_('previous uniqueIds of this ICMSContent'),
         value_type=zope.schema.TextLine(),
-        required=False, default=())
+        required=False,
+        default=(),
+    )

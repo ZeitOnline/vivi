@@ -24,8 +24,6 @@ def test_suite():
     zeit.connector.testing.mark_doctest_suite(functional, pytest.mark.slow)
     suite.addTest(functional)
 
-    suite.addTest(zeit.cms.testing.DocFileSuite(
-        'search.txt',
-        package='zeit.connector'))
+    suite.addTest(zeit.cms.testing.DocFileSuite('search.txt', package='zeit.connector'))
 
     return suite

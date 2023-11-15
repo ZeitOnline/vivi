@@ -13,7 +13,6 @@ import zope.security.checker
 
 
 class UnknownType:
-
     __slots__ = ()
     _instance = None
 
@@ -46,12 +45,7 @@ def source_token(value):
 
 
 class TriState(zc.sourcefactory.basic.BasicSourceFactory):
-
-    _values = collections.OrderedDict((
-        (True, _('yes')),
-        (False, _('no')),
-        (Unknown, _('unknown'))
-    ))
+    _values = collections.OrderedDict(((True, _('yes')), (False, _('no')), (Unknown, _('unknown'))))
 
     def getTitle(self, value):
         return self._values.get(value, value)

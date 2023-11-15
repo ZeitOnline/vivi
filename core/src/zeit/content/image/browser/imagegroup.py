@@ -28,47 +28,45 @@ import zope.publisher.interfaces
 
 
 class FormBase:
-
     field_groups = zeit.content.image.browser.form.ImageFormBase.field_groups
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.image.interfaces.IImageGroup,
         zeit.content.image.interfaces.IImageMetadata,
-        zeit.content.image.interfaces.IReferences).omit(
-            'acquire_metadata', 'variants')
+        zeit.content.image.interfaces.IReferences,
+    ).omit('acquire_metadata', 'variants')
 
 
-class AddForm(FormBase,
-              zeit.cms.repository.browser.file.FormBase,
-              zeit.cms.browser.form.AddForm,
-              zeit.content.image.browser.form.Resize):
-
+class AddForm(
+    FormBase,
+    zeit.cms.repository.browser.file.FormBase,
+    zeit.cms.browser.form.AddForm,
+    zeit.content.image.browser.form.Resize,
+):
     title = _('Add image group')
     factory = zeit.content.image.imagegroup.ImageGroup
     checkout = False
     form_fields = (
-        FormBase.form_fields.omit(
-            'references', 'master_images', 'external_id') +
-        zope.formlib.form.FormFields(IMasterImageUploadSchema) +
-        zope.formlib.form.FormFields(
-            zeit.workflow.interfaces.ITimeBasedPublishing).select(
-                'release_period')
+        FormBase.form_fields.omit('references', 'master_images', 'external_id')
+        + zope.formlib.form.FormFields(IMasterImageUploadSchema)
+        + zope.formlib.form.FormFields(zeit.workflow.interfaces.ITimeBasedPublishing).select(
+            'release_period'
+        )
     )
 
-    form_fields['master_image_blobs'].custom_widget = (
-        CustomWidgetFactory(
-            zope.formlib.sequencewidget.SequenceWidget,
-            zeit.cms.repository.browser.file.BlobWidget))
+    form_fields['master_image_blobs'].custom_widget = CustomWidgetFactory(
+        zope.formlib.sequencewidget.SequenceWidget, zeit.cms.repository.browser.file.BlobWidget
+    )
     form_fields['mdb_blob'].custom_widget = MDBImportWidget
 
     field_groups = FormBase.field_groups + (
         gocept.form.grouped.Fields(
-            _("Settings"), ('release_period',),
-            css_class='column-left image-form'),)
+            _('Settings'), ('release_period',), css_class='column-left image-form'
+        ),
+    )
 
     def __init__(self, *args, **kw):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.image')
         if not config.get('mdb-api-url'):
             self.form_fields = self.form_fields.omit('mdb_blob')
         self.max_size = config.get('max-image-size', 4000)
@@ -105,8 +103,7 @@ class AddForm(FormBase,
         # Must remove master_image_blobs from data before creating the images,
         # since `zeit.cms.browser.form.apply_changes_with_setattr` breaks on
         # fields that are not actually part of the interface.
-        blobs = data.pop('master_image_blobs', ()) + (
-            data.pop('mdb_blob', None),)
+        blobs = data.pop('master_image_blobs', ()) + (data.pop('mdb_blob', None),)
 
         # Create ImageGroup with remaining data.
         group = super().create(data)
@@ -152,8 +149,8 @@ class AddForm(FormBase,
         if name:
             image.__name__ = zeit.cms.interfaces.normalize_filename(name)
         zeit.cms.browser.form.apply_changes_with_setattr(
-            image,
-            self.form_fields.omit('__name__', 'display_type'), data)
+            image, self.form_fields.omit('__name__', 'display_type'), data
+        )
         return image
 
     @property
@@ -166,66 +163,60 @@ class AddForm(FormBase,
         super().setUpWidgets(*args, **kw)
         self.widgets['master_image_blobs'].addButtonLabel = _('Add motif')
         self.widgets['master_image_blobs'].subwidget.extra = 'accept="%s"' % (
-            ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES))
+            ','.join(zeit.content.image.interfaces.AVAILABLE_MIME_TYPES)
+        )
         self.widgets['copyright'].vivi_css_class = 'fieldname-copyright--add'
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
-
     title = _('Edit image group')
     form_fields = FormBase.form_fields.omit('__name__')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
-        self.widgets['master_images'].addButtonLabel = _(
-            'Add viewport to master image mapping')
-        self.widgets['copyright'].vivi_css_class = (
-            'fieldname-copyright--edit')
+        self.widgets['master_images'].addButtonLabel = _('Add viewport to master image mapping')
+        self.widgets['copyright'].vivi_css_class = 'fieldname-copyright--edit'
 
 
 class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):
-
     title = _('Image group metadata')
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
-        self.widgets['copyright'].vivi_css_class = (
-            'fieldname-copyright--display')
+        self.widgets['copyright'].vivi_css_class = 'fieldname-copyright--display'
 
 
 class ImageColumn(zc.table.column.GetterColumn):
-
     def getter(self, item, formatter):
         return item.context
 
     def cell_formatter(self, value, item, formatter):
-        img = zope.component.getMultiAdapter(
-            (value, formatter.request),
-            name='preview').tag()
+        img = zope.component.getMultiAdapter((value, formatter.request), name='preview').tag()
         master = ''
         if zeit.content.image.interfaces.IMasterImage.providedBy(value):
             master = '<div class="master-image">%s</div>' % (
-                zope.i18n.translate(_('Master image'),
-                                    context=formatter.request))
+                zope.i18n.translate(_('Master image'), context=formatter.request)
+            )
         return img + master
 
 
 class View(zeit.cms.browser.listing.Listing):
-
     title = _('Image group')
     filter_interface = zeit.content.image.interfaces.IImage
 
     columns = (
         zeit.cms.browser.listing.LockedColumn('', name='locked'),
         zeit.cms.browser.listing.GetterColumn(
-            title=_("File name"),
+            title=_('File name'),
             # zc.table can't deal with spaces in colum names
             name='filename',
-            getter=lambda i, f: i.__name__),
+            getter=lambda i, f: i.__name__,
+        ),
         zeit.cms.browser.listing.GetterColumn(
             title=_('Dimensions'),
             getter=lambda i, f: i.context.getImageSize(),
-            cell_formatter=lambda v, i, f: 'x'.join(str(i) for i in v)),
+            cell_formatter=lambda v, i, f: 'x'.join(str(i) for i in v),
+        ),
         ImageColumn(title=_('Image')),
         zeit.cms.browser.listing.MetadataColumn('Metadaten', name='metadata'),
     )
@@ -239,34 +230,28 @@ class View(zeit.cms.browser.listing.Listing):
 
 
 class AddImage(zeit.content.image.browser.form.AddForm):
-
     checkout = False
 
-    field_groups = (
-        gocept.form.grouped.RemainingFields(_("Image data")),
-    )
+    field_groups = (gocept.form.grouped.RemainingFields(_('Image data')),)
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.image.browser.interfaces.IFileEditSchema)
-    form_fields['blob'].custom_widget = (
-        zeit.cms.repository.browser.file.BlobWidget)
+        zeit.content.image.browser.interfaces.IFileEditSchema
+    )
+    form_fields['blob'].custom_widget = zeit.cms.repository.browser.file.BlobWidget
 
     def nextURL(self):
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request), name='absolute_url')
+        url = zope.component.getMultiAdapter((self.context, self.request), name='absolute_url')
         return url()
 
 
 class Metadata:
-
     @zope.cachedescriptors.property.Lazy
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
 
     @property
     def images(self):
-        if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-                self.context):
+        if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(self.context):
             return
         for obj in self.context.values():
             if zeit.content.image.interfaces.IImage.providedBy(obj):
@@ -274,7 +259,6 @@ class Metadata:
 
 
 class Thumbnail:
-
     first_choice = re.compile(r'.*-\d+x\d+')
     view_name = 'thumbnail'
 
@@ -287,13 +271,13 @@ class Thumbnail:
     @property
     def image_view(self):
         view = zope.component.getMultiAdapter(
-            (self._find_image(), self.request), name=self.view_name)
+            (self._find_image(), self.request), name=self.view_name
+        )
         return view
 
     def _find_image(self):
         if not self.context.keys():
-            raise zope.publisher.interfaces.NotFound(
-                self.context, self.__name__, self.request)
+            raise zope.publisher.interfaces.NotFound(self.context, self.__name__, self.request)
 
         for name in self.context.keys():
             if self.first_choice.match(name):
@@ -303,7 +287,6 @@ class Thumbnail:
 
 
 class ThumbnailLarge(Thumbnail):
-
     first_choice = re.compile(r'.*-[5-9][0-9]+x\d+')
     view_name = 'preview'
 
@@ -321,7 +304,6 @@ class DefaultView(zeit.cms.browser.view.Base):
 
 
 class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
-
     CSV_SEPERATOR = '\t'
 
     def __init__(self, context, request):
@@ -334,7 +316,8 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader('location', 'https://www.zeit.de')
         self.request.response.setHeader(
-            'Content-Disposition', 'attachment; filename="%s"' % filename)
+            'Content-Disposition', 'attachment; filename="%s"' % filename
+        )
         self.send_message(f'Download {filename}')
         return self.create_csv()
 
@@ -347,7 +330,6 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
         out = io.StringIO()
         writer = csv.writer(out, delimiter=self.CSV_SEPERATOR)
         for row in self.create_imagegroup_list():
-
             writer.writerow(row)
 
         file_content = out.getvalue()
@@ -355,42 +337,49 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
 
     def create_imagegroup_list(self):
         csv_rows = []
-        csv_rows.append([
-            _('publish_date'), _('image_number'), _('copyright infos'),
-            _('internal link')])
+        csv_rows.append(
+            [_('publish_date'), _('image_number'), _('copyright infos'), _('internal link')]
+        )
         for imgr_content in self.find_imagegroups():
             try:
-                imgr_metadata = zeit.content.image.interfaces.IImageMetadata(
-                    imgr_content)
+                imgr_metadata = zeit.content.image.interfaces.IImageMetadata(imgr_content)
                 publish_date = IPublishInfo(imgr_content).date_first_released
                 copyrights = '/'.join(map(str, imgr_metadata.copyright))
                 vivi_url = imgr_content.uniqueId.replace(
-                    'http://xml.zeit.de', 'https://vivi.zeit.de/repository')
-                csv_rows.append([
-                    publish_date.to_datetime_string(),
-                    imgr_content.master_image,
-                    copyrights,
-                    vivi_url])
+                    'http://xml.zeit.de', 'https://vivi.zeit.de/repository'
+                )
+                csv_rows.append(
+                    [
+                        publish_date.to_datetime_string(),
+                        imgr_content.master_image,
+                        copyrights,
+                        vivi_url,
+                    ]
+                )
             except Exception as e:
-                csv_rows.append([
-                    'ERROR',
-                    str(e),
-                    imgr_content.uniqueId])
+                csv_rows.append(['ERROR', str(e), imgr_content.uniqueId])
                 continue
         return csv_rows
 
     def find_imagegroups(self, days_ago=40):
         es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
         query = {
-            "query": {"bool": {
-                "filter": [{
-                    "range": {
-                        "payload.document.date_first_released": {
-                            "gte": f'now-{days_ago}d/d'}
-                    }},
-                    {"term": {"doc_type": "image-group"}},
-                    {"term": {"payload.image.single_purchase": True}}
-                ]}}}
+            'query': {
+                'bool': {
+                    'filter': [
+                        {
+                            'range': {
+                                'payload.document.date_first_released': {
+                                    'gte': f'now-{days_ago}d/d'
+                                }
+                            }
+                        },
+                        {'term': {'doc_type': 'image-group'}},
+                        {'term': {'payload.image.single_purchase': True}},
+                    ]
+                }
+            }
+        }
         results = es.search(query, rows=10000)
         imgroups = []
         for result in results:
@@ -399,7 +388,6 @@ class CopyrightCompanyPurchaseReport(zeit.cms.browser.view.Base):
 
 
 class MenuItem(zeit.cms.browser.menu.GlobalMenuItem):
-
-    title = _("CopyrightPurchaseReport")
+    title = _('CopyrightPurchaseReport')
     viewURL = '@@CopyrightCompanyPurchaseReport'
     pathitem = '@@CopyrightCompanyPurchaseReport'

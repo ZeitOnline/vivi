@@ -36,16 +36,13 @@ def index_after_add(event):
         return
     if zeit.cms.repository.interfaces.IRepository.providedBy(context):
         return
-    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
-            event.newParent):
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
     log.info('AfterAdd: Creating index job for %s', context.uniqueId)
     index_async.delay(context.uniqueId)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
     if event.publishing:
         return
@@ -56,9 +53,7 @@ def index_after_checkin(context, event):
     index_async.apply_async((context.uniqueId,), countdown=5)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.workflow.interfaces.IBeforePublishEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def index_before_publish(context, event):
     # Unfortunately we have to enrich here too, even though strictly
     # speaking that "already happened" on checkin, to support the "checkin
@@ -67,27 +62,22 @@ def index_before_publish(context, event):
     index_on_checkin(context, enrich=True)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.workflow.interfaces.IRetractedEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IRetractedEvent)
 def index_after_retract(context, event):
     log.info('AfterRetract: Creating async index job for %s', context.uniqueId)
     index_async.apply_async((context.uniqueId, False), countdown=5)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.IObjectRemovedEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectRemovedEvent)
 def unindex_on_remove(context, event):
-    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
-            event.oldParent):
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.oldParent):
         return
     unindex_async.delay(zeit.cms.content.interfaces.IUUID(context).id)
 
 
 @grok.subscribe(
-    zeit.workflow.interfaces.IContentWorkflow,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+    zeit.workflow.interfaces.IContentWorkflow, zeit.cms.content.interfaces.IDAVPropertyChangedEvent
+)
 def index_workflow_properties(context, event):
     content = context.context
     if zeit.cms.checkout.interfaces.ILocalContent.providedBy(content):
@@ -101,8 +91,7 @@ def index_workflow_properties(context, event):
 def index_async(self, uniqueId, enrich=True):
     context = zeit.cms.interfaces.ICMSContent(uniqueId, None)
     if context is None:
-        log.warning('Could not index %s because it does not exist any longer.',
-                    uniqueId)
+        log.warning('Could not index %s because it does not exist any longer.', uniqueId)
         return
     try:
         index_on_checkin(context, enrich=enrich)
@@ -133,15 +122,19 @@ def index(content, enrich=False, update_keywords=False, publish=False):
     errors = []
     while stack:
         content = stack.pop(0)
-        if (ICollection.providedBy(content) and
-                not INonRecursiveCollection.providedBy(content)):
+        if ICollection.providedBy(content) and not INonRecursiveCollection.providedBy(content):
             stack.extend(content.values())
         if should_skip(content):
             continue
-        uuid = getattr(zeit.cms.content.interfaces.IUUID(content, None), 'id',
-                       '<no-uuid>')
-        log.info('Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
-                 content.uniqueId, uuid, enrich, update_keywords, publish)
+        uuid = getattr(zeit.cms.content.interfaces.IUUID(content, None), 'id', '<no-uuid>')
+        log.info(
+            'Updating: %s %s, enrich: %s, keywords: %s, publish: %s',
+            content.uniqueId,
+            uuid,
+            enrich,
+            update_keywords,
+            publish,
+        )
         try:
             data = {}
             previous = conn.get_article_data(content)
@@ -156,29 +149,24 @@ def index(content, enrich=False, update_keywords=False, publish=False):
                 data['body'] = response.get('body')
                 if update_keywords:
                     tagger = zeit.retresco.tagger.Tagger(content)
-                    tagger.update(conn.generate_keyword_list(response),
-                                  clear_disabled=False)
+                    tagger.update(conn.generate_keyword_list(response), clear_disabled=False)
 
             conn.index(content, data)
 
             if publish:
                 pub_info = zeit.cms.workflow.interfaces.IPublishInfo(content)
                 if pub_info.published:
-                    if zeit.retresco.interfaces.ITMSRepresentation(
-                            content)() is not None:
+                    if zeit.retresco.interfaces.ITMSRepresentation(content)() is not None:
                         log.info('Publishing: %s', content.uniqueId)
                         conn.publish(content)
                     else:
-                        log.info(
-                            'Skip publish for %s, missing required fields',
-                            content.uniqueId)
+                        log.info('Skip publish for %s, missing required fields', content.uniqueId)
         except zeit.retresco.interfaces.TechnicalError as e:
             log.info('Retrying %s due to %r', content.uniqueId, e)
             raise
         except Exception as e:
             errors.append(e)
-            log.warning('Error indexing %s, giving up',
-                        content.uniqueId, exc_info=True)
+            log.warning('Error indexing %s, giving up', content.uniqueId, exc_info=True)
             continue
     return errors
 
@@ -207,8 +195,7 @@ def should_skip(content):
             return True
     content_type = zeit.cms.type.get_type(content)
     if content_type in SKIP_TYPES:
-        log.debug('Skipping %s due to its content type %s',
-                  content, content_type)
+        log.debug('Skipping %s due to its content type %s', content, content_type)
         return True
     return False
 
@@ -222,8 +209,7 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
         return
     except Exception:
         self.retry()
-    if (ICollection.providedBy(content) and
-            not INonRecursiveCollection.providedBy(content)):
+    if ICollection.providedBy(content) and not INonRecursiveCollection.providedBy(content):
         children = content.values()
         for item in children:
             if should_skip(item):
@@ -234,8 +220,7 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
             return
         start = time.time()
         try:
-            errors = index(content, enrich=enrich, update_keywords=enrich,
-                           publish=publish)
+            errors = index(content, enrich=enrich, update_keywords=enrich, publish=publish)
         except zeit.retresco.interfaces.TechnicalError:
             self.retry()
         else:
@@ -244,30 +229,24 @@ def index_parallel(self, unique_id, enrich=False, publish=False):
                 log.info('Processed %s in %s', content.uniqueId, stop - start)
 
 
-@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
-    'zeit.retresco', 'index-principal'))
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.retresco', 'index-principal'))
 def reindex():
     parser = argparse.ArgumentParser(description='Reindex folder in TMS')
+    parser.add_argument('ids', nargs='+', help='uniqueIds to reindex')
+    parser.add_argument('--file', action='store_true', help='Load uniqueIds from a file to reindex')
     parser.add_argument(
-        'ids', nargs='+', help='uniqueIds to reindex')
+        '--parallel', action='store_true', help='process via job queue instead of directly'
+    )
     parser.add_argument(
-        '--file', action='store_true',
-        help='Load uniqueIds from a file to reindex')
-    parser.add_argument(
-        '--parallel', action='store_true',
-        help='process via job queue instead of directly')
-    parser.add_argument(
-        '--enrich', action='store_true',
-        help='Perform TMS analyze/enrich prior to indexing')
-    parser.add_argument(
-        '--publish', action='store_true',
-        help='Perform TMS publish after indexing')
+        '--enrich', action='store_true', help='Perform TMS analyze/enrich prior to indexing'
+    )
+    parser.add_argument('--publish', action='store_true', help='Perform TMS publish after indexing')
 
     args = parser.parse_args()
     ids = args.ids
     if args.file:
         if len(args.ids) > 1:
-            raise Exception("Only one file can be passed!")
+            raise Exception('Only one file can be passed!')
         with open(args.ids[0], 'r') as f:
             ids = f.read().splitlines()
 
@@ -279,5 +258,7 @@ def reindex():
         else:
             index(
                 zeit.cms.interfaces.ICMSContent(id),
-                enrich=args.enrich, update_keywords=args.enrich,
-                publish=args.publish)
+                enrich=args.enrich,
+                update_keywords=args.enrich,
+                publish=args.publish,
+            )

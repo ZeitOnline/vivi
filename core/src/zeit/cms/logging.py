@@ -58,8 +58,7 @@ def apply_logging_syntax_fixes(config):
     config.setdefault('disable_existing_loggers', False)
 
     if config.get('root', {}).get('handlers'):
-        config['root']['handlers'] = re.split(
-            ', *', config['root']['handlers'])
+        config['root']['handlers'] = re.split(', *', config['root']['handlers'])
 
     if 'loggers' in config:
         for key, value in list(config['loggers'].items()):

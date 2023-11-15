@@ -28,15 +28,12 @@ class Whitelist(grok.GlobalUtility):
 
 
 @grok.implementer(zeit.cms.tagging.interfaces.ITopicpages)
-class Topicpages(grok.GlobalUtility,
-                 zeit.cms.content.sources.OverridableURLConfiguration):
-
+class Topicpages(grok.GlobalUtility, zeit.cms.content.sources.OverridableURLConfiguration):
     product_configuration = 'zeit.retresco'
     config_url = 'topicpages-source'
     default_filename = 'topicpages.xml'
 
-    def get_topics(self, start=0, rows=25, sort_by='title', sort_order='asc',
-                   firstletter=None):
+    def get_topics(self, start=0, rows=25, sort_by='title', sort_order='asc', firstletter=None):
         result = []
         tree = self.load()
         xpath = '//topic'
@@ -45,8 +42,7 @@ class Topicpages(grok.GlobalUtility,
         elif len(firstletter) == 1:
             xpath += f'[substring(@id, 1, 1) = "{firstletter.lower()}"]'
         else:
-            xpath += (
-                f'[contains("{firstletter.lower()}", substring(@id, 1, 1))]')
+            xpath += f'[contains("{firstletter.lower()}", substring(@id, 1, 1))]'
 
         for node in tree.xpath(xpath):
             topic = {}
@@ -73,7 +69,7 @@ class Topicpages(grok.GlobalUtility,
 
         hits = len(result)
         if rows is not None:
-            result = result[start:start + rows]
+            result = result[start : start + rows]
         slice = zeit.cms.interfaces.Result(result)
         slice.hits = hits
         return slice

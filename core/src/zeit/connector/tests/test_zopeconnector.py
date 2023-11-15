@@ -2,11 +2,11 @@ import zeit.connector.testing
 
 
 class TestMoveRollback(zeit.connector.testing.ConnectorTest):
-
     layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
 
     def test_move_should_revert_on_abort(self):
         import transaction
+
         source = self.get_resource('source', 'source-body')
         target = self.get_resource('target', '')
         self.connector.add(source)
@@ -14,12 +14,16 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
         transaction.abort()
         self.assertEqual(
             ['source'],
-            [name for name, unique_id in
-             self.connector.listCollection(
-                 'http://xml.zeit.de/testing') if name])
+            [
+                name
+                for name, unique_id in self.connector.listCollection('http://xml.zeit.de/testing')
+                if name
+            ],
+        )
 
     def test_move_should_not_revert_on_commit(self):
         import transaction
+
         source = self.get_resource('source', 'source-body')
         target = self.get_resource('target', '')
         self.connector.add(source)
@@ -27,12 +31,16 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
         transaction.commit()
         self.assertEqual(
             ['target'],
-            [name for name, unique_id in
-             self.connector.listCollection(
-                 'http://xml.zeit.de/testing') if name])
+            [
+                name
+                for name, unique_id in self.connector.listCollection('http://xml.zeit.de/testing')
+                if name
+            ],
+        )
 
     def test_move_should_not_try_to_revert_on_error(self):
         import transaction
+
         source = self.get_resource('source', 'source-body')
         target = self.get_resource('target', 'target-body')
         self.connector.add(source)
@@ -48,6 +56,9 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
         transaction.abort()
         self.assertEqual(
             ['target'],
-            [name for name, unique_id in self.connector.listCollection(
-                'http://xml.zeit.de/testing')
-             if name])
+            [
+                name
+                for name, unique_id in self.connector.listCollection('http://xml.zeit.de/testing')
+                if name
+            ],
+        )

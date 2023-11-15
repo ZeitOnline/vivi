@@ -12,7 +12,6 @@ import zope.viewlet.viewlet
 
 
 class Sidebar(zope.viewlet.viewlet.ViewletBase):
-
     @zope.cachedescriptors.property.Lazy
     def clipboard(self):
         return zeit.cms.clipboard.interfaces.IClipboard(self.request.principal)
@@ -37,7 +36,7 @@ class Tree(zeit.cms.browser.tree.Tree):
             return ''
         root_path = zope.traversing.api.getPath(self.root)
         full_path = zope.traversing.api.getPath(object)
-        relative = full_path[len(root_path) + 1:]
+        relative = full_path[len(root_path) + 1 :]
         return relative
 
     def getDisplayedUniqueId(self, object):
@@ -48,8 +47,9 @@ class Tree(zeit.cms.browser.tree.Tree):
     def addContent(self, add_to, unique_id):
         container = self.getAddContext(add_to)
         add_object = zeit.cms.interfaces.ICMSContent(unique_id)
-        self.context.addContent(container, add_object, add_object.__name__,
-                                insert=self.expanded(container))
+        self.context.addContent(
+            container, add_object, add_object.__name__, insert=self.expanded(container)
+        )
         return self()
 
     def addContainer(self, title):
@@ -58,18 +58,17 @@ class Tree(zeit.cms.browser.tree.Tree):
 
     def moveContent(self, add_to, object_path):
         container = self.getAddContext(add_to)
-        obj = zope.traversing.interfaces.ITraverser(
-            self.context).traverse(object_path)
+        obj = zope.traversing.interfaces.ITraverser(self.context).traverse(object_path)
         try:
-            self.context.moveObject(
-                obj, container, insert=self.expanded(container))
+            self.context.moveObject(obj, container, insert=self.expanded(container))
         except ValueError:
             transaction.doom()
         return self()
 
     def getTitle(self, obj):
-        if (zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj) or
-                zeit.cms.clipboard.interfaces.IClip.providedBy(obj)):
+        if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
+            obj
+        ) or zeit.cms.clipboard.interfaces.IClip.providedBy(obj):
             return obj.title
         return super().getTitle(obj)
 
@@ -80,8 +79,7 @@ class Tree(zeit.cms.browser.tree.Tree):
 
     def getAddContext(self, add_to):
         if add_to:
-            return zope.traversing.interfaces.ITraverser(
-                self.context).traverse(add_to)
+            return zope.traversing.interfaces.ITraverser(self.context).traverse(add_to)
         return self.context
 
     def selected(self, url):
@@ -93,12 +91,10 @@ class Tree(zeit.cms.browser.tree.Tree):
 
 
 @zope.component.adapter(
-    zeit.cms.clipboard.interfaces.IClipboard,
-    zope.publisher.interfaces.IPublicationRequest)
+    zeit.cms.clipboard.interfaces.IClipboard, zope.publisher.interfaces.IPublicationRequest
+)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
-class ClipboardListRepresentation(
-        zeit.cms.browser.listing.BaseListRepresentation):
-
+class ClipboardListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     author = subtitle = byline = ressort = volume = page = year = None
 
     title = 'Clipboard'

@@ -52,8 +52,12 @@ def load_zcml(settings):
     feature = 'zcml.feature.'
     return _load_zcml(
         settings['site_zcml'],
-        [x.replace(feature, '', 1) for x in settings
-         if x.startswith(feature) and ast.literal_eval(settings[x])])
+        [
+            x.replace(feature, '', 1)
+            for x in settings
+            if x.startswith(feature) and ast.literal_eval(settings[x])
+        ],
+    )
 
 
 def _load_zcml(filename, features=(), package=None):
@@ -64,8 +68,7 @@ def _load_zcml(filename, features=(), package=None):
     for x in features:
         context.provideFeature(x)
     zope.configuration.xmlconfig.registerCommonDirectives(context)
-    zope.configuration.xmlconfig.include(
-        context, file=filename, package=package)
+    zope.configuration.xmlconfig.include(context, file=filename, package=package)
     context.execute_actions()
     zope.event.notify(ZCMLLoaded())
     return context
@@ -109,17 +112,17 @@ class DelayedInitZODB:
 @grok.subscribe(ZCMLLoaded)
 def configure_dogpile_cache(event):
     import pyramid_dogpile_cache2
+
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     regions = config['cache-regions']
     if not regions:
         return
-    settings = {
-        'dogpile_cache.regions': regions
-    }
+    settings = {'dogpile_cache.regions': regions}
     for region in re.split(r'\s*,\s*', regions):
         settings['dogpile_cache.%s.backend' % region] = 'dogpile.cache.memory'
         settings['dogpile_cache.%s.expiration_time' % region] = config[
-            'cache-expiration-%s' % region]
+            'cache-expiration-%s' % region
+        ]
     pyramid_dogpile_cache2.configure_dogpile_cache(settings)
 
 
@@ -128,10 +131,10 @@ try:
 except ImportError:  # UI-only dependency
     pass
 else:
+
     @grok.subscribe(ZCMLLoaded)
     def set_passwords(event):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.cms.principals')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms.principals')
         if not config:
             return
         registry = zope.principalregistry.principalregistry.principalRegistry

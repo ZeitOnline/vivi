@@ -64,7 +64,6 @@ import zope.testing.renormalizing
 
 
 class LoggingLayer(plone.testing.Layer):
-
     def setUp(self):
         logging.getLogger().setLevel(logging.INFO)
         logging.getLogger('zeit').setLevel(logging.DEBUG)
@@ -78,7 +77,6 @@ LOGGING_LAYER = LoggingLayer()
 
 
 class CeleryEagerLayer(plone.testing.Layer):
-
     def setUp(self):
         zeit.cms.celery.CELERY.conf.task_always_eager = True
 
@@ -90,11 +88,11 @@ CELERY_EAGER_LAYER = CeleryEagerLayer()
 
 
 class ProductConfigLayer(plone.testing.Layer):
-
     DELETE = object()
 
-    def __init__(self, config, package=None, patches=None,
-                 name='ConfigLayer', module=None, bases=None):
+    def __init__(
+        self, config, package=None, patches=None, name='ConfigLayer', module=None, bases=None
+    ):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         super().__init__(name=name, module=module, bases=bases)
@@ -107,23 +105,19 @@ class ProductConfigLayer(plone.testing.Layer):
         self.patches = patches or {}
 
     def loadConfiguration(self, text, package):
-        return zope.app.appsetup.product.loadConfiguration(
-            StringIO(text))[package]
+        return zope.app.appsetup.product.loadConfiguration(StringIO(text))[package]
 
     def setUp(self):
         self.previous = {}
 
-        product = zope.app.appsetup.product.getProductConfiguration(
-            self.package)
+        product = zope.app.appsetup.product.getProductConfiguration(self.package)
         if product:
             self.previous[self.package] = copy.deepcopy(product)
-        zope.app.appsetup.product.setProductConfiguration(
-            self.package, copy.deepcopy(self.config))
+        zope.app.appsetup.product.setProductConfiguration(self.package, copy.deepcopy(self.config))
 
         for package, config in self.patches.items():
             previous = self.previous[package] = {}
-            product = zope.app.appsetup.product.getProductConfiguration(
-                package)
+            product = zope.app.appsetup.product.getProductConfiguration(package)
             for key in config:
                 if product and key in product:
                     previous[key] = copy.deepcopy(product[key])
@@ -137,8 +131,7 @@ class ProductConfigLayer(plone.testing.Layer):
             self._update(package, config)
 
     def testSetUp(self):
-        zope.app.appsetup.product.setProductConfiguration(
-            self.package, copy.deepcopy(self.config))
+        zope.app.appsetup.product.setProductConfiguration(self.package, copy.deepcopy(self.config))
         for package, config in self.patches.items():
             self._update(package, config)
 
@@ -146,8 +139,7 @@ class ProductConfigLayer(plone.testing.Layer):
         product = zope.app.appsetup.product.getProductConfiguration(package)
         if product is None:
             zope.app.appsetup.product.setProductConfiguration(package, {})
-            product = zope.app.appsetup.product.getProductConfiguration(
-                package)
+            product = zope.app.appsetup.product.getProductConfiguration(package)
         for key, value in config.items():
             if value is self.DELETE:
                 product.pop(key, None)
@@ -156,21 +148,19 @@ class ProductConfigLayer(plone.testing.Layer):
 
 
 class ZCMLLayer(plone.testing.Layer):
-
     defaultBases = (LOGGING_LAYER,)
 
-    def __init__(self, config_file='ftesting.zcml', features=(),
-                 name='ZCMLLayer', module=None, bases=()):
+    def __init__(
+        self, config_file='ftesting.zcml', features=(), name='ZCMLLayer', module=None, bases=()
+    ):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         package, _ = module.rsplit('.', 1)
         if not config_file.startswith('/'):
-            config_file = str((
-                importlib.resources.files(package) / config_file))
+            config_file = str((importlib.resources.files(package) / config_file))
         self.config_file = config_file
         self.features = features
-        super().__init__(
-            name=name, module=module, bases=self.defaultBases + bases)
+        super().__init__(name=name, module=module, bases=self.defaultBases + bases)
 
     def setUp(self):
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
@@ -199,7 +189,8 @@ class ZCMLLayer(plone.testing.Layer):
                 if directive in line:
                     raise AssertionError(
                         'Browser-specific directive found in %s\n'
-                        '    %s: %s' % (configure_zcml, i, line))
+                        '    %s: %s' % (configure_zcml, i, line)
+                    )
 
     def tearDown(self):
         plone.testing.zca.popGlobalRegistry()
@@ -220,10 +211,8 @@ class ZCMLLayer(plone.testing.Layer):
 
 
 class ZODBLayer(plone.testing.Layer):
-
     def setUp(self):
-        self['zodbDB-layer'] = ZODB.DB(ZODB.DemoStorage.DemoStorage(
-            name=self.__name__ + '-layer'))
+        self['zodbDB-layer'] = ZODB.DB(ZODB.DemoStorage.DemoStorage(name=self.__name__ + '-layer'))
 
     def tearDown(self):
         self['zodbDB-layer'].close()
@@ -231,7 +220,8 @@ class ZODBLayer(plone.testing.Layer):
 
     def testSetUp(self):
         self['zodbDB'] = plone.testing.zodb.stackDemoStorage(
-            self['zodbDB-layer'], name=self.__name__)
+            self['zodbDB-layer'], name=self.__name__
+        )
         self['zodbConnection'] = self['zodbDB'].open()
 
     def testTearDown(self):
@@ -243,10 +233,8 @@ class ZODBLayer(plone.testing.Layer):
 
 
 class MockConnectorLayer(plone.testing.Layer):
-
     def testTearDown(self):
-        connector = zope.component.queryUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
         if isinstance(connector, zeit.connector.mock.Connector):
             connector._reset()
 
@@ -255,7 +243,6 @@ MOCK_CONNECTOR_LAYER = MockConnectorLayer()
 
 
 class MockWorkflowLayer(plone.testing.Layer):
-
     def testTearDown(self):
         zeit.cms.workflow.mock.reset()
 
@@ -264,7 +251,6 @@ MOCK_WORKFLOW_LAYER = MockWorkflowLayer()
 
 
 class CacheLayer(plone.testing.Layer):
-
     def testTearDown(self):
         pyramid_dogpile_cache2.clear()
 
@@ -273,7 +259,6 @@ DOGPILE_CACHE_LAYER = CacheLayer()
 
 
 class ZopeLayer(plone.testing.Layer):
-
     defaultBases = (
         CELERY_EAGER_LAYER,
         DOGPILE_CACHE_LAYER,
@@ -285,15 +270,16 @@ class ZopeLayer(plone.testing.Layer):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         super().__init__(
-            name=name, module=module,
+            name=name,
+            module=module,
             # This is a bit kludgy. We need an individual ZODB layer per ZCML
             # file (so e.g. different install generations are isolated), but
             # we don't really want to have to create one per package.
-            bases=self.defaultBases + bases + (ZODBLayer(),))
+            bases=self.defaultBases + bases + (ZODBLayer(),),
+        )
 
     def setUp(self):
-        zope.event.notify(zope.processlifetime.DatabaseOpened(
-            self['zodbDB-layer']))
+        zope.event.notify(zope.processlifetime.DatabaseOpened(self['zodbDB-layer']))
         transaction.commit()
         with self.rootFolder(self['zodbDB-layer']):
             pass
@@ -312,8 +298,7 @@ class ZopeLayer(plone.testing.Layer):
         each time.
         """
         connection = db.open()
-        root = connection.root()[
-            zope.app.publication.zopepublication.ZopePublication.root_name]
+        root = connection.root()[zope.app.publication.zopepublication.ZopePublication.root_name]
         self._set_current_zca(root)
         yield root
         transaction.commit()
@@ -321,7 +306,8 @@ class ZopeLayer(plone.testing.Layer):
 
     def testSetUp(self):
         self['zodbApp'] = self['zodbConnection'].root()[
-            zope.app.publication.zopepublication.ZopePublication.root_name]
+            zope.app.publication.zopepublication.ZopePublication.root_name
+        ]
         self._set_current_zca(self['zodbApp'])
         transaction.commit()
 
@@ -336,22 +322,25 @@ class ZopeLayer(plone.testing.Layer):
 
 
 class WSGILayer(plone.testing.Layer):
-
     def __init__(self, name='WSGILayer', module=None, bases=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
-        self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(
-            self['zodbDB-layer'])
-        self['wsgi_app'] = zeit.cms.wsgi.wsgi_pipeline(self['zope_app'], [
-            ('prometheus', 'call:zeit.cms.application:prometheus_filter'),
-            ('fanstatic', 'call:fanstatic:make_fanstatic'),
-        ], {'fanstatic.' + key: value for key, value
-            in zeit.cms.application.FANSTATIC_SETTINGS.items()})
-        self['wsgi_app'] = zeit.cms.application.OpenTelemetryMiddleware(
-            self['wsgi_app'])
+        self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(self['zodbDB-layer'])
+        self['wsgi_app'] = zeit.cms.wsgi.wsgi_pipeline(
+            self['zope_app'],
+            [
+                ('prometheus', 'call:zeit.cms.application:prometheus_filter'),
+                ('fanstatic', 'call:fanstatic:make_fanstatic'),
+            ],
+            {
+                'fanstatic.' + key: value
+                for key, value in zeit.cms.application.FANSTATIC_SETTINGS.items()
+            },
+        )
+        self['wsgi_app'] = zeit.cms.application.OpenTelemetryMiddleware(self['wsgi_app'])
 
     def testSetUp(self):
         # Switch database to the currently active DemoStorage.
@@ -373,8 +362,14 @@ class CeleryWorkerLayer(plone.testing.Layer):
     """
 
     queues = (
-        'default', 'publish_homepage', 'publish_highprio', 'publish_lowprio',
-        'publish_default', 'publish_timebased', 'webhook')
+        'default',
+        'publish_homepage',
+        'publish_highprio',
+        'publish_lowprio',
+        'publish_default',
+        'publish_timebased',
+        'webhook',
+    )
     default_queue = 'default'
 
     def __init__(self, name='CeleryLayer', module=None, bases=None):
@@ -386,25 +381,22 @@ class CeleryWorkerLayer(plone.testing.Layer):
         self['celery_app'] = zeit.cms.celery.CELERY
         self['celery_previous_config'] = dict(self['celery_app'].conf)
 
+        self['celery_app'].conf.update(celery.contrib.testing.app.DEFAULT_TEST_CONFIG)
         self['celery_app'].conf.update(
-            celery.contrib.testing.app.DEFAULT_TEST_CONFIG)
-        self['celery_app'].conf.update({
-            'task_always_eager': False,
-
-            'task_create_missing_queues': False,
-            'task_default_queue': self.default_queue,
-            'task_queues': [kombu.Queue(q) for q in self.queues],
-            'task_send_sent_event': True,  # So we can inspect routing in tests
-
-            'longterm_scheduler_backend': 'memory://',
-
-            'TESTING': True,
-            'ZODB': self['zodbDB-layer'],
-        })
+            {
+                'task_always_eager': False,
+                'task_create_missing_queues': False,
+                'task_default_queue': self.default_queue,
+                'task_queues': [kombu.Queue(q) for q in self.queues],
+                'task_send_sent_event': True,  # So we can inspect routing in tests
+                'longterm_scheduler_backend': 'memory://',
+                'TESTING': True,
+                'ZODB': self['zodbDB-layer'],
+            }
+        )
         self.reset_celery_app()
 
-        self['celery_worker'] = celery.contrib.testing.worker.start_worker(
-            self['celery_app'])
+        self['celery_worker'] = celery.contrib.testing.worker.start_worker(self['celery_app'])
         self['celery_worker'].__enter__()
 
     def reset_celery_app(self):
@@ -423,8 +415,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
         # see zeit.cms.testing.WSGILayer.testSetUp().
         self['celery_app'].conf['ZODB'] = self['zodbDB']
 
-        celery_longterm_scheduler.get_scheduler(
-            self['celery_app']).backend.__init__(None, None)
+        celery_longterm_scheduler.get_scheduler(self['celery_app']).backend.__init__(None, None)
 
     def tearDown(self):
         self['celery_worker'].__exit__(None, None, None)
@@ -447,19 +438,20 @@ def celery_ping():
 
 
 class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
-
     response_code = 200
     response_headers = {}
     response_body = '{}'
 
     def do_GET(self):
         length = int(self.headers.get('content-length', 0))
-        self.requests.append({
-            'verb': self.command,
-            'path': self.path,
-            'headers': self.headers,
-            'body': self.rfile.read(length).decode('utf-8') if length else None,
-        })
+        self.requests.append(
+            {
+                'verb': self.command,
+                'path': self.path,
+                'headers': self.headers,
+                'body': self.rfile.read(length).decode('utf-8') if length else None,
+            }
+        )
         self.send_response(self._next('response_code'))
         for key, value in self._next('response_headers').items():
             self.send_header(key, value)
@@ -478,7 +470,6 @@ class RecordingRequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
 
 class HTTPLayer(gocept.httpserverlayer.custom.Layer):
-
     def testSetUp(self):
         super().testSetUp()
         self['request_handler'].requests = []
@@ -534,10 +525,13 @@ cms_product_config = """\
 
 
 CONFIG_LAYER = ProductConfigLayer(
-    cms_product_config, patches={'zeit.connector': {
-        'repository-path': str((importlib.resources.files(
-            'zeit.connector') / 'testcontent'))
-    }})
+    cms_product_config,
+    patches={
+        'zeit.connector': {
+            'repository-path': str((importlib.resources.files('zeit.connector') / 'testcontent'))
+        }
+    },
+)
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
 ZOPE_LAYER = ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
@@ -545,7 +539,6 @@ WSGI_LAYER = WSGILayer(bases=(ZOPE_LAYER,))
 
 # Layer API modelled after gocept.httpserverlayer.wsgi
 class WSGIServerLayer(plone.testing.Layer):
-
     port = 0  # choose automatically
 
     def __init__(self, *args, **kw):
@@ -566,8 +559,8 @@ class WSGIServerLayer(plone.testing.Layer):
 
     def setUp(self):
         self['httpd'] = waitress.server.create_server(
-            self.wsgi_app, host=self.host, port=0, ipv6=False,
-            clear_untrusted_proxy_headers=True)
+            self.wsgi_app, host=self.host, port=0, ipv6=False, clear_untrusted_proxy_headers=True
+        )
 
         if isinstance(self['httpd'], waitress.server.MultiSocketServer):
             self['http_host'] = self['httpd'].effective_listen[0][0]
@@ -588,7 +581,9 @@ class WSGIServerLayer(plone.testing.Layer):
             # Ignore "bad file descriptor" exceptions during tearDown
             logging.getLogger('waitress').warning(
                 'Suppressed exception to keep thread from crashing'
-                ' (most probably during shutdown anyway)', exc_info=True)
+                ' (most probably during shutdown anyway)',
+                exc_info=True,
+            )
 
     def tearDown(self):
         self['httpd'].close()
@@ -609,7 +604,6 @@ HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
 
 
 class WebdriverLayer(gocept.selenium.WebdriverLayer):
-
     def get_firefox_webdriver_args(self):
         args = super().get_firefox_webdriver_args()
         options = args['options']
@@ -630,17 +624,18 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
 
 WD_LAYER = WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
+    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
+)
 
 
-checker = zope.testing.renormalizing.RENormalizing([
-    (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
-    (re.compile('0x[0-9a-f]+'), "0x..."),
-    (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),
-    (re.compile(
-        '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
-     "<GUID>"),
-])
+checker = zope.testing.renormalizing.RENormalizing(
+    [
+        (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
+        (re.compile('0x[0-9a-f]+'), '0x...'),
+        (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),
+        (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'), '<GUID>'),
+    ]
+)
 
 
 def remove_exception_module(msg):
@@ -656,10 +651,12 @@ def remove_exception_module(msg):
 doctest._strip_exception_details = remove_exception_module
 
 
-optionflags = (doctest.REPORT_NDIFF +
-               doctest.NORMALIZE_WHITESPACE +
-               doctest.ELLIPSIS +
-               doctest.IGNORE_EXCEPTION_DETAIL)
+optionflags = (
+    doctest.REPORT_NDIFF
+    + doctest.NORMALIZE_WHITESPACE
+    + doctest.ELLIPSIS
+    + doctest.IGNORE_EXCEPTION_DETAIL
+)
 
 
 def DocFileSuite(*paths, **kw):
@@ -687,13 +684,12 @@ def FunctionalDocFileSuite(*paths, **kw):
 
 
 class RepositoryHelper:
-
     @property
     def repository(self):
         import zeit.cms.repository.interfaces
+
         with site(self.getRootFolder()):
-            return zope.component.getUtility(
-                zeit.cms.repository.interfaces.IRepository)
+            return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     @repository.setter
     def repository(self, value):
@@ -701,12 +697,12 @@ class RepositoryHelper:
 
 
 class FunctionalTestCase(
-        unittest.TestCase,
-        gocept.testing.assertion.Ellipsis,
-        gocept.testing.assertion.Exceptions,
-        gocept.testing.assertion.String,
-        RepositoryHelper):
-
+    unittest.TestCase,
+    gocept.testing.assertion.Ellipsis,
+    gocept.testing.assertion.Exceptions,
+    gocept.testing.assertion.String,
+    RepositoryHelper,
+):
     def getRootFolder(self):
         """Returns the Zope root folder."""
         return self.layer['zodbApp']
@@ -719,6 +715,7 @@ class FunctionalTestCase(
 
 # XXX We should subclass instead of monkey-patch, but then I'd have
 # to change all the layer declarations in the zeit.* packages, sigh.
+
 
 def selenium_setup_authcache(self):
     # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
@@ -736,16 +733,14 @@ def selenium_setup_authcache(self):
     # XXX It seems something is not ready immediately?!??
     s.pause(1000)
     # XXX Credentials are duplicated from SeleniumTestCase.open().
-    s.open('http://user:userpw@%s/++skin++vivi/@@test-setup-auth'
-           % self['http_address'])
+    s.open('http://user:userpw@%s/++skin++vivi/@@test-setup-auth' % self['http_address'])
     # We don't really know how much time the browser needs until it's
     # satisfied, or how we could determine this.
     s.pause(1000)
 
 
 original_setup = gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp
-gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp = (
-    selenium_setup_authcache)
+gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp = selenium_setup_authcache
 
 
 def selenium_teardown_authcache(self):
@@ -754,14 +749,11 @@ def selenium_teardown_authcache(self):
 
 
 original_teardown = gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown
-gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = (
-    selenium_teardown_authcache)
+gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = selenium_teardown_authcache
 
 
 @pytest.mark.selenium()
-class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
-                       FunctionalTestCase):
-
+class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase, FunctionalTestCase):
     skin = 'cms'
     log_errors = False
     log_errors_ignore = ()
@@ -777,8 +769,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.layer['selenium'].setTimeout(self.TIMEOUT * 1000)
 
         if self.log_errors:
-            error_log = zope.component.getUtility(
-                zope.error.interfaces.IErrorReportingUtility)
+            error_log = zope.component.getUtility(zope.error.interfaces.IErrorReportingUtility)
             error_log.copy_to_zlog = True
             error_log._ignored_exceptions = self.log_errors_ignore
             self.log_handler = logging.StreamHandler(sys.stdout)
@@ -813,12 +804,11 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         if auth:
             auth += '@'
         self.selenium.open(
-            'http://%s%s/++skin++%s%s' % (
-                auth, self.selenium.server, self.skin, path))
+            'http://%s%s/++skin++%s%s' % (auth, self.selenium.server, self.skin, path)
+        )
 
     def click_label(self, label):
-        self.selenium.click('//label[contains(string(.), %s)]' %
-                            xml.sax.saxutils.quoteattr(label))
+        self.selenium.click('//label[contains(string(.), %s)]' % xml.sax.saxutils.quoteattr(label))
 
     js_globals = """\
         var document = window.document;
@@ -832,9 +822,13 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         return self.execute('return ' + text)
 
     def wait_for_condition(self, text):
-        self.selenium.waitForCondition(self.js_globals + """\
+        self.selenium.waitForCondition(
+            self.js_globals
+            + """\
         return Boolean(%s);
-        """ % text)
+        """
+            % text
+        )
 
     def wait_for_dotted_name(self, dotted_name):
         partial = []
@@ -873,7 +867,8 @@ def set_site(site=None):
 # XXX use zope.publisher.testing for the following two
 def create_interaction(name='zope.user'):
     principal = zope.security.testing.Principal(
-        name, groups=['zope.Authenticated'], description='test@example.com')
+        name, groups=['zope.Authenticated'], description='test@example.com'
+    )
     request = zope.publisher.browser.TestRequest()
     request.setPrincipal(principal)
     zope.security.management.newInteraction(request)
@@ -902,7 +897,6 @@ def site(root):
 
 @zope.interface.implementer(zope.i18n.interfaces.IGlobalMessageCatalog)
 class TestCatalog:
-
     language = 'tt'
     messages = {}
 
@@ -927,9 +921,11 @@ def copy_inherited_functions(base, locals):
 
     Usage: copy_inherited_functions(BaseClass, locals())
     """
+
     def make_delegate(name):
         def delegate(self):
             return getattr(super(type(self), self), name)()
+
         return delegate
 
     for name in dir(base):
@@ -939,7 +935,6 @@ def copy_inherited_functions(base, locals):
 
 
 class BrowserAssertions(gocept.testing.assertion.Ellipsis):
-
     # XXX backwards-compat method signature for existing tests, should probably
     # be removed at some point
     def assert_ellipsis(self, want, got=None):
@@ -956,7 +951,6 @@ class BrowserAssertions(gocept.testing.assertion.Ellipsis):
 
 
 class Browser(zope.testbrowser.browser.Browser):
-
     follow_redirects = True
     xml_strict = False
 
@@ -969,16 +963,14 @@ class Browser(zope.testbrowser.browser.Browser):
         return super().open(url, *args, **kw)
 
     def login(self, username, password):
-        auth = base64.b64encode(
-            ('%s:%s' % (username, password)).encode('utf-8')).decode('ascii')
+        auth = base64.b64encode(('%s:%s' % (username, password)).encode('utf-8')).decode('ascii')
         self.addHeader('Authorization', 'Basic %s' % auth)
 
     def reload(self):
         # Don't know what the superclass is doing here, exactly, but it's not
         # helpful at all, so we reimplement it in a hopefully more sane way.
         if self._response is None:
-            raise zope.testbrowser.browser.BrowserStateError(
-                'No URL has yet been .open()ed')
+            raise zope.testbrowser.browser.BrowserStateError('No URL has yet been .open()ed')
         self.open(self.url)
 
     def _processRequest(self, url, make_request):
@@ -994,8 +986,7 @@ class Browser(zope.testbrowser.browser.Browser):
         finally:
             zope.component.hooks.setSite(old_site)
             if old_interaction:
-                zope.security.management.thread_local.interaction = (
-                    old_interaction)
+                zope.security.management.thread_local.interaction = old_interaction
 
     # copy&paste from superclass _processRequest to plug in `follow_redirects`
     def _do_processRequest(self, url, make_request):
@@ -1004,13 +995,12 @@ class Browser(zope.testbrowser.browser.Browser):
             resp = make_request(reqargs)
             if self.follow_redirects:
                 remaining_redirects = 100  # infinite loops protection
-                while (remaining_redirects and
-                       resp.status_int in zope.testbrowser.browser.REDIRECTS):
+                while remaining_redirects and resp.status_int in zope.testbrowser.browser.REDIRECTS:
                     remaining_redirects -= 1
                     url = urljoin(url, resp.headers['location'])
                     with self._preparedRequest(url) as reqargs:
                         resp = self.testapp.get(url, **reqargs)
-                assert remaining_redirects > 0, "redirect chain looks infinite"
+                assert remaining_redirects > 0, 'redirect chain looks infinite'
             self._setResponse(resp)
             self._checkStatus()
 
@@ -1027,8 +1017,7 @@ class Browser(zope.testbrowser.browser.Browser):
         if self.xml_strict:
             self._document = lxml.etree.fromstring(self.contents)
         else:
-            self._document = lxml.html.document_fromstring(
-                self.contents, parser=self.HTML_PARSER)
+            self._document = lxml.html.document_fromstring(self.contents, parser=self.HTML_PARSER)
         return self._document
 
     def xpath(self, selector, **kw):
@@ -1048,7 +1037,6 @@ webtest.lint.isinstance = zope.security.proxy.isinstance
 
 
 class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
-
     login_as = ('user', 'userpw')
 
     def setUp(self):
@@ -1065,18 +1053,16 @@ class BrowserTestCase(FunctionalTestCase, BrowserAssertions):
 # 2. pytest does not allow for subclassing a TestCase and changing its layer
 #    (for the same reason as copy_inherited_functions above).
 
-class ZeitCmsTestCase(FunctionalTestCase):
 
+class ZeitCmsTestCase(FunctionalTestCase):
     layer = ZOPE_LAYER
 
 
 class ZeitCmsBrowserTestCase(BrowserTestCase):
-
     layer = WSGI_LAYER
 
 
 class JSLintTestCase(gocept.jslint.TestCase):
-
     jshint_command = os.environ.get('JSHINT_COMMAND', '/bin/true')
 
     options = {
@@ -1091,28 +1077,52 @@ class JSLintTestCase(gocept.jslint.TestCase):
         'devel': True,
     }
     predefined = (
-        'zeit', 'gocept',
-        'application_url', 'context_url',
-        'DOMParser', 'escape', 'unescape',
+        'zeit',
+        'gocept',
+        'application_url',
+        'context_url',
+        'DOMParser',
+        'escape',
+        'unescape',
         'jsontemplate',
-        'MochiKit', '$$', 'forEach', 'filter', 'map', 'extend', 'bind',
-        'log', 'repr', 'logger', 'logDebug', 'logError',  # XXX
-        'DIV', 'A', 'UL', 'LI', 'INPUT', 'IMG', 'SELECT', 'OPTION', 'BUTTON',
-        'SPAN', 'LABEL',
-        'isNull', 'isUndefined', 'isUndefinedOrNull',
+        'MochiKit',
+        '$$',
+        'forEach',
+        'filter',
+        'map',
+        'extend',
+        'bind',
+        'log',
+        'repr',
+        'logger',
+        'logDebug',
+        'logError',  # XXX
+        'DIV',
+        'A',
+        'UL',
+        'LI',
+        'INPUT',
+        'IMG',
+        'SELECT',
+        'OPTION',
+        'BUTTON',
+        'SPAN',
+        'LABEL',
+        'isNull',
+        'isUndefined',
+        'isUndefinedOrNull',
         'Uri',
         '_',  # js.underscore
     )
 
     ignore = (
-        "Functions declared within loops",
+        'Functions declared within loops',
         "Expected an identifier and instead saw 'import'",
         "Use '===' to compare with",
         "Use '!==' to compare with",
-        "Missing radix parameter",
-        "Misleading line break",
-        "Expected an assignment or function call and instead"
-        " saw an expression",
+        'Missing radix parameter',
+        'Misleading line break',
+        'Expected an assignment or function call and instead' ' saw an expression',
     )
 
     def _write_config_file(self):
@@ -1134,13 +1144,11 @@ original = datetime.datetime
 
 
 class FreezeMeta(type):
-
     def __instancecheck__(self, instance):
         return type(instance) is original or type(instance) is Freeze
 
 
 class Freeze(datetime.datetime, metaclass=FreezeMeta):
-
     @classmethod
     def freeze(cls, val):
         cls.frozen = val
@@ -1163,7 +1171,7 @@ class Freeze(datetime.datetime, metaclass=FreezeMeta):
 
     @classmethod
     def delta(cls, timedelta=None, **kwargs):
-        """ Moves time fwd/bwd by the delta"""
+        """Moves time fwd/bwd by the delta"""
         if not timedelta:
             timedelta = datetime.timedelta(**kwargs)
         cls.frozen += timedelta
@@ -1183,7 +1191,6 @@ def xmltotext(xml):
 
 
 class Trace:
-
     def __init__(self, exporter):
         self._exporter = exporter
 

@@ -7,8 +7,7 @@ import zeit.cms.relation.interfaces
 
 
 def update(root):
-    relations = zope.component.getUtility(
-        zeit.cms.relation.interfaces.IRelations)
+    relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
     relations.add_index(zeit.cms.syndication.feed.syndicated_in, multiple=True)
 
 

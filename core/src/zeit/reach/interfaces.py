@@ -3,7 +3,6 @@ import zope.interface
 
 
 class IReach(zope.interface.Interface):
-
     def get_ranking(service, facet=None, **kw):
         """Retrieve ranked content from reach.zeit.de.
 

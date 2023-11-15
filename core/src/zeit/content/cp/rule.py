@@ -8,7 +8,6 @@ import zope.interface
 
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
 class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
-
     @property
     def children(self):
         # WARNING: Does not include modules, only regions and areas.
@@ -49,8 +48,7 @@ def layout(context):  # noqa
 
 @glob(zeit.content.cp.interfaces.IBlock)
 def content(context):
-    return list(
-        zeit.edit.interfaces.IElementReferences(context, []))
+    return list(zeit.edit.interfaces.IElementReferences(context, []))
 
 
 @glob(zope.interface.Interface)
@@ -80,4 +78,5 @@ def all_modules(context):
             for area in region.values():
                 for module in area.values():
                     yield module
+
     return inner()

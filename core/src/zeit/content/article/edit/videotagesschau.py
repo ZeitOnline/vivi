@@ -25,15 +25,24 @@ log = logging.getLogger(__name__)
 # QSTN: Better define this as dict (in ProductConfiguration) to replace
 #       mapping in z.c.article.edit.browser.edit.VideoTagesschau.handle_update?
 VIDEO_ATTRIBUTES = {
-    'id', 'title', 'type', 'synopsis', 'video_url_hd',
-    'video_url_hls_stream', 'video_url_hq', 'video_url_ln',
-    'thumbnail_url_fullhd', 'thumbnail_url_large', 'thumbnail_url_small',
-    'date_published', 'date_available'}
+    'id',
+    'title',
+    'type',
+    'synopsis',
+    'video_url_hd',
+    'video_url_hls_stream',
+    'video_url_hq',
+    'video_url_ln',
+    'thumbnail_url_fullhd',
+    'thumbnail_url_large',
+    'thumbnail_url_small',
+    'date_published',
+    'date_available',
+}
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
-class VideoTagesschauAPI():
-
+class VideoTagesschauAPI:
     def __init__(self, config):
         self.api_url_post = config['tagesschau-api-url-post']
         self.api_url_post_sync = config['tagesschau-api-url-post-sync']
@@ -43,15 +52,14 @@ class VideoTagesschauAPI():
 
     def request_videos(self, article):
         payload = self._prepare_payload(article)
-        article_hash = hashlib.sha256(
-            payload['article_text'].encode('utf-8')).hexdigest()
+        article_hash = hashlib.sha256(payload['article_text'].encode('utf-8')).hexdigest()
 
         # lookup for existing videos for given parameter
-        video_recommendations = self._request_recommendations(
-            article, payload, article_hash)
+        video_recommendations = self._request_recommendations(article, payload, article_hash)
         if video_recommendations['recommendations']:
-            log.info(f'Found tagesschauvideo for "{article.title}" '
-                     f'{payload["article_custom_id"]}')
+            log.info(
+                f'Found tagesschauvideo for "{article.title}" ' f'{payload["article_custom_id"]}'
+            )
             return video_recommendations
         api_url = self.api_url_post
         if FEATURE_TOGGLES.find('ard_sync_api'):
@@ -60,24 +68,24 @@ class VideoTagesschauAPI():
             rpost = self._request(
                 f'POST {api_url}?SIG_URI={self.sig_uri}'
                 f'&API_KEY={self.api_key}&ART_HASH={article_hash}',
-                json=payload)
+                json=payload,
+            )
         # TODO: more detailed exception report?
         except Exception as e:
-            log.error(f'POST "{article.title}" '
-                      f'[{payload["article_custom_id"]}] '
-                      f'to Tagesschau: {e}')
+            log.error(
+                f'POST "{article.title}" '
+                f'[{payload["article_custom_id"]}] '
+                f'to Tagesschau: {e}'
+            )
         if rpost.status_code == 200:
             return rpost.json()
         # NOTE: this sleep is just a guess; better: retry loop?
         time.sleep(3)
-        return self._request_recommendations(
-            article, payload, article_hash)
+        return self._request_recommendations(article, payload, article_hash)
 
-    def _request_recommendations(
-            self, article, payload, article_hash):
+    def _request_recommendations(self, article, payload, article_hash):
         try:
-            rget = self._request(
-                f'GET {self.api_url_get}/{article_hash}')
+            rget = self._request(f'GET {self.api_url_get}/{article_hash}')
             if rget.status_code == 200:
                 return rget.json()
             if rget.status_code == 404:
@@ -85,12 +93,15 @@ class VideoTagesschauAPI():
                     f'404: No entry for current version of '
                     f'"{article.title}" '
                     f'{payload["article_custom_id"]}; '
-                    f'key: {article_hash}')
-            return {"recommendations": []}
+                    f'key: {article_hash}'
+                )
+            return {'recommendations': []}
         except Exception as e:
-            log.error(f'GET Tagesschau video for "{article.title}" '
-                      f'{payload["article_custom_id"]}: {e}',
-                      exc_info=True)
+            log.error(
+                f'GET Tagesschau video for "{article.title}" '
+                f'{payload["article_custom_id"]}: {e}',
+                exc_info=True,
+            )
             pass
 
     def _request(self, request, headers=None, **kw):
@@ -108,8 +119,10 @@ class VideoTagesschauAPI():
         filename = uniqueId_parts[-1]
         # new articles
         if filename.endswith('.tmp'):
-            article_uri = f'{"/".join(uniqueId_parts[0:-1])}/'\
+            article_uri = (
+                f'{"/".join(uniqueId_parts[0:-1])}/'
                 f'{zeit.cms.interfaces.normalize_filename(article.title)}'
+            )
         else:
             article_uri = '/'.join(uniqueId_parts)
         body = ' '.join(ISearchableText(article).getSearchableText())
@@ -118,14 +131,13 @@ class VideoTagesschauAPI():
             'article_custom_id': IUUID(article).id,
             'article_title': article.title,
             'article_text': body,
-            'article_uri': f'{urlparse(config["live-prefix"]).hostname}'
-                           f'{article_uri}'}
+            'article_uri': f'{urlparse(config["live-prefix"]).hostname}' f'{article_uri}',
+        }
         return payload
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IVideoTagesschau)
 class VideoTagesschau(zeit.content.article.edit.block.Block):
-
     type = 'videotagesschau'
 
     _selected = ObjectPathAttributeProperty('.', 'selected')
@@ -168,13 +180,11 @@ class VideoTagesschau(zeit.content.article.edit.block.Block):
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
-
     produces = VideoTagesschau
     title = _('ARD Video')
 
 
 class Video:
-
     def __init__(self, recommendations=None, **kwargs):
         for key, val in kwargs.items():
             setattr(self, key, val)
@@ -185,20 +195,18 @@ class Video:
         return self.id == other.id
 
 
-@zope.interface.implementer(
-    zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+@zope.interface.implementer(zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
 def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.content.article')
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.content.article')
     return VideoTagesschauAPI(config)
 
 
-@zope.interface.implementer(
-    zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+@zope.interface.implementer(zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
 def MockVideoTagesschau():
     from unittest import mock  # testing dependency
+
     tagesschau_api = mock.Mock()
     zope.interface.alsoProvides(
-        tagesschau_api,
-        zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
+        tagesschau_api, zeit.content.article.edit.interfaces.IVideoTagesschauAPI
+    )
     return tagesschau_api

@@ -2,17 +2,13 @@
 import zeit.content.article.edit.browser.testing
 
 
-class HTMLConvertTest(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class HTMLConvertTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
 
     def convert(self):
-        self.execute(
-            "window.zeit.content.article.html.to_xml("
-            "window.jQuery('.editable')[0])")
+        self.execute('window.zeit.content.article.html.to_xml(' "window.jQuery('.editable')[0])")
 
     def test_h3_is_translated_to_intertitle(self):
         s = self.selenium
@@ -49,8 +45,7 @@ class HTMLConvertTest(
         s = self.selenium
         self.create('<p>foo</p><p></p><p></p>')
         self.convert()
-        self.assertEqual(
-            '<p>foo</p>', self.eval('window.jQuery(".editable")[0].innerHTML'))
+        self.assertEqual('<p>foo</p>', self.eval('window.jQuery(".editable")[0].innerHTML'))
         s.assertXpathCount('//*[@class="editable"]//p', 1)
 
     def test_all_double_brs_are_translated_to_p(self):
@@ -58,17 +53,20 @@ class HTMLConvertTest(
         self.create('<p>foo<br><br>bar<br><br>baz</p>')
         self.convert()
         s.waitForCssCount('css=.editable p', 3)
-        self.assertEqual('<p>foo</p><p>bar</p><p>baz</p>',
-                         self.eval('window.jQuery(".editable")[0].innerHTML'))
+        self.assertEqual(
+            '<p>foo</p><p>bar</p><p>baz</p>', self.eval('window.jQuery(".editable")[0].innerHTML')
+        )
         s.assertXpathCount('//*[@class="editable"]//br', 0)
 
     def test_trailing_br_does_not_break_see_BUG_1273(self):
-        self.execute("""\
+        self.execute(
+            """\
             window.tree = MochiKit.DOM.createDOM('p');
             window.tree.innerHTML = '<p>foo</p><br><br>';
             window.cloned = window.tree.cloneNode(true);
             window.zeit.content.article.html.to_xml(window.cloned);
-        """)
+        """
+        )
         # br/br transforms to p, and empty p is removed
         self.assertEqual('<p>foo</p>', self.eval('window.cloned.innerHTML'))
 
@@ -119,16 +117,13 @@ class HTMLConvertTest(
 
     def test_top_level_inline_styles_are_not_joined_to_existing_p(self):
         s = self.selenium
-        self.create(
-            '<p>foo</p>Mary <strong>had</strong> a little lamb. <p>bar</p>')
+        self.create('<p>foo</p>Mary <strong>had</strong> a little lamb. <p>bar</p>')
         self.convert()
         s.assertElementPresent('jquery=.editable p:contains(Mary had a)')
         s.assertElementPresent('jquery=.editable p > strong:contains(had)')
         # XXX jQuery's contains() yields incorrect results here, why?
-        s.assertElementNotPresent(
-            '//*[contains(@class, "editable")]//p[contains(., "foo Mary")]')
-        s.assertElementNotPresent(
-            '//*[contains(@class, "editable")]//p[contains(., "lamb. bar")]')
+        s.assertElementNotPresent('//*[contains(@class, "editable")]//p[contains(., "foo Mary")]')
+        s.assertElementNotPresent('//*[contains(@class, "editable")]//p[contains(., "lamb. bar")]')
 
     def test_quotation_marks_are_normalized(self):
         s = self.selenium

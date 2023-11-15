@@ -72,18 +72,20 @@ class Tree(zope.publisher.browser.BrowserView):
         if not selected:
             selected = None
 
-        return {'title': self.getTitle(obj),
-                'id': self.getId(obj),
-                'action': action,
-                'uniqueId': uid,
-                'displayedObjectUniqueId': self.getDisplayedUniqueId(obj),
-                'expanded': expanded,
-                'subfolders': expandable,
-                'isroot': root,
-                'url': url,
-                'delete_url': self.getDeleteUrl(obj),
-                'type': self.getType(obj),
-                'selected': selected}
+        return {
+            'title': self.getTitle(obj),
+            'id': self.getId(obj),
+            'action': action,
+            'uniqueId': uid,
+            'displayedObjectUniqueId': self.getDisplayedUniqueId(obj),
+            'expanded': expanded,
+            'subfolders': expandable,
+            'isroot': root,
+            'url': url,
+            'delete_url': self.getDeleteUrl(obj),
+            'type': self.getType(obj),
+            'selected': selected,
+        }
 
     def getTitle(self, obj):
         if self.isRoot(obj):
@@ -95,9 +97,7 @@ class Tree(zope.publisher.browser.BrowserView):
 
     def getUrl(self, obj):
         """Returns the absolute url of obj"""
-        return zope.component.getMultiAdapter(
-            (obj, self.request),
-            name='absolute_url')()
+        return zope.component.getMultiAdapter((obj, self.request), name='absolute_url')()
 
     def getDeleteUrl(self, obj):
         """Returns the url to delete this content item."""
@@ -127,9 +127,8 @@ class Tree(zope.publisher.browser.BrowserView):
     def treeState(self):
         key = self.key
         if key is None:
-            raise NotImplementedError("No `key` set.")
-        tree_states = zeit.cms.browser.interfaces.ITreeState(
-            self.request.principal)
+            raise NotImplementedError('No `key` set.')
+        tree_states = zeit.cms.browser.interfaces.ITreeState(self.request.principal)
         try:
             state = tree_states[key]
         except KeyError:
@@ -161,14 +160,12 @@ class Tree(zope.publisher.browser.BrowserView):
 
 
 class TreeExpand:
-
     def __call__(self, uniqueId):
         self.context.expandNode(uniqueId)
         return self.context()
 
 
 class TreeCollapse:
-
     def __call__(self, uniqueId):
         self.context.collapseNode(uniqueId)
         return self.context()

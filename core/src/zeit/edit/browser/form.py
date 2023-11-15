@@ -19,9 +19,7 @@ class Forms:
 FormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.forms.pt')
 
 
-class FoldableFormGroup(zope.viewlet.viewlet.SimpleViewletClass(
-        'layout.foldable-forms.pt')):
-
+class FoldableFormGroup(zope.viewlet.viewlet.SimpleViewletClass('layout.foldable-forms.pt')):
     folded_workingcopy = True
     folded_repository = True
 
@@ -36,11 +34,12 @@ class FoldableFormGroup(zope.viewlet.viewlet.SimpleViewletClass(
 FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
 
 
-class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
-                 zeit.cms.browser.form.PlaceholderMixin,
-                 zope.formlib.form.SubPageEditForm,
-                 zeit.cms.browser.view.Base):
-
+class InlineForm(
+    zeit.cms.browser.form.WidgetCSSMixin,
+    zeit.cms.browser.form.PlaceholderMixin,
+    zope.formlib.form.SubPageEditForm,
+    zeit.cms.browser.view.Base,
+):
     template = zope.browserpage.ViewPageTemplateFile('inlineform.pt')
 
     css_class = None
@@ -52,8 +51,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
     def reload(self, element=None):
         if element is None:
             element = self.context
-        self.signal(
-            'reload', element.__name__, self.url(element, '@@contents'))
+        self.signal('reload', element.__name__, self.url(element, '@@contents'))
 
     def signal(self, name, *args):
         self._signals.append({'name': name, 'args': args})
@@ -85,8 +83,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
         # handled here).
         form_prefix = zope.formlib.form.expandPrefix(self.prefix)
         for input, widget in self.widgets.__iter_input_and_widget__():
-            if input and zope.formlib.interfaces.IInputWidget.providedBy(
-                    widget):
+            if input and zope.formlib.interfaces.IInputWidget.providedBy(widget):
                 name = zope.formlib.form._widgetKey(widget, form_prefix)
                 try:
                     try:
@@ -96,8 +93,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
                         if not hasattr(widget, '_toFieldValue'):
                             # e.g. SequenceWidget
                             continue
-                        data[name] = widget._toFieldValue(
-                            widget._getFormInput() or widget._missing)
+                        data[name] = widget._toFieldValue(widget._getFormInput() or widget._missing)
                 except zope.formlib.interfaces.ConversionError:
                     pass
 

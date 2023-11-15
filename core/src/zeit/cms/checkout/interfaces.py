@@ -11,7 +11,8 @@ class ICheckoutManager(zope.interface.Interface):
     """Manages workingcopy checkout"""
 
     canCheckout = zope.interface.Attribute(
-        "True if the object can be checked out, False otherwise.")
+        'True if the object can be checked out, False otherwise.'
+    )
 
     def checkout(event=True, temporary=False):
         """Checkout the managed object.
@@ -27,15 +28,14 @@ class ICheckoutManager(zope.interface.Interface):
 
 
 class ICheckinManager(zope.interface.Interface):
-
-    canCheckin = zope.interface.Attribute(
-        "True if the object can be checked in, False otherwise.")
+    canCheckin = zope.interface.Attribute('True if the object can be checked in, False otherwise.')
 
     last_validation_error = zope.interface.Attribute(
         """If canCheckin returned False, this may contain an error message,
         it's None otherwise.
         Note that you need to "call" canCheckin before this is filled in.
-        """)
+        """
+    )
 
     def checkin(event=True, semantic_change=None, ignore_conflicts=False):
         """Check in the managed object and return the checked-in object.
@@ -77,8 +77,7 @@ class IWorkingcopy(zope.container.interfaces.IContainer):
 
     """
 
-    temporary = zope.interface.Attribute(
-        'True if this workingcopy does not belong to a principal')
+    temporary = zope.interface.Attribute('True if this workingcopy does not belong to a principal')
 
 
 class ILocalContent(zope.interface.Interface):
@@ -117,15 +116,15 @@ class CheckinCheckoutError(Exception):
 class ICheckinCheckoutEvent(zope.interface.interfaces.IObjectEvent):
     """Generated when a content object is checked in or out."""
 
-    principal = zope.interface.Attribute(
-        "The principal checking out the content object")
+    principal = zope.interface.Attribute('The principal checking out the content object')
 
     publishing = zope.interface.Attribute(
         """"True if this checkin happens during publishing.
 
         Event handlers can use this to prevent infinite loops (since another
         checkout/checkin cycle happens during publishing to update XML
-        references etc.).""")
+        references etc.)."""
+    )
 
 
 class IBeforeCheckoutEvent(ICheckinCheckoutEvent):
@@ -145,7 +144,8 @@ class IValidateCheckinEvent(ICheckinCheckoutEvent):
 
     publishing = zope.interface.Attribute(
         """NOTE: this common checkin/checkout attribute does not apply for
-        this event""")
+        this event"""
+    )
 
 
 class IBeforeCheckinEvent(ICheckinCheckoutEvent):
@@ -165,7 +165,6 @@ class IAfterDeleteEvent(ICheckinCheckoutEvent):
 
 
 class EventBase(zope.interface.interfaces.ObjectEvent):
-
     def __init__(self, object, workingcopy, principal, publishing=False):
         super().__init__(object)
         self.workingcopy = workingcopy
@@ -185,7 +184,6 @@ class AfterCheckoutEvent(EventBase):
 
 @zope.interface.implementer(IValidateCheckinEvent)
 class ValidateCheckinEvent(EventBase):
-
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
         self.vetoed = None

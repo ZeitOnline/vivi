@@ -6,7 +6,6 @@ import zeit.content.image.testing
 
 
 class ImageGroupHelperMixin:
-
     def add_imagegroup(self, filename='imagegroup', fill_copyright=True):
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/')
@@ -33,25 +32,24 @@ class ImageGroupHelperMixin:
 
     def fill_copyright_information(self):
         b = self.browser
-        b.getControl(name='form.copyright.combination_00').value = (
-            'ZEIT ONLINE')
-        b.getControl(name='form.copyright.combination_01').displayValue = (
-            ['dpa'])
-        b.getControl(name='form.copyright.combination_03').value = (
-            'http://www.zeit.de/')
+        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
+        b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
     def _upload_image(self, field, filename):
         if filename.startswith(zeit.cms.interfaces.ID_NAMESPACE):
             self._upload_cms_content(field, uniqueId=filename)
             return
         self.browser.getControl(name='form.{}'.format(field)).add_file(
-            fixture_bytes(filename), 'image/jpeg', filename)
+            fixture_bytes(filename), 'image/jpeg', filename
+        )
 
     def _upload_cms_content(self, field, uniqueId):
         file = zeit.cms.interfaces.ICMSContent(uniqueId)
         with file.open() as f:
             self.browser.getControl(name='form.{}'.format(field)).add_file(
-                f, 'image/jpeg', uniqueId.split('/')[-1])
+                f, 'image/jpeg', uniqueId.split('/')[-1]
+            )
 
     def upload_primary_image(self, filename):
         self._upload_image('master_image_blobs.0.', filename)
@@ -66,10 +64,7 @@ class ImageGroupHelperMixin:
         self.browser.getControl(name='form.actions.add').click()
 
 
-class ImageGroupGhostTest(
-        zeit.content.image.testing.BrowserTestCase,
-        ImageGroupHelperMixin):
-
+class ImageGroupGhostTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
     def test_adding_imagegroup_adds_a_ghost(self):
         self.add_imagegroup()
         self.set_title('New Hampshire')
@@ -79,16 +74,14 @@ class ImageGroupGhostTest(
         self.assertEqual(1, len(wc))
 
 
-class ImageGroupBrowserTest(
-        zeit.content.image.testing.BrowserTestCase,
-        ImageGroupHelperMixin):
-
+class ImageGroupBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
     def test_resize_too_large_images_before_upload_width(self):
         self.add_imagegroup()
         self.upload_primary_image('shoppingmeile_4001x2251px.jpg')
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/imagegroup/shoppingmeile-4001x2251px.jpg')
+            'http://xml.zeit.de/imagegroup/shoppingmeile-4001x2251px.jpg'
+        )
         self.assertEqual((4000, 2250), img.getImageSize())
 
     def test_resize_too_large_images_before_upload_height(self):
@@ -96,7 +89,8 @@ class ImageGroupBrowserTest(
         self.upload_primary_image('shoppingmeile_2251x4001px.jpg')
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg')
+            'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg'
+        )
         self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_resize_too_large_secondary_images_before_upload_height(self):
@@ -106,14 +100,14 @@ class ImageGroupBrowserTest(
         self.upload_secondary_image('shoppingmeile_2251x4001px.jpg')
         self.save_imagegroup()
         img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg')
+            'http://xml.zeit.de/imagegroup/shoppingmeile-2251x4001px.jpg'
+        )
         self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_traversing_thumbnail_yields_images(self):
         create_image_group_with_master_image()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository'
-               '/group/thumbnails/square/@@raw')
+        b.open('http://localhost/++skin++vivi/repository' '/group/thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
 
     def test_primary_master_image_is_marked_for_desktop_viewport(self):
@@ -136,8 +130,7 @@ class ImageGroupBrowserTest(
         group = self.repository['imagegroup']
         self.assertEqual(2, len(group.master_images))
         self.assertEqual('mobile', group.master_images[1][0])
-        self.assertEqual(
-            'new-hampshire-artikel.jpg', group.master_images[1][1])
+        self.assertEqual('new-hampshire-artikel.jpg', group.master_images[1][1])
 
     def test_tertiary_master_image_has_no_viewport(self):
         self.add_imagegroup()
@@ -174,35 +167,33 @@ class ImageGroupBrowserTest(
         self.add_imagegroup()
         self.set_display_type('Bildergruppe')
         self.save_imagegroup()
-        self.assertEllipsis(
-            '...repository/imagegroup/@@variant.html...',
-            self.browser.contents)
+        self.assertEllipsis('...repository/imagegroup/@@variant.html...', self.browser.contents)
 
     def test_display_type_infographic_hides_edit_tab(self):
         self.add_imagegroup()
         self.set_display_type('Infografik')
         self.save_imagegroup()
-        self.assertNotEllipsis(
-            '...repository/imagegroup/@@variant.html...',
-            self.browser.contents)
+        self.assertNotEllipsis('...repository/imagegroup/@@variant.html...', self.browser.contents)
 
     def test_prefills_external_id_from_image_filename(self):
         b = self.browser
         self.add_imagegroup()
         b.getControl(name='form.master_image_blobs.0.').add_file(
             fixture_bytes('opernball.jpg'),
-            'image/jpeg', 'dpa Picture-Alliance-90999280-HighRes.jpg')
+            'image/jpeg',
+            'dpa Picture-Alliance-90999280-HighRes.jpg',
+        )
         self.save_imagegroup()
         group = self.repository['imagegroup']
         self.assertEqual(
-            '90999280',
-            zeit.content.image.interfaces.IImageMetadata(group).external_id)
+            '90999280', zeit.content.image.interfaces.IImageMetadata(group).external_id
+        )
 
     def test_normalizes_image_filename_on_upload(self):
         self.add_imagegroup()
         self.browser.getControl(name='form.master_image_blobs.0.').add_file(
-            fixture_bytes('new-hampshire-artikel.jpg'),
-            'image/jpeg', 'föö.jpg'.encode('utf-8'))
+            fixture_bytes('new-hampshire-artikel.jpg'), 'image/jpeg', 'föö.jpg'.encode('utf-8')
+        )
         self.save_imagegroup()
         group = self.repository['imagegroup']
         self.assertEqual(['foeoe.jpg'], list(group.keys()))
@@ -211,12 +202,10 @@ class ImageGroupBrowserTest(
         self.add_imagegroup()
         self.upload_primary_image('berlin-polizei.webp')
         self.save_imagegroup()
-        self.assertEllipsis(
-            '...Unsupported image type...', self.browser.contents)
+        self.assertEllipsis('...Unsupported image type...', self.browser.contents)
 
 
 class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         create_image_group_with_master_image()
@@ -266,30 +255,25 @@ class ImageGroupWebdriverTest(zeit.content.image.testing.SeleniumTestCase):
 
 
 class ThumbnailTest(zeit.content.image.testing.FunctionalTestCase):
-
     def setUp(self):
         from zeit.content.image.browser.imagegroup import Thumbnail
+
         super().setUp()
         self.group = create_image_group_with_master_image()
         self.thumbnail = Thumbnail()
         self.thumbnail.context = self.group
 
     def test_defaults_to_master_image(self):
-        self.assertEqual(
-            self.group['master-image.jpg'], self.thumbnail._find_image())
+        self.assertEqual(self.group['master-image.jpg'], self.thumbnail._find_image())
 
     def test_uses_materialized_image_if_present(self):
         from zeit.content.image.testing import create_local_image
-        self.group['image-540x304.jpg'] = create_local_image(
-            'obama-clinton-120x120.jpg')
-        self.assertEqual(
-            self.group['image-540x304.jpg'], self.thumbnail._find_image())
+
+        self.group['image-540x304.jpg'] = create_local_image('obama-clinton-120x120.jpg')
+        self.assertEqual(self.group['image-540x304.jpg'], self.thumbnail._find_image())
 
 
-class ThumbnailBrowserTest(
-        zeit.content.image.testing.BrowserTestCase,
-        ImageGroupHelperMixin):
-
+class ThumbnailBrowserTest(zeit.content.image.testing.BrowserTestCase, ImageGroupHelperMixin):
     def test_thumbnail_source_is_created_on_add(self):
         self.add_imagegroup()
         self.upload_primary_image('http://xml.zeit.de/2006/DSC00109_2.JPG')
@@ -305,5 +289,6 @@ class ThumbnailBrowserTest(
         b.open('http://localhost/++skin++cms/repository/imagegroup/view.html')
         self.assertEqual(
             ['dsc00109-2.jpg', 'thumbnail-source-dsc00109-2.jpg'],
-            [x.__name__ for x in self.repository['imagegroup'].values()])
+            [x.__name__ for x in self.repository['imagegroup'].values()],
+        )
         self.assertNotIn('thumbnail-source-DSC00109_2.JPG', b.contents)

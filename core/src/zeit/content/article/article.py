@@ -56,45 +56,59 @@ ARTICLE_TEMPLATE = """\
 
 
 class ToggleableAccess(zeit.cms.content.dav.DAVProperty):
-
     def __get__(self, instance, class_, properties=None):
         value = super().__get__(instance, class_, properties)
-        if FEATURE_TOGGLES.find(
-                'access_treat_free_as_dynamic') and value == 'free':
+        if FEATURE_TOGGLES.find('access_treat_free_as_dynamic') and value == 'free':
             return 'dynamic'
         return value
 
 
 @zope.interface.implementer(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.interfaces.IEditorialContent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.interfaces.IEditorialContent
+)
 class Article(zeit.cms.content.metadata.CommonMetadata):
     """Article is the main content type in the Zeit CMS."""
 
     default_template = ARTICLE_TEMPLATE
 
-    cache = gocept.cache.property.TransactionBoundCache(
-        '_v_article_cache', writeabledict)
+    cache = gocept.cache.property.TransactionBoundCache('_v_article_cache', writeabledict)
 
     textLength = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['textLength'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'text-length')
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'text-length',
+    )
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'artbox_thema', 'audio_speechbert', 'genre',
-         'template', 'header_layout', 'header_color',
-         'hide_ligatus_recommendations', 'prevent_ligatus_indexing',
-         'comments_sorting'))
+        (
+            'has_recensions',
+            'artbox_thema',
+            'audio_speechbert',
+            'genre',
+            'template',
+            'header_layout',
+            'header_color',
+            'hide_ligatus_recommendations',
+            'prevent_ligatus_indexing',
+            'comments_sorting',
+        ),
+    )
 
     access = ToggleableAccess(
         ICommonMetadata['access'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'access', use_default=True)
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'access',
+        use_default=True,
+    )
 
     has_audio = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['has_audio'],
-        zeit.cms.interfaces.PRINT_NAMESPACE, 'has_audio', use_default=True)
+        zeit.cms.interfaces.PRINT_NAMESPACE,
+        'has_audio',
+        use_default=True,
+    )
 
     @property
     def body(self):
@@ -111,18 +125,19 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     def updateDAVFromXML(self):
         properties = zeit.connector.interfaces.IWebDAVProperties(self)
         modified = []
-        for (name, ns), value in zeit.connector.filesystem.parse_properties(
-                self.xml).items():
+        for (name, ns), value in zeit.connector.filesystem.parse_properties(self.xml).items():
             if not value:
                 continue
             properties[(name, ns)] = value
             prop = zeit.cms.content.dav.findProperty(
-                zeit.cms.content.metadata.CommonMetadata, name, ns)
+                zeit.cms.content.metadata.CommonMetadata, name, ns
+            )
             if prop:
                 modified.append(prop.field.__name__)
         zope.lifecycleevent.modified(
-            self, zope.lifecycleevent.Attributes(
-                zeit.cms.content.interfaces.ICommonMetadata, *modified))
+            self,
+            zope.lifecycleevent.Attributes(zeit.cms.content.interfaces.ICommonMetadata, *modified),
+        )
 
     @property
     def main_image_block(self):
@@ -130,8 +145,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             image_block = self.body.values()[0]
         except IndexError:
             return None
-        if not zeit.content.article.edit.interfaces.IImage.providedBy(
-                image_block):
+        if not zeit.content.article.edit.interfaces.IImage.providedBy(image_block):
             return None
         return image_block
 
@@ -170,7 +184,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     def _create_image_block_in_front(self):
         body = self.body
         image_block = zope.component.getAdapter(
-            body, zeit.edit.interfaces.IElementFactory, 'image')()
+            body, zeit.edit.interfaces.IElementFactory, 'image'
+        )()
         ids = body.keys()
         ids.insert(0, ids.pop())  # XXX ElementFactory should do this
         body.updateOrder(ids)
@@ -192,7 +207,6 @@ class NoMainImageBlockReference(zeit.cms.content.reference.EmptyReference):
 
 
 class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Article
     interface = zeit.content.article.interfaces.IArticle
     type = 'article'
@@ -205,16 +219,16 @@ def articleFromTemplate(context):
     source = StringIO(zeit.cms.content.interfaces.IXMLSource(context))
     article = Article(xml_source=source)
     zeit.cms.interfaces.IWebDAVWriteProperties(article).update(
-        zeit.cms.interfaces.IWebDAVReadProperties(context))
+        zeit.cms.interfaces.IWebDAVReadProperties(context)
+    )
     return article
 
 
 @zope.component.adapter(
-    zeit.content.article.interfaces.IArticle,
-    zope.lifecycleevent.IObjectModifiedEvent)
+    zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectModifiedEvent
+)
 def updateTextLengthOnChange(object, event):
-    length = zope.security.proxy.removeSecurityProxy(object.xml).body.xpath(
-        'string-length()')
+    length = zope.security.proxy.removeSecurityProxy(object.xml).body.xpath('string-length()')
     try:
         object.textLength = int(length)
     except zope.security.interfaces.Unauthorized:
@@ -223,8 +237,8 @@ def updateTextLengthOnChange(object, event):
 
 
 @zope.component.adapter(
-    zeit.content.article.interfaces.IArticle,
-    zope.lifecycleevent.IObjectModifiedEvent)
+    zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectModifiedEvent
+)
 def disallowCommentsIfCommentsAreNotShown(object, event):
     if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(object):
         return
@@ -232,17 +246,16 @@ def disallowCommentsIfCommentsAreNotShown(object, event):
         object.commentsAllowed = False
 
 
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectModifiedEvent)
 def modify_speechbert_audio_depeding_on_genre(article, event):
     """Checkbox speechbert audio depends on article-genres.xml"""
     genres = zeit.content.article.interfaces.IArticle['genre'].source(None)
     for desc in event.descriptions:
-        if (desc.interface is zeit.content.article.interfaces.IArticle and
-                'genre' in desc.attributes):
-            if (genres.audio(article.genre) == 'speechbert' or
-                    not article.genre):
+        if (
+            desc.interface is zeit.content.article.interfaces.IArticle
+            and 'genre' in desc.attributes
+        ):
+            if genres.audio(article.genre) == 'speechbert' or not article.genre:
                 article.audio_speechbert = True
             else:
                 article.audio_speechbert = False
@@ -256,10 +269,11 @@ def iter_referenced_content(context):
     if not body:
         return referenced_content
     for element in body.values():
-        if zeit.content.article.edit.interfaces.IReference.providedBy(
-                element) and element.references:
-            if zeit.cms.content.interfaces.IReference.providedBy(
-                    element.references):
+        if (
+            zeit.content.article.edit.interfaces.IReference.providedBy(element)
+            and element.references
+        ):
+            if zeit.cms.content.interfaces.IReference.providedBy(element.references):
                 if element.references.target:
                     referenced_content.append(element.references.target)
             else:
@@ -275,7 +289,7 @@ class SearchableText(grok.Adapter):
 
     def getSearchableText(self):
         main_text = []
-        for p in self.context.xml.body.xpath("//p//text()"):
+        for p in self.context.xml.body.xpath('//p//text()'):
             text = str(p).strip()
             if text:
                 main_text.append(text)
@@ -284,7 +298,6 @@ class SearchableText(grok.Adapter):
 
 @zope.component.adapter(zeit.content.article.interfaces.IArticle)
 class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
-
     def can_publish(self):
         result = super().can_publish()
         if result == CAN_PUBLISH_ERROR:
@@ -306,47 +319,47 @@ def publish_priority_article(context):
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
 def ensure_division_handler(context, event):
     context.body.ensure_division()
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+)
 def set_default_values(context, event):
-    zeit.cms.content.field.apply_default_values(
-        context, zeit.content.article.interfaces.IArticle)
+    zeit.cms.content.field.apply_default_values(context, zeit.content.article.interfaces.IArticle)
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+)
 def set_template_and_header_defaults(context, event):
     source = zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE(context)
 
-    if ((not context.template and not context.header_layout) or
-            context.template not in source):
+    if (not context.template and not context.header_layout) or context.template not in source:
         template, header_layout = source.factory.get_default_template(context)
 
         context.template = template if template else None
         context.header_layout = header_layout if header_layout else None
 
     source = zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE
-    if (context.main_image_block and
-            context.main_image_block._variant_name not in source(context) and
-            (context.template or context.header_layout)):
+    if (
+        context.main_image_block
+        and context.main_image_block._variant_name not in source(context)
+        and (context.template or context.header_layout)
+    ):
         context.main_image_variant_name = source.factory.get_default(context)
 
 
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectModifiedEvent)
 def set_default_header_when_template_is_changed(context, event):
     for desc in event.descriptions:
-        if (desc.interface is zeit.content.article.interfaces.IArticle and
-                'template' in desc.attributes):
+        if (
+            desc.interface is zeit.content.article.interfaces.IArticle
+            and 'template' in desc.attributes
+        ):
             break
     else:
         return
@@ -356,13 +369,13 @@ def set_default_header_when_template_is_changed(context, event):
     context.header_layout = header_layout if header_layout else None
 
 
-@grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectModifiedEvent)
 def set_podcast_header_when_article_has_podcast_audio(context, event):
     for desc in event.descriptions:
-        if (desc.interface is zeit.content.audio.interfaces.IAudioReferences
-                and 'items' in desc.attributes):
+        if (
+            desc.interface is zeit.content.audio.interfaces.IAudioReferences
+            and 'items' in desc.attributes
+        ):
             break
     else:
         return
@@ -387,8 +400,8 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+)
 def ensure_block_ids(context, event):
     body = context.body
     # Keys are generated on demand, so we force this once, otherwise a
@@ -405,21 +418,25 @@ QUOTE_CHARACTERS_CLOSE = re.compile(rf'([\w\.]){_QUOTE_CHARACTERS}')
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+)
 def normalize_quotation_marks(context, event):
     # XXX objectify has immutable text/tail. le sigh.
-    normalize = normalize_quotes if FEATURE_TOGGLES.find(
-        'normalize_quotes') else normalize_quotes_to_inch_sign
-    context.xml.body = lxml.objectify.fromstring(lxml.etree.tostring(
-        normalize(
-            lxml.etree.fromstring(lxml.etree.tostring(context.xml.body)))))
+    normalize = (
+        normalize_quotes
+        if FEATURE_TOGGLES.find('normalize_quotes')
+        else normalize_quotes_to_inch_sign
+    )
+    context.xml.body = lxml.objectify.fromstring(
+        lxml.etree.tostring(normalize(lxml.etree.fromstring(lxml.etree.tostring(context.xml.body))))
+    )
 
     if context.xml.find('teaser') is not None:
-        context.xml.teaser = lxml.objectify.fromstring(lxml.etree.tostring(
-            normalize(
-                lxml.etree.fromstring(
-                    lxml.etree.tostring(context.xml.teaser)))))
+        context.xml.teaser = lxml.objectify.fromstring(
+            lxml.etree.tostring(
+                normalize(lxml.etree.fromstring(lxml.etree.tostring(context.xml.teaser)))
+            )
+        )
 
 
 def normalize_quotes(node):
@@ -445,7 +462,6 @@ def normalize_quotes_to_inch_sign(node):
 
 
 class ArticleMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-
     target_iface = zeit.content.article.interfaces.IArticle
 
     def update_with_context(self, node, context):
@@ -453,27 +469,27 @@ class ArticleMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             node.set('genre', context.genre)
 
 
-@zope.interface.implementer(
-    zeit.content.article.interfaces.ISpeechbertChecksum)
+@zope.interface.implementer(zeit.content.article.interfaces.ISpeechbertChecksum)
 class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     checksum = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.ISpeechbertChecksum['checksum'],
-        zeit.cms.interfaces.SPEECHBERT_NAMESPACE, 'checksum',
-        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE)
+        zeit.cms.interfaces.SPEECHBERT_NAMESPACE,
+        'checksum',
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
+    )
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.workflow.interfaces.IBeforePublishEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.workflow.interfaces.IBeforePublishEvent
+)
 def calculate_checksum(context, event):
     speechbert = zope.component.getAdapter(
-        context, zeit.workflow.interfaces.IPublisherData, name='speechbert')
+        context, zeit.workflow.interfaces.IPublisherData, name='speechbert'
+    )
     if speechbert.ignore('publish'):
         return
     checksum = hashlib.md5(usedforsecurity=False)
-    body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode(
-        'utf-8')
+    body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode('utf-8')
     checksum.update(body)
     article = zeit.content.article.interfaces.ISpeechbertChecksum(context)
     article.checksum = checksum.hexdigest()
@@ -487,14 +503,14 @@ class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
     the article, but we get the error message and prevent
     the article from being published.
     """
+
     grok.context(zeit.content.article.interfaces.IArticle)
     grok.name('zeit.content.article')
 
     retract_dependencies = False
 
     def get_dependencies(self):
-        audio_refs = zeit.content.audio.interfaces.IAudioReferences(
-            self.context, None)
+        audio_refs = zeit.content.audio.interfaces.IAudioReferences(self.context, None)
         if audio_refs:
             return audio_refs.items
         return ()

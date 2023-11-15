@@ -6,22 +6,20 @@ import zope.dottedname.resolve
 
 
 class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
-
     def isAvailable(self, node, context):
         import zeit.content.article.interfaces  # break circular import
+
         context = zeit.content.article.interfaces.IArticle(context, None)
         return super().isAvailable(node, context)
 
 
 class BookRecensionCategories(zeit.cms.content.sources.SimpleXMLSource):
-
     product_configuration = 'zeit.content.article'
     config_url = 'book-recension-categories'
     default_filename = 'article-recension-categories.xml'
 
 
 class GenreSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.article'
     config_url = 'genre-url'
     default_filename = 'article-genres.xml'
@@ -41,17 +39,15 @@ class GenreSource(zeit.cms.content.sources.XMLSource):
 
     def findNode(self, value, type):
         tree = self._get_tree()
-        nodes = tree.xpath('%s[@%s=%s]' % (
-                           self.title_xpath,
-                           self.attribute,
-                           xml.sax.saxutils.quoteattr(value)))
+        nodes = tree.xpath(
+            '%s[@%s=%s]' % (self.title_xpath, self.attribute, xml.sax.saxutils.quoteattr(value))
+        )
         if not nodes:
             return None
         return nodes[0].get(type)
 
 
 class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.article'
     config_url = 'template-source'
     default_filename = 'article-templates.xml'
@@ -66,11 +62,13 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
         if not context.template and not context.header_layout:
             return False
 
-        headers = tree.xpath('template[@name="{}"]/header[@name="{}"]'.format(
-            context.template, context.header_layout))
+        headers = tree.xpath(
+            'template[@name="{}"]/header[@name="{}"]'.format(
+                context.template, context.header_layout
+            )
+        )
         for header in headers:
-            if context.header_layout == header.get('name') and header.get(
-                    'allow_header_module'):
+            if context.header_layout == header.get('name') and header.get('allow_header_module'):
                 return True
         return False
 
@@ -101,8 +99,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
         if len(generic_default) == 1:
             elem = generic_default.pop()
             if elem.tag == 'header':
-                return (str(elem.getparent().get('name')),
-                        str(elem.get('name')))
+                return (str(elem.getparent().get('name')), str(elem.get('name')))
             elif elem.tag == 'template':
                 return (str(elem.get('name')), '')
         return ('', '')
@@ -137,10 +134,7 @@ class ArticleTemplateSource(zeit.cms.content.sources.XMLSource):
 ARTICLE_TEMPLATE_SOURCE = ArticleTemplateSource()
 
 
-class ArticleHeaderSource(
-        BodyAwareXMLSource,
-        zeit.cms.content.sources.ParentChildSource):
-
+class ArticleHeaderSource(BodyAwareXMLSource, zeit.cms.content.sources.ParentChildSource):
     product_configuration = ArticleTemplateSource.product_configuration
     config_url = ArticleTemplateSource.config_url
     default_filename = ArticleTemplateSource.default_filename
@@ -153,6 +147,7 @@ class ArticleHeaderSource(
     def parent_value_iface(self):
         # prevent circular import
         import zeit.content.article.interfaces
+
         return zeit.content.article.interfaces.IArticleMetadata
 
     def _get_title_for(self, node):
@@ -160,14 +155,12 @@ class ArticleHeaderSource(
 
 
 class ArticleHeaderColorSource(ArticleHeaderSource):
-
     child_tag = 'color'
     parent_node_xpath = '/templates/template/header'
     parent_value_key = 'header'
 
 
 class ImageDisplayModeSource(BodyAwareXMLSource):
-
     product_configuration = 'zeit.content.article'
     config_url = 'image-display-mode-source'
     default_filename = 'article-image-display-modes.xml'
@@ -187,15 +180,13 @@ class LegacyDisplayModeSource(zeit.cms.content.sources.XMLSource):
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [(node.get('layout'), node.get('display_mode'))
-                for node in tree.iterchildren('*')]
+        return [(node.get('layout'), node.get('display_mode')) for node in tree.iterchildren('*')]
 
 
 LEGACY_DISPLAY_MODE_SOURCE = LegacyDisplayModeSource()
 
 
 class ImageVariantNameSource(BodyAwareXMLSource):
-
     product_configuration = 'zeit.content.article'
     config_url = 'image-variant-name-source'
     default_filename = 'article-image-variant-names.xml'
@@ -207,23 +198,26 @@ IMAGE_VARIANT_NAME_SOURCE = ImageVariantNameSource()
 
 
 class MainImageVariantNameSource(ImageVariantNameSource):
-
     def _filter_values(self, template, values):
         tree = self._get_tree()
-        names = [node.get('id') for node in tree.iterchildren('*')
-                 if node.get('id') in values and
-                 template in node.get('allowed', '').split(' ')]
+        names = [
+            node.get('id')
+            for node in tree.iterchildren('*')
+            if node.get('id') in values and template in node.get('allowed', '').split(' ')
+        ]
 
         # No `allowed` attribute means allowed for all.
         if not names:
-            return [node.get('id') for node in tree.iterchildren('*')
-                    if node.get('id') in values and not node.get('allowed')]
+            return [
+                node.get('id')
+                for node in tree.iterchildren('*')
+                if node.get('id') in values and not node.get('allowed')
+            ]
 
         return names
 
     def _template(self, context):
-        return '.'.join(
-            [x for x in [context.template, context.header_layout] if x])
+        return '.'.join([x for x in [context.template, context.header_layout] if x])
 
     def getValues(self, context):
         values = super().getValues(context)
@@ -257,8 +251,7 @@ class LegacyVariantNameSource(zeit.cms.content.sources.XMLSource):
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [(node.get('layout'), node.get('variant_name'))
-                for node in tree.iterchildren('*')]
+        return [(node.get('layout'), node.get('variant_name')) for node in tree.iterchildren('*')]
 
 
 LEGACY_VARIANT_NAME_SOURCE = LegacyVariantNameSource()

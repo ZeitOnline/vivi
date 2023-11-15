@@ -9,7 +9,6 @@ import zeit.connector.interfaces
 
 @zope.interface.implementer(zeit.connector.interfaces.ILockInfoStorage)
 class LockInfo(persistent.Persistent):
-
     def __init__(self):
         self._storage = BTrees.OOBTree.OOBTree()
 

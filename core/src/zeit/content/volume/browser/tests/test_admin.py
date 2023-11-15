@@ -12,13 +12,13 @@ import zope.component
 
 
 class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
-
     login_as = 'zmgr:mgrpw'
 
     def setUp(self):
         self.elastic = mock.Mock()
         zope.component.getGlobalSiteManager().registerUtility(
-            self.elastic, zeit.find.interfaces.ICMSSearch)
+            self.elastic, zeit.find.interfaces.ICMSSearch
+        )
         super().setUp()
         volume = Volume()
         volume.year = 2015
@@ -39,6 +39,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         from zeit.content.portraitbox.portraitbox import Portraitbox
         from zeit.content.infobox.infobox import Infobox
         import zeit.cms.browser.form
+
         article = Article()
         zeit.cms.content.field.apply_default_values(article, IArticle)
         article.year = 2017
@@ -56,10 +57,10 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         infobox_reference._validate = mock.Mock()
         infobox_reference.references = infobox
         self.repository['image'] = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+            'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        )
         image_reference = body.create_item('image', 3)
-        image_reference.references = image_reference.references.create(
-            self.repository['image'])
+        image_reference.references = image_reference.references.create(self.repository['image'])
         image_reference._validate = mock.Mock()
         self.repository['article_with_ref'] = article
         return self.repository['article_with_ref']
@@ -68,45 +69,45 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         # Cause the VolumeAdminForm has additional actions
         # check if base class and subclass actions are used.
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               '2015/01/ausgabe/@@admin.html')
+        b.open('http://localhost/++skin++vivi/repository/' '2015/01/ausgabe/@@admin.html')
         self.assertIn('Apply', self.browser.contents)
         self.assertIn('Publish content', self.browser.contents)
 
     def publish_content(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               '2015/01/ausgabe/@@publish-all')
+        b.open('http://localhost/++skin++vivi/repository/' '2015/01/ausgabe/@@publish-all')
 
     def test_publish_button_publishes_volume_content(self):
-        self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/testcontent'}])
+        self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/testcontent'}])
         self.publish_content()
         self.assertTrue(IPublishInfo(self.repository['testcontent']).published)
-        self.assertTrue(
-            IPublishInfo(self.repository['2015']['01']['ausgabe']).published)
+        self.assertTrue(IPublishInfo(self.repository['2015']['01']['ausgabe']).published)
 
     def test_referenced_boxes_of_articles_are_published_as_well(self):
         self.create_article_with_references()
         self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/article_with_ref'}])
+            [{'url': '/article_with_ref'}]
+        )
         self.publish_content()
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
-            self.repository['portraitbox']).published)
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
-            self.repository['infobox']).published)
+        self.assertTrue(
+            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['portraitbox']).published
+        )
+        self.assertTrue(
+            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['infobox']).published
+        )
 
     def test_referenced_image_is_not_published(self):
         self.create_article_with_references()
         self.elastic.search.return_value = zeit.cms.interfaces.Result(
-            [{'url': '/article_with_ref'}])
+            [{'url': '/article_with_ref'}]
+        )
         self.publish_content()
-        self.assertFalse(zeit.cms.workflow.interfaces.IPublishInfo(
-            self.repository['image']).published)
+        self.assertFalse(
+            zeit.cms.workflow.interfaces.IPublishInfo(self.repository['image']).published
+        )
 
 
 class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
-
     log_errors = True
     login_as = 'zmgr:mgrpw'
 
@@ -115,7 +116,8 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
         elastic = mock.Mock()
         elastic.search.return_value = zeit.cms.interfaces.Result()
         zope.component.getGlobalSiteManager().registerUtility(
-            elastic, zeit.find.interfaces.ICMSSearch)
+            elastic, zeit.find.interfaces.ICMSSearch
+        )
         volume = Volume()
         volume.year = 2015
         volume.volume = 1
@@ -137,8 +139,7 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
     def test_multi_publish_errors_are_logged_on_volume(self):
         s = self.selenium
         self.open('/repository/ausgabe/@@admin.html', self.login_as)
-        with mock.patch(
-                'zeit.workflow.publish.MultiPublishTask.recurse') as recurse:
+        with mock.patch('zeit.workflow.publish.MultiPublishTask.recurse') as recurse:
             recurse.side_effect = RuntimeError('provoked')
             s.click('id=form.actions.publish-all')
             s.waitForElementPresent('css=li.busy[action=start_job]')

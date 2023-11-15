@@ -8,7 +8,6 @@ import zope.component
 
 
 class TestHTMLContent(unittest.TestCase):
-
     def test_get_tree_should_append_text(self):
         gallery = zeit.content.gallery.gallery.Gallery()
         html = zeit.content.gallery.gallery.HTMLContent(gallery)
@@ -27,12 +26,10 @@ class TestHTMLContent(unittest.TestCase):
 
 
 class TestEntryMetadata(zeit.content.gallery.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         gallery.image_folder = repository['2007']
         zeit.content.gallery.testing.add_image('2007', '01.jpg')
         transaction.commit()
@@ -59,7 +56,6 @@ class TestEntryMetadata(zeit.content.gallery.testing.FunctionalTestCase):
 
 
 class TestEntryImages(zeit.content.gallery.testing.FunctionalTestCase):
-
     def test_gallery_entry_should_adapt_to_IImages(self):
         entry = zeit.content.gallery.gallery.GalleryEntry()
         entry.image = object()
@@ -69,12 +65,10 @@ class TestEntryImages(zeit.content.gallery.testing.FunctionalTestCase):
 
 
 class TestVisibleEntryCount(zeit.content.gallery.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         gallery = zeit.content.gallery.gallery.Gallery()
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         gallery.image_folder = repository['2007']
         entries = {'01.jpg': None, '02.jpg': 'image-only', '03.jpg': 'hidden'}
         for key in entries:
@@ -88,13 +82,11 @@ class TestVisibleEntryCount(zeit.content.gallery.testing.FunctionalTestCase):
         self.gallery = gallery
 
     def test_visible_entry_count_should_consider_layout(self):
-        count = zeit.content.gallery.interfaces.IVisibleEntryCount(
-            self.gallery)
+        count = zeit.content.gallery.interfaces.IVisibleEntryCount(self.gallery)
         self.assertEqual(2, count)
 
 
 class TestWorkflow(zeit.content.gallery.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
 
@@ -113,5 +105,4 @@ class TestWorkflow(zeit.content.gallery.testing.FunctionalTestCase):
 
     def test_nonexistent_image_folder_does_not_break(self):
         del self.folder.__parent__[self.folder.__name__]
-        self.assertEqual(
-            [], IPublicationDependencies(self.gallery).get_dependencies())
+        self.assertEqual([], IPublicationDependencies(self.gallery).get_dependencies())

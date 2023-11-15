@@ -3,7 +3,6 @@ import zeit.cms.testing
 
 
 class TestListing(zeit.cms.testing.SeleniumTestCase):
-
     layer = zeit.cms.testing.WEBDRIVER_LAYER
     window_height = 800
 
@@ -38,14 +37,16 @@ class TestListing(zeit.cms.testing.SeleniumTestCase):
         s.click('xpath=//td[contains(string(.), "%s")]' % match)
         s.waitForElementPresent('css=div#bottomcontent > div')
         s.dragAndDropToObject(
-            'xpath=//td[contains(string(.), "%s")]' % match,
-            '//li[@uniqueid="Clip"]')
+            'xpath=//td[contains(string(.), "%s")]' % match, '//li[@uniqueid="Clip"]'
+        )
         s.waitForElementPresent('xpath=//li[@uniqueid="Clip/testcontent"]')
 
     def verifyTextNotDisplayed(self, string):
-        self.selenium.verifyNotVisible('//tr[contains(string(.), %s)]' %
-                                       xml.sax.saxutils.quoteattr(string))
+        self.selenium.verifyNotVisible(
+            '//tr[contains(string(.), %s)]' % xml.sax.saxutils.quoteattr(string)
+        )
 
     def verifyTextDisplayed(self, string):
-        self.selenium.verifyVisible('//tr[contains(string(.), %s)]' %
-                                    xml.sax.saxutils.quoteattr(string))
+        self.selenium.verifyVisible(
+            '//tr[contains(string(.), %s)]' % xml.sax.saxutils.quoteattr(string)
+        )

@@ -8,10 +8,8 @@ import zope.publisher.interfaces
 
 
 class Entry:
-
     def __call__(self):
-        url = zope.traversing.browser.absoluteURL(self.context.references,
-                                                  self.request)
+        url = zope.traversing.browser.absoluteURL(self.context.references, self.request)
         self.request.response.redirect(url + '/@@view.html')
 
     def get_unique_id(self):
@@ -19,18 +17,15 @@ class Entry:
 
 
 class AjaxDeleteEntry:
-
     def delete(self):
         clipboard = zeit.cms.clipboard.interfaces.IClipboard(self.context)
         del self.context.__parent__[self.context.__name__]
-        tree = zope.component.getMultiAdapter((clipboard, self.request),
-                                              name="tree.html")
+        tree = zope.component.getMultiAdapter((clipboard, self.request), name='tree.html')
         return tree()
 
 
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class EntryListRepresentation:
-
     __name__ = None
 
     def __init__(self, context, list_repr, name):
@@ -43,14 +38,11 @@ class EntryListRepresentation:
 
     @zope.cachedescriptors.property.Lazy
     def url(self):
-        return zope.component.getMultiAdapter(
-            (self.context, self.request),
-            name='absolute_url')
+        return zope.component.getMultiAdapter((self.context, self.request), name='absolute_url')
 
 
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 class InvalidReferenceListRepresentation:
-
     author = None
     ressort = None
     searchableText = None
@@ -72,25 +64,22 @@ class InvalidReferenceListRepresentation:
 
     @property
     def title(self):
-        title = _("Broken reference to ${uniqueId}",
-                  mapping={'uniqueId': self.uniqueId})
+        title = _('Broken reference to ${uniqueId}', mapping={'uniqueId': self.uniqueId})
         return zope.i18n.translate(title, context=self.request)
 
 
 @zope.component.adapter(
-    zeit.cms.clipboard.interfaces.IObjectReference,
-    zope.publisher.interfaces.IPublicationRequest)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IListRepresentation)
+    zeit.cms.clipboard.interfaces.IObjectReference, zope.publisher.interfaces.IPublicationRequest
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
 def entryListRepresentationFactory(context, request):
     """Defer the list representation to the referenced object."""
     references = context.references
     if references is None:
-        return InvalidReferenceListRepresentation(
-            request, context.referenced_unique_id)
+        return InvalidReferenceListRepresentation(request, context.referenced_unique_id)
     list_repr = zope.component.queryMultiAdapter(
-        (references, request),
-        zeit.cms.browser.interfaces.IListRepresentation)
+        (references, request), zeit.cms.browser.interfaces.IListRepresentation
+    )
     if list_repr is None:
         return None
     list_repr = EntryListRepresentation(context, list_repr, context.__name__)
@@ -102,17 +91,17 @@ class DragPane:
 
     def __call__(self):
         return zope.component.getMultiAdapter(
-            (self.context.references, self.request),
-            name='drag-pane.html')()
+            (self.context.references, self.request), name='drag-pane.html'
+        )()
 
 
 @zope.component.adapter(
     zeit.cms.clipboard.interfaces.IObjectReference,
-    zope.publisher.interfaces.browser.IBrowserRequest)
+    zope.publisher.interfaces.browser.IBrowserRequest,
+)
 @zope.interface.implementer(zope.interface.Interface)
 def entry_icon(context, request):
     references = context.references
     if references is None:
         return None
-    return zope.component.queryMultiAdapter(
-        (references, request), name="zmi_icon")
+    return zope.component.queryMultiAdapter((references, request), name='zmi_icon')

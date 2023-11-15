@@ -6,13 +6,11 @@ import zope.app.appsetup.product
 
 
 def prefixed_url(prefix, unique_id):
-    """Given a prefix and a unique id, return preview URL.
-    """
+    """Given a prefix and a unique id, return preview URL."""
     if not unique_id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
         raise ValueError("UniqueId doesn't start with correct prefix")
-    path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE):]
-    cms_config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.cms')
+    path = unique_id[len(zeit.cms.interfaces.ID_NAMESPACE) :]
+    cms_config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
     prefix = cms_config[prefix]
     if not prefix.endswith('/'):
         prefix = prefix + '/'
@@ -36,11 +34,10 @@ class PreviewBase(zeit.cms.browser.view.Base):
     preview_type = None  # override in subclass
 
     def __call__(self):
-        preview_object = zeit.cms.browser.interfaces.IPreviewObject(
-            self.context, self.context)
+        preview_object = zeit.cms.browser.interfaces.IPreviewObject(self.context, self.context)
         preview_url = zope.component.getMultiAdapter(
-            (preview_object, self.preview_type),
-            zeit.cms.browser.interfaces.IPreviewURL)
+            (preview_object, self.preview_type), zeit.cms.browser.interfaces.IPreviewURL
+        )
         query_string = self.request.environment['QUERY_STRING']
         if query_string:
             preview_url += '?%s' % query_string
@@ -48,10 +45,8 @@ class PreviewBase(zeit.cms.browser.view.Base):
 
 
 class Preview(PreviewBase):
-
     preview_type = 'preview'
 
 
 class Live(PreviewBase):
-
     preview_type = 'live'

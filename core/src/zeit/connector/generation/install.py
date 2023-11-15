@@ -18,19 +18,29 @@ def installLocalUtility(root, factory, name, interface, utility_name=''):
 def install(root):
     site_manager = zope.component.getSiteManager()
     installLocalUtility(
-        site_manager, zeit.connector.cache.ResourceCache,
-        'connector-body-cache', zeit.connector.interfaces.IResourceCache)
+        site_manager,
+        zeit.connector.cache.ResourceCache,
+        'connector-body-cache',
+        zeit.connector.interfaces.IResourceCache,
+    )
     installLocalUtility(
-        site_manager, zeit.connector.cache.PropertyCache,
-        'connector-property-cache', zeit.connector.interfaces.IPropertyCache)
+        site_manager,
+        zeit.connector.cache.PropertyCache,
+        'connector-property-cache',
+        zeit.connector.interfaces.IPropertyCache,
+    )
     installLocalUtility(
-        site_manager, zeit.connector.cache.ChildNameCache,
+        site_manager,
+        zeit.connector.cache.ChildNameCache,
         'connector-child-name-cache',
-        zeit.connector.interfaces.IChildNameCache)
+        zeit.connector.interfaces.IChildNameCache,
+    )
     installLocalUtility(
-        site_manager, zeit.connector.invalidator.Invalidator,
+        site_manager,
+        zeit.connector.invalidator.Invalidator,
         'connector-invalidator',
-        zeit.connector.invalidator.IInvalidator)
+        zeit.connector.invalidator.IInvalidator,
+    )
 
 
 def evolve(context):

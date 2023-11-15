@@ -5,7 +5,6 @@ import zeit.content.text.testing
 
 
 class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
-
     login_as = 'producer:producerpw'
 
     def test_add_embed(self):
@@ -63,18 +62,11 @@ class EmbedBrowserTest(zeit.content.text.testing.BrowserTestCase):
         b.getControl('Contains thirdparty code').displayValue = ['yes']
         b.getControl('Add Vendors').click()
         b.getControl('Add Vendors').click()
-        b.getControl(name='form.thirdparty_vendors.0.').displayValue = [
-            'Twitter']
-        b.getControl(name='form.thirdparty_vendors.1.').displayValue = [
-            'YouTube']
+        b.getControl(name='form.thirdparty_vendors.0.').displayValue = ['Twitter']
+        b.getControl(name='form.thirdparty_vendors.1.').displayValue = ['YouTube']
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
-        self.assertEqual(
-            ['yes'], b.getControl('Contains thirdparty code').displayValue)
-        self.assertEqual(
-            ['Twitter'],
-            b.getControl(name='form.thirdparty_vendors.0.').displayValue)
-        self.assertEqual(
-            ['YouTube'],
-            b.getControl(name='form.thirdparty_vendors.1.').displayValue)
+        self.assertEqual(['yes'], b.getControl('Contains thirdparty code').displayValue)
+        self.assertEqual(['Twitter'], b.getControl(name='form.thirdparty_vendors.0.').displayValue)
+        self.assertEqual(['YouTube'], b.getControl(name='form.thirdparty_vendors.1.').displayValue)

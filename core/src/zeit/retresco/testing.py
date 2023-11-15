@@ -14,8 +14,8 @@ import zope.app.appsetup.product
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(
-    zeit.cms.testing.RecordingRequestHandler,
-    name='HTTPLayer', module=__name__)
+    zeit.cms.testing.RecordingRequestHandler, name='HTTPLayer', module=__name__
+)
 
 
 product_config = """
@@ -35,34 +35,35 @@ product_config = """
 
 
 class ProductConfigLayer(zeit.cms.testing.ProductConfigLayer):
-
     def __init__(self, config, **kw):
         self.raw_config = config
         super().__init__({}, **kw)
 
     def setUp(self):
         config = self.raw_config.format(port=self['http_port'])
-        self.config = zope.app.appsetup.product.loadConfiguration(
-            StringIO(config))[self.package]
+        self.config = zope.app.appsetup.product.loadConfiguration(StringIO(config))[self.package]
         super().setUp()
 
 
-CONFIG_LAYER = ProductConfigLayer(product_config, bases=(
-    HTTP_LAYER,
-    zeit.content.article.testing.CONFIG_LAYER,
-    zeit.content.link.testing.CONFIG_LAYER,
-    zeit.content.volume.testing.CONFIG_LAYER,
-    zeit.wochenmarkt.testing.CONFIG_LAYER))
+CONFIG_LAYER = ProductConfigLayer(
+    product_config,
+    bases=(
+        HTTP_LAYER,
+        zeit.content.article.testing.CONFIG_LAYER,
+        zeit.content.link.testing.CONFIG_LAYER,
+        zeit.content.volume.testing.CONFIG_LAYER,
+        zeit.wochenmarkt.testing.CONFIG_LAYER,
+    ),
+)
 
 
 class ElasticsearchMockLayer(plone.testing.Layer):
-
     def setUp(self):
-        self['elasticsearch_mocker'] = mock.patch(
-            'elasticsearch.client.Elasticsearch.search')
+        self['elasticsearch_mocker'] = mock.patch('elasticsearch.client.Elasticsearch.search')
         self['elasticsearch'] = self['elasticsearch_mocker'].start()
-        response = (importlib.resources.files('zeit.retresco.tests') /
-                    'elasticsearch_result.json').read_text('utf-8')
+        response = (
+            importlib.resources.files('zeit.retresco.tests') / 'elasticsearch_result.json'
+        ).read_text('utf-8')
         self['elasticsearch'].return_value = json.loads(response)
 
     def tearDown(self):
@@ -75,21 +76,20 @@ ELASTICSEARCH_MOCK_LAYER = ElasticsearchMockLayer()
 
 
 class TMSMockLayer(plone.testing.Layer):
-
     def setUp(self):
         registry = zope.component.getGlobalSiteManager()
         self['old_tms'] = registry.queryUtility(zeit.retresco.interfaces.ITMS)
         self['tms_mock'] = mock.Mock()
         self['tms_mock'].primary = {'url': 'http://tms.example.com'}
         self['tms_mock'].get_article_topiclinks.return_value = []
-        registry.registerUtility(
-            self['tms_mock'], zeit.retresco.interfaces.ITMS)
+        registry.registerUtility(self['tms_mock'], zeit.retresco.interfaces.ITMS)
 
     def tearDown(self):
         del self['tms_mock']
         if self['old_tms'] is not None:
             zope.component.getGlobalSiteManager().registerUtility(
-                self['old_tms'], zeit.retresco.interfaces.ITMS)
+                self['old_tms'], zeit.retresco.interfaces.ITMS
+            )
         del self['old_tms']
 
     def testTearDown(self):
@@ -108,17 +108,15 @@ CELERY_LAYER.queues += ('search',)
 
 
 MOCK_LAYER = plone.testing.Layer(
-    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer',
-    module=__name__)
+    bases=(ZOPE_LAYER, ELASTICSEARCH_MOCK_LAYER), name='MockLayer', module=__name__
+)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
     layer = WSGI_LAYER
 
 
@@ -140,8 +138,7 @@ class TagTestHelpers:
         dav = zeit.connector.interfaces.IWebDAVProperties(content)
         name, ns = dav_key = zeit.retresco.tagger.KEYWORD_PROPERTY
         dav[dav_key] = """<ns:rankedTags xmlns:ns="{ns}">
-        <rankedTags>{0}</rankedTags></ns:rankedTags>""".format(
-            xml, ns=ns)
+        <rankedTags>{0}</rankedTags></ns:rankedTags>""".format(xml, ns=ns)
 
 
 def create_testcontent():

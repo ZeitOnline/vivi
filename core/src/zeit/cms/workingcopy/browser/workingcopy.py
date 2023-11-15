@@ -22,43 +22,41 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase):
 
     @property
     def workingcopy(self):
-        return zeit.cms.workingcopy.interfaces.IWorkingcopy(
-            self.request.principal)
+        return zeit.cms.workingcopy.interfaces.IWorkingcopy(self.request.principal)
 
     @zope.cachedescriptors.property.Lazy
     def content(self):
         result = []
         for obj in self.workingcopy.values():
             list_repr = zope.component.queryMultiAdapter(
-                (obj, self.request),
-                zeit.cms.browser.interfaces.IListRepresentation)
+                (obj, self.request), zeit.cms.browser.interfaces.IListRepresentation
+            )
             if list_repr is None:
-                log.warning("Could not adapt %r to IListRepresentation",
-                            (obj, ))
+                log.warning('Could not adapt %r to IListRepresentation', (obj,))
                 continue
             css_class = []
             if list_repr.type:
                 css_class.append('type-' + list_repr.type)
             if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj):
                 css_class.append('reference')
-            result.append({
-                'css_class': ' '.join(css_class),
-                'obj': obj,
-                'title': list_repr.title or list_repr.__name__,
-                'uniqueId': list_repr.uniqueId,
-                'url': list_repr.url,
-            })
+            result.append(
+                {
+                    'css_class': ' '.join(css_class),
+                    'obj': obj,
+                    'title': list_repr.title or list_repr.__name__,
+                    'uniqueId': list_repr.uniqueId,
+                    'url': list_repr.url,
+                }
+            )
         return result
 
 
 @zope.component.adapter(
-    zeit.cms.workingcopy.interfaces.ILocalContent,
-    zeit.cms.content.interfaces.ICMSContentSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.cms.workingcopy.interfaces.ILocalContent, zeit.cms.content.interfaces.ICMSContentSource
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def localcontent_default_browsing_location(context, schema):
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     # Get the object in the repository, potentially looking for the parent.
     object_in_repository = None
@@ -79,8 +77,8 @@ def localcontent_default_browsing_location(context, schema):
             break
 
     return zope.component.queryMultiAdapter(
-        (object_in_repository, schema),
-        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+        (object_in_repository, schema), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
+    )
 
 
 @grok.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
@@ -90,7 +88,6 @@ def layer_for_workingcopy(context):
 
 
 class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):
-
     def next_url(self, folder):
         unique_id = self.context.uniqueId
         target = None

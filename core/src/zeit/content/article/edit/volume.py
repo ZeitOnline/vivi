@@ -7,11 +7,13 @@ import zeit.content.volume.interfaces
 
 
 class ReferenceProperty(zeit.cms.content.reference.SingleReferenceProperty):
-
     def __set__(self, instance, value):
-        saved_attributes = {name: getattr(instance, name) for name in [
-            '__name__',
-        ]}
+        saved_attributes = {
+            name: getattr(instance, name)
+            for name in [
+                '__name__',
+            ]
+        }
 
         super().__set__(instance, value)
 
@@ -22,25 +24,21 @@ class ReferenceProperty(zeit.cms.content.reference.SingleReferenceProperty):
 
 @grok.implementer(zeit.content.article.edit.interfaces.IVolume)
 class Volume(zeit.content.article.edit.reference.Reference):
-
     type = 'volume'
 
     references = ReferenceProperty('.', 'related')
 
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):
-
     produces = Volume
     title = _('Volume block')
 
 
 @grok.adapter(
-    zeit.content.article.edit.interfaces.IArticleArea,
-    zeit.content.volume.interfaces.IVolume,
-    int)
+    zeit.content.article.edit.interfaces.IArticleArea, zeit.content.volume.interfaces.IVolume, int
+)
 @grok.implementer(zeit.edit.interfaces.IElement)
 def factor_volume_block_from_volume(body, content, position):
     block = Factory(body)(position)
-    block.references = (block.references.get(content) or
-                        block.references.create(content))
+    block.references = block.references.get(content) or block.references.create(content)
     return block

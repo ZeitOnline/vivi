@@ -12,7 +12,6 @@ import zope.schema
 
 @grok.implementer(zeit.content.image.interfaces.IVariants)
 class Variants(grok.Adapter, collections.abc.Mapping):
-
     grok.context(zeit.content.image.interfaces.IImageGroup)
 
     def __init__(self, context):
@@ -54,8 +53,7 @@ class Variants(grok.Adapter, collections.abc.Mapping):
         `target` already has a "custom" zoom value of 1.0.
 
         """
-        for key in zope.schema.getFieldNames(
-                zeit.content.image.interfaces.IVariant):
+        for key in zope.schema.getFieldNames(zeit.content.image.interfaces.IVariant):
             if hasattr(target, key) and getattr(target, key) is not None:
                 continue
             if hasattr(source, key):
@@ -75,14 +73,12 @@ class Variants(grok.Adapter, collections.abc.Mapping):
         if Variant.DEFAULT_NAME in self.settings:
             default = self[Variant.DEFAULT_NAME]
         else:
-            default = VARIANT_SOURCE.factory.find(
-                self.context, Variant.DEFAULT_NAME)
+            default = VARIANT_SOURCE.factory.find(self.context, Variant.DEFAULT_NAME)
         return default
 
 
 @grok.implementer(zeit.content.image.interfaces.IVariant)
 class Variant(zeit.cms.content.sources.AllowedBase):
-
     DEFAULT_NAME = 'default'
     interface = zeit.content.image.interfaces.IVariant
 
@@ -105,8 +101,7 @@ class Variant(zeit.cms.content.sources.AllowedBase):
             setattr(self, key, value)
 
     def __eq__(self, other):
-        if zeit.content.image.interfaces.IVariant.providedBy(other) and (
-                self.id == other.id):
+        if zeit.content.image.interfaces.IVariant.providedBy(other) and (self.id == other.id):
             return True
         else:
             return False
@@ -163,17 +158,15 @@ class Variant(zeit.cms.content.sources.AllowedBase):
     @property
     def relative_image_path(self):
         if self.max_size is None:
-            return '%s/%s' % (
-                zeit.content.image.imagegroup.Thumbnails.NAME, self.name)
+            return '%s/%s' % (zeit.content.image.imagegroup.Thumbnails.NAME, self.name)
         return '{}/{}__{}'.format(
-            zeit.content.image.imagegroup.Thumbnails.NAME,
-            self.name, self.max_size)
+            zeit.content.image.imagegroup.Thumbnails.NAME, self.name, self.max_size
+        )
 
 
 class VariantSource(
-        zeit.cms.content.sources.ObjectSource,
-        zeit.cms.content.sources.SimpleContextualXMLSource):
-
+    zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.SimpleContextualXMLSource
+):
     product_configuration = 'zeit.content.image'
     config_url = 'variant-source'
     default_filename = 'image-variants.xml'
@@ -204,8 +197,7 @@ class VariantSource(
 
             for size in sizes:
                 # Create Variant for each given size
-                variant = Variant(**self._merge_attributes(
-                    node.attrib, size.attrib))
+                variant = Variant(**self._merge_attributes(node.attrib, size.attrib))
                 result[variant.id] = variant
         return result
 
@@ -222,8 +214,7 @@ class VariantSource(
         result.update(child_attr)
 
         if 'name' in parent_attr and 'id' in child_attr:
-            result['id'] = '{}-{}'.format(
-                parent_attr['name'], child_attr['id'])
+            result['id'] = '{}-{}'.format(parent_attr['name'], child_attr['id'])
 
         return result
 
@@ -232,7 +223,6 @@ VARIANT_SOURCE = VariantSource()
 
 
 class VariantsTraverser(zeit.edit.body.Traverser):
-
     grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
     body_name = 'variants'
     body_interface = zeit.content.image.interfaces.IVariants

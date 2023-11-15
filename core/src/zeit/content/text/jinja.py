@@ -13,10 +13,11 @@ import zope.interface
 
 @zope.interface.implementer(zeit.content.text.interfaces.IJinjaTemplate)
 class JinjaTemplate(zeit.content.text.text.Text):
-
     title = zeit.cms.content.dav.DAVProperty(
         zeit.content.text.interfaces.IJinjaTemplate['title'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'title')
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'title',
+    )
 
     def __call__(self, variables, **kw):
         patch = None
@@ -35,7 +36,6 @@ class JinjaTemplate(zeit.content.text.text.Text):
 
 
 class JinjaTemplateType(zeit.content.text.text.TextType):
-
     interface = zeit.content.text.interfaces.IJinjaTemplate
     type = 'jinja'
     title = _('Jinja template')
@@ -44,20 +44,18 @@ class JinjaTemplateType(zeit.content.text.text.TextType):
 
 
 class Template(jinja2.Template):
-
     def render(self, variables):
         # Patched from upstream to remove any and all dict-wrapping, so we can
         # also pass in a defaultdict to dummy-render a template.
         try:
             return jinja2.utils.concat(
-                self.root_render_func(
-                    self.new_context(variables, shared=True)))
+                self.root_render_func(self.new_context(variables, shared=True))
+            )
         except Exception:
             self.environment.handle_exception()
 
 
 class MockDict(collections.defaultdict):
-
     def __init__(self):
         super().__init__(mock.MagicMock)
 

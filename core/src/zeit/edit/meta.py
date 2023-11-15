@@ -27,7 +27,6 @@ class NoneGuard:
 
 
 class GlobalRuleGlobsGrokker(martian.GlobalGrokker):
-
     def grok(self, name, module, module_info, config, **kw):
         globs = module_info.getAnnotation('zeit.edit.globs', [])
         for func, adapts in globs:
@@ -36,12 +35,12 @@ class GlobalRuleGlobsGrokker(martian.GlobalGrokker):
                 for_=(adapts,),
                 factory=(NoneGuard(func),),
                 provides=zeit.edit.interfaces.IRuleGlob,
-                name=func.__name__)
+                name=func.__name__,
+            )
         return True
 
 
 class SimpleElementGrokker(martian.ClassGrokker):
-
     martian.component(zeit.edit.block.SimpleElement)
 
     def execute(self, context, config, **kw):
@@ -57,7 +56,6 @@ class SimpleElementGrokker(martian.ClassGrokker):
 
 
 class ElementFactoryGrokker(martian.ClassGrokker):
-
     martian.component(zeit.edit.block.ElementFactory)
     martian.directive(grokcore.component.context)
 

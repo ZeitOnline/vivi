@@ -12,7 +12,6 @@ log = logging.getLogger(__name__)
 
 
 class IngredientsSearch(zeit.cms.browser.view.JSON):
-
     def json(self):
         term = self.request.form.get('term')
         if term:
@@ -22,12 +21,8 @@ class IngredientsSearch(zeit.cms.browser.view.JSON):
         return [{'label': x.name, 'value': x.code} for x in tags]
 
 
-@grok.adapter(
-    zeit.wochenmarkt.interfaces.IIngredientsSource,
-    zeit.cms.browser.interfaces.ICMSLayer)
+@grok.adapter(zeit.wochenmarkt.interfaces.IIngredientsSource, zeit.cms.browser.interfaces.ICMSLayer)
 @grok.implementer(zeit.cms.browser.interfaces.ISourceQueryURL)
 def IngredientsSearchURL(context, request):
-    base = zope.traversing.browser.absoluteURL(
-        zope.component.hooks.getSite(), request)
-    return (
-        base + '/@@ingredients_find')
+    base = zope.traversing.browser.absoluteURL(zope.component.hooks.getSite(), request)
+    return base + '/@@ingredients_find'

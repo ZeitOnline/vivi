@@ -27,8 +27,14 @@ MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
 
 # Backward compatibility imports
 from zeit.connector.interfaces import (  # noqa
-    DeleteProperty, LockingError, IConnector, IResource,
-    IWebDAVReadProperties, IWebDAVWriteProperties, IWebDAVProperties)
+    DeleteProperty,
+    LockingError,
+    IConnector,
+    IResource,
+    IWebDAVReadProperties,
+    IWebDAVWriteProperties,
+    IWebDAVProperties,
+)
 
 
 CONFIG_CACHE = pyramid_dogpile_cache2.get_region('config')
@@ -44,7 +50,6 @@ class InvalidName(zope.schema.ValidationError):
 
 
 class ValidationError(zope.schema.ValidationError):
-
     def doc(self):
         return self.args[0]
 
@@ -76,16 +81,11 @@ def valid_link_target(value):
 
 
 class ICMSContent(zope.interface.Interface):
-    """Interface for all CMS content being loaded from the repository.
+    """Interface for all CMS content being loaded from the repository."""
 
-    """
+    uniqueId = zope.interface.Attribute('Unique Id')
 
-    uniqueId = zope.interface.Attribute("Unique Id")
-
-    __name__ = zope.schema.TextLine(
-        title=_("File name"),
-        readonly=True,
-        constraint=valid_name)
+    __name__ = zope.schema.TextLine(title=_('File name'), readonly=True, constraint=valid_name)
 
 
 class ICMSWCContent(zope.interface.Interface):
@@ -116,9 +116,7 @@ class IEditPermission(zope.security.interfaces.IPermission):
 
 
 class ITypeDeclaration(zope.interface.Interface):
-
-    type_identifier = zope.schema.TextLine(
-        title='Unique identifier for this type')
+    type_identifier = zope.schema.TextLine(title='Unique identifier for this type')
 
     # XXX add other attributes
 
@@ -126,8 +124,7 @@ class ITypeDeclaration(zope.interface.Interface):
 class IResult(zope.interface.common.sequence.IReadSequence):
     """A list of dicts, with info about the total number of entries."""
 
-    hits = zope.interface.Attribute(
-        'Number of total available entries (for pagination)')
+    hits = zope.interface.Attribute('Number of total available entries (for pagination)')
 
 
 @zope.interface.implementer(IResult)
@@ -170,8 +167,7 @@ def normalize_filename(filename):
     # Replace special characters, but keep dots for special treatment
     f = re.sub('[^a-z0-9.]', '-', f)
     # Save dot of filename extensions
-    f = re.sub(
-        r'^(.*)\.(jpg|jpeg|png|pdf|mp3|swf|rtf|gif|svg|bmp)$', r'\1_\2', f)
+    f = re.sub(r'^(.*)\.(jpg|jpeg|png|pdf|mp3|swf|rtf|gif|svg|bmp)$', r'\1_\2', f)
     # Remove all dots
     f = f.replace('.', '-')
     # Restore saved dot

@@ -24,7 +24,8 @@ class Connection:
             self.base_url + '/api/annotations',
             headers={'Authorization': 'Bearer %s' % self.apikey},
             json={'text': link, 'tags': ['push', 'www', template]},
-            timeout=2)
+            timeout=2,
+        )
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)

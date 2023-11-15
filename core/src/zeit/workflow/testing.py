@@ -24,22 +24,19 @@ product_config = """
 """
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,))
+    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,)
+)
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 CELERY_LAYER = zeit.cms.testing.CeleryWorkerLayer(bases=(ZOPE_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(CELERY_LAYER,))
 
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
-    name='HTTPLayer', bases=(WSGI_LAYER,))
-WD_LAYER = zeit.cms.testing.WebdriverLayer(
-    name='WebdriverLayer', bases=(HTTP_LAYER,))
-WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='SeleniumLayer', bases=(WD_LAYER,))
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
+WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(name='SeleniumLayer', bases=(WD_LAYER,))
 
 
 class TMSMockLayer(plone.testing.Layer):
-
     def testSetUp(self):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
         self.representation = self.patch.start()
@@ -52,17 +49,14 @@ TMS_MOCK_LAYER = TMSMockLayer(name='TMSMockLayer', bases=(ZOPE_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
     layer = WSGI_LAYER
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
-
     layer = WEBDRIVER_LAYER
 
 
@@ -87,20 +81,16 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
         return self._can_publish
 
 
-@zope.component.adapter(
-    zeit.cms.testcontenttype.interfaces.IExampleContentType)
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def workflow_with_error_for_testcontent(context):
-    return FakeValidatingWorkflow(
-        context, 'Fake Validation Error Message', CAN_PUBLISH_ERROR)
+    return FakeValidatingWorkflow(context, 'Fake Validation Error Message', CAN_PUBLISH_ERROR)
 
 
-@zope.component.adapter(
-    zeit.cms.testcontenttype.interfaces.IExampleContentType)
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def workflow_with_warning_for_testcontent(context):
-    return FakeValidatingWorkflow(
-        context, 'Fake Validation Warning Message', CAN_PUBLISH_WARNING)
+    return FakeValidatingWorkflow(context, 'Fake Validation Warning Message', CAN_PUBLISH_WARNING)
 
 
 class FakeValidatingWorkflowMixin:
@@ -139,7 +129,6 @@ def run_tasks():
 
 def publish_json(context, name):
     data_factory = zope.component.getAdapter(
-        context,
-        zeit.workflow.interfaces.IPublisherData,
-        name=name)
+        context, zeit.workflow.interfaces.IPublisherData, name=name
+    )
     return data_factory.publish_json()

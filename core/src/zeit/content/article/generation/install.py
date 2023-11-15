@@ -8,12 +8,14 @@ import zope.generations.utility
 
 def install(root):
     name = 'Article templates'
-    templates = zope.component.getUtility(
-        zeit.cms.content.interfaces.ITemplateManagerContainer)
+    templates = zope.component.getUtility(zeit.cms.content.interfaces.ITemplateManagerContainer)
     zeit.cms.generation.install.installLocalUtility(
-        templates, zeit.cms.content.template.TemplateManager,
-        name, zeit.cms.content.interfaces.ITemplateManager,
-        utility_name=name)
+        templates,
+        zeit.cms.content.template.TemplateManager,
+        name,
+        zeit.cms.content.interfaces.ITemplateManager,
+        utility_name=name,
+    )
 
 
 def evolve(context):

@@ -24,7 +24,8 @@ class Login:
         if self.camefrom:
             return self.request.response.redirect(self.camefrom)
         return self.request.response.redirect(
-            zope.traversing.browser.absoluteURL(self.context, self.request))
+            zope.traversing.browser.absoluteURL(self.context, self.request)
+        )
 
     @property
     def camefrom(self):
@@ -32,8 +33,7 @@ class Login:
 
     @property
     def authenticated(self):
-        unauthenticated = IUnauthenticatedPrincipal.providedBy(
-            self.request.principal)
+        unauthenticated = IUnauthenticatedPrincipal.providedBy(self.request.principal)
         return not unauthenticated
 
     @property
@@ -47,20 +47,16 @@ class Login:
 
 
 class Logout:
-
     def __call__(self):
-        logged_out = IUnauthenticatedPrincipal.providedBy(
-            self.request.principal)
+        logged_out = IUnauthenticatedPrincipal.providedBy(self.request.principal)
 
         if not logged_out:
-            auth = zope.component.getUtility(
-                zope.authentication.interfaces.IAuthentication)
+            auth = zope.component.getUtility(zope.authentication.interfaces.IAuthentication)
             zope.authentication.interfaces.ILogout(auth).logout(self.request)
             self._delete_sso_cookies()
 
     def _delete_sso_cookies(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.cms')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         prefix = config.get('sso-cookie-name-prefix')
         if prefix is None:
             return
@@ -90,8 +86,7 @@ class SSOLogin:
 
     def __call__(self):
         permission = self.request.form.get('permission', 'zope.View')
-        if not self.request.interaction.checkPermission(
-                permission, self.context):
+        if not self.request.interaction.checkPermission(permission, self.context):
             raise zope.security.interfaces.Unauthorized(permission)
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         principal = self.request.principal
@@ -99,35 +94,39 @@ class SSOLogin:
             private_key = f.read()
         headers = set_cookie_headers(
             config['sso-cookie-name-prefix'] + permission,
-            jwt.encode({
-                'id': principal.id,
-                'name': principal.title,
-                'email': principal.description,
-                # XXX Once TMS haproxy learns to validate JWT, use a single
-                # cookie with all permissions (or probably roles) instead.
-                'permissions': [permission],
-                'exp': int(time.time()) + int(config['sso-expiration']),
-            }, private_key, config['sso-algorithm']))
+            jwt.encode(
+                {
+                    'id': principal.id,
+                    'name': principal.title,
+                    'email': principal.description,
+                    # XXX Once TMS haproxy learns to validate JWT, use a single
+                    # cookie with all permissions (or probably roles) instead.
+                    'permissions': [permission],
+                    'exp': int(time.time()) + int(config['sso-expiration']),
+                },
+                private_key,
+                config['sso-algorithm'],
+            ),
+        )
         for key, value in headers:
             self.request.response.setHeader(key, value)
-        url = self.request.form.get('url', zope.traversing.browser.absoluteURL(
-            self.context, self.request))
+        url = self.request.form.get(
+            'url', zope.traversing.browser.absoluteURL(self.context, self.request)
+        )
         return self.request.response.redirect(url, trusted=True)
 
 
 def set_cookie_headers(name, value):
     # Inspired by zeit.web.member.security._set_cookie_headers()
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    cookie_helper = webob.cookies.CookieProfile(
-        name, serializer=SIMPLE_SERIALIZER)
+    cookie_helper = webob.cookies.CookieProfile(name, serializer=SIMPLE_SERIALIZER)
     if config['sso-cookie-domain']:
         domains = [config['sso-cookie-domain']]
     else:
         # Applies only in tests and localhost environment; since at least
         # zope.testbrowser does not understand "Domain=localhost", sigh.
         domains = [None]
-    return cookie_helper.get_headers(
-        value, domains=domains, max_age=EXPIRE_ON_BROWSER_CLOSE)
+    return cookie_helper.get_headers(value, domains=domains, max_age=EXPIRE_ON_BROWSER_CLOSE)
 
 
 class SimpleSerializer:

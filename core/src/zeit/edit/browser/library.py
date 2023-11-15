@@ -9,7 +9,6 @@ import zope.i18n
 
 
 class BlockFactories(zeit.cms.browser.view.JSON):
-
     # XXX The block images should probably move to zeit.edit, or we should set
     # up separate BlockFactories registrations for cp, article, and newsletter
     # with their respective resource_library.
@@ -30,8 +29,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
                 types[item['name']] = {
                     'css': ['module', 'represents-content-object'],
                     'image': image,
-                    'title': zope.i18n.translate(
-                        item['title'], context=self.request),
+                    'title': zope.i18n.translate(item['title'], context=self.request),
                     'type': item['type'],
                     'params': json.dumps(item['params']),
                 }
@@ -47,15 +45,18 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         context = self.factory_context
         if context is None:
             return []
-        adapters = zope.component.getAdapters(
-            (context,), zeit.edit.interfaces.IElementFactory)
-        return [{
-            'name': name,
-            'type': name,
-            'title': adapter.title,
-            'library_name': self.library_name,
-            'params': {}
-        } for (name, adapter) in adapters if adapter.title]
+        adapters = zope.component.getAdapters((context,), zeit.edit.interfaces.IElementFactory)
+        return [
+            {
+                'name': name,
+                'type': name,
+                'title': adapter.title,
+                'library_name': self.library_name,
+                'params': {},
+            }
+            for (name, adapter) in adapters
+            if adapter.title
+        ]
 
     @property
     def factory_context(self):
@@ -71,12 +72,10 @@ class BlockFactories(zeit.cms.browser.view.JSON):
 
 
 class BlockLandingZone(zeit.edit.browser.landing.LandingZone):
-
     block_type = zeit.edit.browser.view.Form('block_type')
     order = 'after-context'
 
 
 class AreaLandingZone(zeit.edit.browser.landing.LandingZone):
-
     block_type = zeit.edit.browser.view.Form('block_type')
     order = 0

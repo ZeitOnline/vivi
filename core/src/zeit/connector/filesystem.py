@@ -33,14 +33,10 @@ class Connector:
 
     _set_lastmodified_property = False
 
-    property_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_property_cache', dict)
-    body_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_body_cache', dict)
-    child_name_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_child_name_cache', dict)
-    canonical_id_cache = gocept.cache.property.TransactionBoundCache(
-        '_v_canonical_id_cache', dict)
+    property_cache = gocept.cache.property.TransactionBoundCache('_v_property_cache', dict)
+    body_cache = gocept.cache.property.TransactionBoundCache('_v_body_cache', dict)
+    child_name_cache = gocept.cache.property.TransactionBoundCache('_v_child_name_cache', dict)
+    canonical_id_cache = gocept.cache.property.TransactionBoundCache('_v_canonical_id_cache', dict)
 
     def __init__(self, repository_path):
         # Support `egg://` product config from zeit.cms.zope
@@ -51,8 +47,8 @@ class Connector:
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
     def factory(cls):
         import zope.app.appsetup.product
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.connector') or {}
+
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
         connector = cls(config['repository-path'])
         canonicalize = config.get('canonicalize-directories', None)
         if canonicalize is not None:
@@ -60,7 +56,7 @@ class Connector:
         return connector
 
     def listCollection(self, id):
-        """List the filenames of a collection identified by path. """
+        """List the filenames of a collection identified by path."""
         id = self._get_cannonical_id(id)
         try:
             return self.child_name_cache[id]
@@ -108,8 +104,7 @@ class Connector:
 
         properties = self._get_properties(id)
         if properties:
-            type = properties.get(
-                zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
+            type = properties.get(zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
             if type:
                 return type
 
@@ -134,10 +129,13 @@ class Connector:
         properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
         path = urlparse(id).path.strip('/').split('/')
         return self.resource_class(
-            str(id), path[-1], type,
+            str(id),
+            path[-1],
+            type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
-            contentType=self._get_content_type(id))
+            contentType=self._get_content_type(id),
+        )
 
     def _get_body(self, id):
         try:
@@ -155,8 +153,7 @@ class Connector:
 
     def _get_content_type(self, id):
         properties = self._get_properties(id)
-        if (properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] ==
-                'collection'):
+        if properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] == 'collection':
             return 'httpd/unix-directory'
         davtype = ('getcontenttype', 'DAV:')
         return properties.get(davtype, '')
@@ -229,7 +226,7 @@ class Connector:
 
     def _path(self, id):
         if not id.startswith(ID_NAMESPACE):
-            raise ValueError("The id %r is invalid." % id)
+            raise ValueError('The id %r is invalid.' % id)
         path = id.replace(ID_NAMESPACE, '', 1).rstrip('/')
         return os.path.join(self.repository_path, path).rstrip('/')
 
@@ -240,8 +237,7 @@ class Connector:
             return open(filename, 'rb')
         except IOError:
             if os.path.isdir(filename):
-                raise ValueError(
-                    'The path %r points to a directory.' % filename)
+                raise ValueError('The path %r points to a directory.' % filename)
             raise KeyError("The resource '%s' does not exist." % id)
 
     def _get_metadata_file(self, id):
@@ -274,8 +270,7 @@ class Connector:
             # Performance optimization: We know this error happens only for
             # directories, so we can determine the resource type here instead
             # of waiting for getResourceType() doing the isdir check _again_.
-            properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = (
-                'collection')
+            properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = 'collection'
             metadata_parse_error = True
         except lxml.etree.LxmlError:
             metadata_parse_error = True
@@ -317,12 +312,8 @@ def parse_properties(xml):
     # different format:
     tags = xml.xpath('//head/rankedTags')
     if tags:
-        value = (
-            '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
-            '/CMS/tagging">')
+        value = '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de' '/CMS/tagging">'
         value += lxml.etree.tostring(tags[0], encoding=str)
         value += '</tag:rankedTags>'
-        properties[(
-            'keywords',
-            'http://namespaces.zeit.de/CMS/tagging')] = value
+        properties[('keywords', 'http://namespaces.zeit.de/CMS/tagging')] = value
     return properties

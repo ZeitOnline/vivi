@@ -18,12 +18,9 @@ BODY_NAME = 'editable-body'
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IEditableBody)
-class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
-                   grok.MultiAdapter):
-
+class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.MultiAdapter):
     grok.provides(zeit.content.article.edit.interfaces.IEditableBody)
-    grok.adapts(zeit.content.article.interfaces.IArticle,
-                gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.article.interfaces.IArticle, gocept.lxml.interfaces.IObjectified)
 
     __name__ = BODY_NAME
 
@@ -31,8 +28,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
         # XXX this is much too simple and needs work. and tests.
         result = []
         self.ensure_division()
-        for didx, division in enumerate(
-                xml_node.xpath('division[@type="page"]'), start=1):
+        for didx, division in enumerate(xml_node.xpath('division[@type="page"]'), start=1):
             key = self._set_default_key(division)
             if didx > 1:
                 # Skip the first division as it isn't editable
@@ -48,15 +44,13 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
         # zeit.frontend).
 
         result = []
-        for didx, division in enumerate(
-                self.xml.xpath('division[@type="page"]'), start=1):
+        for didx, division in enumerate(self.xml.xpath('division[@type="page"]'), start=1):
             if didx > 1:
                 result.append(self._get_element_for_node(division))
             for child in division.iterchildren('*'):
                 element = self._get_element_for_node(child)
                 if element is None:
-                    element = self._get_element_for_node(
-                        child, zeit.edit.block.UnknownBlock.type)
+                    element = self._get_element_for_node(child, zeit.edit.block.UnknownBlock.type)
                 result.append(element)
         return result
 
@@ -113,14 +107,13 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer,
 @grok.implementer(zeit.content.article.edit.interfaces.IEditableBody)
 def get_editable_body(article):
     return zope.component.queryMultiAdapter(
-        (article,
-         zope.security.proxy.removeSecurityProxy(article.xml['body'])),
-        zeit.content.article.edit.interfaces.IEditableBody)
+        (article, zope.security.proxy.removeSecurityProxy(article.xml['body'])),
+        zeit.content.article.edit.interfaces.IEditableBody,
+    )
 
 
 @grok.implementer(zope.traversing.interfaces.ITraversable)
 class BodyTraverser(grok.Adapter):
-
     grok.context(zeit.content.article.interfaces.IArticle)
 
     candidates = {
@@ -140,12 +133,10 @@ class BodyTraverser(grok.Adapter):
         # XXX zope.component does not offer an API to get the next adapter
         # that is less specific than the current one. So we hard-code the
         # default.
-        return zope.traversing.adapters.DefaultTraversable(
-            self.context).traverse(name, furtherPath)
+        return zope.traversing.adapters.DefaultTraversable(self.context).traverse(name, furtherPath)
 
 
 class ModuleSource(zeit.content.article.edit.interfaces.BodyAwareXMLSource):
-
     product_configuration = 'zeit.content.article'
     config_url = 'module-source'
     default_filename = 'article-modules.xml'
@@ -158,13 +149,13 @@ MODULES = ModuleSource()
 # Remove all the __name__ thingies on before adding an article to the
 # repository
 _find_name_attributes = lxml.etree.XPath(
-    '//*[@cms:__name__]',
-    namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'})
+    '//*[@cms:__name__]', namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'}
+)
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
+)
 def remove_name_attributes(context, event):
     unwrapped = zope.security.proxy.removeSecurityProxy(context)
     for element in _find_name_attributes(unwrapped.xml):
@@ -173,7 +164,6 @@ def remove_name_attributes(context, event):
 
 
 class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
-
     grok.context(zeit.content.article.interfaces.IArticle)
 
     @property
@@ -182,8 +172,8 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IValidateCheckinEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IValidateCheckinEvent
+)
 def validate_article(context, event):
     errors = []
     # field validation (e.g. zope.schema.Tuple) does type comparisons, which
@@ -199,18 +189,22 @@ def validate_article(context, event):
         errors.extend([(iface[k], v) for k, v in err])
     # XXX using a separate event handler would be cleaner, but we only support
     # retrieving a single error (last_validation_error), so this doesn't work.
-    if (IAutomaticallyRenameable(context).renameable and
-            not IAutomaticallyRenameable(context).rename_to):
+    if (
+        IAutomaticallyRenameable(context).renameable
+        and not IAutomaticallyRenameable(context).rename_to
+    ):
         errors.append(
-            (IAutomaticallyRenameable['rename_to'],
-             zope.schema.interfaces.RequiredMissing('rename_to')))
+            (
+                IAutomaticallyRenameable['rename_to'],
+                zope.schema.interfaces.RequiredMissing('rename_to'),
+            )
+        )
     if errors:
         event.veto(errors)
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IBreakingNewsBody)
 class BreakingNewsBody(grok.Adapter):
-
     grok.context(zeit.content.article.interfaces.IArticle)
 
     @property
@@ -221,15 +215,14 @@ class BreakingNewsBody(grok.Adapter):
     def text(self, value):
         if not self._paragraph:
             factory = zope.component.getAdapter(
-                self.context.body, zeit.edit.interfaces.IElementFactory,
-                name='p')
+                self.context.body, zeit.edit.interfaces.IElementFactory, name='p'
+            )
             factory()
         self._paragraph.text = value
 
     @property
     def _paragraph(self):
         for block in self.context.body.values():
-            if zeit.content.article.edit.interfaces.IParagraph.providedBy(
-                    block):
+            if zeit.content.article.edit.interfaces.IParagraph.providedBy(block):
                 return block
         return None

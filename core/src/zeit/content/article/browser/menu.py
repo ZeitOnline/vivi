@@ -4,9 +4,8 @@ import zeit.cms.checkout
 
 
 class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
-
     weight = -1
-    viewURL = "@@edit.html"
+    viewURL = '@@edit.html'
     activeCSS = 'edit_contents selected'
     inActiveCSS = 'edit_contents'
 
@@ -15,8 +14,8 @@ class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
         """Changes wheter item is checked out or checked in"""
         checkout = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
         if checkout.canCheckout:
-            return _("View")
-        return _("Edit contents")
+            return _('View')
+        return _('Edit contents')
 
     @property
     def selected(self):

@@ -2,7 +2,6 @@ import zeit.edit.testing
 
 
 class RestoreFolding(zeit.edit.testing.SeleniumTestCase):
-
     def test_ids_unknown_to_session_keep_their_initial_folding_state(self):
         self.open('/@@/zeit.edit.browser.tests.fixtures/fold.html')
         self.execute('zeit.edit.restore_folding();')

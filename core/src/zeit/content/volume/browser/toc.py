@@ -18,7 +18,6 @@ import zope.site.site
 
 
 class Toc(zeit.cms.browser.view.Base):
-
     CSV_DELIMITER = '\t'
 
     def __init__(self, context, request):
@@ -29,7 +28,8 @@ class Toc(zeit.cms.browser.view.Base):
         filename = self._generate_file_name()
         self.request.response.setHeader('Content-Type', 'text/csv')
         self.request.response.setHeader(
-            'Content-Disposition', 'attachment; filename="%s"' % filename)
+            'Content-Disposition', 'attachment; filename="%s"' % filename
+        )
         return self._create_toc_content()
 
     def _fill_template(self, text):
@@ -39,9 +39,9 @@ class Toc(zeit.cms.browser.view.Base):
         return dummy.fill_template(text)
 
     def _generate_file_name(self):
-        toc_file_string = _("Table of Content").lower().replace(" ", "_")
-        volume_formatted = self._fill_template("{year}_{name}")
-        return "{}_{}.csv".format(toc_file_string, volume_formatted)
+        toc_file_string = _('Table of Content').lower().replace(' ', '_')
+        volume_formatted = self._fill_template('{year}_{name}')
+        return '{}_{}.csv'.format(toc_file_string, volume_formatted)
 
     def _create_toc_content(self):
         toc_data = self._get_ir_content()
@@ -52,23 +52,20 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _get_ir_content(self):
         if FEATURE_TOGGLES.find('volume_toc_products_from_config'):
-            config = zope.app.appsetup.product.getProductConfiguration(
-                'zeit.content.volume')
-            products = [PRODUCTS.find(x.strip()) for x
-                        in config.get('toc-product-ids', '').split(' ')]
-        else:
+            config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
             products = [
-                self.context.product] + self.context.product.dependent_products
+                PRODUCTS.find(x.strip()) for x in config.get('toc-product-ids', '').split(' ')
+            ]
+        else:
+            products = [self.context.product] + self.context.product.dependent_products
 
         results = {}
         for product in products:
             if not product or not product.location:
                 continue
             result_for_product = defaultdict(list)
-            product_folder = os.path.dirname(
-                self._fill_template(product.location))
-            product_folder = zeit.cms.interfaces.ICMSContent(
-                product_folder, None)
+            product_folder = os.path.dirname(self._fill_template(product.location))
+            product_folder = zeit.cms.interfaces.ICMSContent(product_folder, None)
             if product_folder is None:
                 continue
             for article in product_folder.values():
@@ -77,21 +74,19 @@ class Toc(zeit.cms.browser.view.Base):
                     continue
                 toc_entry = self._create_toc_element(article)
                 if toc_entry:
-                    if (article.main_image and
-                            article.main_image.target is not None):
-                        toc_entry['image_url'] = self.url(
-                            article.main_image.target)
+                    if article.main_image and article.main_image.target is not None:
+                        toc_entry['image_url'] = self.url(article.main_image.target)
                     toc_entry['preview_url'] = zope.component.getMultiAdapter(
-                        (article, 'preview'), IPreviewURL)
+                        (article, 'preview'), IPreviewURL
+                    )
                     result_for_product[article.printRessort].append(toc_entry)
             results[product.title] = result_for_product
         return results
 
     @property
     def product_ids(self):
-        """ List [First Product ID, Second ...] """
-        config = zope.app.appsetup.product \
-            .getProductConfiguration('zeit.content.volume')
+        """List [First Product ID, Second ...]"""
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.volume')
         ids_as_string = config.get('toc-product-ids')
         return [product_id.strip() for product_id in ids_as_string.split(' ')]
 
@@ -117,37 +112,41 @@ class Toc(zeit.cms.browser.view.Base):
             'teaser': article.subtitle,
             'supertitle': article.supertitle,
             'access': article.access,
-            'authors': ', '.join([
-                x.target.display_name for x in article.authorships]),
+            'authors': ', '.join([x.target.display_name for x in article.authorships]),
             'article_id': article.ir_article_id,
         }
         return self._normalize_toc_element(result)
 
     REQUIRED = ['title', 'teaser']
     EXCLUDE = {
-        'title': [re.compile(x, re.IGNORECASE) for x in [
-            'Heute \\d+.\\d+',
-            'Damals \\d+.\\d+',
-            'PROMINENT IGNORIERT',
-            'Du siehst aus, wie ich mich fühle',
-            'WAS MEIN LEBEN REICHER MACHT',
-            'UND WER BIST DU?'
-
-        ]],
-        'supertitle': [re.compile(x, re.IGNORECASE) for x in [
-            'NEIN. QUARTERLY',
-            'MAIL AUS:',
-            'MACHER UND MÄRKTE',
-            'AUTO WOFÜR IST DAS DA',
-            'HALBWISSEN',
-            'ZAHL DER WOCHE',
-            'WIR RATEN (AB|ZU)',
-            'DER UNNÜTZE VERGLEICH',
-            'MALEN NACH ZAHLEN',
-            'LEXIKON DER NEUROSEN',
-            'ZEITSPRUNG',
-            '(LESE|BASTEL)-TIPP'
-        ]],
+        'title': [
+            re.compile(x, re.IGNORECASE)
+            for x in [
+                'Heute \\d+.\\d+',
+                'Damals \\d+.\\d+',
+                'PROMINENT IGNORIERT',
+                'Du siehst aus, wie ich mich fühle',
+                'WAS MEIN LEBEN REICHER MACHT',
+                'UND WER BIST DU?',
+            ]
+        ],
+        'supertitle': [
+            re.compile(x, re.IGNORECASE)
+            for x in [
+                'NEIN. QUARTERLY',
+                'MAIL AUS:',
+                'MACHER UND MÄRKTE',
+                'AUTO WOFÜR IST DAS DA',
+                'HALBWISSEN',
+                'ZAHL DER WOCHE',
+                'WIR RATEN (AB|ZU)',
+                'DER UNNÜTZE VERGLEICH',
+                'MALEN NACH ZAHLEN',
+                'LEXIKON DER NEUROSEN',
+                'ZEITSPRUNG',
+                '(LESE|BASTEL)-TIPP',
+            ]
+        ],
     }
 
     @classmethod
@@ -177,8 +176,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_toc_element(self, toc_entry):
         for key, value in toc_entry.items():
-            toc_entry[key] = value.replace(
-                self.CSV_DELIMITER, '') if value else ''
+            toc_entry[key] = value.replace(self.CSV_DELIMITER, '') if value else ''
         self._normalize_teaser(toc_entry)
         self._normalize_page(toc_entry)
         self._normalize_access_element(toc_entry)
@@ -186,8 +184,7 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_page(self, toc_entry):
         """Transform page to correct integer"""
-        page_entries = [x.lstrip("0") for x in re.findall(
-            r'\d+', toc_entry.get('page', ''))]
+        page_entries = [x.lstrip('0') for x in re.findall(r'\d+', toc_entry.get('page', ''))]
         try:
             page = int(page_entries[0])
         except (IndexError, ValueError):
@@ -202,11 +199,11 @@ class Toc(zeit.cms.browser.view.Base):
 
     def _normalize_access_element(self, toc_entry):
         if not toc_entry['access']:
-            toc_entry['access'] = "Nicht Gesetzt"
+            toc_entry['access'] = 'Nicht Gesetzt'
         else:
-            toc_entry['access'] = \
-                zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
-                self.context, toc_entry['access'])
+            toc_entry['access'] = zeit.cms.content.sources.ACCESS_SOURCE.factory.getTitle(
+                self.context, toc_entry['access']
+            )
 
     def _full_product_name(self, product_id):
         product = PRODUCTS.find(product_id)
@@ -222,8 +219,9 @@ class Toc(zeit.cms.browser.view.Base):
         """
         for product_name, ressort_dict in toc_data.items():
             for ressort_name, articles in ressort_dict.items():
-                toc_data[product_name][ressort_name] = \
-                    sorted(articles, key=lambda x: x.get('page', sys.maxsize))
+                toc_data[product_name][ressort_name] = sorted(
+                    articles, key=lambda x: x.get('page', sys.maxsize)
+                )
         for product_name, ressort_dict in toc_data.items():
             toc_data[product_name] = self._sorted_ressorts(ressort_dict)
         return toc_data
@@ -244,8 +242,8 @@ class Toc(zeit.cms.browser.view.Base):
             ressort_min_page_number_tuples.append((resort_name, min_page))
         d = OrderedDict()
         for ressort_page_tuple in sorted(
-                ressort_min_page_number_tuples, key=lambda resort_page_tup:
-                resort_page_tup[1]):
+            ressort_min_page_number_tuples, key=lambda resort_page_tup: resort_page_tup[1]
+        ):
             d[ressort_page_tuple[0]] = ressorts.get(ressort_page_tuple[0])
         return d
 
@@ -260,7 +258,6 @@ class Toc(zeit.cms.browser.view.Base):
         try:
             writer = csv.writer(out, delimiter=self.CSV_DELIMITER)
             for toc_element in self._generate_csv_rows(toc_data):
-
                 writer.writerow(val for val in toc_element)
             return out.getvalue()
         finally:
@@ -275,24 +272,29 @@ class Toc(zeit.cms.browser.view.Base):
         for product_name, ressort_dict in toc_entries.items():
             for ressort_name, toc_entries in ressort_dict.items():
                 for toc_entry in toc_entries:
-                    yield self._format_toc_element(
-                        toc_entry, product_name, ressort_name)
+                    yield self._format_toc_element(toc_entry, product_name, ressort_name)
         return
 
     def _format_toc_element(self, toc_entry, product_name, ressort_name):
-        title_teaser = " ".join(
-            [toc_entry.get("title"),
-             toc_entry.get("teaser")])
+        title_teaser = ' '.join([toc_entry.get('title'), toc_entry.get('teaser')])
         page = toc_entry.get('page')
         if page == sys.maxsize:
             page = ''
         return (
-            [str(page), title_teaser, '', '', toc_entry.get('access')] +
-            [''] * 8 + [toc_entry.get('image_url', '')] +
-            [''] * 5 + [toc_entry.get('preview_url', '')] +
-            [ressort_name, str(self.context.year), str(self.context.volume),
-                product_name, toc_entry.get('authors', ''),
-                toc_entry.get('article_id', '')])
+            [str(page), title_teaser, '', '', toc_entry.get('access')]
+            + [''] * 8
+            + [toc_entry.get('image_url', '')]
+            + [''] * 5
+            + [toc_entry.get('preview_url', '')]
+            + [
+                ressort_name,
+                str(self.context.year),
+                str(self.context.volume),
+                product_name,
+                toc_entry.get('authors', ''),
+                toc_entry.get('article_id', ''),
+            ]
+        )
 
 
 PRODUCTS = zeit.cms.content.sources.PRODUCT_SOURCE(None)

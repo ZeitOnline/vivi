@@ -6,19 +6,18 @@ import zope.traversing.browser
 
 
 class LinkColumn(zc.table.column.GetterColumn):
-    """A column which displays a link to a value.
-    """
+    """A column which displays a link to a value."""
 
-    def __init__(self, view='', css_class=None, hide_header=False,
-                 sortable=True, target=None, **kw):
+    def __init__(
+        self, view='', css_class=None, hide_header=False, sortable=True, target=None, **kw
+    ):
         super().__init__(**kw)
         self.view = view
         self.hide_header = hide_header
         if css_class:
             self.css_class = css_class
         if sortable:
-            zope.interface.alsoProvides(
-                self, zc.table.interfaces.ISortableColumn)
+            zope.interface.alsoProvides(self, zc.table.interfaces.ISortableColumn)
         self.target = target
 
     def renderHeader(self, formatter):
@@ -37,8 +36,7 @@ class LinkColumn(zc.table.column.GetterColumn):
 
         # Try to get a URL, if we can't then ignore setting up a link.
         try:
-            url = zope.component.getMultiAdapter(
-                (target, formatter.request), name='absolute_url')()
+            url = zope.component.getMultiAdapter((target, formatter.request), name='absolute_url')()
         except TypeError:
             result = content
         else:
@@ -50,16 +48,14 @@ class LinkColumn(zc.table.column.GetterColumn):
             target = ''
             if self.target:
                 target = 'target="%s" ' % self.target
-            result = '<a %s%shref="%s">%s</a>' % (
-                target, css_class, url, content)
+            result = '<a %s%shref="%s">%s</a>' % (target, css_class, url, content)
         return result
 
     def cell_formatter(self, value, item, formatter):
         return value.title
 
     def getSortKey(self, item, formatter):
-        return self.cell_formatter(
-            self.getter(item, formatter), item, formatter)
+        return self.cell_formatter(self.getter(item, formatter), item, formatter)
 
     def css_class(self, value, item, formatter):
         return ''

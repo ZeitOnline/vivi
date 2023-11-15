@@ -10,9 +10,9 @@ import zope.interface
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IEmbed)
 class Embed(zeit.edit.block.Element):
-
     url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'url', zeit.content.modules.interfaces.IEmbed['url'])
+        '.', 'url', zeit.content.modules.interfaces.IEmbed['url']
+    )
 
     @cachedproperty
     def domain(self):
@@ -27,7 +27,6 @@ class Embed(zeit.edit.block.Element):
 
 @grok.implementer(zeit.cmp.interfaces.IConsentInfo)
 class ConsentInfo(grok.Adapter):
-
     grok.context(zeit.content.modules.interfaces.IEmbed)
 
     has_thirdparty = True

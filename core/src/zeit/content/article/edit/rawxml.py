@@ -10,12 +10,10 @@ import zeit.content.article.edit.interfaces
 
 @grok.implementer(zeit.content.article.edit.interfaces.IRawXML)
 class RawXML(zeit.content.article.edit.block.Block):
-
     type = 'raw'
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
-
     produces = RawXML
     title = _('Raw XML block')
 
@@ -29,19 +27,22 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
 # BBB Just like zeit.content.modules.rawtext.RawText.text
 @grok.implementer(zeit.cmp.interfaces.IConsentInfo)
-class ConsentInfo(zeit.cms.grok.TrustedAdapter,
-                  zeit.cms.content.xmlsupport.Persistent,
-                  zeit.cmp.consent.ConsentInfoBase):
-
+class ConsentInfo(
+    zeit.cms.grok.TrustedAdapter,
+    zeit.cms.content.xmlsupport.Persistent,
+    zeit.cmp.consent.ConsentInfoBase,
+):
     grok.context(zeit.content.article.edit.interfaces.IRawXML)
 
     has_thirdparty = DAVConverterWrapper(
         ObjectPathAttributeProperty('.', 'has_thirdparty'),
-        zeit.cmp.interfaces.IConsentInfo['has_thirdparty'])
+        zeit.cmp.interfaces.IConsentInfo['has_thirdparty'],
+    )
 
     thirdparty_vendors = DAVConverterWrapper(
         ObjectPathAttributeProperty('.', 'thirdparty_vendors'),
-        zeit.cmp.interfaces.IConsentInfo['thirdparty_vendors'])
+        zeit.cmp.interfaces.IConsentInfo['thirdparty_vendors'],
+    )
 
     @cachedproperty  # for ObjectPathAttributeProperty
     def xml(self):

@@ -11,31 +11,24 @@ class GetterColumn(zc.table.column.GetterColumn):
 
 
 class MetadataColumn(GetterColumn):
-
     def __init__(self):
         super().__init__(title='')
 
     def cell_formatter(self, value, item, formatter):
         return '<span class="SearchableText">%s</span>' % ' '.join(
-            map(str, [item[0][0], item[0][1], item[1]]))
+            map(str, [item[0][0], item[0][1], item[1]])
+        )
 
 
 class Listing(zeit.cms.browser.listing.Listing):
-
     title = _('DAV Properties')
     filter_interface = None
     css_class = 'contentListing hasMetadata'
 
     columns = (
-        GetterColumn(
-            title=_('Namespace'),
-            getter=lambda t, c: t[0][1]),
-        GetterColumn(
-            title=_('Name'),
-            getter=lambda t, c: t[0][0]),
-        GetterColumn(
-            title=_('Value'),
-            getter=lambda t, c: str(t[1])),
+        GetterColumn(title=_('Namespace'), getter=lambda t, c: t[0][1]),
+        GetterColumn(title=_('Name'), getter=lambda t, c: t[0][0]),
+        GetterColumn(title=_('Value'), getter=lambda t, c: str(t[1])),
         MetadataColumn(),
     )
 

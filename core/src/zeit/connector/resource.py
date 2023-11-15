@@ -5,38 +5,36 @@ import zope.interface
 
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 class WebDAVProperties(persistent.mapping.PersistentMapping):
-
     def __repr__(self):
         return object.__repr__(self)
 
 
 class ReadOnlyWebDAVProperties(WebDAVProperties):
-
     def __init__(self, adict=None):
         super().__init__()
         if adict is not None:
             self.data.update(adict)
 
     def __delitem__(self, *args, **kwargs):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
     def __setitem__(self, *args, **kwargs):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
     def clear(self, *args, **kwargs):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
     def update(self, *args, **kwargs):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
     def setdefault(self, *args, **kwargs):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
     def pop(self, *args, **kwargs):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
     def popitem(self, *args, **kwargs):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResource)
@@ -58,8 +56,7 @@ class Resource:
 class CachedResource:
     """Represents a resource in the webdav."""
 
-    def __init__(self, id, name, type_name, property_getter, body_getter,
-                 contentType):
+    def __init__(self, id, name, type_name, property_getter, body_getter, contentType):
         self.id = id
         self.__name__ = name
         self.type = type_name
@@ -79,10 +76,8 @@ class CachedResource:
 class WriteableCachedResource(CachedResource):
     """Used by mock connector"""
 
-    def __init__(self, id, name, type_name, property_getter, body_getter,
-                 contentType):
-        super().__init__(
-            id, name, type_name, property_getter, body_getter, contentType)
+    def __init__(self, id, name, type_name, property_getter, body_getter, contentType):
+        super().__init__(id, name, type_name, property_getter, body_getter, contentType)
         self._properties = WebDAVProperties(self._property_getter())
 
     @property

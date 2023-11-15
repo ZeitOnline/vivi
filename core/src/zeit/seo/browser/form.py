@@ -8,26 +8,23 @@ import zope.formlib.form
 
 
 class SEOBaseForm:
-
-    form_fields = (
-        zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO) +
-        zope.formlib.form.FormFields(
-            zeit.cms.content.interfaces.ICommonMetadata).select(
-                'keywords', 'ressort', 'sub_ressort', 'serie'))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.seo.interfaces.ISEO
+    ) + zope.formlib.form.FormFields(zeit.cms.content.interfaces.ICommonMetadata).select(
+        'keywords', 'ressort', 'sub_ressort', 'serie'
+    )
 
     field_groups = (
-        gocept.form.grouped.RemainingFields(
-            _('SEO data'),
-            'column-left wide-widgets'),
+        gocept.form.grouped.RemainingFields(_('SEO data'), 'column-left wide-widgets'),
         gocept.form.grouped.Fields(
             _('Standard metadata'),
-            ('keywords', 'keyword_entity_type',
-             'ressort', 'sub_ressort', 'serie'),
-            'column-right'))
+            ('keywords', 'keyword_entity_type', 'ressort', 'sub_ressort', 'serie'),
+            'column-right',
+        ),
+    )
 
 
 class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
-
     title = _('Edit SEO data')
 
     @zope.formlib.form.action(_('Apply'))
@@ -43,7 +40,6 @@ class SEOEdit(SEOBaseForm, zeit.cms.browser.form.EditForm):
 
 
 class SEODisplay(SEOBaseForm, zeit.cms.browser.form.DisplayForm):
-
     title = _('View SEO data')
 
 
@@ -60,19 +56,14 @@ def display_view_name(context):
 
 
 class OnlySEOBaseForm:
-
     form_fields = zope.formlib.form.FormFields(zeit.seo.interfaces.ISEO)
 
-    field_groups = (
-        gocept.form.grouped.RemainingFields(
-            _('SEO data'), 'column-left wide-widgets'),)
+    field_groups = (gocept.form.grouped.RemainingFields(_('SEO data'), 'column-left wide-widgets'),)
 
 
 class OnlySEOEdit(OnlySEOBaseForm, zeit.cms.browser.form.EditForm):
-
     title = _('Edit OnlySEO data')
 
 
 class OnlySEODisplay(OnlySEOBaseForm, zeit.cms.browser.form.DisplayForm):
-
     title = _('View OnlySEO data')

@@ -7,7 +7,6 @@ import zope.interface
 
 
 class Ingredient:
-
     def __init__(self, code, label, **kwargs):
         self.code = code
         self.label = label
@@ -21,8 +20,8 @@ class Ingredient:
         code = node.get('code')
         try:
             ingredient = zope.component.getUtility(
-                zeit.wochenmarkt.interfaces.IIngredientsWhitelist).get(
-                    code)
+                zeit.wochenmarkt.interfaces.IIngredientsWhitelist
+            ).get(code)
             # These attributes have to be available:
             name = ingredient.name  # This also represents the singular.
             plural = ingredient.plural
@@ -35,51 +34,49 @@ class Ingredient:
             amount=node.get('amount', ''),
             unit=node.get('unit', ''),
             details=node.get('details', ''),
-            plural=plural)
+            plural=plural,
+        )
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IRecipeList)
 class RecipeList(zeit.edit.block.Element):
-
-    merge_with_previous = (
-        zeit.cms.content.property.ObjectPathProperty(
-            '.merge_with_previous',
-            zeit.content.modules.interfaces.IRecipeList[
-                'merge_with_previous']))
+    merge_with_previous = zeit.cms.content.property.ObjectPathProperty(
+        '.merge_with_previous', zeit.content.modules.interfaces.IRecipeList['merge_with_previous']
+    )
 
     title = zeit.cms.content.property.ObjectPathProperty(
-        '.title', zeit.content.modules.interfaces.IRecipeList['title'])
+        '.title', zeit.content.modules.interfaces.IRecipeList['title']
+    )
 
     subheading = zeit.cms.content.property.ObjectPathProperty(
-        '.subheading', zeit.content.modules.interfaces.IRecipeList[
-            'subheading'])
+        '.subheading', zeit.content.modules.interfaces.IRecipeList['subheading']
+    )
 
-    searchable_subheading = (
-        zeit.cms.content.property.ObjectPathAttributeProperty(
-            '.subheading', 'searchable',
-            zeit.content.modules.interfaces.IRecipeList[
-                'searchable_subheading']))
+    searchable_subheading = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.subheading',
+        'searchable',
+        zeit.content.modules.interfaces.IRecipeList['searchable_subheading'],
+    )
 
     complexity = zeit.cms.content.property.ObjectPathProperty(
-        '.complexity',
-        zeit.content.modules.interfaces.IRecipeList['complexity'])
+        '.complexity', zeit.content.modules.interfaces.IRecipeList['complexity']
+    )
 
     time = zeit.cms.content.property.ObjectPathProperty(
-        '.time',
-        zeit.content.modules.interfaces.IRecipeList['time'])
+        '.time', zeit.content.modules.interfaces.IRecipeList['time']
+    )
 
     servings = zeit.cms.content.property.ObjectPathProperty(
-        '.servings',
-        zeit.content.modules.interfaces.IRecipeList['servings'])
+        '.servings', zeit.content.modules.interfaces.IRecipeList['servings']
+    )
 
     special_ingredient = zeit.cms.content.property.ObjectPathProperty(
-        '.special_ingredient',
-        zeit.content.modules.interfaces.IRecipeList['special_ingredient'])
+        '.special_ingredient', zeit.content.modules.interfaces.IRecipeList['special_ingredient']
+    )
 
     @property
     def ingredients(self):
-        ingredients = [Ingredient.from_xml(x) for x in self.xml.xpath(
-            './ingredient')]
+        ingredients = [Ingredient.from_xml(x) for x in self.xml.xpath('./ingredient')]
         return [i for i in ingredients if i is not None]
 
     @ingredients.setter
@@ -92,4 +89,6 @@ class RecipeList(zeit.edit.block.Element):
                     code=item.code,
                     amount=item.amount if hasattr(item, 'amount') else '',
                     unit=item.unit if hasattr(item, 'unit') else '',
-                    details=item.details if hasattr(item, 'details') else ''))
+                    details=item.details if hasattr(item, 'details') else '',
+                )
+            )

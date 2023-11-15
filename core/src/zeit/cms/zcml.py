@@ -16,5 +16,4 @@ class IEditPermissionDirective(zope.security.zcml.IPermissionDirective):
 
 def edit_permission(_context, id, title, description=''):
     permission = zope.security.permission.Permission(id, title, description)
-    zope.component.zcml.utility(
-        _context, zeit.cms.interfaces.IEditPermission, permission, name=id)
+    zope.component.zcml.utility(_context, zeit.cms.interfaces.IEditPermission, permission, name=id)

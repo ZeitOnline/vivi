@@ -9,38 +9,36 @@ import zope.interface
 
 
 @zope.interface.implementer(
-    zeit.content.advertisement.interfaces.IAdvertisement,
-    zeit.cms.interfaces.IEditorialContent)
+    zeit.content.advertisement.interfaces.IAdvertisement, zeit.cms.interfaces.IEditorialContent
+)
 class Advertisement(zeit.cms.content.xmlsupport.XMLContentBase):
-
     default_template = (
         '<advertisement xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        '<head/><body/></advertisement>')
+        '<head/><body/></advertisement>'
+    )
 
     supertitle = zeit.cms.content.property.ObjectPathProperty(
-        '.body.supertitle',
-        zeit.content.advertisement.interfaces.IAdvertisement['supertitle'])
+        '.body.supertitle', zeit.content.advertisement.interfaces.IAdvertisement['supertitle']
+    )
     title = zeit.cms.content.property.ObjectPathProperty(
-        '.body.title',
-        zeit.content.advertisement.interfaces.IAdvertisement['title'])
+        '.body.title', zeit.content.advertisement.interfaces.IAdvertisement['title']
+    )
     text = zeit.cms.content.property.ObjectPathProperty(
-        '.body.text',
-        zeit.content.advertisement.interfaces.IAdvertisement['text'])
+        '.body.text', zeit.content.advertisement.interfaces.IAdvertisement['text']
+    )
     button_text = zeit.cms.content.property.ObjectPathProperty(
-        '.body.button_text',
-        zeit.content.advertisement.interfaces.IAdvertisement['button_text'])
+        '.body.button_text', zeit.content.advertisement.interfaces.IAdvertisement['button_text']
+    )
     button_color = zeit.cms.content.property.ObjectPathProperty(
-        '.body.button_color',
-        zeit.content.advertisement.interfaces.IAdvertisement['button_color'])
-    image = zeit.cms.content.reference.SingleResource(
-        '.head.image', 'image')
+        '.body.button_color', zeit.content.advertisement.interfaces.IAdvertisement['button_color']
+    )
+    image = zeit.cms.content.reference.SingleResource('.head.image', 'image')
     url = zeit.cms.content.property.ObjectPathProperty(
-        '.body.url',
-        zeit.content.advertisement.interfaces.IAdvertisement['url'])
+        '.body.url', zeit.content.advertisement.interfaces.IAdvertisement['url']
+    )
 
 
 class AdvertisementType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Advertisement
     interface = zeit.content.advertisement.interfaces.IAdvertisement
     title = _('Publisher advertisement')

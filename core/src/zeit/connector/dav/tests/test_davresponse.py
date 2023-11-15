@@ -5,7 +5,6 @@ import unittest
 
 
 class TestDAVResponse(unittest.TestCase):
-
     RESPONSE_TEMPLATE = """\
 <D:multistatus xmlns:D="DAV:" xmlns:ns0="DAV:">
 <D:response

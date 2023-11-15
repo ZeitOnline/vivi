@@ -15,7 +15,6 @@ class InsertMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
 
 class InsertLightbox:
-
     @zope.cachedescriptors.property.Lazy
     def clipboard(self):
         return zeit.cms.clipboard.interfaces.IClipboard(self.request.principal)
@@ -34,6 +33,9 @@ class Insert(zeit.cms.browser.view.Base):
         new_name = copier.copyTo(self.context)
         new_obj = self.context[new_name]
         self.send_message(
-            _('${source} was copied to ${target}.',
-              mapping={'source': unique_id, 'target': new_obj.uniqueId}))
+            _(
+                '${source} was copied to ${target}.',
+                mapping={'source': unique_id, 'target': new_obj.uniqueId},
+            )
+        )
         self.redirect(self.url(new_obj))

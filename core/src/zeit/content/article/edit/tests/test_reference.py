@@ -6,16 +6,16 @@ import zope.lifecycleevent
 
 
 class ReferenceTest(unittest.TestCase):
-
     @property
     def test_class(self):
         from zeit.content.article.edit.reference import Reference
+
         return Reference
 
     def get_ref(self):
         import lxml.objectify
-        tree = lxml.objectify.E.tree(
-            lxml.objectify.E.ref())
+
+        tree = lxml.objectify.E.tree(lxml.objectify.E.ref())
         ref = self.test_class(None, tree.ref)
         ref._validate = mock.Mock()
         return ref
@@ -56,8 +56,7 @@ class ReferenceTest(unittest.TestCase):
         ref = self.get_ref()
         obj = mock.Mock()
         obj.uniqueId = 'my-id'
-        with mock.patch('zeit.cms.content.interfaces.IXMLReferenceUpdater') \
-                as xru:
+        with mock.patch('zeit.cms.content.interfaces.IXMLReferenceUpdater') as xru:
             ref.references = obj
             xru.assert_called_with(obj, None)
             xru.return_value.update.assert_called_with(ref.xml)
@@ -77,18 +76,18 @@ class ReferenceTest(unittest.TestCase):
 
 
 class TestGallery(ReferenceTest):
-
     @property
     def test_class(self):
         from zeit.content.article.edit.reference import Gallery
+
         return Gallery
 
 
 class TestInfobox(ReferenceTest):
-
     @property
     def test_class(self):
         from zeit.content.article.edit.reference import Infobox
+
         return Infobox
 
     def test_no_layout_set_should_return_default(self):
@@ -102,10 +101,10 @@ class TestInfobox(ReferenceTest):
 
 
 class TestPortraitbox(ReferenceTest):
-
     @property
     def test_class(self):
         from zeit.content.article.edit.reference import Portraitbox
+
         return Portraitbox
 
     def test_default_layout_should_be_set(self):
@@ -125,47 +124,41 @@ class TestPortraitbox(ReferenceTest):
 
     def test_default_name_should_be_read_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox'
-                        '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
             pbox.name = 'ref-name'
             self.assertEqual(ref.name, 'ref-name')
 
     def test_local_name_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox'
-                        '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
             pbox.name = 'ref-name'
             ref.name = 'local-name'
             self.assertEqual(ref.name, 'local-name')
 
     def test_default_text_should_be_read_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox'
-                        '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
             pbox.text = 'ref-text'
             self.assertEqual(ref.text, 'ref-text')
 
     def test_local_text_should_override_value_from_referenced_box(self):
         ref = self.get_ref()
-        with mock.patch('zeit.content.article.edit.reference.Portraitbox'
-                        '.references') as pbox:
+        with mock.patch('zeit.content.article.edit.reference.Portraitbox' '.references') as pbox:
             pbox.text = 'ref-text'
             ref.text = 'local-text'
             self.assertEqual(ref.text, 'local-text')
 
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
-
     def assert_factory(self, name, title, interface):
         import zeit.content.article.article
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
         import zope.component
+
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
-        factory = zope.component.getAdapter(
-            body, zeit.edit.interfaces.IElementFactory, name)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, name)
         self.assertEqual(title, factory.title)
         div = factory()
         self.assertTrue(interface.providedBy(div))
@@ -173,19 +166,21 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def test_gallery_factory(self):
         from zeit.content.article.edit.interfaces import IGallery
+
         self.assert_factory('gallery', 'Gallery', IGallery)
 
     def test_infobox_factory(self):
         from zeit.content.article.edit.interfaces import IInfobox
+
         self.assert_factory('infobox', 'Infobox', IInfobox)
 
     def test_portraitbox_factory(self):
         from zeit.content.article.edit.interfaces import IPortraitbox
+
         self.assert_factory('portraitbox', 'Portraitbox', IPortraitbox)
 
 
 class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
-
     def setUp(self):
         # We do not want a fake tagger as Portraitbox and Infobox do not
         # support tagging in the real world, so skip the setup of the parent
@@ -198,8 +193,7 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         article = self.get_article()
         reference = self.get_factory(article, factory_name)()
         if reference_field:
-            reference.references = reference.references.create(
-                self.repository['refed'])
+            reference.references = reference.references.create(self.repository['refed'])
         else:
             reference.references = self.repository['refed']
         self.repository['article'] = article
@@ -208,50 +202,54 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         import zeit.workflow.interfaces
         import datetime
         import pytz
-        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(
-            self.repository['refed'])
-        workflow.release_period = (
-            None, datetime.datetime(2005, 1, 2, tzinfo=pytz.UTC))
+
+        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(self.repository['refed'])
+        workflow.release_period = (None, datetime.datetime(2005, 1, 2, tzinfo=pytz.UTC))
 
         #
         with checked_out(self.repository['article']):
             pass
         self.assertEqual(
             '2005-01-02T00:00:00+00:00',
-            self.repository['article'].xml.body.division.getchildren()[0].get(
-                'expires'))
+            self.repository['article'].xml.body.division.getchildren()[0].get('expires'),
+        )
 
     def test_gallery_metadata_should_be_updated(self):
         from zeit.content.gallery.gallery import Gallery
+
         self.assert_updated(Gallery(), 'gallery')
 
     def test_portraitbox_metadata_should_be_updated(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
+
         portraitbox = Portraitbox()
         portraitbox.text = 'huzenpups'
         self.assert_updated(portraitbox, 'portraitbox')
 
     def test_infobox_metadata_should_be_updated(self):
         from zeit.content.infobox.infobox import Infobox
+
         self.assert_updated(Infobox(), 'infobox')
 
     def test_image_metadata_should_be_updated(self):
         from zeit.content.image.image import LocalImage
+
         self.assert_updated(LocalImage(), 'image', reference_field=True)
 
     def test_author_metadata_should_be_updated(self):
         from zeit.content.author.author import Author
+
         self.assert_updated(Author(), 'author', reference_field=True)
 
     def test_volume_metadata_should_be_updated(self):
         from zeit.content.volume.volume import Volume
+
         volume = Volume()
         volume.product = zeit.cms.content.sources.Product('ZEI')
         self.assert_updated(volume, 'volume', reference_field=True)
 
     def test_empty_reference_should_not_break_metadata_update(self):
-        for typ in ['gallery', 'portraitbox', 'infobox',
-                    'image', 'author', 'volume']:
+        for typ in ['gallery', 'portraitbox', 'infobox', 'image', 'author', 'volume']:
             article = self.get_article()
             self.get_factory(article, typ)()
             self.repository['article'] = article
@@ -261,7 +259,6 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
 
 
 class EmptyMarkerTest:
-
     block_type = NotImplemented
 
     def create_block(self):
@@ -301,16 +298,14 @@ class EmptyMarkerTest:
 
     def test_block_is_not_empty_when_created_from_reference(self):
         article = self.get_article()
-        body = zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
         block = zope.component.getMultiAdapter(
-            (body, self.create_target(), 0), zeit.edit.interfaces.IElement)
+            (body, self.create_target(), 0), zeit.edit.interfaces.IElement
+        )
         self.assertFalse(block.is_empty)
 
 
-class ImageEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
-                       EmptyMarkerTest):
-
+class ImageEmptyMarker(zeit.content.article.testing.FunctionalTestCase, EmptyMarkerTest):
     block_type = 'image'
 
     def create_target(self):
@@ -323,34 +318,31 @@ class ImageEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
             block.references = block.references.create(target)
 
 
-class GalleryEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
-                         EmptyMarkerTest):
-
+class GalleryEmptyMarker(zeit.content.article.testing.FunctionalTestCase, EmptyMarkerTest):
     block_type = 'gallery'
 
     def create_target(self):
         from zeit.content.gallery.gallery import Gallery
+
         self.repository['gallery'] = Gallery()
         return self.repository['gallery']
 
 
-class PortraitboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
-                             EmptyMarkerTest):
-
+class PortraitboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase, EmptyMarkerTest):
     block_type = 'portraitbox'
 
     def create_target(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
+
         self.repository['portraitbox'] = Portraitbox()
         return self.repository['portraitbox']
 
 
-class InfoboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
-                         EmptyMarkerTest):
-
+class InfoboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase, EmptyMarkerTest):
     block_type = 'infobox'
 
     def create_target(self):
         from zeit.content.infobox.infobox import Infobox
+
         self.repository['infobox'] = Infobox()
         return self.repository['infobox']

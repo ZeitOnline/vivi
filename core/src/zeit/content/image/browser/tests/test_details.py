@@ -5,10 +5,8 @@ import zeit.content.image.testing
 
 
 class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
-
     def test_clicking_button_shows_details_pane(self):
-        image = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with zeit.cms.checkout.helper.checked_out(image) as co:
             meta = zeit.content.image.interfaces.IImageMetadata(co)
             meta.caption = 'foo'
@@ -22,18 +20,15 @@ class ImageDetails(zeit.content.image.testing.SeleniumTestCase):
 
 
 class ImageDetailsErrorHandling(zeit.content.image.testing.BrowserTestCase):
-
     def test_no_image_exists_still_renders(self):
         self.repository['group'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
         b.handleErrors = False
-        b.open('http://localhost/++skin++vivi/repository'
-               '/group/@@object-details-body')
+        b.open('http://localhost/++skin++vivi/repository' '/group/@@object-details-body')
         self.assertEllipsis('...edit-button...', b.contents)
 
     def test_metadata_view(self):
         self.repository['group'] = zeit.content.image.imagegroup.ImageGroup()
         b = self.browser
         b.handleErrors = False
-        b.open('http://localhost/++skin++vivi/repository'
-               '/group/@@metadata.html')
+        b.open('http://localhost/++skin++vivi/repository' '/group/@@metadata.html')

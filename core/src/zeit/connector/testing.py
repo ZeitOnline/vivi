@@ -26,10 +26,9 @@ class DockerSetupError(requests.exceptions.ConnectionError):
 
 
 class DAVServerLayer(plone.testing.Layer):
-
     container_image = (
-        'europe-west3-docker.pkg.dev/zeitonline-engineering/docker-zon/'
-        'dav-server:1.1.1')
+        'europe-west3-docker.pkg.dev/zeitonline-engineering/docker-zon/' 'dav-server:1.1.1'
+    )
 
     def setUp(self):
         dav = get_random_port()
@@ -37,17 +36,17 @@ class DAVServerLayer(plone.testing.Layer):
         self['docker'] = docker.from_env()
         try:
             self['dav_container'] = self['docker'].containers.run(
-                self.container_image, detach=True, remove=True,
-                ports={9000: dav, 9999: query})
+                self.container_image, detach=True, remove=True, ports={9000: dav, 9999: query}
+            )
         except requests.exceptions.ConnectionError:
-            raise DockerSetupError(
-                "Couldn't start docker container, is docker running?")
+            raise DockerSetupError("Couldn't start docker container, is docker running?")
         self['dav_url'] = 'http://localhost:%s/cms/' % dav
         self['query_url'] = 'http://localhost:%s' % query
         self.wait_for_http(self['dav_url'])
         # We can get away without self.wait_for_http(self['query_url'])
         zope.component.provideUtility(
-            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer)
+            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer
+        )
         TBC = zeit.connector.connector.TransactionBoundCachingConnector
         self['connector'] = TBC({'default': self['dav_url']})
         mkdir(self['connector'], 'http://xml.zeit.de/testing')
@@ -81,16 +80,14 @@ class DAVServerLayer(plone.testing.Layer):
     def testTearDown(self):
         transaction.abort()
         connector = self['connector']
-        for _name, uid in connector.listCollection(
-                'http://xml.zeit.de/testing'):
+        for _name, uid in connector.listCollection('http://xml.zeit.de/testing'):
             try:
                 connector.unlock(uid)
                 del connector[uid]
             except Exception:
                 pass
 
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         connector.disconnect()
 
 
@@ -106,7 +103,6 @@ def get_random_port():
 
 
 class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
-
     defaultBases = (DAV_SERVER_LAYER,)
 
     def setUp(self):
@@ -120,30 +116,28 @@ class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
 DAV_CONFIG_LAYER = ConfigLayer({})
 
 ZOPE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER))
+    features=['zeit.connector'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
+)
 ZOPE_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_ZCML_LAYER,))
 
 REAL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.nocache'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER))
+    features=['zeit.connector.nocache'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
+)
 REAL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(REAL_ZCML_LAYER,))
 
 
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.filesystem'],
-    bases=(zeit.cms.testing.CONFIG_LAYER,))
-FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(
-    bases=(FILESYSTEM_ZCML_LAYER,))
+    features=['zeit.connector.filesystem'], bases=(zeit.cms.testing.CONFIG_LAYER,)
+)
+FILESYSTEM_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(FILESYSTEM_ZCML_LAYER,))
 
 MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.mock'],
-    bases=(zeit.cms.testing.CONFIG_LAYER,))
+    features=['zeit.connector.mock'], bases=(zeit.cms.testing.CONFIG_LAYER,)
+)
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
 class SQLLayer(plone.testing.Layer):
-
     container_image = 'postgres:14'
 
     def setUp(self):
@@ -151,12 +145,14 @@ class SQLLayer(plone.testing.Layer):
         port = get_random_port()
         try:
             self['psql_container'] = self['docker'].containers.run(
-                self.container_image, detach=True, remove=True,
+                self.container_image,
+                detach=True,
+                remove=True,
                 environment={'POSTGRES_PASSWORD': 'postgres'},
-                ports={5432: port})
+                ports={5432: port},
+            )
         except requests.exceptions.ConnectionError:
-            raise DockerSetupError(
-                "Couldn't start docker container, is docker running?")
+            raise DockerSetupError("Couldn't start docker container, is docker running?")
 
         self['dsn'] = f'postgresql://postgres:postgres@localhost:{port}'
         self.wait_for_startup(self['dsn'])
@@ -188,16 +184,16 @@ SQL_LAYER = SQLLayer()
 
 
 class GCSLayer(plone.testing.Layer):
-
     bucket = 'vivi-test'
 
     def setUp(self):
         self['gcp_server'] = create_gcp_server(
-            'localhost', 0, in_memory=True, default_bucket=self.bucket)
+            'localhost', 0, in_memory=True, default_bucket=self.bucket
+        )
         self['gcp_server'].start()
         _, port = self['gcp_server']._api._httpd.socket.getsockname()
         # Evaluated automatically by google.cloud.storage.Client
-        os.environ["STORAGE_EMULATOR_HOST"] = 'http://localhost:%s' % port
+        os.environ['STORAGE_EMULATOR_HOST'] = 'http://localhost:%s' % port
 
     def tearDown(self):
         self['gcp_server'].stop()
@@ -208,14 +204,17 @@ GCS_LAYER = GCSLayer()
 
 
 class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
-
-    defaultBases = (SQL_LAYER, GCS_LAYER,)
+    defaultBases = (
+        SQL_LAYER,
+        GCS_LAYER,
+    )
 
     def setUp(self):
         self.config = {
             'dsn': self['dsn'],
             'storage-project': 'ignored_by_emulator',
-            'storage-bucket': GCS_LAYER.bucket}
+            'storage-bucket': GCS_LAYER.bucket,
+        }
         os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()
 
@@ -224,10 +223,8 @@ SQL_CONFIG_LAYER = SQLConfigLayer({})
 
 
 class SQLDatabaseLayer(plone.testing.Layer):
-
     def setUp(self):
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         engine = connector.engine
         try:
             self['sql_connection'] = engine.connect()
@@ -253,8 +250,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
         zeit.connector.postgresql.METADATA.create_all(c)
         t.commit()
 
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         mkdir(connector, 'http://xml.zeit.de/testing')
         transaction.commit()
 
@@ -274,13 +270,11 @@ class SQLDatabaseLayer(plone.testing.Layer):
         # Begin a non-orm transaction which we roll back in testTearDown().
         self['sql_transaction'] = connection.begin()
 
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         # Begin savepoint, so we can use transaction.abort() during tests.
         self['sql_nested'] = connection.begin_nested()
         self['sql_session'] = connector.session()
-        sqlalchemy.event.listen(
-            self['sql_session'], 'after_transaction_end', self.end_savepoint)
+        sqlalchemy.event.listen(self['sql_session'], 'after_transaction_end', self.end_savepoint)
 
     def end_savepoint(self, session, transaction):
         if not self['sql_nested'].is_active:
@@ -289,10 +283,8 @@ class SQLDatabaseLayer(plone.testing.Layer):
     def testTearDown(self):
         transaction.abort()
 
-        sqlalchemy.event.remove(
-            self['sql_session'], 'after_transaction_end', self.end_savepoint)
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        sqlalchemy.event.remove(self['sql_session'], 'after_transaction_end', self.end_savepoint)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         connector.session.remove()
         del self['sql_session']
 
@@ -305,49 +297,40 @@ SQL_DB_LAYER = SQLDatabaseLayer()
 
 
 SQL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    features=['zeit.connector.sql'],
-    bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER))
-SQL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(
-    bases=(SQL_ZCML_LAYER, SQL_DB_LAYER))
+    features=['zeit.connector.sql'], bases=(zeit.cms.testing.CONFIG_LAYER, SQL_CONFIG_LAYER)
+)
+SQL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(SQL_ZCML_LAYER, SQL_DB_LAYER))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
-
     @property
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    def get_resource(self, name, body=b'', properties=None,
-                     contentType='text/plain'):
+    def get_resource(self, name, body=b'', properties=None, contentType='text/plain'):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
         rid = 'http://xml.zeit.de/testing/%s' % name
         return zeit.connector.resource.Resource(
-            rid, name, 'testing',
-            BytesIO(body),
-            properties=properties,
-            contentType=contentType)
+            rid, name, 'testing', BytesIO(body), properties=properties, contentType=contentType
+        )
 
 
 @pytest.mark.slow()
 class ConnectorTest(TestCase):
-
     layer = REAL_CONNECTOR_LAYER
     level = 2
 
 
 class FilesystemConnectorTest(TestCase):
-
     layer = FILESYSTEM_CONNECTOR_LAYER
 
 
 class MockTest(TestCase):
-
     layer = MOCK_CONNECTOR_LAYER
 
 
 class SQLTest(TestCase):
-
     layer = SQL_CONNECTOR_LAYER
 
 
@@ -387,8 +370,8 @@ def mkdir(connector, id):
     # would fall back to `collection`. (Even though the latter value is what we
     # use "in reality" in zeit.cms.repository.folder.)
     res = zeit.connector.resource.Resource(
-        id, None, 'folder', BytesIO(b''),
-        contentType='httpd/unix-directory')
+        id, None, 'folder', BytesIO(b''), contentType='httpd/unix-directory'
+    )
     connector.add(res)
     transaction.commit()
 
@@ -402,8 +385,8 @@ def create_folder_structure(connector):
     def add_file(id):
         id = 'http://xml.zeit.de/testing/%s' % id
         res = zeit.connector.resource.Resource(
-            id, None, 'text', BytesIO(b'Pop.'),
-            contentType='text/plain')
+            id, None, 'text', BytesIO(b'Pop.'), contentType='text/plain'
+        )
         connector.add(res)
 
     add_folder('testroot')
@@ -436,9 +419,9 @@ def create_folder_structure(connector):
         'http://xml.zeit.de/testing/testroot/b/b/foo text',
         'http://xml.zeit.de/testing/testroot/f text',
         'http://xml.zeit.de/testing/testroot/g text',
-        'http://xml.zeit.de/testing/testroot/h text']
-    assert expected_structure == list_tree(
-        connector, 'http://xml.zeit.de/testing/testroot')
+        'http://xml.zeit.de/testing/testroot/h text',
+    ]
+    assert expected_structure == list_tree(connector, 'http://xml.zeit.de/testing/testroot')
 
 
 def copy_inherited_functions(base, locals):
@@ -449,9 +432,11 @@ def copy_inherited_functions(base, locals):
     object, which would be completely wrong.
 
     """
+
     def make_delegate(name):
         def delegate(self):
             return getattr(super(type(self), self), name)()
+
         return delegate
 
     for name in dir(base):

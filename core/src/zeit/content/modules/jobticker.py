@@ -8,7 +8,6 @@ import zope.interface
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IJobTicker)
 class JobTicker(zeit.edit.block.Element):
-
     source = NotImplemented
 
     @property
@@ -27,7 +26,6 @@ class JobTicker(zeit.edit.block.Element):
 
 
 class Feed(zeit.cms.content.sources.AllowedBase):
-
     def __init__(self, id, title, available, teaser, landing_url, feed_url):
         super().__init__(id, title, available)
         self.id = id
@@ -36,9 +34,7 @@ class Feed(zeit.cms.content.sources.AllowedBase):
         self.feed_url = feed_url
 
 
-class FeedSource(zeit.cms.content.sources.ObjectSource,
-                 zeit.cms.content.sources.XMLSource):
-
+class FeedSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.modules'
     config_url = 'jobticker-source'
     default_filename = 'jobboxticker.xml'
@@ -55,11 +51,11 @@ class FeedSource(zeit.cms.content.sources.ObjectSource,
             feed = Feed(
                 node.get('id'),
                 node.get('title'),
-                zeit.cms.content.sources.unicode_or_none(node.get(
-                    'available')),
+                zeit.cms.content.sources.unicode_or_none(node.get('available')),
                 node.get('teaser'),
                 node.get('landing_url'),
-                node.get('feed_url'))
+                node.get('feed_url'),
+            )
             result[feed.id] = feed
         return result
 

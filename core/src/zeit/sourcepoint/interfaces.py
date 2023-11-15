@@ -14,7 +14,8 @@ class IJavaScript(zope.interface.Interface):
     """
 
     latest_version = zope.interface.Attribute(
-        'ICMSContent representing the latest locally stored version')
+        'ICMSContent representing the latest locally stored version'
+    )
 
     def update():
         """Downloads the current version from Sourcepoint.

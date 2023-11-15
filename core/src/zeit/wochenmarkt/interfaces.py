@@ -19,11 +19,9 @@ class IRecipeCategory(zope.interface.Interface):
     IRecipeCategorySource.
     """
 
-    code = zope.schema.TextLine(
-        title='Internal recipe category id')
+    code = zope.schema.TextLine(title='Internal recipe category id')
 
-    name = zope.schema.TextLine(
-        title='User visible name of recipe category')
+    name = zope.schema.TextLine(title='User visible name of recipe category')
 
 
 class IRecipeCategoriesSource(zope.schema.interfaces.IIterableSource):
@@ -69,11 +67,8 @@ class IIngredient(zope.interface.Interface):
     IIngredientSource.
     """
 
-    code = zope.schema.TextLine(
-        title='Internal ingredient id')
+    code = zope.schema.TextLine(title='Internal ingredient id')
 
-    name = zope.schema.TextLine(
-        title='User visible name of ingredient')
+    name = zope.schema.TextLine(title='User visible name of ingredient')
 
-    category = zope.schema.TextLine(
-        title='The kind of category this ingredient belongs to')
+    category = zope.schema.TextLine(title='The kind of category this ingredient belongs to')
