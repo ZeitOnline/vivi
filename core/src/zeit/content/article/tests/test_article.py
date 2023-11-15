@@ -441,15 +441,83 @@ class ArticleAccess(zeit.content.article.testing.FunctionalTestCase):
 
 class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
 
-    def test_article_with_audio_references_is_podcast(self):
-        article = self.repository['article'] = self.get_article()
+    def _create_audio(self):
         audio = zeit.content.audio.audio.Audio()
-        audio.title = 'Test podcast episode'
-        audio.url = 'https://simplecast.example/episode/1'
-        self.repository['audio'] = audio
-        with checked_out(article) as co:
+        audio.title = 'Pawdcast'
+        audio.audio_type = 'podcast'
+        info = zeit.content.audio.interfaces.IPodcastEpisodeInfo(audio)
+        info.summary = 'lorem ipsum'
+        info.notes = 'dolor sit amet'
+        return audio, info
+
+    def _add_audio_to_article(self):
+        self.repository['article'] = self.article
+        with checked_out(self.article) as co:
             audios = zeit.content.audio.interfaces.IAudioReferences
             audios(co).items = (self.repository['audio'],)
             zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
                 co, zope.lifecycleevent.Attributes(audios, 'items')))
-            self.assertEqual('podcast', co.header_layout)
+        self.article = self.repository['article']
+
+    def setUp(self):
+        super().setUp()
+        self.article = self.get_article()
+        self.article.title = ''
+        self.article.body.create_item('image')
+        self.audio, self.info = self._create_audio()
+        self.repository['audio'] = self.audio
+
+    def test_remove_audio_from_article(self):
+        self.repository['article'] = self.article
+        with checked_out(self.article) as co:
+            audios = zeit.content.audio.interfaces.IAudioReferences
+            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+                co, zope.lifecycleevent.Attributes(audios, 'items')))
+        # without items, no changes
+        assert 'podcast' != self.article.header_layout
+
+    def test_podcast_updates_article_information(self):
+        self._add_audio_to_article()
+
+        assert 'podcast' == self.article.header_layout
+        assert self.audio.title == self.article.title
+        assert self.info.summary == self.article.teaserText
+        assert self.info.notes == self.article.body.values()[1].text
+
+    def test_podcast_does_not_replace_existing_title(self):
+        self.article.title = 'Do not replace me'
+        self._add_audio_to_article()
+
+        assert 'podcast' == self.article.header_layout
+        assert self.audio.title != self.article.title
+        assert self.info.summary == self.article.teaserText
+        assert self.info.notes == self.article.body.values()[1].text
+
+    def test_podcast_does_not_replace_existing_teaser_text(self):
+        self.article.teaserText = 'Do not replace me'
+        self._add_audio_to_article()
+
+        assert 'podcast' == self.article.header_layout
+        assert self.audio.title == self.article.title
+        assert self.info.summary != self.article.teaserText
+        assert self.info.notes == self.article.body.values()[1].text
+
+    def test_podcast_does_not_replace_existing_body_text(self):
+        self.article.body.create_item('p')
+        self.article.body.create_item('p').text = 'bar'
+        self._add_audio_to_article()
+
+        assert 'podcast' == self.article.header_layout
+        assert self.audio.title == self.article.title
+        assert self.info.summary == self.article.teaserText
+        assert self.info.notes != self.article.body.values()[1].text
+
+    def test_other_than_podcast_type_does_not_edit_content(self):
+        self.audio.audio_type = 'premium'
+        self.repository['audio'] = self.audio
+        self._add_audio_to_article()
+
+        assert 'podcast' == self.article.header_layout
+        assert self.audio.title != self.article.title
+        assert self.info.summary != self.article.teaserText
+        assert len(self.article.body.values()) == 1, 'Without audio, body should only contain "main image block"'
