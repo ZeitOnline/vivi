@@ -13,11 +13,12 @@ import zope.security.proxy
 
 @zope.interface.implementer(zeit.cms.content.interfaces.ISemanticChange)
 class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     last_semantic_change = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ISemanticChange['last_semantic_change'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'last-semantic-change', writeable=WRITEABLE_ALWAYS)
+        'last-semantic-change',
+        writeable=WRITEABLE_ALWAYS,
+    )
 
     @property
     def has_semantic_change(self):
@@ -37,7 +38,6 @@ hsc_field = zeit.cms.content.interfaces.ISemanticChange['has_semantic_change']
 
 
 class SemanticChangeLocal(SemanticChange):
-
     grok.context(zeit.cms.checkout.interfaces.ILocalContent)
 
     ANNOTATION_KEY = 'zeit.cms.content.semanticchange.has_semantic_change'
@@ -53,12 +53,11 @@ class SemanticChangeLocal(SemanticChange):
         ann[self.ANNOTATION_KEY] = value
 
 
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.IObjectCreatedEvent)
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectCreatedEvent)
 def set_semantic_change_on_create(context, event):
     if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
         return
     lsc = zope.security.proxy.removeSecurityProxy(
-        zeit.cms.content.interfaces.ISemanticChange(context))
+        zeit.cms.content.interfaces.ISemanticChange(context)
+    )
     lsc.last_semantic_change = datetime.datetime.now(pytz.UTC)

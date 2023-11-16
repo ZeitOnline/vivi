@@ -10,7 +10,6 @@ import zope.security.management
 
 
 class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
-
     def setUp(self):
         super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
@@ -55,19 +54,20 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.pause(100)
         self.assertEqual(
             ['(nothing selected)', 'Meinung', 'Nahost', 'US-Wahl'],
-            s.getSelectOptions('id=metadata-a.sub_ressort'))
+            s.getSelectOptions('id=metadata-a.sub_ressort'),
+        )
         s.select('id=metadata-a.ressort', 'Deutschland')
         s.pause(100)
         self.assertEqual(
-            ['(nothing selected)', 'Datenschutz', 'Integration',
-             'Joschka Fisher', 'Meinung'],
-            s.getSelectOptions('id=metadata-a.sub_ressort'))
+            ['(nothing selected)', 'Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung'],
+            s.getSelectOptions('id=metadata-a.sub_ressort'),
+        )
         s.keyPress('id=metadata-a.sub_ressort', Keys.TAB)  # Trigger blur
         s.pause(500)
         self.assertEqual(
-            ['(nothing selected)', 'Datenschutz', 'Integration',
-             'Joschka Fisher', 'Meinung'],
-            s.getSelectOptions('id=metadata-a.sub_ressort'))
+            ['(nothing selected)', 'Datenschutz', 'Integration', 'Joschka Fisher', 'Meinung'],
+            s.getSelectOptions('id=metadata-a.sub_ressort'),
+        )
 
     def test_invalid_input_should_display_error_message(self):
         s = self.selenium
@@ -82,13 +82,11 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         fold = 'css=#edit-form-internallinks .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
-        self.eval('document.querySelector("%s").scrollIntoView()' %
-                  fold.replace('css=', ''))
+        self.eval('document.querySelector("%s").scrollIntoView()' % fold.replace('css=', ''))
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/testcontent"]',
-            'xpath=//*[@id="internallinks.related"]//ul')
-        s.waitForElementPresent(
-            'xpath=//*[@id="internallinks.related"]//li[1]')
+            '//li[@uniqueid="Clip/testcontent"]', 'xpath=//*[@id="internallinks.related"]//ul'
+        )
+        s.waitForElementPresent('xpath=//*[@id="internallinks.related"]//li[1]')
 
     def test_metadata_should_be_foldable_and_unfoldable(self):
         s = self.selenium
@@ -108,9 +106,9 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertElementNotPresent('css=#edit-form-metadata.folded')
 
 
-class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
-                  zeit.cms.tagging.testing.TaggingHelper):
-
+class KeywordTest(
+    zeit.content.article.edit.browser.testing.EditorTestCase, zeit.cms.tagging.testing.TaggingHelper
+):
     @unittest.skip("no d'n'd 'til webdriver")
     def test_sorting_should_trigger_write(self):
         s = self.selenium
@@ -118,17 +116,12 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s.waitForElementPresent('id=metadata-a.keywords')
         s.waitForTextPresent('t1*t2*t3')
-        s.dragAndDropToObject(
-            "xpath=//li[contains(., 't1')]",
-            "xpath=//li[contains(., 't3')]")
+        s.dragAndDropToObject("xpath=//li[contains(., 't1')]", "xpath=//li[contains(., 't3')]")
         s.pause(200)
-        self.assertEqual(
-            ['t2', 't1', 't3'],
-            list(self.tagger().updateOrder.call_args[0][0]))
+        self.assertEqual(['t2', 't1', 't3'], list(self.tagger().updateOrder.call_args[0][0]))
 
 
 class CommentsTest(zeit.content.article.edit.browser.testing.EditorTestCase):
-
     def setUp(self):
         super().setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
@@ -162,13 +155,10 @@ class CommentsTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('metadata-comments.commentsPremoderate')
 
 
-@unittest.skip(
-    'Drag&Drop does not work, the icon is never dropped on the clipboard')
+@unittest.skip('Drag&Drop does not work, the icon is never dropped on the clipboard')
 class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
-
     def test_icon_in_header_is_draggable_to_clipboard(self):
-        principal = (zope.security.management.getInteraction()
-                     .participations[0].principal)
+        principal = zope.security.management.getInteraction().participations[0].principal
         clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
         clipboard.addClip('Clip')
         transaction.commit()
@@ -183,23 +173,19 @@ class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(icon)
         s.dragAndDropToObject(icon, clipboard)
         s.waitForElementPresent(
-            clipboard + '//span[contains(@class, "uniqueId") and '
-            'contains(text(), "Somalia")]')
+            clipboard + '//span[contains(@class, "uniqueId") and ' 'contains(text(), "Somalia")]'
+        )
 
 
-class AuthorLocationTest(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class AuthorLocationTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         shakespeare = zeit.content.author.author.Author()
         shakespeare.firstname = 'William'
         shakespeare.lastname = 'Shakespeare'
         self.repository['shakespeare'] = shakespeare
-        with checked_out(ICMSContent(
-                'http://xml.zeit.de/online/2007/01/Somalia')) as co:
-            co.authorships = [co.authorships.create(
-                self.repository['shakespeare'])]
+        with checked_out(ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')) as co:
+            co.authorships = [co.authorships.create(self.repository['shakespeare'])]
 
     def test_entering_location_via_autocomplete(self):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
@@ -210,8 +196,8 @@ class AuthorLocationTest(
         location_input = 'css=.object-details.type-author .autocomplete-widget'
         s.waitForElementPresent(location_input)
         self.execute(
-            'document.querySelector("%s").scrollIntoView()' %
-            location_input.replace('css=', ''))
+            'document.querySelector("%s").scrollIntoView()' % location_input.replace('css=', '')
+        )
         self.add_by_autocomplete('Paris', location_input)
 
         s.pause(500)  # Workflow area is reloaded on each InlineForm submit.
@@ -222,7 +208,6 @@ class AuthorLocationTest(
 
 
 class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
-
     def test_filename_input_is_wired_up(self):
         self.add_article()
         s = self.selenium

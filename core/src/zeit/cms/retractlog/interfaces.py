@@ -9,13 +9,11 @@ class IRetractLog(zope.container.interfaces.IReadContainer):
 
 
 class URLText(zope.schema.Text):
-
     def _validate(self, value):
         if not value:
             raise zope.schema.interfaces.TooShort()
         super()._validate(value)
-        url_limit = int(
-            RETRACT_LOG_CONFIG.limit)
+        url_limit = int(RETRACT_LOG_CONFIG.limit)
         if value.count('\n') >= url_limit:
             raise zope.schema.interfaces.TooLong()
 
@@ -23,10 +21,8 @@ class URLText(zope.schema.Text):
 class IJob(zope.interface.Interface):
     """A template for xml content types."""
 
-    title = zope.schema.TextLine(title=_("Title"))
-    urls_text = URLText(
-        title=_('URLs'),
-        missing_value='')
+    title = zope.schema.TextLine(title=_('Title'))
+    urls_text = URLText(title=_('URLs'), missing_value='')
     urls = zope.schema.List(value_type=zope.schema.TextLine())
     invalid = zope.schema.List(value_type=zope.schema.TextLine())
     unknown = zope.schema.List(value_type=zope.schema.TextLine())
@@ -36,7 +32,6 @@ class IJob(zope.interface.Interface):
 
 
 class RetractLogConfig(zeit.cms.content.sources.CachedXMLBase):
-
     product_configuration = 'zeit.cms'
     config_url = 'config-retractlog'
     default_filename = 'retractlog.xml'

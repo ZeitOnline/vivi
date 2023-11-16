@@ -17,7 +17,6 @@ import zope.schema.interfaces
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMSContent)
 class Content:
-
     uniqueId = None
     __name__ = None
 
@@ -101,7 +100,6 @@ class Content:
 
 
 class TMSAuthor(Content, zeit.content.author.author.Author):
-
     def _build_xml_image(self):
         image = self._get_teaser_image_xml()
         if image is None:
@@ -125,7 +123,6 @@ def gallery_entry_count(context):
 
 
 class TMSVideo(Content, zeit.content.video.video.Video):
-
     def _build_xml_image(self):
         image = self._get_teaser_image_xml()
         if image is None:
@@ -136,7 +133,6 @@ class TMSVideo(Content, zeit.content.video.video.Video):
 
 @grok.implementer(zeit.cms.content.interfaces.IKPI)
 class KPI(grok.Adapter):
-
     grok.context(zeit.retresco.interfaces.ITMSContent)
     FIELDS = zeit.retresco.interfaces.KPIFieldSource()
 
@@ -150,26 +146,20 @@ class KPI(grok.Adapter):
 @grok.implementer(zeit.retresco.interfaces.ITMSContent)
 def from_tms_representation(context):
     doc_type = context.get('doc_type', 'unknown')
-    tms_typ = zope.component.queryUtility(
-        zeit.retresco.interfaces.ITMSContent, name=doc_type)
+    tms_typ = zope.component.queryUtility(zeit.retresco.interfaces.ITMSContent, name=doc_type)
     if tms_typ is None:
-        typ = zope.component.queryUtility(
-            zeit.cms.interfaces.ITypeDeclaration, name=doc_type)
+        typ = zope.component.queryUtility(zeit.cms.interfaces.ITypeDeclaration, name=doc_type)
         if typ is None:
-            typ = zope.component.queryUtility(
-                zeit.cms.interfaces.ITypeDeclaration, name='unknown')
-        tms_typ = type(
-            'TMS' + typ.factory.__name__, (Content, typ.factory), {})
-        zope.component.provideUtility(
-            tms_typ, zeit.retresco.interfaces.ITMSContent, name=doc_type)
+            typ = zope.component.queryUtility(zeit.cms.interfaces.ITypeDeclaration, name='unknown')
+        tms_typ = type('TMS' + typ.factory.__name__, (Content, typ.factory), {})
+        zope.component.provideUtility(tms_typ, zeit.retresco.interfaces.ITMSContent, name=doc_type)
     content = tms_typ(context)
     # XXX This event is not really applicable, since the whole point is that we
     # have no DAV resource here. However, it currently has only one handler,
     # `zeit.cms.type.restore_provided_interfaces_from_dav`, which only wants
     # the properties, which we do have. So we keep that protocol for now by
     # faking the expected API.
-    zope.event.notify(AfterObjectConstructedEvent(
-        content, FakeDAVResource(content, doc_type)))
+    zope.event.notify(AfterObjectConstructedEvent(content, FakeDAVResource(content, doc_type)))
     return content
 
 
@@ -177,22 +167,24 @@ def from_tms_representation(context):
 # not actually a semantically useful gesture and b) this only fakes enough to
 # make properties work.
 class FakeDAVResource(zeit.connector.resource.Resource):
-
     def __init__(self, content, type):
-        super().__init__(content.uniqueId, content.__name__, type, 'fake data',
-                         zeit.connector.interfaces.IWebDAVProperties(content))
+        super().__init__(
+            content.uniqueId,
+            content.__name__,
+            type,
+            'fake data',
+            zeit.connector.interfaces.IWebDAVProperties(content),
+        )
 
 
 @grok.implementer(zeit.retresco.interfaces.IElasticDAVProperties)
 class WebDAVProperties(grok.Adapter, collections.abc.MutableMapping):
-
     grok.context(zeit.retresco.interfaces.ITMSContent)
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
 
     def __getitem__(self, key):
         name, namespace = key
-        namespace = namespace.replace(
-            zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
+        namespace = namespace.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1)
         name = quote_es_field_name(name)
         namespace = quote_es_field_name(namespace)
         return self.context._tms_payload[namespace][name]
@@ -201,8 +193,7 @@ class WebDAVProperties(grok.Adapter, collections.abc.MutableMapping):
         for ns, values in self.context._tms_payload.items():
             namespace = zeit.retresco.interfaces.DAV_NAMESPACE_BASE + ns
             for name in values:
-                yield (unquote_es_field_name(name),
-                       unquote_es_field_name(namespace))
+                yield (unquote_es_field_name(name), unquote_es_field_name(namespace))
 
     def __iter__(self):
         return iter(self.keys())
@@ -211,10 +202,10 @@ class WebDAVProperties(grok.Adapter, collections.abc.MutableMapping):
         return len(self.keys())
 
     def __delitem__(self, key):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
     def __setitem__(self, key, value):
-        raise RuntimeError("Cannot write on ReadOnlyWebDAVProperties")
+        raise RuntimeError('Cannot write on ReadOnlyWebDAVProperties')
 
 
 def quote_es_field_name(name):
@@ -227,8 +218,7 @@ def unquote_es_field_name(name):
 
 
 def davproperty_to_es(ns, name):
-    ns = quote_es_field_name(
-        ns.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1))
+    ns = quote_es_field_name(ns.replace(zeit.retresco.interfaces.DAV_NAMESPACE_BASE, '', 1))
     name = quote_es_field_name(name)
     return ns, name
 
@@ -253,26 +243,26 @@ class JSONType(grok.MultiAdapter):
 
 
 class Bool(JSONType):
-
     grok.adapts(
         zope.schema.Bool,  # IFromUnicode is parallel to IBool
-        zeit.retresco.interfaces.IElasticDAVProperties)
+        zeit.retresco.interfaces.IElasticDAVProperties,
+    )
 
 
 class Int(JSONType):
-
     grok.adapts(
         zope.schema.Int,  # IFromUnicode is parallel to IInt
-        zeit.retresco.interfaces.IElasticDAVProperties)
+        zeit.retresco.interfaces.IElasticDAVProperties,
+    )
 
 
 @grok.implementer(zeit.cms.content.interfaces.IDAVPropertyConverter)
 class CollectionTextLine(grok.MultiAdapter):
-
     grok.adapts(
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.ITextLine,
-        zeit.retresco.interfaces.IElasticDAVProperties)
+        zeit.retresco.interfaces.IElasticDAVProperties,
+    )
 
     # Taken from zeit.cms.content.dav.CollectionTextLineProperty
     def __init__(self, context, value_type, content):
@@ -286,28 +276,28 @@ class CollectionTextLine(grok.MultiAdapter):
 
     def fromProperty(self, value):
         typ = zope.component.getMultiAdapter(
-            (self.value_type, self.content),
-            zeit.cms.content.interfaces.IDAVPropertyConverter)
+            (self.value_type, self.content), zeit.cms.content.interfaces.IDAVPropertyConverter
+        )
         return self._type([typ.fromProperty(x) for x in value])
 
     def toProperty(self, value):
         typ = zope.component.getMultiAdapter(
-            (self.value_type, self.content),
-            zeit.cms.content.interfaces.IDAVPropertyConverter)
+            (self.value_type, self.content), zeit.cms.content.interfaces.IDAVPropertyConverter
+        )
         return [typ.toProperty(x) for x in value]
 
 
 class CollectionChoice(CollectionTextLine):
-
     grok.adapts(
         zope.schema.interfaces.ICollection,
         zope.schema.interfaces.IChoice,
-        zeit.retresco.interfaces.IElasticDAVProperties)
+        zeit.retresco.interfaces.IElasticDAVProperties,
+    )
 
 
 class CollectionChannels(CollectionTextLine):
-
     grok.adapts(
         zope.schema.interfaces.ICollection,
         zeit.cms.content.interfaces.IChannelField,
-        zeit.retresco.interfaces.IElasticDAVProperties)
+        zeit.retresco.interfaces.IElasticDAVProperties,
+    )

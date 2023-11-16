@@ -6,7 +6,6 @@ import zeit.content.text.testing
 
 
 class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
-
     def create(self, text):
         result = zeit.content.text.jinja.JinjaTemplate()
         result.uniqueId = 'http://xml.zeit.de/template'
@@ -30,15 +29,18 @@ class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
         except IndexError:
             self.assertEllipsis(
                 '...File "<template>", line ... in top-level template code...',
-                ''.join(traceback.format_exception(*sys.exc_info())))
+                ''.join(traceback.format_exception(*sys.exc_info())),
+            )
         else:
             self.fail('did not raise')
 
     def test_escapes_variables_for_json(self):
-        tpl = self.create("""{
+        tpl = self.create(
+            """{
             "title": "{{foo}}",
             "undefined": "{{nonexistent}}"
-        }""")
+        }"""
+        )
         result = tpl({'foo': 'with "quotes"'}, output_format='json')
         result = json.loads(result)
         self.assertEqual({'title': 'with "quotes"', 'undefined': ''}, result)

@@ -8,12 +8,12 @@ import zeit.content.cp.interfaces
 
 @grok.implementer(zeit.content.cp.interfaces.IMarkupBlock)
 class MarkupBlock(zeit.content.cp.blocks.block.Block):
-
     type = 'markup'
 
     text = zeit.cms.content.property.Structure('.text')
     alignment = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'align', zeit.content.cp.interfaces.IMarkupBlock['alignment'])
+        '.', 'align', zeit.content.cp.interfaces.IMarkupBlock['alignment']
+    )
 
     @property
     def markdown(self):
@@ -21,6 +21,5 @@ class MarkupBlock(zeit.content.cp.blocks.block.Block):
 
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):
-
     produces = MarkupBlock
     title = _('Markup block')

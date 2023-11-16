@@ -12,31 +12,29 @@ class IZARSection(zeit.cms.section.interfaces.ISection):
     pass
 
 
-class IZARContent(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.section.interfaces.ISectionMarker):
+class IZARContent(zeit.cms.interfaces.ICMSContent, zeit.cms.section.interfaces.ISectionMarker):
     pass
 
 
 class IZARFolder(
-        zeit.cms.repository.interfaces.IFolder,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.cms.repository.interfaces.IFolder, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZARArticle(
-        zeit.content.article.interfaces.IArticle,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.article.interfaces.IArticle, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZARCenterPage(
-        zeit.content.cp.interfaces.ICenterPage,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.cp.interfaces.ICenterPage, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZARInfobox(
-        zeit.content.infobox.interfaces.IInfobox,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.infobox.interfaces.IInfobox, zeit.cms.section.interfaces.ISectionMarker
+):
     pass

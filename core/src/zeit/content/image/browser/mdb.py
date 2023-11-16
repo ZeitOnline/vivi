@@ -5,9 +5,7 @@ import zope.formlib.widget
 
 
 class MDBImportWidget(zope.formlib.widget.SimpleInputWidget):
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'mdb-widget.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('mdb-widget.pt')
 
     def __call__(self):
         return self.template()
@@ -15,8 +13,7 @@ class MDBImportWidget(zope.formlib.widget.SimpleInputWidget):
     def _toFieldValue(self, input):
         if input == self._missing:
             return self.context.missing_value
-        return zope.component.getUtility(
-            zeit.content.image.interfaces.IMDB).get_body(input)
+        return zope.component.getUtility(zeit.content.image.interfaces.IMDB).get_body(input)
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:
@@ -33,7 +30,6 @@ class MDBImportWidget(zope.formlib.widget.SimpleInputWidget):
 
 
 class MDBProxy:
-
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
         if 'id' not in self.request.form:

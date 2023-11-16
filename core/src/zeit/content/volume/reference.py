@@ -19,16 +19,13 @@ def XMLRelatedReference(context):
 
 @grok.implementer(zeit.content.volume.interfaces.IVolumeReference)
 class RelatedReference(zeit.cms.content.reference.Reference):
-
-    grok.adapts(
-        zeit.content.article.edit.interfaces.IVolume,
-        gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.article.edit.interfaces.IVolume, gocept.lxml.interfaces.IObjectified)
     grok.provides(zeit.cms.content.interfaces.IReference)
     grok.name('related')
 
     _teaserText_local = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'teasertext_local',
-        zeit.content.volume.interfaces.IVolumeReference['teaserText'])
+        '.', 'teasertext_local', zeit.content.volume.interfaces.IVolumeReference['teaserText']
+    )
     teaserText = zeit.cms.content.reference.OverridableProperty(
-        zeit.content.volume.interfaces.IVolume['teaserText'],
-        original='target')
+        zeit.content.volume.interfaces.IVolume['teaserText'], original='target'
+    )

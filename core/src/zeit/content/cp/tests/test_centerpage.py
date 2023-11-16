@@ -16,12 +16,12 @@ import zope.copypastemove.interfaces
 
 
 class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def create_teaser(self, cp):
         import zeit.edit.interfaces
+
         factory = zope.component.getAdapter(
-            cp['lead'], zeit.edit.interfaces.IElementFactory,
-            name='teaser')
+            cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
+        )
         return factory()
 
     def assertXML(self, expected, actual):
@@ -46,12 +46,12 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
 
 
 class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def create_teaser(self, cp):
         import zeit.edit.interfaces
+
         factory = zope.component.getAdapter(
-            cp['lead'], zeit.edit.interfaces.IElementFactory,
-            name='teaser')
+            cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
+        )
         return factory()
 
     def test_moving_referenced_article_updates_uniqueId_on_cp_checkin(self):
@@ -60,49 +60,45 @@ class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.create_teaser(cp)
         t1.insert(0, self.repository['testcontent'])
 
-        zope.copypastemove.interfaces.IObjectMover(
-            self.repository['testcontent']).moveTo(
-            self.repository, 'changed')
+        zope.copypastemove.interfaces.IObjectMover(self.repository['testcontent']).moveTo(
+            self.repository, 'changed'
+        )
         self.repository['cp'] = cp
         with checked_out(self.repository['cp']):
             pass
         self.assertIn(
-            'http://xml.zeit.de/changed',
-            zeit.cms.testing.xmltotext(self.repository['cp'].xml))
+            'http://xml.zeit.de/changed', zeit.cms.testing.xmltotext(self.repository['cp'].xml)
+        )
 
 
 class TestContentIter(unittest.TestCase):
-
     def test_unresolveable_blocks_should_not_be_adapted(self):
         from zeit.content.cp.centerpage import cms_content_iter
+
         centerpage = mock.Mock()
         centerpage.values = mock.Mock(
-            return_value=[mock.sentinel.block1,
-                          None,
-                          mock.sentinel.block2])
-        with mock.patch('zeit.edit.interfaces.IElementReferences') as \
-                ci:
+            return_value=[mock.sentinel.block1, None, mock.sentinel.block2]
+        )
+        with mock.patch('zeit.edit.interfaces.IElementReferences') as ci:
             cms_content_iter(centerpage)
             self.assertEqual(2, ci.call_count)
             self.assertEqual(
-                [((mock.sentinel.block1, ), {}),
-                 ((mock.sentinel.block2, ), {})],
-                ci.call_args_list)
+                [((mock.sentinel.block1,), {}), ((mock.sentinel.block2,), {})], ci.call_args_list
+            )
 
 
 class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def test_regression_bug_217_copying_actually_copies(self):
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        copier = zope.copypastemove.interfaces.IObjectCopier(
-            self.repository['cp'])
+        copier = zope.copypastemove.interfaces.IObjectCopier(self.repository['cp'])
         copier.copyTo(self.repository['online'])
         with self.assertNothingRaised():
             self.repository['cp']
 
     def test_handles_unicode_uniqueIds(self):
-        content = self.repository['ümläut'] = (
-            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
+        content = self.repository[
+            'ümläut'
+        ] = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         cp = zeit.content.cp.centerpage.CenterPage()
         cp['lead'].create_item('teaser').append(content)
         with self.assertNothingRaised():
@@ -112,19 +108,20 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
         cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.assertEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HIGH,
-            zeit.cms.workflow.interfaces.IPublishPriority(cp))
+            zeit.cms.workflow.interfaces.IPublishPriority(cp),
+        )
         cp.type = 'homepage'
         self.assertEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
-            zeit.cms.workflow.interfaces.IPublishPriority(cp))
+            zeit.cms.workflow.interfaces.IPublishPriority(cp),
+        )
 
 
 class SeriesAvailableTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def test_series_available(self):
         cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         cp_series = zeit.cms.content.sources.SerieSource()(cp)
         names = [x.serienname for x in cp_series]
         # See zeit.cms.content.serie.xml
-        assert "Podcast" in names
-        assert "Notcast" not in names
+        assert 'Podcast' in names
+        assert 'Notcast' not in names

@@ -4,10 +4,9 @@ import zope.schema.interfaces
 
 
 class DynamicCombination(zc.form.field.Combination):
-
     def __init__(self, type_field, type_interface, *fields, **kw):
         self.type_field = type_field
-        self.type_field.__name__ = "combination_00"
+        self.type_field.__name__ = 'combination_00'
         self.fields = (type_field,) + fields
         self.type_interface = type_interface
         super(zc.form.field.Combination, self).__init__(**kw)
@@ -23,7 +22,7 @@ class DynamicCombination(zc.form.field.Combination):
             result.append(field)
         result = [x.bind(self.context) for x in result]
         for ix, field in enumerate(result):
-            field.__name__ = "combination_%02d" % (ix + 1)
+            field.__name__ = 'combination_%02d' % (ix + 1)
         return result
 
     def _validate(self, value):

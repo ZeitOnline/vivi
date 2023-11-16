@@ -2,7 +2,6 @@ import zeit.content.markup.testing
 
 
 class MarkupTest(zeit.content.markup.testing.BrowserTestCase):
-
     def test_add_markup(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/online/2007/01/')

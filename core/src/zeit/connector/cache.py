@@ -48,6 +48,7 @@ class StringRef(persistent.Persistent):
 
 class SlottedStringRef(StringRef):
     """A variant of StringRef using slots for less memory consumption."""
+
     # Legacy
 
     __slots__ = ('_str',)
@@ -57,7 +58,6 @@ INVALID_ETAG = object()
 
 
 class Body(persistent.Persistent):
-
     __slots__ = ('data', 'etag')
 
     def __init__(self):
@@ -65,8 +65,7 @@ class Body(persistent.Persistent):
 
     @property
     def BUFFER_SIZE(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.connector') or {}
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
         return int(config.get('body-cache-blob-threshold', 10 * 1024))
 
     def open(self, mode='r'):
@@ -78,8 +77,7 @@ class Body(persistent.Persistent):
                 # In the rather rare case that the blob was created in this
                 # transaction, we have to copy the data to a temporary file.
                 data = self.data.open('r')
-                tmp = tempfile.NamedTemporaryFile(
-                    prefix='zeit.connector.cache.')
+                tmp = tempfile.NamedTemporaryFile(prefix='zeit.connector.cache.')
                 s = data.read(self.BUFFER_SIZE)
                 while s:
                     tmp.write(s)
@@ -94,8 +92,7 @@ class Body(persistent.Persistent):
         elif isinstance(self.data, bytes):
             data_file = BytesIO(self.data)
         else:
-            raise RuntimeError('self.data is of unsupported type %s' %
-                               type(self.data))
+            raise RuntimeError('self.data is of unsupported type %s' % type(self.data))
         return data_file
 
     def update(self, data, etag):
@@ -132,7 +129,6 @@ class Body(persistent.Persistent):
 
 
 class AccessTimes:
-
     UPDATE_INTERVAL = NotImplemented
 
     def __init__(self):
@@ -151,8 +147,7 @@ class AccessTimes:
         try:
             new_set = self._access_time_to_ids[new_access_time]
         except KeyError:
-            new_set = self._access_time_to_ids[new_access_time] = (
-                BTrees.family32.OI.TreeSet())
+            new_set = self._access_time_to_ids[new_access_time] = BTrees.family32.OI.TreeSet()
 
         if old_set != new_set:
             if old_set is not None:
@@ -169,8 +164,7 @@ class AccessTimes:
         timeout = self._get_time_key(time.time() - cache_timeout)
         while True:
             try:
-                access_time = next(iter(self._access_time_to_ids.keys(
-                    min=start, max=timeout)))
+                access_time = next(iter(self._access_time_to_ids.keys(min=start, max=timeout)))
                 id_set = []
                 # For reasons unknown we sometimes get "the bucket being
                 # iterated changed size" here, which according to
@@ -239,7 +233,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         value = self._data.get(key)
         if value is not None and not isinstance(value, Body):
             if isinstance(value, str):
-                log.warning("Loaded str for %s" % unique_id)
+                log.warning('Loaded str for %s' % unique_id)
                 raise KeyError(unique_id)
             # Legacy, meke a temporary body
             old_etags = getattr(self, '_etags', None)
@@ -266,8 +260,7 @@ class ResourceCache(AccessTimes, persistent.Persistent):
             f = BytesIO(data.read())
             return f
 
-        log.debug('Storing body of %s with etag %s' % (
-            unique_id, current_etag))
+        log.debug('Storing body of %s with etag %s' % (unique_id, current_etag))
 
         # Reuse previously stored container
         store = self._data.get(key)
@@ -285,7 +278,6 @@ class ResourceCache(AccessTimes, persistent.Persistent):
 
 @zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
 class PersistentCache(AccessTimes, persistent.Persistent):
-
     CACHE_VALUE_CLASS = None  # Set in subclass
 
     def __init__(self):
@@ -358,7 +350,6 @@ class PersistentCache(AccessTimes, persistent.Persistent):
 
 @total_ordering
 class WebDAVPropertyKey:
-
     __slots__ = ('name',)
     _instances = {}  # class variable
 
@@ -398,26 +389,22 @@ class WebDAVPropertyKey:
 
 try:
     import zope.testing.cleanup
+
     zope.testing.cleanup.addCleanUp(WebDAVPropertyKey._instances.clear)
 except ImportError:
     pass
 
 
 class Properties(persistent.mapping.PersistentMapping):
-
     cached_time = None
 
     # NOTE: By default, conflict resolution is performed by the ZEO *server*!
     def _p_resolveConflict(self, old, commited, newstate):
         if not FEATURE_TOGGLES.find('dav_cache_delete_property_on_conflict'):
-            log.info('Overwriting %s with %s after ConflictError',
-                     commited, newstate)
+            log.info('Overwriting %s with %s after ConflictError', commited, newstate)
             return newstate
 
-        if not (list(old.keys()) ==
-                list(commited.keys()) ==
-                list(newstate.keys()) ==
-                ['data']):
+        if not (list(old.keys()) == list(commited.keys()) == list(newstate.keys()) == ['data']):
             # We can only resolve data.
             raise ZODB.POSException.ConflictError
         commited_data = commited['data']
@@ -434,8 +421,9 @@ class Properties(persistent.mapping.PersistentMapping):
 
     def __setitem__(self, key, value):
         key = zope.security.proxy.removeSecurityProxy(key)
-        if (key is not zeit.connector.interfaces.DeleteProperty and
-                not isinstance(key, WebDAVPropertyKey)):
+        if key is not zeit.connector.interfaces.DeleteProperty and not isinstance(
+            key, WebDAVPropertyKey
+        ):
             key = WebDAVPropertyKey(key)
         super().__setitem__(key, value)
 
@@ -468,7 +456,6 @@ class PropertyCache(PersistentCache):
 
 
 class ChildNames(zc.set.Set):
-
     def _p_resolveConflict(self, old, commited, newstate):
         if commited == newstate:
             return commited
@@ -530,7 +517,6 @@ class AlwaysEmptyDict(collections.abc.MutableMapping):
 # Copy&paste from zeit.cms.content.sources to make it work in a ZEO environment
 # where we have no dogpile setup, no product config, etc.pp.
 class FeatureToggles:
-
     config_url = 'ZEIT_VIVI_FEATURE_TOGGLE_SOURCE'
 
     def find(self, name):
@@ -551,7 +537,7 @@ class FeatureToggles:
         return self._get_tree_from_url(os.environ[self.config_url])
 
     def _get_tree_from_url(self, url):
-        __traceback_info__ = (url, )
+        __traceback_info__ = (url,)
         log.debug('Getting %s' % url)
         response = urllib.request.urlopen(url)
         return gocept.lxml.objectify.fromfile(response)

@@ -13,37 +13,28 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_index_on_checkin(context, event):
     if not FEATURE_TOGGLES.find('reference_index'):
         return
     if getattr(event, 'publishing', False):
         return
-    log.info('BeforeCheckin: Creating async index job for %s',
-             context.uniqueId)
-    relations = zope.component.getUtility(
-        zeit.cms.relation.interfaces.IRelations)
+    log.info('BeforeCheckin: Creating async index job for %s', context.uniqueId)
+    relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
     relations.index(context)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.IObjectAddedEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectAddedEvent)
 def update_index_on_add(context, event):
-    if not zeit.cms.repository.interfaces.ICollection.providedBy(
-            context.__parent__):
+    if not zeit.cms.repository.interfaces.ICollection.providedBy(context.__parent__):
         return
     if not FEATURE_TOGGLES.find('reference_index'):
         return
-    relations = zope.component.getUtility(
-        zeit.cms.relation.interfaces.IRelations)
+    relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
     relations.index(context)
 
 
 class Dummy:
-
     uniqueId = None
 
 
@@ -59,13 +50,13 @@ def update_referencing_objects(uniqueId):
     context = Dummy()
     context.uniqueId = uniqueId
 
-    relations = zope.component.getUtility(
-        zeit.cms.relation.interfaces.IRelations)
+    relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context)
     for related_object in list(relating_objects):
         log.info(
             'Cycling %s to update referenced metadata (caused by %s)',
-            related_object.uniqueId, context.uniqueId)
+            related_object.uniqueId,
+            context.uniqueId,
+        )
         # the actual work is done by IBeforeCheckin-handlers
-        zeit.cms.checkout.helper.with_checked_out(
-            related_object, lambda x: True)
+        zeit.cms.checkout.helper.with_checked_out(related_object, lambda x: True)

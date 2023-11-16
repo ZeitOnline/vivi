@@ -1,8 +1,7 @@
 import zope.cachedescriptors.property
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.dynamicfolder.interfaces import (
-    IMaterializedContent, ICloneArmy)
+from zeit.content.dynamicfolder.interfaces import IMaterializedContent, ICloneArmy
 
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
@@ -21,8 +20,7 @@ class Materialize(zeit.cms.browser.view.Base):
         return super().__call__()
 
     def materialize(self):
-        zeit.content.dynamicfolder.materialize.materialize_content(
-            self.context)
+        zeit.content.dynamicfolder.materialize.materialize_content(self.context)
         next_url = self.url(self.context, '@@view.html')
         return '<span class="nextURL">%s</span>' % next_url
 
@@ -32,14 +30,11 @@ class Materialize(zeit.cms.browser.view.Base):
 
     @zope.cachedescriptors.property.Lazy
     def content_count(self):
-        content = [
-            IMaterializedContent.providedBy(val) for val in
-            self.context.values()]
+        content = [IMaterializedContent.providedBy(val) for val in self.context.values()]
         return str(sum(content))
 
 
 class CloneArmyGuard:
-
     @property
     def visible(self):
         return ICloneArmy(self.context).activate
@@ -51,14 +46,11 @@ class CloneArmyGuard:
             return ''
 
 
-class MaterializeMenuItem(
-        CloneArmyGuard, zeit.cms.browser.menu.LightboxActionMenuItem):
-
+class MaterializeMenuItem(CloneArmyGuard, zeit.cms.browser.menu.LightboxActionMenuItem):
     title = _('Materialize dynamic folder and update content')
 
 
 class PublishMaterializedContent(zeit.cms.browser.view.Base):
-
     def __call__(self):
         zeit.content.dynamicfolder.materialize.publish_content(self.context)
         self.redirect(self.url(self.context, '@@view.html'))
@@ -66,5 +58,4 @@ class PublishMaterializedContent(zeit.cms.browser.view.Base):
 
 
 class PublishMenuItem(CloneArmyGuard, zeit.cms.browser.menu.ActionMenuItem):
-
     title = _('Publish content of dynamic folder')

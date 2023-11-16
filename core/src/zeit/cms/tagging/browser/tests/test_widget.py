@@ -10,67 +10,57 @@ import zeit.cms.testing
 import zope.component
 
 
-class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
-                    zeit.cms.tagging.testing.TaggingHelper):
-
+class DisplayWidget(
+    zeit.cms.testing.ZeitCmsBrowserTestCase, zeit.cms.tagging.testing.TaggingHelper
+):
     def test_renders_keyword_labels(self):
         self.setup_tags('t1', 't2', 't3')
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/testcontent')
-        self.assertEllipsis('...<li>...t1...<li>...t2...',
-                            self.browser.contents)
+        self.browser.open('http://localhost/++skin++vivi/repository/testcontent')
+        self.assertEllipsis('...<li>...t1...<li>...t2...', self.browser.contents)
 
     def test_highlights_keywords_with_topicpage(self):
         tags = self.setup_tags('t1', 't2', 't3')
         self.add_topicpage_link(tags['t1'])
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/testcontent')
-        self.assertEllipsis('...<li>...<a...class="with-topic-page"...t1...',
-                            self.browser.contents)
-        self.assertTrue(1,
-                        self.browser.contents.count("with-topic-page"))
+        self.browser.open('http://localhost/++skin++vivi/repository/testcontent')
+        self.assertEllipsis('...<li>...<a...class="with-topic-page"...t1...', self.browser.contents)
+        self.assertTrue(1, self.browser.contents.count('with-topic-page'))
 
     def test_keyword_links_to_topicpage(self):
         tags = self.setup_tags('t1', 't2', 't3')
         self.add_topicpage_link(tags['t1'])
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/testcontent')
+        self.browser.open('http://localhost/++skin++vivi/repository/testcontent')
         self.assertEllipsis(
-            '...<li>...<a...href="http://localhost/live-prefix/thema/t1"'
-            '...t1...',
-            self.browser.contents)
+            '...<li>...<a...href="http://localhost/live-prefix/thema/t1"' '...t1...',
+            self.browser.contents,
+        )
 
 
-class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
-                  zeit.cms.tagging.testing.TaggingHelper):
-
+class InputWidget(zeit.cms.testing.ZeitCmsBrowserTestCase, zeit.cms.tagging.testing.TaggingHelper):
     def test_serializes_tag_ids_with_unicode_escapes(self):
         self.setup_tags('Bärlin')
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
-        self.assertEllipsis(
-            r'...tag://...B\\xe4rlin...', self.browser.contents)
+        self.browser.open('http://localhost/++skin++vivi/repository/testcontent/@@checkout')
+        self.assertEllipsis(r'...tag://...B\\xe4rlin...', self.browser.contents)
 
 
-class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase,
-                 zeit.cms.tagging.testing.TaggingHelper):
-
+class UpdateTags(zeit.cms.testing.ZeitCmsBrowserTestCase, zeit.cms.tagging.testing.TaggingHelper):
     def test_serializes_tag_ids_with_unicode_escapes(self):
         self.setup_tags('Bärlin')
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/testcontent/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/@@checkout')
         b.open('@@update_tags')
-        self.assertEqual([{
-            'code': 'tag://test\\u2603B\\xe4rlin',
-            'label': 'Bärlin (Test)',
-            'pinned': False,
-        }], json.loads(b.contents)['tags'])
+        self.assertEqual(
+            [
+                {
+                    'code': 'tag://test\\u2603B\\xe4rlin',
+                    'label': 'Bärlin (Test)',
+                    'pinned': False,
+                }
+            ],
+            json.loads(b.contents)['tags'],
+        )
 
 
-class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
-                    zeit.cms.tagging.testing.TaggingHelper):
-
+class InputWidgetUI(zeit.cms.testing.SeleniumTestCase, zeit.cms.tagging.testing.TaggingHelper):
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     window_width = 1600
@@ -81,7 +71,8 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         self.patches = gocept.testing.mock.Patches()
         display = self.patches.add(
             'zeit.cms.tagging.browser.widget.Widget.display_update_button',
-            gocept.testing.mock.Property())
+            gocept.testing.mock.Property(),
+        )
         display.return_value = True
 
     def tearDown(self):
@@ -102,8 +93,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         self.open_content()
         s = self.selenium
         s.assertText('id=form.keywords.list', '*t1*t2*t3*t4*')
-        s.dragAndDropToObject(
-            'jquery=li:contains(t1)', 'jquery=li:contains(t3)')
+        s.dragAndDropToObject('jquery=li:contains(t1)', 'jquery=li:contains(t3)')
         s.assertText('id=form.keywords.list', '*t2*t3*t1*t4*')
         # XXX check that sorting triggers a change event (inlineforms need it)
 
@@ -112,13 +102,10 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.dragAndDropToObject(
-            'jquery=li:contains(t1)', 'jquery=li:contains(t3)')
+        s.dragAndDropToObject('jquery=li:contains(t1)', 'jquery=li:contains(t3)')
         s.assertText('id=form.keywords.list', '*t2*t3*t1*t4*')
         s.clickAndWait('name=form.actions.apply')
-        self.assertEqual(
-            ['t2', 't3', 't1', 't4'],
-            list(self.tagger().updateOrder.call_args[0][0]))
+        self.assertEqual(['t2', 't3', 't1', 't4'], list(self.tagger().updateOrder.call_args[0][0]))
 
     def test_unchecked_tags_should_be_disabled(self):
         self.setup_tags('t1', 't2', 't3', 't4')
@@ -145,8 +132,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         self.assertTrue(self.tagger().update.called)
 
     def test_update_should_trigger_highlight_tags_call(self):
-        with mock.patch(
-                'zeit.cms.tagging.browser.widget.UpdateTags.json') as mocked:
+        with mock.patch('zeit.cms.tagging.browser.widget.UpdateTags.json') as mocked:
             self.open_content()
             s = self.selenium
             s.click('name=update_tags')
@@ -166,8 +152,7 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
 
     def test_can_add_tags_via_autocomplete_field(self):
         self.setup_tags()
-        whitelist = zope.component.queryUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        whitelist = zope.component.queryUtility(zeit.cms.tagging.interfaces.IWhitelist)
         whitelist.tags.append('Kohle')
         self.open_content()
         s = self.selenium
@@ -190,11 +175,9 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase,
         self.add_topicpage_link(tags['t1'])
         self.open_content()
         sel = self.selenium
-        sel.assertXpathCount(
-            '//li/a[@href="http://localhost/live-prefix/thema/t1"]', 1)
+        sel.assertXpathCount('//li/a[@href="http://localhost/live-prefix/thema/t1"]', 1)
         self.assertEqual(
             'with-topic-page',
-            sel.selenium.find_element_by_link_text('t1 (Test)').get_attribute(
-                'class'))
-        sel.assertXpathCount(
-            '//li/a[@href="http://localhost/live-prefix/thema/t2"]', 0)
+            sel.selenium.find_element_by_link_text('t1 (Test)').get_attribute('class'),
+        )
+        sel.assertXpathCount('//li/a[@href="http://localhost/live-prefix/thema/t2"]', 0)

@@ -2,7 +2,6 @@ import zeit.cms.testing
 
 
 class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_adapting_foreign_objects_should_fail_adaption(self):
         from zeit.cms.workingcopy.interfaces import ILocalContent
         import zeit.cms.interfaces
@@ -23,8 +22,8 @@ class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
     def test_adapting_removed_objects_should_fail_adaption(self):
         from zeit.cms.workingcopy.interfaces import ILocalContent
         import zeit.cms.interfaces
-        content = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/testcontent')
+
+        content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         del content.__parent__[content.__name__]
         try:
             ILocalContent(content)
@@ -35,21 +34,22 @@ class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
 
 
 class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
-
     def get_content(self, name='testcontent'):
         import zeit.cms.interfaces
-        return zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/{0}'.format(name))
+
+        return zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/{0}'.format(name))
 
     def test_content_should_not_be_automatically_renameable_by_default(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
-        self.assertFalse(
-            IAutomaticallyRenameable(self.get_content()).renameable)
+
+        self.assertFalse(IAutomaticallyRenameable(self.get_content()).renameable)
 
     def test_renameable_and_new_name_should_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
+
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
             renameable.renameable = True
@@ -59,8 +59,10 @@ class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_renameable_and_no_new_name_should_not_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
+
         self.assertIn('testcontent', content.__parent__.keys())
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
@@ -70,8 +72,10 @@ class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_not_renameable_and_new_name_should_not_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
+
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
             renameable.renameable = False
@@ -81,8 +85,10 @@ class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_not_renameable_and_no_new_name_should_not_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
+
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
             renameable.renameable = False
@@ -91,8 +97,10 @@ class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_renameable_should_be_none_after_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
+
         with checked_out(content) as co:
             renameable = IAutomaticallyRenameable(co)
             renameable.renameable = True

@@ -2,9 +2,7 @@ import lxml.objectify
 import zeit.content.portraitbox.portraitbox
 
 
-class PortraitboxLongtext(
-        zeit.content.portraitbox.portraitbox.PortraitboxHTMLContent):
-
+class PortraitboxLongtext(zeit.content.portraitbox.portraitbox.PortraitboxHTMLContent):
     path = lxml.objectify.ObjectPath('.block.longtext')
 
     @property

@@ -7,7 +7,6 @@ import zeit.content.text.testing
 
 
 class JSONBrowserTest(zeit.content.text.testing.BrowserTestCase):
-
     def test_add_json(self):
         b = self.browser
         b.open('http://localhost/++skin++cms/repository/2006')
@@ -33,7 +32,6 @@ class JSONBrowserTest(zeit.content.text.testing.BrowserTestCase):
 
 
 class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
-
     def test_validate_against_schema(self):
         self.repository['foo'] = zeit.content.text.json.JSON()
         browser = self.browser
@@ -43,10 +41,8 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
         browser.getControl('Content').value = '"{urn:uuid:d995ba5a}"'
         browser.getControl('Apply').click()
         browser.getLink('Validate').click()
-        browser.getControl('url of schema').value = (
-            zeit.content.text.testing.schema_url)
-        browser.getControl('specific schema to use for validation').value = (
-            'uuid')
+        browser.getControl('url of schema').value = zeit.content.text.testing.schema_url
+        browser.getControl('specific schema to use for validation').value = 'uuid'
         browser.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', browser.contents)
         browser.getLink('Checkin').click()
@@ -60,13 +56,10 @@ class JSONValidationTest(zeit.content.text.testing.BrowserTestCase):
         browser.getControl('Content').value = '"{uuid:d995ba5a}"'
         browser.getControl('Apply').click()
         browser.getLink('Validate').click()
-        browser.getControl('url of schema').value = (
-            zeit.content.text.testing.schema_url)
-        browser.getControl('specific schema to use for validation').value = (
-            'uuid')
+        browser.getControl('url of schema').value = zeit.content.text.testing.schema_url
+        browser.getControl('specific schema to use for validation').value = 'uuid'
         browser.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', browser.contents)
         with self.assertRaises(urllib.error.HTTPError):
             browser.getLink('Checkin').click()
-            self.assertEllipsis(
-                '...Failed validating...', browser.contents)
+            self.assertEllipsis('...Failed validating...', browser.contents)

@@ -28,20 +28,24 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Timebased workflow."""
 
     zeit.cms.content.dav.mapProperty(
-        zeit.workflow.interfaces.ITimeBasedPublishing[
-            'release_period'].fields[0],
-        WORKFLOW_NS, 'released_from', writeable=WRITEABLE_ALWAYS)
+        zeit.workflow.interfaces.ITimeBasedPublishing['release_period'].fields[0],
+        WORKFLOW_NS,
+        'released_from',
+        writeable=WRITEABLE_ALWAYS,
+    )
     zeit.cms.content.dav.mapProperty(
-        zeit.workflow.interfaces.ITimeBasedPublishing[
-            'release_period'].fields[1],
-        WORKFLOW_NS, 'released_to', writeable=WRITEABLE_ALWAYS)
+        zeit.workflow.interfaces.ITimeBasedPublishing['release_period'].fields[1],
+        WORKFLOW_NS,
+        'released_to',
+        writeable=WRITEABLE_ALWAYS,
+    )
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Text(), WORKFLOW_NS, 'publish_job_id',
-        writeable=WRITEABLE_ALWAYS)
+        zope.schema.Text(), WORKFLOW_NS, 'publish_job_id', writeable=WRITEABLE_ALWAYS
+    )
     retract_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Text(), WORKFLOW_NS, 'retract_job_id',
-        writeable=WRITEABLE_ALWAYS)
+        zope.schema.Text(), WORKFLOW_NS, 'retract_job_id', writeable=WRITEABLE_ALWAYS
+    )
 
     def __init__(self, context):
         self.context = self.__parent__ = context
@@ -52,8 +56,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
     @release_period.setter
     def release_period(self, value):
-        """When setting the release period jobs to publish retract are created.
-        """
+        """When setting the release period jobs to publish retract are created."""
         if value is None:
             value = None, None
         released_from, released_to = value
@@ -68,36 +71,39 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
         jobid = lambda: getattr(self, '%s_job_id' % task)  # NOQA
         cancelled = self.cancel_job(jobid())
         if cancelled:
-            self.log(_msg(
-                'timebased-%s-cancel' % task,
-                default='Scheduled %s cancelled (job #${job}).' % task,
-                mapping={'job': jobid()}))
+            self.log(
+                _msg(
+                    'timebased-%s-cancel' % task,
+                    default='Scheduled %s cancelled (job #${job}).' % task,
+                    mapping={'job': jobid()},
+                )
+            )
             setattr(self, '%s_job_id' % task, None)
         if timestamp is not None:
             setattr(
-                self, '%s_job_id' % task, self.add_job(
-                    getattr(zeit.workflow.publish, '%s_TASK' % task.upper()),
-                    timestamp))
-            self.log(_msg(
-                'timebased-%s-add' % task,
-                default='To %s on ${date} (job #${job})' % task,
-                mapping={
-                    'date': self.format_datetime(timestamp), 'job': jobid()}))
+                self,
+                '%s_job_id' % task,
+                self.add_job(getattr(zeit.workflow.publish, '%s_TASK' % task.upper()), timestamp),
+            )
+            self.log(
+                _msg(
+                    'timebased-%s-add' % task,
+                    default='To %s on ${date} (job #${job})' % task,
+                    mapping={'date': self.format_datetime(timestamp), 'job': jobid()},
+                )
+            )
 
     def add_job(self, task, when):
         # Special cases that keep piling up, sigh.
-        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            self.context)
+        renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(self.context)
         if renameable.renameable and renameable.rename_to:
-            parent = zeit.cms.interfaces.ICMSContent(
-                self.context.uniqueId).__parent__
+            parent = zeit.cms.interfaces.ICMSContent(self.context.uniqueId).__parent__
             uniqueId = parent.uniqueId + renameable.rename_to
         else:
             uniqueId = self.context.uniqueId
 
         if when > datetime.datetime.now(pytz.UTC):
-            job_id = task.apply_async(
-                ([uniqueId],), eta=when, queue=PRIORITY_TIMEBASED).id
+            job_id = task.apply_async(([uniqueId],), eta=when, queue=PRIORITY_TIMEBASED).id
         else:
             job_id = task.delay([uniqueId]).id
         return job_id
@@ -107,8 +113,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
         if not job_id:
             return False
-        return celery_longterm_scheduler.get_scheduler(
-            zeit.cms.celery.CELERY).revoke(job_id)
+        return celery_longterm_scheduler.get_scheduler(zeit.cms.celery.CELERY).revoke(job_id)
 
     def log(self, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -150,35 +155,46 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         entry.set('expires', date)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.workflow.interfaces.IPublishedEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
 def schedule_imported_retract_jobs(context, event):
     """Since the print-import (exporter.zeit.de) works only on the DAV-level,
     it can not create vivi jobs. Thus we do that here. (This especially applies
     to imagegroups.)
     """
     workflow = zeit.workflow.interfaces.ITimeBasedPublishing(context, None)
-    if (workflow is None or
-        workflow.retract_job_id or
-        not workflow.released_to or
-            workflow.released_to < datetime.datetime.now(pytz.UTC)):
+    if (
+        workflow is None
+        or workflow.retract_job_id
+        or not workflow.released_to
+        or workflow.released_to < datetime.datetime.now(pytz.UTC)
+    ):
         return
     workflow.setup_job('retract', workflow.released_to)
 
 
-@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
-    'zeit.workflow', 'retract-timebased-principal'))
+@zeit.cms.cli.runner(
+    principal=zeit.cms.cli.from_config('zeit.workflow', 'retract-timebased-principal')
+)
 def retract_overdue_objects():
     import zeit.find.interfaces
     import zeit.retresco.interfaces
 
     tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     es = zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
-    unretracted = es.search({'query': {'bool': {'filter': [
-        {'term': {'payload.workflow.published': True}},
-        {'range': {'payload.workflow.released_to': {'lt': 'now-15m'}}}
-    ]}}, '_source': ['url', 'doc_id']}, rows=1000)
+    unretracted = es.search(
+        {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'term': {'payload.workflow.published': True}},
+                        {'range': {'payload.workflow.released_to': {'lt': 'now-15m'}}},
+                    ]
+                }
+            },
+            '_source': ['url', 'doc_id'],
+        },
+        rows=1000,
+    )
 
     for item in unretracted:
         uniqueId = 'http://xml.zeit.de' + item['url']

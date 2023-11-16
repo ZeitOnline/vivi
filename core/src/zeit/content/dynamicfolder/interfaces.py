@@ -28,13 +28,10 @@ class ICloneArmy(zope.interface.Interface):
     expeted. Activates the materialize and publish functionality
     """
 
-    activate = zope.schema.Bool(
-        title=_('Activate content materialisation'),
-        default=False)
+    activate = zope.schema.Bool(title=_('Activate content materialisation'), default=False)
 
 
-class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent,
-                     zeit.cms.interfaces.IAsset):
+class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent, zeit.cms.interfaces.IAsset):
     """Interface for the Content-Type DynamicFolder.
 
     Does not specify that it is a container, since it is only a container
@@ -43,20 +40,17 @@ class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent,
     """
 
     config_file = zope.schema.Choice(
-        title=_('Configuration file'),
-        source=zeit.cms.content.contentsource.cmsContentSource)
+        title=_('Configuration file'), source=zeit.cms.content.contentsource.cmsContentSource
+    )
 
     content_template_file = zope.interface.Attribute(
-        'XML template to create virtual content (ICMSContent)')
+        'XML template to create virtual content (ICMSContent)'
+    )
 
 
-class IRepositoryDynamicFolder(
-        IDynamicFolder,
-        zeit.cms.repository.interfaces.IFolder):
+class IRepositoryDynamicFolder(IDynamicFolder, zeit.cms.repository.interfaces.IFolder):
     """DynamicFolder is a container inside the repository."""
 
 
-class ILocalDynamicFolder(
-        IDynamicFolder,
-        zeit.cms.workingcopy.interfaces.ILocalContent):
+class ILocalDynamicFolder(IDynamicFolder, zeit.cms.workingcopy.interfaces.ILocalContent):
     """DynamicFolder is a simple object, i.e. no folder, when checked out."""

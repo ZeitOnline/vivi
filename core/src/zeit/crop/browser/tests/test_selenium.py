@@ -7,7 +7,6 @@ import zeit.crop.testing
 
 
 class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
-
     def test_generic_load(self):
         self.selenium.assertTextPresent('450×200')
 
@@ -16,25 +15,23 @@ class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
 
         # After clicking on the mask choice the image is loaded
         self.click_label('450×200')
-        s.verifyAttribute(
-            'id=imp-mask-image@src',
-            '*&mask_width=450&mask_height=200&border=')
+        s.verifyAttribute('id=imp-mask-image@src', '*&mask_width=450&mask_height=200&border=')
 
         # The border will be passed
-        self.click_label("grauer Rahmen")
+        self.click_label('grauer Rahmen')
         s.verifyAttribute(
-            'id=imp-mask-image@src',
-            '*&mask_width=450&mask_height=200&border=%23888888')
+            'id=imp-mask-image@src', '*&mask_width=450&mask_height=200&border=%23888888'
+        )
 
     def test_border_select_wo_selected_mask_does_not_fail(self):
         s = self.selenium
 
-        self.click_label("schwarzer Rahmen")
+        self.click_label('schwarzer Rahmen')
         s.verifyElementNotPresent('id=imp-mask-image')
         self.click_label('450×200')
         s.verifyAttribute(
-            'id=imp-mask-image@src',
-            '*&mask_width=450&mask_height=200&border=%23000000')
+            'id=imp-mask-image@src', '*&mask_width=450&mask_height=200&border=%23000000'
+        )
 
     def test_image_dragging(self):
         s = self.selenium
@@ -51,15 +48,13 @@ class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
         s = self.selenium
 
         # Simple dimensions
-        s.runScript(
-            'window.document.imp.set_mask("500x200/500/200")')
+        s.runScript('window.document.imp.set_mask("500x200/500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.name', '"500x200"')
 
         # The dimensions can be variable, indicated by a ?
-        s.runScript(
-            'window.document.imp.set_mask("art-200/?500/200")')
+        s.runScript('window.document.imp.set_mask("art-200/?500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
@@ -95,17 +90,19 @@ class SeleniumBasicTests(zeit.crop.testing.SeleniumTestCase):
         s.verifyEval('window.document.imp_zoom_slider.get_value()>1', 'true')
 
     def zoom_with_wheel(self, delta_y):
-        self.selenium.runScript("""\
+        self.selenium.runScript(
+            """\
             var evt = window.document.createEvent('MouseEvents')
             evt.initEvent('DOMMouseScroll', false, false)
             evt.wheelDeltaX = 0;
             evt.wheelDeltaY = %s;
             window.document.getElementById('imp-mask').dispatchEvent(evt)
-        """ % delta_y)
+        """
+            % delta_y
+        )
 
 
 class SeleniumCropTests(zeit.crop.testing.SeleniumTestCase):
-
     def test_crop_wo_mask(self):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
@@ -142,8 +139,7 @@ class SeleniumCropTests(zeit.crop.testing.SeleniumTestCase):
         s.verifyAlert('Das Bild ist nicht*')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
-    @unittest.skip(
-        'selenium3 does not support dragging beyond the window boundaries')
+    @unittest.skip('selenium3 does not support dragging beyond the window boundaries')
     def test_drag_outside_mask_snaps_to_mask(self):
         # As it snaps to the mask we can crop the image and no alert is
         # generated.
@@ -161,14 +157,12 @@ class SeleniumCropTests(zeit.crop.testing.SeleniumTestCase):
         # then select another mask
         self.click_label('140×140')
         # Assert that the slider is at the minimum value
-        self.wait_for_condition(
-            'window.jQuery("#imp-zoom-slider div").position().left == 0')
+        self.wait_for_condition('window.jQuery("#imp-zoom-slider div").position().left == 0')
         zoom = self.eval('document.imp_zoom_slider.get_value()')
         self.assertTrue(str(zoom).startswith('0.09'))
 
 
 class SeleniumMaskTests(zeit.crop.testing.SeleniumTestCase):
-
     def test_input_fields_show_mask_size(self):
         s = self.selenium
         self.click_label('450×200')
@@ -193,14 +187,14 @@ class SeleniumMaskTests(zeit.crop.testing.SeleniumTestCase):
 
     def test_input_field_enabled_for_variable_mask(self):
         s = self.selenium
-        self.click_label("Artikelbild breit")
+        self.click_label('Artikelbild breit')
         form = "window.document.getElementById('imp-configuration-form')"
         s.verifyEval("%s['mask-w'].disabled" % form, 'true')
         s.verifyEval("%s['mask-h'].disabled" % form, 'false')
 
     def test_input_field_changes_are_reflected_in_the_mask(self):
         s = self.selenium
-        self.click_label("Artikelbild breit")
+        self.click_label('Artikelbild breit')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         for _ in range(3):
             s.keyPress('mask-h', Keys.BACKSPACE)
@@ -222,7 +216,7 @@ class SeleniumMaskTests(zeit.crop.testing.SeleniumTestCase):
 
     def verify_press(self, key_code, expected_value):
         s = self.selenium
-        self.click_label("Artikelbild breit")
+        self.click_label('Artikelbild breit')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.keyPress('mask-h', key_code)
         s.verifyEval('window.document.imp.mask_dimensions.h', expected_value)
@@ -245,14 +239,12 @@ class SeleniumMaskTests(zeit.crop.testing.SeleniumTestCase):
 
     def verify_hold(self, key_code, expected_value):
         s = self.selenium
-        self.click_label("Artikelbild breit")
+        self.click_label('Artikelbild breit')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.keyDown('mask-h', key_code)
         s.pause(5000)
         s.keyUp('mask-h', key_code)
-        s.verifyEval(
-            'window.document.imp.mask_dimensions.h %s' % expected_value,
-            'true')
+        s.verifyEval('window.document.imp.mask_dimensions.h %s' % expected_value, 'true')
 
     def test_mask_select_should_fit_image_into_mask_x(self):
         s = self.selenium
@@ -282,7 +274,6 @@ class SeleniumMaskTests(zeit.crop.testing.SeleniumTestCase):
 
 
 class ResizeTests(zeit.crop.testing.SeleniumTestCase):
-
     window_width = 1000
     window_height = 800
 
@@ -298,22 +289,14 @@ class ResizeTests(zeit.crop.testing.SeleniumTestCase):
         height = int(s.getEval('window.document.imp.mask_image_dimensions.h'))
         # Increase the window width affects mask, try width only first:
         s.setWindowSize(1200, 800)
-        s.waitForEval(
-            "window.document.imp.mask_image_dimensions.w > %d" % width,
-            'true')
-        self.assertEqual(
-            height,
-            int(s.getEval("window.document.imp.mask_image_dimensions.h")))
+        s.waitForEval('window.document.imp.mask_image_dimensions.w > %d' % width, 'true')
+        self.assertEqual(height, int(s.getEval('window.document.imp.mask_image_dimensions.h')))
 
         # change width and height:
         s.setWindowSize(800, 900)
         s.pause(100)
-        s.waitForEval(
-            "window.document.imp.mask_image_dimensions.w < %d" % width,
-            'true')
-        self.assertTrue(
-            int(s.getEval("window.document.imp.mask_image_dimensions.h"))
-            > height)
+        s.waitForEval('window.document.imp.mask_image_dimensions.w < %d' % width, 'true')
+        self.assertTrue(int(s.getEval('window.document.imp.mask_image_dimensions.h')) > height)
 
     def test_window_resize_moves_image(self):
         # When the area changes it's size the crop area remains centered. This
@@ -322,8 +305,9 @@ class ResizeTests(zeit.crop.testing.SeleniumTestCase):
         # same.
 
         s = self.selenium
-        get_crop_args = ('window.MochiKit.Base.serializeJSON('
-                         '  window.document.imp.get_crop_arguments())')
+        get_crop_args = (
+            'window.MochiKit.Base.serializeJSON(' '  window.document.imp.get_crop_arguments())'
+        )
         crop_args = self.eval(get_crop_args)
 
         s.setWindowSize(900, 900)
@@ -338,50 +322,40 @@ class ResizeTests(zeit.crop.testing.SeleniumTestCase):
     def test_window_resize_updates_zoom_slider(self):
         # The zoom slider doesn't automatically support size updates.
         s = self.selenium
-        max_left = s.getEval(
-            'window.document.imp_zoom_slider.zoom_slider._maxLeft')
+        max_left = s.getEval('window.document.imp_zoom_slider.zoom_slider._maxLeft')
         s.setWindowSize(800, 900)
         s.waitForEval(
-            'window.document.imp_zoom_slider.zoom_slider._maxLeft < %s' %
-            max_left, 'true')
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft < %s' % max_left, 'true'
+        )
 
     def test_sidebar_switch_sends_resize_event(self):
         # The sidebar can be switched on/off. This obiously doesn't send an
         # onresize event to the window. We must support this nevertheless.
 
         s = self.selenium
-        max_left = s.getEval(
-            'window.document.imp_zoom_slider.zoom_slider._maxLeft')
+        max_left = s.getEval('window.document.imp_zoom_slider.zoom_slider._maxLeft')
         s.click('id=sidebar-dragger')
         s.pause(50)
         s.waitForEval(
-            'window.document.imp_zoom_slider.zoom_slider._maxLeft > %s' %
-            max_left, 'true')
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft > %s' % max_left, 'true'
+        )
         # Clicking again resets to the original state
         s.click('id=sidebar-dragger')
         s.pause(50)
         s.waitForEval(
-            'window.document.imp_zoom_slider.zoom_slider._maxLeft == %s' %
-            max_left, 'true')
+            'window.document.imp_zoom_slider.zoom_slider._maxLeft == %s' % max_left, 'true'
+        )
 
 
 class FilterTests(zeit.crop.testing.SeleniumTestCase):
-
     def test_value_mapper(self):
         s = self.selenium
 
         def verify_mappers(step, value, filter):
-            s.waitForNotEval(
-                'typeof(window.document.imp_color_filter)', 'undefined')
-            s.verifyEval(
-                'window.document.imp_color_filter.to_value(%s)' % step,
-                str(value))
-            s.verifyEval(
-                'window.document.imp_color_filter.to_step(%s)' % value,
-                str(step))
-            s.verifyEval(
-                'window.document.imp_color_filter.to_filter(%s)' % value,
-                str(filter))
+            s.waitForNotEval('typeof(window.document.imp_color_filter)', 'undefined')
+            s.verifyEval('window.document.imp_color_filter.to_value(%s)' % step, str(value))
+            s.verifyEval('window.document.imp_color_filter.to_step(%s)' % value, str(step))
+            s.verifyEval('window.document.imp_color_filter.to_filter(%s)' % value, str(filter))
 
         verify_mappers(0, -100, 0.75)
         verify_mappers(600, -40, 0.9)
@@ -405,37 +379,30 @@ class FilterTests(zeit.crop.testing.SeleniumTestCase):
         s = self.selenium
         selector = 'css=*[id="filter.%s"] .uislider' % name
         s.waitForElementPresent(selector)
-        self.eval(
-            'document.querySelector(\'%s\').scrollIntoView()' %
-            selector.replace('css=', ''))
+        self.eval("document.querySelector('%s').scrollIntoView()" % selector.replace('css=', ''))
 
         # Clicking 0 yields 0.75 as value and changes the image url
         image_url = s.getEval('window.document.imp.image.src')
         s.clickAt(selector, '1,5')
         s.verifyValue('filter.%s.input' % name, '-100')
-        s.verifyEval(
-            "window.document.imp.crop_arguments['filter.%s']" % name, '0.75')
-        s.waitForEval(
-            "window.document.imp.image.src == '%s'" % image_url, 'false')
+        s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name, '0.75')
+        s.waitForEval("window.document.imp.image.src == '%s'" % image_url, 'false')
 
         # Clicking > 0 increases the value:
         s.clickAt(selector, '100,5')
         s.verifyEval(
-            "new Number(window.document.getElementById("
+            'new Number(window.document.getElementById('
             "   'filter.%s.input').value) > -100" % name,
-            'true')
-        s.verifyEval(
-            "window.document.imp.crop_arguments['filter.%s'] != 0" % name,
-            'true')
+            'true',
+        )
+        s.verifyEval("window.document.imp.crop_arguments['filter.%s'] != 0" % name, 'true')
 
         # clicking reset sets the slider back to 0 (filter becomes 1 then)
         s.click('id=imp-action-reset')
-        s.verifyEval(
-            "window.document.imp.crop_arguments['filter.%s']" % name, '1')
+        s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name, '1')
 
 
 class ContentZoomTest(zeit.crop.testing.SeleniumTestCase):
-
     def test_zoom(self):
         s = self.selenium
         s.verifyElementNotPresent('css=#content.imp-zoomed-content')

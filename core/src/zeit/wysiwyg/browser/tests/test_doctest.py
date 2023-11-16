@@ -7,4 +7,5 @@ def test_suite():
         'filebrowser.txt',
         'image.txt',
         layer=zeit.wysiwyg.testing.WSGI_LAYER,
-        package='zeit.wysiwyg.browser')
+        package='zeit.wysiwyg.browser',
+    )

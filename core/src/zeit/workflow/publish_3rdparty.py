@@ -35,7 +35,6 @@ class AuthorDashboard(grok.Adapter):
 
 
 class BigQueryMixin:
-
     def publish_json(self):
         if not FEATURE_TOGGLES.find('publish_bigquery_json'):
             return {}
@@ -44,8 +43,7 @@ class BigQueryMixin:
             return None
         properties = tms.get('payload', {})
         properties.setdefault('meta', {})['url'] = self.context.uniqueId
-        properties['tagging'] = {
-            k: v for k, v in tms.items() if k.startswith('rtr_')}
+        properties['tagging'] = {k: v for k, v in tms.items() if k.startswith('rtr_')}
         return {
             'properties': properties,
             'body': badgerfish(self.context.xml.body)['body'],
@@ -55,10 +53,12 @@ class BigQueryMixin:
         if not FEATURE_TOGGLES.find('publish_bigquery_json'):
             return {}
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
-        return {'properties': {
-            'meta': {'url': self.context.uniqueId},
-            'document': {'uuid': uuid.id},
-        }}
+        return {
+            'properties': {
+                'meta': {'url': self.context.uniqueId},
+                'document': {'uuid': uuid.id},
+            }
+        }
 
 
 def badgerfish(node):
@@ -71,8 +71,7 @@ def badgerfish(node):
     children = list(node.iterchildren())
 
     if children and (node.text or any(x.tail for x in children)):
-        result['$'] = ' '.join(
-            [x.strip() for x in node.xpath('.//text()')])
+        result['$'] = ' '.join([x.strip() for x in node.xpath('.//text()')])
         children = []
     elif node.text:
         result['$'] = node.text
@@ -125,7 +124,8 @@ class CommentsMixin:
             'comments_allowed': self.context.commentsAllowed,
             'pre_moderated': self.context.commentsPremoderate,
             'type': 'commentsection',
-            'visible': self.context.commentSectionEnable}
+            'visible': self.context.commentSectionEnable,
+        }
 
     def retract_json(self):
         # on retraction nothing is done
@@ -156,27 +156,24 @@ class FacebookNewstab(grok.Adapter):
     grok.name('facebooknewstab')
 
     def publish_json(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow') or {}
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
         ignore_ressorts = {
-            x.strip().lower()
-            for x in config.get(
-                'facebooknewstab-ignore-ressorts', '').split(',')}
+            x.strip().lower() for x in config.get('facebooknewstab-ignore-ressorts', '').split(',')
+        }
         ressort = self.context.ressort
         if ressort.lower() in ignore_ressorts:
             return None
         product_id = self.context.product.id
         ignore_products = {
-            x.strip().lower()
-            for x in config.get(
-                'facebooknewstab-ignore-products', '').split(',')}
+            x.strip().lower() for x in config.get('facebooknewstab-ignore-products', '').split(',')
+        }
         if product_id.lower() in ignore_products:
             return None
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         date_first_released = info.date_first_released
         facebooknewstab_startdate = datetime.datetime.strptime(
-            config['facebooknewstab-startdate'],
-            "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)
+            config['facebooknewstab-startdate'], '%Y-%m-%d'
+        ).replace(tzinfo=datetime.timezone.utc)
         if date_first_released is not None:
             if date_first_released < facebooknewstab_startdate:
                 # Ignore resources before the cut off date.
@@ -193,19 +190,14 @@ class Speechbert(grok.Adapter):
     grok.name('speechbert')
 
     def ignore(self, method):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow') or {}
-        if method == "publish":
-            ignore_genres = [
-                x.lower()
-                for x in config['speechbert-ignore-genres'].split()]
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
+        if method == 'publish':
+            ignore_genres = [x.lower() for x in config['speechbert-ignore-genres'].split()]
             genre = self.context.genre
             if genre and genre.lower() in ignore_genres:
                 return True
-        if method == "publish":
-            ignore_templates = [
-                x.lower()
-                for x in config['speechbert-ignore-templates'].split()]
+        if method == 'publish':
+            ignore_templates = [x.lower() for x in config['speechbert-ignore-templates'].split()]
             template = self.context.template
             if template is not None and template.lower() in ignore_templates:
                 return True
@@ -215,25 +207,21 @@ class Speechbert(grok.Adapter):
 
     def get_body(self):
         body = []
-        elements = self.context.body.xml.xpath(
-            "(//division/* | //division/ul/*)")
+        elements = self.context.body.xml.xpath('(//division/* | //division/ul/*)')
         for elem in elements:
             if elem.tag not in ('intertitle', 'li', 'p'):
                 continue
             text = elem.xpath('.//text()')
             if not text:
                 continue
-            body.append({
-                'content': ' '.join([x.strip() for x in text]),
-                'type': elem.tag})
+            body.append({'content': ' '.join([x.strip() for x in text]), 'type': elem.tag})
         return body
 
     def get_image(self):
         image = zeit.content.image.interfaces.IImages(self.context).image
         if not image:
             return None
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.cms') or {}
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms') or {}
         prefix = config.get('image-live-prefix', '').strip('/')
         variant_url = image.variant_url('')  # ZO-2856: no slug
         if not variant_url:
@@ -241,15 +229,12 @@ class Speechbert(grok.Adapter):
         return f'{prefix}{variant_url}'
 
     def _json(self):
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(
-            self.context)
+        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.context)
         payload = {
-            'authors': [x.target.display_name for x in self.context.authorships
-                        if not x.role],
+            'authors': [x.target.display_name for x in self.context.authorships if not x.role],
             'body': self.get_body(),
             'checksum': checksum.checksum,
-            'channels': ' '.join([
-                x for x in chain(*self.context.channels) if x]),
+            'channels': ' '.join([x for x in chain(*self.context.channels) if x]),
             'genre': self.context.genre,
             'hasAudio': 'true' if self.context.audio_speechbert else 'false',
             'headline': self.context.title,
@@ -265,8 +250,7 @@ class Speechbert(grok.Adapter):
             payload['access'] = self.context.access
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.date_last_published_semantic is not None:
-            payload['lastModified'] = (
-                info.date_last_published_semantic.isoformat())
+            payload['lastModified'] = info.date_last_published_semantic.isoformat()
         if info.date_first_released is not None:
             payload['publishDate'] = info.date_first_released.isoformat()
         if self.context.serie:
@@ -322,7 +306,8 @@ class PublisherData(grok.Adapter):
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         result = {'uuid': uuid.shortened, 'uniqueId': self.context.uniqueId}
         for name, adapter in zope.component.getAdapters(
-                (self.context,), zeit.workflow.interfaces.IPublisherData):
+            (self.context,), zeit.workflow.interfaces.IPublisherData
+        ):
             if not name:  # ourselves
                 continue
             if name in self.ignore:

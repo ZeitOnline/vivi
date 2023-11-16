@@ -3,7 +3,6 @@ import zeit.cms.testing
 
 
 class TestTypeChangeBox(zeit.cms.testing.SeleniumTestCase):
-
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def test_box_should_scroll(self):

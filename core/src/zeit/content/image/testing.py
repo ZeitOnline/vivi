@@ -23,21 +23,19 @@ product_config = """
 """.format(here=importlib.resources.files(__package__))
 
 
-CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
-    zeit.workflow.testing.CONFIG_LAYER,))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config, bases=(zeit.workflow.testing.CONFIG_LAYER,)
+)
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
-HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(
-    name='HTTPLayer', bases=(WSGI_LAYER,))
-HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(
-    name='HTTPStaticLayer',
-    bases=(HTTP_LAYER,))
+HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
+HTTP_STATIC_LAYER = gocept.httpserverlayer.static.Layer(name='HTTPStaticLayer', bases=(HTTP_LAYER,))
 
-WD_LAYER = zeit.cms.testing.WebdriverLayer(
-    name='WebdriverLayer', bases=(HTTP_LAYER,))
+WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
-    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
+    name='WebdriverSeleneseLayer', bases=(WD_LAYER,)
+)
 
 
 def fixture_bytes(filename, package=None, folder=None):
@@ -58,20 +56,20 @@ def create_local_image(filename, package=None, folder=None):
 
 
 def create_image_group():
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
     group = repository['image-group']
-    for filename in ('new-hampshire-450x200.jpg',
-                     'new-hampshire-artikel.jpg',
-                     'obama-clinton-120x120.jpg'):
+    for filename in (
+        'new-hampshire-450x200.jpg',
+        'new-hampshire-artikel.jpg',
+        'obama-clinton-120x120.jpg',
+    ):
         group[filename] = create_local_image(filename)
     return group
 
 
 def create_image_group_with_master_image(file_name=None):
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     if file_name is None:
         file_name = 'DSC00109_2.JPG'
         fh = repository['2006'][file_name].open()
@@ -95,20 +93,16 @@ def create_image_group_with_master_image(file_name=None):
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
     layer = WSGI_LAYER
 
 
 class StaticBrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
     layer = HTTP_STATIC_LAYER
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
-
     layer = WEBDRIVER_LAYER

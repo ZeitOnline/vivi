@@ -17,13 +17,14 @@ log = logging.getLogger(__name__)
 
 
 class IMessage(zope.interface.Interface):
-
     get_text_from = zope.interface.Attribute(
-        'Fieldname from `IPushMessages` to read the text for the notification')
+        'Fieldname from `IPushMessages` to read the text for the notification'
+    )
 
     text = zope.interface.Attribute(
         'Property that can be overriden if `get_text_from` is not sufficient '
-        'to retrieve the text for the notification')
+        'to retrieve the text for the notification'
+    )
 
     def send():
         """Send push notification to external service via `IPushNotifier`.
@@ -35,7 +36,6 @@ class IMessage(zope.interface.Interface):
 
 
 class IPushNotifier(zope.interface.Interface):
-
     def send(text, link, **kw):
         """Sends given ``text`` as a push message through an external service.
 
@@ -98,7 +98,8 @@ class IPushMessages(zope.interface.Interface):
         # XXX It's not yet clear what we can do when the user enters another
         # URL as part of the tweet and that URL gets *longer* during the
         # shortening process.
-        max_length=256)
+        max_length=256,
+    )
 
     """A message configuration is a dict with at least the following keys:
        - type: Kind of service (twitter, facebook, ...). Must correspond
@@ -114,7 +115,8 @@ class IPushMessages(zope.interface.Interface):
     message_config = zope.schema.Tuple(required=False, default=())
 
     messages = zope.interface.Attribute(
-        'List of IMessage objects, one for each enabled message_config entry')
+        'List of IMessage objects, one for each enabled message_config entry'
+    )
 
     def get(**query):
         """Returns the first entry in message_config that matches the given
@@ -147,8 +149,7 @@ class IBanner(zope.interface.Interface):
     Utility to manage the homepage banner.
     """
 
-    article_id = zope.interface.Attribute(
-        'UniqueId of the current article in the homepage banner')
+    article_id = zope.interface.Attribute('UniqueId of the current article in the homepage banner')
 
 
 class ITwitterCredentials(zope.interface.Interface):
@@ -165,13 +166,11 @@ class ITwitterCredentials(zope.interface.Interface):
 
 
 class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.push'
     config_url = 'twitter-accounts'
     attribute = 'name'
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
         @property
         def MAIN_ACCOUNT(self):
             return self.factory.main_account()
@@ -182,34 +181,30 @@ class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
 
     @classmethod
     def main_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
         return config['twitter-main-account']
 
     @classmethod
     def print_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
         return config['twitter-print-account']
 
     def isAvailable(self, node, context):
-        return (
-            super().isAvailable(node, context) and
-            node.get('name') not in [
-                self.main_account(), self.print_account()])
+        return super().isAvailable(node, context) and node.get('name') not in [
+            self.main_account(),
+            self.print_account(),
+        ]
 
 
 twitterAccountSource = TwitterAccountSource()
 
 
 class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.push'
     config_url = 'facebook-accounts'
     attribute = 'name'
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
         @property
         def MAIN_ACCOUNT(self):
             return self.factory.main_account()
@@ -228,39 +223,32 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
 
     @classmethod
     def main_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
         return config['facebook-main-account']
 
     @classmethod
     def magazin_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
         return config['facebook-magazin-account']
 
     @classmethod
     def campus_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
         return config['facebook-campus-account']
 
     @classmethod
     def zett_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
         return config['facebook-zett-account']
 
     def isAvailable(self, node, context):
-        return (
-            super().isAvailable(node, context) and
-            node.get('name') != self.main_account())
+        return super().isAvailable(node, context) and node.get('name') != self.main_account()
 
     def access_token(self, value):
         tree = self._get_tree()
-        nodes = tree.xpath('%s[@%s= %s]' % (
-                           self.title_xpath,
-                           self.attribute,
-                           xml.sax.saxutils.quoteattr(value)))
+        nodes = tree.xpath(
+            '%s[@%s= %s]' % (self.title_xpath, self.attribute, xml.sax.saxutils.quoteattr(value))
+        )
         if not nodes:
             return 'invalid'
         return nodes[0].get('token')
@@ -270,7 +258,6 @@ facebookAccountSource = FacebookAccountSource()
 
 
 class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.push'
     config_url = 'mobile-buttons'
     default_filename = 'push-mobile-buttons.xml'
@@ -281,7 +268,6 @@ MOBILE_BUTTONS_SOURCE = MobileButtonsSource()
 
 
 class PayloadTemplateSource(zeit.cms.content.sources.FolderItemSource):
-
     product_configuration = 'zeit.push'
     config_url = 'push-payload-templates'
     interface = zeit.content.text.interfaces.IJinjaTemplate
@@ -299,9 +285,7 @@ class PayloadTemplateSource(zeit.cms.content.sources.FolderItemSource):
             result = value(zeit.content.text.jinja.MockDict())
             return json.loads(result)['default_title']
         except Exception:
-            log.debug(
-                'No default title for %s', value.__name__,
-                exc_info=True)
+            log.debug('No default title for %s', value.__name__, exc_info=True)
             return ''
 
 
@@ -332,78 +316,66 @@ class ToggleDependentText(ToggleDependentField, zope.schema.Text):
 class IAccountData(zope.interface.Interface):
     """Convenience access to IPushMessages.message_config entries"""
 
-    facebook_main_enabled = zope.schema.Bool(
-        title=_('Enable Facebook'), required=False)
+    facebook_main_enabled = zope.schema.Bool(title=_('Enable Facebook'), required=False)
     facebook_main_text = ToggleDependentText(
-        title=_('Facebook Main Text'),
-        required=False,
-        dependent_field='facebook_main_enabled')
+        title=_('Facebook Main Text'), required=False, dependent_field='facebook_main_enabled'
+    )
 
-    facebook_magazin_enabled = zope.schema.Bool(
-        title=_('Enable Facebook Magazin'), required=False)
+    facebook_magazin_enabled = zope.schema.Bool(title=_('Enable Facebook Magazin'), required=False)
     facebook_magazin_text = ToggleDependentText(
-        title=_('Facebook Magazin Text'),
-        required=False,
-        dependent_field='facebook_magazin_enabled')
+        title=_('Facebook Magazin Text'), required=False, dependent_field='facebook_magazin_enabled'
+    )
 
-    facebook_campus_enabled = zope.schema.Bool(
-        title=_('Enable Facebook Campus'), required=False)
+    facebook_campus_enabled = zope.schema.Bool(title=_('Enable Facebook Campus'), required=False)
     facebook_campus_text = ToggleDependentText(
-        title=_('Facebook Campus Text'),
-        required=False,
-        dependent_field='facebook_campus_enabled')
+        title=_('Facebook Campus Text'), required=False, dependent_field='facebook_campus_enabled'
+    )
 
-    facebook_zett_enabled = zope.schema.Bool(
-        title=_('Enable Facebook ze.tt'), required=False)
+    facebook_zett_enabled = zope.schema.Bool(title=_('Enable Facebook ze.tt'), required=False)
     facebook_zett_text = ToggleDependentText(
-        title=_('Facebook ze.tt Text'),
-        required=False,
-        dependent_field='facebook_zett_enabled')
+        title=_('Facebook ze.tt Text'), required=False, dependent_field='facebook_zett_enabled'
+    )
 
-    twitter_main_enabled = zope.schema.Bool(
-        title=_('Enable Twitter'), required=False)
+    twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'), required=False)
     twitter_ressort_text = ToggleDependentText(
         title=_('Ressort Tweet'),
         required=False,
         max_length=256,
-        dependent_field='twitter_ressort_enabled')
-    twitter_ressort_enabled = zope.schema.Bool(
-        title=_('Enable Twitter Ressort'), required=False)
+        dependent_field='twitter_ressort_enabled',
+    )
+    twitter_ressort_enabled = zope.schema.Bool(title=_('Enable Twitter Ressort'), required=False)
     twitter_ressort = ToggleDependentChoice(
         title=_('Additional Twitter'),
         source=twitterAccountSource,
         required=False,
-        dependent_field='twitter_ressort_enabled')
+        dependent_field='twitter_ressort_enabled',
+    )
     twitter_print_text = ToggleDependentText(
         title=_('Print Tweet'),
         required=False,
         max_length=256,
-        dependent_field='twitter_print_enabled')
-    twitter_print_enabled = zope.schema.Bool(
-        title=_('Enable Twitter Print'), required=False)
+        dependent_field='twitter_print_enabled',
+    )
+    twitter_print_enabled = zope.schema.Bool(title=_('Enable Twitter Print'), required=False)
 
-    mobile_title = zope.schema.TextLine(
-        title=_('Mobile title'), required=False)
-    mobile_text = zope.schema.Text(
-        title=_('Mobile text'),
-        required=False)
-    mobile_enabled = zope.schema.Bool(
-        title=_('Enable mobile push'), required=False)
+    mobile_title = zope.schema.TextLine(title=_('Mobile title'), required=False)
+    mobile_text = zope.schema.Text(title=_('Mobile text'), required=False)
+    mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'), required=False)
 
-    mobile_uses_image = zope.schema.Bool(
-        title=_('Mobile push with image'), required=False)
+    mobile_uses_image = zope.schema.Bool(title=_('Mobile push with image'), required=False)
     mobile_image = ToggleDependentChoice(
         title=_('Mobile image'),
-        description=_("Drag an image group here"),
+        description=_('Drag an image group here'),
         source=zeit.content.image.interfaces.imageGroupSource,
         required=False,
-        dependent_field='mobile_uses_image')
+        dependent_field='mobile_uses_image',
+    )
     mobile_buttons = zope.schema.Choice(
-        title=_('Mobile buttons'),
-        source=MOBILE_BUTTONS_SOURCE,
-        required=False)
+        title=_('Mobile buttons'), source=MOBILE_BUTTONS_SOURCE, required=False
+    )
     mobile_payload_template = ToggleDependentChoice(
         title=_('Payload Template'),
         source=PAYLOAD_TEMPLATE_SOURCE,
         required=False,
-        dependent_field='mobile_enabled')
+        dependent_field='mobile_enabled',
+    )

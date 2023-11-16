@@ -31,7 +31,6 @@ class IAuthorType(zeit.cms.interfaces.ICMSContentType):
 
 @zope.interface.implementer(zeit.cms.content.contentsource.IAutocompleteSource)
 class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
-
     check_interfaces = IAuthorType
     name = 'authors'
 
@@ -40,7 +39,6 @@ authorSource = AuthorSource()
 
 
 class AgencySource(AuthorSource):
-
     name = 'agencies'
     additional_query_conditions = {'author_type': 'Agentur'}
 
@@ -49,7 +47,6 @@ agencySource = AgencySource()
 
 
 class ColorSchemeSource(zeit.cms.content.sources.SimpleDictSource):
-
     values = {
         'light': _('color scheme light'),
         'dark': _('color scheme dark'),
@@ -62,7 +59,6 @@ class IChannelField(zc.form.interfaces.ICombinationField):
 
 
 class ReferenceField(zope.schema.Choice):
-
     def _validate(self, value):
         if self._init_field:
             return
@@ -73,190 +69,147 @@ class ReferenceField(zope.schema.Choice):
 
 
 class ICommonMetadata(zope.interface.Interface):
+    year = zope.schema.Int(title=_('Year'), min=1900, max=2100, required=False)
 
-    year = zope.schema.Int(
-        title=_("Year"),
-        min=1900,
-        max=2100,
-        required=False)
+    volume = zope.schema.Int(title=_('Volume'), min=1, max=54, required=False)
 
-    volume = zope.schema.Int(
-        title=_("Volume"),
-        min=1,
-        max=54,
-        required=False)
-
-    page = zope.schema.Int(
-        title=_("Page"),
-        readonly=True,
-        required=False)
+    page = zope.schema.Int(title=_('Page'), readonly=True, required=False)
 
     ressort = zope.schema.Choice(
-        title=_("Ressort"),
-        source=zeit.cms.content.sources.RessortSource())
+        title=_('Ressort'), source=zeit.cms.content.sources.RessortSource()
+    )
 
     sub_ressort = zope.schema.Choice(
-        title=_('Sub ressort'),
-        source=zeit.cms.content.sources.SubRessortSource(),
-        required=False)
+        title=_('Sub ressort'), source=zeit.cms.content.sources.SubRessortSource(), required=False
+    )
 
     channels = zope.schema.Tuple(
         title=_('Channels'),
         value_type=zc.form.field.Combination(
-            (zope.schema.Choice(
-                title=_('Channel'),
-                source=zeit.cms.content.sources.ChannelSource()),
-             zope.schema.Choice(
-                 title=_('Subchannel'),
-                 source=zeit.cms.content.sources.SubChannelSource(),
-                 required=False))
+            (
+                zope.schema.Choice(
+                    title=_('Channel'), source=zeit.cms.content.sources.ChannelSource()
+                ),
+                zope.schema.Choice(
+                    title=_('Subchannel'),
+                    source=zeit.cms.content.sources.SubChannelSource(),
+                    required=False,
+                ),
+            )
         ),
         default=(),
-        required=False)
+        required=False,
+    )
     zope.interface.alsoProvides(channels.value_type, IChannelField)
 
     printRessort = zope.schema.TextLine(
-        title=_("Print ressort"),
-        readonly=True,
-        required=False,
-        default='n/a')
+        title=_('Print ressort'), readonly=True, required=False, default='n/a'
+    )
 
     # not required since e.g. Agenturmeldungen don't have an author, only
     # a copyright notice
     authorships = zope.schema.Tuple(
-        title=_("Authors"),
+        title=_('Authors'),
         value_type=ReferenceField(source=authorSource),
         default=(),
-        required=False)
+        required=False,
+    )
     authorships.value_type.setTaggedValue(
-        'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
+        'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree'
+    )
 
     # DEPRECATED, use authorships instead
     # (still used by publisher `speechbert.xslt`)
     authors = zope.schema.Tuple(
-        title=_("Authors (freetext)"),
+        title=_('Authors (freetext)'),
         value_type=zope.schema.TextLine(),
         required=False,
         default=('',),
-        description=_('overwritten if any non-freetext authors are set'))
+        description=_('overwritten if any non-freetext authors are set'),
+    )
 
     agencies = zope.schema.Tuple(
-        title=_("Agencies"),
+        title=_('Agencies'),
         value_type=zope.schema.Choice(source=agencySource),
         default=(),
-        required=False)
+        required=False,
+    )
 
     access = zope.schema.Choice(
-        title=_('Access'),
-        default='free',
-        source=zeit.cms.content.sources.ACCESS_SOURCE)
+        title=_('Access'), default='free', source=zeit.cms.content.sources.ACCESS_SOURCE
+    )
 
-    keywords = zeit.cms.tagging.interfaces.Keywords(
-        required=False,
-        default=())
+    keywords = zeit.cms.tagging.interfaces.Keywords(required=False, default=())
 
     recipe_categories = zope.schema.Tuple(
-        title=_("Recipe Categories"),
-        value_type=zope.schema.Choice(
-            source=zeit.wochenmarkt.sources.RecipeCategoriesSource()),
+        title=_('Recipe Categories'),
+        value_type=zope.schema.Choice(source=zeit.wochenmarkt.sources.RecipeCategoriesSource()),
         default=(),
-        required=False)
+        required=False,
+    )
 
     serie = zope.schema.Choice(
-        title=_("Serie"),
-        source=zeit.cms.content.sources.SerieSource(),
-        required=False)
+        title=_('Serie'), source=zeit.cms.content.sources.SerieSource(), required=False
+    )
 
     copyrights = zope.schema.TextLine(
-        title=_("Copyright (c)"),
-        description=_("Do not enter (c)."),
-        required=False)
+        title=_('Copyright (c)'), description=_('Do not enter (c).'), required=False
+    )
 
     supertitle = zope.schema.TextLine(
-        title=_("Kicker"),
-        description=_("Please take care of capitalisation."),
+        title=_('Kicker'),
+        description=_('Please take care of capitalisation.'),
         required=False,
-        max_length=70)
+        max_length=70,
+    )
 
     # DEPRECATED, use authorships instead (still used by
     # k4import/exporter.zeit.de to transmit author information *into* vivi,
     # so Producing can manually convert it to authorships)
-    byline = zope.schema.TextLine(
-        title=_("By line"),
-        readonly=True,
-        required=False)
+    byline = zope.schema.TextLine(title=_('By line'), readonly=True, required=False)
 
-    title = zope.schema.Text(
-        title=_("Title"),
-        missing_value='')
+    title = zope.schema.Text(title=_('Title'), missing_value='')
 
     title.setTaggedValue('zeit.cms.charlimit', 70)
 
-    subtitle = zope.schema.Text(
-        title=_("Subtitle"),
-        missing_value='',
-        required=False)
+    subtitle = zope.schema.Text(title=_('Subtitle'), missing_value='', required=False)
 
     subtitle.setTaggedValue('zeit.cms.charlimit', 170)
 
-    teaserTitle = zope.schema.TextLine(
-        title=_("Teaser title"),
-        required=False,
-        max_length=70)
+    teaserTitle = zope.schema.TextLine(title=_('Teaser title'), required=False, max_length=70)
 
-    teaserText = zope.schema.Text(
-        title=_("Teaser text"),
-        required=False,
-        max_length=170)
+    teaserText = zope.schema.Text(title=_('Teaser text'), required=False, max_length=170)
 
     teaserSupertitle = zope.schema.TextLine(
         title=_('Teaser kicker'),
         description=_('Please take care of capitalisation.'),
         required=False,
-        max_length=70)
+        max_length=70,
+    )
 
-    vg_wort_id = zope.schema.TextLine(
-        title=_('VG Wort Id'),
-        required=False)
+    vg_wort_id = zope.schema.TextLine(title=_('VG Wort Id'), required=False)
 
     commentsPremoderate = zope.schema.Bool(
-        title=_("Comments premoderate"),
-        required=False,
-        default=False)
+        title=_('Comments premoderate'), required=False, default=False
+    )
 
-    commentsAllowed = zope.schema.Bool(
-        title=_("Comments allowed"),
-        required=False,
-        default=True)
+    commentsAllowed = zope.schema.Bool(title=_('Comments allowed'), required=False, default=True)
 
     commentSectionEnable = zope.schema.Bool(
-        title=_("Show commentthread"),
-        required=False,
-        default=True)
+        title=_('Show commentthread'), required=False, default=True
+    )
 
-    banner = zope.schema.Bool(
-        title=_("Banner"),
-        required=False,
-        default=True)
+    banner = zope.schema.Bool(title=_('Banner'), required=False, default=True)
 
-    banner_content = zope.schema.Bool(
-        title=_("Banner in Content"),
-        required=False,
-        default=True)
+    banner_content = zope.schema.Bool(title=_('Banner in Content'), required=False, default=True)
 
-    banner_outer = zope.schema.Bool(
-        title=_("Banner Mainad"),
-        required=False,
-        default=True)
+    banner_outer = zope.schema.Bool(title=_('Banner Mainad'), required=False, default=True)
 
-    banner_id = zope.schema.TextLine(
-        title=_('Banner id'),
-        required=False)
+    banner_id = zope.schema.TextLine(title=_('Banner id'), required=False)
 
     hide_adblocker_notification = zope.schema.Bool(
-        title=_('Hide AdBlocker notification'),
-        default=False,
-        required=False)
+        title=_('Hide AdBlocker notification'), default=False, required=False
+    )
 
     product = zope.schema.Choice(
         title=_('Product id'),
@@ -264,44 +217,30 @@ class ICommonMetadata(zope.interface.Interface):
         # file. We only need to set an ID here, since to read the product we'll
         # ask the source anyway.
         default=zeit.cms.content.sources.Product('ZEDE'),
-        source=zeit.cms.content.sources.PRODUCT_SOURCE)
+        source=zeit.cms.content.sources.PRODUCT_SOURCE,
+    )
 
-    overscrolling = zope.schema.Bool(
-        title=_('Overscrolling'),
-        required=False,
-        default=True)
+    overscrolling = zope.schema.Bool(title=_('Overscrolling'), required=False, default=True)
 
-    cap_title = zope.schema.TextLine(
-        title=_('CAP title'),
-        required=False)
+    cap_title = zope.schema.TextLine(title=_('CAP title'), required=False)
 
-    deeplink_url = zope.schema.URI(
-        title=_('Deeplink URL'),
-        required=False,
-        default=None)
+    deeplink_url = zope.schema.URI(title=_('Deeplink URL'), required=False, default=None)
 
     color_scheme = zope.schema.Choice(
-        title=_('Color scheme'),
-        source=ColorSchemeSource(),
-        required=False)
+        title=_('Color scheme'), source=ColorSchemeSource(), required=False
+    )
 
-    advertisement_title = zope.schema.TextLine(
-        title=_("Advertisement title"),
-        required=False)
+    advertisement_title = zope.schema.TextLine(title=_('Advertisement title'), required=False)
 
-    advertisement_text = zope.schema.Text(
-        title=_("Advertisement text"),
-        required=False)
+    advertisement_text = zope.schema.Text(title=_('Advertisement text'), required=False)
 
     ir_mediasync_id = zope.schema.TextLine(
-        title=_("InterRed MediaSync ID"),
-        required=False,
-        readonly=True)
+        title=_('InterRed MediaSync ID'), required=False, readonly=True
+    )
 
     ir_article_id = zope.schema.TextLine(
-        title=_("InterRed Article ID"),
-        required=False,
-        readonly=True)
+        title=_('InterRed Article ID'), required=False, readonly=True
+    )
 
 
 class IProduct(zope.interface.Interface):
@@ -312,29 +251,29 @@ class IProduct(zope.interface.Interface):
     vgwortcode = zope.interface.Attribute('VGWort code, optional')
     href = zope.interface.Attribute('URL for the "homepage" of this product')
     target = zope.interface.Attribute('Optional link target (e.g. _blank)')
-    show = zope.interface.Attribute(
-        'Flag what to display in frontend byline. {issue,link,source}')
+    show = zope.interface.Attribute('Flag what to display in frontend byline. {issue,link,source}')
     volume = zope.interface.Attribute('Boolean: has print volumes')
     location = zope.interface.Attribute(
         'uniqueId template of the IVolumes of this product, '
-        'e.g. http://xml.zeit.de/{year}/{name}/ausgabe')
+        'e.g. http://xml.zeit.de/{year}/{name}/ausgabe'
+    )
     centerpage = zope.interface.Attribute(
         'uniqueId template for the public-facing CP of this product, '
-        'e.g. http://xml.zeit.de/{year}/{name}/index')
+        'e.g. http://xml.zeit.de/{year}/{name}/index'
+    )
     cp_template = zope.interface.Attribute(
         'uniqueId of a zeit.content.text.interfaces.IPythonScript, which is '
-        'used to create the public-facing CP of this product')
+        'used to create the public-facing CP of this product'
+    )
     autochannel = zope.interface.Attribute(
-        'Set false to suppress setting channel on ressort changes')
-    relates_to = zope.interface.Attribute(
-        'Product-ID of another Product we belong to')
-    dependent_products = zope.interface.Attribute(
-        'List of products whose relates_to points to us')
+        'Set false to suppress setting channel on ressort changes'
+    )
+    relates_to = zope.interface.Attribute('Product-ID of another Product we belong to')
+    dependent_products = zope.interface.Attribute('List of products whose relates_to points to us')
     is_news = zope.interface.Attribute('is_news')
 
 
 class ISerie(zope.interface.Interface):
-
     id = zope.interface.Attribute('')
     title = zope.interface.Attribute('')
     serienname = zope.interface.Attribute('')
@@ -348,7 +287,7 @@ def hex_literal(value):
     try:
         int(value, base=16)
     except ValueError:
-        raise zeit.cms.interfaces.ValidationError(_("Invalid hex literal"))
+        raise zeit.cms.interfaces.ValidationError(_('Invalid hex literal'))
     else:
         return True
 
@@ -395,21 +334,18 @@ class IDAVToken(zope.interface.Interface):
 class IDAVPropertyChangedEvent(zope.interface.interfaces.IObjectEvent):
     """A dav property has been changed."""
 
-    old_value = zope.interface.Attribute("The value before the change.")
-    new_value = zope.interface.Attribute("The value after the change.")
+    old_value = zope.interface.Attribute('The value before the change.')
+    new_value = zope.interface.Attribute('The value after the change.')
 
-    property_namespace = zope.interface.Attribute("Webdav property namespace.")
-    property_name = zope.interface.Attribute("Webdav property name.")
+    property_namespace = zope.interface.Attribute('Webdav property namespace.')
+    property_name = zope.interface.Attribute('Webdav property name.')
 
-    field = zope.interface.Attribute(
-        "zope.schema field the property was changed for.")
+    field = zope.interface.Attribute('zope.schema field the property was changed for.')
 
 
 @zope.interface.implementer(IDAVPropertyChangedEvent)
 class DAVPropertyChangedEvent(zope.interface.interfaces.ObjectEvent):
-
-    def __init__(self, object, property_namespace, property_name,
-                 old_value, new_value, field):
+    def __init__(self, object, property_namespace, property_name, old_value, new_value, field):
         self.object = object
         self.property_namespace = property_namespace
         self.property_name = property_name
@@ -421,14 +357,13 @@ class DAVPropertyChangedEvent(zope.interface.interfaces.ObjectEvent):
 class ITextContent(zope.interface.Interface):
     """Representing text content XXX"""
 
-    data = zope.schema.Text(title="Document content")
+    data = zope.schema.Text(title='Document content')
 
 
 class IXMLRepresentation(zope.interface.Interface):
     """Objects with an XML representation."""
 
-    xml = zeit.cms.content.field.XMLTree(
-        title=_("XML Source"))
+    xml = zeit.cms.content.field.XMLTree(title=_('XML Source'))
 
 
 class IXMLReference(zope.interface.Interface):
@@ -459,9 +394,9 @@ class IXMLReferenceUpdater(zope.interface.Interface):
         """
 
 
-class IReference(IXMLRepresentation,
-                 zeit.cms.interfaces.ICMSContent,
-                 zope.location.interfaces.ILocation):
+class IReference(
+    IXMLRepresentation, zeit.cms.interfaces.ICMSContent, zope.location.interfaces.ILocation
+):
     """Reference to an ICMSContent object (optionally with properties of its
     own).
 
@@ -480,10 +415,8 @@ class IReference(IXMLRepresentation,
     """
 
     target = zope.interface.Attribute('The referenced ICMSContent object')
-    target_unique_id = zope.interface.Attribute(
-        'uniqueId of the referenced ICMSContent object')
-    attribute = zope.interface.Attribute(
-        'Attribute name of reference property on source')
+    target_unique_id = zope.interface.Attribute('uniqueId of the referenced ICMSContent object')
+    attribute = zope.interface.Attribute('Attribute name of reference property on source')
 
     def create(target, suppress_errors=False):
         """Create a new references from our source to the given target
@@ -498,7 +431,6 @@ class IReference(IXMLRepresentation,
 
 
 class IReferences(zope.interface.common.sequence.IReadSequence):
-
     def __iter__(self):
         # XXX not declared by IReadSequence,
         # dear zope.interface are you serious?!
@@ -516,8 +448,7 @@ class IXMLSource(zope.interface.Interface):
     """str representing the xml of an object."""
 
 
-class IXMLContent(zeit.cms.repository.interfaces.IDAVContent,
-                  IXMLRepresentation):
+class IXMLContent(zeit.cms.repository.interfaces.IDAVContent, IXMLRepresentation):
     """Content with an XML representation."""
 
 
@@ -555,14 +486,10 @@ class IDAVPropertyXMLSynchroniser(zope.interface.Interface):
 
 
 class ISynchronisingDAVPropertyToXMLEvent(zope.interface.Interface):
-
-    namespace = zope.interface.Attribute("DAV property namespace")
-    name = zope.interface.Attribute("DAV property name")
-    value = zope.interface.Attribute("DAV property value")
-    vetoed = zope.schema.Bool(
-        title="True if sync was vetoed.",
-        readonly=True,
-        default=False)
+    namespace = zope.interface.Attribute('DAV property namespace')
+    name = zope.interface.Attribute('DAV property name')
+    value = zope.interface.Attribute('DAV property value')
+    vetoed = zope.schema.Bool(title='True if sync was vetoed.', readonly=True, default=False)
 
     def veto():
         """Called by subscribers to veto the property being added to xml."""
@@ -596,15 +523,12 @@ class ISemanticChange(zope.interface.Interface):
     """
 
     last_semantic_change = zope.schema.Datetime(
-        title=_('Last semantic change'),
-        required=False,
-        readonly=True,
-        default=None)
+        title=_('Last semantic change'), required=False, readonly=True, default=None
+    )
 
     has_semantic_change = zope.schema.Bool(
-        title=_('Update last semantic change'),
-        required=False,
-        default=False)
+        title=_('Update last semantic change'), required=False, default=False
+    )
 
     def update():
         """Set last semantic change to last modified."""
@@ -614,50 +538,36 @@ class IUUID(zope.interface.Interface):
     """Accessing the uuid of a content object."""
 
     id = zope.schema.ASCIILine(
-        title="The uuid of the content object.",
-        default=None,
-        required=False)
+        title='The uuid of the content object.', default=None, required=False
+    )
 
     shortened = zope.schema.ASCIILine(
-        title="id without `{urn:uuid:}` prefix",
-        readonly=True,
-        required=False,
-        default=None)
+        title='id without `{urn:uuid:}` prefix', readonly=True, required=False, default=None
+    )
 
 
 class IMemo(zope.interface.Interface):
     """Provide a memo for additional remarks on a content object."""
 
-    memo = zope.schema.Text(
-        title=_('Memo'),
-        required=False)
+    memo = zope.schema.Text(title=_('Memo'), required=False)
 
 
 class IContentAdder(zope.interface.Interface):
-
     type_ = zope.schema.Choice(
-        title=_("Type"),
-        source=zeit.cms.content.sources.AddableCMSContentTypeSource())
+        title=_('Type'), source=zeit.cms.content.sources.AddableCMSContentTypeSource()
+    )
 
     ressort = zope.schema.Choice(
-        title=_("Ressort"),
-        source=zeit.cms.content.sources.RessortSource(),
-        required=False)
+        title=_('Ressort'), source=zeit.cms.content.sources.RessortSource(), required=False
+    )
 
     sub_ressort = zope.schema.Choice(
-        title=_('Sub ressort'),
-        source=zeit.cms.content.sources.SubRessortSource(),
-        required=False)
+        title=_('Sub ressort'), source=zeit.cms.content.sources.SubRessortSource(), required=False
+    )
 
-    year = zope.schema.Int(
-        title=_("Year"),
-        min=1900,
-        max=2100)
+    year = zope.schema.Int(title=_('Year'), min=1900, max=2100)
 
-    month = zope.schema.Int(
-        title=_("Month"),
-        min=1,
-        max=12)
+    month = zope.schema.Int(title=_('Month'), min=1, max=12)
 
 
 class IAddLocation(zope.interface.Interface):
@@ -686,22 +596,13 @@ class ICachingTime(zope.interface.Interface):
     zeit.web. For admins only.
     """
 
-    browser = zope.schema.Int(
-        title=_("Caching time browser"),
-        min=0,
-        max=3600,
-        required=False)
+    browser = zope.schema.Int(title=_('Caching time browser'), min=0, max=3600, required=False)
 
-    server = zope.schema.Int(
-        title=_("Caching time server"),
-        min=0,
-        max=3600,
-        required=False)
+    server = zope.schema.Int(title=_('Caching time server'), min=0, max=3600, required=False)
 
 
 class IKPI(zope.interface.Interface):
-    """Provides access to kpi fields (visits, comments, etc.) on ITMSContent.
-    """
+    """Provides access to kpi fields (visits, comments, etc.) on ITMSContent."""
 
     visits = zope.schema.Int(default=0, readonly=True)
     comments = zope.schema.Int(default=0, readonly=True)
@@ -710,7 +611,6 @@ class IKPI(zope.interface.Interface):
 
 @grok.implementer(IKPI)
 class KPI(grok.Adapter):
-
     grok.context(zeit.cms.interfaces.ICMSContent)
 
     def __init__(self, context):
@@ -720,13 +620,6 @@ class KPI(grok.Adapter):
 
 
 class IRemoteMetadata(zope.interface.Interface):
+    remote_image = zope.schema.URI(title=_('Remote image URL'), required=False)
 
-    remote_image = zope.schema.URI(
-        title=_('Remote image URL'),
-        required=False
-    )
-
-    remote_timestamp = zope.schema.URI(
-        title=_('Remote timestamp URL'),
-        required=False
-    )
+    remote_timestamp = zope.schema.URI(title=_('Remote timestamp URL'), required=False)

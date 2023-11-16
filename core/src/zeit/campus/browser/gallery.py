@@ -5,25 +5,21 @@ import zeit.campus.browser.social
 
 base = zeit.content.gallery.browser.form.GalleryFormBase
 field_groups = (
-    base.field_groups[:4] +
-    (zeit.campus.browser.social.SocialBase.social_fields,) +
-    base.field_groups[5:]
+    base.field_groups[:4]
+    + (zeit.campus.browser.social.SocialBase.social_fields,)
+    + base.field_groups[5:]
 )
 
 
-class Add(zeit.campus.browser.social.SocialBase,
-          zeit.content.gallery.browser.form.AddGallery):
-
+class Add(zeit.campus.browser.social.SocialBase, zeit.content.gallery.browser.form.AddGallery):
     field_groups = field_groups
 
 
-class Edit(zeit.campus.browser.social.SocialBase,
-           zeit.content.gallery.browser.form.EditGallery):
-
+class Edit(zeit.campus.browser.social.SocialBase, zeit.content.gallery.browser.form.EditGallery):
     field_groups = field_groups
 
 
-class Display(zeit.campus.browser.social.SocialBase,
-              zeit.content.gallery.browser.form.DisplayGallery):
-
+class Display(
+    zeit.campus.browser.social.SocialBase, zeit.content.gallery.browser.form.DisplayGallery
+):
     field_groups = field_groups

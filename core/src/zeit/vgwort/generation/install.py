@@ -6,8 +6,8 @@ import zeit.vgwort.token
 
 def install(root):
     zeit.cms.generation.install.installLocalUtility(
-        root, zeit.vgwort.token.TokenStorage, 'vgwort-tokens',
-        zeit.vgwort.interfaces.ITokens)
+        root, zeit.vgwort.token.TokenStorage, 'vgwort-tokens', zeit.vgwort.interfaces.ITokens
+    )
 
 
 def evolve(context):

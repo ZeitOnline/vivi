@@ -13,7 +13,6 @@ import zope.interface
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class RelatedBase(zeit.cms.content.xmlsupport.Persistent):
-
     def __init__(self, context):
         self.context = context
         self.xml = self.context.xml
@@ -27,8 +26,7 @@ class RelatedBase(zeit.cms.content.xmlsupport.Persistent):
 class RelatedContent(RelatedBase):
     """Adapter which stores related content in xml."""
 
-    related = zeit.cms.content.reference.MultiResource(
-        '.head.references.reference', 'related')
+    related = zeit.cms.content.reference.MultiResource('.head.references.reference', 'related')
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.ITemplate)
@@ -57,7 +55,6 @@ def create_related_reference_suppress_errors(context):
 
 
 class RelatedReference(zeit.cms.content.reference.Reference):
-
     grok.name('related')
 
 
@@ -65,16 +62,16 @@ class RelatedReference(zeit.cms.content.reference.Reference):
 @zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def related_references(context):
     import zeit.content.cp.interfaces  # XXX circular dependency
+
     related = zeit.cms.related.interfaces.IRelatedContent(context, None)
     if related is None:
         return None
-    return [x for x in related.related
-            if not zeit.content.cp.interfaces.ICenterPage.providedBy(x)]
+    return [x for x in related.related if not zeit.content.cp.interfaces.ICenterPage.providedBy(x)]
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
 def update_related_on_checkin(context, event):
     """Update the related metadata before checkin."""
     related = zeit.cms.related.interfaces.IRelatedContent(context, None)

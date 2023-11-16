@@ -6,17 +6,15 @@ import zeit.workflow.interfaces
 
 
 class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
-
-    fields = zope.formlib.form.FormFields(
-        zeit.workflow.interfaces.IContentWorkflow)
+    fields = zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow)
 
     widgets = None
 
     def update(self):
         if self.workflow is not None:
             self.widgets = zope.formlib.form.setUpEditWidgets(
-                self.fields, 'workflow', self.workflow, self.request,
-                for_display=True)
+                self.fields, 'workflow', self.workflow, self.request, for_display=True
+            )
 
     def render(self):
         if not self.widgets:

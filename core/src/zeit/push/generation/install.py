@@ -6,8 +6,11 @@ import zeit.push.twitter
 
 def install(root):
     zeit.cms.generation.install.installLocalUtility(
-        root, zeit.push.twitter.TwitterCredentials, 'twitter-credentials',
-        zeit.push.interfaces.ITwitterCredentials)
+        root,
+        zeit.push.twitter.TwitterCredentials,
+        'twitter-credentials',
+        zeit.push.interfaces.ITwitterCredentials,
+    )
 
 
 def evolve(context):

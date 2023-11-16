@@ -13,13 +13,11 @@ def article_for_element(context):
 
 
 class Block(zeit.edit.block.SimpleElement):
-
     area = zeit.content.article.edit.interfaces.IArticleArea
     grok.baseclass()
 
 
 class BlockFactory(zeit.edit.block.ElementFactory):
-
     grok.baseclass()
     grok.context(zeit.content.article.edit.interfaces.IArticleArea)
     # No title so we are excluded from @@block-factories -- our blocks are

@@ -9,24 +9,19 @@ import zope.interface
 
 
 class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
-
     layer = zeit.cms.section.testing.SECTION_LAYER
 
     def test_adding_content_to_folder_marks_it_with_general_interface(self):
         self.repository['example']['test'] = Folder()
         obj = self.repository['example']['test']
-        self.assertTrue(
-            zeit.cms.section.testing.IExampleContent.providedBy(obj))
-        self.assertFalse(
-            zeit.cms.section.testing.IExampleTestcontent.providedBy(obj))
+        self.assertTrue(zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertFalse(zeit.cms.section.testing.IExampleTestcontent.providedBy(obj))
 
     def test_specific_types_are_marked_with_type_specific_interface(self):
         self.repository['example']['test'] = ExampleContentType()
         obj = self.repository['example']['test']
-        self.assertTrue(
-            zeit.cms.section.testing.IExampleContent.providedBy(obj))
-        self.assertTrue(
-            zeit.cms.section.testing.IExampleTestcontent.providedBy(obj))
+        self.assertTrue(zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertTrue(zeit.cms.section.testing.IExampleTestcontent.providedBy(obj))
 
     def test_type_markers_are_more_specific_than_general_markers(self):
         self.repository['example']['test'] = ExampleContentType()
@@ -34,7 +29,8 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
         provides = list(zope.interface.providedBy(obj))
         self.assertLess(
             provides.index(zeit.cms.section.testing.IExampleTestcontent),
-            provides.index(zeit.cms.section.testing.IExampleContent))
+            provides.index(zeit.cms.section.testing.IExampleContent),
+        )
 
     # XXX not supported yet
     # def test_copymove_into_section_adds_markers(self):
@@ -50,27 +46,21 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
         # while it's checked in -- and checking out folders is not supported,
         # so we *replace* the folder object... don't try this at home, folks.
         folder = zeit.cms.repository.folder.Folder()
-        zope.interface.alsoProvides(
-            folder, zeit.cms.section.testing.IExampleSection)
+        zope.interface.alsoProvides(folder, zeit.cms.section.testing.IExampleSection)
         self.repository['folder'] = folder
         # Clear Repository's cache, so we get the replaced folder object,
         # not the cached version from above.
         transaction.commit()
 
         obj = self.repository['folder']['test']
-        self.assertFalse(
-            zeit.cms.section.testing.IExampleContent.providedBy(obj))
-        self.assertTrue(
-            zeit.cms.section.interfaces.IZONContent.providedBy(obj))
+        self.assertFalse(zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertTrue(zeit.cms.section.interfaces.IZONContent.providedBy(obj))
 
-        with zeit.cms.checkout.helper.checked_out(
-                self.repository['folder']['test']):
+        with zeit.cms.checkout.helper.checked_out(self.repository['folder']['test']):
             pass
         obj = self.repository['folder']['test']
-        self.assertTrue(
-            zeit.cms.section.testing.IExampleContent.providedBy(obj))
-        self.assertFalse(
-            zeit.cms.section.interfaces.IZONContent.providedBy(obj))
+        self.assertTrue(zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertFalse(zeit.cms.section.interfaces.IZONContent.providedBy(obj))
 
     def test_content_is_marked_according_to_ressort(self):
         obj = ExampleContentType()
@@ -79,20 +69,18 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
         self.repository['sport'] = obj
         obj = self.repository['sport']
 
-        self.assertTrue(
-            zeit.cms.section.testing.IExampleContent.providedBy(obj))
-        self.assertFalse(
-            zeit.cms.section.interfaces.IZONContent.providedBy(obj))
+        self.assertTrue(zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertFalse(zeit.cms.section.interfaces.IZONContent.providedBy(obj))
 
 
 class FindSectionTest(zeit.cms.testing.FunctionalTestCase):
-
     layer = zeit.cms.section.testing.SECTION_LAYER
 
     def test_content_not_in_section_returns_zon(self):
         # since the repository provides IZONSection
-        self.assertEqual(zeit.cms.section.interfaces.IZONSection,
-                         ISection(self.repository['testcontent']))
+        self.assertEqual(
+            zeit.cms.section.interfaces.IZONSection, ISection(self.repository['testcontent'])
+        )
 
     def test_content_inside_section_returns_that_interface(self):
         self.repository['example']['content'] = ExampleContentType()

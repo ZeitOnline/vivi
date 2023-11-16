@@ -5,7 +5,9 @@ from typing import Optional
 from opentelemetry.sdk.metrics._internal.point import HistogramDataPoint
 from opentelemetry.sdk.metrics._internal.aggregation import _DataPointVarT
 from opentelemetry.sdk.metrics._internal.aggregation import (
-    AggregationTemporality, _ExplicitBucketHistogramAggregation)
+    AggregationTemporality,
+    _ExplicitBucketHistogramAggregation,
+)
 
 
 def collect(
@@ -48,8 +50,7 @@ def collect(
         return current_point
 
     if self._previous_point is None or (
-        self._instrument_aggregation_temporality
-        is collection_aggregation_temporality
+        self._instrument_aggregation_temporality is collection_aggregation_temporality
     ):
         self._previous_point = current_point
         return current_point
@@ -57,10 +58,7 @@ def collect(
     max_ = current_point.max
     min_ = current_point.min
 
-    if (
-        collection_aggregation_temporality
-        is AggregationTemporality.CUMULATIVE
-    ):
+    if collection_aggregation_temporality is AggregationTemporality.CUMULATIVE:
         start_time_unix_nano = self._previous_point.start_time_unix_nano
         sum_ = current_point.sum + self._previous_point.sum
         # Only update min/max on delta -> cumulative
@@ -97,5 +95,6 @@ def collect(
     )
     self._previous_point = current_point
     return current_point
+
 
 _ExplicitBucketHistogramAggregation.collect = collect

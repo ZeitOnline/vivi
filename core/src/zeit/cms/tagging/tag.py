@@ -92,21 +92,20 @@ class Tag:
 
     @property
     def uniqueId(self):
-        return ('{}{}'.format(
+        return '{}{}'.format(
             zeit.cms.tagging.interfaces.ID_NAMESPACE,
-            self.code.encode('unicode_escape').decode('ascii')))
+            self.code.encode('unicode_escape').decode('ascii'),
+        )
 
     @property
     def title(self):
         return '%s (%s)' % (self.label, self.entity_type.title())
 
     def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__, self.uniqueId)
+        return '<%s.%s %s>' % (self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_tagging_properties(event):
     if event.namespace == 'http://namespaces.zeit.de/CMS/tagging':
         event.veto()
@@ -116,8 +115,7 @@ def add_ranked_tags_to_head(content):
     tagger = zeit.cms.tagging.interfaces.ITagger(content, None)
     xml = zope.security.proxy.removeSecurityProxy(content.xml)
     if tagger and xml.find('head') is not None:
-        xml.head.rankedTags = zope.security.proxy.removeSecurityProxy(
-            tagger).to_xml()
+        xml.head.rankedTags = zope.security.proxy.removeSecurityProxy(tagger).to_xml()
     else:
         try:
             del xml.head.rankedTags
@@ -127,36 +125,31 @@ def add_ranked_tags_to_head(content):
 
 @grok.subscribe(
     zeit.cms.content.interfaces.IDAVPropertiesInXML,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent,
+)
 def update_tags_on_checkin(content, event):
     # ICMSContent.providedBy(content) is True implicitly, since otherwise one
     # wouldn't be able to check it in.
     add_ranked_tags_to_head(content)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.ObjectModifiedEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.ObjectModifiedEvent)
 def update_tags_on_modify(content, event):
     if not zeit.cms.content.interfaces.IDAVPropertiesInXML.providedBy(content):
         return
     add_ranked_tags_to_head(content)
 
 
-@grok.adapter(
-    str, name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
+@grok.adapter(str, name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_tag(unique_id):
-    assert unique_id.startswith(
-        zeit.cms.tagging.interfaces.ID_NAMESPACE)
-    token = unique_id.replace(
-        zeit.cms.tagging.interfaces.ID_NAMESPACE, '', 1)
+    assert unique_id.startswith(zeit.cms.tagging.interfaces.ID_NAMESPACE)
+    token = unique_id.replace(zeit.cms.tagging.interfaces.ID_NAMESPACE, '', 1)
     # `zeit.retresco` generates unicode escaped uniqueIds, so we decode them.
     if isinstance(token, str):
         token = token.encode('utf-8')
     token = token.decode('unicode_escape')
-    whitelist = zope.component.getUtility(
-        zeit.cms.tagging.interfaces.IWhitelist)
+    whitelist = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
     # return a copy so clients can manipulate the Tag object (e.g. set
     # ``pinned`` on it). This is analogue to the way zeit.intrafind.Tagger
     # works, it also returns fresh Tag objects on each read access.

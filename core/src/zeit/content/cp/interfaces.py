@@ -32,119 +32,98 @@ DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
 TEASER_ID_NAMESPACE = 'http://teaser.vivi.zeit.de/'
 
 
-zope.security.checker.BasicTypes[fractions.Fraction] = (
-    zope.security.checker.NoProxy)
+zope.security.checker.BasicTypes[fractions.Fraction] = zope.security.checker.NoProxy
 
 
 class ITopicLinks(zope.interface.Interface):
+    topiclink_label_1 = zope.schema.TextLine(title=_('Label for topiclink #1'), required=False)
 
-    topiclink_label_1 = zope.schema.TextLine(
-        title=_('Label for topiclink #1'),
-        required=False)
+    topiclink_label_2 = zope.schema.TextLine(title=_('Label for topiclink #2'), required=False)
 
-    topiclink_label_2 = zope.schema.TextLine(
-        title=_('Label for topiclink #2'),
-        required=False)
+    topiclink_label_3 = zope.schema.TextLine(title=_('Label for topiclink #3'), required=False)
 
-    topiclink_label_3 = zope.schema.TextLine(
-        title=_('Label for topiclink #3'),
-        required=False)
+    topiclink_label_4 = zope.schema.TextLine(title=_('Label for topiclink #4'), required=False)
 
-    topiclink_label_4 = zope.schema.TextLine(
-        title=_('Label for topiclink #4'),
-        required=False)
-
-    topiclink_label_5 = zope.schema.TextLine(
-        title=_('Label for topiclink #5'),
-        required=False)
+    topiclink_label_5 = zope.schema.TextLine(title=_('Label for topiclink #5'), required=False)
 
     topiclink_url_1 = zope.schema.URI(
         title=_('URL for topiclink #1'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
     topiclink_url_2 = zope.schema.URI(
         title=_('URL for topiclink #2'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
     topiclink_url_3 = zope.schema.URI(
         title=_('URL for topiclink #3'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
     topiclink_url_4 = zope.schema.URI(
         title=_('URL for topiclink #4'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
     topiclink_url_5 = zope.schema.URI(
         title=_('URL for topiclink #5'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
 
 class ILiveblogLinks(zope.interface.Interface):
+    liveblog_label_1 = zope.schema.TextLine(title=_('Label for liveblog #1'), required=False)
 
-    liveblog_label_1 = zope.schema.TextLine(
-        title=_('Label for liveblog #1'),
-        required=False)
+    liveblog_label_2 = zope.schema.TextLine(title=_('Label for liveblog #2'), required=False)
 
-    liveblog_label_2 = zope.schema.TextLine(
-        title=_('Label for liveblog #2'),
-        required=False)
-
-    liveblog_label_3 = zope.schema.TextLine(
-        title=_('Label for liveblog #3'),
-        required=False)
+    liveblog_label_3 = zope.schema.TextLine(title=_('Label for liveblog #3'), required=False)
 
     liveblog_url_1 = zope.schema.URI(
         title=_('URL for liveblog #1'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
     liveblog_url_2 = zope.schema.URI(
         title=_('URL for liveblog #2'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
     liveblog_url_3 = zope.schema.URI(
         title=_('URL for liveblog #3'),
         required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        constraint=zeit.cms.interfaces.valid_link_target,
+    )
 
 
-class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
-                  zeit.cms.content.interfaces.IXMLContent,
-                  zeit.edit.interfaces.IContainer,
-                  ITopicLinks,
-                  ILiveblogLinks,
-                  zeit.retresco.interfaces.ISkipEnrich):
-
+class ICenterPage(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.content.interfaces.IXMLContent,
+    zeit.edit.interfaces.IContainer,
+    ITopicLinks,
+    ILiveblogLinks,
+    zeit.retresco.interfaces.ISkipEnrich,
+):
     type = zope.schema.Choice(
-        title=_('CP type'),
-        source=zeit.content.cp.source.CPTypeSource(),
-        default='centerpage')
+        title=_('CP type'), source=zeit.content.cp.source.CPTypeSource(), default='centerpage'
+    )
 
-    topiclink_title = zope.schema.TextLine(
-        title=_('Name for topiclinks'),
-        required=False)
+    topiclink_title = zope.schema.TextLine(title=_('Name for topiclinks'), required=False)
 
-    og_title = zope.schema.TextLine(
-        title=_('Titel'),
-        required=False)
+    og_title = zope.schema.TextLine(title=_('Titel'), required=False)
 
-    og_description = zope.schema.TextLine(
-        title=_('Description'),
-        required=False)
+    og_description = zope.schema.TextLine(title=_('Description'), required=False)
 
-    og_image = zope.schema.TextLine(
-        title=_('Image'),
-        required=False)
+    og_image = zope.schema.TextLine(title=_('Image'), required=False)
 
-    keywords = zeit.cms.tagging.interfaces.Keywords(
-        required=False,
-        default=())
+    keywords = zeit.cms.tagging.interfaces.Keywords(required=False, default=())
 
     def __getitem__(area_key):
         """Return IArea for given key.
@@ -162,13 +141,17 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     def updateMetadata(content):
         """Update the metadata of the given content object."""
 
-    cache = zope.interface.Attribute("""\
+    cache = zope.interface.Attribute(
+        """\
         Returns a (transaction bound) cache, which can be used for various
-        things like rendered areas, teaser contents, query objects etc.""")
+        things like rendered areas, teaser contents, query objects etc."""
+    )
 
-    cached_areas = zope.interface.Attribute("""\
+    cached_areas = zope.interface.Attribute(
+        """\
         Cached list of all IArea objects; IContentQuery uses this instead of
-        iterating over body/regions/values, for performance reasons.""")
+        iterating over body/regions/values, for performance reasons."""
+    )
 
 
 class ISitemap(ICenterPage):
@@ -188,9 +171,7 @@ class ISearchpage(ICenterPage):
 class IElement(zeit.edit.interfaces.IElement):
     """generic element, but CP-specific"""
 
-    visible = zope.schema.Bool(
-        title=_('Visible in frontend'),
-        default=True)
+    visible = zope.schema.Bool(title=_('Visible in frontend'), default=True)
 
 
 class IBody(zeit.edit.interfaces.IArea, IElement):
@@ -198,58 +179,46 @@ class IBody(zeit.edit.interfaces.IArea, IElement):
 
 
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
-
     # Use a schema field so the security can declare it as writable,
     # since in ILocation __parent__ is only an Attribute.
     __parent__ = zope.schema.Object(IElement)
 
-    title = zope.schema.TextLine(
-        title=_("Title"),
-        required=False)
+    title = zope.schema.TextLine(title=_('Title'), required=False)
 
-    __name__ = zope.schema.TextLine(
-        title=_("Name"),
-        required=True)
+    __name__ = zope.schema.TextLine(title=_('Name'), required=True)
 
     # XXX We need to repeat these from IElement for security declarations.
-    visible = zope.schema.Bool(
-        title=_('Visible in frontend'),
-        default=True)
+    visible = zope.schema.Bool(title=_('Visible in frontend'), default=True)
 
-    kind = zope.schema.TextLine(
-        title=_("Kind"))
+    kind = zope.schema.TextLine(title=_('Kind'))
 
-    kind_title = zope.schema.TextLine(
-        title=_("Kind Title"))
+    kind_title = zope.schema.TextLine(title=_('Kind Title'))
 
 
 class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
     pass
 
 
-class IRegion(
-        IReadRegion,
-        IWriteRegion,
-        zeit.edit.interfaces.IContainer,
-        IElement):
+class IRegion(IReadRegion, IWriteRegion, zeit.edit.interfaces.IContainer, IElement):
     """Abstract layer above IArea."""
 
     zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
 
 
 class AutomaticTypeSource(zeit.cms.content.sources.SimpleDictSource):
-
-    values = collections.OrderedDict([
-        ('centerpage', _('automatic-area-type-centerpage')),
-        ('custom', _('automatic-area-type-custom')),
-        ('topicpage', _('automatic-area-type-topicpage')),
-        ('related-topics', _('automatic-area-type-related-topics')),
-        ('query', _('automatic-area-type-query')),
-        ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
-        ('reach', _('automatic-area-type-reach')),
-        ('topicpagelist', _('automatic-area-type-topicpagelist')),
-        ('rss-feed', _('automatic-area-type-rss-feed'))
-    ])
+    values = collections.OrderedDict(
+        [
+            ('centerpage', _('automatic-area-type-centerpage')),
+            ('custom', _('automatic-area-type-custom')),
+            ('topicpage', _('automatic-area-type-topicpage')),
+            ('related-topics', _('automatic-area-type-related-topics')),
+            ('query', _('automatic-area-type-query')),
+            ('elasticsearch-query', _('automatic-area-type-elasticsearch-query')),
+            ('reach', _('automatic-area-type-reach')),
+            ('topicpagelist', _('automatic-area-type-topicpagelist')),
+            ('rss-feed', _('automatic-area-type-rss-feed')),
+        ]
+    )
 
     def getToken(self, value):
         # JS needs to use these values, don't MD5 them.
@@ -272,8 +241,7 @@ def automatic_area_can_read_teasers_automatically(data):
     if data.automatic_type == 'query' and data.raw_query:
         return True
 
-    if (data.automatic_type == 'elasticsearch-query' and
-            data.elasticsearch_raw_query):
+    if data.automatic_type == 'elasticsearch-query' and data.elasticsearch_raw_query:
         return True
 
     if data.automatic_type == 'rss-feed' and data.rss_feed:
@@ -288,67 +256,52 @@ def automatic_area_can_read_teasers_automatically(data):
     return False
 
 
-class IReadArea(
-        zeit.edit.interfaces.IReadContainer,
-        ITopicLinks,
-        IConfiguration):
-
+class IReadArea(zeit.edit.interfaces.IReadContainer, ITopicLinks, IConfiguration):
     # Use a schema field so the security can declare it as writable,
     # since in ILocation __parent__ is only an Attribute.
     __parent__ = zope.schema.Object(IElement)
 
     # XXX We need to repeat this from IElement for security declarations.
-    visible = zope.schema.Bool(
-        title=_('Visible in frontend'),
-        default=True)
+    visible = zope.schema.Bool(title=_('Visible in frontend'), default=True)
 
     kind = zope.schema.TextLine(
-        title=_("Kind"),
-        description=_("Used internally for rendering on Friedbert"),
-        default='solo')
+        title=_('Kind'), description=_('Used internally for rendering on Friedbert'), default='solo'
+    )
 
-    kind_title = zope.interface.Attribute(
-        "Translation of kind to a human friendly information")
+    kind_title = zope.interface.Attribute('Translation of kind to a human friendly information')
 
-    supertitle = zope.schema.TextLine(
-        title=_("Supertitle"),
-        required=False)
+    supertitle = zope.schema.TextLine(title=_('Supertitle'), required=False)
 
-    title = zope.schema.TextLine(
-        title=_("Title"),
-        required=False)
+    title = zope.schema.TextLine(title=_('Title'), required=False)
 
-    read_more = zope.schema.TextLine(
-        title=_("Read more"),
-        required=False)
+    read_more = zope.schema.TextLine(title=_('Read more'), required=False)
 
     read_more_url = zope.schema.URI(
-        title=_("Read more URL"),
-        required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        title=_('Read more URL'), required=False, constraint=zeit.cms.interfaces.valid_link_target
+    )
 
     image = zope.schema.Choice(
         title=_('Image'),
-        description=_("Drag an image group here"),
+        description=_('Drag an image group here'),
         required=False,
-        source=zeit.content.image.interfaces.imageGroupSource)
+        source=zeit.content.image.interfaces.imageGroupSource,
+    )
 
     apply_teaser_layouts_automatically = zope.schema.Bool(
-        title=_('Apply teaser layouts automatically?'),
-        required=False,
-        default=False)
+        title=_('Apply teaser layouts automatically?'), required=False, default=False
+    )
 
     first_teaser_layout = zope.schema.Choice(
         title=_('First teaser layout'),
         source=zeit.content.cp.layout.TeaserBlockLayoutSource(),
-        required=False)
+        required=False,
+    )
 
     default_teaser_layout = zope.interface.Attribute(
-        'Default layout for teaser lists inside this area')
+        'Default layout for teaser lists inside this area'
+    )
 
-    automatic = zope.schema.Bool(
-        title=_('automatic'),
-        default=False)
+    automatic = zope.schema.Bool(title=_('automatic'), default=False)
     automatic.__doc__ = """If True, IRenderedArea.values() will populate
     any IAutomaticTeaserBlock with content, as specified by automatic_type.
     """
@@ -356,9 +309,8 @@ class IReadArea(
     automatic.setTaggedValue('placeholder', ' ')
 
     automatic_type = zope.schema.Choice(
-        title=_('Automatic type'),
-        source=AutomaticTypeSource(),
-        required=True)
+        title=_('Automatic type'), source=AutomaticTypeSource(), required=True
+    )
 
     background_color = zope.schema.TextLine(
         title=_('Area background color (6 characters, no #)'),
@@ -366,54 +318,52 @@ class IReadArea(
         required=False,
         min_length=6,
         max_length=6,
-        constraint=zeit.cms.content.interfaces.hex_literal)
+        constraint=zeit.cms.content.interfaces.hex_literal,
+    )
 
     @zope.interface.invariant
     def automatic_type_required_arguments(data):
-        if (data.automatic and
-                not automatic_area_can_read_teasers_automatically(data)):
+        if data.automatic and not automatic_area_can_read_teasers_automatically(data):
             if data.automatic_type == 'centerpage':
                 error_message = _(
                     'Automatic area with teaser from centerpage '
-                    'requires a referenced centerpage.')
+                    'requires a referenced centerpage.'
+                )
             if data.automatic_type == 'custom':
                 error_message = _(
-                    'Automatic area with teaser from custom query '
-                    'requires a query condition.')
+                    'Automatic area with teaser from custom query ' 'requires a query condition.'
+                )
             if data.automatic_type == 'topicpage':
                 error_message = _(
-                    'Automatic area with teaser from TMS topicpage '
-                    'requires a topicpage ID.')
+                    'Automatic area with teaser from TMS topicpage ' 'requires a topicpage ID.'
+                )
             if data.automatic_type == 'elasticsearch-query':
                 error_message = _(
-                    'Automatic area with teaser from elasticsearch query '
-                    'requires a raw query.')
+                    'Automatic area with teaser from elasticsearch query ' 'requires a raw query.'
+                )
             if data.automatic_type == 'rss-feed':
-                error_message = _(
-                    'Automatic area with rss-feed requires a given feed')
+                error_message = _('Automatic area with rss-feed requires a given feed')
             if data.automatic_type == 'related-topics':
                 error_message = _(
-                    'Automatic area with related-topics requires a given'
-                    ' topicpage')
+                    'Automatic area with related-topics requires a given' ' topicpage'
+                )
             if data.automatic_type == 'reach':
-                error_message = _(
-                    'Automatic area with teasers from reach require a given'
-                    ' kind')
+                error_message = _('Automatic area with teasers from reach require a given' ' kind')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 
     @zope.interface.invariant
     def elasticsearch_valid_json_query(data):
         """Check the es raw query is plausible elasticsearch DSL"""
-        if data.automatic_type == 'elasticsearch-query' and (
-                data.elasticsearch_raw_query):
+        if data.automatic_type == 'elasticsearch-query' and (data.elasticsearch_raw_query):
             try:
                 query = json.loads(data.elasticsearch_raw_query)
                 if 'query' not in query:
                     raise ValueError('Top-level key "query" is required.')
             except Exception as err:
                 raise zeit.cms.interfaces.ValidationError(
-                    _('Elasticsearch raw query is malformed: %s' % err))
+                    _('Elasticsearch raw query is malformed: %s' % err)
+                )
         return True
 
     def adjust_auto_blocks_to_count():
@@ -432,12 +382,12 @@ class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
 
 
 class IRenderedArea(IArea):
-    """Overrides values() to evaluate any automatic settings.
-    """
+    """Overrides values() to evaluate any automatic settings."""
 
     start = zope.interface.Attribute(
         'Offset the IContentQuery result by this many content objects. '
-        'This is an extension point for zeit.web to do pagination.')
+        'This is an extension point for zeit.web to do pagination.'
+    )
 
 
 class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
@@ -447,27 +397,18 @@ class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
 
 
 class IBlock(IElement, zeit.edit.interfaces.IBlock):
-
-    supertitle = zope.schema.TextLine(
-        title=_("Supertitle"),
-        required=False)
-    title = zope.schema.TextLine(
-        title=_("Title"),
-        required=False)
-    type_title = zope.interface.Attribute(
-        "Translation of type to a human friendly information")
+    supertitle = zope.schema.TextLine(title=_('Supertitle'), required=False)
+    title = zope.schema.TextLine(title=_('Title'), required=False)
+    type_title = zope.interface.Attribute('Translation of type to a human friendly information')
     volatile = zope.schema.Bool(
-        title=_("Whether block can be removed by automation, e.g. AutoPilot"),
-        default=False)
+        title=_('Whether block can be removed by automation, e.g. AutoPilot'), default=False
+    )
 
     # BBB needed by zeit.web for legacy/zmo content only
-    read_more = zope.schema.TextLine(
-        title=_("Read more"),
-        required=False)
+    read_more = zope.schema.TextLine(title=_('Read more'), required=False)
     read_more_url = zope.schema.URI(
-        title=_("Read more URL"),
-        required=False,
-        constraint=zeit.cms.interfaces.valid_link_target)
+        title=_('Read more URL'), required=False, constraint=zeit.cms.interfaces.valid_link_target
+    )
 
 
 class IUnknownBlock(zeit.edit.interfaces.IUnknownBlock, IBlock):
@@ -483,7 +424,6 @@ class IUnknownBlock(zeit.edit.interfaces.IUnknownBlock, IBlock):
 # so it has no access to the token machinery, thus no conversion
 # from/to string happens there -- so we need to do that explicitly.
 class IntChoice(zope.schema.Choice):
-
     def fromUnicode(self, value):
         try:
             value = int(value)
@@ -495,29 +435,26 @@ class IntChoice(zope.schema.Choice):
 class IEntry(zope.interface.Interface):
     """An entry in a feed."""
 
-    pinned = zope.schema.Bool(
-        title=_('Pinned'))
+    pinned = zope.schema.Bool(title=_('Pinned'))
 
-    hidden = zope.schema.Bool(
-        title=_('Hidden on HP'))
+    hidden = zope.schema.Bool(title=_('Hidden on HP'))
 
-    big_layout = zope.schema.Bool(
-        title=_('Big layout'))
+    big_layout = zope.schema.Bool(title=_('Big layout'))
 
-    hidden_relateds = zope.schema.Bool(
-        title=_('Hidden relateds'))
+    hidden_relateds = zope.schema.Bool(title=_('Hidden relateds'))
 
 
 class IReadFeed(zope.interface.Interface):
     """Feed read interface."""
 
-    title = zope.schema.TextLine(title=_("Title"))
+    title = zope.schema.TextLine(title=_('Title'))
     object_limit = zope.schema.Int(
-        title=_("Limit amount"),
-        description=_("limit-amount-description"),
+        title=_('Limit amount'),
+        description=_('limit-amount-description'),
         default=50,
         min=1,
-        required=False)
+        required=False,
+    )
 
     def __len__():
         """Return amount of objects syndicated."""
@@ -584,24 +521,21 @@ class IFeed(IReadFeed, IWriteFeed):
 
 
 class IReadTeaserBlock(IBlock, IReadFeed):
-
     references = zope.schema.Choice(
         title=_('Referenced content'),
-        description=_("Drag content here"),
+        description=_('Drag content here'),
         source=zeit.cms.content.contentsource.cmsContentSource,
-        required=False)
+        required=False,
+    )
 
     layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.cp.layout.TeaserBlockLayoutSource())
+        title=_('Layout'), source=zeit.content.cp.layout.TeaserBlockLayoutSource()
+    )
 
-    force_mobile_image = zope.schema.Bool(
-        title=_('Force image on mobile'),
-        default=True)
+    force_mobile_image = zope.schema.Bool(title=_('Force image on mobile'), default=True)
 
 
 class IWriteTeaserBlock(IWriteFeed):
-
     def update(other):
         """Copy content and properties from another ITeaserBlock."""
 
@@ -611,18 +545,11 @@ class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
 
 
 class IReadLocalTeaserBlock(IReadTeaserBlock):
+    teaserSupertitle = zope.schema.TextLine(title=_('Teaser kicker'), required=False)
 
-    teaserSupertitle = zope.schema.TextLine(
-        title=_('Teaser kicker'),
-        required=False)
+    teaserTitle = zope.schema.TextLine(title=_('Teaser title'), required=False)
 
-    teaserTitle = zope.schema.TextLine(
-        title=_("Teaser title"),
-        required=False)
-
-    teaserText = zope.schema.Text(
-        title=_("Teaser text"),
-        required=False)
+    teaserText = zope.schema.Text(title=_('Teaser text'), required=False)
 
     # Implementing a separate IImages adapter for ILocalTeaserBlock seems way
     # more effort than it's worth, so we include the two fields here instead.
@@ -637,23 +564,17 @@ class IWriteLocalTeaserBlock(IWriteTeaserBlock):
     pass
 
 
-class ILocalTeaserBlock(
-        IReadLocalTeaserBlock,
-        IWriteLocalTeaserBlock,
-        ITeaserBlock):
+class ILocalTeaserBlock(IReadLocalTeaserBlock, IWriteLocalTeaserBlock, ITeaserBlock):
     """Teaser module that allows overriding title/text/image"""
 
 
 class IReadAutomaticTeaserBlock(IReadTeaserBlock):
-
     force_mobile_image = zope.schema.Bool(
-        title=_('Force image on mobile'),
-        required=False,
-        default=False)
+        title=_('Force image on mobile'), required=False, default=False
+    )
 
 
 class IWriteAutomaticTeaserBlock(IWriteTeaserBlock):
-
     def change_layout(layout):
         """Temporarily change the layout (for the duration of one area.values()
         evaluation)."""
@@ -664,22 +585,17 @@ class IWriteAutomaticTeaserBlock(IWriteTeaserBlock):
         """
 
 
-class IAutomaticTeaserBlock(IReadAutomaticTeaserBlock,
-                            IWriteAutomaticTeaserBlock,
-                            ITeaserBlock):
+class IAutomaticTeaserBlock(IReadAutomaticTeaserBlock, IWriteAutomaticTeaserBlock, ITeaserBlock):
     pass
 
 
 def validate_xml_block(xml):
     if xml.tag != 'container':
-        raise zeit.cms.interfaces.ValidationError(
-            _("The root element must be <container>."))
+        raise zeit.cms.interfaces.ValidationError(_('The root element must be <container>.'))
     if xml.get('{http://namespaces.zeit.de/CMS/cp}type') != 'xml':
-        raise zeit.cms.interfaces.ValidationError(
-            _("cp:type must be 'xml'."))
+        raise zeit.cms.interfaces.ValidationError(_("cp:type must be 'xml'."))
     if not xml.get('{http://namespaces.zeit.de/CMS/cp}__name__'):
-        raise zeit.cms.interfaces.ValidationError(
-            _("No or empty cp:__name__ attribute."))
+        raise zeit.cms.interfaces.ValidationError(_('No or empty cp:__name__ attribute.'))
     return True
 
 
@@ -687,34 +603,32 @@ class IXMLBlock(IBlock):
     """A block containing raw XML."""
 
     xml = zeit.cms.content.field.XMLTree(
-        title=_("XML Source"),
-        constraint=validate_xml_block,
-        tidy_input=True)
+        title=_('XML Source'), constraint=validate_xml_block, tidy_input=True
+    )
 
 
 class IPlaylistBlock(IBlock):
     """A block which contains the link to a video playlist."""
 
     referenced_playlist = zope.schema.Choice(
-        title=_("Playlist"),
-        source=zeit.content.video.interfaces.PlaylistSource())
+        title=_('Playlist'), source=zeit.content.video.interfaces.PlaylistSource()
+    )
 
 
 class ICPExtraBlock(IBlock):
     """Block which contains a cp_extra."""
 
     cpextra = zope.schema.Choice(
-        title=_('CP Extra Id'),
-        source=zeit.content.cp.source.CPExtraSource())
+        title=_('CP Extra Id'), source=zeit.content.cp.source.CPExtraSource()
+    )
 
 
-class ITeaser(zeit.cms.content.interfaces.ICommonMetadata,
-              zeit.cms.content.interfaces.IXMLContent):
+class ITeaser(zeit.cms.content.interfaces.ICommonMetadata, zeit.cms.content.interfaces.IXMLContent):
     """A standalone teaser object which references the article."""
 
     original_content = zope.schema.Choice(
-        title='The referenced article.',
-        source=zeit.cms.content.contentsource.cmsContentSource)
+        title='The referenced article.', source=zeit.cms.content.contentsource.cmsContentSource
+    )
 
 
 class IQuizBlock(zeit.content.modules.interfaces.IQuiz, IBlock):
@@ -722,7 +636,6 @@ class IQuizBlock(zeit.content.modules.interfaces.IQuiz, IBlock):
 
 
 class ILeadTime(zope.interface.Interface):
-
     start = zope.schema.Datetime(title=_('From'))
     end = zope.schema.Datetime(title=_('To'))
 
@@ -734,9 +647,7 @@ class ILeadTimeCP(zope.interface.Interface):
 
 
 class ILeadTimeWorklist(zope.interface.Interface):
-
-    previous_leader = zope.schema.Choice(
-        source=zeit.cms.content.contentsource.CMSContentSource())
+    previous_leader = zope.schema.Choice(source=zeit.cms.content.contentsource.CMSContentSource())
 
 
 class IRenderedXML(zope.interface.Interface):
@@ -748,88 +659,80 @@ class IRawTextBlock(zeit.content.modules.interfaces.IRawText, IBlock):
 
 
 class IHeaderImageBlock(IBlock):
-
     image = zope.schema.Choice(
         title=_('Image'),
-        description=_("Drag an image group here"),
+        description=_('Drag an image group here'),
         required=False,
-        source=zeit.content.image.interfaces.imageGroupSource)
-    animate = zope.schema.Bool(
-        title=_('Animate'),
-        default=False)
+        source=zeit.content.image.interfaces.imageGroupSource,
+    )
+    animate = zope.schema.Bool(title=_('Animate'), default=False)
 
 
 class AlignmentSource(zeit.cms.content.sources.SimpleDictSource):
-
-    values = collections.OrderedDict((
-        ('left', _('left')),
-        ('center', _('center')),
-        ('right', _('right')),
-    ))
+    values = collections.OrderedDict(
+        (
+            ('left', _('left')),
+            ('center', _('center')),
+            ('right', _('right')),
+        )
+    )
 
 
 class IMarkupBlock(IBlock):
-
-    text = zope.schema.Text(
-        title=_('Contents'),
-        description=_('Use Markdown'),
-        required=True)
+    text = zope.schema.Text(title=_('Contents'), description=_('Use Markdown'), required=True)
     markdown = zope.interface.Attribute('Text in markdown format')
     alignment = zope.schema.Choice(
         title=_('Alignment'),
         description=_('Choose alignment'),
         source=AlignmentSource(),
-        default='left')
+        default='left',
+    )
 
 
 class CardstackColorSource(zeit.cms.content.sources.SimpleDictSource):
-
-    values = collections.OrderedDict((
-        (color, color) for color in [
-            '#D8D8D8',
-            '#5E534F',
-            '#E4DED8',
-            '#69696C',
-            '#FF7783',
-            '#7C0E14',
-            '#6FA6B9',
-            '#085064',
-            '#57C494',
-            '#1E6847']
-    ))
+    values = collections.OrderedDict(
+        (
+            (color, color)
+            for color in [
+                '#D8D8D8',
+                '#5E534F',
+                '#E4DED8',
+                '#69696C',
+                '#FF7783',
+                '#7C0E14',
+                '#6FA6B9',
+                '#085064',
+                '#57C494',
+                '#1E6847',
+            ]
+        )
+    )
 
 
 class ICardstackBlock(IBlock):
+    card_id = zope.schema.TextLine(title=_('Cardstack id'))
 
-    card_id = zope.schema.TextLine(
-        title=_('Cardstack id'))
-
-    is_advertorial = zope.schema.Bool(
-        title=_('Advertorial?'),
-        default=False)
+    is_advertorial = zope.schema.Bool(title=_('Advertorial?'), default=False)
 
     cardstack_background_color = zope.schema.Choice(
         title=_('Background color'),
         description=_('Choose a background color'),
-        source=CardstackColorSource()
+        source=CardstackColorSource(),
     )
 
 
-JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(
-    ICenterPage)
+JOBTICKER_SOURCE = zeit.content.modules.jobticker.FeedSource(ICenterPage)
 
 
 class IJobTickerBlock(zeit.content.modules.interfaces.IJobTicker, IBlock):
     """The Jobticker block with a specific feed specified in source."""
 
-    feed = zope.schema.Choice(
-        title=_('Jobbox Ticker'),
-        required=True,
-        source=JOBTICKER_SOURCE)
+    feed = zope.schema.Choice(title=_('Jobbox Ticker'), required=True, source=JOBTICKER_SOURCE)
 
 
 class IPodcastBlock(IBlock, zeit.content.modules.interfaces.PodcastBase):
     """The Podcast block with a reference to a podcast."""
+
     pass
 
 
@@ -837,8 +740,7 @@ class IMailBlock(zeit.content.modules.interfaces.IMail, IBlock):
     pass
 
 
-class INewsletterSignupBlock(
-        zeit.content.modules.interfaces.INewsletterSignup, IBlock):
+class INewsletterSignupBlock(zeit.content.modules.interfaces.INewsletterSignup, IBlock):
     pass
 
 
@@ -849,5 +751,5 @@ class ICP2015(ICenterPage):
 
 class ICpSEO(zeit.seo.interfaces.ISEO):
     enable_rss_tracking_parameter = zope.schema.Bool(
-        title=_('Enable RSS Tracking-Parameter'),
-        required=False)
+        title=_('Enable RSS Tracking-Parameter'), required=False
+    )

@@ -10,7 +10,6 @@ class Break(Exception):
 
 
 class EvalExecHelper:
-
     def _globals(self, globs):
         globs['__return'] = self._store_result
         return globs
@@ -29,7 +28,6 @@ class EvalExecHelper:
 
 @zope.interface.implementer(zeit.content.text.interfaces.IPythonScript)
 class PythonScript(zeit.content.text.text.Text, EvalExecHelper):
-
     def __call__(self, **kw):
         self._v_result = None
         code = compile(self.text, filename=self.uniqueId, mode='exec')
@@ -43,7 +41,6 @@ class PythonScript(zeit.content.text.text.Text, EvalExecHelper):
 
 
 class PythonScriptType(zeit.content.text.text.TextType):
-
     interface = zeit.content.text.interfaces.IPythonScript
     type = 'python'
     title = _('Python script')

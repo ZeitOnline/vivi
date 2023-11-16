@@ -5,7 +5,6 @@ import zope.interface
 
 
 class AllowedMixin(zeit.cms.content.sources.AllowedBase):
-
     def __init__(self, id, title, available, types):
         super().__init__(id, title, available)
         self.types = types.split(' ') if types else None
@@ -13,6 +12,7 @@ class AllowedMixin(zeit.cms.content.sources.AllowedBase):
     def is_allowed(self, context):
         # Avoid circular import
         from zeit.content.cp.interfaces import ICenterPage
+
         cp = ICenterPage(context, None)
         if cp is None:
             return True
@@ -43,14 +43,10 @@ class ITeaserBlockLayout(zope.interface.Interface):
 
     id = zope.schema.ASCIILine(title='Id used in xml to identify layout')
     title = zope.schema.TextLine(title='Human readable title.')
-    image_pattern = zope.schema.ASCIILine(
-        title='A match for the image to use in this layout.')
-    areas = zope.schema.Set(
-        title='Kinds of areas where this layout is allowed')
-    default_in_areas = zope.schema.Set(
-        title='Kinds of areas where this layout is the default')
-    types = zope.schema.Set(
-        title='Types of CP where this layout is allowed')
+    image_pattern = zope.schema.ASCIILine(title='A match for the image to use in this layout.')
+    areas = zope.schema.Set(title='Kinds of areas where this layout is allowed')
+    default_in_areas = zope.schema.Set(title='Kinds of areas where this layout is the default')
+    types = zope.schema.Set(title='Types of CP where this layout is allowed')
 
     def is_default(block):
         """True if this layout is the default for the given block's area."""
@@ -58,9 +54,9 @@ class ITeaserBlockLayout(zope.interface.Interface):
 
 @zope.interface.implementer(ITeaserBlockLayout)
 class BlockLayout(AllowedMixin):
-
-    def __init__(self, id, title, image_pattern=None,
-                 areas=None, default=(), available=None, types=None):
+    def __init__(
+        self, id, title, image_pattern=None, areas=None, default=(), available=None, types=None
+    ):
         super().__init__(id, title, available, types)
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
@@ -72,7 +68,6 @@ class BlockLayout(AllowedMixin):
 
 
 class NoBlockLayout:
-
     def __init__(self, block):
         self.block = block
 
@@ -82,15 +77,17 @@ class NoBlockLayout:
         area = zeit.content.cp.interfaces.IArea(self.block, None)
         raise ValueError(
             'Teaser layout "%s" is not configured for area "%s".\n'
-            '  (module:%s, area:%s). Is a default layout set for the area?' % (
+            '  (module:%s, area:%s). Is a default layout set for the area?'
+            % (
                 self.block.xml.get('module'),
                 getattr(area, 'kind', '<unknown>'),
                 self.block.__name__,
-                getattr(area, '__name__', '<unknown>')))
+                getattr(area, '__name__', '<unknown>'),
+            )
+        )
 
 
 class RegionConfig(AllowedMixin):
-
     def __init__(self, id, title, kind, areas, available, types):
         super().__init__(id, title, available, types)
         self.kind = kind
@@ -98,27 +95,22 @@ class RegionConfig(AllowedMixin):
 
 
 class AreaConfig(AllowedMixin):
-
     def __init__(self, id, title, kind, available, types):
         super().__init__(id, title, available, types)
         self.kind = kind
 
 
 class ModuleConfig(AllowedMixin):
-
     def __init__(self, id, title, available, types):
         super().__init__(id, title, available, types)
 
 
 class ObjectSource(zeit.cms.content.sources.ObjectSource):
-
     def _get_title_for(self, node):
         return node.get('title')
 
 
-class TeaserBlockLayoutSource(
-        ObjectSource, zeit.cms.content.sources.XMLSource):
-
+class TeaserBlockLayoutSource(ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.cp'
     config_url = 'block-layout-source'
     default_filename = 'cp-layouts.xml'
@@ -134,9 +126,14 @@ class TeaserBlockLayoutSource(
             areas = areas.split()
             id = node.get(self.attribute)
             result[id] = BlockLayout(
-                id, self._get_title_for(node),
-                g('image_pattern'), areas, g('default', ''),
-                g('available', None), g('types', None))
+                id,
+                self._get_title_for(node),
+                g('image_pattern'),
+                areas,
+                g('default', ''),
+                g('available', None),
+                g('types', None),
+            )
         return result
 
     def filterValue(self, context, value):
@@ -154,7 +151,6 @@ def get_layout(id):
 
 
 class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.cp'
     config_url = 'region-config-source'
     default_filename = 'cp-regions.xml'
@@ -169,10 +165,12 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             # Therefore we need to prefix the kind to make it unique.
             id = '%s-%s' % (i, node.get('kind'))
             result[id] = RegionConfig(
-                id, self._get_title_for(node),
+                id,
+                self._get_title_for(node),
                 node.get('kind'),
                 [dict(x.attrib) for x in node.iterchildren('area')],
-                node.get('available', None), node.get('types', None),
+                node.get('available', None),
+                node.get('types', None),
             )
         return result
 
@@ -181,7 +179,6 @@ REGION_CONFIGS = RegionConfigSource()
 
 
 class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.cp'
     config_url = 'area-config-source'
     default_filename = 'cp-areas.xml'
@@ -193,9 +190,11 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
         for node in tree.iterchildren('*'):
             id = node.get('kind')
             result[id] = AreaConfig(
-                id, self._get_title_for(node),
+                id,
+                self._get_title_for(node),
                 node.get('kind'),
-                node.get('available', None), node.get('types', None),
+                node.get('available', None),
+                node.get('types', None),
             )
         return result
 
@@ -204,7 +203,6 @@ AREA_CONFIGS = AreaConfigSource()
 
 
 class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.cp'
     config_url = 'module-config-source'
     default_filename = 'cp-modules.xml'
@@ -216,8 +214,10 @@ class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
         for node in tree.iterchildren('*'):
             id = node.get('id')
             result[id] = ModuleConfig(
-                id, self._get_title_for(node),
-                node.get('available', None), node.get('types', None),
+                id,
+                self._get_title_for(node),
+                node.get('available', None),
+                node.get('types', None),
             )
         return result
 

@@ -2,7 +2,6 @@ import zeit.campus.testing
 
 
 class ZCOInfoboxDebate(zeit.campus.testing.BrowserTestCase):
-
     def test_zco_infobox_has_debate_field(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/campus')
@@ -16,8 +15,7 @@ class ZCOInfoboxDebate(zeit.campus.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
 
         self.assertEndsWith('@@edit.html', b.url)
-        self.assertEqual(
-            'mailto:foo@example.com', b.getControl('Debate action URL').value)
+        self.assertEqual('mailto:foo@example.com', b.getControl('Debate action URL').value)
 
         b.getLink('Checkin').click()
         self.assertEllipsis('...mailto:foo@example.com...', b.contents)

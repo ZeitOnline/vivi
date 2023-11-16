@@ -7,7 +7,6 @@ import zope.i18n
 
 
 class ErrorView:
-
     status = 500
 
     def __call__(self):
@@ -28,8 +27,7 @@ class ErrorView:
     def message(self):
         args = getattr(self.context, 'args', None)
         if args:
-            message = zope.i18n.translate(
-                args[0], context=self.request)
+            message = zope.i18n.translate(args[0], context=self.request)
         else:
             message = self.context
 
@@ -37,7 +35,6 @@ class ErrorView:
 
 
 class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
-
     copy_to_zlog = True
 
     def raising(self, info, request=None):
@@ -68,9 +65,7 @@ class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
             user = {'id': username[1], 'name': username[2]}
             if username[3]:
                 user['email'] = username[3]
-        bugsnag.notify(
-            info[1], traceback=info[2], context=path,
-            severity='error', user=user)
+        bugsnag.notify(info[1], traceback=info[2], context=path, severity='error', user=user)
 
 
 # copy&paste from zope.error.error to customize the formatter
@@ -85,9 +80,7 @@ def getFormattedException(info):
     return ''.join(lines)
 
 
-class ExceptionFormatter(
-        zope.exceptions.exceptionformatter.TextExceptionFormatter):
-
+class ExceptionFormatter(zope.exceptions.exceptionformatter.TextExceptionFormatter):
     # copy&paste to throw away non-application parts of the traceback.
     def formatException(self, etype, value, tb):
         __exception_formatter__ = 1  # noqa
@@ -98,8 +91,9 @@ class ExceptionFormatter(
         while tb is not None and (limit is None or n < limit):
             if tb.tb_frame.f_locals.get('__exception_formatter__'):
                 # Stop recursion.
-                result.append('(Recursive formatException() stopped,'
-                              ' trying traceback.format_tb)\n')
+                result.append(
+                    '(Recursive formatException() stopped,' ' trying traceback.format_tb)\n'
+                )
                 result.extend(traceback.format_tb(tb))
                 break
             # patched

@@ -19,8 +19,7 @@ import zope.schema
 
 IMAGE_NAMESPACE = 'http://namespaces.zeit.de/CMS/image'
 AVAILABLE_MIME_TYPES = ['image/jpeg', 'image/png']
-AVAILABLE_PILLOW_TYPES = [
-    x.replace('image/', '').upper() for x in AVAILABLE_MIME_TYPES]
+AVAILABLE_PILLOW_TYPES = [x.replace('image/', '').upper() for x in AVAILABLE_MIME_TYPES]
 
 
 class ImageProcessingError(TypeError):
@@ -32,16 +31,13 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
 
 
 class CopyrightCompanySource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.image'
     config_url = 'copyright-company-source'
     default_filename = 'image-copyright-company.xml'
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [str(node)
-                for node in tree.iterchildren('*')
-                if self.isAvailable(node, context)]
+        return [str(node) for node in tree.iterchildren('*') if self.isAvailable(node, context)]
 
     def getTitle(self, context, value):
         return value
@@ -51,95 +47,75 @@ COPYRIGHT_COMPANY_SOURCE = CopyrightCompanySource()
 
 
 class IImageMetadata(zope.interface.Interface):
+    title = zope.schema.TextLine(title=_('Image title'), default='', required=False)
 
-    title = zope.schema.TextLine(
-        title=_("Image title"),
-        default='',
-        required=False)
+    origin = zope.schema.TextLine(title=_('Origin'), default='', required=False)
 
-    origin = zope.schema.TextLine(
-        title=_("Origin"),
-        default='',
-        required=False)
-
-    copyright = zc.form.field.Combination((
-        zope.schema.TextLine(
-            title=_('Photographer'),
-            required=False),
-        zope.schema.Choice(
-            title=_('Image company'),
-            source=COPYRIGHT_COMPANY_SOURCE,
-            required=True),
-        zope.schema.TextLine(
-            title=_('Copyright freetext'),
-            description=_(
-                'Copyright holder that is not part '
-                'of image company list'),
-            required=False),
-        zope.schema.URI(
-            title=_('Link'),
-            description=_('Link to copyright holder'),
-            required=False),
-        zope.schema.Bool(
-            title=_('set nofollow'),
-            required=False)),
+    copyright = zc.form.field.Combination(
+        (
+            zope.schema.TextLine(title=_('Photographer'), required=False),
+            zope.schema.Choice(
+                title=_('Image company'), source=COPYRIGHT_COMPANY_SOURCE, required=True
+            ),
+            zope.schema.TextLine(
+                title=_('Copyright freetext'),
+                description=_('Copyright holder that is not part ' 'of image company list'),
+                required=False,
+            ),
+            zope.schema.URI(
+                title=_('Link'), description=_('Link to copyright holder'), required=False
+            ),
+            zope.schema.Bool(title=_('set nofollow'), required=False),
+        ),
         default=None,
-        title=_("Copyrights"),
-        missing_value=None)
+        title=_('Copyrights'),
+        missing_value=None,
+    )
 
-    single_purchase = zope.schema.Bool(
-        title=_('Single purchase'),
-        required=False)
+    single_purchase = zope.schema.Bool(title=_('Single purchase'), required=False)
 
-    external_id = zope.schema.TextLine(
-        title=_('External company ID'),
-        required=False)
+    external_id = zope.schema.TextLine(title=_('External company ID'), required=False)
 
-    mdb_id = zope.schema.TextLine(
-        title=_('InterRed MDB ID'),
-        required=False, readonly=True)
+    mdb_id = zope.schema.TextLine(title=_('InterRed MDB ID'), required=False, readonly=True)
 
     alt = zope.schema.TextLine(
-        title=_("Alternative text"),
-        description=_("Enter a textual description of the image"),
+        title=_('Alternative text'),
+        description=_('Enter a textual description of the image'),
         default='',
-        required=False)
+        required=False,
+    )
 
-    caption = zope.schema.Text(
-        title=_("Image sub text"),
-        default='',
-        required=False)
+    caption = zope.schema.Text(title=_('Image sub text'), default='', required=False)
 
     links_to = zope.schema.URI(
-        title=_('Links to'),
-        description=_('Enter a URL this image should link to.'),
-        required=False)
+        title=_('Links to'), description=_('Enter a URL this image should link to.'), required=False
+    )
 
-    nofollow = zope.schema.Bool(
-        title=_('set nofollow'),
-        required=False,
-        default=False)
+    nofollow = zope.schema.Bool(title=_('set nofollow'), required=False, default=False)
 
     acquire_metadata = zope.schema.Bool(
-        title='True if metadata should be acquired from the parent.')
+        title='True if metadata should be acquired from the parent.'
+    )
 
 
-class IImage(zeit.cms.interfaces.IAsset,
-             zeit.cms.repository.interfaces.IDAVContent,
-             zope.file.interfaces.IFile):
+class IImage(
+    zeit.cms.interfaces.IAsset,
+    zeit.cms.repository.interfaces.IDAVContent,
+    zope.file.interfaces.IFile,
+):
     """Image."""
 
     def getImageSize():
         """return tuple (width, heigth) of image."""
 
     format = zope.interface.Attribute(
-        'Our mimeType formatted as a PIL-compatible format (e.g. JPEG, PNG)')
+        'Our mimeType formatted as a PIL-compatible format (e.g. JPEG, PNG)'
+    )
 
     ratio = zope.interface.Attribute('width/height')
 
 
 class ITransform(zope.interface.Interface):
-
     def thumbnail(width, height, filter=PIL.Image.Resampling.LANCZOS):
         """Create a thumbnail version of the image.
 
@@ -176,17 +152,14 @@ class IThumbnailFolder(zope.interface.Interface):
     """The folder where to find thumbnails for an image."""
 
 
-class MasterImageSource(
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
+class MasterImageSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     def getValues(self, context):
         """List names of images inside ImageGroup."""
         # Sadly zc.form.field.Combination does not bind it's field to the right
         # context, thus fix the context if necessary.
         if zc.form.interfaces.ICombinationField.providedBy(context):
             context = context.context
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         for name in repository.getContent(context.uniqueId):
             yield name
 
@@ -195,7 +168,6 @@ INFOGRAPHIC_DISPLAY_TYPE = 'infographic'
 
 
 class DisplayTypeSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.image'
     config_url = 'display-type-source'
     default_filename = 'image-display-types.xml'
@@ -203,7 +175,6 @@ class DisplayTypeSource(zeit.cms.content.sources.XMLSource):
 
 
 class ViewportSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
     values = {
         'desktop': _('viewport-desktop'),
         'mobile': _('viewport-mobile'),
@@ -246,15 +217,18 @@ def unique_viewport_and_master_image(value):
     return True
 
 
-class IImageGroup(zeit.cms.repository.interfaces.ICollection,
-                  zeit.cms.interfaces.IAsset,
-                  zeit.cms.repository.interfaces.IDAVContent):
+class IImageGroup(
+    zeit.cms.repository.interfaces.ICollection,
+    zeit.cms.interfaces.IAsset,
+    zeit.cms.repository.interfaces.IDAVContent,
+):
     """An image group groups images with the same motif together."""
 
     __name__ = zope.schema.TextLine(
         title=_('File name of image group'),
         readonly=True,
-        constraint=zeit.cms.interfaces.valid_name)
+        constraint=zeit.cms.interfaces.valid_name,
+    )
 
     master_image = zope.interface.Attribute('Name of the master image')
 
@@ -265,24 +239,20 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
         missing_value=(),
         constraint=unique_viewport_and_master_image,
         value_type=zc.form.field.Combination(
-            (zope.schema.Choice(
-                title=_('Viewport'),
-                source=VIEWPORT_SOURCE),
-             zope.schema.Choice(
-                 title=_('Image file'),
-                 source=MasterImageSource()))))
+            (
+                zope.schema.Choice(title=_('Viewport'), source=VIEWPORT_SOURCE),
+                zope.schema.Choice(title=_('Image file'), source=MasterImageSource()),
+            )
+        ),
+    )
 
-    variants = zope.schema.Dict(
-        title=_('Setting for variants'))
+    variants = zope.schema.Dict(title=_('Setting for variants'))
 
     display_type = zope.schema.Choice(
-        title=_("Display Type"),
-        source=DisplayTypeSource(),
-        default='imagegroup',
-        required=True)
+        title=_('Display Type'), source=DisplayTypeSource(), default='imagegroup', required=True
+    )
 
-    def variant_url(name, width=None, height=None, fill_color=None,
-                    thumbnail=False):
+    def variant_url(name, width=None, height=None, fill_color=None, thumbnail=False):
         """Return an URL path to the variant with the given name that matches
         the width/height requirements most closely.
 
@@ -308,13 +278,10 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
 
 
 class IRepositoryImageGroup(IImageGroup):
-    """An image group in the repository.  It contains images.
-
-    """
+    """An image group in the repository.  It contains images."""
 
 
-class ILocalImageGroup(IImageGroup,
-                       zeit.cms.workingcopy.interfaces.ILocalContent):
+class ILocalImageGroup(IImageGroup, zeit.cms.workingcopy.interfaces.ILocalContent):
     """Local version of an image group.
 
     The local version only holds the metadata, therefore it is not a container.
@@ -326,53 +293,51 @@ class IVariants(zope.interface.common.mapping.IEnumerableMapping):
 
 
 class IVariant(zope.interface.Interface):
-
     id = zope.schema.TextLine(description='Unique Variant name')
     name = zope.schema.TextLine(description='Grouping of Variant sizes')
     display_name = zope.schema.TextLine(description='Displayed name')
-    focus_x = zope.schema.Float(
-        description='Position of the focus point relative to image width')
-    focus_y = zope.schema.Float(
-        description='Position of the focus point relative to image height')
-    zoom = zope.schema.Float(
-        description='Zoom factor used, i.e. 1 for no zoom')
+    focus_x = zope.schema.Float(description='Position of the focus point relative to image width')
+    focus_y = zope.schema.Float(description='Position of the focus point relative to image height')
+    zoom = zope.schema.Float(description='Zoom factor used, i.e. 1 for no zoom')
     aspect_ratio = zope.schema.TextLine(
         description='String representation of ratio as X:Y, e.g. 16:9. '
-                    'Can be set to `original`, to use width/height of image.')
+        'Can be set to `original`, to use width/height of image.'
+    )
     max_size = zope.schema.TextLine(
-        description='Maximum width / height of this Variant, e.g. 160x90')
+        description='Maximum width / height of this Variant, e.g. 160x90'
+    )
     brightness = zope.schema.Float(
-        description='Factor to enhance brightness, 1.0 for original value')
-    contrast = zope.schema.Float(
-        description='Factor to enhance contrast, 1.0 for original value')
+        description='Factor to enhance brightness, 1.0 for original value'
+    )
+    contrast = zope.schema.Float(description='Factor to enhance contrast, 1.0 for original value')
     saturation = zope.schema.Float(
-        description='Factor to enhance saturation, 1.0 for original value')
-    sharpness = zope.schema.Float(
-        description='Factor to enhance sharpness, 1.0 for original value')
+        description='Factor to enhance saturation, 1.0 for original value'
+    )
+    sharpness = zope.schema.Float(description='Factor to enhance sharpness, 1.0 for original value')
     fallback_size = zope.schema.TextLine(
         description='Fallback width / height, e.g. 1200x514. '
-                    'Used by Friedbert to limit the size of large variants.')
+        'Used by Friedbert to limit the size of large variants.'
+    )
 
-    ratio = zope.interface.Attribute(
-        'Float representation of ratio')
-    max_width = zope.interface.Attribute(
-        'Shorthand to access width of max_size')
-    max_height = zope.interface.Attribute(
-        'Shorthand to access height of max_size')
-    fallback_width = zope.interface.Attribute(
-        'Shorthand to access width of fallback_size')
-    fallback_height = zope.interface.Attribute(
-        'Shorthand to access height of fallback_size')
+    ratio = zope.interface.Attribute('Float representation of ratio')
+    max_width = zope.interface.Attribute('Shorthand to access width of max_size')
+    max_height = zope.interface.Attribute('Shorthand to access height of max_size')
+    fallback_width = zope.interface.Attribute('Shorthand to access width of fallback_size')
+    fallback_height = zope.interface.Attribute('Shorthand to access height of fallback_size')
     relative_image_path = zope.interface.Attribute(
-        'Image path relative to the ImageGroup the Variant lives in')
+        'Image path relative to the ImageGroup the Variant lives in'
+    )
     is_default = zope.interface.Attribute(
-        'Bool whether this Variant represents the default configuration')
+        'Bool whether this Variant represents the default configuration'
+    )
 
     legacy_name = zope.interface.Attribute(
-        'If applicable, the legacy name this Variant was mapped from')
+        'If applicable, the legacy name this Variant was mapped from'
+    )
     legacy_size = zope.interface.Attribute(
         'If applicable, a [width, height] setting to use if no size'
-        ' was passed in through the URL')
+        ' was passed in through the URL'
+    )
 
 
 class IImageSource(zope.interface.common.mapping.IEnumerableMapping):
@@ -381,7 +346,6 @@ class IImageSource(zope.interface.common.mapping.IEnumerableMapping):
 
 @zope.interface.implementer(IImageSource)
 class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
-
     check_interfaces = IImageType
     name = 'images'
 
@@ -391,7 +355,6 @@ imageSource = ImageSource()
 
 @zope.interface.implementer(IImageSource)
 class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
-
     check_interfaces = (IImage,)
     name = 'bare-images'
 
@@ -401,7 +364,6 @@ bareImageSource = BareImageSource()
 
 @zope.interface.implementer(IImageSource)
 class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
-
     check_interfaces = (IImageGroup,)
     name = 'image-groups'
 
@@ -430,31 +392,32 @@ class IImages(zope.interface.Interface):
 
     image = zope.schema.Choice(
         title=_('Image group'),
-        description=_("Drag an image group here"),
+        description=_('Drag an image group here'),
         required=False,
-        source=imageGroupSource)
+        source=imageGroupSource,
+    )
 
     fill_color = zope.schema.TextLine(
-        title=_("Alpha channel fill color"),
+        title=_('Alpha channel fill color'),
         required=False,
-        max_length=6, constraint=zeit.cms.content.interfaces.hex_literal)
+        max_length=6,
+        constraint=zeit.cms.content.interfaces.hex_literal,
+    )
 
 
 class IReferences(zope.interface.Interface):
-
     references = zope.schema.Tuple(
         title=_('Objects using this image'),
         readonly=True,
-        value_type=zope.schema.Choice(
-            source=zeit.cms.content.contentsource.cmsContentSource))
+        value_type=zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource),
+    )
 
 
 class IMasterImage(zope.interface.Interface):
     """Marks an image in an image group as master for the other images."""
 
 
-class IImageReference(zeit.cms.content.interfaces.IReference,
-                      IImageMetadata):
+class IImageReference(zeit.cms.content.interfaces.IReference, IImageMetadata):
     """Reference to an image, allows overriding metadata locally for the
     referring content object."""
 
@@ -470,7 +433,6 @@ class IMDB(zope.interface.Interface):
 
 
 class EncoderParameters(zeit.cms.content.sources.CachedXMLBase):
-
     product_configuration = 'zeit.content.image'
     config_url = 'encoder-parameters'
     default_filename = 'image-encoders.xml'

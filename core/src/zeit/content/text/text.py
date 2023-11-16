@@ -9,23 +9,19 @@ import zeit.content.text.interfaces
 import zope.interface
 
 
-@zope.interface.implementer(
-    zeit.content.text.interfaces.IText,
-    zeit.cms.interfaces.IAsset)
-class Text(zeit.cms.repository.repository.ContentBase,
-           persistent.Persistent):
-
+@zope.interface.implementer(zeit.content.text.interfaces.IText, zeit.cms.interfaces.IAsset)
+class Text(zeit.cms.repository.repository.ContentBase, persistent.Persistent):
     text = None
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IText,
         zeit.content.text.interfaces.DAV_NAMESPACE,
         ('mimeType',),
-        use_default=True)
+        use_default=True,
+    )
 
 
 class TextType(zeit.cms.type.TypeDeclaration):
-
     interface = zeit.content.text.interfaces.IText
     type = 'text'
     title = _('Plain text')

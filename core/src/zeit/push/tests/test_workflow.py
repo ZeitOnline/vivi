@@ -10,7 +10,6 @@ import zope.component
 
 
 class PushServiceProperties(zeit.push.testing.TestCase):
-
     def test_properties_can_be_set_while_checked_in(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
@@ -30,13 +29,15 @@ class PushServiceProperties(zeit.push.testing.TestCase):
 
 
 class SendingNotifications(zeit.push.testing.TestCase):
-
     def setUp(self):
         super().setUp()
         self.notifier = mock.Mock()
         zope.component.getGlobalSiteManager().registerAdapter(
-            self.notifier, (zeit.cms.content.interfaces.ICommonMetadata,),
-            zeit.push.interfaces.IMessage, name='mypush')
+            self.notifier,
+            (zeit.cms.content.interfaces.ICommonMetadata,),
+            zeit.push.interfaces.IMessage,
+            name='mypush',
+        )
         # getAdapter instantiates factory, which causes one call
         self.notifier = self.notifier()
         self.notifier.type = 'mypush'

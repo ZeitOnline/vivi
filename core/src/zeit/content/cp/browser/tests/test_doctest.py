@@ -8,4 +8,5 @@ def test_suite():
         'library.txt',
         'rule.txt',
         package='zeit.content.cp.browser',
-        layer=zeit.content.cp.testing.WSGI_LAYER)
+        layer=zeit.content.cp.testing.WSGI_LAYER,
+    )

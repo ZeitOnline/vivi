@@ -17,7 +17,6 @@ log = logging.getLogger(__name__)
 
 
 class JavaScript:
-
     FILENAME = '{prefix}_{now}.js'
 
     def __init__(self, folder_id, url, prefix, headers=None):
@@ -35,7 +34,8 @@ class JavaScript:
             config[f'{name}-javascript-folder'],
             config[f'{name}-url'],
             config[f'{name}-filename'],
-            config.get(f'{name}-headers'))
+            config.get(f'{name}-headers'),
+        )
 
     @cachedproperty
     def folder(self):
@@ -61,15 +61,14 @@ class JavaScript:
         try:
             return requests.get(self.url, headers=self.headers).text
         except Exception:
-            log.warning('Error downloading %s, ignored', self.
-                        url, exc_info=True)
+            log.warning('Error downloading %s, ignored', self.url, exc_info=True)
             return None
 
     def _store(self, content):
         obj = zeit.content.text.text.Text()
         filename = self.FILENAME.format(
-            prefix=self.prefix,
-            now=datetime.datetime.now().strftime('%Y%m%d%H%M'))
+            prefix=self.prefix, now=datetime.datetime.now().strftime('%Y%m%d%H%M')
+        )
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content
         self.folder[filename] = obj

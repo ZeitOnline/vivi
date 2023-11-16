@@ -4,7 +4,6 @@ import zope.app.appsetup
 
 
 class TestForm(zeit.content.link.testing.BrowserTestCase):
-
     def create_link_object(self):
         link = zeit.content.link.link.Link()
         link.ressort = 'Politik'
@@ -23,8 +22,7 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         b.getControl('Ressort', index=0).displayValue = ['Leben']
         b.getControl('Link address').value = 'http://gocept.com'
         b.getControl('HTTP Status Code').displayValue = ['307']
-        b.getControl(name="form.image").value = \
-            'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl(name='form.image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         b.getControl(name='form.actions.add').click()
         self.assertFalse('There were errors' in b.contents)
         b.getLink('Source').click()
@@ -32,15 +30,17 @@ class TestForm(zeit.content.link.testing.BrowserTestCase):
         self.assertTrue('<title>gocept homepage' in xml)
         self.assertTrue('<url>http://gocept.com' in xml)
         self.assertTrue('<status>307' in xml)
-        self.assertEllipsis("""
+        self.assertEllipsis(
+            """
         <link...
         <head>...
             <image...src="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
             ...
             </image>...
-         """, xml)
-        self.assertTrue('name="ressort">Leben</attribute'
-                        in xml)
+         """,
+            xml,
+        )
+        self.assertTrue('name="ressort">Leben</attribute' in xml)
         b.getLink('Checkin').click()
         self.assertFalse('There were errors' in b.contents)
         self.assertTrue('/2006/gocept.link' in b.url)

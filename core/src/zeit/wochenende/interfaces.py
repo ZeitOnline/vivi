@@ -11,19 +11,17 @@ class IZWESection(zeit.cms.section.interfaces.ISection):
     pass
 
 
-class IZWEContent(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.section.interfaces.ISectionMarker):
+class IZWEContent(zeit.cms.interfaces.ICMSContent, zeit.cms.section.interfaces.ISectionMarker):
     pass
 
 
 class IZWEFolder(
-        zeit.cms.repository.interfaces.IFolder,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.cms.repository.interfaces.IFolder, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZWECenterPage(
-        zeit.content.cp.interfaces.ICenterPage,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.cp.interfaces.ICenterPage, zeit.cms.section.interfaces.ISectionMarker
+):
     pass

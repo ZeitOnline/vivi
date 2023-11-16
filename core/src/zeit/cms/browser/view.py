@@ -5,7 +5,6 @@ import zope.component
 
 
 class Base:
-
     def __call__(self):
         self.request.response.setHeader('Cache-Control', 'no-cache')
         return super().__call__()
@@ -16,8 +15,8 @@ class Base:
         if isinstance(obj, str):
             if name is not None:
                 raise TypeError(
-                    'url() takes either obj argument, obj, string arguments, '
-                    'or string argument')
+                    'url() takes either obj argument, obj, string arguments, ' 'or string argument'
+                )
             name = obj
             obj = None
 
@@ -27,25 +26,23 @@ class Base:
         elif name is not None and obj is None:
             # create URL to view on context
             obj = self.context
-        url = zope.component.getMultiAdapter(
-            (obj, self.request), name='absolute_url')()
+        url = zope.component.getMultiAdapter((obj, self.request), name='absolute_url')()
         if name is None:
             return url
         return '%s/%s' % (url, name)
 
     def redirect(self, url, status=None, trusted=False):
         assert status is None or isinstance(status, int)
-        return self.request.response.redirect(
-            url, status=status, trusted=trusted)
+        return self.request.response.redirect(url, status=status, trusted=trusted)
 
     def send_message(self, message, type='message'):
         source = zope.component.getUtility(
-            z3c.flashmessage.interfaces.IMessageSource, name='session')
+            z3c.flashmessage.interfaces.IMessageSource, name='session'
+        )
         source.send(message, type)
 
 
 class JSON(Base):
-
     resource_library = None
     template = None
 
@@ -72,9 +69,11 @@ class JSON(Base):
 
 
 def resource_url(request, library, filename):
-    return '/'.join([
-        request.getApplicationURL(),
-        zeit.cms.application.FANSTATIC_SETTINGS['publisher_signature'],
-        library,
-        filename,
-    ])
+    return '/'.join(
+        [
+            request.getApplicationURL(),
+            zeit.cms.application.FANSTATIC_SETTINGS['publisher_signature'],
+            library,
+            filename,
+        ]
+    )

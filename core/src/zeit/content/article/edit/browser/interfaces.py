@@ -9,7 +9,6 @@ class IFoldable(zope.interface.Interface):
 
 @zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)
 class VideoTagesschauNoResultError(Exception):
-
     def __init__(self, error_type):
         self.error_type = error_type
 

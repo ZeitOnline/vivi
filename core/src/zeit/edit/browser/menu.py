@@ -4,10 +4,9 @@ import zeit.cms.browser.menu
 
 
 class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
-
     sort = -1
-    viewURL = "@@edit.html"
-    title = _("Edit contents")
+    viewURL = '@@edit.html'
+    title = _('Edit contents')
     activeCSS = 'edit_contents selected'
     inActiveCSS = 'edit_contents'
 

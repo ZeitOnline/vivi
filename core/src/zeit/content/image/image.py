@@ -23,7 +23,6 @@ import zope.security.proxy
 
 
 class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
-
     def __get__(self, inst, class_):
         if inst is None:
             return self
@@ -42,7 +41,6 @@ class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
 
 
 class BaseImage:
-
     def __init__(self, uniqueId=None):
         super().__init__(uniqueId, mimeType='')
 
@@ -80,8 +78,8 @@ class BaseImage:
 
 
 @zope.interface.implementer_only(
-    zeit.content.image.interfaces.IImage,
-    zope.location.interfaces.IContained)
+    zeit.content.image.interfaces.IImage, zope.location.interfaces.IContained
+)
 class RepositoryImage(BaseImage, zeit.cms.repository.file.RepositoryFile):
     pass
 
@@ -89,20 +87,20 @@ class RepositoryImage(BaseImage, zeit.cms.repository.file.RepositoryFile):
 @zope.interface.implementer_only(
     zeit.content.image.interfaces.IImage,
     zeit.cms.workingcopy.interfaces.ILocalContent,
-    zope.location.interfaces.IContained)
+    zope.location.interfaces.IContained,
+)
 class LocalImage(BaseImage, zeit.cms.repository.file.LocalFile):
     pass
 
 
 class TemporaryImage(LocalImage):
-
     def open(self, mode='r'):
         if mode not in ('r', 'w'):
             raise ValueError(mode)
 
         if self.local_data is None:
             if mode == 'r':
-                raise ValueError("Cannot open for reading, no data available.")
+                raise ValueError('Cannot open for reading, no data available.')
             if mode == 'w':
                 self.local_data = zeit.cms.util.MemoryFile()
         else:
@@ -117,11 +115,11 @@ def localimage_factory(context):
     local = LocalImage(context.uniqueId)
     local.__name__ = context.__name__
     zeit.cms.interfaces.IWebDAVProperties(local).update(
-        zeit.cms.interfaces.IWebDAVProperties(context))
+        zeit.cms.interfaces.IWebDAVProperties(context)
+    )
     # Hrmpf. I don't quite like this:
     if zeit.content.image.interfaces.IMasterImage.providedBy(context):
-        zope.interface.alsoProvides(
-            local, zeit.content.image.interfaces.IMasterImage)
+        zope.interface.alsoProvides(local, zeit.content.image.interfaces.IMasterImage)
     return local
 
 
@@ -143,7 +141,6 @@ def XMLReference(context):
 
 
 class ImageType(zeit.cms.type.TypeDeclaration):
-
     interface = zeit.content.image.interfaces.IImage
     interface_type = zeit.content.image.interfaces.IImageType
     type = 'image'
@@ -162,21 +159,18 @@ class ImageType(zeit.cms.type.TypeDeclaration):
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
-
     target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
 
     def update_with_context(self, entry, workflow):
         super().update_with_context(entry, workflow)
 
-        parent = zope.security.proxy.removeSecurityProxy(
-            workflow).context.__parent__
+        parent = zope.security.proxy.removeSecurityProxy(workflow).context.__parent__
         if not zeit.content.image.interfaces.IImageGroup.providedBy(parent):
             return
 
         if not entry.get('expires'):
             parent_workflow = self.target_iface(parent)
-            super().update_with_context(
-                entry, parent_workflow)
+            super().update_with_context(entry, parent_workflow)
 
 
 KiB = 1024

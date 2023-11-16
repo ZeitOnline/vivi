@@ -19,21 +19,18 @@ MARKUP_TEMPLATE = """\
 """
 
 
-@grok.implementer(
-    zeit.content.markup.interfaces.IMarkup,
-    zeit.cms.interfaces.IAsset)
+@grok.implementer(zeit.content.markup.interfaces.IMarkup, zeit.cms.interfaces.IAsset)
 class Markup(zeit.cms.content.metadata.CommonMetadata):
-
     default_template = MARKUP_TEMPLATE
 
     text = zeit.cms.content.property.Structure('.text')
 
     @property
     def teaserText(self):
-        '''for metadata preview, return text as teaser text
+        """for metadata preview, return text as teaser text
         to display it.
         If text is longer than 15 words, shorten it
-        '''
+        """
         if self.text and self.text.count(' ') > 15:
             teaser = ' '.join(self.text.split(' ')[:10])
             return f'{teaser} ...'
@@ -41,7 +38,6 @@ class Markup(zeit.cms.content.metadata.CommonMetadata):
 
 
 class MarkupType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Markup
     interface = zeit.content.markup.interfaces.IMarkup
     title = _('Markup content')

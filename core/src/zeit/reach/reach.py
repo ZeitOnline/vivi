@@ -14,7 +14,6 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.reach.interfaces.IReach)
 class Reach:
-
     http = requests.Session()
     timeout = 1
 
@@ -45,8 +44,7 @@ class Reach:
         return result
 
     def _resolve(self, doc):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         try:
             content = repository.getCopyOf(doc['uniqueId'])
         except KeyError:
@@ -57,7 +55,8 @@ class Reach:
         zope.interface.alsoProvides(
             content,
             zeit.cms.repository.interfaces.IRepositoryContent,
-            zeit.reach.interfaces.IReachContent)
+            zeit.reach.interfaces.IReachContent,
+        )
         return content
 
 
@@ -69,7 +68,6 @@ def from_product_config():
 
 @grok.implementer(zeit.reach.interfaces.IKPI)
 class KPI(grok.Adapter):
-
     grok.context(zeit.reach.interfaces.IReachContent)
     grok.provides(zeit.cms.content.interfaces.IKPI)
 

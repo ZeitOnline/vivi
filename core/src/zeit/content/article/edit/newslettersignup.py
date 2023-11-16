@@ -7,14 +7,11 @@ import zeit.content.modules.newslettersignup
 
 @grok.implementer(zeit.content.article.edit.interfaces.INewsletterSignup)
 class NewsletterSignup(
-        zeit.content.modules.newslettersignup.NewsletterSignup,
-        zeit.content.article.edit.block.Block):
-
+    zeit.content.modules.newslettersignup.NewsletterSignup, zeit.content.article.edit.block.Block
+):
     type = 'newslettersignup'
 
 
-class NewsletterSignupBlockFactory(
-        zeit.content.article.edit.block.BlockFactory):
-
+class NewsletterSignupBlockFactory(zeit.content.article.edit.block.BlockFactory):
     produces = NewsletterSignup
     title = _('Newsletter Signup block')

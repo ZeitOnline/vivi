@@ -11,7 +11,6 @@ import zope.schema
 
 @grok.implementer(zeit.content.article.edit.interfaces.IVideo)
 class Video(zeit.content.article.edit.block.Block):
-
     type = 'video'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -19,19 +18,21 @@ class Video(zeit.content.article.edit.block.Block):
         # but we can't use that here, since legacy data might have all
         # sorts of values for layout, so the field's source would be
         # too restrictive.
-        '.', 'format', zope.schema.TextLine(required=False))
+        '.',
+        'format',
+        zope.schema.TextLine(required=False),
+    )
 
     badge = 'video'
 
     is_empty = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'is_empty',
-        zeit.content.article.edit.interfaces.IReference['is_empty'])
+        '.', 'is_empty', zeit.content.article.edit.interfaces.IReference['is_empty']
+    )
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
         if self.layout is None:
-            self.layout = zeit.content.article.edit.interfaces.IVideo[
-                'layout'].default
+            self.layout = zeit.content.article.edit.interfaces.IVideo['layout'].default
 
     @property
     def video(self):
@@ -56,19 +57,19 @@ class Video(zeit.content.article.edit.block.Block):
             self.xml.attrib.pop('expires', None)
 
     def _validate(self, field_name, value):
-        zeit.content.article.edit.interfaces.IVideo[field_name].bind(
-            self).validate(value)
+        zeit.content.article.edit.interfaces.IVideo[field_name].bind(self).validate(value)
 
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):
-
     produces = Video
     title = _('Video')
 
 
-@grok.adapter(zeit.content.article.edit.interfaces.IArticleArea,
-              zeit.content.video.interfaces.IVideoContent,
-              int)
+@grok.adapter(
+    zeit.content.article.edit.interfaces.IArticleArea,
+    zeit.content.video.interfaces.IVideoContent,
+    int,
+)
 @grok.implementer(zeit.edit.interfaces.IElement)
 def create_video_block_from_video(body, context, position):
     block = Factory(body)(position)
@@ -77,15 +78,15 @@ def create_video_block_from_video(body, context, position):
 
 
 @grok.subscribe(
-    zeit.content.article.edit.interfaces.IVideo,
-    zope.lifecycleevent.IObjectModifiedEvent)
+    zeit.content.article.edit.interfaces.IVideo, zope.lifecycleevent.IObjectModifiedEvent
+)
 def update_empty(context, event):
     context.is_empty = context.video is None
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
 def update_video_metadata(article, event):
     for block in article.body.values():
         video = zeit.content.article.edit.interfaces.IVideo(block, None)

@@ -11,15 +11,15 @@ def test_pip_check_for_all_extras():
     """
     # Adapted from pypa/pip#4824
     requirements = [
-        packaging.requirements.Requirement(x) for x in
-        importlib.metadata.metadata('vivi.core').get_all('Requires-Dist')]
+        packaging.requirements.Requirement(x)
+        for x in importlib.metadata.metadata('vivi.core').get_all('Requires-Dist')
+    ]
     for req in requirements:
         installed = importlib.metadata.distribution(req.name)
         assert req.specifier.contains(installed.version, prereleases=True)
 
 
 class Prometheus(zeit.cms.testing.ZeitCmsBrowserTestCase):
-
     def test_prometheus_metrics_are_exposed(self):
         b = self.browser
 

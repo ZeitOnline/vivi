@@ -7,4 +7,5 @@ def test_suite():
         'README.txt',
         'indicator.txt',
         package='zeit.workflow.browser',
-        layer=zeit.workflow.testing.WSGI_LAYER)
+        layer=zeit.workflow.testing.WSGI_LAYER,
+    )

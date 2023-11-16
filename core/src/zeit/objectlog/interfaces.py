@@ -26,20 +26,16 @@ class ILogEntry(zope.interface.Interface):
         title='Principal',
         required=False,
         readonly=True,
-        source=zope.app.security.vocabulary.PrincipalSource())
+        source=zope.app.security.vocabulary.PrincipalSource(),
+    )
 
-    message = zope.configuration.fields.MessageID(
-        title='Log message',
-        readonly=True)
+    message = zope.configuration.fields.MessageID(title='Log message', readonly=True)
 
     mapping = zope.schema.Dict(
-        title='Arbitrary data to store along the log.',
-        readonly=True,
-        required=False)
+        title='Arbitrary data to store along the log.', readonly=True, required=False
+    )
 
-    time = zope.schema.Datetime(
-        title='Timestamp',
-        readonly=True)
+    time = zope.schema.Datetime(title='Timestamp', readonly=True)
 
     def get_object():
         """return the affected object."""
@@ -59,9 +55,9 @@ class ILog(zope.interface.Interface):
 
     logs = zope.schema.Tuple(
         title=_('Log'),
-        value_type=zope.schema.Choice(
-            source=zeit.objectlog.source.LogEntrySource()),
-        readonly=True)
+        value_type=zope.schema.Choice(source=zeit.objectlog.source.LogEntrySource()),
+        readonly=True,
+    )
 
 
 class ILogProcessor(zope.interface.Interface):

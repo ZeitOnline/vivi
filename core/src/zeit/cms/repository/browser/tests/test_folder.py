@@ -3,7 +3,6 @@ import zeit.cms.testing
 
 
 class FolderPermissionsTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.folder = self.repository['online']['2007']['01']

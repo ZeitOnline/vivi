@@ -3,15 +3,13 @@ import zeit.content.cp.centerpage
 
 
 class TestQuiz(zeit.content.cp.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('quiz')
         self.repository['centerpage'] = self.centerpage
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')
         b.open('contents')
         self.content_url = b.url
 

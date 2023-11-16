@@ -9,13 +9,10 @@ import zope.schema
 
 
 class SocialContainer(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Social media')
 
 
-class Social(zeit.push.browser.form.SocialBase,
-             zeit.edit.browser.form.InlineForm):
-
+class Social(zeit.push.browser.form.SocialBase, zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'social'
 
@@ -30,13 +27,10 @@ class Social(zeit.push.browser.form.SocialBase,
 
 
 class MobileContainer(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Mobile apps')
 
 
-class Mobile(zeit.push.browser.form.MobileBase,
-             zeit.edit.browser.form.InlineForm):
-
+class Mobile(zeit.push.browser.form.MobileBase, zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'mobile'
 
@@ -44,8 +38,7 @@ class Mobile(zeit.push.browser.form.MobileBase,
     form_fields = FormFieldsFactory()
 
     def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
 
     @property
@@ -55,8 +48,7 @@ class Mobile(zeit.push.browser.form.MobileBase,
         fields += super().mobile_form_fields
         return fields
 
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    @zope.formlib.form.action(_('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         accountdata = zeit.push.interfaces.IAccountData(self.context)
         previous = accountdata.mobile_image
@@ -67,15 +59,11 @@ class Mobile(zeit.push.browser.form.MobileBase,
 
 
 class IAuthorPush(zope.interface.Interface):
-
-    author_enabled = zope.schema.Bool(
-        title=_('Author push enabled'),
-        readonly=True)
+    author_enabled = zope.schema.Bool(title=_('Author push enabled'), readonly=True)
 
 
 @grok.implementer(IAuthorPush)
 class AuthorPush(grok.Adapter):
-
     grok.context(zeit.content.article.interfaces.IArticle)
 
     # Should this move to zeit.push.interfaces.IAccountData?
@@ -87,10 +75,8 @@ class AuthorPush(grok.Adapter):
 
 
 class HideOnFalseWidget(zope.formlib.widgets.DisplayWidget):
-
     def __call__(self):
         if self._data:
-            return '<div class="output">%s</div>' % self._translate(
-                self.context.title)
+            return '<div class="output">%s</div>' % self._translate(self.context.title)
         else:
             return ''

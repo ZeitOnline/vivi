@@ -25,7 +25,6 @@ AUDIO_ID = SearchVar('external_id', zeit.content.audio.audio.AUDIO_SCHEMA_NS)
 
 @grok.implementer(zeit.simplecast.interfaces.ISimplecast)
 class Simplecast(grok.GlobalUtility):
-
     #: lazy mapping between audio interfaces (key) and simplecast api (value)
     _properties = {
         IAudio: {
@@ -41,12 +40,11 @@ class Simplecast(grok.GlobalUtility):
             'notes': 'long_description',
             'is_published': 'is_published',
             'dashboard_link': 'dashboard_link',
-        }
+        },
     }
 
     def __init__(self, timeout=None):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.simplecast')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
         self.api_url = config['simplecast-url']
         self.api_token = f"Bearer {config['simplecast-token']}"
         self.timeout = timeout or int(config.get('timeout', 1))
@@ -61,9 +59,11 @@ class Simplecast(grok.GlobalUtility):
             status_code = None
             try:
                 response = requests.request(
-                    verb.lower(), url,
+                    verb.lower(),
+                    url,
                     headers={'Authorization': self.api_token},
-                    timeout=self.timeout)
+                    timeout=self.timeout,
+                )
                 status_code = response.status_code
                 response_text = response.text
                 # 404 is a valid response
@@ -73,14 +73,13 @@ class Simplecast(grok.GlobalUtility):
                 response.raise_for_status()
                 json = response.json()
             except requests.exceptions.JSONDecodeError as err:
-                response_text = f"Invalid Json {err}: {response.text}"
+                response_text = f'Invalid Json {err}: {response.text}'
                 raise
             except requests.exceptions.RequestException as err:
                 if not status_code:
                     status_code = getattr(err.response, 'status_code', 599)
                 response_text = getattr(err.response, 'text', str(err))
-                log.error(
-                    '%s returned %s', request, status_code, exc_info=True)
+                log.error('%s returned %s', request, status_code, exc_info=True)
                 raise
             finally:
                 zeit.cms.tracing.record_span(span, status_code, response_text)
@@ -93,10 +92,8 @@ class Simplecast(grok.GlobalUtility):
 
     def folder(self, episode_create_at):
         """Podcast should end up in this folder by default"""
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.simplecast')
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
         podcasts = config['podcast-folder']
         date_created = pendulum.parse(episode_create_at)
         yyyy_mm = date_created.strftime('%Y-%m')
@@ -107,10 +104,8 @@ class Simplecast(grok.GlobalUtility):
         return repository[podcasts][yyyy_mm]
 
     def _find_existing_episode(self, episode_id):
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
-        result = list(connector.search(
-            [AUDIO_ID], (AUDIO_ID == str(episode_id))))
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        result = list(connector.search([AUDIO_ID], (AUDIO_ID == str(episode_id))))
         if not result:
             return None
         try:
@@ -120,7 +115,9 @@ class Simplecast(grok.GlobalUtility):
         except TypeError as error:
             log.error(
                 'Podcast Episode %s found for %s. But not found in DAV: %s',
-                result[0][0], episode_id, error
+                result[0][0],
+                episode_id,
+                error,
             )
             return None
 
@@ -134,12 +131,13 @@ class Simplecast(grok.GlobalUtility):
         podcast_id = episode_data['podcast']['id']
         info = IPodcastEpisodeInfo(audio)
         info.podcast_id = podcast_id
-        info.podcast = \
-            IPodcastEpisodeInfo['podcast'].source(None).find_by_property(
-                'external_id', episode_data['podcast']['id'])
+        info.podcast = (
+            IPodcastEpisodeInfo['podcast']
+            .source(None)
+            .find_by_property('external_id', episode_data['podcast']['id'])
+        )
 
-        ISemanticChange(audio).last_semantic_change = pendulum.parse(
-            episode_data['updated_at'])
+        ISemanticChange(audio).last_semantic_change = pendulum.parse(episode_data['updated_at'])
 
     def synchronize_episode(self, episode_id):
         audio = self._find_existing_episode(episode_id)
@@ -152,9 +150,7 @@ class Simplecast(grok.GlobalUtility):
             self._delete(audio)
             return
         elif not audio and not episode_data:
-            log.warning(
-                'No podcast episode %s in vivi and simplecast found.',
-                episode_id)
+            log.warning('No podcast episode %s in vivi and simplecast found.', episode_id)
             return
 
         if self._publish_state_needs_sync(audio):
@@ -163,12 +159,10 @@ class Simplecast(grok.GlobalUtility):
             self._retract(audio)
 
     def _retract_state_needs_sync(self, audio):
-        return (IPublishInfo(audio).published and
-                not IPodcastEpisodeInfo(audio).is_published)
+        return IPublishInfo(audio).published and not IPodcastEpisodeInfo(audio).is_published
 
     def _publish_state_needs_sync(self, audio):
-        return (not IPublishInfo(audio).published and
-                IPodcastEpisodeInfo(audio).is_published)
+        return not IPublishInfo(audio).published and IPodcastEpisodeInfo(audio).is_published
 
     def _create(self, episode_id, episode_data):
         container = self.folder(episode_data['created_at'])
@@ -181,27 +175,21 @@ class Simplecast(grok.GlobalUtility):
     def _update(self, audio, episode_data):
         with zeit.cms.checkout.helper.checked_out(audio) as episode:
             if not episode:
-                log.error('Unable to update %s. Could not checkout!',
-                          audio.uniqueId)
+                log.error('Unable to update %s. Could not checkout!', audio.uniqueId)
                 return
 
             self._update_properties(episode_data, episode)
-            log.info(
-                'Podcast Episode %s successfully updated.',
-                episode.uniqueId)
+            log.info('Podcast Episode %s successfully updated.', episode.uniqueId)
 
     def _publish(self, audio):
         IPublish(audio).publish(background=False)
-        log.info('Podcast Episode %s successfully published.',
-                 audio.uniqueId)
+        log.info('Podcast Episode %s successfully published.', audio.uniqueId)
 
     def _retract(self, audio):
-        with zeit.cms.checkout.helper.checked_out(
-                audio, semantic_change=None, events=False) as co:
+        with zeit.cms.checkout.helper.checked_out(audio, semantic_change=None, events=False) as co:
             IPodcastEpisodeInfo(co).is_published = False
         IPublish(audio).retract(background=False)
-        log.info('Podcast Episode %s successfully retracted.',
-                 audio.uniqueId)
+        log.info('Podcast Episode %s successfully retracted.', audio.uniqueId)
 
     def _delete(self, audio):
         self._retract(audio)

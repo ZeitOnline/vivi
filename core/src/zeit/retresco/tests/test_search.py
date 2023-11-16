@@ -10,14 +10,7 @@ class TestElasticsearch(unittest.TestCase):
 
     layer = zeit.retresco.testing.MOCK_LAYER
 
-    query = {
-        "query": {
-            "query_string": {
-                "query": "Salafisten"
-            }
-        },
-        "sort": [{"title": "asc"}]
-    }
+    query = {'query': {'query_string': {'query': 'Salafisten'}}, 'sort': [{'title': 'asc'}]}
 
     def setUp(self):
         super().setUp()
@@ -29,10 +22,8 @@ class TestElasticsearch(unittest.TestCase):
         self.assertEqual(5, result.hits)
 
     def test_search_result_may_contain_payload_fields(self):
-        result = self.elasticsearch.search(
-            self.query, rows=2, include_payload=True)
-        self.assertEqual(
-            'Islamismus', result[0]['payload']['body']['supertitle'])
+        result = self.elasticsearch.search(self.query, rows=2, include_payload=True)
+        self.assertEqual('Islamismus', result[0]['payload']['body']['supertitle'])
 
     def test_search_result_may_contain_specific_source(self):
         query = self.query.copy()

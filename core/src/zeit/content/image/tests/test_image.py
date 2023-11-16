@@ -7,9 +7,7 @@ import zeit.content.image.testing
 import zope.component
 
 
-class TestImageMetadataAcquisition(
-        zeit.content.image.testing.FunctionalTestCase):
-
+class TestImageMetadataAcquisition(zeit.content.image.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.group_id = create_image_group().uniqueId
@@ -45,7 +43,6 @@ class TestImageMetadataAcquisition(
 
 
 class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
-
     def test_master_image_without_filename_extension_sets_mime_as_type(self):
         image = zeit.content.image.image.LocalImage()
         with image.open('w') as out:
@@ -54,12 +51,13 @@ class TestImageXMLReference(zeit.content.image.testing.FunctionalTestCase):
         self.repository['example-image'] = image
         ref = zope.component.getAdapter(
             self.repository['example-image'],
-            zeit.cms.content.interfaces.IXMLReference, name='image')
+            zeit.cms.content.interfaces.IXMLReference,
+            name='image',
+        )
         self.assertEqual('jpeg', ref.get('type'))
 
 
 class TestImageMIMEType(zeit.content.image.testing.FunctionalTestCase):
-
     def test_ignores_stored_dav_mime_type(self):
         self.repository['image'] = create_local_image('opernball.jpg')
         with checked_out(self.repository['image']) as co:

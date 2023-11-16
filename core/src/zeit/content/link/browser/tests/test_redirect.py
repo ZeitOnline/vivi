@@ -4,7 +4,6 @@ import zeit.content.link.testing
 
 
 class LinkRedirectTest(zeit.content.link.testing.BrowserTestCase):
-
     login_as = 'zmgr:mgrpw'
 
     def test_copies_metadata_fields(self):
@@ -13,13 +12,13 @@ class LinkRedirectTest(zeit.content.link.testing.BrowserTestCase):
             co.title = 'My Title'
             IImages(co).image = image
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/testcontent/'
-               '@@redirect-box')
+        b.open('http://localhost/++skin++vivi/repository/testcontent/' '@@redirect-box')
         b.getControl('Redirect path').value = '/link'
         b.getControl('Create redirect').click()
         self.assertEllipsis(
-            '...<span class="nextURL">http://localhost/++skin++vivi/repository'
-            '/link...', b.contents)
+            '...<span class="nextURL">http://localhost/++skin++vivi/repository' '/link...',
+            b.contents,
+        )
         link = self.repository['link']
         self.assertEqual('My Title', link.title)
         self.assertEqual('http://localhost/live-prefix/testcontent', link.url)

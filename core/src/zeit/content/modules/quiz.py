@@ -4,12 +4,11 @@ import zeit.edit.block
 
 
 class Quiz(zeit.edit.block.Element):
-
-    quiz_id = ObjectPathAttributeProperty(
-        '.', 'quiz_id', IQuiz['quiz_id'])
+    quiz_id = ObjectPathAttributeProperty('.', 'quiz_id', IQuiz['quiz_id'])
 
     adreload_enabled = ObjectPathAttributeProperty(
-        '.', 'adreload_enabled', IQuiz['adreload_enabled'])
+        '.', 'adreload_enabled', IQuiz['adreload_enabled']
+    )
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)

@@ -4,6 +4,5 @@ import zeit.cms.browser.view
 
 
 class Editor(zeit.cms.browser.view.Base):
-
     render = ViewPageTemplateFile('editor.pt')
     title = _('Edit')

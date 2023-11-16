@@ -7,7 +7,6 @@ from zeit.content.video.video import Video
 
 
 class TestAnimation(FunctionalTestCase):
-
     layer = MOCK_LAYER
 
     def test_animation(self):

@@ -18,10 +18,9 @@ import zope.security.proxy
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(
-    zeit.cms.checkout.interfaces.ICheckoutManager,
-    zeit.cms.checkout.interfaces.ICheckinManager)
+    zeit.cms.checkout.interfaces.ICheckoutManager, zeit.cms.checkout.interfaces.ICheckinManager
+)
 class CheckoutManager:
-
     def __init__(self, context):
         self.context = context
         self.__parent__ = context
@@ -37,24 +36,24 @@ class CheckoutManager:
 
     def _guard_checkout(self):
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
-        if (lockable is not None and
-                lockable.locked() and not lockable.ownLock()):
+        if lockable is not None and lockable.locked() and not lockable.ownLock():
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId,
-                _('The content object is locked by ${name}.', mapping={
-                    'name': lockable.locker()}))
-        if zeit.cms.workingcopy.interfaces.ILocalContent(
-                self.context, None) is None:
+                _('The content object is locked by ${name}.', mapping={'name': lockable.locker()}),
+            )
+        if zeit.cms.workingcopy.interfaces.ILocalContent(self.context, None) is None:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                self.context.uniqueId,
-                'Could not adapt content to ILocalContent')
+                self.context.uniqueId, 'Could not adapt content to ILocalContent'
+            )
         for obj in self.workingcopy.values():
-            if (zeit.cms.interfaces.ICMSContent.providedBy(obj) and
-                    obj.uniqueId == self.context.uniqueId):
+            if (
+                zeit.cms.interfaces.ICMSContent.providedBy(obj)
+                and obj.uniqueId == self.context.uniqueId
+            ):
                 raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                     self.context.uniqueId,
-                    _('The content you tried to check out is already in your '
-                      'working copy.'))
+                    _('The content you tried to check out is already in your ' 'working copy.'),
+                )
         return True
 
     def checkout(self, event=True, temporary=False, publishing=False):
@@ -72,24 +71,24 @@ class CheckoutManager:
                 # This is to catch a race condition when the object is locked
                 # by another process/thread between the lock check above and
                 # here.
-                raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                    *e.args)
+                raise zeit.cms.checkout.interfaces.CheckinCheckoutError(*e.args)
 
         if temporary:
-            workingcopy = zeit.cms.workingcopy.workingcopy.Workingcopy(
-                temporary=True)
+            workingcopy = zeit.cms.workingcopy.workingcopy.Workingcopy(temporary=True)
         else:
             workingcopy = self.workingcopy
 
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckoutEvent(
-                    self.context, workingcopy, self.principal, publishing))
-        assert not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
-            self.context), (
-            "Either you have to re-fetch %r from the repository or you have "
-            "to use transaction.commit() to avoid poisoning the "
-            "caches with objects providing ILocalContent." % self.context)
+                    self.context, workingcopy, self.principal, publishing
+                )
+            )
+        assert not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(self.context), (
+            'Either you have to re-fetch %r from the repository or you have '
+            'to use transaction.commit() to avoid poisoning the '
+            'caches with objects providing ILocalContent.' % self.context
+        )
         content = zeit.cms.workingcopy.interfaces.ILocalContent(self.context)
         namechooser = zope.container.interfaces.INameChooser(workingcopy)
         name = namechooser.chooseName(content.__name__, content)
@@ -98,39 +97,40 @@ class CheckoutManager:
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckoutEvent(
-                    added, workingcopy, self.principal, publishing))
+                    added, workingcopy, self.principal, publishing
+                )
+            )
 
         return workingcopy[name]
 
     @property
     def canCheckin(self):
-        if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
-                self.context):
+        if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(self.context):
             self.last_validation_error = _('Object is not local content')
             return False
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
-        if (lockable is not None and
-                not lockable.ownLock() and lockable.locked()):
+        if lockable is not None and not lockable.ownLock() and lockable.locked():
             self.last_validation_error = _('Cannot acquire lock')
             return False
         workingcopy = self.context.__parent__
         if not workingcopy.temporary:
             event = zeit.cms.checkout.interfaces.ValidateCheckinEvent(
-                self.context, workingcopy, self.principal)
+                self.context, workingcopy, self.principal
+            )
             zope.event.notify(event)
             self.last_validation_error = event.vetoed
             if self.last_validation_error is not None:
                 return False
         return True
 
-    def checkin(self, event=True, semantic_change=None,
-                ignore_conflicts=False, publishing=False):
+    def checkin(self, event=True, semantic_change=None, ignore_conflicts=False, publishing=False):
         if not self.canCheckin:
             reason = self.last_validation_error
             if reason is None:
                 reason = _('Unknown error')
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                self.context.uniqueId, 'Cannot checkin: %s' % reason)
+                self.context.uniqueId, 'Cannot checkin: %s' % reason
+            )
         workingcopy = self.context.__parent__
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if semantic_change is None:
@@ -140,20 +140,23 @@ class CheckoutManager:
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
-                    self.context, workingcopy, self.principal, publishing))
+                    self.context, workingcopy, self.principal, publishing
+                )
+            )
         if ignore_conflicts:
             adapter_name = 'non-conflicting'
         else:
             adapter_name = ''
         added = zope.component.getAdapter(
-            self.context,
-            zeit.cms.checkout.interfaces.IRepositoryContent,
-            name=adapter_name)
+            self.context, zeit.cms.checkout.interfaces.IRepositoryContent, name=adapter_name
+        )
         del workingcopy[self.context.__name__]
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
-                    added, workingcopy, self.principal, publishing))
+                    added, workingcopy, self.principal, publishing
+                )
+            )
             if not publishing:
                 if semantic_change:
                     msg = _('Checked in with semantic change')
@@ -175,11 +178,13 @@ class CheckoutManager:
         workingcopy = self.context.__parent__
         zope.event.notify(
             zeit.cms.checkout.interfaces.BeforeDeleteEvent(
-                self.context, workingcopy, self.principal))
+                self.context, workingcopy, self.principal
+            )
+        )
         del workingcopy[self.context.__name__]
         zope.event.notify(
-            zeit.cms.checkout.interfaces.AfterDeleteEvent(
-                self.context, workingcopy, self.principal))
+            zeit.cms.checkout.interfaces.AfterDeleteEvent(self.context, workingcopy, self.principal)
+        )
 
     @zope.cachedescriptors.property.Lazy
     def workingcopy(self):
@@ -195,15 +200,13 @@ class CheckoutManager:
             if principal is None:
                 principal = p.principal
             else:
-                raise ValueError("Multiple principals found")
+                raise ValueError('Multiple principals found')
         if principal is None:
-            raise ValueError("No principal found")
+            raise ValueError('No principal found')
         return principal
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterDeleteEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterDeleteEvent)
 def unlockOnWorkingcopyDelete(context, event):
     """When the user deletes content from the working copy we see if this user
     has it locked. If so unlock it.
@@ -215,16 +218,13 @@ def unlockOnWorkingcopyDelete(context, event):
         lockable.unlock()
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterDeleteEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterDeleteEvent)
 def deleteNewContentFromRepositoryOnWorkingcopyDelete(context, event):
     """When the user deletes content from the working copy which has never
     been checked in, we delete the empty object from the repository as well.
 
     """
-    renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-        context, None)
+    renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(context, None)
     if renameable is None or not renameable.renameable:
         return
     content = zeit.cms.interfaces.ICMSContent(context.uniqueId, None)

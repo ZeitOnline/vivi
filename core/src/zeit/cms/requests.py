@@ -32,7 +32,8 @@ def request_with_timeout(self, method, url, **kw):
         return self._old_request(method, url, **kw)
     except SignalTimeout:
         raise requests.exceptions.Timeout(
-            'Request attempt timed out after %s seconds' % sig_timeout)
+            'Request attempt timed out after %s seconds' % sig_timeout
+        )
     finally:
         if sig_timeout:
             signal.setitimer(signal.ITIMER_REAL, 0)
@@ -48,6 +49,5 @@ def dump_request(response):
     uri = request.url
     data = request.body
     headers = ["'{0}: {1}'".format(k, v) for k, v in request.headers.items()]
-    headers = " -H ".join(headers)
-    return command.format(
-        method=method, headers=headers, data=data, uri=uri)
+    headers = ' -H '.join(headers)
+    return command.format(method=method, headers=headers, data=data, uri=uri)

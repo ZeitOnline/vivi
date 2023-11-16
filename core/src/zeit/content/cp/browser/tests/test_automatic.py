@@ -6,7 +6,6 @@ import zope.security.management
 
 
 class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
-
     # XXX As long as the "automatic" properties require a special
     # permission, we can't perform the test as the normal user.
     login_as = 'zmgr:mgrpw'
@@ -27,10 +26,8 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
     def test_stores_elasticsearch_query_properties_in_xml(self):
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('Automatic type', index=0).displayValue = [
-            'elasticsearch-query']
-        b.getControl('Elasticsearch raw query').value = (
-            '{"query": {"match_all": {}}}')
+        b.getControl('Automatic type', index=0).displayValue = ['elasticsearch-query']
+        b.getControl('Elasticsearch raw query').value = '{"query": {"match_all": {}}}'
         b.getControl('Sort order', index=1).value = 'date:desc'
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
@@ -42,15 +39,15 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 <region...count="3" automatic="True" automatic_type="elasticsearch-query"...>...
 <elasticsearch_raw_query>{..."match_all": {}...}</elasticsearch_raw_query>...
 <elasticsearch_raw_order>date:desc</elasticsearch_raw_order>...""",  # noqa
-            zeit.cms.testing.xmltotext(cp['lead'].xml))
+            zeit.cms.testing.xmltotext(cp['lead'].xml),
+        )
 
     def test_stores_centerpage_properties_in_xml(self):
         # Create centerpage to reference later on
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('Automatic type', index=0).displayValue = [
-            'centerpage']
+        b.getControl('Automatic type', index=0).displayValue = ['centerpage']
         b.getControl(name='form.referenced_cp').value = 'http://xml.zeit.de/cp'
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
@@ -61,13 +58,13 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="centerpage"...>...
 <referenced_cp>http://xml.zeit.de/cp</referenced_cp>...""",
-            zeit.cms.testing.xmltotext(cp['lead'].xml))
+            zeit.cms.testing.xmltotext(cp['lead'].xml),
+        )
 
     def test_stores_topicpage_properties_in_xml(self):
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('Automatic type', index=0).displayValue = [
-            'topicpage']
+        b.getControl('Automatic type', index=0).displayValue = ['topicpage']
         b.getControl(name='form.referenced_topicpage').value = 'tms-id'
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
@@ -78,13 +75,13 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="topicpage"...>...
 <referenced_topicpage>tms-id</referenced_topicpage>...""",
-            zeit.cms.testing.xmltotext(cp['lead'].xml))
+            zeit.cms.testing.xmltotext(cp['lead'].xml),
+        )
 
     def test_stores_rss_feed_in_xml(self):
         b = self.browser
         self.create_automatic_cp(b)
-        b.getControl('Automatic type', index=0).displayValue = [
-            'rss-feed']
+        b.getControl('Automatic type', index=0).displayValue = ['rss-feed']
         b.getControl(name='form.rss_feed').value = ['zett']
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
@@ -94,16 +91,15 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="rss-feed"
  rss_feed="zett">...""",
-            zeit.cms.testing.xmltotext(cp['lead'].xml))
+            zeit.cms.testing.xmltotext(cp['lead'].xml),
+        )
 
 
 class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         teaser = self.create_content('t1', 'Teaser Title')
-        cp_with_teaser = self.create_and_checkout_centerpage(
-            'cp_with_teaser', contents=[teaser])
+        cp_with_teaser = self.create_and_checkout_centerpage('cp_with_teaser', contents=[teaser])
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.cp = self.create_and_checkout_centerpage('cp')
@@ -124,8 +120,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.waitForElementPresent('css=.lightbox')
         sel.waitForElementPresent('id=form.automatic_type')
         sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
-        sel.type('id=form.referenced_cp.url',
-                 'http://xml.zeit.de/cp_with_teaser')
+        sel.type('id=form.referenced_cp.url', 'http://xml.zeit.de/cp_with_teaser')
         sel.type('id=form.count', 1)
         sel.click(r'css=#tab-0 #form\.actions\.apply')
         sel.click('css=a.CloseButton')

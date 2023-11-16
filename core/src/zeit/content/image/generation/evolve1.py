@@ -6,7 +6,8 @@ import zope.component
 
 def update(root):
     workingcopy_location = zope.component.getUtility(
-        zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+        zeit.cms.workingcopy.interfaces.IWorkingcopyLocation
+    )
 
     for workingcopy in workingcopy_location.values():
         for name in list(workingcopy):

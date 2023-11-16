@@ -12,14 +12,13 @@ import zeit.retresco.testing
 import zope.component
 
 
-class TestTags(unittest.TestCase,
-               zeit.cms.tagging.testing.TaggingHelper):
-
+class TestTags(unittest.TestCase, zeit.cms.tagging.testing.TaggingHelper):
     def get_content(self):
         from zeit.cms.tagging.tag import Tags
 
         class Content:
             tags = Tags()
+
         return Content()
 
     def test_get_without_tagger_should_be_empty(self):
@@ -28,6 +27,7 @@ class TestTags(unittest.TestCase,
     def test_set_should_raise_without_tagger(self):
         def set():
             self.get_content().tags = ()
+
         self.assertRaises(TypeError, lambda: set())
 
     def test_get_should_return_tagger_values(self):
@@ -72,9 +72,9 @@ class TestTags(unittest.TestCase,
         self.assertEqual(['t1'], [x.label for x in result])
 
 
-class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
-                           zeit.cms.tagging.testing.TaggingHelper):
-
+class TestCMSContentWiring(
+    zeit.cms.testing.ZeitCmsBrowserTestCase, zeit.cms.tagging.testing.TaggingHelper
+):
     # This test checks that the Tag object and its views etc are wired up
     # properly so that they can be addressed as ICMSContent and traversed to.
     # We need these things so we can use the ObjectSequenceWidget to edit tags.
@@ -83,9 +83,7 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
         self.setup_tags('foo')
         base = 'http://localhost/++skin++vivi/'
         browser = self.browser
-        browser.open(
-            '{}@@redirect_to?unique_id=tag://foo&view=@@object-details'.format(
-                base))
+        browser.open('{}@@redirect_to?unique_id=tag://foo&view=@@object-details'.format(base))
 
         self.assertEqual('<h3>foo (Test)</h3>', browser.contents)
 
@@ -95,13 +93,12 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
         code = 'Bärlin'.encode('unicode_escape').decode('ascii')
         base = 'http://localhost/++skin++vivi/'
         browser = self.browser
-        browser.open(
-            '{}@@redirect_to?unique_id=tag://{}&view=@@object-details'
-            .format(base, code))
+        browser.open('{}@@redirect_to?unique_id=tag://{}&view=@@object-details'.format(base, code))
         self.assertEqual('<h3>Bärlin (Test)</h3>', browser.contents)
 
     def test_adapting_tag_url_to_cmscontent_yields_a_copy(self):
         from zeit.cms.interfaces import ICMSContent
+
         self.setup_tags('foo')
         t1 = ICMSContent('tag://foo')
         t2 = ICMSContent('tag://foo')
@@ -110,32 +107,31 @@ class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase,
 
     def test_adapting_tag_url_with_escaped_unicode_yields_tag(self):
         from zeit.cms.interfaces import ICMSContent
+
         self.setup_tags('Bärlin')
-        tag = ICMSContent(
-            'tag://%s' % 'Bärlin'.encode('unicode_escape').decode('ascii'))
+        tag = ICMSContent('tag://%s' % 'Bärlin'.encode('unicode_escape').decode('ascii'))
         self.assertEqual('Bärlin', tag.label)
 
     def test_adapting_unicode_escaped_uniqueId_of_tag_yields_tag(self):
         from zeit.cms.interfaces import ICMSContent
+
         self.setup_tags('Bärlin')
-        whitelist = zope.component.queryUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        whitelist = zope.component.queryUtility(zeit.cms.tagging.interfaces.IWhitelist)
         tag = ICMSContent(whitelist.get('Bärlin').uniqueId)
         self.assertEqual('Bärlin', tag.label)
 
 
-class TestSyncToXML(zeit.cms.testing.ZeitCmsBrowserTestCase,
-                    zeit.cms.tagging.testing.TaggingHelper):
-
+class TestSyncToXML(
+    zeit.cms.testing.ZeitCmsBrowserTestCase, zeit.cms.tagging.testing.TaggingHelper
+):
     def test_copies_tags_to_head(self):
         self.setup_tags('foo')
         with checked_out(self.repository['testcontent']):
             pass
         self.assertEllipsis(
             '...<tag...>foo</tag>...',
-            lxml.etree.tostring(
-                self.repository['testcontent'].xml.head,
-                encoding=str))
+            lxml.etree.tostring(self.repository['testcontent'].xml.head, encoding=str),
+        )
 
     def test_leaves_xml_without_head_alone(self):
         content = self.repository['testcontent']
@@ -163,10 +159,8 @@ class TagTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_not_equal_comparison_is_supported(self):
         tag = zeit.cms.tagging.tag.Tag('Vipraschül', 'Person')
-        self.assertEqual(False, tag != zeit.cms.tagging.tag.Tag(
-            'Vipraschül', 'Person'))
+        self.assertEqual(False, tag != zeit.cms.tagging.tag.Tag('Vipraschül', 'Person'))
         self.assertEqual(True, tag != {})
 
     def test_from_code_returns_None_if_invalid_code_given(self):
-        self.assertEqual(None, zeit.cms.tagging.tag.Tag.from_code(
-            'invalid-code'))
+        self.assertEqual(None, zeit.cms.tagging.tag.Tag.from_code('invalid-code'))

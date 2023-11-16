@@ -65,24 +65,26 @@ class ReferenceProperty:
         """
         if instance is None:
             return self
-        if not zeit.cms.content.interfaces.IXMLRepresentation.providedBy(
-                instance):
+        if not zeit.cms.content.interfaces.IXMLRepresentation.providedBy(instance):
             raise TypeError(
                 'References descriptor can only be used on objects '
-                'that provided IXMLRepresentation, not %s' % type(instance))
+                'that provided IXMLRepresentation, not %s' % type(instance)
+            )
         result = []
         attribute = self.__name__(instance)
         for element in self._reference_nodes(instance):
             reference = zope.component.queryMultiAdapter(
-                (instance, element), zeit.cms.content.interfaces.IReference,
-                name=self.xml_reference_name)
+                (instance, element),
+                zeit.cms.content.interfaces.IReference,
+                name=self.xml_reference_name,
+            )
             if reference is not None and reference.target is not None:
                 reference.attribute = attribute
                 reference.xml_reference_name = self.xml_reference_name
                 result.append(reference)
         return References(
-            result, source=instance, attribute=attribute,
-            xml_reference_name=self.xml_reference_name)
+            result, source=instance, attribute=attribute, xml_reference_name=self.xml_reference_name
+        )
 
     def __set__(self, instance, value):
         """Writes ``value`` into XML of ``instance``.
@@ -125,8 +127,10 @@ class ReferenceProperty:
         """Raise ``TypeError`` if any value does not provide ``IReference``."""
         for value in values:
             if not zeit.cms.content.interfaces.IReference.providedBy(value):
-                raise TypeError('Only accept IReference to avoid programming '
-                                'errors that could lead to data loss.')
+                raise TypeError(
+                    'Only accept IReference to avoid programming '
+                    'errors that could lead to data loss.'
+                )
 
     def _filter_duplicates(self, value):
         # set does not preserve order, so we use dict keys instead.
@@ -155,9 +159,7 @@ class ReferenceProperty:
             reference.update_metadata(suppress_errors)
 
     @staticmethod
-    def create_reference(
-            source, attribute, target, xml_reference_name,
-            suppress_errors=False):
+    def create_reference(source, attribute, target, xml_reference_name, suppress_errors=False):
         """Creates an IReference object.
 
         Not meant to be called directly, clients should use
@@ -170,30 +172,33 @@ class ReferenceProperty:
         generic "catch all exceptions" switch.
         """
         if zeit.cms.content.interfaces.IReference.providedBy(target):
-            raise TypeError('Cannot create reference for reference because it '
-                            'could lead to data loss.')
+            raise TypeError(
+                'Cannot create reference for reference because it ' 'could lead to data loss.'
+            )
 
         element = None
         if suppress_errors:
             try:
                 element = zope.component.getAdapter(
-                    target, zeit.cms.content.interfaces.IXMLReference,
-                    name=xml_reference_name + '_suppress_errors')
+                    target,
+                    zeit.cms.content.interfaces.IXMLReference,
+                    name=xml_reference_name + '_suppress_errors',
+                )
             except zope.component.ComponentLookupError:
                 pass
         if element is None:
             try:
                 element = zope.component.getAdapter(
-                    target, zeit.cms.content.interfaces.IXMLReference,
-                    name=xml_reference_name)
+                    target, zeit.cms.content.interfaces.IXMLReference, name=xml_reference_name
+                )
             except zope.component.ComponentLookupError:
                 raise ValueError(
-                    ("Could not create XML reference type '%s' for %s "
-                     "(referenced by %s).") % (
-                         xml_reference_name, target.uniqueId, source.uniqueId))
+                    ("Could not create XML reference type '%s' for %s " '(referenced by %s).')
+                    % (xml_reference_name, target.uniqueId, source.uniqueId)
+                )
         reference = zope.component.queryMultiAdapter(
-            (source, element), zeit.cms.content.interfaces.IReference,
-            name=xml_reference_name)
+            (source, element), zeit.cms.content.interfaces.IReference, name=xml_reference_name
+        )
         reference.attribute = attribute
         reference.xml_reference_name = xml_reference_name
         return reference
@@ -212,8 +217,9 @@ class ReferenceProperty:
             if reference.target_unique_id == target:
                 if result is not None:
                     raise ValueError(
-                        '%s has more than one reference to %s on %s' %
-                        (source.uniqueId, target, attribute))
+                        '%s has more than one reference to %s on %s'
+                        % (source.uniqueId, target, attribute)
+                    )
                 result = reference
         if result is not None:
             return result
@@ -247,8 +253,7 @@ class SingleReferenceProperty(ReferenceProperty):
         super().__set__(instance, value)
 
     def _reference_nodes(self, instance):
-        result = super()._reference_nodes(
-            instance)
+        result = super()._reference_nodes(instance)
         if not isinstance(result, list):
             result = [result]
         return result
@@ -311,9 +316,7 @@ class MultiResource(ReferenceProperty):
             reference.update_metadata(suppress_errors)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_metadata_on_checkin(context, event):
     cls = type(context)
     for name in dir(cls):
@@ -326,7 +329,6 @@ def update_metadata_on_checkin(context, event):
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IReferences)
 class References(tuple):
-
     def __new__(cls, items, source, attribute, xml_reference_name):
         self = super().__new__(cls, items)
         self.source = source
@@ -337,13 +339,12 @@ class References(tuple):
     def create(self, target, suppress_errors=False):
         """See ReferenceProperty.__get__"""
         return ReferenceProperty.create_reference(
-            self.source, self.attribute, target, self.xml_reference_name,
-            suppress_errors)
+            self.source, self.attribute, target, self.xml_reference_name, suppress_errors
+        )
 
     def get(self, target, default=None):
         """Supports ICMSContent resolving for IReference."""
-        return ReferenceProperty.find_reference(
-            self.source, self.attribute, target, default)
+        return ReferenceProperty.find_reference(self.source, self.attribute, target, default)
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IReference)
@@ -365,8 +366,8 @@ class EmptyReference:
 
     def create(self, target, suppress_errors=False):
         return ReferenceProperty.create_reference(
-            self.source, self.attribute, target, self.xml_reference_name,
-            suppress_errors)
+            self.source, self.attribute, target, self.xml_reference_name, suppress_errors
+        )
 
     def get(self, target, default=None):
         return default
@@ -385,10 +386,7 @@ ID_PREFIX = 'reference://'
 
 @grok.implementer(zeit.cms.content.interfaces.IReference)
 class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
-
-    grok.adapts(
-        zeit.cms.content.interfaces.IXMLRepresentation,
-        gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.cms.content.interfaces.IXMLRepresentation, gocept.lxml.interfaces.IObjectified)
     grok.baseclass()
 
     # XXX kludgy: These must be set manually after adapter call by clients.
@@ -402,12 +400,10 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     def __setattr__(self, key, value):
         # XXX the kludge around our attributes continues
-        if (key not in ['attribute', 'xml_reference_name'] and
-                not key.startswith('_p_')):
+        if key not in ['attribute', 'xml_reference_name'] and not key.startswith('_p_'):
             self._p_changed = True
         # skip immediate superclass since it has the bevaiour we want to change
-        super(zeit.cms.content.xmlsupport.Persistent, self).__setattr__(
-            key, value)
+        super(zeit.cms.content.xmlsupport.Persistent, self).__setattr__(key, value)
 
     @property
     def target_unique_id(self):
@@ -425,13 +421,12 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
             return None
 
     def get(self, target, default=None):
-        return ReferenceProperty.find_reference(
-            self.__parent__, self.attribute, target, default)
+        return ReferenceProperty.find_reference(self.__parent__, self.attribute, target, default)
 
     def create(self, target, suppress_errors=False):
         return ReferenceProperty.create_reference(
-            self.__parent__, self.attribute, target, self.xml_reference_name,
-            suppress_errors)
+            self.__parent__, self.attribute, target, self.xml_reference_name, suppress_errors
+        )
 
     def update_metadata(self, suppress_errors=False):
         if self.target is None:
@@ -447,54 +442,58 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     @property
     def uniqueId(self):
-        return '%s?%s' % (ID_PREFIX, urllib.parse.urlencode({
-            'source': self.__parent__.uniqueId, 'attribute': self.attribute,
-            'target': self.target_unique_id}))
+        return '%s?%s' % (
+            ID_PREFIX,
+            urllib.parse.urlencode(
+                {
+                    'source': self.__parent__.uniqueId,
+                    'attribute': self.attribute,
+                    'target': self.target_unique_id,
+                }
+            ),
+        )
 
     def __eq__(self, other):
-        return (self.__class__ == other.__class__ and
-                self.__parent__.uniqueId == other.__parent__.uniqueId and
-                self.attribute == other.attribute and
-                self.target.uniqueId == other.target_unique_id)
+        return (
+            self.__class__ == other.__class__
+            and self.__parent__.uniqueId == other.__parent__.uniqueId
+            and self.attribute == other.attribute
+            and self.target.uniqueId == other.target_unique_id
+        )
 
     def __hash__(self):
-        return hash((
-            self.__parent__.uniqueId, self.attribute, self.target_unique_id))
+        return hash((self.__parent__.uniqueId, self.attribute, self.target_unique_id))
 
     def __repr__(self):
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__, self.uniqueId)
+        return '<%s.%s %s>' % (self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
 @grok.adapter(str, name=ID_PREFIX)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_reference(unique_id):
     assert unique_id.startswith(ID_PREFIX)
-    params = urllib.parse.parse_qs(
-        urllib.parse.urlparse(unique_id).query)
+    params = urllib.parse.parse_qs(urllib.parse.urlparse(unique_id).query)
     source = zeit.cms.cmscontent.resolve_wc_or_repository(params['source'][0])
     references = getattr(source, params['attribute'][0], {})
     return references.get(params['target'][0])
 
 
 @zope.component.adapter(
-    zeit.cms.content.interfaces.IReference,
-    zeit.cms.browser.interfaces.ICMSLayer)
+    zeit.cms.content.interfaces.IReference, zeit.cms.browser.interfaces.ICMSLayer
+)
 class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-
     def __str__(self):
-        base = zope.traversing.browser.absoluteURL(
-            self.context.__parent__, self.request)
+        base = zope.traversing.browser.absoluteURL(self.context.__parent__, self.request)
         return base + '/++attribute++%s/%s' % (
             # XXX zope.publisher seems to decode stuff (but why?), so we need
             # to encode twice
-            self.context.attribute, urllib.parse.quote_plus(
-                urllib.parse.quote_plus(self.context.__name__)))
+            self.context.attribute,
+            urllib.parse.quote_plus(urllib.parse.quote_plus(self.context.__name__)),
+        )
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class Traverser:
-
     def __init__(self, context, request):
         self.context = context
         self.request = request

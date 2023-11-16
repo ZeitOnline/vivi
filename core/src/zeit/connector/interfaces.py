@@ -25,9 +25,9 @@ DeleteProperty = _DeleteProperty()
 
 try:
     import zope.security.checker
+
     # Make DeleteProperty a rock
-    zope.security.checker.BasicTypes[_DeleteProperty] = (
-        zope.security.checker.NoProxy)
+    zope.security.checker.BasicTypes[_DeleteProperty] = zope.security.checker.NoProxy
 except ImportError:
     pass  # soft dependency
 
@@ -59,8 +59,7 @@ class MoveError(ConnectorError):
 
 
 class LockedByOtherSystemError(LockingError):
-    """Raised when trying to update an resource which was not locked by us.
-    """
+    """Raised when trying to update an resource which was not locked by us."""
 
 
 class IConnector(zope.interface.Interface):
@@ -219,8 +218,7 @@ class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
     """
 
 
-class IWebDAVWriteProperties(
-        zope.interface.common.mapping.IExtendedWriteMapping):
+class IWebDAVWriteProperties(zope.interface.common.mapping.IExtendedWriteMapping):
     """Write interface for WebDAVProperties."""
 
 
@@ -237,7 +235,8 @@ class IResource(zope.interface.Interface):
 
     __name__ = zope.schema.TextLine(
         title='The name within the parent',
-        description='Traverse the parent with this name to get the object.')
+        description='Traverse the parent with this name to get the object.',
+    )
 
     # TODO: make this an URI. We want the unique ids to not contain any unicode
     # characters, so a URI would be the right thing. Right now we have unicode
@@ -246,20 +245,19 @@ class IResource(zope.interface.Interface):
 
     type = zope.interface.Attribute(
         'Resource type (folder, image, ...). This is mapped to the property '
-        'defined by `RESOURCE_TYPE_PROPERTY`')
+        'defined by `RESOURCE_TYPE_PROPERTY`'
+    )
 
-    data = zope.interface.Attribute(
-        'Resource main data (body, image data) as a file-like object.')
+    data = zope.interface.Attribute('Resource main data (body, image data) as a file-like object.')
 
     contentType = zope.schema.BytesLine(
-        title=u'Content Type',
+        title='Content Type',
         description='The mime content type identifies the type of data.',
         default=b'',
-        required=False)
+        required=False,
+    )
 
-    properties = zope.schema.Object(
-        IWebDAVProperties,
-        title='WebDAV properties')
+    properties = zope.schema.Object(IWebDAVProperties, title='WebDAV properties')
 
 
 class IResourceCache(zope.interface.Interface):
@@ -282,8 +280,9 @@ class IResourceCache(zope.interface.Interface):
         """Minimize cache."""
 
 
-class ICache(zope.interface.common.mapping.IReadMapping,
-             zope.interface.common.mapping.IWriteMapping):
+class ICache(
+    zope.interface.common.mapping.IReadMapping, zope.interface.common.mapping.IWriteMapping
+):
     """Generic cache interface."""
 
     def keys(include_deleted=False):
@@ -342,12 +341,11 @@ class ILockInfoStorage(zope.interface.Interface):
 class IResourceInvalidatedEvent(zope.interface.Interface):
     """A resource has been invalidated."""
 
-    id = zope.interface.Attribute("Unique id of resource")
+    id = zope.interface.Attribute('Unique id of resource')
 
 
 @zope.interface.implementer(IResourceInvalidatedEvent)
 class ResourceInvalidatedEvent:
-
     def __init__(self, id):
         self.id = id
 

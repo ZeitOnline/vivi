@@ -16,6 +16,7 @@ class TestWhitelist(zeit.retresco.testing.FunctionalTestCase):
     @property
     def whitelist(self):
         from ..whitelist import Whitelist
+
         return Whitelist()
 
     def test_get_creates_tag_from_code(self):
@@ -24,8 +25,7 @@ class TestWhitelist(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('person', tag.entity_type)
 
     def test_get_returns_None_for_old_uuids(self):
-        self.assertEqual(
-            None, self.whitelist.get('66ef0e83-f760-43fa-ae24-8bf9ce14ebf0'))
+        self.assertEqual(None, self.whitelist.get('66ef0e83-f760-43fa-ae24-8bf9ce14ebf0'))
 
     def test_search_uses_TMS_get_keywords_for_searching(self):
         with mock.patch('zeit.retresco.connection.TMS.get_keywords') as kw:
@@ -33,61 +33,61 @@ class TestWhitelist(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual('Foo-Bar', kw.call_args[0][0])
 
 
-class TestWhitelistLocationAutocomplete(
-        zeit.cms.testing.ZeitCmsBrowserTestCase):
+class TestWhitelistLocationAutocomplete(zeit.cms.testing.ZeitCmsBrowserTestCase):
     """Testing ..whitelist.Whitelist.locations()."""
 
     layer = zeit.retresco.testing.WSGI_LAYER
 
     def test_search_for_locations(self):
         request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSLayer,
-            SERVER_URL='http://localhost/++skin++vivi')
+            skin=zeit.cms.browser.interfaces.ICMSLayer, SERVER_URL='http://localhost/++skin++vivi'
+        )
         url = zope.component.getMultiAdapter(
             (zeit.cms.tagging.source.locationSource(None), request),
-            zeit.cms.browser.interfaces.ISourceQueryURL)
+            zeit.cms.browser.interfaces.ISourceQueryURL,
+        )
         with mock.patch('zeit.retresco.connection.TMS.get_locations') as gl:
-            gl.return_value = [Tag('Schweiz', 'location'),
-                               Tag('Frankreich', 'location')]
+            gl.return_value = [Tag('Schweiz', 'location'), Tag('Frankreich', 'location')]
             b = self.browser
             b.open(url + '?term=ei')
             result = json.loads(b.contents)
-        self.assertEqual([{'label': 'Schweiz',
-                           'value': 'tag://location\\u2603Schweiz'},
-                          {'label': 'Frankreich',
-                           'value': 'tag://location\\u2603Frankreich'}],
-                         result)
+        self.assertEqual(
+            [
+                {'label': 'Schweiz', 'value': 'tag://location\\u2603Schweiz'},
+                {'label': 'Frankreich', 'value': 'tag://location\\u2603Frankreich'},
+            ],
+            result,
+        )
 
 
 class TestTopicpages(zeit.retresco.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        self.topics = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.ITopicpages)
+        self.topics = zope.component.getUtility(zeit.cms.tagging.interfaces.ITopicpages)
 
     def test_slice(self):
         self.assertEqual(
-            ['berlin', 'pedelec'],
-            [x['id'] for x in self.topics.get_topics(start=2, rows=2)])
+            ['berlin', 'pedelec'], [x['id'] for x in self.topics.get_topics(start=2, rows=2)]
+        )
         self.assertEqual(5, len(self.topics.get_topics(rows=None)))
 
     def test_sort_by_kpi(self):
         self.assertEqual(
             ['pedelec', 'zweirad'],
-            [x['id'] for x in self.topics.get_topics(
-                start=3, rows=2, sort_by='kpi_1')])
+            [x['id'] for x in self.topics.get_topics(start=3, rows=2, sort_by='kpi_1')],
+        )
         self.assertEqual(
             ['zweirad', 'pedelec'],
-            [x['id'] for x in self.topics.get_topics(rows=2, sort_by='kpi_1',
-                                                     sort_order='desc')])
+            [x['id'] for x in self.topics.get_topics(rows=2, sort_by='kpi_1', sort_order='desc')],
+        )
 
     def test_filter_by_first_letter(self):
         self.assertEqual(
-            ['angela-merkel'],
-            [x['id'] for x in self.topics.get_topics(firstletter='a')])
+            ['angela-merkel'], [x['id'] for x in self.topics.get_topics(firstletter='a')]
+        )
 
     def test_filter_by_numbers(self):
         self.assertEqual(
             ['1-fc-kaiserslautern'],
-            [x['id'] for x in self.topics.get_topics(firstletter='123456789')])
+            [x['id'] for x in self.topics.get_topics(firstletter='123456789')],
+        )

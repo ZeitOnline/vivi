@@ -24,7 +24,6 @@ class IInvalidator(zope.interface.Interface):
 
 
 class Invalidator(persistent.Persistent):
-
     def __init__(self):
         self.working_set = BTrees.family32.OI.TreeSet()
         self.missed = BTrees.family32.OI.TreeSet()
@@ -41,7 +40,7 @@ class Invalidator(persistent.Persistent):
         return True
 
     def fill_working_set(self):
-        log.info("Filling working set.")
+        log.info('Filling working set.')
         for id in self.property_cache.keys():
             # The inverse of .cache.get_storage_key()
             if isinstance(id, bytes):
@@ -54,9 +53,8 @@ class Invalidator(persistent.Persistent):
         collection = self.get_next_collection()
         if collection is None:
             return
-        log.info("Refreshing %s" % collection)
-        zope.event.notify(
-            zeit.connector.interfaces.ResourceInvaliatedEvent(collection))
+        log.info('Refreshing %s' % collection)
+        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(collection))
         # When the resource exists, we remember what we have updated.
         try:
             resource = self.connector[collection]
@@ -64,8 +62,7 @@ class Invalidator(persistent.Persistent):
             pass
         else:
             if resource.contentType == 'httpd/unix-directory':
-                self.got.update(
-                    o[1] for o in self.connector.listCollection(collection))
+                self.got.update(o[1] for o in self.connector.listCollection(collection))
             else:
                 self.missed.insert(resource.id)
 
@@ -78,12 +75,11 @@ class Invalidator(persistent.Persistent):
             self.missed.insert(collection)
 
     def invalidate_missed(self):
-        log.info("Invalidating deleted objects.")
+        log.info('Invalidating deleted objects.')
         really_missed = BTrees.family32.OI.difference(self.missed, self.got)
         property_cache = self.property_cache
         for id in really_missed:
-            zope.event.notify(
-                zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+            zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
             try:
                 property_cache.remove(id)
             except KeyError:
@@ -91,13 +87,11 @@ class Invalidator(persistent.Persistent):
 
     @property
     def connector(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
     @property
     def property_cache(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IPropertyCache)
+        return zope.component.getUtility(zeit.connector.interfaces.IPropertyCache)
 
 
 @zeit.cms.cli.runner(ticks=0.05, once=False)

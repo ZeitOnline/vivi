@@ -12,7 +12,6 @@ from zope.component import getUtility, getGlobalSiteManager
 
 
 class FilesystemCachingTest(ZeitCmsTestCase):
-
     def setUp(self):
         super().setUp()
         environ['CONTENT_CACHE_SIZE'] = '5'
@@ -22,11 +21,13 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         gsm.registerUtility(connector, IConnector)
         repository = getUtility(IRepository)
         self.getcontent_patch = patch.object(
-            type(repository), 'getContent', wraps=repository.getContent)
+            type(repository), 'getContent', wraps=repository.getContent
+        )
         self.getcontent = self.getcontent_patch.start()
         self.getproperty_patch = patch(
             'zeit.cms.content.dav.CollectionTextLineProperty.fromProperty',
-            return_value=('Icke', 'Er'))
+            return_value=('Icke', 'Er'),
+        )
         self.getproperty = self.getproperty_patch.start()
         self.path = Path(path)
         self.reset_cache()
@@ -38,15 +39,15 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         super().tearDown()
 
     def reset_cache(self):
-        cache = vars(caching)['__cache']    # reset the cache by removing
-        if hasattr(cache, 'cache'):         # the `cache` attribute
+        cache = vars(caching)['__cache']  # reset the cache by removing
+        if hasattr(cache, 'cache'):  # the `cache` attribute
             delattr(cache, 'cache')
 
     def test_content_is_cached(self):
         assert self.getcontent.call_count == 0
         a = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
-        commit()                            # new transaction (aka request)
+        commit()  # new transaction (aka request)
         b = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
         assert a is b
@@ -54,7 +55,7 @@ class FilesystemCachingTest(ZeitCmsTestCase):
     def test_content_is_invalidated_by_update(self):
         a = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 1
-        commit()                            # new transaction (aka request)
+        commit()  # new transaction (aka request)
         self.path.joinpath('testcontent').touch()
         b = ICMSContent('http://xml.zeit.de/testcontent')
         assert self.getcontent.call_count == 2
@@ -65,7 +66,7 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         a = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert a.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 1
-        commit()                            # new transaction (aka request)
+        commit()  # new transaction (aka request)
         b = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert b.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 1
@@ -74,7 +75,7 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         a = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert a.authors == ('Icke', 'Er')
         assert self.getproperty.call_count == 1
-        commit()                            # new transaction (aka request)
+        commit()  # new transaction (aka request)
         self.path.joinpath('contentwithproperty.meta').touch()
         b = ICMSContent('http://xml.zeit.de/contentwithproperty')
         assert b.authors == ('Icke', 'Er')
@@ -105,24 +106,33 @@ class FilesystemCachingTest(ZeitCmsTestCase):
         assert 'http://xml.zeit.de/2007/01/Miami' not in cache
 
     def test_cache_info(self):
-        assert caching.info() == {
-            'size': 5, 'count': 0, 'hits': 0, 'misses': 0, 'usage': {}}
+        assert caching.info() == {'size': 5, 'count': 0, 'hits': 0, 'misses': 0, 'usage': {}}
         ICMSContent('http://xml.zeit.de/2006/49/Young')
         ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
         ICMSContent('http://xml.zeit.de/2007/01/Macher')
         assert caching.info() == {
-            'size': 5, 'count': 3, 'hits': 0, 'misses': 3, 'usage': {
+            'size': 5,
+            'count': 3,
+            'hits': 0,
+            'misses': 3,
+            'usage': {
                 'http://xml.zeit.de/2006/49/Young': 1,
                 'http://xml.zeit.de/2006/52/Stimmts': 1,
                 'http://xml.zeit.de/2007/01/Macher': 1,
-            }}
+            },
+        }
         ICMSContent('http://xml.zeit.de/2006/52/Stimmts')
         ICMSContent('http://xml.zeit.de/2007/01/Macher')
         ICMSContent('http://xml.zeit.de/2007/02/Vita')
         assert caching.info() == {
-            'size': 5, 'count': 4, 'hits': 2, 'misses': 4, 'usage': {
+            'size': 5,
+            'count': 4,
+            'hits': 2,
+            'misses': 4,
+            'usage': {
                 'http://xml.zeit.de/2006/49/Young': 1,
                 'http://xml.zeit.de/2006/52/Stimmts': 2,
                 'http://xml.zeit.de/2007/01/Macher': 2,
                 'http://xml.zeit.de/2007/02/Vita': 1,
-            }}
+            },
+        }

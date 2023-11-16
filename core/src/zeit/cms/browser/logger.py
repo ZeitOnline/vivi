@@ -11,12 +11,10 @@ log = logging.getLogger('JavaScript')
 
 
 class JSONLog(zeit.cms.browser.view.JSON):
-
     # XXX It would be even nicer to convert the JS traceback to Python and
     # then simply use IErrorReportingUtility.raising().
     def json(self):
-        decoded = json.loads(self.request.bodyStream.read(
-            int(self.request['CONTENT_LENGTH'])))
+        decoded = json.loads(self.request.bodyStream.read(int(self.request['CONTENT_LENGTH'])))
         message = '\n'.join(str(x) for x in decoded['message'])
 
         # XXX Ignore errors triggered by Firefox bug where a
@@ -28,9 +26,9 @@ class JSONLog(zeit.cms.browser.view.JSON):
         log_func = getattr(log, decoded['level'].lower())
 
         error_reporting_util = zope.component.getUtility(
-            zope.error.interfaces.IErrorReportingUtility)
-        user = (
-            error_reporting_util._getUsername(self.request) or '').split(', ')
+            zope.error.interfaces.IErrorReportingUtility
+        )
+        user = (error_reporting_util._getUsername(self.request) or '').split(', ')
         if user:
             user = {'id': user[1], 'name': user[2], 'email': user[3]}
         url = decoded['url']
@@ -41,8 +39,12 @@ class JSONLog(zeit.cms.browser.view.JSON):
         path = urllib.parse.urlparse(url).path if url else None
         js_error = decoded['message'][0]
         bugsnag.notify(
-            JavaScriptError(js_error), context=path, severity='error',
-            user=user, grouping_hash=js_error)
+            JavaScriptError(js_error),
+            context=path,
+            severity='error',
+            user=user,
+            grouping_hash=js_error,
+        )
 
         return {}
 

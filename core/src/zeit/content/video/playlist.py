@@ -10,22 +10,18 @@ import zeit.content.video.interfaces
 import zope.interface
 
 
-@zope.interface.implementer(
-    zeit.content.video.interfaces.IPlaylist,
-    zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(zeit.content.video.interfaces.IPlaylist, zeit.cms.interfaces.IAsset)
 class Playlist(zeit.cms.content.metadata.CommonMetadata):
+    default_template = (importlib.resources.files(__package__) / 'playlist-template.xml').read_text(
+        'utf-8'
+    )
 
-    default_template = (importlib.resources.files(
-        __package__) / 'playlist-template.xml').read_text('utf-8')
-
-    videos = zeit.cms.content.reference.MultiResource(
-        '.body.videos.video', 'related')
+    videos = zeit.cms.content.reference.MultiResource('.body.videos.video', 'related')
 
     id_prefix = 'pls'
 
 
 class PlaylistType(zeit.cms.type.XMLContentTypeDeclaration):
-
     title = _('Playlist')
     interface = zeit.content.video.interfaces.IPlaylist
     addform = zeit.cms.type.SKIP_ADD

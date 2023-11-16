@@ -20,8 +20,7 @@ XML_PREFIX_MARKER = '||ESCAPE||'
 
 xml = lxml.etree.Element('{DAV:}propfind')
 xml.append(lxml.etree.Element('{DAV:}allprop'))
-PROPFIND_BODY = lxml.etree.tostring(
-    xml, encoding='UTF-8', xml_declaration=True)
+PROPFIND_BODY = lxml.etree.tostring(xml, encoding='UTF-8', xml_declaration=True)
 del xml
 
 
@@ -31,7 +30,7 @@ def _mk_if_data(url, locktoken):
     return s
 
 
-_qname_pattern = re.compile("{(?P<uri>.+)}(?P<name>.+)")
+_qname_pattern = re.compile('{(?P<uri>.+)}(?P<name>.+)')
 
 
 def _make_qname_tuple(string, pattern=_qname_pattern):
@@ -46,16 +45,16 @@ def _make_qname_tuple(string, pattern=_qname_pattern):
 # :note:  should we only look for direct children?
 def _find_child(node, name):
     """Find all direct children of node with ns 'DAV:' and name <name>"""
-    res = node.xpath("D:%s" % (name,), namespaces={'D': 'DAV:'})
+    res = node.xpath('D:%s' % (name,), namespaces={'D': 'DAV:'})
     return res
 
 
 # As of rfc2616: 6.1 Status Line
-_stat_patt = re.compile(r"^(HTTP/\d+\.\d+)\s+(\d\d\d)(?:\s+(.*))?$")
+_stat_patt = re.compile(r'^(HTTP/\d+\.\d+)\s+(\d\d\d)(?:\s+(.*))?$')
 
 
 def _parse_status_line(line):
-    line = line.strip("\r\n\t ")
+    line = line.strip('\r\n\t ')
     m = _stat_patt.match(line)
     # EEK! m==None should be caught by exception below, but isn't :-(
     if m is not None:
@@ -68,8 +67,8 @@ def _parse_status_line(line):
         else:
             return stat, reason
 
-    raise zeit.connector.dav.interfaces.DAVBadStatusLineError(
-        "Can't grok status line %r" % line)
+    raise zeit.connector.dav.interfaces.DAVBadStatusLineError("Can't grok status line %r" % line)
+
 
 # :fixme: I don't like this setup: why group properties by their status code
 # at all. Does a read operation on a property need to check in all DAVPropstat
@@ -77,8 +76,8 @@ def _parse_status_line(line):
 
 
 class DAVPropstat:
-    """
-    """
+    """ """
+
     def __init__(self, doc, ps_node):
         self.status = None
         self.reason = ''
@@ -93,22 +92,19 @@ class DAVPropstat:
     # convenient iff we :ove xpath evaluation to the document object
     # (by calling doc.xpathEval(expr, context_node)
     def _parse_ps(self, doc, context_node):
-        status_nodes = context_node.xpath(
-            'D:status', namespaces={'D': 'DAV:'})
+        status_nodes = context_node.xpath('D:status', namespaces={'D': 'DAV:'})
         # Huzzah for copy&paste programming :-(
         if status_nodes:  # FIXME: What when more than one?
             # may raise exception
             self.status, self.reason = _parse_status_line(status_nodes[0].text)
 
         # description
-        desc = context_node.xpath(
-            'D:responsedescription', namespaces={'D': 'DAV:'})
+        desc = context_node.xpath('D:responsedescription', namespaces={'D': 'DAV:'})
         if desc:
             self.description = desc[0].text.strip()
 
         # parse property name/value pairs
-        prop_nodes = context_node.xpath(
-            'D:prop/*', namespaces={'D': 'DAV:'})
+        prop_nodes = context_node.xpath('D:prop/*', namespaces={'D': 'DAV:'})
         for prop in prop_nodes:
             pkey = _make_qname_tuple(prop.tag)
             # :fixme: is strip() correct here?
@@ -116,7 +112,7 @@ class DAVPropstat:
             if len(prop) < 1:
                 pvalue = prop.text  # .strip()
                 if pvalue and pvalue.startswith(XML_PREFIX_MARKER):
-                    pvalue = pvalue[len(XML_PREFIX_MARKER):]
+                    pvalue = pvalue[len(XML_PREFIX_MARKER) :]
             else:
                 pvalue = lxml.etree.tostring(prop, encoding=str)
             if pvalue is None:
@@ -128,8 +124,7 @@ class DAVPropstat:
         # :fixme: can we use restype = doc.xpathEval(path, ps_node)
         # Why this extra scan? {DAV:}resourcetype should be set during
         # the above iteration
-        restype = context_node.xpath(
-            'D:prop/D:resourcetype/*', namespaces={'D': 'DAV:'})
+        restype = context_node.xpath('D:prop/D:resourcetype/*', namespaces={'D': 'DAV:'})
         if not restype:
             # resourcetype not filled
             # This is plain and simple wrong!
@@ -137,25 +132,25 @@ class DAVPropstat:
         # locking info
         linfo = {}
         lockinfo_nodes = context_node.xpath(
-            'D:prop/D:lockdiscovery/D:activelock',
-            namespaces={'D': 'DAV:'})
+            'D:prop/D:lockdiscovery/D:activelock', namespaces={'D': 'DAV:'}
+        )
         if len(lockinfo_nodes) > 1:
             raise zeit.connector.dav.interfaces.DAVError(
-                "Malformed PROPSTAT respones: more than one activlock found!")
+                'Malformed PROPSTAT respones: more than one activlock found!'
+            )
         if lockinfo_nodes:
             context = lockinfo_nodes[0]
             # :fixme: the following would be prominent calls
             # for find_first_child(...)
             try:
-                linfo['owner'] = context.xpath(
-                    'D:owner', namespaces={'D': 'DAV:'})[0].text.strip()
+                linfo['owner'] = context.xpath('D:owner', namespaces={'D': 'DAV:'})[0].text.strip()
             except IndexError:
                 linfo['owner'] = None
                 pass
-            linfo['timeout'] = context.xpath(
-                'D:timeout', namespaces={'D': 'DAV:'})[0].text.strip()
-            linfo['locktoken'] = context.xpath(
-                'D:locktoken/D:href', namespaces={'D': 'DAV:'})[0].text.strip()
+            linfo['timeout'] = context.xpath('D:timeout', namespaces={'D': 'DAV:'})[0].text.strip()
+            linfo['locktoken'] = context.xpath('D:locktoken/D:href', namespaces={'D': 'DAV:'})[
+                0
+            ].text.strip()
         self.locking_info = linfo
         return
 
@@ -166,15 +161,17 @@ class DAVPropstat:
         return False
 
     def __repr__(self):
-        return "DAVPropstat: Status: %r %r %r\n" % (
-            self.status, self.reason, self.description) + \
-            "  Properties:" + pprint.pformat(self.properties, 2) + \
-            "\n  Locking info: " + pprint.pformat(self.locking_info, 2)
+        return (
+            'DAVPropstat: Status: %r %r %r\n' % (self.status, self.reason, self.description)
+            + '  Properties:'
+            + pprint.pformat(self.properties, 2)
+            + '\n  Locking info: '
+            + pprint.pformat(self.locking_info, 2)
+        )
 
 
 class DAVResponse:
-    """FIXME: document
-    """
+    """FIXME: document"""
 
     def __init__(self, doc, res_node):
         self.propstats = []
@@ -190,7 +187,8 @@ class DAVResponse:
         if not href_nodes:
             # :fixme: nodePath() is libxml2, this is probably not tested
             raise zeit.connector.dav.interfaces.DAVNotFoundError(
-                'No href found in node %s!' % res_node.nodePath())
+                'No href found in node %s!' % res_node.nodePath()
+            )
         url_node = href_nodes[0]
         self.url = unquote(url_node.text.strip())
         status_nodes = _find_child(res_node, 'status')
@@ -234,13 +232,14 @@ class DAVResponse:
         return ret
 
     def __repr__(self):
-        return "  DAVResponse for %s: %r %r\n  " % (
-            self.url, self.status, self.reason) + \
-            "\n  ".join([p.__repr__() for p in self.propstats])
+        return '  DAVResponse for %s: %r %r\n  ' % (
+            self.url,
+            self.status,
+            self.reason,
+        ) + '\n  '.join([p.__repr__() for p in self.propstats])
 
 
 class DAVResult:
-
     def __init__(self, http_response=None):
         """Initialize a DAVResult instance.
 
@@ -319,8 +318,7 @@ class DAVResult:
 
 
 class DAVResource:
-    """Basic class describing an arbitrary DAV resource (file or collection)
-    """
+    """Basic class describing an arbitrary DAV resource (file or collection)"""
 
     collection = None
     size = None
@@ -328,8 +326,7 @@ class DAVResource:
     _result = None
 
     def __init__(self, url, conn=None, auto_request=False):
-        """Setup a fresh instance.
-        """
+        """Setup a fresh instance."""
         self._set_url(url)
         self.auto_request = auto_request
         self._conn = conn
@@ -383,8 +380,7 @@ class DAVResource:
         return self._result
 
     def is_connected(self):
-        """Return True if there is a connection established.
-        """
+        """Return True if there is a connection established."""
         return self._conn is not None
 
     def set_connection(self, conn):
@@ -426,8 +422,7 @@ class DAVResource:
         if not nsuri:
             res = response.get_all_properties().keys()
         else:
-            res = [t for t in response.get_all_properties().keys()
-                   if t[1] == nsuri]
+            res = [t for t in response.get_all_properties().keys() if t[1] == nsuri]
         return res
 
     def get_property_value(self, propname):
@@ -451,8 +446,7 @@ class DAVResource:
         return r.get_all_properties()
 
     def get_etag(self):
-        """Return the etag for this resource or None.
-        """
+        """Return the etag for this resource or None."""
         etag = self._result.get_etag(self.path)
         return etag
 
@@ -483,9 +477,8 @@ class DAVResource:
                 continue
 
             if value is delmark:  # delete
-                delete_properties.append(
-                    make_element(namespace, name))
-            else:            # set/change
+                delete_properties.append(make_element(namespace, name))
+            else:  # set/change
                 try:
                     node = lxml.etree.XML(value)
                 except lxml.etree.XMLSyntaxError:
@@ -501,8 +494,7 @@ class DAVResource:
                     # Temporary fix to avoid webdav server confusion. When the
                     # value starts with a '<' the server does some magic. Avoid
                     # this by adding a magic marker before the actual value.
-                    if (value.startswith('<') or
-                            value.startswith(XML_PREFIX_MARKER)):
+                    if value.startswith('<') or value.startswith(XML_PREFIX_MARKER):
                         value = XML_PREFIX_MARKER + value
                     node = make_element(namespace, name)
                     node.text = value
@@ -525,9 +517,7 @@ class DAVResource:
         _append_change('{DAV:}set', set_properties)
         _append_change('{DAV:}remove', delete_properties)
 
-        xml_body = lxml.etree.tostring(body.getroottree(),
-                                       encoding='UTF-8',
-                                       xml_declaration=True)
+        xml_body = lxml.etree.tostring(body.getroottree(), encoding='UTF-8', xml_declaration=True)
         res = self._proppatch(xml_body, locktoken=locktoken)
         return res
 
@@ -573,8 +563,7 @@ class DAVResource:
         return d
 
     def is_locked(self):
-        """Return True if this resource is locked.
-        """
+        """Return True if this resource is locked."""
         if self.auto_request or not self._result:
             self.update()
         result = self._result
@@ -599,8 +588,7 @@ class DAVResource:
         return li.copy()
 
     def _propfind(self, depth=0):
-        """Query all properties for this resource, return a DAVResult instance.
-        """
+        """Query all properties for this resource, return a DAVResult instance."""
         hdrs = {}
         # if we have a locktoken, supply it
         if self.locktoken is not None:
@@ -609,8 +597,7 @@ class DAVResource:
             hdrs['Lock-Token'] = self.locktoken
             hdrs['If'] = '<%s>(%s)' % (self.url, lt)
         __traceback_info__ = (self.url,)
-        davres = self._conn.propfind(
-            self.url, body=PROPFIND_BODY, depth=depth, extra_hdrs=hdrs)
+        davres = self._conn.propfind(self.url, body=PROPFIND_BODY, depth=depth, extra_hdrs=hdrs)
         return davres
 
     def _proppatch(self, body, locktoken):
@@ -618,12 +605,11 @@ class DAVResource:
 
         Returns a DAVResult instance as result.
         """
-        __traceback_info__ = (body, )
+        __traceback_info__ = (body,)
         return self._conn.proppatch(self.url, body, locktoken)
 
 
 class DAVFile(DAVResource):
-
     def __init__(self, url, conn=None, auto_request=False):
         DAVResource.__init__(self, url, conn, auto_request)
         self.update()
@@ -651,7 +637,6 @@ class DAVFile(DAVResource):
 
 
 class DAVCollection(DAVResource):
-
     def __init__(self, url, conn=None, auto_request=False):
         """Initialize a fresh DAVCollection instance.
 
@@ -684,8 +669,7 @@ class DAVCollection(DAVResource):
         return ret
 
     def get_child_objects(self):
-        """Return all children of this collection as DAVResources.
-        """
+        """Return all children of this collection as DAVResources."""
         ret = []
         if self.auto_request or not self._result:
             self.update()

@@ -13,39 +13,37 @@ class TestDelete(zeit.content.image.testing.BrowserTestCase):
     """
 
     def test_delete_message_in_repository(self):
-        self.browser.open('http://localhost/++skin++vivi/repository/2006/'
-                          'DSC00109_2.JPG/@@delete.html')
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/2006/' 'DSC00109_2.JPG/@@delete.html'
+        )
         self.assertEllipsis(
-            '...Do you really want to delete the object from the folder...',
-            self.browser.contents)
+            '...Do you really want to delete the object from the folder...', self.browser.contents
+        )
 
     def test_delete_message_in_workingcopy(self):
-        self.browser.open('http://localhost/++skin++vivi/repository/2006/'
-                          'DSC00109_2.JPG/@@checkout')
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/2006/' 'DSC00109_2.JPG/@@checkout'
+        )
         self.browser.open('@@delete.html')
         self.assertEllipsis(
-            '...Do you really want to delete your workingcopy?...',
-            self.browser.contents)
+            '...Do you really want to delete your workingcopy?...', self.browser.contents
+        )
 
 
 class TestImage(zeit.content.image.testing.BrowserTestCase):
-
     def test_normalizes_filename_on_upload(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/2006/')
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = (
-            'ZEIT ONLINE')
-        b.getControl(name='form.copyright.combination_01').displayValue = (
-            ['dpa'])
-        b.getControl(name='form.copyright.combination_03').value = (
-            'http://www.zeit.de/')
+        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
+        b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
         b.getControl(name='form.blob').add_file(
-            fixture_bytes('new-hampshire-artikel.jpg'),
-            'image/jpeg', 'föö.jpg'.encode('utf-8'))
+            fixture_bytes('new-hampshire-artikel.jpg'), 'image/jpeg', 'föö.jpg'.encode('utf-8')
+        )
         b.getControl(name='form.actions.add').click()
         self.assertIn('/foeoe.jpg/@@edit.html', b.url)
 
@@ -55,15 +53,13 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = (
-            'ZEIT ONLINE')
-        b.getControl(name='form.copyright.combination_01').displayValue = (
-            ['dpa'])
-        b.getControl(name='form.copyright.combination_03').value = (
-            'http://www.zeit.de/')
+        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
+        b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
-        b.getControl(name='form.blob').add_file(fixture_bytes(
-            'berlin-polizei.webp'), 'image/webp', 'foo.webp')
+        b.getControl(name='form.blob').add_file(
+            fixture_bytes('berlin-polizei.webp'), 'image/webp', 'foo.webp'
+        )
         b.getControl(name='form.actions.add').click()
         self.assertEllipsis('...Unsupported image type...', b.contents)
 
@@ -73,19 +69,15 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = (
-            'ZEIT ONLINE')
-        b.getControl(name='form.copyright.combination_01').displayValue = (
-            ['dpa'])
-        b.getControl(name='form.copyright.combination_03').value = (
-            'http://www.zeit.de/')
+        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
+        b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
         b.getControl(name='form.blob').add_file(
-            fixture_bytes('shoppingmeile_2251x4001px.jpg'),
-            'image/jpeg', 'föö.jpg'.encode('utf-8'))
+            fixture_bytes('shoppingmeile_2251x4001px.jpg'), 'image/jpeg', 'föö.jpg'.encode('utf-8')
+        )
         b.getControl(name='form.actions.add').click()
-        img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/foeoe.jpg')
+        img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/foeoe.jpg')
         self.assertEqual((2250, 4000), img.getImageSize())
 
     def test_resizes_too_large_image_on_upload_height(self):
@@ -94,17 +86,13 @@ class TestImage(zeit.content.image.testing.BrowserTestCase):
         menu = b.getControl(name='add_menu')
         menu.displayValue = ['Image (single)']
         b.open(menu.value[0])
-        b.getControl(name='form.copyright.combination_00').value = (
-            'ZEIT ONLINE')
-        b.getControl(name='form.copyright.combination_01').displayValue = (
-            ['dpa'])
-        b.getControl(name='form.copyright.combination_03').value = (
-            'http://www.zeit.de/')
+        b.getControl(name='form.copyright.combination_00').value = 'ZEIT ONLINE'
+        b.getControl(name='form.copyright.combination_01').displayValue = ['dpa']
+        b.getControl(name='form.copyright.combination_03').value = 'http://www.zeit.de/'
 
         b.getControl(name='form.blob').add_file(
-            fixture_bytes('shoppingmeile_4001x2251px.jpg'),
-            'image/jpeg', 'bär.jpg'.encode('utf-8'))
+            fixture_bytes('shoppingmeile_4001x2251px.jpg'), 'image/jpeg', 'bär.jpg'.encode('utf-8')
+        )
         b.getControl(name='form.actions.add').click()
-        img = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/baer.jpg')
+        img = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/baer.jpg')
         self.assertEqual((4000, 2250), img.getImageSize())

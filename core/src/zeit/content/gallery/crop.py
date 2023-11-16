@@ -16,7 +16,6 @@ def cropper_for_gallery(context):
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 @zope.interface.implementer(zeit.crop.interfaces.IStorer)
 class GalleryStorer:
-
     def __init__(self, context):
         self.context = context
         self.gallery = self.context.__parent__
@@ -35,8 +34,7 @@ class GalleryStorer:
         return self.gallery[new_entry.__name__]
 
     def copy_image_metadata(self, image):
-        source = zeit.content.image.interfaces.IImageMetadata(
-            self.context.image)
+        source = zeit.content.image.interfaces.IImageMetadata(self.context.image)
         destination = zeit.content.image.interfaces.IImageMetadata(image)
         for name in zeit.content.image.interfaces.IImageMetadata:
             field = zeit.content.image.interfaces.IImageMetadata[name]
@@ -49,8 +47,7 @@ class GalleryStorer:
 
     def copy_entry(self, image):
         entry = zeit.content.gallery.gallery.GalleryEntry()
-        for field in zope.schema.getFields(
-                zeit.content.gallery.interfaces.IGalleryEntry).values():
+        for field in zope.schema.getFields(zeit.content.gallery.interfaces.IGalleryEntry).values():
             if not field.readonly:
                 field.set(entry, field.get(self.context))
         entry.image = image

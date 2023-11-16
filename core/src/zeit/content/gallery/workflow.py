@@ -15,6 +15,5 @@ class PublicationDependencies(zeit.cms.workflow.dependency.DependencyBase):
     def get_dependencies(self):
         folder = self.context.image_folder
         if folder is not None:
-            return [x for x in folder.values()
-                    if x.__name__ != THUMBNAIL_FOLDER_NAME]
+            return [x for x in folder.values() if x.__name__ != THUMBNAIL_FOLDER_NAME]
         return ()

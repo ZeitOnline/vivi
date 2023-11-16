@@ -4,7 +4,6 @@ import zeit.cms.content.sources
 
 
 class GalleryTypeSource(zeit.cms.content.sources.XMLSource):
-
     product_configuration = 'zeit.content.gallery'
     config_url = 'gallery-types-url'
     default_filename = 'gallery-types.xml'
@@ -12,7 +11,6 @@ class GalleryTypeSource(zeit.cms.content.sources.XMLSource):
 
 
 class LayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
-
     values = {
         'image-only': _('Image only'),
         'hidden': _('Hidden'),

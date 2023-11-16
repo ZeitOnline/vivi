@@ -7,7 +7,6 @@ import zope.schema
 
 
 class SupertitleSource(zc.sourcefactory.basic.BasicSourceFactory):
-
     values = {
         'publisher': _('Publisher offering'),
         'advertisement': _('Publisher advertisement'),
@@ -21,32 +20,23 @@ class SupertitleSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 
 class IAdvertisement(zeit.cms.content.interfaces.IXMLContent):
+    title = zope.schema.Text(title=_('Title'), missing_value='')
 
-    title = zope.schema.Text(
-        title=_('Title'),
-        missing_value='')
+    text = zope.schema.Text(title=_('Advertisement teaser'), required=False)
 
-    text = zope.schema.Text(
-        title=_('Advertisement teaser'),
-        required=False)
+    button_text = zope.schema.TextLine(title=_('Button text'), required=False)
 
-    button_text = zope.schema.TextLine(
-        title=_('Button text'),
-        required=False)
-
-    button_color = zeit.cms.content.field.Color(
-        title=_('Button color'),
-        required=False)
+    button_color = zeit.cms.content.field.Color(title=_('Button color'), required=False)
 
     image = zope.schema.Choice(
         title=_('Image'),
         description=_('Drag an image group here'),
         required=False,
-        source=zeit.content.image.interfaces.imageGroupSource)
+        source=zeit.content.image.interfaces.imageGroupSource,
+    )
 
     supertitle = zope.schema.Choice(
-        title=_('Advertisement supertitle'),
-        required=False,
-        source=SupertitleSource())
+        title=_('Advertisement supertitle'), required=False, source=SupertitleSource()
+    )
 
     url = zope.schema.URI(title=_('Link address'))

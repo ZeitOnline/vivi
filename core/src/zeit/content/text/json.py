@@ -23,14 +23,12 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.content.text.interfaces.IJSON)
 class JSON(zeit.content.text.text.Text):
-
     @property
     def data(self):
         return commentjson.loads(self.text)
 
 
 class JSONType(zeit.content.text.text.TextType):
-
     interface = zeit.content.text.interfaces.IJSON
     type = 'json'
     title = _('JSON file')
@@ -38,14 +36,12 @@ class JSONType(zeit.content.text.text.TextType):
     addform = zeit.cms.type.SKIP_ADD
 
 
-@zope.interface.implementer(
-    zeit.content.text.interfaces.IValidationSchema)
+@zope.interface.implementer(zeit.content.text.interfaces.IValidationSchema)
 class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IValidationSchema,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('schema_url', 'field_name')
+        ('schema_url', 'field_name'),
     )
 
     def request(self, method, url, **kw):
@@ -70,8 +66,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         try:
             response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)
-            ref_resolver = jsonschema.validators.RefResolver.from_schema(
-                schema)
+            ref_resolver = jsonschema.validators.RefResolver.from_schema(schema)
             response.close()
             return schema, ref_resolver
         except requests.exceptions.RequestException as err:
@@ -89,15 +84,15 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
                 openapi_schema_validator.validate(
                     self.context.data,
                     schema['components']['schemas'][self.field_name],
-                    resolver=ref_resolver)
+                    resolver=ref_resolver,
+                )
             except jsonschema.exceptions.ValidationError as error:
-                raise zeit.content.text.interfaces.SchemaValidationError(
-                    str(error))
+                raise zeit.content.text.interfaces.SchemaValidationError(str(error))
 
 
 @grok.subscribe(
-    zeit.content.text.interfaces.IJSON,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+    zeit.content.text.interfaces.IJSON, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
+)
 def validate_after_checkin(context, event):
     validation = zeit.content.text.interfaces.IValidationSchema(context)
     if validation.schema_url and validation.field_name:

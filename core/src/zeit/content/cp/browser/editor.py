@@ -6,15 +6,13 @@ import zope.lifecycleevent
 
 
 class Editor(zeit.edit.browser.editor.Editor):
-
     render = ViewPageTemplateFile('editor.pt')
 
     def __call__(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.cp')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.content.cp')
         zeit.content.cp.browser.resources.RemoteURLResource(
-            zeit.content.cp.browser.resources.lib,
-            '/repository' + config['layout-css-path']).need()
+            zeit.content.cp.browser.resources.lib, '/repository' + config['layout-css-path']
+        ).need()
         return super().__call__()
 
     @property
@@ -24,12 +22,10 @@ class Editor(zeit.edit.browser.editor.Editor):
         return None
 
     def has_permission(self, permission):
-        return self.request.interaction.checkPermission(
-            permission, self.context)
+        return self.request.interaction.checkPermission(permission, self.context)
 
     def validate(self, area):
-        validation_class, validation_messages = (
-            zeit.edit.browser.view.validate(area))
+        validation_class, validation_messages = zeit.edit.browser.view.validate(area)
         css_class = ['editable-area']
         if validation_class:
             css_class.append(validation_class)
@@ -38,7 +34,6 @@ class Editor(zeit.edit.browser.editor.Editor):
 
 
 class ToggleBooleanBase(zeit.edit.browser.view.Action):
-
     to = zeit.edit.browser.view.Form('to')
     attribute = NotImplemented
 
@@ -47,15 +42,12 @@ class ToggleBooleanBase(zeit.edit.browser.view.Action):
         return self.context
 
     def update(self):
-        setattr(self.target, self.attribute,
-                (True if self.to == 'on' else False))
-        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-            self.context))
+        setattr(self.target, self.attribute, (True if self.to == 'on' else False))
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(self.context))
         self.reload()
 
 
 class ToggleMenuItem(zeit.cms.browser.view.Base):
-
     attribute = NotImplemented
 
     @property
@@ -69,10 +61,8 @@ class ToggleMenuItem(zeit.cms.browser.view.Base):
 
 
 class ToggleVisibleMenuItem(ToggleMenuItem):
-
     attribute = 'visible'
 
 
 class ToggleVisible(ToggleBooleanBase):
-
     attribute = 'visible'

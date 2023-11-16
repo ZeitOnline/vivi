@@ -11,26 +11,23 @@ import zope.formlib.form
 
 
 class FormBase(zeit.content.infobox.browser.form.FormBase):
-
     form_fields = (
-        zeit.content.infobox.browser.form.FormBase.form_fields +
-        zope.formlib.form.FormFields(zeit.content.infobox.interfaces.IDebate))
+        zeit.content.infobox.browser.form.FormBase.form_fields
+        + zope.formlib.form.FormFields(zeit.content.infobox.interfaces.IDebate)
+    )
 
 
 class Add(FormBase, zeit.cms.browser.form.AddForm):
-
     factory = zeit.content.infobox.infobox.Infobox
     title = _('Add infobox')
 
 
 class Edit(FormBase, zeit.cms.browser.form.EditForm):
-
     title = _('Edit infobox')
     form_fields = FormBase.form_fields.omit('__name__')
 
 
 class Display(FormBase, zeit.cms.browser.form.DisplayForm):
-
     title = _('View infobox')
     form_fields = FormBase.form_fields.omit('__name__')
     for_display = True

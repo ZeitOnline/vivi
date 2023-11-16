@@ -12,7 +12,6 @@ import zope.component
 
 
 class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
-
     weight = -1
     lightbox = '@@publish.html'
 
@@ -49,7 +48,6 @@ class Publish:
 
 
 class FlashPublishErrors(zeit.cms.browser.view.Base):
-
     def __call__(self, job, objectlog=False):
         objectlog = ast.literal_eval(objectlog)
         async_result = celery.result.AsyncResult(job)
@@ -61,7 +59,6 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
 
 
 class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
-
     weight = 200
     lightbox = '@@retract.html'
 

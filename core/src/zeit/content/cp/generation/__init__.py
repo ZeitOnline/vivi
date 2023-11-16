@@ -6,4 +6,5 @@ generation = 0
 
 
 manager = zope.generations.generations.SchemaManager(
-    minimum_generation, generation, "zeit.content.cp.generation")
+    minimum_generation, generation, 'zeit.content.cp.generation'
+)

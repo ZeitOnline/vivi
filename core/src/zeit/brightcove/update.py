@@ -20,12 +20,12 @@ log = logging.getLogger(__name__)
 
 
 class import_base:
-
     def _update(self):
         log.info('Updating %s', self.bcobj)
         # We overwrite last_semantic_change with the BC value.
         with zeit.cms.checkout.helper.checked_out(
-                self.cmsobj, semantic_change=None, events=False) as co:
+            self.cmsobj, semantic_change=None, events=False
+        ) as co:
             # Don't send events here, a full checkout/checkin cycle is done
             # during publish anyway, directly below (and so we don't publish
             # twice due to the publish_on_checkin handler).
@@ -40,8 +40,9 @@ class import_base:
                 # not worth the effort anyway.
                 zope.event.notify(
                     zope.lifecycleevent.ObjectModifiedEvent(
-                        co, zope.lifecycleevent.Attributes(
-                            IVideo, *list(IVideo))))
+                        co, zope.lifecycleevent.Attributes(IVideo, *list(IVideo))
+                    )
+                )
 
 
 class import_video(import_base):
@@ -58,10 +59,9 @@ class import_video(import_base):
         log.debug('Import for video %s', bcobj.uniqueId)
         self.bcobj = bcobj
         self.folder = self.bcobj.__parent__
-        self.cmsobj = zeit.cms.interfaces.ICMSContent(
-            self.bcobj.uniqueId, None)
+        self.cmsobj = zeit.cms.interfaces.ICMSContent(self.bcobj.uniqueId, None)
         log.debug('CMS object resolved: %r', self.cmsobj)
-        success = (self.delete() or self.add() or self.update())
+        success = self.delete() or self.add() or self.update()
         if not success:
             log.warning('Not processed: %s', self.bcobj.uniqueId)
 
@@ -142,24 +142,20 @@ class import_video(import_base):
         return False
 
 
-BC_IMG_KEYS = {
-    'still': 'poster'
-}
+BC_IMG_KEYS = {'still': 'poster'}
 
 
 def download_teaser_image(folder, bcdata, ttype='still'):
     name = '%s-%s' % (bcdata['id'], ttype)
     try:
         image = zeit.content.image.image.get_remote_image(
-            bcdata['images'][BC_IMG_KEYS[ttype]]['src'])
+            bcdata['images'][BC_IMG_KEYS[ttype]]['src']
+        )
     except Exception as exc:
         log.error(exc)
         image = None
     try:
-        return zeit.content.image.imagegroup.ImageGroup.from_image(
-            folder,
-            name,
-            image)
+        return zeit.content.image.imagegroup.ImageGroup.from_image(folder, name, image)
     except zope.app.locking.interfaces.LockingError:
         # don't bother to try to overwrite an image, that's
         # obviously being edited.
@@ -195,8 +191,7 @@ class import_playlist(import_base):
     def __init__(self, bcobj):
         log.debug('Import for playlist %s', bcobj.uniqueId)
         self.bcobj = bcobj
-        self.cmsobj = zeit.cms.interfaces.ICMSContent(
-            self.bcobj.uniqueId, None)
+        self.cmsobj = zeit.cms.interfaces.ICMSContent(self.bcobj.uniqueId, None)
         log.debug('CMS object resolved: %r', self.cmsobj)
         success = self.add() or self.update()
         if not success:
@@ -210,8 +205,7 @@ class import_playlist(import_base):
         return True
 
     def update(self):
-        lsc = zeit.cms.content.interfaces.ISemanticChange(
-            self.cmsobj).last_semantic_change
+        lsc = zeit.cms.content.interfaces.ISemanticChange(self.cmsobj).last_semantic_change
         if self.bcobj.updated_at <= lsc:
             return False
         self._update()
@@ -257,8 +251,9 @@ class import_playlist(import_base):
             del folder[name]
 
 
-@zeit.cms.cli.runner(ticks=120, principal=zeit.cms.cli.from_config(
-    'zeit.brightcove', 'index-principal'), once=False)
+@zeit.cms.cli.runner(
+    ticks=120, principal=zeit.cms.cli.from_config('zeit.brightcove', 'index-principal'), once=False
+)
 def import_playlists():
     log.info('Update run started')
     _import_playlists()

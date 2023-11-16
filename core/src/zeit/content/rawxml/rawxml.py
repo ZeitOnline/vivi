@@ -11,16 +11,13 @@ import zope.proxy
 
 @zope.interface.implementer(zeit.content.rawxml.interfaces.IRawXML)
 class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
-
     default_template = '<your-xml-here/>'
     zeit.cms.content.dav.mapProperties(
-        zeit.content.rawxml.interfaces.IRawXML,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('title',))
+        zeit.content.rawxml.interfaces.IRawXML, zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('title',)
+    )
 
 
 class RawXMLType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = RawXML
     interface = zeit.content.rawxml.interfaces.IRawXML
     title = _('Raw XML')
@@ -36,8 +33,7 @@ class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         # Since we're adding arbitrary xml, we need to mark nodes we've
         # inserted to be able to remove them later. The following attribute is
         # "ours":
-        attribute_name = ('{http://namespaces.zeit.de/CMS/RawXML}'
-                          'isSyndicatedRawXML')
+        attribute_name = '{http://namespaces.zeit.de/CMS/RawXML}' 'isSyndicatedRawXML'
 
         # Remove nodes we've added
         remove_nodes = []
@@ -48,7 +44,6 @@ class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             node.getparent().remove(node)
 
         # Append new nodes
-        node = copy.deepcopy(
-            zope.proxy.removeAllProxies(self.context.xml))
+        node = copy.deepcopy(zope.proxy.removeAllProxies(self.context.xml))
         node.set(attribute_name, 'true')
         xml_node.append(node)

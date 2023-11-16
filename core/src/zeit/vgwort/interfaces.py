@@ -6,7 +6,6 @@ import zope.schema
 
 
 class SearchVars:
-
     def SearchVar(name, ns):
         prefix = 'http://namespaces.zeit.de/CMS/'
         return zeit.connector.search.SearchVar(name, prefix + ns)
@@ -44,26 +43,19 @@ class ITokens(zope.interface.Interface):
 
 
 class IToken(zope.interface.Interface):
+    public_token = zope.schema.TextLine(title=_('Public VGWort token'), required=False)
 
-    public_token = zope.schema.TextLine(
-        title=_('Public VGWort token'),
-        required=False)
-
-    private_token = zope.schema.TextLine(
-        title=_('Private VGWort token'),
-        required=False)
+    private_token = zope.schema.TextLine(title=_('Private VGWort token'), required=False)
 
 
 class IReportInfo(zope.interface.Interface):
-
     reported_on = zope.schema.Datetime(
-        title=_(
-            'Timestamp when the content object was reported to VGWort'),
-        required=False)
+        title=_('Timestamp when the content object was reported to VGWort'), required=False
+    )
 
     reported_error = zope.schema.Text(
-        title=_('Error message that occured while reporting'),
-        required=False)
+        title=_('Error message that occured while reporting'), required=False
+    )
 
 
 class IGenerallyReportableContent(zope.interface.Interface):
@@ -77,13 +69,11 @@ class IGenerallyReportableContent(zope.interface.Interface):
 
 
 class IPixelService(zope.interface.Interface):
-
     def order_pixels(amount):
         """orders ``amount`` new tokens."""
 
 
 class IMessageService(zope.interface.Interface):
-
     def new_document(content):
         """notify VGWort about a published document.
 
@@ -106,7 +96,6 @@ class TechnicalError(Exception):
 
 
 class IReportableContentSource(zope.interface.Interface):
-
     def __iter__():
         """iteratte over ICMSContent objects that are eligble for reporting
 

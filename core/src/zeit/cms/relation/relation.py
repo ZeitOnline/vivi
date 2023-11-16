@@ -14,7 +14,8 @@ class Relations(persistent.Persistent):
     def __init__(self):
         super().__init__()
         self._catalog = zc.relation.catalog.Catalog(
-            _dump_content, _load_content, btree=BTrees.family32.OI)
+            _dump_content, _load_content, btree=BTrees.family32.OI
+        )
 
     # IRelations
 
@@ -27,14 +28,13 @@ class Relations(persistent.Persistent):
         if token is None:
             return ()
         # TODO: add some code to remove removed objects from the index
-        return (obj for obj in self._catalog.findRelations({index: token})
-                if obj is not None)
+        return (obj for obj in self._catalog.findRelations({index: token}) if obj is not None)
 
     def add_index(self, element, multiple=False):
         """add a value index for given element."""
         self._catalog.addValueIndex(
-            element, _dump_content, _load_content,
-            btree=BTrees.family32.OI, multiple=multiple)
+            element, _dump_content, _load_content, btree=BTrees.family32.OI, multiple=multiple
+        )
 
 
 def _dump_content(content, catalog, cache):
@@ -55,10 +55,12 @@ def referenced_by(content, catalog):
 def references(context):
     result = []
     for name, adapter in zope.component.getAdapters(
-            (context,), zeit.cms.relation.interfaces.IReferenceProvider):
+        (context,), zeit.cms.relation.interfaces.IReferenceProvider
+    ):
         if not name:
             raise ValueError(
                 'IReferenceProvider %r is registered without a name,'
-                ' this will cause configuration conflicts.')
+                ' this will cause configuration conflicts.'
+            )
         result.extend(adapter)
     return result

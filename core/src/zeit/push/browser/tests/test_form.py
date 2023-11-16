@@ -6,22 +6,18 @@ import zeit.push.workflow
 
 
 class SocialFormTest(zeit.push.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/'
-            'testcontent/@@checkout')
+        self.browser.open('http://localhost/++skin++vivi/repository/' 'testcontent/@@checkout')
 
     def get_article(self):
-        return zeit.cms.interfaces.ICMSWCContent(
-            'http://xml.zeit.de/testcontent')
+        return zeit.cms.interfaces.ICMSWCContent('http://xml.zeit.de/testcontent')
 
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?
         self.browser.open(
-            'http://localhost/++skin++vivi/workingcopy/zope.user/'
-            'testcontent/@@edit-social.html')
+            'http://localhost/++skin++vivi/workingcopy/zope.user/' 'testcontent/@@edit-social.html'
+        )
         self.browser.getControl('Payload Template').displayValue = ['Foo']
 
     def test_stores_IPushMessage_fields(self):
@@ -54,26 +50,43 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         # are not included in the base form.
         self.assertEqual(5, len(push.message_config))
         self.assertIn(
-            {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'},
-            push.message_config)
+            {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'}, push.message_config
+        )
         self.assertIn(
-            {'type': 'twitter', 'enabled': True, 'variant': 'ressort',
-             'account': 'twitter_ressort_wissen',
-             'override_text': 'additional ressort tweet'},
-            push.message_config)
+            {
+                'type': 'twitter',
+                'enabled': True,
+                'variant': 'ressort',
+                'account': 'twitter_ressort_wissen',
+                'override_text': 'additional ressort tweet',
+            },
+            push.message_config,
+        )
         self.assertIn(
-            {'type': 'twitter', 'enabled': True, 'account': 'twitter-print',
-             'override_text': 'additional print tweet'},
-            push.message_config)
+            {
+                'type': 'twitter',
+                'enabled': True,
+                'account': 'twitter-print',
+                'override_text': 'additional print tweet',
+            },
+            push.message_config,
+        )
         self.assertIn(
-            {'type': 'facebook', 'enabled': True, 'account': 'fb-test',
-             'override_text': 'fb-main'},
-            push.message_config)
+            {'type': 'facebook', 'enabled': True, 'account': 'fb-test', 'override_text': 'fb-main'},
+            push.message_config,
+        )
         self.assertIn(
-            {'type': 'mobile', 'enabled': True, 'override_text': 'mobile',
-             'title': 'mobile title', 'uses_image': False, 'variant': 'manual',
-             'payload_template': 'foo.json'},
-            push.message_config)
+            {
+                'type': 'mobile',
+                'enabled': True,
+                'override_text': 'mobile',
+                'title': 'mobile title',
+                'uses_image': False,
+                'variant': 'manual',
+                'payload_template': 'foo.json',
+            },
+            push.message_config,
+        )
 
         self.open_form()
         self.assertTrue(b.getControl('Enable Twitter', index=0).selected)
@@ -92,26 +105,48 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertEqual(5, len(push.message_config))
         self.assertIn(
-            {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
-            push.message_config)
+            {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'}, push.message_config
+        )
         self.assertIn(
-            {'type': 'twitter', 'enabled': False, 'variant': 'ressort',
-             'account': 'twitter_ressort_wissen',
-             'override_text': 'additional ressort tweet'},
-            push.message_config)
+            {
+                'type': 'twitter',
+                'enabled': False,
+                'variant': 'ressort',
+                'account': 'twitter_ressort_wissen',
+                'override_text': 'additional ressort tweet',
+            },
+            push.message_config,
+        )
         self.assertIn(
-            {'type': 'twitter', 'enabled': False, 'account': 'twitter-print',
-             'override_text': 'additional print tweet'},
-            push.message_config)
+            {
+                'type': 'twitter',
+                'enabled': False,
+                'account': 'twitter-print',
+                'override_text': 'additional print tweet',
+            },
+            push.message_config,
+        )
         self.assertIn(
-            {'type': 'facebook', 'enabled': False, 'account': 'fb-test',
-             'override_text': 'fb-main'},
-            push.message_config)
+            {
+                'type': 'facebook',
+                'enabled': False,
+                'account': 'fb-test',
+                'override_text': 'fb-main',
+            },
+            push.message_config,
+        )
         self.assertIn(
-            {'type': 'mobile', 'enabled': False, 'override_text': 'mobile',
-             'title': 'mobile title', 'uses_image': False, 'variant': 'manual',
-             'payload_template': 'foo.json'},
-            push.message_config)
+            {
+                'type': 'mobile',
+                'enabled': False,
+                'override_text': 'mobile',
+                'title': 'mobile title',
+                'uses_image': False,
+                'variant': 'manual',
+                'payload_template': 'foo.json',
+            },
+            push.message_config,
+        )
 
         self.open_form()
         self.assertFalse(b.getControl('Enable Twitter', index=0).selected)
@@ -130,22 +165,25 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'twitter', 'enabled': True, 'variant': 'ressort',
-             'account': 'twitter_ressort_wissen',
-             'override_text': 'additional ressort tweet'},
-            push.message_config)
+            {
+                'type': 'twitter',
+                'enabled': True,
+                'variant': 'ressort',
+                'account': 'twitter_ressort_wissen',
+                'override_text': 'additional ressort tweet',
+            },
+            push.message_config,
+        )
 
         self.open_form()
-        self.assertEqual(
-            ['Wissen'], b.getControl('Additional Twitter').displayValue)
+        self.assertEqual(['Wissen'], b.getControl('Additional Twitter').displayValue)
 
     def test_ressort_is_required_when_enabled(self):
         self.open_form()
         b = self.browser
         b.getControl('Enable Twitter Ressort').selected = True
         b.getControl('Apply').click()
-        self.assertEllipsis(
-            '...Additional Twitter...Required input is missing...', b.contents)
+        self.assertEllipsis('...Additional Twitter...Required input is missing...', b.contents)
 
     def test_stores_facebook_main_override_text(self):
         self.open_form()
@@ -175,14 +213,12 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
     def test_stores_mobile_image(self):
         self.open_form()
         b = self.browser
-        b.getControl('Mobile image').value = (
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        b.getControl('Mobile image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         service = push.get(type='mobile')
-        self.assertEqual(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
+        self.assertEqual('http://xml.zeit.de/2006/DSC00109_2.JPG', service['image'])
 
         self.open_form()
         b.getControl('Mobile image').value = ''
@@ -219,8 +255,7 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         b.getControl('Mobile text').value = 'foo'
         b.getControl('Payload Template').displayValue = []
         b.getControl('Apply').click()
-        self.assertEllipsis(
-            '...Payload Template...Required input is missing...', b.contents)
+        self.assertEllipsis('...Payload Template...Required input is missing...', b.contents)
         b.getControl('Payload Template').displayValue = ['Foo']
         b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
@@ -232,14 +267,11 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
 
 
 class SocialAddFormTest(SocialFormTest):
-
     layer = zeit.push.testing.WSGI_LAYER
 
     def test_applies_push_configuration_to_added_object(self):
-
         b = self.browser
-        b.open('http://localhost/++skin++vivi'
-               '/repository/@@zeit.cms.testcontenttype.AddSocial')
+        b.open('http://localhost/++skin++vivi' '/repository/@@zeit.cms.testcontenttype.AddSocial')
         b.getControl('File name').value = 'social'
         b.getControl('Title').value = 'Social content'
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']
@@ -250,12 +282,11 @@ class SocialAddFormTest(SocialFormTest):
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/social')
         push = zeit.push.interfaces.IPushMessages(content)
         self.assertIn(
-            {'type': 'twitter', 'enabled': True,
-             'account': 'twitter-test'}, push.message_config)
+            {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'}, push.message_config
+        )
 
 
 class TwitterShorteningTest(zeit.push.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         self.open('/repository/testcontent/@@checkout')
@@ -285,14 +316,12 @@ class TwitterShorteningTest(zeit.push.testing.SeleniumTestCase):
 
 
 class AuthorPushTest(zeit.push.testing.BrowserTestCase):
-
     def get_article(self):
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
         return list(wc.values())[0]
 
     def test_author_push_is_enabled_on_article_creation(self):
-        self.browser.open(
-            'http://localhost:8080/++skin++vivi/repository/online/2007/01/')
+        self.browser.open('http://localhost:8080/++skin++vivi/repository/online/2007/01/')
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Article']
         url = menu.value[0]
@@ -300,8 +329,11 @@ class AuthorPushTest(zeit.push.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertEqual(
-            {'type': 'mobile',
-             'payload_template': 'authors.json',
-             'variant': 'automatic-author',
-             'enabled': True},
-            push.messages[0].config)
+            {
+                'type': 'mobile',
+                'payload_template': 'authors.json',
+                'variant': 'automatic-author',
+                'enabled': True,
+            },
+            push.messages[0].config,
+        )

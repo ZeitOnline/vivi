@@ -2,7 +2,6 @@ import zeit.campus.testing
 
 
 class ZCOLinkCRUD(zeit.cms.testing.BrowserTestCase):
-
     layer = zeit.campus.testing.WSGI_LAYER
 
     def test_zmo_link_has_facebook_campus_fields(self):
@@ -20,8 +19,7 @@ class ZCOLinkCRUD(zeit.cms.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
 
         self.assertEndsWith('@@edit.html', b.url)
-        self.assertEqual(
-            'mycampus', b.getControl('Facebook Campus Text').value)
+        self.assertEqual('mycampus', b.getControl('Facebook Campus Text').value)
 
         b.getLink('Checkin').click()
         self.assertEllipsis('...mycampus...', b.contents)

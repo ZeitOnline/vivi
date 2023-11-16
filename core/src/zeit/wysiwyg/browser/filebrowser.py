@@ -8,8 +8,7 @@ import zope.component
 import zope.traversing.interfaces
 
 
-class FileBrowser(zeit.cms.browser.view.Base,
-                  gocept.fckeditor.connector.FCKEditorBrowser):
+class FileBrowser(zeit.cms.browser.view.Base, gocept.fckeditor.connector.FCKEditorBrowser):
     """Connect FCKEditor file browser to cms."""
 
     @zope.cachedescriptors.property.Lazy
@@ -29,13 +28,11 @@ class FileBrowser(zeit.cms.browser.view.Base,
 
         if not remaining_path:
             return root
-        return zope.traversing.interfaces.ITraverser(root).traverse(
-            remaining_path)
+        return zope.traversing.interfaces.ITraverser(root).traverse(remaining_path)
 
     @zope.cachedescriptors.property.Lazy
     def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     @zope.cachedescriptors.property.Lazy
     def clipboard(self):
@@ -62,13 +59,9 @@ class FileBrowser(zeit.cms.browser.view.Base,
                 unique_id = list_repr.url()
                 id_and_title = '%s (%s)' % (name, title)
 
-            yield {
-                'id': name,
-                'title': title,
-                'uniqueId': unique_id,
-                'id_and_title': id_and_title}
+            yield {'id': name, 'title': title, 'uniqueId': unique_id, 'id_and_title': id_and_title}
 
     def get_list_repr(self, obj):
         return zope.component.queryMultiAdapter(
-            (obj, self.request),
-            zeit.cms.browser.interfaces.IListRepresentation)
+            (obj, self.request), zeit.cms.browser.interfaces.IListRepresentation
+        )

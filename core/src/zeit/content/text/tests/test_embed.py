@@ -4,7 +4,6 @@ import zope.schema
 
 
 class EmbedParameters(zeit.content.text.testing.FunctionalTestCase):
-
     def create(self, params):
         result = zeit.content.text.embed.Embed()
         result.uniqueId = 'http://xml.zeit.de/foo'
@@ -20,17 +19,18 @@ class EmbedParameters(zeit.content.text.testing.FunctionalTestCase):
         self.assertEqual('One', field.title)  # nice display default
 
     def test_supports_statements_and_custom_return(self):
-        embed = self.create("""\
+        embed = self.create(
+            """\
 foo = "one"
 __return({foo: zope.schema.TextLine()})
-""")
+"""
+        )
         params = embed.parameter_fields
         field = params['one']
         self.assertIsInstance(field, zope.schema.TextLine)
 
     def test_imports_required_packages(self):
-        embed = self.create(
-            'collections.OrderedDict([("one", zope.schema.TextLine())])')
+        embed = self.create('collections.OrderedDict([("one", zope.schema.TextLine())])')
         params = embed.parameter_fields
         field = params['one']
         self.assertIsInstance(field, zope.schema.TextLine)
@@ -44,6 +44,5 @@ __return({foo: zope.schema.TextLine()})
     def test_invalid_values_are_dropped(self):
         embed = self.create('[zope.schema.TextLine()]')
         self.assertEqual({}, embed.parameter_fields)
-        embed = self.create(
-            '{"one": "not a field", "two": zope.schema.TextLine()}')
-        self.assertEqual(["two"], list(embed.parameter_fields.keys()))
+        embed = self.create('{"one": "not a field", "two": zope.schema.TextLine()}')
+        self.assertEqual(['two'], list(embed.parameter_fields.keys()))

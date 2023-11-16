@@ -5,12 +5,10 @@ import zope.app.keyreference.interfaces
 
 
 class KeyReferenceTest(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_uses_target_id_for_renameable_content(self):
         with checked_out(self.repository['testcontent']) as co:
             rn = zeit.cms.repository.interfaces.IAutomaticallyRenameable(co)
             rn.renameable = True
             rn.rename_to = 'changed'
             ref = zope.app.keyreference.interfaces.IKeyReference(co)
-            self.assertEqual(
-                'http://xml.zeit.de/changed', ref.referenced_object)
+            self.assertEqual('http://xml.zeit.de/changed', ref.referenced_object)

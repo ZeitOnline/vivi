@@ -26,8 +26,8 @@ class Dependencies(grok.Adapter):
 
     def _find_adapters(self):
         for name, adapter in zope.component.getAdapters(
-                (self.context,),
-                zeit.cms.workflow.interfaces.IPublicationDependencies):
+            (self.context,), zeit.cms.workflow.interfaces.IPublicationDependencies
+        ):
             if not name:
                 # This is actually this adapter
                 continue
@@ -36,7 +36,6 @@ class Dependencies(grok.Adapter):
 
 @grok.implementer(zeit.cms.workflow.interfaces.IPublicationDependencies)
 class DependencyBase(grok.Adapter):
-
     grok.name('must be set in subclass')
     grok.baseclass()
 

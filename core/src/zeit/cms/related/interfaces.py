@@ -6,7 +6,6 @@ import zope.schema
 
 
 class RelatableContentSource(zeit.cms.content.contentsource.CMSContentSource):
-
     def get_check_interfaces(self):
         conf = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         types = conf.get('relatable-content-types', '*')
@@ -28,8 +27,9 @@ class IRelatedContent(zope.interface.Interface):
     """Relate other content."""
 
     related = zope.schema.Tuple(
-        title=_("Related content"),
-        description=_("Objects that are related to this object."),
+        title=_('Related content'),
+        description=_('Objects that are related to this object.'),
         default=(),
         required=False,
-        value_type=zope.schema.Choice(source=relatableContentSource))
+        value_type=zope.schema.Choice(source=relatableContentSource),
+    )

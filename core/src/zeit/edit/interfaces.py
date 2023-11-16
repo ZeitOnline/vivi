@@ -13,9 +13,7 @@ BLOCK_NAMESPACE = 'http://block.vivi.zeit.de/'
 
 
 class IElementFactory(zope.interface.Interface):
-
-    title = zope.schema.TextLine(
-        title=_('Block type'))
+    title = zope.schema.TextLine(title=_('Block type'))
 
     def __call__(position=None):
         """Create block at position."""
@@ -24,8 +22,8 @@ class IElementFactory(zope.interface.Interface):
 class IElement(zeit.cms.content.interfaces.IXMLRepresentation):
     """An element which can be instantiated and added to a page."""
 
-    type = zope.interface.Attribute("Type identifier.")
-    uniqueId = zope.interface.Attribute("Only used as source for references")
+    type = zope.interface.Attribute('Type identifier.')
+    uniqueId = zope.interface.Attribute('Only used as source for references')
 
 
 class IBlock(IElement, zope.location.interfaces.IContained):
@@ -46,10 +44,12 @@ class IUnknownBlock(IBlock):
     """
 
 
-class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
-                     zope.location.interfaces.IContained,
-                     zope.container.interfaces.IReadContainer,
-                     IElement):
+class IReadContainer(
+    zeit.cms.content.interfaces.IXMLRepresentation,
+    zope.location.interfaces.IContained,
+    zope.container.interfaces.IReadContainer,
+    IElement,
+):
     """Area on the CP which can be edited.
 
     This references a <region> or <cluster>
@@ -118,6 +118,7 @@ class IEditBarViewletManager(zope.viewlet.interfaces.IViewletManager):
 
 # Rule and validation system
 
+
 class IRuleGlobs(zope.interface.Interface):
     """Adapt to this to convert the context to a dictionary of things of
     interest to an IRule XXX docme"""
@@ -130,15 +131,13 @@ class IRuleGlob(zope.interface.Interface):
 class IValidator(zope.interface.Interface):
     """Adapt an object to validate it with the rule system."""
 
-    status = zope.schema.TextLine(
-        title='Validation status: {None, warning, error}')
+    status = zope.schema.TextLine(title='Validation status: {None, warning, error}')
 
-    messages = zope.schema.List(
-        title='List of error messages.')
+    messages = zope.schema.List(title='List of error messages.')
 
 
 class IRulesManager(zope.interface.Interface):
-    '''Collects all validation rules.'''
+    """Collects all validation rules."""
 
     rules = zope.schema.List(title='A list of rules.')
 
@@ -164,19 +163,20 @@ def unique_name_invariant(data):
             continue
         if data.__name__ == name:
             raise zeit.cms.interfaces.ValidationError(
-                _("Given name {name} is not unique inside parent {parent}."
-                  .format(name=data.__name__,
-                          parent=context.__parent__.__name__)))
+                _(
+                    'Given name {name} is not unique inside parent {parent}.'.format(
+                        name=data.__name__, parent=context.__parent__.__name__
+                    )
+                )
+            )
 
 
 class IOrderUpdatedEvent(zope.container.interfaces.IContainerModifiedEvent):
-
     old_order = zope.interface.Attribute('List of keys of the previous order')
 
 
 @zope.interface.implementer(IOrderUpdatedEvent)
 class OrderUpdatedEvent(zope.container.contained.ContainerModifiedEvent):
-
     def __init__(self, context, *old_order):
         super().__init__(context)
         self.old_order = old_order

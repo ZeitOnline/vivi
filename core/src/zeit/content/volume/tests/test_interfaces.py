@@ -3,7 +3,6 @@ import zeit.content.volume.interfaces
 
 
 class TestProductSource(zeit.content.volume.testing.FunctionalTestCase):
-
     def test_source_is_filtered_by_volume_attribute(self):
         source = zeit.content.volume.interfaces.PRODUCT_SOURCE
         values = list(source(None))

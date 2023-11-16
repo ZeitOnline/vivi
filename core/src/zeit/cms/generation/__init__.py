@@ -7,7 +7,8 @@ import zope.generations.utility
 minimum_generation = generation = 16
 
 manager = zope.generations.generations.SchemaManager(
-    minimum_generation, generation, "zeit.cms.generation")
+    minimum_generation, generation, 'zeit.cms.generation'
+)
 
 
 def do_evolve(context, evolver):

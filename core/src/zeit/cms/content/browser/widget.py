@@ -17,7 +17,6 @@ import zope.interface
 
 
 class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
-
     def _toFieldValue(self, input):
         try:
             return self.context.fromUnicode(input)
@@ -35,29 +34,27 @@ class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
                 # When we're editing the whole tree we want to serialize the
                 # root tree to get processing instructions.
                 value = value.getroottree()
-            return lxml.etree.tounicode(value, pretty_print=True).replace(
-                '\n', '\r\n')
+            return lxml.etree.tounicode(value, pretty_print=True).replace('\n', '\r\n')
 
 
 class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
-
     def __call__(self):
         if self._renderedValueSet():
             content = self._data
             content = zope.proxy.removeAllProxies(content)
-            content = lxml.etree.tostring(
-                content, pretty_print=True, encoding=str)
+            content = lxml.etree.tostring(content, pretty_print=True, encoding=str)
         else:
             content = self.context.default
         if not content:
             return ''
         return pygments.highlight(
-            content, pygments.lexers.XmlLexer(),
-            pygments.formatters.HtmlFormatter(cssclass='pygments'))
+            content,
+            pygments.lexers.XmlLexer(),
+            pygments.formatters.HtmlFormatter(cssclass='pygments'),
+        )
 
 
-class CombinationWidget(
-        zc.form.browser.combinationwidget.CombinationWidget):
+class CombinationWidget(zc.form.browser.combinationwidget.CombinationWidget):
     """Subclassed combination widget to change the template.
 
     NamedTemplate doesn't take the request into account so we cannot register a
@@ -65,12 +62,10 @@ class CombinationWidget(
 
     """
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'combinationwidget.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('combinationwidget.pt')
 
 
 class ParentChildDropdownUpdater:
-
     parent_source = NotImplemented
     child_source = NotImplemented
 
@@ -78,8 +73,8 @@ class ParentChildDropdownUpdater:
         super().__init__(context, request)
         self.parent_source = self.parent_source(self.context)
         self.parent_terms = zope.component.getMultiAdapter(
-            (self.parent_source, request),
-            zope.app.form.browser.interfaces.ITerms)
+            (self.parent_source, request), zope.app.form.browser.interfaces.ITerms
+        )
 
     def get_result(self, parent_token):
         try:
@@ -87,16 +82,17 @@ class ParentChildDropdownUpdater:
         except KeyError:
             return []
 
-        @zope.interface.implementer(
-            self.child_source.factory.parent_value_iface)
+        @zope.interface.implementer(self.child_source.factory.parent_value_iface)
         class Fake:
             pass
+
         fake = Fake()
         setattr(fake, self.child_source.factory.parent_value_key, parent_value)
 
         source = self.child_source(fake)
         terms = zope.component.getMultiAdapter(
-            (source, self.request), zope.app.form.browser.interfaces.ITerms)
+            (source, self.request), zope.app.form.browser.interfaces.ITerms
+        )
         result = []
         for value in source:
             term = terms.getTerm(value)
@@ -112,12 +108,10 @@ class ParentChildDropdownUpdater:
 
 
 class SubNavigationUpdater(ParentChildDropdownUpdater):
-
     parent_source = zeit.cms.content.sources.RessortSource()
     child_source = zeit.cms.content.sources.SubRessortSource()
 
 
 class ChannelUpdater(ParentChildDropdownUpdater):
-
     parent_source = zeit.cms.content.sources.ChannelSource()
     child_source = zeit.cms.content.sources.SubChannelSource()

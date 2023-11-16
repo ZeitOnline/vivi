@@ -4,15 +4,13 @@ import zeit.content.cp.testing
 
 
 class TestPodcast(zeit.content.cp.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('podcast')
         self.repository['centerpage'] = self.centerpage
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')
         b.open('contents')
         self.content_url = b.url
 
@@ -36,5 +34,4 @@ class TestPodcast(zeit.content.cp.testing.BrowserTestCase):
         self.assertEllipsis('...ID:...12345...', b.contents)
         b.getLink('Edit block properties', index=0).click()
         self.assertEqual('12345', b.getControl('Podcast id').value.strip())
-        self.assertEqual(
-            ['ZEIT ONLINE'], b.getControl('Provider').displayValue)
+        self.assertEqual(['ZEIT ONLINE'], b.getControl('Provider').displayValue)

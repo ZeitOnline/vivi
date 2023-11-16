@@ -13,16 +13,15 @@ import zope.i18n
 
 
 class WorkflowTimeContainer(zeit.edit.browser.form.FoldableFormGroup):
-
     title = _('Workflow time')
 
 
 class Timebased(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'timebased'
-    form_fields = zope.formlib.form.FormFields(
-        zeit.workflow.interfaces.IContentWorkflow).select('release_period')
+    form_fields = zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow).select(
+        'release_period'
+    )
 
 
 class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
@@ -34,19 +33,18 @@ class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class Publish(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'publish'
 
     @property
     def form_fields(self):
-        fields = zope.formlib.form.FormFields(
-            zeit.workflow.interfaces.IContentWorkflow).select(
-            'edited', 'corrected', 'seo_optimized', 'urgent')
+        fields = zope.formlib.form.FormFields(zeit.workflow.interfaces.IContentWorkflow).select(
+            'edited', 'corrected', 'seo_optimized', 'urgent'
+        )
         if not self.can_checkout:
             fields += zope.formlib.form.FormFields(
-                zeit.cms.content.interfaces.ISemanticChange).select(
-                'has_semantic_change')
+                zeit.cms.content.interfaces.ISemanticChange
+            ).select('has_semantic_change')
 
         for name in ['edited', 'corrected', 'seo_optimized']:
             fields[name].custom_widget = zeit.cms.browser.widget.CheckBoxWidget
@@ -57,8 +55,7 @@ class Publish(zeit.edit.browser.form.InlineForm):
         items = list(self.widgets.__Widgets_widgets_items__)
         items.append(self._make_view_widget('edit.form.checkin-buttons'))
         if not self.can_checkout:
-            items.insert(
-                -1, self._make_view_widget('edit.form.checkin-errors'))
+            items.insert(-1, self._make_view_widget('edit.form.checkin-errors'))
             items.insert(-1, self._make_view_widget('edit.form.timestamp'))
         self.widgets = zope.formlib.form.Widgets(items, prefix=self.prefix)
 
@@ -74,23 +71,25 @@ class Publish(zeit.edit.browser.form.InlineForm):
 
 
 class CheckinErrors:
-
     @cachedproperty
     def checkin_errors(self):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
         manager.canCheckin  # cause last_validation_error to be populated
         errors = manager.last_validation_error
-        if (not errors or
-                # XXX stopgap so it doesn't break, see #10851
-                not isinstance(errors, list)):
+        if (
+            not errors
+            or
+            # XXX stopgap so it doesn't break, see #10851
+            not isinstance(errors, list)
+        ):
             return []
 
         result = []
         for field, error in errors:
             # adapted from zope.formlib.form.FormBase.error_views
             view = zope.component.getMultiAdapter(
-                (error, self.request),
-                zope.formlib.interfaces.IWidgetInputErrorView)
+                (error, self.request), zope.formlib.interfaces.IWidgetInputErrorView
+            )
             title = field.title
             if isinstance(title, zope.i18n.Message):
                 title = zope.i18n.translate(title, context=self.request)
@@ -99,7 +98,6 @@ class CheckinErrors:
 
 
 class WorkflowButtons:
-
     @cachedproperty
     def can_checkout(self):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
@@ -121,28 +119,23 @@ class WorkflowButtons:
 
     @property
     def has_semantic_change(self):
-        return zeit.cms.content.interfaces.ISemanticChange(
-            self.context).has_semantic_change
+        return zeit.cms.content.interfaces.ISemanticChange(self.context).has_semantic_change
 
 
 class Timestamp:
-
     def show_semantic_change(self):
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
-        return ((not sc.has_semantic_change) and
-                (sc.last_semantic_change is not None))
+        return (not sc.has_semantic_change) and (sc.last_semantic_change is not None)
 
     def last_semantic_change(self):
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if not sc.last_semantic_change:
             return ''
         tz = zope.interface.common.idatetime.ITZInfo(self.request)
-        return sc.last_semantic_change.astimezone(tz).strftime(
-            '%d.%m.%Y %H:%Mh')
+        return sc.last_semantic_change.astimezone(tz).strftime('%d.%m.%Y %H:%Mh')
 
 
 class ViewWidget(zope.formlib.widget.BrowserWidget):
-
     field_css_class = ''
 
     def __init__(self, context, request, view):
@@ -155,6 +148,5 @@ class ViewWidget(zope.formlib.widget.BrowserWidget):
         self.label = None
 
     def __call__(self):
-        view = zope.component.getMultiAdapter(
-            (self.context, self.request), name=self.view)
+        view = zope.component.getMultiAdapter((self.context, self.request), name=self.view)
         return view()

@@ -2,7 +2,6 @@ import zeit.content.text.testing
 
 
 class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
-
     def create(self, text):
         py = zeit.content.text.python.PythonScript()
         py.uniqueId = 'http://xml.zeit.de/py'
@@ -14,9 +13,11 @@ class PythonScriptTest(zeit.content.text.testing.FunctionalTestCase):
         self.assertEqual(42, py())
 
     def test_return_stops_execution(self):
-        py = self.create("""\
+        py = self.create(
+            """\
 __return(1)
-__return(2)""")
+__return(2)"""
+        )
         self.assertEqual(1, py())
 
     def test_keyword_args_are_passed_in_as_context(self):

@@ -6,9 +6,7 @@ import zope.i18n
 import zope.interface.common.idatetime
 
 
-class LogEntrySource(
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
+class LogEntrySource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     def getValues(self, context):
         log = zeit.objectlog.interfaces.ILog(context)
         return log.get_log()
@@ -22,7 +20,8 @@ class LogEntrySource(
         else:
             p_source = zeit.objectlog.interfaces.ILogEntry['principal'].source
             principal_terms = zope.component.getMultiAdapter(
-                (p_source, request), zope.app.form.browser.interfaces.ITerms)
+                (p_source, request), zope.app.form.browser.interfaces.ITerms
+            )
             try:
                 principal = principal_terms.getTerm(value.principal).title
             except LookupError:
@@ -37,12 +36,14 @@ class LogEntrySource(
 
         message = zope.i18n.translate(value.message, context=request)
 
-        title = _("${time} [${principal}]: ${message}",
-                  mapping={
-                      'time': time,
-                      'principal_id': value.principal,
-                      'principal': principal,
-                      'message': message})
+        title = _(
+            '${time} [${principal}]: ${message}',
+            mapping={
+                'time': time,
+                'principal_id': value.principal,
+                'principal': principal,
+                'message': message,
+            },
+        )
 
-        return super().createTerm(
-            context, source, value, title, token, request)
+        return super().createTerm(context, source, value, title, token, request)

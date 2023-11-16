@@ -8,8 +8,7 @@ import zope.container.contained
 
 
 @zope.interface.implementer(zeit.brightcove.interfaces.IRepository)
-class Repository(persistent.Persistent,
-                 zope.container.contained.Contained):
+class Repository(persistent.Persistent, zope.container.contained.Contained):
     # Stub so the generation can remove the objects properly
 
     def __init__(self):
@@ -48,17 +47,15 @@ Video = Playlist = Content
 def update(root):
     # Fake the old locations of persistent objects
     from zeit.brightcove.generation import evolve2
+
     sys.modules['zeit.brightcove.repository'] = evolve2
     sys.modules['zeit.brightcove.content'] = evolve2
     # Remove the brightcove repository from ZODB.
     try:
-        repository = zope.component.queryUtility(
-            zeit.brightcove.interfaces.IRepository)
+        repository = zope.component.queryUtility(zeit.brightcove.interfaces.IRepository)
         if repository is not None:
             site_manager = zope.component.getSiteManager()
-            site_manager.unregisterUtility(
-                repository,
-                zeit.brightcove.interfaces.IRepository)
+            site_manager.unregisterUtility(repository, zeit.brightcove.interfaces.IRepository)
             del root['repository-brightcove']
     finally:
         del sys.modules['zeit.brightcove.repository']

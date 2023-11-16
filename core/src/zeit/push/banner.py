@@ -14,7 +14,6 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.push.interfaces.IBanner)
 class Banner:
-
     def __init__(self, banner_unique_id):
         self.banner_unique_id = banner_unique_id
 
@@ -40,8 +39,7 @@ class Banner:
         return content
 
     def publish(self):
-        IPublish(self.xml_banner).publish(
-            background=False, priority=PRIORITY_HOMEPAGE)
+        IPublish(self.xml_banner).publish(background=False, priority=PRIORITY_HOMEPAGE)
 
     def _ensure_unlocked(self):
         banner = zeit.cms.interfaces.ICMSContent(self.banner_unique_id)
@@ -51,8 +49,7 @@ class Banner:
         if lockable.isLockedOut():
             lockable.breaklock()
         if lockable.ownLock():
-            checked_out = zeit.cms.interfaces.ICMSWCContent(
-                banner.uniqueId, None)
+            checked_out = zeit.cms.interfaces.ICMSWCContent(banner.uniqueId, None)
             if checked_out is not None:
                 ICheckinManager(checked_out).delete()
 
@@ -70,7 +67,6 @@ def get_breaking_news_article():
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Push:
-
     def send(self, text, article_unique_id, **kw):
         log.debug('Publishing Homepage banner for %s', article_unique_id)
         banner = zope.component.getUtility(zeit.push.interfaces.IBanner)
@@ -79,7 +75,6 @@ class Push:
 
 
 class HomepageMessage(zeit.push.message.Message):
-
     grok.name('homepage')
     get_text_from = 'short_text'
 

@@ -1,4 +1,3 @@
-
 from zeit.cms.i18n import MessageFactory as _
 import lxml.builder
 import lxml.objectify
@@ -13,22 +12,20 @@ import zope.interface
 
 
 @zope.interface.implementer(
-    zeit.content.portraitbox.interfaces.IPortraitbox,
-    zeit.cms.interfaces.IAsset)
+    zeit.content.portraitbox.interfaces.IPortraitbox, zeit.cms.interfaces.IAsset
+)
 class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
-
     default_template = (
         '<container layout="artbox" label="portrait" '
-        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
+        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />'
+    )
 
     name = zeit.cms.content.property.ObjectPathProperty('.block.title')
     text = zeit.cms.content.property.Structure('.block.text')
-    image = zeit.cms.content.reference.SingleResource(
-        '.block.image', xml_reference_name='image')
+    image = zeit.cms.content.reference.SingleResource('.block.image', xml_reference_name='image')
 
 
 class PortraiboxType(zeit.cms.type.XMLContentTypeDeclaration):
-
     interface = zeit.content.portraitbox.interfaces.IPortraitbox
     type = 'portraitbox'
     factory = Portraitbox

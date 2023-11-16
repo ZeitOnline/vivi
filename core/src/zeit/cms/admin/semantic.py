@@ -9,7 +9,6 @@ import zope.interface
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.admin.interfaces.IAdjustSemanticPublish)
 class AdjustSemanticPublish:
-
     def __init__(self, context):
         self.context = context
 

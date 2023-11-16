@@ -8,7 +8,6 @@ import zeit.content.rawxml.rawxml
 
 
 class BreakingNewsTest(zeit.content.article.testing.FunctionalTestCase):
-
     def create_breaking_news_article(self):
         article = zeit.content.article.testing.create_article()
         IBreakingNews(article).is_breaking = True
@@ -25,17 +24,16 @@ class BreakingNewsTest(zeit.content.article.testing.FunctionalTestCase):
         breaking = self.create_breaking_news_article()
         self.assertEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
-            zeit.cms.workflow.interfaces.IPublishPriority(breaking)
+            zeit.cms.workflow.interfaces.IPublishPriority(breaking),
         )
         article = zeit.content.article.testing.create_article()
         self.assertNotEqual(
             zeit.cms.workflow.interfaces.PRIORITY_HOMEPAGE,
-            zeit.cms.workflow.interfaces.IPublishPriority(article)
+            zeit.cms.workflow.interfaces.IPublishPriority(article),
         )
 
 
 class BreakingBannerTest(zeit.content.article.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         banner_config = zeit.content.rawxml.rawxml.RawXML()
@@ -44,21 +42,18 @@ class BreakingBannerTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = create_article()
 
     def test_no_article_id_in_banner_config_does_not_match(self):
-        self.assertFalse(
-            IBreakingNews(self.repository['article']).banner_matches())
+        self.assertFalse(IBreakingNews(self.repository['article']).banner_matches())
 
     def test_url_equal_uniqueId_matches(self):
         with checked_out(self.repository['banner']) as co:
-            co.xml = etree.fromstring('<xml><article_id>'
-                                      'http://xml.zeit.de/article'
-                                      '</article_id></xml>')
-        self.assertTrue(
-            IBreakingNews(self.repository['article']).banner_matches())
+            co.xml = etree.fromstring(
+                '<xml><article_id>' 'http://xml.zeit.de/article' '</article_id></xml>'
+            )
+        self.assertTrue(IBreakingNews(self.repository['article']).banner_matches())
 
     def test_url_not_equal_uniqueId_does_not_match(self):
         with checked_out(self.repository['banner']) as co:
-            co.xml = etree.fromstring('<xml><article_id>'
-                                      'http://xml.zeit.de/foo'
-                                      '</article_id></xml>')
-        self.assertFalse(
-            IBreakingNews(self.repository['article']).banner_matches())
+            co.xml = etree.fromstring(
+                '<xml><article_id>' 'http://xml.zeit.de/foo' '</article_id></xml>'
+            )
+        self.assertFalse(IBreakingNews(self.repository['article']).banner_matches())

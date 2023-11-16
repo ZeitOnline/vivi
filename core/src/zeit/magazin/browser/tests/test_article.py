@@ -4,7 +4,6 @@ import zeit.content.article.testing
 
 
 class FacebookTest(zeit.magazin.testing.BrowserTestCase):
-
     def get_article(self):
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
         return list(wc.values())[0]
@@ -17,9 +16,7 @@ class FacebookTest(zeit.magazin.testing.BrowserTestCase):
         article = zeit.content.article.testing.create_article()
         self.repository['magazin']['article'] = article
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository'
-            '/magazin/article/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository' '/magazin/article/@@checkout')
         b.open('@@edit.form.social?show_form=1')
         self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
         b.getControl('Enable Facebook Magazin').selected = True
@@ -28,5 +25,11 @@ class FacebookTest(zeit.magazin.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin',
-             'override_text': 'magazin'}, push.message_config)
+            {
+                'type': 'facebook',
+                'enabled': True,
+                'account': 'fb-magazin',
+                'override_text': 'magazin',
+            },
+            push.message_config,
+        )

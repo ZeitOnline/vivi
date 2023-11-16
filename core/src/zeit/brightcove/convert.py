@@ -12,7 +12,6 @@ import zope.component
 
 
 class Converter:
-
     def __init__(self):
         self.data = {}
 
@@ -54,12 +53,13 @@ class Converter:
 
     def __repr__(self):
         return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__,
-            self.id or '(unknown)')
+            self.__class__.__module__,
+            self.__class__.__name__,
+            self.id or '(unknown)',
+        )
 
 
 class Video(Converter):
-
     @classmethod
     def find_by_id(cls, id):
         api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
@@ -70,7 +70,8 @@ class Video(Converter):
             # Since BC gives us no further information, we need to try and
             # resolve the CMS uniqueId by ourselves.
             cmsobj = zeit.cms.interfaces.ICMSContent(
-                zeit.brightcove.resolve.query_video_id(id), None)
+                zeit.brightcove.resolve.query_video_id(id), None
+            )
             return DeletedVideo(id, cmsobj)
         return cls.from_bc(data)
 
@@ -95,14 +96,11 @@ class Video(Converter):
         data['name'] = cmsobj.title
         data['description'] = cmsobj.teaserText
         data['long_description'] = cmsobj.subtitle
-        data['economics'] = (
-            'AD_SUPPORTED' if cmsobj.has_advertisement else 'FREE')
+        data['economics'] = 'AD_SUPPORTED' if cmsobj.has_advertisement else 'FREE'
 
-        custom['authors'] = ' '.join(
-            x.target.uniqueId for x in cmsobj.authorships)
+        custom['authors'] = ' '.join(x.target.uniqueId for x in cmsobj.authorships)
         custom['allow_comments'] = cls.bc_bool(cmsobj.commentsAllowed)
-        custom['premoderate_comments'] = cls.bc_bool(
-            cmsobj.commentsPremoderate)
+        custom['premoderate_comments'] = cls.bc_bool(cmsobj.commentsPremoderate)
         custom['banner'] = cls.bc_bool(cmsobj.banner)
         custom['banner_id'] = cmsobj.banner_id
         custom['recensions'] = cls.bc_bool(cmsobj.has_recensions)
@@ -110,8 +108,9 @@ class Video(Converter):
         custom['cmskeywords'] = ';'.join(x.code for x in cmsobj.keywords)
         custom['ressort'] = cmsobj.ressort
         custom['serie'] = cmsobj.serie.serienname if cmsobj.serie else None
-        custom['channels'] = ';'.join([' '.join([x for x in channel if x])
-                                       for channel in cmsobj.channels])
+        custom['channels'] = ';'.join(
+            [' '.join([x for x in channel if x]) for channel in cmsobj.channels]
+        )
         custom['supertitle'] = cmsobj.supertitle
         custom['credit'] = cmsobj.video_still_copyright
         custom['type'] = cmsobj.type
@@ -124,8 +123,7 @@ class Video(Converter):
                 custom['ref_link%s' % i] = ''
                 custom['ref_title%s' % i] = ''
             else:
-                metadata = zeit.cms.content.interfaces.ICommonMetadata(
-                    item, None)
+                metadata = zeit.cms.content.interfaces.ICommonMetadata(item, None)
                 if metadata and metadata.teaserTitle:
                     title = metadata.teaserTitle
                 else:
@@ -147,27 +145,27 @@ class Video(Converter):
         data = self.data
         custom = data.get('custom_fields', {})
 
-        zeit.cms.content.field.apply_default_values(
-            cmsobj, zeit.content.video.interfaces.IVideo)
+        zeit.cms.content.field.apply_default_values(cmsobj, zeit.content.video.interfaces.IVideo)
         cmsobj.external_id = data.get('id')
         cmsobj.title = data.get('name')
         cmsobj.teaserText = data.get('description')
         cmsobj.subtitle = data.get('long_description')
-        authors = [zeit.cms.interfaces.ICMSContent(x, None)
-                   for x in custom.get('authors', '').split(' ')]
+        authors = [
+            zeit.cms.interfaces.ICMSContent(x, None) for x in custom.get('authors', '').split(' ')
+        ]
         cmsobj.authorships = tuple([x for x in authors if x is not None])
         cmsobj.commentsAllowed = self._default_if_missing(
-            custom, 'allow_comments', IVideo['commentsAllowed'], self.cms_bool)
+            custom, 'allow_comments', IVideo['commentsAllowed'], self.cms_bool
+        )
         cmsobj.commentsPremoderate = self._default_if_missing(
-            custom, 'premoderate_comments', IVideo['commentsPremoderate'],
-            self.cms_bool)
-        cmsobj.banner = self._default_if_missing(
-            custom, 'banner', IVideo['banner'], self.cms_bool)
+            custom, 'premoderate_comments', IVideo['commentsPremoderate'], self.cms_bool
+        )
+        cmsobj.banner = self._default_if_missing(custom, 'banner', IVideo['banner'], self.cms_bool)
         cmsobj.banner_id = custom.get('banner_id')
-        cmsobj.expires = self.cms_date(
-            (data.get('schedule') or {}).get('ends_at'))
+        cmsobj.expires = self.cms_date((data.get('schedule') or {}).get('ends_at'))
         cmsobj.has_recensions = self._default_if_missing(
-            custom, 'recensions', IVideo['has_recensions'], self.cms_bool)
+            custom, 'recensions', IVideo['has_recensions'], self.cms_bool
+        )
         cmsobj.has_advertisement = data.get('economics') == 'AD_SUPPORTED'
         cmsobj.ressort = custom.get('ressort')
         cmsobj.serie = IVideo['serie'].source(None).find(custom.get('serie'))
@@ -207,14 +205,10 @@ class Video(Converter):
             if not item:
                 continue  # Micro-optimization
             related.append(zeit.cms.interfaces.ICMSContent(item, None))
-        zeit.cms.related.interfaces.IRelatedContent(
-            cmsobj).related = tuple(related)
+        zeit.cms.related.interfaces.IRelatedContent(cmsobj).related = tuple(related)
 
-        whitelist = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-        keywords = [
-            whitelist.get(code)
-            for code in custom.get('cmskeywords', '').split(';')]
+        whitelist = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
+        keywords = [whitelist.get(code) for code in custom.get('cmskeywords', '').split(';')]
         cmsobj.keywords = tuple([x for x in keywords if x is not None])
 
         publish = zeit.cms.workflow.interfaces.IPublishInfo(cmsobj)
@@ -231,9 +225,9 @@ class Video(Converter):
                 if fake_id:
                     cmsobj.uniqueId = None
 
-        zeit.cms.content.interfaces.ISemanticChange(
-            cmsobj).last_semantic_change = self.cms_date(
-                data.get('updated_at'))
+        zeit.cms.content.interfaces.ISemanticChange(cmsobj).last_semantic_change = self.cms_date(
+            data.get('updated_at')
+        )
 
     def _default_if_missing(self, data, key, field, convert=None):
         if key not in data:
@@ -246,8 +240,7 @@ class Video(Converter):
     @property
     def write_data(self):
         data = {}
-        for key in [
-                'custom_fields', 'name', 'description', 'long_description']:
+        for key in ['custom_fields', 'name', 'description', 'long_description']:
             if key in self.data:
                 data[key] = self.data[key]
         return data
@@ -258,12 +251,10 @@ class Video(Converter):
 
     @property
     def skip_import(self):
-        return self.cms_bool(self.data.get('custom_fields', {}).get(
-            'ignore_for_update'))
+        return self.cms_bool(self.data.get('custom_fields', {}).get('ignore_for_update'))
 
 
 class DeletedVideo(Video):
-
     def __init__(self, id, cmsobj):
         # We fake just enough API so VideoUpdater can perform the delete
         # (or skip us entirely if we don't even have a CMS object anymore).
@@ -274,8 +265,7 @@ class DeletedVideo(Video):
             self.__dict__['uniqueId'] = cmsobj.uniqueId
         else:
             self.__dict__['__parent__'] = None
-            self.__dict__['uniqueId'] = (
-                'http://xml.zeit.de/__deleted_video__/' + id)
+            self.__dict__['uniqueId'] = 'http://xml.zeit.de/__deleted_video__/' + id
 
 
 @grok.implementer(zeit.cms.content.interfaces.IAddLocation)
@@ -284,11 +274,11 @@ def video_location(bcobj):
     conf = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
     path = conf['video-folder']
     return zeit.cms.content.add.find_or_create_folder(
-        *(path.split('/') + [bcobj.date_created.strftime('%Y-%m')]))
+        *(path.split('/') + [bcobj.date_created.strftime('%Y-%m')])
+    )
 
 
 class Playlist(Converter):
-
     @classmethod
     def find_by_id(cls, id):
         api = zope.component.getUtility(zeit.brightcove.interfaces.ICMSAPI)
@@ -309,9 +299,9 @@ class Playlist(Converter):
         cmsobj.title = self.data.get('name')
         cmsobj.teaserText = self.data.get('description')
 
-        zeit.cms.content.interfaces.ISemanticChange(
-            cmsobj).last_semantic_change = self.cms_date(
-                self.data.get('updated_at'))
+        zeit.cms.content.interfaces.ISemanticChange(cmsobj).last_semantic_change = self.cms_date(
+            self.data.get('updated_at')
+        )
 
         videos = []
         for id in self.data.get('video_ids', ()):
@@ -331,7 +321,6 @@ class Playlist(Converter):
 @grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 @grok.adapter(Playlist)
 def playlist_location(bcobj):
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.brightcove')
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.brightcove')
     path = config['playlist-folder']
     return zeit.cms.content.add.find_or_create_folder(*path.split('/'))

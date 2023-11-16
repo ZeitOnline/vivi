@@ -33,25 +33,24 @@ GALLERY_TEMPLATE = """\
 
 
 @zope.interface.implementer(
-    zeit.content.gallery.interfaces.IGallery,
-    zeit.cms.interfaces.IEditorialContent)
+    zeit.content.gallery.interfaces.IGallery, zeit.cms.interfaces.IEditorialContent
+)
 class Gallery(zeit.cms.content.metadata.CommonMetadata):
     """Gallery"""
 
-    _image_folder = zeit.cms.content.property.SingleResource(
-        '.head.image-folder')
+    _image_folder = zeit.cms.content.property.SingleResource('.head.image-folder')
 
     default_template = GALLERY_TEMPLATE
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.gallery.interfaces.IGalleryMetadata,
         zeit.content.gallery.interfaces.DAV_NAMESPACE,
-        ('type',))
+        ('type',),
+    )
 
     @property
     def xml_source(self):
-        return lxml.etree.tostring(
-            self.xml, 'UTF-8', xml_declaration=True, encoding=str)
+        return lxml.etree.tostring(self.xml, 'UTF-8', xml_declaration=True, encoding=str)
 
     @property
     def image_folder(self):
@@ -114,8 +113,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         elif entry.text.text:
             # Hrm. There is text which is not wrapped in another node, wrap it.
             entry.text = lxml.objectify.E.text(
-                lxml.objectify.E.p(entry.text.text,
-                                   *entry.text.getchildren()))
+                lxml.objectify.E.p(entry.text.text, *entry.text.getchildren())
+            )
         entry.layout = node.get('layout')
         if entry.layout is not None:
             entry.layout = str(entry.layout)
@@ -152,27 +151,22 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         return self._get_block_for_key(key) is not None
 
     def keys(self):
-        """Return the keys of the mapping object.
-        """
+        """Return the keys of the mapping object."""
         image_folder = self._image_folder
         if image_folder is None:
             return []
-        return (name for name in self._list_all_keys()
-                if name in image_folder)
+        return (name for name in self._list_all_keys() if name in image_folder)
 
     def __iter__(self):
-        """Return an iterator for the keys of the mapping object.
-        """
+        """Return an iterator for the keys of the mapping object."""
         return iter(self.keys())
 
     def values(self):
-        """Return the values of the mapping object.
-        """
+        """Return the values of the mapping object."""
         return (self[key] for key in self)
 
     def items(self):
-        """Return the items of the mapping object.
-        """
+        """Return the items of the mapping object."""
         return list(zip(list(self.keys()), list(self.values())))
 
     def __len__(self):
@@ -192,8 +186,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     def updateOrder(self, order):
         if set(self.keys()) != set(order):
-            raise ValueError("The order argument must contain the same "
-                             "keys as the container.")
+            raise ValueError('The order argument must contain the same ' 'keys as the container.')
         ordered = []
         for id in order:
             ordered.append(self._get_block_for_key(id))
@@ -210,7 +203,8 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     def _get_block_for_key(self, key):
         matching_blocks = self._entries_container.xpath(
-            'block[@name=%s]' % xml.sax.saxutils.quoteattr(key))
+            'block[@name=%s]' % xml.sax.saxutils.quoteattr(key)
+        )
         if matching_blocks:
             assert len(matching_blocks) == 1
             return matching_blocks[0]
@@ -250,8 +244,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         if not unique_id:
             return None
 
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         try:
             image = repository.getContent(unique_id)
         except KeyError:
@@ -260,7 +253,6 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
 
 class GalleryType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Gallery
     interface = zeit.content.gallery.interfaces.IGallery
     type = 'gallery'
@@ -272,8 +264,7 @@ class GalleryType(zeit.cms.type.XMLContentTypeDeclaration):
 def galleryentry_factory(context):
     entry = GalleryEntry()
     entry.image = context
-    entry.thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(
-        context)
+    entry.thumbnail = zeit.content.image.interfaces.IPersistentThumbnail(context)
     entry.title = None
     entry.text = None
     entry.layout = None
@@ -287,7 +278,6 @@ def galleryentry_factory(context):
 
 @zope.interface.implementer(zeit.content.gallery.interfaces.IGalleryEntry)
 class GalleryEntry:
-
     @property
     def crops(self):
         result = []
@@ -300,7 +290,6 @@ class GalleryEntry:
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)
 class EntryXMLRepresentation:
-
     def __init__(self, context):
         self.context = context
 
@@ -312,8 +301,7 @@ class EntryXMLRepresentation:
 
         # Remove security proxy from lxml tree before inserting in the a
         # different tree
-        node['text'] = zope.security.proxy.removeSecurityProxy(
-            self.context.text)
+        node['text'] = zope.security.proxy.removeSecurityProxy(self.context.text)
 
         if self.context.caption:
             node.append(lxml.objectify.E.caption(self.context.caption))
@@ -321,11 +309,11 @@ class EntryXMLRepresentation:
             node.set('is_crop_of', self.context.is_crop_of)
 
         node['image'] = zope.component.getAdapter(
-            self.context.image,
-            zeit.cms.content.interfaces.IXMLReference, name='image')
+            self.context.image, zeit.cms.content.interfaces.IXMLReference, name='image'
+        )
         node['thumbnail'] = zope.component.getAdapter(
-            self.context.thumbnail,
-            zeit.cms.content.interfaces.IXMLReference, name='image')
+            self.context.thumbnail, zeit.cms.content.interfaces.IXMLReference, name='image'
+        )
         if self.context.layout:
             node.set('layout', self.context.layout)
         return node
@@ -333,7 +321,6 @@ class EntryXMLRepresentation:
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGallery)
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
     def get_tree(self):
         # we can't express that 'body' is allowed for IGallery objects as a
         # security declaration, since that would have to apply to the objectify
@@ -349,14 +336,13 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)
 class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
-
     def get_tree(self):
         return self.context.text
 
 
 @zope.component.adapter(
-    zeit.content.gallery.interfaces.IGalleryEntry,
-    zope.lifecycleevent.IObjectModifiedEvent)
+    zeit.content.gallery.interfaces.IGalleryEntry, zope.lifecycleevent.IObjectModifiedEvent
+)
 def update_gallery_on_entry_change(entry, event):
     entry.__parent__[entry.__name__] = entry
 
@@ -374,8 +360,7 @@ class EntryMetadata:
 
     def __init__(self, context):
         self.context = context
-        self._image_metadata = zeit.content.image.interfaces.IImageMetadata(
-            context.image, None)
+        self._image_metadata = zeit.content.image.interfaces.IImageMetadata(context.image, None)
 
     def __getattr__(self, name):
         __traceback_info__ = (self.context.__name__, name)
@@ -401,7 +386,7 @@ class SearchableText(grok.Adapter):
 
     def getSearchableText(self):
         main_text = []
-        for p in self.context.xml.body.xpath("//p"):
+        for p in self.context.xml.body.xpath('//p'):
             text = str(p).strip()
             if text:
                 main_text.append(text)

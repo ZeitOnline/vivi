@@ -4,7 +4,6 @@ import unittest
 
 
 class MemoryFileTest(unittest.TestCase):
-
     def test_is_pickleable(self):
         f = MemoryFile(b'asdf')
         dumped = pickle.dumps(f)

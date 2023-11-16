@@ -8,16 +8,14 @@ import zeit.content.article.edit.interfaces
 
 @grok.implementer(ICardstack)
 class Cardstack(zeit.content.article.edit.block.Block):
-
     type = 'cardstack'
 
-    card_id = ObjectPathAttributeProperty(
-        '.', 'card_id', ICardstack['card_id'])
+    card_id = ObjectPathAttributeProperty('.', 'card_id', ICardstack['card_id'])
     is_advertorial = ObjectPathAttributeProperty(
-        '.', 'is_advertorial', ICardstack['is_advertorial'])
+        '.', 'is_advertorial', ICardstack['is_advertorial']
+    )
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
-
     produces = Cardstack
     title = _('Cardstack block')

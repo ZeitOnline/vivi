@@ -11,17 +11,15 @@ import zope.viewlet.viewlet
 
 
 class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
-
     def getMenuItems(self, object, request):
         result = super().getMenuItems(object, request)
         for item in result:
-            item['target'] = "_blank"
+            item['target'] = '_blank'
             item['rel'] = 'zeit.cms.follow_with_lock'
         return result
 
 
 class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
-
     weight = 0
 
     @property
@@ -32,8 +30,7 @@ class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
 class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
     """A simple action menu item with icon."""
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'action-menu-item.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('action-menu-item.pt')
     rel = None
 
     def update(self):
@@ -41,8 +38,7 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
         self.item_id = 'menuitem.%s' % time.time()
 
     def get_url(self):
-        url = zope.component.getMultiAdapter(
-            (self.context, self.request), name='absolute_url')
+        url = zope.component.getMultiAdapter((self.context, self.request), name='absolute_url')
         return '%s/%s' % (url, self.action)
 
     def img_tag(self):
@@ -50,28 +46,25 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
         if img_url.startswith('/@@/'):
             # Dereference resource library
             library_name, path = img_url[4:].split('/', 1)
-            img_url = zeit.cms.browser.view.resource_url(
-                self.request, library_name, path)
+            img_url = zeit.cms.browser.view.resource_url(self.request, library_name, path)
         return '<img src=%s />' % xml.sax.saxutils.quoteattr(img_url)
 
 
 class MenuViewlet(MenuItemBase):
-
     menu = None
 
     @property
     def menu_items(self):
         menu = zope.component.getUtility(
-            zope.app.publisher.interfaces.browser.IBrowserMenu,
-            name=self.menu)
+            zope.app.publisher.interfaces.browser.IBrowserMenu, name=self.menu
+        )
         return menu.getMenuItems(self.context, self.request)
 
 
 class GlobalMenuItem(MenuItemBase, z3c.menu.simple.menu.GlobalMenuItem):
     """A menu item in the global menu."""
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'globalmenuitem.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('globalmenuitem.pt')
 
     activeCSS = 'selected'
     inActiveCSS = ''
@@ -81,7 +74,7 @@ class GlobalMenuItem(MenuItemBase, z3c.menu.simple.menu.GlobalMenuItem):
     def selected(self):
         app_url = self.request.getApplicationURL()
         url = self.request.getURL()
-        path = url[len(app_url):].split('/')
+        path = url[len(app_url) :].split('/')
         if path and self.pathitem in path:
             return True
 
@@ -91,8 +84,8 @@ class GlobalMenuItem(MenuItemBase, z3c.menu.simple.menu.GlobalMenuItem):
 class CMSMenuItem(GlobalMenuItem):
     """The CMS menu item which is active when no other item is active."""
 
-    title = _("CMS")
-    viewURL = "@@index.html"
+    title = _('CMS')
+    viewURL = '@@index.html'
     weight = 0
 
     @property
@@ -113,16 +106,13 @@ class CMSMenuItem(GlobalMenuItem):
 class LightboxActionMenuItem(ActionMenuItem):
     """A menu item rendering a lighbox."""
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'action-menu-item-with-lightbox.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('action-menu-item-with-lightbox.pt')
 
 
 class DropDownMenuBase:
-
     weight = 1000
     items_provider = None
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'secondary_context_actions.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('secondary_context_actions.pt')
     activeCSS = 'secondary selected'
     inActiveCSS = 'secondary'
     selected = False
@@ -133,7 +123,8 @@ class DropDownMenuBase:
         provider = zope.component.getMultiAdapter(
             (self.context, self.request, self),
             zope.viewlet.interfaces.IViewletManager,
-            self.items_provider)
+            self.items_provider,
+        )
         provider.update()
         for menu_item in provider.viewlets:
             if menu_item.selected:
@@ -144,9 +135,7 @@ class DropDownMenuBase:
 
 
 class ContextViewsMenu(MenuItemBase, z3c.menu.simple.menu.ContextMenuItem):
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'context-views-menu-item.pt')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('context-views-menu-item.pt')
 
 
 class SecondaryActions(DropDownMenuBase, MenuItemBase):

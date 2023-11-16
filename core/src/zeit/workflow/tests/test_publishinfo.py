@@ -5,7 +5,6 @@ import zope.interface.verify
 
 
 class PublishInfoTest(zeit.workflow.testing.FunctionalTestCase):
-
     def test_last_published_by_takes_last_entry_from_objectlog(self):
         content = self.repository['testcontent']
         info = IPublishInfo(content)
@@ -21,7 +20,6 @@ class PublishInfoTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class WorkflowCopyTest(zeit.workflow.testing.FunctionalTestCase):
-
     def test_publishinfo_is_reset_for_copied_objects(self):
         content = self.repository['testcontent']
         IPublishInfo(content).published = True

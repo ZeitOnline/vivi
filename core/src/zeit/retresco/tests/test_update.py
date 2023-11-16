@@ -15,7 +15,6 @@ import zope.lifecycleevent
 
 
 class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.tms = mock.Mock()
@@ -23,13 +22,13 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.tms.enrich.return_value = {}
         self.tms.generate_keyword_list.return_value = []
         zope.component.getGlobalSiteManager().registerUtility(
-            self.tms, zeit.retresco.interfaces.ITMS)
+            self.tms, zeit.retresco.interfaces.ITMS
+        )
 
     def test_creating_content_should_index(self):
         self.repository['t1'] = ExampleContentType()
         self.tms.enrich.assert_called_with(self.repository['t1'])
-        self.tms.index.assert_called_with(
-            self.repository['t1'], {'body': None})
+        self.tms.index.assert_called_with(self.repository['t1'], {'body': None})
 
     def test_event_dispatched_to_sublocation_should_be_ignored(self):
         # XXX: I'm not quite sure which use cases actually create this kind of
@@ -72,8 +71,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_checkin_should_enrich_marked_content(self):
         content = ExampleContentType()
-        zope.interface.alsoProvides(
-            content, zeit.retresco.interfaces.ISkipEnrich)
+        zope.interface.alsoProvides(content, zeit.retresco.interfaces.ISkipEnrich)
         self.repository['t1'] = content
         with zeit.cms.checkout.helper.checked_out(self.repository['t1']):
             pass
@@ -87,8 +85,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_non_recursive_folders_should_not_be_indexed_recursively(self):
         folder = zeit.cms.repository.folder.Folder()
-        zope.interface.alsoProvides(
-            folder, zeit.cms.repository.interfaces.INonRecursiveCollection)
+        zope.interface.alsoProvides(folder, zeit.cms.repository.interfaces.INonRecursiveCollection)
         self.repository['nonrecursive'] = folder
         self.repository['nonrecursive']['test'] = ExampleContentType()
 
@@ -100,8 +97,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         with mock.patch('zeit.cms.interfaces.ICMSContent') as cmscontent:
             with mock.patch('zeit.retresco.update.index') as index:
                 cmscontent.return_value = None
-                zeit.retresco.update.index_async(
-                    'http://xml.zeit.de/testcontent')
+                zeit.retresco.update.index_async('http://xml.zeit.de/testcontent')
                 self.assertFalse(index.called)
 
     def test_publish_should_not_be_called_on_index_if_res_not_published(self):
@@ -115,8 +111,7 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_publish_should_be_called_on_index_if_res_published(self):
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pub:
-            with mock.patch(
-                    'zeit.retresco.interfaces.ITMSRepresentation') as tmsrep:
+            with mock.patch('zeit.retresco.interfaces.ITMSRepresentation') as tmsrep:
                 tmsrep().return_value = {'not empty': ''}
                 content = self.repository['testcontent']
                 pub_info = mock.Mock()
@@ -161,79 +156,77 @@ class UpdateTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertFalse(self.tms.delete.called)
 
     def test_rename_should_index(self):
-        zope.copypastemove.interfaces.IObjectMover(
-            self.repository['testcontent']).moveTo(self.repository, 'changed')
+        zope.copypastemove.interfaces.IObjectMover(self.repository['testcontent']).moveTo(
+            self.repository, 'changed'
+        )
         self.assertTrue(self.tms.index.called)
 
     def test_changing_workflow_properties_in_repository_should_index(self):
         content = self.repository['testcontent']
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        zope.interface.alsoProvides(
-            workflow, zeit.workflow.interfaces.IContentWorkflow)
+        zope.interface.alsoProvides(workflow, zeit.workflow.interfaces.IContentWorkflow)
         event = zeit.cms.content.interfaces.DAVPropertyChangedEvent(
-            workflow, 'ns', 'name', 'old', 'new',
-            zeit.workflow.interfaces.IContentWorkflow['urgent'])
+            workflow,
+            'ns',
+            'name',
+            'old',
+            'new',
+            zeit.workflow.interfaces.IContentWorkflow['urgent'],
+        )
 
-        zope.interface.alsoProvides(
-            content, zeit.cms.checkout.interfaces.ILocalContent)
+        zope.interface.alsoProvides(content, zeit.cms.checkout.interfaces.ILocalContent)
         zope.event.notify(event)
         self.assertFalse(self.tms.index.called)
 
-        zope.interface.noLongerProvides(
-            content, zeit.cms.checkout.interfaces.ILocalContent)
+        zope.interface.noLongerProvides(content, zeit.cms.checkout.interfaces.ILocalContent)
         zope.event.notify(event)
         self.assertTrue(self.tms.index.called)
 
 
 class UpdatePublishTest(zeit.retresco.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.tms = mock.Mock()
         self.tms.get_article_data.return_value = {}
         self.tms.generate_keyword_list.return_value = []
         zope.component.getGlobalSiteManager().registerUtility(
-            self.tms, zeit.retresco.interfaces.ITMS)
+            self.tms, zeit.retresco.interfaces.ITMS
+        )
 
     def test_publish_should_index_with_published_true(self):
         published = []
 
         def index(content, overrides=None):
-            published.append(zeit.cms.workflow.interfaces.IPublishInfo(
-                content).published)
+            published.append(zeit.cms.workflow.interfaces.IPublishInfo(content).published)
+
         self.tms.index = index
         content = self.repository['testcontent']
-        zeit.cms.workflow.interfaces.IPublish(content).publish(
-            background=False)
+        zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
         self.assertEqual([True], published)
 
         content = self.repository['2006']['DSC00109_2.JPG']
-        zeit.cms.workflow.interfaces.IPublish(content).publish(
-            background=False)
+        zeit.cms.workflow.interfaces.IPublish(content).publish(background=False)
         self.assertEqual([True, True], published)
 
     def test_retract_should_index_with_published_false(self):
         published = []
 
         def index(content, overrides=None):
-            published.append(zeit.cms.workflow.interfaces.IPublishInfo(
-                content).published)
+            published.append(zeit.cms.workflow.interfaces.IPublishInfo(content).published)
+
         self.tms.index = index
         content = self.repository['testcontent']
         zeit.cms.workflow.interfaces.IPublishInfo(content).published = True
-        zeit.cms.workflow.interfaces.IPublish(content).retract(
-            background=False)
+        zeit.cms.workflow.interfaces.IPublish(content).retract(background=False)
         self.assertEqual([False], published)
 
         content = self.repository['2006']['DSC00109_2.JPG']
         zeit.cms.workflow.interfaces.IPublishInfo(content).published = True
-        zeit.cms.workflow.interfaces.IPublish(content).retract(
-            background=False)
+        zeit.cms.workflow.interfaces.IPublish(content).retract(background=False)
         self.assertEqual([False, False], published)
 
 
 class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.index_patch = mock.patch('zeit.retresco.update.index')
@@ -244,33 +237,30 @@ class IndexParallelTest(zeit.retresco.testing.FunctionalTestCase):
         super().tearDown()
 
     def test_should_create_job_per_folder_entry(self):
-        zeit.retresco.update.index_parallel.delay(
-            'http://xml.zeit.de/online/2007/')
+        zeit.retresco.update.index_parallel.delay('http://xml.zeit.de/online/2007/')
         self.assertEqual(54, self.index.call_count)
 
     def test_should_not_recurse_into_nonrecursive_collections(self):
         folder = zeit.cms.repository.folder.Folder()
-        zope.interface.alsoProvides(
-            folder, zeit.cms.repository.interfaces.INonRecursiveCollection)
+        zope.interface.alsoProvides(folder, zeit.cms.repository.interfaces.INonRecursiveCollection)
         self.repository['nonrecursive'] = folder
         self.repository['nonrecursive']['test'] = ExampleContentType()
         self.index.reset_mock()
-        zeit.retresco.update.index_parallel.delay(
-            'http://xml.zeit.de/nonrecursive/')
+        zeit.retresco.update.index_parallel.delay('http://xml.zeit.de/nonrecursive/')
         self.assertEqual(1, self.index.call_count)
 
     def test_should_pass_parameters_through_recursion(self):
         self.repository['testing']['foo'] = ExampleContentType()
         zeit.retresco.update.index_parallel.delay(
-            'http://xml.zeit.de/testing/',
-            enrich=True, publish=True)
+            'http://xml.zeit.de/testing/', enrich=True, publish=True
+        )
         self.assertEqual(
             dict(enrich=True, update_keywords=True, publish=True),  # noqa
-            self.index.call_args[1])
+            self.index.call_args[1],
+        )
 
 
 class RetryTest(zeit.retresco.testing.FunctionalTestCase):
-
     layer = zeit.retresco.testing.CELERY_LAYER
 
     def setUp(self):
@@ -280,10 +270,10 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
         self.tms.get_article_data.return_value = {}
         self.tms.enrich.return_value = {}
         zope.component.getGlobalSiteManager().registerUtility(
-            self.tms, zeit.retresco.interfaces.ITMS)
+            self.tms, zeit.retresco.interfaces.ITMS
+        )
 
-        self.retry_patch = mock.patch(
-            'zeit.cms.celery.Task.default_retry_delay', new=None)
+        self.retry_patch = mock.patch('zeit.cms.celery.Task.default_retry_delay', new=None)
         self.retry_patch.start()
 
     def tearDown(self):
@@ -292,16 +282,14 @@ class RetryTest(zeit.retresco.testing.FunctionalTestCase):
 
     def test_retries_on_technical_error(self):
         self.tms.enrich.side_effect = [TechnicalError('internal', 500), None]
-        result = zeit.retresco.update.index_async.delay(
-            'http://xml.zeit.de/testcontent')
+        result = zeit.retresco.update.index_async.delay('http://xml.zeit.de/testcontent')
         transaction.commit()
         result.get()
         self.assertEqual(2, self.tms.enrich.call_count)
 
     def test_no_retry_on_other_errors(self):
         self.tms.enrich.side_effect = RuntimeError('provoked')
-        result = zeit.retresco.update.index_async.delay(
-            'http://xml.zeit.de/testcontent')
+        result = zeit.retresco.update.index_async.delay('http://xml.zeit.de/testcontent')
         transaction.commit()
         result.get()
         self.assertEqual(1, self.tms.enrich.call_count)

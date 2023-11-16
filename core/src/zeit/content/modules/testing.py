@@ -21,21 +21,19 @@ product_config = """\
 """.format(here=importlib.resources.files(__package__))
 
 
-CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
-    zeit.cmp.testing.CONFIG_LAYER,
-    zeit.wochenmarkt.testing.CONFIG_LAYER))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config, bases=(zeit.cmp.testing.CONFIG_LAYER, zeit.wochenmarkt.testing.CONFIG_LAYER)
+)
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.ZeitCmsBrowserTestCase):
-
     layer = WSGI_LAYER
 
 
@@ -47,8 +45,8 @@ class IngredientsHelper:
         unit = kwargs.get('unit', 'g')
         details = kwargs.get('details', 'sautiert')
         ingredient = zeit.content.modules.recipelist.Ingredient(
-            code=code, label='_' + code, amount=amount,
-            unit=unit, details=details)
+            code=code, label='_' + code, amount=amount, unit=unit, details=details
+        )
         return ingredient
 
     def setup_ingredients(self, *codes):

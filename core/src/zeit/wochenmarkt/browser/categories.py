@@ -12,7 +12,6 @@ log = logging.getLogger(__name__)
 
 
 class RecipeCategoriesSearch(zeit.cms.browser.view.JSON):
-
     def json(self):
         term = self.request.form.get('term')
         if term:
@@ -23,11 +22,9 @@ class RecipeCategoriesSearch(zeit.cms.browser.view.JSON):
 
 
 @grok.adapter(
-    zeit.wochenmarkt.interfaces.IRecipeCategoriesSource,
-    zeit.cms.browser.interfaces.ICMSLayer)
+    zeit.wochenmarkt.interfaces.IRecipeCategoriesSource, zeit.cms.browser.interfaces.ICMSLayer
+)
 @grok.implementer(zeit.cms.browser.interfaces.ISourceQueryURL)
 def CategoriesSearchURL(context, request):
-    base = zope.traversing.browser.absoluteURL(
-        zope.component.hooks.getSite(), request)
-    return (
-        base + '/@@recipe_categories_find')
+    base = zope.traversing.browser.absoluteURL(zope.component.hooks.getSite(), request)
+    return base + '/@@recipe_categories_find'

@@ -21,10 +21,8 @@ def convert(conditions):
 def parse():
     parser = ArgumentParser(description='Elasticsearch debug client')
     parser.add_argument('conditions', nargs='+', help='Search conditions')
-    parser.add_argument(
-        '-v', '--verbose', action='store_true', help='Report query & results')
-    parser.add_argument(
-        '-p', '--payload', action='store_true', help='Dump result payload')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Report query & results')
+    parser.add_argument('-p', '--payload', action='store_true', help='Dump result payload')
     args = parser.parse_args()
     return args, dict(convert(args.conditions))
 

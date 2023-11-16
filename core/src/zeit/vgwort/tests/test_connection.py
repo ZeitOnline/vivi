@@ -11,17 +11,15 @@ import zope.component
 
 
 class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
-
     def setUp(self):
         super().setUp()
-        self.service = zope.component.getUtility(
-            zeit.vgwort.interfaces.IMessageService)
+        self.service = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
 
     @property
     def repository(self):
         import zeit.cms.repository.interfaces
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     def add_token(self, content):
         ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
@@ -111,6 +109,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
     def test_non_author_doc_as_author_should_be_ignored(self):
         import transaction
         import zeit.connector.interfaces
+
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'
@@ -124,16 +123,15 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author2 = self.repository['author2']
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.authorships = [co.authorships.create(author),
-                              co.authorships.create(author2)]
+            co.authorships = [co.authorships.create(author), co.authorships.create(author2)]
             co.title = 'Title'
             co.teaserText = 'Das ist ein Blindtext. ' * 2000
         content = self.repository['testcontent']
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         transaction.commit()
         connector._properties['http://xml.zeit.de/author2'][
-            ('type', 'http://namespaces.zeit.de/CMS/meta')] = 'foo'
+            ('type', 'http://namespaces.zeit.de/CMS/meta')
+        ] = 'foo'
         self.add_token(content)
 
         try:
@@ -143,12 +141,10 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
-
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        wsdl = (importlib.resources.files(__package__) /
-                'pixelService.wsdl').read_text('utf-8')
+        wsdl = (importlib.resources.files(__package__) / 'pixelService.wsdl').read_text('utf-8')
         wsdl = wsdl.replace('__PORT__', str(HTTP_LAYER['http_port']))
         self.wfile.write(wsdl.encode('utf-8'))
 
@@ -162,25 +158,23 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
         self.wfile.write(b'')
 
 
-HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
-    RequestHandler, name='HTTPLayer', module=__name__)
+HTTP_LAYER = gocept.httpserverlayer.custom.Layer(RequestHandler, name='HTTPLayer', module=__name__)
 
 
 class HTTPErrorTest(unittest.TestCase):
-
     layer = HTTP_LAYER
 
     def test_http_error_should_raise_technical_error(self):
         service = zeit.vgwort.connection.PixelService(
-            'http://%s' % self.layer['http_address'], '', '')
+            'http://%s' % self.layer['http_address'], '', ''
+        )
         time.sleep(1)
         self.assertRaises(
-            zeit.vgwort.interfaces.TechnicalError,
-            lambda: list(service.order_pixels(1)))
+            zeit.vgwort.interfaces.TechnicalError, lambda: list(service.order_pixels(1))
+        )
 
     def test_connection_error_should_raise_technical_error(self):
-        service = zeit.vgwort.connection.PixelService(
-            'http://unavailable_address', '', '')
+        service = zeit.vgwort.connection.PixelService('http://unavailable_address', '', '')
         time.sleep(1)
         with self.assertRaises(zeit.vgwort.interfaces.TechnicalError) as e:
             list(service.order_pixels(1))
@@ -188,18 +182,16 @@ class HTTPErrorTest(unittest.TestCase):
 
 
 class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
-
     def setUp(self):
         super().setUp()
         # Need a real webservice to load the WSDL.
-        self.service = zope.component.getUtility(
-            zeit.vgwort.interfaces.IMessageService)
+        self.service = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
 
     @property
     def repository(self):
         import zeit.cms.repository.interfaces
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+
+        return zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
     def get_content(self, authors, freetext=None, product='KINZ'):
         products = list(zeit.cms.content.sources.PRODUCT_SOURCE(None))
@@ -217,9 +209,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
     def test_content_must_have_commonmetadata(self):
         with self.assertRaises(zeit.vgwort.interfaces.WebServiceError) as e:
             self.service.new_document(mock.sentinel.notanarticle)
-        self.assertEqual(
-            e.exception.args,
-            ('Artikel existiert nicht mehr.',))
+        self.assertEqual(e.exception.args, ('Artikel existiert nicht mehr.',))
 
     def test_product_is_passed_as_additional_author_with_code(self):
         author = zeit.content.author.author.Author()
@@ -279,8 +269,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.repository['paul'] = paul
         content = self.get_content([], product=None)
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.authorships = [co.authorships.create(tina),
-                              co.authorships.create(paul)]
+            co.authorships = [co.authorships.create(tina), co.authorships.create(paul)]
             co.authorships[0].role = 'Illustration'
             co.authorships[1].role = 'Visualisierung'
         content = self.repository['testcontent']
@@ -295,12 +284,13 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         content = self.get_content([])
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)
-            self.assertEqual('http://www.zeit.de/testcontent/komplettansicht',
-                             call.call_args[0][3].webrange[0].url)
+            self.assertEqual(
+                'http://www.zeit.de/testcontent/komplettansicht',
+                call.call_args[0][3].webrange[0].url,
+            )
 
     def test_freetext_authors_should_be_passed(self):
-        content = self.get_content(
-            [], freetext=(('Paul Auster', 'Hans Christian Andersen')))
+        content = self.get_content([], freetext=(('Paul Auster', 'Hans Christian Andersen')))
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)
             parties = call.call_args[0][1]
@@ -317,8 +307,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author.lastname = 'Groll'
         self.repository['author'] = author
         author = self.repository['author']
-        content = self.get_content(
-            [author], freetext=(('Paul Auster', 'Hans Christian Andersen')))
+        content = self.get_content([author], freetext=(('Paul Auster', 'Hans Christian Andersen')))
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)
             parties = call.call_args[0][1]
@@ -328,8 +317,7 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.assertEqual('Groll', authors[0].surName)
 
     def test_freetext_authors_should_not_break_with_no_space(self):
-        content = self.get_content(
-            [], freetext=(('Merlin',)))
+        content = self.get_content([], freetext=(('Merlin',)))
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)
             parties = call.call_args[0][1]
@@ -338,8 +326,8 @@ class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def test_freetext_authors_should_be_whitespace_normalized(self):
         content = self.get_content(
-            [], freetext=(
-                ('  Paul   Auster  ', '  Hans   Christian   Andersen  ')))
+            [], freetext=(('  Paul   Auster  ', '  Hans   Christian   Andersen  '))
+        )
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)
             parties = call.call_args[0][1]

@@ -4,15 +4,13 @@ import zeit.content.cp.testing
 
 
 class TestLocalTeaser(zeit.content.cp.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
         self.centerpage['lead'].create_item('local-teaser')
         self.repository['centerpage'] = self.centerpage
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')
         b.open('contents')
         self.content_url = b.url
 
@@ -27,17 +25,21 @@ class TestLocalTeaser(zeit.content.cp.testing.BrowserTestCase):
         b = self.browser
         b.xml_strict = True
         ns = 'http://namespaces.gocept.com/zeit-cms'
-        drop = b.cssselect('.type-local-teaser div[cms|drop-url]',
-                           namespaces={'cms': ns})[0].get('{%s}drop-url' % ns)
+        drop = b.cssselect('.type-local-teaser div[cms|drop-url]', namespaces={'cms': ns})[0].get(
+            '{%s}drop-url' % ns
+        )
         b.open('%s?uniqueId=http://xml.zeit.de/testcontent' % drop)
         b.open(self.content_url)
-        self.assertEllipsis("""...
+        self.assertEllipsis(
+            """...
   <div class="teaser">...
     <div class="supertitle"></div>
     <div class="teaserTitle"></div>
     <div class="teaserText"></div>
     <span class="uniqueId">http://xml.zeit.de/testcontent</span>
-  </div>...""", b.contents)
+  </div>...""",
+            b.contents,
+        )
 
     def test_applies_overrides(self):
         self.test_drag_content_to_module_adds_reference()
@@ -49,10 +51,13 @@ class TestLocalTeaser(zeit.content.cp.testing.BrowserTestCase):
         b.getControl('Teaser text').value = 'mytext'
         b.getControl('Apply').click()
         b.open(self.content_url)
-        self.assertEllipsis("""...
+        self.assertEllipsis(
+            """...
   <div class="teaser">...
     <div class="supertitle">mysuper</div>
     <div class="teaserTitle">mytitle</div>
     <div class="teaserText">mytext</div>
     <span class="uniqueId">http://xml.zeit.de/testcontent</span>
-  </div>...""", b.contents)
+  </div>...""",
+            b.contents,
+        )

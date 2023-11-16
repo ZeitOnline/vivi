@@ -5,7 +5,6 @@ import zope.interface.verify
 
 
 class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.group = zeit.content.image.testing.create_image_group()
@@ -14,33 +13,26 @@ class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
         zope.interface.verify.verifyObject(IVariants, IVariants(self.group))
 
     def test_access_variants_dict_entries_as_objects(self):
-        self.group.variants = {
-            'square': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.3}
-        }
+        self.group.variants = {'square': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.3}}
         variant = IVariants(self.group)['square']
         self.assertEqual(0.1, variant.focus_x)
         self.assertEqual(0.1, variant.focus_y)
         self.assertEqual(0.3, variant.zoom)
 
     def test_variant_with_settings_gets_missing_values_from_XML(self):
-        self.group.variants = {
-            'square': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.3}
-        }
+        self.group.variants = {'square': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.3}}
         variant = IVariants(self.group)['square']
         self.assertEqual('1:1', variant.aspect_ratio)
 
     def test_variant_with_settings_gets_missing_values_from_default_variant(
-            self):  # this is important for new default values in the future
-        self.group.variants = {
-            'square': {'focus_x': 0.1, 'focus_y': 0.1}
-        }
+        self
+    ):  # this is important for new default values in the future
+        self.group.variants = {'square': {'focus_x': 0.1, 'focus_y': 0.1}}
         variant = IVariants(self.group)['square']
         self.assertEqual(1, variant.zoom)
 
     def test_variant_without_settings_returns_default_settings(self):
-        self.group.variants = {
-            'default': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.5}
-        }
+        self.group.variants = {'default': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.5}}
         variant = IVariants(self.group)['square']
         self.assertEqual(0.1, variant.focus_x)
         self.assertEqual(0.1, variant.focus_y)
@@ -68,11 +60,9 @@ class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
 
 
 class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        self.group = (
-            zeit.content.image.testing.create_image_group_with_master_image())
+        self.group = zeit.content.image.testing.create_image_group_with_master_image()
 
     @property
     def variants(self):
@@ -88,8 +78,7 @@ class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(None, self.variants['default'].aspect_ratio)
         self.assertEqual(None, self.variants['default'].ratio)
 
-    def test_setting_aspect_ratio_to_original_will_use_ratio_from_master_image(
-            self):
+    def test_setting_aspect_ratio_to_original_will_use_ratio_from_master_image(self):
         self.group.variants = {'square': {'aspect_ratio': 'original'}}
         self.assertEqual('original', self.variants['square'].aspect_ratio)
         self.assertEqual(None, self.variants['square'].ratio)
@@ -108,15 +97,11 @@ class VariantProperties(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(True, self.variants['default'].is_default)
         self.assertEqual(False, self.variants['square'].is_default)
 
-    def test_relative_path_variants_link_to_thumbnail_of_that_variant(
-            self):
-        self.assertEqual(
-            'thumbnails/default', self.variants['default'].relative_image_path)
-        self.assertEqual(
-            'thumbnails/square', self.variants['square'].relative_image_path)
+    def test_relative_path_variants_link_to_thumbnail_of_that_variant(self):
+        self.assertEqual('thumbnails/default', self.variants['default'].relative_image_path)
+        self.assertEqual('thumbnails/square', self.variants['square'].relative_image_path)
 
-    def test_relative_path_contains_max_size_to_distinguish_variant_sizes(
-            self):
+    def test_relative_path_contains_max_size_to_distinguish_variant_sizes(self):
         self.assertEqual(
-            'thumbnails/cinema__320x180',
-            self.variants['cinema-small'].relative_image_path)
+            'thumbnails/cinema__320x180', self.variants['cinema-small'].relative_image_path
+        )

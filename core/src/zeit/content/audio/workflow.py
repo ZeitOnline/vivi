@@ -11,30 +11,33 @@ from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
 
 
 class AudioWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
-
     def can_publish(self):
         status = super().can_publish()
         if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
             return status
         if not self.context.url:
             self.error_messages = (
-                _('Could not publish ${name}. Audio URL is missing',
-                  mapping={'name': self.context.uniqueId}),)
+                _(
+                    'Could not publish ${name}. Audio URL is missing',
+                    mapping={'name': self.context.uniqueId},
+                ),
+            )
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
 
 
 class PodcastWorkflow(AudioWorkflow):
-
     def can_publish(self):
         status = super().can_publish()
         if status == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR:
             return status
         if not IPodcastEpisodeInfo(self.context).is_published:
             self.error_messages = (
-                _('Could not publish ${name}. Podcast Episode is '
-                  'not published by Provider',
-                  mapping={'name': self.context.uniqueId}),)
+                _(
+                    'Could not publish ${name}. Podcast Episode is ' 'not published by Provider',
+                    mapping={'name': self.context.uniqueId},
+                ),
+            )
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
 

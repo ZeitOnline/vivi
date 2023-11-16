@@ -13,9 +13,11 @@ def update(root):
     site_manager = zope.component.getSiteManager()
     # Install lockinfo and move the storage from the body cache
     lockinfo = zeit.connector.generation.install.installLocalUtility(
-        site_manager, zeit.connector.lockinfo.LockInfo,
+        site_manager,
+        zeit.connector.lockinfo.LockInfo,
         'connector-lockinfo',
-        zeit.connector.interfaces.ILockInfoStorage)
+        zeit.connector.interfaces.ILockInfoStorage,
+    )
 
     body_cache = site_manager['connector-body-cache']
     lockinfo._storage = body_cache.locktokens

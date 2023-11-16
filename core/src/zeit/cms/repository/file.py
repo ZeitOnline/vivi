@@ -12,9 +12,7 @@ import zope.interface
 import zope.security.proxy
 
 
-@zope.interface.implementer(
-    zeit.cms.repository.interfaces.IFile,
-    zeit.cms.interfaces.IAsset)
+@zope.interface.implementer(zeit.cms.repository.interfaces.IFile, zeit.cms.interfaces.IAsset)
 class RepositoryFile(zeit.cms.repository.repository.ContentBase):
     """A file in the repository."""
 
@@ -57,7 +55,7 @@ class LocalFile(persistent.Persistent, RepositoryFile):
             raise ValueError(mode)
 
         if not self.uniqueId and self.local_data is None and mode == 'r':
-            raise ValueError("Cannot open for reading, no data available.")
+            raise ValueError('Cannot open for reading, no data available.')
 
         if self.local_data is None:
             if mode == 'r':
@@ -81,7 +79,6 @@ def localfile_factory(context):
 
 
 class FileType(zeit.cms.type.TypeDeclaration):
-
     interface = zeit.cms.repository.interfaces.IFile
     type = 'file'
     title = _('File')

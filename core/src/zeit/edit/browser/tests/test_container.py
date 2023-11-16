@@ -7,7 +7,6 @@ import zope.security.management
 
 
 class MoveTest(zeit.edit.testing.FunctionalTestCase):
-
     # XXX it's quite hard to test zeit.edit stuff since mostly everything here
     # is abstract. Especially: we don't have an "editable" content type
     # available, so anything with the repository is right out.
@@ -16,14 +15,13 @@ class MoveTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_should_remove_item_from_source_and_add_to_target(self):
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
-        root = zeit.edit.tests.fixture.Container(
-            wc, lxml.objectify.fromstring('<container/>'))
-        factory = zope.component.getAdapter(
-            root, zeit.edit.interfaces.IElementFactory, 'container')
+        root = zeit.edit.tests.fixture.Container(wc, lxml.objectify.fromstring('<container/>'))
+        factory = zope.component.getAdapter(root, zeit.edit.interfaces.IElementFactory, 'container')
         source = factory()
         target = factory()
         block_factory = zope.component.getAdapter(
-            source, zeit.edit.interfaces.IElementFactory, 'block')
+            source, zeit.edit.interfaces.IElementFactory, 'block'
+        )
         item = block_factory()
         key = item.__name__
 

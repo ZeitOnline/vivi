@@ -3,9 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import zeit.content.article.edit.browser.testing
 
 
-class ArticleTemplateTest(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class ArticleTemplateTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super().setUp()
         self.add_article()
@@ -15,8 +13,7 @@ class ArticleTemplateTest(
         s = self.selenium
         s.click('css=#edit-form-misc .edit-bar .fold-link')
 
-        s.assertSelectedLabel(
-            'id=options-template.template', 'Artikel')
+        s.assertSelectedLabel('id=options-template.template', 'Artikel')
         s.select('id=options-template.template', 'Kolumne')
         s.pause(100)
 
@@ -30,11 +27,7 @@ class ArticleTemplateTest(
         ]
 
         s.assertVisible('css=.fieldname-header_layout')
-        self.assertEqual(
-            kolumne_layouts,
-            s.getSelectOptions('id=options-template.header_layout'))
+        self.assertEqual(kolumne_layouts, s.getSelectOptions('id=options-template.header_layout'))
         s.keyPress('id=options-template.header_layout', Keys.TAB)
         s.pause(500)
-        self.assertEqual(
-            kolumne_layouts,
-            s.getSelectOptions('id=options-template.header_layout'))
+        self.assertEqual(kolumne_layouts, s.getSelectOptions('id=options-template.header_layout'))

@@ -8,7 +8,6 @@ import zope.interface
 
 
 class API:
-
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'application/json')
 
@@ -37,7 +36,6 @@ class ISerializeSource(zope.interface.Interface):
 
 @grok.implementer(ISerializeSource)
 class SerializeSource(grok.Adapter):
-
     grok.context(zc.sourcefactory.factories.BasicSourceFactory)
 
     def __init__(self, context):
@@ -45,8 +43,7 @@ class SerializeSource(grok.Adapter):
         self.context.isAvailable = lambda *args: True
 
     def __call__(self):
-        return [{'id': self.getId(x), 'title': self.getTitle(x)}
-                for x in self]
+        return [{'id': self.getId(x), 'title': self.getTitle(x)} for x in self]
 
     def __iter__(self):
         return iter(self.context.getValues())
@@ -59,7 +56,6 @@ class SerializeSource(grok.Adapter):
 
 
 class SerializeContextualSource(SerializeSource):
-
     grok.context(zc.sourcefactory.factories.ContextualSourceFactory)
 
     def __iter__(self):
@@ -70,7 +66,6 @@ class SerializeContextualSource(SerializeSource):
 
 
 class SerializeObjectSource(SerializeContextualSource):
-
     grok.context(zeit.cms.content.sources.ObjectSource)
 
     def getId(self, value):
@@ -78,25 +73,18 @@ class SerializeObjectSource(SerializeContextualSource):
 
 
 class SerializeRessortSource(SerializeContextualSource):
-
     grok.context(zeit.cms.content.sources.RessortSource)
 
     def __call__(self):
         # XXX 90% copy&paste from zeit.web.core.view_json.c1_channeltree()
         result = []
         for ressort in self.context._get_tree().xpath('/ressorts/ressort'):
-            item = {
-                'id': ressort.get('name').lower(),
-                'title': ressort.find('title').text
-            }
+            item = {'id': ressort.get('name').lower(), 'title': ressort.find('title').text}
             result.append(item)
 
             children = []
             for sub in ressort.xpath('subnavigation'):
-                subitem = {
-                    'id': sub.get('name').lower(),
-                    'title': sub.find('title').text
-                }
+                subitem = {'id': sub.get('name').lower(), 'title': sub.find('title').text}
                 children.append(subitem)
             if children:
                 item['children'] = children

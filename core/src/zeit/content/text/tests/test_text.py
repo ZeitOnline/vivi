@@ -6,7 +6,6 @@ import zeit.content.text.testing
 
 
 class TextTest(zeit.content.text.testing.FunctionalTestCase):
-
     def test_interfaces(self):
         text = Text()
         text.text = 'foo'

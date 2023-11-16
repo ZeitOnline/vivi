@@ -9,12 +9,9 @@ import zope.interface
 import zope.traversing.api
 
 
-@zope.component.adapter(
-    zeit.edit.interfaces.IContainer,
-    gocept.lxml.interfaces.IObjectified)
+@zope.component.adapter(zeit.edit.interfaces.IContainer, gocept.lxml.interfaces.IObjectified)
 @zope.interface.implementer(zeit.edit.interfaces.IElement)
-class Element(zope.container.contained.Contained,
-              zeit.cms.content.xmlsupport.Persistent):
+class Element(zope.container.contained.Contained, zeit.cms.content.xmlsupport.Persistent):
     """Base class for blocks."""
 
     def __init__(self, context, xml):
@@ -56,8 +53,7 @@ class Element(zope.container.contained.Contained,
     def uniqueId(self):
         parent = getattr(self.__parent__, 'uniqueId', '')
         if not parent.startswith(zeit.edit.interfaces.BLOCK_NAMESPACE):
-            return '%s%s#%s' % (
-                zeit.edit.interfaces.BLOCK_NAMESPACE, parent, self.__name__)
+            return '%s%s#%s' % (zeit.edit.interfaces.BLOCK_NAMESPACE, parent, self.__name__)
         else:
             name = self.__name__
             if name is None:
@@ -72,8 +68,7 @@ class Element(zope.container.contained.Contained,
             uniqueId = self.uniqueId.encode('ascii', 'replace')
         except Exception:
             uniqueId = '(unknown)'
-        return '<%s.%s %s>' % (
-            self.__class__.__module__, self.__class__.__name__, uniqueId)
+        return '<%s.%s %s>' % (self.__class__.__module__, self.__class__.__name__, uniqueId)
 
 
 def xml_tree_equal(a, b):
@@ -106,7 +101,6 @@ def resolve_block_id(context):
 
 
 class SimpleElement(Element):
-
     grok.baseclass()
 
 
@@ -134,9 +128,8 @@ class ElementFactory:
     def __call__(self, position=None):
         container = self.get_xml()
         content = zope.component.getMultiAdapter(
-            (self.context, container),
-            zeit.edit.interfaces.IElement,
-            name=self.element_type)
+            (self.context, container), zeit.edit.interfaces.IElement, name=self.element_type
+        )
 
         if position is not None:
             self.context.insert(position, content)
@@ -152,22 +145,20 @@ class ElementFactory:
 
         """
         element = zope.component.getSiteManager().adapters.lookup(
-            list(map(zope.interface.providedBy,
-                     (self.context, self.get_xml()))),
+            list(map(zope.interface.providedBy, (self.context, self.get_xml()))),
             zeit.edit.interfaces.IElement,
-            name=self.element_type)
+            name=self.element_type,
+        )
         return getattr(element, 'grokcore.component.directive.provides', None)
 
 
 class TypeOnAttributeElementFactory(ElementFactory):
-
     grok.baseclass()
     tag_name = 'container'
 
     def get_xml(self):
         container = getattr(lxml.objectify.E, self.tag_name)()
-        container.set(
-            '{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
+        container.set('{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
         container.set('module', self.module)  # XXX Why? Who needs this?
         return container
 
@@ -178,6 +169,5 @@ class TypeOnAttributeElementFactory(ElementFactory):
 
 @zope.interface.implementer(zeit.edit.interfaces.IUnknownBlock)
 class UnknownBlock(SimpleElement):
-
     area = zeit.edit.interfaces.IArea
     type = '__unknown__'

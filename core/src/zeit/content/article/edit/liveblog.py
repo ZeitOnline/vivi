@@ -12,21 +12,20 @@ import zope.component
 
 @grok.implementer(zeit.content.article.edit.interfaces.ILiveblog)
 class Liveblog(zeit.content.article.edit.block.Block):
-
     type = 'liveblog'
 
     blog_id = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'blogID',
-        zeit.content.article.edit.interfaces.ILiveblog['blog_id'])
+        '.', 'blogID', zeit.content.article.edit.interfaces.ILiveblog['blog_id']
+    )
     _version = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'version',
-        zeit.content.article.edit.interfaces.ILiveblog['version'],
-        use_default=True)
-    collapse_preceding_content = (
-        zeit.cms.content.property.ObjectPathAttributeProperty(
-            '.', 'collapse-preceding-content',
-            zeit.content.article.edit.interfaces.ILiveblog[
-                'collapse_preceding_content'], use_default=True))
+        '.', 'version', zeit.content.article.edit.interfaces.ILiveblog['version'], use_default=True
+    )
+    collapse_preceding_content = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.',
+        'collapse-preceding-content',
+        zeit.content.article.edit.interfaces.ILiveblog['collapse_preceding_content'],
+        use_default=True,
+    )
 
     LIVEBLOG_VERSION_UPDATE = datetime(2018, 8, 6, tzinfo=pytz.UTC)
 
@@ -40,8 +39,7 @@ class Liveblog(zeit.content.article.edit.block.Block):
             return version
 
         article = zeit.content.article.interfaces.IArticle(self)
-        dfr = zeit.cms.workflow.interfaces.IPublishInfo(
-            article).date_first_released
+        dfr = zeit.cms.workflow.interfaces.IPublishInfo(article).date_first_released
         if not dfr:
             return '3'
         elif dfr > self.LIVEBLOG_VERSION_UPDATE:
@@ -55,34 +53,30 @@ class Liveblog(zeit.content.article.edit.block.Block):
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
-
     produces = Liveblog
     title = _('Liveblog')
 
 
 @grok.subscribe(
-    zeit.content.article.interfaces.IArticle,
-    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+    zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+)
 def set_lsc_default_for_liveblogs(context, event):
     if event.publishing:
         return
     for block in context.body.values():
         if zeit.content.article.edit.interfaces.ILiveblog.providedBy(block):
-            zeit.cms.content.interfaces.ISemanticChange(
-                context).has_semantic_change = True
+            zeit.cms.content.interfaces.ISemanticChange(context).has_semantic_change = True
             break
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.ITickarooLiveblog)
 class TickarooLiveblog(
-        zeit.content.article.edit.block.Block,
-        zeit.content.modules.liveblog.TickarooLiveblog):
-
+    zeit.content.article.edit.block.Block, zeit.content.modules.liveblog.TickarooLiveblog
+):
     type = 'tickaroo_liveblog'
 
 
 @zope.component.adapter(ITickarooLiveblog)
 class TickarooLiveblogFactory(zeit.content.article.edit.block.BlockFactory):
-
     produces = TickarooLiveblog
     title = _('Tickaroo liveblog block')

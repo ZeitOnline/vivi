@@ -4,7 +4,6 @@ import zeit.cms.interfaces
 
 
 class NormalizeFilenameTest(unittest.TestCase):
-
     def normalize(self, text):
         # Plugin point so the JS/Selenium test can adapt this to its needs.
         return zeit.cms.interfaces.normalize_filename(text)
@@ -40,5 +39,4 @@ class NormalizeFilenameTest(unittest.TestCase):
         self.assertEqual('foo.jpg', self.normalize('foo.jpg'))
 
     def test_removes_dots(self):
-        self.assertEqual(
-            'st-foo-bar-baz-qux', self.normalize('st.foo....bar.baz.qux'))
+        self.assertEqual('st-foo-bar-baz-qux', self.normalize('st.foo....bar.baz.qux'))

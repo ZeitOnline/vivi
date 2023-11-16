@@ -2,7 +2,6 @@ import zeit.magazin.testing
 
 
 class ZMOLinkCRUD(zeit.magazin.testing.BrowserTestCase):
-
     def test_zmo_link_has_facebook_magazin_fields(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/magazin')
@@ -19,15 +18,13 @@ class ZMOLinkCRUD(zeit.magazin.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
 
         self.assertEndsWith('@@edit.html', b.url)
-        self.assertEqual(
-            'mymagazin', b.getControl('Facebook Magazin Text').value)
+        self.assertEqual('mymagazin', b.getControl('Facebook Magazin Text').value)
 
         b.getLink('Checkin').click()
         self.assertEllipsis('...mymagazin...', b.contents)
 
 
 class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         link = zeit.content.link.link.Link()
@@ -37,19 +34,16 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
         link.url = 'http://example.com'
         self.repository['magazin']['mylink'] = link
         self.browser.handleErrors = False
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/'
-            'magazin/mylink/@@checkout')
+        self.browser.open('http://localhost/++skin++vivi/repository/' 'magazin/mylink/@@checkout')
 
     def get_content(self):
-        return zeit.cms.interfaces.ICMSWCContent(
-            'http://xml.zeit.de/magazin/mylink')
+        return zeit.cms.interfaces.ICMSWCContent('http://xml.zeit.de/magazin/mylink')
 
     def open_form(self):
         # XXX A simple browser.reload() does not work, why?
         self.browser.open(
-            'http://localhost/++skin++vivi/workingcopy/zope.user/'
-            'mylink/@@edit.html')
+            'http://localhost/++skin++vivi/workingcopy/zope.user/' 'mylink/@@edit.html'
+        )
 
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
@@ -60,9 +54,14 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
         content = self.get_content()
         push = zeit.push.interfaces.IPushMessages(content)
         self.assertIn(
-            {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin',
-             'override_text': 'fb-magazin'},
-            push.message_config)
+            {
+                'type': 'facebook',
+                'enabled': True,
+                'account': 'fb-magazin',
+                'override_text': 'fb-magazin',
+            },
+            push.message_config,
+        )
         self.open_form()
         self.assertTrue(b.getControl('Enable Facebook Magazin').selected)
 
@@ -71,9 +70,14 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
         content = self.get_content()
         push = zeit.push.interfaces.IPushMessages(content)
         self.assertIn(
-            {'type': 'facebook', 'enabled': False, 'account': 'fb-magazin',
-             'override_text': 'fb-magazin'},
-            push.message_config)
+            {
+                'type': 'facebook',
+                'enabled': False,
+                'account': 'fb-magazin',
+                'override_text': 'fb-magazin',
+            },
+            push.message_config,
+        )
 
         self.open_form()
         self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
@@ -86,13 +90,11 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
         content = self.get_content()
         push = zeit.push.interfaces.IPushMessages(content)
         for service in push.message_config:
-            if (service['type'] != 'facebook' or
-                    service.get('account') != 'fb-magazin'):
+            if service['type'] != 'facebook' or service.get('account') != 'fb-magazin':
                 continue
             self.assertEqual('facebook', service['override_text'])
             break
         else:
             self.fail('facebook message_config is missing')
         self.open_form()
-        self.assertEqual(
-            'facebook', b.getControl('Facebook Magazin Text').value)
+        self.assertEqual('facebook', b.getControl('Facebook Magazin Text').value)

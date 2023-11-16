@@ -22,7 +22,6 @@ xpath_functions['lower'] = xpath_lowercase
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategory)
 class RecipeCategory:
-
     def __init__(self, code, name):
         self.code = code
         self.name = name
@@ -32,9 +31,11 @@ class RecipeCategory:
     def from_xml(cls, node):
         code = node.get('code')
         try:
-            name = zope.component.getUtility(
-                zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist).get(
-                    code).name
+            name = (
+                zope.component.getUtility(zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)
+                .get(code)
+                .name
+            )
         except AttributeError:
             # Take care of insufficient whitelist data e.g. missing entries.
             return None
@@ -46,8 +47,10 @@ class RecipeCategories:
 
     def __get__(self, instance, class_):
         if instance is not None:
-            categories = [RecipeCategory.from_xml(x) for x in (
-                instance.xml.xpath('./head/recipe_categories/category'))]
+            categories = [
+                RecipeCategory.from_xml(x)
+                for x in (instance.xml.xpath('./head/recipe_categories/category'))
+            ]
             return tuple(c for c in categories if c is not None)
         return None
 
@@ -71,9 +74,7 @@ class RecipeCategories:
 
 
 @grok.implementer(zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)
-class RecipeCategoriesWhitelist(
-        grok.GlobalUtility,
-        zeit.cms.content.sources.CachedXMLBase):
+class RecipeCategoriesWhitelist(grok.GlobalUtility, zeit.cms.content.sources.CachedXMLBase):
     """Search for categories in categories source"""
 
     product_configuration = 'zeit.wochenmarkt'
@@ -87,8 +88,9 @@ class RecipeCategoriesWhitelist(
     def search(self, term):
         xml = self._get_tree()
         nodes = xml.xpath(
-            '//category[contains(zeit:lower(@name), "%s")]' %
-            term.lower(), namespaces={'zeit': 'zeit.categories'})
+            '//category[contains(zeit:lower(@name), "%s")]' % term.lower(),
+            namespaces={'zeit': 'zeit.categories'},
+        )
         return [self.get(x.get('id')) for x in nodes]
 
     def get(self, code):
@@ -100,9 +102,7 @@ class RecipeCategoriesWhitelist(
         xml = self._get_tree()
         categories = collections.OrderedDict()
         for category_node in xml.xpath('//category'):
-            category = RecipeCategory(
-                category_node.get('id'),
-                category_node.get('name'))
+            category = RecipeCategory(category_node.get('id'), category_node.get('name'))
             categories[category_node.get('id')] = category
         log.info('categories loaded.')
         return categories

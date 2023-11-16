@@ -52,7 +52,6 @@ class OrderMixin:
 
 
 class ReloadContainerAction(zeit.edit.browser.view.Action):
-
     def __call__(self):
         # It seems that each time one accesses a method, the function is bound
         # again, yielding a different object. Since ZCA cares about object
@@ -60,28 +59,23 @@ class ReloadContainerAction(zeit.edit.browser.view.Action):
         # unregister.
         trigger_reload = self.trigger_reload
         try:
-            zope.component.getSiteManager().registerHandler(
-                trigger_reload)
+            zope.component.getSiteManager().registerHandler(trigger_reload)
             return super().__call__()
         finally:
-            zope.component.getSiteManager().unregisterHandler(
-                trigger_reload)
+            zope.component.getSiteManager().unregisterHandler(trigger_reload)
 
     @zope.component.adapter(
-        zeit.edit.interfaces.IContainer,
-        zope.container.interfaces.IContainerModifiedEvent)
+        zeit.edit.interfaces.IContainer, zope.container.interfaces.IContainerModifiedEvent
+    )
     def trigger_reload(self, context, event):
         self.reload(context)
 
 
 class LandingZone(ReloadContainerAction, OrderMixin):
-    """Landing Zone to drop Content or Modules.
-
-    """
+    """Landing Zone to drop Content or Modules."""
 
     block_type = NotImplemented
-    block_params = zeit.edit.browser.view.Form(
-        'block_params', json=True, default={})
+    block_params = zeit.edit.browser.view.Form('block_params', json=True, default={})
 
     def update(self):
         self.validate_order_params()
@@ -118,8 +112,8 @@ class LandingZone(ReloadContainerAction, OrderMixin):
     @property
     def block_factory(self):
         return zope.component.getAdapter(
-            self.container, zeit.edit.interfaces.IElementFactory,
-            name=self.block_type)
+            self.container, zeit.edit.interfaces.IElementFactory, name=self.block_type
+        )
 
     def create_block(self):
         position = self.get_position_from_order(self.container.keys())
@@ -133,7 +127,6 @@ class LandingZone(ReloadContainerAction, OrderMixin):
 
 
 class LandingZoneMove(ReloadContainerAction, OrderMixin):
-
     block_id = zeit.edit.browser.view.Form('id')
 
     def update(self):
@@ -149,8 +142,7 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
 
     @property
     def move_to_same_position(self):
-        return (self.order_from_form == 'insert-after' and
-                self.insert_after == self.block_id)
+        return self.order_from_form == 'insert-after' and self.insert_after == self.block_id
 
     def move_block(self):
         """Move block to new location.
@@ -160,8 +152,7 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
         containers, a simple delete / insert mechanism will do.
 
         """
-        self.block = self.find_topmost_container(
-            self.container).get_recursive(self.block_id)
+        self.block = self.find_topmost_container(self.container).get_recursive(self.block_id)
         self.old_container = self.block.__parent__
 
         if self.container == self.old_container:

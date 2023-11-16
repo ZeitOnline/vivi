@@ -20,7 +20,6 @@ log = logging.getLogger(__name__)
 @zope.component.adapter(zeit.content.cp.interfaces.IArea)
 @zope.interface.implementer(zeit.content.cp.interfaces.IRenderedArea)
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
-
     def __init__(self, context):
         self.context = context
         self.xml = self.context.xml
@@ -47,8 +46,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         try:
             content = self._content_query()
         except LookupError:
-            log.warning('%s found no IContentQuery type %s',
-                        self.context, self.automatic_type)
+            log.warning('%s found no IContentQuery type %s', self.context, self.automatic_type)
             return self.context.values()
 
         result = []
@@ -68,8 +66,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     @cachedproperty
     def _content_query(self):
         return zope.component.getAdapter(
-            self, zeit.contentquery.interfaces.IContentQuery,
-            name=self.automatic_type or '')
+            self, zeit.contentquery.interfaces.IContentQuery, name=self.automatic_type or ''
+        )
 
     def filter_values(self, *interfaces):
         # XXX copy&paste from zeit.edit.container.Base.filter_values

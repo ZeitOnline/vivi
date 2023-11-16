@@ -24,6 +24,7 @@ logger = logging.getLogger('zeit.cms.content.sources')
 
 try:
     import zope.testing.cleanup
+
     zope.testing.cleanup.addCleanUp(pyramid_dogpile_cache2.clear)
 except ImportError:
     pass
@@ -31,15 +32,13 @@ except ImportError:
 
 def load(url):
     if url.startswith(zeit.cms.interfaces.ID_NAMESPACE):
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         return connector[url].data
     else:
         return urllib.request.urlopen(url)
 
 
 class OverridableURLConfiguration:
-
     product_configuration = 'zeit.cms'
     config_url = NotImplemented
     default_filename = NotImplemented
@@ -58,38 +57,34 @@ class OverridableURLConfiguration:
 
 
 class CachedXMLBase(OverridableURLConfiguration):
-
     def _get_tree(self):
         return self._get_tree_from_url(self.url)
 
     @CONFIG_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
-        __traceback_info__ = (url, )
+        __traceback_info__ = (url,)
         logger.debug('Getting %s' % url)
         return gocept.lxml.objectify.fromfile(load(url))
 
 
 class ShortCachedXMLBase(CachedXMLBase):
-
     # Unfortunately needs copy&paste to change the cache region.
     @FEATURE_CACHE.cache_on_arguments()
     def _get_tree_from_url(self, url):
-        __traceback_info__ = (url, )
+        __traceback_info__ = (url,)
         logger.debug('Getting %s' % url)
         return gocept.lxml.objectify.fromfile(load(url))
 
 
 class SimpleXMLSourceBase(CachedXMLBase):
-
     def getValues(self):
         xml = self._get_tree()
         return [str(x).strip() for x in xml.iterchildren('*')]
 
 
-class XMLSource(
-        SimpleXMLSourceBase,
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+class XMLSource(SimpleXMLSourceBase, zc.sourcefactory.contextual.BasicContextualSourceFactory):
     """This source should be used in most cases."""
+
     # NOTE: this source is contextual to be able to set a default for a field
     # using the source even while there is no product config.
 
@@ -98,9 +93,11 @@ class XMLSource(
 
     def getValues(self, context):
         tree = self._get_tree()
-        return [str(node.get(self.attribute))
-                for node in tree.iterchildren('*')
-                if self.isAvailable(node, context)]
+        return [
+            str(node.get(self.attribute))
+            for node in tree.iterchildren('*')
+            if self.isAvailable(node, context)
+        ]
 
     def isAvailable(self, node, context):
         # NOTE: the *default* value must not use ``available``, since e.g.
@@ -113,12 +110,11 @@ class XMLSource(
         return False
 
     def getTitle(self, context, value):
-        __traceback_info__ = (value, )
+        __traceback_info__ = (value,)
         tree = self._get_tree()
-        nodes = tree.xpath('%s[@%s= %s]' % (
-                           self.title_xpath,
-                           self.attribute,
-                           xml.sax.saxutils.quoteattr(value)))
+        nodes = tree.xpath(
+            '%s[@%s= %s]' % (self.title_xpath, self.attribute, xml.sax.saxutils.quoteattr(value))
+        )
         if nodes:
             return self._get_title_for(nodes[0])
         return value
@@ -128,7 +124,6 @@ class XMLSource(
 
 
 class SearchableXMLSource(XMLSource):
-
     def __init__(self, xpath):
         super().__init__()
         self.xpath = xpath
@@ -137,13 +132,13 @@ class SearchableXMLSource(XMLSource):
         tree = self._get_tree()
         if self.attribute is NotImplemented:
             # Return text value of nodes
-            return [str(node)
-                    for node in tree.xpath(self.xpath)
-                    if self.isAvailable(node, context)]
+            return [str(node) for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
         # Return value of provided attribute for nodes
-        return [str(node.get(self.attribute))
-                for node in tree.xpath(self.xpath)
-                if self.isAvailable(node, context)]
+        return [
+            str(node.get(self.attribute))
+            for node in tree.xpath(self.xpath)
+            if self.isAvailable(node, context)
+        ]
 
 
 def parse_available_interface_list(text):
@@ -158,15 +153,13 @@ def parse_available_interface_list(text):
     return result
 
 
-class SimpleXMLSource(
-        SimpleXMLSourceBase,
-        zc.sourcefactory.basic.BasicSourceFactory):
+class SimpleXMLSource(SimpleXMLSourceBase, zc.sourcefactory.basic.BasicSourceFactory):
     """A simple xml source."""
 
 
 class SimpleContextualXMLSource(
-        SimpleXMLSourceBase,
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    SimpleXMLSourceBase, zc.sourcefactory.contextual.BasicContextualSourceFactory
+):
     """A simple contextual xml source."""
 
     def getValues(self, context):
@@ -174,16 +167,13 @@ class SimpleContextualXMLSource(
 
 
 class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
-
     values = NotImplemented
 
     def __init__(self, values=None):
         if values is not None:
             self.values = values
         if not hasattr(self.values, 'keys'):
-            self.values = collections.OrderedDict([
-                (x, _(x)) for x in self.values
-            ])
+            self.values = collections.OrderedDict([(x, _(x)) for x in self.values])
 
     def getValues(self):
         return self.values.keys()
@@ -197,10 +187,8 @@ class IObjectSource(zope.schema.interfaces.IIterableSource):
 
 
 class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
-
     @zope.interface.implementer(IObjectSource)
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
         def find(self, id):
             return self.factory.find(self.context, id)
 
@@ -217,19 +205,20 @@ class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
         return value.is_allowed(context)
 
     def getValues(self, context):
-        return [x for x in self._values().values()
-                if self.isAvailable(x, context)]
+        return [x for x in self._values().values() if self.isAvailable(x, context)]
 
     def find(self, context, id):
         value = self._values().get(id)
-        if (not value or not self.isAvailable(value, context) or
-                not self.filterValue(context, value)):
+        if (
+            not value
+            or not self.isAvailable(value, context)
+            or not self.filterValue(context, value)
+        ):
             return None
         return value
 
 
 class AllowedBase:
-
     def __init__(self, id, title, available):
         self.id = id
         self.title = title
@@ -244,18 +233,15 @@ class AllowedBase:
         return False
 
     def __eq__(self, other):
-        return zope.security.proxy.isinstance(
-            other, self.__class__) and self.id == other.id
+        return zope.security.proxy.isinstance(other, self.__class__) and self.id == other.id
 
 
 class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
-
     product_configuration = NotImplemented
     config_url = NotImplemented
     interface = None
 
     class source_class(zc.sourcefactory.source.FactoredSource):
-
         def find(self, name):
             return self.factory.find(name)
 
@@ -283,7 +269,6 @@ class FolderItemSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 
 class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
-
     values = collections.OrderedDict()
 
     def getValues(self):
@@ -294,7 +279,6 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 
 class RessortSource(XMLSource):
-
     config_url = 'source-ressorts'
     default_filename = 'ressorts.xml'
     attribute = 'name'
@@ -305,7 +289,6 @@ class RessortSource(XMLSource):
 
 
 class ParentChildSource(XMLSource):
-
     child_tag = NotImplemented
     parent_node_xpath = NotImplemented
     parent_value_iface = NotImplemented
@@ -314,12 +297,10 @@ class ParentChildSource(XMLSource):
     def getValues(self, context):
         __traceback_info__ = (context,)
         parent_nodes = self._get_parent_nodes(context)
-        child_nodes = reduce(
-            operator.add, [
-                node.findall(self.child_tag) for node in parent_nodes])
-        result = {str(node.get(self.attribute))
-                  for node in child_nodes
-                  if self.isAvailable(node, context)}
+        child_nodes = reduce(operator.add, [node.findall(self.child_tag) for node in parent_nodes])
+        result = {
+            str(node.get(self.attribute)) for node in child_nodes if self.isAvailable(node, context)
+        }
         return result
 
     def getTitle(self, context, value):
@@ -330,7 +311,9 @@ class ParentChildSource(XMLSource):
                 '//{child_tag}[@{attribute} = {value}]'.format(
                     child_tag=self.child_tag,
                     attribute=self.attribute,
-                    value=xml.sax.saxutils.quoteattr(value)))
+                    value=xml.sax.saxutils.quoteattr(value),
+                )
+            )
         else:
             nodes = tree.xpath(
                 '{parent_node_xpath}[@{attribute} = {master}]'
@@ -339,7 +322,9 @@ class ParentChildSource(XMLSource):
                     attribute=self.attribute,
                     child_tag=self.child_tag,
                     master=xml.sax.saxutils.quoteattr(parent_value),
-                    value=xml.sax.saxutils.quoteattr(value)))
+                    value=xml.sax.saxutils.quoteattr(value),
+                )
+            )
         if nodes:
             return str(self._get_title_for(nodes[0]))
         return value
@@ -359,7 +344,9 @@ class ParentChildSource(XMLSource):
                 # here, doesn't feel as it was thought through. There's a
                 # random doctest example about 'Bildung & Beruf' however that
                 # breaks if I change it.
-                value=parent_value))
+                value=parent_value,
+            )
+        )
         if not nodes:
             return None
         # XXX assert len(nodes) == 1
@@ -377,7 +364,6 @@ class ParentChildSource(XMLSource):
 
 
 class SubRessortSource(ParentChildSource):
-
     config_url = RessortSource.config_url
     default_filename = RessortSource.default_filename
     attribute = RessortSource.attribute
@@ -389,6 +375,7 @@ class SubRessortSource(ParentChildSource):
     def parent_value_iface(self):
         # prevent circular import
         import zeit.cms.content.interfaces
+
         return zeit.cms.content.interfaces.ICommonMetadata
 
     def _get_title_for(self, node):
@@ -396,7 +383,6 @@ class SubRessortSource(ParentChildSource):
 
 
 class ChannelSource(XMLSource):
-
     config_url = 'source-channels'
     default_filename = 'channels.xml'
     attribute = 'name'
@@ -407,7 +393,6 @@ class ChannelSource(XMLSource):
 
 
 class SubChannelSource(ParentChildSource):
-
     config_url = ChannelSource.config_url
     default_filename = ChannelSource.default_filename
     attribute = ChannelSource.attribute
@@ -419,6 +404,7 @@ class SubChannelSource(ParentChildSource):
     def parent_value_iface(self):
         # prevent circular import
         import zeit.cms.content.interfaces
+
         return zeit.cms.content.interfaces.ICommonMetadata
 
     def _get_parent_nodes(self, context):
@@ -446,7 +432,6 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
     default_filename = 'vivi-feature-toggle.xml'
 
     class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
         def find(self, name):
             return self.factory.find(name)
 
@@ -494,11 +479,22 @@ def unicode_or_none(value):
 
 
 class Serie(AllowedBase):
-
-    def __init__(self, serienname=None, title=None, url=None, encoded=None,
-                 column=False, kind=None, video=False, fallback_image=False,
-                 podigee_id=None, podigee_url=None, zonaudioapp_id=None,
-                 color=None, available=None):
+    def __init__(
+        self,
+        serienname=None,
+        title=None,
+        url=None,
+        encoded=None,
+        column=False,
+        kind=None,
+        video=False,
+        fallback_image=False,
+        podigee_id=None,
+        podigee_url=None,
+        zonaudioapp_id=None,
+        color=None,
+        available=None,
+    ):
         super().__init__(serienname, title, available)
         self.id = serienname
         self.serienname = serienname
@@ -521,7 +517,6 @@ class Serie(AllowedBase):
 
 
 class SerieSource(ObjectSource, SimpleContextualXMLSource):
-
     config_url = 'source-serie'
     default_filename = 'series.xml'
 
@@ -547,23 +542,34 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
                 unicode_or_none(node.get('podigee-url')),
                 unicode_or_none(node.get('zonaudioapp-id')),
                 unicode_or_none(node.get('color')),
-                unicode_or_none(node.get('available'))
+                unicode_or_none(node.get('available')),
             )
         return result
 
     def getTitle(self, context, value):
-        if not isinstance(zope.security.proxy.removeSecurityProxy(value),
-                          Serie):
+        if not isinstance(zope.security.proxy.removeSecurityProxy(value), Serie):
             return None
         return value.serienname
 
 
 class Product(AllowedBase):
-
-    def __init__(self, id=None, title=None, vgwortcode=None,
-                 href=None, target=None, label=None, show=None,
-                 volume=None, location=None, centerpage=None, cp_template=None,
-                 autochannel=True, relates_to=None, is_news=False):
+    def __init__(
+        self,
+        id=None,
+        title=None,
+        vgwortcode=None,
+        href=None,
+        target=None,
+        label=None,
+        show=None,
+        volume=None,
+        location=None,
+        centerpage=None,
+        cp_template=None,
+        autochannel=True,
+        relates_to=None,
+        is_news=False,
+    ):
         super().__init__(id, title, None)
         self.vgwortcode = vgwortcode
         self.href = href
@@ -581,7 +587,6 @@ class Product(AllowedBase):
 
 
 class ProductSource(ObjectSource, SimpleContextualXMLSource):
-
     config_url = 'source-products'
     default_filename = 'products.xml'
 
@@ -630,13 +635,9 @@ class ProductSource(ObjectSource, SimpleContextualXMLSource):
 PRODUCT_SOURCE = ProductSource()
 
 
-class CMSContentTypeSource(
-        ObjectSource,
-        zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
+class CMSContentTypeSource(ObjectSource, zc.sourcefactory.contextual.BasicContextualSourceFactory):
     def _values(self):
-        return dict(zope.component.getUtilitiesFor(
-            zeit.cms.interfaces.ICMSContentType))
+        return dict(zope.component.getUtilitiesFor(zeit.cms.interfaces.ICMSContentType))
 
     def getTitle(self, context, value):
         return value.queryTaggedValue('zeit.cms.title') or str(value)
@@ -649,44 +650,43 @@ class CMSContentTypeSource(
 
 
 class AddableCMSContentTypeSource(CMSContentTypeSource):
-
     def getValues(self, context):
         import zeit.cms.content.interfaces  # break circular import
-        types = (
-            list(super().getValues(context)) +
-            [interface for name, interface in zope.component.getUtilitiesFor(
-                zeit.cms.content.interfaces.IAddableContent)])
+
+        types = list(super().getValues(context)) + [
+            interface
+            for name, interface in zope.component.getUtilitiesFor(
+                zeit.cms.content.interfaces.IAddableContent
+            )
+        ]
         by_title = {
             # XXX Hard-code language, since we don't have a request here.
-            zope.i18n.translate(
-                self.getTitle(context, x), target_language='de'): x
-            for x in types}
+            zope.i18n.translate(self.getTitle(context, x), target_language='de'): x
+            for x in types
+        }
         return [by_title[x] for x in sorted(by_title.keys())]
 
     def filterValue(self, context, value):
         import zeit.cms.type  # break circular import
-        if value.queryTaggedValue(
-                'zeit.cms.addform') == zeit.cms.type.SKIP_ADD:
+
+        if value.queryTaggedValue('zeit.cms.addform') == zeit.cms.type.SKIP_ADD:
             return False
         if not FEATURE_TOGGLES.find('add_content_permissions'):
             return True
         permission = value.queryTaggedValue('zeit.cms.addpermission')
         if not permission:  # most content types need no special permission
             return True
-        return zope.security.management.getInteraction().checkPermission(
-            permission, context)
+        return zope.security.management.getInteraction().checkPermission(permission, context)
 
 
 class AccessSource(XMLSource):
-
     config_url = 'source-access'
     default_filename = 'access.xml'
     attribute = 'id'
 
     def translate_to_c1(self, value):
         try:
-            return self._get_tree().xpath(
-                '//type[@id = "{}"]/@c1_id'.format(value))[0]
+            return self._get_tree().xpath('//type[@id = "{}"]/@c1_id'.format(value))[0]
         except IndexError:
             return None
 
@@ -695,7 +695,6 @@ ACCESS_SOURCE = AccessSource()
 
 
 class PrintRessortSource(XMLSource):
-
     product_configuration = 'zeit.cms'
     config_url = 'source-printressorts'
     default_filename = 'print-ressorts.xml'

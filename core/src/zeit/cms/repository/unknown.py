@@ -9,8 +9,8 @@ import zope.interface
 
 
 @zope.interface.implementer(
-    zeit.cms.repository.interfaces.IUnknownResource,
-    zeit.cms.content.interfaces.ITextContent)
+    zeit.cms.repository.interfaces.IUnknownResource, zeit.cms.content.interfaces.ITextContent
+)
 class UnknownResource(zeit.cms.repository.repository.ContentBase):
     """Represent an unknown resource"""
 
@@ -21,8 +21,7 @@ class UnknownResource(zeit.cms.repository.repository.ContentBase):
         self.type = type_info
 
 
-class PersistentUnknownResource(UnknownResource,
-                                persistent.Persistent):
+class PersistentUnknownResource(UnknownResource, persistent.Persistent):
     """An unknown resource that is also persistent.
 
     We create a new class for this to be backward compatible. Just adding
@@ -38,7 +37,6 @@ class PersistentUnknownResource(UnknownResource,
 
 
 class UnknownResourceType(zeit.cms.type.TypeDeclaration):
-
     type = 'unknown'
     title = _('Unknown Resource')
     interface = zeit.cms.repository.interfaces.IUnknownResource
@@ -46,8 +44,7 @@ class UnknownResourceType(zeit.cms.type.TypeDeclaration):
     factory = PersistentUnknownResource
 
     def content(self, resource):
-        return self.factory(
-            resource.data.read().decode('latin1'), resource.type)
+        return self.factory(resource.data.read().decode('latin1'), resource.type)
 
     def resource_body(self, content):
         return zeit.cms.util.MemoryFile(content.data.encode('latin1'))

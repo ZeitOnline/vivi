@@ -11,7 +11,6 @@ ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 
 
 class VariantChoice(zope.schema.Choice):
-
     def validate(self, value):
         try:
             super().validate(value)
@@ -27,104 +26,102 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
     # bind(None) amounts to "clone".
-    keywords = zeit.cms.content.interfaces.ICommonMetadata['keywords'].bind(
-        object())
+    keywords = zeit.cms.content.interfaces.ICommonMetadata['keywords'].bind(object())
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
 
-    recipe_categories = zeit.cms.content.interfaces.ICommonMetadata[
-        'recipe_categories'].bind(object())
+    recipe_categories = zeit.cms.content.interfaces.ICommonMetadata['recipe_categories'].bind(
+        object()
+    )
 
     body = zope.interface.Attribute('Convenience access to IEditableBody')
     header = zope.interface.Attribute('Convenience access to IHeaderArea')
 
     paragraphs = zope.schema.Int(
-        title=_("Paragraphsamount"),
-        description=_("Amount of paragraphs in total."),
+        title=_('Paragraphsamount'),
+        description=_('Amount of paragraphs in total.'),
         readonly=True,
-        required=False)
+        required=False,
+    )
 
-    textLength = zope.schema.Int(
-        title=_('Textlength'),
-        required=False)
+    textLength = zope.schema.Int(title=_('Textlength'), required=False)
 
     # DEPRECATED xslt
     has_recensions = zope.schema.Bool(
-        title=_('Has recension content'),
-        default=False,
-        required=False)
+        title=_('Has recension content'), default=False, required=False
+    )
 
     # DEPRECATED xslt
-    artbox_thema = zope.schema.Bool(
-        title=_('First related as box'),
-        default=False,
-        required=False)
+    artbox_thema = zope.schema.Bool(title=_('First related as box'), default=False, required=False)
 
     genre = zope.schema.Choice(
-        title=_("Genre"),
-        source=zeit.content.article.source.GenreSource(),
-        required=False)
+        title=_('Genre'), source=zeit.content.article.source.GenreSource(), required=False
+    )
 
     audio_speechbert = zope.schema.Bool(
-        title=_("Show in-article player"),
-        required=False,
-        default=True)
+        title=_('Show in-article player'), required=False, default=True
+    )
 
     main_image = zeit.cms.content.interfaces.ReferenceField(
-        title=_("Image"),
-        description=_("Drag an image group here"),
+        title=_('Image'),
+        description=_('Drag an image group here'),
         # BBB allow single images
         source=zeit.content.image.interfaces.imageSource,
-        required=False)
+        required=False,
+    )
 
     main_image_variant_name = VariantChoice(
         title=_('Variant Name'),
         source=zeit.content.article.source.MAIN_IMAGE_VARIANT_NAME_SOURCE,
-        required=False)
+        required=False,
+    )
 
     main_image_block = zope.interface.Attribute(
-        'First block of the body if it is present and is an image block')
+        'First block of the body if it is present and is an image block'
+    )
 
     template = zope.schema.Choice(
-        title=_("Template"),
+        title=_('Template'),
         source=zeit.content.article.source.ARTICLE_TEMPLATE_SOURCE,
-        required=False)
+        required=False,
+    )
 
     header_layout = zope.schema.Choice(
-        title=_("Header layout"),
+        title=_('Header layout'),
         source=zeit.content.article.source.ArticleHeaderSource(),
-        required=False)
+        required=False,
+    )
 
     header_color = zope.schema.Choice(
-        title=_("Header color"),
+        title=_('Header color'),
         source=zeit.content.article.source.ArticleHeaderColorSource(),
-        required=False)
+        required=False,
+    )
 
     hide_ligatus_recommendations = zope.schema.Bool(
-        title=_('Hide Ligatus recommendations'),
-        default=False,
-        required=False)
+        title=_('Hide Ligatus recommendations'), default=False, required=False
+    )
 
     prevent_ligatus_indexing = zope.schema.Bool(
-        title=_('Prevent Ligatus indexing'),
-        default=False,
-        required=False)
+        title=_('Prevent Ligatus indexing'), default=False, required=False
+    )
 
     comments_sorting = zope.schema.Choice(
         title=_('Comments sorting'),
         source=zeit.content.article.source.CommentsSortingSource(),
-        required=False)
+        required=False,
+    )
 
-    has_audio = zope.schema.Bool(
-        title=_('Has audio file'),
-        default=False)
+    has_audio = zope.schema.Bool(title=_('Has audio file'), default=False)
 
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
 
-    cache = zope.interface.Attribute("""\
+    cache = zope.interface.Attribute(
+        """\
         Returns a (transaction bound) cache, which can be used for various
-        things like rendered areas, teaser contents, query objects etc.""")
+        things like rendered areas, teaser contents, query objects etc."""
+    )
 
     def updateDAVFromXML():
         """Update the DAV properties based on the information in the XML.
@@ -140,7 +137,6 @@ class IZONArticle(IArticle, zeit.cms.section.interfaces.ISectionMarker):
 
 
 class ArticleSource(zeit.cms.content.contentsource.CMSContentSource):
-
     name = 'article'
     check_interfaces = (IArticle,)
 
@@ -171,8 +167,7 @@ class IBookRecensionWriteContainer(zope.interface.Interface):
         """Remove recension with given name from container."""
 
 
-class IBookRecensionContainer(IBookRecensionReadContainer,
-                              IBookRecensionWriteContainer):
+class IBookRecensionContainer(IBookRecensionReadContainer, IBookRecensionWriteContainer):
     """Book recensions."""
 
 
@@ -182,64 +177,39 @@ class IBookRecension(zope.interface.Interface):
     authors = zope.schema.Tuple(
         title=_('Authors'),
         min_length=1,
-        default=(None, ),
-        value_type=zope.schema.TextLine(
-            title=_('Author')))
+        default=(None,),
+        value_type=zope.schema.TextLine(title=_('Author')),
+    )
 
     title = zope.schema.TextLine(title=_('Title'))
 
-    info = zope.schema.Text(
-        title=_('Info'),
-        required=False)
+    info = zope.schema.Text(title=_('Info'), required=False)
 
-    genre = zope.schema.TextLine(
-        title=_('Genre'),
-        required=False)
+    genre = zope.schema.TextLine(title=_('Genre'), required=False)
 
     category = zope.schema.Choice(
-        title=_('ZEIT category'),
-        source=zeit.content.article.source.BookRecensionCategories())
+        title=_('ZEIT category'), source=zeit.content.article.source.BookRecensionCategories()
+    )
 
-    age_limit = zope.schema.Int(
-        title=_('Agelimit'),
-        required=False)
+    age_limit = zope.schema.Int(title=_('Agelimit'), required=False)
 
-    original_language = zope.schema.TextLine(
-        title=_('Original language'),
-        required=False)
+    original_language = zope.schema.TextLine(title=_('Original language'), required=False)
 
-    translator = zope.schema.TextLine(
-        title=_('Translator'),
-        required=False)
+    translator = zope.schema.TextLine(title=_('Translator'), required=False)
 
-    publisher = zope.schema.TextLine(
-        title=_('Publisher'),
-        required=False)
+    publisher = zope.schema.TextLine(title=_('Publisher'), required=False)
 
-    location = zope.schema.TextLine(
-        title=_('book-location', default='Location'),
-        required=False)
+    location = zope.schema.TextLine(title=_('book-location', default='Location'), required=False)
 
-    year = zope.schema.Int(
-        title=_('Year'),
-        required=False)
+    year = zope.schema.Int(title=_('Year'), required=False)
 
-    media_type = zope.schema.TextLine(
-        title=_('Media type'),
-        required=False)
+    media_type = zope.schema.TextLine(title=_('Media type'), required=False)
 
-    pages = zope.schema.Int(
-        title=_('Pages'),
-        required=False)
+    pages = zope.schema.Int(title=_('Pages'), required=False)
 
-    price = zope.schema.TextLine(
-        title=_('Price (EUR)'),
-        required=False)
+    price = zope.schema.TextLine(title=_('Price (EUR)'), required=False)
 
-    raw_data = zope.schema.Text(
-        title=_('Raw data'),
-        required=False,
-        readonly=True)
+    raw_data = zope.schema.Text(title=_('Raw data'), required=False, readonly=True)
 
 
 class ITagesspiegelArticle(zope.interface.Interface):
@@ -251,24 +221,18 @@ class IBreakingNews(IArticle):
     on publishing.
     """
 
-    title = zope.schema.Text(
-        title=_("Title"), missing_value='')
+    title = zope.schema.Text(title=_('Title'), missing_value='')
     title.setTaggedValue('zeit.cms.charlimit', 70)
 
-    is_breaking = zope.schema.Bool(
-        title=_('Breaking news article'),
-        default=False,
-        required=False)
+    is_breaking = zope.schema.Bool(title=_('Breaking news article'), default=False, required=False)
 
     def banner_matches(banner):
         """Returns True if the given banner content object refers to this
         breaking news article."""
 
 
-IBreakingNews.setTaggedValue(
-    'zeit.cms.addform', 'zeit.content.article.AddBreakingNews')
-IBreakingNews.setTaggedValue(
-    'zeit.cms.title', _('Add breaking news'))
+IBreakingNews.setTaggedValue('zeit.cms.addform', 'zeit.content.article.AddBreakingNews')
+IBreakingNews.setTaggedValue('zeit.cms.title', _('Add breaking news'))
 IBreakingNews.setTaggedValue('zeit.cms.type', None)
 
 
@@ -281,10 +245,8 @@ class IErrorPage(IArticle):
 
 
 class ISpeechbertChecksum(zope.interface.Interface):
-    """ Checksum of speechbert payload of article to validate consistency
+    """Checksum of speechbert payload of article to validate consistency
     between audio and article body.
     """
 
-    checksum = zope.schema.Text(
-        title=_('Speechbert Checksum'),
-        required=False)
+    checksum = zope.schema.Text(title=_('Speechbert Checksum'), required=False)

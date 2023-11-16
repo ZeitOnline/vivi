@@ -13,10 +13,7 @@ import zope.traversing.interfaces
 
 @grok.implementer(zope.traversing.interfaces.ITraversable)
 class TagTraverser(grok.MultiAdapter):
-
-    grok.adapts(
-        zope.site.interfaces.IRootFolder,
-        zope.publisher.interfaces.IRequest)
+    grok.adapts(zope.site.interfaces.IRootFolder, zope.publisher.interfaces.IRequest)
     grok.name('tag')
 
     def __init__(self, context, request):
@@ -24,8 +21,7 @@ class TagTraverser(grok.MultiAdapter):
         self.request = request
 
     def traverse(self, name, ignored):
-        whitelist = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
+        whitelist = zope.component.getUtility(zeit.cms.tagging.interfaces.IWhitelist)
         # As we encoded the code in `AbsoluteURL` we have to undo the escaping.
         if isinstance(name, str):
             name = name.encode('utf-8')
@@ -36,15 +32,10 @@ class TagTraverser(grok.MultiAdapter):
         return tag
 
 
-@zope.component.adapter(
-    zeit.cms.tagging.interfaces.ITag,
-    zeit.cms.browser.interfaces.ICMSLayer)
+@zope.component.adapter(zeit.cms.tagging.interfaces.ITag, zeit.cms.browser.interfaces.ICMSLayer)
 class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
-
     def __str__(self):
-        base = zope.traversing.browser.absoluteURL(
-            zope.component.hooks.getSite(), self.request)
+        base = zope.traversing.browser.absoluteURL(zope.component.hooks.getSite(), self.request)
         # `zeit.retresco` possibly generates `.code` with unicode characters so
         # we have to escape them to get a valid url.
-        return base + '/++tag++' + self.context.code.encode(
-            'unicode_escape').decode('ascii')
+        return base + '/++tag++' + self.context.code.encode('unicode_escape').decode('ascii')

@@ -1,4 +1,3 @@
-
 import gocept.form.interfaces
 import zope.interface
 import zope.interface.common.mapping
@@ -47,16 +46,18 @@ class IAdditionalLayer(zope.interface.Interface):
     """
 
 
-class ICMSTestingSkin(ICMSStyles,
-                      ICMSLayer,
-                      zope.publisher.interfaces.browser.IDefaultBrowserLayer):
+class ICMSTestingSkin(
+    ICMSStyles, ICMSLayer, zope.publisher.interfaces.browser.IDefaultBrowserLayer
+):
     """Layer/Skin which is only used in tests."""
 
 
-class ICMSSkin(ICMSStyles,
-               ICMSLayer,
-               gocept.form.interfaces.IJSValidationLayer,
-               zope.publisher.interfaces.browser.IDefaultBrowserLayer):
+class ICMSSkin(
+    ICMSStyles,
+    ICMSLayer,
+    gocept.form.interfaces.IJSValidationLayer,
+    zope.publisher.interfaces.browser.IDefaultBrowserLayer,
+):
     """CMS skin"""
 
 
@@ -111,11 +112,9 @@ class IListRepresentation(zope.interface.Interface):
 
     modifiedBy = zope.interface.Attribute('Datetime of last modification')
 
-    modifiedOn = zope.interface.Attribute(
-        'datetime of last modification.')
+    modifiedOn = zope.interface.Attribute('datetime of last modification.')
 
-    createdOn = zope.interface.Attribute(
-        'datetime of creation date.')
+    createdOn = zope.interface.Attribute('datetime of creation date.')
 
 
 class ITreeState(zope.interface.common.mapping.IMapping):
@@ -125,7 +124,7 @@ class ITreeState(zope.interface.common.mapping.IMapping):
 class ITree(zope.interface.Interface):
     """Tree rendering."""
 
-    root = zope.interface.Attribute("The root of the tree.")
+    root = zope.interface.Attribute('The root of the tree.')
 
     def expandNode(self, id):
         """Expand the node identified by id."""
@@ -154,10 +153,7 @@ class IPanelState(zope.interface.Interface):
 
 
 class ICMSUserPreferences(zope.interface.Interface):
-
-    sidebarFolded = zope.schema.Bool(
-        title='Sidebar folded?',
-        default=False)
+    sidebarFolded = zope.schema.Bool(title='Sidebar folded?', default=False)
 
 
 class IDefaultBrowsingLocation(zope.interface.Interface):

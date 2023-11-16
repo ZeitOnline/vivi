@@ -12,11 +12,9 @@ import zope.component
 
 
 class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
-        xml_selector = lxml.cssselect.CSSSelector(
-            '#lead > .block-inner > .type-teaser').path
+        xml_selector = lxml.cssselect.CSSSelector('#lead > .block-inner > .type-teaser').path
         self.teaser_selector = 'xpath=' + xml_selector + '[{pos}]@id'
 
         self.cp = self.create_and_checkout_centerpage()
@@ -37,8 +35,7 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
     def wait_for_order(self, order):
         s = self.selenium
         for i, teaser_id in enumerate(order):
-            s.waitForAttribute(
-                self.teaser_selector.format(pos=i + 1), teaser_id)
+            s.waitForAttribute(self.teaser_selector.format(pos=i + 1), teaser_id)
 
     def assert_layout(self, layouts):
         s = self.selenium
@@ -52,7 +49,8 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=#{} .dragger'.format(self.teaser1),
             'css=#{} + .landing-zone'.format(self.teaser2),
-            '10,10')
+            '10,10',
+        )
         self.wait_for_order([self.teaser2, self.teaser1, self.teaser3])
         self.assert_layout(['buttons', 'buttons', 'buttons'])
 
@@ -62,14 +60,14 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
         s.click('css=#{} .edit-link'.format(self.teaser2))
         s.waitForVisible('css=.lightbox .leader-upright')
         s.click('css=.lightbox .leader-upright')
-        s.waitForCssCount(
-            'css=#{} > .block-inner > .leader-upright'.format(self.teaser2), 1)
+        s.waitForCssCount('css=#{} > .block-inner > .leader-upright'.format(self.teaser2), 1)
 
         # drag from 2nd to 3rd pos
         s.dragAndDropToObject(
             'css=#{} .dragger'.format(self.teaser2),
             'css=#{} + .landing-zone'.format(self.teaser3),
-            '10,10')
+            '10,10',
+        )
         self.wait_for_order([self.teaser1, self.teaser3, self.teaser2])
         self.assert_layout(['leader', 'buttons', 'leader-upright'])
 
@@ -84,9 +82,9 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
 
 
 class TestTeaserDisplay(unittest.TestCase):
-
     def setUp(self):
         from zeit.content.cp.browser.blocks.teaser import Display
+
         display = Display()
         display.context = mock.Mock()
         display.request = mock.Mock()
@@ -98,8 +96,7 @@ class TestTeaserDisplay(unittest.TestCase):
     def test_get_image_should_use_preview_when_no_iimages(self):
         with mock.patch('zope.component.queryMultiAdapter') as qma:
             image = self.display.get_image(self.content)
-            qma.assert_called_with((self.content, self.display.request),
-                                   name='preview')
+            qma.assert_called_with((self.content, self.display.request), name='preview')
             self.display.url.assert_called_with(qma())
             self.assertEqual(image, self.display.url())
 
@@ -108,15 +105,12 @@ class TestTeaserDisplay(unittest.TestCase):
 
 
 class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
-
     def test_values_are_saved(self):
         b = self.browser
         zeit.content.cp.browser.testing.create_cp(b)
         b.open('contents')
         contents_url = b.url
-        b.open('lead/@@landing-zone-drop'
-               '?uniqueId=http://xml.zeit.de/testcontent'
-               '&order=top')
+        b.open('lead/@@landing-zone-drop' '?uniqueId=http://xml.zeit.de/testcontent' '&order=top')
 
         b.open(contents_url)
         b.getLink('Edit block common', index=2).click()
@@ -129,8 +123,7 @@ class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
 
 
 def teaser_view(block):
-    request = zope.publisher.browser.TestRequest(
-        skin=zeit.cms.browser.interfaces.ICMSLayer)
+    request = zope.publisher.browser.TestRequest(skin=zeit.cms.browser.interfaces.ICMSLayer)
     view = zeit.content.cp.browser.blocks.teaser.Display()
     view.context = block
     view.request = request
@@ -149,8 +142,7 @@ class TeaserArticleBuilder:
         return self
 
     def with_citation(self, text):
-        body = zeit.content.article.edit.body.EditableBody(
-            self.article, self.article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(self.article, self.article.xml.body)
         citation = body.create_item('citation', 1)
         citation.text = text
         return self
@@ -162,7 +154,6 @@ class TeaserArticleBuilder:
 
 
 class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
@@ -171,7 +162,8 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
     def create_teaserblock(self, layout):
         container = self.cp.body.create_item('region').create_item('area')
         block = zope.component.getAdapter(
-            container, zeit.edit.interfaces.IElementFactory, name='teaser')()
+            container, zeit.edit.interfaces.IElementFactory, name='teaser'
+        )()
         block.layout = zeit.content.cp.layout.get_layout(layout)
         return block
 
@@ -181,8 +173,7 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
         for i in range(3):
             id = 't%s' % i
             self.repository[id] = ExampleContentType()
-            with zeit.cms.checkout.helper.checked_out(
-                    self.repository[id]) as co:
+            with zeit.cms.checkout.helper.checked_out(self.repository[id]) as co:
                 zeit.content.image.interfaces.IImages(co).image = image
         for i in range(3):
             block.insert(0, self.repository['t%s' % i])
@@ -191,8 +182,7 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
     def create_gallery(self):
         gallery = zeit.content.gallery.gallery.Gallery()
         gallery.image_folder = self.repository['2007']
-        self.repository['2007']['image01'] = ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.repository['2007']['image01'] = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         transaction.commit()
         gallery.reload_image_folder()
         return gallery
@@ -203,9 +193,7 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_layout_with_image_pattern_shows_header_image(self):
         view = teaser_view(self.create_teaserimage_block(layout='large'))
-        self.assertEqual(
-            'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw',
-            view.header_image)
+        self.assertEqual('http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw', view.header_image)
 
     def test_shows_list_representation_title_for_non_metadata(self):
         block = self.cp['lead'].create_item('teaser')
@@ -214,48 +202,39 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('2007', view.teasers[0]['texts'][0]['content'])
 
     def test_quote_teaser_shows_citation_text_if_article_has_citation(self):
-        _, view = self.tab.with_citation('Foo').build(
-            self.create_teaserblock('zar-quote-yellow'))
-        self.assertEqual('Foo', view.teasers[0]['texts'][2][
-            'content'])
-        self.assertEqual('Zitat:', view.teasers[0]['texts'][1][
-            'content'])
+        _, view = self.tab.with_citation('Foo').build(self.create_teaserblock('zar-quote-yellow'))
+        self.assertEqual('Foo', view.teasers[0]['texts'][2]['content'])
+        self.assertEqual('Zitat:', view.teasers[0]['texts'][1]['content'])
 
     def test_gallery_teaser_forces_mobile_image(self):
         self.repository['gallery'] = self.create_gallery()
         container = self.cp.body.create_item('region').create_item('area')
         block = zope.component.getMultiAdapter(
-            (container, self.repository['gallery'], 0),
-            zeit.edit.interfaces.IElement)
+            (container, self.repository['gallery'], 0), zeit.edit.interfaces.IElement
+        )
         assert block.force_mobile_image
 
     def test_teaser_forces_mobile_image_per_default(self):
         assert self.create_teaserimage_block('large').force_mobile_image
 
-    def test_teaser_with_non_quote_layout_shows_teaser_text(
-            self):
-        article, view = self.tab.with_citation('Foo').with_metadata(
-            {'teaserTitle': 'Bar', 'teaserText': 'Baz'}).build(
-            self.create_teaserblock('large'))
-        self.assertEqual(article.teaserTitle, view.teasers[0]['texts'][1][
-            'content'])
-        self.assertEqual(article.teaserText, view.teasers[0]['texts'][2][
-            'content'])
+    def test_teaser_with_non_quote_layout_shows_teaser_text(self):
+        article, view = (
+            self.tab.with_citation('Foo')
+            .with_metadata({'teaserTitle': 'Bar', 'teaserText': 'Baz'})
+            .build(self.create_teaserblock('large'))
+        )
+        self.assertEqual(article.teaserTitle, view.teasers[0]['texts'][1]['content'])
+        self.assertEqual(article.teaserText, view.teasers[0]['texts'][2]['content'])
 
-    def test_quote_teaser_without_quote_in_article_shows_teaser_text(
-            self):
-        article, view = self.tab.with_metadata(
-            {'teaserTitle': 'Bar', 'teaserText': 'Baz'}).build(
-            self.create_teaserblock('zar-quote-yellow'))
-        self.assertEqual(article.teaserTitle, view.teasers[0]['texts'][1][
-            'content'])
-        self.assertEqual(article.teaserText, view.teasers[0]['texts'][2][
-            'content'])
+    def test_quote_teaser_without_quote_in_article_shows_teaser_text(self):
+        article, view = self.tab.with_metadata({'teaserTitle': 'Bar', 'teaserText': 'Baz'}).build(
+            self.create_teaserblock('zar-quote-yellow')
+        )
+        self.assertEqual(article.teaserTitle, view.teasers[0]['texts'][1]['content'])
+        self.assertEqual(article.teaserText, view.teasers[0]['texts'][2]['content'])
 
-    def test_content_types_without_teaser_property_have_fallbacks(
-            self):
-        article, view = self.tab.with_metadata(
-            {'title': 'Bar'}).build(
-            self.create_teaserblock('zar-quote-yellow'))
-        self.assertEqual(article.title, view.teasers[0]['texts'][1][
-            'content'])
+    def test_content_types_without_teaser_property_have_fallbacks(self):
+        article, view = self.tab.with_metadata({'title': 'Bar'}).build(
+            self.create_teaserblock('zar-quote-yellow')
+        )
+        self.assertEqual(article.title, view.teasers[0]['texts'][1]['content'])

@@ -5,23 +5,27 @@ import zope.interface
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IMail)
 class Mail(zeit.edit.block.Element):
-
     to = zeit.cms.content.property.ObjectPathProperty(
-        '.to', zeit.content.modules.interfaces.IMail['to'])
+        '.to', zeit.content.modules.interfaces.IMail['to']
+    )
     subject = zeit.cms.content.property.ObjectPathProperty(
-        '.subject', zeit.content.modules.interfaces.IMail['subject'])
+        '.subject', zeit.content.modules.interfaces.IMail['subject']
+    )
     body = zeit.cms.content.property.ObjectPathProperty(
-        '.body', zeit.content.modules.interfaces.IMail['body'])
+        '.body', zeit.content.modules.interfaces.IMail['body']
+    )
     success_message = zeit.cms.content.property.ObjectPathProperty(
-        '.success_message', zeit.content.modules.interfaces.IMail[
-            'success_message'])
+        '.success_message', zeit.content.modules.interfaces.IMail['success_message']
+    )
     title = zeit.cms.content.property.ObjectPathProperty(
-        '.title', zeit.content.modules.interfaces.IMail['title'])
+        '.title', zeit.content.modules.interfaces.IMail['title']
+    )
     subtitle = zeit.cms.content.property.ObjectPathProperty(
-        '.subtitle', zeit.content.modules.interfaces.IMail['subtitle'])
+        '.subtitle', zeit.content.modules.interfaces.IMail['subtitle']
+    )
     email_required = zeit.cms.content.property.ObjectPathProperty(
-        '.email_required', zeit.content.modules.interfaces.IMail[
-            'email_required'])
+        '.email_required', zeit.content.modules.interfaces.IMail['email_required']
+    )
 
     @property
     def subject_display(self):

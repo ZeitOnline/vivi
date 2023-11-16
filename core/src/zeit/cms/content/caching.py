@@ -14,7 +14,6 @@ log = getLogger(__name__)
 
 
 class ContentCache:
-
     @cachedproperty
     def cache(self):
         size = environ.get('CONTENT_CACHE_SIZE')
@@ -24,8 +23,7 @@ class ContentCache:
             self.size = int(size)
             self.check = int(check) if check is not None else self.size / 5
             self.connector = connector
-            self.cache = defaultdict(
-                lambda: {'used': 0, 'mtimes': {}, 'data': {}})
+            self.cache = defaultdict(lambda: {'used': 0, 'mtimes': {}, 'data': {}})
             self.hits = self.misses = 0
             log.info('initialized content cache (size %s)', size)
             return self.cache
@@ -62,8 +60,9 @@ class ContentCache:
     def cleanup(self):
         cache = self.cache
         over = len(cache) - self.size
-        log.info('size: %d/%d, hits: %d, misses: %d',
-                 over + self.size, self.size, self.hits, self.misses)
+        log.info(
+            'size: %d/%d, hits: %d, misses: %d', over + self.size, self.size, self.hits, self.misses
+        )
         if over > 0:
             log.debug('removing %d items', over)
             last = sorted((cache[uid]['last'], uid) for uid in cache)
@@ -84,7 +83,8 @@ class ContentCache:
             'count': len(cache),
             'hits': self.hits,
             'misses': self.misses,
-            'usage': usage}
+            'usage': usage,
+        }
 
 
 __cache = ContentCache()

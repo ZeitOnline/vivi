@@ -14,11 +14,12 @@ HERE = importlib.resources.files(__package__)
 
 
 class TestLayerMask(unittest.TestCase):
-
-    mask_colors = {(200, 200, 200, 220): 'x',
-                   (255, 0, 0, 0): ' ',
-                   (0, 0, 0, 255): '#',
-                   (0, 255, 0, 128): ' '}
+    mask_colors = {
+        (200, 200, 200, 220): 'x',
+        (255, 0, 0, 0): ' ',
+        (0, 0, 0, 255): '#',
+        (0, 255, 0, 128): ' ',
+    }
 
     def assert_mask(self, expected, mask):
         with mask.open('r') as f:
@@ -33,45 +34,48 @@ class TestLayerMask(unittest.TestCase):
             got.append(''.join(line))
         error_message = (
             'The computed mask did not match the expected.\n'
-            'Expected:\n%s\n\nGot:\n%s' % ('\n'.join(expected),
-                                           '\n'.join(got)))
+            'Expected:\n%s\n\nGot:\n%s' % ('\n'.join(expected), '\n'.join(got))
+        )
         self.assertEqual(expected, got, error_message)
 
     def test_mask_should_have_correct_size(self):
         # Create a 20x30 mask in an 150x100 image
         mask = zeit.crop.mask.Mask((10, 7), (6, 3), cross_size=0)
-        expected = ['xxxxxxxxxx',
-                    'xxxxxxxxxx',
-                    'xx      xx',
-                    'xx      xx',
-                    'xx      xx',
-                    'xxxxxxxxxx',
-                    'xxxxxxxxxx']
+        expected = [
+            'xxxxxxxxxx',
+            'xxxxxxxxxx',
+            'xx      xx',
+            'xx      xx',
+            'xx      xx',
+            'xxxxxxxxxx',
+            'xxxxxxxxxx',
+        ]
         self.assert_mask(expected, mask)
 
     def test_border_should_be_inside_given_mask_size(self):
-        mask = zeit.crop.mask.Mask((20, 20), (10, 8), border=(0, 0, 0),
-                                   cross_size=0)
-        expected = ['xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxx##########xxxxx',
-                    'xxxxx#        #xxxxx',
-                    'xxxxx#        #xxxxx',
-                    'xxxxx#        #xxxxx',
-                    'xxxxx#        #xxxxx',
-                    'xxxxx#        #xxxxx',
-                    'xxxxx#        #xxxxx',
-                    'xxxxx##########xxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx',
-                    'xxxxxxxxxxxxxxxxxxxx']
+        mask = zeit.crop.mask.Mask((20, 20), (10, 8), border=(0, 0, 0), cross_size=0)
+        expected = [
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxx##########xxxxx',
+            'xxxxx#        #xxxxx',
+            'xxxxx#        #xxxxx',
+            'xxxxx#        #xxxxx',
+            'xxxxx#        #xxxxx',
+            'xxxxx#        #xxxxx',
+            'xxxxx#        #xxxxx',
+            'xxxxx##########xxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxx',
+        ]
         self.assert_mask(expected, mask)
 
     def test_given_border_colour_should_be_used(self):
@@ -93,11 +97,9 @@ class TestLayerMask(unittest.TestCase):
 
 
 class TestCrop(zeit.crop.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        self.group = (
-            zeit.content.image.testing.create_image_group_with_master_image())
+        self.group = zeit.content.image.testing.create_image_group_with_master_image()
         self.crop = zeit.crop.interfaces.ICropper(self.group)
 
     def get_histogram(self, image):
@@ -157,8 +159,7 @@ class TestCrop(zeit.crop.testing.FunctionalTestCase):
 
     def test_store(self):
         self.crop.crop(200, 200, 0, 0, 200, 200)
-        image = zeit.crop.interfaces.IStorer(self.group).store(
-            'foo', self.crop.pil_image)
+        image = zeit.crop.interfaces.IStorer(self.group).store('foo', self.crop.pil_image)
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertIn('group-foo.jpg', self.group)
 
@@ -177,35 +178,31 @@ class TestCrop(zeit.crop.testing.FunctionalTestCase):
         self.assertNotEqual(0, b[0])
 
     def test_border_color(self):
-        image = self.crop.crop(200, 200, 0, 0, 200, 200,
-                               border=(127, 127, 127))
+        image = self.crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual((127, 127, 127), image.getpixel((0, 0)))
 
     def test_border_on_grayscale_image(self):
-        self.group = (
-            zeit.content.image.testing.create_image_group_with_master_image(
-                HERE / 'testdata/grayscale.jpg'))
+        self.group = zeit.content.image.testing.create_image_group_with_master_image(
+            HERE / 'testdata/grayscale.jpg'
+        )
         # The following used to fail with TypeError: an integer is required
         crop = zeit.crop.interfaces.ICropper(self.group)
         crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
 
     def test_cmyk_converted_to_rgb(self):
-        self.group = create_image_group_with_master_image(
-            HERE / 'testdata/cmyk.jpg')
+        self.group = create_image_group_with_master_image(HERE / 'testdata/cmyk.jpg')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
     def test_palette_converted_to_rgb(self):
-        self.group = create_image_group_with_master_image(
-            HERE / 'testdata/palette.gif')
+        self.group = create_image_group_with_master_image(HERE / 'testdata/palette.gif')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGB', image.mode)
 
     def test_png_converted_to_rgba(self):
-        self.group = create_image_group_with_master_image(
-            HERE / 'testdata/transparent.png')
+        self.group = create_image_group_with_master_image(HERE / 'testdata/transparent.png')
         crop = zeit.crop.interfaces.ICropper(self.group)
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEqual('RGBA', image.mode)

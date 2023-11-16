@@ -8,11 +8,9 @@ import zeit.cms.content.add
 
 
 class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
-
     def open_add_form(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               '@@zeit.content.volume.Add')
+        b.open('http://localhost/++skin++vivi/repository/' '@@zeit.content.volume.Add')
         b.getControl('Date of digital publication').value = '2017-01-01'
 
     def test_add_form_prefills_year_and_volume_from_global_settings(self):
@@ -29,28 +27,24 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl('Add').click()
         b.getLink('Checkin').click()
         self.assertEqual(
-            'http://localhost/++skin++vivi/repository/'
-            '2010/02/ausgabe/@@view.html', b.url)
+            'http://localhost/++skin++vivi/repository/' '2010/02/ausgabe/@@view.html', b.url
+        )
 
     def test_displays_dynamic_form_fields_for_imagegroup_references(self):
         self.open_add_form()
         b = self.browser
         b.getControl('Add').click()
-        self.assertEllipsis(
-            """...Portrait...Landscape...iPad...""", b.contents)
+        self.assertEllipsis("""...Portrait...Landscape...iPad...""", b.contents)
 
     def test_saves_imagegroup_reference_via_dynamic_form_field(self):
         self.repository['imagegroup'] = create_image_group()
         self.open_add_form()
         b = self.browser
         b.getControl('Add').click()
-        b.getControl('Landscape', index=0).value = 'http://xml.zeit.de/' \
-                                                   'imagegroup'
+        b.getControl('Landscape', index=0).value = 'http://xml.zeit.de/' 'imagegroup'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
-        self.assertIn(
-            '<span class="uniqueId">http://xml.zeit.de/imagegroup/</span>',
-            b.contents)
+        self.assertIn('<span class="uniqueId">http://xml.zeit.de/imagegroup/</span>', b.contents)
 
     def test_saves_imagegroup_for_dependent_project_in_xml(self):
         self.repository['imagegroup'] = create_image_group()
@@ -59,12 +53,10 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl('Year').value = '2010'
         b.getControl(name='form.volume').value = '2'
         b.getControl('Add').click()
-        b.getControl('Landscape', index=1).value = 'http://xml.zeit.de/' \
-                                                   'imagegroup'
+        b.getControl('Landscape', index=1).value = 'http://xml.zeit.de/' 'imagegroup'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
-        volume = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2010/02/ausgabe')
+        volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2010/02/ausgabe')
         xml = volume.xml.covers.cover
         self.assertEqual('landscape', xml.get('id'))
         self.assertEqual('ZMLB', xml.get('product_id'))
@@ -81,8 +73,8 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl(name='form.volume').value = '2'
         b.getControl('Add').click()
         self.assertEqual(
-            'http://localhost/++skin++vivi/repository/'
-            '@@zeit.content.volume.Add', b.url)
+            'http://localhost/++skin++vivi/repository/' '@@zeit.content.volume.Add', b.url
+        )
         self.assertIn('volume with the given name already exists', b.contents)
 
     def test_ICommonMetadata_can_be_adapted_to_added_volume(self):
@@ -97,9 +89,7 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         content.product = zeit.cms.content.sources.Product('ZEI')
         self.repository['testcontent'] = content
         volume = zeit.content.volume.interfaces.IVolume(content)
-        self.assertEqual(
-            'http://xml.zeit.de/2010/02/ausgabe',
-            volume.uniqueId)
+        self.assertEqual('http://xml.zeit.de/2010/02/ausgabe', volume.uniqueId)
 
     def test_adds_centerpage_in_addition_to_volume(self):
         template = zeit.content.text.python.PythonScript()
@@ -115,16 +105,13 @@ __return(cp)"""
         b.getControl('Year').value = '2010'
         b.getControl(name='form.volume').value = '2'
         b.getControl('Add').click()
-        cp = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2010/02/index')
-        self.assertTrue(
-            zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
+        cp = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2010/02/index')
+        self.assertTrue(zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
         self.assertEqual(2010, cp.year)
         self.assertEqual(2, cp.volume)
 
 
 class TestVolumeCoverWidget(zeit.content.volume.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         volume = Volume()

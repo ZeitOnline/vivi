@@ -1,4 +1,3 @@
-
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.workflow.interfaces
 import zope.i18n
@@ -15,8 +14,7 @@ class Published:
     }
 
     def update(self):
-        self.status = zeit.cms.workflow.interfaces.IPublicationStatus(
-            self.context, None)
+        self.status = zeit.cms.workflow.interfaces.IPublicationStatus(self.context, None)
 
     def render(self):
         if self.status is None:
@@ -26,8 +24,7 @@ class Published:
             return ''
         title = self.messages[status]
         title = zope.i18n.translate(title, context=self.request)
-        return ('<span class="publish-state %s" title="%s"></span>' % (
-            status, title))
+        return '<span class="publish-state %s" title="%s"></span>' % (status, title)
 
 
 class PublishedViewlet(Published, zope.viewlet.viewlet.ViewletBase):
@@ -35,7 +32,6 @@ class PublishedViewlet(Published, zope.viewlet.viewlet.ViewletBase):
 
 
 class PublishedView(Published):
-
     def __call__(self):
         self.update()
         return self.render()

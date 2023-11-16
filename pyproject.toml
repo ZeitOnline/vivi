@@ -1,0 +1,66 @@
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [
+    "pyproject.toml",
+    ".git",
+    ".venv",
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # # pyupgrade
+    # "UP",
+    # # flake8-bugbear
+    # "B",
+    # # flake8-simplify
+    # "SIM",
+    # # isort
+    # "I",
+]
+ignore = [
+    # builtin-variable-shadowing
+    "A001",
+    # builtin-argument-shadowing
+    "A002",
+    # builtin-attribute-shadowing
+    "A003",
+    # one-blank-line-after-class
+    "D204",
+    # triple-single-quotes
+    "D300",
+    # indentation-with-invalid-multiple
+    "E111",
+    # indentation-with-invalid-multiple-comment
+    "E114",
+    # over-indented
+    "E117",
+    # lambda-assignment
+    "E731",
+    # undefined-name
+    "F821",
+    # flake8-logging-format
+    "G",
+    # unsorted-imports
+    "I001",
+    # bad-quotes-inline-string
+    "Q000",
+    # bad-quotes-multiline-string
+    "Q001",
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"

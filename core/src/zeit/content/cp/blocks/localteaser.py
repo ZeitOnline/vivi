@@ -14,23 +14,21 @@ import zope.interface
 import zope.security.checker
 
 
-@zope.interface.implementer(
-    zeit.content.cp.interfaces.ILocalTeaserBlock)
+@zope.interface.implementer(zeit.content.cp.interfaces.ILocalTeaserBlock)
 class LocalTeaserBlock(
-        zeit.content.cp.blocks.teaser.Layoutable,
-        zeit.content.cp.blocks.block.Block):
-
+    zeit.content.cp.blocks.teaser.Layoutable, zeit.content.cp.blocks.block.Block
+):
     type = 'local-teaser'
 
     teaserSupertitle = OverridableProperty(
-        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserSupertitle'],
-        original='_reference')
+        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserSupertitle'], original='_reference'
+    )
     teaserTitle = OverridableProperty(
-        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserTitle'],
-        original='_reference')
+        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserTitle'], original='_reference'
+    )
     teaserText = OverridableProperty(
-        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserText'],
-        original='_reference')
+        zeit.content.cp.interfaces.ILocalTeaserBlock['teaserText'], original='_reference'
+    )
 
     _teaserSupertitle_local = ObjectPathProperty('.local_supertitle')
     _teaserTitle_local = ObjectPathProperty('.local_title')
@@ -43,8 +41,11 @@ class LocalTeaserBlock(
 
     # XXX copy&paste from TeaserBlock
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
-            'force_mobile_image'], use_default=True)
+        '.',
+        'force_mobile_image',
+        zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image'],
+        use_default=True,
+    )
 
     def __iter__(self):
         content = self._reference
@@ -99,7 +100,6 @@ class LocalTeaserBlock(
 
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):
-
     produces = LocalTeaserBlock
     title = _('Overridable teaser')
 
@@ -144,8 +144,7 @@ class TeaserOverrides:
     def __init__(self, module, content):
         self.module = module
         self.content = content
-        zope.interface.directlyProvides(
-            self, ITeaserOverrides, zope.interface.providedBy(content))
+        zope.interface.directlyProvides(self, ITeaserOverrides, zope.interface.providedBy(content))
 
     def __getattr__(self, name):
         if name not in self.OVERRIDES:
@@ -155,21 +154,17 @@ class TeaserOverrides:
 
 
 # Strictly readonly proxy. Bypass security, there's no good way to declare it.
-zope.security.checker.BasicTypes[
-    TeaserOverrides] = zope.security.checker.NoProxy
+zope.security.checker.BasicTypes[TeaserOverrides] = zope.security.checker.NoProxy
 
 
 @grok.implementer(zeit.content.image.interfaces.IImages)
 class OverrideImages(grok.Adapter):
-
     grok.context(ITeaserOverrides)
 
-    image = OverridableProperty(
-        zeit.content.image.interfaces.IImages['image'],
-        original='_content')
+    image = OverridableProperty(zeit.content.image.interfaces.IImages['image'], original='_content')
     fill_color = OverridableProperty(
-        zeit.content.image.interfaces.IImages['fill_color'],
-        original='_content')
+        zeit.content.image.interfaces.IImages['fill_color'], original='_content'
+    )
 
     def __init__(self, context):
         super().__init__(context)

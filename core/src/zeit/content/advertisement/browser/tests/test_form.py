@@ -2,7 +2,6 @@ import zeit.content.advertisement.testing
 
 
 class AdvertisementTest(zeit.content.advertisement.testing.BrowserTestCase):
-
     def test_advertisement_can_be_added(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/')
@@ -16,5 +15,4 @@ class AdvertisementTest(zeit.content.advertisement.testing.BrowserTestCase):
         b.getControl(name='form.actions.add').click()
         self.assertNotIn('There were errors', b.contents)
 
-        self.assertEqual(
-            'http://example.com', b.getControl('Link address').value)
+        self.assertEqual('http://example.com', b.getControl('Link address').value)

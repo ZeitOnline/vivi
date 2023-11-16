@@ -7,4 +7,5 @@ def test_suite():
         'README.txt',
         'reference.txt',
         package='zeit.content.gallery',
-        layer=zeit.content.gallery.testing.ZOPE_LAYER)
+        layer=zeit.content.gallery.testing.ZOPE_LAYER,
+    )

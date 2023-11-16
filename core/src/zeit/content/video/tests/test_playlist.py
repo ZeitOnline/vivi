@@ -6,7 +6,6 @@ import zeit.content.video.testing
 
 
 class TestPlaylist(zeit.content.video.testing.TestCase):
-
     def test_videos_should_contain_metadata_in_xml(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = next(factory)
@@ -15,8 +14,7 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)
         pls.videos = (video,)
-        self.assertEqual(
-            'Bla bla', pls.xml['body']['videos']['video']['text'])
+        self.assertEqual('Bla bla', pls.xml['body']['videos']['video']['text'])
 
     def test_video_title_should_show_up_as_teaser_title_in_playlist(self):
         factory = zeit.content.video.testing.video_factory(self)
@@ -26,13 +24,13 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)
         pls.videos = (video,)
-        self.assertEqual(
-            'The big Foo', pls.xml['body']['videos']['video']['title'])
+        self.assertEqual('The big Foo', pls.xml['body']['videos']['video']['title'])
 
     def test_security_should_allow_access_to_id_prefix(self):
         import zeit.cms.testing
         import zope.security.management
         from zope.security.proxy import ProxyFactory
+
         factory = zeit.content.video.testing.playlist_factory(self)
         next(factory)
         pls = next(factory)  # in repository
@@ -55,21 +53,20 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         with zeit.cms.checkout.helper.checked_out(pls):
             pass
         pls = self.repository['pls']
-        self.assertEqual(
-            'bar', pls.xml['body']['videos']['video']['title'])
+        self.assertEqual('bar', pls.xml['body']['videos']['video']['title'])
 
     def test_animation_video_reference(self):
         import zeit.content.animation.animation
+
         factory = zeit.content.video.testing.video_factory(self)
         next(factory)
         video = next(factory)
         animation = zeit.content.animation.animation.Animation()
         animation.video = video
-        assert animation.xml.body.video.xpath("@contenttype")[0] == 'video'
+        assert animation.xml.body.video.xpath('@contenttype')[0] == 'video'
 
 
 class TestReferencesAdapter(zeit.content.video.testing.TestCase):
-
     def test_playlist_references_should_contain_its_videos(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = next(factory)
@@ -81,8 +78,7 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
 
         videos = zeit.cms.relation.interfaces.IReferences(pls)
         self.assertEqual(1, len(videos))
-        self.assertEqual(
-            'http://xml.zeit.de/video', videos[0].uniqueId)
+        self.assertEqual('http://xml.zeit.de/video', videos[0].uniqueId)
 
     def test_playlist_is_published_when_contained_video_is_published(self):
         factory = zeit.content.video.testing.video_factory(self)
@@ -102,5 +98,6 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
         with checked_out(self.repository['testcontent']) as co:
             zeit.cms.related.interfaces.IRelatedContent(co).related = (video,)
 
-        self.assertNotIn(self.repository['testcontent'],
-                         IPublicationDependencies(video).get_dependencies())
+        self.assertNotIn(
+            self.repository['testcontent'], IPublicationDependencies(video).get_dependencies()
+        )

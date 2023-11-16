@@ -4,7 +4,6 @@ import zeit.content.text.text
 
 
 class TestRawText(zeit.content.cp.testing.BrowserTestCase):
-
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
@@ -16,8 +15,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
         self.repository['plaintext'] = self.plaintext
 
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository/centerpage/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')
         b.open('contents')
         self.content_url = b.url
 
@@ -30,9 +28,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
 
     def test_can_create_rawtext_module_by_dropping_content(self):
         b = self.browser
-        b.open(
-            'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/plaintext'
-            '&order=top')
+        b.open('lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/plaintext' '&order=top')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-rawtext'))
 

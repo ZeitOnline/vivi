@@ -1,8 +1,7 @@
 from zeit.cms.content.cache import content_cache, cached_on_content
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.cp.interfaces import (
-    IAutomaticTeaserBlock, ICenterPage, ITeaserBlock)
+from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage, ITeaserBlock
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
@@ -21,16 +20,13 @@ import zope.interface
 import zope.lifecycleevent
 
 
-@zope.component.adapter(
-    zeit.content.cp.interfaces.IBody,
-    gocept.lxml.interfaces.IObjectified)
+@zope.component.adapter(zeit.content.cp.interfaces.IBody, gocept.lxml.interfaces.IObjectified)
 @zope.interface.implementer(zeit.content.cp.interfaces.IRegion)
-class Region(zeit.content.cp.blocks.block.VisibleMixin,
-             zeit.edit.container.Base):
-
+class Region(zeit.content.cp.blocks.block.VisibleMixin, zeit.edit.container.Base):
     _find_item = lxml.etree.XPath(
         './*[@area = $name or @cms:__name__ = $name]',
-        namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'})
+        namespaces={'cms': 'http://namespaces.zeit.de/CMS/cp'},
+    )
 
     type = 'region'
 
@@ -57,7 +53,6 @@ class Region(zeit.content.cp.blocks.block.VisibleMixin,
 
 
 class RegionFactory(zeit.edit.block.ElementFactory):
-
     grok.context(zeit.content.cp.interfaces.IBody)
     produces = Region
     # XML tags are named "cluster", thus do not change.
@@ -67,8 +62,7 @@ class RegionFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
-class ReferencedCpFallbackProperty(
-        zeit.cms.content.property.ObjectPathProperty):
+class ReferencedCpFallbackProperty(zeit.cms.content.property.ObjectPathProperty):
     """
     Special ObjectPathProperty which looks up an attribute
     from the referenced cp as a fallback.
@@ -77,88 +71,80 @@ class ReferencedCpFallbackProperty(
     def __get__(self, instance, class_):
         value = super().__get__(instance, class_)
         if value == self.field.missing_value and instance.referenced_cp:
-            value = getattr(instance.referenced_cp,
-                            self.field.__name__,
-                            self.field.default)
+            value = getattr(instance.referenced_cp, self.field.__name__, self.field.default)
         return value
 
 
-@zope.component.adapter(
-    zeit.content.cp.interfaces.IRegion,
-    gocept.lxml.interfaces.IObjectified)
+@zope.component.adapter(zeit.content.cp.interfaces.IRegion, gocept.lxml.interfaces.IObjectified)
 @zope.interface.implementer(zeit.content.cp.interfaces.IArea)
-class Area(zeit.content.cp.blocks.block.VisibleMixin,
-           zeit.edit.container.TypeOnAttributeContainer,
-           zeit.contentquery.configuration.Configuration):
-
+class Area(
+    zeit.content.cp.blocks.block.VisibleMixin,
+    zeit.edit.container.TypeOnAttributeContainer,
+    zeit.contentquery.configuration.Configuration,
+):
     type = 'area'
 
     kind = ObjectPathAttributeProperty(
-        '.', 'kind', zeit.content.cp.interfaces.IArea['kind'],
-        use_default=True)
+        '.', 'kind', zeit.content.cp.interfaces.IArea['kind'], use_default=True
+    )
 
-    _layout = ObjectPathAttributeProperty(
-        '.', 'module')
+    _layout = ObjectPathAttributeProperty('.', 'module')
 
-    supertitle = ObjectPathAttributeProperty(
-        '.', 'supertitle')
-    title = ObjectPathAttributeProperty(
-        '.', 'title')
+    supertitle = ObjectPathAttributeProperty('.', 'supertitle')
+    title = ObjectPathAttributeProperty('.', 'title')
 
-    read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'read_more')
-    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'read_more_url')
+    read_more = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'read_more')
+    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'read_more_url')
 
     _image = zeit.cms.content.property.SingleResource('.image')
 
     apply_teaser_layouts_automatically = ObjectPathAttributeProperty(
-        '.', 'apply_teaser_layouts',
-        zeit.content.cp.interfaces.IArea['apply_teaser_layouts_automatically'])
-    _first_teaser_layout = ObjectPathAttributeProperty(
-        '.', 'first_teaser_layout')
+        '.',
+        'apply_teaser_layouts',
+        zeit.content.cp.interfaces.IArea['apply_teaser_layouts_automatically'],
+    )
+    _first_teaser_layout = ObjectPathAttributeProperty('.', 'first_teaser_layout')
 
     _automatic = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'automatic',
-        zeit.content.cp.interfaces.IArea['automatic'])
+        '.', 'automatic', zeit.content.cp.interfaces.IArea['automatic']
+    )
 
     _automatic_type_bbb = {'channel': 'custom'}
     _automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'automatic_type',
-        zeit.content.cp.interfaces.IArea['automatic_type'])
+        '.', 'automatic_type', zeit.content.cp.interfaces.IArea['automatic_type']
+    )
 
-    query = zeit.contentquery.configuration.CustomQueryProperty(
-        {'Channel': 'channels'})
+    query = zeit.contentquery.configuration.CustomQueryProperty({'Channel': 'channels'})
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', zeit.content.cp.interfaces.IArea['count'])
+        '.', 'count', zeit.content.cp.interfaces.IArea['count']
+    )
 
     topiclink_label_1 = ReferencedCpFallbackProperty(
-        '.topiclink_label_1',
-        zeit.content.cp.interfaces.IArea['topiclink_label_1'])
+        '.topiclink_label_1', zeit.content.cp.interfaces.IArea['topiclink_label_1']
+    )
 
     topiclink_url_1 = ReferencedCpFallbackProperty(
-        '.topiclink_url_1',
-        zeit.content.cp.interfaces.IArea['topiclink_url_1'])
+        '.topiclink_url_1', zeit.content.cp.interfaces.IArea['topiclink_url_1']
+    )
 
     topiclink_label_2 = ReferencedCpFallbackProperty(
-        '.topiclink_label_2',
-        zeit.content.cp.interfaces.IArea['topiclink_label_2'])
+        '.topiclink_label_2', zeit.content.cp.interfaces.IArea['topiclink_label_2']
+    )
 
     topiclink_url_2 = ReferencedCpFallbackProperty(
-        '.topiclink_url_2',
-        zeit.content.cp.interfaces.IArea['topiclink_url_2'])
+        '.topiclink_url_2', zeit.content.cp.interfaces.IArea['topiclink_url_2']
+    )
 
     topiclink_label_3 = ReferencedCpFallbackProperty(
-        '.topiclink_label_3',
-        zeit.content.cp.interfaces.IArea['topiclink_label_3'])
+        '.topiclink_label_3', zeit.content.cp.interfaces.IArea['topiclink_label_3']
+    )
 
     topiclink_url_3 = ReferencedCpFallbackProperty(
-        '.topiclink_url_3',
-        zeit.content.cp.interfaces.IArea['topiclink_url_3'])
+        '.topiclink_url_3', zeit.content.cp.interfaces.IArea['topiclink_url_3']
+    )
 
-    background_color = ObjectPathAttributeProperty(
-        '.', 'background_color')
+    background_color = ObjectPathAttributeProperty('.', 'background_color')
 
     @property
     def image(self):
@@ -166,8 +152,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             return self._image
         if self.referenced_cp is None:
             return None
-        images = zeit.content.image.interfaces.IImages(
-            self.referenced_cp, None)
+        images = zeit.content.image.interfaces.IImages(self.referenced_cp, None)
         if images is None:
             return None
         return images.image
@@ -178,8 +163,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     @property
     def first_teaser_layout(self):
-        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-                self):
+        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(self):
             if layout.id == self._first_teaser_layout:
                 return layout
         return None
@@ -193,8 +177,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     @property
     def default_teaser_layout(self):
-        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-                self):
+        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(self):
             if layout.is_default(self):
                 return layout
         return None
@@ -346,10 +329,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def existing_teasers(self):
         current_area = self
         cp = ICenterPage(self)
-        area_teasered_content = content_cache(
-            cp, 'area_teasered_content')
-        area_manual_content = content_cache(
-            cp, 'area_manual_content')
+        area_teasered_content = content_cache(cp, 'area_teasered_content')
+        area_manual_content = content_cache(cp, 'area_manual_content')
 
         seen = set()
         above = True
@@ -361,7 +342,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             if above:  # automatic teasers above current area
                 if area not in area_teasered_content:
                     area_teasered_content[area] = set(
-                        zeit.content.cp.interfaces.ITeaseredContent(area))
+                        zeit.content.cp.interfaces.ITeaseredContent(area)
+                    )
 
                 seen.update(area_teasered_content[area])
             else:  # manual teasers below (or in) current area
@@ -370,18 +352,16 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                     # ITeaseredContent), since the use case is pretty
                     # specialised.
                     area_manual_content[area] = set(
-                        zeit.content.cp.blocks.teaser.extract_manual_teasers(
-                            area))
+                        zeit.content.cp.blocks.teaser.extract_manual_teasers(area)
+                    )
                 seen.update(area_manual_content[area])
         return seen
 
     def filter_values(self, *interfaces):
-        return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(
-            *interfaces)
+        return zeit.content.cp.interfaces.IRenderedArea(self).filter_values(*interfaces)
 
 
 class AreaFactory(zeit.edit.block.ElementFactory):
-
     grok.context(zeit.content.cp.interfaces.IRegion)
     produces = Area
     # XML tags are named "region", thus do not change.
@@ -414,12 +394,15 @@ def region_to_area(context):
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.edit.interfaces.IElementReferences)
 def cms_content_iter(context):
-    if (context.automatic and
-            context.automatic_type == 'centerpage' and
-            context.referenced_cp is not None):
+    if (
+        context.automatic
+        and context.automatic_type == 'centerpage'
+        and context.referenced_cp is not None
+    ):
         yield context.referenced_cp
     for content in zeit.content.cp.centerpage.cms_content_iter(
-            zeit.content.cp.interfaces.IRenderedArea(context)):
+        zeit.content.cp.interfaces.IRenderedArea(context)
+    ):
         yield content
 
 
@@ -442,9 +425,7 @@ def rendered_xml(context):
     return area
 
 
-@grok.subscribe(
-    zeit.content.cp.interfaces.IBlock,
-    zope.lifecycleevent.IObjectMovedEvent)
+@grok.subscribe(zeit.content.cp.interfaces.IBlock, zope.lifecycleevent.IObjectMovedEvent)
 def adjust_auto_blocks_to_count(context, event):
     if IAutomaticTeaserBlock.providedBy(context):
         return  # avoid infty loop when adding / deleting auto teaser
@@ -452,9 +433,7 @@ def adjust_auto_blocks_to_count(context, event):
     area.adjust_auto_blocks_to_count()
 
 
-@grok.subscribe(
-    zeit.content.cp.interfaces.IArea,
-    zope.lifecycleevent.IObjectModifiedEvent)
+@grok.subscribe(zeit.content.cp.interfaces.IArea, zope.lifecycleevent.IObjectModifiedEvent)
 def prefill_metadata_from_referenced_cp(context, event):
     for description in event.descriptions:
         if description.interface is zeit.content.cp.interfaces.IArea:
@@ -472,5 +451,5 @@ def prefill_metadata_from_referenced_cp(context, event):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
         live_prefix = config['live-prefix']
         context.read_more_url = context.referenced_cp.uniqueId.replace(
-            zeit.cms.interfaces.ID_NAMESPACE,
-            live_prefix)
+            zeit.cms.interfaces.ID_NAMESPACE, live_prefix
+        )

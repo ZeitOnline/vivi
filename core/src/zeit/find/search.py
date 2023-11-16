@@ -15,7 +15,6 @@ DEFAULT_FIELDS = (
 
 
 class Elasticsearch(zeit.retresco.search.Elasticsearch):
-
     def search(self, query, **kw):
         query.setdefault('_source', DEFAULT_FIELDS)
         kw.setdefault('rows', 50)
@@ -26,8 +25,7 @@ class Elasticsearch(zeit.retresco.search.Elasticsearch):
 def from_product_config():
     """Get the utility configured with data from the product config."""
     config = getProductConfiguration('zeit.find')
-    return Elasticsearch(config['elasticsearch-url'],
-                         config['elasticsearch-index'])
+    return Elasticsearch(config['elasticsearch-url'], config['elasticsearch-index'])
 
 
 field_map = {
@@ -56,7 +54,7 @@ rtr_fields = (
 
 
 def query(fulltext=None, **conditions):
-    """ Create elasticsearch query for search. Supported field are:
+    """Create elasticsearch query for search. Supported field are:
 
     fulltext - fulltext to search for
     from_ - search only after from_ datetime. If None, no start to range.
@@ -84,27 +82,32 @@ def query(fulltext=None, **conditions):
     fields = conditions.pop('fields', [])
     # handle fulltext
     if fulltext:
-        must.append({'query_string': {
-            'query': fulltext, 'fields': fields,
-            'default_operator': 'AND'}})
+        must.append(
+            {'query_string': {'query': fulltext, 'fields': fields, 'default_operator': 'AND'}}
+        )
     # handle from_, until
     from_ = conditions.pop('from_', None)
     until = conditions.pop('until', None)
     if from_ is not None or until is not None:
-        filters.append({'range': {
-            'payload.document.last-semantic-change':
-            zeit.retresco.search.date_range(from_, until)}})
+        filters.append(
+            {
+                'range': {
+                    'payload.document.last-semantic-change': zeit.retresco.search.date_range(
+                        from_, until
+                    )
+                }
+            }
+        )
     # handle show_news
     if not conditions.pop('show_news', True):
-        clauses['must_not'] = [
-            {'match': {'payload.document.ressort': 'News'}}] + [
-                {'match': {'payload.workflow.product-id': pid}}
-                for pid in ('News', 'afp', 'SID', 'dpa-hamburg')]
+        clauses['must_not'] = [{'match': {'payload.document.ressort': 'News'}}] + [
+            {'match': {'payload.workflow.product-id': pid}}
+            for pid in ('News', 'afp', 'SID', 'dpa-hamburg')
+        ]
     # handle "keywords" (by querying all `rtr_*` fields)
     keyword = conditions.pop('keywords', None)
     if keyword is not None:
-        filters.append({'bool': {'should': [
-            {'match': {field: keyword}} for field in rtr_fields]}})
+        filters.append({'bool': {'should': [{'match': {field: keyword}} for field in rtr_fields]}})
     # handle autocomplete queries as prefix matches
     autocomplete = conditions.pop('autocomplete', None)
     if autocomplete is not None:
@@ -112,8 +115,7 @@ def query(fulltext=None, **conditions):
         # payload.vivi.autocomplete by the ES mapping, so this hopefully should
         # be somewhat generically applicable (even though we currently only use
         # it for IAuthor objects).
-        must.append({'match_phrase_prefix': {
-            'payload.vivi.autocomplete': autocomplete}})
+        must.append({'match_phrase_prefix': {'payload.vivi.autocomplete': autocomplete}})
     # handle remaining fields
     for field, value in conditions.items():
         if value in (None, [], ()):
@@ -121,8 +123,7 @@ def query(fulltext=None, **conditions):
         if field not in field_map:
             raise ValueError('unsupported search condition {}', field)
         if isinstance(value, (list, tuple)):
-            filters.append({'bool': {'should': [
-                {'match': {field_map[field]: v}} for v in value]}})
+            filters.append({'bool': {'should': [{'match': {field_map[field]: v}} for v in value]}})
         else:
             filters.append({'match': {field_map[field]: value}})
     # construct either bool or simple query

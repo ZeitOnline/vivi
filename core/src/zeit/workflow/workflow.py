@@ -27,8 +27,10 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
 
     zeit.cms.content.dav.mapProperties(
         zeit.workflow.interfaces.IContentWorkflow,
-        WORKFLOW_NS, ('edited', 'corrected', 'seo_optimized', 'urgent'),
-        writeable=WRITEABLE_ALWAYS)
+        WORKFLOW_NS,
+        ('edited', 'corrected', 'seo_optimized', 'urgent'),
+        writeable=WRITEABLE_ALWAYS,
+    )
 
     def can_publish(self):
         status = super().can_publish()
@@ -38,25 +40,27 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
         if self.edited and self.corrected:
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
-        self.error_messages = (
-            _('publish-preconditions-urgent', mapping=self._error_mapping),)
+        self.error_messages = (_('publish-preconditions-urgent', mapping=self._error_mapping),)
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
 
 
 @zope.component.adapter(
-    zeit.workflow.interfaces.IContentWorkflow,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+    zeit.workflow.interfaces.IContentWorkflow, zeit.cms.content.interfaces.IDAVPropertyChangedEvent
+)
 def log_workflow_changes(workflow, event):
-    if event.field.__name__ not in (
-            'edited', 'corrected', 'seo_optimized', 'urgent'):
+    if event.field.__name__ not in ('edited', 'corrected', 'seo_optimized', 'urgent'):
         # Only act on certain fields.
         return
 
     content = workflow.context
-    message = _('${name}: ${new_value}',
-                mapping={'name': event.field.title,
-                         'old_value': event.old_value,
-                         'new_value': event.new_value})
+    message = _(
+        '${name}: ${new_value}',
+        mapping={
+            'name': event.field.title,
+            'old_value': event.old_value,
+            'new_value': event.new_value,
+        },
+    )
 
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.log(content, message)

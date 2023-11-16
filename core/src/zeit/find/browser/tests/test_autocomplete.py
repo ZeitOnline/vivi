@@ -7,13 +7,12 @@ import zope.interface
 import zope.publisher.browser
 
 
-class TestSimpleFind(unittest.TestCase,
-                     zeit.cms.testing.BrowserAssertions):
-
+class TestSimpleFind(unittest.TestCase, zeit.cms.testing.BrowserAssertions):
     layer = zeit.find.testing.WSGI_LAYER
 
     def setUp(self):
         from zeit.cms.testing import Browser
+
         self.browser = Browser(self.layer['wsgi_app'])
         self.browser.login('user', 'userpw')
         self.browser.open('http://localhost/++skin++vivi/')
@@ -30,49 +29,67 @@ class TestSimpleFind(unittest.TestCase,
         self.browser.open('@@simple_find?term=Search-Term')
         # ES applies the same analyzer (e.g. lowercase) to the search term
         # as to the field value during indexing, so we don't need to lowercase.
-        self.search.assert_called_with({'query': {'match_phrase_prefix': {
-            'payload.vivi.autocomplete': 'Search-Term'}}})
+        self.search.assert_called_with(
+            {'query': {'match_phrase_prefix': {'payload.vivi.autocomplete': 'Search-Term'}}}
+        )
 
     def test_given_types_should_be_passed_to_search(self):
         self.search.return_value = []
-        self.browser.open(
-            '@@simple_find?term=search-term&types:list=t1&types:list=t2')
+        self.browser.open('@@simple_find?term=search-term&types:list=t1&types:list=t2')
         self.search.assert_called_with(
-            {'query': {'bool': {'must': [
-                {'match_phrase_prefix': {
-                    'payload.vivi.autocomplete': 'search-term'}}
-            ], 'filter': [
-                {'bool': {'should': [
-                    {'match': {'doc_type': 't1'}},
-                    {'match': {'doc_type': 't2'}},
-                ]}}
-            ]}}})
+            {
+                'query': {
+                    'bool': {
+                        'must': [
+                            {'match_phrase_prefix': {'payload.vivi.autocomplete': 'search-term'}}
+                        ],
+                        'filter': [
+                            {
+                                'bool': {
+                                    'should': [
+                                        {'match': {'doc_type': 't1'}},
+                                        {'match': {'doc_type': 't2'}},
+                                    ]
+                                }
+                            }
+                        ],
+                    }
+                }
+            }
+        )
 
     def test_given_parameters_should_be_passed_to_search(self):
         self.search.return_value = []
-        self.browser.open(
-            '@@simple_find?term=search-term&access=abo')
+        self.browser.open('@@simple_find?term=search-term&access=abo')
         self.search.assert_called_with(
-            {'query': {'bool': {'must': [
-                {'match_phrase_prefix': {
-                    'payload.vivi.autocomplete': 'search-term'}}
-            ], 'filter': [
-                {'match': {'payload.document.access': 'abo'}},
-            ]}}})
+            {
+                'query': {
+                    'bool': {
+                        'must': [
+                            {'match_phrase_prefix': {'payload.vivi.autocomplete': 'search-term'}}
+                        ],
+                        'filter': [
+                            {'match': {'payload.document.access': 'abo'}},
+                        ],
+                    }
+                }
+            }
+        )
 
     def test_query_result_should_be_returned(self):
         self.search.return_value = [{'url': '/A'}, {'url': '/B'}]
         self.browser.open('@@simple_find?term=search-term')
         self.assert_json(
-            [{'label': '/A', 'value': 'http://xml.zeit.de/A'},
-             {'label': '/B', 'value': 'http://xml.zeit.de/B'}])
+            [
+                {'label': '/A', 'value': 'http://xml.zeit.de/A'},
+                {'label': '/B', 'value': 'http://xml.zeit.de/B'},
+            ]
+        )
 
     def test_test_title_should_become_label(self):
-        self.search.return_value = [
-            {'url': '/A', 'teaser': 'Teaser Title', 'title': 'Title'}]
+        self.search.return_value = [{'url': '/A', 'teaser': 'Teaser Title', 'title': 'Title'}]
         self.browser.open('@@simple_find?term=search-term')
-        self.assert_json([{'label': 'Title',
-                           'value': 'http://xml.zeit.de/A'}])
+        self.assert_json([{'label': 'Title', 'value': 'http://xml.zeit.de/A'}])
 
     def test_title_should_become_label_if_no_teaser_title(self):
         self.search.return_value = [{'url': '/A', 'title': 'Title'}]
@@ -80,18 +97,21 @@ class TestSimpleFind(unittest.TestCase,
         self.assert_json([{'label': 'Title', 'value': 'http://xml.zeit.de/A'}])
 
     def test_query_view_should_render_input(self):
-        @zope.interface.implementer(
-            zeit.cms.content.interfaces.IAutocompleteSource)
+        @zope.interface.implementer(zeit.cms.content.interfaces.IAutocompleteSource)
         class FakeSource:
             def get_check_types(self):
                 return ('t1', 't2', 't3')
 
         view = AutocompleteSourceQuery(
-            FakeSource(), zope.publisher.browser.TestRequest(
-                skin=zeit.cms.browser.interfaces.ICMSLayer))
+            FakeSource(),
+            zope.publisher.browser.TestRequest(skin=zeit.cms.browser.interfaces.ICMSLayer),
+        )
         self.assertEllipsis(
-            ('<input type="text" class="autocomplete" '
-             'placeholder="Type to find entries ..." '
-             'cms:autocomplete-source="'
-             '...?types%3Alist=t1&types%3Alist=t2&types%3Alist=t3" />'),
-            view())
+            (
+                '<input type="text" class="autocomplete" '
+                'placeholder="Type to find entries ..." '
+                'cms:autocomplete-source="'
+                '...?types%3Alist=t1&types%3Alist=t2&types%3Alist=t3" />'
+            ),
+            view(),
+        )

@@ -19,31 +19,25 @@ log = logging.getLogger(__name__)
 
 
 class JSONView(zeit.cms.browser.view.JSON):
-
     resource_library = 'zeit.find'
 
     def url(self, view, uniqueId):
-        return super().url(
-            self.context, '%s?uniqueId=%s' % (view, uniqueId))
+        return super().url(self.context, '%s?uniqueId=%s' % (view, uniqueId))
 
 
 class FieldsList(zeit.cms.content.sources.SimpleXMLSourceBase):
-
     default_filename = 'vivi-find-search-fields.xml'
 
 
 class SearchForm(JSONView):
-
     template = 'search_form.jsont'
 
     def json(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
         return {
-            'access': self.get_source(metadata_if['access'].source,
-                                      'access', 'access_title'),
+            'access': self.get_source(metadata_if['access'].source, 'access', 'access_title'),
             'products': self.products,
-            'ressorts': self.get_source(metadata_if['ressort'].source,
-                                        'ressort', 'ressort_name'),
+            'ressorts': self.get_source(metadata_if['ressort'].source, 'ressort', 'ressort_name'),
             'series': self.series,
             'types': self.types,
         }
@@ -53,19 +47,17 @@ class SearchForm(JSONView):
         source = source(None)
         result = []
         terms = zope.component.getMultiAdapter(
-            (source, self.request), zope.browser.interfaces.ITerms)
+            (source, self.request), zope.browser.interfaces.ITerms
+        )
         for value in source:
             title = terms.getTerm(value).title
-            result.append({
-                value_name: value,
-                title_name: title})
+            result.append({value_name: value, title_name: title})
         return result
 
     @property
     def products(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
-        result = self.get_source(metadata_if['product'].source,
-                                 'product_id', 'product_name')
+        result = self.get_source(metadata_if['product'].source, 'product_id', 'product_name')
         for entry in result:
             entry['product_id'] = entry['product_id'].id
         return result
@@ -73,8 +65,7 @@ class SearchForm(JSONView):
     @property
     def series(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
-        result = self.get_source(metadata_if['serie'].source,
-                                 'serie', 'serie_title')
+        result = self.get_source(metadata_if['serie'].source, 'serie', 'serie_title')
         for entry in result:
             entry['serie'] = entry['serie'].serienname
         return result
@@ -96,33 +87,31 @@ class SearchForm(JSONView):
         'portraitbox',
         'rawxml',
         'video',
-        'volume'
+        'volume',
     ]
 
     @property
     def types(self):
         result = []
         for name in self.CONTENT_TYPES:
-            typ = zope.component.queryUtility(
-                zeit.cms.interfaces.ITypeDeclaration, name=name)
+            typ = zope.component.queryUtility(zeit.cms.interfaces.ITypeDeclaration, name=name)
             if typ is None:
                 # Should happen only in tests that don't have much ZCML loaded.
                 continue
-            result.append({
-                'title': zope.i18n.translate(
-                    typ.title or typ.type, context=self.request),
-                'type': typ.type,
-            })
+            result.append(
+                {
+                    'title': zope.i18n.translate(typ.title or typ.type, context=self.request),
+                    'type': typ.type,
+                }
+            )
         return sorted(result, key=lambda r: r['title'])
 
 
 def get_favorited_css_class(favorited):
-    return 'toggle_favorited ' + (
-        'favorited' if favorited else 'not_favorited')
+    return 'toggle_favorited ' + ('favorited' if favorited else 'not_favorited')
 
 
 class DottedNestedDict:
-
     def __init__(self, dict_):
         self.dict = dict_
 
@@ -141,7 +130,6 @@ class DottedNestedDict:
 
 
 class SearchResult(JSONView):
-
     template = 'search_result.jsont'
 
     search_result_keys = (
@@ -187,7 +175,7 @@ class SearchResult(JSONView):
             q['sort'] = self.sort_order()
         except InputError as e:
             error = str(e)
-            return {'template': 'no_search_result.jsont', "error": error}
+            return {'template': 'no_search_result.jsont', 'error': error}
         if q is None:
             return {'template': 'no_search_result.jsont'}
         self.store_session()
@@ -196,8 +184,7 @@ class SearchResult(JSONView):
             results = elastic.search(q)
             return self.results(results)
         except Exception as e:
-            return {'template': 'no_search_result.jsont',
-                    'error': e.args[0]}
+            return {'template': 'no_search_result.jsont', 'error': e.args[0]}
 
     SORT_ORDERS = {
         'date': [{'payload.document.last-semantic-change': 'desc'}],
@@ -235,8 +222,7 @@ class SearchResult(JSONView):
         return get_favorited_css_class(self.get_favorited(result))
 
     def get_product(self, result):
-        source = zeit.cms.content.interfaces.ICommonMetadata['product'].source(
-            None)
+        source = zeit.cms.content.interfaces.ICommonMetadata['product'].source(None)
         product = source.find(result.get('payload.workflow.product-id'))
         return product and product.title or ''
 
@@ -252,8 +238,7 @@ class SearchResult(JSONView):
         return publication_status
 
     def get_teaser_title(self, result):
-        return self.get_first_field(
-            result, 'payload.teaser.title', 'payload.body.title', 'url')
+        return self.get_first_field(result, 'payload.teaser.title', 'payload.body.title', 'url')
 
     def get_type(self, result):
         return result.get('doc_type', '')
@@ -262,8 +247,7 @@ class SearchResult(JSONView):
         return result.get('payload.document.author', [])
 
     def _get_unformatted_date(self, result):
-        last_semantic_change = result.get(
-            'payload.document.last-semantic-change')
+        last_semantic_change = result.get('payload.document.last-semantic-change')
         dt = None
         if last_semantic_change is not None:
             dt = pendulum.parse(last_semantic_change)
@@ -294,12 +278,10 @@ class SearchResult(JSONView):
         return result.get('payload.body.subtitle', '')
 
     def get_supertitle(self, result):
-        return self.get_first_field(
-            result, 'payload.teaser.supertitle', 'payload.body.supertitle')
+        return self.get_first_field(result, 'payload.teaser.supertitle', 'payload.body.supertitle')
 
     def get_teaser_text(self, result):
-        return self.get_first_field(
-            result, 'payload.teaser.text', 'payload.body.text')
+        return self.get_first_field(result, 'payload.teaser.text', 'payload.body.text')
 
     def get_serie(self, result):
         return result.get('payload.document.serie', '')
@@ -322,8 +304,7 @@ class SearchResult(JSONView):
         """
         favorite_uniqueIds = set()
         for favorite in get_favorites(self.request).values():
-            if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
-                    favorite):
+            if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(favorite):
                 continue
             uniqueId = favorite.referenced_unique_id
             if not uniqueId:
@@ -333,19 +314,16 @@ class SearchResult(JSONView):
 
 
 class ToggleFavorited(JSONView):
-
     template = 'toggle_favorited.jsont'
 
     def json(self):
-        content = zeit.cms.interfaces.ICMSContent(
-            self.request.get('uniqueId'))
+        content = zeit.cms.interfaces.ICMSContent(self.request.get('uniqueId'))
         favorites = get_favorites(self.request)
         if content.__name__ in favorites:
             del favorites[content.__name__]
             favorited = False
         else:
-            favorites[content.__name__] = (
-                zeit.cms.clipboard.interfaces.IClipboardEntry(content))
+            favorites[content.__name__] = zeit.cms.clipboard.interfaces.IClipboardEntry(content)
             favorited = True
         return {
             'favorited_css_class': get_favorited_css_class(favorited),
@@ -353,11 +331,9 @@ class ToggleFavorited(JSONView):
 
 
 class LastQuery(JSONView):
-
     def json(self):
         last_query = {}
-        session = zope.session.interfaces.ISession(self.request).get(
-            'zeit.find')
+        session = zope.session.interfaces.ISession(self.request).get('zeit.find')
         if session is not None:
             last_query = session.get('last-query', {})
         query = {}
@@ -414,6 +390,7 @@ def search_form(request):
 
     def g(name, default=None):
         return _get(request, name, default)
+
     fulltext = g('fulltext')
     from_ = parse_input_date(g('from', 'TT.MM.JJJJ'))
     until = parse_input_date(g('until', 'TT.MM.JJJJ'))
@@ -497,19 +474,19 @@ def parse_input_date(s):
     try:
         day, month, year = s.split('.')
     except ValueError:
-        raise InputDateParseError("Missing periods in date")
+        raise InputDateParseError('Missing periods in date')
     try:
         day = int(day)
     except ValueError:
-        raise InputDateParseError("Day is not a proper number")
+        raise InputDateParseError('Day is not a proper number')
     try:
         month = int(month)
     except ValueError:
-        raise InputDateParseError("Month is not a proper number")
+        raise InputDateParseError('Month is not a proper number')
     try:
         year = int(year)
     except ValueError:
-        raise InputDateParseError("Year is not a proper number")
+        raise InputDateParseError('Year is not a proper number')
     return datetime.datetime(year, month, day)
 
 
@@ -531,15 +508,15 @@ def parse_volume_year(s):
     try:
         volume, year = s.split('/')
     except ValueError:
-        raise VolumeYearError("Missing / in volume.year")
+        raise VolumeYearError('Missing / in volume.year')
     try:
         int(volume)
     except ValueError:
-        raise VolumeYearError("Volume is not a proper number")
+        raise VolumeYearError('Volume is not a proper number')
     try:
         int(year)
     except ValueError:
-        raise VolumeYearError("Year is not a proper number")
+        raise VolumeYearError('Year is not a proper number')
     return volume, year
 
 
@@ -551,6 +528,6 @@ def format_date(dt):
 
 def format_amount(amount):
     if amount >= 1000:
-        return "1000+"
+        return '1000+'
     else:
         return str(amount)

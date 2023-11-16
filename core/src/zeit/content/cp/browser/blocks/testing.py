@@ -6,8 +6,7 @@ import zope.component
 
 def create_content(root):
     with zeit.cms.testing.site(root):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
 
         for i in range(3):
             name = 'c%s' % (i + 1)

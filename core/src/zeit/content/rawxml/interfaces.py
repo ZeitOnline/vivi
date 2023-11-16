@@ -6,14 +6,15 @@ import zeit.retresco.interfaces
 import zope.schema
 
 
-class IRawXML(zeit.cms.interfaces.IAsset,
-              zeit.cms.content.interfaces.IXMLRepresentation,
-              zeit.cms.repository.interfaces.IDAVContent,
-              zeit.retresco.interfaces.ISkipEnrich):
+class IRawXML(
+    zeit.cms.interfaces.IAsset,
+    zeit.cms.content.interfaces.IXMLRepresentation,
+    zeit.cms.repository.interfaces.IDAVContent,
+    zeit.retresco.interfaces.ISkipEnrich,
+):
     """An asset which is just raw xml."""
 
-    title = zope.schema.TextLine(
-        title=_('Title'))
+    title = zope.schema.TextLine(title=_('Title'))
 
 
 class IUserDashboard(IRawXML):

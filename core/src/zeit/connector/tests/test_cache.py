@@ -12,7 +12,6 @@ import zeit.connector.testing
 
 
 class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
-
     layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
 
     def setUp(self):
@@ -34,11 +33,9 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(b'data', got.read())
         got.close()
         del self.cache._etags[self.key]
-        self.assertRaises(
-            KeyError, self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
         del self.cache._etags
-        self.assertRaises(
-            KeyError, self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
 
     def test_missing_blob_file(self):
         body1 = self.BUFFER_SIZE * 2 * b'x'
@@ -50,8 +47,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         body = self.cache._data[self.key]
         os.remove(body.data.committed())
         del body.data._p_changed  # Invalidate, thus force reload
-        self.assertRaises(KeyError,
-                          self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
         self.cache.setData(self.uniqueId, self.properties2, data2).close()
         got = self.cache.getData(self.uniqueId, self.properties2)
         self.assertEqual(body2, got.read())
@@ -67,8 +63,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         os.remove(data.committed())
         del data._p_changed
-        self.assertRaises(KeyError,
-                          self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
         expected = self.BUFFER_SIZE * 2 * b'y'
         data2 = BytesIO(expected)
         self.cache.setData(self.uniqueId, self.properties2, data2).close()
@@ -84,6 +79,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
             transaction.abort()
             self.cache.setData(self.uniqueId, self.properties1, body).close()
             transaction.commit()
+
         t1 = threading.Thread(target=store)
         t2 = threading.Thread(target=store)
         t1.start()

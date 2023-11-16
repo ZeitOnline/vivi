@@ -17,7 +17,6 @@ logger = logging.getLogger('zeit.cms.browser.listing')
 
 
 class BaseListRepresentation:
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -36,9 +35,7 @@ class BaseListRepresentation:
 
     @zope.cachedescriptors.property.Lazy
     def url(self):
-        return zope.component.getMultiAdapter(
-            (self.context, self.request),
-            name='absolute_url')
+        return zope.component.getMultiAdapter((self.context, self.request), name='absolute_url')
 
     @property
     def modifiedOn(self):
@@ -50,8 +47,7 @@ class BaseListRepresentation:
 
     def _dc_date_helper(self, attribute):
         try:
-            times = zope.dublincore.interfaces.IDCTimes(
-                self.context)
+            times = zope.dublincore.interfaces.IDCTimes(self.context)
         except TypeError:
             return None
         return getattr(times, attribute)
@@ -67,7 +63,7 @@ class CommonListRepresentation(BaseListRepresentation):
 
     @zope.cachedescriptors.property.Lazy
     def author(self):
-        return ", ".join(self.context.authors)
+        return ', '.join(self.context.authors)
 
     @zope.cachedescriptors.property.Lazy
     def title(self):
@@ -118,14 +114,23 @@ class CommonListRepresentation(BaseListRepresentation):
     @zope.cachedescriptors.property.Lazy
     def teaserimage(self):
         import zeit.content.image.interfaces
-        return zeit.content.image.interfaces.IImages(
-            self.context).image
+
+        return zeit.content.image.interfaces.IImages(self.context).image
 
     @zope.cachedescriptors.property.Lazy
     def searchableText(self):
         items = []
-        for name in ('author', 'title', 'subtitle', 'byline',
-                     'ressort', 'volume', 'page', 'year', '__name__'):
+        for name in (
+            'author',
+            'title',
+            'subtitle',
+            'byline',
+            'ressort',
+            'volume',
+            'page',
+            'year',
+            '__name__',
+        ):
             try:
                 items.append(str(getattr(self, name)))
             except Exception:
@@ -133,8 +138,7 @@ class CommonListRepresentation(BaseListRepresentation):
         return ' '.join(items)
 
 
-@zope.component.adapter(
-    zeit.cms.browser.interfaces.IListRepresentation)
+@zope.component.adapter(zeit.cms.browser.interfaces.IListRepresentation)
 @zope.interface.implementer(zope.app.locking.interfaces.ILockable)
 def listRepresentation_to_Lockable(obj):
     return zope.app.locking.interfaces.ILockable(obj.context, None)
@@ -142,7 +146,6 @@ def listRepresentation_to_Lockable(obj):
 
 @zope.interface.implementer(zc.table.interfaces.ISortableColumn)
 class GetterColumn(zc.table.column.GetterColumn):
-
     def __init__(self, *args, **kw):
         self._getter = kw.pop('getter', None)
         cell_formatter = kw.pop('cell_formatter', None)
@@ -173,7 +176,6 @@ class GetterColumn(zc.table.column.GetterColumn):
 
 
 class MetadataColumn(GetterColumn):
-
     def __init__(self, title='', searchable_text=True, **kwargs):
         super().__init__(title=title, **kwargs)
         self.searchable_text = searchable_text
@@ -181,38 +183,33 @@ class MetadataColumn(GetterColumn):
     def getter(self, item, formatter):
         result = []
         if self.searchable_text:
-            result.append('<span class="SearchableText">%s</span>' %
-                          item.searchableText)
+            result.append('<span class="SearchableText">%s</span>' % item.searchableText)
         result.append(
             '<span class="URL">%s</span>'
-            '<span class="uniqueId">%s</span>' % (
-                item.url, item.uniqueId))
+            '<span class="uniqueId">%s</span>' % (item.url, item.uniqueId)
+        )
         return ''.join(result)
 
 
 class LockedColumn(zc.table.column.GetterColumn):
-
     def getter(self, item, formatter):
         return zope.component.getMultiAdapter(
-            (item, formatter.request), name='get_locking_indicator')
+            (item, formatter.request), name='get_locking_indicator'
+        )
 
     def cell_formatter(self, value, item, formatter):
         return str(value)
 
 
 class TypeColumn(GetterColumn):
-
     def getter(self, item, formatter):
-        icon = zope.component.queryMultiAdapter(
-            (item.context, formatter.request),
-            name='zmi_icon')
+        icon = zope.component.queryMultiAdapter((item.context, formatter.request), name='zmi_icon')
         if icon is None:
             return ''
         return icon()
 
 
 class PublishedColumn(zc.table.column.GetterColumn):
-
     def getter(self, item, formatter):
         return item.context  # The actual content object, not list_repr
 
@@ -220,32 +217,27 @@ class PublishedColumn(zc.table.column.GetterColumn):
         viewlet_manager = zope.component.getMultiAdapter(
             (value, formatter.request, self),
             zope.viewlet.interfaces.IViewletManager,
-            name='zeit.cms.workflow-indicator')
+            name='zeit.cms.workflow-indicator',
+        )
         viewlet_manager.update()
-        return '<div class="workflow-column">%s</div>' % (
-            viewlet_manager.render(),)
+        return '<div class="workflow-column">%s</div>' % (viewlet_manager.render(),)
 
 
 class FilenameColumn(GetterColumn):
-
     def cell_formatter(self, value, item, formatter):
-        formatted = super().cell_formatter(
-            value, item, formatter)
+        formatted = super().cell_formatter(value, item, formatter)
         return '<span class="filename">%s</span>' % formatted
 
 
 class DatetimeColumn(GetterColumn):
-
     def cell_formatter(self, value, item, formatter):
         if not value:
             return ''
-        tzinfo = zope.interface.common.idatetime.ITZInfo(formatter.request,
-                                                         None)
+        tzinfo = zope.interface.common.idatetime.ITZInfo(formatter.request, None)
         if tzinfo is not None:
             value = value.astimezone(tzinfo)
 
-        date_formatter = formatter.request.locale.dates.getFormatter(
-            'dateTime', 'medium')
+        date_formatter = formatter.request.locale.dates.getFormatter('dateTime', 'medium')
         return date_formatter.format(value)
 
     def getSortKey(self, item, formatter):
@@ -269,31 +261,12 @@ class Listing:
         TypeColumn('', name='type'),
         LockedColumn('', name='locked'),
         PublishedColumn('', name='published'),
-        GetterColumn(
-            _('Author'),
-            name='author',
-            getter=lambda t, c: t.author),
-        GetterColumn(
-            _('Title'),
-            name='title',
-            getter=lambda t, c: t.title),
-        FilenameColumn(
-            _('File name'),
-            name='filename',
-            getter=lambda t, c: t.__name__),
-        DatetimeColumn(
-            _('Modified'),
-            name='modified',
-            getter=lambda t, c: t.modifiedOn),
-        GetterColumn(
-            _('Ressort'),
-            name='ressort',
-            getter=lambda t, c: t.ressort),
-        GetterColumn(
-            _('Page'),
-            name='page',
-            getter=lambda t, c: t.page,
-            sort_default=-1),
+        GetterColumn(_('Author'), name='author', getter=lambda t, c: t.author),
+        GetterColumn(_('Title'), name='title', getter=lambda t, c: t.title),
+        FilenameColumn(_('File name'), name='filename', getter=lambda t, c: t.__name__),
+        DatetimeColumn(_('Modified'), name='modified', getter=lambda t, c: t.modifiedOn),
+        GetterColumn(_('Ressort'), name='ressort', getter=lambda t, c: t.ressort),
+        GetterColumn(_('Page'), name='page', getter=lambda t, c: t.page, sort_default=-1),
         MetadataColumn('Metadaten', name='metadata'),
     )
 
@@ -305,16 +278,15 @@ class Listing:
     def content(self):
         result = []
         for obj in sorted(
-                self.contentContext.values(),
-                key=zeit.cms.content.interfaces.IContentSortKey):
+            self.contentContext.values(), key=zeit.cms.content.interfaces.IContentSortKey
+        ):
             if not self.filter_content(obj):
                 continue
             list_repr = zope.component.queryMultiAdapter(
-                (obj, self.request),
-                zeit.cms.browser.interfaces.IListRepresentation)
+                (obj, self.request), zeit.cms.browser.interfaces.IListRepresentation
+            )
             if list_repr is None:
-                logger.warning("Could not adapt %r to IListRepresentation",
-                               (obj, ))
+                logger.warning('Could not adapt %r to IListRepresentation', (obj,))
             else:
                 result.append(list_repr)
         return result
@@ -323,8 +295,8 @@ class Listing:
     def contentTable(self):
         """Returns table listing contents"""
         formatter = zc.table.table.FormFullFormatter(
-            self.context, self.request, self.content,
-            columns=self.columns)
+            self.context, self.request, self.content, columns=self.columns
+        )
         formatter.cssClasses['table'] = self.css_class
         return formatter
 

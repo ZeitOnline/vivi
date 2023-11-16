@@ -10,4 +10,5 @@ def test_suite():
         'ticket.txt',
         'upload.txt',
         package='zeit.content.gallery.browser',
-        layer=zeit.content.gallery.testing.WSGI_LAYER)
+        layer=zeit.content.gallery.testing.WSGI_LAYER,
+    )

@@ -14,7 +14,6 @@ log = logging.getLogger(__name__)
 
 @grok.implementer(zeit.push.interfaces.IMessage)
 class Message(grok.Adapter):
-
     grok.context(zeit.cms.interfaces.ICMSContent)
     grok.baseclass()
 
@@ -41,15 +40,15 @@ class Message(grok.Adapter):
         kw['message'] = self
 
         try:
-            notifier = zope.component.getUtility(
-                zeit.push.interfaces.IPushNotifier, name=self.type)
+            notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=self.type)
             notifier.send(self.text, self.url, **kw)
             self.log_success()
             log.info('Push notification for %s sent', self.type)
         except Exception as e:
             self.log_error(str(e))
-            log.error('Error during push to %s with config %s',
-                      self.type, self.config, exc_info=True)
+            log.error(
+                'Error during push to %s with config %s', self.type, self.config, exc_info=True
+            )
 
     def _disable_message_config(self):
         push = zeit.push.interfaces.IPushMessages(self.context)
@@ -66,10 +65,10 @@ class Message(grok.Adapter):
 
     @property
     def url(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.push')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
         return zeit.push.interfaces.IPushURL(self.context).replace(
-            zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url'])
+            zeit.cms.interfaces.ID_NAMESPACE, config['push-target-url']
+        )
 
     @staticmethod
     def add_query_params(url, **params):
@@ -84,19 +83,29 @@ class Message(grok.Adapter):
         return zeit.objectlog.interfaces.ILog(self.context)
 
     def log_success(self):
-        self.object_log.log(_(
-            'Push notification for "${name}" sent.'
-            ' (Message: "${message}", Details: ${details})',
-            mapping={'name': self.type.capitalize(),
-                     'message': self.text,
-                     'details': self.log_message_details}))
+        self.object_log.log(
+            _(
+                'Push notification for "${name}" sent.'
+                ' (Message: "${message}", Details: ${details})',
+                mapping={
+                    'name': self.type.capitalize(),
+                    'message': self.text,
+                    'details': self.log_message_details,
+                },
+            )
+        )
 
     def log_error(self, reason):
-        self.object_log.log(_(
-            'Error during push to ${name} ${details}: ${reason}',
-            mapping={'name': self.type.capitalize(),
-                     'details': self.log_message_details,
-                     'reason': reason}))
+        self.object_log.log(
+            _(
+                'Error during push to ${name} ${details}: ${reason}',
+                mapping={
+                    'name': self.type.capitalize(),
+                    'details': self.log_message_details,
+                    'reason': reason,
+                },
+            )
+        )
 
     @property
     def log_message_details(self):
@@ -111,7 +120,6 @@ def default_push_url(context):
 
 @grok.implementer(zeit.push.interfaces.IAccountData)
 class AccountData(grok.Adapter):
-
     grok.context(zeit.cms.interfaces.ICMSContent)
 
     def __init__(self, context):
@@ -131,8 +139,7 @@ class AccountData(grok.Adapter):
     @facebook_main_enabled.setter
     def facebook_main_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT},
-                      enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT}, enabled=value)
 
     # We cannot use the key ``text``, since the first positional parameter of
     # IPushNotifier.send() is also called text, which causes TypeError.
@@ -145,34 +152,29 @@ class AccountData(grok.Adapter):
     @facebook_main_text.setter
     def facebook_main_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT},
-                      override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT}, override_text=value)
 
     @property
     def facebook_magazin_enabled(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(
-            type='facebook', account=source.MAGAZIN_ACCOUNT)
+        service = self.push.get(type='facebook', account=source.MAGAZIN_ACCOUNT)
         return service and service.get('enabled')
 
     @facebook_magazin_enabled.setter
     def facebook_magazin_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT},
-                      enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT}, enabled=value)
 
     @property
     def facebook_magazin_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(
-            type='facebook', account=source.MAGAZIN_ACCOUNT)
+        service = self.push.get(type='facebook', account=source.MAGAZIN_ACCOUNT)
         return service and service.get('override_text')
 
     @facebook_magazin_text.setter
     def facebook_magazin_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT},
-                      override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT}, override_text=value)
 
     @property
     def facebook_campus_enabled(self):
@@ -183,21 +185,18 @@ class AccountData(grok.Adapter):
     @facebook_campus_enabled.setter
     def facebook_campus_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT},
-                      enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT}, enabled=value)
 
     @property
     def facebook_campus_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(
-            type='facebook', account=source.CAMPUS_ACCOUNT)
+        service = self.push.get(type='facebook', account=source.CAMPUS_ACCOUNT)
         return service and service.get('override_text')
 
     @facebook_campus_text.setter
     def facebook_campus_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT},
-                      override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT}, override_text=value)
 
     @property
     def facebook_zett_enabled(self):
@@ -208,21 +207,18 @@ class AccountData(grok.Adapter):
     @facebook_zett_enabled.setter
     def facebook_zett_enabled(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT},
-                      enabled=value)
+        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT}, enabled=value)
 
     @property
     def facebook_zett_text(self):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(
-            type='facebook', account=source.ZETT_ACCOUNT)
+        service = self.push.get(type='facebook', account=source.ZETT_ACCOUNT)
         return service and service.get('override_text')
 
     @facebook_zett_text.setter
     def facebook_zett_text(self, value):
         source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT},
-                      override_text=value)
+        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT}, override_text=value)
 
     @property
     def twitter_main_enabled(self):
@@ -233,8 +229,7 @@ class AccountData(grok.Adapter):
     @twitter_main_enabled.setter
     def twitter_main_enabled(self, value):
         source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set({'type': 'twitter', 'account': source.MAIN_ACCOUNT},
-                      enabled=value)
+        self.push.set({'type': 'twitter', 'account': source.MAIN_ACCOUNT}, enabled=value)
 
     @property
     def twitter_ressort_text(self):
@@ -242,8 +237,7 @@ class AccountData(grok.Adapter):
 
     @twitter_ressort_text.setter
     def twitter_ressort_text(self, value):
-        self.push.set({'type': 'twitter', 'variant': 'ressort'},
-                      override_text=value)
+        self.push.set({'type': 'twitter', 'variant': 'ressort'}, override_text=value)
 
     @property
     def twitter_ressort(self):
@@ -299,8 +293,7 @@ class AccountData(grok.Adapter):
     @twitter_print_enabled.setter
     def twitter_print_enabled(self, value):
         source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT},
-                      enabled=value)
+        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT}, enabled=value)
 
     @property
     def twitter_print_text(self):
@@ -311,8 +304,7 @@ class AccountData(grok.Adapter):
     @twitter_print_text.setter
     def twitter_print_text(self, value):
         source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT},
-                      override_text=value)
+        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT}, override_text=value)
 
     @property
     def mobile_enabled(self):
@@ -375,16 +367,16 @@ class AccountData(grok.Adapter):
     @property
     def mobile_payload_template(self):
         service = self._mobile_service
-        return service and zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
-            .factory.find(service.get('payload_template'))
+        return service and zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.find(
+            service.get('payload_template')
+        )
 
     @mobile_payload_template.setter
     def mobile_payload_template(self, value):
         if value is None:
             token = None
         else:
-            token = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE\
-                .factory.getToken(value)
+            token = zeit.push.interfaces.PAYLOAD_TEMPLATE_SOURCE.factory.getToken(value)
         self._set_mobile_service(payload_template=token)
 
     @property

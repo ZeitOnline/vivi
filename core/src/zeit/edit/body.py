@@ -9,7 +9,6 @@ import zope.traversing.interfaces
 
 @grok.implementer(zope.traversing.interfaces.ITraversable)
 class Traverser(grok.Adapter):
-
     grok.baseclass()
 
     body_name = NotImplemented
@@ -24,8 +23,9 @@ class Traverser(grok.Adapter):
             # XXX zope.component does not offer an API to get the next adapter
             # that is less specific than the current one. So we hard-code the
             # default.
-            return zope.traversing.adapters.DefaultTraversable(
-                self.context).traverse(name, furtherPath)
+            return zope.traversing.adapters.DefaultTraversable(self.context).traverse(
+                name, furtherPath
+            )
 
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
@@ -52,8 +52,6 @@ class PublishTraverser:
 
     def publishTraverse(self, request, name):
         try:
-            return zope.traversing.interfaces.ITraversable(
-                self.context).traverse(name, None)
+            return zope.traversing.interfaces.ITraversable(self.context).traverse(name, None)
         except zope.location.interfaces.LocationError:
-            raise zope.publisher.interfaces.NotFound(
-                self.context, name, request)
+            raise zope.publisher.interfaces.NotFound(self.context, name, request)

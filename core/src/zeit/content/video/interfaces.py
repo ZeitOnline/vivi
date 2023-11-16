@@ -4,92 +4,66 @@ import zeit.content.image.interfaces
 import zope.schema
 
 
-class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
-                    zeit.cms.content.interfaces.IXMLContent,
-                    zeit.cms.content.interfaces.ISkipDefaultChannel):
+class IVideoContent(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.content.interfaces.IXMLContent,
+    zeit.cms.content.interfaces.ISkipDefaultChannel,
+):
     """Video like content.
 
     This could be a video or a playlist.
 
     """
 
-    id_prefix = zope.schema.TextLine(
-        title=_('Id prefix'),
-        required=True,
-        readonly=True)
+    id_prefix = zope.schema.TextLine(title=_('Id prefix'), required=True, readonly=True)
 
 
 class IVideoRendition(zope.interface.interfaces.IInterface):
-    url = zope.schema.URI(
-        title=_('URI of the rendition'),
-        required=False,
-        readonly=True)
+    url = zope.schema.URI(title=_('URI of the rendition'), required=False, readonly=True)
 
-    frame_width = zope.schema.Int(
-        title=_('Width of the Frame'))
+    frame_width = zope.schema.Int(title=_('Width of the Frame'))
 
-    video_duration = zope.schema.Int(
-        title=_('Duration of the rendition'))
+    video_duration = zope.schema.Int(title=_('Duration of the rendition'))
 
 
 class VideoTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
     values = ['livestream']
 
 
 class IVideo(IVideoContent):
+    external_id = zope.schema.TextLine(title=_('External ID'), readonly=True)
 
-    external_id = zope.schema.TextLine(
-        title=_('External ID'),
-        readonly=True)
-
-    has_recensions = zope.schema.Bool(
-        title=_('Has recension content'),
-        default=False)
+    has_recensions = zope.schema.Bool(title=_('Has recension content'), default=False)
 
     expires = zope.schema.Datetime(
-        title=_('Video expires on'),
-        required=False,
-        readonly=True,
-        default=None)
+        title=_('Video expires on'), required=False, readonly=True, default=None
+    )
 
-    video_still = zope.schema.URI(
-        title=_('URI of the still image'),
-        required=False,
-        readonly=True)
+    video_still = zope.schema.URI(title=_('URI of the still image'), required=False, readonly=True)
 
     renditions = zope.schema.Tuple(
-        title=_("Renditions of the Video"),
+        title=_('Renditions of the Video'),
         required=False,
         readonly=True,
         default=(),
         unique=False,
-        value_type=zope.schema.Object(
-            schema=IVideoRendition
-        )
+        value_type=zope.schema.Object(schema=IVideoRendition),
     )
 
     highest_rendition_url = zope.interface.Attribute(
-        'URL of the rendition with the highest resolution')
+        'URL of the rendition with the highest resolution'
+    )
 
-    video_still_copyright = zope.schema.TextLine(
-        title=_('Video still copyright'),
-        required=False)
+    video_still_copyright = zope.schema.TextLine(title=_('Video still copyright'), required=False)
 
     seo_slug = zope.interface.Attribute('URL tail for SEO.')
 
-    has_advertisement = zope.schema.Bool(
-        title=_('Has advertisement'),
-        default=True)
+    has_advertisement = zope.schema.Bool(title=_('Has advertisement'), default=True)
 
-    type = zope.schema.Choice(
-        title=_('Video type'),
-        source=VideoTypeSource(),
-        required=False)
+    type = zope.schema.Choice(title=_('Video type'), source=VideoTypeSource(), required=False)
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
-
     name = 'video'
     check_interfaces = (IVideo,)
 
@@ -98,26 +72,22 @@ videoSource = VideoSource()
 
 
 class IPlaylist(IVideoContent):
-
     videos = zope.schema.Tuple(
-        title=_("Video IDs"),
+        title=_('Video IDs'),
         required=False,
         readonly=True,
         default=(),
         unique=False,
-        value_type=zope.schema.Choice(
-            title=_('Videos in the playlist'),
-            source=videoSource))
+        value_type=zope.schema.Choice(title=_('Videos in the playlist'), source=videoSource),
+    )
 
 
 class PlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
-
     name = 'playlist'
     check_interfaces = (IPlaylist,)
 
 
 class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
-
     name = 'video-or-playlist'
     check_interfaces = IVideo, IPlaylist
 

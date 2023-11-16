@@ -30,62 +30,53 @@ product_config = """
 )
 
 
-CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(product_config, bases=(
-    zeit.content.author.testing.CONFIG_LAYER,))
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-mock.zcml', bases=(CONFIG_LAYER,))
-ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(
-    ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
+    product_config, bases=(zeit.content.author.testing.CONFIG_LAYER,)
+)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-mock.zcml', bases=(CONFIG_LAYER,))
+ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER, zeit.retresco.testhelper.TMS_MOCK_LAYER))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 
 
 TMS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-tms.zcml', bases=(
-        CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER))
+    'ftesting-tms.zcml', bases=(CONFIG_LAYER, zeit.retresco.testing.CONFIG_LAYER)
+)
 TMS_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(TMS_ZCML_LAYER,))
 TMS_WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(TMS_ZOPE_LAYER,))
 
 
 class XMLRPCLayer(plone.testing.Layer):
-
     defaultBases = (WSGI_LAYER,)
 
     def setUp(self):
         super().setUp()
         token_service = zeit.vgwort.token.TokenService()
-        token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(
-            x, self['wsgi_app'])
+        token_service.ServerProxy = lambda x: zeit.cms.webtest.ServerProxy(x, self['wsgi_app'])
         zope.component.getSiteManager().registerUtility(token_service)
 
 
 XMLRPC_LAYER = XMLRPCLayer()
 
-SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting-soap.zcml', bases=(CONFIG_LAYER,))
+SOAP_ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting-soap.zcml', bases=(CONFIG_LAYER,))
 SOAP_LAYER = zeit.cms.testing.ZopeLayer(bases=(SOAP_ZCML_LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = ZOPE_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
     layer = WSGI_LAYER
 
 
 @pytest.mark.integration()
-class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
-                       unittest.TestCase):
-
+class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase, unittest.TestCase):
     layer = SOAP_LAYER
     level = 2
 
     def setUp(self):
         super().setUp()
-        service = zope.component.getUtility(
-            zeit.vgwort.interfaces.IMessageService)
+        service = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
         try:
             service.call('qualityControl')
         except Exception:
@@ -95,7 +86,6 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
 @zope.component.adapter(zeit.cms.content.interfaces.ICommonMetadata)
 @zope.interface.implementer(zope.index.text.interfaces.ISearchableText)
 class SearchableText:
-
     def __init__(self, context):
         self.context = context
 

@@ -10,14 +10,12 @@ import zope.cachedescriptors.property
 
 
 class NoMasterImageErrorView:
-
     def __call__(self):
         transaction.doom()
         return super().__call__()
 
 
 class ImpBase(zeit.cms.browser.view.Base):
-
     template = zope.app.pagetemplate.ViewPageTemplateFile('imp.pt')
 
     @property
@@ -47,17 +45,14 @@ class Imp(ImpBase):
 
 
 class ImageBar(zeit.cms.browser.view.Base):
-
     def __call__(self):
         result = []
         for image in self.images:
-            scale_name = image.__name__.replace(
-                self.context.__name__ + '-', '', 1)
+            scale_name = image.__name__.replace(self.context.__name__ + '-', '', 1)
             scale_name = scale_name.rsplit('.', 1)[0]
-            result.append({
-                'url': self.url(image),
-                'name': image.__name__,
-                'scale_name': scale_name})
+            result.append(
+                {'url': self.url(image), 'name': image.__name__, 'scale_name': scale_name}
+            )
         return json.dumps(result)
 
     @property

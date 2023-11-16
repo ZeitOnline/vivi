@@ -6,14 +6,10 @@ import zeit.content.modules.quiz
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IQuiz)
-class Quiz(
-        zeit.content.modules.quiz.Quiz,
-        zeit.content.article.edit.block.Block):
-
+class Quiz(zeit.content.modules.quiz.Quiz, zeit.content.article.edit.block.Block):
     type = 'quiz'
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
-
     produces = Quiz
     title = _('Quiz block')

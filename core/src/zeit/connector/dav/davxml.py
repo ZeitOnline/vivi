@@ -8,13 +8,9 @@ __all__ = ('xml_from_string', 'xml_from_file')
 
 
 class DavXmlDoc:
-
     def __init__(self):
         self.doc = None
-        self.nsmap = {
-            'D': 'DAV:',
-            'd': 'DAV:',
-            'DAV:': 'DAV:'}
+        self.nsmap = {'D': 'DAV:', 'd': 'DAV:', 'DAV:': 'DAV:'}
 
     def from_string(self, string):
         self.parse(lxml.etree.fromstring, string)
@@ -27,8 +23,8 @@ class DavXmlDoc:
             self.doc = method(arg)
         except lxml.etree.XMLSyntaxError as e:
             raise zeit.connector.dav.interfaces.DavXmlParseError(
-                e.error_log.filter_levels(
-                    lxml.etree.ErrorLevels.FATAL))
+                e.error_log.filter_levels(lxml.etree.ErrorLevels.FATAL)
+            )
 
     def xpathEval(self, expr):
         return self.doc.xpath(expr, namespaces=self.nsmap)

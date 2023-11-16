@@ -35,10 +35,10 @@ class Form:
         if instance is None:
             return self
 
-        if (instance.request.method == 'POST' and
-                not instance.request.form.get('_body_decoded')):
-            decoded = json.loads(instance.request.bodyStream.read(
-                int(instance.request['CONTENT_LENGTH'])))
+        if instance.request.method == 'POST' and not instance.request.form.get('_body_decoded'):
+            decoded = json.loads(
+                instance.request.bodyStream.read(int(instance.request['CONTENT_LENGTH']))
+            )
             instance.request.form.update(decoded)
             instance.request.form['_body_decoded'] = True
 
@@ -51,7 +51,6 @@ class Form:
 
 
 class Action(zeit.cms.browser.view.Base):
-
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
         self.signals = []
@@ -60,8 +59,7 @@ class Action(zeit.cms.browser.view.Base):
     def reload(self, element=None):
         if element is None:
             element = self.context
-        self.signal(
-            None, 'reload', element.__name__, self.url(element, '@@contents'))
+        self.signal(None, 'reload', element.__name__, self.url(element, '@@contents'))
 
     def signal(self, when, name, *args):
         signal = {'args': args, 'name': name, 'when': when}
@@ -90,13 +88,13 @@ def validate(context):
     return (css_class, messages)
 
 
-class EditBox(zeit.cms.browser.form.WidgetCSSMixin,
-              zope.formlib.form.SubPageEditForm):
+class EditBox(zeit.cms.browser.form.WidgetCSSMixin, zope.formlib.form.SubPageEditForm):
     """Base class for an edit box."""
 
     template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
     form = zope.app.pagetemplate.ViewPageTemplateFile(
-        'subpageform.pt', str(importlib.resources.files('zeit.cms.browser')))
+        'subpageform.pt', str(importlib.resources.files('zeit.cms.browser'))
+    )
     close = False
     form_fields = NotImplemented
 
@@ -108,8 +106,7 @@ class EditBox(zeit.cms.browser.form.WidgetCSSMixin,
 
 # There is no SubPageAddForm, so we set this up analog to SubPageEditForm
 @zope.interface.implementer(zope.formlib.interfaces.ISubPageForm)
-class AddBox(zeit.cms.browser.form.AddFormBase,
-             zope.formlib.form.AddFormBase):
+class AddBox(zeit.cms.browser.form.AddFormBase, zope.formlib.form.AddFormBase):
     """Base class for an add box."""
 
     template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
@@ -140,9 +137,7 @@ class AddBox(zeit.cms.browser.form.AddFormBase,
 
 
 class EditBoxAction(zope.viewlet.viewlet.ViewletBase):
-
-    render = zope.browserpage.ViewPageTemplateFile(
-        'view.editbox-action.pt')
+    render = zope.browserpage.ViewPageTemplateFile('view.editbox-action.pt')
     title = NotImplemented
     action = NotImplemented
     type = 'edit-link'
@@ -151,24 +146,26 @@ class EditBoxAction(zope.viewlet.viewlet.ViewletBase):
 ViewLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.view-loader.pt')
 
 
-class ErrorPreventingViewletManager(
-        zope.viewlet.manager.WeightOrderedViewletManager):
+class ErrorPreventingViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
     """Prevents rendering viewlets which raise an Exception in render."""
 
     wrapper = '<div class="error">{error_msg}</div>'
 
     def render_viewlet(self, viewlet):
-        "Renders viewlet. Returns error message if viewlet cannot be rendered."
+        'Renders viewlet. Returns error message if viewlet cannot be rendered.'
         try:
             return viewlet.render()
         except Exception as e:
-            mapping = {'name': viewlet.__name__, 'exc_type': type(e).__name__,
-                       'exc_msg': str(e)}
+            mapping = {'name': viewlet.__name__, 'exc_type': type(e).__name__, 'exc_msg': str(e)}
             error_msg = _(
-                "There was an error rendering ${name}: ${exc_type} ${exc_msg}",
-                mapping=mapping)
-            log.warning('There was an error rendering %s at %s' % (
-                mapping['name'], self.request.getURL()), exc_info=True)
+                'There was an error rendering ${name}: ${exc_type} ${exc_msg}', mapping=mapping
+            )
+            log.warning(
+                'There was an error rendering %s at %s' % (mapping['name'], self.request.getURL()),
+                exc_info=True,
+            )
             return self.wrapper.format(
-                error_msg=xml.sax.saxutils.escape(zope.i18n.translate(
-                    error_msg, context=self.request)))
+                error_msg=xml.sax.saxutils.escape(
+                    zope.i18n.translate(error_msg, context=self.request)
+                )
+            )

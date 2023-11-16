@@ -8,17 +8,19 @@ DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/text'
 
 
 class CannotEncode(zope.schema.ValidationError):
-
     def doc(self):
         text, encoding, e = self.args
-        return _('Could not encode charachters ${start}-${end} to ${encoding} '
-                 '(${characters}): ${reason}',
-                 mapping={
-                     'start': e.start,
-                     'end': e.end,
-                     'encoding': encoding,
-                     'characters': text[e.start:e.end],
-                     'reason': e.reason})
+        return _(
+            'Could not encode charachters ${start}-${end} to ${encoding} '
+            '(${characters}): ${reason}',
+            mapping={
+                'start': e.start,
+                'end': e.end,
+                'encoding': encoding,
+                'characters': text[e.start : e.end],
+                'reason': e.reason,
+            },
+        )
 
     def __repr__(self):
         return '<%s %s>' % (self.__class__.__name__, self.args[2])
@@ -31,15 +33,13 @@ class Code(zope.schema.Text):
 class IText(zeit.cms.repository.interfaces.IDAVContent):
     """A simple object containing unparsed text."""
 
-    text = Code(
-        title=_('Content'))
+    text = Code(title=_('Content'))
 
     mimeType = zeit.cms.repository.interfaces.IFile['mimeType'].bind(object())
     mimeType.default = 'text/plain'
 
 
 class TextSource(zeit.cms.content.contentsource.CMSContentSource):
-
     name = 'zeit.content.text'
     check_interfaces = (IText,)
 
@@ -48,7 +48,6 @@ textSource = TextSource()
 
 
 class IPythonScript(IText):
-
     def __call__(**kw):
         """Evaluates the python code and returns the result.
 
@@ -61,8 +60,7 @@ class IPythonScript(IText):
 
 
 class IJinjaTemplate(IText):
-
-    title = zope.schema.TextLine(title=_("Title"))
+    title = zope.schema.TextLine(title=_('Title'))
 
     def __call__(**kw):
         """Renders the content as a jina template and returns the result.
@@ -76,7 +74,6 @@ class JSON(zope.schema.Text):
 
 
 class IJSON(IText):
-
     text = JSON(title=_('Content'))
 
     mimeType = zeit.cms.repository.interfaces.IFile['mimeType'].bind(object())
@@ -84,14 +81,11 @@ class IJSON(IText):
 
 
 class IValidationSchema(zope.interface.Interface):
-
-    schema_url = zope.schema.TextLine(
-        title=_('url of schema'),
-        required=False)
+    schema_url = zope.schema.TextLine(title=_('url of schema'), required=False)
 
     field_name = zope.schema.TextLine(
-        title=_('specific schema to use for validation'),
-        required=False)
+        title=_('specific schema to use for validation'), required=False
+    )
 
     def validate():
         pass
@@ -102,22 +96,16 @@ class SchemaValidationError(Exception):
 
 
 class IEmbed(IText):
+    render_as_template = zope.schema.Bool(title=_('Render as template?'))
 
-    render_as_template = zope.schema.Bool(title=_("Render as template?"))
-
-    parameter_definition = Code(
-        title=_("Parameter definition"),
-        required=False)
+    parameter_definition = Code(title=_('Parameter definition'), required=False)
 
     parameter_fields = zope.interface.Attribute('dict of schema fields')
 
-    vivi_css = Code(
-        title=_("Embed CSS"),
-        required=False)
+    vivi_css = Code(title=_('Embed CSS'), required=False)
 
 
 class EmbedSource(zeit.cms.content.contentsource.CMSContentSource):
-
     name = 'zeit.content.text.embed'
     check_interfaces = (IText, IEmbed)
 

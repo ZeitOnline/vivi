@@ -14,18 +14,15 @@ def css_path(css):
 
 
 class TestDottedName(zeit.content.cp.testing.SeleniumTestCase):
-
     def test_lookup(self):
         self.open_centerpage()
         # Test a name that we know that exists
         # XXX should be moved to zeit.cms
-        result = self.eval(
-            'new (window.zeit.cms.resolveDottedName("zeit.edit.Editor"))')
+        result = self.eval('new (window.zeit.cms.resolveDottedName("zeit.edit.Editor"))')
         self.assertEqual('zeit.edit.Editor', result['__name__'])
 
 
 class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
-
     def test_add_and_delete(self):
         self.create_teaserlist()
         s = self.selenium
@@ -83,7 +80,6 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
 
 
 class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
-
     def test_adding_via_drag_and_drop_from_clipboard(self):
         self.open('/')
         s = self.selenium
@@ -94,20 +90,15 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
         self.create_teaserlist()
 
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/testcontent"]',
-            'css=div.type-teaser')
+        s.dragAndDropToObject('//li[@uniqueid="Clip/testcontent"]', 'css=div.type-teaser')
         s.waitForElementPresent('css=div.supertitle')
 
     def test_delete_content(self):
         s = self.selenium
         self.create_content_and_fill_clipboard()
         self.create_teaserlist()
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser', '10,150')
-        s.waitForElementPresent(
-            '//div[@class="teaserTitle" and text() = "c1 teaser"]')
+        s.dragAndDropToObject('//li[@uniqueid="Clip/c1"]', 'css=div.type-teaser', '10,150')
+        s.waitForElementPresent('//div[@class="teaserTitle" and text() = "c1 teaser"]')
 
         s.click('css=.type-teaser a.common-link')
         s.waitForElementPresent('css=.edit-common-box')
@@ -117,8 +108,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('id=form.actions.apply')
 
         s.click('css=a.CloseButton')
-        s.waitForElementNotPresent(
-            '//div[@class="teaserTitle" and text() = "c1 teaser"]')
+        s.waitForElementNotPresent('//div[@class="teaserTitle" and text() = "c1 teaser"]')
 
     def test_toggle_visible(self):
         self.open_centerpage()
@@ -128,10 +118,9 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         teaser_module = self.get_module('cp', 'Teaser')
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
-            teaser_module,
-            'css=.landing-zone.action-cp-module-droppable', '10,10')
-        s.waitForElementPresent(
-            'css=.block.type-area .block.type-teaser')
+            teaser_module, 'css=.landing-zone.action-cp-module-droppable', '10,10'
+        )
+        s.waitForElementPresent('css=.block.type-area .block.type-teaser')
 
         visible_off_marker = 'css=.block.type-teaser.block-visible-off'
         toggle_visible = 'css=.block.type-teaser .toggle-visible-link'
@@ -143,12 +132,12 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
 
 class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         cp = self.create_and_checkout_centerpage()
         self.teaser = zope.component.getAdapter(
-            cp['lead'], zeit.edit.interfaces.IElementFactory, 'teaser')()
+            cp['lead'], zeit.edit.interfaces.IElementFactory, 'teaser'
+        )()
         transaction.commit()
         self.open_centerpage(create_cp=False)
 
@@ -163,7 +152,8 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=#lead .block.type-teaser .dragger',
             'css=#informatives .landing-zone.action-cp-module-movable',
-            '10,10')
+            '10,10',
+        )
         s.waitForElementNotPresent('css=#lead .block.type-teaser')
         s.waitForElementPresent('css=#informatives .block.type-teaser')
 
@@ -177,7 +167,8 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=#{} .dragger'.format(block2),
             'css=#informatives .landing-zone.action-cp-module-movable',
-            '10,10')
+            '10,10',
+        )
         s.waitForAttribute(path.format(pos=1), block2)
         s.waitForAttribute(path.format(pos=2), block1)
 
@@ -187,8 +178,7 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.click('link=Regionen')
         module = self.get_module('body', 'Solo')
         s.waitForElementPresent(module)
-        s.dragAndDropToObject(
-            module, 'css=.action-cp-body-module-droppable', '10,10')
+        s.dragAndDropToObject(module, 'css=.action-cp-body-module-droppable', '10,10')
         s.waitForCssCount('css=.type-region', 2)
         region = s.selenium.find_elements(*split_locator('css=.type-region'))
         region = [x.get_attribute('id') for x in region]
@@ -196,7 +186,8 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=#feature #informatives .dragger',
             'css=#%s .landing-zone.action-cp-region-module-movable' % region,
-            '10,10')
+            '10,10',
+        )
         s.waitForElementNotPresent('css=#feature #informatives')
         s.waitForElementPresent('css=#%s #informatives' % region)
 
@@ -210,7 +201,8 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=#{} .dragger'.format(area2),
             'css=#feature .landing-zone.action-cp-region-module-movable',
-            '10,10')
+            '10,10',
+        )
         s.waitForAttribute(path.format(pos=1), area2)
         s.waitForAttribute(path.format(pos=2), area1)
 
@@ -226,11 +218,9 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         self.selenium.click('link=Struktur')
         self.selenium.click('link=Regionen')
         self.selenium.waitForElementPresent(module)
-        self.selenium.dragAndDropToObject(
-            module, selector, '10,10')
+        self.selenium.dragAndDropToObject(module, selector, '10,10')
         s.waitForCssCount('css=.type-region', 2)
-        self.selenium.dragAndDropToObject(
-            module, selector, '10,10')
+        self.selenium.dragAndDropToObject(module, selector, '10,10')
         s.waitForCssCount('css=.type-region', 3)
 
         region1 = s.getAttribute(path.format(pos=1))
@@ -238,7 +228,8 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=#{} .dragger'.format(region2),
             'css=#body .landing-zone.action-cp-type-region-movable',
-            '10,10')
+            '10,10',
+        )
         s.waitForAttribute(path.format(pos=1), region2)
         s.waitForAttribute(path.format(pos=2), region1)
 
@@ -256,7 +247,6 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
 
 
 class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
-
     def test_lead(self):
         self.create_content_and_fill_clipboard()
         self.open_centerpage()
@@ -264,8 +254,8 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
 
         s.verifyElementNotPresent('css=.block.type-teaser')
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]',
-            'css=.landing-zone.action-cp-module-droppable', '10,10')
+            '//li[@uniqueid="Clip/c3"]', 'css=.landing-zone.action-cp-module-droppable', '10,10'
+        )
         s.waitForElementPresent('css=.block.type-teaser')
 
     def test_zones_after_blocks(self):
@@ -274,22 +264,18 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
 
         # Create a block, there will be a landing zone after it:
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone', '10,10')
+        s.dragAndDropToObject('//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone', '10,10')
         s.verifyElementPresent('css=.block + .landing-zone')
 
         # The "normal" landing zone is also there
         s.verifyElementPresent('css=.landing-zone + .block')
 
         # Drop something on the after-block landing zone
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]',
-            'css=.block + .landing-zone', '10,10')
+        s.dragAndDropToObject('//li[@uniqueid="Clip/c1"]', 'css=.block + .landing-zone', '10,10')
         s.waitForElementPresent('css=.block.type-teaser')
 
 
 class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
-
     def test_add_quiz(self):
         self.open_centerpage()
 
@@ -297,14 +283,11 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('link=Struktur')
         module = self.get_module('cp', 'Quiz')
         s.waitForElementPresent(module)
-        s.dragAndDropToObject(
-            module,
-            'css=.landing-zone.action-cp-module-droppable', '10,10')
+        s.dragAndDropToObject(module, 'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=div.type-quiz')
 
 
 class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
-
     def test_add_xml_to_lead(self):
         self.open_centerpage()
 
@@ -312,23 +295,18 @@ class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('link=Struktur')
         module = self.get_module('cp', 'XML')
         s.waitForElementPresent(module)
-        s.dragAndDropToObject(
-            module,
-            'css=.landing-zone.action-cp-module-droppable', '10,10')
+        s.dragAndDropToObject(module, 'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=div.type-xml')
 
 
 class TestSidebar(zeit.content.cp.testing.SeleniumTestCase):
-
     def test_sidebar_should_be_folded_away(self):
         s = self.selenium
         self.open_centerpage()
-        s.waitForElementPresent(
-            '//div[@id="sidebar-dragger" and @class="sidebar-expanded"]')
+        s.waitForElementPresent('//div[@id="sidebar-dragger" and @class="sidebar-expanded"]')
 
 
 class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
-
     def setUp(self):
         super().setUp()
         self.create_content_and_fill_clipboard()
@@ -337,10 +315,9 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         for i in range(1, 4):
             s.dragAndDropToObject(
-                '//li[@uniqueid="Clip/c%s"]' % i,
-                'css=#lead .landing-zone', '10,150')
-            s.waitForElementPresent(
-                '//div[@class="teaserTitle" and text() = "c%s teaser"]' % i)
+                '//li[@uniqueid="Clip/c%s"]' % i, 'css=#lead .landing-zone', '10,150'
+            )
+            s.waitForElementPresent('//div[@class="teaserTitle" and text() = "c%s teaser"]' % i)
 
     def test_editor_should_be_reloaded_after_publishing(self):
         s = self.selenium

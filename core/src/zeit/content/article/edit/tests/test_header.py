@@ -9,14 +9,12 @@ import zope.security.proxy
 
 
 class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
         fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
-        self.patches.add(
-            'zeit.edit.container.Base._generate_block_id', fake_uuid)
+        self.patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)
 
     def tearDown(self):
         self.patches.reset()
@@ -33,8 +31,7 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(1, len(article.xml.xpath('//head/header')))
 
     def test_migration_works_with_security(self):
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(article, temporary=False) as co:
             co = zope.security.proxy.ProxyFactory(co)
             with self.assertNothingRaised():
@@ -67,8 +64,7 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(0, header.index(module))
 
     def test_header_has_security_declaration(self):
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         with checked_out(article, temporary=False) as co:
             co = zope.security.proxy.ProxyFactory(co)
             with self.assertNothingRaised():

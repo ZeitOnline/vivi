@@ -5,13 +5,11 @@ import zeit.connector.dav.davconnection
 
 
 class TestPropfind(unittest.TestCase):
-
     response = ''
 
     def setUp(self):
         self.count = 0
-        self.conn = zeit.connector.dav.davconnection.DAVConnection(
-            'localhost')
+        self.conn = zeit.connector.dav.davconnection.DAVConnection('localhost')
         self._orig_propfind = zeit.connector.dav.davbase.DAVConnection.propfind
         zeit.connector.dav.davbase.DAVConnection.propfind = self.propfind
 
@@ -40,7 +38,6 @@ class TestPropfind(unittest.TestCase):
 
     def verifyRaisesAfter(self, xml, count):
         self.response = xml
-        self.assertRaises(zeit.connector.dav.interfaces.DavXmlParseError,
-                          self.conn.propfind, '/')
+        self.assertRaises(zeit.connector.dav.interfaces.DavXmlParseError, self.conn.propfind, '/')
         self.assertEqual(count, self.count)
         self.count = 0

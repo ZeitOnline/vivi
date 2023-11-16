@@ -7,31 +7,23 @@ import zope.formlib.form
 
 
 class Base:
-
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.advertisement.interfaces.IAdvertisement).select(
-            'title', 'text', 'button_text', 'button_color', 'image',
-            'supertitle', 'url')
+        zeit.content.advertisement.interfaces.IAdvertisement
+    ).select('title', 'text', 'button_text', 'button_color', 'image', 'supertitle', 'url')
 
-    field_groups = (
-        gocept.form.grouped.RemainingFields(
-            _('Texts')),
-    )
+    field_groups = (gocept.form.grouped.RemainingFields(_('Texts')),)
 
 
 class Add(Base, zeit.cms.browser.form.AddForm):
-
     title = _('Add publisher advertisement')
     factory = zeit.content.advertisement.advertisement.Advertisement
     form_fields = Base.form_fields + zope.formlib.form.FormFields(
-        zeit.content.advertisement.interfaces.IAdvertisement).select(
-            '__name__')
+        zeit.content.advertisement.interfaces.IAdvertisement
+    ).select('__name__')
 
     field_groups = (
-        (gocept.form.grouped.Fields(
-            _('Navigation'), ('__name__',), css_class='column-right'),) +
-        Base.field_groups
-    )
+        gocept.form.grouped.Fields(_('Navigation'), ('__name__',), css_class='column-right'),
+    ) + Base.field_groups
 
 
 class Edit(Base, zeit.cms.browser.form.EditForm):

@@ -4,6 +4,7 @@ import zope.component
 
 def update(root):
     from lovely.remotetask.interfaces import ITaskService
+
     site_manager = zope.component.getSiteManager()
     for name, service in site_manager.getUtilitiesFor(ITaskService):
         done = site_manager.unregisterUtility(provided=ITaskService, name=name)

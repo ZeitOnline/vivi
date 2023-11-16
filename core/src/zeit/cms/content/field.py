@@ -15,12 +15,12 @@ DEFAULT_MARKER = object()
 
 class IXMLTree(zope.schema.interfaces.IField):
     """A field containing an lxml.objectified tree."""
+
     # This is here to avoid circular imports
 
 
 @zope.interface.implementer(zope.schema.interfaces.IFromUnicode)
 class _XMLBase(zope.schema.Field):
-
     def __init__(self, *args, **kw):
         tidy_input = kw.pop('tidy_input', False)
         if tidy_input:
@@ -43,27 +43,24 @@ class _XMLBase(zope.schema.Field):
 
     def set(self, object, value):
         if self.readonly:
-            raise TypeError("Can't set values on read-only fields "
-                            "(name=%s, class=%s.%s)"
-                            % (self.__name__,
-                               object.__class__.__module__,
-                               object.__class__.__name__))
+            raise TypeError(
+                "Can't set values on read-only fields "
+                '(name=%s, class=%s.%s)'
+                % (self.__name__, object.__class__.__module__, object.__class__.__name__)
+            )
         current_value = self.query(object, DEFAULT_MARKER)
-        if not (current_value is DEFAULT_MARKER or
-                current_value.getparent() is None):
+        if not (current_value is DEFAULT_MARKER or current_value.getparent() is None):
             # Locate the XML object into the workingcopy so that edit
             # permissions can be found
             parent = located(current_value.getparent(), object, self.__name__)
             # Remove the security proxy cause lxml can't eat them
-            parent.replace(
-                zope.security.proxy.removeSecurityProxy(current_value), value)
+            parent.replace(zope.security.proxy.removeSecurityProxy(current_value), value)
         setattr(object, self.__name__, value)
 
 
 def located(obj, parent, name):
     obj_ = zope.security.proxy.removeSecurityProxy(obj)
-    obj_ = zope.location.location.LocationProxy(
-        obj_, parent, name)
+    obj_ = zope.location.location.LocationProxy(obj_, parent, name)
     if type(obj) is zope.security.proxy.Proxy:
         return zope.security.checker.ProxyFactory(obj_)
     return obj_

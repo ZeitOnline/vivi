@@ -16,62 +16,53 @@ class IZCOSection(zeit.cms.section.interfaces.ISection):
     pass
 
 
-class IZCOContent(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.section.interfaces.ISectionMarker):
+class IZCOContent(zeit.cms.interfaces.ICMSContent, zeit.cms.section.interfaces.ISectionMarker):
     pass
 
 
 class IZCOFolder(
-        zeit.cms.repository.interfaces.IFolder,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.cms.repository.interfaces.IFolder, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZCOArticle(
-        zeit.content.article.interfaces.IArticle,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.article.interfaces.IArticle, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZCOCenterPage(
-        zeit.content.cp.interfaces.ICenterPage,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.cp.interfaces.ICenterPage, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class IZCOGallery(
-        zeit.content.gallery.interfaces.IGallery,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.gallery.interfaces.IGallery, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
-class IZCOLink(
-        zeit.content.link.interfaces.ILink,
-        zeit.cms.section.interfaces.ISectionMarker):
+class IZCOLink(zeit.content.link.interfaces.ILink, zeit.cms.section.interfaces.ISectionMarker):
     pass
 
 
 class IZCOInfobox(
-        zeit.content.infobox.interfaces.IInfobox,
-        zeit.cms.section.interfaces.ISectionMarker):
+    zeit.content.infobox.interfaces.IInfobox, zeit.cms.section.interfaces.ISectionMarker
+):
     pass
 
 
 class ITopic(zope.interface.Interface):
-
     page = zope.schema.Choice(
-        title=_("Topic page"),
-        required=False,
-        source=zeit.content.cp.source.centerPageSource)
+        title=_('Topic page'), required=False, source=zeit.content.cp.source.centerPageSource
+    )
 
-    label = zope.schema.TextLine(
-        title=_("Topic label"),
-        required=False)
+    label = zope.schema.TextLine(title=_('Topic label'), required=False)
 
 
 class StudyCourse(zeit.cms.content.sources.AllowedBase):
-
     def __init__(self, id, title, available, text, href, button_text):
         super().__init__(id, title, available)
         self.text = text
@@ -83,10 +74,7 @@ class StudyCourse(zeit.cms.content.sources.AllowedBase):
         return super().is_allowed(article)
 
 
-class StudyCourseSource(
-        zeit.cms.content.sources.ObjectSource,
-        zeit.cms.content.sources.XMLSource):
-
+class StudyCourseSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.campus'
     config_url = 'article-stoa-source'
     default_filename = 'article-stoa.xml'
@@ -100,9 +88,13 @@ class StudyCourseSource(
             g = node.get
             id = node.get(self.attribute)
             result[id] = StudyCourse(
-                id, g('vivi_title'), g('available', None),
-                self._get_title_for(node), g('href', None),
-                g('button_text', None))
+                id,
+                g('vivi_title'),
+                g('available', None),
+                self._get_title_for(node),
+                g('href', None),
+                g('button_text', None),
+            )
         return result
 
 
@@ -110,9 +102,5 @@ STUDY_COURSE_SOURCE = StudyCourseSource()
 
 
 class IStudyCourse(zeit.edit.interfaces.IBlock):
-
     # For editing
-    course = zope.schema.Choice(
-        title=_('Study course'),
-        required=True,
-        source=STUDY_COURSE_SOURCE)
+    course = zope.schema.Choice(title=_('Study course'), required=True, source=STUDY_COURSE_SOURCE)

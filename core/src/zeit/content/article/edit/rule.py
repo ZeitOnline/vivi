@@ -22,8 +22,9 @@ def content(context):  # noqa
 
 @glob(zeit.content.article.edit.interfaces.IReference)
 def content(context):  # noqa
-    field = zope.interface.implementedBy(type(
-        zope.security.proxy.getObject(context))).get('references')
+    field = zope.interface.implementedBy(type(zope.security.proxy.getObject(context))).get(
+        'references'
+    )
     if field.required:
         return [context.references]
     else:
@@ -49,5 +50,6 @@ def content(context):  # noqa
 @glob(zeit.content.article.edit.interfaces.ILayoutable)
 def layout(context):
     return context.layout
+
 
 # Note that layout(Interface) is defined in zeit.content.cp.rule

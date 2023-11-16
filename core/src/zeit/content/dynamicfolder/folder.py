@@ -26,8 +26,7 @@ import zope.interface
 import zope.security.proxy
 
 
-@zope.interface.implementer(
-    zeit.content.dynamicfolder.interfaces.IDynamicFolder)
+@zope.interface.implementer(zeit.content.dynamicfolder.interfaces.IDynamicFolder)
 class DynamicFolderBase:
     """Base class for the dynamic folder that holds all attributes.
 
@@ -38,15 +37,15 @@ class DynamicFolderBase:
     zeit.cms.content.dav.mapProperties(
         zeit.content.dynamicfolder.interfaces.IDynamicFolder,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('config_file',))
+        ('config_file',),
+    )
 
 
 @zope.interface.implementer(
     zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder,
-    zeit.cms.repository.interfaces.INonRecursiveCollection)
-class RepositoryDynamicFolder(
-        DynamicFolderBase,
-        zeit.cms.repository.folder.Folder):
+    zeit.cms.repository.interfaces.INonRecursiveCollection,
+)
+class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Folder):
     """Inside the repository the dynamic folder can contain children."""
 
     def __getitem__(self, key):
@@ -68,8 +67,7 @@ class RepositoryDynamicFolder(
             # XXX copy&paste from Repository._getContent().
             self.repository._add_marker_interfaces(content)
             self.repository._content[unique_id] = content
-        return zope.container.contained.contained(
-            content, self, content.__name__)
+        return zope.container.contained.contained(content, self, content.__name__)
 
     def __delitem__(self, key):
         value = self.get(key)
@@ -83,9 +81,11 @@ class RepositoryDynamicFolder(
             if self.content_template_file is None:
                 return jinja2.Template('')
             self._v_content_template = jinja2.Template(
-                zeit.connector.interfaces.IResource(
-                    self.content_template_file).data.read().decode('utf-8'),
-                autoescape=True)
+                zeit.connector.interfaces.IResource(self.content_template_file)
+                .data.read()
+                .decode('utf-8'),
+                autoescape=True,
+            )
         return self._v_content_template
 
     @property
@@ -94,15 +94,12 @@ class RepositoryDynamicFolder(
         return zeit.cms.interfaces.ICMSContent(template_file, None)
 
     def _create_virtual_content(self, key):
-        body = self.content_template.render(
-            **self.virtual_content[key]).encode('utf-8')
+        body = self.content_template.render(**self.virtual_content[key]).encode('utf-8')
         properties = VirtualProperties.parse(body)
         resource = zeit.connector.resource.Resource(
             id=self._get_id_for_name(key),
             name=key,
-            type=properties.get(
-                ('type', 'http://namespaces.zeit.de/CMS/meta'),
-                'centerpage-2009'),
+            type=properties.get(('type', 'http://namespaces.zeit.de/CMS/meta'), 'centerpage-2009'),
             data=BytesIO(body),
             # Even though virtual content never touches the connector and thus
             # we have to override the IWebDAVProperties adapter, some parts of
@@ -112,8 +109,7 @@ class RepositoryDynamicFolder(
         content = zeit.cms.interfaces.ICMSContent(resource)
         # Setting __name__ is normally done by Repository.getCopyOf().
         content.__name__ = resource.__name__
-        zope.interface.alsoProvides(
-            content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
+        zope.interface.alsoProvides(content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
         return content
 
     @property
@@ -137,8 +133,8 @@ class RepositoryDynamicFolder(
 
         if not hasattr(self, '_v_config'):
             config = lxml.objectify.fromstring(
-                zeit.connector.interfaces.IResource(
-                    self.config_file).data.read())
+                zeit.connector.interfaces.IResource(self.config_file).data.read()
+            )
             for include in config.xpath('//include'):
                 parent = include.getparent()
                 parent.remove(include)
@@ -150,7 +146,8 @@ class RepositoryDynamicFolder(
     @staticmethod
     def _resolve_include(include):
         data = zeit.connector.interfaces.IResource(
-            zeit.cms.interfaces.ICMSContent(include.get('href'))).data.read()
+            zeit.cms.interfaces.ICMSContent(include.get('href'))
+        ).data.read()
         document = lxml.objectify.fromstring(data)
         if include.get('xpointer'):
             return document.xpath(include.get('xpointer'))
@@ -199,11 +196,10 @@ class RepositoryDynamicFolder(
         return result
 
 
-@zope.interface.implementer(
-    zeit.content.dynamicfolder.interfaces.ILocalDynamicFolder)
-class LocalDynamicFolder(DynamicFolderBase,
-                         persistent.Persistent,
-                         zope.container.contained.Contained):
+@zope.interface.implementer(zeit.content.dynamicfolder.interfaces.ILocalDynamicFolder)
+class LocalDynamicFolder(
+    DynamicFolderBase, persistent.Persistent, zope.container.contained.Contained
+):
     """Inside the workingcopy the folder only holds attributes, no children."""
 
 
@@ -224,7 +220,8 @@ def local_dynamic_folder_factory(context):
     local.uniqueId = context.uniqueId
     local.__name__ = context.__name__
     zeit.connector.interfaces.IWebDAVWriteProperties(local).update(
-        zeit.connector.interfaces.IWebDAVReadProperties(context))
+        zeit.connector.interfaces.IWebDAVReadProperties(context)
+    )
     return local
 
 
@@ -237,16 +234,12 @@ def virtual_local_content(context):
     # (Note: Our return value must not be security-wrapped; with getCopyOf()
     # that works out automatically).
     content = copy.copy(zope.security.proxy.getObject(context))
-    repository_properties = zeit.connector.interfaces.IWebDAVReadProperties(
-        context)
+    repository_properties = zeit.connector.interfaces.IWebDAVReadProperties(context)
 
-    zope.interface.alsoProvides(
-        content, zeit.cms.workingcopy.interfaces.ILocalContent)
-    zope.interface.noLongerProvides(
-        content, zeit.cms.repository.interfaces.IRepositoryContent)
+    zope.interface.alsoProvides(content, zeit.cms.workingcopy.interfaces.ILocalContent)
+    zope.interface.noLongerProvides(content, zeit.cms.repository.interfaces.IRepositoryContent)
 
-    zope.interface.noLongerProvides(
-        content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
+    zope.interface.noLongerProvides(content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
     new_properties = zeit.connector.interfaces.IWebDAVWriteProperties(content)
     new_properties.update(repository_properties)
 
@@ -262,9 +255,7 @@ def virtual_lockable(context):
     return None
 
 
-class VirtualProperties(zeit.connector.resource.WebDAVProperties,
-                        grok.Adapter):
-
+class VirtualProperties(zeit.connector.resource.WebDAVProperties, grok.Adapter):
     grok.context(zeit.content.dynamicfolder.interfaces.IVirtualContent)
     grok.provides(zeit.connector.interfaces.IWebDAVProperties)
 
@@ -274,9 +265,12 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
         super().__init__()
         self.context = context
         self.update(self.parse(context.xml))
-        self[self.ID_PROPERTY] = '{%s}' % uuid.UUID(
-            hashlib.md5(context.uniqueId.encode('utf-8'),
-                        usedforsecurity=False).hexdigest()).urn
+        self[self.ID_PROPERTY] = (
+            '{%s}'
+            % uuid.UUID(
+                hashlib.md5(context.uniqueId.encode('utf-8'), usedforsecurity=False).hexdigest()
+            ).urn
+        )
 
     # XXX zeit.cms.content.xmlsupport.PropertyToXMLAttribute violates
     # the contract by assuming that IWebDAVProperties of IRepositoryContent
@@ -291,8 +285,7 @@ class VirtualProperties(zeit.connector.resource.WebDAVProperties,
                 body = lxml.etree.fromstring(body)
             except lxml.etree.LxmlError:
                 return {}
-        return zeit.connector.filesystem.parse_properties(
-            zope.security.proxy.getObject(body))
+        return zeit.connector.filesystem.parse_properties(zope.security.proxy.getObject(body))
 
 
 class ConfigDependency(zeit.cms.workflow.dependency.DependencyBase):
@@ -314,7 +307,6 @@ class ConfigDependency(zeit.cms.workflow.dependency.DependencyBase):
 
 
 class FolderDependencies(zeit.cms.workflow.dependency.DependencyBase):
-
     grok.context(zeit.content.dynamicfolder.interfaces.IDynamicFolder)
     grok.name('zeit.cms.repository.folder')
 

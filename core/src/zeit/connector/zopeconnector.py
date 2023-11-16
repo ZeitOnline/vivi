@@ -51,8 +51,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
 
     def unlock(self, id, locktoken=None, invalidate=True):
         locktoken = super().unlock(id, locktoken, invalidate)
-        self.get_datamanager().remove_cleanup(
-            self.unlock, id, locktoken, False)
+        self.get_datamanager().remove_cleanup(self.unlock, id, locktoken, False)
         return locktoken
 
     def move(self, old_id, new_id):
@@ -62,22 +61,18 @@ class ZopeConnector(zeit.connector.connector.Connector):
 
     @property
     def body_cache(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IResourceCache)
+        return zope.component.getUtility(zeit.connector.interfaces.IResourceCache)
 
     @property
     def property_cache(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IPropertyCache)
+        return zope.component.getUtility(zeit.connector.interfaces.IPropertyCache)
 
     @property
     def child_name_cache(self):
-        return zope.component.getUtility(
-            zeit.connector.interfaces.IChildNameCache)
+        return zope.component.getUtility(zeit.connector.interfaces.IChildNameCache)
 
     def _invalidate_cache(self, id):
-        zope.event.notify(
-            zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
 
 factory = ZopeConnector.factory
@@ -85,7 +80,7 @@ factory = ZopeConnector.factory
 
 @zope.interface.implementer(transaction.interfaces.IDataManager)
 class DataManager:
-    """Takes care of the transaction process in Zope. """
+    """Takes care of the transaction process in Zope."""
 
     def __init__(self, connector):
         self.connector = connector
@@ -129,28 +124,26 @@ class DataManager:
 
     def _cleanup(self):
         for method, args, kwargs in self.cleanup:
-            log.info("Abort cleanup: %s(%s, %s)" % (method, args, kwargs))
+            log.info('Abort cleanup: %s(%s, %s)' % (method, args, kwargs))
             try:
                 method(*args, **kwargs)
             except ZODB.POSException.ConflictError:
                 raise
             except Exception:
-                log.warning("Cleanup failed", exc_info=True)
+                log.warning('Cleanup failed', exc_info=True)
 
         self.cleanup[:] = []
 
 
 @zope.interface.implementer(transaction.interfaces.IDataManagerSavepoint)
 class ConnectorSavepoint:
-
     def rollback(self):
         raise Exception("Can't roll back connector savepoints.")
 
 
 @zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
 def invalidate_cache(event):
-    connector = zope.component.getUtility(
-        zeit.connector.interfaces.IConnector)
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     try:
         connector.invalidate_cache(event.id)
     except ValueError:

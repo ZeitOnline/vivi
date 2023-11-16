@@ -4,8 +4,7 @@ import zope.interface
 class ITemplateWidgetSetup(zope.interface.Interface):
     """Adapter which sets up widget values from a template."""
 
-    def setup_widget(widgets, session_key, chooser_schema,
-                     ignore_request=False):
+    def setup_widget(widgets, session_key, chooser_schema, ignore_request=False):
         """Setup widgets
 
         widgets: sequence of the widgets to setup

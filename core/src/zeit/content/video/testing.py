@@ -7,20 +7,18 @@ import zope.component
 import zope.interface
 
 
-CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=(
-    zeit.push.testing.CONFIG_LAYER,))
+CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=(zeit.push.testing.CONFIG_LAYER,))
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 PUSH_LAYER = zeit.push.testing.UrbanairshipTemplateLayer(
-    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,))
+    name='UrbanairshipTemplateLayer', bases=(ZOPE_LAYER,)
+)
 
 
 class PlayerMockLayer(plone.testing.Layer):
-
     def setUp(self):
         self['player'] = mock.Mock()
-        zope.interface.alsoProvides(
-            self['player'], zeit.content.video.interfaces.IPlayer)
+        zope.interface.alsoProvides(self['player'], zeit.content.video.interfaces.IPlayer)
         zope.component.getSiteManager().registerUtility(self['player'])
 
     def tearDown(self):
@@ -37,19 +35,15 @@ class PlayerMockLayer(plone.testing.Layer):
 PLAYER_MOCK_LAYER = PlayerMockLayer()
 
 
-LAYER = plone.testing.Layer(
-    bases=(PUSH_LAYER, PLAYER_MOCK_LAYER),
-    name='Layer', module=__name__)
+LAYER = plone.testing.Layer(bases=(PUSH_LAYER, PLAYER_MOCK_LAYER), name='Layer', module=__name__)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
-
     layer = LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
-
     layer = WSGI_LAYER
 
 
@@ -60,6 +54,7 @@ def FunctionalDocFileSuite(*args, **kw):
 
 def playlist_factory(self, location=''):
     from zeit.content.video.playlist import Playlist
+
     parent = self.repository
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():
@@ -78,6 +73,7 @@ def playlist_factory(self, location=''):
 def video_factory(self):
     from zeit.content.video.video import Video
     from zeit.content.image.testing import create_image_group_with_master_image
+
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():
             video = Video()

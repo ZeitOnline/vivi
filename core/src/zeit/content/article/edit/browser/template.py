@@ -6,12 +6,11 @@ import zeit.edit.browser.form
 
 
 class EditTemplate(zeit.edit.browser.form.InlineForm):
-
     legend = _('')
     prefix = 'options-template'
-    form_fields = FormFields(
-        zeit.content.article.interfaces.IArticle).select(
-        'template', 'header_layout', 'header_color')
+    form_fields = FormFields(zeit.content.article.interfaces.IArticle).select(
+        'template', 'header_layout', 'header_color'
+    )
 
     def render(self):
         result = super().render()
@@ -32,15 +31,11 @@ class EditTemplate(zeit.edit.browser.form.InlineForm):
         self.reload(self.context.header)
 
 
-class TemplateUpdater(
-        zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
-
+class TemplateUpdater(zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
     parent_source = zeit.content.article.source.ArticleTemplateSource()
     child_source = zeit.content.article.source.ArticleHeaderSource()
 
 
-class HeaderUpdater(
-        zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
-
+class HeaderUpdater(zeit.cms.content.browser.widget.ParentChildDropdownUpdater):
     parent_source = zeit.content.article.source.ArticleHeaderSource()
     child_source = zeit.content.article.source.ArticleHeaderColorSource()

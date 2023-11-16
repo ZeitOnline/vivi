@@ -20,20 +20,21 @@ import zope.publisher.interfaces
 
 def get_img_tag(image, request, view=None):
     """Render <img.../>-tag."""
-    url = zope.component.getMultiAdapter(
-        (image, request), name='absolute_url')
+    url = zope.component.getMultiAdapter((image, request), name='absolute_url')
     width, height = image.getImageSize()
     if view:
         view = '/' + view
     else:
         view = ''
-    return (
-        '<img src="%s%s" alt="" height="%s" width="%s" border="0" />' % (
-            url, view, height, width))
+    return '<img src="%s%s" alt="" height="%s" width="%s" border="0" />' % (
+        url,
+        view,
+        height,
+        width,
+    )
 
 
 class Image(zope.file.download.Display):
-
     def __call__(self):
         self.request.response.setHeader('Content-Type', self.context.mimeType)
         return self.stream_image()
@@ -43,7 +44,6 @@ class Image(zope.file.download.Display):
 
 
 class ImageView(zeit.cms.browser.view.Base):
-
     title = _('View image')
 
     @cachedproperty
@@ -65,20 +65,20 @@ class ImageView(zeit.cms.browser.view.Base):
     def copyright(self):
         if not self.metadata.copyright:
             return None
-        copyright, company, company_text, url, nofollow = (
-            self.metadata.copyright)
+        copyright, company, company_text, url, nofollow = self.metadata.copyright
         return {
             'copyright': copyright,
             'company': company,
             'company_text': company_text,
             'url': url,
-            'nofollow': nofollow}
+            'nofollow': nofollow,
+        }
 
 
 class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
-
-    template = ViewPageTemplateFile(str((importlib.resources.files(
-        'zeit.cms.browser') / 'object-details-heading.pt')))
+    template = ViewPageTemplateFile(
+        str((importlib.resources.files('zeit.cms.browser') / 'object-details-heading.pt'))
+    )
 
     def __init__(self, context, request):
         super().__init__(context.target, request)
@@ -88,16 +88,13 @@ class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
 
 
 class ReferenceDetailsBody(ImageView):
-
     @cachedproperty
     def metadata(self):
-        return zeit.content.image.interfaces.IImageMetadata(
-            self.context.target)
+        return zeit.content.image.interfaces.IImageMetadata(self.context.target)
 
     @cachedproperty
     def is_infographic(self):
-        if zeit.content.image.interfaces.IImageGroup.providedBy(
-                self.context.target):
+        if zeit.content.image.interfaces.IImageGroup.providedBy(self.context.target):
             return self.context.target.display_type == INFOGRAPHIC_DISPLAY_TYPE
         return False
 
@@ -106,7 +103,6 @@ class ReferenceDetailsBody(ImageView):
 
 
 class Scaled:
-
     filter = PIL.Image.Resampling.LANCZOS
 
     def __call__(self):
@@ -124,8 +120,7 @@ class Scaled:
         else:
             image = self._resize(transform)
             image.__name__ = self.__name__
-        image_view = zope.component.getMultiAdapter(
-            (image, self.request), name='raw')
+        image_view = zope.component.getMultiAdapter((image, self.request), name='raw')
         return image_view
 
     def _resize(self, transform):
@@ -133,34 +128,30 @@ class Scaled:
 
 
 class Preview(Scaled):
-
     width = 600
     height = 350
     variant = zeit.content.image.variant.Variant(
-        id='preview', aspect_ratio='16:9', focus_x=0.5, focus_y=0.3, zoom=0)
+        id='preview', aspect_ratio='16:9', focus_x=0.5, focus_y=0.3, zoom=0
+    )
 
     def _resize(self, transform):
-        return transform.create_variant_image(
-            self.variant, (self.width, self.height))
+        return transform.create_variant_image(self.variant, (self.width, self.height))
 
 
 class MetadataPreview(Scaled):
-
     width = 500
     height = 90
 
 
 class Thumbnail(Scaled):
-
     width = height = 100
 
 
 @zope.component.adapter(
-    zeit.content.image.interfaces.IImage,
-    zope.publisher.interfaces.IPublicationRequest)
+    zeit.content.image.interfaces.IImage, zope.publisher.interfaces.IPublicationRequest
+)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IListRepresentation)
-class ImageListRepresentation(
-        zeit.cms.browser.listing.BaseListRepresentation):
+class ImageListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing article content resources"""
 
     author = ressort = page = ''
@@ -168,8 +159,7 @@ class ImageListRepresentation(
     @property
     def title(self):
         try:
-            title = zeit.content.image.interfaces.IImageMetadata(
-                self.context).title
+            title = zeit.content.image.interfaces.IImageMetadata(self.context).title
         except Exception:
             title = None
         if not title:
@@ -191,19 +181,17 @@ class ImageListRepresentation(
 
 
 @zope.component.adapter(
-    zeit.cms.repository.interfaces.IFolder,
-    zeit.content.image.interfaces.IImageSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.cms.repository.interfaces.IFolder, zeit.content.image.interfaces.IImageSource
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def imagefolder_browse_location(context, source):
     """The image browse location is deduced from the current folder, i.e.
 
-        for /online/2007/32 it is /bilder/2007/32
+    for /online/2007/32 it is /bilder/2007/32
 
     """
     unique_id = context.uniqueId
-    repository = zope.component.getUtility(
-        zeit.cms.repository.interfaces.IRepository)
+    repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
     base = image_folder = None
     try:
         obj_in_repository = repository.getContent(unique_id)
@@ -212,12 +200,10 @@ def imagefolder_browse_location(context, source):
     else:
         # Try to get a base folder
         while base is None:
-            properties = zeit.connector.interfaces.IWebDAVProperties(
-                obj_in_repository, None)
+            properties = zeit.connector.interfaces.IWebDAVProperties(obj_in_repository, None)
             if properties is None:
                 break
-            base = properties.get(('base-folder',
-                                   'http://namespaces.zeit.de/CMS/Image'))
+            base = properties.get(('base-folder', 'http://namespaces.zeit.de/CMS/Image'))
             obj_in_repository = obj_in_repository.__parent__
 
     if base is not None:
@@ -229,35 +215,34 @@ def imagefolder_browse_location(context, source):
             # Get from the base folder to the year/volume folder
             settings = zeit.cms.settings.interfaces.IGlobalSettings(context)
             try:
-                image_folder = base_obj[
-                    '%04d' % settings.default_year][
-                    '%02d' % settings.default_volume]
+                image_folder = base_obj['%04d' % settings.default_year][
+                    '%02d' % settings.default_volume
+                ]
             except KeyError:
                 pass
 
     if image_folder is None:
         all_content_source = zope.component.getUtility(
-            zeit.cms.content.interfaces.ICMSContentSource, name='all-types')
+            zeit.cms.content.interfaces.ICMSContentSource, name='all-types'
+        )
         image_folder = zope.component.queryMultiAdapter(
-            (context, all_content_source),
-            zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+            (context, all_content_source), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
+        )
 
     return image_folder
 
 
 @zope.component.adapter(
-    zeit.content.image.imagereference.ImagesAdapter,
-    zeit.content.image.interfaces.IImageSource)
-@zope.interface.implementer(
-    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.content.image.imagereference.ImagesAdapter, zeit.content.image.interfaces.IImageSource
+)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def imageadapter_browse_location(context, source):
     return zope.component.queryMultiAdapter(
-        (context.__parent__, source),
-        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+        (context.__parent__, source), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
+    )
 
 
 class MetadataPreviewHTML:
-
     @cachedproperty
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)

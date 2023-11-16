@@ -24,9 +24,7 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.vgwort.interfaces.ITokens)
-class TokenStorage(persistent.Persistent,
-                   zope.container.contained.Contained):
-
+class TokenStorage(persistent.Persistent, zope.container.contained.Contained):
     def __init__(self):
         self._data = zc.queue.CompositeQueue(compositeSize=100)
         self._len = BTrees.Length.Length()
@@ -43,7 +41,7 @@ class TokenStorage(persistent.Persistent,
 
     def claim(self):
         if len(self) == 0:
-            raise ValueError("No tokens available.")
+            raise ValueError('No tokens available.')
         value = self._data.pull(int(random.random() * (len(self) - 1)))
         self._len.change(-1)
         return value
@@ -53,8 +51,7 @@ class TokenStorage(persistent.Persistent,
         return service.claim_token()
 
     def order(self, amount):
-        service = zope.component.getUtility(
-            zeit.vgwort.interfaces.IPixelService)
+        service = zope.component.getUtility(zeit.vgwort.interfaces.IPixelService)
         for public, private in service.order_pixels(amount):
             self.add(public, private)
 
@@ -81,8 +78,7 @@ class TokenService(grok.GlobalUtility):
 
     def __init__(self):
         if not self.config:
-            log.warning(
-                'No configuration found. Could not set up token service.')
+            log.warning('No configuration found. Could not set up token service.')
 
     @property
     def config(self):
@@ -97,19 +93,20 @@ class TokenService(grok.GlobalUtility):
 
 
 class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     grok.provides(zeit.vgwort.interfaces.IToken)
 
     zeit.cms.content.dav.mapProperties(
         zeit.vgwort.interfaces.IToken,
         'http://namespaces.zeit.de/CMS/vgwort',
         ('public_token', 'private_token'),
-        writeable=WRITEABLE_LIVE)
+        writeable=WRITEABLE_LIVE,
+    )
 
 
 @grok.subscribe(
     zeit.vgwort.interfaces.IGenerallyReportableContent,
-    zeit.cms.workflow.interfaces.IBeforePublishEvent)
+    zeit.cms.workflow.interfaces.IBeforePublishEvent,
+)
 def add_token(context, event):
     if context != event.master:
         # Only assign tokens to the master
@@ -128,23 +125,20 @@ def add_token(context, event):
 
         def isoformat(self):
             return ''
+
     never = Dummy()
     reginfo = zeit.vgwort.interfaces.IReportInfo(context)
     reginfo.reported_on = never
     reginfo.reported_error = ''
 
 
-@grok.subscribe(
-    zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
+@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_private_token(event):
-    if (event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and
-            event.name != 'public_token'):
+    if event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and event.name != 'public_token':
         event.veto()
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.IObjectCopiedEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectCopiedEvent)
 def remove_vgwort_properties_after_copy(context, event):
     # This is internals; users may not edit token and report properties anyway.
     context = zope.security.proxy.removeSecurityProxy(context)
@@ -156,15 +150,13 @@ def remove_vgwort_properties_after_copy(context, event):
     info.reported_error = None
 
 
-@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
-    'zeit.vgwort', 'token-principal'))
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.vgwort', 'token-principal'))
 def order_tokens():
     _order_tokens()
 
 
 def _order_tokens():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
-    ts = zope.component.getUtility(
-        zeit.vgwort.interfaces.ITokens)
+    ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
     if len(ts) < int(config['minimum-token-amount']):
         ts.order(int(config['order-token-amount']))

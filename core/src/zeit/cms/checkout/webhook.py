@@ -16,13 +16,14 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
-@grok.subscribe(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def notify_after_checkin(context, event):
     # XXX Work around redis/ZODB race condition, see BUG-796.
-    log.info('AfterCheckin: Creating async index job for %s: publishing: %s',
-             context.uniqueId, event.publishing)
+    log.info(
+        'AfterCheckin: Creating async index job for %s: publishing: %s',
+        context.uniqueId,
+        event.publishing,
+    )
     for hook in HOOKS:
         notify_webhook.apply_async((context.uniqueId, hook.url), countdown=5)
 
@@ -34,8 +35,7 @@ def notify_after_add(event):
         return
     if zeit.cms.repository.interfaces.IRepository.providedBy(context):
         return
-    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
-            event.newParent):
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
     for hook in HOOKS:
         notify_webhook.delay(context.uniqueId, hook.url)
@@ -60,7 +60,6 @@ def notify_webhook(self, uniqueId, url):
 
 
 class Hook:
-
     def __init__(self, url):
         self.url = url
         self.excludes = []
@@ -74,12 +73,10 @@ class Hook:
         except requests.exceptions.HTTPError as err:
             if getattr(err.response, 'status_code', 500) < 500:
                 raise
-            log.warning('Webhook %s returned error, retrying',
-                        self.url, exc_info=True)
+            log.warning('Webhook %s returned error, retrying', self.url, exc_info=True)
             raise TechnicalError()
         except requests.exceptions.RequestException:
-            log.warning('Webhook %s returned error, retrying',
-                        self.url, exc_info=True)
+            log.warning('Webhook %s returned error, retrying', self.url, exc_info=True)
             raise TechnicalError()
 
     def deliver(self, content):
@@ -90,8 +87,7 @@ class Hook:
         self.excludes.append((key, value))
 
     def should_exclude(self, content):
-        renameable = getattr(
-            IAutomaticallyRenameable(content, None), 'renameable', False)
+        renameable = getattr(IAutomaticallyRenameable(content, None), 'renameable', False)
         if renameable:
             return True
         for exclude in self.excludes:
@@ -106,8 +102,7 @@ class Hook:
         return func(content, value)
 
     def _match_type(self, content, value):
-        typ = getattr(
-            ITypeDeclaration(content, None), 'type_identifier', 'unknown')
+        typ = getattr(ITypeDeclaration(content, None), 'type_identifier', 'unknown')
         return typ == value
 
     def _match_product(self, content, value):
@@ -121,7 +116,6 @@ class Hook:
 
 
 class HookSource(zeit.cms.content.sources.SimpleXMLSource):
-
     config_url = 'checkin-webhook-config'
     default_filename = 'checkin-webhooks.xml'
 
@@ -147,6 +141,5 @@ HOOKS = HookSource()
 
 
 class TechnicalError(Exception):
-
     def __init__(self, countdown=60):
         self.countdown = countdown

@@ -9,12 +9,13 @@ import zope.schema
 
 
 class DisplayModeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    values = collections.OrderedDict([
-        ("images", _("use images")),
-        ("gallery", _("use gallery")),
-        ("video", _("use video")),
-    ])
+    values = collections.OrderedDict(
+        [
+            ('images', _('use images')),
+            ('gallery', _('use gallery')),
+            ('video', _('use video')),
+        ]
+    )
 
 
 class IAnimation(
@@ -24,33 +25,31 @@ class IAnimation(
     """A type for managing animated placeholders for articles."""
 
     article = zope.schema.Choice(
-        title=_("Article"),
+        title=_('Article'),
         source=zeit.cms.content.contentsource.cmsContentSource,
         required=True,
     )
 
     display_mode = zope.schema.Choice(
-        title=_("Display mode"), required=True, source=DisplayModeSource()
+        title=_('Display mode'), required=True, source=DisplayModeSource()
     )
 
     video = zope.schema.Choice(
-        title=_("Video to use for animation"),
+        title=_('Video to use for animation'),
         source=zeit.content.video.interfaces.VideoSource(),
         required=False,
     )
 
     images = zope.schema.Tuple(
-        title=_("Images"),
+        title=_('Images'),
         default=(),
         max_length=5,
         required=False,
-        value_type=zope.schema.Choice(
-            source=zeit.content.image.interfaces.ImageSource()
-        ),
+        value_type=zope.schema.Choice(source=zeit.content.image.interfaces.ImageSource()),
     )
 
     gallery = zope.schema.Choice(
-        title=_("Gallery to use for animation"),
+        title=_('Gallery to use for animation'),
         source=zeit.content.gallery.interfaces.gallerySource,
         required=False,
     )

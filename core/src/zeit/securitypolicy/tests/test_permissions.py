@@ -5,8 +5,7 @@ import xlrd
 
 
 def test_suite():
-    book = xlrd.open_workbook(os.path.join(
-        os.path.dirname(__file__), '../test.xls'))
+    book = xlrd.open_workbook(os.path.join(os.path.dirname(__file__), '../test.xls'))
     sheet = book.sheet_by_index(0)
 
     suite = unittest.TestSuite()
@@ -31,8 +30,7 @@ def test_suite():
             if path:
                 cases.append((skin, path, form, expected))
             if cases and (not path or row == sheet.nrows - 1):
-                description = 'test.xls rows %d-%d for %s' % (
-                    start_row + 1, row, username)
+                description = 'test.xls rows %d-%d for %s' % (start_row + 1, row, username)
                 suite.addTest(make_xls_test(username, cases, description))
                 cases = []
                 start_row = None

@@ -6,23 +6,24 @@ import zeit.wochenmarkt.testing
 import zope.component
 
 
-class TestRecipeCategoriesWhitelist(
-        zeit.wochenmarkt.testing.FunctionalTestCase):
-
+class TestRecipeCategoriesWhitelist(zeit.wochenmarkt.testing.FunctionalTestCase):
     def test_category_should_be_found_through_xml(self):
         categories = zope.component.getUtility(
-            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist)._load()
+            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
+        )._load()
         pizza = dict(categories.items()).get('pizza')
         assert 'Pizza' == pizza.name
 
     def test_category_should_be_found_by_id(self):
         bowl = zope.component.getUtility(
-            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist).get('bowl')
+            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
+        ).get('bowl')
         assert 'Bowl' == bowl.name
 
     def test_autocomplete_should_be_available_for_categrories(self):
         result = zope.component.getUtility(
-            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist).search('B')
+            zeit.wochenmarkt.interfaces.IRecipeCategoriesWhitelist
+        ).search('B')
         assert 2 == len(result)
         names = []
         for item in result:
@@ -31,9 +32,8 @@ class TestRecipeCategoriesWhitelist(
 
 
 class TestRecipeCategories(
-        zeit.wochenmarkt.testing.FunctionalTestCase,
-        zeit.wochenmarkt.testing.RecipeCategoriesHelper):
-
+    zeit.wochenmarkt.testing.FunctionalTestCase, zeit.wochenmarkt.testing.RecipeCategoriesHelper
+):
     def get_content(self):
         from zeit.wochenmarkt.categories import RecipeCategories
         from lxml import objectify
@@ -41,6 +41,7 @@ class TestRecipeCategories(
         class Content:
             categories = RecipeCategories()
             xml = objectify.fromstring('<article><head/></article>')
+
         return Content()
 
     def test_set_should_add_new_categories(self):
@@ -67,9 +68,8 @@ class TestRecipeCategories(
         content.categories = [summer]
         self.assertEllipsis(
             '<recipe_categories...><category code="summer"/>...',
-            lxml.etree.tostring(
-                content.xml.head.recipe_categories,
-                encoding=str))
+            lxml.etree.tostring(content.xml.head.recipe_categories, encoding=str),
+        )
 
     def test_removing_all_categories_should_leave_no_trace(self):
         categories = self.setup_categories('summer')

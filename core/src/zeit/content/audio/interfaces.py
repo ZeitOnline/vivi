@@ -13,6 +13,7 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     Identify audio types without inspecting live object.
     For example to be used in zeit.web templates.
     """
+
     values = {
         'podcast': _('Podcast'),
         'tts': _('Text to Speech'),
@@ -20,8 +21,7 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     }
 
 
-class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
-             zeit.cms.content.interfaces.IXMLContent):
+class IAudio(zeit.cms.content.interfaces.ICommonMetadata, zeit.cms.content.interfaces.IXMLContent):
     """
     Basic playable audio containing minimum required information
     for ZEIT audio players.
@@ -30,16 +30,11 @@ class IAudio(zeit.cms.content.interfaces.ICommonMetadata,
     title = zope.schema.TextLine(title=_('Title'))
     external_id = zope.schema.TextLine(title=_('External Id'))
     url = zope.schema.URI(title=_('URL'), required=False)
-    duration = zeit.cms.content.field.DurationField(
-        title=_('Duration'), min=0, required=False)
-    audio_type = zope.schema.Choice(
-        title=_('Type'),
-        readonly=True,
-        source=AudioTypeSource())
+    duration = zeit.cms.content.field.DurationField(title=_('Duration'), min=0, required=False)
+    audio_type = zope.schema.Choice(title=_('Type'), readonly=True, source=AudioTypeSource())
 
 
 class IPodcast(zope.interface.Interface):
-
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
     external_id = zope.interface.Attribute('external_id')
@@ -48,10 +43,9 @@ class IPodcast(zope.interface.Interface):
 
 
 class Podcast(zeit.cms.content.sources.AllowedBase):
-
     def __init__(
-            self, id, title, external_id, subtitle,
-            distribution_channels=None, podigee_id=None):
+        self, id, title, external_id, subtitle, distribution_channels=None, podigee_id=None
+    ):
         super().__init__(id, title, available=None)
         self.external_id = external_id
         self.subtitle = subtitle
@@ -62,28 +56,25 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
 
     def __eq__(self, other):
         return (
-            zope.security.proxy.isinstance(other, self.__class__) and
-            self.id == other.id and
-            self.title == other.title and
-            self.external_id == other.external_id and
-            self.subtitle == other.subtitle and
-            self.distribution_channels == other.distribution_channels and
-            self.podigee_id == other.podigee_id)
+            zope.security.proxy.isinstance(other, self.__class__)
+            and self.id == other.id
+            and self.title == other.title
+            and self.external_id == other.external_id
+            and self.subtitle == other.subtitle
+            and self.distribution_channels == other.distribution_channels
+            and self.podigee_id == other.podigee_id
+        )
 
 
-class PodcastSource(zeit.cms.content.sources.ObjectSource,
-                    zeit.cms.content.sources.XMLSource):
-
+class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.content.audio'
     config_url = 'podcast-source'
     default_filename = 'podcasts.xml'
     attribute = 'id'
 
     class source_class(zeit.cms.content.sources.ObjectSource.source_class):
-
         def find_by_property(self, property_name, value):
-            return self.factory.find_by_property(
-                self.context, property_name, value)
+            return self.factory.find_by_property(self.context, property_name, value)
 
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
@@ -96,15 +87,14 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource,
 
     def _create_podcast(self, node):
         channels = node.iterchildren('distribution_channel')
-        distribution_channels = {
-            x.get('id'): x.get('href') for x in channels
-        }
+        distribution_channels = {x.get('id'): x.get('href') for x in channels}
         podcast = Podcast(
             node.get(self.attribute),
             node.get('title'),
             node.get('external_id'),
             node.get('subtitle'),
-            podigee_id=node.get('podigee_id'))
+            podigee_id=node.get('podigee_id'),
+        )
         podcast.distribution_channels = distribution_channels
         return podcast
 
@@ -117,44 +107,23 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource,
 
 class IPodcastEpisodeInfo(zope.interface.Interface):
     """Additional Audioinformation for podcast episodes."""
-    podcast = zope.schema.Choice(
-        title=_('Podcast Serie'),
-        source=PodcastSource(),
-        readonly=True)
-    podcast_id = zope.schema.TextLine(
-        title=_('External Podcast Id'),
-        required=False,
-        readonly=True)
-    episode_nr = zope.schema.Int(
-        title=_('Episode No'),
-        readonly=True)
-    url_ad_free = zope.schema.URI(
-        title=_('URL ad-free'),
-        readonly=True,
-        required=False)
-    summary = zope.schema.Text(
-        title=_('Episode Summary'),
-        required=False,
-        readonly=True)
-    notes = zope.schema.Text(
-        title=_('Episode Notes'),
-        required=False,
-        readonly=True)
-    is_published = zope.schema.Bool(
-        title=_('Is Published'),
-        readonly=True,
-        default=False)
-    dashboard_link = zope.schema.URI(
-        title=_('Dashboard Link'),
-        required=False)
+
+    podcast = zope.schema.Choice(title=_('Podcast Serie'), source=PodcastSource(), readonly=True)
+    podcast_id = zope.schema.TextLine(title=_('External Podcast Id'), required=False, readonly=True)
+    episode_nr = zope.schema.Int(title=_('Episode No'), readonly=True)
+    url_ad_free = zope.schema.URI(title=_('URL ad-free'), readonly=True, required=False)
+    summary = zope.schema.Text(title=_('Episode Summary'), required=False, readonly=True)
+    notes = zope.schema.Text(title=_('Episode Notes'), required=False, readonly=True)
+    is_published = zope.schema.Bool(title=_('Is Published'), readonly=True, default=False)
+    dashboard_link = zope.schema.URI(title=_('Dashboard Link'), required=False)
 
 
 class AudioSource(zeit.cms.content.contentsource.CMSContentSource):
-    name = "audio"
+    name = 'audio'
     check_interfaces = (IAudio,)
 
 
 class IAudioReferences(zope.interface.Interface):
     items = zope.schema.Tuple(
-        title=_('AudioReferences'),
-        value_type=zope.schema.Choice(source=AudioSource()))
+        title=_('AudioReferences'), value_type=zope.schema.Choice(source=AudioSource())
+    )

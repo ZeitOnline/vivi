@@ -12,7 +12,6 @@ import zope.interface
 
 @zope.interface.implementer(zope.annotation.interfaces.IAttributeAnnotatable)
 class NoMetadata(zeit.cms.content.metadata.CommonMetadata):
-
     default_template = '<empty/>'
 
 
@@ -25,13 +24,12 @@ class Details(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def list_repr(self):
         return zope.component.queryMultiAdapter(
-            (self.context, self.request),
-            zeit.cms.browser.interfaces.IListRepresentation)
+            (self.context, self.request), zeit.cms.browser.interfaces.IListRepresentation
+        )
 
     @zope.cachedescriptors.property.Lazy
     def common_metadata(self):
-        return zeit.cms.content.interfaces.ICommonMetadata(
-            self.context, NO_METADATA)
+        return zeit.cms.content.interfaces.ICommonMetadata(self.context, NO_METADATA)
 
     @property
     def teaser_title(self):
@@ -50,26 +48,25 @@ class Details(zeit.cms.browser.view.Base):
     @property
     def preview_url(self):
         return zope.component.queryMultiAdapter(
-            (self.context, 'preview'),
-            zeit.cms.browser.interfaces.IPreviewURL)
+            (self.context, 'preview'), zeit.cms.browser.interfaces.IPreviewURL
+        )
 
     @property
     def live_url(self):
         return zope.component.queryMultiAdapter(
-            (self.context, 'live'),
-            zeit.cms.browser.interfaces.IPreviewURL)
+            (self.context, 'live'), zeit.cms.browser.interfaces.IPreviewURL
+        )
 
     @property
     def resources_filename(self):
         urlstring = zope.component.queryMultiAdapter(
-            (self.context, 'live'),
-            zeit.cms.browser.interfaces.IPreviewURL)
+            (self.context, 'live'), zeit.cms.browser.interfaces.IPreviewURL
+        )
         return urlstring.split('/')[-1]
 
     @zope.cachedescriptors.property.Lazy
     def graphical_preview_url(self):
-        thumbnail = zope.component.queryMultiAdapter(
-            (self.context, self.request), name='thumbnail')
+        thumbnail = zope.component.queryMultiAdapter((self.context, self.request), name='thumbnail')
         if thumbnail is None:
             return None
         return self.url('@@thumbnail')
@@ -77,7 +74,8 @@ class Details(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def large_graphical_preview_url(self):
         thumbnail = zope.component.queryMultiAdapter(
-            (self.context, self.request), name='thumbnail_large')
+            (self.context, self.request), name='thumbnail_large'
+        )
         if thumbnail is None:
             return None
         return self.url('@@thumbnail_large')
@@ -104,8 +102,7 @@ class Details(zeit.cms.browser.view.Base):
 
     @property
     def display_metadata(self):
-        lsc = zeit.cms.content.interfaces.ISemanticChange(
-            self.context).last_semantic_change
+        lsc = zeit.cms.content.interfaces.ISemanticChange(self.context).last_semantic_change
         entries = {
             'teaser_title': self.teaser_title,
             'created': lsc and lsc.strftime('%d.%m.%Y'),
@@ -120,17 +117,19 @@ class Details(zeit.cms.browser.view.Base):
         return sorted_entries
 
     def display_metadata_short(self):
-        lsc = zeit.cms.content.interfaces.ISemanticChange(
-            self.context).last_semantic_change
-        return [x for x in [
-            lsc and lsc.strftime('%d.%m.%Y'),
-            self.common_metadata.ressort,
-            self.author,
-            self.volume,
-        ] if x]
+        lsc = zeit.cms.content.interfaces.ISemanticChange(self.context).last_semantic_change
+        return [
+            x
+            for x in [
+                lsc and lsc.strftime('%d.%m.%Y'),
+                self.common_metadata.ressort,
+                self.author,
+                self.volume,
+            ]
+            if x
+        ]
 
     @property
     def type_declaration(self):
-        no_type = type(
-            'NoTypeDeclaration', (object,), {'type_identifier': 'unknown'})
+        no_type = type('NoTypeDeclaration', (object,), {'type_identifier': 'unknown'})
         return zeit.cms.interfaces.ITypeDeclaration(self.context, no_type)

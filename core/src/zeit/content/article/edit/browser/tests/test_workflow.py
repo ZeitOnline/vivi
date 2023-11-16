@@ -13,23 +13,22 @@ import zope.component
 
 
 class Checkin(zeit.content.article.testing.BrowserTestCase):
-
     def test_validation_errors_should_be_displayed_at_checkin_button(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               '@@zeit.content.article.Add')
+        b.open('http://localhost/++skin++vivi/repository/' '@@zeit.content.article.Add')
         b.open('@@edit.form.checkin-errors')
-        self.assert_ellipsis("""
+        self.assert_ellipsis(
+            """
             ...Ressort:...Required input is missing...
             ...Title:...Required input is missing...
             ...New file name:...Required input is missing...
-            ...""")
+            ..."""
+        )
 
 
 class CheckinSelenium(
-        zeit.content.article.edit.browser.testing.EditorTestCase,
-        zeit.cms.tagging.testing.TaggingHelper):
-
+    zeit.content.article.edit.browser.testing.EditorTestCase, zeit.cms.tagging.testing.TaggingHelper
+):
     def test_form_with_semantic_change_shows_current_timestamp(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia-Grill/@@checkout')
@@ -108,7 +107,8 @@ class CheckinSelenium(
 
     def test_checkin_does_not_set_last_semantic_change_by_default(self):
         sc = zeit.cms.content.interfaces.ISemanticChange(
-            self.repository['online']['2007']['01']['Somalia'])
+            self.repository['online']['2007']['01']['Somalia']
+        )
         before = sc.last_semantic_change
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
@@ -119,7 +119,8 @@ class CheckinSelenium(
 
     def test_checkin_sets_last_semantic_change_if_checked(self):
         sc = zeit.cms.content.interfaces.ISemanticChange(
-            self.repository['online']['2007']['01']['Somalia'])
+            self.repository['online']['2007']['01']['Somalia']
+        )
         before = sc.last_semantic_change
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
@@ -160,24 +161,26 @@ class CheckinSelenium(
         s.waitForNotChecked('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
 
-    @unittest.skip('Cannot make the focus/blur-trigger work'
-                   ' to get the inlineform to submit. Maybe with Webdriver?')
+    @unittest.skip(
+        'Cannot make the focus/blur-trigger work'
+        ' to get the inlineform to submit. Maybe with Webdriver?'
+    )
     def test_clicking_checkin_button_triggers_inlineform_save_beforehand(self):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
-        s.runScript("""\
+        s.runScript(
+            """\
 zeit.cms.with_lock_calls = [];
 zeit.cms.with_lock = function(callable) {
     zeit.cms.with_lock_calls.push(callable);
-};""")
+};"""
+        )
 
         s.click('id=article-content-head.title')
         s.click('id=checkin')
         self.assertEqual(2, self.eval('zeit.cms.with_lock_calls.length'))
-        self.assertEqual(
-            'MochiKit.Async.doXHR',
-            self.eval('zeit.cms.with_lock_calls[0].NAME'))
+        self.assertEqual('MochiKit.Async.doXHR', self.eval('zeit.cms.with_lock_calls[0].NAME'))
         self.assertEqual(None, self.eval('zeit.cms.with_lock_calls[1].NAME'))
 
     def test_save_state_button_should_load_page(self):
@@ -190,9 +193,7 @@ zeit.cms.with_lock = function(callable) {
         s.waitForElementPresent('css=#edit-form-workflow a.save')
 
 
-class WorkflowEndToEnd(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
-
+class WorkflowEndToEnd(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_checkin_redirects_to_repository(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/@@checkout')
@@ -241,7 +242,6 @@ class WorkflowEndToEnd(
 
 
 class Publish(zeit.content.article.testing.BrowserTestCase):
-
     def test_validation_errors_are_displayed_during_publish(self):
         # Create article with divisions, otherwise the recursive validator has
         # no children to validate
@@ -249,23 +249,23 @@ class Publish(zeit.content.article.testing.BrowserTestCase):
         article.body.create_item('image')
         self.repository['article_with_division'] = article
         zeit.cms.workflow.interfaces.IPublishInfo(
-            self.repository['article_with_division']).urgent = True
+            self.repository['article_with_division']
+        ).urgent = True
 
         rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
         rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
         with mock.patch.object(zeit.edit.rule.RulesManager, 'rules', rules):
             b = self.browser
-            b.open('http://localhost/++skin++vivi/repository/'
-                   'article_with_division/@@publish.html')
+            b.open(
+                'http://localhost/++skin++vivi/repository/' 'article_with_division/@@publish.html'
+            )
         self.assertEllipsis('...Custom Error...', b.contents)
 
 
 class Delete(zeit.content.article.testing.BrowserTestCase):
-
     def test_checked_out_article_has_cancel_but_no_delete(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/' 'online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Cancel')
         self.assertNotIn('Delete', b.contents)
@@ -274,21 +274,19 @@ class Delete(zeit.content.article.testing.BrowserTestCase):
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository'
-            '/online/2007/01/Somalia/@@edit.form.checkin-buttons?show_form=1')
+            '/online/2007/01/Somalia/@@edit.form.checkin-buttons?show_form=1'
+        )
         self.assertNothingRaised(b.getLink, 'Delete')
         self.assertNotIn('Cancel', b.contents)
 
 
 class Objectlog(zeit.content.article.edit.browser.testing.EditorTestCase):
-
     def test_objectlog_is_wrapped(self):
         # this is a sanity check that the views are wired up correctly
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         zeit.objectlog.interfaces.ILog(article).log('example message')
         transaction.commit()
-        self.open(
-            '/++skin++vivi/repository/online/2007/01/Somalia/')
+        self.open('/++skin++vivi/repository/online/2007/01/Somalia/')
         s = self.selenium
         fold = 'css=#edit-form-status .fold-link'
         s.waitForElementPresent(fold)

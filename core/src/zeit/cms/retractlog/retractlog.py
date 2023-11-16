@@ -15,8 +15,7 @@ class RetractLog(zope.container.btree.BTreeContainer):
 
 
 @zope.interface.implementer(zeit.cms.retractlog.interfaces.IJob)
-class Job(zope.container.contained.Contained,
-          persistent.Persistent):
+class Job(zope.container.contained.Contained, persistent.Persistent):
     """A list of ICMSContent URLs, which were or will be retracted."""
 
     def __init__(self):
@@ -29,6 +28,6 @@ class Job(zope.container.contained.Contained,
 
     def start(self):
         publish = zeit.cms.workflow.interfaces.IPublish(
-            zope.component.getUtility(
-                zeit.cms.repository.interfaces.IRepository))
+            zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
+        )
         publish.retract_multiple(self.urls)

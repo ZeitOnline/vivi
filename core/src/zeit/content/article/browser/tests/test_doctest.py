@@ -7,4 +7,5 @@ def test_suite():
         'README.txt',
         'recension.txt',
         package='zeit.content.article.browser',
-        layer=zeit.content.article.testing.WSGI_LAYER)
+        layer=zeit.content.article.testing.WSGI_LAYER,
+    )

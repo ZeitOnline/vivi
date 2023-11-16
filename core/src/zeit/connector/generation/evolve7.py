@@ -7,9 +7,7 @@ import zope.component.hooks
 def update(root):
     """Removes obsolete lockinfo cache"""
     sm = zope.component.getSiteManager()
-    sm.unregisterUtility(
-        sm['connector-lockinfo'],
-        zeit.connector.interfaces.ILockInfoStorage)
+    sm.unregisterUtility(sm['connector-lockinfo'], zeit.connector.interfaces.ILockInfoStorage)
     del sm['connector-lockinfo']
 
 

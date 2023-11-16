@@ -12,10 +12,9 @@ import zope.security.proxy
 
 @zope.component.adapter(zeit.content.article.interfaces.IArticle)
 @zope.interface.implementer(
-    zeit.content.article.interfaces.IBookRecensionContainer,
-    zope.location.interfaces.ILocation)
+    zeit.content.article.interfaces.IBookRecensionContainer, zope.location.interfaces.ILocation
+)
 class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
-
     def __init__(self, context):
         self.context = context
         self.__name__ = 'recensions'
@@ -36,8 +35,7 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(recension)
         self.xml['body'].append(xml_repr.xml)
         self._p_changed = True
-        zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(
-            recension, self, recension.__name__))
+        zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(recension, self, recension.__name__))
 
     def remove(self, name):
         prefix, count = name.split()
@@ -47,14 +45,13 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
         recension = self.entries[count]
         self.xml['body'].remove(recension)
         self._p_changed = True
-        zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(
-            recension, self, name))
+        zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(recension, self, name))
 
     @property
     def entries(self):
-        return lxml.objectify.ObjectPath(
-            '.body.{http://namespaces.zeit.de/bibinfo}entry').find(
-                self.xml, ())
+        return lxml.objectify.ObjectPath('.body.{http://namespaces.zeit.de/bibinfo}entry').find(
+            self.xml, ()
+        )
 
     @property
     def xml(self):
@@ -64,48 +61,41 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
         recension = BookRecension()
         recension.xml = node
         recension_classes = '%s %s' % (self.__name__, str(index))
-        recension = zope.location.location.located(
-            recension, self, recension_classes)
+        recension = zope.location.location.located(recension, self, recension_classes)
         # located() sets __parent__ first, so it has triggered a false write
         recension._p_changed = False
         return recension
 
 
 @zope.interface.implementer(
-    zeit.content.article.interfaces.IBookRecension,
-    zope.location.interfaces.ILocation)
-class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
-                    zeit.cms.content.xmlsupport.Persistent):
+    zeit.content.article.interfaces.IBookRecension, zope.location.interfaces.ILocation
+)
+class BookRecension(
+    zeit.cms.content.xmlsupport.XMLRepresentationBase, zeit.cms.content.xmlsupport.Persistent
+):
     """Information about a book in a recension."""
 
     default_template = (
         '<entry xmlns="http://namespaces.zeit.de/bibinfo" '
-        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
+        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />'
+    )
 
-    authors = zeit.cms.content.property.SimpleMultiProperty(
-        '.auth-info.author')
+    authors = zeit.cms.content.property.SimpleMultiProperty('.auth-info.author')
     title = zeit.cms.content.property.ObjectPathProperty('.title')
     genre = zeit.cms.content.property.ObjectPathProperty('.genre')
     info = zeit.cms.content.property.ObjectPathProperty('.info')
     category = zeit.cms.content.property.ObjectPathProperty('.category')
     age_limit = zeit.cms.content.property.ObjectPathProperty('.agelimit')
-    original_language = zeit.cms.content.property.ObjectPathProperty(
-        '.original_language')
-    translator = zeit.cms.content.property.ObjectPathProperty(
-        '.translator')
-    publisher = zeit.cms.content.property.ObjectPathProperty(
-        '.edition.publisher')
-    location = zeit.cms.content.property.ObjectPathProperty(
-        '.edition.location')
-    year = zeit.cms.content.property.ObjectPathProperty(
-        '.edition.year')
-    media_type = zeit.cms.content.property.ObjectPathProperty(
-        '.edition.mediatype')
-    pages = zeit.cms.content.property.ObjectPathProperty(
-        '.edition.pages')
+    original_language = zeit.cms.content.property.ObjectPathProperty('.original_language')
+    translator = zeit.cms.content.property.ObjectPathProperty('.translator')
+    publisher = zeit.cms.content.property.ObjectPathProperty('.edition.publisher')
+    location = zeit.cms.content.property.ObjectPathProperty('.edition.location')
+    year = zeit.cms.content.property.ObjectPathProperty('.edition.year')
+    media_type = zeit.cms.content.property.ObjectPathProperty('.edition.mediatype')
+    pages = zeit.cms.content.property.ObjectPathProperty('.edition.pages')
     price = zeit.cms.content.property.ObjectPathProperty(
-        '.edition.price',
-        zeit.content.article.interfaces.IBookRecension['price'])
+        '.edition.price', zeit.content.article.interfaces.IBookRecension['price']
+    )
 
     raw_data = 'Wird noch nicht eingelesen.'  # XXX
 
@@ -115,15 +105,12 @@ class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class RecensionContainerTraverser:
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
     def publishTraverse(self, request, name):
-        recensions = (
-            zeit.content.article.interfaces.IBookRecensionContainer(
-                self.context))
+        recensions = zeit.content.article.interfaces.IBookRecensionContainer(self.context)
         if name in recensions.__name__:  # XXX Is 'in' really what's meant?
             return recensions
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
@@ -131,7 +118,6 @@ class RecensionContainerTraverser:
 
 @zope.interface.implementer(z3c.traverser.interfaces.IPluggableTraverser)
 class RecensionTraverser:
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -150,8 +136,9 @@ class RecensionTraverser:
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
 
-@zope.component.adapter(zeit.content.article.interfaces.IBookRecension,
-                        zope.lifecycleevent.IObjectAddedEvent)
+@zope.component.adapter(
+    zeit.content.article.interfaces.IBookRecension, zope.lifecycleevent.IObjectAddedEvent
+)
 def set_has_recension(context, event):
     # XXX Recension does not provide ILocation, so we fudge a little to get to
     # the article

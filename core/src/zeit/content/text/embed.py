@@ -15,13 +15,12 @@ log = logging.getLogger(__name__)
 
 
 @zope.interface.implementer(zeit.content.text.interfaces.IEmbed)
-class Embed(zeit.content.text.text.Text,
-            zeit.content.text.python.EvalExecHelper):
-
+class Embed(zeit.content.text.text.Text, zeit.content.text.python.EvalExecHelper):
     zeit.cms.content.dav.mapProperties(
         zeit.content.text.interfaces.IEmbed,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('render_as_template', 'parameter_definition', 'vivi_css'))
+        ('render_as_template', 'parameter_definition', 'vivi_css'),
+    )
 
     @property
     def parameter_fields(self):
@@ -40,20 +39,20 @@ class Embed(zeit.content.text.text.Text,
         except Exception:
             log.warning(
                 'Parameter definition of %s had errors, treated as empty',
-                self.uniqueId, exc_info=True)
+                self.uniqueId,
+                exc_info=True,
+            )
             return {}
         if not isinstance(fields, dict):
-            log.warning(
-                'Parameter definition of %s is not a dict, treated as empty',
-                self.uniqueId)
+            log.warning('Parameter definition of %s is not a dict, treated as empty', self.uniqueId)
             return {}
 
         invalid = []
         for name, field in fields.items():
             if not zope.schema.interfaces.IField.providedBy(field):
                 log.warning(
-                    'Parameter definition %s of %s is not a field, ignored',
-                    name, self.uniqueId)
+                    'Parameter definition %s of %s is not a field, ignored', name, self.uniqueId
+                )
                 invalid.append(name)
                 continue
             if not field.title:
@@ -69,7 +68,6 @@ class Embed(zeit.content.text.text.Text,
 
 
 class EmbedType(zeit.content.text.text.TextType):
-
     interface = zeit.content.text.interfaces.IEmbed
     type = 'embed'
     title = _('Embed')

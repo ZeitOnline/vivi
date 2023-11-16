@@ -8,13 +8,11 @@ import zope.app.appsetup.product
 
 
 class ZEOInstrumentor(BaseInstrumentor):
-
     def instrumentation_dependencies(self):
-        return ("ZEO ~= 5.4",)
+        return ('ZEO ~= 5.4',)
 
     def _instrument(self, **kw):
-        tracer = opentelemetry.trace.get_tracer(
-            __name__, tracer_provider=kw.get("tracer_provider"))
+        tracer = opentelemetry.trace.get_tracer(__name__, tracer_provider=kw.get('tracer_provider'))
 
         wrapped_setup_delegation = ClientRunner.setup_delegation
 
@@ -30,19 +28,21 @@ class ZEOInstrumentor(BaseInstrumentor):
                     traceargs = args[1]
                 else:
                     traceargs = args
-                if operation in [
-                        'tpc_begin', 'vote', 'tpc_finish', 'tpc_abort']:
+                if operation in ['tpc_begin', 'vote', 'tpc_finish', 'tpc_abort']:
                     tid = str(traceargs[0])
                 else:
                     tid = ''
 
                 if logging.getLogger(__name__).isEnabledFor(logging.DEBUG):
-                    config = zope.app.appsetup.product.getProductConfiguration(
-                        'zeit.cms')
+                    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
                     with tracer.start_as_current_span(
-                            'ZEO ' + operation, attributes={
-                                'span.kind': 'client', 'db.transaction': tid,
-                                'SampleRate': config['samplerate-zeo']}):
+                        'ZEO ' + operation,
+                        attributes={
+                            'span.kind': 'client',
+                            'db.transaction': tid,
+                            'SampleRate': config['samplerate-zeo'],
+                        },
+                    ):
                         return wrapped_call(method, *args, **kw)
                 else:
                     return wrapped_call(method, *args, **kw)
@@ -56,20 +56,18 @@ class ZEOInstrumentor(BaseInstrumentor):
 
         @functools.wraps(wrapped_connect)
         def instrumented_connect(self):
-            span = tracer.start_as_current_span('ZEO connect', attributes={
-                'type': 'client', 'zeo.server': str(self.addr)})
+            span = tracer.start_as_current_span(
+                'ZEO connect', attributes={'type': 'client', 'zeo.server': str(self.addr)}
+            )
             span.__enter__()
             wrapped_connect(self)
-            self._connecting.add_done_callback(
-                lambda x: span.__exit__(None, None, None))
+            self._connecting.add_done_callback(lambda x: span.__exit__(None, None, None))
 
         instrumented_connect.otel_zeo_instrumented = True
         Protocol.connect = instrumented_connect
 
     def _uninstrument(self, **kw):
-        for cls, names in {
-                Protocol: ['connect'],
-                ClientRunner: ['setup_delegation']}:
+        for cls, names in {Protocol: ['connect'], ClientRunner: ['setup_delegation']}:
             for name in names:
                 func = getattr(cls, name)
                 if not getattr(func, 'otel_zeo_instrumented', False):

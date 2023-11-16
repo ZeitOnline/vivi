@@ -19,10 +19,8 @@ class IContent(zeit.cms.interfaces.ICMSContent):
     pass
 
 
-@zope.interface.implementer(
-    IContent, zope.annotation.interfaces.IAttributeAnnotatable)
+@zope.interface.implementer(IContent, zope.annotation.interfaces.IAttributeAnnotatable)
 class Content:
-
     uniqueId = 'testcontent://'
     __name__ = 'karlheinz'
 
@@ -32,8 +30,7 @@ class Content:
 def local_content(context):
     local = copy.copy(context)
     local.are_you_local = True
-    zope.interface.alsoProvides(
-        local, zeit.cms.checkout.interfaces.ILocalContent)
+    zope.interface.alsoProvides(local, zeit.cms.checkout.interfaces.ILocalContent)
     return local
 
 
@@ -42,13 +39,11 @@ def local_content(context):
 def repository_content(context):
     content = copy.copy(context)
     content.are_you_local = False
-    zope.interface.noLongerProvides(
-        content, zeit.cms.checkout.interfaces.ILocalContent)
+    zope.interface.noLongerProvides(content, zeit.cms.checkout.interfaces.ILocalContent)
     return content
 
 
 class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
-
     def setUp(self):
         super().setUp()
         self.content = Content()
@@ -103,38 +98,33 @@ class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
             self.assertEqual(2, len(notify.call_args_list))
             before, after = notify.call_args_list
             self.assertTrue(
-                zeit.cms.checkout.interfaces.IBeforeDeleteEvent.providedBy(
-                    before[0][0]))
-            self.assertTrue(
-                zeit.cms.checkout.interfaces.IAfterDeleteEvent.providedBy(
-                    after[0][0]))
+                zeit.cms.checkout.interfaces.IBeforeDeleteEvent.providedBy(before[0][0])
+            )
+            self.assertTrue(zeit.cms.checkout.interfaces.IAfterDeleteEvent.providedBy(after[0][0]))
 
     def test_checkin_does_not_unlock_while_publishing(self):
         manager = ICheckoutManager(self.repository['testcontent'])
         checked_out = manager.checkout()
         manager = ICheckinManager(checked_out)
         manager.checkin(publishing=True)
-        lockable = zope.app.locking.interfaces.ILockable(
-            self.repository['testcontent'])
+        lockable = zope.app.locking.interfaces.ILockable(self.repository['testcontent'])
         self.assertTrue(lockable.locked())
 
 
 class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
-
     def setUp(self):
         super().setUp()
-        zope.component.getSiteManager().registerHandler(
-            self.provoke_veto, (IValidateCheckinEvent,))
+        zope.component.getSiteManager().registerHandler(self.provoke_veto, (IValidateCheckinEvent,))
 
-        self.workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
-            self.principal)
+        self.workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
 
         manager = ICheckoutManager(self.repository['testcontent'])
         self.checked_out = manager.checkout()
 
     def tearDown(self):
         zope.component.getSiteManager().unregisterHandler(
-            self.provoke_veto, (IValidateCheckinEvent,))
+            self.provoke_veto, (IValidateCheckinEvent,)
+        )
         super().tearDown()
 
     def provoke_veto(self, event):
@@ -151,8 +141,7 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_checkin_with_veto_should_raise(self):
         self.assertEqual(1, len(self.workingcopy))
-        lsc = zeit.cms.content.interfaces.ISemanticChange(
-            self.repository['testcontent'])
+        lsc = zeit.cms.content.interfaces.ISemanticChange(self.repository['testcontent'])
         changed = lsc.last_semantic_change
 
         manager = ICheckinManager(self.checked_out)
@@ -162,8 +151,7 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 
         self.assertEqual(1, len(self.workingcopy))
 
-        lsc = zeit.cms.content.interfaces.ISemanticChange(
-            self.repository['testcontent'])
+        lsc = zeit.cms.content.interfaces.ISemanticChange(self.repository['testcontent'])
         self.assertEqual(changed, lsc.last_semantic_change)
 
     def test_event_is_not_sent_for_temporary_workingcopy(self):
@@ -181,7 +169,6 @@ class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 
 
 class SemanticChangeTest(zeit.cms.testing.ZeitCmsTestCase):
-
     def setUp(self):
         super().setUp()
         self.content = self.repository['testcontent']
@@ -191,34 +178,29 @@ class SemanticChangeTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertIsNone(self.sc.last_semantic_change)
 
     def test_checkin_with_semantic_change_sets_lsc_date(self):
-        with zeit.cms.checkout.helper.checked_out(
-                self.content, semantic_change=True):
+        with zeit.cms.checkout.helper.checked_out(self.content, semantic_change=True):
             pass
         self.assertIsInstance(self.sc.last_semantic_change, datetime.datetime)
 
     def test_checkin_without_semantic_change_does_not_change_lsc_date(self):
         old = self.sc.last_semantic_change
-        with zeit.cms.checkout.helper.checked_out(
-                self.content, semantic_change=False):
+        with zeit.cms.checkout.helper.checked_out(self.content, semantic_change=False):
             pass
         self.assertEqual(old, self.sc.last_semantic_change)
 
     def test_checkin_without_explicit_sc_uses_sc_flag_on_content_object(self):
-        with zeit.cms.checkout.helper.checked_out(
-                self.content, semantic_change=None) as co:
+        with zeit.cms.checkout.helper.checked_out(self.content, semantic_change=None) as co:
             sc = zeit.cms.content.interfaces.ISemanticChange(co)
             sc.has_semantic_change = True
         self.assertIsInstance(self.sc.last_semantic_change, datetime.datetime)
 
 
 class DeleteWorkingCopy(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_new_content_is_deleted_in_repo_when_wc_is_deleted(self):
         content = self.repository['testcontent']
         co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = co_manager.checkout()
-        zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            co).renameable = True
+        zeit.cms.repository.interfaces.IAutomaticallyRenameable(co).renameable = True
         ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(co)
         ci_manager.delete()
         with self.assertRaises(TypeError):
@@ -228,8 +210,7 @@ class DeleteWorkingCopy(zeit.cms.testing.ZeitCmsTestCase):
         content = self.repository['testcontent']
         co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
         co = co_manager.checkout()
-        zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            co).renameable = False
+        zeit.cms.repository.interfaces.IAutomaticallyRenameable(co).renameable = False
         ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(co)
         ci_manager.delete()
         with self.assertNothingRaised():

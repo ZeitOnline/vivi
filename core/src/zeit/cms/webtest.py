@@ -7,14 +7,12 @@ import zope.component.hooks
 import zope.security.management
 
 
-def ServerProxy(uri, wsgi_app, encoding=None,
-                verbose=0, allow_none=0, handleErrors=True):
+def ServerProxy(uri, wsgi_app, encoding=None, verbose=0, allow_none=0, handleErrors=True):
     """A factory that creates a server proxy using the WebTestTransport
     by default.
     """
     transport = WebTestTransport(webtest.TestApp(wsgi_app), handleErrors)
-    return xmlrpc.client.ServerProxy(
-        uri, transport, encoding, verbose, allow_none)
+    return xmlrpc.client.ServerProxy(uri, transport, encoding, verbose, allow_none)
 
 
 class WebTestTransport(xmlrpc.client.Transport):
@@ -43,8 +41,7 @@ class WebTestTransport(xmlrpc.client.Transport):
         finally:
             zope.component.hooks.setSite(old_site)
             if old_interaction:
-                zope.security.management.thread_local.interaction = (
-                    old_interaction)
+                zope.security.management.thread_local.interaction = old_interaction
 
     def _request(self, host, handler, request_body, verbose=0):
         headers = {
@@ -53,7 +50,7 @@ class WebTestTransport(xmlrpc.client.Transport):
         }
         host, extra_headers, x509 = self.get_host_info(host)
         if extra_headers:
-            headers['Authorization'] = dict(extra_headers)["Authorization"]
+            headers['Authorization'] = dict(extra_headers)['Authorization']
 
         extra_environ = {}
         if self.handleErrors:  # copied from zope.testbrowser
@@ -66,18 +63,13 @@ class WebTestTransport(xmlrpc.client.Transport):
             headers.pop('X-zope-handle-errors', None)
 
         response = self.testapp.post(
-            handler, request_body,
-            headers=headers,
-            extra_environ=extra_environ,
-            expect_errors=True)
+            handler, request_body, headers=headers, extra_environ=extra_environ, expect_errors=True
+        )
 
         errcode = response.status_int
         errmsg = response.status
         if errcode != 200:
-            raise xmlrpc.client.ProtocolError(
-                host + handler,
-                errcode, errmsg,
-                response.headers)
+            raise xmlrpc.client.ProtocolError(host + handler, errcode, errmsg, response.headers)
 
         res = http.client.HTTPResponse(FakeSocket(response.body))
         res.begin()
@@ -85,7 +77,6 @@ class WebTestTransport(xmlrpc.client.Transport):
 
 
 class FakeSocket:
-
     prefix = b'HTTP/1.1 200 Ok\r\n\r\n'
 
     def __init__(self, data):

@@ -8,11 +8,10 @@ import zope.interface
 
 
 class BasicTemplateSourceFactory(zc.sourcefactory.basic.BasicSourceFactory):
-
     def getValues(self):
         manager = zope.component.getUtility(
-            zeit.cms.content.interfaces.ITemplateManager,
-            name=self.template_manager)
+            zeit.cms.content.interfaces.ITemplateManager, name=self.template_manager
+        )
         return manager.values()
 
     def getTitle(self, obj):
@@ -25,8 +24,7 @@ def BasicTemplateSource(template_manager):
     return source
 
 
-@zope.interface.implementer(
-    zeit.cms.content.interfaces.ITemplateManagerContainer)
+@zope.interface.implementer(zeit.cms.content.interfaces.ITemplateManagerContainer)
 class TemplateManagerContainer(zope.container.btree.BTreeContainer):
     """Container which holds all template managers."""
 
@@ -37,8 +35,7 @@ class TemplateManager(zope.container.btree.BTreeContainer):
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.ITemplate)
-class Template(zope.container.contained.Contained,
-               persistent.Persistent):
+class Template(zope.container.contained.Contained, persistent.Persistent):
     """A template for xml content types."""
 
     xml = None

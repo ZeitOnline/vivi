@@ -92,15 +92,14 @@ class HTTPBasicAuthCon:
             if scheme.lower() != 'basic':
                 raise BadAuthTypeError(scheme)
             # set basic auth header and retry
-            raw = "%s:%s" % self.get_auth(realm)
+            raw = '%s:%s' % self.get_auth(realm)
             self._realm = realm
             auth = 'Basic %s' % base64.encodestring(raw).strip()
             headers['Authorization'] = auth
         return
 
     def get_quoted_path(self, uri):
-        path = urllib.parse.urlunparse(
-            ('', '') + urllib.parse.urlparse(uri)[2:])
+        path = urllib.parse.urlunparse(('', '') + urllib.parse.urlparse(uri)[2:])
         # NOTE: Everything after the netloc is considered a path and will be
         # quoted
         quoted = urllib.parse.quote(path)
@@ -109,8 +108,8 @@ class HTTPBasicAuthCon:
     def quote_uri(self, uri):
         parsed = urllib.parse.urlparse(uri)
         quoted = urllib.parse.urlunparse(
-            (parsed.scheme, parsed.netloc, self.get_quoted_path(uri),
-             '', '', ''))
+            (parsed.scheme, parsed.netloc, self.get_quoted_path(uri), '', '', '')
+        )
         return quoted
 
     def request(self, method, uri, body=None, extra_hdrs=None):
@@ -123,7 +122,7 @@ class HTTPBasicAuthCon:
             raise AssertionError('Response left')
         if self._authon:
             # short cut to avoid useless requests
-            raw = "%s:%s" % self.get_auth(self._realm)
+            raw = '%s:%s' % self.get_auth(self._realm)
             auth = 'Basic %s' % base64.encodestring(raw).strip()
             headers['Authorization'] = auth
         host = str(urllib.parse.urlparse(uri).netloc)
@@ -153,7 +152,6 @@ class HTTPBasicAuthCon:
 
 
 class DAVBase:
-
     def get(self, url, extra_hdrs=None):
         return self._request('GET', url, extra_hdrs=extra_hdrs)
 
@@ -164,18 +162,16 @@ class DAVBase:
         headers = {}
         if extra_hdrs:
             headers.update(extra_hdrs)
-        assert body or data, "body or data must be supplied"
-        assert not (body and data), "cannot supply both body and data"
+        assert body or data, 'body or data must be supplied'
+        assert not (body and data), 'cannot supply both body and data'
         if data:
             body = ''
             for key, value in data.items():
                 if isinstance(value, list):
                     for item in value:
-                        body = (body + '&' + key + '=' +
-                                urllib.parse.quote(str(item)))
+                        body = body + '&' + key + '=' + urllib.parse.quote(str(item))
                 else:
-                    body = (body + '&' + key + '=' +
-                            urllib.parse.quote(str(value)))
+                    body = body + '&' + key + '=' + urllib.parse.quote(str(value))
             body = body[1:]
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
         return self._request('POST', url, body, headers)
@@ -186,8 +182,7 @@ class DAVBase:
     def trace(self, url, extra_hdrs=None):
         return self._request('TRACE', url, extra_hdrs=extra_hdrs)
 
-    def put(self, url, contents,
-            content_type=None, content_enc=None, extra_hdrs=None):
+    def put(self, url, contents, content_type=None, content_enc=None, extra_hdrs=None):
         if not content_type:
             content_type, content_enc = mimetypes.guess_type(url)
         headers = {}
@@ -245,8 +240,16 @@ class DAVBase:
             headers['Depth'] = str(depth)
         return self._request('COPY', src, extra_hdrs=headers)
 
-    def lock(self, url, owner='', timeout=None, depth=None,
-             scope='exclusive', type='write', extra_hdrs=None):
+    def lock(
+        self,
+        url,
+        owner='',
+        timeout=None,
+        depth=None,
+        scope='exclusive',
+        type='write',
+        extra_hdrs=None,
+    ):
         headers = {}
         if extra_hdrs:
             headers.update(extra_hdrs)
@@ -269,9 +272,7 @@ class DAVBase:
             node = lxml.etree.Element('{DAV:}owner')
             node.text = owner
             body.append(node)
-        xmlstr = lxml.etree.tostring(body,
-                                     encoding='UTF-8',
-                                     xml_declaration=True)
+        xmlstr = lxml.etree.tostring(body, encoding='UTF-8', xml_declaration=True)
         return self._request('LOCK', url, xmlstr, extra_hdrs=headers)
 
     def unlock(self, url, locktoken, extra_hdrs=None):
@@ -286,23 +287,22 @@ class DAVBase:
         return self._request('UNLOCK', url, extra_hdrs=headers)
 
     def _request(self, method, url, body=None, extra_hdrs=None):
-        "Internal method for sending a request."
+        'Internal method for sending a request.'
         if DEBUG_REQUEST:
             if extra_hdrs:
-                debug_header_items = [
-                    "%s: %s" % (k, v) for k, v in extra_hdrs.items()]
+                debug_header_items = ['%s: %s' % (k, v) for k, v in extra_hdrs.items()]
             else:
                 debug_header_items = []
             sys.stderr.write(
-                "### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n############\n" % (
-                    method, url,
-                    "\n  ".join(debug_header_items),
-                    body))
+                '### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n############\n'
+                % (method, url, '\n  '.join(debug_header_items), body)
+            )
         # that's HTTPxxxAuthCon.request, called via DAVConnection
         logger.debug('%s %s', method, url)
         tracer = zope.component.getUtility(zeit.cms.interfaces.ITracer)
-        with tracer.start_as_current_span('DAV %s' % method, attributes={
-                'http.url': url, 'http.method': method}) as span:
+        with tracer.start_as_current_span(
+            'DAV %s' % method, attributes={'http.url': url, 'http.method': method}
+        ) as span:
             self.request(method, url, body, extra_hdrs)
             try:
                 resp = self.getresponse()
@@ -316,14 +316,19 @@ class DAVBase:
 
         if DEBUG_REQUEST:
             sys.stderr.write(
-                "### RESPONSE: ###\n  %s %s\n  %s\n#################\n" % (
-                    (resp.status, resp.reason,
-                     "\n  ".join(["%s: %s" % h for h in resp.getheaders()]))))
+                '### RESPONSE: ###\n  %s %s\n  %s\n#################\n'
+                % (
+                    (
+                        resp.status,
+                        resp.reason,
+                        '\n  '.join(['%s: %s' % h for h in resp.getheaders()]),
+                    )
+                )
+            )
         return resp
 
 
-class DAVConnection (HTTPBasicAuthCon, DAVBase):
-
+class DAVConnection(HTTPBasicAuthCon, DAVBase):
     def __init__(self, host, port=None, strict=None, referrer=None):
         HTTPBasicAuthCon.__init__(self, host, port, strict)
         self._con._http_vsn_str = 'HTTP/1.1'

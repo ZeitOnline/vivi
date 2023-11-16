@@ -20,13 +20,14 @@ Emily Faith Pedone (@nothinbutdream)
 
 
 class TestObjectifySoup(unittest.TestCase):
-
     def test_should_parse_youtube_embed_code(self):
         from ..util import objectify_soup_fromstring
+
         xml = objectify_soup_fromstring(YOUTUBE)
         self.assertEqual('iframe', xml.tag)
 
     def test_should_parse_tweet(self):
         from ..util import objectify_soup_fromstring
+
         xml = objectify_soup_fromstring(TWITTER)
         self.assertEqual('raw', xml.tag)

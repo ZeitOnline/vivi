@@ -25,7 +25,6 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMS)
 class TMS:
-
     def __init__(self, primary, secondary=None):
         self.primary = dict(primary)
         self.secondary = dict(secondary or {})
@@ -47,8 +46,7 @@ class TMS:
         result = []
         for entity_type in zeit.retresco.interfaces.ENTITY_TYPES:
             for keyword in response.get('rtr_{}s'.format(entity_type), ()):
-                result.append(zeit.cms.tagging.tag.Tag(
-                    label=keyword, entity_type=entity_type))
+                result.append(zeit.cms.tagging.tag.Tag(label=keyword, entity_type=entity_type))
         return result
 
     def get_keywords(self, search_string, entity_type=None):
@@ -58,8 +56,7 @@ class TMS:
             params['item_type'] = entity_type
         response = self._request('GET /entities', params=params)
         for entity in response['entities']:
-            yield zeit.cms.tagging.tag.Tag(
-                entity['entity_name'], entity['entity_type'])
+            yield zeit.cms.tagging.tag.Tag(entity['entity_name'], entity['entity_type'])
 
     def get_locations(self, search_string):
         return self.get_keywords(search_string, entity_type='location')
@@ -80,9 +77,8 @@ class TMS:
     def get_topicpages(self, start=0, rows=25):
         response = self._request(
             'GET /topic-pages',
-            params={'q': '*',
-                    'page': int(start / max(rows, 1)) + 1,
-                    'rows': rows})
+            params={'q': '*', 'page': int(start / max(rows, 1)) + 1, 'rows': rows},
+        )
         result = zeit.cms.interfaces.Result()
         result.hits = response['num_found']
         for row in response['docs']:
@@ -90,16 +86,13 @@ class TMS:
             result.append(row)
         return result
 
-    def get_topicpage_documents(
-            self, id, start=0, rows=25, filter=None, order=None):
+    def get_topicpage_documents(self, id, start=0, rows=25, filter=None, order=None):
         params = {'start': start, 'rows': rows}
         if filter is not None:
             params['filter'] = filter
         if order is not None:
             params['sort_by'] = order
-        response = self._request(
-            'GET /topic-pages/{}/documents'.format(id),
-            params=params)
+        response = self._request('GET /topic-pages/{}/documents'.format(id), params=params)
         result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = response['num_found']
         return result
@@ -110,65 +103,56 @@ class TMS:
         if filter:
             params['filter'] = filter
 
-        response = self._request(
-            'GET /content/{}/relateds'.format(uuid), params=params)
+        response = self._request('GET /content/{}/relateds'.format(uuid), params=params)
         result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = len(response['docs'])
         return result
 
-    def _get_related_topicpages(
-            self, topicpage_id, rows=10, suppress_errors=False, timeout=None):
+    def _get_related_topicpages(self, topicpage_id, rows=10, suppress_errors=False, timeout=None):
         try:
             params = {'rows': rows}
             response = self._request(
-                'GET /topic-pages/{}/relateds'.format(topicpage_id),
-                params=params, timeout=timeout)
+                'GET /topic-pages/{}/relateds'.format(topicpage_id), params=params, timeout=timeout
+            )
             return response['docs']
         except Exception:
             if not suppress_errors:
-                log.warning(
-                    'Retresco topiclinks failed for {}'.format(
-                        topicpage_id), exc_info=True)
+                log.warning('Retresco topiclinks failed for {}'.format(topicpage_id), exc_info=True)
             return ()
 
     def get_related_topics(self, topicpage_id, rows=10, suppress_errors=False):
-        response = self._get_related_topicpages(
-            topicpage_id, rows, suppress_errors)
+        response = self._get_related_topicpages(topicpage_id, rows, suppress_errors)
         id_namespace = zeit.cms.interfaces.ID_NAMESPACE.rstrip('/')
-        result = zeit.cms.interfaces.Result(
-            [id_namespace + x['url'] for x in response])
+        result = zeit.cms.interfaces.Result([id_namespace + x['url'] for x in response])
         result.hits = len(response)
         return result
 
-    def get_content_related_topicpages(
-            self, content, rows=10, suppress_errors=False, timeout=None):
-        is_metadata = zeit.cms.content.interfaces.ICommonMetadata.providedBy(
-            content)
+    def get_content_related_topicpages(self, content, rows=10, suppress_errors=False, timeout=None):
+        is_metadata = zeit.cms.content.interfaces.ICommonMetadata.providedBy(content)
         if not is_metadata or not content.keywords:
             return []
 
         response = self._get_related_topicpages(
-            content.keywords[0].label.lower(), rows, suppress_errors, timeout)
+            content.keywords[0].label.lower(), rows, suppress_errors, timeout
+        )
         return get_tagslist(response)
 
     def _get_content_topics(self, content, timeout=None):
         uuid = zeit.cms.content.interfaces.IUUID(content).id
-        response = self._request(
-            'GET /content/{}/topic-pages'.format(uuid), timeout=timeout)
+        response = self._request('GET /content/{}/topic-pages'.format(uuid), timeout=timeout)
         result = zeit.cms.interfaces.Result(response['docs'])
         result.hits = len(response['docs'])
         return result
 
-    def get_content_containing_topicpages(
-            self, content, timeout=None, suppress_errors=False):
+    def get_content_containing_topicpages(self, content, timeout=None, suppress_errors=False):
         try:
             response = self._get_content_topics(content, timeout)
             return get_tagslist(response)
         except Exception:
             if not suppress_errors:
                 log.warning(
-                    'Retresco topiclinks failed for {}'.format(
-                        content.uniqueId), exc_info=True)
+                    'Retresco topiclinks failed for {}'.format(content.uniqueId), exc_info=True
+                )
             return ()
 
     def get_article_data(self, content):
@@ -182,8 +166,7 @@ class TMS:
         if published:
             return self._get_intextlink_data(content, timeout).get('body')
         else:
-            return self._get_intextlink_data_preview(content,
-                                                     timeout).get('body')
+            return self._get_intextlink_data_preview(content, timeout).get('body')
 
     def _get_intextlink_data(self, content, timeout):
         __traceback_info__ = (content.uniqueId,)
@@ -192,8 +175,7 @@ class TMS:
             log.warning('%s has no UUID, intextlinks request skipped', content)
             return {}
         try:
-            response = self._request(
-                'GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
+            response = self._request('GET /in-text-linked-documents/%s' % uuid, timeout=timeout)
             return response
         except (KeyError, requests.Timeout):
             return {}
@@ -206,21 +188,15 @@ class TMS:
             return {}
         try:
             return self._request(
-                'POST /in-text-linked-documents-preview',
-                json=tms_content,
-                timeout=timeout)
+                'POST /in-text-linked-documents-preview', json=tms_content, timeout=timeout
+            )
         except requests.Timeout:
             log.warning(
-                '/in-text-linked-documents-preview request for %s timed out',
-                content.uniqueId)
+                '/in-text-linked-documents-preview request for %s timed out', content.uniqueId
+            )
             return {}
 
-    def get_article_topiclinks(
-            self,
-            content,
-            timeout=None,
-            published=True,
-            suppress_errors=False):
+    def get_article_topiclinks(self, content, timeout=None, published=True, suppress_errors=False):
         try:
             if published:
                 response = self._get_intextlink_data(content, timeout)
@@ -241,8 +217,7 @@ class TMS:
             for keyword in zeit.retresco.tagger.Tagger(content).values():
                 if not keyword.pinned:
                     continue
-                tms = entity_links.pop(
-                    (keyword.label, keyword.entity_type), None)
+                tms = entity_links.pop((keyword.label, keyword.entity_type), None)
                 if not tms:
                     continue
                 keyword.link = tms['link']
@@ -250,17 +225,14 @@ class TMS:
             # Then we add the rest, TMS returns those sorted by descending
             # score.
             for tms in entity_links.values():
-                keyword = zeit.cms.tagging.tag.Tag(
-                    tms['key'],
-                    tms['key_type'],
-                    tms['link'])
+                keyword = zeit.cms.tagging.tag.Tag(tms['key'], tms['key_type'], tms['link'])
                 result.append(keyword)
             return result
         except Exception:
             if not suppress_errors:
                 log.warning(
-                    'Retresco topiclinks failed for {}'.format(
-                        content.uniqueId), exc_info=True)
+                    'Retresco topiclinks failed for {}'.format(content.uniqueId), exc_info=True
+                )
             return ()
 
     def index(self, content, overrides=None):
@@ -268,8 +240,7 @@ class TMS:
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
 
         if data is None:
-            log.info('Skip index for %s, it is missing required fields',
-                     content.uniqueId)
+            log.info('Skip index for %s, it is missing required fields', content.uniqueId)
             return {}
         if overrides:
             for key, value in overrides.items():
@@ -289,24 +260,20 @@ class TMS:
         __traceback_info__ = (content.uniqueId,)
         data = zeit.retresco.interfaces.ITMSRepresentation(content)()
         if data is None:
-            log.info(
-                'Skip enrich for %s, it is missing required fields',
-                content.uniqueId)
+            log.info('Skip enrich for %s, it is missing required fields', content.uniqueId)
             return {}
         params = {}
         if intextlinks:
             params['in-text-linked'] = ''
 
-        return self._request(
-            'POST /enrich', params=params, json=data)
+        return self._request('POST /enrich', params=params, json=data)
 
     def delete_id(self, uuid):
         try:
             self._request('DELETE /content/%s' % uuid)
         except zeit.retresco.interfaces.TMSError as e:
             if e.status == 404:
-                log.debug(
-                    'Warning: Tried to delete non-existent %s, ignored.', uuid)
+                log.debug('Warning: Tried to delete non-existent %s, ignored.', uuid)
             else:
                 raise
 
@@ -334,15 +301,15 @@ class TMS:
             status = getattr(e.response, 'status_code', 599)
             body = getattr(e.response, 'text', '(no error detail)')
             message = '{verb} {path} {error!r}\n{body}'.format(
-                verb=verb, path=path, error=e, body=body)
+                verb=verb, path=path, error=e, body=body
+            )
             if status < 500:
                 raise zeit.retresco.interfaces.TMSError(message, status)
             raise zeit.retresco.interfaces.TechnicalError(message, status)
         try:
             return response.json()
         except ValueError:
-            message = '{verb} {path} returned invalid json'.format(
-                verb=verb, path=path)
+            message = '{verb} {path} returned invalid json'.format(verb=verb, path=path)
             raise zeit.retresco.interfaces.TechnicalError(message, 590)
 
 
@@ -354,15 +321,17 @@ def from_product_config():
         primary={
             'url': config.get(f'{prefix}base-url'),
             'username': config.get(f'{prefix}username'),
-            'password': config.get(f'{prefix}password')},
+            'password': config.get(f'{prefix}password'),
+        },
         secondary={
             'url': config.get('secondary-base-url'),
             'username': config.get('secondary-username'),
-            'password': config.get('secondary-password')})
+            'password': config.get('secondary-password'),
+        },
+    )
 
 
-@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config(
-    'zeit.retresco', 'topiclist-principal'))
+@zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.retresco', 'topiclist-principal'))
 def update_topiclist():
     _update_topiclist()
 
@@ -371,13 +340,10 @@ def _update_topiclist():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.retresco')
     keywords = zeit.cms.interfaces.ICMSContent(config['topiclist'], None)
     if not zeit.content.rawxml.interfaces.IRawXML.providedBy(keywords):
-        raise ValueError(
-            '%s is not a raw xml document' % config['topiclist'])
-    redirects = zeit.cms.interfaces.ICMSContent(
-        config['topic-redirect-id'], None)
+        raise ValueError('%s is not a raw xml document' % config['topiclist'])
+    redirects = zeit.cms.interfaces.ICMSContent(config['topic-redirect-id'], None)
     if not zeit.content.text.interfaces.IText.providedBy(redirects):
-        raise ValueError(
-            '%s is not a text document' % config['topic-redirect-id'])
+        raise ValueError('%s is not a text document' % config['topic-redirect-id'])
 
     log.info('Retrieving all topic pages from TMS')
     tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
@@ -438,9 +404,7 @@ def _build_topic_redirects(topicpages):
     url_prefix = config['topic-redirect-prefix']
 
     output = StringIO()
-    output.write(
-        '# Generated by zeit.retresco.connection.update_topiclist(),'
-        ' do not edit.\n\n')
+    output.write('# Generated by zeit.retresco.connection.update_topiclist(),' ' do not edit.\n\n')
 
     for row in topicpages:
         target = row.get('redirect')
@@ -461,8 +425,7 @@ def get_tagslist(response):
     result = []
     for value in response:
         keyword = zeit.cms.tagging.tag.Tag(
-            value['name'],
-            value['topic_type'],
-            value['url'].lstrip('/'))
+            value['name'], value['topic_type'], value['url'].lstrip('/')
+        )
         result.append(keyword)
     return result

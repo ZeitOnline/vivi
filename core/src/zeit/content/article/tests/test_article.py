@@ -24,32 +24,33 @@ import zope.lifecycleevent
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
-        self.article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
+        self.article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.info = zeit.cms.workflow.interfaces.IPublishInfo(self.article)
 
         sm = zope.component.getSiteManager()
         self.orig_validator = sm.adapters.lookup(
-            (zeit.content.article.interfaces.IArticle,),
-            zeit.edit.interfaces.IValidator)
+            (zeit.content.article.interfaces.IArticle,), zeit.edit.interfaces.IValidator
+        )
 
         self.validator = mock.Mock()
         zope.component.provideAdapter(
             self.validator,
             adapts=(zeit.content.article.interfaces.IArticle,),
-            provides=zeit.edit.interfaces.IValidator)
+            provides=zeit.edit.interfaces.IValidator,
+        )
 
     def tearDown(self):
         zope.component.getSiteManager().unregisterAdapter(
             required=(zeit.content.article.interfaces.IArticle,),
-            provided=zeit.edit.interfaces.IValidator)
+            provided=zeit.edit.interfaces.IValidator,
+        )
         zope.component.provideAdapter(
             self.orig_validator,
             adapts=(zeit.content.article.interfaces.IArticle,),
-            provides=zeit.edit.interfaces.IValidator)
+            provides=zeit.edit.interfaces.IValidator,
+        )
         super().tearDown()
 
     def test_not_urgent_cannot_publish(self):
@@ -72,7 +73,6 @@ class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
 
 
 class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
-
     # See bug #9495
 
     def get_article_with_paras(self):
@@ -89,16 +89,14 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
     def test_article_should_not_mangle_divisions_on_add_to_repository(self):
         article = self.get_article_with_paras()
         self.repository['article'] = article
-        self.assertEqual(
-            1, len(self.repository['article'].xml.body.findall('division')))
+        self.assertEqual(1, len(self.repository['article'].xml.body.findall('division')))
 
     def test_article_should_not_mangle_divisions_on_checkin(self):
         article = self.get_article_with_paras()
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
-        self.assertEqual(
-            1, len(self.repository['article'].xml.body.findall('division')))
+        self.assertEqual(1, len(self.repository['article'].xml.body.findall('division')))
 
     def test_article_without_division_should_get_them_on_checkin(self):
         article = self.get_article_with_paras()
@@ -109,12 +107,10 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
-        self.assertEqual(
-            2, len(self.repository['article'].xml.body.findall('division')))
+        self.assertEqual(2, len(self.repository['article'].xml.body.findall('division')))
 
 
 class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
-
     def test_main_image_is_none_if_first_body_is_empty(self):
         article = self.get_article()
         self.assertEqual(None, article.main_image)
@@ -132,16 +128,14 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_main_image_is_returned_if_first_block_contains_one(self):
         article = self.get_article()
         block = self.get_factory(article, 'image')()
-        image = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         block.references = block.references.create(image)
         self.assertEqual(image, article.main_image.target)
 
     def test_setting_main_image_is_reflected_inside_body(self):
         article = self.get_article()
         block = self.get_factory(article, 'image')()
-        image = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         article.main_image = article.main_image.create(image)
         block = article.body.values()[0]
         self.assertEqual(image, block.references.target)
@@ -149,15 +143,13 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_setting_main_image_works_if_body_does_not_start_with_image(self):
         article = self.get_article()
-        image = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        image = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         article.main_image = article.main_image.create(image)
         block = article.body.values()[0]
         self.assertEqual(image, block.references.target)
 
 
 class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
-
     def test_normalize_body_to_inch(self):
         article = self.get_article()
         p = self.get_factory(article, 'p')()
@@ -193,9 +185,7 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual('»up« and »down« and »around«', co.teaserTitle)
 
 
-class LayoutHeaderByArticleTemplate(
-        zeit.content.article.testing.FunctionalTestCase):
-
+class LayoutHeaderByArticleTemplate(zeit.content.article.testing.FunctionalTestCase):
     def test_header_layout_should_determine_header_module_visibility(self):
         article = self.get_article()
         article.template = 'column'
@@ -210,61 +200,43 @@ class LayoutHeaderByArticleTemplate(
         assert '#cccccf' in source.getValues(article)
 
 
-class DefaultTemplateByContentType(
-        zeit.content.article.testing.FunctionalTestCase):
-
+class DefaultTemplateByContentType(zeit.content.article.testing.FunctionalTestCase):
     def test_config_should_define_default_template_for_context(self):
         article = self.get_article()
         source = zeit.content.article.source.ArticleTemplateSource().factory
 
-        has_default = source._provides_default(
-            article,
-            ['zeit.cms.section.interfaces.IZONContent'])
+        has_default = source._provides_default(article, ['zeit.cms.section.interfaces.IZONContent'])
         self.assertFalse(has_default)
 
-        zope.interface.alsoProvides(article,
-                                    zeit.cms.section.interfaces.IZONContent)
-        has_default = source._provides_default(
-            article,
-            ['zeit.cms.section.interfaces.IZONContent'])
+        zope.interface.alsoProvides(article, zeit.cms.section.interfaces.IZONContent)
+        has_default = source._provides_default(article, ['zeit.cms.section.interfaces.IZONContent'])
         self.assertTrue(has_default)
 
         article = self.get_article()
-        zope.interface.alsoProvides(article,
-                                    zeit.magazin.interfaces.IZMOContent)
+        zope.interface.alsoProvides(article, zeit.magazin.interfaces.IZMOContent)
         has_default = source._provides_default(
             article,
-            ['zeit.cms.section.interfaces.IZONContent',
-             'zeit.magazin.interfaces.IZMOContent'])
+            ['zeit.cms.section.interfaces.IZONContent', 'zeit.magazin.interfaces.IZMOContent'],
+        )
         self.assertTrue(has_default)
 
     def test_config_should_define_generic_default_for_context(self):
         source = zeit.content.article.source.ArticleTemplateSource().factory
-        self.assertEqual(
-            ('article', 'inside'),
-            source._get_generic_default())
+        self.assertEqual(('article', 'inside'), source._get_generic_default())
 
     def test_config_should_provide_defaults(self):
         article = self.get_article()
         source = zeit.content.article.source.ArticleTemplateSource().factory
-        zope.interface.alsoProvides(article,
-                                    zeit.cms.section.interfaces.IZONContent)
-        self.assertEqual(
-            ('article', 'default'),
-            source.get_default_template(article))
+        zope.interface.alsoProvides(article, zeit.cms.section.interfaces.IZONContent)
+        self.assertEqual(('article', 'default'), source.get_default_template(article))
 
         article = self.get_article()
         source = zeit.content.article.source.ArticleTemplateSource().factory
-        zope.interface.alsoProvides(article,
-                                    zeit.magazin.interfaces.IZMOContent)
-        self.assertEqual(
-            ('short', ''),
-            source.get_default_template(article))
+        zope.interface.alsoProvides(article, zeit.magazin.interfaces.IZMOContent)
+        self.assertEqual(('short', ''), source.get_default_template(article))
 
         article = self.get_article()
-        self.assertEqual(
-            ('article', 'inside'),
-            source.get_default_template(article))
+        self.assertEqual(('article', 'inside'), source.get_default_template(article))
 
     def test_article_should_have_default_template_on_checkout(self):
         article = self.get_article()
@@ -298,8 +270,7 @@ class DefaultTemplateByContentType(
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
-        self.assertEqual(
-            'original', self.repository['article'].main_image_variant_name)
+        self.assertEqual('original', self.repository['article'].main_image_variant_name)
 
     def test_checkout_change_variant_name_if_invalid(self):
         article = self.get_article()
@@ -308,8 +279,7 @@ class DefaultTemplateByContentType(
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
-        self.assertEqual(
-            'original', self.repository['article'].main_image_variant_name)
+        self.assertEqual('original', self.repository['article'].main_image_variant_name)
 
     def test_changing_template_should_set_default_header(self):
         article = self.get_article()
@@ -319,36 +289,37 @@ class DefaultTemplateByContentType(
         with checked_out(self.repository['article']) as article:
             self.assertEqual(None, article.header_layout)
             article.template = 'article'
-            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-                article, zope.lifecycleevent.Attributes(
-                    zeit.content.article.interfaces.IArticle, 'template')))
+            zope.event.notify(
+                zope.lifecycleevent.ObjectModifiedEvent(
+                    article,
+                    zope.lifecycleevent.Attributes(
+                        zeit.content.article.interfaces.IArticle, 'template'
+                    ),
+                )
+            )
             self.assertEqual('default', article.header_layout)
 
 
-class ArticleXMLReferenceUpdate(
-        zeit.content.article.testing.FunctionalTestCase):
-
+class ArticleXMLReferenceUpdate(zeit.content.article.testing.FunctionalTestCase):
     def test_writes_genre_as_attribute(self):
         self.repository['article'] = self.get_article()
         with checked_out(self.repository['article']) as co:
             co.genre = 'nachricht'
 
         reference = zope.component.queryAdapter(
-            self.repository['article'],
-            zeit.cms.content.interfaces.IXMLReference, name='related')
-        self.assertIn(
-            'genre="nachricht"', zeit.cms.testing.xmltotext(reference))
+            self.repository['article'], zeit.cms.content.interfaces.IXMLReference, name='related'
+        )
+        self.assertIn('genre="nachricht"', zeit.cms.testing.xmltotext(reference))
 
 
-class ArticleElementReferencesTest(
-        zeit.content.article.testing.FunctionalTestCase):
-
+class ArticleElementReferencesTest(zeit.content.article.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.article = self.get_article()
 
     def create_empty_portraitbox_reference(self):
         from zeit.content.article.edit.body import EditableBody
+
         body = EditableBody(self.article, self.article.xml.body)
         portraitbox_reference = body.create_item('portraitbox', 1)
         portraitbox_reference._validate = mock.Mock()
@@ -356,40 +327,38 @@ class ArticleElementReferencesTest(
 
     def test_articles_element_references_iterates_over_references(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
+
         pbox = Portraitbox()
         self.repository['pbox'] = pbox
         ref = self.create_empty_portraitbox_reference()
         ref.references = pbox
-        self.assertEqual([pbox], list(zeit.edit.interfaces.IElementReferences(
-            self.article)))
+        self.assertEqual([pbox], list(zeit.edit.interfaces.IElementReferences(self.article)))
 
     def test_empty_imagegroup_not_in_element_references(self):
         from zeit.content.article.edit.body import EditableBody
-        self.repository['image-group'] = \
-            zeit.content.image.imagegroup.ImageGroup()
+
+        self.repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
         body = EditableBody(self.article, self.article.xml.body)
         image_group = body.create_item('image', 3)
-        image_group.references = image_group.references.create(
-            self.repository['image-group'])
+        image_group.references = image_group.references.create(self.repository['image-group'])
         image_group._validate = mock.Mock()
         self.repository['article_with_empty_ref'] = self.article
-        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
-            self.repository['article_with_empty_ref'])))
+        self.assertEqual(
+            [],
+            list(
+                zeit.edit.interfaces.IElementReferences(self.repository['article_with_empty_ref'])
+            ),
+        )
 
-    def test_articles_element_references_is_empty_if_no_references_are_set(
-            self):
-        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
-            self.article)))
+    def test_articles_element_references_is_empty_if_no_references_are_set(self):
+        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(self.article)))
 
-    def test_articles_element_references_is_empty_if_empty_reference_is_set(
-            self):
+    def test_articles_element_references_is_empty_if_empty_reference_is_set(self):
         self.create_empty_portraitbox_reference()
-        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(
-            self.article)))
+        self.assertEqual([], list(zeit.edit.interfaces.IElementReferences(self.article)))
 
 
 class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
-
     def test_checksum_updates_on_publish(self):
         article = self.get_article()
         article.body.create_item('p').text = 'foo'
@@ -418,9 +387,9 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_no_checksum_for_ignored_genres(self):
         article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
+            'http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept'
+        )
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         config['speechbert-ignore-genres'] = 'rezept-vorstellung'
         IPublish(article).publish()
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
@@ -428,7 +397,6 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
 
 
 class ArticleAccess(zeit.content.article.testing.FunctionalTestCase):
-
     def test_free_is_treated_as_dynamic_according_to_toggle(self):
         article = self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(article) as co:
@@ -440,7 +408,6 @@ class ArticleAccess(zeit.content.article.testing.FunctionalTestCase):
 
 
 class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
-
     def _create_audio(self):
         audio = zeit.content.audio.audio.Audio()
         audio.title = 'Pawdcast'
@@ -455,8 +422,11 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         with checked_out(self.article) as co:
             audios = zeit.content.audio.interfaces.IAudioReferences
             audios(co).items = (self.repository['audio'],)
-            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-                co, zope.lifecycleevent.Attributes(audios, 'items')))
+            zope.event.notify(
+                zope.lifecycleevent.ObjectModifiedEvent(
+                    co, zope.lifecycleevent.Attributes(audios, 'items')
+                )
+            )
         self.article = self.repository['article']
 
     def setUp(self):
@@ -471,8 +441,11 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = self.article
         with checked_out(self.article) as co:
             audios = zeit.content.audio.interfaces.IAudioReferences
-            zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-                co, zope.lifecycleevent.Attributes(audios, 'items')))
+            zope.event.notify(
+                zope.lifecycleevent.ObjectModifiedEvent(
+                    co, zope.lifecycleevent.Attributes(audios, 'items')
+                )
+            )
         # without items, no changes
         assert 'podcast' != self.article.header_layout
 
@@ -520,4 +493,6 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert 'podcast' == self.article.header_layout
         assert self.audio.title != self.article.title
         assert self.info.summary != self.article.teaserText
-        assert len(self.article.body.values()) == 1, 'Without audio, body should only contain "main image block"'
+        assert (
+            len(self.article.body.values()) == 1
+        ), 'Without audio, body should only contain "main image block"'

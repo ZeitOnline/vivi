@@ -2,7 +2,6 @@ import zeit.content.article.edit.browser.testing
 
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
-
     def test_puzzle_inline_form_saves_values(self):
         self.get_article(with_block='puzzleform')
         b = self.browser

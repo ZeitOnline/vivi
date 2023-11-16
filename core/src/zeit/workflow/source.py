@@ -9,7 +9,6 @@ from zeit.cms.i18n import MessageFactory as _
 
 
 class _NotNecessary:
-
     __slots__ = ()
     _instance = None
 
@@ -27,8 +26,7 @@ class _NotNecessary:
 
 NotNecessary = _NotNecessary()
 # Make it a rock
-zope.security.checker.BasicTypes[_NotNecessary] = (
-    zope.security.checker.NoProxy)
+zope.security.checker.BasicTypes[_NotNecessary] = zope.security.checker.NoProxy
 
 
 @zope.component.adapter(_NotNecessary)
@@ -40,11 +38,13 @@ def fromNotNecessary(value):
 class TriState(zc.sourcefactory.basic.BasicSourceFactory):
     """Source providing yes/no/notnecessary."""
 
-    _values = collections.OrderedDict((
-        (False, _('no')),
-        (True, _('yes')),
-        (NotNecessary, _('not necessary')),
-    ))
+    _values = collections.OrderedDict(
+        (
+            (False, _('no')),
+            (True, _('yes')),
+            (NotNecessary, _('not necessary')),
+        )
+    )
 
     def getTitle(self, value):
         return self._values.get(value, value)

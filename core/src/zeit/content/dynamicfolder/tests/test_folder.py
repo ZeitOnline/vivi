@@ -20,7 +20,8 @@ import zope.component
 
 
 class TestContainerMethodsRespectVirtualChildren(
-        zeit.content.dynamicfolder.testing.FunctionalTestCase):
+    zeit.content.dynamicfolder.testing.FunctionalTestCase
+):
     """Test folder methods like keys, values etc to return virtual children."""
 
     def setUp(self):
@@ -30,18 +31,17 @@ class TestContainerMethodsRespectVirtualChildren(
     def assert_xanten_has_basic_info_set(self, xanten):
         self.assertEqual('xanten', xanten.__name__)
         self.assertEqual('Xanten', xanten.title)
-        self.assertEqual(
-            'http://xml.zeit.de/dynamicfolder/xanten', xanten.uniqueId)
+        self.assertEqual('http://xml.zeit.de/dynamicfolder/xanten', xanten.uniqueId)
 
     def test_folder_keys_contains_children_defined_in_xml_config(self):
         self.assertEqual(
-            ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'],
-            sorted(iter(self.folder)))
+            ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'], sorted(iter(self.folder))
+        )
 
     def test_folder_iter_contains_children_defined_in_xml_config(self):
         self.assertEqual(
-            ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'],
-            sorted(iter(self.folder)))
+            ['art-déco', 'xaernten', 'xanten', 'xinjiang', 'überlingen'], sorted(iter(self.folder))
+        )
 
     def test_folder_getitem_returns_child_with_basic_info_set(self):
         child = self.folder['xanten']
@@ -90,10 +90,8 @@ class TestContainerMethodsRespectVirtualChildren(
         self.assertIn('xanten', self.folder)
 
 
-class TestDynamicFolder(
-        zeit.content.dynamicfolder.testing.FunctionalTestCase):
-    """Tests behaviour that exceeds basic container methods like keys, get etc.
-    """
+class TestDynamicFolder(zeit.content.dynamicfolder.testing.FunctionalTestCase):
+    """Tests behaviour that exceeds basic container methods like keys, get etc."""
 
     def setUp(self):
         super().setUp()
@@ -107,6 +105,7 @@ class TestDynamicFolder(
 
     def test_unconfigured_folder_does_not_break_due_to_missing_config(self):
         from ..folder import RepositoryDynamicFolder
+
         self.repository['folder'] = RepositoryDynamicFolder()
         self.assertEqual([], self.repository['folder'].items())
 
@@ -115,8 +114,7 @@ class TestDynamicFolder(
             self.folder['Buxtehude']
 
     def test_folder_can_also_contain_normal_content(self):
-        self.folder['foo'] = (
-            zeit.cms.testcontenttype.testcontenttype.ExampleContentType())
+        self.folder['foo'] = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         self.assertIn('foo', self.folder)
         self.assertIn('xanten', self.folder)
 
@@ -132,8 +130,7 @@ class TestDynamicFolder(
 
     def test_fills_in_template_placeholders_from_config_entries(self):
         cp = self.folder['xanten']
-        self.assertTrue(
-            zeit.cms.repository.interfaces.IRepositoryContent.providedBy(cp))
+        self.assertTrue(zeit.cms.repository.interfaces.IRepositoryContent.providedBy(cp))
         self.assertTrue(zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
         self.assertTrue(zeit.content.cp.interfaces.ICP2015.providedBy(cp))
         self.assertEqual('Xanten', cp.title)
@@ -150,29 +147,31 @@ class TestDynamicFolder(
             render.return_value = ''
             self.folder['xinjiang']  # load files and renders template
             self.assertEqual(1, render.call_count)
-            self.assertIn(
-                ('text', 'Text Xinjiang'), render.call_args[1].items())
+            self.assertIn(('text', 'Text Xinjiang'), render.call_args[1].items())
 
     def test_parent_can_be_accessed_in_template(self):
         with mock.patch(
-                'zeit.content.dynamicfolder.folder.'
-                'RepositoryDynamicFolder.content_template',
-                new_callable=mock.PropertyMock) as template:
-            template.return_value = jinja2.Template("""
+            'zeit.content.dynamicfolder.folder.' 'RepositoryDynamicFolder.content_template',
+            new_callable=mock.PropertyMock,
+        ) as template:
+            template.return_value = jinja2.Template(
+                """
 <test>
     <head />
     <body>{{url_value}} {{__parent__.__name__}}</body>
-</test>""")
+</test>"""
+            )
             self.assertIn(
                 '<body>xanten dynamicfolder</body>',
-                lxml.etree.tostring(
-                    self.folder['xanten'].xml, encoding=str))
+                lxml.etree.tostring(self.folder['xanten'].xml, encoding=str),
+            )
 
     def test_works_with_raxml_template(self):
         # These get an xml declaration in their serialization, so we must not
         # process them as unicode, else lxml complains.
-        with (importlib.resources.files(__package__) /
-             'fixtures/dynamic-centerpages/template.xml').open() as f:
+        with (
+            importlib.resources.files(__package__) / 'fixtures/dynamic-centerpages/template.xml'
+        ).open() as f:
             self.repository['data']['template.xml'] = RawXML(f)
         with self.assertNothingRaised():
             self.folder['xanten']
@@ -181,9 +180,10 @@ class TestDynamicFolder(
         # These don't get an xml declaration in their serialization, but
         # luckily(?) lxml doesn't care if we use unicode or utf-8 in that case.
         self.repository['data']['template.xml'] = PersistentUnknownResource(
-            data=(importlib.resources.files(__package__) /
-                  'fixtures/dynamic-centerpages/template.xml').read_text(
-                      'latin-1'))
+            data=(
+                importlib.resources.files(__package__) / 'fixtures/dynamic-centerpages/template.xml'
+            ).read_text('latin-1')
+        )
         with self.assertNothingRaised():
             self.folder['xanten']
 
@@ -192,33 +192,30 @@ class TestDynamicFolder(
 
     def test_does_not_copy_uuid_of_template_into_content(self):
         self.assertNotEqual(
-            '{urn:uuid:6a5bcb2a-bd80-499b-ad79-72eb0a07e65e}',
-            IUUID(self.folder['xanten']).id)
+            '{urn:uuid:6a5bcb2a-bd80-499b-ad79-72eb0a07e65e}', IUUID(self.folder['xanten']).id
+        )
 
     def test_calculates_uuid_from_uniqueid(self):
         second = zeit.content.dynamicfolder.folder.RepositoryDynamicFolder()
         second.config_file = self.repository['data']['config.xml']
         self.repository['secondfolder'] = second
         transaction.commit()
-        self.assertNotEqual(
-            IUUID(self.folder['xanten']).id, IUUID(second['xanten']).id)
+        self.assertNotEqual(IUUID(self.folder['xanten']).id, IUUID(second['xanten']).id)
 
     def test_checkout_preserves_dav_properties_from_xml(self):
         # We need a DAV property that is handled by a separate adapter to see
         # the effect, since direct DAV properties are directly copied to XML,
         # so for those it makes no difference if e.g. VirtualProperties were
         # still used for checked-out IVirtualContent, which they should not be.
-        self.assertEqual('seo-title', zeit.seo.interfaces.ISEO(
-            self.folder['xanten']).html_title)
+        self.assertEqual('seo-title', zeit.seo.interfaces.ISEO(self.folder['xanten']).html_title)
         with checked_out(self.folder['xanten']) as co:
-            self.assertEqual(
-                'seo-title', zeit.seo.interfaces.ISEO(co).html_title)
+            self.assertEqual('seo-title', zeit.seo.interfaces.ISEO(co).html_title)
             zeit.seo.interfaces.ISEO(co).html_title = 'changed'
-        self.assertEqual('changed', zeit.seo.interfaces.ISEO(
-            self.folder['xanten']).html_title)
+        self.assertEqual('changed', zeit.seo.interfaces.ISEO(self.folder['xanten']).html_title)
 
     def test_does_not_break_on_erroneous_config(self):
         from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
+
         dynamic = RepositoryDynamicFolder()
         dynamic.config_file = self.repository['data']['template.xml']
         self.repository['brokenfolder'] = dynamic
@@ -233,13 +230,13 @@ class TestDynamicFolder(
             calls.append(context.uniqueId)
 
         zope.component.getGlobalSiteManager().registerHandler(
-            check_publish, (
+            check_publish,
+            (
                 zeit.cms.repository.interfaces.IRepositoryContent,
-                zeit.cms.workflow.interfaces.IPublishedEvent
-            )
+                zeit.cms.workflow.interfaces.IPublishedEvent,
+            ),
         )
-        zeit.cms.workflow.interfaces.IPublish(
-            self.folder).publish(background=False)
+        zeit.cms.workflow.interfaces.IPublish(self.folder).publish(background=False)
         self.assertIn('http://xml.zeit.de/dynamicfolder/', calls)
         # Would be nice to check these, for completeness, but mock IPublish
         # does not handle IPublicationDependencies, so we have
@@ -259,12 +256,10 @@ class TestDynamicFolder(
             self.assertIn(self.folder.content_template_file, deps)
 
 
-class MaterializeDynamicFolder(
-        zeit.cms.testing.FunctionalTestCase):
-
+class MaterializeDynamicFolder(zeit.cms.testing.FunctionalTestCase):
     layer = zeit.content.dynamicfolder.testing.DynamicLayer(
-        path='tests/fixtures/dynamic-articles/',
-        files=['config.xml', 'template.xml'])
+        path='tests/fixtures/dynamic-articles/', files=['config.xml', 'template.xml']
+    )
 
     def setUp(self):
         super().setUp()
@@ -274,63 +269,76 @@ class MaterializeDynamicFolder(
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         self.assertEqual(
-            'Wahlergebnis in Kiel',
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
-        with checked_out(
-                self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
+            'Wahlergebnis in Kiel', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title
+        )
+        with checked_out(self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
             co.title = 'foo'
-        self.assertEqual(
-            'foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
-        self.assertTrue(DFinterfaces.IMaterializedContent.providedBy(
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
+        self.assertEqual('foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
+        self.assertTrue(
+            DFinterfaces.IMaterializedContent.providedBy(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']
+            )
+        )
 
     def test_materializing_virtual_content(self):
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
-        self.assertFalse(DFinterfaces.IVirtualContent.providedBy(
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
-        self.assertTrue(DFinterfaces.IMaterializedContent.providedBy(
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
+        self.assertFalse(
+            DFinterfaces.IVirtualContent.providedBy(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']
+            )
+        )
+        self.assertTrue(
+            DFinterfaces.IMaterializedContent.providedBy(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']
+            )
+        )
 
     def test_materialized_content_is_virtual_content_again(self):
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         del self.folder['wahlergebnis-kiel-wahlkreis-5-live']
         self.assertIn('wahlergebnis-kiel-wahlkreis-5-live', self.folder)
-        self.assertTrue(DFinterfaces.IVirtualContent.providedBy(
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
+        self.assertTrue(
+            DFinterfaces.IVirtualContent.providedBy(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']
+            )
+        )
 
     def test_publish_materialized_content(self):
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         zeit.content.dynamicfolder.materialize.publish_content(self.folder)
-        self.assertTrue(zeit.cms.workflow.interfaces.IPublishInfo(
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live']).published)
+        self.assertTrue(
+            zeit.cms.workflow.interfaces.IPublishInfo(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']
+            ).published
+        )
 
     def test_folder_should_not_be_materialized_content(self):
         """
         And therefore is never published, when
         zeit.content.dynamicfolder.publish.publish_content is called
         """
-        self.repository['dynamicfolder']['real-folder'] = (
-            zeit.cms.repository.folder.Folder())
-        zeit.content.dynamicfolder.materialize.materialize_content(
-            self.repository['dynamicfolder'])
+        self.repository['dynamicfolder']['real-folder'] = zeit.cms.repository.folder.Folder()
+        zeit.content.dynamicfolder.materialize.materialize_content(self.repository['dynamicfolder'])
         transaction.commit()
-        self.assertFalse(DFinterfaces.IVirtualContent.providedBy(
-            self.repository['dynamicfolder']['real-folder']))
+        self.assertFalse(
+            DFinterfaces.IVirtualContent.providedBy(self.repository['dynamicfolder']['real-folder'])
+        )
 
     def test_materialized_content_is_updated_when_materialized_again(self):
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
-        with checked_out(
-                self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
+        with checked_out(self.folder['wahlergebnis-kiel-wahlkreis-5-live']) as co:
             co.title = 'foo'
-        self.assertEqual(
-            'foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
+        self.assertEqual('foo', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
         zeit.content.dynamicfolder.materialize.materialize_content(self.folder)
         transaction.commit()
         self.assertEqual(
-            'Wahlergebnis in Kiel',
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title)
-        self.assertTrue(DFinterfaces.IMaterializedContent.providedBy(
-            self.folder['wahlergebnis-kiel-wahlkreis-5-live']))
+            'Wahlergebnis in Kiel', self.folder['wahlergebnis-kiel-wahlkreis-5-live'].title
+        )
+        self.assertTrue(
+            DFinterfaces.IMaterializedContent.providedBy(
+                self.folder['wahlergebnis-kiel-wahlkreis-5-live']
+            )
+        )

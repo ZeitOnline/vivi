@@ -6,14 +6,15 @@ import zope.lifecycleevent
 
 
 class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_no_channels_copies_ressort_to_channel_on_change(self):
         with checked_out(self.repository['testcontent']) as co:
             co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
-                    'ressort'))
+                co,
+                zope.lifecycleevent.Attributes(
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType, 'ressort'
+                ),
+            )
             self.assertEqual((('Deutschland', None),), co.channels)
 
     def test_merges_with_existing_channels(self):
@@ -21,20 +22,23 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             co.channels = (('International', None),)
             co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
-                    'ressort'))
-            self.assertEqual((('International', None),
-                              ('Deutschland', None)), co.channels)
+                co,
+                zope.lifecycleevent.Attributes(
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType, 'ressort'
+                ),
+            )
+            self.assertEqual((('International', None), ('Deutschland', None)), co.channels)
 
     def test_channels_already_set_does_not_change_anything(self):
         with checked_out(self.repository['testcontent']) as co:
             co.channels = (('Deutschland', None),)
             co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
-                    'ressort'))
+                co,
+                zope.lifecycleevent.Attributes(
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType, 'ressort'
+                ),
+            )
             self.assertEqual((('Deutschland', None),), co.channels)
 
     def test_channels_are_not_set_if_product_forbids_it(self):
@@ -44,40 +48,42 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(self.repository['testcontent']) as co:
             co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
-                    'ressort'))
+                co,
+                zope.lifecycleevent.Attributes(
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType, 'ressort'
+                ),
+            )
             self.assertEqual((), co.channels)
 
     def test_channels_are_not_set_if_content_forbids_it(self):
         article = ExampleContentType()
-        zope.interface.alsoProvides(
-            article, zeit.cms.content.interfaces.ISkipDefaultChannel)
+        zope.interface.alsoProvides(article, zeit.cms.content.interfaces.ISkipDefaultChannel)
         self.repository['testcontent'] = article
         with checked_out(self.repository['testcontent']) as co:
             co.ressort = 'Deutschland'
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.testcontenttype.interfaces.IExampleContentType,
-                    'ressort'))
+                co,
+                zope.lifecycleevent.Attributes(
+                    zeit.cms.testcontenttype.interfaces.IExampleContentType, 'ressort'
+                ),
+            )
             self.assertEqual((), co.channels)
 
 
 class Access(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_change_access_value_is_logged(self):
         article = self.repository['testcontent']
         log = zeit.objectlog.interfaces.ILog(article)
         with zeit.cms.checkout.helper.checked_out(article) as co:
             co.access = 'abo'
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata,
-                    'access'))
+                co,
+                zope.lifecycleevent.Attributes(
+                    zeit.cms.content.interfaces.ICommonMetadata, 'access'
+                ),
+            )
             entries = list(log.get_log())
-            assert (
-                entries[-1].message ==
-                'Access changed from "${old}" to "${new}"')
+            assert entries[-1].message == 'Access changed from "${old}" to "${new}"'
 
     def test_spurious_non_change_of_access_is_not_logged(self):
         article = self.repository['testcontent']
@@ -85,14 +91,15 @@ class Access(zeit.cms.testing.ZeitCmsTestCase):
         with zeit.cms.checkout.helper.checked_out(article) as co:
             co.access = 'free'
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata,
-                    'access'))
+                co,
+                zope.lifecycleevent.Attributes(
+                    zeit.cms.content.interfaces.ICommonMetadata, 'access'
+                ),
+            )
             self.assertEqual([], list(log.get_log()))
 
 
 class ColorScheme(zeit.cms.testing.ZeitCmsTestCase):
-
     def test_ignores_invalid_values(self):
         article = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(article) as co:

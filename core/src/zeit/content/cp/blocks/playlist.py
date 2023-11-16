@@ -8,15 +8,14 @@ import zeit.edit.interfaces
 
 @grok.implementer(zeit.content.cp.interfaces.IPlaylistBlock)
 class PlaylistBlock(zeit.content.cp.blocks.block.Block):
-
     type = 'playlist'
 
     referenced_playlist = zeit.cms.content.reference.SingleResource(
-        '.block', xml_reference_name='related')
+        '.block', xml_reference_name='related'
+    )
 
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):
-
     produces = PlaylistBlock
     title = _('Video Bar')
 

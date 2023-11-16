@@ -4,7 +4,6 @@ import zope.component
 
 
 class MessageList:
-
     @property
     def css_class(self):
         result = ['staticErrorText']
@@ -16,6 +15,5 @@ class MessageList:
 
     @cachedproperty
     def messages(self):
-        receiver = zope.component.getUtility(
-            z3c.flashmessage.interfaces.IMessageReceiver)
+        receiver = zope.component.getUtility(z3c.flashmessage.interfaces.IMessageReceiver)
         return list(receiver.receive())

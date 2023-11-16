@@ -11,15 +11,14 @@ import zope.copypastemove.interfaces
 
 
 class ImageAssetTest(zeit.content.image.testing.FunctionalTestCase):
-
     def test_IImages_accepts_IImage_for_backwards_compatibility(self):
         with self.assertNothingRaised():
             zeit.content.image.interfaces.IImages['image'].validate(
-                ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG'))
+                ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+            )
 
 
 class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
-
     def setUp(self):
         super().setUp()
         ExampleContentType.images = ReferenceProperty('.body.image', 'image')
@@ -96,23 +95,21 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
             if kw.get('name') == 'image':
                 return None
             return queryAdapter(*args, **kw)
+
         queryAdapter = zope.component.queryAdapter
 
         with mock.patch('zope.component.queryAdapter', mock_query):
             with self.assertNothingRaised():
-                updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
-                    content)
+                updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
                 updater.update(content.xml, suppress_errors=True)
 
     def test_colorpicker_should_generate_proper_xml(self):
         content = self.repository['testcontent']
         zeit.content.image.interfaces.IImages(content).fill_color = 'F00F00'
-        assert len(content.xml.xpath(
-            '//head/image[@fill_color="F00F00"]')) == 1
+        assert len(content.xml.xpath('//head/image[@fill_color="F00F00"]')) == 1
 
 
 class MoveReferencesTest(zeit.content.image.testing.FunctionalTestCase):
-
     def test_moving_image_updates_uniqueId_in_referencing_obj(self):
         # This is basically the same test as zeit.cms.redirect.tests.test_move,
         # but for image references instead of related references.
@@ -120,15 +117,13 @@ class MoveReferencesTest(zeit.content.image.testing.FunctionalTestCase):
         with checked_out(self.repository['testcontent']) as co:
             zeit.content.image.interfaces.IImages(co).image = image
 
-        zope.copypastemove.interfaces.IObjectMover(image).moveTo(
-            self.repository, 'changed')
+        zope.copypastemove.interfaces.IObjectMover(image).moveTo(self.repository, 'changed')
 
         content = self.repository['testcontent']
         with mock.patch('zeit.cms.redirect.interfaces.ILookup') as lookup:
             self.assertEqual(
                 'http://xml.zeit.de/changed',
-                zeit.content.image.interfaces.IImages(content).image.uniqueId)
+                zeit.content.image.interfaces.IImages(content).image.uniqueId,
+            )
             self.assertFalse(lookup().find.called)
-        self.assertIn(
-            'http://xml.zeit.de/changed',
-            zeit.cms.testing.xmltotext(content.xml))
+        self.assertIn('http://xml.zeit.de/changed', zeit.cms.testing.xmltotext(content.xml))

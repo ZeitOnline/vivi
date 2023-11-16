@@ -3,7 +3,6 @@ import zeit.content.article.testing
 
 
 class FacebookTest(zeit.zett.testing.BrowserTestCase):
-
     def get_article(self):
         wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
         return list(wc.values())[0]
@@ -16,9 +15,7 @@ class FacebookTest(zeit.zett.testing.BrowserTestCase):
         article = zeit.content.article.testing.create_article()
         self.repository['zett']['article'] = article
         b = self.browser
-        b.open(
-            'http://localhost/++skin++vivi/repository'
-            '/zett/article/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository' '/zett/article/@@checkout')
         b.open('@@edit.form.social?show_form=1')
         self.assertFalse(b.getControl('Enable Facebook ze.tt').selected)
         b.getControl('Enable Facebook ze.tt').selected = True
@@ -27,5 +24,6 @@ class FacebookTest(zeit.zett.testing.BrowserTestCase):
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'facebook', 'enabled': True, 'account': 'fb-zett',
-             'override_text': 'zett'}, push.message_config)
+            {'type': 'facebook', 'enabled': True, 'account': 'fb-zett', 'override_text': 'zett'},
+            push.message_config,
+        )

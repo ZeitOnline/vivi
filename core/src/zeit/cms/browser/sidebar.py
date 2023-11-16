@@ -11,7 +11,6 @@ import zope.security.interfaces
 @zope.component.adapter(zope.security.interfaces.IPrincipal)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IPanelState)
 class PanelState(persistent.mapping.PersistentMapping):
-
     def folded(self, panel):
         return self.get(panel, False)
 
@@ -26,7 +25,6 @@ panelStateFactory = zope.annotation.factory(PanelState)
 
 
 class Panel:
-
     def __call__(self, toggle_folding=None):
         if toggle_folding is not None:
             self.toggle_folding(toggle_folding)
@@ -51,7 +49,6 @@ class Panel:
 
 
 class Sidebar:
-
     @property
     def css_class(self):
         if self.folded:
@@ -69,5 +66,4 @@ class Sidebar:
 
     @zope.cachedescriptors.property.Lazy
     def preferences(self):
-        return zope.app.preference.interfaces.IUserPreferences(
-            self.context).cms_preferences
+        return zope.app.preference.interfaces.IUserPreferences(self.context).cms_preferences

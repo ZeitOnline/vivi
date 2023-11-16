@@ -20,18 +20,13 @@ import zope.interface
 class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
     """A type for managing animations made from existing media."""
 
-    default_template = "<body/>"
+    default_template = '<body/>'
 
-    article = zeit.cms.content.reference.SingleResource(
-        ".body.article", "related"
-    )
-    display_mode = zeit.cms.content.property.ObjectPathProperty(
-        ".body.display_mode"
-    )
-    images = zeit.cms.content.reference.MultiResource(".body.image", "image")
-    video = zeit.cms.content.reference.SingleResource(".body.video", "related")
-    gallery = zeit.cms.content.reference.SingleResource(
-        ".body.gallery", "related")
+    article = zeit.cms.content.reference.SingleResource('.body.article', 'related')
+    display_mode = zeit.cms.content.property.ObjectPathProperty('.body.display_mode')
+    images = zeit.cms.content.reference.MultiResource('.body.image', 'image')
+    video = zeit.cms.content.reference.SingleResource('.body.video', 'related')
+    gallery = zeit.cms.content.reference.SingleResource('.body.gallery', 'related')
 
     _proxy_attributes = frozenset(list(ICommonMetadata) + ['genre'])
 
@@ -47,8 +42,7 @@ class Animation(zeit.cms.content.xmlsupport.XMLContentBase):
 
 
 class AnimationType(zeit.cms.type.XMLContentTypeDeclaration):
-
     factory = Animation
     interface = zeit.content.animation.interfaces.IAnimation
-    title = _("Animation")
-    type = "animation"
+    title = _('Animation')
+    type = 'animation'

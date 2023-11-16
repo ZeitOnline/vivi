@@ -14,24 +14,28 @@ import zope.interface
 
 @zope.interface.implementer(zeit.content.cp.interfaces.ILeadTime)
 class LeadTime(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     start = zeit.cms.content.dav.DAVProperty(
         zeit.content.cp.interfaces.ILeadTime['start'],
-        zeit.content.cp.interfaces.DAV_NAMESPACE, 'leadtime_start',
-        writeable=WRITEABLE_LIVE)
+        zeit.content.cp.interfaces.DAV_NAMESPACE,
+        'leadtime_start',
+        writeable=WRITEABLE_LIVE,
+    )
     end = zeit.cms.content.dav.DAVProperty(
         zeit.content.cp.interfaces.ILeadTime['end'],
-        zeit.content.cp.interfaces.DAV_NAMESPACE, 'leadtime_end',
-        writeable=WRITEABLE_LIVE)
+        zeit.content.cp.interfaces.DAV_NAMESPACE,
+        'leadtime_end',
+        writeable=WRITEABLE_LIVE,
+    )
 
 
 @zope.interface.implementer(zeit.content.cp.interfaces.ILeadTimeWorklist)
 class LeadTimeWorklist(zeit.cms.content.dav.DAVPropertiesAdapter):
-
     zeit.cms.content.dav.mapProperties(
         zeit.content.cp.interfaces.ILeadTimeWorklist,
         zeit.content.cp.interfaces.DAV_NAMESPACE,
-        ('previous_leader',), writeable=WRITEABLE_LIVE)
+        ('previous_leader',),
+        writeable=WRITEABLE_LIVE,
+    )
 
 
 def find_leader(cp):
@@ -44,8 +48,8 @@ def find_leader(cp):
 
 
 @grok.subscribe(
-    zeit.content.cp.interfaces.ILeadTimeCP,
-    zeit.cms.workflow.interfaces.IPublishedEvent)
+    zeit.content.cp.interfaces.ILeadTimeCP, zeit.cms.workflow.interfaces.IPublishedEvent
+)
 def update_leadtime(context, event):
     now = datetime.now(pytz.UTC)
     unmark_previous_leader(context, now)

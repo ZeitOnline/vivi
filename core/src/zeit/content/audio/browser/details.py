@@ -10,8 +10,9 @@ import zeit.cms.workflow.interfaces
 class Details(zeit.cms.browser.objectdetails.Details):
     """Displays audio details in article view."""
 
-    index = ViewPageTemplateFile(str(importlib.resources.files(
-        __package__) / 'object-details-body.pt'))
+    index = ViewPageTemplateFile(
+        str(importlib.resources.files(__package__) / 'object-details-body.pt')
+    )
 
     def __call__(self):
         return self.index()
@@ -22,8 +23,7 @@ class Details(zeit.cms.browser.objectdetails.Details):
 
     @property
     def duration(self):
-        return zeit.cms.browser.widget.readable_duration(
-            self.context.duration)
+        return zeit.cms.browser.widget.readable_duration(self.context.duration)
 
     @property
     def audio_type(self):

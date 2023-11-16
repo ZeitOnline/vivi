@@ -4,7 +4,7 @@ import zope.security.checker
 import zope.security.proxy
 
 try:
-    from collections.abc import Mapping     # Python 3.3+
+    from collections.abc import Mapping  # Python 3.3+
 except ImportError:
     from collections import Mapping
 
@@ -22,7 +22,6 @@ def instancecheck_with_zope_proxy(cls, instance):
 
 
 class DummyMapping(Mapping):
-
     def __getitem__(self, key):
         raise KeyError(key)
 
@@ -36,15 +35,11 @@ class DummyMapping(Mapping):
 mydict = DummyMapping()
 
 # <https://github.com/zopefoundation/zope.security/issues/66>
-zope.security.checker.BasicTypes[
-    type(mydict.keys())] = zope.security.checker.NoProxy
-zope.security.checker.BasicTypes[
-    type(mydict.values())] = zope.security.checker.NoProxy
-zope.security.checker.BasicTypes[
-    type(mydict.items())] = zope.security.checker.NoProxy
+zope.security.checker.BasicTypes[type(mydict.keys())] = zope.security.checker.NoProxy
+zope.security.checker.BasicTypes[type(mydict.values())] = zope.security.checker.NoProxy
+zope.security.checker.BasicTypes[type(mydict.items())] = zope.security.checker.NoProxy
 
 
 # Treat pendulum like datetime.datetime.
 for cls in ['DateTime', 'Date', 'Time']:
-    zope.security.checker.BasicTypes[getattr(pendulum, cls)] = (
-        zope.security.checker.NoProxy)
+    zope.security.checker.BasicTypes[getattr(pendulum, cls)] = zope.security.checker.NoProxy

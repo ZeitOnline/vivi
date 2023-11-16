@@ -8,9 +8,11 @@ import zope.generations.utility
 def update(root):
     site_manager = zope.component.getSiteManager()
     zeit.connector.generation.install.installLocalUtility(
-        site_manager, zeit.connector.invalidator.Invalidator,
+        site_manager,
+        zeit.connector.invalidator.Invalidator,
         'connector-invalidator',
-        zeit.connector.invalidator.IInvalidator)
+        zeit.connector.invalidator.IInvalidator,
+    )
 
 
 def evolve(context):
