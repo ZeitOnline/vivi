@@ -391,6 +391,7 @@ class CeleryWorkerLayer(plone.testing.Layer):
                 'task_send_sent_event': True,  # So we can inspect routing in tests
                 'longterm_scheduler_backend': 'memory://',
                 'TESTING': True,
+                'broker_connection_retry_on_startup': True,  # Avoid deprecation warning
                 'ZODB': self['zodbDB-layer'],
             }
         )
