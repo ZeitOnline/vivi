@@ -44,6 +44,14 @@ class Counter(Metric, prometheus_client.Counter):
 
 IMPORTERS = [
     Gauge(
+        'vivi_recent_audios_published_total',
+        [
+            {'term': {'doc_type': 'audio'}},
+            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+        ],
+        'external',
+    ),
+    Gauge(
         'vivi_recent_news_published_total',
         [
             {'term': {'payload.workflow.product-id': 'News'}},
