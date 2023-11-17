@@ -162,7 +162,7 @@ class Simplecast(grok.GlobalUtility):
         return IPublishInfo(audio).published and not IPodcastEpisodeInfo(audio).is_published
 
     def _publish_state_needs_sync(self, audio):
-        return not IPublishInfo(audio).published and IPodcastEpisodeInfo(audio).is_published
+        return IPodcastEpisodeInfo(audio).is_published
 
     def _create(self, episode_id, episode_data):
         container = self.folder(episode_data['created_at'])
