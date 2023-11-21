@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.66.0 (2023-11-21)
+-------------------
+
+- ZO-3967: Record metric vivi_recent_audios_published_total
+
+- ZO-4057: Truncate temporary table before running zodbpack
+
+
+MAINT:
+- MAINT: lint and autoformat code with ruff
+
+
 5.65.0 (2023-11-15)
 -------------------
 
