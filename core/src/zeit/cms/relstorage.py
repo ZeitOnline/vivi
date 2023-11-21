@@ -11,6 +11,9 @@ import zodburi
 import zope.app.appsetup.product
 
 
+log = logging.getLogger(__name__)
+
+
 class PsqlServiceResolver(Resolver):
     def __call__(self, parsed_uri, kw):
         def factory(options):
@@ -25,9 +28,20 @@ psql_resolver = RelStorageURIResolver(PsqlServiceResolver())
 
 
 def zodbpack():
+    import psycopg2  # soft dependency
+
     settings = zeit.cms.cli.parse_paste_ini()
     storage_factory, db_kw = zodburi.resolve_uri(settings['zodbconn.uri'])
     storage = storage_factory()
+
+    # Work around zodb/relstorage#482
+    conn = psycopg2.connect(storage._adapter._dsn)
+    cur = conn.cursor()
+    log.info('Workaround: truncating object_refs_added table')
+    cur.execute('TRUNCATE object_refs_added')
+    conn.commit()
+    conn.close()
+
     # We use keep_history=False, so we run pack only for garbage collection
     timestamp = None
     storage.pack(timestamp, ZODB.serialize.referencesf)
@@ -46,9 +60,7 @@ class RelStorageInstrumentor(BaseInstrumentor):
         tracer = opentelemetry.trace.get_tracer(__name__, tracer_provider=kw.get('tracer_provider'))
 
         if not perfmetrics._util.PURE_PYTHON:
-            logging.getLogger(__name__).warning(
-                'perfmetrics loaded C extensions, skipping instrumentation'
-            )
+            log.warning('perfmetrics loaded C extensions, skipping instrumentation')
             return
 
         wrapped_call = MetricImpl.__call__
