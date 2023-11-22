@@ -470,4 +470,5 @@ class Audio(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-form', 'options-template')
         self.signal('reload-inline-form', 'article-content-head')
         self.signal('reload-inline-form', 'teaser-text')
+        self.signal('reload-inline-form', 'teaser-title')
         self.signal('reload', 'editable-body', self.url(self.context.body, 'contents'))

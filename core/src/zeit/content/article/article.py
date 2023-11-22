@@ -393,6 +393,10 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
         episode = zeit.content.audio.interfaces.IPodcastEpisodeInfo(main_audio)
         if not context.teaserText:
             context.teaserText = episode.summary
+        if not context.teaserTitle:
+            context.teaserTitle = main_audio.title
+        if not context.subtitle:
+            context.subtitle = episode.summary
         # article image reserves first position
         body = context.body
         if not body or (len(body.keys()) == 1 and context.main_image_block):
