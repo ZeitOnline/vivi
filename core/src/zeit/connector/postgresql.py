@@ -282,9 +282,11 @@ class Connector:
         ):
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
-            result = self.session.execute(select(Paths.parent_path, Paths.name).filter_by(id=uuid))
+            result = self.session.execute(
+                select(Paths.id, Paths.parent_path, Paths.name).filter_by(id=uuid)
+            )
             for item in result:
-                yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', uuid)
+                yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', item.id)
         else:
             query = select(Paths).join(Properties).filter(_build_filter(expr))
             result = self.session.execute(query)

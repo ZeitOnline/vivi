@@ -303,7 +303,7 @@ class ContractSearch:
         var = SearchVar('uuid', namespace)
         result = list(self.connector.search([var], var == uuid))
         if self.shortened_uuid:
-            uuid = uuid.replace('urn:uuid:', '')
+            uuid = uuid.replace('{urn:uuid:', '').replace('}', '')
         assert result == [('http://xml.zeit.de/testing/foo', uuid)]
 
     def test_search_and_operator(self):
