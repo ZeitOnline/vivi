@@ -1,10 +1,10 @@
 import logging
 
-import grokcore.component as grok
 import pendulum
 import requests
 import zope.app.appsetup.product
 import zope.component
+import zope.interface
 
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
@@ -23,8 +23,8 @@ log = logging.getLogger(__name__)
 AUDIO_ID = SearchVar('external_id', zeit.content.audio.audio.AUDIO_SCHEMA_NS)
 
 
-@grok.implementer(zeit.simplecast.interfaces.ISimplecast)
-class Simplecast(grok.GlobalUtility):
+@zope.interface.implementer(zeit.simplecast.interfaces.ISimplecast)
+class Simplecast:
     #: lazy mapping between audio interfaces (key) and simplecast api (value)
     _properties = {
         IAudio: {

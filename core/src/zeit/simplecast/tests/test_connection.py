@@ -12,6 +12,7 @@ from zeit.content.audio.workflow import AudioWorkflow, PodcastWorkflow
 import zeit.cms.repository.folder
 import zeit.cms.workflow.interfaces
 import zeit.content.audio.audio
+import zeit.simplecast.connection
 import zeit.simplecast.interfaces
 import zeit.simplecast.testing
 import zeit.workflow.asset
@@ -28,7 +29,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
-        self.simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
+        self.simplecast = zeit.simplecast.connection.Simplecast()
         self.trace_patch = mock.patch('zeit.cms.tracing.record_span')
         self.trace_mock = self.trace_patch.start()
 
