@@ -196,5 +196,10 @@
    title="Materialize dynamic folder content"
    />
 
+  <permission
+   id="zeit.content.audio.ManualUpdate"
+   title="Audio object update from simplecast"
+   />
+
 </configure>
 

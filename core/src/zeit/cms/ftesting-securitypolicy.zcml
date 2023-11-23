@@ -193,6 +193,10 @@
     principal="zope.producer"
     permission="zeit.MaterializeContent"
     />
+  <grant
+    principal="zope.producer"
+    permission="zeit.content.audio.ManualUpdate"
+    />
 
   <!-- SEO grants -->
 

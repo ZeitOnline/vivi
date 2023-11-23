@@ -1,8 +1,7 @@
-from unittest import mock
-
 import json
 import pytest
 import requests_mock
+import zope.component
 
 import zeit.simplecast.testing
 import zeit.simplecast.json.webhook
@@ -35,6 +34,10 @@ def episode_url():
 
 
 class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
+    def setUp(self):
+        super().setUp()
+        self.simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
+
     @pytest.fixture(autouse=True)
     def _caplog(self, caplog):
         self.caplog = caplog
@@ -57,61 +60,53 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
 
     def test_create_episode(self):
         event = webhook_event('episode_created')
-        with mock.patch('zeit.simplecast.connection.Simplecast.synchronize_episode') as create:
-            self.browser.post(
-                'http://localhost/@@simplecast_webhook',
-                json.dumps(event),
-                'application/x-javascript',
-            )
-            create.assert_called_with(episode_id())
+        self.browser.post(
+            'http://localhost/@@simplecast_webhook',
+            json.dumps(event),
+            'application/x-javascript',
+        )
+        self.simplecast.synchronize_episode.assert_called_with(episode_id())
 
     def test_update_episode(self):
         event = webhook_event('episode_updated')
-        with mock.patch('zeit.simplecast.connection.Simplecast.synchronize_episode') as update:
-            self.browser.post(
-                'http://localhost/@@simplecast_webhook',
-                json.dumps(event),
-                'application/x-javascript',
-            )
-            update.assert_called_with(episode_id())
+        self.browser.post(
+            'http://localhost/@@simplecast_webhook',
+            json.dumps(event),
+            'application/x-javascript',
+        )
+        self.simplecast.synchronize_episode.assert_called_with(episode_id())
 
     def test_delete_episode(self):
         event = webhook_event('episode_deleted')
-        with mock.patch('zeit.simplecast.connection.Simplecast.synchronize_episode') as delete:
-            self.browser.post(
-                'http://localhost/@@simplecast_webhook',
-                json.dumps(event),
-                'application/x-javascript',
-            )
-            delete.assert_called_with(episode_id())
+        self.browser.post(
+            'http://localhost/@@simplecast_webhook',
+            json.dumps(event),
+            'application/x-javascript',
+        )
+        self.simplecast.synchronize_episode.assert_called_with(episode_id())
 
     def test_publish_episode(self):
         event = webhook_event('episode_published')
-        with mock.patch('zeit.simplecast.connection.Simplecast.synchronize_episode') as publish:
-            self.browser.post(
-                'http://localhost/@@simplecast_webhook',
-                json.dumps(event),
-                'application/x-javascript',
-            )
-            publish.assert_called_with(episode_id())
+        self.browser.post(
+            'http://localhost/@@simplecast_webhook',
+            json.dumps(event),
+            'application/x-javascript',
+        )
+        self.simplecast.synchronize_episode.assert_called_with(episode_id())
 
     def test_unpublish_episode(self):
         event = webhook_event('episode_unpublished')
-        with mock.patch('zeit.simplecast.connection.Simplecast.synchronize_episode') as retract:
-            self.browser.post(
-                'http://localhost/@@simplecast_webhook',
-                json.dumps(event),
-                'application/x-javascript',
-            )
-            retract.assert_called_with(episode_id())
+        self.browser.post(
+            'http://localhost/@@simplecast_webhook',
+            json.dumps(event),
+            'application/x-javascript',
+        )
+        self.simplecast.synchronize_episode.assert_called_with(episode_id())
 
     def test_webhook_body_is_traced(self):
         # only exemplary for `episode_updated`
         event = webhook_event('episode_updated')
-        with (
-            zeit.cms.testing.captrace() as trace,
-            mock.patch('zeit.simplecast.connection.Simplecast.synchronize_episode'),
-        ):
+        with zeit.cms.testing.captrace() as trace:
             self.browser.post(
                 'http://localhost/@@simplecast_webhook',
                 json.dumps(event),

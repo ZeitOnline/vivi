@@ -7,4 +7,6 @@
   <include package="zeit.content.audio" />
   <include package="zeit.content.audio.browser" />
 
+  <include package="zeit.simplecast" />
+
 </configure>

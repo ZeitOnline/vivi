@@ -130,4 +130,26 @@
     provides="zeit.workflow.browser.interfaces.IWorkflowForm"
   />
 
+
+  <!-- Audio Update -->
+  <browser:viewlet
+    name="AudioUpdate"
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".audioupdate.MenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zeit.content.audio.ManualUpdate"
+    action="@@audioupdate"
+    icon="/@@/zeit.cms/icons/simplecast.png"
+    weight="50"
+    />
+
+  <browser:page
+    name="audioupdate"
+    for="zeit.content.audio.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".audioupdate.AudioUpdate"
+    permission="zeit.content.audio.ManualUpdate"
+    />
+
 </configure>

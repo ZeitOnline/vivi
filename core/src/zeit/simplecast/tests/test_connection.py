@@ -12,6 +12,7 @@ from zeit.content.audio.workflow import AudioWorkflow, PodcastWorkflow
 import zeit.cms.repository.folder
 import zeit.cms.workflow.interfaces
 import zeit.content.audio.audio
+import zeit.simplecast.connection
 import zeit.simplecast.interfaces
 import zeit.simplecast.testing
 import zeit.workflow.asset
@@ -19,7 +20,7 @@ import zeit.workflow.asset
 
 class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
     def create_audio(self, json):
-        with mock.patch.object(self.simplecast, '_fetch_episode') as request:
+        with mock.patch.object(self.simplecast, 'fetch_episode') as request:
             request.return_value = json
             self.simplecast.synchronize_episode(json['id'])
         self.repository.connector.search_result = [
@@ -28,7 +29,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
-        self.simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
+        self.simplecast = zeit.simplecast.connection.Simplecast()
         self.trace_patch = mock.patch('zeit.cms.tracing.record_span')
         self.trace_mock = self.trace_patch.start()
 
@@ -45,7 +46,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
                 status_code=500,
                 text='an error occurred',
             )
-            self.simplecast._fetch_episode(episode_id)
+            self.simplecast.fetch_episode(episode_id)
         args, _ = self.trace_mock.call_args_list[0]
         self.assertEqual(500, args[1])
         self.assertEqual('an error occurred', args[2])
@@ -58,7 +59,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
                 f'https://testapi.simplecast.com/episodes/{episode_id}',
                 exc=requests.exceptions.ConnectTimeout,
             )
-            self.simplecast._fetch_episode(episode_id)
+            self.simplecast.fetch_episode(episode_id)
         args, _ = self.trace_mock.call_args_list[0]
         self.assertEqual(599, args[1])
         self.assertEqual('', args[2])
@@ -68,7 +69,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         episode_id = '1234'
         with self.assertRaises(requests.exceptions.JSONDecodeError):
             m.get(f'https://testapi.simplecast.com/episodes/{episode_id}', text='no json')
-            self.simplecast._fetch_episode(episode_id)
+            self.simplecast.fetch_episode(episode_id)
         args, _ = self.trace_mock.call_args_list[0]
         self.assertEqual(200, args[1])
         self.assertEqual(
@@ -82,7 +83,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
             f'https://testapi.simplecast.com/episodes/{episode_id}', json=self.episode_info
         )
         with m_simple:
-            result = self.simplecast._fetch_episode(episode_id)
+            result = self.simplecast.fetch_episode(episode_id)
             self.assertEqual(result, self.episode_info)
 
     def test_simplecast_gets_podcast_folder(self):
