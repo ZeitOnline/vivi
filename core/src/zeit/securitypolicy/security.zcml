@@ -220,6 +220,10 @@
     role="zeit.Producer"
     permission="zeit.MaterializeContent"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.audio.ManualUpdate"
+    />
 
 
   <!-- CvD grants -->
@@ -246,6 +250,10 @@
   <grant
     role="zeit.CvD"
     permission="zeit.MoveContent"
+    />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.content.audio.ManualUpdate"
     />
 
   <!-- SEO grants -->
