@@ -29,18 +29,18 @@ class BrowserTestCase(zeit.content.audio.testing.BrowserTestCase):
     def test_audio_is_updated(self):
         audio = self.create_audio()
         simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
-        simplecast._fetch_episode.return_value = zeit.simplecast.testing.EPISODE_200
+        simplecast.fetch_episode.return_value = zeit.simplecast.testing.EPISODE_200
         browser = self.browser
         browser.login('producer', 'producerpw')
         browser.open('/repository/audio')
         link = browser.getLink('Update audio from simplecast')
         link.click()
-        simplecast._update.assert_called_with(audio, zeit.simplecast.testing.EPISODE_200)
+        simplecast.update.assert_called_with(audio, zeit.simplecast.testing.EPISODE_200)
 
     def test_simplecast_request_failed_displays_error(self):
         self.create_audio()
         simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
-        simplecast._fetch_episode.return_value = {}
+        simplecast.fetch_episode.return_value = {}
         browser = self.browser
         browser.login('producer', 'producerpw')
 

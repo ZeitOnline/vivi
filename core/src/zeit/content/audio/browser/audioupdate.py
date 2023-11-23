@@ -20,9 +20,9 @@ class AudioUpdate(zeit.cms.browser.view.Base):
             )
             self.send_message(message, type='error')
             return self.redirect(self.url(self.context))
-        episode_data = simplecast._fetch_episode(audio.external_id)
+        episode_data = simplecast.fetch_episode(audio.external_id)
         if episode_data:
-            simplecast._update(audio, episode_data)
+            simplecast.update(audio, episode_data)
             message = _(
                 '${name} successfully updated.',
                 mapping={'name': audio.uniqueId},

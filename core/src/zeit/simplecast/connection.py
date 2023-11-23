@@ -86,7 +86,7 @@ class Simplecast:
 
             return json
 
-    def _fetch_episode(self, episode_id):
+    def fetch_episode(self, episode_id):
         """Request episode data from simplecast, return json body"""
         return self._request(f'GET episodes/{episode_id}')
 
@@ -141,9 +141,9 @@ class Simplecast:
 
     def synchronize_episode(self, episode_id):
         audio = self._find_existing_episode(episode_id)
-        episode_data = self._fetch_episode(episode_id)
+        episode_data = self.fetch_episode(episode_id)
         if audio and episode_data:
-            self._update(audio, episode_data)
+            self.update(audio, episode_data)
         elif not audio and episode_data:
             audio = self._create(episode_id, episode_data)
         elif audio and not episode_data:
@@ -172,7 +172,7 @@ class Simplecast:
         log.info('Podcast Episode %s successfully created.', audio.uniqueId)
         return container[episode_id]
 
-    def _update(self, audio, episode_data):
+    def update(self, audio, episode_data):
         with zeit.cms.checkout.helper.checked_out(audio) as episode:
             if not episode:
                 log.error('Unable to update %s. Could not checkout!', audio.uniqueId)
