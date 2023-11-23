@@ -36,6 +36,7 @@ field_map = {
     'published': 'payload.vivi.publish_status',
     'raw_tags': 'body',
     'serie': 'payload.document.serie',
+    'podcast': 'payload.audio.podcast',
     'topic': 'payload.document.ressort',
     'types': 'doc_type',
     'volume': 'payload.document.volume',

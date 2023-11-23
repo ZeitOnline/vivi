@@ -85,6 +85,15 @@
         </select>
       </fieldset>
       <fieldset>
+        <label>Podcast:</label>
+        <select name="podcast">
+        <option value=""></option>
+        {.repeated section podcasts}
+        <option value="{podcast}">{podcast_title}</option>
+        {.end}
+        </select>
+      </fieldset>
+      <fieldset>
           <label>Verfügbarkeit:</label>
           <select name="access">
               <option value=""></option>
