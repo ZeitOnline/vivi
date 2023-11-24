@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.69.0 (2023-11-24)
+-------------------
+
+- ZO-3830: Allow manual update of audio object from simplecast
+
+
 5.68.0 (2023-11-22)
 -------------------
 
