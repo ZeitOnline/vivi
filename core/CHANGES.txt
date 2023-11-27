@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.70.0 (2023-11-27)
+-------------------
+
+- ZO-3830: Show simplecast update button only for checked in audio
+
+
 5.69.0 (2023-11-24)
 -------------------
 
