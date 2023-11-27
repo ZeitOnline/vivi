@@ -24,7 +24,16 @@ class BrowserTestCase(zeit.content.audio.testing.BrowserTestCase):
         browser = self.browser
         browser.login('user', 'userpw')
         browser.open('/repository/audio')
-        self.assertNotIn('...Update audio from simplecast...', browser.contents)
+        self.assertNotIn('Update audio from simplecast', browser.contents)
+
+    def test_request_audio_update_unavailable_for_checked_out_object(self):
+        self.create_audio()
+        browser = self.browser
+        browser.login('producer', 'producerpw')
+        browser.open('/repository/audio')
+        link = browser.getLink('Checkout')
+        link.click()
+        self.assertNotIn('Update audio from simplecast', browser.contents)
 
     def test_audio_is_updated(self):
         audio = self.create_audio()

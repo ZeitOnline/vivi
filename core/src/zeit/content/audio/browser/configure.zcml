@@ -135,7 +135,7 @@
   <browser:viewlet
     name="AudioUpdate"
     for="zeit.content.audio.interfaces.IAudio"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
     class=".audioupdate.MenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.content.audio.ManualUpdate"
@@ -147,7 +147,7 @@
   <browser:page
     name="audioupdate"
     for="zeit.content.audio.interfaces.IAudio"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
     class=".audioupdate.AudioUpdate"
     permission="zeit.content.audio.ManualUpdate"
     />
