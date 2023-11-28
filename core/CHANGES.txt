@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.71.0 (2023-11-28)
+-------------------
+
+- ZO-4254: index audio objects
+
+
 5.70.0 (2023-11-27)
 -------------------
 
