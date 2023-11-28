@@ -6,6 +6,7 @@ import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.audio.interfaces
 import zeit.find.interfaces
 import zeit.find.search
 import zope.browser.interfaces
