@@ -1,25 +1,11 @@
 from zope.testbrowser.browser import LinkNotFoundError
 
-from zeit.content.audio.audio import Audio, PodcastEpisodeInfo
-from zeit.content.audio.interfaces import Podcast
-import zeit.content.audio.testing
+from zeit.content.audio.testing import AudioBuilder, BrowserTestCase
 
 
-class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
-    def create_audio(self):
-        audio = Audio()
-        audio.title = 'mytitle'
-        audio.url = 'http://example.com/cats.mp3'
-        audio.duration = 123
-        audio.audio_type = 'podcast'
-        podcast = Podcast('cat-jokes-pawdcast', 'Cat Jokes Pawdcast', '1234', 'Jokes about cats')
-        PodcastEpisodeInfo(audio).podcast = podcast
-
-        self.repository['audio'] = audio
-        return audio
-
+class AudioObjectDetails(BrowserTestCase):
     def test_displays_details(self):
-        audio = self.create_audio()
+        audio = AudioBuilder().build(self.repository)
         b = self.browser
         b.open('/repository/audio/@@object-details')
         self.assert_ellipsis(
@@ -35,27 +21,24 @@ class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
         )
 
     def test_displays_additional_info_only_if_available(self):
-        audio = Audio()
-        audio.title = 'mytitle'
-        audio.audio_type = 'tts'
-        self.repository['audio'] = audio
+        AudioBuilder().with_duration(0).with_url('').with_title('mytitle').with_audio_type(
+            'tts'
+        ).build(self.repository)
         b = self.browser
         b.open('/repository/audio/@@object-details')
         self.assert_ellipsis(
             '...<li class="teaser_title" title="mytitle">mytitle</li>...', b.contents
         )
-        assert (
-            'Duration:' not in b.contents
-        ), 'Duration should not be displayed without duration set'
+        assert 'Duration' not in b.contents, 'Duration should not be displayed without duration set'
         assert (
             'open-audio object-link' not in b.contents
         ), 'Play should not be displayed without url'
         assert (
-            'Podcast:' not in b.contents
+            'Podcast' not in b.contents
         ), 'Podcast should not be displayed without audio_type set to podcast'
 
     def test_cannot_delete_if_permissions_missing(self):
-        self.create_audio()
+        AudioBuilder().build(self.repository)
         b = self.browser
         b.open('/repository/audio')
         with self.assertRaises(LinkNotFoundError):
@@ -66,7 +49,7 @@ class AudioObjectDetails(zeit.content.audio.testing.BrowserTestCase):
             (1500, '25:00'),
             (7512, '02:05:12'),
         ]
-        audio = self.create_audio()
+        audio = AudioBuilder().build(self.repository)
         for duration, expected in test_cases:
             audio.duration = duration
             self.repository['audio'] = audio
