@@ -1,9 +1,12 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
+from zeit.content.audio.interfaces import IAudioReferences
+import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.tagging.tag
-import zeit.cms.content.interfaces
 import zeit.content.article.article
+import zeit.content.audio.interfaces
+import zeit.content.audio.testing
 import zeit.content.author.author
 import zeit.content.image.interfaces
 import zeit.content.link.interfaces
@@ -184,3 +187,17 @@ class ContentTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(1, kpi.visits)
         self.assertEqual(2, kpi.comments)
         self.assertEqual(3, kpi.subscriptions)
+
+    def test_convert_tms_result_with_audio_to_cmscontent(self):
+        audio = zeit.content.audio.testing.AudioBuilder().build(self.repository)
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article) as co:
+            audios = IAudioReferences
+            audios(co).items = (self.repository['audio'],)
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        content = zeit.retresco.interfaces.ITMSContent(data)
+
+        self.assertIsInstance(content, zeit.content.article.article.Article)
+        self.assertTrue(IArticle.providedBy(content))
+        assert IAudioReferences(content).items == (audio,)

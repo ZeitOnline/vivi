@@ -67,6 +67,10 @@ class Content:
             # See zeit.cms.content.metadata.CommonMetadata.agencies
             head.append(E.agency(href=id))
 
+        for id in self._tms_payload_head.get('audio_references', ()):
+            # See zeit.content.audio.interfaces.IAudioReferences
+            head.append(E.audio(href=id))
+
         if 'covers' in self._tms_payload_head:
             # See zeit.content.volume.volume.Volume.set_cover
             covers = E.covers()

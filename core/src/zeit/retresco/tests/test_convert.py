@@ -9,6 +9,8 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.tagging.tag
 import zeit.content.advertisement.advertisement
+import zeit.content.audio.audio
+import zeit.content.audio.testing
 import zeit.content.author.author
 import zeit.content.gallery.gallery
 import zeit.content.image.interfaces
@@ -102,6 +104,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                     },
                     'head': {
                         'authors': [],
+                        'audio_references': [],
                         'agencies': [],
                         'teaser_image': 'http://xml.zeit.de/2006/DSC00109_2.JPG',
                     },
@@ -508,3 +511,13 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertEqual(
             'http://xml.zeit.de/data/config.xml', data['payload']['document']['config_file']
         )
+
+    def test_converts_article_with_audio(self):
+        audio = zeit.content.audio.testing.AudioBuilder().build(self.repository)
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        with checked_out(article) as co:
+            audios = zeit.content.audio.interfaces.IAudioReferences
+            audios(co).items = (self.repository['audio'],)
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        data = zeit.retresco.interfaces.ITMSRepresentation(article)()
+        assert data['payload']['head']['audio_references'] == [audio.uniqueId]

@@ -133,7 +133,7 @@ def notify_cms_content_property_change(context, event):
 
     When a content object is adapted to extend functionality it is common to
     have an adapter to IWebDAVProperties from the adapter. In this case the
-    orgiginal object would not be notified about changes.
+    original object would not be notified about changes.
 
     """
     if zeit.cms.interfaces.ICMSContent.providedBy(context):

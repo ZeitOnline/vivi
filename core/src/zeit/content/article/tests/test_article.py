@@ -5,6 +5,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.content.audio.testing import AudioBuilder
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
@@ -408,15 +409,6 @@ class ArticleAccess(zeit.content.article.testing.FunctionalTestCase):
 
 
 class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
-    def _create_audio(self):
-        audio = zeit.content.audio.audio.Audio()
-        audio.title = 'Pawdcast'
-        audio.audio_type = 'podcast'
-        info = zeit.content.audio.interfaces.IPodcastEpisodeInfo(audio)
-        info.summary = 'lorem ipsum'
-        info.notes = 'dolor sit amet'
-        return audio, info
-
     def _add_audio_to_article(self):
         self.repository['article'] = self.article
         with checked_out(self.article) as co:
@@ -434,8 +426,8 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         self.article = self.get_article()
         self.article.title = ''
         self.article.body.create_item('image')
-        self.audio, self.info = self._create_audio()
-        self.repository['audio'] = self.audio
+        self.audio = AudioBuilder().build(self.repository)
+        self.info = zeit.content.audio.interfaces.IPodcastEpisodeInfo(self.audio)
 
     def test_remove_audio_from_article(self):
         self.repository['article'] = self.article
@@ -474,8 +466,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert self.info.notes != self.article.body.values()[1].text
 
     def test_other_than_podcast_type_does_not_edit_content(self):
-        self.audio.audio_type = 'premium'
-        self.repository['audio'] = self.audio
+        AudioBuilder().with_audio_type('premium').build(self.repository)
         self._add_audio_to_article()
 
         assert 'podcast' == self.article.header_layout
