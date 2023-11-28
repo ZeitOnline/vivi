@@ -1,4 +1,17 @@
 from datetime import datetime
+import logging
+import os.path
+import re
+
+import grokcore.component as grok
+import lxml.builder
+import lxml.etree
+import pendulum
+import pytz
+import zope.component
+import zope.interface
+import zope.publisher.browser
+
 from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.workflow.interfaces import IPublicationStatus
@@ -6,20 +19,13 @@ from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
 from zeit.retresco.interfaces import DAV_NAMESPACE_BASE
 from zeit.wochenmarkt.interfaces import IRecipeCategoriesWhitelist
-import grokcore.component as grok
-import logging
-import lxml.builder
-import lxml.etree
-import os.path
-import pendulum
-import pytz
-import re
 import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.advertisement.interfaces
 import zeit.content.article.interfaces
+import zeit.content.audio.interfaces
 import zeit.content.author.interfaces
 import zeit.content.dynamicfolder.interfaces
 import zeit.content.gallery.interfaces
@@ -34,9 +40,6 @@ import zeit.push.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zeit.seo.interfaces
-import zope.component
-import zope.interface
-import zope.publisher.browser
 
 log = logging.getLogger(__name__)
 MIN_DATE = datetime(1970, 1, 1, tzinfo=pytz.UTC)
@@ -486,7 +489,7 @@ class Portraitbox(Converter):
         }
 
 
-class Recipe(Converter):
+class Article(Converter):
     interface = zeit.content.article.interfaces.IArticle
     grok.name(interface.__name__)
 
@@ -495,52 +498,69 @@ class Recipe(Converter):
         result = {'payload': {}}
         search_list = []
 
-        if body.xpath('//recipe_categories'):
-            categories = body.xpath('//recipe_categories/category/@code')
-            result['payload']['recipe'] = {'categories': list(dict.fromkeys(sorted(categories)))}
+        result['payload']['head'] = self._convert_audio_references()
 
-            whitelist = zope.component.getUtility(IRecipeCategoriesWhitelist)
-            for code in categories:
-                category = whitelist.get(code)
-                if category is not None:
-                    search_list.append(category.name.strip() + ':category')
+        if body.xpath('//recipe_categories'):
+            self._convert_recipe_categories(body, result, search_list)
 
         if body.xpath('//recipelist'):
-            ingredients = sorted(body.xpath('//recipelist/ingredient/@code'))
-            whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
-            for code in ingredients:
-                ingredient = whitelist.get(code)
-                if ingredient is None:
-                    continue
-                search_list += [x.strip() + ':ingredient' for x in ingredient.qwords or ()]
-                search_list += [x.strip() + ':ingredient' for x in ingredient.qwords_category or ()]
+            self._convert_recipe_list(body, result, search_list)
 
-            titles = sorted(body.xpath('//recipelist/title/text()'))
-            search_list += [x.strip() + ':recipe_title' for x in titles]
-
-            subheadings = sorted(body.xpath('//recipelist/subheading[@searchable="True"]/text()'))
-            search_list += [x.strip() + ':subheading' for x in subheadings]
-
-            complexities = sorted(body.xpath('//recipelist/complexity/text()'))
-            servings = sorted(body.xpath('//recipelist/servings/text()'))
-            times = sorted(body.xpath('//recipelist/time/text()'))
-
-            doctitles = body.xpath('title/text()')
-            if len(doctitles) == 1 and doctitles[0] != '':
-                search_list.append(doctitles[0].strip() + ':title')
-
-            result['payload'].setdefault('recipe', {}).update(
-                {
-                    'search': list(dict.fromkeys(sorted(search_list))),
-                    'ingredients': list(dict.fromkeys(ingredients)),
-                    'titles': list(dict.fromkeys(titles)),
-                    'subheadings': list(dict.fromkeys(subheadings)),
-                    'complexities': list(dict.fromkeys(complexities)),
-                    'servings': list(dict.fromkeys(servings)),
-                    'times': list(dict.fromkeys(times)),
-                }
-            )
         return result
+
+    def _convert_audio_references(self):
+        return {
+            'audio_references': [
+                i.uniqueId
+                for i in zeit.content.audio.interfaces.IAudioReferences(self.context).items
+            ]
+        }
+
+    def _convert_recipe_categories(self, body, result, search_list):
+        categories = body.xpath('//recipe_categories/category/@code')
+        result['payload']['recipe'] = {'categories': list(dict.fromkeys(sorted(categories)))}
+
+        whitelist = zope.component.getUtility(IRecipeCategoriesWhitelist)
+        for code in categories:
+            category = whitelist.get(code)
+            if category is not None:
+                search_list.append(category.name.strip() + ':category')
+
+    def _convert_recipe_list(self, body, result, search_list):
+        ingredients = sorted(body.xpath('//recipelist/ingredient/@code'))
+        whitelist = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
+        for code in ingredients:
+            ingredient = whitelist.get(code)
+            if ingredient is None:
+                continue
+            search_list += [x.strip() + ':ingredient' for x in ingredient.qwords or ()]
+            search_list += [x.strip() + ':ingredient' for x in ingredient.qwords_category or ()]
+
+        titles = sorted(body.xpath('//recipelist/title/text()'))
+        search_list += [x.strip() + ':recipe_title' for x in titles]
+
+        subheadings = sorted(body.xpath('//recipelist/subheading[@searchable="True"]/text()'))
+        search_list += [x.strip() + ':subheading' for x in subheadings]
+
+        complexities = sorted(body.xpath('//recipelist/complexity/text()'))
+        servings = sorted(body.xpath('//recipelist/servings/text()'))
+        times = sorted(body.xpath('//recipelist/time/text()'))
+
+        doctitles = body.xpath('title/text()')
+        if len(doctitles) == 1 and doctitles[0] != '':
+            search_list.append(doctitles[0].strip() + ':title')
+
+        result['payload'].setdefault('recipe', {}).update(
+            {
+                'search': list(dict.fromkeys(sorted(search_list))),
+                'ingredients': list(dict.fromkeys(ingredients)),
+                'titles': list(dict.fromkeys(titles)),
+                'subheadings': list(dict.fromkeys(subheadings)),
+                'complexities': list(dict.fromkeys(complexities)),
+                'servings': list(dict.fromkeys(servings)),
+                'times': list(dict.fromkeys(times)),
+            }
+        )
 
 
 class Text(Converter):
