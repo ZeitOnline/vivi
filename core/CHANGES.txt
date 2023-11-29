@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.72.0 (2023-11-29)
+-------------------
+
+- ZO-3897: filter for podcasts in search
+
+
 5.71.0 (2023-11-28)
 -------------------
 
