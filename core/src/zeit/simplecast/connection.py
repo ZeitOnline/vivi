@@ -154,7 +154,7 @@ class Simplecast:
             return
 
         if self._publish_state_needs_sync(audio):
-            self._publish(audio)
+            self.publish(audio)
         elif self._retract_state_needs_sync(audio):
             self._retract(audio)
 
@@ -181,7 +181,7 @@ class Simplecast:
             self._update_properties(episode_data, episode)
             log.info('Podcast Episode %s successfully updated.', episode.uniqueId)
 
-    def _publish(self, audio):
+    def publish(self, audio):
         IPublish(audio).publish(background=False)
         log.info('Podcast Episode %s successfully published.', audio.uniqueId)
 

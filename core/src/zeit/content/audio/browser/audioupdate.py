@@ -1,9 +1,10 @@
 import logging
 import zope.component
 
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.audio.interfaces import IPodcastEpisodeInfo
 import zeit.simplecast.interfaces
 import zeit.cms.browser.menu
-from zeit.cms.i18n import MessageFactory as _
 
 
 log = logging.getLogger(__name__)
@@ -28,6 +29,13 @@ class AudioUpdate(zeit.cms.browser.view.Base):
                 mapping={'name': audio.uniqueId},
             )
             self.send_message(message)
+            if IPodcastEpisodeInfo(audio).is_published:
+                message = _(
+                    '${name} successfully published.',
+                    mapping={'name': audio.uniqueId},
+                )
+                simplecast.publish(audio)
+                self.send_message(message)
         else:
             message = _(
                 'We could not find a podcast episode for ${name}.',
