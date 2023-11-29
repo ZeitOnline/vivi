@@ -6,6 +6,7 @@ import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.audio.interfaces
 import zeit.find.interfaces
 import zeit.find.search
 import zope.browser.interfaces
@@ -39,6 +40,7 @@ class SearchForm(JSONView):
             'products': self.products,
             'ressorts': self.get_source(metadata_if['ressort'].source, 'ressort', 'ressort_name'),
             'series': self.series,
+            'podcasts': self.podcasts,
             'types': self.types,
         }
 
@@ -68,6 +70,14 @@ class SearchForm(JSONView):
         result = self.get_source(metadata_if['serie'].source, 'serie', 'serie_title')
         for entry in result:
             entry['serie'] = entry['serie'].serienname
+        return result
+
+    @property
+    def podcasts(self):
+        metadata_if = zeit.content.audio.interfaces.IPodcastEpisodeInfo
+        result = self.get_source(metadata_if['podcast'].source, 'podcast', 'podcast_title')
+        for entry in result:
+            entry['podcast'] = entry['podcast'].id
         return result
 
     CONTENT_TYPES = [
@@ -403,6 +413,7 @@ def search_form(request):
     product_id = g('product', None)
     show_news = g('show_news', False)
     serie = g('serie', None)
+    podcast = g('podcast', None)
     # four states: published, not-published, published-with-changes,
     # don't care (None)
     published = g('published', None)
@@ -421,6 +432,7 @@ def search_form(request):
         'product_id': product_id,
         'published': published,
         'serie': serie,
+        'podcast': podcast,
         'show_news': show_news,
         'topic': topic,
         'types': types,

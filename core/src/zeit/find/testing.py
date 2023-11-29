@@ -1,12 +1,16 @@
 from unittest import mock
-import gocept.selenium
-import json
+
 import importlib.resources
+import json
+
+import gocept.selenium
 import plone.testing
+import zope.component
+
 import zeit.cms.testing
+import zeit.content.audio.testing
 import zeit.content.image.testing
 import zeit.find.interfaces
-import zope.component
 
 product_config = """\
 <product-config zeit.find>
@@ -17,7 +21,8 @@ product_config = """\
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.content.image.testing.CONFIG_LAYER,)
+    product_config,
+    bases=(zeit.content.image.testing.CONFIG_LAYER, zeit.content.audio.testing.CONFIG_LAYER),
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
