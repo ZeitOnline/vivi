@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Nov 23 14:31:05 2023\n"
+"POT-Creation-Date: Thu Nov 30 09:43:53 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -2369,19 +2369,23 @@ msgstr "ältester zuerst"
 msgid "highlights"
 msgstr "highlights"
 
-#: zeit/content/audio/browser/audioupdate.py:17
+#: zeit/content/audio/browser/audioupdate.py:18
 msgid "${name} has no ID."
 msgstr "»${name}« hat keine ID."
 
-#: zeit/content/audio/browser/audioupdate.py:26
+#: zeit/content/audio/browser/audioupdate.py:27
 msgid "${name} successfully updated."
 msgstr "‘${name}’ erfolgreich aktualisiert."
 
-#: zeit/content/audio/browser/audioupdate.py:32
+#: zeit/content/audio/browser/audioupdate.py:34
+msgid "${name} successfully published."
+msgstr "‘${name}’ erfolgreich veröffentlicht."
+
+#: zeit/content/audio/browser/audioupdate.py:40
 msgid "We could not find a podcast episode for ${name}."
 msgstr "Es konnte keine zugehörige Podcastfolge gefunden werden."
 
-#: zeit/content/audio/browser/audioupdate.py:44
+#: zeit/content/audio/browser/audioupdate.py:52
 msgid "Update audio from simplecast"
 msgstr "Audio von Simplecast aktualisieren"
 
