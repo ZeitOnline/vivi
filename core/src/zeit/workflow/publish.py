@@ -2,6 +2,7 @@ from datetime import datetime
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_RETRACT_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import celery.result
 import celery.states
@@ -55,6 +56,11 @@ class Publish:
 
     def retract(self, priority=None, background=True, **kw):
         """Retract object."""
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        if info.can_retract() == CAN_RETRACT_ERROR:
+            raise zeit.cms.workflow.interfaces.RetractingError(
+                'Retracting pre-conditions not satisifed.'
+            )
         return self._execute_task(
             RETRACT_TASK,
             [self.context.uniqueId],

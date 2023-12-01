@@ -9,6 +9,9 @@ import zope.schema
 CAN_PUBLISH_ERROR = 'can-publish-error'
 CAN_PUBLISH_WARNING = 'can-publish-warning'
 CAN_PUBLISH_SUCCESS = 'can-publish-success'
+CAN_RETRACT_ERROR = 'can-retract-error'
+CAN_RETRACT_WARNING = 'can-retract-warning'
+CAN_RETRACT_SUCCESS = 'can-retract-success'
 
 
 # During the checkout/checkin cycle() while publishing the object will be most
@@ -21,6 +24,10 @@ PUBLISH_DURATION_GRACE = 60
 
 class PublishingError(Exception):
     """Raised when object publishing fails."""
+
+
+class RetractingError(Exception):
+    """Raised when object retracting fails."""
 
 
 class IModified(zope.interface.Interface):
@@ -87,6 +94,13 @@ class IPublishInfo(zope.interface.Interface):
 
         """
 
+    def can_retract():
+        """Return whether the object can be retracted right now.
+
+        returns True if the object can be retracted, False otherwise.
+
+        """
+
 
 class IPublicationStatus(zope.interface.Interface):
     published = zope.schema.Choice(
@@ -136,6 +150,7 @@ class IPublish(zope.interface.Interface):
 
         Before the object is published a BeforeRetractEvent is issued.
         After the object has been published a RetractedEvent is issued.
+        raises RetractingError if the object cannot be retracted.
 
         """
 
