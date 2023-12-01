@@ -59,7 +59,12 @@ class AudioBuilder:
                 'is_published': True,
                 'dashboard_link': 'http://simplecast.com/pawdcast',
                 'podcast': Podcast(
-                    'cat-jokes-pawdcast', 'Cat Jokes Pawdcast', '1234', 'Jokes about cats'
+                    'cat-jokes-pawdcast',
+                    'Cat Jokes Pawdcast',
+                    '1234',
+                    'Jokes about cats',
+                    'e5ded8',
+                    'http://example.com/cat',
                 ),
             },
         }
