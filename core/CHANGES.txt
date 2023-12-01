@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.73.0 (2023-12-01)
+-------------------
+
+- ZO-3830: manual trigger for simplecast update should also publish changes
+
+- ZO-4328: Add color and image attributes to Podcast class
+
+
 5.72.0 (2023-11-29)
 -------------------
 
