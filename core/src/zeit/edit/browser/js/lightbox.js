@@ -93,15 +93,17 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
             self.events.push(
                 MochiKit.Signal.connect(
                     tab_view, 'load', function() {
-                    self.form = MochiKit.DOM.getFirstElementByTagAndClassName(
-                        'form', null, $(tab_view.target_id));
-                    if (!isNull(self.form)) {
-                        self.rewire_submit_buttons();
-                    }
-                    $(tab_view.target_id).__handler__ = self;
-                    zeit.cms.evaluate_js_and_css(
-                        self.container, function(code) { eval(code); });
-                    MochiKit.Signal.signal(self, 'after-reload');
+                        if (self.tabs.active_tab.id === tab_view.target_id) {
+                            self.form = MochiKit.DOM.getFirstElementByTagAndClassName(
+                                'form', null, $(tab_view.target_id));
+                            if (!isNull(self.form)) {
+                                self.rewire_submit_buttons();
+                            }
+                            $(tab_view.target_id).__handler__ = self;
+                            zeit.cms.evaluate_js_and_css(
+                                self.container, function(code) { eval(code); });
+                            MochiKit.Signal.signal(self, 'after-reload');
+                        }
             }));
             if (self.context_element == tab_definition) {
                 self.tabs.activate(tab_id);
