@@ -125,11 +125,6 @@
     />
   </configure>
 
-  <adapter
-    factory=".form.Workflow"
-    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
-  />
-
 
   <!-- Audio Update -->
   <browser:viewlet
