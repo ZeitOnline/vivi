@@ -26,8 +26,10 @@ class PodcastSourceTest(zeit.content.audio.testing.FunctionalTestCase):
             'Cat Jokes Pawdcast',
             '1234',
             'A podcast of cat jokes',
+            'e5ded8',
+            'http://example.com/cat',
             distribution_channels,
-            'asdf-1234',
+            'podigee-1234',
         )
         assert values[0] == podcast
 

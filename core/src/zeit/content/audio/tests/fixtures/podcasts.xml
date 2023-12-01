@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <podcasts>
-    <podcast id="cat-jokes-pawdcast" title="Cat Jokes Pawdcast" external_id="1234" subtitle="A podcast of cat jokes" podigee_id="asdf-1234">
+    <podcast id="cat-jokes-pawdcast" title="Cat Jokes Pawdcast" external_id="1234" subtitle="A podcast of cat jokes" color='e5ded8' image='http://example.com/cat' podigee_id="podigee-1234">
         <distribution_channel id="itunes" href="http://example.com/itunes">Apple Podcasts</distribution_channel>
         <distribution_channel id="google" href="http://example.com/google">Google Podcasts</distribution_channel>
     </podcast>
