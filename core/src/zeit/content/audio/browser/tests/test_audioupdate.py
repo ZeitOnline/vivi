@@ -33,6 +33,7 @@ class AudioUpdateTest(BrowserTestCase):
         link = browser.getLink('Update audio from simplecast')
         link.click()
         simplecast.update.assert_called_with(audio, zeit.simplecast.testing.EPISODE_200)
+        simplecast.publish.assert_called_once()
 
     def test_simplecast_request_failed_displays_error(self):
         AudioBuilder().build(self.repository)

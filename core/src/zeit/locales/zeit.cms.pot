@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Nov 23 14:31:05 2023\n"
+"POT-Creation-Date: Thu Nov 30 09:43:53 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2437,19 +2437,23 @@ msgstr ""
 msgid "highlights"
 msgstr ""
 
-#: zeit/content/audio/browser/audioupdate.py:17
+#: zeit/content/audio/browser/audioupdate.py:18
 msgid "${name} has no ID."
 msgstr ""
 
-#: zeit/content/audio/browser/audioupdate.py:26
+#: zeit/content/audio/browser/audioupdate.py:27
 msgid "${name} successfully updated."
 msgstr ""
 
-#: zeit/content/audio/browser/audioupdate.py:32
+#: zeit/content/audio/browser/audioupdate.py:34
+msgid "${name} successfully published."
+msgstr ""
+
+#: zeit/content/audio/browser/audioupdate.py:40
 msgid "We could not find a podcast episode for ${name}."
 msgstr ""
 
-#: zeit/content/audio/browser/audioupdate.py:44
+#: zeit/content/audio/browser/audioupdate.py:52
 msgid "Update audio from simplecast"
 msgstr ""
 
