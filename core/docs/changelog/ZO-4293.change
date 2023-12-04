@@ -1,1 +1,0 @@
-ZO-4293: `load` event is being triggered for both tabs therefore check which tab we are in before setting form

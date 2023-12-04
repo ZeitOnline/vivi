@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.74.0 (2023-12-04)
+-------------------
+
+- ZO-4293: `load` event is being triggered for both tabs therefore check which tab we are in before setting form
+
+
 5.73.0 (2023-12-01)
 -------------------
 
