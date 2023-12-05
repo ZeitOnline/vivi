@@ -194,6 +194,11 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
             simplecast_resp, 'Podcast Episode is not published by Provider'
         )
 
+    def test_podcast_not_retracted_if_requirements_not_met_is_not_published(self):
+        simplecast_resp = self.episode_info.copy()
+        simplecast_resp['is_published'] = True
+        self._check_retracting_error(simplecast_resp, 'Podcast Episode is published by Provider')
+
     def _check_publishing_error(self, simplecast_resp, message):
         self.create_audio(simplecast_resp)
         content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
@@ -211,6 +216,24 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         ):
             publish.publish(background=False)
         assert not workflow.published
+
+    def _check_retracting_error(self, simplecast_resp, message):
+        self.create_audio(simplecast_resp)
+        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
+
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        assert isinstance(workflow, PodcastWorkflow)
+        assert workflow.can_retract() == zeit.cms.workflow.interfaces.CAN_RETRACT_ERROR
+        assert workflow.published
+        assert message in workflow.error_messages[0]
+
+        publish = zeit.cms.workflow.interfaces.IPublish(content)
+        with pytest.raises(
+            zeit.cms.workflow.interfaces.RetractingError,
+            match='Retracting pre-conditions not satisifed.',
+        ):
+            publish.retract(background=False)
+        assert workflow.published
 
     def test_missing_audio_type_uses_default_workflow(self):
         default_audio = zeit.content.audio.audio.Audio()
