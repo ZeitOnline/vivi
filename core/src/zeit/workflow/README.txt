@@ -117,7 +117,7 @@ exception:
 >>> publish.publish(background=False)
 Traceback (most recent call last):
     ...
-PublishingError: Publish pre-conditions not satisifed.
+PublishingError: Publish pre-conditions not satisfied.
 
 
 If an object is publish is indicated by the `published` attribute. Also the
