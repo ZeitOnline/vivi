@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from io import BytesIO
 from zeit.connector.dav.interfaces import DAVNotFoundError
-from zeit.connector.interfaces import CopyError, MoveError
+from zeit.connector.interfaces import CopyError, MoveError, DeleteProperty
 from zeit.connector.resource import Resource
 from zeit.connector.testing import copy_inherited_functions
 import pytz
@@ -123,15 +123,20 @@ class ContractReadWrite:
             properties={
                 ('foo', self.NS): 'foo',
                 ('bar', self.NS): 'bar',
+                ('baz', self.NS): 'baz',
             },
         )
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual('foo', res.properties[('foo', self.NS)])
-        self.connector.changeProperties('http://xml.zeit.de/testing/foo', {('foo', self.NS): 'qux'})
+        self.connector.changeProperties(
+            'http://xml.zeit.de/testing/foo',
+            {('foo', self.NS): 'qux', ('baz', self.NS): DeleteProperty},
+        )
         transaction.commit()
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual('qux', res.properties[('foo', self.NS)])
         self.assertEqual('bar', res.properties[('bar', self.NS)])
+        self.assertNotIn(('baz', self.NS), res.properties)
 
     def test_collection_is_determined_by_mime_type(self):
         # XXX This is the *only* place the mime type is still used, we should
