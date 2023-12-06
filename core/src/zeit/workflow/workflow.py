@@ -43,6 +43,9 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         self.error_messages = (_('publish-preconditions-urgent', mapping=self._error_mapping),)
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
 
+    def can_retract(self):
+        return zeit.cms.workflow.interfaces.CAN_RETRACT_SUCCESS  # default
+
 
 @zope.component.adapter(
     zeit.workflow.interfaces.IContentWorkflow, zeit.cms.content.interfaces.IDAVPropertyChangedEvent
