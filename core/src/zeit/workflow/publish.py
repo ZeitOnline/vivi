@@ -428,7 +428,7 @@ class PublishTask(PublishRetractTask):
             errors = []
             for error_message in info.error_messages:
                 errors.append(zope.i18n.translate(error_message, target_language='de'))
-            raise zeit.cms.workflow.interfaces.PublishingError(', '.join(errors))
+            raise zeit.cms.workflow.interfaces.RetractingError(', '.join(errors))
         return obj
 
     def before_publish(self, obj, master):
