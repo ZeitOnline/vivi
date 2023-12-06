@@ -48,9 +48,9 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
     def __init__(
         self,
         id,
-        title,
-        external_id,
-        subtitle,
+        title=None,
+        external_id=None,
+        subtitle=None,
         color=None,
         image=None,
         distribution_channels=None,
