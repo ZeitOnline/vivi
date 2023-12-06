@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_RETRACT_SUCCESS
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.action
 import gocept.form.grouped
@@ -44,14 +45,17 @@ class WorkflowActions:
             self.send_validation_messages()
 
     def do_retract(self):
-        self.publish.retract(countdown=5)
-        self.send_message(
-            _(
-                'scheduled-for-immediate-retracting',
-                default='${id} has been scheduled for retracting.',
-                mapping=self._error_mapping,
+        if self.info.can_retract() == CAN_RETRACT_SUCCESS:
+            self.publish.retract(countdown=5)
+            self.send_message(
+                _(
+                    'scheduled-for-immediate-retracting',
+                    default='${id} has been scheduled for retracting.',
+                    mapping=self._error_mapping,
+                )
             )
-        )
+        else:
+            self.send_validation_messages()
 
     def send_validation_messages(self):
         self.send_message(
