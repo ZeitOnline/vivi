@@ -57,10 +57,14 @@ class Publish:
     def retract(self, priority=None, background=True, **kw):
         """Retract object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if info.can_retract() == CAN_RETRACT_ERROR:
-            raise zeit.cms.workflow.interfaces.RetractingError(
-                'Retracting pre-conditions not satisfied.'
-            )
+        try:
+            if info.can_retract() == CAN_RETRACT_ERROR:
+                raise zeit.cms.workflow.interfaces.RetractingError(
+                    'Retracting pre-conditions not satisfied.'
+                )
+        except AttributeError:
+            pass
+
         return self._execute_task(
             RETRACT_TASK,
             [self.context.uniqueId],
@@ -410,6 +414,17 @@ class PublishTask(PublishRetractTask):
         setting published to True"""
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         if info.can_publish() == CAN_PUBLISH_ERROR:
+            errors = []
+            for error_message in info.error_messages:
+                errors.append(zope.i18n.translate(error_message, target_language='de'))
+            raise zeit.cms.workflow.interfaces.PublishingError(', '.join(errors))
+        return obj
+
+    def can_retract(self, obj):
+        """at least check if the object can be retracted before
+        setting published to True"""
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        if info.can_retract() == CAN_RETRACT_ERROR:
             errors = []
             for error_message in info.error_messages:
                 errors.append(zope.i18n.translate(error_message, target_language='de'))
