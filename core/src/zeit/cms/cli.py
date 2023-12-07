@@ -26,6 +26,7 @@ def zope_shell():
         'zope': sys.modules['zope'],
         'transaction': sys.modules['transaction'],
     }
+    zope.component.hooks.setSite(globs['root'])
     if len(sys.argv) > 1:
         sys.argv[:] = sys.argv[1:]
         globs['__file__'] = sys.argv[0]
@@ -37,7 +38,6 @@ def zope_shell():
         )
         sys.exit()
     else:
-        zope.component.hooks.setSite(globs['root'])
         import code
 
         # Modeled after pyramid.scripts.pshell
@@ -134,16 +134,35 @@ else:
             return run
 
 
-def wait_for_commit(func):
-    from ZODB.POSException import ConflictError
+def wait_for_commit(content, max_attempts):
     import transaction
 
-    while True:
-        func()
-        try:
-            transaction.commit()
-            return
-        except ConflictError:
-            log.warning('ConflictError, retrying')
-            transaction.abort()
-            time.sleep(0.5)
+    attempts = 0
+    try:
+        transaction.commit()
+    except Exception:
+        transaction.abort()
+        time.sleep(0.5)
+        while attempts <= max_attempts:
+            # If commit could not be performed, we try again with explicit
+            # cache invalidation. Otherwise there is nothing left to commit
+            # after the first `transaction.abort()`.
+            zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(content.uniqueId))
+            try:
+                transaction.commit()
+                break
+            except Exception:
+                transaction.abort()
+                time.sleep(0.5)
+                attempts += 1
+    if attempts > max_attempts:
+        return False
+    return True
+
+
+def login(username):
+    import z3c.celery.celery
+
+    z3c.celery.celery.login_principal(
+        z3c.celery.celery.get_principal(username), 'console.PUBLISH_TASK'
+    )
