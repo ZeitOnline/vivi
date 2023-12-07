@@ -3,6 +3,15 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.76.0 (2023-12-07)
+-------------------
+
+- ZO-4329: add adapter for podcast setting to real image
+
+- ZO-862: add zope shell convenience function and add wait_for_commit
+  and login functions
+
+
 5.75.0 (2023-12-06)
 -------------------
 
