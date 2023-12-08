@@ -40,6 +40,7 @@ class SearchForm(JSONView):
             'products': self.products,
             'ressorts': self.get_source(metadata_if['ressort'].source, 'ressort', 'ressort_name'),
             'series': self.series,
+            'audio_type': self.audio_types,
             'podcasts': self.podcasts,
             'types': self.types,
         }
@@ -79,6 +80,11 @@ class SearchForm(JSONView):
         for entry in result:
             entry['podcast'] = entry['podcast'].id
         return result
+
+    @property
+    def audio_types(self):
+        types = zeit.content.audio.interfaces.AudioTypeSource().factory.values
+        return [{'key': key, 'value': value} for key, value in types.items()]
 
     CONTENT_TYPES = [
         'advertisement',
@@ -413,6 +419,7 @@ def search_form(request):
     product_id = g('product', None)
     show_news = g('show_news', False)
     serie = g('serie', None)
+    audio_type = g('audio_type', None)
     podcast = g('podcast', None)
     # four states: published, not-published, published-with-changes,
     # don't care (None)
@@ -432,6 +439,7 @@ def search_form(request):
         'product_id': product_id,
         'published': published,
         'serie': serie,
+        'audio_type': audio_type,
         'podcast': podcast,
         'show_news': show_news,
         'topic': topic,
