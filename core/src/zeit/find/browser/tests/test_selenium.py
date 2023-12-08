@@ -101,3 +101,14 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s.assertNotChecked('id=search-type-file')
         self.execute("zeit.cms.activate_objectbrowser(['file'])")
         s.assertChecked('id=search-type-file')
+
+    def test_audio_type_selection(self):
+        s = self.selenium
+        s.verifyNotVisible('id=extended_search')
+        s.click('id=extended_search_button')
+        s.waitForVisible('id=extended_search')
+        s.verifyNotVisible('id=extended_search_info')
+        s.select('name=audio_type', 'Text to Speech')
+        s.verifyValue('name=audio_type', 'tts')
+        s.select('name=audio_type', 'Podcast')
+        s.verifyValue('name=audio_type', 'podcast')
