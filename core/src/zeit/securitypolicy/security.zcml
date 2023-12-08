@@ -224,7 +224,10 @@
     role="zeit.Producer"
     permission="zeit.content.audio.ManualUpdate"
     />
-
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.audio.Retract"
+    />
 
   <!-- CvD grants -->
   <grant
