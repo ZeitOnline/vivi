@@ -34,12 +34,23 @@ class PodcastWorkflow(AudioWorkflow):
         if not IPodcastEpisodeInfo(self.context).is_published:
             self.error_messages = (
                 _(
-                    'Could not publish ${name}. Podcast Episode is ' 'not published by Provider',
+                    'Could not publish ${name}. Podcast Episode is not published by Provider',
                     mapping={'name': self.context.uniqueId},
                 ),
             )
             return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
+
+    def can_retract(self):
+        if IPodcastEpisodeInfo(self.context).is_published:
+            self.error_messages = (
+                _(
+                    'Could not retract ${name}. Podcast Episode is published by Provider',
+                    mapping={'name': self.context.uniqueId},
+                ),
+            )
+            return zeit.cms.workflow.interfaces.CAN_RETRACT_ERROR
+        return zeit.cms.workflow.interfaces.CAN_RETRACT_SUCCESS
 
 
 @zope.component.adapter(IAudio)

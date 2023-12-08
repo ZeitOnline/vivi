@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Nov 30 09:43:53 2023\n"
+"POT-Creation-Date: Tue Dec  5 15:29:34 2023\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -1394,8 +1394,8 @@ msgstr "Bitte mindestens 3 Schlagworte vergeben"
 msgid "Keywords"
 msgstr "Schlagworte"
 
-#: zeit/cms/workflow/browser/indicator.py:11 zeit/cms/workflow/interfaces.py:46
-#: zeit/workflow/publish.py:434 zeit/workflow/publishinfo.py:59
+#: zeit/cms/workflow/browser/indicator.py:11 zeit/cms/workflow/interfaces.py:53
+#: zeit/workflow/publish.py:440 zeit/workflow/publishinfo.py:59
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1407,52 +1407,52 @@ msgstr "Nicht veröffentlicht"
 msgid "Published but has changes"
 msgstr "Veröffentlicht, hat aber Änderungen"
 
-#: zeit/cms/workflow/interfaces.py:28
+#: zeit/cms/workflow/interfaces.py:35
 msgid "Last modified by"
 msgstr "Zuletzt geändert von"
 
-#: zeit/cms/workflow/interfaces.py:35
+#: zeit/cms/workflow/interfaces.py:42
 msgid "Date last modified"
 msgstr "Zuletzt geändert am"
 
-#: zeit/cms/workflow/interfaces.py:39
+#: zeit/cms/workflow/interfaces.py:46
 msgid "Date last checked out"
 msgstr "Beginn der Bearbeitung"
 
-#: zeit/cms/workflow/interfaces.py:49
+#: zeit/cms/workflow/interfaces.py:56
 msgid "Date last published"
 msgstr "Zuletzt veröffentlicht am"
 
-#: zeit/cms/workflow/interfaces.py:53
+#: zeit/cms/workflow/interfaces.py:60
 msgid "Last published with semantic change"
 msgstr "Letzte Veröffentlichung mit inhaltlicher Änderung"
 
-#: zeit/cms/workflow/interfaces.py:57
+#: zeit/cms/workflow/interfaces.py:64
 msgid "Date first released"
 msgstr "Zuerst veröffentlicht am"
 
-#: zeit/cms/workflow/interfaces.py:61
+#: zeit/cms/workflow/interfaces.py:68
 msgid "Date of print publication"
 msgstr "Veröffentlicht (Print)"
 
-#: zeit/cms/workflow/interfaces.py:65
+#: zeit/cms/workflow/interfaces.py:72
 msgid "Last published by"
 msgstr "Letzte Veröffentlichnung von"
 
-#: zeit/cms/workflow/interfaces.py:69 zeit/workflow/browser/form.py:139
+#: zeit/cms/workflow/interfaces.py:76 zeit/workflow/browser/form.py:139
 #: zeit/workflow/browser/form.py:167
 msgid "Publish lock?"
 msgstr "Sperrvermerk"
 
-#: zeit/cms/workflow/interfaces.py:70
+#: zeit/cms/workflow/interfaces.py:77
 msgid "Please retract first"
 msgstr "Achtung: Bitte erst depublizieren!"
 
-#: zeit/cms/workflow/interfaces.py:75
+#: zeit/cms/workflow/interfaces.py:82
 msgid "Publish lock reason"
 msgstr "Sperrvermerk-Notizen"
 
-#: zeit/cms/workflow/interfaces.py:93
+#: zeit/cms/workflow/interfaces.py:107
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
 
@@ -2377,7 +2377,7 @@ msgstr "»${name}« hat keine ID."
 msgid "${name} successfully updated."
 msgstr "‘${name}’ erfolgreich aktualisiert."
 
-#: zeit/content/audio/browser/audioupdate.py:34
+#: zeit/content/audio/browser/audioupdate.py:33
 msgid "${name} successfully published."
 msgstr "‘${name}’ erfolgreich veröffentlicht."
 
@@ -2409,11 +2409,6 @@ msgstr "Audio bearbeiten"
 msgid "View audio"
 msgstr "Audio anzeigen"
 
-#: zeit/content/audio/browser/form.py:107
-#: zeit/content/cp/browser/workflow.py:46 zeit/workflow/browser/form.py:103
-msgid "Save state only"
-msgstr "Nur Status speichern"
-
 #: zeit/content/audio/browser/object-details-body.pt:6
 #: zeit/content/audio/interfaces.py:33
 msgid "Duration"
@@ -2443,39 +2438,43 @@ msgstr "Premium Audio"
 msgid "External Id"
 msgstr "Externe ID"
 
-#: zeit/content/audio/interfaces.py:111
+#: zeit/content/audio/interfaces.py:43
+msgid "show art"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:127
 msgid "Podcast Serie"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:112
+#: zeit/content/audio/interfaces.py:128
 msgid "External Podcast Id"
 msgstr "Externe Podcast ID"
 
-#: zeit/content/audio/interfaces.py:113
+#: zeit/content/audio/interfaces.py:129
 msgid "Episode No"
 msgstr "Nummer der Folge"
 
-#: zeit/content/audio/interfaces.py:114
+#: zeit/content/audio/interfaces.py:130
 msgid "URL ad-free"
 msgstr "Ad-free URL"
 
-#: zeit/content/audio/interfaces.py:115
+#: zeit/content/audio/interfaces.py:131
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:116
+#: zeit/content/audio/interfaces.py:132
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:117
+#: zeit/content/audio/interfaces.py:133
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:118
+#: zeit/content/audio/interfaces.py:134
 msgid "Dashboard Link"
 msgstr "Dashboard Link"
 
-#: zeit/content/audio/interfaces.py:128
+#: zeit/content/audio/interfaces.py:144
 msgid "AudioReferences"
 msgstr "Audioreferenzen"
 
@@ -2489,6 +2488,12 @@ msgid "Could not publish ${name}. Podcast Episode is not published by Provider"
 msgstr ""
 "Podcastfolge ${name} kann nicht veröffentlicht werden, da die Folge "
 "unveröffentlicht beim Podcast-Hoster ist"
+
+#: zeit/content/audio/workflow.py:47
+msgid "Could not retract ${name}. Podcast Episode is published by Provider"
+msgstr ""
+"Podcastfolge ${name} kann nicht zurückgezogen werden, da die Folge "
+"veröffentlicht beim Podcast-Hoster ist"
 
 #: zeit/content/author/browser/form.py:30
 msgid "Contact"
@@ -2918,6 +2923,10 @@ msgstr "Einstellungen"
 #: zeit/workflow/browser/form.py:174 zeit/workflow/browser/form.py:192
 msgid "Log"
 msgstr "Log"
+
+#: zeit/content/cp/browser/workflow.py:46 zeit/workflow/browser/form.py:103
+msgid "Save state only"
+msgstr "Nur Status speichern"
 
 #: zeit/content/cp/browser/workflow.py:51 zeit/workflow/browser/form.py:107
 msgid "Save state and publish now"
@@ -4745,31 +4754,31 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:52
+#: zeit/workflow/publish.py:53
 msgid "Publication scheduled"
 msgstr "wird veröffentlicht"
 
-#: zeit/workflow/publish.py:63
+#: zeit/workflow/publish.py:69
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
-#: zeit/workflow/publish.py:79
+#: zeit/workflow/publish.py:85
 msgid "Collective Publication of ${count} objects"
 msgstr "Sammelveröffentlichung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:95
+#: zeit/workflow/publish.py:101
 msgid "Collective Retraction of ${count} objects"
 msgstr "Sammeldepublizierung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:189
+#: zeit/workflow/publish.py:195
 msgid "Objects with errors: ${objects}"
 msgstr "Inhalte mit Fehlern: ${objects}"
 
-#: zeit/workflow/publish.py:323
+#: zeit/workflow/publish.py:329
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:501
+#: zeit/workflow/publish.py:507
 msgid "Retracted"
 msgstr "Zurückgezogen"
 

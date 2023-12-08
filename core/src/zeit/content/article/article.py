@@ -4,6 +4,7 @@ from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_RETRACT_ERROR
 import gocept.cache.property
 import grokcore.component as grok
 import hashlib
@@ -304,6 +305,15 @@ class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
             return CAN_PUBLISH_ERROR
         validator = zeit.edit.rule.ValidatingWorkflow(self.context)
         result = validator.can_publish()
+        self.error_messages = validator.error_messages
+        return result
+
+    def can_retract(self):
+        result = super().can_retract()
+        if result == CAN_RETRACT_ERROR:
+            return CAN_RETRACT_ERROR
+        validator = zeit.edit.rule.ValidatingWorkflow(self.context)
+        result = validator.can_retract()
         self.error_messages = validator.error_messages
         return result
 

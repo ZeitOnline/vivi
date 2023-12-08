@@ -1,4 +1,5 @@
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_RETRACT_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import celery.result
@@ -40,6 +41,9 @@ class MockPublish:
         if object is not None:
             self.context = object
         self.context = zope.security.proxy.getObject(self.context)
+        can_retract = zeit.cms.workflow.interfaces.IPublishInfo(self.context).can_retract()
+        if can_retract == CAN_RETRACT_ERROR:
+            raise zeit.cms.workflow.interfaces.RetractError('Cannot retract.')
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context, self.context)
         )
@@ -112,13 +116,22 @@ class MockPublishInfo:
             self.context.uniqueId, zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
         )
 
+    def can_retract(self):
+        return _can_retract.get(
+            self.context.uniqueId, zeit.cms.workflow.interfaces.CAN_RETRACT_SUCCESS
+        )
+
     # Test support
 
     def set_can_publish(self, can):
         _can_publish[self.context.uniqueId] = can
 
+    def set_can_retract(self, can):
+        _can_retract[self.context.uniqueId] = can
+
 
 _can_publish = {}
+_can_retract = {}
 _published = {}
 _publish_times = {}
 _publish_times_semantic = {}
