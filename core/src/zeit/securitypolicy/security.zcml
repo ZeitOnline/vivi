@@ -226,6 +226,10 @@
     />
   <grant
     role="zeit.Producer"
+    permission="zeit.content.audio.Publish"
+    />
+  <grant
+    role="zeit.Producer"
     permission="zeit.content.audio.Retract"
     />
 
