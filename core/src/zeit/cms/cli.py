@@ -7,7 +7,6 @@ import sys
 import time
 import zeit.cms.logging
 
-
 log = logging.getLogger(__name__)
 
 
@@ -136,6 +135,7 @@ else:
 
 def wait_for_commit(content, max_attempts):
     import transaction
+    import zope.event
 
     attempts = 0
     try:
