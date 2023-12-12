@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.79.0 (2023-12-12)
+-------------------
+
+FIX:
+- ZO-4220: cli module add missing import
+
+
 5.78.0 (2023-12-11)
 -------------------
 
