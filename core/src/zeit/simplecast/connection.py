@@ -86,6 +86,9 @@ class Simplecast:
 
             return json
 
+    def fetch_episode_audio(self, audio_id):
+        return self._request(f'GET episodes/audio/{audio_id}')
+
     def fetch_episode(self, episode_id):
         """Request episode data from simplecast, return json body"""
         return self._request(f'GET episodes/{episode_id}')
