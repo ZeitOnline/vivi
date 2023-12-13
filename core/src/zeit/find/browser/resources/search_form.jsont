@@ -85,6 +85,15 @@
         </select>
       </fieldset>
       <fieldset>
+        <label>Audiotyp:</label>
+        <select name="audio_type">
+        <option value=""></option>
+        {.repeated section audio_type}
+        <option value="{key}">{value}</option>
+        {.end}
+        </select>
+      </fieldset>
+      <fieldset>
         <label>Podcast:</label>
         <select name="podcast">
         <option value=""></option>
