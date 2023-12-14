@@ -29,6 +29,14 @@
 
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
+    name="can-retract"
+    class=".publish.Publish"
+    attribute="can_retract"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
     name="job-status"
     class=".task.Status"
     attribute="getStatus"

@@ -42,7 +42,7 @@ class Publish:
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if info.can_publish() == CAN_PUBLISH_ERROR:
             raise zeit.cms.workflow.interfaces.PublishingError(
-                'Publish pre-conditions not satisfied.'
+                _('Publish pre-conditions not satisfied.')
             )
 
         return self._execute_task(
@@ -60,7 +60,7 @@ class Publish:
         try:
             if info.can_retract() == CAN_RETRACT_ERROR:
                 raise zeit.cms.workflow.interfaces.RetractingError(
-                    'Retracting pre-conditions not satisfied.'
+                    _('Retracting pre-conditions not satisfied.')
                 )
         except AttributeError:
             pass
