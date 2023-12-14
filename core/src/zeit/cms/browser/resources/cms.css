@@ -422,7 +422,7 @@ pre {
 }
 
 #main-navigation > li:first-child > a {
-  background: transparent url("layout/logo.png") no-repeat left center;
+  background: transparent url("layout/logo_xmas.png") no-repeat left center;
   right: 0;
 }
 
