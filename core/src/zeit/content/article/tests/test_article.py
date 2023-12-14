@@ -448,7 +448,8 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert self.audio.title == self.article.title
         assert self.audio.title == self.article.teaserTitle
         assert self.info.summary == self.article.teaserText
-        assert self.info.notes == self.article.body.values()[1].text
+        # NOTE: The notes contain html tags
+        assert self.info.notes[3:-4] == self.article.body.values()[1].text
 
     def test_podcast_does_not_replace_existing_teaser_title(self):
         self.article.title = 'Do not replace me'
@@ -475,3 +476,21 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert (
             len(self.article.body.values()) == 1
         ), 'Without audio, body should only contain "main image block"'
+
+    def test_article_body_contains_all_warped_html_formats(self):
+        p0 = 'I am a paragraph without the paragraph tags!'
+        p1 = 'We can <b>use Markdown</b> and <a href="https://example.com">Links</a>'
+        p2 = 'But wait there is more, like <i>lists:</i>'
+        ol = '<li>ü</li><li>käse</li><li>a b c</li>'
+        h = 'lalala'
+        notes = f'{p0}<p>{p1}</p><p>{p2}</p><ul>{ol}</ul><h1>{h}</h1>'
+        audio = self.repository['audio']
+        with checked_out(audio) as co:
+            info = zeit.content.audio.interfaces.IPodcastEpisodeInfo(co)
+            info.notes = notes
+        self._add_audio_to_article()
+        assert self.article.body.values()[1].text == p0
+        assert self.article.body.values()[2].text == p1
+        assert self.article.body.values()[3].text == p2
+        assert self.article.body.values()[4].text == ol
+        assert self.article.body.values()[5].text == h

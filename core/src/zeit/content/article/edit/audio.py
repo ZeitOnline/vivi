@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.content.article.edit.block
@@ -28,3 +29,18 @@ def factor_block_from_content(body, context, position):
     block = Factory(body)(position)
     block.references = context
     return block
+
+
+def apply_notes(body, episode_info):
+    notes = BeautifulSoup(episode_info.notes, 'html.parser')
+    mapping = {
+        'p': 'p',
+        'ul': 'ul',
+        'ol': 'ol',
+        'h1': 'intertitle',
+        'h2': 'intertitle',
+        'h3': 'intertitle',
+    }
+    for item in notes.contents:
+        tag_name = mapping.get(item.name, 'p')
+        body.create_item(tag_name).text = str(item)
