@@ -38,6 +38,9 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         super().setUp()
         self.simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
 
+    def tearDown(self):
+        self.simplecast.reset_mock()
+
     @pytest.fixture(autouse=True)
     def _caplog(self, caplog):
         self.caplog = caplog
@@ -57,6 +60,38 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
             )
 
         self.assertGreater(len(self.caplog.messages), 0)
+
+    def test_broken_event(self):
+        self.browser.post(
+            'http://localhost/@@simplecast_webhook',
+            json.dumps({'data': {}}),
+            'application/x-javascript',
+        )
+        self.simplecast.fetch_episode_audio.assert_not_called()
+        self.simplecast.synchronize_episode.assert_not_called()
+
+    def test_transcode_finished(self):
+        episode_audio_id = '9185df81-b5fc-4686-86e4-2a7bb38a33f9'
+        self.simplecast.fetch_episode_audio.return_value = {
+            'episode_id': episode_id(),
+        }
+        event = {
+            'sent_at': '2023-12-12 10:22:06.093797Z',
+            'data': {
+                'message': 'The audio for an episode has finished transcoding. '
+                f'The episode audio id is: `{episode_audio_id}`',
+                'href': f'https://api.simplecast.com/episodes/audio/{episode_audio_id}',
+                'event': 'transcode_finished',
+                'episode_audio_id': f'{episode_audio_id}',
+            },
+        }
+        self.browser.post(
+            'http://localhost/@@simplecast_webhook',
+            json.dumps(event),
+            'application/x-javascript',
+        )
+        self.simplecast.fetch_episode_audio.assert_called_with(episode_audio_id)
+        self.simplecast.synchronize_episode.assert_called_with(episode_id())
 
     def test_create_episode(self):
         event = webhook_event('episode_created')
