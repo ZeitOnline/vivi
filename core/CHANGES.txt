@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.80.0 (2023-12-14)
+-------------------
+
+- ZO-4214: add search filter for audio content type
+
+- ZO-4384: handle simplecast event transcode_finished
+
+
 5.79.0 (2023-12-12)
 -------------------
 
