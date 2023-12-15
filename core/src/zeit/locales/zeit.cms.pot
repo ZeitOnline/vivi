@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Tue Dec  5 15:29:34 2023\n"
+"POT-Creation-Date: Fri Dec 15 13:56:01 2023\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1431,7 +1431,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:11
 #: zeit/cms/workflow/interfaces.py:53
-#: zeit/workflow/publish.py:440
+#: zeit/workflow/publish.py:455
 #: zeit/workflow/publishinfo.py:59
 msgid "Published"
 msgstr ""
@@ -1477,8 +1477,8 @@ msgid "Last published by"
 msgstr ""
 
 #: zeit/cms/workflow/interfaces.py:76
-#: zeit/workflow/browser/form.py:139
-#: zeit/workflow/browser/form.py:167
+#: zeit/workflow/browser/form.py:143
+#: zeit/workflow/browser/form.py:171
 msgid "Publish lock?"
 msgstr ""
 
@@ -1618,7 +1618,7 @@ msgstr ""
 
 #: zeit/content/animation/browser/form.py:20
 #: zeit/content/animation/interfaces.py:28
-#: zeit/content/article/article.py:213
+#: zeit/content/article/article.py:214
 #: zeit/content/article/browser/configure.zcml:74
 #: zeit/content/article/edit/browser/form.py:55
 msgid "Article"
@@ -1714,7 +1714,7 @@ msgstr ""
 
 #: zeit/content/article/edit/audio.py:20
 #: zeit/content/article/edit/browser/form.py:457
-#: zeit/content/audio/audio.py:71
+#: zeit/content/audio/audio.py:72
 #: zeit/content/audio/browser/configure.zcml:6
 #: zeit/content/audio/browser/form.py:17
 msgid "Audio"
@@ -1783,9 +1783,9 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:151
 #: zeit/content/cp/browser/workflow.py:29
-#: zeit/workflow/browser/form.py:133
-#: zeit/workflow/browser/form.py:163
-#: zeit/workflow/browser/form.py:190
+#: zeit/workflow/browser/form.py:137
+#: zeit/workflow/browser/form.py:167
+#: zeit/workflow/browser/form.py:194
 msgid "Status"
 msgstr ""
 
@@ -1950,7 +1950,7 @@ msgid "Workflow time"
 msgstr ""
 
 #: zeit/content/article/edit/browser/workflow.py:30
-#: zeit/workflow/browser/form.py:86
+#: zeit/workflow/browser/form.py:90
 #: zeit/workflow/browser/menu.py:10
 msgid "Workflow"
 msgstr ""
@@ -2511,39 +2511,43 @@ msgstr ""
 msgid "show art"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:127
-msgid "Podcast Serie"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:128
-msgid "External Podcast Id"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:129
-msgid "Episode No"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:130
-msgid "URL ad-free"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:131
-msgid "Episode Summary"
-msgstr ""
-
-#: zeit/content/audio/interfaces.py:132
-msgid "Episode Notes"
+#: zeit/content/audio/interfaces.py:45
+msgid "feed"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:133
-msgid "Is Published"
+msgid "Podcast Serie"
 msgstr ""
 
 #: zeit/content/audio/interfaces.py:134
+msgid "External Podcast Id"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:135
+msgid "Episode No"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:136
+msgid "URL ad-free"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:137
+msgid "Episode Summary"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:138
+msgid "Episode Notes"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:139
+msgid "Is Published"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:140
 msgid "Dashboard Link"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:144
+#: zeit/content/audio/interfaces.py:150
 msgid "AudioReferences"
 msgstr ""
 
@@ -2981,35 +2985,35 @@ msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:33
 #: zeit/content/image/browser/imagegroup.py:64
-#: zeit/workflow/browser/form.py:137
-#: zeit/workflow/browser/form.py:165
+#: zeit/workflow/browser/form.py:141
+#: zeit/workflow/browser/form.py:169
 msgid "Settings"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:34
-#: zeit/workflow/browser/form.py:146
-#: zeit/workflow/browser/form.py:174
-#: zeit/workflow/browser/form.py:192
+#: zeit/workflow/browser/form.py:150
+#: zeit/workflow/browser/form.py:178
+#: zeit/workflow/browser/form.py:196
 msgid "Log"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:46
-#: zeit/workflow/browser/form.py:103
+#: zeit/workflow/browser/form.py:107
 msgid "Save state only"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:51
-#: zeit/workflow/browser/form.py:107
+#: zeit/workflow/browser/form.py:111
 msgid "Save state and publish now"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:57
-#: zeit/workflow/browser/form.py:113
+#: zeit/workflow/browser/form.py:117
 msgid "Save state and retract now"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:59
-#: zeit/workflow/browser/form.py:115
+#: zeit/workflow/browser/form.py:119
 msgid "Really retract? This will remove the object from all channels it is syndicated in and make it unavailable to the public!"
 msgstr ""
 
@@ -4755,17 +4759,17 @@ msgstr ""
 msgid "Type to find ingredients ..."
 msgstr ""
 
-#: zeit/workflow/browser/form.py:37
+#: zeit/workflow/browser/form.py:38
 #. Default: "${id} has been scheduled for publishing."
 msgid "scheduled-for-immediate-publishing"
 msgstr ""
 
-#: zeit/workflow/browser/form.py:49
+#: zeit/workflow/browser/form.py:51
 #. Default: "${id} has been scheduled for retracting."
 msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
-#: zeit/workflow/browser/form.py:58
+#: zeit/workflow/browser/form.py:62
 #: zeit/workflow/publishinfo.py:103
 msgid "publish-preconditions-not-met"
 msgstr ""
@@ -4810,27 +4814,27 @@ msgstr ""
 msgid "Publication scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:69
+#: zeit/workflow/publish.py:73
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:85
+#: zeit/workflow/publish.py:89
 msgid "Collective Publication of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:101
+#: zeit/workflow/publish.py:105
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:195
+#: zeit/workflow/publish.py:199
 msgid "Objects with errors: ${objects}"
 msgstr ""
 
-#: zeit/workflow/publish.py:329
+#: zeit/workflow/publish.py:333
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:507
+#: zeit/workflow/publish.py:522
 msgid "Retracted"
 msgstr ""
 
@@ -4847,7 +4851,7 @@ msgid "publish-preconditions-locked"
 msgstr ""
 
 #: zeit/workflow/publishinfo.py:131
-#: zeit/workflow/workflow.py:56
+#: zeit/workflow/workflow.py:59
 msgid "${name}: ${new_value}"
 msgstr ""
 
