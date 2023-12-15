@@ -324,7 +324,7 @@ strict-naming = false  # required for proper output filename
 
 [tool.towncrier]
 directory = "docs/changelog/"
-filename = "CHANGES.txt"
+filename = "CHANGES.rst"
 # Our changelog file already has a title
 title_format = ""
 # First underline is used for version/date header.
