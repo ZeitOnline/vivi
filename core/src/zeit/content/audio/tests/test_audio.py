@@ -29,6 +29,7 @@ class PodcastSourceTest(FunctionalTestCase):
             'e5ded8',
             'http://xml.zeit.de/2006/DSC00109_2.JPG',
             distribution_channels,
+            'https://feeds.example.com/aRDC72E_',
             'podigee-1234',
         )
         assert values[0] == podcast
