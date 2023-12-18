@@ -77,6 +77,9 @@ class PublishInfo:
             self.error_messages = (_('publish-preconditions-locked', mapping=mapping),)
         return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
 
+    def can_retract(self):
+        return zeit.cms.workflow.interfaces.CAN_RETRACT_SUCCESS
+
     def matches_blacklist(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         blacklist = re.split(', *', config['blacklist'])
