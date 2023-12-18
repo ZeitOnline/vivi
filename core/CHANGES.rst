@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.82.0 (2023-12-18)
+-------------------
+
+- ZO-4370: add rss feed to podcasts.xml
+
+
 5.81.0 (2023-12-14)
 -------------------
 
