@@ -42,6 +42,8 @@ class IPodcast(zope.interface.Interface):
     color = zope.interface.Attribute('color')
     image = zope.schema.URI(title=_('show art'))
     distribution_channels = zope.interface.Attribute('distribution_channels')
+    feed = zope.schema.URI(title=_('feed'))
+    podigee_id = zope.interface.Attribute('podigee_id')
 
 
 class Podcast(zeit.cms.content.sources.AllowedBase):
@@ -54,6 +56,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         color=None,
         image=None,
         distribution_channels=None,
+        feed=None,
         podigee_id=None,
     ):
         super().__init__(id, title, available=None)
@@ -64,6 +67,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
         #: mapping of distribution channel (itunes, spotify, etc.) to url
         self.distribution_channels = distribution_channels
         # For parallel use of podcast hosts
+        self.feed = feed
         self.podigee_id = podigee_id
 
     def __eq__(self, other):
@@ -76,6 +80,7 @@ class Podcast(zeit.cms.content.sources.AllowedBase):
             and self.color == other.color
             and self.image == other.image
             and self.distribution_channels == other.distribution_channels
+            and self.feed == other.feed
             and self.podigee_id == other.podigee_id
         )
 
@@ -109,9 +114,10 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('subtitle'),
             node.get('color'),
             node.get('image'),
-            podigee_id=node.get('podigee_id'),
+            distribution_channels,
+            node.get('feed'),
+            node.get('podigee_id'),
         )
-        podcast.distribution_channels = distribution_channels
         return podcast
 
     def find_by_property(self, context, property_name, value):
