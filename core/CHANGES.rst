@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.83.0 (2023-12-19)
+-------------------
+
+- ZO-4104: improve error handling for can_retract, fix tests
+
+- ZO-4224: add webhook for text to speech
+
+
 5.82.0 (2023-12-18)
 -------------------
 
