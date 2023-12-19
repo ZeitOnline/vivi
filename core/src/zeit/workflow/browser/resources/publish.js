@@ -62,7 +62,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         var d = MochiKit.Async.loadJSONDoc(context + '/@@' + action);
         d.addCallbacks(function(job) {
             if (job.error) {
-                throw new Error('Kann nicht veröffentlichen: ' + job.error);
+                throw new Error('Kann nicht veröffentlichen bzw. zurückziehen: ' + job.error);
             }
             return MochiKit.Async.callLater(
                 1, function() {
