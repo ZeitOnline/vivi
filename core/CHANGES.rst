@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.84.0 (2023-12-20)
+-------------------
+
+- ZO-4224: add celery queue speech
+
+
 5.83.0 (2023-12-19)
 -------------------
 
