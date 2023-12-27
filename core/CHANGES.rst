@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.85.0 (2023-12-27)
+-------------------
+
+- ZO-4369: Add complete audio episode notes html to article body
+
+
 5.84.0 (2023-12-20)
 -------------------
 
