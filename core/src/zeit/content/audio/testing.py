@@ -55,7 +55,7 @@ class AudioBuilder:
                 'episode_nr': 1,
                 'url_ad_free': 'http://simplecast.com/adfree.mp3',
                 'summary': 'lorem ipsum',
-                'notes': 'dolor <b>sit</b> amet',
+                'notes': '<p>dolor <b>sit</b> amet</p>',
                 'is_published': True,
                 'dashboard_link': 'http://simplecast.com/pawdcast',
                 'podcast': Podcast(

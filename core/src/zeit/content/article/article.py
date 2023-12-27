@@ -23,8 +23,10 @@ import zeit.cms.workflow.dependency
 import zeit.cms.workflow.interfaces
 import zeit.connector.filesystem
 import zeit.connector.interfaces
+import zeit.content.article.edit.audio
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.content.audio.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
@@ -36,7 +38,6 @@ import zope.dublincore.interfaces
 import zope.index.text.interfaces
 import zope.interface
 import zope.security.proxy
-import zeit.content.audio.interfaces
 
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
@@ -397,20 +398,22 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
     context.header_layout = 'podcast'
 
     main_audio = audio.items[0]
-    if main_audio.audio_type == 'podcast':
-        if not context.title:
-            context.title = main_audio.title
-        episode = zeit.content.audio.interfaces.IPodcastEpisodeInfo(main_audio)
-        if not context.teaserText:
-            context.teaserText = episode.summary
-        if not context.teaserTitle:
-            context.teaserTitle = main_audio.title
-        if not context.subtitle:
-            context.subtitle = episode.summary
-        # article image reserves first position
-        body = context.body
-        if not body or (len(body.keys()) == 1 and context.main_image_block):
-            body.create_item('p').text = episode.notes
+    if main_audio.audio_type != 'podcast':
+        return
+
+    if not context.title:
+        context.title = main_audio.title
+    episode = zeit.content.audio.interfaces.IPodcastEpisodeInfo(main_audio)
+    if not context.teaserText:
+        context.teaserText = episode.summary
+    if not context.teaserTitle:
+        context.teaserTitle = main_audio.title
+    if not context.subtitle:
+        context.subtitle = episode.summary
+    body = context.body
+    # article image reserves first position
+    if not body or (len(body.keys()) == 1 and context.main_image_block):
+        zeit.content.article.edit.audio.apply_notes(body, episode)
 
 
 @grok.subscribe(
