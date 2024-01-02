@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.86.0 (2024-01-02)
+-------------------
+
+FIX:
+- Happy new year
+
+
 5.85.0 (2023-12-27)
 -------------------
 
