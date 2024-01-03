@@ -54,7 +54,7 @@ class RelStorageInstrumentor(BaseInstrumentor):
     """
 
     def instrumentation_dependencies(self):
-        return ('relstorage ~= 3.5',)
+        return ('relstorage >= 3.5',)
 
     def _instrument(self, **kw):
         tracer = opentelemetry.trace.get_tracer(__name__, tracer_provider=kw.get('tracer_provider'))
