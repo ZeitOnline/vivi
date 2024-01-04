@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Dec 15 13:56:01 2023\n"
+"POT-Creation-Date: Wed Jan  3 16:35:54 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -556,7 +556,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:12
 #: zeit/content/advertisement/browser/form.py:25
 #: zeit/content/animation/browser/form.py:33
-#: zeit/content/audio/browser/form.py:62
+#: zeit/content/audio/browser/form.py:89
 #: zeit/content/cp/browser/form.py:75
 #: zeit/content/markup/browser/form.py:30
 #: zeit/content/video/browser/video.py:57
@@ -1618,7 +1618,7 @@ msgstr ""
 
 #: zeit/content/animation/browser/form.py:20
 #: zeit/content/animation/interfaces.py:28
-#: zeit/content/article/article.py:214
+#: zeit/content/article/article.py:216
 #: zeit/content/article/browser/configure.zcml:74
 #: zeit/content/article/edit/browser/form.py:55
 msgid "Article"
@@ -1712,11 +1712,11 @@ msgstr ""
 msgid "Adplace block"
 msgstr ""
 
-#: zeit/content/article/edit/audio.py:20
+#: zeit/content/article/edit/audio.py:21
 #: zeit/content/article/edit/browser/form.py:457
-#: zeit/content/audio/audio.py:72
+#: zeit/content/audio/audio.py:73
 #: zeit/content/audio/browser/configure.zcml:6
-#: zeit/content/audio/browser/form.py:17
+#: zeit/content/audio/browser/form.py:19
 msgid "Audio"
 msgstr ""
 
@@ -2421,10 +2421,6 @@ msgstr ""
 msgid "Breaking news article"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:252
-msgid "Speechbert Checksum"
-msgstr ""
-
 #: zeit/content/article/source.py:262
 msgid "newest first"
 msgstr ""
@@ -2457,24 +2453,35 @@ msgstr ""
 msgid "Update audio from simplecast"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:27
-#: zeit/content/audio/browser/form.py:52
-msgid "Audio file"
-msgstr ""
-
-#: zeit/content/audio/browser/form.py:46
+#: zeit/content/audio/browser/form.py:60
 msgid "Podcast Episode Info"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:71
-msgid "Add audio"
+#: zeit/content/audio/browser/form.py:66
+msgid "Podcast Host"
+msgstr ""
+
+#: zeit/content/audio/browser/form.py:70
+msgid "Podcast audio file"
 msgstr ""
 
 #: zeit/content/audio/browser/form.py:76
+msgid "TTS Info"
+msgstr ""
+
+#: zeit/content/audio/browser/form.py:82
+msgid "TTS audio file"
+msgstr ""
+
+#: zeit/content/audio/browser/form.py:110
+msgid "Add audio"
+msgstr ""
+
+#: zeit/content/audio/browser/form.py:115
 msgid "Edit audio"
 msgstr ""
 
-#: zeit/content/audio/browser/form.py:81
+#: zeit/content/audio/browser/form.py:120
 msgid "View audio"
 msgstr ""
 
@@ -2515,40 +2522,48 @@ msgstr ""
 msgid "feed"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:133
+#: zeit/content/audio/interfaces.py:134
 msgid "Podcast Serie"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:134
+#: zeit/content/audio/interfaces.py:136
 msgid "External Podcast Id"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:135
+#: zeit/content/audio/interfaces.py:137
 msgid "Episode No"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:136
+#: zeit/content/audio/interfaces.py:138
 msgid "URL ad-free"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:137
+#: zeit/content/audio/interfaces.py:139
 msgid "Episode Summary"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:138
+#: zeit/content/audio/interfaces.py:140
 msgid "Episode Notes"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:139
+#: zeit/content/audio/interfaces.py:141
 msgid "Is Published"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:140
+#: zeit/content/audio/interfaces.py:142
 msgid "Dashboard Link"
 msgstr ""
 
-#: zeit/content/audio/interfaces.py:150
+#: zeit/content/audio/interfaces.py:152
 msgid "AudioReferences"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:163
+msgid "Preview URL"
+msgstr ""
+
+#: zeit/content/audio/interfaces.py:165
+msgid "Speechbert Checksum"
 msgstr ""
 
 #: zeit/content/audio/workflow.py:20
@@ -4770,7 +4785,7 @@ msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
 #: zeit/workflow/browser/form.py:62
-#: zeit/workflow/publishinfo.py:103
+#: zeit/workflow/publishinfo.py:106
 msgid "publish-preconditions-not-met"
 msgstr ""
 
@@ -4850,7 +4865,7 @@ msgstr ""
 msgid "publish-preconditions-locked"
 msgstr ""
 
-#: zeit/workflow/publishinfo.py:131
+#: zeit/workflow/publishinfo.py:134
 #: zeit/workflow/workflow.py:59
 msgid "${name}: ${new_value}"
 msgstr ""

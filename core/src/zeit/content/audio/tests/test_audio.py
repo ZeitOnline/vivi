@@ -4,6 +4,7 @@ from zeit.content.audio.interfaces import PodcastSource, Podcast
 from zeit.content.audio.testing import AudioBuilder, FunctionalTestCase
 
 import zeit.cms.content.sources
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.audio.audio
@@ -47,3 +48,21 @@ class PodcastSourceTest(FunctionalTestCase):
         assert (
             images.fill_color == 'e5ded8'
         ), 'Fill color should match color audio/tests/fixtures/podcasts.xml'
+
+
+class SpeechTest(FunctionalTestCase):
+    def test_create_tts_audio(self):
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        uuid = zeit.cms.content.interfaces.IUUID(article)
+        audio = zeit.content.audio.audio.Audio()
+        audio.audio_type = 'tts'
+        tts = zeit.content.audio.interfaces.ISpeechInfo(audio)
+        tts.article_uuid = uuid.shortened
+        tts.preview_url = 'https://example-preview-url.bert'
+        tts.checksum = '123foo'
+        audio = self.repository['audio'] = audio
+        speechinfo = zeit.content.audio.interfaces.ISpeechInfo(audio)
+        self.assertEqual(audio.audio_type, 'tts')
+        self.assertEqual(speechinfo.article_uuid, uuid.shortened)
+        self.assertEqual(speechinfo.preview_url, 'https://example-preview-url.bert')
+        self.assertTrue(speechinfo.checksum, '123foo')

@@ -1,5 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
+from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo, ISpeechInfo
 
 import logging
 
@@ -93,3 +93,11 @@ class PodcastImage(grok.Adapter):
         podcast = self._get_podcast()
         if podcast and podcast.image:
             return zeit.cms.interfaces.ICMSContent(podcast.image, None)
+
+
+@grok.implementer(ISpeechInfo)
+class SpeechInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
+    grok.context(IAudio)
+    zeit.cms.content.dav.mapProperties(
+        ISpeechInfo, AUDIO_SCHEMA_NS, ('article_uuid', 'preview_url', 'checksum')
+    )

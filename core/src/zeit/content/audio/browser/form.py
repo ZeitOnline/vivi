@@ -15,31 +15,40 @@ class Base:
 
     audio_fields = gocept.form.grouped.Fields(
         _('Audio'),
-        (
-            'title',
-            'duration',
-            'audio_type',
-        ),
+        ('title', 'duration', 'audio_type', 'url'),
         css_class='wide-widgets column-left',
     )
 
-    audio_file_fields = gocept.form.grouped.Fields(
-        _('Audio file'), ('url',), css_class='wide-widgets column-left'
-    )
-
-    field_groups = (audio_fields, audio_file_fields)
+    field_groups = (audio_fields,)
 
 
-class PodcastForm:
-    form_fields = Base.form_fields + zope.formlib.form.FormFields(
-        zeit.content.audio.interfaces.IPodcastEpisodeInfo
-    ).select(
+class Form:
+    _omit_podcast_fields = (
         'podcast',
         'episode_nr',
         'url_ad_free',
         'summary',
         'notes',
         'dashboard_link',
+        'image',
+        'url_ad_free',
+    )
+
+    _omit_tts_fields = ('article_uuid', 'preview_url', 'checksum')
+
+    form_fields = (
+        Base.form_fields
+        + zope.formlib.form.FormFields(zeit.content.audio.interfaces.IPodcastEpisodeInfo).select(
+            'podcast',
+            'episode_nr',
+            'url_ad_free',
+            'summary',
+            'notes',
+            'dashboard_link',
+        )
+        + zope.formlib.form.FormFields(zeit.content.audio.interfaces.ISpeechInfo).select(
+            'article_uuid', 'preview_url', 'checksum'
+        )
     )
 
     podcast_fields = gocept.form.grouped.Fields(
@@ -48,42 +57,67 @@ class PodcastForm:
         'wide-widgets column-left',
     )
 
-    audio_file_fields = gocept.form.grouped.Fields(
-        _('Audio file'),
-        (
-            'url',
-            'url_ad_free',
-        ),
+    podcast_host_fields = gocept.form.grouped.Fields(
+        _('Podcast Host'), ('dashboard_link'), css_class='wide-widgets column-left'
+    )
+
+    podcast_file_fields = gocept.form.grouped.Fields(
+        _('Podcast audio file'),
+        ('url_ad_free',),
+        css_class='wide-widgets column-left',
+    )
+
+    tts_fields = gocept.form.grouped.Fields(
+        _('TTS Info'),
+        ('article_uuid', 'checksum'),
+        'wide-widgets column-left',
+    )
+
+    tts_file_fields = gocept.form.grouped.Fields(
+        _('TTS audio file'),
+        ('preview_url',),
         css_class='wide-widgets column-left',
     )
 
     field_groups = (
         gocept.form.grouped.Fields(
-            _('Navigation'), ('__name__', 'dashboard_link'), css_class='wide-widgets column-right'
+            _('Navigation'), ('__name__'), css_class='wide-widgets column-right'
         ),
         Base.audio_fields,
-        audio_file_fields,
+        podcast_file_fields,
         podcast_fields,
+        podcast_host_fields,
+        tts_fields,
+        tts_file_fields,
     )
 
 
-class Add(PodcastForm, zeit.cms.browser.form.AddForm):
+class Mixin(Form):
+    def __init__(self, context, request):
+        super().__init__(context, request)
+        if context.audio_type == 'tts':
+            self.form_fields = self.form_fields.omit(*self._omit_podcast_fields)
+        elif context.audio_type == 'podcast':
+            self.form_fields = self.form_fields.omit(*self._omit_tts_fields)
+
+
+class Add(Form, zeit.cms.browser.form.AddForm):
     title = _('Add audio')
     factory = zeit.content.audio.audio.Audio
 
 
-class Edit(PodcastForm, zeit.cms.browser.form.EditForm):
+class Edit(Mixin, zeit.cms.browser.form.EditForm):
     title = _('Edit audio')
-    form_fields = PodcastForm.form_fields.omit('__name__')
+    form_fields = Form.form_fields.omit('__name__')
 
 
-class Display(PodcastForm, zeit.cms.browser.form.DisplayForm):
+class Display(Mixin, zeit.cms.browser.form.DisplayForm):
     title = _('View audio')
     for_display = True
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
-        if self.widgets['dashboard_link']:
+        if self.widgets.get('dashboard_link'):
             self.widgets[
                 'dashboard_link'
             ].linkTarget = zeit.content.audio.interfaces.IPodcastEpisodeInfo(
