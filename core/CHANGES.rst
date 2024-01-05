@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.87.0 (2024-01-05)
+-------------------
+
+- ZO-4091: Set up RelStorage tracing
+
+- ZO-4321: Save tts audio specific data
+
+
 5.86.0 (2024-01-02)
 -------------------
 
