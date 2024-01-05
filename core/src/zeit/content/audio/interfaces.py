@@ -130,9 +130,11 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
 class IPodcastEpisodeInfo(zope.interface.Interface):
     """Additional Audioinformation for podcast episodes."""
 
-    podcast = zope.schema.Choice(title=_('Podcast Serie'), source=PodcastSource(), readonly=True)
+    podcast = zope.schema.Choice(
+        title=_('Podcast Serie'), source=PodcastSource(), readonly=True, required=False
+    )
     podcast_id = zope.schema.TextLine(title=_('External Podcast Id'), required=False, readonly=True)
-    episode_nr = zope.schema.Int(title=_('Episode No'), readonly=True)
+    episode_nr = zope.schema.Int(title=_('Episode No'), readonly=True, required=False)
     url_ad_free = zope.schema.URI(title=_('URL ad-free'), readonly=True, required=False)
     summary = zope.schema.Text(title=_('Episode Summary'), required=False, readonly=True)
     notes = zope.schema.Text(title=_('Episode Notes'), required=False, readonly=True)
@@ -149,3 +151,15 @@ class IAudioReferences(zope.interface.Interface):
     items = zope.schema.Tuple(
         title=_('AudioReferences'), value_type=zope.schema.Choice(source=AudioSource())
     )
+
+
+class ISpeechInfo(zope.interface.Interface):
+    article_uuid = zope.schema.ASCIILine(
+        title='Article uuid',
+        description='The uuid of the content object',
+        required=False,
+        readonly=True,
+    )
+    preview_url = zope.schema.URI(title=_('Preview URL'), required=False, readonly=True)
+
+    checksum = zope.schema.ASCIILine(title=_('Speechbert Checksum'), required=False, readonly=True)

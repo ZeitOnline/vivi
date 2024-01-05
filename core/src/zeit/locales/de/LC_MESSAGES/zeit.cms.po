@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Dec 15 13:56:01 2023\n"
+"POT-Creation-Date: Wed Jan  3 16:35:54 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:38
 #: zeit/cms/browser/form.py:219 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -530,7 +530,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:12
 #: zeit/content/advertisement/browser/form.py:25
 #: zeit/content/animation/browser/form.py:33
-#: zeit/content/audio/browser/form.py:62 zeit/content/cp/browser/form.py:75
+#: zeit/content/audio/browser/form.py:89 zeit/content/cp/browser/form.py:75
 #: zeit/content/markup/browser/form.py:30
 #: zeit/content/video/browser/video.py:57
 msgid "Navigation"
@@ -1575,7 +1575,7 @@ msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
 #: zeit/content/animation/browser/form.py:20
-#: zeit/content/animation/interfaces.py:28 zeit/content/article/article.py:214
+#: zeit/content/animation/interfaces.py:28 zeit/content/article/article.py:216
 #: zeit/content/article/browser/configure.zcml:74
 #: zeit/content/article/edit/browser/form.py:55
 msgid "Article"
@@ -1668,10 +1668,10 @@ msgstr "Bearbeiten"
 msgid "Adplace block"
 msgstr "Ad-Place"
 
-#: zeit/content/article/edit/audio.py:20
-#: zeit/content/article/edit/browser/form.py:457 zeit/content/audio/audio.py:72
+#: zeit/content/article/edit/audio.py:21
+#: zeit/content/article/edit/browser/form.py:457 zeit/content/audio/audio.py:73
 #: zeit/content/audio/browser/configure.zcml:6
-#: zeit/content/audio/browser/form.py:17
+#: zeit/content/audio/browser/form.py:19
 msgid "Audio"
 msgstr "Audio"
 
@@ -2353,10 +2353,6 @@ msgstr "Preis in €"
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
 
-#: zeit/content/article/interfaces.py:252
-msgid "Speechbert Checksum"
-msgstr "TTS Checksumme"
-
 #: zeit/content/article/source.py:262
 msgid "newest first"
 msgstr "neuester zuerst"
@@ -2389,23 +2385,35 @@ msgstr "Es konnte keine zugehörige Podcastfolge gefunden werden."
 msgid "Update audio from simplecast"
 msgstr "Audio von Simplecast aktualisieren"
 
-#: zeit/content/audio/browser/form.py:27 zeit/content/audio/browser/form.py:52
-msgid "Audio file"
-msgstr "Audio Datei"
-
-#: zeit/content/audio/browser/form.py:46
+#: zeit/content/audio/browser/form.py:60
 msgid "Podcast Episode Info"
 msgstr "Podcastfolge"
 
-#: zeit/content/audio/browser/form.py:71
+#: zeit/content/audio/browser/form.py:66
+msgid "Podcast Host"
+msgstr "Podcast Host"
+
+#: zeit/content/audio/browser/form.py:70
+msgid "Podcast audio file"
+msgstr "Podcast Audiodatei"
+
+#: zeit/content/audio/browser/form.py:76
+msgid "TTS Info"
+msgstr "Text to Speech Info"
+
+#: zeit/content/audio/browser/form.py:82
+msgid "TTS audio file"
+msgstr "Text to Speech Audiodatei"
+
+#: zeit/content/audio/browser/form.py:110
 msgid "Add audio"
 msgstr "Audio hinzufügen"
 
-#: zeit/content/audio/browser/form.py:76
+#: zeit/content/audio/browser/form.py:115
 msgid "Edit audio"
 msgstr "Audio bearbeiten"
 
-#: zeit/content/audio/browser/form.py:81
+#: zeit/content/audio/browser/form.py:120
 msgid "View audio"
 msgstr "Audio anzeigen"
 
@@ -2446,41 +2454,49 @@ msgstr "Show art"
 msgid "feed"
 msgstr "RSS (Web-Feed)"
 
-#: zeit/content/audio/interfaces.py:133
+#: zeit/content/audio/interfaces.py:134
 msgid "Podcast Serie"
 msgstr "Podcast"
 
-#: zeit/content/audio/interfaces.py:134
+#: zeit/content/audio/interfaces.py:136
 msgid "External Podcast Id"
 msgstr "Externe Podcast ID"
 
-#: zeit/content/audio/interfaces.py:135
+#: zeit/content/audio/interfaces.py:137
 msgid "Episode No"
 msgstr "Nummer der Folge"
 
-#: zeit/content/audio/interfaces.py:136
+#: zeit/content/audio/interfaces.py:138
 msgid "URL ad-free"
 msgstr "Ad-free URL"
 
-#: zeit/content/audio/interfaces.py:137
+#: zeit/content/audio/interfaces.py:139
 msgid "Episode Summary"
 msgstr "Zusammenfassung der Folge"
 
-#: zeit/content/audio/interfaces.py:138
+#: zeit/content/audio/interfaces.py:140
 msgid "Episode Notes"
 msgstr "Beschreibung der Folge"
 
-#: zeit/content/audio/interfaces.py:139
+#: zeit/content/audio/interfaces.py:141
 msgid "Is Published"
 msgstr "Veröffentlicht"
 
-#: zeit/content/audio/interfaces.py:140
+#: zeit/content/audio/interfaces.py:142
 msgid "Dashboard Link"
 msgstr "Dashboard Link"
 
-#: zeit/content/audio/interfaces.py:150
+#: zeit/content/audio/interfaces.py:152
 msgid "AudioReferences"
 msgstr "Audioreferenzen"
+
+#: zeit/content/audio/interfaces.py:163
+msgid "Preview URL"
+msgstr "Vorschau URL"
+
+#: zeit/content/audio/interfaces.py:165
+msgid "Speechbert Checksum"
+msgstr "TTS Checksumme"
 
 #: zeit/content/audio/workflow.py:20
 msgid "Could not publish ${name}. Audio URL is missing"
@@ -4707,7 +4723,7 @@ msgstr "»${id}« wird veröffentlicht."
 msgid "scheduled-for-immediate-retracting"
 msgstr "»${id}« wird zurückgezogen."
 
-#: zeit/workflow/browser/form.py:62 zeit/workflow/publishinfo.py:103
+#: zeit/workflow/browser/form.py:62 zeit/workflow/publishinfo.py:106
 msgid "publish-preconditions-not-met"
 msgstr ""
 "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die "
@@ -4798,7 +4814,7 @@ msgstr "Bitte erst depublizieren, dann Sperrvermerk setzen."
 msgid "publish-preconditions-locked"
 msgstr "Sperrvermerk »${reason}«"
 
-#: zeit/workflow/publishinfo.py:131 zeit/workflow/workflow.py:59
+#: zeit/workflow/publishinfo.py:134 zeit/workflow/workflow.py:59
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 
@@ -4896,6 +4912,9 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Audio file"
+#~ msgstr "Audio Datei"
 
 #~ msgid "Edit block overflow"
 #~ msgstr "Fläche verknüpfen"

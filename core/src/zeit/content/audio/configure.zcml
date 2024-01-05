@@ -76,4 +76,16 @@
       />
   </class>
 
+  <!-- TTS Audio -->
+  <class class=".audio.SpeechInfo">
+    <require
+      interface=".interfaces.ISpeechInfo"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ISpeechInfo"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

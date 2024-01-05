@@ -11,9 +11,9 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         self.browser.getControl('Type').displayValue = 'Podcast'
         self.browser.getControl('Title').value = 'Cats episode'
         self.browser.getControl(label='URL', index=0).value = 'http://example.com/cats.mp3'
-        self.browser.getControl(label='URL', index=1).value = 'http://ad-free-example.com/cats.mp3'
         self.browser.getControl('Duration').value = 123
         # Podcast specific fields
+        self.browser.getControl(label='URL ad-free').value = 'http://ad-free-example.com/cats.mp3'
         self.browser.getControl('Podcast', index=1).value = ['cat-jokes-pawdcast']
         self.browser.getControl('Episode No').value = '1'
         self.browser.getControl('Episode Summary').value = 'summary'
@@ -27,8 +27,6 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
         self.browser.getLink('Checkin').click()
         self.assertEllipsis(
             """...
-            <label for="form.dashboard_link">...
-            <div class="widget"><a href="http://simplecast.example.dashboard" target="http://simplecast.example.dashboard">http://simplecast.example.dashboard</a></div>...
             <label for="form.title">...
             <div class="widget">Cats episode</div>...
             <label for="form.duration">...
@@ -47,6 +45,27 @@ class TestAudioForm(zeit.content.audio.testing.BrowserTestCase):
             <div class="widget">summary</div>...
             <label for="form.notes">...
             <div class="widget">notes</div>...
+            <label for="form.dashboard_link">...
+            <div class="widget"><a href="http://simplecast.example.dashboard" target="http://simplecast.example.dashboard">http://simplecast.example.dashboard</a></div>...
             """,
             self.browser.contents,
         )
+
+    def test_add_tts_audio(self):
+        self.browser.open('/repository/online/2007/01')
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Audio']
+        self.browser.open(menu.value[0])
+        self.browser.getControl('File name').value = 'test-audio'
+        self.browser.getControl('Type').displayValue = 'Text to Speech'
+        self.browser.getControl('Title').value = 'Cat article'
+        self.browser.getControl(label='Preview URL').value = 'http://example.com/cats.mp3'
+        self.browser.getControl('Duration').value = 123
+        # TTS specific fields
+        self.browser.getControl(label='URL', index=2).value = 'http://preview-example.com/cats.mp3'
+        article = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        uuid = zeit.cms.content.interfaces.IUUID(article)
+        self.browser.getControl('Article uuid').value = uuid.id
+        self.browser.getControl('Checksum').value = '123foo'
+        self.browser.getControl('Add').click()
+        assert 'There were errors' not in self.browser.contents
