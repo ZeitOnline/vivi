@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.88.0 (2024-01-08)
+-------------------
+
+- ZO-4015: Support rediss in longterm scheduler
+
+
 5.87.0 (2024-01-05)
 -------------------
 
