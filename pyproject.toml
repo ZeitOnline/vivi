@@ -19,8 +19,8 @@ select = [
     # "B",
     # # flake8-simplify
     # "SIM",
-    # # isort
-    # "I",
+    # isort
+    "I",
 ]
 ignore = [
     # builtin-variable-shadowing
@@ -45,8 +45,6 @@ ignore = [
     "F821",
     # flake8-logging-format
     "G",
-    # unsorted-imports
-    "I001",
     # bad-quotes-inline-string
     "Q000",
     # bad-quotes-multiline-string
@@ -64,3 +62,8 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 # Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
+
+[tool.ruff.lint.isort]
+from-first = true
+known-first-party = ["zeit"]
+lines-after-imports = 2
