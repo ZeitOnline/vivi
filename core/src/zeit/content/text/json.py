@@ -1,22 +1,22 @@
-from zeit.cms.i18n import MessageFactory as _
-
-import grokcore.component as grok
+import logging
 
 import commentjson
+import grokcore.component as grok
 import jsonschema
-import logging
 import openapi_schema_validator
 import requests
 import requests_file
 import yaml
+import zope.interface
 import zope.schema
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.text.interfaces
 import zeit.content.text.text
-import zope.interface
+
 
 log = logging.getLogger(__name__)
 

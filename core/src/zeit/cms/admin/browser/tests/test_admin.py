@@ -1,8 +1,10 @@
 from datetime import datetime
+
 import pytz
+import zope.component.hooks
+
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
-import zope.component.hooks
 
 
 class TestAdminMenu(zeit.cms.testing.ZeitCmsBrowserTestCase):

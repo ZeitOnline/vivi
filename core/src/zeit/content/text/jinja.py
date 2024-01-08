@@ -1,14 +1,16 @@
-from jinja2.runtime import Undefined
 from unittest import mock
-from zeit.cms.i18n import MessageFactory as _
 import collections
+
+from jinja2.runtime import Undefined
 import jinja2
 import jinja2.utils
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.text.interfaces
 import zeit.content.text.text
-import zope.interface
 
 
 @zope.interface.implementer(zeit.content.text.interfaces.IJinjaTemplate)

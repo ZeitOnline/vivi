@@ -1,5 +1,6 @@
-import zeit.retresco.interfaces
 import zope.interface
+
+import zeit.retresco.interfaces
 
 
 class IReach(zope.interface.Interface):

@@ -1,9 +1,10 @@
+import zope.component
+import zope.schema
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublish
 import zeit.push.interfaces
 import zeit.push.testing
-import zope.component
-import zope.schema
 
 
 class MessageTest(zeit.push.testing.TestCase):

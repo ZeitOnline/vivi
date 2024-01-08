@@ -1,9 +1,11 @@
 from unittest import mock
+
+import zope.component
+
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zope.component
 
 
 class PublishTest(zeit.content.cp.testing.BrowserTestCase):

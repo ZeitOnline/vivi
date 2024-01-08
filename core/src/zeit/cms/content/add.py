@@ -1,11 +1,13 @@
 import datetime
-import grokcore.component as grok
 import urllib.parse
-import zeit.cms.content.interfaces
-import zeit.cms.repository.interfaces
+
+import grokcore.component as grok
 import zope.browser.interfaces
 import zope.component
 import zope.interface
+
+import zeit.cms.content.interfaces
+import zeit.cms.repository.interfaces
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IContentAdder)

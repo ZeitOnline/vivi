@@ -1,4 +1,9 @@
 from unittest import mock
+
+import zope.component
+import zope.container.contained
+import zope.interface
+
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -6,9 +11,6 @@ import zeit.cms.repository.unknown
 import zeit.cms.testing
 import zeit.cms.type
 import zeit.connector.interfaces
-import zope.component
-import zope.container.contained
-import zope.interface
 
 
 class ITestInterface(zope.interface.Interface):

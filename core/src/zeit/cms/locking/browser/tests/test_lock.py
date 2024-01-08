@@ -1,11 +1,13 @@
 from datetime import datetime
 from unittest import mock
-import pytz
 import time
 import urllib.error
+
+import pytz
+import zope.app.locking.lockinfo
+
 import zeit.cms.checkout.interfaces
 import zeit.cms.testing
-import zope.app.locking.lockinfo
 
 
 class TimeFreezeLockInfo(zope.app.locking.lockinfo.LockInfo):

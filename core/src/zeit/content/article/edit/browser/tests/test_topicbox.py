@@ -1,5 +1,5 @@
-import zeit.content.article.edit.browser.testing
 import zeit.content.article.article
+import zeit.content.article.edit.browser.testing
 
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):

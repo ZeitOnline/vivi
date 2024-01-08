@@ -1,7 +1,8 @@
-from zeit.edit.rule import glob
-import zeit.content.article.interfaces
-import zeit.content.article.edit.interfaces
 import zope.interface
+
+from zeit.edit.rule import glob
+import zeit.content.article.edit.interfaces
+import zeit.content.article.interfaces
 
 
 @glob(zope.interface.Interface)

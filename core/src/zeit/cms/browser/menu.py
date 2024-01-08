@@ -1,13 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
 import time
 import xml.sax.saxutils
+
 import z3c.menu.simple.menu
-import zeit.cms.browser.view
 import zope.app.pagetemplate
 import zope.app.publisher.browser.menu
 import zope.app.publisher.interfaces.browser
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.view
 
 
 class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):

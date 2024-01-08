@@ -2,7 +2,7 @@ import zope.container.interfaces
 import zope.interface
 
 # BBB:
-from zeit.cms.checkout.interfaces import IWorkingcopy, ILocalContent  # noqa
+from zeit.cms.checkout.interfaces import ILocalContent, IWorkingcopy  # noqa
 
 
 class IWorkingcopyLocation(zope.container.interfaces.IContainer):

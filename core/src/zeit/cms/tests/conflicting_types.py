@@ -1,5 +1,6 @@
-import zeit.cms.type
 import zope.interface
+
+import zeit.cms.type
 
 
 class ITestInterface(zope.interface.Interface):

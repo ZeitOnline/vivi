@@ -1,7 +1,9 @@
 import logging
+
 import requests
-import zeit.push.interfaces
 import zope.interface
+
+import zeit.push.interfaces
 
 
 log = logging.getLogger(__name__)

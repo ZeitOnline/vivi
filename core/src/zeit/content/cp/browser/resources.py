@@ -1,6 +1,8 @@
-from zeit.cms.browser.resources import Resource, Library
-import fanstatic.core
 import os.path
+
+import fanstatic.core
+
+from zeit.cms.browser.resources import Library, Resource
 import zeit.cms.browser.resources
 import zeit.edit.browser.resources
 

@@ -1,13 +1,15 @@
 # coding: utf-8
 from unittest import mock
-import gocept.testing.mock
 import json
 import unittest
+
+import gocept.testing.mock
+import zope.component
+
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
 import zeit.cms.testing
-import zope.component
 
 
 class DisplayWidget(

@@ -1,10 +1,12 @@
 import json
+
 import lxml.objectify
+import zope.component
+import zope.publisher.browser
+
 import zeit.cms.workingcopy.interfaces
 import zeit.edit.testing
 import zeit.edit.tests.fixture
-import zope.component
-import zope.publisher.browser
 
 
 class LandingZone(zeit.edit.testing.FunctionalTestCase):

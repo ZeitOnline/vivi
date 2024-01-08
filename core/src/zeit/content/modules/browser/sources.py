@@ -1,6 +1,7 @@
 import grokcore.component as grok
-import zeit.content.modules.interfaces
+
 import zeit.cms.content.browser.sources
+import zeit.content.modules.interfaces
 
 
 class SerializeRecipeUnitsSource(zeit.cms.content.browser.sources.SerializeContextualSource):

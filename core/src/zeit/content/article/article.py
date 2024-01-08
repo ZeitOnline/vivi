@@ -1,17 +1,23 @@
 from io import StringIO
+import hashlib
+import json
+import re
+
+import gocept.cache.property
+import grokcore.component as grok
+import lxml.etree
+import lxml.objectify
+import zope.component
+import zope.dublincore.interfaces
+import zope.index.text.interfaces
+import zope.interface
+import zope.security.proxy
+
 from zeit.cms.content.cache import writeabledict
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_RETRACT_ERROR
-import gocept.cache.property
-import grokcore.component as grok
-import hashlib
-import json
-import lxml.etree
-import lxml.objectify
-import re
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_RETRACT_ERROR
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.field
@@ -33,11 +39,6 @@ import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.workflow.interfaces
 import zeit.workflow.workflow
-import zope.component
-import zope.dublincore.interfaces
-import zope.index.text.interfaces
-import zope.interface
-import zope.security.proxy
 
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS

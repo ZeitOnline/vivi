@@ -1,12 +1,14 @@
-from zeit.content.image.imagegroup import Thumbnails
 import json
+
 import transaction
+import zope.app.pagetemplate
+import zope.cachedescriptors.property
+
+from zeit.content.image.imagegroup import Thumbnails
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
 import zeit.crop.browser.interfaces
 import zeit.crop.source
-import zope.app.pagetemplate
-import zope.cachedescriptors.property
 
 
 class NoMasterImageErrorView:

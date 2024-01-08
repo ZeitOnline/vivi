@@ -1,10 +1,11 @@
+import gocept.form.grouped
+import zope.formlib.form
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.retresco.interfaces import ISkipEnrich
-import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
 import zeit.seo.interfaces
-import zope.formlib.form
 
 
 class SEOBaseForm:

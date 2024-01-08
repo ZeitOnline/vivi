@@ -1,11 +1,10 @@
-import zope.component
-
+from unittest.mock import patch
 import json
 
-from unittest.mock import patch
+import zope.component
 
-from zeit.speech.testing import BrowserTestCase, TTS_CREATED
 from zeit.speech.interfaces import ISpeech
+from zeit.speech.testing import TTS_CREATED, BrowserTestCase
 
 
 class TestWebhook(BrowserTestCase):

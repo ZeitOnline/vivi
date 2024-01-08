@@ -1,9 +1,11 @@
 import urllib.parse
 import urllib.request
+
+import zope.component
+
 import zeit.cms.browser.preview
 import zeit.cms.interfaces
 import zeit.connector.interfaces
-import zope.component
 
 
 class WorkingcopyPreview(zeit.cms.browser.preview.Preview):

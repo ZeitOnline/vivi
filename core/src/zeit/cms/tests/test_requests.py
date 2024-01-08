@@ -1,7 +1,9 @@
 from unittest import mock
+import time
+
 import requests.adapters
 import requests.exceptions
-import time
+
 import zeit.cms.testing
 
 

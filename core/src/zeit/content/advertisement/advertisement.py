@@ -1,3 +1,5 @@
+import zope.interface
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -5,7 +7,6 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.advertisement.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(

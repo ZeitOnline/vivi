@@ -1,6 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 
 
 class ILookup(zope.interface.Interface):

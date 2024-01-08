@@ -1,9 +1,10 @@
 import lxml.objectify
+import zope.component
+import zope.security.management
+
 import zeit.edit.interfaces
 import zeit.edit.testing
 import zeit.edit.tests.fixture
-import zope.component
-import zope.security.management
 
 
 class MoveTest(zeit.edit.testing.FunctionalTestCase):

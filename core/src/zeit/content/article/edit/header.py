@@ -1,12 +1,13 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+import zope.component
+
 import zeit.cms.content.field
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.content.article.source
-import zope.component
 
 
 HEADER_NAME = 'editable-header'

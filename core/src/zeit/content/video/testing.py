@@ -1,10 +1,12 @@
 from unittest import mock
+
 import plone.testing
+import zope.component
+import zope.interface
+
 import zeit.cms.repository.folder
 import zeit.cms.testing
 import zeit.push.testing
-import zope.component
-import zope.interface
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer({}, bases=(zeit.push.testing.CONFIG_LAYER,))
@@ -71,8 +73,8 @@ def playlist_factory(self, location=''):
 
 
 def video_factory(self):
-    from zeit.content.video.video import Video
     from zeit.content.image.testing import create_image_group_with_master_image
+    from zeit.content.video.video import Video
 
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():

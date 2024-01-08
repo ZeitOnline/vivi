@@ -1,15 +1,17 @@
 # coding: utf-8
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import gocept.testing.assertion
 import os
-import plone.testing.zca
-import pytest
 import time
 import unittest
+
+import gocept.testing.assertion
+import plone.testing.zca
+import pytest
+import zope.component
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.twitter
-import zope.component
 
 
 @unittest.skip('Twitter API v2 is currently very flaky')

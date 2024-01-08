@@ -1,12 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zope.container.contained
 import zope.container.interfaces
 import zope.interface
 import zope.location.interfaces
 import zope.schema
 import zope.viewlet.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 
 
 BLOCK_NAMESPACE = 'http://block.vivi.zeit.de/'

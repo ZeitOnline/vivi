@@ -1,21 +1,15 @@
 # coding: utf8
-from zeit.cms.i18n import MessageFactory as _
+import json
+import time
+import urllib.parse
+import xml.sax.saxutils
+
 import docutils.core
 import grokcore.component as grok
-import json
 import markdown
 import markdownify
 import pypandoc
-import urllib.parse
-import time
-import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.view
-import zeit.cms.content.add
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zope.app.form.browser
 import zope.app.form.browser.sequencewidget
 import zope.app.form.browser.widget
@@ -31,6 +25,14 @@ import zope.interface
 import zope.schema
 import zope.schema.interfaces
 import zope.traversing.browser.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
+import zeit.cms.content.add
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 
 
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):

@@ -1,7 +1,9 @@
 import json
+
+import zope.security.proxy
+
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
-import zope.security.proxy
 
 
 class VariantSerializeMixin:

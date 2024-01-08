@@ -1,8 +1,9 @@
 from zope.interface.common.idatetime import ITZInfo
-from zeit.workflow.publishinfo import id_to_principal
-import zeit.objectlog.interfaces
 import zope.component
 import zope.interface
+
+from zeit.workflow.publishinfo import id_to_principal
+import zeit.objectlog.interfaces
 
 
 @zope.component.adapter(zope.interface.Interface)

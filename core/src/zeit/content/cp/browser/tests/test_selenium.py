@@ -1,12 +1,14 @@
 # coding: utf8
+import unittest
+
 from gocept.selenium.wd_selenese import split_locator
 import lxml.cssselect
 import transaction
-import unittest
-import zeit.content.cp.testing
-import zeit.edit.interfaces
 import zope.app.appsetup.product
 import zope.component
+
+import zeit.content.cp.testing
+import zeit.edit.interfaces
 
 
 def css_path(css):

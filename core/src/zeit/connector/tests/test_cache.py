@@ -1,11 +1,13 @@
 # coding: utf8
 from io import BytesIO
-import BTrees
-import ZODB
-import pytest
 import os
 import threading
+
+import BTrees
+import pytest
 import transaction
+import ZODB
+
 import zeit.cms.testing
 import zeit.connector.cache
 import zeit.connector.testing

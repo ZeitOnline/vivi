@@ -1,9 +1,10 @@
 import BTrees
-import zeit.connector.cache
-import zeit.connector.interfaces
-import zope.generations.utility
 import zope.component
 import zope.component.hooks
+import zope.generations.utility
+
+import zeit.connector.cache
+import zeit.connector.interfaces
 
 
 def update(root):

@@ -1,7 +1,9 @@
-from zeit.securitypolicy.testing import make_xls_test
 import os.path
 import unittest
+
 import xlrd
+
+from zeit.securitypolicy.testing import make_xls_test
 
 
 def test_suite():

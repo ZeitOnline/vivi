@@ -1,17 +1,19 @@
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import logging
 import random
+import threading
+import urllib.parse
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import requests
 import requests.auth
 import requests.exceptions
-import threading
-import urllib.parse
 import zeep
 import zeep.exceptions
-import zeit.content.author.interfaces
-import zeit.vgwort.interfaces
 import zope.app.appsetup.product
 import zope.interface
+
+import zeit.content.author.interfaces
+import zeit.vgwort.interfaces
 
 
 log = logging.getLogger(__name__)

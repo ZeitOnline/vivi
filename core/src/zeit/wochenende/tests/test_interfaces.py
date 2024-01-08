@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.wochenende.interfaces
 import zeit.wochenende.testing
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
 
 class SectionTest(zeit.wochenende.testing.FunctionalTestCase):

@@ -1,7 +1,8 @@
+import zope.component.hooks
+
 from zeit.cms.checkout.helper import checked_out
 import zeit.cms.content.interfaces
 import zeit.workflow.testing
-import zope.component.hooks
 
 
 class WorkflowFormTest(zeit.workflow.testing.BrowserTestCase):

@@ -1,5 +1,7 @@
-import transaction
 import unittest
+
+import transaction
+
 import zeit.cms.checkout.interfaces
 import zeit.content.cp.testing
 

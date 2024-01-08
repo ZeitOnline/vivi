@@ -1,5 +1,6 @@
-from zeit.cmp.interfaces import VENDOR_SOURCE
 import grokcore.component as grok
+
+from zeit.cmp.interfaces import VENDOR_SOURCE
 import zeit.cmp.interfaces
 import zeit.cms.content.dav
 

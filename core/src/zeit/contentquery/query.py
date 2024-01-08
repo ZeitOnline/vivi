@@ -1,11 +1,15 @@
-from zeit.cms.content.cache import content_cache
-from zeit.contentquery.configuration import CustomQueryProperty
-from zope.cachedescriptors.property import Lazy as cachedproperty
-import grokcore.component as grok
 import json
 import logging
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
+import grokcore.component as grok
 import lxml
 import requests
+import zope.component
+import zope.interface
+
+from zeit.cms.content.cache import content_cache
+from zeit.contentquery.configuration import CustomQueryProperty
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.article
@@ -15,8 +19,6 @@ import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
-import zope.component
-import zope.interface
 
 
 log = logging.getLogger(__name__)

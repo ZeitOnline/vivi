@@ -1,9 +1,11 @@
 from unittest import mock
+
 import transaction
-import zeit.cms.repository.interfaces
-import zeit.cms.testing
+
 import zeit.cms.related.interfaces
 import zeit.cms.relation.corehandlers
+import zeit.cms.repository.interfaces
+import zeit.cms.testing
 
 
 class CorehandlerTest(zeit.cms.testing.ZeitCmsTestCase):

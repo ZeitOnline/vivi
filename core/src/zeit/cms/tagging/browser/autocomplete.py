@@ -1,9 +1,10 @@
 import grokcore.component as grok
+import zope.component.hooks
+
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.source
-import zope.component.hooks
 
 
 class WhitelistSearch(zeit.cms.browser.view.JSON):

@@ -1,13 +1,14 @@
+import zope.app.form.browser.interfaces
+import zope.cachedescriptors.property
+import zope.component
+import zope.i18n
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.content.gallery.interfaces
 import zeit.wysiwyg.interfaces
-import zope.app.form.browser.interfaces
-import zope.cachedescriptors.property
-import zope.component
-import zope.i18n
 
 
 class Overview(zeit.cms.browser.view.Base):

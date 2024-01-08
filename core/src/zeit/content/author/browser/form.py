@@ -1,20 +1,22 @@
 # coding: utf8
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
-import gocept.form.grouped
 import re
+
+import gocept.form.grouped
 import transaction
-import zeit.cms.browser.form
-import zeit.content.author.author
-import zeit.content.author.interfaces
-import zeit.content.image.interfaces
-import zeit.edit.browser.form
 import zope.container.interfaces
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
 import zope.schema
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
+import zeit.cms.browser.form
+import zeit.content.author.author
+import zeit.content.author.interfaces
+import zeit.content.image.interfaces
+import zeit.edit.browser.form
 
 
 class FormBase(zeit.cms.browser.form.CharlimitMixin):

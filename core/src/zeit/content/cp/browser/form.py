@@ -1,13 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import itertools
+
+import gocept.form.grouped
+import zope.formlib.form
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
-import zope.formlib.form
 import zeit.seo.browser.form
 
 

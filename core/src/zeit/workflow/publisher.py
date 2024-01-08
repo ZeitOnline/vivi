@@ -1,10 +1,9 @@
 import requests
-
 import zope.app.appsetup.product
 import zope.interface
 
-import zeit.workflow.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.workflow.interfaces
 
 
 class PublisherError(Exception):

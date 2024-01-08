@@ -1,7 +1,9 @@
 import json
+
 import z3c.flashmessage.interfaces
-import zeit.cms.application
 import zope.component
+
+import zeit.cms.application
 
 
 class Base:

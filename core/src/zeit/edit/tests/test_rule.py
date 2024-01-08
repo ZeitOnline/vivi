@@ -1,17 +1,19 @@
 from datetime import datetime, timedelta
 from io import StringIO
 from unittest import mock
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-import pytz
 import unittest
+
+import pytz
+import zope.component
+import zope.interface
+
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.edit.testing
 import zeit.workflow.browser.publish
-import zope.component
-import zope.interface
 
 
 class RuleTest(unittest.TestCase):
@@ -69,6 +71,7 @@ class GlobTest(zeit.edit.testing.FunctionalTestCase):
         super().setUp()
 
         import lxml.objectify
+
         import zeit.edit.block
         import zeit.edit.container
 
@@ -265,8 +268,9 @@ applicable(True)
 
 class RecursiveValidatorTest(unittest.TestCase):
     def setUp(self):
-        import zeit.edit.interfaces
         import zope.component
+
+        import zeit.edit.interfaces
 
         self.validator = mock.Mock()
         self.validator().status = None
@@ -292,7 +296,7 @@ class RecursiveValidatorTest(unittest.TestCase):
         self.assertEqual([mock.sentinel.message, mock.sentinel.message], validator.messages)
 
     def test_error_overrides_warning(self):
-        from zeit.edit.rule import RecursiveValidator, ERROR, WARNING
+        from zeit.edit.rule import ERROR, WARNING, RecursiveValidator
 
         v1 = mock.Mock()
         v1.status = ERROR

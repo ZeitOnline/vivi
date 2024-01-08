@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 from datetime import datetime
 from logging import getLogger
 from pprint import pformat
+
 from zeit.cms.interfaces import ICMSContent
 import zeit.cms.cli
 import zeit.find.search

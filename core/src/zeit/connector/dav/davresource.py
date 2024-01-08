@@ -4,11 +4,13 @@ DAVResource is the class to use; it points to a location (URL) and offers
 some methods to retrieve informations about the refered to resource.
 """
 
-from urllib.parse import urlparse, urlunparse, unquote
-from zeit.connector.dav.interfaces import DAVNotFoundError, DAVNoFileError
-import lxml.etree
+from urllib.parse import unquote, urlparse, urlunparse
 import pprint
 import re
+
+import lxml.etree
+
+from zeit.connector.dav.interfaces import DAVNoFileError, DAVNotFoundError
 import zeit.connector.dav.davxml
 import zeit.connector.dav.interfaces
 

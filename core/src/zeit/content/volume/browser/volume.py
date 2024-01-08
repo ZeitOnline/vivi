@@ -1,6 +1,7 @@
 import grokcore.component as grok
-import zeit.cms.browser.listing
 import zope.publisher.interfaces
+
+import zeit.cms.browser.listing
 
 
 @grok.implementer(zeit.cms.browser.interfaces.IListRepresentation)

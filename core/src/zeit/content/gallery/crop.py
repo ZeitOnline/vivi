@@ -1,10 +1,12 @@
 import os.path
-import zeit.content.gallery.interfaces
-import zeit.content.image.interfaces
-import zeit.crop.interfaces
+
 import zope.component
 import zope.interface
 import zope.schema.interfaces
+
+import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
+import zeit.crop.interfaces
 
 
 @zope.component.adapter(zeit.content.gallery.interfaces.IGalleryEntry)

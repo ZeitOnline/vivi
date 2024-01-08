@@ -1,7 +1,8 @@
-import zeit.cms.interfaces
 import zope.container.interfaces
 import zope.interface
 import zope.schema
+
+import zeit.cms.interfaces
 
 
 class IClipboardEntry(zope.interface.Interface):

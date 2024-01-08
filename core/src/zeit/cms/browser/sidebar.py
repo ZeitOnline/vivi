@@ -1,11 +1,12 @@
 import persistent.mapping
-import zeit.cms.browser.interfaces
 import zope.annotation.factory
 import zope.app.preference.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.security.interfaces
+
+import zeit.cms.browser.interfaces
 
 
 @zope.component.adapter(zope.security.interfaces.IPrincipal)

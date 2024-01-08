@@ -1,5 +1,6 @@
-from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
 
 

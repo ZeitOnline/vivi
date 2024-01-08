@@ -1,10 +1,17 @@
-from zeit.cms.i18n import MessageFactory as _
-import PIL.Image
+import os
+import urllib.parse
+
 import filetype
 import lxml.objectify
-import os
+import PIL.Image
 import requests
-import urllib.parse
+import zope.cachedescriptors.property
+import zope.component
+import zope.interface
+import zope.location.interfaces
+import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.file
@@ -15,11 +22,6 @@ import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
-import zope.cachedescriptors.property
-import zope.component
-import zope.interface
-import zope.location.interfaces
-import zope.security.proxy
 
 
 class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):

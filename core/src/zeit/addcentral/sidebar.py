@@ -1,8 +1,9 @@
-from zeit.cms.i18n import MessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-import zeit.cms.content.add
 import zope.formlib.form
 import zope.session.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.add
 
 
 class Form(zope.formlib.form.SubPageForm):

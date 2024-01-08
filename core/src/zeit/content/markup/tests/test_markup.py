@@ -1,11 +1,10 @@
 import string
 
-from zeit.cms.checkout.helper import checked_out
-from zeit.cms.testing import xmltotext
-
 import zope.event
 import zope.lifecycleevent
 
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.testing import xmltotext
 import zeit.content.author.author
 import zeit.content.markup.markup
 import zeit.content.markup.testing

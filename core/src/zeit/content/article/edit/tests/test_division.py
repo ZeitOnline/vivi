@@ -1,9 +1,10 @@
 import lxml.objectify
+import zope.component
+
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces
-import zope.component
 
 
 class DivisionTest(zeit.content.article.testing.FunctionalTestCase):

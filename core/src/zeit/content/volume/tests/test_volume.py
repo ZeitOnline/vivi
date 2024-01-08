@@ -1,15 +1,19 @@
 # coding: utf-8
 from datetime import datetime
 from unittest import mock
+
+import lxml.etree
+import lxml.objectify
+import pytz
+import requests_mock
+import zope.app.appsetup.product
+import zope.component
+
 from zeit.cms.repository.folder import Folder
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
-import lxml.etree
-import lxml.objectify
-import pytz
-import requests_mock
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -19,8 +23,6 @@ import zeit.content.volume.interfaces
 import zeit.content.volume.testing
 import zeit.content.volume.volume
 import zeit.find.interfaces
-import zope.app.appsetup.product
-import zope.component
 
 
 class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):

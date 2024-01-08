@@ -1,17 +1,14 @@
-import persistent
 import BTrees
-
+import persistent
 import zope.annotation
 import zope.component
+import zope.container.contained
 import zope.interface
 
-import zope.container.contained
-
-import zeit.cms.interfaces
 import zeit.cms.content.property
-import zeit.cms.workingcopy.interfaces
-
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.workingcopy.interfaces
 
 
 @zope.component.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopy)

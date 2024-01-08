@@ -1,8 +1,10 @@
 from pprint import pformat
-from zeit.content.image.variant import Variant
+import importlib.resources
+
 import PIL.Image
 import PIL.ImageDraw
-import importlib.resources
+
+from zeit.content.image.variant import Variant
 import zeit.content.image.interfaces
 import zeit.content.image.testing
 
@@ -190,6 +192,7 @@ class CreateVariantImageTest(zeit.content.image.testing.FunctionalTestCase):
 
     def test_all_image_enhancements_are_applied_to_variant_image(self):
         from unittest.mock import patch
+
         import PIL.Image
 
         variant = Variant(

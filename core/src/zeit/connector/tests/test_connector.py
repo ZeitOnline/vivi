@@ -2,14 +2,16 @@
 from datetime import datetime
 from io import BytesIO
 from unittest import mock
-from zeit.connector.testing import copy_inherited_functions
+import unittest
+
 import pytz
 import transaction
-import unittest
+import zope.component
+
+from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.connector
 import zeit.connector.interfaces
 import zeit.connector.testing
-import zope.component
 
 
 class TestUnicode(zeit.connector.testing.ConnectorTest):

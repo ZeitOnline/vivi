@@ -1,4 +1,5 @@
 import zope.interface
+
 from zeit.content.audio.interfaces import IAudio
 
 

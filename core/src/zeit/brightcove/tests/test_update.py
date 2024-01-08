@@ -1,19 +1,21 @@
 from datetime import datetime
 from os import path
 from unittest import mock
-from zeit.brightcove.update import import_video, import_playlist
+import importlib.resources
+import shutil
+
+import pytz
+import transaction
+import zope.security.management
+
+from zeit.brightcove.update import import_playlist, import_video
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
-import importlib.resources
-import pytz
-import shutil
-import transaction
 import zeit.brightcove.testing
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.image.testing
 import zeit.content.video.video
-import zope.security.management
 
 
 def create_video():

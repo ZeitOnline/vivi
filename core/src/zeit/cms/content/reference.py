@@ -12,19 +12,21 @@ Terminology note: the "source" (A or C) references the "target" (B).
 
 """
 import copy
+import urllib.parse
+
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import urllib.parse
 import z3c.traverser.interfaces
-import zeit.cms.browser.interfaces
-import zeit.cms.content.interfaces
-import zeit.cms.content.xmlsupport
-import zeit.cms.interfaces
 import zope.component
 import zope.publisher.interfaces
 import zope.security.proxy
 import zope.traversing.browser.absoluteurl
+
+import zeit.cms.browser.interfaces
+import zeit.cms.content.interfaces
+import zeit.cms.content.xmlsupport
+import zeit.cms.interfaces
 
 
 class ReferenceProperty:

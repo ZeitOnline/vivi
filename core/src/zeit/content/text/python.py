@@ -1,8 +1,9 @@
+import zope.interface
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.type
 import zeit.content.text.interfaces
 import zeit.content.text.text
-import zope.interface
 
 
 class Break(Exception):

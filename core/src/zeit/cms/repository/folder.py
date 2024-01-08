@@ -1,4 +1,5 @@
 import grokcore.component as grok
+import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
@@ -7,7 +8,6 @@ import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.cms.util
 import zeit.cms.workflow.dependency
-import zope.interface
 
 
 @zope.interface.implementer(zeit.cms.repository.interfaces.IFolder)

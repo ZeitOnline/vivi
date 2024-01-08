@@ -1,9 +1,10 @@
 import grokcore.component as grok
-import zeit.cms.repository.interfaces
 import zope.component
 import zope.container.interfaces
 import zope.copypastemove
 import zope.lifecycleevent
+
+import zeit.cms.repository.interfaces
 
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)

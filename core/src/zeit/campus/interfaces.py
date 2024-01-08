@@ -1,6 +1,9 @@
-from zeit.cms.interfaces import CONFIG_CACHE
-from zeit.cms.i18n import MessageFactory as _
 import collections
+
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
@@ -9,7 +12,6 @@ import zeit.content.cp.source
 import zeit.content.gallery.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.link.interfaces
-import zope.interface
 
 
 class IZCOSection(zeit.cms.section.interfaces.ISection):

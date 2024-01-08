@@ -1,8 +1,9 @@
+import zope.formlib.form
+
 import zeit.cms.browser.view
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.modules.rawtext
-import zope.formlib.form
 
 
 class EditProperties(

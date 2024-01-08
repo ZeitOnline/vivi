@@ -1,14 +1,16 @@
 import logging
+
 import lxml.etree
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
-import zeit.connector.interfaces
-import zeit.connector.resource
 import zope.annotation
 import zope.component
 import zope.interface
 import zope.location.interfaces
 import zope.security.proxy
+
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.connector.interfaces
+import zeit.connector.resource
 
 
 logger = logging.getLogger(__name__)

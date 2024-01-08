@@ -1,7 +1,9 @@
 import json
 import logging
-import zeit.brightcove.update
+
 import zope.app.appsetup.product
+
+import zeit.brightcove.update
 
 
 log = logging.getLogger(__name__)

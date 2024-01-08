@@ -1,9 +1,11 @@
 from subprocess import check_output
 import unittest
+
+import zope.interface
+
 import zeit.arbeit.interfaces
 import zeit.content.article.edit.browser.testing
 import zeit.content.image.testing
-import zope.interface
 
 
 class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):

@@ -1,9 +1,11 @@
-import importlib.resources
-import zeit.content.image.testing
-import shutil
-import requests
 from os import path
+import importlib.resources
+import shutil
+
+import requests
+
 from zeit.content.image import image
+import zeit.content.image.testing
 
 
 class TestImageServing(zeit.content.image.testing.StaticBrowserTestCase):

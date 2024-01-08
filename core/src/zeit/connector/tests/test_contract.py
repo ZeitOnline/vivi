@@ -1,14 +1,16 @@
 from datetime import datetime, timedelta
 from io import BytesIO
-from zeit.connector.dav.interfaces import DAVNotFoundError
-from zeit.connector.interfaces import CopyError, MoveError, DeleteProperty
-from zeit.connector.resource import Resource
-from zeit.connector.testing import copy_inherited_functions
+
 import pytz
 import transaction
+import zope.interface.verify
+
+from zeit.connector.dav.interfaces import DAVNotFoundError
+from zeit.connector.interfaces import CopyError, DeleteProperty, MoveError
+from zeit.connector.resource import Resource
+from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.interfaces
 import zeit.connector.testing
-import zope.interface.verify
 
 
 class ContractReadWrite:

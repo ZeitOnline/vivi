@@ -1,7 +1,9 @@
 from unittest import mock
+
+import zope.copypastemove.interfaces
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
-import zope.copypastemove.interfaces
 
 
 class TestDeleteObjectlog(zeit.cms.testing.ZeitCmsTestCase):

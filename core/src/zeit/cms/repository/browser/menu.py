@@ -1,10 +1,11 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.repository.browser.delete import folder_can_be_deleted
-from zeit.cms.repository.interfaces import IRepositoryContent, IFolder
-from zeit.cms.workflow.interfaces import IPublishInfo
-import zeit.cms.browser.menu
 import zope.browsermenu.menu
 import zope.i18n
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.browser.delete import folder_can_be_deleted
+from zeit.cms.repository.interfaces import IFolder, IRepositoryContent
+from zeit.cms.workflow.interfaces import IPublishInfo
+import zeit.cms.browser.menu
 
 
 class SortingMenu(zope.browsermenu.menu.BrowserMenu):

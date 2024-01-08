@@ -1,15 +1,16 @@
 # coding: utf-8
 from unittest import mock
-from zeit.cms.workflow.interfaces import IPublicationDependencies
-from zeit.content.image import imagegroup
-from zeit.content.image.testing import create_image_group_with_master_image
-from zeit.content.image.testing import create_local_image
+
 from zope.publisher.interfaces import NotFound
 import PIL
-import zeit.cms.repository.interfaces
-import zeit.content.image.testing
 import zope.event
 import zope.lifecycleevent
+
+from zeit.cms.workflow.interfaces import IPublicationDependencies
+from zeit.content.image import imagegroup
+from zeit.content.image.testing import create_image_group_with_master_image, create_local_image
+import zeit.cms.repository.interfaces
+import zeit.content.image.testing
 
 
 class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
@@ -156,7 +157,7 @@ class ImageGroupTest(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual(None, self.traverser._parse_variant_by_size('cinema__800x'))
 
     def test_no_size_matches_returns_none(self):
-        from zeit.content.image.variant import Variants, Variant
+        from zeit.content.image.variant import Variant, Variants
 
         with mock.patch.object(
             Variants, 'values', return_value=[Variant(name='foo', id='small', max_size='100x100')]

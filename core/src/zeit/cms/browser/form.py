@@ -1,9 +1,6 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import zeit.cms.browser.view
-import zeit.cms.checkout.interfaces
-import zope.container.interfaces
 import zope.app.pagetemplate
+import zope.container.interfaces
 import zope.event
 import zope.formlib.form
 import zope.formlib.interfaces
@@ -11,6 +8,10 @@ import zope.interface.common.idatetime
 import zope.interface.interfaces
 import zope.schema
 import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.view
+import zeit.cms.checkout.interfaces
 
 
 REMAINING_FIELDS = object()

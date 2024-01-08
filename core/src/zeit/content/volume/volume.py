@@ -1,12 +1,17 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import IPublish
 import argparse
 import datetime
-import grokcore.component as grok
 import itertools
 import logging
+
+import grokcore.component as grok
 import lxml.objectify
 import requests
+import zope.interface
+import zope.lifecycleevent
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
@@ -20,9 +25,7 @@ import zeit.content.volume.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
 import zeit.retresco.search
-import zope.interface
-import zope.lifecycleevent
-import zope.schema
+
 
 log = logging.getLogger()
 UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]

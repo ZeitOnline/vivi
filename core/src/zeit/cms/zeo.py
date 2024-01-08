@@ -1,9 +1,10 @@
-from ZEO.asyncio.client import ClientRunner, Protocol
-from opentelemetry.instrumentation.instrumentor import BaseInstrumentor
 import functools
 import logging
-import opentelemetry.trace
 import random
+
+from opentelemetry.instrumentation.instrumentor import BaseInstrumentor
+from ZEO.asyncio.client import ClientRunner, Protocol
+import opentelemetry.trace
 import zope.app.appsetup.product
 
 

@@ -1,7 +1,8 @@
+import zope.cachedescriptors.property
+
 import zeit.content.gallery.interfaces
 import zeit.crop.browser.crop
 import zeit.crop.browser.scale
-import zope.cachedescriptors.property
 
 
 class Imp(zeit.crop.browser.crop.ImpBase):

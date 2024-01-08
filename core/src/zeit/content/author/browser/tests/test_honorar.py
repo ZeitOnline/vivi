@@ -1,14 +1,16 @@
 # coding: utf-8
 from unittest import mock
 import json
+
 import pendulum
+import zope.component
+
 import zeit.content.author.author
 import zeit.content.author.browser.honorar as honorar
 import zeit.content.author.interfaces
 import zeit.content.author.testing
 import zeit.find.interfaces
 import zeit.retresco.testing
-import zope.component
 
 
 class HonorarLookupTest(zeit.content.author.testing.BrowserTestCase):

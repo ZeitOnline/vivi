@@ -1,6 +1,8 @@
 from datetime import datetime
-from zeit.find.search import query
+
 import pytest
+
+from zeit.find.search import query
 
 
 def test_simple_queries():

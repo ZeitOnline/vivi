@@ -1,12 +1,14 @@
+import unittest
+
 from selenium.webdriver.common.keys import Keys
+import transaction
+import zope.security.management
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
-import transaction
-import unittest
 import zeit.cms.tagging.testing
 import zeit.content.article.edit.browser.testing
 import zeit.content.author.author
-import zope.security.management
 
 
 class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):

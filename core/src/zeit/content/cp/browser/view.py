@@ -1,9 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import zeit.cms.browser.form
-import zeit.edit.browser.view
 import zope.browserpage
 import zope.formlib.form
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.form
+import zeit.edit.browser.view
 
 
 class EditBox(zeit.edit.browser.view.EditBox):

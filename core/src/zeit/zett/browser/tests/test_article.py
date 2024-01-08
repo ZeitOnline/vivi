@@ -1,5 +1,5 @@
-import zeit.zett.testing
 import zeit.content.article.testing
+import zeit.zett.testing
 
 
 class FacebookTest(zeit.zett.testing.BrowserTestCase):

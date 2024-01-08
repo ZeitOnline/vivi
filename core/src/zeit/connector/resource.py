@@ -1,6 +1,7 @@
 import persistent.mapping
-import zeit.connector.interfaces
 import zope.interface
+
+import zeit.connector.interfaces
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)

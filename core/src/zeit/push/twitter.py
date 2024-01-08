@@ -1,12 +1,14 @@
-from zeit.push.interfaces import ITwitterCredentials
 import argparse
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
 import tweepy
-import zeit.push.interfaces
-import zeit.push.message
 import zope.container.btree
 import zope.interface
+
+from zeit.push.interfaces import ITwitterCredentials
+import zeit.push.interfaces
+import zeit.push.message
 
 
 log = logging.getLogger(__name__)

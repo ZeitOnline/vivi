@@ -1,7 +1,8 @@
-from zeit.content.image.transform import THUMBNAIL_FOLDER_NAME
 import grokcore.component as grok
-import zeit.content.gallery.interfaces
+
+from zeit.content.image.transform import THUMBNAIL_FOLDER_NAME
 import zeit.cms.workflow.dependency
+import zeit.content.gallery.interfaces
 
 
 class PublicationDependencies(zeit.cms.workflow.dependency.DependencyBase):

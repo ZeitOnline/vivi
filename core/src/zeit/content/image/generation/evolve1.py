@@ -1,7 +1,8 @@
+import zope.component
+
 import zeit.cms.generation
 import zeit.cms.workingcopy.interfaces
 import zeit.content.image.image
-import zope.component
 
 
 def update(root):

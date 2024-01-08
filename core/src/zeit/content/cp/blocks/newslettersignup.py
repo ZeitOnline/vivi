@@ -1,5 +1,6 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.modules.newslettersignup

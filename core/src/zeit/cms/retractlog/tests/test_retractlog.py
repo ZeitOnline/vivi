@@ -1,7 +1,7 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
-import zeit.cms.testing
 import zeit.cms.retractlog.retractlog
+import zeit.cms.testing
 
 
 class RetractLogTest(zeit.cms.testing.ZeitCmsTestCase):

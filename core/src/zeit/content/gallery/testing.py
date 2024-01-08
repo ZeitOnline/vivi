@@ -1,5 +1,8 @@
 import importlib.resources
+
 import plone.testing
+import zope.component
+
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
@@ -7,7 +10,6 @@ import zeit.content.image.interfaces
 import zeit.crop.testing
 import zeit.push.testing
 import zeit.workflow.testing
-import zope.component
 
 
 product_config = """

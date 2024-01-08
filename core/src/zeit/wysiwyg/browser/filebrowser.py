@@ -1,11 +1,12 @@
 import gocept.fckeditor.connector
+import zope.cachedescriptors.property
+import zope.component
+import zope.traversing.interfaces
+
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.repository.interfaces
-import zope.cachedescriptors.property
-import zope.component
-import zope.traversing.interfaces
 
 
 class FileBrowser(zeit.cms.browser.view.Base, gocept.fckeditor.connector.FCKEditorBrowser):

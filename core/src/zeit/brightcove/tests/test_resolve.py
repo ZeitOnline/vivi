@@ -1,6 +1,7 @@
 from unittest import mock
 import logging
 import unittest
+
 import zeit.brightcove.testing
 
 
@@ -78,9 +79,9 @@ class BackwardCompatibleUniqueIdsTest(zeit.brightcove.testing.FunctionalTestCase
         rvi.assert_called_with('1234')
 
     def test_playlists_should_be_resolvable(self):
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
         from zeit.cms.interfaces import ICMSContent
         from zeit.cms.repository.folder import Folder
+        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
         self.repository['video'] = Folder()
         self.repository['video']['playlist'] = Folder()

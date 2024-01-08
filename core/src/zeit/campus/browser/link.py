@@ -1,6 +1,6 @@
 # XXX 100% copy&paste from zeit.magazin.browser.social
-import zeit.content.link.browser.form
 import zeit.campus.browser.social
+import zeit.content.link.browser.form
 
 
 base = zeit.content.link.browser.form.Base

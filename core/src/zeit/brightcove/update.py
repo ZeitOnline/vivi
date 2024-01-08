@@ -1,10 +1,14 @@
+import logging
+
+import gocept.runner
+import z3c.celery.celery
+import zope.event
+import zope.lifecycleevent
+
 from zeit.brightcove.convert import DeletedVideo
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.video.interfaces import IVideo
-import gocept.runner
-import logging
-import z3c.celery.celery
 import zeit.brightcove.convert
 import zeit.brightcove.session
 import zeit.cms.celery
@@ -12,8 +16,6 @@ import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.content.video.playlist
 import zeit.content.video.video
-import zope.event
-import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)

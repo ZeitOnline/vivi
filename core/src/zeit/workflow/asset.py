@@ -1,8 +1,9 @@
+import zope.component
+import zope.interface
+
 import zeit.cms.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
-import zope.component
-import zope.interface
 
 
 @zope.component.adapter(zeit.cms.interfaces.IAsset)

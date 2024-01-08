@@ -1,3 +1,6 @@
+import zope.component
+import zope.error.interfaces
+
 import zeit.cms.browser.error
 import zeit.cms.content.interfaces
 import zeit.cms.content.template
@@ -7,8 +10,6 @@ import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.retractlog.retractlog
 import zeit.cms.workingcopy.workingcopy
-import zope.component
-import zope.error.interfaces
 
 
 def installLocalUtility(root, factory, name, interface, utility_name=''):

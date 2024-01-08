@@ -1,7 +1,8 @@
-from zeit.cms.workingcopy.interfaces import IWorkingcopy
-import zeit.cms.testing
 import zope.component
 import zope.security.management
+
+from zeit.cms.workingcopy.interfaces import IWorkingcopy
+import zeit.cms.testing
 
 
 class AdapterTests(zeit.cms.testing.ZeitCmsTestCase):

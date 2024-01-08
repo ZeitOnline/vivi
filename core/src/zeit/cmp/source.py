@@ -1,12 +1,14 @@
-from zeit.cms.i18n import MessageFactory as _
 import collections
+
 import grokcore.component as grok
 import zc.sourcefactory.basic
 import zc.sourcefactory.interfaces
-import zeit.cms.content.interfaces
 import zope.component
 import zope.interface
 import zope.security.checker
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.interfaces
 
 
 # Copy&paste from zeit.workflow.source for the yes/no/other tri-state mechanics

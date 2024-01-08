@@ -1,5 +1,7 @@
 from unittest import mock
+
 import lxml.etree
+
 import zeit.cms.checkout.interfaces
 import zeit.cms.testing
 

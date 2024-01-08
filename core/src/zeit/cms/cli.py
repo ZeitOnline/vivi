@@ -5,14 +5,17 @@ import os.path
 import signal
 import sys
 import time
+
 import zeit.cms.logging
+
 
 log = logging.getLogger(__name__)
 
 
 def zope_shell():
-    import zeit.cms.zope
     import zope.component.hooks
+
+    import zeit.cms.zope
 
     settings = parse_paste_ini()
     db = zeit.cms.zope.bootstrap(settings)
@@ -90,8 +93,8 @@ def _configure_logging(settings):
 
 
 try:
-    import gocept.runner
     from gocept.runner import from_config  # noqa API
+    import gocept.runner
 except ImportError:
     # Provide fake decorator so zeit.web can avoid importing the zope machinery
     def runner(*args, **kw):

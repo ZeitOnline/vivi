@@ -1,6 +1,7 @@
+import zope.formlib.form
+
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
-import zope.formlib.form
 
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):

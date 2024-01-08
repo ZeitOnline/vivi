@@ -1,19 +1,21 @@
-from zeit.cms.i18n import MessageFactory as _
 import copy
+
 import grokcore.component as grok
 import lxml.objectify
-import zeit.cms.content.property
-import zeit.cms.interfaces
-import zeit.content.cp.feed
-import zeit.content.cp.blocks.block
-import zeit.content.cp.interfaces
-import zeit.content.gallery.interfaces
-import zeit.edit.interfaces
 import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.location.interfaces
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.property
+import zeit.cms.interfaces
+import zeit.content.cp.blocks.block
+import zeit.content.cp.feed
+import zeit.content.cp.interfaces
+import zeit.content.gallery.interfaces
+import zeit.edit.interfaces
 
 
 class Layoutable:

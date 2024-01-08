@@ -1,9 +1,10 @@
-import zeit.connector.generation.install
-import zeit.connector.interfaces
-import zeit.connector.lockinfo
 import zope.component
 import zope.component.hooks
 import zope.generations.utility
+
+import zeit.connector.generation.install
+import zeit.connector.interfaces
+import zeit.connector.lockinfo
 
 
 generation = 1

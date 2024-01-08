@@ -1,7 +1,8 @@
-from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.workflow.interfaces
 import zope.i18n
 import zope.viewlet.viewlet
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.workflow.interfaces
 
 
 class Published:

@@ -1,8 +1,8 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 
-import zeit.content.article.edit.block
+from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import IIngredientDice
+import zeit.content.article.edit.block
 
 
 @grok.implementer(IIngredientDice)

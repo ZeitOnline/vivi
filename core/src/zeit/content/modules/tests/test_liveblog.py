@@ -1,5 +1,7 @@
 from unittest import mock
+
 import lxml.etree
+
 import zeit.content.modules.embed
 import zeit.content.modules.testing
 

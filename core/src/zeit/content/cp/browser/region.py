@@ -1,5 +1,6 @@
-import zeit.content.cp.browser.view
 import zope.formlib.form
+
+import zeit.content.cp.browser.view
 
 
 class EditCommon(zeit.content.cp.browser.view.EditBox):

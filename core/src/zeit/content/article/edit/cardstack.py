@@ -1,7 +1,8 @@
+import grokcore.component as grok
+
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import ICardstack
-import grokcore.component as grok
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 

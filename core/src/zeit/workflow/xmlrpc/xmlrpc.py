@@ -1,8 +1,9 @@
-import zeit.cms.repository.interfaces
-import zeit.workflow.interfaces
 import zope.app.publisher.xmlrpc
 import zope.cachedescriptors.property
 import zope.component
+
+import zeit.cms.repository.interfaces
+import zeit.workflow.interfaces
 
 
 class Publish(zope.app.publisher.xmlrpc.XMLRPCView):

@@ -1,11 +1,13 @@
 from unittest import mock
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+
 import lxml.objectify
 import persistent.interfaces
+import zope.component
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.interfaces
 import zeit.edit.testing
 import zeit.edit.tests.fixture
-import zope.component
 
 
 class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):

@@ -1,15 +1,17 @@
-from zeit.cms.i18n import MessageFactory as _
 import json
-import zeit.cms.browser.form
-import zeit.cms.browser.view
-import zeit.cms.checkout.interfaces
-import zeit.edit.browser.view
+
 import zope.browserpage
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.formlib.itemswidgets
 import zope.formlib.source
 import zope.formlib.widget
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.form
+import zeit.cms.browser.view
+import zeit.cms.checkout.interfaces
+import zeit.edit.browser.view
 
 
 class Forms:

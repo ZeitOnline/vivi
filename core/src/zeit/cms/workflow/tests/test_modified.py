@@ -1,10 +1,12 @@
 from datetime import datetime
-from zeit.cms.checkout.helper import checked_out
+
 import pytz
 import transaction
+import zope.event
+
+from zeit.cms.checkout.helper import checked_out
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
-import zope.event
 
 
 class LastSemanticPublish(zeit.cms.testing.ZeitCmsTestCase):

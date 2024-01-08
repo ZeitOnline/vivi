@@ -1,5 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import zope.formlib.form
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.content.browser.form
 import zeit.cms.interfaces
@@ -8,7 +10,7 @@ import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.push.browser.form
 import zeit.wysiwyg.interfaces
-import zope.formlib.form
+
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
 

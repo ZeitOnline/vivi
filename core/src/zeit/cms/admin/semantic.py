@@ -1,9 +1,10 @@
+import zope.component
+import zope.interface
+
 import zeit.cms.admin.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
-import zope.component
-import zope.interface
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

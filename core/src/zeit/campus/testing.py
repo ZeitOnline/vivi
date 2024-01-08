@@ -1,15 +1,17 @@
-from zeit.campus.interfaces import IZCOSection, IZCOFolder
-import gocept.selenium
 import importlib.resources
+
+import gocept.selenium
 import plone.testing
+import zope.component
+import zope.interface
+
+from zeit.campus.interfaces import IZCOFolder, IZCOSection
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.gallery.testing
 import zeit.content.link.testing
 import zeit.push.testing
-import zope.component
-import zope.interface
 
 
 product_config = """\

@@ -1,8 +1,8 @@
 from zope.testbrowser.browser import LinkNotFoundError
+
 from zeit.cms import testing
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS, IPublish, IPublishInfo
 
 
 class TestDeleteMenuItem(testing.ZeitCmsBrowserTestCase):

@@ -2,12 +2,12 @@
 from math import inf
 from typing import Optional
 
-from opentelemetry.sdk.metrics._internal.point import HistogramDataPoint
-from opentelemetry.sdk.metrics._internal.aggregation import _DataPointVarT
 from opentelemetry.sdk.metrics._internal.aggregation import (
     AggregationTemporality,
+    _DataPointVarT,
     _ExplicitBucketHistogramAggregation,
 )
+from opentelemetry.sdk.metrics._internal.point import HistogramDataPoint
 
 
 def collect(

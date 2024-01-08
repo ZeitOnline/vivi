@@ -1,13 +1,15 @@
 from io import BytesIO
 import base64
 import importlib.metadata
-import lxml.etree
 import os.path
-import pendulum
 import re
+
+import lxml.etree
+import pendulum
 import requests
-import zeit.content.image.interfaces
 import zope.interface
+
+import zeit.content.image.interfaces
 
 
 USER_AGENT = 'zeit.content.image/' + importlib.metadata.version('vivi.core')

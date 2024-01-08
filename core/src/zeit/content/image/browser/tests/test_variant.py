@@ -1,16 +1,18 @@
-from zeit.content.image.testing import create_image_group_with_master_image
+import json
+import time
+
 import fanstatic
 import gocept.jasmine.jasmine
-import json
 import pytest
 import requests
-import time
 import transaction
+import zope.component
+
+from zeit.content.image.testing import create_image_group_with_master_image
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
-import zope.component
 
 
 class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):

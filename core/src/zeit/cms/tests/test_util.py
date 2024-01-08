@@ -1,6 +1,7 @@
-from zeit.cms.util import MemoryFile
 import pickle
 import unittest
+
+from zeit.cms.util import MemoryFile
 
 
 class MemoryFileTest(unittest.TestCase):

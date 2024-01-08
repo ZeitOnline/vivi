@@ -1,6 +1,7 @@
 # coding: utf8
 import unittest
 
+
 YOUTUBE = """\
 <iframe width="560" height="315" src="http://www.youtube.com/embed/qnydFmqHuVo"
 frameborder="0" allowfullscreen></iframe>

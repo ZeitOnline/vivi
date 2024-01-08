@@ -1,13 +1,6 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zc.form.field
 import zc.form.interfaces
-import zeit.cms.content.field
-import zeit.cms.content.sources
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.tagging.interfaces
-import zeit.wochenmarkt.sources
 import zope.container.interfaces
 import zope.interface
 import zope.interface.common.sequence
@@ -15,14 +8,20 @@ import zope.interface.interfaces
 import zope.schema
 import zope.schema.interfaces
 
-
 # XXX There is too much, too unordered in here, clean this up.
-
-
 # prevent circular import
-from zeit.cms.content.contentsource import ICMSContentSource  # noqa
-from zeit.cms.content.contentsource import INamedCMSContentSource  # noqa
-from zeit.cms.content.contentsource import IAutocompleteSource  # noqa
+from zeit.cms.content.contentsource import (
+    IAutocompleteSource,  # noqa
+    ICMSContentSource,  # noqa
+    INamedCMSContentSource,  # noqa
+)
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.field
+import zeit.cms.content.sources
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.tagging.interfaces
+import zeit.wochenmarkt.sources
 
 
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):

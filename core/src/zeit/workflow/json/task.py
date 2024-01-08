@@ -1,5 +1,6 @@
-import celery.result
 import json
+
+import celery.result
 
 
 class Status:

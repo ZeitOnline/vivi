@@ -1,11 +1,10 @@
 import json
+
 import lxml.etree
 import pygments
 import pygments.formatters
 import pygments.lexers
 import zc.form.browser.combinationwidget
-import zeit.cms.content.interfaces
-import zeit.cms.content.sources
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.textwidgets
 import zope.app.form.browser.widget
@@ -14,6 +13,9 @@ import zope.app.pagetemplate
 import zope.component
 import zope.formlib.widgets
 import zope.interface
+
+import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 
 
 class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):

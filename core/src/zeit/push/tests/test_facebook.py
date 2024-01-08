@@ -1,13 +1,15 @@
 # coding: utf-8
 from unittest import mock
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import os
-import pytest
 import time
+
+import pytest
+import zope.component
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.push.facebook
 import zeit.push.interfaces
 import zeit.push.testing
-import zope.component
 
 
 @pytest.mark.integration()

@@ -1,7 +1,9 @@
-from zeit.cms.redirect.connection import Lookup
-import gocept.httpserverlayer.custom
 import json
 import unittest
+
+import gocept.httpserverlayer.custom
+
+from zeit.cms.redirect.connection import Lookup
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):

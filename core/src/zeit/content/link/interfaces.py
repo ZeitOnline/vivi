@@ -1,10 +1,11 @@
+import zope.schema
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.content.link.sources
-import zope.schema
 
 
 class TargetSource(zeit.cms.content.sources.SimpleDictSource):

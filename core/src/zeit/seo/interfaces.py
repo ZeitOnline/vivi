@@ -1,8 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import collections
+
 import zc.sourcefactory.basic
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 
 
 class EntityTypeSource(zc.sourcefactory.basic.BasicSourceFactory):

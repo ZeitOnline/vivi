@@ -1,10 +1,11 @@
-from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.browser.interfaces
-import zeit.cms.clipboard.interfaces
 import zope.component
 import zope.i18n
 import zope.interface
 import zope.publisher.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.interfaces
+import zeit.cms.clipboard.interfaces
 
 
 class Entry:

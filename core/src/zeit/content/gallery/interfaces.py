@@ -1,3 +1,6 @@
+import zope.container.interfaces
+import zope.schema
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
@@ -6,8 +9,6 @@ import zeit.content.gallery.source
 import zeit.content.image.interfaces
 import zeit.crop.source
 import zeit.wysiwyg.interfaces
-import zope.container.interfaces
-import zope.schema
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.gallery'

@@ -1,12 +1,16 @@
+import collections
+import datetime
+import logging
+
+import pendulum
+import zc.sourcefactory.contextual
+import zope.schema
+import zope.security.proxy
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
 from zeit.content.animation.interfaces import IAnimation
 from zeit.content.article.source import BodyAwareXMLSource
-import collections
-import datetime
-import logging
-import pendulum
-import zc.sourcefactory.contextual
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.content.article.interfaces
@@ -24,8 +28,7 @@ import zeit.content.video.interfaces
 import zeit.content.volume.interfaces
 import zeit.contentquery.interfaces
 import zeit.edit.interfaces
-import zope.schema
-import zope.security.proxy
+
 
 log = logging.getLogger(__name__)
 

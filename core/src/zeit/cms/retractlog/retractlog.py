@@ -1,12 +1,13 @@
 import persistent
+import zope.component
 import zope.container.btree
 import zope.container.contained
 import zope.container.interfaces
+
 import zeit.cms.content.sources
-import zeit.cms.retractlog.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.retractlog.interfaces
 import zeit.cms.workflow.interfaces
-import zope.component
 
 
 @zope.interface.implementer(zeit.cms.retractlog.interfaces.IRetractLog)

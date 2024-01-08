@@ -1,8 +1,10 @@
 from datetime import datetime
+
 import transaction
+import zope.component
+
 import zeit.objectlog.interfaces
 import zeit.objectlog.testing
-import zope.component
 
 
 class ObjectLog(zeit.objectlog.testing.FunctionalTestCase):

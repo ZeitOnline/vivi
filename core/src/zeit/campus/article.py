@@ -1,5 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.campus.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.reference
@@ -7,7 +9,6 @@ import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
-import zope.interface
 
 
 @zope.interface.implementer(zeit.campus.interfaces.ITopic)

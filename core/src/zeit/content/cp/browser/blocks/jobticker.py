@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import zope.formlib.form
-import zeit.content.cp.interfaces
+
 import zeit.content.cp.browser.blocks.block
+import zeit.content.cp.interfaces
 
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):

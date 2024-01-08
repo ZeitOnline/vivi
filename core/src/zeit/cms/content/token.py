@@ -1,7 +1,6 @@
+import zc.sourcefactory.interfaces
 import zope.component
 import zope.interface
-
-import zc.sourcefactory.interfaces
 
 import zeit.cms.interfaces
 

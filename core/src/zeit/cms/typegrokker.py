@@ -1,9 +1,10 @@
 import martian
+import zope.component.zcml
+
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.connector.interfaces
 import zeit.connector.resource
-import zope.component.zcml
 
 
 def annotate_interface(interface, key, value):

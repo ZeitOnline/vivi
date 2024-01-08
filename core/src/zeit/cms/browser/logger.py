@@ -1,10 +1,12 @@
-import bugsnag
 import json
 import logging
 import urllib.parse
-import zeit.cms.browser.view
+
+import bugsnag
 import zope.component
 import zope.error.interfaces
+
+import zeit.cms.browser.view
 
 
 log = logging.getLogger('JavaScript')

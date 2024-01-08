@@ -1,11 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
 import inspect
-import zeit.cms.interfaces
+
 import zope.container.interfaces
 import zope.file.interfaces
 import zope.interface
 import zope.lifecycleevent
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.interfaces
 
 
 class IBeforeObjectAddEvent(zope.interface.interfaces.IObjectEvent):

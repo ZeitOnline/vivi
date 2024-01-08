@@ -1,8 +1,10 @@
 from unittest import mock
-from zeit.cms.checkout.helper import checked_out
 import unittest
-import zeit.content.article.testing
+
 import zope.lifecycleevent
+
+from zeit.cms.checkout.helper import checked_out
+import zeit.content.article.testing
 
 
 class ReferenceTest(unittest.TestCase):
@@ -151,10 +153,11 @@ class TestPortraitbox(ReferenceTest):
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
     def assert_factory(self, name, title, interface):
+        import zope.component
+
         import zeit.content.article.article
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
-        import zope.component
 
         article = zeit.content.article.article.Article()
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
@@ -199,9 +202,11 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         self.repository['article'] = article
 
         #
-        import zeit.workflow.interfaces
         import datetime
+
         import pytz
+
+        import zeit.workflow.interfaces
 
         workflow = zeit.workflow.interfaces.ITimeBasedPublishing(self.repository['refed'])
         workflow.release_period = (None, datetime.datetime(2005, 1, 2, tzinfo=pytz.UTC))

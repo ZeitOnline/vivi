@@ -1,7 +1,8 @@
 import plone.testing
+import zope.component
+
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-import zope.component
 
 
 product_config = """\

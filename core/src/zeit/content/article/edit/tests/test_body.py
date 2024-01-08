@@ -1,16 +1,17 @@
 from unittest import mock
-from zeit.cms.checkout.interfaces import ICheckinManager
-from zeit.cms.checkout.interfaces import ICheckoutManager
-from zeit.content.article.edit.interfaces import IDivision
+import unittest
+
 import gocept.testing.mock
 import lxml.objectify
-import unittest
+import zope.schema
+
+from zeit.cms.checkout.interfaces import ICheckinManager, ICheckoutManager
+from zeit.content.article.edit.interfaces import IDivision
 import zeit.cms.testing
 import zeit.content.article.article
 import zeit.content.article.edit.body
 import zeit.content.article.testing
 import zeit.edit.interfaces
-import zope.schema
 
 
 class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):

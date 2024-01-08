@@ -1,5 +1,6 @@
-import zeit.cms.testing
 import zope.app.appsetup.product
+
+import zeit.cms.testing
 
 
 class WorkingcopyPreviewTest(zeit.cms.testing.ZeitCmsBrowserTestCase):

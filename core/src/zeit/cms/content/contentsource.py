@@ -1,7 +1,8 @@
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zope.component
 import zope.interface
+
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 
 
 class ICMSContentSource(zope.schema.interfaces.ISource):

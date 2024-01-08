@@ -1,5 +1,6 @@
-import zeit.cms.browser.view
 import json
+
+import zeit.cms.browser.view
 
 
 class Details(zeit.cms.browser.view.Base):

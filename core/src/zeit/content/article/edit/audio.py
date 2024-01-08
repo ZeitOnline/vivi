@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.reference

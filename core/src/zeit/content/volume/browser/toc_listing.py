@@ -1,12 +1,14 @@
-from zeit.cms.i18n import MessageFactory as _
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import json
-import zeit.cms.browser.listing
-import zeit.cms.content.interfaces
-import zeit.cms.content.sources
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import zope.browser.interfaces
 import zope.component
 import zope.i18n
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.listing
+import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 
 
 class CheckColumn(zeit.cms.browser.listing.GetterColumn):

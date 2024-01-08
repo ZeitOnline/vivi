@@ -1,10 +1,12 @@
 import functools
-import grokcore.component as grok
 import urllib.parse
+
+import grokcore.component as grok
+import zope.component
+
 import zeit.cms.content.caching
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
-import zope.component
 
 
 @grok.adapter(str)

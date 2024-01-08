@@ -1,10 +1,11 @@
+import zope.formlib.form
+import zope.interface
+
 from zeit.content.article.edit.browser.form import FormFields
 import zeit.campus.browser.social
 import zeit.cms.browser.interfaces
 import zeit.content.article.edit.browser.push
 import zeit.edit.browser.form
-import zope.formlib.form
-import zope.interface
 
 
 class Topic(zeit.edit.browser.form.InlineForm):

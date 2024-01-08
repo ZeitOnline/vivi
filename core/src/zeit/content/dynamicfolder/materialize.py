@@ -1,18 +1,18 @@
+import logging
+
+import zope.interface
+
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IRepositoryContent
-from zeit.connector.interfaces import IWebDAVReadProperties
-from zeit.connector.interfaces import IWebDAVWriteProperties
-from zeit.content.dynamicfolder.interfaces import IMaterializedContent
-from zeit.content.dynamicfolder.interfaces import IVirtualContent
-import logging
+from zeit.connector.interfaces import IWebDAVReadProperties, IWebDAVWriteProperties
+from zeit.content.dynamicfolder.interfaces import IMaterializedContent, IVirtualContent
 import zeit.cms.celery
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.content.dynamicfolder.interfaces
 import zeit.objectlog.interfaces
-import zope.interface
 
 
 log = logging.getLogger(__name__)

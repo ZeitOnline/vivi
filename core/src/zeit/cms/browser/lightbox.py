@@ -1,8 +1,9 @@
+import zope.app.pagetemplate
+import zope.formlib.form
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.browser.view
-import zope.app.pagetemplate
-import zope.formlib.form
 
 
 class Form(

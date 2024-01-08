@@ -1,8 +1,9 @@
+import zope.lifecycleevent
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
-import zope.lifecycleevent
 
 
 class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):

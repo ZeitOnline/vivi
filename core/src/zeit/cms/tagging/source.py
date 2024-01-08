@@ -1,9 +1,10 @@
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
-import zeit.cms.content.contentsource
-import zeit.cms.content.sources
 import zope.interface
 import zope.schema.interfaces
+
+import zeit.cms.content.contentsource
+import zeit.cms.content.sources
 
 
 class IWhitelistSource(zope.schema.interfaces.IIterableSource):

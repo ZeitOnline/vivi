@@ -1,16 +1,17 @@
-from zeit.cms.content.interfaces import ICommonMetadata
-from zeit.cms.interfaces import CONFIG_CACHE
-from zeit.cms.interfaces import ITypeDeclaration
-from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import collections
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
 import requests
 import transaction
+import zope.lifecycleevent
+
+from zeit.cms.content.interfaces import ICommonMetadata
+from zeit.cms.interfaces import CONFIG_CACHE, ITypeDeclaration
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
-import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)

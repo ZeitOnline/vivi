@@ -1,8 +1,10 @@
 import datetime
 import re
+
+import zope.testing.renormalizing
+
 import zeit.cms.testing
 import zeit.content.image.testing
-import zope.testing.renormalizing
 
 
 now_plus_7_days = datetime.date.today() + datetime.timedelta(days=7)

@@ -1,12 +1,13 @@
 from unittest import mock
 
-from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
 import requests_mock
+import zope.component
+
+from zeit.cms.interfaces import ICMSContent
+from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
 import zeit.content.article.testing
 import zeit.workflow.publisher
 import zeit.workflow.testing
-import zope.component
 
 
 class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):

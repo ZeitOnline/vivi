@@ -1,7 +1,9 @@
 import json
-import zeit.content.image.interfaces
+
 import zope.app.pagetemplate
 import zope.formlib.widget
+
+import zeit.content.image.interfaces
 
 
 class MDBImportWidget(zope.formlib.widget.SimpleInputWidget):

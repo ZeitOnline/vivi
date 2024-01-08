@@ -1,13 +1,15 @@
+import datetime
+import unittest
+
 from selenium.webdriver.common.keys import Keys
+import pytz
+
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.article import Article
 from zeit.workflow.interfaces import IContentWorkflow
-import datetime
-import pytz
-import unittest
-import zeit.cms.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 

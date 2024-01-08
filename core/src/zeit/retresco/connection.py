@@ -1,12 +1,17 @@
 from io import StringIO
-from zeit.cms.checkout.helper import checked_out
 import collections
 import logging
+
 import lxml.builder
 import requests
 import requests.exceptions
 import requests.sessions
 import transaction
+import zope.app.appsetup.product
+import zope.component
+import zope.interface
+
+from zeit.cms.checkout.helper import checked_out
 import zeit.cms.cli
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -15,9 +20,6 @@ import zeit.cms.tagging.tag
 import zeit.cms.workflow.interfaces
 import zeit.content.rawxml.interfaces
 import zeit.retresco.interfaces
-import zope.app.appsetup.product
-import zope.component
-import zope.interface
 
 
 log = logging.getLogger(__name__)

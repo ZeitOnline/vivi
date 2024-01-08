@@ -1,10 +1,11 @@
+import gocept.form.grouped
+import zope.formlib.form
+
 from zeit.cms.checkout.interfaces import ILocalContent
 from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.settings.interfaces
-import zope.formlib.form
 
 
 class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):

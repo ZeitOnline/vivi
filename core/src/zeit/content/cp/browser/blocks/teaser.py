@@ -1,5 +1,12 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import zope.cachedescriptors.property
+import zope.component
+import zope.event
+import zope.formlib.form
+import zope.interface
+import zope.lifecycleevent
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
@@ -10,12 +17,6 @@ import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.browser.view
-import zope.cachedescriptors.property
-import zope.component
-import zope.event
-import zope.formlib.form
-import zope.lifecycleevent
-import zope.interface
 
 
 class EditLayout:

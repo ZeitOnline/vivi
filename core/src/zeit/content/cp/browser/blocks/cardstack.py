@@ -1,8 +1,9 @@
-import zeit.content.cp.browser.blocks.block
-import zeit.content.cp.interfaces
 import zope.formlib.form
 import zope.formlib.source
 import zope.formlib.widget
+
+import zeit.content.cp.browser.blocks.block
+import zeit.content.cp.interfaces
 
 
 class ColorSourceWidget(zope.formlib.source.SourceDropdownWidget):

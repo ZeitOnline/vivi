@@ -1,12 +1,14 @@
-from zeit.cms.i18n import MessageFactory as _
 import json
 import logging
-import zeit.cms.locking.browser.interfaces
-import zeit.cms.locking.interfaces
-import zeit.connector.interfaces
+
 import zope.cachedescriptors.property
 import zope.formlib.form
 import zope.i18n
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.locking.browser.interfaces
+import zeit.cms.locking.interfaces
+import zeit.connector.interfaces
 
 
 log = logging.getLogger(__name__)

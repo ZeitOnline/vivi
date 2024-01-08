@@ -1,15 +1,17 @@
-from selenium.webdriver.common.keys import Keys
 from unittest import mock
 import datetime
-import transaction
 import unittest
+
+from selenium.webdriver.common.keys import Keys
+import transaction
+import zope.component
+
 import zeit.cms.tagging.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zope.component
 
 
 class Checkin(zeit.content.article.testing.BrowserTestCase):

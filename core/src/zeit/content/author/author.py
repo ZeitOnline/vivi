@@ -1,12 +1,17 @@
-from requests.exceptions import RequestException
-from zeit.cms.content.property import ObjectPathProperty
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.author.interfaces import IAuthor
 import collections.abc
+import urllib.parse
+
+from requests.exceptions import RequestException
 import grokcore.component as grok
 import lxml.objectify
 import requests
-import urllib.parse
+import zope.interface
+import zope.lifecycleevent
+import zope.security.proxy
+
+from zeit.cms.content.property import ObjectPathProperty
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.interfaces import IAuthor
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -18,9 +23,6 @@ import zeit.cms.type
 import zeit.cms.workflow.dependency
 import zeit.content.author.interfaces
 import zeit.find.interfaces
-import zope.interface
-import zope.lifecycleevent
-import zope.security.proxy
 
 
 @zope.interface.implementer(zeit.content.author.interfaces.IAuthor, zeit.cms.interfaces.IAsset)

@@ -1,14 +1,15 @@
+import grokcore.component as grok
+import zope.component
+import zope.interface
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.interfaces import IBox
-import grokcore.component as grok
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.related.related
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
-import zope.component
-import zope.interface
 
 
 @grok.implementer(IBox)

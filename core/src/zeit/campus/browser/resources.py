@@ -1,4 +1,5 @@
-from zeit.cms.browser.resources import Resource, Library
+from zeit.cms.browser.resources import Library, Resource
+
 
 lib = Library('zeit.campus', 'resources')
 

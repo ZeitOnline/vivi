@@ -1,7 +1,7 @@
 import zope.copypastemove.interfaces
 
-import zeit.cms.testing
 import zeit.cms.interfaces
+import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.testing

@@ -1,10 +1,11 @@
 import persistent
 import zc.sourcefactory.basic
-import zeit.cms.content.interfaces
-import zeit.connector.resource
 import zope.container.btree
 import zope.container.contained
 import zope.interface
+
+import zeit.cms.content.interfaces
+import zeit.connector.resource
 
 
 class BasicTemplateSourceFactory(zc.sourcefactory.basic.BasicSourceFactory):

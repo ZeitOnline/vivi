@@ -1,12 +1,14 @@
 from io import BytesIO
-from zeit.cms.i18n import MessageFactory as _
+
 import persistent
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.content.text.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(zeit.content.text.interfaces.IText, zeit.cms.interfaces.IAsset)

@@ -1,11 +1,13 @@
 import copy
+
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+import zope.security.proxy
+
 import zeit.cms.content.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.author.interfaces
-import zope.security.proxy
 
 
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='author')

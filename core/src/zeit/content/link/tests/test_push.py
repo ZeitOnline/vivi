@@ -1,7 +1,8 @@
+import zope.component
+
 import zeit.content.link.link
 import zeit.content.link.testing
 import zeit.push.interfaces
-import zope.component
 
 
 class PushURLTest(zeit.content.link.testing.FunctionalTestCase):

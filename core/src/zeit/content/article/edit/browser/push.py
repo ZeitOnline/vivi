@@ -1,11 +1,12 @@
+import grokcore.component as grok
+import zope.interface
+import zope.schema
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.browser.form import FormFields
-import grokcore.component as grok
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.push.browser.form
-import zope.interface
-import zope.schema
 
 
 class SocialContainer(zeit.edit.browser.form.FoldableFormGroup):

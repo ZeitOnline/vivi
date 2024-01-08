@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import zope.component
+
 import zeit.wochenmarkt.interfaces
 import zeit.wochenmarkt.testing
 

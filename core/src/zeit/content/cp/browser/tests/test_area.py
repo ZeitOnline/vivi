@@ -1,8 +1,10 @@
 # coding: utf-8
 import json
+import unittest
+
 import lxml.cssselect
 import pytest
-import unittest
+
 import zeit.cms.testing
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing

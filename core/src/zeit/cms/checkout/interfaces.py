@@ -1,6 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
 import zope.container.interfaces
 import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 
 
 class NotChanged(Exception):

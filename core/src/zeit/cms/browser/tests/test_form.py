@@ -1,10 +1,12 @@
 import unittest
-import zeit.cms.browser.form
-import zeit.cms.testing
+
 import zope.formlib.form
 import zope.interface
 import zope.publisher.browser
 import zope.schema
+
+import zeit.cms.browser.form
+import zeit.cms.testing
 
 
 class DummyContext:

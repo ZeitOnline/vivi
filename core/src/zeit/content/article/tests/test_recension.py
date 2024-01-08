@@ -1,7 +1,8 @@
 import transaction
+import zope.component
+
 import zeit.cms.checkout.interfaces
 import zeit.content.article.testing
-import zope.component
 
 
 class RecensionTest(zeit.content.article.testing.FunctionalTestCase):

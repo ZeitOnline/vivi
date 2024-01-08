@@ -1,8 +1,10 @@
 import urllib.parse
+
+import zope.app.appsetup.product
+
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
-import zope.app.appsetup.product
 
 
 def prefixed_url(prefix, unique_id):

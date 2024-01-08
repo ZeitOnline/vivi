@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.content.add
-import zeit.cms.testing
 import zeit.cms.retractlog
+import zeit.cms.testing
 
 
 class TestRetractList(zeit.cms.testing.ZeitCmsBrowserTestCase):

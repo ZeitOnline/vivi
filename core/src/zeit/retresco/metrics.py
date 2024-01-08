@@ -1,15 +1,17 @@
+import argparse
+import logging
+
+import prometheus_client
+import requests
+import zope.app.appsetup.product
+import zope.component
+
 from zeit.cms.interfaces import ICMSContent
 from zeit.content.article.interfaces import IArticle
 from zeit.push.interfaces import facebookAccountSource
-import argparse
-import logging
-import prometheus_client
-import requests
 import zeit.cms.cli
 import zeit.find.interfaces
 import zeit.retresco.interfaces
-import zope.app.appsetup.product
-import zope.component
 
 
 REGISTRY = prometheus_client.CollectorRegistry()

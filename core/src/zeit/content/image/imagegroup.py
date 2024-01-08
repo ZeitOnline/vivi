@@ -1,17 +1,24 @@
 from io import BytesIO
 from math import ceil
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
-import PIL.ImageColor
 import collections
-import grokcore.component as grok
-import lxml.objectify
 import os.path
-import persistent
 import re
 import sys
 import urllib.parse
+
+import grokcore.component as grok
+import lxml.objectify
+import persistent
+import PIL.ImageColor
 import z3c.traverser.interfaces
+import zope.container.contained
+import zope.interface
+import zope.lifecycleevent
+import zope.location.interfaces
+import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.interfaces import IMAGE_NAMESPACE, VIEWPORT_SOURCE
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -22,11 +29,6 @@ import zeit.cms.workflow.dependency
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
 import zeit.content.image.variant
-import zope.container.contained
-import zope.interface
-import zope.lifecycleevent
-import zope.location.interfaces
-import zope.security.proxy
 
 
 # Use an object whose bool() evaluates to False, so it works in conditionals.

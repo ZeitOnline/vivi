@@ -1,8 +1,10 @@
 from functools import total_ordering
-import zeit.cms.interfaces
+
 import zope.app.keyreference.interfaces
 import zope.component
 import zope.interface
+
+import zeit.cms.interfaces
 
 
 @total_ordering

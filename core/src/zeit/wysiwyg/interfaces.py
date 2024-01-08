@@ -1,6 +1,5 @@
-import zope.interface
-
 import zc.form.field
+import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
 

@@ -1,6 +1,7 @@
-from zeit.connector.search import SearchVar as SV
 import io
 import logging
+
+from zeit.connector.search import SearchVar as SV
 import zeit.connector.testing
 
 

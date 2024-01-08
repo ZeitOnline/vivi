@@ -1,6 +1,6 @@
 from zeit.cms.testing import copy_inherited_functions
-import zeit.cms.testing
 import zeit.cms.content.contentsource
+import zeit.cms.testing
 
 
 class ContentSourceBase:

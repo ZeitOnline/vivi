@@ -1,6 +1,7 @@
+from zope.interface.verify import verifyObject
+
 from zeit.content.text.interfaces import IText
 from zeit.content.text.text import Text
-from zope.interface.verify import verifyObject
 import zeit.cms.interfaces
 import zeit.content.text.testing
 

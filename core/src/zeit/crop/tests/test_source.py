@@ -1,6 +1,7 @@
+import zope.interface.verify
+
 import zeit.crop.source
 import zeit.crop.testing
-import zope.interface.verify
 
 
 class TestSources(zeit.crop.testing.FunctionalTestCase):

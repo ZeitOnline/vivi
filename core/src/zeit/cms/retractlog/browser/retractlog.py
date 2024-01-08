@@ -1,14 +1,14 @@
 from datetime import datetime
-from zeit.cms.i18n import MessageFactory as _
+import re
 
 import pytz
-import re
 import zc.table
-import zeit.cms.retractlog.interfaces
 import zope.formlib.form
 import zope.interface
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser
+import zeit.cms.retractlog.interfaces
 import zeit.cms.workflow.interfaces
 
 

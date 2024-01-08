@@ -1,6 +1,7 @@
+import zope.dottedname.resolve
+
 import zeit.cms.content.contentsource
 import zeit.cms.content.sources
-import zope.dottedname.resolve
 
 
 class CPTypeSource(zeit.cms.content.sources.XMLSource):

@@ -1,8 +1,9 @@
+import zope.component
+
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.cp.testing
-import zope.component
 
 
 def create_content(root):

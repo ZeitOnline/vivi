@@ -1,10 +1,10 @@
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.testing import create_image_group
 from zeit.content.volume.volume import Volume
+import zeit.cms.content.add
+import zeit.cms.testing
 import zeit.content.text.python
 import zeit.content.volume.testing
-import zeit.cms.testing
-import zeit.cms.content.add
 
 
 class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):

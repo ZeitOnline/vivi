@@ -1,6 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
-import markdownify
 import grokcore.component as grok
+import markdownify
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces

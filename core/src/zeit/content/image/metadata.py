@@ -1,12 +1,13 @@
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component as grok
 import lxml.objectify
-import zeit.cms.content.dav
-import zeit.content.image.interfaces
-import zeit.content.image.image
 import zope.component
 import zope.interface
 import zope.schema
+
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+import zeit.cms.content.dav
+import zeit.content.image.image
+import zeit.content.image.interfaces
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.IImageMetadata)

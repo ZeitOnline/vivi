@@ -1,7 +1,9 @@
 from unittest import mock
+
 import transaction
-import zeit.workflow.testing
 import zope.component.hooks
+
+import zeit.workflow.testing
 
 
 class TestPublish(

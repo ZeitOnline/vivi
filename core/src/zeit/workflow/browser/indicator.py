@@ -1,10 +1,12 @@
-from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
-import zeit.workflow
+
 import zope.app.form.browser.interfaces
 import zope.component
 import zope.i18n
 import zope.viewlet.viewlet
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.workflow
 
 
 class ContentStatus(zope.viewlet.viewlet.ViewletBase):

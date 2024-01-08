@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
+import urllib.parse
+
+from zope.lifecycleevent import Attributes, ObjectCreatedEvent, ObjectModifiedEvent
+import requests_mock
+import zope.event
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zope.lifecycleevent import Attributes
-from zope.lifecycleevent import ObjectModifiedEvent, ObjectCreatedEvent
-import requests_mock
-import urllib.parse
 import zeit.cms.interfaces
 import zeit.content.author.author
 import zeit.content.author.interfaces
 import zeit.content.author.testing
 import zeit.find.interfaces
-import zope.event
 
 
 NONZERO = 3

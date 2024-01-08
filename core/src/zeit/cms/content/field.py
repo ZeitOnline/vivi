@@ -1,4 +1,3 @@
-from zeit.cms.content.util import objectify_soup_fromstring
 import lxml.etree
 import lxml.objectify
 import zope.interface
@@ -8,6 +7,8 @@ import zope.schema
 import zope.schema.interfaces
 import zope.security.checker
 import zope.security.proxy
+
+from zeit.cms.content.util import objectify_soup_fromstring
 
 
 DEFAULT_MARKER = object()

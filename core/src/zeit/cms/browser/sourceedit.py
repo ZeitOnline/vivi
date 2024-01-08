@@ -1,9 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.formlib.namedtemplate
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 
 
 form_template = zope.formlib.namedtemplate.NamedTemplateImplementation(

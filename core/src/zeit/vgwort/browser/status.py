@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import re
-import zeit.vgwort.interfaces
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import zope.component
+
+import zeit.vgwort.interfaces
 
 
 class Status:

@@ -1,16 +1,19 @@
 from datetime import datetime
 from unittest import mock
 import contextlib
-import pytz
 import unittest
+
+import pytz
+
 import zeit.content.article.edit.tests.test_reference
 import zeit.content.article.testing
 
 
 class VideoTest(unittest.TestCase):
     def get_video(self):
-        from zeit.content.article.edit.video import Video
         import lxml.objectify
+
+        from zeit.content.article.edit.video import Video
 
         tree = lxml.objectify.E.tree(lxml.objectify.E.video())
         video = Video(None, tree.video)
@@ -48,6 +51,7 @@ class VideoTest(unittest.TestCase):
 
     def test_expires_should_be_set(self):
         import datetime
+
         import pytz
 
         video_obj = mock.Mock()
@@ -79,10 +83,11 @@ class VideoTest(unittest.TestCase):
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
     def test_factory_should_create_video_node(self):
+        import zope.component
+
         import zeit.content.article.article
         import zeit.content.article.edit.interfaces
         import zeit.edit.interfaces
-        import zope.component
 
         article = zeit.content.article.article.Article()
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
@@ -96,10 +101,11 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
     @contextlib.contextmanager
     def video_block(self):
+        import zope.component
+
         import zeit.cms.checkout.helper
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
-        import zope.component
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as article:

@@ -1,16 +1,17 @@
-from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
+import zope.component
+import zope.formlib.form
+import zope.formlib.interfaces
+import zope.formlib.widgets
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.browser.widget
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
-import zope.component
-import zope.formlib.form
-import zope.formlib.interfaces
-import zope.formlib.widgets
 
 
 class ViewletManager(zeit.edit.browser.block.BlockViewletManager):

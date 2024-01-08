@@ -1,8 +1,12 @@
 from unittest import mock
-import gocept.selenium
 import importlib.resources
-import plone.testing
 import re
+
+import gocept.selenium
+import plone.testing
+import zope.component
+import zope.testing.renormalizing
+
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
@@ -12,8 +16,6 @@ import zeit.content.volume.testing
 import zeit.push.testing
 import zeit.retresco.testhelper
 import zeit.wochenmarkt.testing
-import zope.component
-import zope.testing.renormalizing
 
 
 product_config = """
@@ -126,9 +128,10 @@ class FunctionalTestCase(
         return article
 
     def get_factory(self, article, factory_name):
+        import zope.component
+
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
-        import zope.component
 
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
         return zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, factory_name)

@@ -1,8 +1,8 @@
+import importlib.resources
+
 from zope.browserpage import ViewPageTemplateFile
 
 from zeit.content.audio.interfaces import IPodcastEpisodeInfo
-
-import importlib.resources
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 

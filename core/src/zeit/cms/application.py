@@ -1,27 +1,29 @@
+import logging
+import os
+import urllib.parse
+import wsgiref.util
+
 from opentelemetry.util.http import ExcludeList
-from zeit.cms.tracing import anonymize
 from zope.app.publication.httpfactory import HTTPPublicationRequestFactory
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import fanstatic
 import grokcore.component as grok
-import logging
 import opentelemetry.instrumentation.wsgi
 import opentelemetry.trace
-import os
 import prometheus_client
-import urllib.parse
 import webob.cookies
-import wsgiref.util
-import zeit.cms.cli
-import zeit.cms.wsgi
-import zeit.cms.zeo
-import zeit.cms.zope
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.app.wsgi
 import zope.app.wsgi.paste
 import zope.component.hooks
 import zope.publisher.browser
+
+from zeit.cms.tracing import anonymize
+import zeit.cms.cli
+import zeit.cms.wsgi
+import zeit.cms.zeo
+import zeit.cms.zope
 
 
 log = logging.getLogger(__name__)

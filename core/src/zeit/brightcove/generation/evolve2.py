@@ -1,10 +1,12 @@
+import sys
+
 import BTrees
 import persistent
-import sys
-import zeit.brightcove.interfaces
-import zeit.cms.generation
 import zope.component
 import zope.container.contained
+
+import zeit.brightcove.interfaces
+import zeit.cms.generation
 
 
 @zope.interface.implementer(zeit.brightcove.interfaces.IRepository)

@@ -1,5 +1,4 @@
 from unittest import mock
-
 import importlib.resources
 import json
 
@@ -11,6 +10,7 @@ import zeit.cms.testing
 import zeit.content.audio.testing
 import zeit.content.image.testing
 import zeit.find.interfaces
+
 
 product_config = """\
 <product-config zeit.find>

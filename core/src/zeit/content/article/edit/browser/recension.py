@@ -1,12 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import zope.cachedescriptors.property
+import zope.component
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.content.article.interfaces
 import zeit.content.article.recension
 import zeit.edit.browser.form
 import zeit.edit.browser.view
-import zope.cachedescriptors.property
-import zope.component
 
 
 class RecensionForms(zeit.edit.browser.form.FoldableFormGroup):

@@ -1,6 +1,7 @@
 # coding: utf-8
-from zeit.cms.checkout.helper import checked_out
 from zope.testbrowser.browser import LinkNotFoundError
+
+from zeit.cms.checkout.helper import checked_out
 import zeit.cms.testing
 
 

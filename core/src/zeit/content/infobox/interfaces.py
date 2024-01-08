@@ -1,9 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import zc.form.field
-import zeit.cms.content.contentsource
-import zeit.cms.content.interfaces
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.contentsource
+import zeit.cms.content.interfaces
 
 
 class IInfobox(

@@ -1,9 +1,10 @@
+import zope.component
+import zope.formlib.form
+
 import zeit.cms.browser.widget
 import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
-import zope.component
-import zope.formlib.form
 
 
 class ViewletManager(zeit.edit.browser.block.BlockViewletManager):

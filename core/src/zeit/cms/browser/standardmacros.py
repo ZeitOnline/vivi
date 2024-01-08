@@ -1,15 +1,17 @@
 import importlib.metadata
+
+import zope.app.appsetup.product
+import zope.app.basicskin.standardmacros
+import zope.component
+import zope.location.interfaces
+import zope.security.proxy
+
 import zeit.cms.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.resources
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
-import zope.app.appsetup.product
-import zope.app.basicskin.standardmacros
-import zope.component
-import zope.location.interfaces
-import zope.security.proxy
 
 
 class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):

@@ -1,9 +1,10 @@
-from zeit.objectlog.i18n import MessageFactory as _
 import zc.sourcefactory.contextual
-import zeit.objectlog.interfaces
 import zope.app.form.browser.interfaces
 import zope.i18n
 import zope.interface.common.idatetime
+
+from zeit.objectlog.i18n import MessageFactory as _
+import zeit.objectlog.interfaces
 
 
 class LogEntrySource(zc.sourcefactory.contextual.BasicContextualSourceFactory):

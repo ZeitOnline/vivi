@@ -1,10 +1,11 @@
 import grokcore.component.testing
-import zeit.cms.interfaces
-import zeit.cms.testing
-import zeit.cms.type
 import zope.component
 import zope.configuration.config
 import zope.interface
+
+import zeit.cms.interfaces
+import zeit.cms.testing
+import zeit.cms.type
 
 
 class ITestInterface(zope.interface.Interface):

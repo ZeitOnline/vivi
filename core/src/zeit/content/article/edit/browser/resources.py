@@ -1,4 +1,4 @@
-from zeit.cms.browser.resources import Resource, Library
+from zeit.cms.browser.resources import Library, Resource
 import zeit.cms.browser.resources
 import zeit.edit.browser.resources
 

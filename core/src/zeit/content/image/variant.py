@@ -1,13 +1,15 @@
-from zeit.cms.interfaces import CONFIG_CACHE
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections.abc
 import copy
-import grokcore.component as grok
 import sys
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
+import grokcore.component as grok
+import zope.schema
+
+from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
 import zeit.edit.body
-import zope.schema
 
 
 @grok.implementer(zeit.content.image.interfaces.IVariants)

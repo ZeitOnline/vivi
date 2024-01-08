@@ -1,7 +1,8 @@
 import transaction
+import zope.security.management
+
 import zeit.cms.clipboard.interfaces
 import zeit.content.article.testing
-import zope.security.management
 
 
 class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):

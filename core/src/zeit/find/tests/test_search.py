@@ -1,5 +1,7 @@
 from unittest import TestCase
+
 from zope.component import getUtility
+
 from zeit.cms.testing import FunctionalTestCase
 from zeit.find.interfaces import ICMSSearch
 from zeit.find.testing import LAYER

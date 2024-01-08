@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
+
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.content.video.interfaces
@@ -9,9 +10,10 @@ import zeit.content.video.video
 
 class TestVideo(zeit.content.video.testing.TestCase):
     def test_security_should_allow_access_to_id_prefix(self):
-        import zeit.cms.testing
-        import zope.security.management
         from zope.security.proxy import ProxyFactory
+        import zope.security.management
+
+        import zeit.cms.testing
 
         factory = zeit.content.video.testing.video_factory(self)
         next(factory)

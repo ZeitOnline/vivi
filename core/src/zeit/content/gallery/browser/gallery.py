@@ -1,11 +1,12 @@
+import zope.component
+import zope.interface
+import zope.security
+
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.repository.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.browser.image
-import zope.component
-import zope.interface
-import zope.security
 
 
 @zope.component.adapter(

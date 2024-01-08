@@ -1,8 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
+
 import zc.sourcefactory.source
-import zeit.cms.content.sources
 import zope.dottedname.resolve
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.sources
 
 
 class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):

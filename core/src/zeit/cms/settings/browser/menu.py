@@ -1,5 +1,5 @@
-import zeit.cms.browser.menu
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.menu
 
 
 class Global(zeit.cms.browser.menu.GlobalMenuItem):

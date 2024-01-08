@@ -1,15 +1,15 @@
+import zope.publisher.browser
+
 import zeit.cms.content.sources
 import zeit.content.volume.browser.reference
 import zeit.content.volume.testing
 import zeit.content.volume.volume
-import zope.publisher.browser
 
 
 class ReferenceDisplayTest(zeit.content.volume.testing.FunctionalTestCase):
     def get_display_view(self, cover_image=True):
         from zeit.content.image.testing import create_image_group
-        from zeit.content.volume.reference import RelatedReference
-        from zeit.content.volume.reference import XMLRelatedReference
+        from zeit.content.volume.reference import RelatedReference, XMLRelatedReference
 
         self.repository['imagegroup'] = create_image_group()
 

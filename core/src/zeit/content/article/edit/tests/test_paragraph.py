@@ -1,5 +1,7 @@
-import lxml.objectify
 import unittest
+
+import lxml.objectify
+
 import zeit.content.article.testing
 
 
@@ -90,8 +92,9 @@ class ParagraphTest(unittest.TestCase):
 
 class UnorderedListTest(ParagraphTest):
     def get_paragraph(self, p=''):
-        from zeit.content.article.edit.paragraph import UnorderedList
         import lxml.objectify
+
+        from zeit.content.article.edit.paragraph import UnorderedList
 
         body = lxml.objectify.E.body(lxml.objectify.XML('<ul>%s</ul>' % p))
         return UnorderedList(None, body.ul)
@@ -111,8 +114,9 @@ class UnorderedListTest(ParagraphTest):
 
 class OrderedListTest(UnorderedListTest):
     def get_paragraph(self, p=''):
-        from zeit.content.article.edit.paragraph import OrderedList
         import lxml.objectify
+
+        from zeit.content.article.edit.paragraph import OrderedList
 
         body = lxml.objectify.E.body(lxml.objectify.XML('<ol>%s</ol>' % p))
         return OrderedList(None, body.ol)
@@ -120,8 +124,9 @@ class OrderedListTest(UnorderedListTest):
 
 class IntertitleTest(ParagraphTest):
     def get_paragraph(self, p=''):
-        from zeit.content.article.edit.paragraph import Intertitle
         import lxml.objectify
+
+        from zeit.content.article.edit.paragraph import Intertitle
 
         body = lxml.objectify.E.body(lxml.objectify.XML('<intertitle>%s</intertitle>' % p))
         return Intertitle(None, body.intertitle)
@@ -129,8 +134,9 @@ class IntertitleTest(ParagraphTest):
 
 class LegacyInitialParagraphTest(ParagraphTest):
     def get_paragraph(self, p=''):
-        from zeit.content.article.edit.paragraph import LegacyInitialParagraph
         import lxml.objectify
+
+        from zeit.content.article.edit.paragraph import LegacyInitialParagraph
 
         body = lxml.objectify.E.body(lxml.objectify.XML('<initial>%s</initial>' % p))
         return LegacyInitialParagraph(None, body.initial)
@@ -138,10 +144,11 @@ class LegacyInitialParagraphTest(ParagraphTest):
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
     def assert_factory(self, name):
+        import zope.component
+
         import zeit.content.article.article
         import zeit.content.article.edit.interfaces
         import zeit.edit.interfaces
-        import zope.component
 
         article = zeit.content.article.article.Article()
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)

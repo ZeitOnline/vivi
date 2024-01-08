@@ -1,5 +1,6 @@
-from zeit.content.video.playlist import Playlist
 import urllib.error
+
+from zeit.content.video.playlist import Playlist
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 

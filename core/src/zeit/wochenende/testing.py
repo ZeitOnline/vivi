@@ -1,9 +1,10 @@
-from zeit.wochenende.interfaces import IZWESection, IZWEFolder
 import plone.testing
-import zeit.cms.testing
-import zeit.cms.repository.interfaces
-import zeit.content.article.testing
 import zope.component
+
+from zeit.wochenende.interfaces import IZWEFolder, IZWESection
+import zeit.cms.repository.interfaces
+import zeit.cms.testing
+import zeit.content.article.testing
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.article.testing.CONFIG_LAYER,))

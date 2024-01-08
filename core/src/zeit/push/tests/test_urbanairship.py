@@ -1,21 +1,23 @@
 # coding=utf-8
 from datetime import datetime
 from unittest import mock
-from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublish
-from zope.lifecycleevent import ObjectCreatedEvent
 import os
+import unittest
+
+from zope.lifecycleevent import ObjectCreatedEvent
 import pytest
 import pytz
 import requests_mock
-import unittest
+import zope.component
+import zope.event
+
+from zeit.cms.interfaces import ICMSContent
+from zeit.cms.workflow.interfaces import IPublish
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.urbanairship
-import zope.component
-import zope.event
 
 
 class ConnectionTest(zeit.push.testing.TestCase):

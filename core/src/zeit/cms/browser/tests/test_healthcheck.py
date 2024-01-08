@@ -1,8 +1,10 @@
 import os
 import tempfile
 import urllib.error
-import zeit.cms.testing
+
 import zope.app.appsetup.product
+
+import zeit.cms.testing
 
 
 class HealthCheckTest(zeit.cms.testing.ZeitCmsBrowserTestCase):

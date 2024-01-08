@@ -1,6 +1,7 @@
+import zope.schema
+
 import zeit.content.text.embed
 import zeit.content.text.testing
-import zope.schema
 
 
 class EmbedParameters(zeit.content.text.testing.FunctionalTestCase):

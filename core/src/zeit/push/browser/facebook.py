@@ -1,11 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
+import urllib.parse
+
 import gocept.form.grouped
 import requests
-import urllib.parse
-import zeit.cms.browser.menu
 import zope.app.appsetup.product
 import zope.formlib.form
 import zope.session.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.menu
 
 
 class IFacebookApp(zope.interface.Interface):

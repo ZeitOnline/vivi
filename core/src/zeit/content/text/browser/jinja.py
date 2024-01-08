@@ -1,12 +1,13 @@
+import zope.component
+import zope.formlib.form
+import zope.interface
+import zope.publisher.interfaces
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.repository.browser.adapter
 import zeit.content.text.interfaces
-import zope.component
-import zope.formlib.form
-import zope.interface
-import zope.publisher.interfaces
 
 
 class Edit(zeit.cms.browser.form.EditForm):

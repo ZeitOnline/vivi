@@ -1,8 +1,9 @@
 import grokcore.component as grok
+import zope.component
+
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.workflow.interfaces
-import zope.component
 
 
 @grok.implementer(zeit.cms.workflow.interfaces.IPublicationDependencies)

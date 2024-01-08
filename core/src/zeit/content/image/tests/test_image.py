@@ -1,10 +1,11 @@
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.image.testing import create_image_group, create_local_image
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.image
 import zeit.content.image.testing
-import zope.component
 
 
 class TestImageMetadataAcquisition(zeit.content.image.testing.FunctionalTestCase):

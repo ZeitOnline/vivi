@@ -1,5 +1,6 @@
-import zeit.cms.content.dav
 import grokcore.component as grok
+
+import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.portraitbox.interfaces
 

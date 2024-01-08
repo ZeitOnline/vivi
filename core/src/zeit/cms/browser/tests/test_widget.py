@@ -1,26 +1,30 @@
 # coding: utf8
 from unittest import mock
-from selenium.webdriver.common.keys import Keys
-from zeit.cms.browser.widget import DurationDisplayWidget
-from zeit.cms.browser.widget import ObjectSequenceDisplayWidget
-from zeit.cms.browser.widget import ObjectSequenceWidget
-from zeit.cms.browser.widget import ReferenceSequenceWidget
-from zeit.cms.content.field import DurationField
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import contextlib
 import os
 import os.path
 import unittest
+
+from selenium.webdriver.common.keys import Keys
+import zope.configuration.xmlconfig
+import zope.formlib.interfaces
+import zope.interface
+import zope.schema.interfaces
+
+from zeit.cms.browser.widget import (
+    DurationDisplayWidget,
+    ObjectSequenceDisplayWidget,
+    ObjectSequenceWidget,
+    ReferenceSequenceWidget,
+)
+from zeit.cms.content.field import DurationField
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.testing
-import zope.configuration.xmlconfig
-import zope.formlib.interfaces
-import zope.interface
-import zope.schema.interfaces
 
 
 class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
@@ -76,8 +80,9 @@ class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
 
 class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
     def test_to_form_value_ignores_non_cms_content(self):
-        import zeit.cms.interfaces
         import zope.interface
+
+        import zeit.cms.interfaces
 
         context = mock.Mock()
         context.__name__ = 'name'
@@ -138,18 +143,20 @@ class TestObjectSequenceWidgetIntegration(
         zope.security.management.endInteraction()
 
     def get_field(self):
-        import zeit.cms.content.contentsource
         import zope.schema
+
+        import zeit.cms.content.contentsource
 
         return zope.schema.Tuple(
             value_type=zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
         )
 
     def get_widget(self, field=None):
-        import zeit.cms.browser.interfaces
         import zope.app.form.browser.interfaces
         import zope.interface
         import zope.publisher.browser
+
+        import zeit.cms.browser.interfaces
 
         if field is None:
             field = self.get_field()
@@ -177,9 +184,10 @@ class TestObjectSequenceWidgetIntegration(
         self.assertNotIsInstance(widget, ObjectSequenceWidget)
 
     def test_widget_should_render_source_query_view_and_no_url_input(self):
-        import zeit.cms.content.interfaces
         import zope.component
         import zope.publisher.interfaces.browser
+
+        import zeit.cms.content.interfaces
 
         adapter = mock.Mock()
         adapter.return_value = mock.Mock(return_value='mock')
@@ -588,17 +596,19 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.ZeitCmsTestCase):
         zope.security.management.endInteraction()
 
     def get_choice(self):
-        import zeit.cms.content.contentsource
         import zope.schema
+
+        import zeit.cms.content.contentsource
 
         return zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
 
     def test_widget_should_be_available_with_search(self):
-        from zeit.cms.browser.widget import DropObjectWidget
-        import zeit.cms.browser.interfaces
         import zope.app.form.browser.interfaces
         import zope.interface
         import zope.publisher.browser
+
+        from zeit.cms.browser.widget import DropObjectWidget
+        import zeit.cms.browser.interfaces
 
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
@@ -609,9 +619,10 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.ZeitCmsTestCase):
         self.assertIsInstance(widget, DropObjectWidget)
 
     def test_widget_should_not_be_available_without_search(self):
-        from zeit.cms.browser.widget import DropObjectWidget
         import zope.app.form.browser.interfaces
         import zope.publisher.browser
+
+        from zeit.cms.browser.widget import DropObjectWidget
 
         choice = self.get_choice()
         request = zope.publisher.browser.TestRequest()
@@ -715,8 +726,9 @@ class DropObjectWidget(zeit.cms.testing.ZeitCmsTestCase):
 
 class TestObjectSequenceDisplayWidget(unittest.TestCase):
     def get_content(self):
-        import zeit.cms.interfaces
         import zope.interface
+
+        import zeit.cms.interfaces
 
         content = mock.Mock()
         zope.interface.alsoProvides(content, zeit.cms.interfaces.ICMSContent)
@@ -761,18 +773,20 @@ class TestObjectSequenceDisplayWidgetIntegration(
         super().tearDown()
 
     def get_field(self):
-        import zeit.cms.content.contentsource
         import zope.schema
+
+        import zeit.cms.content.contentsource
 
         return zope.schema.Tuple(
             value_type=zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
         )
 
     def get_widget(self):
-        import zeit.cms.browser.interfaces
         import zope.formlib.interfaces
         import zope.interface
         import zope.publisher.browser
+
+        import zeit.cms.browser.interfaces
 
         field = self.get_field()
         request = zope.publisher.browser.TestRequest()
@@ -820,16 +834,18 @@ class TestDropObjectDisplayWidgetIntegration(
         super().tearDown()
 
     def get_field(self):
-        import zeit.cms.content.contentsource
         import zope.schema
+
+        import zeit.cms.content.contentsource
 
         return zope.schema.Choice(source=zeit.cms.content.contentsource.cmsContentSource)
 
     def get_widget(self):
-        import zeit.cms.browser.interfaces
         import zope.formlib.interfaces
         import zope.interface
         import zope.publisher.browser
+
+        import zeit.cms.browser.interfaces
 
         field = self.get_field()
         request = zope.publisher.browser.TestRequest()

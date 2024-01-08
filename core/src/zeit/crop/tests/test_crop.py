@@ -1,7 +1,9 @@
-from zeit.content.image.testing import create_image_group_with_master_image
-import PIL.Image
 import importlib.resources
 import unittest
+
+import PIL.Image
+
+from zeit.content.image.testing import create_image_group_with_master_image
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.crop.interfaces

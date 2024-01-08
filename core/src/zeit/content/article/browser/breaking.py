@@ -1,18 +1,19 @@
+import gocept.form.grouped
+import zope.formlib.form
+import zope.i18n
+import zope.interface
+import zope.schema
+
 from zeit.cms.checkout.interfaces import ICheckinManager
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
-import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.interfaces
 import zeit.cms.settings.interfaces
 import zeit.content.article.article
 import zeit.edit.interfaces
 import zeit.push.interfaces
-import zope.formlib.form
-import zope.i18n
-import zope.interface
-import zope.schema
 
 
 class IPushServices(zope.interface.Interface):

@@ -1,10 +1,11 @@
 import grokcore.component as grok
-import zeit.cms.checkout.interfaces
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zope.component
 import zope.copypastemove.interfaces
 import zope.interface
+
+import zeit.cms.checkout.interfaces
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 
 
 @grok.adapter(zeit.cms.repository.interfaces.IDAVContent)

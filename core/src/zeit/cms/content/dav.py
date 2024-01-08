@@ -1,20 +1,13 @@
-from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 import datetime
 import functools
-import grokcore.component as grok
 import logging
-import lxml.etree
-import pendulum
 import re
 import sys
 import time
-import zeit.cms.content.interfaces
-import zeit.cms.content.liveproperty
-import zeit.cms.content.caching
-import zeit.cms.grok
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
-import zeit.connector.interfaces
+
+import grokcore.component as grok
+import lxml.etree
+import pendulum
 import zope.app.security.interfaces
 import zope.component
 import zope.event
@@ -22,6 +15,15 @@ import zope.proxy
 import zope.publisher.browser
 import zope.schema.interfaces
 import zope.xmlpickle
+
+from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
+import zeit.cms.content.caching
+import zeit.cms.content.interfaces
+import zeit.cms.content.liveproperty
+import zeit.cms.grok
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
 
 
 logger = logging.getLogger(__name__)

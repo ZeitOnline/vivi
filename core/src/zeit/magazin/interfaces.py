@@ -1,5 +1,8 @@
-from zeit.cms.i18n import MessageFactory as _
 import zc.form.field
+import zope.interface
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.section.interfaces
@@ -9,8 +12,6 @@ import zeit.content.gallery.interfaces
 import zeit.content.link.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.magazin.sources
-import zope.interface
-import zope.schema
 
 
 class IZMOSection(zeit.cms.section.interfaces.ISection):

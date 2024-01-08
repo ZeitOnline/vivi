@@ -1,20 +1,21 @@
 # coding: utf8
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.interfaces import CONFIG_CACHE
 import PIL.Image
 import zc.form.field
 import zc.form.interfaces
 import zc.sourcefactory.contextual
 import zc.sourcefactory.factories
+import zope.file.interfaces
+import zope.interface
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
-import zope.file.interfaces
-import zope.interface
-import zope.schema
 
 
 IMAGE_NAMESPACE = 'http://namespaces.zeit.de/CMS/image'

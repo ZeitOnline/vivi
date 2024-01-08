@@ -1,17 +1,17 @@
-from zeit.cms.content.property import ObjectPathAttributeProperty
-from zeit.cms.content.property import ObjectPathProperty
-from zeit.cms.content.reference import OverridableProperty
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
+import zope.interface
+import zope.security.checker
+
+from zeit.cms.content.property import ObjectPathAttributeProperty, ObjectPathProperty
+from zeit.cms.content.reference import OverridableProperty
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.content.cp.blocks.block
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
-import zope.interface
-import zope.security.checker
 
 
 @zope.interface.implementer(zeit.content.cp.interfaces.ILocalTeaserBlock)

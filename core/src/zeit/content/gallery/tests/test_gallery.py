@@ -1,10 +1,12 @@
-from zeit.cms.workflow.interfaces import IPublicationDependencies
-from zeit.cms.repository.folder import Folder
-from zeit.content.image.testing import create_local_image
-import transaction
 import unittest
-import zeit.content.gallery.gallery
+
+import transaction
 import zope.component
+
+from zeit.cms.repository.folder import Folder
+from zeit.cms.workflow.interfaces import IPublicationDependencies
+from zeit.content.image.testing import create_local_image
+import zeit.content.gallery.gallery
 
 
 class TestHTMLContent(unittest.TestCase):

@@ -1,5 +1,8 @@
 # coding: utf8
 from unittest import mock
+
+import zope.publisher.browser
+
 import zeit.cms.browser.breadcrumbs
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.folder
@@ -7,7 +10,6 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
-import zope.publisher.browser
 
 
 class BreadcrumbsView(zeit.cms.browser.breadcrumbs.Breadcrumbs):

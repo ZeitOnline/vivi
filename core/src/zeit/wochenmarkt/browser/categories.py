@@ -1,11 +1,13 @@
-from zeit.wochenmarkt.sources import recipeCategoriesSource
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
+import zope.component
+import zope.component.hooks
+
+from zeit.wochenmarkt.sources import recipeCategoriesSource
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.wochenmarkt.interfaces
-import zope.component
-import zope.component.hooks
 
 
 log = logging.getLogger(__name__)

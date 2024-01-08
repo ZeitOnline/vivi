@@ -1,23 +1,25 @@
 from functools import reduce
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
-from zope.app.appsetup.product import getProductConfiguration
 import collections
-import gocept.lxml.objectify
 import logging
 import operator
 import os
-import pyramid_dogpile_cache2
 import urllib.request
 import xml.sax.saxutils
+
+from zope.app.appsetup.product import getProductConfiguration
+import gocept.lxml.objectify
+import pyramid_dogpile_cache2
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
-import zeit.cms.interfaces
-import zeit.connector.interfaces
 import zope.component
 import zope.dottedname
 import zope.i18n
 import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import CONFIG_CACHE, FEATURE_CACHE
+import zeit.cms.interfaces
+import zeit.connector.interfaces
 
 
 logger = logging.getLogger('zeit.cms.content.sources')

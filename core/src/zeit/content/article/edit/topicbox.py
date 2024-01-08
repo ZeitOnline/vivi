@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
+import logging
+
+import grokcore.component as grok
+import zope.app.appsetup.product
+import zope.component
+
 from zeit.cms.content.cache import cached_on_content
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
-import logging
 import zeit.cms.content.reference
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.image.interfaces
 import zeit.contentquery.configuration
 import zeit.contentquery.interfaces
-import zope.app.appsetup.product
-import zope.component
+
 
 log = logging.getLogger(__name__)
 

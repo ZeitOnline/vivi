@@ -1,13 +1,15 @@
-from zeit.cms.testing import FunctionalTestCase
-import plone.testing
 import urllib.parse
+
+import plone.testing
+import zope.component
+import zope.component.hooks
+
+from zeit.cms.testing import FunctionalTestCase
 import zeit.brightcove.testing
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.retresco.testing
-import zope.component
-import zope.component.hooks
 
 
 class ZCMLLayer(zeit.cms.testing.ZCMLLayer):

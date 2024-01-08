@@ -1,8 +1,9 @@
-from zeit.content.article.interfaces import IArticle
 from zope.browser.interfaces import ITerms
-import zeit.content.article.testing
 import zope.component
 import zope.publisher.browser
+
+from zeit.content.article.interfaces import IArticle
+import zeit.content.article.testing
 
 
 class TestAdding(zeit.content.article.testing.BrowserTestCase):

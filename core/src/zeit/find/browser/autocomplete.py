@@ -1,13 +1,15 @@
-import grokcore.component as grok
 import urllib.parse
+
+import grokcore.component as grok
+import zope.component
+import zope.component.hooks
+import zope.traversing.browser
+
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.find.interfaces
 import zeit.find.search
-import zope.component
-import zope.component.hooks
-import zope.traversing.browser
 
 
 class SimpleFind(zeit.cms.browser.view.JSON):

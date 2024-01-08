@@ -1,15 +1,21 @@
+import collections
+import copy
+import itertools
+import xml.sax.saxutils
+
+import gocept.cache.property
+import gocept.lxml.interfaces
+import grokcore.component as grok
+import lxml.etree
+import zope.interface
+import zope.lifecycleevent
+import zope.location.interfaces
+import zope.security.proxy
+
 from zeit.cms.content.cache import writeabledict
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
-import collections
-import copy
-import gocept.cache.property
-import gocept.lxml.interfaces
-import grokcore.component as grok
-import itertools
-import lxml.etree
-import xml.sax.saxutils
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -24,10 +30,6 @@ import zeit.edit.body
 import zeit.edit.container
 import zeit.edit.interfaces
 import zeit.seo.seo
-import zope.interface
-import zope.lifecycleevent
-import zope.location.interfaces
-import zope.security.proxy
 
 
 BODY_NAME = 'body'

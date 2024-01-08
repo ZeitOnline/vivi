@@ -1,5 +1,6 @@
-import zeit.cms.redirect.interfaces
 import zope.interface
+
+import zeit.cms.redirect.interfaces
 
 
 @zope.interface.implementer(zeit.cms.redirect.interfaces.ILookup)

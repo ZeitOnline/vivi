@@ -1,14 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
+import itertools
 
 import gocept.form.grouped
-import itertools
-import zeit.content.image.interfaces
+import zope.formlib.form
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.settings.interfaces
+import zeit.content.image.interfaces
 import zeit.content.link.interfaces
 import zeit.content.link.link
 import zeit.push.browser.form
-import zope.formlib.form
 
 
 class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase):

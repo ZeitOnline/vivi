@@ -1,15 +1,17 @@
 from unittest import mock
 import datetime
-import pytz
 import time
+
+import pytz
+import zope.component
+import zope.interface
+
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.find.interfaces
 import zeit.retresco.interfaces
 import zeit.vgwort.interfaces
 import zeit.vgwort.report
 import zeit.vgwort.testing
-import zope.component
-import zope.interface
 
 
 class ReportTest(zeit.vgwort.testing.TestCase):

@@ -1,13 +1,14 @@
 import PIL.Image
 import PIL.ImageColor
 import PIL.ImageEnhance
-import zeit.cms.repository.folder
-import zeit.connector.interfaces
-import zeit.content.image.interfaces
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
 import zope.security.proxy
+
+import zeit.cms.repository.folder
+import zeit.connector.interfaces
+import zeit.content.image.interfaces
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)

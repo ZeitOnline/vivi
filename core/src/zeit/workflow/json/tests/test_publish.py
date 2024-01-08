@@ -1,7 +1,9 @@
-import celery.result
 import json
-import transaction
 import uuid
+
+import celery.result
+import transaction
+
 import zeit.workflow.interfaces
 import zeit.workflow.testing
 

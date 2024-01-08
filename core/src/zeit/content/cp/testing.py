@@ -1,9 +1,15 @@
 from unittest import mock
-import gocept.selenium
 import importlib.resources
-import plone.testing
 import re
+
+import gocept.selenium
+import plone.testing
 import transaction
+import zope.component
+import zope.interface
+import zope.security.management
+import zope.testing.renormalizing
+
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -12,10 +18,6 @@ import zeit.content.modules.testing
 import zeit.content.text.testing
 import zeit.retresco.interfaces
 import zeit.retresco.testhelper
-import zope.component
-import zope.interface
-import zope.security.management
-import zope.testing.renormalizing
 
 
 product_config = """

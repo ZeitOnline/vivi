@@ -1,18 +1,20 @@
-from opentelemetry.instrumentation.utils import http_status_to_status_code
-from opentelemetry.trace.status import Status
 import base64
 import http.client
 import importlib.metadata
 import logging
-import lxml.etree
 import mimetypes
 import re
 import socket
 import sys
 import urllib.parse
+
+from opentelemetry.instrumentation.utils import http_status_to_status_code
+from opentelemetry.trace.status import Status
+import lxml.etree
+import zope.component
+
 import zeit.cms.interfaces
 import zeit.cms.tracing
-import zope.component
 
 
 # This is for debugging, *NOT TO BE USED IN PRODUCTION*
@@ -287,7 +289,7 @@ class DAVBase:
         return self._request('UNLOCK', url, extra_hdrs=headers)
 
     def _request(self, method, url, body=None, extra_hdrs=None):
-        'Internal method for sending a request.'
+        "Internal method for sending a request."
         if DEBUG_REQUEST:
             if extra_hdrs:
                 debug_header_items = ['%s: %s' % (k, v) for k, v in extra_hdrs.items()]

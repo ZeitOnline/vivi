@@ -1,21 +1,23 @@
 from io import StringIO
-from zeit.cms.workingcopy.interfaces import IWorkingcopy
 import datetime
+
 import gocept.lxml.objectify
 import grokcore.component as grok
 import lxml.objectify
 import persistent
 import persistent.interfaces
 import pytz
+import zope.interface
+import zope.security.interfaces
+import zope.security.proxy
+
+from zeit.cms.workingcopy.interfaces import IWorkingcopy
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.lxmlpickle  # extended pickle support
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
 import zeit.connector.interfaces
-import zope.interface
-import zope.security.interfaces
-import zope.security.proxy
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLRepresentation)

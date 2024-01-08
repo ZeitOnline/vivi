@@ -1,6 +1,12 @@
-from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import uuid
+
+import gocept.form.grouped
+import zope.browser.interfaces
+import zope.event
+import zope.formlib.form
+import zope.lifecycleevent
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.browser.form
@@ -9,10 +15,6 @@ import zeit.cms.settings.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.interfaces
 import zeit.wysiwyg.interfaces
-import zope.browser.interfaces
-import zope.event
-import zope.formlib.form
-import zope.lifecycleevent
 
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase

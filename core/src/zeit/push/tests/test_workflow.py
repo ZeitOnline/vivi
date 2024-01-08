@@ -1,4 +1,7 @@
 from unittest import mock
+
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish
@@ -6,7 +9,6 @@ from zeit.push.interfaces import IPushMessages
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.push.testing
-import zope.component
 
 
 class PushServiceProperties(zeit.push.testing.TestCase):

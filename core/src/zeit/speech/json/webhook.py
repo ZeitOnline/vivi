@@ -1,16 +1,16 @@
 import json
 import logging
-import opentelemetry.trace
 
+import opentelemetry.trace
 import zope.app.appsetup.product
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-
 import zeit.cms.celery
 import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.simplecast.interfaces
+
 
 log = logging.getLogger(__name__)
 

@@ -1,11 +1,13 @@
 from unittest import mock
+
+import gocept.testing.mock
+import zope.security.proxy
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.article import Article
-import gocept.testing.mock
 import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
-import zope.security.proxy
 
 
 class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):

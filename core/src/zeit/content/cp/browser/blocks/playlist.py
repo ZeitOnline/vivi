@@ -1,11 +1,12 @@
+import zope.formlib.form
+import zope.lifecycleevent
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.video.interfaces
 import zeit.edit.browser.view
-import zope.formlib.form
-import zope.lifecycleevent
 
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):

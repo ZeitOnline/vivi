@@ -1,9 +1,10 @@
+import zope.schema
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.retresco.interfaces
-import zope.schema
 
 
 class IRawXML(

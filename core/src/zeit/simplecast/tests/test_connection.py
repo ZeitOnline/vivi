@@ -2,8 +2,8 @@ from unittest import mock
 
 import pendulum
 import pytest
-import requests_mock
 import requests
+import requests_mock
 import zope.component
 
 from zeit.cms.content.interfaces import ISemanticChange

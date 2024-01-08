@@ -1,7 +1,8 @@
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-import zeit.workflow.testing
 import zope.copypastemove.interfaces
 import zope.interface.verify
+
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+import zeit.workflow.testing
 
 
 class PublishInfoTest(zeit.workflow.testing.FunctionalTestCase):

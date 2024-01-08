@@ -1,6 +1,6 @@
 import zope.component
-from zeit.content.audio.testing import AudioBuilder, BrowserTestCase
 
+from zeit.content.audio.testing import AudioBuilder, BrowserTestCase
 import zeit.content.audio.browser.audioupdate
 import zeit.simplecast.interfaces
 import zeit.simplecast.testing

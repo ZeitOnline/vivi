@@ -1,8 +1,9 @@
+import zope.interface
+import zope.schema
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.interfaces
-import zope.interface
-import zope.schema
 
 
 class RelatableContentSource(zeit.cms.content.contentsource.CMSContentSource):

@@ -1,10 +1,11 @@
-from ZODB.ActivityMonitor import ActivityMonitor
 from urllib.parse import urlparse
-import ZODB
 import ast
-import grokcore.component as grok
 import importlib.resources
 import re
+
+from ZODB.ActivityMonitor import ActivityMonitor
+import grokcore.component as grok
+import ZODB
 import zodburi
 import zope.app.appsetup.appsetup
 import zope.app.appsetup.product

@@ -8,10 +8,12 @@ class TestSemanticChange(zeit.cms.testing.ZeitCmsTestCase):
         return ExampleContentType()
 
     def test_lsc_should_be_set_on_creation(self):
-        from zeit.cms.content.interfaces import ISemanticChange
         import datetime
+
         import zope.event
         import zope.lifecycleevent
+
+        from zeit.cms.content.interfaces import ISemanticChange
 
         content = self.get_content()
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(content))
@@ -19,9 +21,10 @@ class TestSemanticChange(zeit.cms.testing.ZeitCmsTestCase):
         self.assertTrue(isinstance(sc.last_semantic_change, datetime.datetime))
 
     def test_lsc_should_not_be_set_on_copy(self):
-        from zeit.cms.content.interfaces import ISemanticChange
         import zope.event
         import zope.lifecycleevent
+
+        from zeit.cms.content.interfaces import ISemanticChange
 
         content = self.get_content()
         zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(content, content))
@@ -36,9 +39,10 @@ class TestSemanticChange(zeit.cms.testing.ZeitCmsTestCase):
         self.assertTrue(sc.last_semantic_change is None)
 
     def test_checkin_should_set_last_semantic_change(self):
+        import datetime
+
         from zeit.cms.checkout.helper import checked_out
         from zeit.cms.content.interfaces import ISemanticChange
-        import datetime
         import zeit.cms.interfaces
 
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')

@@ -1,12 +1,14 @@
 from unittest import mock
-from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
+
 import lxml.etree
 import transaction
+import zope.i18n.translationdomain
+
+from zeit.cms.interfaces import ICMSContent
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.checkout.helper
 import zeit.content.article.interfaces
 import zeit.content.article.testing
-import zope.i18n.translationdomain
 
 
 class TestAdding(zeit.content.article.testing.BrowserTestCase):

@@ -1,9 +1,10 @@
+import transaction
+import zope.component
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.cp.interfaces import IRenderedArea
-import transaction
 import zeit.content.cp.testing
 import zeit.retresco.interfaces
-import zope.component
 
 
 class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):

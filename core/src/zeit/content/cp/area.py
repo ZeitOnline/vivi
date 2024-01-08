@@ -1,11 +1,15 @@
-from zeit.cms.content.cache import content_cache, cached_on_content
-from zeit.cms.content.property import ObjectPathAttributeProperty
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage, ITeaserBlock
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
+import zope.component
+import zope.interface
+import zope.lifecycleevent
+
+from zeit.cms.content.cache import cached_on_content, content_cache
+from zeit.cms.content.property import ObjectPathAttributeProperty
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ICenterPage, ITeaserBlock
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.content.cp.blocks.block
@@ -15,9 +19,6 @@ import zeit.contentquery.configuration
 import zeit.contentquery.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
-import zope.component
-import zope.interface
-import zope.lifecycleevent
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.IBody, gocept.lxml.interfaces.IObjectified)

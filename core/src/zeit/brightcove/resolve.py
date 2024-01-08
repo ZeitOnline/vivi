@@ -1,10 +1,12 @@
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
+import zope.component
+
 import zeit.brightcove.convert
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.connector.search
-import zope.component
 
 
 log = logging.getLogger(__name__)

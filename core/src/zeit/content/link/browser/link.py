@@ -1,9 +1,10 @@
-import zeit.cms.browser.listing
-import zeit.content.link.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.publisher.interfaces
+
+import zeit.cms.browser.listing
+import zeit.content.link.interfaces
 
 
 @zope.component.adapter(

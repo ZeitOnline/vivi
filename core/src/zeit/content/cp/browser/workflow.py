@@ -1,14 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import zope.component
+import zope.dublincore.interfaces
+import zope.formlib.form
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
 import zeit.objectlog.interfaces
 import zeit.workflow.browser.form
-import zope.component
-import zope.dublincore.interfaces
-import zope.formlib.form
 
 
 def is_published_and_has_permission(form, action):

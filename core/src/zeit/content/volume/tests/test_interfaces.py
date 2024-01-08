@@ -1,5 +1,5 @@
-import zeit.content.volume.testing
 import zeit.content.volume.interfaces
+import zeit.content.volume.testing
 
 
 class TestProductSource(zeit.content.volume.testing.FunctionalTestCase):

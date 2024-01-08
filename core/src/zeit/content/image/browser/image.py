@@ -1,9 +1,14 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
+import importlib.resources
+
 from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import PIL.Image
-import importlib.resources
+import zope.component
+import zope.file.download
+import zope.publisher.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
@@ -13,9 +18,6 @@ import zeit.connector.interfaces
 import zeit.content.image.imagereference
 import zeit.content.image.interfaces
 import zeit.content.image.variant
-import zope.component
-import zope.file.download
-import zope.publisher.interfaces
 
 
 def get_img_tag(image, request, view=None):

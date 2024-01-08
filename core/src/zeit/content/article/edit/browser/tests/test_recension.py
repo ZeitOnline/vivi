@@ -1,5 +1,6 @@
-from zeit.content.article.interfaces import IBookRecensionContainer
 import transaction
+
+from zeit.content.article.interfaces import IBookRecensionContainer
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.recension

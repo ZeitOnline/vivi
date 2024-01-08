@@ -2,8 +2,8 @@ import zope.component
 
 import zeit.cms.generation
 import zeit.cms.generation.install
-import zeit.cms.relation.relation
 import zeit.cms.relation.interfaces
+import zeit.cms.relation.relation
 
 
 def update(root):

@@ -1,8 +1,9 @@
-import zeit.content.cp.browser.blocks.block
-import zeit.content.cp.interfaces
 import zope.browser.interfaces
 import zope.component
 import zope.formlib.form
+
+import zeit.content.cp.browser.blocks.block
+import zeit.content.cp.interfaces
 
 
 class CPExtraView:

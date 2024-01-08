@@ -1,10 +1,12 @@
 from unittest import mock
+
+import zope.copypastemove.interfaces
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.testing
-import zope.copypastemove.interfaces
 
 
 class MoveTest(zeit.cms.testing.ZeitCmsTestCase):

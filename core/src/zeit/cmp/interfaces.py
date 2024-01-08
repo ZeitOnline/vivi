@@ -1,10 +1,12 @@
-from zeit.cmp.source import Unknown
-from zeit.cms.i18n import MessageFactory as _
 import xml.sax.saxutils
+
 import zc.sourcefactory.source
-import zeit.cmp.source
 import zope.interface
 import zope.schema
+
+from zeit.cmp.source import Unknown
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cmp.source
 
 
 class VendorSource(zeit.cms.content.sources.XMLSource):

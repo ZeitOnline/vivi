@@ -1,15 +1,17 @@
 # coding: utf-8
 from unittest import mock
-from zeit.cms.checkout.helper import checked_out
-import lxml.etree
 import unittest
+
+import lxml.etree
+import zope.component
+
+from zeit.cms.checkout.helper import checked_out
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.retresco.testing
-import zope.component
 
 
 class TestTags(unittest.TestCase, zeit.cms.tagging.testing.TaggingHelper):

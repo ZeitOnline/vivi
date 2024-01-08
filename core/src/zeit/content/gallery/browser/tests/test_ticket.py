@@ -1,9 +1,11 @@
 from io import StringIO
 import unittest
+
+import zope.app.appsetup.product
+
 import zeit.cms.testing
 import zeit.content.gallery.browser.ticket
 import zeit.content.gallery.testing
-import zope.app.appsetup.product
 
 
 class TestTicketAuthorization(unittest.TestCase):

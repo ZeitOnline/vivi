@@ -1,16 +1,18 @@
 from unittest import mock
+
+import transaction
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublish
-import transaction
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
-import zope.component
 
 
 class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):

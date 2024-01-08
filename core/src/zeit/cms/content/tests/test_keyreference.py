@@ -1,7 +1,8 @@
+import zope.app.keyreference.interfaces
+
 from zeit.cms.checkout.helper import checked_out
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-import zope.app.keyreference.interfaces
 
 
 class KeyReferenceTest(zeit.cms.testing.ZeitCmsTestCase):

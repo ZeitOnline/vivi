@@ -1,12 +1,14 @@
+import logging
+
+import grokcore.component as grok
+import zope.interface
+
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
-import logging
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
-import zope.interface
 
 
 log = logging.getLogger(__name__)

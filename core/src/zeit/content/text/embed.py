@@ -1,14 +1,16 @@
-from zeit.cms.i18n import MessageFactory as _
 import collections  # noqa make available to eval()
 import logging
+
+import zope.interface
+import zope.schema  # noqa make available to eval()
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.modules.interfaces
 import zeit.content.text.interfaces
 import zeit.content.text.python
 import zeit.content.text.text
-import zope.interface
-import zope.schema  # noqa make available to eval()
 
 
 log = logging.getLogger(__name__)

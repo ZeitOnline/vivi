@@ -1,5 +1,6 @@
-from zeit.content.article.edit.interfaces import IParagraph
 import grokcore.component as grok
+
+from zeit.content.article.edit.interfaces import IParagraph
 import zeit.content.article.edit.interfaces
 
 

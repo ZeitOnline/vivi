@@ -1,8 +1,9 @@
+import zope.interface
+
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.type
-import zope.interface
 
 
 @zope.interface.implementer(

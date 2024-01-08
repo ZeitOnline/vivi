@@ -1,6 +1,7 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference

@@ -1,14 +1,15 @@
+import zope.component
+import zope.interface
+import zope.proxy
+import zope.publisher.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.lightbox
 import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
-import zope.component
-import zope.interface
-import zope.proxy
-import zope.publisher.interfaces
-from zeit.cms.i18n import MessageFactory as _
 
 
 @zope.component.adapter(

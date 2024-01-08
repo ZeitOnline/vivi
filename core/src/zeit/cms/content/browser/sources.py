@@ -1,10 +1,12 @@
-import grokcore.component as grok
 import json
+
+import grokcore.component as grok
 import zc.sourcefactory.factories
-import zeit.cms.content.sources
 import zope.app.appsetup.product
 import zope.dottedname.resolve
 import zope.interface
+
+import zeit.cms.content.sources
 
 
 class API:

@@ -1,7 +1,9 @@
-from zeit.content.image.interfaces import IVariants
 import sys
-import zeit.content.image.testing
+
 import zope.interface.verify
+
+from zeit.content.image.interfaces import IVariants
+import zeit.content.image.testing
 
 
 class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
@@ -25,7 +27,7 @@ class VariantTraversal(zeit.content.image.testing.FunctionalTestCase):
         self.assertEqual('1:1', variant.aspect_ratio)
 
     def test_variant_with_settings_gets_missing_values_from_default_variant(
-        self
+        self,
     ):  # this is important for new default values in the future
         self.group.variants = {'square': {'focus_x': 0.1, 'focus_y': 0.1}}
         variant = IVariants(self.group)['square']

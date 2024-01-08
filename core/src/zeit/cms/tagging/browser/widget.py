@@ -1,11 +1,8 @@
 from collections import namedtuple
-import grokcore.component as grok
 import json
 import urllib.parse
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.view
-import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
+
+import grokcore.component as grok
 import zope.app.appsetup.appsetup
 import zope.app.pagetemplate
 import zope.component.hooks
@@ -14,6 +11,11 @@ import zope.formlib.source
 import zope.formlib.widget
 import zope.lifecycleevent
 import zope.schema.interfaces
+
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
+import zeit.cms.interfaces
+import zeit.cms.tagging.interfaces
 
 
 class Widget(grok.MultiAdapter, zope.formlib.widget.SimpleInputWidget, zeit.cms.browser.view.Base):

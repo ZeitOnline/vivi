@@ -1,4 +1,5 @@
 from unittest import mock
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.push.testing
 

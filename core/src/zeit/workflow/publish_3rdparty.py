@@ -1,9 +1,12 @@
 from itertools import chain
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import datetime
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
 import lxml.etree
+import zope.app.appsetup.product
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -14,7 +17,6 @@ import zeit.content.image.interfaces
 import zeit.content.video.interfaces
 import zeit.retresco.interfaces
 import zeit.workflow.interfaces
-import zope.app.appsetup.product
 
 
 log = logging.getLogger(__name__)

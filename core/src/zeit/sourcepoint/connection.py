@@ -1,6 +1,7 @@
 import argparse
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
 import zope.interface
 
 import zeit.cms.cli

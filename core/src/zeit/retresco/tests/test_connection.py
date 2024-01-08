@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
+import json
+import os
+import urllib.parse
+
+import pytest
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import Result
 from zeit.cms.workflow.interfaces import IPublishInfo
-import json
-import os
-import pytest
-import urllib.parse
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zeit.connector.interfaces
@@ -16,7 +19,6 @@ import zeit.retresco.connection
 import zeit.retresco.interfaces
 import zeit.retresco.tagger
 import zeit.retresco.testing
-import zope.component
 
 
 class TMSTest(zeit.retresco.testing.FunctionalTestCase):

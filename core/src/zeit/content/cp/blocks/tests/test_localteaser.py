@@ -1,8 +1,9 @@
+import zope.interface
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.content.cp.blocks.localteaser import ITeaserOverrides
 import zeit.content.cp.testing
-import zope.interface
 
 
 class IExample(zope.interface.Interface):

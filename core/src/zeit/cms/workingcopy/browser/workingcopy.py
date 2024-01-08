@@ -1,6 +1,11 @@
-from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
+import zope.cachedescriptors.property
+import zope.component
+import zope.viewlet.viewlet
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.menu
 import zeit.cms.checkout.interfaces
@@ -9,9 +14,6 @@ import zeit.cms.interfaces
 import zeit.cms.repository.browser.delete
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
-import zope.cachedescriptors.property
-import zope.component
-import zope.viewlet.viewlet
 
 
 log = logging.getLogger(__name__)

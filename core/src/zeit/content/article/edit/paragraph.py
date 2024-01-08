@@ -1,10 +1,12 @@
 import copy
+import xml.sax.saxutils
+
 import grokcore.component as grok
 import lxml.etree
 import lxml.html.clean
 import lxml.html.soupparser
 import lxml.objectify
-import xml.sax.saxutils
+
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block

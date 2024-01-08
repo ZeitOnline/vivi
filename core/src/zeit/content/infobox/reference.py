@@ -1,4 +1,5 @@
 import grokcore.component as grok
+
 import zeit.cms.content.dav
 import zeit.content.infobox.interfaces
 

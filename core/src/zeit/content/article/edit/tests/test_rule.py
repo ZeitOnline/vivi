@@ -1,8 +1,9 @@
+import zope.security.proxy
+
 from zeit.edit.rule import Rule
 import zeit.cms.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces
-import zope.security.proxy
 
 
 class RuleTest(zeit.content.article.testing.FunctionalTestCase):

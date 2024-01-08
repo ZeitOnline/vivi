@@ -1,17 +1,20 @@
 from unittest import mock
+
+import zope.component
+
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.connector.interfaces
-import zope.component
 
 
 class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
     def test_objects_without_properties_should_not_fail(self):
-        import zeit.cms.interfaces
         import zope.event
         import zope.interface
+
         from zeit.cms.checkout.interfaces import BeforeCheckinEvent
+        import zeit.cms.interfaces
 
         content = mock.Mock()
         content.uniqueId = 'http://xml.zeit.de/foo'
@@ -20,6 +23,7 @@ class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_non_cms_objects_should_not_fail(self):
         import zope.event
+
         from zeit.cms.checkout.interfaces import BeforeCheckinEvent
 
         content = mock.Mock()

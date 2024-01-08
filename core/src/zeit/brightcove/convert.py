@@ -1,14 +1,15 @@
-from zeit.content.video.interfaces import IVideo
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import pendulum
+import zope.component
+
+from zeit.content.video.interfaces import IVideo
 import zeit.brightcove.resolve
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.video.video
-import zope.component
 
 
 class Converter:

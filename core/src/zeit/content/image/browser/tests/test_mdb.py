@@ -1,7 +1,8 @@
+import zope.component
+
 from zeit.content.image.browser.tests.test_imagegroup import ImageGroupHelperMixin
 import zeit.content.image.mdb
 import zeit.content.image.testing
-import zope.component
 
 
 class MDBImportJavascript(zeit.content.image.testing.SeleniumTestCase):

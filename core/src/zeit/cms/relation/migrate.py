@@ -1,9 +1,11 @@
 import sys
+
 import transaction
-import zeit.cms.interfaces
-import zeit.cms.relation.interfaces
 import zope.component
 import zope.component.hooks
+
+import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
 
 
 # these are 'zopectl run' scripts to migrate the old indexes into the new index

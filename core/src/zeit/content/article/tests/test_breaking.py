@@ -1,8 +1,9 @@
 from lxml import etree
+
 from zeit.cms.checkout.helper import checked_out
-import zeit.cms.workflow.interfaces
 from zeit.content.article.interfaces import IBreakingNews
 from zeit.content.article.testing import create_article
+import zeit.cms.workflow.interfaces
 import zeit.content.article.testing
 import zeit.content.rawxml.rawxml
 

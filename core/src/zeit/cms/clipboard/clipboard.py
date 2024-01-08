@@ -1,19 +1,17 @@
+import z3c.traverser.interfaces
 import zope.annotation
 import zope.component
+import zope.container.contained
+import zope.container.interfaces
+import zope.container.ordered
 import zope.interface
 import zope.proxy
 import zope.publisher.interfaces
 import zope.security.interfaces
 import zope.traversing.api
 
-import zope.container.interfaces
-import zope.container.contained
-import zope.container.ordered
-
-import z3c.traverser.interfaces
-
-import zeit.cms.workingcopy.interfaces
 import zeit.cms.clipboard.interfaces
+import zeit.cms.workingcopy.interfaces
 
 
 @zope.component.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopy)

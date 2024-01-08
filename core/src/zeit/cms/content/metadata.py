@@ -1,14 +1,15 @@
+import grokcore.component as grok
+import zope.interface
+
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
-import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.tagging.tag
 import zeit.wochenmarkt.categories
-import zope.interface
 
 
 @zope.interface.implementer(ICommonMetadata)

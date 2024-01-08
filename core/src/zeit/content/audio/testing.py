@@ -1,13 +1,12 @@
 from functools import partialmethod
 from typing import Optional, TypeVar
-
 import importlib.resources
 
-from zeit.content.audio.audio import Audio
-from zeit.content.audio.interfaces import Podcast, IPodcastEpisodeInfo
 from zeit.cms.repository.interfaces import IRepository
-
+from zeit.content.audio.audio import Audio
+from zeit.content.audio.interfaces import IPodcastEpisodeInfo, Podcast
 import zeit.cms.testing
+
 
 T = TypeVar('T')  # Can be anything
 

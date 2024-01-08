@@ -1,6 +1,7 @@
 from unittest.mock import Mock
-import gocept.testing.assertion
 import unittest
+
+import gocept.testing.assertion
 import zope.schema
 
 

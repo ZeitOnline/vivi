@@ -1,9 +1,10 @@
 import grokcore.component as grok
+import zope.interface
+
 import zeit.cms.content.dav
 import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.magazin.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(zeit.magazin.interfaces.INextRead)

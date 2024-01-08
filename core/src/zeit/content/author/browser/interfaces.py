@@ -1,6 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
 import zope.formlib.interfaces
 import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 
 
 @zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)

@@ -1,14 +1,16 @@
 # coding: utf8
-from zeit.cms.i18n import MessageFactory as _
 import re
+
 import zc.sourcefactory.source
+import zope.interface
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.related.interfaces
 import zeit.content.image.interfaces
-import zope.interface
 import zeit.retresco.interfaces
-import zope.schema
 
 
 class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):

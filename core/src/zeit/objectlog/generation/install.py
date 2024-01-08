@@ -1,8 +1,9 @@
-import zeit.objectlog.interfaces
-import zeit.objectlog.objectlog
 import zope.component
 import zope.component.hooks
 import zope.generations.utility
+
+import zeit.objectlog.interfaces
+import zeit.objectlog.objectlog
 
 
 def install(root):
