@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.89.0 (2024-01-08)
+-------------------
+
+- ZO-4449: Create explicit contenthub user instead of reusing the internal invalidate user
+
+
 5.88.0 (2024-01-08)
 -------------------
 
