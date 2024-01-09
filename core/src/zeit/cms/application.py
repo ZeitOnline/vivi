@@ -21,8 +21,8 @@ import zope.publisher.browser
 
 from zeit.cms.tracing import anonymize
 import zeit.cms.cli
+import zeit.cms.relstorage
 import zeit.cms.wsgi
-import zeit.cms.zeo
 import zeit.cms.zope
 
 
@@ -177,7 +177,7 @@ class OpenTelemetryMiddleware(opentelemetry.instrumentation.wsgi.OpenTelemetryMi
 
 
 def otel_request_hook(span, environ):
-    zeit.cms.zeo.apply_samplerate(span, environ)
+    zeit.cms.relstorage.apply_samplerate(span, environ)
     clientip = environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0]
     span.set_attribute('net.peer.ip', anonymize(clientip))
 

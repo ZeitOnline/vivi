@@ -3,16 +3,11 @@ from io import BytesIO
 import argparse
 import collections.abc
 import logging
-import os
 import tempfile
 import time
-import urllib.request
 
-from gocept.cache.method import Memoize as memoize
 from zope.dottedname.resolve import resolve
 import BTrees
-import gocept.lxml.objectify
-import lxml.objectify
 import persistent
 import persistent.mapping
 import transaction
@@ -22,6 +17,7 @@ import ZODB.POSException
 import zope.interface
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.cli
 import zeit.connector.interfaces
 
@@ -400,7 +396,6 @@ except ImportError:
 class Properties(persistent.mapping.PersistentMapping):
     cached_time = None
 
-    # NOTE: By default, conflict resolution is performed by the ZEO *server*!
     def _p_resolveConflict(self, old, commited, newstate):
         if not FEATURE_TOGGLES.find('dav_cache_delete_property_on_conflict'):
             log.info('Overwriting %s with %s after ConflictError', commited, newstate)
@@ -514,38 +509,6 @@ class AlwaysEmptyDict(collections.abc.MutableMapping):
 
     def __len__(self):
         return len(self.keys())
-
-
-# Copy&paste from zeit.cms.content.sources to make it work in a ZEO environment
-# where we have no dogpile setup, no product config, etc.pp.
-class FeatureToggles:
-    config_url = 'ZEIT_VIVI_FEATURE_TOGGLE_SOURCE'
-
-    def find(self, name):
-        try:
-            return bool(getattr(self._get_tree(), name, False))
-        except TypeError:
-            return False
-
-    def set(self, *names, **kw):  # only for tests
-        for name in names:
-            # Changes are discarded between tests by gocept.cache
-            setattr(self._get_tree(), name, kw['value'])
-
-    @memoize(300, ignore_self=True)
-    def _get_tree(self):
-        if self.config_url not in os.environ:
-            return lxml.objectify.XML('<empty/>')
-        return self._get_tree_from_url(os.environ[self.config_url])
-
-    def _get_tree_from_url(self, url):
-        __traceback_info__ = (url,)
-        log.debug('Getting %s' % url)
-        response = urllib.request.urlopen(url)
-        return gocept.lxml.objectify.fromfile(response)
-
-
-FEATURE_TOGGLES = FeatureToggles()
 
 
 @zeit.cms.cli.runner()

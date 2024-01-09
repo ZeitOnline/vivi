@@ -203,7 +203,6 @@ deploy = [
     "repoze.vhm",
     "slowlog",
     "waitress",
-    "zeo",
     "zeit.ldap",
     "zeit.newsimport",
 ]
