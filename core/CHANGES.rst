@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.91.0 (2024-01-09)
+-------------------
+
+- ZO-4318: Increase padding for delete icon to move it away from macOS scrollbars
+
+
 5.90.0 (2024-01-09)
 -------------------
 
