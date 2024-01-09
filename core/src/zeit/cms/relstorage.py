@@ -69,13 +69,12 @@ class RelStorageInstrumentor(BaseInstrumentor):
 
         @functools.wraps(wrapped_call)
         def instrumented_call(self, *args, **kw):
-            # XXX Reuse zeo sampling, move it here when we remove zeo.
-            if logging.getLogger('zeit.cms.zeo').isEnabledFor(logging.DEBUG):
+            if logging.getLogger(__name__).isEnabledFor(logging.DEBUG):
                 config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
                 operation = self.stat_name or self._compute_stat(args)
                 with tracer.start_as_current_span(
                     operation,
-                    attributes={'span.kind': 'client', 'SampleRate': config['samplerate-zeo']},
+                    attributes={'span.kind': 'client', 'SampleRate': config['samplerate-zodb']},
                 ):
                     return wrapped_call(self, *args, **kw)
             else:
@@ -92,3 +91,14 @@ class RelStorageInstrumentor(BaseInstrumentor):
                     continue
                 original = func.__wrapped__
                 setattr(cls, name, original)
+
+
+def apply_samplerate(*args, **kw):
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    zodb = logging.getLogger(__name__)
+    # XXX It would be cleaner to use the otel context to transmit this
+    # information, but that's mechanically difficult due to attach/detach API.
+    if random.random() <= 1 / int(config.get('samplerate-zodb', 1)):
+        zodb.setLevel(logging.DEBUG)
+    else:
+        zodb.setLevel(logging.NOTSET)

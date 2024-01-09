@@ -48,7 +48,7 @@ else:
     import zope.app.appsetup.appsetup
 
     from zeit.cms.tracing import anonymize
-    import zeit.cms.zeo
+    import zeit.cms.relstorage
     import zeit.cms.zope
 
     @celery.signals.setup_logging.connect(weak=False)
@@ -81,8 +81,8 @@ else:
                 self.on_worker_process_init()
 
         def on_worker_process_init(self):
-            """Creates ZODB connection *after* forking, otherwise the ZEO
-            thread-global locks are copied to each worker, causing deadlock.
+            """Creates ZODB connection *after* forking, psql connections are
+            not fork-safe.
             """
             conf = self.app.conf
             db = zeit.cms.zope.create_zodb_database(conf['SETTINGS']['zodbconn.uri'])
@@ -181,4 +181,4 @@ else:
     task = CELERY.task
 
     CeleryInstrumentor().instrument()
-    celery.signals.task_prerun.connect(zeit.cms.zeo.apply_samplerate, weak=False)
+    celery.signals.task_prerun.connect(zeit.cms.relstorage.apply_samplerate, weak=False)

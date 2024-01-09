@@ -93,7 +93,7 @@ class DelayedInitZODB:
 
     This supports using gunicorn.preload_app, thereby having to load ZCML only
     once, before forking the worker processes, which is a substantial
-    performance benefit. The delayed init then creates the ZEO connection
+    performance benefit. The delayed init then creates the ZODB connection
     only afterwards (since it is not fork-safe).
 
     We can get away with not proxying any other methods, because all of Zope

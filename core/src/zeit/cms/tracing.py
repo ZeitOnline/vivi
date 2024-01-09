@@ -115,7 +115,6 @@ def tracer_from_product_config():
     import zope.app.appsetup.product
 
     from zeit.cms.relstorage import RelStorageInstrumentor
-    from zeit.cms.zeo import ZEOInstrumentor
 
     hostname = socket.gethostname()
     # We don't want the FQDN and date suffix.
@@ -136,7 +135,6 @@ def tracer_from_product_config():
     opentelemetry.trace.set_tracer_provider(provider)
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
-    ZEOInstrumentor().instrument(tracer_provider=provider)
     RelStorageInstrumentor().instrument(tracer_provider=provider)
 
     return default_tracer()
