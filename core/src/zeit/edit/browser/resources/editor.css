@@ -328,7 +328,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .edit-bar > .delete-link {
   background-image: url("/fanstatic/zeit.cms/icons/delete.png");
   float: right;
-  padding-right: .3em;
+  padding-right: 1em;
 }
 
 
