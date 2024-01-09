@@ -58,7 +58,9 @@ class Form:
     )
 
     podcast_host_fields = gocept.form.grouped.Fields(
-        _('Podcast Host'), ('dashboard_link'), css_class='wide-widgets column-left'
+        _('Podcast Host'),
+        ('dashboard_link',),
+        'wide-widgets column-left',
     )
 
     podcast_file_fields = gocept.form.grouped.Fields(
