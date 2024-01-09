@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.90.0 (2024-01-09)
+-------------------
+
+- ZO-4455: Add year field to CP admin menu
+
+
 5.89.0 (2024-01-08)
 -------------------
 
