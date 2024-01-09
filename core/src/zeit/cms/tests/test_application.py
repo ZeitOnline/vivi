@@ -1,7 +1,9 @@
-from prometheus_client.parser import text_string_to_metric_families as prometheus
 import importlib.metadata
-import packaging.requirements
 import urllib.error
+
+from prometheus_client.parser import text_string_to_metric_families as prometheus
+import packaging.requirements
+
 import zeit.cms.testing
 
 

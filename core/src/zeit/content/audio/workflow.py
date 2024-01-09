@@ -1,13 +1,11 @@
-from zeit.cms.i18n import MessageFactory as _
-
 import zope.component
 import zope.interface
 
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
 import zeit.cms.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
-
-from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
 
 
 class AudioWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):

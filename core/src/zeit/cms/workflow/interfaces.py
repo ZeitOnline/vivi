@@ -1,9 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
-import zeit.cms.content.contentsource
 import zope.app.security.vocabulary
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.contentsource
 
 
 CAN_PUBLISH_ERROR = 'can-publish-error'

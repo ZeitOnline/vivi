@@ -1,6 +1,7 @@
+import zope.interface
+
 import zeit.content.modules.interfaces
 import zeit.edit.block
-import zope.interface
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IMail)

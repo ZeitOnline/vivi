@@ -1,6 +1,8 @@
 from io import StringIO
-from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
+
 import lxml.etree
+
+from zeit.wysiwyg.testing import PLAYLIST, VIDEO1, VIDEO2, VIDEO3
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.wysiwyg.html
 import zeit.wysiwyg.testing

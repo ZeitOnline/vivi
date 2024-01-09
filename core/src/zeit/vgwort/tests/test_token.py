@@ -1,9 +1,11 @@
-from zeit.vgwort.token import _order_tokens
-import transaction
 import unittest
+
+import transaction
+import zope.component
+
+from zeit.vgwort.token import _order_tokens
 import zeit.vgwort.interfaces
 import zeit.vgwort.testing
-import zope.component
 
 
 class TokenStorageTest(zeit.vgwort.testing.EndToEndTestCase):
@@ -61,7 +63,9 @@ class TokenTransactionTest(zeit.vgwort.testing.TestCase):
 class ObjectCopyTest(zeit.vgwort.testing.TestCase):
     def test_copying_should_removes_vgwort_properties_from_copy(self):
         import datetime
+
         import pytz
+
         import zeit.cms.interfaces
         import zeit.vgwort.interfaces
 

@@ -1,8 +1,11 @@
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import logging
 import sys
-import zeit.push.interfaces
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import zope.security.proxy
+
+import zeit.push.interfaces
+
 
 log = logging.getLogger(__name__)
 

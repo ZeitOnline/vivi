@@ -1,6 +1,7 @@
 import grokcore.component as grok
-import zeit.content.article.interfaces
+
 import zeit.cms.admin.interfaces
+import zeit.content.article.interfaces
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle, name='zeit.content.article')

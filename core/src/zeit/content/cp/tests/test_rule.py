@@ -1,14 +1,16 @@
+import importlib.resources
+
+import pyramid_dogpile_cache2
+import zope.app.appsetup.product
+import zope.component
+
 from zeit.edit.interfaces import IRuleGlobs
 from zeit.edit.rule import Rule
-import importlib.resources
-import pyramid_dogpile_cache2
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 import zeit.edit.rule
-import zope.app.appsetup.product
-import zope.component
 
 
 class RuleTest(zeit.content.cp.testing.FunctionalTestCase):

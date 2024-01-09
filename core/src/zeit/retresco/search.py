@@ -1,12 +1,14 @@
+import importlib.metadata
+
 import elasticsearch
 import elasticsearch.connection
 import elasticsearch.transport
-import importlib.metadata
 import requests.utils
-import zeit.cms.interfaces
-import zeit.retresco.interfaces
 import zope.dottedname.resolve
 import zope.interface
+
+import zeit.cms.interfaces
+import zeit.retresco.interfaces
 
 
 class Connection(elasticsearch.connection.RequestsHttpConnection):

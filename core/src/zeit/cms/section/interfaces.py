@@ -1,5 +1,6 @@
-import zeit.cms.interfaces
 import zope.interface
+
+import zeit.cms.interfaces
 
 
 class ISection(zope.interface.Interface):

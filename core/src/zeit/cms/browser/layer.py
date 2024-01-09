@@ -1,7 +1,8 @@
 import z3c.traverser.traverser
-import zeit.cms.browser.interfaces
 import zope.interface
 import zope.publisher.skinnable
+
+import zeit.cms.browser.interfaces
 
 
 class LayerAddTraverser(z3c.traverser.traverser.ContainerTraverserPlugin):

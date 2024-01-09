@@ -1,15 +1,17 @@
+import collections
+import logging
+
+import grokcore.component as grok
+import lxml.etree
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.cli import wait_for_commit
 from zeit.cms.interfaces import CONFIG_CACHE, ICMSContent
 from zeit.cms.workflow.interfaces import IPublish
-import collections
-import grokcore.component as grok
-import logging
-import lxml.etree
 import zeit.cms.cli
 import zeit.retresco.interfaces
 import zeit.wochenmarkt.interfaces
-import zope.component
 
 
 log = logging.getLogger(__name__)

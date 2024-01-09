@@ -1,11 +1,13 @@
 from unittest import mock
-from zeit.cms.tagging.tag import Tag
 import collections
+
 import lxml.objectify
-import zeit.cms.repository.interfaces
-import zeit.cms.tagging.interfaces
 import zope.component
 import zope.interface
+
+from zeit.cms.tagging.tag import Tag
+import zeit.cms.repository.interfaces
+import zeit.cms.tagging.interfaces
 
 
 NAMESPACE = 'http://namespaces.zeit.de/CMS/tagging'

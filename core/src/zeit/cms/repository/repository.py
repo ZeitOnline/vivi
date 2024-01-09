@@ -1,18 +1,11 @@
 from functools import total_ordering
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.repository.interfaces import IRepositoryContent
-import gocept.cache.property
-import grokcore.component as grok
 import logging
 import os.path
-import persistent
 import re
-import zeit.cms.interfaces
-import zeit.cms.redirect.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.section.interfaces
-import zeit.connector.dav.interfaces
-import zeit.connector.interfaces
+
+import gocept.cache.property
+import grokcore.component as grok
+import persistent
 import zope.annotation.interfaces
 import zope.app.appsetup.product
 import zope.component
@@ -21,6 +14,15 @@ import zope.interface
 import zope.lifecycleevent
 import zope.processlifetime
 import zope.securitypolicy.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IRepositoryContent
+import zeit.cms.interfaces
+import zeit.cms.redirect.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.section.interfaces
+import zeit.connector.dav.interfaces
+import zeit.connector.interfaces
 
 
 log = logging.getLogger('zeit.cms.repository')

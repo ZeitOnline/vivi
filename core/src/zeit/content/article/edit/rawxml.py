@@ -1,9 +1,9 @@
-from zeit.cms.content.property import DAVConverterWrapper
-from zeit.cms.content.property import ObjectPathAttributeProperty
-from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml.objectify
+
+from zeit.cms.content.property import DAVConverterWrapper, ObjectPathAttributeProperty
+from zeit.cms.i18n import MessageFactory as _
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 

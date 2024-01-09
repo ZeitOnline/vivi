@@ -1,17 +1,22 @@
 # coding: utf-8
 from datetime import datetime, timedelta
 from unittest import mock
-from zeit.cms.content.sources import FEATURE_TOGGLES
-import bugsnag
-import grokcore.component as grok
+import importlib.resources
 import json
 import logging
-import importlib.resources
-import pytz
 import re
-import requests
 import sys
 import urllib.parse
+
+import bugsnag
+import grokcore.component as grok
+import pytz
+import requests
+import zope.app.appsetup.product
+import zope.interface
+import zope.lifecycleevent
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
@@ -19,9 +24,6 @@ import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.push.interfaces
 import zeit.push.message
-import zope.app.appsetup.product
-import zope.interface
-import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)

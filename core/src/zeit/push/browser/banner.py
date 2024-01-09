@@ -1,6 +1,7 @@
+import zope.component
+
 import zeit.content.article.interfaces
 import zeit.push.interfaces
-import zope.component
 
 
 class Retract:

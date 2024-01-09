@@ -1,10 +1,11 @@
 from datetime import timedelta
-import zeit.cms.workflow.interfaces
+
 import grokcore.component as grok
-import zeit.cms.interfaces
-import zeit.cms.workflow.interfaces
 import zope.component
 import zope.interface
+
+import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

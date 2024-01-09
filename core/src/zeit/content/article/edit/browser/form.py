@@ -1,5 +1,7 @@
-from zeit.cms.browser.widget import CheckboxDisplayWidget
-from zeit.cms.browser.widget import RestructuredTextWidget
+import zope.formlib.form
+import zope.formlib.interfaces
+
+from zeit.cms.browser.widget import CheckboxDisplayWidget, RestructuredTextWidget
 from zeit.cms.content.interfaces import ICommonMetadata, IRemoteMetadata
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
@@ -13,14 +15,12 @@ import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
+import zeit.content.audio.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.video.interfaces
-import zeit.content.audio.interfaces
 import zeit.edit.browser.form
 import zeit.workflow.interfaces
-import zope.formlib.form
-import zope.formlib.interfaces
 
 
 class FormFields(zope.formlib.form.FormFields):

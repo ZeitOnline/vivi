@@ -1,5 +1,6 @@
-import zeit.cms.relation.interfaces
 import zope.component
+
+import zeit.cms.relation.interfaces
 
 
 class Index:

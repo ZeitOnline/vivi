@@ -1,7 +1,8 @@
 # coding: utf-8
-from zeit.cms.checkout.helper import checked_out
 import lxml.objectify
 import transaction
+
+from zeit.cms.checkout.helper import checked_out
 import zeit.cms.testing
 
 

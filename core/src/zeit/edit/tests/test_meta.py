@@ -1,10 +1,11 @@
 import grokcore.component as grok
 import grokcore.component.testing
+import zope.component
+import zope.interface
+
 import zeit.edit.block
 import zeit.edit.interfaces
 import zeit.edit.testing
-import zope.component
-import zope.interface
 
 
 class IExampleElement(zeit.edit.interfaces.IElement):

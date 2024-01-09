@@ -1,12 +1,14 @@
 from unittest import mock
+
+import gocept.testing.mock
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
-import gocept.testing.mock
 import zeit.cms.content.interfaces
 import zeit.content.article.edit.author
 import zeit.content.author.author
 import zeit.content.author.testing
-import zope.component
 
 
 class AuthorshipXMLReferenceUpdater(zeit.content.author.testing.FunctionalTestCase):

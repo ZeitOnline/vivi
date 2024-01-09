@@ -1,19 +1,22 @@
-from ..timebased import TimeBasedWorkflow
 from datetime import datetime, timedelta
 from io import StringIO
 from unittest import mock
+import logging
+
+import celery.result
+import celery_longterm_scheduler
+import pytz
+import transaction
+import zope.component
+import zope.i18n
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
-import celery.result
-import celery_longterm_scheduler
-import logging
-import pytz
-import transaction
 import zeit.cms.testing
 import zeit.workflow.testing
-import zope.component
-import zope.i18n
+
+from ..timebased import TimeBasedWorkflow
 
 
 class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):

@@ -1,7 +1,7 @@
 from zeit.cms.interfaces import ICMSContent
-import zeit.content.video.testing
 import zeit.content.animation.animation
 import zeit.content.animation.testing
+import zeit.content.video.testing
 
 
 class AnimationTest(zeit.content.animation.testing.FunctionalTestCase):

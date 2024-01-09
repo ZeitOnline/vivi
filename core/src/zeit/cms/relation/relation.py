@@ -2,9 +2,10 @@ import BTrees
 import grokcore.component as grok
 import persistent
 import zc.relation.catalog
+import zope.interface
+
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(zeit.cms.relation.interfaces.IRelations)

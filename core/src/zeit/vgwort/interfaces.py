@@ -1,8 +1,9 @@
 # coding: utf8
-from zeit.cms.i18n import MessageFactory as _
-import zeit.connector.search
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.connector.search
 
 
 class SearchVars:

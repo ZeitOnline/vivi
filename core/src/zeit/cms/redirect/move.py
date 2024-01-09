@@ -1,12 +1,14 @@
-from zeit.cms.content.interfaces import WRITEABLE_LIVE
-import grokcore.component as grok
 import os.path
+
+import grokcore.component as grok
+import zope.component
+import zope.lifecycleevent
+
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import zeit.cms.checkout.interfaces
 import zeit.cms.redirect.interfaces
 import zeit.cms.relation.corehandlers
 import zeit.cms.repository.interfaces
-import zope.component
-import zope.lifecycleevent
 
 
 @zope.interface.implementer(zeit.cms.redirect.interfaces.IRenameInfo)

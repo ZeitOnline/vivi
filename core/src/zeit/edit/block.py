@@ -1,12 +1,14 @@
+import urllib.parse
+
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import urllib.parse
-import zeit.cms.content.xmlsupport
-import zeit.edit.interfaces
 import zope.component
 import zope.interface
 import zope.traversing.api
+
+import zeit.cms.content.xmlsupport
+import zeit.edit.interfaces
 
 
 @zope.component.adapter(zeit.edit.interfaces.IContainer, gocept.lxml.interfaces.IObjectified)

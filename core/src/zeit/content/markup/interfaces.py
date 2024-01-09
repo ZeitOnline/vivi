@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
 

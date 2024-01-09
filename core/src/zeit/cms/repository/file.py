@@ -1,15 +1,16 @@
-from zeit.cms.i18n import MessageFactory as _
-import ZODB.blob
 import persistent
+import ZODB.blob
+import zope.component
+import zope.interface
+import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.cms.workingcopy.interfaces
 import zeit.connector.interfaces
-import zope.component
-import zope.interface
-import zope.security.proxy
 
 
 @zope.interface.implementer(zeit.cms.repository.interfaces.IFile, zeit.cms.interfaces.IAsset)

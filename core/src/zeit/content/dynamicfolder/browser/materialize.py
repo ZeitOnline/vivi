@@ -1,8 +1,7 @@
 import zope.cachedescriptors.property
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.dynamicfolder.interfaces import IMaterializedContent, ICloneArmy
-
+from zeit.content.dynamicfolder.interfaces import ICloneArmy, IMaterializedContent
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.content.dynamicfolder.materialize

@@ -1,12 +1,14 @@
-import lxml.etree
-import lxml.objectify
 import sys
 import xml.sax.saxutils
+
+import lxml.etree
+import lxml.objectify
+import zope.component
+import zope.schema.interfaces
+
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.resource
-import zope.component
-import zope.schema.interfaces
 
 
 class ObjectPathProperty:

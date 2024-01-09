@@ -1,7 +1,9 @@
-from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import zeit.cms.content.sources
+
 import zope.interface
+
+from zeit.cms.interfaces import CONFIG_CACHE
+import zeit.cms.content.sources
 
 
 class AllowedMixin(zeit.cms.content.sources.AllowedBase):

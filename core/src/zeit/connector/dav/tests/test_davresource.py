@@ -1,5 +1,6 @@
-from zeit.connector.dav.davresource import DAVResource
 import unittest
+
+from zeit.connector.dav.davresource import DAVResource
 
 
 class TestDAVResource(unittest.TestCase):

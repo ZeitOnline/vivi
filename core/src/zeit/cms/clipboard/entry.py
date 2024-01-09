@@ -1,12 +1,13 @@
 import persistent
+import zope.component
+import zope.container.contained
+import zope.container.ordered
+import zope.interface
+import zope.publisher.browser
+
 import zeit.cms.browser.interfaces
 import zeit.cms.clipboard.interfaces
 import zeit.cms.interfaces
-import zope.container.contained
-import zope.container.ordered
-import zope.component
-import zope.interface
-import zope.publisher.browser
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

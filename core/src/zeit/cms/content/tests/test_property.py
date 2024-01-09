@@ -1,13 +1,15 @@
 from unittest import mock
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import unittest
+
 import gocept.testing.assertion
 import lxml.etree
 import plone.testing.zca
-import unittest
-import zeit.cms.content.interfaces
 import zope.component
 import zope.interface
 import zope.schema
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import zeit.cms.content.interfaces
 
 
 class TestDAVConverterWrapper(unittest.TestCase):

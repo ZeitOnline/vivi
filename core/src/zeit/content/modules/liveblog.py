@@ -1,7 +1,8 @@
+import zope.interface
+
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.content.modules.interfaces import ITickarooLiveblog
 import zeit.edit.block
-import zope.interface
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.ITickarooLiveblog)

@@ -1,6 +1,7 @@
-import zeit.vgwort.interfaces
 import zope.component
 import zope.publisher.xmlrpc
+
+import zeit.vgwort.interfaces
 
 
 class AvailableTokens:

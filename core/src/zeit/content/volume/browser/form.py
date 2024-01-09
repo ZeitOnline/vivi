@@ -1,17 +1,18 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import grokcore.component as grok
 import transaction
+import zope.formlib.form
+import zope.formlib.interfaces
+import zope.interface
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.interfaces
 import zeit.cms.settings.interfaces
 import zeit.content.image.interfaces
 import zeit.content.volume.interfaces
 import zeit.content.volume.volume
-import zope.formlib.form
-import zope.formlib.interfaces
-import zope.interface
-import zope.schema
 
 
 @zope.interface.implementer(zope.formlib.interfaces.IWidgetInputError)

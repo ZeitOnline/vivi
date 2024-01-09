@@ -1,5 +1,6 @@
 # XXX 100% copy&paste from zeit.magazin.browser.social
 import copy
+
 import zeit.push.browser.form
 import zeit.push.interfaces
 

@@ -1,3 +1,6 @@
+import zope.browsermenu.menu
+import zope.formlib.form
+
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cmp.interfaces
@@ -5,8 +8,6 @@ import zeit.cms.browser.form
 import zeit.cms.checkout.browser.manager
 import zeit.content.text.embed
 import zeit.content.text.interfaces
-import zope.browsermenu.menu
-import zope.formlib.form
 
 
 class FormBase:

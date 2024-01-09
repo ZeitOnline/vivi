@@ -1,5 +1,6 @@
-import zeit.workflow.testing
 import zope.testbrowser.browser
+
+import zeit.workflow.testing
 
 
 class WorkflowTabTest(zeit.workflow.testing.BrowserTestCase):

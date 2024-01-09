@@ -1,9 +1,10 @@
 from lxml.objectify import E
+import zope.interface
+
 import zeit.cms.content.property
 import zeit.content.modules.interfaces
 import zeit.edit.block
 import zeit.wochenmarkt.interfaces
-import zope.interface
 
 
 class Ingredient:

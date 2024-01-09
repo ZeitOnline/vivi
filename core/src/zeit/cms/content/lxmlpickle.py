@@ -1,7 +1,8 @@
+import copyreg
 import logging
+
 import lxml.etree
 import lxml.objectify
-import copyreg
 
 
 log = logging.getLogger(__name__)

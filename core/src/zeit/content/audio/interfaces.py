@@ -1,11 +1,11 @@
+import zope.interface
+import zope.schema
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.interfaces import CONFIG_CACHE
-
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
-import zope.interface
-import zope.schema
 
 
 class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):

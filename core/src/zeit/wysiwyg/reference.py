@@ -1,8 +1,9 @@
+import zope.component
+import zope.interface
+
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.wysiwyg.interfaces
-import zope.component
-import zope.interface
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

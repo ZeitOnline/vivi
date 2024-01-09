@@ -1,11 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
 import collections
+
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.content.article.interfaces
-import zeit.content.video.interfaces
 import zeit.content.gallery.interfaces
-import zope.schema
+import zeit.content.video.interfaces
 
 
 class DisplayModeSource(zeit.cms.content.sources.SimpleFixedValueSource):

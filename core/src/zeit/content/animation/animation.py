@@ -1,3 +1,6 @@
+import zope.component
+import zope.interface
+
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.metadata
@@ -9,8 +12,6 @@ import zeit.content.animation.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.push.interfaces
-import zope.component
-import zope.interface
 
 
 @zope.interface.implementer(

@@ -1,13 +1,15 @@
-from zeit.cms.content.sources import FEATURE_TOGGLES
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
+import zope.component
+import zope.lifecycleevent
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.celery
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
-import zope.component
-import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)

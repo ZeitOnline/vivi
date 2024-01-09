@@ -1,8 +1,9 @@
 from zope.browserpage import ViewPageTemplateFile
+import zope.lifecycleevent
+
 import zeit.cms.browser.view
 import zeit.edit.browser.editor
 import zeit.edit.browser.view
-import zope.lifecycleevent
 
 
 class Editor(zeit.edit.browser.editor.Editor):

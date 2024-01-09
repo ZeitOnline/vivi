@@ -1,6 +1,7 @@
+import zope.component
+
 import zeit.brightcove.interfaces
 import zeit.cms.generation
-import zope.component
 
 
 def update(root):

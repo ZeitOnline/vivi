@@ -1,7 +1,9 @@
 from io import BytesIO
+
 import PIL.Image
 import PIL.ImageColor
 import PIL.ImageDraw
+
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
 import zeit.crop.mask

@@ -1,18 +1,20 @@
-from zeit.cms.redirect.interfaces import IRenameInfo
-import grokcore.component as grok
 import logging
-import lxml.etree
 import os.path
-import zeit.content.cp.interfaces
+
+import grokcore.component as grok
+import lxml.etree
+import zope.interface
+import zope.location.location
+import zope.proxy
+
+from zeit.cms.redirect.interfaces import IRenameInfo
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.redirect.interfaces
 import zeit.cms.type
-import zope.interface
-import zope.location.location
-import zope.proxy
+import zeit.content.cp.interfaces
 
 
 log = logging.getLogger(__name__)

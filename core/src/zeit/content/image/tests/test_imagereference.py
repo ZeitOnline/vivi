@@ -1,4 +1,7 @@
 from unittest import mock
+
+import zope.copypastemove.interfaces
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.content.reference import ReferenceProperty
@@ -7,7 +10,6 @@ from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.content.image.interfaces import IImageMetadata
 import zeit.content.image.interfaces
 import zeit.content.image.testing
-import zope.copypastemove.interfaces
 
 
 class ImageAssetTest(zeit.content.image.testing.FunctionalTestCase):

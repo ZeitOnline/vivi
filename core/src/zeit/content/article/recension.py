@@ -1,13 +1,14 @@
 import lxml.objectify
 import z3c.traverser.interfaces
-import zeit.cms.content.property
-import zeit.cms.content.xmlsupport
-import zeit.content.article.interfaces
 import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.publisher.interfaces
 import zope.security.proxy
+
+import zeit.cms.content.property
+import zeit.cms.content.xmlsupport
+import zeit.content.article.interfaces
 
 
 @zope.component.adapter(zeit.content.article.interfaces.IArticle)

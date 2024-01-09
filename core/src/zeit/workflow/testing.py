@@ -1,15 +1,16 @@
 from unittest import mock
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
+
 import gocept.selenium
 import plone.testing
+import zope.app.appsetup.product
+import zope.component
+import zope.interface
+
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_WARNING
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.workflow.publishinfo
-import zope.app.appsetup.product
-import zope.component
-import zope.interface
 
 
 product_config = """

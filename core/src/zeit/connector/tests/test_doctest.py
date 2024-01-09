@@ -1,5 +1,7 @@
-import pytest
 import unittest
+
+import pytest
+
 import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.testing

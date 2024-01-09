@@ -1,5 +1,6 @@
 import grokcore.component as grok
 import lxml.objectify
+
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.block

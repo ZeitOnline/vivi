@@ -1,14 +1,16 @@
+import functools
+import logging
+
 from opentelemetry.instrumentation.instrumentor import BaseInstrumentor
 from perfmetrics.metric import _AbstractMetricImpl as MetricImpl
 from relstorage.zodburi_resolver import RelStorageURIResolver, Resolver
-import ZODB.serialize
-import functools
-import logging
 import opentelemetry.trace
 import perfmetrics._util
-import zeit.cms.cli
+import ZODB.serialize
 import zodburi
 import zope.app.appsetup.product
+
+import zeit.cms.cli
 
 
 log = logging.getLogger(__name__)

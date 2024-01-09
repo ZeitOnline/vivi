@@ -1,9 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.content.image.interfaces
-import zope.schema
 
 
 class SupertitleSource(zc.sourcefactory.basic.BasicSourceFactory):

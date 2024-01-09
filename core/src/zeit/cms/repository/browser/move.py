@@ -1,15 +1,17 @@
 from urllib.parse import urlparse
-from zeit.cms.i18n import MessageFactory as _
 import os.path
+
+import zope.copypastemove.interfaces
+import zope.formlib.form
+import zope.interface
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.lightbox
 import zeit.cms.browser.menu
 import zeit.cms.repository.browser.rename
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
-import zope.copypastemove.interfaces
-import zope.formlib.form
-import zope.interface
-import zope.schema
 
 
 def valid_name(value):

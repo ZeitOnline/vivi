@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import zope.formlib.form
+
 import zeit.cms.browser.widget
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces

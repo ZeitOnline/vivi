@@ -1,20 +1,22 @@
 from io import BytesIO
 from urllib.parse import urlparse
+import ast
+import email.utils
+import logging
+import os
+import os.path
+
+import gocept.cache.property
+import lxml.etree
+import zope.app.file.image
+import zope.interface
+
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.interfaces import ID_NAMESPACE
-import ast
-import email.utils
-import gocept.cache.property
-import logging
-import lxml.etree
-import os
-import os.path
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
-import zope.app.file.image
-import zope.interface
 
 
 log = logging.getLogger(__name__)

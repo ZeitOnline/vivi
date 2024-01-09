@@ -1,17 +1,19 @@
-from urllib.parse import urlencode
 from io import BytesIO
-import PIL.Image
+from urllib.parse import urlencode
 import importlib.resources
 import json
+
+import PIL.Image
 import transaction
+import zope.app.file.image
+import zope.component
+import zope.component.hooks
+
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.testing
 import zeit.crop.testing
-import zope.app.file.image
-import zope.component
-import zope.component.hooks
 
 
 HERE = importlib.resources.files(__package__)

@@ -1,9 +1,14 @@
-from zeit.cms.content.property import DAVConverterWrapper
-from zeit.cms.content.property import ObjectPathAttributeProperty
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import collections.abc
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
 import lxml.objectify
+import zope.formlib.form
+import zope.formlib.widget
+import zope.interface
+import zope.security
+
+from zeit.cms.content.property import DAVConverterWrapper, ObjectPathAttributeProperty
 import zeit.cmp.consent
 import zeit.cmp.interfaces
 import zeit.cms.content.property
@@ -11,10 +16,6 @@ import zeit.cms.content.reference
 import zeit.cms.grok
 import zeit.content.modules.interfaces
 import zeit.edit.block
-import zope.formlib.form
-import zope.formlib.widget
-import zope.interface
-import zope.security
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IRawText)

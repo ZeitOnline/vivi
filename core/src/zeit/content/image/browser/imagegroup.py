@@ -1,19 +1,24 @@
+import csv
+import datetime
+import io
+import re
+
+from zope.formlib.widget import CustomWidgetFactory
+import gocept.form.grouped
+import zc.table.column
+import zope.app.appsetup.appsetup
+import zope.formlib.form
+import zope.publisher.interfaces
+
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.browser.interfaces import IMasterImageUploadSchema
 from zeit.content.image.browser.mdb import MDBImportWidget
 from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE
-from zeit.cms.workflow.interfaces import IPublishInfo
-from zope.formlib.widget import CustomWidgetFactory
-import csv
-import datetime
-import gocept.form.grouped
-import io
-import re
-import zc.table.column
 import zeit.cms.browser.form
 import zeit.cms.browser.listing
-import zeit.cms.browser.view
 import zeit.cms.browser.menu
+import zeit.cms.browser.view
 import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
@@ -22,9 +27,6 @@ import zeit.find.interfaces
 import zeit.ghost.ghost
 import zeit.retresco.interfaces
 import zeit.workflow.interfaces
-import zope.app.appsetup.appsetup
-import zope.formlib.form
-import zope.publisher.interfaces
 
 
 class FormBase:

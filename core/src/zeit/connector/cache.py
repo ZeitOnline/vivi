@@ -1,27 +1,29 @@
 from functools import total_ordering
-from gocept.cache.method import Memoize as memoize
 from io import BytesIO
-from zope.dottedname.resolve import resolve
-import BTrees
-import ZODB.POSException
-import ZODB.blob
 import argparse
 import collections.abc
-import gocept.lxml.objectify
 import logging
-import lxml.objectify
 import os
-import persistent
-import persistent.mapping
 import tempfile
 import time
-import transaction
 import urllib.request
+
+from gocept.cache.method import Memoize as memoize
+from zope.dottedname.resolve import resolve
+import BTrees
+import gocept.lxml.objectify
+import lxml.objectify
+import persistent
+import persistent.mapping
+import transaction
 import zc.set
-import zeit.cms.cli
-import zeit.connector.interfaces
+import ZODB.blob
+import ZODB.POSException
 import zope.interface
 import zope.security.proxy
+
+import zeit.cms.cli
+import zeit.connector.interfaces
 
 
 log = logging.getLogger(__name__)

@@ -1,14 +1,16 @@
 # coding: utf-8
-from zeit.cms.repository.unknown import PersistentUnknownResource
-from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
 import importlib.resources
+
 import plone.testing
 import transaction
+import zope.component
+
+from zeit.cms.repository.unknown import PersistentUnknownResource
+from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.cp.testing
-import zope.component
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.cp.testing.CONFIG_LAYER,))

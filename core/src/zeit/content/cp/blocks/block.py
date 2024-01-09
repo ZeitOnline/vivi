@@ -1,11 +1,13 @@
 import copy
+
 import grokcore.component as grok
+import zope.component
+import zope.interface
+
 import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
-import zope.component
-import zope.interface
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.IElement)

@@ -1,11 +1,12 @@
+import zope.component
+import zope.container.interfaces
+import zope.interface
+
 import zeit.cms.checkout.interfaces
 import zeit.cms.clipboard.entry
 import zeit.cms.clipboard.interfaces
 import zeit.cms.interfaces
 import zeit.ghost.interfaces
-import zope.component
-import zope.container.interfaces
-import zope.interface
 
 
 def create_ghost(content, workingcopy=None):

@@ -1,14 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.grouped
+import zope.component
+import zope.formlib.form
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.content.animation.interfaces
 import zeit.content.image.interfaces
 import zeit.push.browser.form
-import zope.component
-import zope.formlib.form
-import zope.interface
 
 
 class Base:

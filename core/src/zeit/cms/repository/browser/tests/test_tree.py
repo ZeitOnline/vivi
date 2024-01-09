@@ -1,9 +1,11 @@
 # coding: utf8
 from unittest import mock
+
+import zope.publisher.browser
+
 import zeit.cms.browser.interfaces
 import zeit.cms.repository.browser.repository
 import zeit.cms.testing
-import zope.publisher.browser
 
 
 class TestTree(zeit.cms.testing.SeleniumTestCase):

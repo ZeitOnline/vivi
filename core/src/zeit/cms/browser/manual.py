@@ -1,11 +1,12 @@
 from zope.browserpage import ViewPageTemplateFile
 import grokcore.component as grok
-import zeit.cms.content.sources
 import zope.browser.interfaces
 import zope.component
 import zope.formlib.form
 import zope.formlib.widget
 import zope.interface
+
+import zeit.cms.content.sources
 
 
 class LinkSource(zeit.cms.content.sources.XMLSource):

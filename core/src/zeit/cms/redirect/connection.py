@@ -1,9 +1,11 @@
 from urllib.parse import urlparse
 import json
+
 import requests
-import zeit.cms.redirect.interfaces
 import zope.app.appsetup.product
 import zope.interface
+
+import zeit.cms.redirect.interfaces
 
 
 @zope.interface.implementer(zeit.cms.redirect.interfaces.ILookup)

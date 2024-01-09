@@ -1,15 +1,16 @@
 import grokcore.component as grok
 import z3c.traverser.interfaces
-import zeit.cms.workingcopy.interfaces
-import zope.container.btree
 import zope.app.security.interfaces
 import zope.component
+import zope.container.btree
 import zope.dublincore.interfaces
 import zope.interface
 import zope.publisher.interfaces
 import zope.security.interfaces
 import zope.security.management
 import zope.securitypolicy.interfaces
+
+import zeit.cms.workingcopy.interfaces
 
 
 @zope.interface.implementer(zeit.cms.workingcopy.interfaces.IWorkingcopy)

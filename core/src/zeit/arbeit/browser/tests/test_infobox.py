@@ -1,5 +1,5 @@
-import zeit.cms.testing
 import zeit.arbeit.testing
+import zeit.cms.testing
 
 
 class ZARInfoboxDebateTest(zeit.arbeit.testing.BrowserTestCase):

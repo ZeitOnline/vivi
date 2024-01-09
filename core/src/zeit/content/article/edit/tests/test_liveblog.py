@@ -26,8 +26,9 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
 
 class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
     def get_liveblog(self):
-        from zeit.content.article.edit.liveblog import Liveblog
         import lxml.objectify
+
+        from zeit.content.article.edit.liveblog import Liveblog
 
         liveblog = Liveblog(None, lxml.objectify.E.liveblog())
         return liveblog

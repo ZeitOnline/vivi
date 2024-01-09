@@ -1,8 +1,12 @@
-from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
 import collections.abc
+import os.path
+
 import grokcore.component as grok
 import lxml.objectify
-import os.path
+import zope.component
+import zope.schema.interfaces
+
+from zeit.cms.repository.interfaces import AfterObjectConstructedEvent
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.author.author
@@ -11,8 +15,6 @@ import zeit.content.gallery.interfaces
 import zeit.content.link.link
 import zeit.content.video.video
 import zeit.retresco.interfaces
-import zope.component
-import zope.schema.interfaces
 
 
 @zope.interface.implementer(zeit.retresco.interfaces.ITMSContent)

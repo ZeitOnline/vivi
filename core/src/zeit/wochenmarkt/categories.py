@@ -1,12 +1,14 @@
-from lxml.objectify import E
-from zeit.cms.interfaces import CONFIG_CACHE
 import collections
-import grokcore.component as grok
 import logging
+
+from lxml.objectify import E
+import grokcore.component as grok
 import lxml.etree
+import zope.interface
+
+from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
-import zope.interface
 
 
 log = logging.getLogger(__name__)

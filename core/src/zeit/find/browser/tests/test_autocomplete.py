@@ -1,10 +1,12 @@
 from unittest import mock
-from zeit.cms.browser.widget import AutocompleteSourceQuery
 import unittest
-import zeit.cms.testing
-import zeit.find.testing
+
 import zope.interface
 import zope.publisher.browser
+
+from zeit.cms.browser.widget import AutocompleteSourceQuery
+import zeit.cms.testing
+import zeit.find.testing
 
 
 class TestSimpleFind(unittest.TestCase, zeit.cms.testing.BrowserAssertions):

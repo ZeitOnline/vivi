@@ -1,7 +1,7 @@
 import zope.component.zcml
-import zope.security.zcml
-import zope.security.permission
 import zope.security.interfaces
+import zope.security.permission
+import zope.security.zcml
 
 import zeit.cms.interfaces
 

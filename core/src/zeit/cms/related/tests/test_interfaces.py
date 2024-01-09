@@ -1,8 +1,9 @@
+import zope.app.appsetup.product
+
 from zeit.cms.content.contentsource import cmsContentSource
 from zeit.cms.related.interfaces import relatableContentSource
 import zeit.cms.content.contentsource
 import zeit.cms.testing
-import zope.app.appsetup.product
 
 
 class Source(zeit.cms.testing.ZeitCmsTestCase):

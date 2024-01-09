@@ -1,9 +1,11 @@
-from zope.browserpage import ViewPageTemplateFile
 import importlib.resources
-import zeit.cms.browser.objectdetails
-import zeit.edit.browser.form
+
+from zope.browserpage import ViewPageTemplateFile
 import zope.formlib.form
 import zope.formlib.interfaces
+
+import zeit.cms.browser.objectdetails
+import zeit.edit.browser.form
 
 
 class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):

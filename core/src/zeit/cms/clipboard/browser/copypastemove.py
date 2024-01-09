@@ -1,10 +1,11 @@
+import zope.cachedescriptors.property
+import zope.component
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.interfaces
-import zope.cachedescriptors.property
-import zope.component
 
 
 class InsertMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):

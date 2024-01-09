@@ -1,10 +1,11 @@
 import plone.testing
+import zope.component
+import zope.interface
+
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
-import zope.component
-import zope.interface
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(zeit.cms.testing.CONFIG_LAYER,))

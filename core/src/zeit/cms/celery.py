@@ -3,7 +3,9 @@ import ast
 import logging
 import os
 import os.path
+
 import zeit.cms.cli
+
 
 log = logging.getLogger(__name__)
 
@@ -39,14 +41,15 @@ except ImportError:
 
             return Callable
 else:
-    from zeit.cms.tracing import anonymize
     import bugsnag
     import kombu
     import opentelemetry.trace
     import prometheus_client
+    import zope.app.appsetup.appsetup
+
+    from zeit.cms.tracing import anonymize
     import zeit.cms.zeo
     import zeit.cms.zope
-    import zope.app.appsetup.appsetup
 
     @celery.signals.setup_logging.connect(weak=False)
     def setup_logging(*args, **kw):

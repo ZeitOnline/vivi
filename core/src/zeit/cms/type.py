@@ -1,17 +1,19 @@
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
 import lxml.etree
-import zeit.cms.content.dav
+import zope.container.contained
+import zope.interface
+import zope.proxy
+import zope.schema
+
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.util
 import zeit.connector.interfaces
 import zeit.connector.resource
-import zope.container.contained
-import zope.interface
-import zope.proxy
-import zope.schema
 
 
 log = logging.getLogger(__name__)

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
+
+import pendulum
+
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.browser.imagegroup import CopyrightCompanyPurchaseReport  # noqa
 from zeit.content.image.interfaces import IImageMetadata
-from zeit.cms.workflow.interfaces import IPublishInfo
-import pendulum
 import zeit.cms.content.add
 import zeit.cms.content.sources
 import zeit.cms.testing

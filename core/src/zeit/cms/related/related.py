@@ -1,13 +1,14 @@
 import grokcore.component as grok
 import lxml.objectify
+import zope.component
+import zope.interface
+
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.relation.interfaces
-import zope.component
-import zope.interface
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLContent)

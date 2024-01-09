@@ -1,15 +1,15 @@
 from unittest.mock import Mock
 
-from zeit.content.audio.interfaces import PodcastSource, Podcast
-from zeit.content.audio.testing import AudioBuilder, FunctionalTestCase
+import zope.interface.verify
 
-import zeit.cms.content.sources
+from zeit.content.audio.interfaces import Podcast, PodcastSource
+from zeit.content.audio.testing import AudioBuilder, FunctionalTestCase
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.audio.audio
 import zeit.content.image.interfaces
-import zope.interface.verify
 
 
 class PodcastSourceTest(FunctionalTestCase):

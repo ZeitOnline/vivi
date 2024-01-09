@@ -1,13 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
 import importlib.resources
+
+import grokcore.component as grok
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.content.video.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(zeit.content.video.interfaces.IPlaylist, zeit.cms.interfaces.IAsset)

@@ -1,3 +1,5 @@
+import zope.schema
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.interfaces import IAudioReferences
@@ -12,7 +14,6 @@ import zeit.content.image.interfaces
 import zeit.content.link.interfaces
 import zeit.content.volume.volume
 import zeit.retresco.testing
-import zope.schema
 
 
 class IExample(zope.interface.Interface):

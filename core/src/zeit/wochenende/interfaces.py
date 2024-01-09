@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import zeit.cms.interfaces
-import zeit.cms.section.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
 import zeit.content.cp.interfaces
 

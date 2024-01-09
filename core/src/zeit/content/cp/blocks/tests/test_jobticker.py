@@ -1,11 +1,12 @@
 import lxml.objectify
+import zope.component
+
 import zeit.cms.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.content.modules.jobticker
 import zeit.edit.interfaces
-import zope.component
 
 
 class TestJobboxtickerblock(zeit.content.cp.testing.FunctionalTestCase):

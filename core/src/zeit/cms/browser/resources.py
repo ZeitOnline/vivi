@@ -1,14 +1,15 @@
-from fanstatic import Library, Group
+import importlib.resources
+import os.path
+import sys
+
+from fanstatic import Group, Library
 from js.jquery import jquery
 from js.mochikit import mochikit
 from js.select2 import select2_de
 from js.underscore import underscore
 from js.vanderlee_colorpicker import colorpicker
 import fanstatic
-import importlib.resources
 import js.jqueryui
-import os.path
-import sys
 
 
 lib_css = Library('zeit.cms', 'resources')

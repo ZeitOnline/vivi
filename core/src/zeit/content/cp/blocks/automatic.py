@@ -1,4 +1,5 @@
 import grokcore.component as grok
+
 import zeit.content.cp.blocks.block
 import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces

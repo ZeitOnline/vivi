@@ -1,9 +1,10 @@
+import zope.component
+import zope.publisher.interfaces.browser
+
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.repository.interfaces
 import zeit.content.portraitbox.interfaces
-import zope.component
-import zope.publisher.interfaces.browser
 
 
 @zope.component.adapter(

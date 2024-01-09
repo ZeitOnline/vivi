@@ -1,12 +1,14 @@
-from zeit.cms.i18n import MessageFactory as _
 import copy
+
+import zope.interface
+import zope.proxy
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.rawxml.interfaces
-import zope.interface
-import zope.proxy
 
 
 @zope.interface.implementer(zeit.content.rawxml.interfaces.IRawXML)

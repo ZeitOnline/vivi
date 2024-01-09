@@ -1,9 +1,11 @@
 from unittest import mock
 import importlib.resources
+
 import plone.testing
+import zope.component
+
 import zeit.cms.testing
 import zeit.find.testing
-import zope.component
 
 
 product_config = """

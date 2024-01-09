@@ -1,6 +1,7 @@
-import unittest
-import zeit.cms.testing
 import doctest
+import unittest
+
+import zeit.cms.testing
 
 
 def test_suite():

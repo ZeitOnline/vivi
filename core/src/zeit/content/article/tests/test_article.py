@@ -1,10 +1,19 @@
 # coding: utf8
 from unittest import mock
+
+import zope.component
+import zope.event
+import zope.interface
+import zope.lifecycleevent
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import (
+    CAN_PUBLISH_ERROR,
+    CAN_PUBLISH_SUCCESS,
+    IPublish,
+    IPublishInfo,
+)
 from zeit.content.audio.testing import AudioBuilder
 import zeit.cms.content.interfaces
 import zeit.cms.content.reference
@@ -18,10 +27,6 @@ import zeit.content.image.imagegroup
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.magazin.interfaces
-import zope.component
-import zope.event
-import zope.interface
-import zope.lifecycleevent
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):

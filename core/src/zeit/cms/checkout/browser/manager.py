@@ -1,17 +1,19 @@
-from zeit.cms.i18n import MessageFactory as _
-import transaction
 import urllib.parse
-import zeit.cms.browser.menu
-import zeit.cms.browser.view
-import zeit.cms.checkout.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.workflow.interfaces
+
+import transaction
 import zope.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.dublincore.interfaces
 import zope.formlib.form
 import zope.i18n
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.menu
+import zeit.cms.browser.view
+import zeit.cms.checkout.interfaces
+import zeit.cms.repository.interfaces
+import zeit.cms.workflow.interfaces
 
 
 class Checkout(zeit.cms.browser.view.Base):

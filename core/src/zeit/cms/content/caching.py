@@ -3,11 +3,13 @@ from logging import getLogger
 from operator import itemgetter
 from os import environ
 from time import time
+
 from zope.cachedescriptors.property import Lazy as cachedproperty
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zope.component import getUtility
-from zeit.connector.interfaces import IConnector
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.connector.filesystem import Connector
+from zeit.connector.interfaces import IConnector
 
 
 log = getLogger(__name__)

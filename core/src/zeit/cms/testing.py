@@ -1,53 +1,47 @@
 from io import StringIO
-from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from unittest import mock
 from urllib.parse import urljoin
-import ZODB
-import ZODB.DemoStorage
 import base64
-import celery.contrib.testing.app
-import celery.contrib.testing.worker
-import celery_longterm_scheduler
 import contextlib
 import copy
 import datetime
 import doctest
+import importlib.resources
+import inspect
+import json
+import logging
+import os
+import re
+import sys
+import tempfile
+import threading
+import unittest
+import xml.sax.saxutils
+
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+import celery.contrib.testing.app
+import celery.contrib.testing.worker
+import celery_longterm_scheduler
 import gocept.httpserverlayer.custom
 import gocept.jslint
 import gocept.selenium
 import gocept.testing.assertion
-import importlib.resources
-import inspect
-import json
 import kombu
-import logging
 import lxml.cssselect
 import lxml.etree
 import lxml.html
 import opentelemetry.sdk.trace
 import opentelemetry.sdk.trace.export.in_memory_span_exporter as otel_export
-import os
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
 import pyramid_dogpile_cache2
 import pytest
-import re
-import sys
-import tempfile
-import threading
 import transaction
-import unittest
 import waitress.server
 import webtest.lint
-import xml.sax.saxutils
-import zeit.cms.application
-import zeit.cms.celery
-import zeit.cms.workflow.mock
-import zeit.cms.wsgi
-import zeit.cms.zope
-import zeit.connector.interfaces
-import zeit.connector.mock
+import ZODB
+import ZODB.DemoStorage
 import zope.app.appsetup.product
 import zope.app.publication.zopepublication
 import zope.app.wsgi
@@ -61,6 +55,14 @@ import zope.security.proxy
 import zope.security.testing
 import zope.testbrowser.browser
 import zope.testing.renormalizing
+
+import zeit.cms.application
+import zeit.cms.celery
+import zeit.cms.workflow.mock
+import zeit.cms.wsgi
+import zeit.cms.zope
+import zeit.connector.interfaces
+import zeit.connector.mock
 
 
 class LoggingLayer(plone.testing.Layer):

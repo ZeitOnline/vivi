@@ -1,8 +1,9 @@
-from zeit.retresco.interfaces import ISkipEnrich
 import grokcore.component as grok
-import zeit.connector.interfaces
-import zeit.cms.interfaces
+
+from zeit.retresco.interfaces import ISkipEnrich
 import zeit.cms.content.dav
+import zeit.cms.interfaces
+import zeit.connector.interfaces
 import zeit.seo.interfaces
 
 

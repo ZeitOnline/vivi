@@ -1,13 +1,14 @@
 # coding: utf8
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.view
-import zeit.cms.content.interfaces
-import zeit.cms.content.metadata
 import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.dublincore.interfaces
 import zope.interface
+
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
+import zeit.cms.content.interfaces
+import zeit.cms.content.metadata
 
 
 @zope.interface.implementer(zope.annotation.interfaces.IAttributeAnnotatable)

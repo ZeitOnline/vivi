@@ -1,8 +1,9 @@
 import lxml.etree
 import lxml.objectify
+import zope.lifecycleevent
+
 import zeit.cms.testing
 import zeit.content.cp.testing
-import zope.lifecycleevent
 
 
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):

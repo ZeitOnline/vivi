@@ -1,12 +1,13 @@
+import gocept.form.grouped
+import zope.dublincore.interfaces
+import zope.formlib.form
+
 from zeit.cms.content.browser.form import CommonMetadataFormBase
 from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
 import zeit.push.browser.form
-import zope.dublincore.interfaces
-import zope.formlib.form
 
 
 class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase):

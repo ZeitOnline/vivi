@@ -1,11 +1,12 @@
-from zeit.cms.i18n import MessageFactory as _
 import persistent
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.cms.util
-import zope.interface
 
 
 @zope.interface.implementer(

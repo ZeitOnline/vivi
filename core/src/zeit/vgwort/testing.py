@@ -1,7 +1,12 @@
 import os
+import unittest
+
 import plone.testing
 import pytest
-import unittest
+import zope.component
+import zope.index.text.interfaces
+import zope.interface
+
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.webtest
@@ -9,9 +14,6 @@ import zeit.content.author.testing
 import zeit.retresco.testhelper
 import zeit.retresco.testing
 import zeit.vgwort.interfaces
-import zope.component
-import zope.index.text.interfaces
-import zope.interface
 
 
 product_config = """

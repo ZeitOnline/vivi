@@ -1,5 +1,5 @@
-import zeit.cms.workingcopy.interfaces
 import zeit.cms.clipboard.interfaces
+import zeit.cms.workingcopy.interfaces
 
 
 class IGhost(

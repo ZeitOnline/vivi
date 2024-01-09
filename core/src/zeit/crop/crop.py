@@ -2,11 +2,12 @@ import PIL.Image
 import PIL.ImageColor
 import PIL.ImageEnhance
 import PIL.ImageFile
-import zeit.content.image.interfaces
-import zeit.crop.interfaces
 import zope.component
 import zope.interface
 import zope.security.proxy
+
+import zeit.content.image.interfaces
+import zeit.crop.interfaces
 
 
 # default is 64k, this allows cropping large images, see #5957

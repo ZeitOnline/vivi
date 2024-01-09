@@ -2,8 +2,10 @@ import lxml.etree
 import pygments
 import pygments.formatters
 import pygments.lexers
-import zeit.cms.browser.view
 import zope.proxy
+
+import zeit.cms.browser.view
+
 
 form_template = zope.formlib.namedtemplate.NamedTemplateImplementation(
     zope.app.pagetemplate.ViewPageTemplateFile('xml.edit-contents.pt'),

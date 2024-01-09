@@ -1,6 +1,8 @@
 # coding: utf8
-from selenium.webdriver.common.keys import Keys
 import unittest
+
+from selenium.webdriver.common.keys import Keys
+
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.crop.testing

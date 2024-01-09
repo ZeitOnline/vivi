@@ -1,14 +1,15 @@
 import transaction
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.listing
-import zeit.cms.browser.tree
-import zeit.cms.clipboard.interfaces
-import zeit.cms.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.traversing.api
 import zope.traversing.interfaces
 import zope.viewlet.viewlet
+
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.listing
+import zeit.cms.browser.tree
+import zeit.cms.clipboard.interfaces
+import zeit.cms.interfaces
 
 
 class Sidebar(zope.viewlet.viewlet.ViewletBase):

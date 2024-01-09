@@ -1,6 +1,7 @@
-import random
 import http.client
+import random
 import time
+
 import zeit.connector.dav.davbase
 import zeit.connector.dav.davresource
 import zeit.connector.dav.interfaces

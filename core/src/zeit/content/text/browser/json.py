@@ -1,19 +1,20 @@
-from zeit.cms.i18n import MessageFactory as _
 import commentjson
 import pygments
 import pygments.formatters
 import pygments.lexers
-import zeit.cms.browser.form
-import zeit.cms.browser.interfaces
-import zeit.cms.repository.browser.adapter
-import zeit.content.text.interfaces
-import zeit.content.text.json
 import zope.component
 import zope.formlib.form
 import zope.formlib.textwidgets
 import zope.formlib.widget
 import zope.interface
 import zope.publisher.interfaces
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.form
+import zeit.cms.browser.interfaces
+import zeit.cms.repository.browser.adapter
+import zeit.content.text.interfaces
+import zeit.content.text.json
 
 
 class FormBase:

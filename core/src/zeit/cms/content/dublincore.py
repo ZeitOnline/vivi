@@ -1,9 +1,10 @@
 import grokcore.component as grok
 import pendulum
+import zope.dublincore.interfaces
+
 import zeit.cms.content.dav
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
-import zope.dublincore.interfaces
 
 
 @grok.implementer(zope.dublincore.interfaces.IDCTimes)

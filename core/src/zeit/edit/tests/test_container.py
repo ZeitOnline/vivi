@@ -1,13 +1,15 @@
-from persistent.interfaces import IPersistent
 from unittest import mock
-import lxml.objectify
 import unittest
+
+from persistent.interfaces import IPersistent
+import lxml.objectify
+import zope.interface
+import zope.security.proxy
+
 import zeit.cms.workingcopy.interfaces
 import zeit.edit.container
 import zeit.edit.testing
 import zeit.edit.tests.fixture
-import zope.interface
-import zope.security.proxy
 
 
 class TestContainer(unittest.TestCase):

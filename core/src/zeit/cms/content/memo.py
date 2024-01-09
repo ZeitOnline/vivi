@@ -1,9 +1,10 @@
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component as grok
+import zope.interface
+
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IMemo)

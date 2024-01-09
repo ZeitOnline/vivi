@@ -1,5 +1,5 @@
-import zeit.content.image.interfaces
 import zeit.cms.browser.view
+import zeit.content.image.interfaces
 
 
 class Images(zeit.cms.browser.view.JSON):

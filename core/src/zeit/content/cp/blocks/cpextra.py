@@ -1,10 +1,11 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
+import zope.component
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
-import zope.component
 
 
 @grok.implementer(zeit.content.cp.interfaces.ICPExtraBlock)

@@ -1,22 +1,24 @@
-from lxml.objectify import E
 from urllib.parse import urlparse
-from zeit.cms.content.interfaces import IUUID
-from zeit.cms.content.property import ObjectPathAttributeProperty
-from zeit.cms.i18n import MessageFactory as _
-from zope.index.text.interfaces import ISearchableText
-import grokcore.component as grok
 import hashlib
 import logging
-import requests
 import time
+
+from lxml.objectify import E
+from zope.index.text.interfaces import ISearchableText
+import grokcore.component as grok
+import requests
+import zope.interface
+import zope.security.management
+import zope.security.proxy
+
+from zeit.cms.content.interfaces import IUUID
+from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.content.article.article
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zope.interface
-import zope.security.management
-import zope.security.proxy
 
 
 log = logging.getLogger(__name__)

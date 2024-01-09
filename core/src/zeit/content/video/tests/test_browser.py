@@ -1,11 +1,12 @@
 import plone.testing
+import zope.component
+import zope.publisher.browser
+
 import zeit.cms.browser.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
 import zeit.push.interfaces
 import zeit.push.testing
-import zope.component
-import zope.publisher.browser
 
 
 class TestStill(zeit.content.video.testing.BrowserTestCase):

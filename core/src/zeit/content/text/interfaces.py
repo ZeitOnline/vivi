@@ -1,7 +1,8 @@
+import zope.schema
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.repository.interfaces
-import zope.schema
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/text'

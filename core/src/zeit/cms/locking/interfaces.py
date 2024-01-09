@@ -1,5 +1,5 @@
-import zope.schema
 import zope.app.locking.interfaces
+import zope.schema
 
 
 class ILockInfo(zope.app.locking.interfaces.ILockInfo):

@@ -1,7 +1,8 @@
-import zeit.cms.generation
-import zeit.cms.generation.install
 import zope.component
 import zope.error.interfaces
+
+import zeit.cms.generation
+import zeit.cms.generation.install
 
 
 def update(root):

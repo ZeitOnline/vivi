@@ -1,6 +1,7 @@
+import zope.app.appsetup
+
 import zeit.content.link.link
 import zeit.content.link.testing
-import zope.app.appsetup
 
 
 class TestForm(zeit.content.link.testing.BrowserTestCase):

@@ -1,9 +1,10 @@
+import zope.component
+
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-import zope.component
 
 
 class TestHelper(zeit.cms.testing.ZeitCmsTestCase):

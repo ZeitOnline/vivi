@@ -1,5 +1,5 @@
-from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.workflow.interfaces import IPublicationDependencies
 import zeit.cms.workflow.interfaces
 import zeit.content.animation.animation
 import zeit.content.video.testing
@@ -27,9 +27,10 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         self.assertEqual('The big Foo', pls.xml['body']['videos']['video']['title'])
 
     def test_security_should_allow_access_to_id_prefix(self):
-        import zeit.cms.testing
-        import zope.security.management
         from zope.security.proxy import ProxyFactory
+        import zope.security.management
+
+        import zeit.cms.testing
 
         factory = zeit.content.video.testing.playlist_factory(self)
         next(factory)

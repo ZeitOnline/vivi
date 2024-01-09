@@ -1,16 +1,18 @@
-from zeit.cms.i18n import MessageFactory as _
 import copy
+
 import gocept.form.grouped
 import zc.form.browser.combinationwidget
+import zope.app.form.browser
+import zope.cachedescriptors.property
+import zope.formlib.form
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.content.browser.form
 import zeit.cms.interfaces
 import zeit.content.infobox.infobox
 import zeit.content.infobox.interfaces
 import zeit.wysiwyg.browser.widget
-import zope.app.form.browser
-import zope.cachedescriptors.property
-import zope.formlib.form
 
 
 class FormBase:

@@ -1,17 +1,18 @@
-from zeit.cms.repository.interfaces import IAutomaticallyRenameable
-from zeit.content.article.edit.header import HEADER_NAME
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
+import zope.app.appsetup.appsetup
+import zope.schema.interfaces
+import zope.security.proxy
+
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+from zeit.content.article.edit.header import HEADER_NAME
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.block
 import zeit.edit.rule
-import zope.app.appsetup.appsetup
-import zope.schema.interfaces
-import zope.security.proxy
 
 
 BODY_NAME = 'editable-body'

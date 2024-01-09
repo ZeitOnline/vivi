@@ -1,17 +1,19 @@
-from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import os.path
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.listing
-import zeit.cms.browser.view
-import zeit.cms.repository.file
-import zeit.cms.repository.interfaces
+
+import gocept.form.grouped
 import zope.app.pagetemplate
 import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
 import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.listing
+import zeit.cms.browser.view
+import zeit.cms.repository.file
+import zeit.cms.repository.interfaces
 
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IFile, zeit.cms.browser.interfaces.ICMSLayer)

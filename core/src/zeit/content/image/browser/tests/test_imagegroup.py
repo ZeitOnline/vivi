@@ -1,6 +1,5 @@
 # coding: utf-8
-from zeit.content.image.testing import create_image_group_with_master_image
-from zeit.content.image.testing import fixture_bytes
+from zeit.content.image.testing import create_image_group_with_master_image, fixture_bytes
 import zeit.cms.interfaces
 import zeit.content.image.testing
 

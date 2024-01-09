@@ -1,11 +1,13 @@
 import collections
-import fanstatic
 import json
 import os.path
-import zeit.cms.browser.view
-import zeit.edit.browser.landing
+
+import fanstatic
 import zope.component
 import zope.i18n
+
+import zeit.cms.browser.view
+import zeit.edit.browser.landing
 
 
 class BlockFactories(zeit.cms.browser.view.JSON):

@@ -1,4 +1,4 @@
-from zeit.cms.browser.resources import SplitDirResource, Library
+from zeit.cms.browser.resources import Library, SplitDirResource
 import zeit.cms.browser.resources
 import zeit.find.browser.resources
 

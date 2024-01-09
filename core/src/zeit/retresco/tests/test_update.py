@@ -1,17 +1,19 @@
 from unittest import mock
+
+import transaction
+import zope.component
+import zope.event
+import zope.lifecycleevent
+
 from zeit.cms.tagging.tag import Tag
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.retresco.interfaces import TechnicalError
-import transaction
 import zeit.cms.checkout.helper
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.retresco.testing
 import zeit.retresco.update
 import zeit.workflow.interfaces
-import zope.component
-import zope.event
-import zope.lifecycleevent
 
 
 class UpdateTest(zeit.retresco.testing.FunctionalTestCase):

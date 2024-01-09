@@ -1,12 +1,14 @@
+import logging
+
 import BTrees
 import gocept.runner
-import logging
 import persistent
-import zeit.cms.cli
-import zeit.connector.interfaces
 import zope.component
 import zope.event
 import zope.interface
+
+import zeit.cms.cli
+import zeit.connector.interfaces
 
 
 log = logging.getLogger(__name__)

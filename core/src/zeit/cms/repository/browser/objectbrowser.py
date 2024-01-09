@@ -1,12 +1,13 @@
+import zope.component
+import zope.interface
+import zope.location.interfaces
+
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
-import zope.component
-import zope.interface
-import zope.location.interfaces
 
 
 @zope.component.adapter(

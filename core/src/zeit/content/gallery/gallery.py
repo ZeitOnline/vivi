@@ -1,8 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
+import xml.sax.saxutils
+
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
-import xml.sax.saxutils
+import zope.component
+import zope.interface
+import zope.lifecycleevent
+import zope.location.location
+import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
@@ -11,11 +18,6 @@ import zeit.cms.type
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.wysiwyg.html
-import zope.component
-import zope.interface
-import zope.lifecycleevent
-import zope.location.location
-import zope.security.proxy
 
 
 # A gallery used to be a center page, that's why we initialize it with such a

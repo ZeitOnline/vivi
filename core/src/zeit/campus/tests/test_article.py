@@ -1,5 +1,6 @@
-import zeit.campus.testing
 import zope.interface.verify
+
+import zeit.campus.testing
 
 
 class TopicTest(zeit.campus.testing.FunctionalTestCase):

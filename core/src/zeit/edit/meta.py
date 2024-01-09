@@ -1,10 +1,11 @@
 import gocept.lxml.interfaces
 import grokcore.component
 import martian
-import zeit.edit.block
-import zeit.edit.interfaces
 import zope.component.zcml
 import zope.interface
+
+import zeit.edit.block
+import zeit.edit.interfaces
 
 
 class NoneGuard:

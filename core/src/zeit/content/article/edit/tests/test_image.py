@@ -1,12 +1,14 @@
 # coding: utf8
 import contextlib
+
 import zeit.content.article.testing
 
 
 class ImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_image_can_be_set(self):
-        from zeit.content.article.edit.image import Image
         import lxml.objectify
+
+        from zeit.content.article.edit.image import Image
         import zeit.cms.interfaces
 
         tree = lxml.objectify.E.tree(lxml.objectify.E.image())
@@ -33,8 +35,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         )
 
     def test_setting_image_to_none_removes_href(self):
-        from zeit.content.article.edit.image import Image
         import lxml.objectify
+
+        from zeit.content.article.edit.image import Image
 
         tree = lxml.objectify.E.tree(lxml.objectify.E.image())
         image = Image(None, tree.image)
@@ -43,12 +46,14 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertNotIn('href', image.xml.attrib)
 
     def get_image_article(self, content):
-        from zeit.connector.resource import Resource
         from io import BytesIO
+
+        import zope.component
+
+        from zeit.connector.resource import Resource
         import zeit.cms.checkout.interfaces
         import zeit.cms.interfaces
         import zeit.connector.interfaces
-        import zope.component
 
         article_xml = """
         <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -117,8 +122,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         )
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkout(self):
-        import zeit.connector.interfaces
         import zope.component
+
+        import zeit.connector.interfaces
 
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         connector.move('http://xml.zeit.de/2006/DSC00109_2.JPG', 'http://xml.zeit.de/2006/ÄÖÜ.JPG')
@@ -132,12 +138,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         )
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(self):
+        import zope.component
+
         from zeit.content.article.interfaces import IArticle
         import zeit.cms.checkout.interfaces
         import zeit.cms.content.field
         import zeit.cms.interfaces
         import zeit.connector.interfaces
-        import zope.component
 
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         connector.move('http://xml.zeit.de/2006/DSC00109_2.JPG', 'http://xml.zeit.de/2006/ÄÖÜ.JPG')
@@ -162,10 +169,11 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         )
 
     def test_image_referenced_via_IImages_is_copied_to_first_body_block(self):
+        import zope.lifecycleevent
+
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
         import zeit.cms.interfaces
-        import zope.lifecycleevent
 
         self.repository['article'] = self.get_article()
 
@@ -185,11 +193,12 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(None, image_block.references)
 
     def test_IImages_is_not_copied_to_body_if_block_was_edited_manually(self):
+        import zope.lifecycleevent
+
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
         import zeit.cms.interfaces
         import zeit.content.image.testing
-        import zope.lifecycleevent
 
         # XXX This test shouldn't be using image groups since they cannot be
         # referenced by image blocks anymore according to the IImage interface
@@ -210,11 +219,12 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(image_group.uniqueId, image_block.references.target.uniqueId)
 
     def test_image_referenced_via_IImages_is_copied_to_push(self):
+        import zope.lifecycleevent
+
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
         import zeit.cms.interfaces
         import zeit.push.interfaces
-        import zope.lifecycleevent
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as co:
@@ -277,12 +287,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     @contextlib.contextmanager
     def image(self):
+        import zope.component
+
         from zeit.cms.interfaces import ICMSContent
         import zeit.cms.browser.form
         import zeit.cms.checkout.helper
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
-        import zope.component
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as article:
@@ -355,8 +366,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(['large', 'float'], list(source(image)))
 
     def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):
-        from zeit.content.article.edit.image import Image
         import lxml.objectify
+
+        from zeit.content.article.edit.image import Image
 
         tree = lxml.objectify.E.tree(lxml.objectify.E.image())
         tree.image.set('layout', 'float-square')
@@ -367,8 +379,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('large', image.display_mode)
 
     def test_variant_name_defaults_to_layout_if_not_set_for_bw_compat(self):
-        from zeit.content.article.edit.image import Image
         import lxml.objectify
+
+        from zeit.content.article.edit.image import Image
 
         tree = lxml.objectify.E.tree(lxml.objectify.E.image())
         tree.image.set('layout', 'float-square')
@@ -381,11 +394,12 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
     def test_factory_should_create_image_node(self):
+        import zope.component
+
         import zeit.content.article.article
         import zeit.content.article.edit.body
         import zeit.content.article.edit.interfaces
         import zeit.edit.interfaces
-        import zope.component
 
         article = zeit.content.article.article.Article()
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)

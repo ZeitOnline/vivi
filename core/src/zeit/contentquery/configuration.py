@@ -1,9 +1,10 @@
-from zeit.cms.interfaces import ICMSContent
-from zeit.contentquery.interfaces import IConfiguration
 import lxml.objectify
-import zeit.cms.content.property
 import zope.component
 import zope.interface
+
+from zeit.cms.interfaces import ICMSContent
+from zeit.contentquery.interfaces import IConfiguration
+import zeit.cms.content.property
 
 
 class CustomQueryProperty:

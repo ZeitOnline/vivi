@@ -1,13 +1,14 @@
 # coding: utf-8
+import lxml.etree
+import zope.component
+import zope.security.management
+
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.workflow.interfaces import IPublishInfo
-import lxml.etree
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.push.banner
 import zeit.push.testing
-import zope.component
-import zope.security.management
 
 
 class BannerPublisherTest(zeit.push.testing.TestCase):

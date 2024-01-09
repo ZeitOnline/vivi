@@ -12,8 +12,8 @@ import zope.component
 import zope.interface
 import zope.publisher.browser
 
-from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.content.interfaces import ISemanticChange
+from zeit.cms.interfaces import ITypeDeclaration
 from zeit.cms.workflow.interfaces import IPublicationStatus
 from zeit.connector.interfaces import DeleteProperty
 from zeit.content.image.interfaces import IImageMetadata
@@ -40,6 +40,7 @@ import zeit.push.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
 import zeit.seo.interfaces
+
 
 log = logging.getLogger(__name__)
 MIN_DATE = datetime(1970, 1, 1, tzinfo=pytz.UTC)

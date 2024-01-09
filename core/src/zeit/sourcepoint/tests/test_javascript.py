@@ -1,12 +1,14 @@
 from datetime import datetime
 from unittest import mock
-from zeit.cms.testing import clock
+
 import transaction
+import zope.component
+
+from zeit.cms.testing import clock
 import zeit.cms.testing
 import zeit.content.text.text
 import zeit.sourcepoint.interfaces
 import zeit.sourcepoint.testing
-import zope.component
 
 
 def Text(content=''):

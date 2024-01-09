@@ -1,11 +1,13 @@
+import zope.schema
+import zope.schema.interfaces
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.source
 import zeit.content.image.interfaces
-import zope.schema
-import zope.schema.interfaces
+
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 

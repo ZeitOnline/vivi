@@ -1,7 +1,6 @@
-from zeit.cms.i18n import MessageFactory as _
-
 import grokcore.component as grok
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.content.property
@@ -10,6 +9,7 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.markup.interfaces
+
 
 MARKUP_TEMPLATE = """\
 <markup xmlns:py="http://codespeak.net/lxml/objectify/pytype">

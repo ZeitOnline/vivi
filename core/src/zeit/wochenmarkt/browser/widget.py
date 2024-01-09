@@ -1,12 +1,7 @@
 from collections import namedtuple
-from zeit.content.modules.recipelist import Ingredient
-from zeit.wochenmarkt.categories import RecipeCategory
 import json
+
 import grokcore.component as grok
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.view
-import zeit.cms.interfaces
-import zeit.wochenmarkt.interfaces
 import zope.app.appsetup.appsetup
 import zope.app.pagetemplate
 import zope.component.hooks
@@ -15,6 +10,13 @@ import zope.formlib.source
 import zope.formlib.widget
 import zope.lifecycleevent
 import zope.schema.interfaces
+
+from zeit.content.modules.recipelist import Ingredient
+from zeit.wochenmarkt.categories import RecipeCategory
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
+import zeit.cms.interfaces
+import zeit.wochenmarkt.interfaces
 
 
 class IngredientsWidget(

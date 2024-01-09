@@ -1,10 +1,11 @@
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
+import zope.interface
+import zope.schema.interfaces
+
 import zeit.cms.content.contentsource
 import zeit.cms.content.sources
 import zeit.wochenmarkt.interfaces
-import zope.interface
-import zope.schema.interfaces
 
 
 class RecipeCategoriesSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):

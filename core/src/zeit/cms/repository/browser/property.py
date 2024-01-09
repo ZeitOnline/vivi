@@ -1,8 +1,9 @@
-from zeit.cms.i18n import MessageFactory as _
 import zc.table.column
 import zc.table.interfaces
-import zeit.cms.browser.listing
 import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.listing
 
 
 @zope.interface.implementer(zc.table.interfaces.ISortableColumn)

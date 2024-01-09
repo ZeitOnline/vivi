@@ -1,8 +1,9 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.article.source import LEGACY_DISPLAY_MODE_SOURCE
-from zeit.content.article.source import LEGACY_VARIANT_NAME_SOURCE
 import grokcore.component as grok
 import lxml.objectify
+import zope.lifecycleevent
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.article.source import LEGACY_DISPLAY_MODE_SOURCE, LEGACY_VARIANT_NAME_SOURCE
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.reference
 import zeit.content.article.edit.interfaces
@@ -11,7 +12,6 @@ import zeit.content.article.interfaces
 import zeit.content.article.source
 import zeit.content.image.interfaces
 import zeit.edit.interfaces
-import zope.lifecycleevent
 
 
 class ImageReferenceProperty(zeit.cms.content.reference.SingleReferenceProperty):

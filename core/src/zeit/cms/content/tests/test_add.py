@@ -1,12 +1,14 @@
-from urllib.parse import urlparse, parse_qsl
+from urllib.parse import parse_qsl, urlparse
+
+import zope.component
+import zope.publisher.browser
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.browser.interfaces
 import zeit.cms.content.add
 import zeit.cms.content.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
-import zope.component
-import zope.publisher.browser
 
 
 class ContentAdderTest(zeit.cms.testing.ZeitCmsTestCase):

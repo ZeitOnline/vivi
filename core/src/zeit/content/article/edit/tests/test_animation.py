@@ -1,8 +1,9 @@
 from lxml.objectify import E
+
 from zeit.content.animation.animation import Animation
 from zeit.content.article.article import Article
 from zeit.content.article.edit.animation import Animation as AnimatedHeader
-from zeit.content.article.testing import FunctionalTestCase, MOCK_LAYER
+from zeit.content.article.testing import MOCK_LAYER, FunctionalTestCase
 from zeit.content.video.video import Video
 
 

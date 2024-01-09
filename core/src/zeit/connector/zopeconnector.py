@@ -1,16 +1,18 @@
-import ZODB.POSException
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
 import transaction
 import transaction.interfaces
-import zeit.connector.connector
-import zeit.connector.interfaces
+import ZODB.POSException
 import zope.component
 import zope.event
 import zope.interface
 import zope.publisher.interfaces
 import zope.security.interfaces
 import zope.security.management
+
+import zeit.connector.connector
+import zeit.connector.interfaces
 
 
 log = logging.getLogger(__name__)

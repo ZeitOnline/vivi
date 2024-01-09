@@ -1,9 +1,10 @@
+import zope.app.pagetemplate
+import zope.formlib.form
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
 import zeit.cms.checkout.helper
 import zeit.content.image.interfaces
-import zope.app.pagetemplate
-import zope.formlib.form
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):

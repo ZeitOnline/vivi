@@ -1,12 +1,15 @@
-from zeit.cms.i18n import MessageFactory as _
 import json
 import logging
+
+import zope.app.appsetup.product
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.celery
 import zeit.cms.content.contentuuid
 import zeit.cms.content.interfaces
 import zeit.objectlog.interfaces
 import zeit.retresco.update
-import zope.app.appsetup.product
+
 
 log = logging.getLogger(__name__)
 

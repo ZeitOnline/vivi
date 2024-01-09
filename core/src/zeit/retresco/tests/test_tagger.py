@@ -1,21 +1,24 @@
 # coding: utf8
 from unittest import mock
+import unittest
+
+import lxml.objectify
+import zope.component
+import zope.interface
+import zope.interface.verify
+import zope.lifecycleevent
+
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.tagging.tag import Tag
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.retresco.tagger import Tagger
 from zeit.retresco.testing import create_testcontent
-import lxml.objectify
-import unittest
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.testing
-import zope.component
-import zope.interface
-import zope.interface.verify
-import zope.lifecycleevent
+
 
 try:
     import zeit.intrafind.tag

@@ -1,10 +1,12 @@
 import threading
 import time
+
 import transaction
 import transaction.interfaces
-import zeit.brightcove.interfaces
 import zope.component
 import zope.interface
+
+import zeit.brightcove.interfaces
 
 
 def get():

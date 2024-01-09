@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 # ruff: noqa: E501
-from io import StringIO
 from collections import OrderedDict
+from io import StringIO
 from unittest import mock
-from zeit.content.author.author import Author
+import sys
+
 from zeit.content.article.article import Article
 from zeit.content.article.testing import create_article
+from zeit.content.author.author import Author
 from zeit.content.volume.browser.toc import Toc
 from zeit.content.volume.volume import Volume
-import sys
 import zeit.cms.content.add
 import zeit.cms.content.sources
 import zeit.cms.testing

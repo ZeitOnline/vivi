@@ -1,12 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
 import lxml.etree
-import zeit.cms.browser.view
-import zeit.edit.browser.view
-import zeit.edit.interfaces
 import zope.component
 import zope.interface
 import zope.security.proxy
 import zope.viewlet.manager
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.view
+import zeit.edit.browser.view
+import zeit.edit.interfaces
 
 
 class BlockViewletManager(zeit.edit.browser.view.ErrorPreventingViewletManager):

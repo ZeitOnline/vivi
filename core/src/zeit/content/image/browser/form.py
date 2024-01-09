@@ -1,13 +1,14 @@
+import gocept.form.grouped
+import zope.formlib.form
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.image.transform import ImageTransform
-import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.repository.browser.file
 import zeit.content.image.browser.interfaces
 import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.edit.browser.form
-import zope.formlib.form
 
 
 class ImageFormBase(zeit.cms.repository.browser.file.FormBase):

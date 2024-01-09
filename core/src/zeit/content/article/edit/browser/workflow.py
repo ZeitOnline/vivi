@@ -1,15 +1,17 @@
 from unittest import mock
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import zeit.content.article.interfaces
-import zeit.edit.browser.form
-import zeit.workflow.interfaces
 import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.formlib.widget
 import zope.i18n
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+import zeit.content.article.interfaces
+import zeit.edit.browser.form
+import zeit.workflow.interfaces
 
 
 class WorkflowTimeContainer(zeit.edit.browser.form.FoldableFormGroup):

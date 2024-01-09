@@ -1,10 +1,11 @@
 import BTrees.OOBTree
 import zc.set
-import zeit.cms.browser.interfaces
 import zope.annotation.factory
 import zope.app.pagetemplate
 import zope.publisher.browser
 import zope.security.interfaces
+
+import zeit.cms.browser.interfaces
 
 
 @zope.component.adapter(zope.security.interfaces.IPrincipal)

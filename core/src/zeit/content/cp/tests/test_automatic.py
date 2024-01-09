@@ -1,13 +1,16 @@
 # coding: utf-8
 # ruff: noqa: E501
 from unittest import mock
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.content.cp.interfaces import IRenderedArea
-import json
-import lxml.etree
 import importlib.resources
+import json
+
+import lxml.etree
 import requests_mock
 import transaction
+import zope.component
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.content.cp.interfaces import IRenderedArea
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.interfaces
@@ -18,7 +21,6 @@ import zeit.edit.interfaces
 import zeit.reach.interfaces
 import zeit.retresco.content
 import zeit.retresco.interfaces
-import zope.component
 
 
 class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase):

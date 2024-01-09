@@ -1,6 +1,7 @@
-import bugsnag
 import traceback
 import urllib.parse
+
+import bugsnag
 import zope.error.error
 import zope.exceptions.exceptionformatter
 import zope.i18n

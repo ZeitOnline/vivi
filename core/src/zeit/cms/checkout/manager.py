@@ -1,19 +1,20 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import zope.app.locking.interfaces
+import zope.cachedescriptors.property
+import zope.component
+import zope.container.interfaces
+import zope.dublincore.interfaces
+import zope.event
+import zope.interface
+import zope.security.proxy
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.objectlog.interfaces
-import zope.container.interfaces
-import zope.app.locking.interfaces
-import zope.cachedescriptors.property
-import zope.component
-import zope.dublincore.interfaces
-import zope.event
-import zope.interface
-import zope.security.proxy
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

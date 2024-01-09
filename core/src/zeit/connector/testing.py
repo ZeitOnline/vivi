@@ -1,23 +1,25 @@
-from gcp_storage_emulator.server import create_server as create_gcp_server
 from io import BytesIO
+import contextlib
+import os
+import socket
+import time
+
+from gcp_storage_emulator.server import create_server as create_gcp_server
 from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
-import contextlib
 import docker
-import os
 import plone.testing
 import pytest
 import requests
-import socket
 import sqlalchemy
-import time
 import transaction
+import zope.component.hooks
+import zope.testing.renormalizing
+
 import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.interfaces
 import zeit.connector.mock
-import zope.component.hooks
-import zope.testing.renormalizing
 
 
 class DockerSetupError(requests.exceptions.ConnectionError):

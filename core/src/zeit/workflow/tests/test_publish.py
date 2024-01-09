@@ -1,19 +1,24 @@
 from datetime import datetime
 from io import StringIO
 from unittest import mock
+import json
+import logging
+import time
+
+import gocept.testing.mock
+import pytz
+import requests_mock
+import transaction
+import zope.app.appsetup.product
+import zope.component
+import zope.i18n
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
-import gocept.testing.mock
-import json
-import logging
-import pytz
-import requests_mock
-import time
-import transaction
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
@@ -23,9 +28,6 @@ import zeit.workflow.interfaces
 import zeit.workflow.publish
 import zeit.workflow.publisher
 import zeit.workflow.testing
-import zope.app.appsetup.product
-import zope.component
-import zope.i18n
 
 
 class PublishTest(zeit.workflow.testing.FunctionalTestCase):

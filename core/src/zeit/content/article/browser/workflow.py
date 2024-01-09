@@ -1,7 +1,8 @@
+import zope.component
+
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
 import zeit.workflow.browser.form
-import zope.component
 
 
 @zope.component.adapter(

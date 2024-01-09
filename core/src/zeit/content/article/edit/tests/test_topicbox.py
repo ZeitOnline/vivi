@@ -1,10 +1,11 @@
+import zope.component
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.content.video.video
 import zeit.edit.interfaces
-import zope.component
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 
 
 class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
@@ -27,8 +28,9 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.tms.get_related_documents.return_value = result
 
     def get_topicbox(self):
-        from zeit.content.article.edit.topicbox import Topicbox
         import lxml.objectify
+
+        from zeit.content.article.edit.topicbox import Topicbox
 
         box = Topicbox(None, lxml.objectify.E.topicbox())
         self.repository['art'] = zeit.content.article.article.Article()

@@ -1,8 +1,9 @@
+import zope.component
+import zope.interface
+
 import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.crop.interfaces
-import zope.component
-import zope.interface
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IRepositoryImageGroup)

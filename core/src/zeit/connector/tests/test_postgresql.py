@@ -1,9 +1,11 @@
 from datetime import datetime
 from io import BytesIO
-from zeit.connector.resource import Resource, WriteableCachedResource
-from zeit.connector.search import SearchVar
+
 import google.api_core.exceptions
 import transaction
+
+from zeit.connector.resource import Resource, WriteableCachedResource
+from zeit.connector.search import SearchVar
 import zeit.connector.testing
 
 

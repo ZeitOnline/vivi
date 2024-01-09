@@ -1,14 +1,17 @@
-import lxml
 import unittest
+
+import lxml
+import zope.schema
+
 import zeit.cms.testing
 import zeit.content.article.testing
-import zope.schema
 
 
 class RawXMLTest(unittest.TestCase):
     def test_root_tag_must_be_raw(self):
-        from zeit.content.article.edit.interfaces import IRawXML
         import lxml.objectify
+
+        from zeit.content.article.edit.interfaces import IRawXML
 
         field = IRawXML['xml']
         with self.assertRaises(zope.schema.ValidationError) as e:
@@ -19,10 +22,11 @@ class RawXMLTest(unittest.TestCase):
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
     def test_factory_should_create_raw_node(self):
+        import zope.component
+
         import zeit.content.article.article
         import zeit.content.article.edit.interfaces
         import zeit.edit.interfaces
-        import zope.component
 
         article = zeit.content.article.article.Article()
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)

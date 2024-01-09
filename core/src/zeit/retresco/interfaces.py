@@ -11,11 +11,13 @@
 * Converting ``ICMSContent`` objects to a nested dict structure and back again
   with ``ITMSRepresentation`` and ``ITMSContent``
 """
-from zeit.cms.interfaces import CONFIG_CACHE
 import collections
+
+import zope.interface
+
+from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.cms.interfaces
-import zope.interface
 
 
 ENTITY_TYPES = (

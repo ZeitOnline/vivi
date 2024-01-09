@@ -1,12 +1,14 @@
-import persistent
 import string
-import zeit.cms.interfaces
-import zeit.cms.repository.folder
-import zeit.cms.settings.interfaces
+
+import persistent
 import zope.annotation
 import zope.component
 import zope.interface
 import zope.location
+
+import zeit.cms.interfaces
+import zeit.cms.repository.folder
+import zeit.cms.settings.interfaces
 
 
 @zope.component.adapter(zope.location.interfaces.ISite)

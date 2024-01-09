@@ -1,5 +1,7 @@
-from zope.browserpage import ViewPageTemplateFile
 import importlib.resources
+
+from zope.browserpage import ViewPageTemplateFile
+
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces

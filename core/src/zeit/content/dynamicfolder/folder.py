@@ -1,17 +1,23 @@
 # coding: utf8
 from io import BytesIO
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.content.contentuuid import ContentUUID
-from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
-import grokcore.component as grok
 import hashlib
+import urllib.parse
+import uuid
+
+import grokcore.component as grok
 import jinja2
 import lxml.etree
 import lxml.objectify
 import persistent
-import urllib.parse
-import uuid
+import zope.app.locking.interfaces
+import zope.container.contained
+import zope.interface
+import zope.security.proxy
+
+from zeit.cms.content.contentuuid import ContentUUID
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -20,10 +26,6 @@ import zeit.cms.workflow.dependency
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zeit.content.dynamicfolder.interfaces
-import zope.app.locking.interfaces
-import zope.container.contained
-import zope.interface
-import zope.security.proxy
 
 
 @zope.interface.implementer(zeit.content.dynamicfolder.interfaces.IDynamicFolder)

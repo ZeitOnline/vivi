@@ -1,8 +1,10 @@
+import unittest
+
+import zope.component
+
 from zeit.cms.interfaces import IResult
 from zeit.retresco.interfaces import IElasticsearch
-import unittest
 import zeit.retresco.testing
-import zope.component
 
 
 class TestElasticsearch(unittest.TestCase):

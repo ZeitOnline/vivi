@@ -1,9 +1,10 @@
-import zeit.cms.content.interfaces
-import zeit.cms.content.template
-import zeit.cms.generation.install
 import zope.component
 import zope.component.hooks
 import zope.generations.utility
+
+import zeit.cms.content.interfaces
+import zeit.cms.content.template
+import zeit.cms.generation.install
 
 
 def install(root):

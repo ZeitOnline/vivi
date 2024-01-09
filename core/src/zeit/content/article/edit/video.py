@@ -1,12 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
-import zeit.content.video.interfaces
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.reference
+import zeit.content.video.interfaces
 import zeit.edit.interfaces
-import zope.schema
 
 
 @grok.implementer(zeit.content.article.edit.interfaces.IVideo)

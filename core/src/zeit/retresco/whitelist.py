@@ -1,12 +1,13 @@
-from zeit.cms.interfaces import CONFIG_CACHE
-from zeit.retresco.connection import TOPIC_PAGE_ATTRIBUTES
 import gocept.lxml.objectify
 import grokcore.component as grok
+import zope.component
+
+from zeit.cms.interfaces import CONFIG_CACHE
+from zeit.retresco.connection import TOPIC_PAGE_ATTRIBUTES
 import zeit.cms.content.sources
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zeit.retresco.interfaces
-import zope.component
 
 
 @grok.implementer(zeit.cms.tagging.interfaces.IWhitelist)

@@ -1,12 +1,14 @@
 import datetime
+
 import pytz
+import zope.component
+import zope.interface
+
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.wysiwyg.html
-import zope.component
-import zope.interface
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.content.image.testing.CONFIG_LAYER,))

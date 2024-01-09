@@ -1,10 +1,11 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
+import zope.interface
+import zope.schema
+
 import zeit.cms.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
-import zope.interface
-import zope.schema
 
 
 class IContainer(zeit.edit.interfaces.IArea, zeit.edit.interfaces.IBlock):

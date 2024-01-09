@@ -1,12 +1,14 @@
 # coding: utf-8
+import unittest
+
+import transaction
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import IWorkingcopy
 from zeit.content.article.edit.browser.tests.test_edit import click
-import transaction
-import unittest
 import zeit.cms.content.field
 import zeit.content.article.testing
-import zope.component
 
 
 class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):

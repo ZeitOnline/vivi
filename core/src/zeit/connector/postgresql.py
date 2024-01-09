@@ -1,38 +1,47 @@
 from functools import partial
-from gocept.cache.property import TransactionBoundCache
-from google.cloud import storage
-from google.cloud.storage.retry import DEFAULT_RETRY
 from io import BytesIO, StringIO
 from logging import getLogger
 from operator import itemgetter
-from sqlalchemy import Boolean, TIMESTAMP, Unicode, UnicodeText, Uuid
-from sqlalchemy import Column, ForeignKey, select
-from sqlalchemy import UniqueConstraint
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import backref
-from sqlalchemy.orm import relationship
 from uuid import uuid4
+import collections
+import os
+import os.path
+import time
+
+from gocept.cache.property import TransactionBoundCache
+from google.cloud import storage
+from google.cloud.storage.retry import DEFAULT_RETRY
+from sqlalchemy import (
+    TIMESTAMP,
+    Boolean,
+    Column,
+    ForeignKey,
+    Unicode,
+    UnicodeText,
+    UniqueConstraint,
+    Uuid,
+    select,
+)
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import backref, relationship
+import google.api_core.exceptions
+import opentelemetry.instrumentation.sqlalchemy
+import opentelemetry.metrics
+import sqlalchemy
+import sqlalchemy.event
+import sqlalchemy.orm
+import transaction
+import zope.component
+import zope.interface
+import zope.sqlalchemy
+
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.interfaces import DeleteProperty
 from zeit.connector.resource import CachedResource
-import collections
-import google.api_core.exceptions
-import opentelemetry.instrumentation.sqlalchemy
-import opentelemetry.metrics
-import os
-import os.path
-import sqlalchemy
-import sqlalchemy.event
-import sqlalchemy.orm
-import time
-import transaction
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.interfaces
-import zope.component
-import zope.interface
-import zope.sqlalchemy
 
 
 log = getLogger(__name__)

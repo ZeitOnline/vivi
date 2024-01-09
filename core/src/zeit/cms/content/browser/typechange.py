@@ -1,10 +1,10 @@
 import zope.component
 
-import zeit.cms.browser.menu
-import zeit.cms.interfaces
-import zeit.cms.browser.view
-import zeit.connector.interfaces
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.menu
+import zeit.cms.browser.view
+import zeit.cms.interfaces
+import zeit.connector.interfaces
 
 
 class TypeChange(zeit.cms.browser.view.Base):

@@ -1,8 +1,10 @@
 from unittest import mock
+
+import lxml.objectify
+
 from zeit.cms.interfaces import ValidationError
 from zeit.content.modules.interfaces import validate_servings
 from zeit.content.modules.recipelist import Ingredient
-import lxml.objectify
 import zeit.cms.testing
 import zeit.content.modules.embed
 import zeit.content.modules.testing
@@ -20,8 +22,9 @@ class RecipeListTest(
         )
 
     def get_content(self):
-        from zeit.content.modules.recipelist import RecipeList
         from lxml import objectify
+
+        from zeit.content.modules.recipelist import RecipeList
 
         class Content:
             xml = objectify.fromstring('<recipelist/>')

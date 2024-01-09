@@ -3,8 +3,8 @@ import zope.component
 import zope.securitypolicy.interfaces
 
 import zeit.cms.content.template
-import zeit.cms.repository.interfaces
 import zeit.cms.generation
+import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
 
 

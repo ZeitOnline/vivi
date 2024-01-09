@@ -1,8 +1,7 @@
 import zope.publisher.interfaces.browser
 
-import zeit.cms.browser.listing
 import zeit.cms.browser.interfaces
-
+import zeit.cms.browser.listing
 import zeit.content.infobox.interfaces
 import zeit.content.infobox.reference
 

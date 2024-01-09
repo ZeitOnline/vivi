@@ -1,7 +1,6 @@
 # BBB obsolete, left only until removed from all ZODBs
-import persistent
 import BTrees.OOBTree
-
+import persistent
 import zope.interface
 
 import zeit.connector.interfaces

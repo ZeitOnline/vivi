@@ -1,8 +1,9 @@
-import zeit.cms.interfaces
-import zeit.edit.browser.view
 import zope.component
 import zope.event
 import zope.lifecycleevent
+
+import zeit.cms.interfaces
+import zeit.edit.browser.view
 
 
 class DropContent(zeit.edit.browser.view.Action):

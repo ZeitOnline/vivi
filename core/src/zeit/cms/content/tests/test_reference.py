@@ -1,17 +1,18 @@
 from unittest.mock import Mock
-from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.reference import ReferenceProperty
-from zeit.cms.content.reference import SingleReferenceProperty
-from zeit.cms.interfaces import ICMSContent
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import urllib.error
 import urllib.parse
+
+import zope.security.management
+import zope.security.proxy
+
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.reference import ReferenceProperty, SingleReferenceProperty
+from zeit.cms.interfaces import ICMSContent
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.related.related
 import zeit.cms.testing
-import zope.security.management
-import zope.security.proxy
 
 
 class ExampleReference(zeit.cms.content.reference.Reference):

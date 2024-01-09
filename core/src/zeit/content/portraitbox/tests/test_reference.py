@@ -1,8 +1,10 @@
 from unittest import mock
-from zeit.content.portraitbox.reference import PortraitboxReference
-import zeit.content.portraitbox.testing
+
 import zope.security
 import zope.security.proxy
+
+from zeit.content.portraitbox.reference import PortraitboxReference
+import zeit.content.portraitbox.testing
 
 
 class ReferenceTest(zeit.content.portraitbox.testing.FunctionalTestCase):

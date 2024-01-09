@@ -1,9 +1,10 @@
 from zope.formlib.form import NoInputData
-import zeit.cms.browser.form
-import zeit.edit.browser.view
 import zope.component
 import zope.formlib.form
 import zope.interface
+
+import zeit.cms.browser.form
+import zeit.edit.browser.view
 
 
 class OrderMixin:

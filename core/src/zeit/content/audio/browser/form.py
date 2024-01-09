@@ -1,11 +1,11 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import zope.formlib
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
-import zeit.workflow.browser.form
 import zeit.content.audio.audio
 import zeit.content.audio.interfaces
+import zeit.workflow.browser.form
 
 
 class Base:

@@ -1,8 +1,10 @@
 from unittest import mock
-from zeit.content.infobox.reference import InfoboxReference
-import zeit.content.infobox.testing
+
 import zope.security
 import zope.security.proxy
+
+from zeit.content.infobox.reference import InfoboxReference
+import zeit.content.infobox.testing
 
 
 class ReferenceTest(zeit.content.infobox.testing.FunctionalTestCase):

@@ -1,6 +1,4 @@
 import grokcore.component as grok
-import zeit.cms.browser.interfaces
-import zeit.cms.tagging.interfaces
 import zope.component
 import zope.component.hooks
 import zope.location.interfaces
@@ -9,6 +7,9 @@ import zope.site.interfaces
 import zope.traversing.browser
 import zope.traversing.browser.absoluteurl
 import zope.traversing.interfaces
+
+import zeit.cms.browser.interfaces
+import zeit.cms.tagging.interfaces
 
 
 @grok.implementer(zope.traversing.interfaces.ITraversable)

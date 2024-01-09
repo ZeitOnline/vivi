@@ -1,16 +1,17 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.interfaces import ITypeDeclaration
-from zeit.cms.repository.folder import FolderType
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import zeit.cms.browser.lightbox
-import zeit.cms.browser.menu
-import zeit.cms.repository.interfaces
-import zeit.cms.workflow.interfaces
+import zope.app.pagetemplate.viewpagetemplatefile
 import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
 import zope.schema
-import zope.app.pagetemplate.viewpagetemplatefile
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import ITypeDeclaration
+from zeit.cms.repository.folder import FolderType
+import zeit.cms.browser.lightbox
+import zeit.cms.browser.menu
+import zeit.cms.repository.interfaces
+import zeit.cms.workflow.interfaces
 
 
 class IRenameSchema(zope.interface.Interface):

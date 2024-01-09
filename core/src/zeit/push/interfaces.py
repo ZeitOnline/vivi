@@ -1,16 +1,18 @@
-from zeit.cms.i18n import MessageFactory as _
 import json
 import logging
 import xml.sax.saxutils
+
 import zc.sourcefactory.basic
 import zc.sourcefactory.source
+import zope.interface
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.content.image.interfaces
 import zeit.content.text.interfaces
 import zeit.content.text.jinja
-import zope.interface
-import zope.schema
 
 
 log = logging.getLogger(__name__)

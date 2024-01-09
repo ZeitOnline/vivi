@@ -1,7 +1,9 @@
 # coding: utf8
 import pprint
-import zeit.cms.interfaces
+
 import zope.component
+
+import zeit.cms.interfaces
 
 
 class View:

@@ -1,8 +1,12 @@
 # coding: utf-8
 from unittest import mock
-from xmldiff.main import diff_trees
-from zeit.cms.checkout.helper import checked_out
 import unittest
+
+from xmldiff.main import diff_trees
+import zope.component
+import zope.copypastemove.interfaces
+
+from zeit.cms.checkout.helper import checked_out
 import zeit.cms.content.sources
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -11,8 +15,6 @@ import zeit.content.cp.centerpage
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
-import zope.component
-import zope.copypastemove.interfaces
 
 
 class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):

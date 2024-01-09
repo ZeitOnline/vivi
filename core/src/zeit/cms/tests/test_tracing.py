@@ -1,5 +1,6 @@
-from zeit.cms.testing import set_tracer_provider
 import opentelemetry.trace
+
+from zeit.cms.testing import set_tracer_provider
 import zeit.cms.testing
 import zeit.cms.tracing
 

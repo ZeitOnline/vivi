@@ -1,9 +1,10 @@
-from zeit.objectlog.i18n import MessageFactory as _
-import zeit.objectlog.source
 import zope.app.security.vocabulary
 import zope.configuration.fields
 import zope.interface
 import zope.schema
+
+from zeit.objectlog.i18n import MessageFactory as _
+import zeit.objectlog.source
 
 
 class IObjectLog(zope.interface.Interface):

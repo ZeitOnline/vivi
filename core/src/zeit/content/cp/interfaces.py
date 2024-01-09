@@ -1,9 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.contentquery.interfaces import IConfiguration
 import collections
 import fractions
 import json
 import logging
+
+import zope.i18n
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.contentquery.interfaces import IConfiguration
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
@@ -21,8 +25,6 @@ import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zeit.retresco.interfaces
 import zeit.seo.interfaces
-import zope.i18n
-import zope.interface
 
 
 log = logging.getLogger(__name__)

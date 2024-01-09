@@ -1,12 +1,14 @@
 # coding: utf-8
 from io import StringIO
 from unittest import mock
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import logging
+
+import zope.component
+
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.interfaces
 import zeit.cms.webtest
 import zeit.retresco.testing
-import zope.component
 
 
 class XMLRPCTest(zeit.retresco.testing.BrowserTestCase):

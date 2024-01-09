@@ -1,7 +1,10 @@
+import logging
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
+import zope.component
+
 from zeit.content.cp.area import cached_on_content
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
-from zope.cachedescriptors.property import Lazy as cachedproperty
-import logging
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.blocks.rss
@@ -11,7 +14,6 @@ import zeit.contentquery.interfaces
 import zeit.contentquery.query
 import zeit.retresco.content
 import zeit.retresco.interfaces
-import zope.component
 
 
 log = logging.getLogger(__name__)

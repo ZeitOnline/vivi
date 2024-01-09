@@ -1,8 +1,11 @@
 from io import StringIO
 from unittest import mock
-import json
 import importlib.resources
+import json
+
 import plone.testing
+import zope.app.appsetup.product
+
 import zeit.cms.content.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -10,7 +13,6 @@ import zeit.content.article.testing
 import zeit.content.link.testing
 import zeit.find.testing
 import zeit.wochenmarkt.testing
-import zope.app.appsetup.product
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(

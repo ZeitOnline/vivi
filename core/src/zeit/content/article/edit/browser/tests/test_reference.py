@@ -1,12 +1,14 @@
+import unittest
+
 from selenium.webdriver.common.keys import Keys
 import transaction
-import unittest
+import zope.security.management
+
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.sources
 import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
 import zeit.content.portraitbox.portraitbox
-import zope.security.management
 
 
 def add_to_clipboard(obj, name):

@@ -5,13 +5,14 @@ For TeaserBlockLandingZone see: http://cmsdev.zeit.de/content/aufmacher-fläche-
 
 """
 
+import zope.component
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.gallery.interfaces import IGallery
 import zeit.connector.resource
 import zeit.content.cp.interfaces
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
-import zope.component
 
 
 class BodyLandingZone(zeit.edit.browser.landing.LandingZone):

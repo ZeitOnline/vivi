@@ -1,4 +1,5 @@
 from unittest import mock
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType

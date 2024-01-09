@@ -1,6 +1,8 @@
 import logging
-import zeit.retresco.update
+
 import zope.app.publisher.xmlrpc
+
+import zeit.retresco.update
 
 
 log = logging.getLogger(__name__)

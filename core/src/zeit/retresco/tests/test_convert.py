@@ -1,9 +1,11 @@
 # coding: utf-8
+import datetime
+
+import pytz
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.content.dynamicfolder.testing import create_dynamic_folder
 from zeit.retresco.testing import create_testcontent
-import datetime
-import pytz
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces

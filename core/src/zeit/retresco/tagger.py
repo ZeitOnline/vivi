@@ -1,15 +1,17 @@
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-from zeit.cms.tagging.tag import Tag
+import logging
+
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import logging
 import lxml.etree
 import lxml.objectify
+import zope.component
+
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+from zeit.cms.tagging.tag import Tag
 import zeit.cms.content.dav
 import zeit.cms.tagging.interfaces
 import zeit.connector.interfaces
 import zeit.retresco.interfaces
-import zope.component
 
 
 NAMESPACE = 'http://namespaces.zeit.de/CMS/tagging'

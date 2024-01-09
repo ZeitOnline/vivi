@@ -1,6 +1,8 @@
-from zeit.cms.i18n import MessageFactory as _
 import lxml.builder
 import lxml.objectify
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
@@ -8,7 +10,6 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.portraitbox.interfaces
 import zeit.wysiwyg.html
-import zope.interface
 
 
 @zope.interface.implementer(

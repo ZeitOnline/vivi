@@ -1,16 +1,18 @@
-from zeit.cms.i18n import MessageFactory as _
 import html
+import importlib.resources
 import json
 import logging
-import importlib.resources
 import xml.sax.saxutils
-import zeit.cms.browser.form
-import zeit.cms.browser.view
+
 import zope.browserpage
 import zope.formlib.form
 import zope.i18n
 import zope.viewlet.manager
 import zope.viewlet.viewlet
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.form
+import zeit.cms.browser.view
 
 
 log = logging.getLogger(__name__)
@@ -152,7 +154,7 @@ class ErrorPreventingViewletManager(zope.viewlet.manager.WeightOrderedViewletMan
     wrapper = '<div class="error">{error_msg}</div>'
 
     def render_viewlet(self, viewlet):
-        'Renders viewlet. Returns error message if viewlet cannot be rendered.'
+        "Renders viewlet. Returns error message if viewlet cannot be rendered."
         try:
             return viewlet.render()
         except Exception as e:

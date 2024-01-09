@@ -1,12 +1,13 @@
+import zope.formlib.form
+import zope.interface
+
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
-from zeit.content.image.interfaces import IImageGroup, INFOGRAPHIC_DISPLAY_TYPE
+from zeit.content.image.interfaces import INFOGRAPHIC_DISPLAY_TYPE, IImageGroup
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.form
-import zope.formlib.form
-import zope.interface
 
 
 class EditBase(zeit.edit.browser.form.InlineForm):

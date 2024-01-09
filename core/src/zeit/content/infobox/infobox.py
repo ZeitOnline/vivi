@@ -1,12 +1,13 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.infobox.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(zeit.content.infobox.interfaces.IInfobox, zeit.cms.interfaces.IAsset)

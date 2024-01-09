@@ -1,14 +1,16 @@
 from unittest import mock
-from zeit.cms.interfaces import ICMSContent
-from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+import unittest
+
 import lxml.cssselect
 import transaction
-import unittest
+import zope.component
+
+from zeit.cms.interfaces import ICMSContent
+from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 import zeit.cms.browser.interfaces
 import zeit.content.cp.browser.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
-import zope.component
 
 
 class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):

@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict, defaultdict
 from io import StringIO
-from zeit.cms.browser.interfaces import IPreviewURL
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.i18n import MessageFactory as _
 import csv
 import os.path
 import re
 import sys
+
+import zope.app.appsetup.product
+import zope.component
+import zope.site.site
+
+from zeit.cms.browser.interfaces import IPreviewURL
+from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.connector.connector
-import zope.app.appsetup.product
-import zope.component
-import zope.site.site
 
 
 class Toc(zeit.cms.browser.view.Base):

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import lxml.etree
+import zope.component
+
 import zeit.content.article.article
 import zeit.wochenmarkt.interfaces
 import zeit.wochenmarkt.testing
-import zope.component
 
 
 class TestRecipeCategoriesWhitelist(zeit.wochenmarkt.testing.FunctionalTestCase):
@@ -35,8 +36,9 @@ class TestRecipeCategories(
     zeit.wochenmarkt.testing.FunctionalTestCase, zeit.wochenmarkt.testing.RecipeCategoriesHelper
 ):
     def get_content(self):
-        from zeit.wochenmarkt.categories import RecipeCategories
         from lxml import objectify
+
+        from zeit.wochenmarkt.categories import RecipeCategories
 
         class Content:
             categories = RecipeCategories()

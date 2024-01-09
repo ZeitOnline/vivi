@@ -1,14 +1,16 @@
 from os import environ
 from pathlib import Path
-from transaction import commit
 from unittest.mock import patch
+
+from transaction import commit
+from zope.component import getGlobalSiteManager, getUtility
+
 from zeit.cms.content import caching
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.interfaces import IRepository
 from zeit.cms.testing import ZeitCmsTestCase
 from zeit.connector.filesystem import Connector
 from zeit.connector.interfaces import IConnector
-from zope.component import getUtility, getGlobalSiteManager
 
 
 class FilesystemCachingTest(ZeitCmsTestCase):

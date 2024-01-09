@@ -1,5 +1,6 @@
-import zeit.content.cp.browser.blocks.teaser
 import zope.formlib.form
+
+import zeit.content.cp.browser.blocks.teaser
 
 
 class EditCommon(zeit.content.cp.browser.blocks.teaser.EditCommon):

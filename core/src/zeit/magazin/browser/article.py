@@ -1,9 +1,10 @@
+import zope.interface
+
 from zeit.content.article.edit.browser.form import FormFields
 import zeit.cms.browser.interfaces
 import zeit.content.article.edit.browser.push
 import zeit.edit.browser.form
 import zeit.magazin.browser.social
-import zope.interface
 
 
 class NextRead(zeit.edit.browser.form.InlineForm):

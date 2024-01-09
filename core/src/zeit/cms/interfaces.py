@@ -1,16 +1,18 @@
 # coding: utf8
 from urllib.parse import urlparse
-from zeit.cms.i18n import MessageFactory as _
 import datetime
+import re
+
 import pyramid_dogpile_cache2
 import pytz
-import re
 import zope.app.appsetup.product
 import zope.i18nmessageid
 import zope.interface
 import zope.interface.common.sequence
 import zope.schema
 import zope.security
+
+from zeit.cms.i18n import MessageFactory as _
 
 
 DOCUMENT_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/document'

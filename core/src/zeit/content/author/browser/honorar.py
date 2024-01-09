@@ -1,21 +1,23 @@
 from urllib.parse import urlencode
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.author.author import Author
-from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import datetime
-import gocept.form.grouped
 import io
 import json
-import zeit.cms.browser.form
-import zeit.cms.browser.menu
-import zeit.cms.browser.view
-import zeit.content.author.interfaces
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
+import gocept.form.grouped
 import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.author import Author
+from zeit.content.author.browser.interfaces import DuplicateAuthorWarning
+import zeit.cms.browser.form
+import zeit.cms.browser.menu
+import zeit.cms.browser.view
+import zeit.content.author.interfaces
 
 
 class ILookup(zope.interface.Interface):

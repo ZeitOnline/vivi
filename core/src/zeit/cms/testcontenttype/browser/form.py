@@ -1,6 +1,7 @@
+import zope.formlib.form
+
 import zeit.cms.content.browser.form
 import zeit.cms.testcontenttype.interfaces
-import zope.formlib.form
 
 
 class Base:

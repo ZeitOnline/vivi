@@ -1,13 +1,15 @@
-from zeit.cms.content.interfaces import ICommonMetadata
-from zeit.cms.interfaces import ICMSContent
-from zeit.cms.section.interfaces import ISection, ISectionMarker, IRessortSection
-import grokcore.component as grok
 import os.path
-import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
+
+import grokcore.component as grok
 import zope.container.contained
 import zope.interface
 import zope.security.proxy
+
+from zeit.cms.content.interfaces import ICommonMetadata
+from zeit.cms.interfaces import ICMSContent
+from zeit.cms.section.interfaces import IRessortSection, ISection, ISectionMarker
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 
 
 @grok.subscribe(ICMSContent, zeit.cms.repository.interfaces.IBeforeObjectAddEvent)

@@ -1,6 +1,8 @@
 # coding: utf-8
-import gocept.selenium
 import importlib.resources
+
+import gocept.selenium
+
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing

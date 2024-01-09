@@ -1,12 +1,13 @@
+import zope.app.appsetup.product
+import zope.cachedescriptors.property
+import zope.location.interfaces
+import zope.traversing.api
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zope.app.appsetup.product
-import zope.cachedescriptors.property
-import zope.location.interfaces
-import zope.traversing.api
 
 
 MARKER = object()

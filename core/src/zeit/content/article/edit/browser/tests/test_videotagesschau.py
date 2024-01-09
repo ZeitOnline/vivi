@@ -1,12 +1,15 @@
 # coding: utf-8
-import json
-import zope.component
 from unittest import mock
+import json
+
 import lxml.objectify
+import zope.component
+
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.videotagesschau
+
 
 MOCKDEFAULTBROKEN = """
 {"cutoff": 1.975

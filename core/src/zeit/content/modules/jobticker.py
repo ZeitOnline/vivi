@@ -1,9 +1,11 @@
-from zeit.cms.interfaces import CONFIG_CACHE
 import collections
+
+import zope.interface
+
+from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.sources
 import zeit.content.modules.interfaces
 import zeit.edit.block
-import zope.interface
 
 
 @zope.interface.implementer(zeit.content.modules.interfaces.IJobTicker)

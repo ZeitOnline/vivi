@@ -1,9 +1,10 @@
+import zope.event
+
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
-import zope.event
 
 
 class Reload(zeit.cms.browser.view.Base):

@@ -1,4 +1,7 @@
 import grokcore.component as grok
+import zope.component
+import zope.interface
+
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -7,8 +10,6 @@ import zeit.cms.interfaces
 import zeit.cms.related.related
 import zeit.cms.relation.interfaces
 import zeit.content.image.interfaces
-import zope.component
-import zope.interface
 
 
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLContent)

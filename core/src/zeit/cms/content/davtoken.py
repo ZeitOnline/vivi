@@ -1,7 +1,8 @@
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zope.component
 import zope.interface
+
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 
 
 @zope.component.adapter(bool)

@@ -1,9 +1,14 @@
+import json
+import logging
+
+import zope.cachedescriptors.property
+import zope.component
+import zope.security
+
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.article.edit.videotagesschau import Video
 from zeit.content.article.edit.browser.interfaces import VideoTagesschauNoResultError
-import logging
-import json
+from zeit.content.article.edit.videotagesschau import Video
 import zeit.cms.browser.manual
 import zeit.cms.browser.widget
 import zeit.cms.interfaces
@@ -16,9 +21,7 @@ import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.library
 import zeit.edit.browser.view
-import zope.cachedescriptors.property
-import zope.component
-import zope.security
+
 
 log = logging.getLogger(__name__)
 

@@ -1,4 +1,9 @@
 from urllib.parse import urlparse
+import os.path
+
+import zope.interface
+import zope.schema
+
 from zeit.cms.admin.interfaces import IAdjustSemanticPublish
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ICommonMetadata
@@ -7,10 +12,7 @@ from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.image.interfaces import IImages
 from zeit.content.link.link import Link
-import os.path
 import zeit.cms.browser.menu
-import zope.interface
-import zope.schema
 
 
 class ISchema(zope.interface.Interface):

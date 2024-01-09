@@ -1,8 +1,9 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.image.interfaces import AVAILABLE_PILLOW_TYPES
 import PIL.Image
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.image.interfaces import AVAILABLE_PILLOW_TYPES
 
 
 class NotAnImage(zope.schema.ValidationError):

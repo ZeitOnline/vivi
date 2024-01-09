@@ -1,14 +1,15 @@
 import grokcore.component as grok
 import grokcore.component.testing
+import zope.component
+import zope.interface
+import zope.security.proxy
+
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.connector.interfaces
-import zope.component
-import zope.interface
-import zope.security.proxy
 
 
 class ITestInterface(zope.interface.Interface):

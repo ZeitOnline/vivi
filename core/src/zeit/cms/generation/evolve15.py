@@ -1,5 +1,6 @@
-import zeit.cms.generation
 import zope.component
+
+import zeit.cms.generation
 
 
 def update(root):

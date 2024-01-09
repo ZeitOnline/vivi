@@ -3,6 +3,7 @@ import hashlib
 import random
 import struct
 import sys
+
 import zope.app.appsetup.product
 import zope.component
 import zope.interface

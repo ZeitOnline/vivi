@@ -1,13 +1,15 @@
 from unittest.mock import Mock
+
+import zope.formlib.form
+import zope.interface
+import zope.publisher.browser
+import zope.schema
+
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.edit.browser.form
 import zeit.edit.browser.view
 import zeit.edit.testing
-import zope.formlib.form
-import zope.interface
-import zope.publisher.browser
-import zope.schema
 
 
 class IExample(zope.interface.Interface):

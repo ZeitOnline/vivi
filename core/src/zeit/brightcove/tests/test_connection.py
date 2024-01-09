@@ -1,8 +1,10 @@
 from unittest import mock
 import os
+import unittest
+
 import pytest
 import requests.exceptions
-import unittest
+
 import zeit.brightcove.connection
 
 

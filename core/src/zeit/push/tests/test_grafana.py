@@ -1,4 +1,5 @@
 from unittest import mock
+
 from zeit.cms.interfaces import ICMSContent
 import zeit.push.grafana
 import zeit.push.testing

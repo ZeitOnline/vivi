@@ -1,9 +1,16 @@
 from unittest import mock
-from zeit.cms.checkout.interfaces import CheckinCheckoutError
-from zeit.cms.checkout.interfaces import ICheckinManager, ICheckoutManager
-from zeit.cms.checkout.interfaces import IValidateCheckinEvent
 import copy
 import datetime
+
+import zope.annotation.interfaces
+import zope.component
+
+from zeit.cms.checkout.interfaces import (
+    CheckinCheckoutError,
+    ICheckinManager,
+    ICheckoutManager,
+    IValidateCheckinEvent,
+)
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
@@ -11,8 +18,6 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
-import zope.annotation.interfaces
-import zope.component
 
 
 class IContent(zeit.cms.interfaces.ICMSContent):

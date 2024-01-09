@@ -1,11 +1,12 @@
+import transaction
+import zope.interface
+
 from zeit.cms.repository.folder import Folder
 from zeit.cms.section.interfaces import ISection
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-import transaction
 import zeit.cms.checkout.helper
 import zeit.cms.section.testing
 import zeit.cms.testing
-import zope.interface
 
 
 class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):

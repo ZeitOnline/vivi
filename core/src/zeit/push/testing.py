@@ -1,14 +1,16 @@
+import importlib.resources
+import logging
+import urllib.parse
+
 import gocept.selenium
 import hvac
-import logging
-import importlib.resources
 import plone.testing
-import urllib.parse
+import zope.interface
+
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.content.text.jinja
 import zeit.push.interfaces
-import zope.interface
 
 
 log = logging.getLogger(__name__)

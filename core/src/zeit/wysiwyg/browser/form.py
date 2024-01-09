@@ -1,7 +1,8 @@
-import zeit.cms.browser.form
-import zeit.wysiwyg.interfaces
 import zope.app.pagetemplate.viewpagetemplatefile
 import zope.formlib.form
+
+import zeit.cms.browser.form
+import zeit.wysiwyg.interfaces
 
 
 class EditForm(zeit.cms.browser.form.EditForm):

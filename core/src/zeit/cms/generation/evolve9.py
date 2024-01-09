@@ -1,8 +1,9 @@
-from zeit.cms.relation.relation import _dump_content, _load_content
 import BTrees
 import zc.relation.catalog
-import zeit.cms.generation
 import zope.component
+
+from zeit.cms.relation.relation import _dump_content, _load_content
+import zeit.cms.generation
 
 
 def update(root):

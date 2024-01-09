@@ -1,12 +1,11 @@
-from zeit.cms.i18n import MessageFactory as _
-from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo, ISpeechInfo
-
 import logging
 
 import grokcore.component as grok
 import zope.component
 import zope.interface
 
+from zeit.cms.i18n import MessageFactory as _
+from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo, ISpeechInfo
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata

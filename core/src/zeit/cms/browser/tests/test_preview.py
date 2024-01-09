@@ -8,8 +8,9 @@ class PreviewTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertRaises(ValueError, prefixed_url, 'aprefix', 'foo')
 
     def test_adapting_cmscontent_should_return_preview_url(self):
-        from zeit.cms.browser.interfaces import IPreviewURL
         import zope.component
+
+        from zeit.cms.browser.interfaces import IPreviewURL
 
         self.assertEqual(
             'http://localhost/preview-prefix/testcontent',

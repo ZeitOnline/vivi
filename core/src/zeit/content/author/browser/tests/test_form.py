@@ -1,7 +1,8 @@
 # coding: utf8
 from unittest import mock
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import unittest
+
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.content.author.testing
 
 

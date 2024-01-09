@@ -1,10 +1,12 @@
 import collections
 import logging
+
 import requests
-import zeit.brightcove.interfaces
-import zeit.content.video.interfaces
 import zope.app.appsetup.product
 import zope.interface
+
+import zeit.brightcove.interfaces
+import zeit.content.video.interfaces
 
 
 log = logging.getLogger(__name__)

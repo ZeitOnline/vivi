@@ -1,14 +1,17 @@
 # coding: utf-8
 from unittest import mock
+import importlib.resources
+
+import jinja2
+import lxml.etree
+import transaction
+import zope.component
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
 from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.cms.workflow.interfaces import IPublicationDependencies
 from zeit.content.rawxml.rawxml import RawXML
-import importlib.resources
-import jinja2
-import lxml.etree
-import transaction
 import zeit.cms.repository.folder
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -16,7 +19,6 @@ import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.interfaces as DFinterfaces
 import zeit.content.dynamicfolder.materialize
 import zeit.content.dynamicfolder.testing
-import zope.component
 
 
 class TestContainerMethodsRespectVirtualChildren(

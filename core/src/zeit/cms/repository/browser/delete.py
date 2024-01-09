@@ -1,12 +1,11 @@
-import zope.component
 import zope.cachedescriptors.property
-
-import zeit.cms.browser.view
-import zeit.cms.browser.interfaces
-import zeit.cms.repository.interfaces
+import zope.component
 
 from zeit.cms.repository.interfaces import IFolder
 from zeit.cms.workflow.interfaces import IPublishInfo
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
+import zeit.cms.repository.interfaces
 
 
 class DeleteContent(zeit.cms.browser.view.Base):

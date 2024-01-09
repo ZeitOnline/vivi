@@ -1,7 +1,14 @@
 import datetime
 import logging
-import pendulum
 import urllib.parse
+
+import pendulum
+import zope.browser.interfaces
+import zope.cachedescriptors.property
+import zope.component
+import zope.i18n
+import zope.session.interfaces
+
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
@@ -9,11 +16,6 @@ import zeit.cms.interfaces
 import zeit.content.audio.interfaces
 import zeit.find.interfaces
 import zeit.find.search
-import zope.browser.interfaces
-import zope.cachedescriptors.property
-import zope.component
-import zope.i18n
-import zope.session.interfaces
 
 
 log = logging.getLogger(__name__)

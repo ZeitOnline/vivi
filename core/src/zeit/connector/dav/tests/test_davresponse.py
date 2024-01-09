@@ -1,7 +1,8 @@
 # coding: utf8
+import unittest
+
 from zeit.connector.dav.davresource import DAVResponse
 from zeit.connector.dav.davxml import DavXmlDoc
-import unittest
 
 
 class TestDAVResponse(unittest.TestCase):

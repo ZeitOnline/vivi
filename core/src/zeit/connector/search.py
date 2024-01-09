@@ -10,14 +10,14 @@ quotetable = (
 
 
 def quotestring(str):
-    'Returns escaped and double-quoted string'
+    "Returns escaped and double-quoted string"
     for orig, target in quotetable:
         str = str.replace(orig, target)
     return '"' + str + '"'
 
 
 def render(x):
-    'Kludge: render a string or some special object'
+    "Kludge: render a string or some special object"
     if isinstance(x, SearchSymbol):  # FIXME more generic!
         return x._render()
     else:  # assume string

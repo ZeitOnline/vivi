@@ -1,6 +1,7 @@
+import zope.interface
+
 import zeit.cms.content.sources
 import zeit.crop.interfaces
-import zope.interface
 
 
 @zope.interface.implementer(zeit.crop.interfaces.IPossibleScale)

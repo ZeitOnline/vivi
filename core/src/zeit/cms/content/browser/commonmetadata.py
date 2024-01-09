@@ -1,7 +1,8 @@
-import zeit.cms.browser.listing
-import zope.interface
 import zope.component
+import zope.interface
+
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.listing
 import zeit.cms.content.interfaces
 
 

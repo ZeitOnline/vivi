@@ -1,6 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import lxml.objectify
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 

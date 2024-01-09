@@ -1,19 +1,21 @@
 # coding: utf8
-from selenium.webdriver.common.keys import Keys
 from unittest import mock
-from zeit.content.article.edit.browser.edit import SaveText, AutoSaveText
-import gocept.testing.mock
 import json
-import lxml.objectify
 import time
-import transaction
 import unittest
+
+from selenium.webdriver.common.keys import Keys
+import gocept.testing.mock
+import lxml.objectify
+import transaction
+import zope.component
+
+from zeit.content.article.edit.browser.edit import AutoSaveText, SaveText
 import zeit.cms.content.field
 import zeit.content.article.article
 import zeit.content.article.edit.body
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
-import zope.component
 
 
 def click(selenium, locator):

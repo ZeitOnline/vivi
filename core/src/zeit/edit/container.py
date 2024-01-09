@@ -1,15 +1,17 @@
 import collections.abc
-import grokcore.component as grok
 import logging
-import lxml.etree
 import uuid
-import zeit.edit.block
-import zeit.edit.interfaces
+
+import grokcore.component as grok
+import lxml.etree
 import zope.container.contained
 import zope.interface
 import zope.location.interfaces
 import zope.proxy
 import zope.security.proxy
+
+import zeit.edit.block
+import zeit.edit.interfaces
 
 
 log = logging.getLogger(__name__)

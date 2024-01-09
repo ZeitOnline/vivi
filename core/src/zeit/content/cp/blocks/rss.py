@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-import zeit.content.link.interfaces
-import zeit.cms.content.interfaces
-import zeit.connector.interfaces
-import zope.interface
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import zope.interface
+
+import zeit.cms.content.interfaces
+import zeit.connector.interfaces
+import zeit.content.link.interfaces
 
 
 class IRSSLink(zeit.content.link.interfaces.ILink):

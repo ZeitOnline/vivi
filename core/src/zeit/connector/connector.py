@@ -1,25 +1,27 @@
 """Connect to the CMS backend."""
 
 from io import BytesIO
-from zeit.connector.interfaces import ID_NAMESPACE
 import datetime
-import gocept.cache.property
-import gocept.lxml.objectify
 import http.client
 import logging
-import pytz
 import re
 import sys
 import threading
 import urllib.parse
+
+import gocept.cache.property
+import gocept.lxml.objectify
+import pytz
+import zope.cachedescriptors.property
+import zope.interface
+
+from zeit.connector.interfaces import ID_NAMESPACE
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
 import zeit.connector.dav.davresource
 import zeit.connector.interfaces
 import zeit.connector.resource
 import zeit.connector.search
-import zope.cachedescriptors.property
-import zope.interface
 
 
 # IMPLEMENTATION NOTES:

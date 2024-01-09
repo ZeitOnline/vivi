@@ -1,5 +1,5 @@
-import zeit.cms.settings.interfaces
 import zeit.cms.browser.view
+import zeit.cms.settings.interfaces
 
 
 class EntryPage(zeit.cms.browser.view.Base):

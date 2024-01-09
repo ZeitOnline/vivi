@@ -1,7 +1,9 @@
 import json
+
+import zope.publisher.browser
+
 import zeit.cms.browser.interfaces
 import zeit.cms.testing
-import zope.publisher.browser
 
 
 class LocationAutocompleteTest(zeit.cms.testing.ZeitCmsBrowserTestCase):

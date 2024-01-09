@@ -1,11 +1,11 @@
+import gocept.form.grouped
+import zope.formlib.form
+
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import ToggleDependentField
-
-import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testcontenttype.testcontenttype
-import zope.formlib.form
 
 
 class Base(zeit.cms.browser.form.CharlimitMixin):

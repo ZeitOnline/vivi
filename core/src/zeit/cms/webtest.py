@@ -1,8 +1,9 @@
 from io import BytesIO
 import http.client
+import xmlrpc.client
+
 import transaction
 import webtest
-import xmlrpc.client
 import zope.component.hooks
 import zope.security.management
 

@@ -6,11 +6,13 @@ and move them to zeit.cms (like we do with e.g. IPublish), but that's a lot of
 busy work for (so far) not _much_ gain.
 """
 from unittest import mock
+
 import plone.testing
-import zeit.cms.interfaces
-import zeit.retresco.interfaces
 import zope.component
 import zope.interface
+
+import zeit.cms.interfaces
+import zeit.retresco.interfaces
 
 
 class ElasticsearchMockLayer(plone.testing.Layer):

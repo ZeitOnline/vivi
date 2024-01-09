@@ -1,23 +1,24 @@
 from io import BytesIO
-from zeit.connector.connector import CannonicalId
-from zeit.connector.interfaces import ID_NAMESPACE
-from zeit.connector.interfaces import UUID_PROPERTY, CopyError, MoveError
 import datetime
-import filetype
 import http.client
 import logging
 import os
 import os.path
-import pytz
 import random
 import time
 import urllib.parse
 import uuid
+
+import filetype
+import pytz
+import zope.event
+
+from zeit.connector.connector import CannonicalId
+from zeit.connector.interfaces import ID_NAMESPACE, UUID_PROPERTY, CopyError, MoveError
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
 import zeit.connector.interfaces
-import zope.event
 
 
 log = logging.getLogger(__name__)

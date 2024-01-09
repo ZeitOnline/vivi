@@ -1,11 +1,12 @@
-from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import zope.formlib.form
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.content.portraitbox.interfaces
 import zeit.content.portraitbox.portraitbox
 import zeit.magazin.interfaces
 import zeit.wysiwyg.interfaces
-import zope.formlib.form
 
 
 # XXX complete copy&paste of zeit.content.portraitbox.browser.form to add

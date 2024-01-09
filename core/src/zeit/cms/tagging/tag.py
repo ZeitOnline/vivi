@@ -1,15 +1,17 @@
 import collections
 import copy
+
 import grokcore.component as grok
-import zeit.cms.checkout.interfaces
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.security.proxy
+
+import zeit.cms.checkout.interfaces
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.cms.tagging.interfaces
 
 
 class Tags:

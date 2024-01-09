@@ -1,16 +1,18 @@
-from zeit.cms.i18n import MessageFactory as _
-import grokcore.component as grok
 import hashlib
+
+import grokcore.component as grok
+import zope.cachedescriptors.property
+import zope.component
+import zope.i18n
+import zope.viewlet.viewlet
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.tree
 import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
-import zope.cachedescriptors.property
-import zope.component
-import zope.i18n
-import zope.viewlet.viewlet
 
 
 class Repository:

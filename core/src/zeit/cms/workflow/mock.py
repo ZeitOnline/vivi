@@ -1,13 +1,16 @@
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_RETRACT_ERROR
-from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
-from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import celery.result
 import celery.states
-import zeit.cms.interfaces
-import zeit.cms.workflow.interfaces
 import zope.component
 import zope.interface
+
+from zeit.cms.workflow.interfaces import (
+    CAN_PUBLISH_ERROR,
+    CAN_RETRACT_ERROR,
+    PRIORITY_DEFAULT,
+    PRIORITY_LOW,
+)
+import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)

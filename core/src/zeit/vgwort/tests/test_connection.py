@@ -1,13 +1,15 @@
 from unittest import mock
-import gocept.httpserverlayer.custom
 import importlib.resources
 import time
 import unittest
+
+import gocept.httpserverlayer.custom
+import zope.component
+
 import zeit.cms.checkout.helper
 import zeit.vgwort.connection
 import zeit.vgwort.interfaces
 import zeit.vgwort.testing
-import zope.component
 
 
 class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
@@ -108,6 +110,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def test_non_author_doc_as_author_should_be_ignored(self):
         import transaction
+
         import zeit.connector.interfaces
 
         author = zeit.content.author.author.Author()

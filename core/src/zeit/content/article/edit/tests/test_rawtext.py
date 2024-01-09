@@ -1,14 +1,16 @@
+import zope.component
+
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces
-import zope.component
 
 
 class RawTextTest(zeit.content.article.testing.FunctionalTestCase):
     def get_rawtext(self):
-        from zeit.content.article.edit.rawtext import RawText
         import lxml.objectify
+
+        from zeit.content.article.edit.rawtext import RawText
 
         rawtext = RawText(None, lxml.objectify.E.rawtext())
         return rawtext

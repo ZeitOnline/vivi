@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import zeit.content.image.testing
+
 from .test_imagegroup import ImageGroupHelperMixin
 
 

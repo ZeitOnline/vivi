@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from unittest import mock
+
+import zope.component
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.volume.volume import Volume
@@ -8,7 +11,6 @@ import zeit.cms.interfaces
 import zeit.content.volume.testing
 import zeit.find.interfaces
 import zeit.workflow.testing
-import zope.component
 
 
 class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
@@ -33,11 +35,11 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         self.repository['testcontent'] = content
 
     def create_article_with_references(self):
-        from zeit.content.article.edit.body import EditableBody
         from zeit.content.article.article import Article
+        from zeit.content.article.edit.body import EditableBody
         from zeit.content.article.interfaces import IArticle
-        from zeit.content.portraitbox.portraitbox import Portraitbox
         from zeit.content.infobox.infobox import Infobox
+        from zeit.content.portraitbox.portraitbox import Portraitbox
         import zeit.cms.browser.form
 
         article = Article()

@@ -1,7 +1,8 @@
-from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.interfaces
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.interfaces
 
 
 class IAdjustSemanticPublish(zope.interface.Interface):

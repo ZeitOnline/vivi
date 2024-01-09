@@ -1,11 +1,13 @@
 from unittest.mock import Mock
-import gocept.lxml.objectify
 import importlib.resources
+
+import gocept.lxml.objectify
 import pyramid_dogpile_cache2
+import zope.interface
+
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.testing
-import zope.interface
 
 
 class ExampleSource(zeit.cms.content.sources.XMLSource):

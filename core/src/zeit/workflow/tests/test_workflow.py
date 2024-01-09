@@ -1,6 +1,8 @@
+import zope.annotation.interfaces
+import zope.interface
+
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_SUCCESS
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
@@ -9,8 +11,6 @@ import zeit.cms.testcontenttype.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.workflow.asset
 import zeit.workflow.testing
-import zope.annotation.interfaces
-import zope.interface
 
 
 class AssetWorkflowTests(zeit.workflow.testing.FunctionalTestCase):

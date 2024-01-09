@@ -1,10 +1,11 @@
 import logging
+
 import zope.component
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.audio.interfaces import IPodcastEpisodeInfo
-import zeit.simplecast.interfaces
 import zeit.cms.browser.menu
+import zeit.simplecast.interfaces
 
 
 log = logging.getLogger(__name__)

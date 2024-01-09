@@ -1,11 +1,12 @@
-import zc.sourcefactory.basic
 import collections
+
+import zc.sourcefactory.basic
 import zope.component
 import zope.interface
 import zope.security.checker
 
-import zeit.cms.content.interfaces
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.interfaces
 
 
 class _NotNecessary:

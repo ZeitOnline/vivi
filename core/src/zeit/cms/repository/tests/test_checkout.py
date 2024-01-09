@@ -3,9 +3,10 @@ import zeit.cms.testing
 
 class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
     def test_adapting_foreign_objects_should_fail_adaption(self):
+        import zope.interface
+
         from zeit.cms.workingcopy.interfaces import ILocalContent
         import zeit.cms.interfaces
-        import zope.interface
 
         @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
         class Content:

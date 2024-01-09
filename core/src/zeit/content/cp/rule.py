@@ -1,9 +1,11 @@
-from zeit.edit.rule import glob
 import itertools
-import zeit.content.cp.interfaces
-import zeit.edit.interfaces
+
 import zope.component
 import zope.interface
+
+from zeit.edit.rule import glob
+import zeit.content.cp.interfaces
+import zeit.edit.interfaces
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)

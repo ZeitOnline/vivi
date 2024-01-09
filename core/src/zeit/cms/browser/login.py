@@ -1,11 +1,13 @@
+import time
+
 from zope.authentication.interfaces import IUnauthenticatedPrincipal
 import jwt
-import time
 import webob.cookies
-import zeit.cms.browser.resources
 import zope.app.appsetup.product
 import zope.authentication.interfaces
 import zope.traversing.browser
+
+import zeit.cms.browser.resources
 
 
 class Login:

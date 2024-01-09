@@ -1,13 +1,18 @@
 from unittest import mock
-from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo, IPublish, IPublisher
-from zeit.content.image.testing import create_image_group_with_master_image
+import unittest
+
 import lxml.etree
 import pytest
 import requests_mock
-import unittest
+import zope.app.appsetup.product
+import zope.component
+import zope.i18n
+
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.interfaces import ICMSContent
+from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
+from zeit.content.image.testing import create_image_group_with_master_image
 import zeit.cms.related.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
@@ -20,9 +25,6 @@ import zeit.workflow.publish
 import zeit.workflow.publish_3rdparty
 import zeit.workflow.publisher
 import zeit.workflow.testing
-import zope.app.appsetup.product
-import zope.component
-import zope.i18n
 
 
 class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):

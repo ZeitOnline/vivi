@@ -1,5 +1,7 @@
-from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -10,7 +12,6 @@ import zeit.content.gallery.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
-import zope.schema
 
 
 class Reference(zeit.content.article.edit.block.Block):

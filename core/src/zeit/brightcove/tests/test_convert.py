@@ -1,8 +1,10 @@
 from datetime import datetime
 from unittest import mock
+
+import pytz
+
 from zeit.brightcove.convert import Video as BCVideo
 from zeit.content.video.video import Video as CMSVideo
-import pytz
 import zeit.brightcove.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.tag

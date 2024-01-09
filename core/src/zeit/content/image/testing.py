@@ -1,13 +1,15 @@
+import importlib.resources
+import os.path
+
 import gocept.httpserverlayer.static
 import gocept.selenium
-import os.path
-import importlib.resources
+import zope.component
+
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.workflow.testing
-import zope.component
 
 
 product_config = """

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-import grokcore.component as grok
 import logging
+
+import grokcore.component as grok
 import requests
+import zope.component
+import zope.interface
+
 import zeit.cms.content.interfaces
 import zeit.reach.interfaces
 import zeit.retresco.interfaces
-import zope.component
-import zope.interface
 
 
 log = logging.getLogger(__name__)

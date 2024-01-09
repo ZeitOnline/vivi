@@ -1,14 +1,16 @@
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
-from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
-from zeit.connector.interfaces import DeleteProperty
 import collections.abc
 import logging
-import zeit.cms.checkout.interfaces
-import zeit.cms.repository.interfaces
-import zeit.connector.interfaces
+
 import zope.component
 import zope.interface
 import zope.security.interfaces
+
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE, WRITEABLE_ON_CHECKIN
+from zeit.connector.interfaces import DeleteProperty
+import zeit.cms.checkout.interfaces
+import zeit.cms.repository.interfaces
+import zeit.connector.interfaces
+
 
 log = logging.getLogger(__name__)
 

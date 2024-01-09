@@ -1,9 +1,11 @@
 from unittest import mock
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-import persistent
 import unittest
-import zeit.cms.content.xmlsupport
+
+import persistent
 import zope.security.proxy
+
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+import zeit.cms.content.xmlsupport
 
 
 class PersistentTest(unittest.TestCase):

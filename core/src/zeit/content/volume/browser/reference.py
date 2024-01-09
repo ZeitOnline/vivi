@@ -1,11 +1,12 @@
+import zope.component
+import zope.formlib.form
+import zope.formlib.interfaces
+
 import zeit.cms.browser.objectdetails
 import zeit.cms.browser.view
 import zeit.cms.repository.interfaces
 import zeit.content.volume.interfaces
 import zeit.edit.browser.form
-import zope.component
-import zope.formlib.form
-import zope.formlib.interfaces
 
 
 class EditReference(zeit.edit.browser.form.InlineForm):

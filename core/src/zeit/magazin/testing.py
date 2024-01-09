@@ -1,11 +1,12 @@
-from zeit.magazin.interfaces import IZMOSection, IZMOFolder
 import plone.testing
+import zope.component
+import zope.interface
+
+from zeit.magazin.interfaces import IZMOFolder, IZMOSection
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.content.link.testing
-import zope.component
-import zope.interface
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(

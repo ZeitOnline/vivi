@@ -1,20 +1,14 @@
 # coding: utf8
-from zeit.wysiwyg.util import contains_element
 import copy
 import datetime
 import html.entities
+
 import lxml.builder
 import lxml.etree
 import lxml.html.soupparser
 import lxml.objectify
 import pendulum
 import pytz
-import zeit.cms.checkout.interfaces
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
-import zeit.cms.relation.interfaces
-import zeit.cms.repository.interfaces
-import zeit.wysiwyg.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
@@ -22,6 +16,14 @@ import zope.interface.common.idatetime
 import zope.security.management
 import zope.security.proxy
 import zope.traversing.interfaces
+
+from zeit.wysiwyg.util import contains_element
+import zeit.cms.checkout.interfaces
+import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
+import zeit.cms.repository.interfaces
+import zeit.wysiwyg.interfaces
 
 
 @zope.component.adapter(zope.interface.Interface)

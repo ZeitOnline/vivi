@@ -1,24 +1,25 @@
-from cryptography.fernet import Fernet
 import contextlib
 import importlib.metadata
-import opentelemetry.trace
 import os
 import re
 import socket
 import time
-import zeit.cms.interfaces
-import zope.interface
 
+from cryptography.fernet import Fernet
 from opentelemetry.instrumentation.utils import http_status_to_status_code
 from opentelemetry.trace.status import Status
+import opentelemetry.trace
+import zope.interface
+
+import zeit.cms.interfaces
+
 
 try:
-    from opentelemetry.sdk.trace import Tracer, TracerProvider
-    from opentelemetry.sdk.trace.export import BatchSpanProcessor
-    from opentelemetry.sdk.trace.export import ConsoleSpanExporter
-    from opentelemetry.sdk.resources import Resource
-    from opentelemetry.sdk.util.instrumentation import InstrumentationScope
     from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+    from opentelemetry.sdk.resources import Resource
+    from opentelemetry.sdk.trace import Tracer, TracerProvider
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+    from opentelemetry.sdk.util.instrumentation import InstrumentationScope
 except ImportError:
     TracerProvider = object
     Tracer = object
@@ -111,9 +112,10 @@ def default_tracer():
 @zope.interface.implementer(zeit.cms.interfaces.ITracer)
 def tracer_from_product_config():
     from opentelemetry.instrumentation.requests import RequestsInstrumentor
+    import zope.app.appsetup.product
+
     from zeit.cms.relstorage import RelStorageInstrumentor
     from zeit.cms.zeo import ZEOInstrumentor
-    import zope.app.appsetup.product
 
     hostname = socket.gethostname()
     # We don't want the FQDN and date suffix.
@@ -150,8 +152,8 @@ def stdout_tracer():
 
 @zope.interface.implementer(zeit.cms.interfaces.IMetrics)
 def prometheus_metrics():
-    from opentelemetry.sdk.metrics import MeterProvider
     from opentelemetry.exporter.prometheus import PrometheusMetricReader
+    from opentelemetry.sdk.metrics import MeterProvider
 
     provider = MeterProvider([PrometheusMetricReader(prefix='')])
     opentelemetry.metrics.set_meter_provider(provider)

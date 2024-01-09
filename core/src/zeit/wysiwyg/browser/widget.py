@@ -1,6 +1,7 @@
 import gocept.fckeditor.resources
-import zeit.cms.browser.view
 import zope.app.form.browser.textwidgets
+
+import zeit.cms.browser.view
 
 
 TEMPLATE = """

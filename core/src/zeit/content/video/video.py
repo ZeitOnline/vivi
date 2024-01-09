@@ -1,7 +1,10 @@
-from zeit.cms.i18n import MessageFactory as _
+import importlib.resources
+
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import importlib.resources
+import zope.interface
+
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
@@ -12,7 +15,6 @@ import zeit.cms.type
 import zeit.cms.workflow.dependency
 import zeit.content.video.interfaces
 import zeit.push.interfaces
-import zope.interface
 
 
 class AuthorshipsProperty(zeit.cms.content.reference.ReferenceProperty):

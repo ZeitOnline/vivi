@@ -1,17 +1,18 @@
-from zope.pluggableauth.plugins.principalfolder import InternalPrincipal
-from zope.pluggableauth.plugins.principalfolder import PrincipalFolder
-import jwt
 import importlib.resources
-import plone.testing
 import urllib.error
 import urllib.parse
-import zeit.cms.generation.install
-import zeit.cms.testing
+
+from zope.pluggableauth.plugins.principalfolder import InternalPrincipal, PrincipalFolder
+import jwt
+import plone.testing
 import zope.authentication.interfaces
 import zope.component
 import zope.pluggableauth.authentication
 import zope.pluggableauth.interfaces
 import zope.securitypolicy.interfaces
+
+import zeit.cms.generation.install
+import zeit.cms.testing
 
 
 class LoginFormLayer(plone.testing.Layer):

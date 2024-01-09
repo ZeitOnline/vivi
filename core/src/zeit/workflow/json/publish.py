@@ -1,11 +1,15 @@
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.workflow.interfaces import CAN_RETRACT_SUCCESS
-from zeit.cms.workflow.interfaces import CAN_RETRACT_ERROR
-from zope.cachedescriptors.property import Lazy as cachedproperty
 import json
-import zeit.cms.workflow.interfaces
+
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import zope.i18n
+
+from zeit.cms.workflow.interfaces import (
+    CAN_PUBLISH_ERROR,
+    CAN_PUBLISH_SUCCESS,
+    CAN_RETRACT_ERROR,
+    CAN_RETRACT_SUCCESS,
+)
+import zeit.cms.workflow.interfaces
 
 
 class Publish:

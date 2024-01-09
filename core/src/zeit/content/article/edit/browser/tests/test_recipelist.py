@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+
 import zeit.content.article.edit.browser.testing
 
 

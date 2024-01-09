@@ -1,10 +1,11 @@
 # coding: utf8
-from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.source
-import zeit.cms.content.interfaces
-import zeit.cms.content.sources
 import zope.interface
 import zope.schema
+
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 
 
 class ProductSource(zeit.cms.content.sources.ProductSource):

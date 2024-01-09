@@ -1,15 +1,17 @@
 from base64 import b64decode
 from unittest import mock
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
 import json
+
 import plone.testing
+import zope.component
+import zope.event
+import zope.lifecycleevent
+
 import zeit.cms.testing
 import zeit.content.author.honorar
 import zeit.content.author.interfaces
 import zeit.content.author.testing
-import zope.component
-import zope.event
-import zope.lifecycleevent
 
 
 HTTP_LAYER = zeit.cms.testing.HTTPLayer(

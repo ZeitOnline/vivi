@@ -1,9 +1,10 @@
 import lxml.objectify
+import zope.component
+
 import zeit.cms.content.interfaces
 import zeit.content.article.edit.volume
 import zeit.content.cp.centerpage
 import zeit.content.volume.testing
-import zope.component
 
 
 class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
@@ -24,8 +25,8 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         self.assertEqual(self.volume.uniqueId, reference.get('href'))
 
     def test_reference_honors_ICommonMetadata_xml_format(self):
-        from zeit.content.volume.volume import Volume
         from zeit.cms.repository.folder import Folder
+        from zeit.content.volume.volume import Volume
 
         volume = Volume()
         volume.year = 2015

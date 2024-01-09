@@ -1,11 +1,15 @@
+import argparse
+import logging
+import time
+
+import grokcore.component as grok
+import transaction
+import zope.component
+import zope.lifecycleevent
+
 from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ICollection, INonRecursiveCollection
 from zeit.retresco.interfaces import ISkipEnrich
-import argparse
-import grokcore.component as grok
-import logging
-import time
-import transaction
 import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.cli
@@ -18,8 +22,6 @@ import zeit.content.image.imagegroup
 import zeit.content.image.transform
 import zeit.retresco.interfaces
 import zeit.workflow.interfaces
-import zope.component
-import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)

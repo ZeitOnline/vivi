@@ -1,13 +1,15 @@
 # coding: utf-8
 from unittest import mock
-from zeit.cms.tagging.tag import Tag
 import json
+
+import zope.component
+import zope.publisher.browser
+
+from zeit.cms.tagging.tag import Tag
 import zeit.cms.browser.interfaces
 import zeit.cms.tagging.source
 import zeit.cms.testing
 import zeit.retresco.testing
-import zope.component
-import zope.publisher.browser
 
 
 class TestWhitelist(zeit.retresco.testing.FunctionalTestCase):

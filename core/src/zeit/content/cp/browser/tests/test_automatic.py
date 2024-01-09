@@ -1,8 +1,9 @@
 import transaction
+import zope.security.management
+
 import zeit.cms.testing
 import zeit.content.cp.browser.testing
 import zeit.content.cp.testing
-import zope.security.management
 
 
 class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):

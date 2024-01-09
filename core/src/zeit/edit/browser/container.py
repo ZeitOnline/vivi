@@ -1,6 +1,7 @@
-import zeit.edit.browser.view
 import zope.event
 import zope.lifecycleevent
+
+import zeit.edit.browser.view
 
 
 class UpdateOrder(zeit.edit.browser.view.Action):

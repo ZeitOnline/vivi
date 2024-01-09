@@ -1,9 +1,10 @@
+import zope.component
+
 from zeit.cms.content.interfaces import IXMLReference
 from zeit.cms.interfaces import ICMSContent
 from zeit.content.image.interfaces import IImageMetadata
-import zeit.content.image.testing
 import zeit.content.image.metadata
-import zope.component
+import zeit.content.image.testing
 
 
 class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
