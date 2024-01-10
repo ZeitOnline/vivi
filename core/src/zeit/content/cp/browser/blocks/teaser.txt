@@ -18,7 +18,7 @@ teasers in the lead area:
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open(
-...  'lead/@@landing-zone-drop'
+...  'body/lead/@@landing-zone-drop'
 ...  '?uniqueId=http://xml.zeit.de/testcontent&order=top')
 >>> browser.open(contents_url)
 >>> print(browser.contents)
@@ -87,7 +87,7 @@ We create a new centerpage with a content type from the repository:
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open(
-...     'lead/@@landing-zone-drop'
+...     'body/lead/@@landing-zone-drop'
 ...     '?uniqueId=http://xml.zeit.de/testcontent'
 ...     '&order=top')
 

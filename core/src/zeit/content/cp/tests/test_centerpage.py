@@ -22,7 +22,7 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         import zeit.edit.interfaces
 
         factory = zope.component.getAdapter(
-            cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
+            cp.body['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
         )
         return factory()
 
@@ -52,7 +52,7 @@ class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
         import zeit.edit.interfaces
 
         factory = zope.component.getAdapter(
-            cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
+            cp.body['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
         )
         return factory()
 
@@ -102,7 +102,7 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
             'ümläut'
         ] = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
         cp = zeit.content.cp.centerpage.CenterPage()
-        cp['lead'].create_item('teaser').append(content)
+        cp.body['lead'].create_item('teaser').append(content)
         with self.assertNothingRaised():
             cp.updateMetadata(content)
 

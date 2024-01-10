@@ -34,17 +34,17 @@ homepage
 
 Other areas are not accessible:
 
->>> cp['ugc-bar']
+>>> cp.body['ugc-bar']
 Traceback (most recent call last):
     ...
 KeyError: 'ugc-bar'
 
 The centerpage is reachable via ``__parent__`` or by adapting to it:
 
->>> cp['feature'].__parent__
+>>> cp.body['feature'].__parent__
 <zeit.content.cp.centerpage.Body...>
 >>> import zeit.content.cp.interfaces
->>> zeit.content.cp.interfaces.ICenterPage(cp['feature'])
+>>> zeit.content.cp.interfaces.ICenterPage(cp.body['feature'])
 <zeit.content.cp.centerpage.CenterPage...>
 
 
@@ -57,7 +57,7 @@ area the centerpage will be considered changed:
 >>> getRootFolder()['cp'] = cp
 >>> transaction.commit()  # Commit to actually be able to "change"
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-...     cp['lead']))
+...     cp.body['lead']))
 >>> cp._p_changed
 True
 
@@ -65,7 +65,7 @@ There is also such a handler for IObjectMovedEvent:
 
 >>> import zope.container.contained
 >>> zope.event.notify(zope.container.contained.ObjectMovedEvent(
-...     cp['lead'], None, None, None, None))
+...     cp.body['lead'], None, None, None, None))
 >>> cp._p_changed
 True
 
@@ -97,7 +97,7 @@ A block is part of an area.
 Teaser block
 ------------
 
->>> informatives = cp['informatives']
+>>> informatives = cp.body['informatives']
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
@@ -204,7 +204,7 @@ we can check it out:
 Now we need some test objects we can edit later on:
 
 >>> factory = zope.component.getAdapter(
-...     cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
+...     cp.body['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> teasers = factory()
 >>> teasers.insert(0, repository['testcontent'])
 

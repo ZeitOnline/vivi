@@ -20,12 +20,12 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
         self.teaser_selector = 'xpath=' + xml_selector + '[{pos}]@id'
 
         self.cp = self.create_and_checkout_centerpage()
-        self.cp['lead'].kind = 'major'
-        self.cp['lead'].apply_teaser_layouts_automatically = True
-        self.cp['lead']._first_teaser_layout = 'leader'
-        self.cp['lead'].create_item('teaser')
-        self.cp['lead'].create_item('teaser')
-        self.cp['lead'].create_item('teaser')
+        self.cp.body['lead'].kind = 'major'
+        self.cp.body['lead'].apply_teaser_layouts_automatically = True
+        self.cp.body['lead']._first_teaser_layout = 'leader'
+        self.cp.body['lead'].create_item('teaser')
+        self.cp.body['lead'].create_item('teaser')
+        self.cp.body['lead'].create_item('teaser')
         transaction.commit()
         self.open_centerpage(create_cp=False)
 
@@ -112,7 +112,9 @@ class CommonEditTest(zeit.content.cp.testing.BrowserTestCase):
         zeit.content.cp.browser.testing.create_cp(b)
         b.open('contents')
         contents_url = b.url
-        b.open('lead/@@landing-zone-drop' '?uniqueId=http://xml.zeit.de/testcontent' '&order=top')
+        b.open(
+            'body/lead/@@landing-zone-drop' '?uniqueId=http://xml.zeit.de/testcontent' '&order=top'
+        )
 
         b.open(contents_url)
         b.getLink('Edit block common', index=2).click()
@@ -198,7 +200,7 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw', view.header_image)
 
     def test_shows_list_representation_title_for_non_metadata(self):
-        block = self.cp['lead'].create_item('teaser')
+        block = self.cp.body['lead'].create_item('teaser')
         block.insert(0, self.repository['2007'])
         view = teaser_view(block)
         self.assertEqual('2007', view.teasers[0]['texts'][0]['content'])

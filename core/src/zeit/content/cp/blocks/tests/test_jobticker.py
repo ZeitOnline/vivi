@@ -12,7 +12,7 @@ import zeit.edit.interfaces
 class TestJobboxtickerblock(zeit.content.cp.testing.FunctionalTestCase):
     def create_jobticker_block(self):
         cp = zeit.content.cp.centerpage.CenterPage()
-        lead = cp['lead']
+        lead = cp.body['lead']
         return zope.component.getAdapter(
             lead, zeit.edit.interfaces.IElementFactory, name='jobbox_ticker'
         )()

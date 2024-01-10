@@ -19,7 +19,7 @@ lead area:
 >>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> browser.open('informatives/@@landing-zone-drop-module'
+>>> browser.open('body/informatives/@@landing-zone-drop-module'
 ...              '?block_type=xml')
 
 A new block with an XML <container> element is created:
@@ -101,11 +101,11 @@ that to XML blocks, because they don't have a layout.
 These calls should just run through without raising HTTP 500.
 
 >>> browser.open(contents_url)
->>> browser.open('lead/@@landing-zone-drop-module'
+>>> browser.open('body/lead/@@landing-zone-drop-module'
 ...              '?block_type=xml')
 >>> browser.open(contents_url)
->>> browser.open('lead/@@landing-zone-drop-module'
+>>> browser.open('body/lead/@@landing-zone-drop-module'
 ...              '?block_type=teaser')
 >>> browser.open(contents_url)
->>> browser.open('lead/@@landing-zone-drop-module'
+>>> browser.open('body/lead/@@landing-zone-drop-module'
 ...              '?block_type=xml')

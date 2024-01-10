@@ -10,7 +10,7 @@ Some setup to fill a centerpage:
 >>> zeit.cms.testing.set_site()
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
->>> lead = cp['lead']
+>>> lead = cp.body['lead']
 >>> import zeit.cms.interfaces
 >>> import zeit.edit.interfaces
 >>> import zope.component

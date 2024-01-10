@@ -190,8 +190,8 @@ class TooltipFixture:
     def setUp(self):
         super().setUp()
         cp = zeit.content.cp.centerpage.CenterPage()
-        cp['lead'].kind = 'major'
-        cp['informatives'].kind = 'minor'
+        cp.body['lead'].kind = 'major'
+        cp.body['informatives'].kind = 'minor'
         self.repository['cp'] = cp
         self.repository['data'] = zeit.cms.repository.folder.Folder()
         self.repository['data']['cp-area-schemas'] = zeit.cms.repository.folder.Folder()
@@ -210,7 +210,7 @@ class TooltipFixture:
 class TooltipBrowserTest(TooltipFixture, zeit.content.cp.testing.BrowserTestCase):
     def test_schematic_preview_returns_content_of_matched_files(self):
         self.browser.open('http://localhost/++skin++vivi/repository/cp/@@checkout')
-        self.browser.open('informatives/@@schematic-preview')
+        self.browser.open('body/informatives/@@schematic-preview')
         self.assertEllipsis('...major...active...minor...', self.browser.contents)
 
 

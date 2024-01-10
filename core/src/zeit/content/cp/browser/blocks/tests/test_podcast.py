@@ -7,7 +7,7 @@ class TestPodcast(zeit.content.cp.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
-        self.centerpage['lead'].create_item('podcast')
+        self.centerpage.body['lead'].create_item('podcast')
         self.repository['centerpage'] = self.centerpage
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')
@@ -17,7 +17,7 @@ class TestPodcast(zeit.content.cp.testing.BrowserTestCase):
     def test_can_create_podcast_module_via_drag_n_drop_from_sidebar(self):
         b = self.browser
         self.assertEqual(1, b.contents.count('type-podcast'))
-        b.open('informatives/@@landing-zone-drop-module?block_type=podcast')
+        b.open('body/informatives/@@landing-zone-drop-module?block_type=podcast')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-podcast'))
 

@@ -1,5 +1,6 @@
 import zeit.content.cp
 import zeit.content.cp.centerpage
+import zeit.content.cp.testing
 import zeit.content.text.text
 
 
@@ -7,7 +8,7 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
     def setUp(self):
         super().setUp()
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
-        self.centerpage['lead'].create_item('rawtext')
+        self.centerpage.body['lead'].create_item('rawtext')
         self.repository['centerpage'] = self.centerpage
 
         self.plaintext = zeit.content.text.text.Text()
@@ -22,13 +23,13 @@ class TestRawText(zeit.content.cp.testing.BrowserTestCase):
     def test_can_create_rawtext_module_via_drag_n_drop_from_sidebar(self):
         b = self.browser
         self.assertEqual(1, b.contents.count('type-rawtext'))
-        b.open('informatives/@@landing-zone-drop-module?block_type=rawtext')
+        b.open('body/informatives/@@landing-zone-drop-module?block_type=rawtext')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-rawtext'))
 
     def test_can_create_rawtext_module_by_dropping_content(self):
         b = self.browser
-        b.open('lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/plaintext' '&order=top')
+        b.open('body/lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/plaintext' '&order=top')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-rawtext'))
 

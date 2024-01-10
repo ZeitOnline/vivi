@@ -44,7 +44,7 @@ Create a cpextra block as first block in the informatives. The view returns
 information about the created block:
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
-...              'island/informatives/@@landing-zone-drop-module'
+...              'island/body/informatives/@@landing-zone-drop-module'
 ...              '?block_type=cpextra')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result['signals'])
@@ -85,7 +85,7 @@ Add another block after the just created block now:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'informatives/%s/@@landing-zone-drop-module?block_type=teaser' %
+...     'body/informatives/%s/@@landing-zone-drop-module?block_type=teaser' %
 ...     created_block_id)
 
 >>> browser.open(contents_url)

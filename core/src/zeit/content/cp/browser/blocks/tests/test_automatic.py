@@ -16,9 +16,9 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.cp = self.create_and_checkout_centerpage('cp')
-        del self.cp['feature']['lead']
-        del self.cp['feature']['informatives']
-        self.area = self.cp['feature'].create_item('area')
+        del self.cp.body['feature']['lead']
+        del self.cp.body['feature']['informatives']
+        self.area = self.cp.body['feature'].create_item('area')
         self.area.referenced_cp = self.repository['cp_with_teaser']
         self.area.count = 1
         self.area.automatic = True

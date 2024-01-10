@@ -22,7 +22,7 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
         cp = zeit.content.cp.centerpage.CenterPage()
         zope.interface.alsoProvides(cp, zeit.content.cp.interfaces.ILeadTimeCP)
         factory = zope.component.getAdapter(
-            cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
+            cp.body['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
         )
         teaser = factory()
         teaser.insert(0, self.repository['foo'])
@@ -48,8 +48,8 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_sets_end_on_article_when_no_longer_in_lead(self):
         self.publish(self.repository['cp'])
         with checked_out(self.repository['cp']) as cp:
-            for entry in cp['lead'].values()[0]:
-                cp['lead'].values()[0].remove(entry)
+            for entry in cp.body['lead'].values()[0]:
+                cp.body['lead'].values()[0].remove(entry)
         self.publish(self.repository['cp'])
         leadtime = zeit.content.cp.interfaces.ILeadTime(self.repository['foo'])
         self.assertNotEqual(None, leadtime.end)

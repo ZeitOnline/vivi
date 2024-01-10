@@ -11,7 +11,7 @@ class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
         from zeit.content.cp.centerpage import CenterPage
 
         self.centerpage = CenterPage()
-        self.playlist = self.centerpage['lead'].create_item('playlist')
+        self.playlist = self.centerpage.body['lead'].create_item('playlist')
         self.repository['centerpage'] = self.centerpage
         self.repository['my-playlist'] = Playlist()
 
@@ -30,13 +30,13 @@ class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
     def test_can_create_playlist_block_via_drag_n_drop_from_sidebar(self):
         b = self.browser
         self.assertEqual(1, b.contents.count('type-playlist'))
-        b.open('informatives/@@landing-zone-drop-module?block_type=playlist')
+        b.open('body/informatives/@@landing-zone-drop-module?block_type=playlist')
         b.open(self.content_url)
         self.assertEqual(2, b.contents.count('type-playlist'))
 
     def test_can_reference_a_playlist_via_drag_n_drop(self):
-        [playlist_block] = self.repository['centerpage']['lead'].values()
-        drop_url = 'lead/{}/@@drop?uniqueId={}'.format(
+        [playlist_block] = self.repository['centerpage'].body['lead'].values()
+        drop_url = 'body/lead/{}/@@drop?uniqueId={}'.format(
             playlist_block.__name__, 'http://xml.zeit.de/my-playlist'
         )
 
@@ -51,8 +51,8 @@ class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
 
         self.repository['my-video'] = Video()
 
-        [playlist_block] = self.repository['centerpage']['lead'].values()
-        drop_url = 'lead/{}/@@drop?uniqueId={}'.format(
+        [playlist_block] = self.repository['centerpage'].body['lead'].values()
+        drop_url = 'body/lead/{}/@@drop?uniqueId={}'.format(
             playlist_block.__name__, 'http://xml.zeit.de/my-video'
         )
 
@@ -64,7 +64,7 @@ class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
     def test_can_reference_a_playlist_by_editing_common_properties(self):
         self.set_referenced_playlist()
         self.browser.open('@@checkin')
-        [playlist_block] = self.repository['centerpage']['lead'].values()
+        [playlist_block] = self.repository['centerpage'].body['lead'].values()
         self.assertEqual(self.repository['my-playlist'], playlist_block.referenced_playlist)
 
     def test_playlist_is_stored_in_xml(self):

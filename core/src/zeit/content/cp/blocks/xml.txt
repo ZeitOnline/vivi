@@ -9,7 +9,7 @@ The xml block contains raw xml.
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
->>> lead = cp['lead']
+>>> lead = cp.body['lead']
 >>> import zeit.content.cp.interfaces
 >>> import zeit.edit.interfaces
 >>> import zope.component

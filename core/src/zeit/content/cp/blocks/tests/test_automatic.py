@@ -17,7 +17,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['t1'] = ExampleContentType()
         self.repository['t2'] = ExampleContentType()
 
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 2
         lead.automatic = True
         lead.automatic_type = 'query'
@@ -40,7 +40,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         first one should be used"""
         self.repository['t1'] = ExampleContentType()
         cp = self.repository['cp']
-        duo_region = cp['feature'].create_item('area')
+        duo_region = cp.body['feature'].create_item('area')
         duo_region.kind = 'duo'
         duo_region.count = 1
         duo_region.automatic = True
@@ -54,7 +54,7 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_automatic_teaser_block_should_not_force_mobile_image(self):
         self.repository['t1'] = ExampleContentType()
         cp = self.repository['cp']
-        region = cp['feature'].create_item('area')
+        region = cp.body['feature'].create_item('area')
         region.kind = 'major'
         region.count = 1
         region.automatic = True

@@ -12,14 +12,14 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
     def test_fills_with_placeholders_when_set_to_automatic(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 5
         lead.automatic = True
         lead.automatic_type = 'query'
         self.assertEqual(5, len(lead))
 
     def test_fills_with_placeholders_when_teaser_count_changed(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 5
         lead.automatic = True
         lead.automatic_type = 'query'
@@ -28,7 +28,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(7, len(lead))
 
     def test_enabling_automatic_preserves_layout(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         teaser = lead.create_item('teaser')
         teaser.volatile = True
         teaser.read_more = 'foo'
@@ -39,7 +39,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('two-side-by-side', lead.values()[0].layout.id)
 
     def test_disabling_automatic_preserves_all_teaser_fields(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         auto = lead.values()[0]
@@ -50,7 +50,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('two-side-by-side', lead.values()[0].layout.id)
 
     def test_materializing_autopilot_marks_previous_automatic_teasers(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.automatic = False
@@ -58,13 +58,13 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(True, teaser.volatile)
 
     def test_adding_teaser_by_hand_uses_default_for_volatile(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         teaser = lead.create_item('teaser')
         # assertFalse accepts None as well, so we use assertEqual explicitly
         self.assertEqual(False, teaser.volatile)
 
     def test_materializing_autopilot_keeps_manual_content(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 0
         lead.automatic = True
         manual_teaser = lead.create_item('teaser')
@@ -74,7 +74,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual([manual_teaser], lead.values())
 
     def test_changing_automatic_count_also_counts_manual_content(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 2
         lead.automatic = True
 
@@ -90,14 +90,14 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(manual_teaser, lead.values()[0])
 
     def test_changing_automatic_count_only_counts_teaser_modules(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.create_item('markup')
         lead.count = 2
         lead.automatic = True
         self.assertEqual(['markup', 'auto-teaser', 'auto-teaser'], [x.type for x in lead.values()])
 
     def test_reducing_automatic_count_does_not_delete_manual_content(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         manual_teaser = lead.create_item('teaser')
@@ -107,7 +107,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual([manual_teaser], lead.values())
 
     def test_autopilot_allows_more_manual_content_than_automatic_count(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         teaser1 = lead.create_item('teaser')
@@ -116,7 +116,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual([teaser1, teaser2], lead.values())
 
     def test_adding_manual_teaser_automatically_removes_last_auto_teaser(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 2
         lead.automatic = True
         auto_teaser1, auto_teaser2 = lead.values()
@@ -126,7 +126,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_removing_manual_teaser_automatically_adds_auto_teaser(self):
         from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 2
         lead.automatic = True
         manual_teaser1 = lead.create_item('teaser')
@@ -139,7 +139,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertTrue(IAutomaticTeaserBlock.providedBy(lead.values()[-1]))
 
     def test_enabling_automatic_removes_all_auto_generated_blocks(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         teaser = lead.create_item('teaser')
         teaser.volatile = True  # generated by AutoPilot
@@ -147,7 +147,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(['auto-teaser'], [x.type for x in lead.values()])
 
     def test_enabling_automatic_keeps_blocks_not_added_by_autopilot(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         teaser = lead.create_item('teaser')
         teaser.volatile = False  # not generated by AutoPilot
@@ -155,7 +155,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual([teaser], lead.values())
 
     def test_enabling_automatic_keeps_order_of_manually_placed_blocks(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 3
 
         teaser1 = lead.create_item('teaser')
@@ -170,7 +170,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_enabling_automatic_does_not_break_on_updateOrder(self):
         """update_autopilot handler might interfere and creates new blocks"""
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 3
         teaser = lead.create_item('teaser')
         teaser.volatile = True
@@ -184,7 +184,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['t1'] = ExampleContentType()
         self.repository['t2'] = ExampleContentType()
 
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 2
         lead.automatic = True
         lead.create_item('teaser')
@@ -199,7 +199,7 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-        self.area = self.repository['cp']['feature'].create_item('area')
+        self.area = self.repository['cp'].body['feature'].create_item('area')
         other = zeit.content.cp.centerpage.CenterPage()
         other.title = 'referenced'
         other.supertitle = 'supertitle'
@@ -261,7 +261,7 @@ class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
     def test_serializes_via_dav_converter(self):
-        area = self.repository['cp']['lead']
+        area = self.repository['cp'].body['lead']
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         autotest = source.find('Autotest')
         area.query = (('serie', 'eq', autotest),)

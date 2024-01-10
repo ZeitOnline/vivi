@@ -17,7 +17,7 @@ class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
-        self.teaser = self.cp['lead'].create_item('teaser')
+        self.teaser = self.cp.body['lead'].create_item('teaser')
 
     def test_content_glob(self):
         r = Rule(
@@ -39,7 +39,7 @@ applicable(is_block)
 error_unless(content == [])
 """
         )
-        area = self.cp['informatives'].create_item('xml')
+        area = self.cp.body['informatives'].create_item('xml')
         s = r.apply(area, IRuleGlobs(area))
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 
@@ -63,11 +63,11 @@ applicable(is_region)
 error_if(True)
 """
         )
-        s = r.apply(self.cp['feature'], IRuleGlobs(self.cp['feature']))
+        s = r.apply(self.cp.body['feature'], IRuleGlobs(self.cp.body['feature']))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_area_is_not_a_region(self):
-        area = self.cp['feature'].create_item('area')
+        area = self.cp.body['feature'].create_item('area')
         r = Rule(
             """
 applicable(is_region)
@@ -99,7 +99,7 @@ error_if(len(list(all_modules)) == 2)
         )
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
-        self.cp['lead'].create_item('teaser')
+        self.cp.body['lead'].create_item('teaser')
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
