@@ -26,6 +26,13 @@ case $COMMAND in
         if [[ -n "$1" ]]; then
             shift
         fi
+
+        cd $WORKSPACE
+        rm -f report*.xml coverage.xml cobertura.xml
+        cd $DEPLOYMENT/work/source
+        rm -f report*.xml coverage.xml cobertura.xml .coverage
+        cd $WORKSPACE
+
         pre-commit run --all-files --show-diff-on-failure
         prepare_credentials staging  # for docker pull dav-server
         bin/ci setup-batou
@@ -55,11 +62,6 @@ case $COMMAND in
     ;;
     test-app-run)
         shift
-
-        cd $WORKSPACE
-        rm -f report*.xml coverage.xml cobertura.xml
-        cd $DEPLOYMENT/work/source
-        rm -f report*.xml coverage.xml cobertura.xml .coverage
 
         cd $DEPLOYMENT
         ./batou deploy jenkins
