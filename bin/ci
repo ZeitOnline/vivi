@@ -98,6 +98,7 @@ case $COMMAND in
         fi
         cp -R $DEPLOYMENT/work/source/coverage-report $WORKSPACE
 
+        $DEPLOYMENT/bin/sv stop all
         $DEPLOYMENT/bin/sv shutdown
         exit $TEST_RESULT
     ;;
