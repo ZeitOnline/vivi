@@ -27,7 +27,7 @@ dependencies = [
     "opentelemetry-api",
     "opentelemetry-api>=1.11.1",
     "opentelemetry-instrumentation-sqlalchemy>=0.38b0",
-    "pendulum>=2.0.0.dev0",
+    "pendulum>=3.0.0.dev0",
     "persistent",
     "pillow",
     "prometheus-client",

@@ -32,4 +32,10 @@
     original="collect"
     replacement=".otel_patch.collect" />
 
+  <monkey:patch
+    description="Remove ZoneInfo.no_cache complication which does not work with zodbpickle"
+    class="pendulum.Timezone"
+    original="__reduce__"
+    replacement=".pendulum_patch.reduce_without_nocache" />
+
 </configure>
