@@ -126,7 +126,7 @@ def cms_content_iter(context):
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
 def extract_teasers_from_cp(context):
-    for region in context.values():
+    for region in context.body.values():
         for area in region.values():
             for teaser in zeit.content.cp.interfaces.ITeaseredContent(area):
                 yield teaser

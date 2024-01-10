@@ -117,6 +117,8 @@ class ICenterPage(
         title=_('CP type'), source=zeit.content.cp.source.CPTypeSource(), default='centerpage'
     )
 
+    body = zope.interface.Attribute('Convenience access to IEditableBody')
+
     topiclink_title = zope.schema.TextLine(title=_('Name for topiclinks'), required=False)
 
     og_title = zope.schema.TextLine(title=_('Titel'), required=False)

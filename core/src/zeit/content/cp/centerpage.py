@@ -35,13 +35,6 @@ import zeit.seo.seo
 BODY_NAME = 'body'
 
 
-def create_delegate(name):
-    def delegate(self, *args, **kw):
-        return getattr(self.body, name)(*args, **kw)
-
-    return delegate
-
-
 @zope.interface.implementer(
     zeit.content.cp.interfaces.ICenterPage, zeit.cms.interfaces.IEditorialContent
 )
@@ -58,21 +51,9 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
 </centerpage>
 """
 
-    # We want to delegate only IContainer itself, not any inherited interfaces;
-    # due to the read/write interface split, we need to express this manually.
-    DELEGATE_METHODS = (
-        set(zeit.edit.interfaces.IContainer)
-        - set(zeit.cms.content.interfaces.IXMLRepresentation)
-        - set(zope.location.interfaces.IContained)
-        - set(zeit.edit.interfaces.IElement)
-    )
-
     @property
     def body(self):
         return zeit.content.cp.interfaces.IBody(self)
-
-    for name in DELEGATE_METHODS:
-        locals()[name] = create_delegate(name)
 
     _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type']
@@ -312,6 +293,12 @@ def cms_content_iter(context):
             if block is not None
         ]
     )
+
+
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
+@grok.implementer(zeit.edit.interfaces.IElementReferences)
+def centerpage_content_iter(context):
+    return zeit.edit.interfaces.IElementReferences(context.body)
 
 
 @zope.component.adapter(

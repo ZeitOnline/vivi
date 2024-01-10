@@ -9,6 +9,7 @@ import zeit.cms.content.metadata
 import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
+import zeit.cms.type
 import zeit.content.video.interfaces
 
 

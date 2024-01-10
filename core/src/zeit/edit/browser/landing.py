@@ -4,6 +4,7 @@ import zope.formlib.form
 import zope.interface
 
 import zeit.cms.browser.form
+import zeit.content.cp.interfaces
 import zeit.edit.browser.view
 
 
@@ -174,7 +175,10 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
         container = element
         while True:
             parent = container.__parent__
-            if zeit.edit.interfaces.IContainer.providedBy(parent):
+            if zeit.content.cp.interfaces.ICenterPage.providedBy(parent):
+                container = parent.body
+                break
+            elif zeit.edit.interfaces.IContainer.providedBy(parent):
                 container = parent
             else:
                 break
