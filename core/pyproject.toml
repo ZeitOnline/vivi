@@ -299,6 +299,7 @@ zeit_vivi = "zeit.pytest"
 
 [project.entry-points."zodburi.resolvers"]
 psql = "zeit.cms.relstorage:psql_resolver"
+pgsock = "zeit.cms.relstorage:socket_resolver"
 
 
 [build-system]

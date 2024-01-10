@@ -29,6 +29,28 @@ class PsqlServiceResolver(Resolver):
 psql_resolver = RelStorageURIResolver(PsqlServiceResolver())
 
 
+class SocketResolver(Resolver):
+    def __call__(self, parsed_uri, kw):
+        def factory(options):
+            from relstorage.adapters.postgresql import PostgreSQLAdapter
+
+            args = {
+                'host': parsed_uri.path,
+                'user': parsed_uri.username,
+                'password': parsed_uri.password,
+                'dbname': parsed_uri.hostname,
+            }
+
+            return PostgreSQLAdapter(
+                dsn=' '.join(f"{k}='{v}'" for k, v in args.items()), options=options
+            )
+
+        return factory, kw
+
+
+socket_resolver = RelStorageURIResolver(SocketResolver())
+
+
 def zodbpack():
     import psycopg2  # soft dependency
 
