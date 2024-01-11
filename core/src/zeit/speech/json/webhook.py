@@ -45,4 +45,8 @@ class Notification:
 @zeit.cms.celery.task(queue='speech')
 def SPEECH_WEBHOOK_TASK(data: dict):
     speech = zope.component.getUtility(zeit.speech.interfaces.ISpeech)
-    speech.update(data)
+    event = data.get('event')
+    if event == 'AUDIO_CREATED':
+        speech.update(data)
+    else:
+        log.info('Event %s not handled.', event)
