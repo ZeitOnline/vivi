@@ -1,6 +1,5 @@
 import grokcore.component as grok
 import lxml.objectify
-import zope.component
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
@@ -26,29 +25,6 @@ class Factory(zeit.content.cp.blocks.block.BlockFactory):
     produces = CPExtraBlock
     title = _('CP extra')
     module = ''
-
-
-# This method only applies to "old" (lead/informatives/mosaic) centerpages
-@grok.subscribe(
-    zeit.content.cp.interfaces.ICenterPage, zeit.cms.repository.interfaces.IBeforeObjectAddEvent
-)
-def add_blocks_to_newly_created_cp(context, event):
-    # The BeforeObjectAddEvent is sent whenever an object is added or changed.
-    # We need to check if this is the first add or not.
-    if zeit.cms.interfaces.ICMSContent(context.uniqueId, None) is not None:
-        # It's already in the repository, do nothing
-        return
-    if 'informatives' not in context.body:
-        # It's a new-style centerpage, do nothing
-        return
-    mostread = zope.component.getAdapter(
-        context.body['informatives'], zeit.edit.interfaces.IElementFactory, name='cpextra'
-    )()
-    mostread.cpextra = 'mostread'
-    mostcommented = zope.component.getAdapter(
-        context.body['informatives'], zeit.edit.interfaces.IElementFactory, name='cpextra'
-    )()
-    mostcommented.cpextra = 'mostcommented'
 
 
 @grok.subscribe(
