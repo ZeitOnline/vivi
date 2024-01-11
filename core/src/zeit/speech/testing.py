@@ -6,6 +6,7 @@ import zeit.workflow.testing
 product_config = """\
 <product-config zeit.speech>
   principal zope.speech
+  speech-folder tts
 </product-config>
 """
 
@@ -32,7 +33,8 @@ TTS_CREATED = {
             'checksum': '3c5977f672b95b3c5abad925b381437c6ca818f4',
             'audioEntry': {
                 'uuid': 'e7fba272-c442-4cde-a5c9-3d75a89e5273',
-                'url': 'https://zon-speechbert-qa.s3.eu-central-1.amazonaws.com/articles/a89ce2e3-4887-466a-a52e-edc6b9802ef9/full_1fd74183d02f50d5cd0731a5748019e95bbe68bd71f33cbd2c03c4d64c8a1d91a7f25f6725db6b19348bd94af09fc563.mp3',
+                'url': 'https://zon-speechbert/articles/a89ce2e3-4887-466a-a52e-edc6b9802ef9/full_1fd74183d02f50d5cd0731a5748019e95bbe68bd71f33cbd2c03c4d64c8a1d91a7f25f6725db6b19348bd94af09fc563.mp3',
+                'duration': 65000,
             },
         },
         {
@@ -40,7 +42,8 @@ TTS_CREATED = {
             'checksum': '3c5977f672b95b3c5abad925b381437c6ca818f4',
             'audioEntry': {
                 'uuid': '58ff08f4-cef5-45eb-a980-064bd78c42df',
-                'url': 'https://zon-speechbert-qa.s3.eu-central-1.amazonaws.com/articles/a89ce2e3-4887-466a-a52e-edc6b9802ef9/preview_1fd74183d02f50d5cd0731a5748019e95bbe68bd71f33cbd2c03c4d64c8a1d91a7f25f6725db6b19348bd94af09fc563.mp3',
+                'url': 'https://zon-speechbert/articles/a89ce2e3-4887-466a-a52e-edc6b9802ef9/preview_1fd74183d02f50d5cd0731a5748019e95bbe68bd71f33cbd2c03c4d64c8a1d91a7f25f6725db6b19348bd94af09fc563.mp3',
+                'duration': 15000,
             },
         },
     ],
@@ -63,14 +66,6 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZOPE_LAYER
 
-    def setUp(self):
-        super().setUp()
-        self.repository.connector.search_result = []
-
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     layer = WSGI_LAYER
-
-    def setUp(self):
-        super().setUp()
-        self.repository.connector.search_result = []

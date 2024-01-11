@@ -1,6 +1,8 @@
 from unittest.mock import patch
+from urllib.error import HTTPError
 import json
 
+import pytest
 import zope.component
 
 from zeit.speech.interfaces import ISpeech
@@ -20,3 +22,11 @@ class TestWebhook(BrowserTestCase):
                 'application/json',
             )
             mock_update.assert_called_with(TTS_CREATED)
+
+    def test_event_raises_validation_error(self):
+        with pytest.raises(HTTPError):
+            self.browser.post(
+                'http://localhost/@@speech_webhook',
+                json.dumps({'event': 'AUDIO_CREATED'}),
+                'application/json',
+            )
