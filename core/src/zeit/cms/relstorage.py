@@ -1,5 +1,6 @@
 import functools
 import logging
+import random
 
 from opentelemetry.instrumentation.instrumentor import BaseInstrumentor
 from perfmetrics.metric import _AbstractMetricImpl as MetricImpl
