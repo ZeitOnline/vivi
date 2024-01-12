@@ -68,11 +68,12 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         try:
             response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)
-            definitions = schema['components']['schemas']
+            definitions = self._absolute_references(schema['components']['schemas'])
+            print(definitions)
             registry = referencing.Registry().with_resources(
                 [
                     (
-                        f'#/components/schemas/{k}',
+                        f'{self.schema_url}#/components/schemas/{k}',
                         referencing.Resource.from_contents(v, default_specification=DRAFT202012),
                     )
                     for k, v in definitions.items()
@@ -86,6 +87,19 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             log.warning(message, exc_info=True)
             raise zeit.content.text.interfaces.SchemaValidationError(message)
 
+    def _absolute_references(self, schema):
+        if isinstance(schema, list):
+            return [self._absolute_references(x) for x in schema]
+        result = {}
+        for key, value in schema.items():
+            if isinstance(value, dict):
+                result[key] = self._absolute_references(value)
+            elif key == '$ref' and value.startswith('#'):
+                result[key] = self.schema_url + value
+            else:
+                result[key] = value
+        return result
+
     def validate(self):
         schema, registry = self._get()
         if not schema:
@@ -94,7 +108,7 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             try:
                 openapi_schema_validator.validate(
                     self.context.data,
-                    schema['components']['schemas'][self.field_name],
+                    {'$ref': f'{self.schema_url}#/components/schemas/{self.field_name}'},
                     registry=registry,
                 )
             except jsonschema.exceptions.ValidationError as error:
