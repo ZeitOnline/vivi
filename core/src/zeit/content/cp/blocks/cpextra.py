@@ -25,14 +25,3 @@ class Factory(zeit.content.cp.blocks.block.BlockFactory):
     produces = CPExtraBlock
     title = _('CP extra')
     module = ''
-
-
-@grok.subscribe(
-    zeit.content.cp.interfaces.ICenterPage, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
-)
-def update_old_cpextras(context, event):
-    for cp_extra in context.xml.xpath(
-        '//container[@cp:type != "cpextra"]/cp_extra',
-        namespaces={'cp': 'http://namespaces.zeit.de/CMS/cp'},
-    ):
-        cp_extra.getparent().set('{http://namespaces.zeit.de/CMS/cp}type', 'cpextra')
