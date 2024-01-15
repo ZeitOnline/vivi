@@ -3,6 +3,22 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.92.0 (2024-01-15)
+-------------------
+
+- ZO-4090: Remove ZEO support
+
+
+FIX:
+- ZO-1156: Fix checkout for broken ghost entries in clipboard and remove body delegates
+
+- ZO-4321: Tuple required
+
+
+MAINT:
+- Make pendulum-3.x work with zodbpickle
+
+
 5.91.0 (2024-01-09)
 -------------------
 
