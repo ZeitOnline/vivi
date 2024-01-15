@@ -23,59 +23,6 @@ Initialy the block is empty and has no module assinged:
 <container ... cp:type="cpextra" module="" ... cp:__name__="id-ce7dc496-327f-432d-b6ec-380866c1ce29"/>
 
 
-MostRead
-++++++++
-
-The most read block shows the most read articles. It is only valid in the
-Informatives area.
-
-When a centerpage is created the toplist is automatically added:
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
->>> principal = zeit.cms.testing.create_interaction()
-
->>> import zeit.cms.interfaces
->>> container = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
->>> container['cp'] = zeit.content.cp.centerpage.CenterPage()
->>> mr = container['cp'].body['informatives'].values()[0]
->>> mr.type
-'cpextra'
->>> mr.cpextra
-'mostread'
->>> print(zeit.cms.testing.xmltotext(mr.xml))
-<container...>
-  <cp_extra id="mostread"/>
-</container>
-
-The generic title can be set:
-
->>> mr.title is None
-True
->>> mr.title = 'a title'
->>> print(mr.title)
-a title
-
-
-MostCommented
-+++++++++++++
-
-The most read block shows the most read articles.  When a centerpage is created
-the mostcommented is automatically added. We look at the cp created above:
-
->>> import zeit.cms.interfaces
->>> mc = container['cp'].body['informatives'].values()[1]
->>> mc.type
-'cpextra'
->>> mc.cpextra
-'mostcommented'
->>> import lxml.etree
->>> print(zeit.cms.testing.xmltotext(mc.xml))
-<container...>
-  <cp_extra id="mostcommented"/>
-</container>
-
-
 CPExtra source
 ++++++++++++++
 
@@ -103,14 +50,6 @@ The source is contextual.
  'solr-month',
  'dwds-ticker',
  'sportextra']
-
-There are more possible extras in the informatives:
-
->>> pprint.pprint(list(source(mc)))
-['mostread',
- 'mostcommented',
- 'weather',
- ...
 
 
 The cpextras have titles:

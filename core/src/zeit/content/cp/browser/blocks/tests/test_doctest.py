@@ -19,7 +19,6 @@ def create_content(root):
 
 def test_suite():
     return zeit.content.cp.testing.FunctionalDocFileSuite(
-        'cpextra.txt',
         'teaser.txt',
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
