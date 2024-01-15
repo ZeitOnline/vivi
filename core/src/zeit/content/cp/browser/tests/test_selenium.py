@@ -138,7 +138,7 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         super().setUp()
         cp = self.create_and_checkout_centerpage()
         self.teaser = zope.component.getAdapter(
-            cp['lead'], zeit.edit.interfaces.IElementFactory, 'teaser'
+            cp.body['lead'], zeit.edit.interfaces.IElementFactory, 'teaser'
         )()
         transaction.commit()
         self.open_centerpage(create_cp=False)

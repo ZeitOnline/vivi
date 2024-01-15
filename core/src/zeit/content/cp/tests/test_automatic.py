@@ -27,7 +27,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
     def setUp(self):
         super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
-        self.area = self.cp['feature'].create_item('area')
+        self.area = self.cp.body['feature'].create_item('area')
         self.area.count = 3
         self.area.automatic = True
         self.area.automatic_type = 'elasticsearch-query'
@@ -89,13 +89,13 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
     def test_checkin_smoke_test(self):
         self.elasticsearch.search.return_value = zeit.cms.interfaces.Result()
         with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
-            lead = cp['lead']
+            lead = cp.body['lead']
             lead.count = 1
             lead.automatic = True
             lead.automatic_type = 'query'
 
     def test_it_returns_no_content_on_elasticsearch_error(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.elasticsearch_raw_query = '{"query": {}}'
@@ -106,7 +106,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.assertEqual(0, auto._content_query.total_hits)
 
     def test_it_returns_content_objects_provided_by_elasticsearch(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.elasticsearch_raw_query = '{"query": {"match": {"title": "üüü"}}}'
@@ -145,7 +145,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_builds_query_from_conditions(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         autotest = source.find('Autotest')
@@ -179,7 +179,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_builds_query_with_elasticsearch_fieldname_exceptions(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.query = (
             ('channels', 'eq', 'International', 'Nahost'),
@@ -229,7 +229,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_builds_query_with_condition_exception(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.query = (
             ('ressort', 'eq', 'International', 'Nahost'),
@@ -290,7 +290,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_joins_different_fields_with_AND_but_same_fields_with_OR(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         autotest = source.find('Autotest')
@@ -346,7 +346,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_puts_fields_into_bool_according_to_operator(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         autotest = source.find('Autotest')
@@ -404,7 +404,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_can_take_over_whole_query_body(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.elasticsearch_raw_query = (
@@ -420,7 +420,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         )
 
     def test_adds_hide_dupes_clause_to_whole_query_body(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.elasticsearch_raw_query = '{"query": {"match": {"title": "foo"}}}'
@@ -455,7 +455,7 @@ class AutomaticAreaElasticsearchTest(zeit.content.cp.testing.FunctionalTestCase)
         self.assertEqual([{'order': 'desc'}], query['sort'])
 
     def test_bbb_converts_automatic_type_channel_to_custom(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         autotest = source.find('Autotest')
@@ -556,7 +556,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         )
 
     def test_passes_id_to_tms(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.referenced_topicpage = 'tms-id'
@@ -567,7 +567,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('tms-id', kw['id'])
 
     def test_returns_no_content_on_tms_error(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.referenced_topicpage = 'tms-id'
@@ -578,7 +578,7 @@ class AutomaticAreaTopicpageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(0, auto._content_query.total_hits)
 
     def test_filter_can_be_set(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.referenced_topicpage = 'tms-id'
@@ -593,7 +593,7 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
-        self.area = self.cp['feature'].create_item('area')
+        self.area = self.cp.body['feature'].create_item('area')
         self.repository['cp'] = self.cp
 
         t1 = self.create_content('t1', 't1')
@@ -630,7 +630,7 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_recursivly_referenced_cps_raise_value_error(self):
         cp_with_teaser = self.create_and_checkout_centerpage(name='self_referencing_cp')
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
-        area = cp_with_teaser['feature'].create_item('area')
+        area = cp_with_teaser.body['feature'].create_item('area')
         area.automatic = True
         area.automatic_type = 'centerpage'
         with self.assertRaises(ValueError):
@@ -664,7 +664,7 @@ class AutomaticAreaReachTest(zeit.content.cp.testing.FunctionalTestCase):
         )
 
     def test_passes_parameters_to_reach(self):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.count = 1
         lead.automatic = True
         lead.reach_service = 'comments'
@@ -677,7 +677,7 @@ class AutomaticAreaReachTest(zeit.content.cp.testing.FunctionalTestCase):
 
 
 def create_automatic_area(cp, count=3, type='centerpage'):
-    area = cp['feature'].create_item('area')
+    area = cp.body['feature'].create_item('area')
     area.count = count
     area.automatic_type = type
     area.automatic = True
@@ -708,36 +708,38 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         )
 
     def test_manual_teaser_already_above_current_area_is_not_shown_again(self):
-        self.cp['feature']['lead'].create_item('teaser').append(self.repository['t1'])
+        self.cp.body['feature']['lead'].create_item('teaser').append(self.repository['t1'])
         self.assertEqual(
             ['http://xml.zeit.de/t2', 'http://xml.zeit.de/t3'],
             [list(x)[0].uniqueId for x in IRenderedArea(self.area).values()],
         )
 
     def test_manual_teaser_already_below_current_area_is_not_shown_again(self):
-        self.cp['feature'].create_item('area').create_item('teaser').append(self.repository['t1'])
+        self.cp.body['feature'].create_item('area').create_item('teaser').append(
+            self.repository['t1']
+        )
         self.assertEqual(
             ['http://xml.zeit.de/t2', 'http://xml.zeit.de/t3'],
             [list(x)[0].uniqueId for x in IRenderedArea(self.area).values()],
         )
 
     def test_skipping_duplicate_teaser_retrieves_next_query_result(self):
-        self.cp['feature']['lead'].create_item('teaser').append(self.repository['t1'])
+        self.cp.body['feature']['lead'].create_item('teaser').append(self.repository['t1'])
         self.area.count = 1
         self.assertEqual(
             'http://xml.zeit.de/t2', list(IRenderedArea(self.area).values()[0])[0].uniqueId
         )
 
     def test_hide_dupes_is_False_then_duplicates_are_not_skipped(self):
-        self.cp['feature']['lead'].create_item('teaser').append(self.repository['t1'])
+        self.cp.body['feature']['lead'].create_item('teaser').append(self.repository['t1'])
         self.area.hide_dupes = False
         self.assertEqual(
             'http://xml.zeit.de/t1', list(IRenderedArea(self.area).values()[0])[0].uniqueId
         )
 
     def test_consider_for_dupes_is_False_then_duplicates_are_not_skipped(self):
-        self.cp['feature']['lead'].create_item('teaser').append(self.repository['t1'])
-        self.cp['feature']['lead'].consider_for_dupes = False
+        self.cp.body['feature']['lead'].create_item('teaser').append(self.repository['t1'])
+        self.cp.body['feature']['lead'].consider_for_dupes = False
         self.assertEqual(
             'http://xml.zeit.de/t1', list(IRenderedArea(self.area).values()[0])[0].uniqueId
         )
@@ -762,7 +764,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(1, self.call_count[self.area])
 
     def test_cp_content_query_filters_duplicates(self):
-        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
         lead.append(self.repository['t2'])
         self.assertEqual(
@@ -781,7 +783,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             ]
         )
 
-        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
         self.assertEqual(
             'http://xml.zeit.de/t2', list(IRenderedArea(self.area).values()[0])[0].uniqueId
@@ -801,7 +803,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             ]
         )
 
-        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
 
         def resolve_tmscontent(self, doc):
@@ -870,7 +872,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = '{"query": {"match": {"foo": "äää"}}}'
 
-        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
         lead.append(self.repository['t2'])
 
@@ -929,7 +931,7 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.automatic_type = 'elasticsearch-query'
         self.area.elasticsearch_raw_query = '{"query": {"match": {"foo": "bar"}}}'
 
-        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead = self.cp.body['feature']['lead'].create_item('teaser')
         lead.append(self.repository['t1'])
 
         with mock.patch('zeit.cms.content.interfaces.IUUID') as uuid:

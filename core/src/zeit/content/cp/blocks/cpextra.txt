@@ -8,7 +8,7 @@ Create a cp extra block:
 
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
->>> lead = cp['lead']
+>>> lead = cp.body['lead']
 >>> import zeit.edit.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
@@ -38,7 +38,7 @@ When a centerpage is created the toplist is automatically added:
 >>> import zeit.cms.interfaces
 >>> container = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
 >>> container['cp'] = zeit.content.cp.centerpage.CenterPage()
->>> mr = container['cp']['informatives'].values()[0]
+>>> mr = container['cp'].body['informatives'].values()[0]
 >>> mr.type
 'cpextra'
 >>> mr.cpextra
@@ -64,7 +64,7 @@ The most read block shows the most read articles.  When a centerpage is created
 the mostcommented is automatically added. We look at the cp created above:
 
 >>> import zeit.cms.interfaces
->>> mc = container['cp']['informatives'].values()[1]
+>>> mc = container['cp'].body['informatives'].values()[1]
 >>> mc.type
 'cpextra'
 >>> mc.cpextra
@@ -186,8 +186,8 @@ When the CP is checked out it will be migrated automatically:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> cp = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     repository['cp']).checkout()
->>> mostread = cp['informatives']['eb09c413-9cbb-49f7-a0ee-f7243cf5d28d']
->>> mostcommented = cp['informatives']['8b887d09-15c7-49d4-8aae-ae21ce42776b']
+>>> mostread = cp.body['informatives']['eb09c413-9cbb-49f7-a0ee-f7243cf5d28d']
+>>> mostcommented = cp.body['informatives']['8b887d09-15c7-49d4-8aae-ae21ce42776b']
 >>> mostread.type
 'cpextra'
 >>> mostread.cpextra

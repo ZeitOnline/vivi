@@ -190,3 +190,8 @@ class ContentBaseTest(zeit.cms.testing.ZeitCmsTestCase):
         one = zeit.cms.repository.repository.ContentBase()
         one.__parent__ = None
         self.assertIsNone(one.__parent__)
+
+    def test_only_resolve_real_content(self):
+        with mock.patch('zeit.cms.repository.unknown.PersistentUnknownResource.foo', create=True):
+            with self.assertRaises(KeyError):
+                self.repository.getContent('http://xml.zeit.de/online/2007/01/index/foo')

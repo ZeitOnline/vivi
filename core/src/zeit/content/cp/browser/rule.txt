@@ -43,9 +43,9 @@ Get rid of the remaining error by adding enough teaser blocks:
 >>> browser.open('@@checkout')
 >>> url = browser.url
 >>> for i in range(7):
-...     browser.open('lead/@@landing-zone-drop?order=top&uniqueId=' + unique_id)
+...     browser.open('body/lead/@@landing-zone-drop?order=top&uniqueId=' + unique_id)
 ...     browser.open(url)
->>> browser.open(contents_url)
+>>> browser.open('contents')
 >>> len(browser.xpath("//div[contains(@class, 'validation-error')]"))
 0
 >>> len(browser.xpath("//div[contains(@class, 'validation-warning')]"))

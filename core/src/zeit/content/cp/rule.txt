@@ -45,7 +45,7 @@ Rules are applied to all areas and blocks of a centerpage, e.g. for the lead
 area:
 
 >>> import zeit.edit.interfaces
->>> validator = zeit.edit.interfaces.IValidator(cp['lead'])
+>>> validator = zeit.edit.interfaces.IValidator(cp.body['lead'])
 >>> validator.status
 'error'
 >>> validator.messages
@@ -58,13 +58,13 @@ Validating the number of blocks in an area
 >>> import zope.component
 >>> import zeit.edit.interfaces
 >>> teaser_factory = zope.component.getAdapter(
-...     cp['lead'], zeit.edit.interfaces.IElementFactory,
+...     cp.body['lead'], zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')
 >>> dummy = teaser_factory()
 >>> dummy = teaser_factory()
 >>> dummy = teaser_factory()
 
->>> validator = zeit.edit.interfaces.IValidator(cp['lead'])
+>>> validator = zeit.edit.interfaces.IValidator(cp.body['lead'])
 >>> validator.status
 'warning'
 >>> validator.messages

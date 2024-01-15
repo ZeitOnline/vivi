@@ -40,7 +40,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 <region...count="3" automatic="True" automatic_type="elasticsearch-query"...>...
 <elasticsearch_raw_query>{..."match_all": {}...}</elasticsearch_raw_query>...
 <elasticsearch_raw_order>date:desc</elasticsearch_raw_order>...""",  # noqa
-            zeit.cms.testing.xmltotext(cp['lead'].xml),
+            zeit.cms.testing.xmltotext(cp.body['lead'].xml),
         )
 
     def test_stores_centerpage_properties_in_xml(self):
@@ -59,7 +59,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="centerpage"...>...
 <referenced_cp>http://xml.zeit.de/cp</referenced_cp>...""",
-            zeit.cms.testing.xmltotext(cp['lead'].xml),
+            zeit.cms.testing.xmltotext(cp.body['lead'].xml),
         )
 
     def test_stores_topicpage_properties_in_xml(self):
@@ -76,7 +76,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="topicpage"...>...
 <referenced_topicpage>tms-id</referenced_topicpage>...""",
-            zeit.cms.testing.xmltotext(cp['lead'].xml),
+            zeit.cms.testing.xmltotext(cp.body['lead'].xml),
         )
 
     def test_stores_rss_feed_in_xml(self):
@@ -92,7 +92,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="rss-feed"
  rss_feed="zett">...""",
-            zeit.cms.testing.xmltotext(cp['lead'].xml),
+            zeit.cms.testing.xmltotext(cp.body['lead'].xml),
         )
 
 

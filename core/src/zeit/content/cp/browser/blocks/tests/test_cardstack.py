@@ -5,7 +5,7 @@ import zeit.content.cp.centerpage
 class TestCardstack(zeit.content.cp.testing.BrowserTestCase):
     def test_cardstack_props_can_be_set(self):
         self.centerpage = zeit.content.cp.centerpage.CenterPage()
-        self.centerpage['lead'].create_item('cardstack')
+        self.centerpage.body['lead'].create_item('cardstack')
         self.repository['centerpage'] = self.centerpage
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/centerpage/@@checkout')

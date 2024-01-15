@@ -38,15 +38,15 @@ def add_blocks_to_newly_created_cp(context, event):
     if zeit.cms.interfaces.ICMSContent(context.uniqueId, None) is not None:
         # It's already in the repository, do nothing
         return
-    if 'informatives' not in context:
+    if 'informatives' not in context.body:
         # It's a new-style centerpage, do nothing
         return
     mostread = zope.component.getAdapter(
-        context['informatives'], zeit.edit.interfaces.IElementFactory, name='cpextra'
+        context.body['informatives'], zeit.edit.interfaces.IElementFactory, name='cpextra'
     )()
     mostread.cpextra = 'mostread'
     mostcommented = zope.component.getAdapter(
-        context['informatives'], zeit.edit.interfaces.IElementFactory, name='cpextra'
+        context.body['informatives'], zeit.edit.interfaces.IElementFactory, name='cpextra'
     )()
     mostcommented.cpextra = 'mostcommented'
 

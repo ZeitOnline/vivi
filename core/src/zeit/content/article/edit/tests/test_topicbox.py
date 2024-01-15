@@ -42,7 +42,7 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         if content:
-            region = self.repository['cp'].create_item('region')
+            region = self.repository['cp'].body.create_item('region')
             area = region.create_item('area')
             for cont in content:
                 teaser = area.create_item('teaser')

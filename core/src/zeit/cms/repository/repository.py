@@ -281,6 +281,8 @@ class Repository(persistent.Persistent, Container):
                 content = zope.traversing.interfaces.ITraverser(self).traverse(path)
             except zope.traversing.interfaces.TraversalError:
                 raise KeyError(unique_id)
+            if not zeit.cms.interfaces.ICMSContent.providedBy(content):
+                raise KeyError(unique_id)
         return content
 
     def _getContent(self, unique_id):

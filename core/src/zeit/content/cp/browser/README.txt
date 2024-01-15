@@ -100,10 +100,10 @@ Blocks can be sorted. There is an ``updateOrder`` view doing this.
 
 >>> browser.open(contents_url)
 >>> browser.open(
-...     'lead/@@landing-zone-drop-module?block_type=teaser&order=top')
+...     'body/lead/@@landing-zone-drop-module?block_type=teaser&order=top')
 >>> browser.open(contents_url)
 >>> browser.open(
-...     'lead/@@landing-zone-drop-module?block_type=teaser&order=top')
+...     'body/lead/@@landing-zone-drop-module?block_type=teaser&order=top')
 >>> browser.open(contents_url)
 >>> bar_divs = browser.xpath(
 ...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')
@@ -120,7 +120,7 @@ Reverse the bars:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'lead/updateOrder?keys=' + json.dumps(reversed_ids))
+...     'body/lead/updateOrder?keys=' + json.dumps(reversed_ids))
 
 The order has been updated now:
 
@@ -137,7 +137,7 @@ Restore the original order again:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'lead/updateOrder?keys=' + json.dumps(original_ids))
+...     'body/lead/updateOrder?keys=' + json.dumps(original_ids))
 >>> browser.open(contents_url)
 >>> bar_divs = browser.xpath(
 ...     '//div[@id="lead"]//div[contains(@class, "type-teaser")]')

@@ -13,7 +13,7 @@ class UnknownBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         """
         )
         cp = zeit.content.cp.centerpage.CenterPage()
-        area = cp.create_item('region').create_item('area')
+        area = cp.body.create_item('region').create_item('area')
         area.xml = xml
         self.assertTrue(zeit.edit.interfaces.IUnknownBlock.providedBy(area['foo']))
         self.assertTrue(zeit.content.cp.interfaces.IBlock.providedBy(area['foo']))

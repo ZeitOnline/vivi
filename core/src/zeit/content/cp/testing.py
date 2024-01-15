@@ -132,12 +132,12 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         cp = zeit.cms.checkout.interfaces.ICheckoutManager(repository[name]).checkout()
         if contents:
             for content in contents:
-                cp['lead'].create_item('teaser').append(content)
+                cp.body['lead'].create_item('teaser').append(content)
         transaction.commit()
         return cp
 
     def create_lead_teaser(self, order=None):
-        lead = self.repository['cp']['lead']
+        lead = self.repository['cp'].body['lead']
         lead.automatic = True
         lead.automatic_type = 'custom'
         lead.count = 1
