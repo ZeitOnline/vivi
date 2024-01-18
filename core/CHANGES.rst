@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.93.0 (2024-01-18)
+-------------------
+
+- ZO-4223: Create TTS audio object from speechbert payload
+
+
 5.92.0 (2024-01-15)
 -------------------
 
