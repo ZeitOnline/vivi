@@ -9,10 +9,14 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.celery
 import zeit.cms.tracing
 import zeit.content.audio.audio
-import zeit.simplecast.interfaces
+import zeit.speech.interfaces
 
 
 log = logging.getLogger(__name__)
+
+
+class InvalidSpeechMessageError(Exception):
+    """An exception raised for incomplete speechbert messages."""
 
 
 class Notification:
@@ -32,17 +36,31 @@ class Notification:
 
         body = self.request.bodyStream.read(int(self.request['CONTENT_LENGTH']))
         log.info(body)
-        data = json.loads(body)
-        self.execute_task(data)
+        payload = json.loads(body)
 
         current_span = opentelemetry.trace.get_current_span()
         current_span.set_attributes({'http.body': body})
 
-    def execute_task(self, data: dict):
-        SPEECH_WEBHOOK_TASK.delay(data, _principal_id_=self._principal)
+        try:
+            validate_request(payload)
+        except InvalidSpeechMessageError as e:
+            self.request.response.setStatus(400, e)
+            return
+        self.execute_task(payload)
+
+    def execute_task(self, payload: dict):
+        SPEECH_WEBHOOK_TASK.delay(payload, _principal_id_=self._principal)
 
 
 @zeit.cms.celery.task(queue='speech')
-def SPEECH_WEBHOOK_TASK(data: dict):
+def SPEECH_WEBHOOK_TASK(payload: dict):
     speech = zope.component.getUtility(zeit.speech.interfaces.ISpeech)
-    speech.update(data)
+    if payload['event'] == 'AUDIO_CREATED':
+        speech.update(payload)
+
+
+def validate_request(payload: dict):
+    event_type = payload.get('event')
+    uuid = payload.get('uuid')
+    if not all([event_type, uuid]):
+        raise InvalidSpeechMessageError(f'Missing field in payload: {payload}')
