@@ -2,9 +2,7 @@
    xmlns="http://namespaces.zope.org/zope"
    i18n_domain="zope">
 
-  <exclude package="zeit.cms.workflow" file="mock.zcml" />
   <include package="zeit.cms" file="ftesting.zcml" />
-  <include package="zeit.workflow" />
 
   <include package="zeit.content.audio" />
   <include package="zeit.content.audio.browser" />
