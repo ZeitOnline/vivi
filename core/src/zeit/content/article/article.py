@@ -411,6 +411,10 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
         context.teaserTitle = main_audio.title
     if not context.subtitle:
         context.subtitle = episode.summary
+    if not context.serie:
+        context.serie = (
+            ICommonMetadata['serie'].source(None).find_by_property('url', episode.podcast.id)
+        )
     body = context.body
     # article image reserves first position
     if not body or (len(body.keys()) == 1 and context.main_image_block):
