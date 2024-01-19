@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.95.0 (2024-01-19)
+-------------------
+
+- ZO-4223: use short article uuid from speechbert to get content
+
+
+FIX:
+- Audio: filename in navigation layout
+
+
+MAINT:
+- Use live URL for bigquery instead of uniqueId
+
+
 5.94.0 (2024-01-19)
 -------------------
 
