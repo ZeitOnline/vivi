@@ -91,10 +91,6 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
     default_filename = 'podcasts.xml'
     attribute = 'id'
 
-    class source_class(zeit.cms.content.sources.ObjectSource.source_class):
-        def find_by_property(self, property_name, value):
-            return self.factory.find_by_property(self.context, property_name, value)
-
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         result = {}
@@ -119,12 +115,6 @@ class PodcastSource(zeit.cms.content.sources.ObjectSource, zeit.cms.content.sour
             node.get('podigee_id'),
         )
         return podcast
-
-    def find_by_property(self, context, property_name, value):
-        for item in self._values().values():
-            if getattr(item, property_name) == value:
-                return item
-        return None
 
 
 class IPodcastEpisodeInfo(zope.interface.Interface):

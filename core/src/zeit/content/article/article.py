@@ -411,7 +411,7 @@ def set_podcast_header_when_article_has_podcast_audio(context, event):
         context.teaserTitle = main_audio.title
     if not context.subtitle:
         context.subtitle = episode.summary
-    if not context.serie:
+    if not context.serie and episode.podcast:
         context.serie = (
             ICommonMetadata['serie'].source(None).find_by_property('url', episode.podcast.id)
         )

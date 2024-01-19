@@ -194,6 +194,9 @@ class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
         def find(self, id):
             return self.factory.find(self.context, id)
 
+        def find_by_property(self, property_name, value):
+            return self.factory.find_by_property(self.context, property_name, value)
+
     def _values(self):
         raise NotImplementedError()
 
@@ -218,6 +221,12 @@ class ObjectSource(zc.sourcefactory.factories.ContextualSourceFactory):
         ):
             return None
         return value
+
+    def find_by_property(self, context, property_name, value):
+        for item in self._values().values():
+            if getattr(item, property_name) == value:
+                return item
+        return None
 
 
 class AllowedBase:
@@ -522,10 +531,6 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
     config_url = 'source-serie'
     default_filename = 'series.xml'
 
-    class source_class(ObjectSource.source_class):
-        def find_by_property(self, property_name, value):
-            return self.factory.find_by_property(self.context, property_name, value)
-
     @CONFIG_CACHE.cache_on_arguments()
     def _values(self):
         result = collections.OrderedDict()
@@ -556,12 +561,6 @@ class SerieSource(ObjectSource, SimpleContextualXMLSource):
         if not isinstance(zope.security.proxy.removeSecurityProxy(value), Serie):
             return None
         return value.serienname
-
-    def find_by_property(self, context, property_name, value):
-        for item in self._values().values():
-            if getattr(item, property_name) == value:
-                return item
-        return None
 
 
 class Product(AllowedBase):
