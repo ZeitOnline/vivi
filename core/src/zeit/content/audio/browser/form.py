@@ -83,7 +83,7 @@ class Form:
 
     field_groups = (
         gocept.form.grouped.Fields(
-            _('Navigation'), ('__name__'), css_class='wide-widgets column-right'
+            _('Navigation'), ('__name__',), css_class='wide-widgets column-right'
         ),
         Base.audio_fields,
         podcast_file_fields,
