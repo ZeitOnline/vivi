@@ -46,7 +46,7 @@ class MockPublish:
         self.context = zope.security.proxy.getObject(self.context)
         can_retract = zeit.cms.workflow.interfaces.IPublishInfo(self.context).can_retract()
         if can_retract == CAN_RETRACT_ERROR:
-            raise zeit.cms.workflow.interfaces.RetractError('Cannot retract.')
+            raise zeit.cms.workflow.interfaces.RetractingError('Cannot retract.')
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context, self.context)
         )

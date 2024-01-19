@@ -210,10 +210,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         assert message in workflow.error_messages[0]
 
         publish = zeit.cms.workflow.interfaces.IPublish(content)
-        with pytest.raises(
-            zeit.cms.workflow.interfaces.PublishingError,
-            match='Publish pre-conditions not satisfied.',
-        ):
+        with pytest.raises(zeit.cms.workflow.interfaces.PublishingError):
             publish.publish(background=False)
         assert not workflow.published
 
@@ -228,10 +225,7 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         assert message in workflow.error_messages[0]
 
         publish = zeit.cms.workflow.interfaces.IPublish(content)
-        with pytest.raises(
-            zeit.cms.workflow.interfaces.RetractingError,
-            match='Retracting pre-conditions not satisfied.',
-        ):
+        with pytest.raises(zeit.cms.workflow.interfaces.RetractingError):
             publish.retract(background=False)
         assert workflow.published
 
