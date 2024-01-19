@@ -49,6 +49,9 @@ def properties(context):
 @zope.interface.implementer(zeit.cms.content.interfaces.IUUID)
 class SimpleUUID(Shortenable):
     def __init__(self, context):
+        # work with shortened uuid
+        if not context.startswith('{urn:uuid:'):
+            context = f'{{urn:uuid:{context}}}'
         self.id = context
 
 
