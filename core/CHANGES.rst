@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.94.0 (2024-01-19)
+-------------------
+
+- ZO-4483: Set series if podcast episode is dropped into article
+
+
 5.93.0 (2024-01-18)
 -------------------
 
