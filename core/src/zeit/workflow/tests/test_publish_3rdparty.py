@@ -490,7 +490,9 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         )
         for action in ['publish', 'retract']:
             d = getattr(data, f'{action}_json')()
-            self.assertEqual('http://xml.zeit.de/testcontent', d['properties']['meta']['url'])
+            self.assertEqual(
+                'http://localhost/live-prefix/testcontent', d['properties']['meta']['url']
+            )
             self.assertStartsWith('{urn:uuid:', d['properties']['document']['uuid'])
 
     def test_moves_rtr_keywords_under_tagging(self):

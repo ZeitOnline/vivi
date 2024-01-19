@@ -44,7 +44,7 @@ class BigQueryMixin:
         if tms is None:
             return None
         properties = tms.get('payload', {})
-        properties.setdefault('meta', {})['url'] = self.context.uniqueId
+        properties.setdefault('meta', {})['url'] = self.live_url
         properties['tagging'] = {k: v for k, v in tms.items() if k.startswith('rtr_')}
         return {
             'properties': properties,
@@ -57,10 +57,16 @@ class BigQueryMixin:
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         return {
             'properties': {
-                'meta': {'url': self.context.uniqueId},
+                'meta': {'url': self.live_url},
                 'document': {'uuid': uuid.id},
             }
         }
+
+    @property
+    def live_url(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live_prefix = config['live-prefix']
+        return self.context.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
 
 
 def badgerfish(node):
