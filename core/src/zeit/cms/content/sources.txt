@@ -24,6 +24,7 @@ The serie source returns the possible "serie" values:
   'Bachelor%20Tagebuch',
   False,
   False],
+ ['Cat Jokes', 'Cat Jokes', 'cat-jokes-pawdcast', 'Cat Jokes', False, False],
  ['Chefsache', 'Chefsache', 'chefsache', None, True, False],
  ...]
 

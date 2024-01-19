@@ -453,16 +453,20 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert self.audio.title == self.article.title
         assert self.audio.title == self.article.teaserTitle
         assert self.info.summary == self.article.teaserText
+        assert self.info.podcast.id == self.article.serie.url
         # NOTE: The notes contain html tags
         assert self.info.notes[3:-4] == self.article.body.values()[1].text
 
-    def test_podcast_does_not_replace_existing_teaser_title(self):
+    def test_podcast_will_not_replace_existing_values(self):
         self.article.title = 'Do not replace me'
         self.article.teaserTitle = 'Do not replace me'
         self.article.subtitle = 'Do not replace me'
         self.article.teaserText = 'Do not replace me'
         self.article.body.create_item('p')
         self.article.body.create_item('p').text = 'bar'
+        self.article.serie = (
+            zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None).find('Autotest')
+        )
         self._add_audio_to_article()
 
         assert 'podcast' == self.article.header_layout
@@ -470,6 +474,7 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         assert self.audio.title != self.article.teaserTitle
         assert self.info.summary != self.article.teaserText
         assert self.info.notes != self.article.body.values()[1].text
+        assert self.info.podcast.id != self.article.serie.url
 
     def test_other_than_podcast_type_does_not_edit_content(self):
         AudioBuilder().with_audio_type('premium').build(self.repository)

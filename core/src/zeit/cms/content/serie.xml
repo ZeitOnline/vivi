@@ -16,6 +16,7 @@
           available="zeit.cms.section.interfaces.IZONContent" />
   <series title="Notcast" serienname="Notcast" url="notcast" encoded="Notcast"
           available="zeit.web.core.interfaces.IInternalUse" />
+  <series title="Cat Jokes" serienname="Cat Jokes" url="cat-jokes-pawdcast" encoded="Cat Jokes" type="Podcast"/>
   <videoseries>
     <series title="BR" serienname="BR" url="br" encoded="BR" video="yes"/>
     <series title="Filmtipp" serienname="Filmtipp" url="filmtipp" encoded="Filmtipp" video="yes"/>
