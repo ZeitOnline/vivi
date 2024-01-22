@@ -1,5 +1,9 @@
+from collections import Counter
+from datetime import datetime
+
 import celery.result
 import celery.states
+import pytz
 import zope.component
 import zope.interface
 
@@ -32,7 +36,11 @@ class MockPublish:
         if can_publish == CAN_PUBLISH_ERROR:
             raise zeit.cms.workflow.interfaces.PublishingError('Cannot publish.')
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        if not info.published:
+            info.date_first_released = datetime.now(pytz.UTC)
         info.published = True
+        info.date_last_published = datetime.now(pytz.UTC)
+        _publish_count[self.context.uniqueId] += 1
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforePublishEvent(self.context, self.context)
         )
@@ -132,6 +140,10 @@ class MockPublishInfo:
     def set_can_retract(self, can):
         _can_retract[self.context.uniqueId] = can
 
+    @property
+    def publish_count(self):
+        return _publish_count[self.context.uniqueId]
+
 
 _can_publish = {}
 _can_retract = {}
@@ -139,6 +151,7 @@ _published = {}
 _publish_times = {}
 _publish_times_semantic = {}
 _publish_times_first = {}
+_publish_count = Counter()
 
 
 def reset():
@@ -147,6 +160,7 @@ def reset():
     _publish_times.clear()
     _publish_times_semantic.clear()
     _publish_times_first.clear()
+    _publish_count.clear()
 
 
 try:
