@@ -1,9 +1,11 @@
 import json
 
+import celery.exceptions
 import pytest
 import requests_mock
 import zope.component
 
+import zeit.simplecast.interfaces
 import zeit.simplecast.json.webhook
 import zeit.simplecast.testing
 
@@ -70,6 +72,19 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         )
         self.simplecast.fetch_episode_audio.assert_not_called()
         self.simplecast.synchronize_episode.assert_not_called()
+
+    def test_technical_error_is_retried(self):
+        self.simplecast.synchronize_episode.side_effect = zeit.simplecast.interfaces.TechnicalError(
+            'provoked', 429
+        )
+        event = webhook_event('episode_created')
+        self.browser.handleErrors = False
+        with self.assertRaises(celery.exceptions.Retry):
+            self.browser.post(
+                'http://localhost/@@simplecast_webhook',
+                json.dumps(event),
+                'application/x-javascript',
+            )
 
     def test_transcode_finished(self):
         episode_audio_id = '9185df81-b5fc-4686-86e4-2a7bb38a33f9'

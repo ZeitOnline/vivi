@@ -18,3 +18,11 @@ class ISimplecast(zope.interface.Interface):
 
     def publish(self, audio: IAudio):
         """Publish audio object"""
+
+
+class TechnicalError(Exception):
+    """Service had a technical error. The request can be retried."""
+
+    def __init__(self, message, status):
+        super().__init__(message)
+        self.status = status

@@ -77,6 +77,8 @@ class Simplecast:
                 response_text = getattr(err.response, 'text', str(err))
                 if status_code == 404:
                     return None  # Triggers delete if audio object exist.
+                if status_code == 429:
+                    raise zeit.simplecast.interfaces.TechnicalError(response_text, status_code)
                 log.error('%s returned %s', request, status_code, exc_info=True)
                 raise
             finally:

@@ -9,6 +9,7 @@ product_config = """\
   simplecast-token TkQvZUd2MHRnR0UybFhsgTfs
   podcast-folder podcasts
   principal zope.simplecast
+  retry-delay-seconds 0
 </product-config>
 """
 
