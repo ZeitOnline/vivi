@@ -40,7 +40,7 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
         self.simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
 
     def tearDown(self):
-        self.simplecast.reset_mock()
+        self.simplecast.reset_mock(return_value=True, side_effect=True)
 
     @pytest.fixture(autouse=True)
     def _caplog(self, caplog):
