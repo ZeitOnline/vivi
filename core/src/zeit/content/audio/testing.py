@@ -4,8 +4,9 @@ import importlib.resources
 
 from zeit.cms.repository.interfaces import IRepository
 from zeit.content.audio.audio import Audio
-from zeit.content.audio.interfaces import IPodcastEpisodeInfo, Podcast
+from zeit.content.audio.interfaces import IPodcastEpisodeInfo, ISpeechInfo, Podcast
 import zeit.cms.testing
+import zeit.workflow.testing
 
 
 T = TypeVar('T')  # Can be anything
@@ -17,7 +18,11 @@ product_config = """
 """.format(here=importlib.resources.files(__package__))
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,)
+    product_config,
+    bases=(
+        zeit.workflow.testing.CONFIG_LAYER,
+        zeit.cms.testing.CONFIG_LAYER,
+    ),
 )
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))
@@ -62,6 +67,11 @@ class AudioBuilder:
                     'cat-jokes-pawdcast',
                 ),
             },
+            'tts': {
+                'article_uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
+                'preview_url': 'https://example-preview-url.bert',
+                'checksum': '123foo',
+            },
         }
 
     def with_attribute(self, attribute_name: str, value: T):
@@ -73,11 +83,18 @@ class AudioBuilder:
 
     def build(self, repository: Optional[IRepository] = None) -> Audio:
         audio = Audio()
-        episode = IPodcastEpisodeInfo(audio)
+        audio_type = self.attributes['audio']['audio_type']
         for attribute, value in self.attributes['audio'].items():
             setattr(audio, attribute, value)
-        for attribute, value in self.attributes['podcast'].items():
-            setattr(episode, attribute, value)
+        if audio_type == 'podcast':
+            episode = IPodcastEpisodeInfo(audio)
+            for attribute, value in self.attributes[audio_type].items():
+                setattr(episode, attribute, value)
+        if audio_type == 'tts':
+            tts = ISpeechInfo(audio)
+            audio.external_id = ''
+            for attribute, value in self.attributes[audio_type].items():
+                setattr(tts, attribute, value)
         if repository is not None:
             repository['audio'] = audio
 

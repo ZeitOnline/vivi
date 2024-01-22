@@ -1,14 +1,12 @@
 from unittest import mock
 
 import pendulum
-import pytest
 import requests
 import requests_mock
 import zope.component
 
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.content.audio.interfaces import IPodcastEpisodeInfo
-from zeit.content.audio.workflow import AudioWorkflow, PodcastWorkflow
 import zeit.cms.repository.folder
 import zeit.cms.workflow.interfaces
 import zeit.content.audio.audio
@@ -181,7 +179,6 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
 
         workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        assert isinstance(workflow, PodcastWorkflow)
         assert workflow.can_publish() == zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
         assert workflow.published
 
@@ -193,63 +190,6 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
         # publish again, should have no effect
         self.simplecast.synchronize_episode(self.episode_info['id'])
         assert workflow.published
-
-    def test_podcast_not_published_if_requirements_not_met_url(self):
-        simplecast_resp = self.episode_info.copy()
-        simplecast_resp['audio_file_url'] = None
-        self._check_publishing_error(simplecast_resp, 'Audio URL is missing')
-
-    def test_podcast_not_published_if_requirements_not_met_is_published(self):
-        simplecast_resp = self.episode_info.copy()
-        simplecast_resp['is_published'] = False
-        self._check_publishing_error(
-            simplecast_resp, 'Podcast Episode is not published by Provider'
-        )
-
-    def test_podcast_not_retracted_if_requirements_not_met_is_not_published(self):
-        simplecast_resp = self.episode_info.copy()
-        simplecast_resp['is_published'] = True
-        self._check_retracting_error(simplecast_resp, 'Podcast Episode is published by Provider')
-
-    def _check_publishing_error(self, simplecast_resp, message):
-        self.create_audio(simplecast_resp)
-        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
-
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        assert isinstance(workflow, PodcastWorkflow)
-        assert workflow.can_publish() == zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
-        assert not workflow.published
-        assert message in workflow.error_messages[0]
-
-        publish = zeit.cms.workflow.interfaces.IPublish(content)
-        with pytest.raises(zeit.cms.workflow.interfaces.PublishingError):
-            publish.publish(background=False)
-        assert not workflow.published
-
-    def _check_retracting_error(self, simplecast_resp, message):
-        self.create_audio(simplecast_resp)
-        content = self.repository['podcasts']['2023-08'][self.episode_info['id']]
-
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        assert isinstance(workflow, PodcastWorkflow)
-        assert workflow.can_retract() == zeit.cms.workflow.interfaces.CAN_RETRACT_ERROR
-        assert workflow.published
-        assert message in workflow.error_messages[0]
-
-        publish = zeit.cms.workflow.interfaces.IPublish(content)
-        with pytest.raises(zeit.cms.workflow.interfaces.RetractingError):
-            publish.retract(background=False)
-        assert workflow.published
-
-    def test_missing_audio_type_uses_default_workflow(self):
-        default_audio = zeit.content.audio.audio.Audio()
-        default_audio.uniqueId = 'http://xml.zeit.de/default'
-        default_audio.url = 'https://example.com/default.mp3'
-        default_audio.external_id = '1234'
-
-        workflow = zeit.cms.workflow.interfaces.IPublishInfo(default_audio)
-        assert isinstance(workflow, AudioWorkflow)
-        assert workflow.can_publish() == zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
 
     @requests_mock.Mocker()
     def test_retract(self, m):

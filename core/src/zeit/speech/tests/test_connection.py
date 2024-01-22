@@ -47,13 +47,6 @@ class TestSpeech(FunctionalTestCase):
         tts_created['articlesAudio'][0][field] = value
         return tts_created
 
-    def test_cannot_publish_without_url(self):
-        tts_msg = self._setup_speech_message('audioEntry', {'url': None})
-        self.create_audio(tts_msg)
-        assert not IPublishInfo(
-            ICMSContent(self.unique_id)
-        ).published, 'Do not publish incomplete audio!'
-
     def test_update_existing_tts_audio(self):
         self.create_audio(TTS_CREATED)
         cms_tts = ICMSContent(self.unique_id)
