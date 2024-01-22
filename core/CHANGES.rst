@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.96.0 (2024-01-22)
+-------------------
+
+- ZO-4496: Retry celery task on simplecast 429 error
+
+
 5.95.0 (2024-01-19)
 -------------------
 
