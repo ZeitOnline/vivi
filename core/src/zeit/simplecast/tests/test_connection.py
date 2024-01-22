@@ -76,6 +76,18 @@ class TestSimplecast(zeit.simplecast.testing.FunctionalTestCase):
             'Invalid Json Expecting value: ' 'line 1 column 1 (char 0): no json', args[2]
         )
 
+    @requests_mock.Mocker()
+    def test_simplecast_too_many_requests_raises(self, m):
+        episode_id = '1234'
+        m.get(
+            f'https://testapi.simplecast.com/episodes/{episode_id}',
+            status_code=429,
+        )
+        with self.assertRaises(zeit.simplecast.interfaces.TechnicalError):
+            self.simplecast.fetch_episode(episode_id)
+        args, _ = self.trace_mock.call_args_list[0]
+        self.assertEqual(429, args[1])
+
     def test_simplecast_yields_episode_info(self):
         m_simple = requests_mock.Mocker()
         episode_id = self.episode_info['id']

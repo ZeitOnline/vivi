@@ -66,10 +66,6 @@ class Simplecast:
                 )
                 status_code = response.status_code
                 response_text = response.text
-                # 404 is a valid response
-                # will trigger delete if audio exist
-                if status_code == 404:
-                    return None
                 response.raise_for_status()
                 json = response.json()
             except requests.exceptions.JSONDecodeError as err:
@@ -79,6 +75,10 @@ class Simplecast:
                 if not status_code:
                     status_code = getattr(err.response, 'status_code', 599)
                 response_text = getattr(err.response, 'text', str(err))
+                if status_code == 404:
+                    return None  # Triggers delete if audio object exist.
+                if status_code == 429:
+                    raise zeit.simplecast.interfaces.TechnicalError(response_text, status_code)
                 log.error('%s returned %s', request, status_code, exc_info=True)
                 raise
             finally:

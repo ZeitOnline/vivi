@@ -1,0 +1,1 @@
+ZO-4496: Retry celery task on simplecast 429 error

@@ -42,8 +42,8 @@ class Notification:
         SIMPLECAST_WEBHOOK_TASK.delay(data, _principal_id_=self._principal)
 
 
-@zeit.cms.celery.task(queue='simplecast')
-def SIMPLECAST_WEBHOOK_TASK(data: dict):
+@zeit.cms.celery.task(bind=True, queue='simplecast')
+def SIMPLECAST_WEBHOOK_TASK(self, data: dict):
     simplecast = zope.component.getUtility(zeit.simplecast.interfaces.ISimplecast)
     episode_id = data.get('episode_id')
     if not episode_id:
@@ -69,6 +69,10 @@ def SIMPLECAST_WEBHOOK_TASK(data: dict):
         'transcode_finished',
     )
     if event in synchronizing_events:
-        simplecast.synchronize_episode(episode_id)
+        try:
+            simplecast.synchronize_episode(episode_id)
+        except zeit.simplecast.interfaces.TechnicalError:
+            config = zope.app.appsetup.product.getProductConfiguration('zeit.simplecast')
+            self.retry(countdown=int(config['retry-delay-seconds']))
     else:
         log.info('Event %s not handled.', event)
