@@ -7,7 +7,7 @@
   <include package="zeit.workflow" />
   <include package="zeit.content.article" />
 
-  <include package="zeit.content.audio" />
+  <include package="zeit.content.audio" file="ctesting.zcml"/>
   <include package="zeit.content.audio.browser" />
 
   <include package="zeit.speech" />

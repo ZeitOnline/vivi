@@ -1,0 +1,9 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   i18n_domain="zope">
+
+  <include package="zeit.content.audio" />
+  <include package="zeit.content.audio.browser" />
+  <includeOverrides package="zeit.content.audio" file="mock-workflow.zcml" />
+
+</configure>
