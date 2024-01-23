@@ -142,6 +142,9 @@ class IAudioReferences(zope.interface.Interface):
         title=_('AudioReferences'), value_type=zope.schema.Choice(source=AudioSource())
     )
 
+    def add(audio: IAudio):
+        pass
+
 
 class ISpeechInfo(zope.interface.Interface):
     article_uuid = zope.schema.ASCIILine(
