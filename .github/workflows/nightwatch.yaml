@@ -18,5 +18,7 @@ jobs:
     secrets: inherit
     with:
       versions: smoketest/k8s/base/versions
+      args: |
+        --overrides='{ "spec": { "serviceAccount": "baseproject" } }' --env="HTTPS_PROXY=http://static-ip-proxy.ops.zeit.de:3128"
 
   # deploy happens via flux (on `main` branch)
