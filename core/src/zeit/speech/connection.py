@@ -107,7 +107,6 @@ class Speech:
         article = IArticle(speech)
         article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
         if not article_checksum.validate(ISpeechInfo(speech).checksum):
-            IPublish(speech).retract(background=False)
             raise ChecksumMismatchError(
                 'Speechbert checksum mismatch for article %s and speech %s',
                 article.uniqueId,
