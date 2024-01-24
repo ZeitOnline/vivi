@@ -491,21 +491,6 @@ class ArticleMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             node.set('genre', context.genre)
 
 
-@zope.interface.implementer(zeit.content.article.interfaces.ISpeechbertChecksum)
-class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
-    checksum = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.ISpeechbertChecksum['checksum'],
-        zeit.cms.interfaces.SPEECHBERT_NAMESPACE,
-        'checksum',
-        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
-    )
-
-    def validate(self, checksum: str) -> bool:
-        if not self.checksum or not checksum:
-            return True
-        return self.checksum == checksum
-
-
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle, zeit.cms.workflow.interfaces.IBeforePublishEvent
 )
@@ -518,7 +503,7 @@ def calculate_checksum(context, event):
     checksum = hashlib.md5(usedforsecurity=False)
     body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode('utf-8')
     checksum.update(body)
-    article = zeit.content.article.interfaces.ISpeechbertChecksum(context)
+    article = zeit.speech.interfaces.ISpeechbertChecksum(context)
     article.checksum = checksum.hexdigest()
 
 

@@ -27,6 +27,7 @@ import zeit.content.image.imagegroup
 import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.magazin.interfaces
+import zeit.speech.interfaces
 
 
 class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
@@ -372,7 +373,7 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         IPublishInfo(article).urgent = True
         IPublish(article).publish()
 
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        checksum = zeit.speech.interfaces.ISpeechbertChecksum(article)
         first = checksum.checksum
         assert len(first) == 32
 
@@ -388,7 +389,7 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         article = self.repository['article'] = self.get_article()
         IPublishInfo(article).urgent = True
         IPublish(article).publish()
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        checksum = zeit.speech.interfaces.ISpeechbertChecksum(article)
         assert checksum.checksum == 'd751713988987e9331980363e24189ce'
 
     def test_no_checksum_for_ignored_genres(self):
@@ -398,7 +399,7 @@ class ArticleSpeechbertTest(zeit.content.article.testing.FunctionalTestCase):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         config['speechbert-ignore-genres'] = 'rezept-vorstellung'
         IPublish(article).publish()
-        checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        checksum = zeit.speech.interfaces.ISpeechbertChecksum(article)
         assert not checksum.checksum
 
 

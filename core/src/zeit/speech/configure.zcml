@@ -6,4 +6,15 @@
 
   <utility factory=".connection.Speech" />
 
+  <class class=".validate.Speechbert">
+    <require
+      permission="zope.View"
+      interface=".interfaces.ISpeechbertChecksum"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.ISpeechbertChecksum"
+      />
+  </class>
+
 </configure>

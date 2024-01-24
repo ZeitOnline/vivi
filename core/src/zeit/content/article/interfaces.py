@@ -244,14 +244,3 @@ class IErrorPage(IArticle):
 
     This interface is applied manually.
     """
-
-
-class ISpeechbertChecksum(zope.interface.Interface):
-    """Checksum of speechbert payload of article to validate consistency
-    between audio and article body.
-    """
-
-    checksum = zope.schema.Text(title=_('Speechbert Checksum'), required=False)
-
-    def validate(checksum: str) -> bool:
-        """Valdiate context checksum against object checksum"""

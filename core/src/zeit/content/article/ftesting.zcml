@@ -26,6 +26,8 @@
 
   <include package="zeit.push" file="ctesting.zcml" />
 
+  <include package="zeit.speech" file="ctesting.zcml" />
+
   <include package="zeit.wochenmarkt" />
   <include package="zeit.wochenmarkt.browser" />
 

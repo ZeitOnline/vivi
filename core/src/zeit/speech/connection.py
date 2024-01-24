@@ -105,7 +105,7 @@ class Speech:
 
     def _compare_checksums(self, speech: IAudio) -> IArticle:
         article = IArticle(speech)
-        article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        article_checksum = zeit.speech.interfaces.ISpeechbertChecksum(article)
         if not article_checksum.validate(ISpeechInfo(speech).checksum):
             raise ChecksumMismatchError(
                 'Speechbert checksum mismatch for article %s and speech %s',

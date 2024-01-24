@@ -7,10 +7,10 @@ import zope.security.management
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo
-from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.speech.connection import Speech
 from zeit.speech.errors import ChecksumMismatchError
+from zeit.speech.interfaces import ISpeechbertChecksum
 from zeit.speech.testing import TTS_CREATED, FunctionalTestCase
 import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.mock
