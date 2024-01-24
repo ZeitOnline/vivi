@@ -10,7 +10,7 @@ from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.speech.connection import Speech
-from zeit.speech.errors import ChecksumMismatchError, RetryException
+from zeit.speech.errors import ChecksumMismatchError
 from zeit.speech.testing import TTS_CREATED, FunctionalTestCase
 import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.mock
@@ -60,7 +60,7 @@ class TestSpeech(FunctionalTestCase):
         zope.security.management.endInteraction()
         with zeit.cms.testing.interaction('zope.producer'):
             zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
-        with pytest.raises(RetryException):
+        with pytest.raises(zeit.cms.checkout.interfaces.CheckinCheckoutError):
             with zeit.cms.testing.interaction('zeit.speech'):
                 self.create_audio(TTS_CREATED)
 

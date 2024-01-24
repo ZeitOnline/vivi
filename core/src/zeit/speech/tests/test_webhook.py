@@ -6,7 +6,7 @@ import celery.exceptions
 import pytest
 import zope.component
 
-from zeit.speech.errors import RetryException
+from zeit.cms.checkout.interfaces import CheckinCheckoutError
 from zeit.speech.interfaces import ISpeech
 from zeit.speech.testing import TTS_CREATED, BrowserTestCase
 
@@ -35,7 +35,7 @@ class TestWebhook(BrowserTestCase):
 
     def test_retryable_error_is_retried(self):
         self.browser.handleErrors = False
-        with patch.object(self.speech, 'update', side_effect=RetryException('provoked')):
+        with patch.object(self.speech, 'update', side_effect=CheckinCheckoutError('provoked')):
             with self.assertRaises(celery.exceptions.Retry):
                 self.browser.post(
                     'http://localhost/@@speech_webhook',

@@ -6,8 +6,8 @@ import zope.app.appsetup.product
 import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.speech.errors import RetryException
 import zeit.cms.celery
+import zeit.cms.checkout.interfaces
 import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.speech.interfaces
@@ -59,7 +59,7 @@ def SPEECH_WEBHOOK_TASK(self, payload: dict):
     if payload['event'] == 'AUDIO_CREATED':
         try:
             speech.update(payload)
-        except RetryException:
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
             self.retry(countdown=int(config['retry-delay-seconds']))
 
