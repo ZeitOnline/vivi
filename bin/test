@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+COMMAND=$1
+case $COMMAND in
+    smoke)
+        set -e
+        shift
+        if [[ "$1" != -* ]]; then
+            environment=$1
+            shift
+        else
+            environment="staging"
+        fi
+
+        cd "$DIR/../smoketest"
+
+        image=$(awk -F': ' '$2 == "nightwatch" { l=NR } l && NR==l+1 { print $2 }' \
+                < k8s/base/kustomization.yaml)
+        docker buildx build --output type=docker --quiet --tag $image .
+        docker run --rm ${interactive} $image \
+               --nightwatch-environment=$environment "$@"
+        ;;
+    *)
+        echo "Unrecognized command: $COMMAND"
+        exit 1
+    ;;
+esac
