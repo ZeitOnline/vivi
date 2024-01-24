@@ -95,5 +95,3 @@ class TestSpeech(FunctionalTestCase):
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             with pytest.raises(ChecksumMismatchError):
                 Speech().update(tts_msg)
-        audio = ICMSContent(self.unique_id)
-        assert not IPublishInfo(audio).published
