@@ -15,7 +15,7 @@ from zeit.connector.search import SearchVar
 from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
 from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
-from zeit.speech.errors import ChecksumMismatchError, RetryException
+from zeit.speech.errors import ChecksumMismatchError
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.speech.interfaces
@@ -94,9 +94,7 @@ class Speech:
 
     def _add_audio_reference(self, speech: IAudio):
         article = self._assert_checksum_matches(speech)
-        with checked_out(article) as co:
-            if co is None:
-                raise RetryException(f'Could not checkout article {article}.')
+        with checked_out(article, raise_if_error=True) as co:
             references = IAudioReferences(co)
             references.add(speech)
         IPublish(article).publish(background=False)
