@@ -1,12 +1,13 @@
 from io import BytesIO
 from urllib.parse import urlparse
+import os
 import xmlrpc.client
 
 import pytest
 import webdav3.client
 
 
-XMLRPC_AUTH = 'nightwatch:FecOdyuecl4OdAgosLong$'
+XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
     'browser': {'baseurl': 'https://www.staging.zeit.de'},
     'vivi': {
