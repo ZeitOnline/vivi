@@ -46,7 +46,11 @@ class Speech:
 
     @staticmethod
     def convert_ms_to_sec(milliseconds: int) -> int:
-        return int(milliseconds / 1000)
+        # XXX no need for try once we have openapi validation
+        try:
+            return int(milliseconds / 1000)
+        except TypeError:
+            return 0
 
     def _create(self, data: dict) -> IAudio:
         speech = Audio()
