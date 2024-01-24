@@ -85,7 +85,7 @@ class Speech:
         speech = self._find(article_uuid)
         if speech:
             self._update(data, speech)
-            self._compare_checksums(speech)
+            self._assert_checksum_matches(speech)
             IPublish(speech).publish(background=False)
         else:
             speech = self._create(data)
@@ -93,7 +93,7 @@ class Speech:
             self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
-        article = self._compare_checksums(speech)
+        article = self._assert_checksum_matches(speech)
         with checked_out(article) as co:
             if co is None:
                 raise RetryException(f'Could not checkout article {article}.')
@@ -101,12 +101,10 @@ class Speech:
             references.add(speech)
         IPublish(article).publish(background=False)
 
-    def _compare_checksums(self, speech: IAudio) -> IArticle:
+    def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
         article = IArticle(speech)
-        article_checksum = zeit.speech.interfaces.IChecksum(article).checksum
-        speech_checksum = ISpeechInfo(speech).checksum
-        if article_checksum and speech_checksum and article_checksum != speech_checksum:
-            IPublish(speech).retract(background=False)
+        article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        if article_checksum != ISpeechInfo(speech).checksum:
             raise ChecksumMismatchError(
                 'Speechbert checksum mismatch for article %s and speech %s',
                 article.uniqueId,
