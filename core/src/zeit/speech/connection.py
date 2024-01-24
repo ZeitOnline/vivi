@@ -103,10 +103,8 @@ class Speech:
         IPublish(article).publish(background=False)
 
     def _compare_checksums(self, speech: IAudio) -> IArticle:
-        article_uuid = ISpeechInfo(speech).article_uuid
-        article = zeit.cms.interfaces.ICMSContent(IUUID(article_uuid))
-
-        article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article).checksum
+        article = IArticle(speech)
+        article_checksum = zeit.speech.interfaces.IChecksum(article).checksum
         speech_checksum = ISpeechInfo(speech).checksum
         if article_checksum and speech_checksum and article_checksum != speech_checksum:
             IPublish(speech).retract()
