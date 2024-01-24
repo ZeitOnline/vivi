@@ -5,6 +5,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import AUDIO_SCHEMA_NS
 from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo, ISpeechInfo
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -19,8 +20,6 @@ import zeit.content.image.interfaces
 
 
 log = logging.getLogger(__name__)
-
-AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
 
 
 @zope.interface.implementer(IAudio, zeit.cms.interfaces.IAsset)
