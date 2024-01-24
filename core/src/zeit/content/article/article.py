@@ -500,6 +500,11 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
         writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE,
     )
 
+    def validate(self, checksum: str) -> bool:
+        if not self.checksum or not checksum:
+            return True
+        return self.checksum == checksum
+
 
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle, zeit.cms.workflow.interfaces.IBeforePublishEvent
