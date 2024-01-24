@@ -98,7 +98,6 @@ class Speech:
             if co is None:
                 raise RetryException(f'Could not checkout article {article}.')
             references = IAudioReferences(co)
-            # XXX what if another speech is already referenced?
             references.add(speech)
         IPublish(article).publish(background=False)
 
@@ -107,7 +106,7 @@ class Speech:
         article_checksum = zeit.speech.interfaces.IChecksum(article).checksum
         speech_checksum = ISpeechInfo(speech).checksum
         if article_checksum and speech_checksum and article_checksum != speech_checksum:
-            IPublish(speech).retract()
+            IPublish(speech).retract(background=False)
             raise ChecksumMismatchError(
                 'Speechbert checksum mismatch for article %s and speech %s',
                 article.uniqueId,
