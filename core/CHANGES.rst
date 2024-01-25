@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.97.0 (2024-01-25)
+-------------------
+
+- ZO-4460: Connect tts audio object with corresponding article
+
+
 5.96.0 (2024-01-22)
 -------------------
 
