@@ -62,10 +62,12 @@ def SPEECH_WEBHOOK_TASK(self, payload: dict):
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
             self.retry(countdown=int(config['retry-delay-seconds']))
+    elif payload['event'] == 'AUDIO_DELETED':
+        speech.delete(payload)
 
 
 def validate_request(payload: dict):
     event_type = payload.get('event')
-    uuid = payload.get('uuid')
+    uuid = payload.get('uuid') or payload.get('article_uuid')
     if not all([event_type, uuid]):
         raise InvalidSpeechMessageError(f'Missing field in payload: {payload}')

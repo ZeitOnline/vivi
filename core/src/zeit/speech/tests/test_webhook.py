@@ -8,7 +8,7 @@ import zope.component
 
 from zeit.cms.checkout.interfaces import CheckinCheckoutError
 from zeit.speech.interfaces import ISpeech
-from zeit.speech.testing import TTS_CREATED, BrowserTestCase
+from zeit.speech.testing import TTS_CREATED, TTS_DELETED, BrowserTestCase
 
 
 class TestWebhook(BrowserTestCase):
@@ -42,3 +42,12 @@ class TestWebhook(BrowserTestCase):
                     json.dumps(TTS_CREATED),
                     'application/json',
                 )
+
+    def test_delete_event_called(self):
+        with patch.object(self.speech, 'delete', return_value=None) as mock_delete:
+            self.browser.post(
+                'http://localhost/@@speech_webhook',
+                json.dumps(TTS_DELETED),
+                'application/json',
+            )
+            mock_delete.assert_called_with(TTS_DELETED)
