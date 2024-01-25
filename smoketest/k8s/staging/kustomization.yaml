@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../base
+
+patches:
+- target:
+    kind: Deployment
+    name: nightwatch
+  patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value:
+        name: HTTPS_PROXY
+        value: http://static-ip-proxy.ops.zeit.de:3128

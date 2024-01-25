@@ -1,0 +1,44 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+function vault_read() {
+    local path=$1
+    local field=$2
+
+    if [[ -z "$VAULT_TOKEN" ]]; then
+        VAULT_TOKEN=$(<"$HOME/.vault-token")
+    fi
+    curl --silent -H "X-Vault-Token: $VAULT_TOKEN" \
+         "${VAULT_ADDR%/}/v1/zon/v1/${path}" | \
+        sed -e "s+^.*\"${field}\":\"\([^\"]*\).*$+\1+"
+}
+
+
+COMMAND=$1
+case $COMMAND in
+    smoke)
+        set -e
+        shift
+        if [[ "$1" != -* ]]; then
+            environment=$1
+            shift
+        else
+            environment="staging"
+        fi
+
+        cd "$DIR/../smoketest"
+
+        image=$(awk -F': ' '/^  newName:/ { print $2 }' \
+                < k8s/base/kustomization.yaml)
+        docker buildx build --output type=docker --quiet --tag $image .
+        docker run --rm -it \
+            -e VIVI_XMLRPC_PASSWORD=$(vault_read vivi/$environment/nightwatch password) \
+            $image \
+            --nightwatch-environment=$environment "$@"
+        ;;
+    *)
+        echo "Unrecognized command: $COMMAND"
+        exit 1
+    ;;
+esac

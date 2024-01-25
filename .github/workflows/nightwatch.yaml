@@ -1,0 +1,37 @@
+name: Build and deploy nightwatch tests
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - '.github/workflows/nightwatch.yaml'
+    - 'smoketest/**'
+  pull_request:
+    paths:
+    - '.github/workflows/nightwatch.yaml'
+    - 'smoketest/**'
+
+jobs:
+  build:
+    uses: zeitonline/gh-action-workflows/.github/workflows/nightwatch-build.yaml@1.9
+    secrets: inherit
+    with:
+      versions: smoketest/k8s/base/versions
+      # copy&paste from k8s/base and k8s/staging manifest;
+      # the json/shell quoting is atrocious.
+      args: |
+        --override-type=strategic --overrides="{\"spec\": {
+          \"serviceAccount\": \"baseproject\",
+          \"containers\": [{
+            \"name\": \"nightwatch-test-$TAG\",
+            \"env\": [
+                {\"name\": \"HTTPS_PROXY\", \"value\": \"http://static-ip-proxy.ops.zeit.de:3128\"},
+                {\"name\": \"VIVI_XMLRPC_PASSWORD\", \"valueFrom\": {\"secretKeyRef\": {
+                  \"name\": \"principals\",
+                  \"key\": \"vivi_zeit.cms.principals_system.nightwatch\"
+                }}}
+            ]
+          }] }}"
+
+  # deploy happens via flux (on `main` branch)
