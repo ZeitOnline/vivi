@@ -18,20 +18,17 @@ jobs:
     secrets: inherit
     with:
       versions: smoketest/k8s/base/versions
-      # copy&paste from k8s/base and k8s/staging manifest;
-      # the json/shell quoting is atrocious.
+      # copy&paste from k8s/base and k8s/staging manifest
       args: |
-        --override-type=strategic --overrides="{\"spec\": {
-          \"serviceAccount\": \"baseproject\",
-          \"containers\": [{
-            \"name\": \"nightwatch-test-$TAG\",
-            \"env\": [
-                {\"name\": \"HTTPS_PROXY\", \"value\": \"http://static-ip-proxy.ops.zeit.de:3128\"},
-                {\"name\": \"VIVI_XMLRPC_PASSWORD\", \"valueFrom\": {\"secretKeyRef\": {
-                  \"name\": \"principals\",
-                  \"key\": \"vivi_zeit.cms.principals_system.nightwatch\"
-                }}}
-            ]
-          }] }}"
+        --override-type=json --overrides='[
+          {"op": "add", "path": "/spec/serviceAccount", "value": "baseproject"},
+          {"op": "add", "path": "/spec/containers/0/env", "value": [
+            {"name": "HTTPS_PROXY", "value": "http://static-ip-proxy.ops.zeit.de:3128"},
+            {"name": "VIVI_XMLRPC_PASSWORD", "valueFrom": {"secretKeyRef": {
+              "name": "principals",
+              "key": "vivi_zeit.cms.principals_system.nightwatch"
+            }}}
+          ]}
+        ]'
 
   # deploy happens via flux (on `main` branch)
