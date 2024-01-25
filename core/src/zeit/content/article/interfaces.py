@@ -252,3 +252,6 @@ class ISpeechbertChecksum(zope.interface.Interface):
     """
 
     checksum = zope.schema.Text(title=_('Speechbert Checksum'), required=False)
+
+    def validate(checksum: str) -> bool:
+        """Valdiate context checksum against object checksum"""

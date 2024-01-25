@@ -7,11 +7,15 @@ import zope.app.appsetup.product
 import zope.component
 import zope.interface
 
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID, ISemanticChange
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, IPublish, IPublishInfo
+from zeit.cms.repository.interfaces import IFolder
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
+from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
-from zeit.content.audio.interfaces import ISpeechInfo
+from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
+from zeit.speech.errors import ChecksumMismatchError
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.speech.interfaces
@@ -27,7 +31,7 @@ class Speech:
     def __init__(self):
         self.config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
 
-    def _get_target_folder(self, article_uuid: str) -> zeit.cms.repository.folder.Folder:
+    def _get_target_folder(self, article_uuid: str) -> IFolder:
         """Returns the folder corresponding to the article's first release date."""
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         speech_folder = self.config['speech-folder']
@@ -42,12 +46,13 @@ class Speech:
 
     @staticmethod
     def convert_ms_to_sec(milliseconds: int) -> int:
+        # XXX no need for try once we have openapi validation
         try:
             return int(milliseconds / 1000)
         except TypeError:
             return 0
 
-    def _create(self, data: dict) -> zeit.cms.interfaces.ICMSContent:
+    def _create(self, data: dict) -> IAudio:
         speech = Audio()
         speech.audio_type = 'tts'
         folder = self._get_target_folder(data['uuid'])
@@ -56,8 +61,8 @@ class Speech:
         self._update(data, folder[data['uuid']])
         return folder[data['uuid']]
 
-    def _update(self, data: dict, speech: zeit.cms.interfaces.ICMSContent):
-        with zeit.cms.checkout.helper.checked_out(speech) as co:
+    def _update(self, data: dict, speech: IAudio):
+        with checked_out(speech) as co:
             for audio in data['articlesAudio']:
                 audio_entry = audio['audioEntry']
                 if audio['type'] == 'FULL_TTS':
@@ -70,7 +75,7 @@ class Speech:
             ISemanticChange(co).last_semantic_change = datetime.now(pytz.UTC)
         log.info('Text-to-speech %s was updated for article uuid %s', speech.uniqueId, data['uuid'])
 
-    def _find(self, article_uuid: str) -> Optional[zeit.cms.interfaces.ICMSContent]:
+    def _find(self, article_uuid: str) -> Optional[IAudio]:
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         result = list(connector.search([AUDIO_ID], (AUDIO_ID == str(article_uuid))))
         if not result:
@@ -84,8 +89,27 @@ class Speech:
         speech = self._find(article_uuid)
         if speech:
             self._update(data, speech)
+            self._assert_checksum_matches(speech)
+            IPublish(speech).publish(background=False)
         else:
             speech = self._create(data)
-        if IPublishInfo(speech).can_publish() == CAN_PUBLISH_ERROR:
-            return
-        IPublish(speech).publish(background=False)
+            IPublish(speech).publish(background=False)
+            self._add_audio_reference(speech)
+
+    def _add_audio_reference(self, speech: IAudio):
+        article = self._assert_checksum_matches(speech)
+        with checked_out(article, raise_if_error=True) as co:
+            references = IAudioReferences(co)
+            references.add(speech)
+        IPublish(article).publish(background=False)
+
+    def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
+        article = IArticle(speech)
+        article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
+        if article_checksum != ISpeechInfo(speech).checksum:
+            raise ChecksumMismatchError(
+                'Speechbert checksum mismatch for article %s and speech %s',
+                article.uniqueId,
+                speech.uniqueId,
+            )
+        return article

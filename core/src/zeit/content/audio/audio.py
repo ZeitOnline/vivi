@@ -5,6 +5,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.interfaces import AUDIO_SCHEMA_NS
 from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo, ISpeechInfo
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -14,13 +15,12 @@ import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.type
+import zeit.content.article.interfaces
 import zeit.content.audio.interfaces
 import zeit.content.image.interfaces
 
 
 log = logging.getLogger(__name__)
-
-AUDIO_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/audio'
 
 
 @zope.interface.implementer(IAudio, zeit.cms.interfaces.IAsset)
@@ -100,3 +100,11 @@ class SpeechInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         ISpeechInfo, AUDIO_SCHEMA_NS, ('article_uuid', 'preview_url', 'checksum')
     )
+
+
+@grok.adapter(IAudio)
+@grok.implementer(zeit.content.article.interfaces.IArticle)
+def article_for_audio(context: IAudio):
+    if article_uuid := ISpeechInfo(context).article_uuid:
+        return zeit.cms.interfaces.ICMSContent(zeit.cms.content.interfaces.IUUID(article_uuid))
+    return

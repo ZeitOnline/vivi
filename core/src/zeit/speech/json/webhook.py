@@ -7,6 +7,7 @@ import zope.component
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.celery
+import zeit.cms.checkout.interfaces
 import zeit.cms.tracing
 import zeit.content.audio.audio
 import zeit.speech.interfaces
@@ -52,11 +53,15 @@ class Notification:
         SPEECH_WEBHOOK_TASK.delay(payload, _principal_id_=self._principal)
 
 
-@zeit.cms.celery.task(queue='speech')
-def SPEECH_WEBHOOK_TASK(payload: dict):
+@zeit.cms.celery.task(bind=True, queue='speech')
+def SPEECH_WEBHOOK_TASK(self, payload: dict):
     speech = zope.component.getUtility(zeit.speech.interfaces.ISpeech)
     if payload['event'] == 'AUDIO_CREATED':
-        speech.update(payload)
+        try:
+            speech.update(payload)
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
+            config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
+            self.retry(countdown=int(config['retry-delay-seconds']))
 
 
 def validate_request(payload: dict):
