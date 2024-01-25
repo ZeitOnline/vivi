@@ -58,7 +58,8 @@ TTS_CREATED = {
 
 TTS_DELETED = {
     'event': 'AUDIO_DELETED',
-    'uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
+    'article_uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
+    'audio_uuid:': 'a89ab2e3-4777-466a-a51a-edc6b9802ef1',
 }
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(

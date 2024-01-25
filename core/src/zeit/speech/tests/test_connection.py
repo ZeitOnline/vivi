@@ -11,7 +11,7 @@ from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.speech.connection import Speech
 from zeit.speech.errors import ChecksumMismatchError
-from zeit.speech.testing import TTS_CREATED, FunctionalTestCase
+from zeit.speech.testing import TTS_CREATED, TTS_DELETED, FunctionalTestCase
 import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.mock
 
@@ -95,3 +95,14 @@ class TestSpeech(FunctionalTestCase):
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             with pytest.raises(ChecksumMismatchError):
                 Speech().update(tts_msg)
+
+    def test_handle_delete_event(self):
+        audio = self.create_audio(TTS_CREATED)
+        self.repository.connector.search_result = [(audio.uniqueId)]
+        Speech().delete(TTS_DELETED)
+        assert ICMSContent(self.unique_id, None) is None
+
+    def test_handle_delete_event_for_non_existing_audio(self):
+        self.repository.connector.search_result = []
+        Speech().delete(TTS_DELETED)
+        assert ICMSContent(self.unique_id, None) is None

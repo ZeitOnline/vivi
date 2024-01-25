@@ -113,3 +113,17 @@ class Speech:
                 speech.uniqueId,
             )
         return article
+
+    def delete(self, data: dict):
+        speech = self._find(data['article_uuid'])
+        if not speech:
+            log.warning(
+                'No Text-to-speech found for article uuid %s. '
+                'Maybe it was already deleted?' % data['article_uuid'],
+            )
+            return
+        IPublish(speech).retract(background=False)
+        unique_id = speech.uniqueId
+        del speech.__parent__[speech.__name__]
+        self.__parent__ = None
+        log.info('Text-to-speech %s successfully deleted.', unique_id)
