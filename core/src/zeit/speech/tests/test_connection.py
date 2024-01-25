@@ -9,6 +9,7 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
+from zeit.content.audio.testing import AudioBuilder
 from zeit.speech.connection import Speech
 from zeit.speech.errors import ChecksumMismatchError
 from zeit.speech.testing import TTS_CREATED, TTS_DELETED, FunctionalTestCase
@@ -106,3 +107,17 @@ class TestSpeech(FunctionalTestCase):
         self.repository.connector.search_result = []
         Speech().delete(TTS_DELETED)
         assert ICMSContent(self.unique_id, None) is None
+
+    def test_remove_audio_from_article(self):
+        audio = self.create_audio(TTS_CREATED)
+        assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio,)
+        self.repository.connector.search_result = [(self.article.uniqueId)]
+        podcast = AudioBuilder().build(self.repository)
+        IAudioReferences(ICMSContent(self.article_uid)).add(podcast)
+        assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio, podcast)
+        self.repository.connector.search_result = [(self.article_uid)]
+        with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
+            Speech()._remove_reference_from_article(TTS_DELETED)
+        article = ICMSContent(self.article_uid)
+        audio = IAudioReferences(article)
+        assert audio.items == (podcast,)

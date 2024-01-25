@@ -114,6 +114,19 @@ class Speech:
             )
         return article
 
+    def _remove_reference_from_article(self, data: dict):
+        speech = self._find(data['article_uuid'])
+        article = IArticle(speech)
+        if not article:
+            log.warning(
+                'No article found for Text-to-speech uuid %s. '
+                'Maybe it was already deleted?' % data['uuid'],
+            )
+            return
+        with checked_out(article, raise_if_error=True) as co:
+            references = IAudioReferences(co)
+            references.items = tuple(filter(lambda ref: ref != speech, references.items))
+
     def delete(self, data: dict):
         speech = self._find(data['article_uuid'])
         if not speech:
