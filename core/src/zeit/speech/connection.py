@@ -121,12 +121,13 @@ class Speech:
             article = zeit.cms.interfaces.ICMSContent(article, None)
         if not article:
             log.warning(
-                'No article found for Text-to-speech %s. ' 'Maybe it was already deleted?' % speech,
+                'No article found for Text-to-speech %s. ' 'Maybe it was already deleted?',
+                speech,
             )
             return
         with checked_out(article, raise_if_error=True) as co:
             references = IAudioReferences(co)
-            references.items = tuple(filter(lambda ref: ref != speech, references.items))
+            references.items = tuple(ref for ref in references.items if ref != speech)
 
     def delete(self, data: dict):
         speech = self._find(data['article_uuid'])
@@ -140,5 +141,4 @@ class Speech:
         IPublish(speech).retract(background=False)
         unique_id = speech.uniqueId
         del speech.__parent__[speech.__name__]
-        self.__parent__ = None
         log.info('Text-to-speech %s successfully deleted.', unique_id)
