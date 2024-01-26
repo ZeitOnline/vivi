@@ -1,6 +1,8 @@
 import copy
 import unittest.mock as mock
 
+import pytest
+
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.speech.connection import Speech
@@ -81,6 +83,13 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         self.article_uid = 'http://xml.zeit.de/online/2007/01/Somalia'
         IPublishInfo(self.article).urgent = True
         IPublish(self.article).publish(background=False)
+
+    def tearDown(self):
+        self.caplog.clear()
+
+    @pytest.fixture(autouse=True)
+    def _caplog(self, caplog):
+        self.caplog = caplog
 
     def create_audio(self, data):
         self.repository.connector.search_result = [(self.article.uniqueId)]

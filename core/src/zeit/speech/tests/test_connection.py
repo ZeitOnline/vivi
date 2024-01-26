@@ -4,6 +4,7 @@ import copy
 import pytest
 import zope.security.management
 
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo
@@ -113,11 +114,21 @@ class TestSpeech(FunctionalTestCase):
         assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio,)
         self.repository.connector.search_result = [(self.article.uniqueId)]
         podcast = AudioBuilder().build(self.repository)
-        IAudioReferences(ICMSContent(self.article_uid)).add(podcast)
+        with checked_out(self.article) as co:
+            references = IAudioReferences(co)
+            references.add(podcast)
         assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio, podcast)
         self.repository.connector.search_result = [(self.article_uid)]
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
-            Speech()._remove_reference_from_article(TTS_DELETED)
+            Speech().delete(TTS_DELETED)
         article = ICMSContent(self.article_uid)
         audio = IAudioReferences(article)
         assert audio.items == (podcast,)
+
+    def test_unable_to_remove_anything_because_article_is_missing(self):
+        audio = AudioBuilder().with_audio_type('tts').build(self.repository)
+        self.repository.connector.search_result = []
+        with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
+            Speech().delete(TTS_DELETED)
+        assert f'No article found for Text-to-speech {audio}' in self.caplog.text
+        assert not self.repository.has_key('audio')

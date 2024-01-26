@@ -116,13 +116,12 @@ class Speech:
             )
         return article
 
-    def _remove_reference_from_article(self, data: dict):
+    def _remove_reference_from_article(self, speech: IAudio):
         if article := zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid):
             article = zeit.cms.interfaces.ICMSContent(article, None)
         if not article:
             log.warning(
-                'No article found for Text-to-speech uuid %s. '
-                'Maybe it was already deleted?' % data['uuid'],
+                'No article found for Text-to-speech %s. ' 'Maybe it was already deleted?' % speech,
             )
             return
         with checked_out(article, raise_if_error=True) as co:
@@ -137,6 +136,7 @@ class Speech:
                 'Maybe it was already deleted?' % data['article_uuid'],
             )
             return
+        self._remove_reference_from_article(speech)
         IPublish(speech).retract(background=False)
         unique_id = speech.uniqueId
         del speech.__parent__[speech.__name__]
