@@ -8,7 +8,7 @@ import zope.component
 
 from zeit.cms.checkout.interfaces import CheckinCheckoutError
 from zeit.speech.interfaces import ISpeech
-from zeit.speech.testing import TTS_CREATED, BrowserTestCase
+from zeit.speech.testing import TTS_CREATED, TTS_DELETED, BrowserTestCase
 
 
 class TestWebhook(BrowserTestCase):
@@ -34,11 +34,22 @@ class TestWebhook(BrowserTestCase):
             )
 
     def test_retryable_error_is_retried(self):
+        events = {'update': TTS_CREATED, 'delete': TTS_DELETED}
         self.browser.handleErrors = False
-        with patch.object(self.speech, 'update', side_effect=CheckinCheckoutError('provoked')):
-            with self.assertRaises(celery.exceptions.Retry):
-                self.browser.post(
-                    'http://localhost/@@speech_webhook',
-                    json.dumps(TTS_CREATED),
-                    'application/json',
-                )
+        for event, payload in events.items():
+            with patch.object(self.speech, event, side_effect=CheckinCheckoutError('provoked')):
+                with self.assertRaises(celery.exceptions.Retry):
+                    self.browser.post(
+                        'http://localhost/@@speech_webhook',
+                        json.dumps(payload),
+                        'application/json',
+                    )
+
+    def test_delete_event_called(self):
+        with patch.object(self.speech, 'delete', return_value=None) as mock_delete:
+            self.browser.post(
+                'http://localhost/@@speech_webhook',
+                json.dumps(TTS_DELETED),
+                'application/json',
+            )
+            mock_delete.assert_called_with(TTS_DELETED)

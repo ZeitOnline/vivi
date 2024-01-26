@@ -1,6 +1,8 @@
 import copy
 import unittest.mock as mock
 
+import pytest
+
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.speech.connection import Speech
@@ -58,7 +60,8 @@ TTS_CREATED = {
 
 TTS_DELETED = {
     'event': 'AUDIO_DELETED',
-    'uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
+    'article_uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
+    'audio_uuid:': 'a89ab2e3-4777-466a-a51a-edc6b9802ef1',
 }
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
@@ -80,6 +83,13 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         self.article_uid = 'http://xml.zeit.de/online/2007/01/Somalia'
         IPublishInfo(self.article).urgent = True
         IPublish(self.article).publish(background=False)
+
+    def tearDown(self):
+        self.caplog.clear()
+
+    @pytest.fixture(autouse=True)
+    def _caplog(self, caplog):
+        self.caplog = caplog
 
     def create_audio(self, data):
         self.repository.connector.search_result = [(self.article.uniqueId)]

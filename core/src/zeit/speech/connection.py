@@ -104,7 +104,9 @@ class Speech:
         IPublish(article).publish(background=False)
 
     def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
-        article = IArticle(speech)
+        article = zeit.cms.interfaces.ICMSContent(
+            zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid)
+        )
         article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
         if article_checksum != ISpeechInfo(speech).checksum:
             raise ChecksumMismatchError(
@@ -113,3 +115,30 @@ class Speech:
                 speech.uniqueId,
             )
         return article
+
+    def _remove_reference_from_article(self, speech: IAudio):
+        if article := zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid):
+            article = zeit.cms.interfaces.ICMSContent(article, None)
+        if not article:
+            log.warning(
+                'No article found for Text-to-speech %s. ' 'Maybe it was already deleted?',
+                speech,
+            )
+            return
+        with checked_out(article, raise_if_error=True) as co:
+            references = IAudioReferences(co)
+            references.items = tuple(ref for ref in references.items if ref != speech)
+
+    def delete(self, data: dict):
+        speech = self._find(data['article_uuid'])
+        if not speech:
+            log.warning(
+                'No Text-to-speech found for article uuid %s. '
+                'Maybe it was already deleted?' % data['article_uuid'],
+            )
+            return
+        self._remove_reference_from_article(speech)
+        IPublish(speech).retract(background=False)
+        unique_id = speech.uniqueId
+        del speech.__parent__[speech.__name__]
+        log.info('Text-to-speech %s successfully deleted.', unique_id)

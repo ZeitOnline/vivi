@@ -56,16 +56,18 @@ class Notification:
 @zeit.cms.celery.task(bind=True, queue='speech')
 def SPEECH_WEBHOOK_TASK(self, payload: dict):
     speech = zope.component.getUtility(zeit.speech.interfaces.ISpeech)
-    if payload['event'] == 'AUDIO_CREATED':
-        try:
+    try:
+        if payload['event'] == 'AUDIO_CREATED':
             speech.update(payload)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
-            config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
-            self.retry(countdown=int(config['retry-delay-seconds']))
+        elif payload['event'] == 'AUDIO_DELETED':
+            speech.delete(payload)
+    except zeit.cms.checkout.interfaces.CheckinCheckoutError:
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
+        self.retry(countdown=int(config['retry-delay-seconds']))
 
 
 def validate_request(payload: dict):
     event_type = payload.get('event')
-    uuid = payload.get('uuid')
+    uuid = payload.get('uuid') or payload.get('article_uuid')
     if not all([event_type, uuid]):
         raise InvalidSpeechMessageError(f'Missing field in payload: {payload}')

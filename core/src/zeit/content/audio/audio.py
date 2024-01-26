@@ -100,11 +100,3 @@ class SpeechInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         ISpeechInfo, AUDIO_SCHEMA_NS, ('article_uuid', 'preview_url', 'checksum')
     )
-
-
-@grok.adapter(IAudio)
-@grok.implementer(zeit.content.article.interfaces.IArticle)
-def article_for_audio(context: IAudio):
-    if article_uuid := ISpeechInfo(context).article_uuid:
-        return zeit.cms.interfaces.ICMSContent(zeit.cms.content.interfaces.IUUID(article_uuid))
-    return
