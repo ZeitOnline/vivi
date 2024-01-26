@@ -6,6 +6,7 @@ from zeit.cms.interfaces import CONFIG_CACHE
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
+import zeit.retresco.interfaces
 
 
 class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
@@ -21,7 +22,11 @@ class AudioTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     }
 
 
-class IAudio(zeit.cms.content.interfaces.ICommonMetadata, zeit.cms.content.interfaces.IXMLContent):
+class IAudio(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.content.interfaces.IXMLContent,
+    zeit.retresco.interfaces.ISkipEnrich,
+):
     """
     Basic playable audio containing minimum required information
     for ZEIT audio players.
