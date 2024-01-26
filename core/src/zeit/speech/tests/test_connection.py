@@ -7,7 +7,7 @@ import zope.security.management
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.content.audio.testing import AudioBuilder
@@ -48,6 +48,17 @@ class TestSpeech(FunctionalTestCase):
         assert updated_time > created_time, 'Semantic time should be updated'
         assert ISpeechInfo(audio).checksum == 'cookiesandcake', 'Update your checksum'
 
+    def test_update_broken_audio_repairs_reference_to_article(self):
+        audio = Speech()._create(TTS_CREATED)
+        IPublish(audio).publish(background=False)
+        assert ICMSContent(self.unique_id)
+        assert not IAudioReferences(ICMSContent(self.article_uid)).items
+        self.repository.connector.search_result = [(audio.uniqueId)]
+        self.repository.connector.search_result = [(self.article.uniqueId)]
+        with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
+            Speech().update(TTS_CREATED)
+        assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio,)
+
     def test_article_has_corresponding_tts_audio_after_publish(self):
         original_date = IPublishInfo(self.article).date_last_published
         self.create_audio(TTS_CREATED)
@@ -72,8 +83,9 @@ class TestSpeech(FunctionalTestCase):
         assert zeit.cms.workflow.mock._publish_count[article.uniqueId] == 2
         assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 1
 
-        self.repository.connector.search_result = [(self.unique_id)]
-        Speech().update(TTS_CREATED)
+        self.repository.connector.search_result = [(self.article.uniqueId)]
+        with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
+            Speech().update(TTS_CREATED)
         article = ICMSContent(self.article_uid)
         audio = ICMSContent(self.unique_id)
         assert zeit.cms.workflow.mock._publish_count[article.uniqueId] == 2

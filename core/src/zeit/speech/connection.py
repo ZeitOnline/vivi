@@ -91,6 +91,7 @@ class Speech:
             self._update(data, speech)
             self._assert_checksum_matches(speech)
             IPublish(speech).publish(background=False)
+            self._ensure_reference(speech)
         else:
             speech = self._create(data)
             IPublish(speech).publish(background=False)
@@ -103,10 +104,13 @@ class Speech:
             references.add(speech)
         IPublish(article).publish(background=False)
 
-    def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
-        article = zeit.cms.interfaces.ICMSContent(
-            zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid)
+    def _article(self, speech: IAudio) -> IArticle:
+        return zeit.cms.interfaces.ICMSContent(
+            zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid), None
         )
+
+    def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
+        article = self._article(speech)
         article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
         if article_checksum != ISpeechInfo(speech).checksum:
             raise ChecksumMismatchError(
@@ -116,9 +120,14 @@ class Speech:
             )
         return article
 
+    def _ensure_reference(self, speech):
+        article = self._article(speech)
+        reference = IAudioReferences(article)
+        if speech not in reference.items:
+            self._add_audio_reference(speech)
+
     def _remove_reference_from_article(self, speech: IAudio):
-        if article := zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid):
-            article = zeit.cms.interfaces.ICMSContent(article, None)
+        article = self._article(speech)
         if not article:
             log.warning(
                 'No article found for Text-to-speech %s. ' 'Maybe it was already deleted?',
