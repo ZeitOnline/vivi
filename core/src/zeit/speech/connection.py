@@ -104,7 +104,9 @@ class Speech:
         IPublish(article).publish(background=False)
 
     def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
-        article = IArticle(speech)
+        article = zeit.cms.interfaces.ICMSContent(
+            zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid)
+        )
         article_checksum = zeit.content.article.interfaces.ISpeechbertChecksum(article)
         if article_checksum != ISpeechInfo(speech).checksum:
             raise ChecksumMismatchError(
@@ -115,8 +117,8 @@ class Speech:
         return article
 
     def _remove_reference_from_article(self, data: dict):
-        speech = self._find(data['article_uuid'])
-        article = IArticle(speech)
+        if article := zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid):
+            article = zeit.cms.interfaces.ICMSContent(article, None)
         if not article:
             log.warning(
                 'No article found for Text-to-speech uuid %s. '
