@@ -89,16 +89,15 @@ class Speech:
         speech = self._find(article_uuid)
         if speech:
             self._update(data, speech)
-            self._assert_checksum_matches(speech)
-            IPublish(speech).publish(background=False)
-            self._ensure_reference(speech)
         else:
             speech = self._create(data)
-            IPublish(speech).publish(background=False)
-            self._add_audio_reference(speech)
+        self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
         article = self._assert_checksum_matches(speech)
+        IPublish(speech).publish(background=False)
+        if speech in IAudioReferences(article).items:
+            return
         with checked_out(article, raise_if_error=True) as co:
             references = IAudioReferences(co)
             references.add(speech)
@@ -119,12 +118,6 @@ class Speech:
                 speech.uniqueId,
             )
         return article
-
-    def _ensure_reference(self, speech):
-        article = self._article(speech)
-        reference = IAudioReferences(article)
-        if speech not in reference.items:
-            self._add_audio_reference(speech)
 
     def _remove_reference_from_article(self, speech: IAudio):
         article = self._article(speech)

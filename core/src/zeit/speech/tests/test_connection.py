@@ -53,7 +53,6 @@ class TestSpeech(FunctionalTestCase):
         IPublish(audio).publish(background=False)
         assert ICMSContent(self.unique_id)
         assert not IAudioReferences(ICMSContent(self.article_uid)).items
-        self.repository.connector.search_result = [(audio.uniqueId)]
         self.repository.connector.search_result = [(self.article.uniqueId)]
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             Speech().update(TTS_CREATED)
