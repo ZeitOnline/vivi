@@ -145,6 +145,9 @@ class IAudioReferences(zope.interface.Interface):
     def add(audio: IAudio):
         pass
 
+    def get_by_type(audio_type: str) -> [IAudio]:
+        pass
+
 
 class ISpeechInfo(zope.interface.Interface):
     article_uuid = zope.schema.ASCIILine(
