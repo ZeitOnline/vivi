@@ -434,6 +434,23 @@ class AudioArticle(zeit.content.article.testing.FunctionalTestCase):
         self.audio = AudioBuilder().build(self.repository)
         self.info = zeit.content.audio.interfaces.IPodcastEpisodeInfo(self.audio)
 
+    def test_filter_audios_by_audio_type(self):
+        self.repository['article'] = self.article
+        tts = AudioBuilder().with_audio_type('tts').build(self.repository, 'tts')
+        pc1 = AudioBuilder().with_audio_type('podcast').build(self.repository, 'pc1')
+        pc2 = AudioBuilder().with_audio_type('podcast').build(self.repository, 'pc2')
+        audios_refs = zeit.content.audio.interfaces.IAudioReferences(self.article)
+        audios_refs.add(tts)
+        audios_refs.add(pc1)
+        audios_refs.add(pc2)
+        audios_tts = audios_refs.get_by_type('tts')
+        audios_pcs = audios_refs.get_by_type('podcast')
+        assert len(audios_tts) == 1
+        assert audios_tts[0].uniqueId == 'http://xml.zeit.de/tts'
+        assert len(audios_pcs) == 2
+        assert audios_pcs[0].uniqueId == 'http://xml.zeit.de/pc1'
+        assert audios_pcs[1].uniqueId == 'http://xml.zeit.de/pc2'
+
     def test_remove_audio_from_article(self):
         self.repository['article'] = self.article
         with checked_out(self.article) as co:

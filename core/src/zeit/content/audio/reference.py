@@ -11,3 +11,6 @@ class AudioReferences(zeit.cms.related.related.RelatedBase):
 
     def add(self, audio):
         self.items += (audio,)
+
+    def get_by_type(self, audio_type):
+        return [i for i in self.items if audio_type == i.audio_type]
