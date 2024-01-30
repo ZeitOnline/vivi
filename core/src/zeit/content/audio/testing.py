@@ -81,7 +81,9 @@ class AudioBuilder:
                 return self
         raise ValueError(f'Unknown attribute {attribute_name}')
 
-    def build(self, repository: Optional[IRepository] = None) -> Audio:
+    def build(
+        self, repository: Optional[IRepository] = None, unique_id: Optional[str] = 'audio'
+    ) -> Audio:
         audio = Audio()
         audio_type = self.attributes['audio']['audio_type']
         for attribute, value in self.attributes['audio'].items():
@@ -96,7 +98,7 @@ class AudioBuilder:
             for attribute, value in self.attributes[audio_type].items():
                 setattr(tts, attribute, value)
         if repository is not None:
-            repository['audio'] = audio
+            repository[unique_id] = audio
 
         return audio
 
