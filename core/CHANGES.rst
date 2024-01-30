@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.98.0 (2024-01-30)
+-------------------
+
+- ZO-4225: filter audio references by type
+
+- ZO-4460: Ensure audio article reference and do not enrich audio objects
+
+- ZO-4461: Delete tts audio via speech webhook
+
+
 5.97.0 (2024-01-25)
 -------------------
 
