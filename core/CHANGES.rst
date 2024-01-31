@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.99.0 (2024-01-31)
+-------------------
+
+- ZO-4225: print checksum object as checksum
+
+
 5.98.0 (2024-01-30)
 -------------------
 
