@@ -13,7 +13,7 @@ class AudioObjectDetails(BrowserTestCase):
             '...<dt>Duration</dt>...'
             '...<dd>02:03</dd>...'
             '...<dt>Type</dt>...'
-            '...<dd>podcast</dd>...'
+            '...<dd>Podcast</dd>...'
             '...<dt>Podcast</dt>...'
             '...<dd>Cat Jokes Pawdcast</dd>...'
             f'...<a target="_blank" href="{audio.url}">Play</a>...',
