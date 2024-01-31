@@ -2,7 +2,7 @@ import importlib.resources
 
 from zope.browserpage import ViewPageTemplateFile
 
-from zeit.content.audio.interfaces import IPodcastEpisodeInfo
+from zeit.content.audio.interfaces import AudioTypeSource, IPodcastEpisodeInfo
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 
@@ -27,7 +27,7 @@ class Details(zeit.cms.browser.objectdetails.Details):
 
     @property
     def audio_type(self):
-        return self.context.audio_type
+        return AudioTypeSource().factory.getTitle(self.context.audio_type)
 
     def podcast(self):
         if self.context.audio_type == 'podcast':
