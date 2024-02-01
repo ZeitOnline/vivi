@@ -3,6 +3,17 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.100.0 (2024-02-01)
+--------------------
+
+FIX:
+- ZO-4549: wait_for_commit required an extra argument which was never added
+
+
+MAINT:
+- use audio type translation in object detail view
+
+
 5.99.0 (2024-01-31)
 -------------------
 
