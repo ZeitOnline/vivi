@@ -1,3 +1,4 @@
+from datetime import datetime
 import copy
 import unittest.mock as mock
 
@@ -78,7 +79,10 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super().setUp()
-        self.unique_id = f'http://xml.zeit.de/tts/2024-01/{TTS_CREATED["uuid"]}'
+        current_date = datetime.now()
+        self.unique_id = (
+            f'http://xml.zeit.de/tts/{current_date.strftime("%Y-%m")}/{TTS_CREATED["uuid"]}'
+        )
         self.article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.article_uid = 'http://xml.zeit.de/online/2007/01/Somalia'
         IPublishInfo(self.article).urgent = True
