@@ -136,7 +136,7 @@ else:
             return run
 
 
-def wait_for_commit(content, max_attempts):
+def wait_for_commit(content, max_attempts=3):
     import transaction
     import zope.event
 
