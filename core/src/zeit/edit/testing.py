@@ -1,10 +1,9 @@
 import gocept.selenium
 
 import zeit.cms.testing
-import zeit.workflow.testing
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.workflow.testing.CONFIG_LAYER,))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(zeit.cms.testing.CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
 WSGI_LAYER = zeit.cms.testing.WSGILayer(bases=(ZOPE_LAYER,))
 HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))

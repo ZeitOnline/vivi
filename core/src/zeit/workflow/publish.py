@@ -276,8 +276,8 @@ class PublishRetractTask:
 
     def recurse(self, method, obj, *args):
         """Apply method recursively on obj."""
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        DEPENDENCY_PUBLISH_LIMIT = int(config['dependency-publish-limit'])
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
+        DEPENDENCY_PUBLISH_LIMIT = int(config.get('dependency-publish-limit', 1))
         stack = [obj]
         seen = set()
         result_obj = None

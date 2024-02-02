@@ -10,7 +10,6 @@ import zeit.cms.content.field
 import zeit.cms.interfaces
 import zeit.content.volume.testing
 import zeit.find.interfaces
-import zeit.workflow.testing
 
 
 class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
