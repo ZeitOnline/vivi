@@ -22,7 +22,6 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
-import zeit.content.article.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
@@ -491,7 +490,7 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')

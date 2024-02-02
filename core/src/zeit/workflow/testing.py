@@ -10,6 +10,7 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_WARNING
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
+import zeit.content.article.testing
 import zeit.workflow.publishinfo
 
 
@@ -47,6 +48,11 @@ class TMSMockLayer(plone.testing.Layer):
 
 
 TMS_MOCK_LAYER = TMSMockLayer(name='TMSMockLayer', bases=(ZOPE_LAYER,))
+ARTICLE_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
+    'zeit.content.article',
+    'ctesting.zcml',
+    bases=(ZOPE_LAYER, zeit.content.article.testing.CONFIG_LAYER),
+)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

@@ -2,6 +2,7 @@ from unittest import mock
 import unittest
 
 import lxml.etree
+import pendulum
 import pytest
 import requests_mock
 import zope.app.appsetup.product
@@ -17,7 +18,6 @@ import zeit.cms.related.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
 import zeit.cms.testing
-import zeit.content.article.testing
 import zeit.content.author.author
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
@@ -28,7 +28,7 @@ import zeit.workflow.testing
 
 
 class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
@@ -190,20 +190,16 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_facebooknewstab_skipped_date_first_released(self):
-        # this article has date_first_published set to an old date
-        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         IPublishInfo(article).urgent = True
-        self.assertTrue(IPublishInfo(article).published)
-        self.assertEqual(IPublishInfo(article).date_first_released.year, 2020)
+        IPublishInfo(article).date_first_released = pendulum.datetime(2020, 10, 5)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' not in result
         # set it to something else and make sure nothing else caused the skip
-        info = IPublishInfo(article)
-        info.date_first_released = info.date_first_released.replace(year=2022)
-        self.assertEqual(IPublishInfo(article).date_first_released.year, 2022)
+        IPublishInfo(article).date_first_released = pendulum.datetime(2022, 1, 1)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
@@ -279,7 +275,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                     'series',
                     'subtitle',
                     'supertitle',
-                    'tags',
                     'teaser',
                 ],
                 sorted(result_sb.keys()),

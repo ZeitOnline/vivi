@@ -5,13 +5,12 @@ import zope.component
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
-import zeit.content.article.testing
 import zeit.workflow.publisher
 import zeit.workflow.testing
 
 
 class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
         self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')

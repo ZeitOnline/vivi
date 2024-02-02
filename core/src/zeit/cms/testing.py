@@ -167,7 +167,7 @@ class ZCMLLayer(plone.testing.Layer):
     def setUp(self):
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
         self.assert_non_browser_modules_have_no_browser_zcml()
-        zeit.cms.zope._load_zcml(self.config_file, self.features)
+        self['zcaContext'] = zeit.cms.zope._load_zcml(self.config_file, self.features)
 
     def assert_non_browser_modules_have_no_browser_zcml(self):
         # Caveat emptor: This whole method is a bunch of heuristics, but
@@ -210,6 +210,36 @@ class ZCMLLayer(plone.testing.Layer):
 
     def testTearDown(self):
         self['zcaRegistry'] = plone.testing.zca.popGlobalRegistry()
+
+
+class AdditionalZCMLLayer(plone.testing.Layer):
+    """Requires a ZCMLLayer instance in the layer hierarchy above it."""
+
+    def __init__(
+        self,
+        package=None,
+        config_file='configure.zcml',
+        name='AdditionalZCMLLayer',
+        module=None,
+        bases=(),
+    ):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        if package is None:
+            package, _ = module.rsplit('.', 1)
+        if not config_file.startswith('/'):
+            config_file = str((importlib.resources.files(package) / config_file))
+        self.config_file = config_file
+        super().__init__(name=name, module=module, bases=self.defaultBases + bases)
+
+    def setUp(self):
+        self['zcaRegistryAdd'] = plone.testing.zca.pushGlobalRegistry()
+        zope.configuration.xmlconfig.include(self['zcaContext'], file=self.config_file)
+        self['zcaContext'].execute_actions()
+
+    def tearDown(self):
+        plone.testing.zca.popGlobalRegistry()
+        del self['zcaRegistryAdd']
 
 
 class ZODBLayer(plone.testing.Layer):
