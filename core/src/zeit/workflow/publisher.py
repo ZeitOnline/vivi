@@ -16,8 +16,8 @@ class PublisherError(Exception):
 
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublisher)
 class Publisher:
-    def request(self, to_process_list, method):
-        if not to_process_list:
+    def request(self, items, method):
+        if not items:
             return
 
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
@@ -31,13 +31,12 @@ class Publisher:
             headers['host'] = hostname
 
         url = f'{publisher_base_url}{method}'
-        json = [zeit.workflow.interfaces.IPublisherData(obj)(method) for obj in to_process_list]
-        r = requests.post(url=url, json=json, headers=headers)
+        r = requests.post(url, json=items, headers=headers)
         if r.status_code != 200:
             raise PublisherError(r.url, r.status_code, r.json()['errors'])
 
 
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublisher)
 class MockPublisher:
-    def request(self, to_process_list, method):
+    def request(self, items, method):
         return

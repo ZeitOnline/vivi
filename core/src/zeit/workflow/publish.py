@@ -311,8 +311,8 @@ class PublishRetractTask:
 
         return result_obj
 
-    def collect(self, obj, result):
-        result.append(obj)
+    def serialize(self, obj, result):
+        result.append(zeit.workflow.interfaces.IPublisherData(obj)(self.mode))
         return obj
 
     def log(self, obj, message):
@@ -382,7 +382,7 @@ class PublishTask(PublishRetractTask):
         for obj in published:
             try:
                 deps = []
-                self.recurse(self.collect, obj, deps)
+                self.recurse(self.serialize, obj, deps)
                 to_publish.extend(deps)
             except Exception as e:
                 errors.append((obj, e))
@@ -487,7 +487,7 @@ class RetractTask(PublishRetractTask):
         for obj in retracted:
             try:
                 deps = []
-                self.recurse(self.collect, obj, deps)
+                self.recurse(self.serialize, obj, deps)
                 to_retract.extend(reversed(deps))
             except Exception as e:
                 errors.append((obj, e))
