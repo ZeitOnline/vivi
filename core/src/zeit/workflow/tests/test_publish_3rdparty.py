@@ -1,4 +1,3 @@
-from unittest import mock
 import unittest
 
 import lxml.etree
@@ -31,14 +30,9 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
         self.gsm.registerUtility(zeit.workflow.publisher.Publisher(), IPublisher)
-
-    def tearDown(self):
-        self.patch.stop()
 
     @pytest.fixture(autouse=True)
     def _caplog(self, caplog):
@@ -426,8 +420,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.TMS_MOCK_LAYER
-
     def test_tms_wait_for_index_article(self):
         article = self.repository['testcontent']
         zope.interface.alsoProvides(article, zeit.content.article.interfaces.IArticle)
@@ -447,7 +439,7 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_ignores_content_without_tms_representation(self):
         content = self.repository['testcontent']
-        self.layer.representation().return_value = None
+        zeit.workflow.testing.MockTMSRepresentation.result = None
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -456,12 +448,10 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.TMS_MOCK_LAYER
-
     def setUp(self):
         super().setUp()
         FEATURE_TOGGLES.set('publish_bigquery_json')
-        self.layer.representation().return_value = {
+        zeit.workflow.testing.MockTMSRepresentation.result = {
             'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}
         }
         with checked_out(self.repository['testcontent']):
@@ -481,7 +471,7 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertStartsWith('{urn:uuid:', d['properties']['document']['uuid'])
 
     def test_moves_rtr_keywords_under_tagging(self):
-        self.layer.representation().return_value = {
+        zeit.workflow.testing.MockTMSRepresentation.result = {
             'rtr_locations': [],
             'rtr_keywords': ['one', 'two'],
             'title': 'ignored',

@@ -1,0 +1,28 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:meta="http://namespaces.zope.org/meta"
+   i18n_domain="zope"
+   >
+
+  <!-- NOTE: Contrary to the "ctesting.zcml" contract, this file does *not*
+  include "everything you need to use this package in your tests".
+
+  1. Ideally, no other package would need to use zeit.workflow anyway,
+  and instead be able to do everything with zeit.cms.workflow.mock.
+  And because the mock is the testing default, those few packages that use
+  zeit.workflow in their tests have to use includeOverrides:ftesting.zcml anyway.
+
+  2. Platonically, publish_3rdparty should be in a separate package,
+  because it uses packages from different dependency tiers (zeit.content.*, zeit.retresco and zeit.workflow).
+  Since we currently think that would be too much bureaucratic effort for too little gain,
+  this results in some edge cases, like z.c.article needing to use publish_3rdparty
+  in its tests, but *without* the rest of zeit.workflow.
+  And *that* is currently the purpose of this file.
+  -->
+
+  <adapter factory=".testing.MockTMSRepresentation" />
+  <subscriber
+    handler=".testing.reset_mock_tms"
+    for="zeit.cms.testing.ResetMocks" />
+
+</configure>

@@ -12,6 +12,7 @@
   <include package="zeit.retresco.xmlrpc" />
 
   <include package="zeit.content.advertisement" />
+  <exclude package="zeit.workflow" file="ctesting.zcml" />
   <include package="zeit.content.article" file="ctesting.zcml" />
   <include package="zeit.content.author" />
   <include package="zeit.content.dynamicfolder" file="ctesting.zcml" />

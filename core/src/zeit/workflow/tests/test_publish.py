@@ -493,17 +493,11 @@ class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
         self.gsm.registerUtility(
             zeit.workflow.publisher.Publisher(), zeit.cms.workflow.interfaces.IPublisher
         )
-
-    def tearDown(self):
-        self.patch.stop()
-        super().tearDown()
 
     def test_object_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')

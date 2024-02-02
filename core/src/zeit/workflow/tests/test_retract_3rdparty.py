@@ -1,5 +1,3 @@
-from unittest import mock
-
 import requests_mock
 import zope.component
 
@@ -13,15 +11,9 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
         self.gsm.registerUtility(zeit.workflow.publisher.Publisher(), IPublisher)
-
-    def tearDown(self):
-        self.patch.stop()
-        super().tearDown()
 
     def test_ignore_3rdparty_list_is_respected(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -135,7 +127,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_retract_ignores_content_without_tms_representation(self):
         content = self.repository['testcontent']
-        self.representation().return_value = None
+        zeit.workflow.testing.MockTMSRepresentation.result = None
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
