@@ -1,0 +1,31 @@
+name: pre-commit
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+env:
+  PROJECT: vivi
+  BUILD_URL: "${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}"
+
+concurrency: precommit_branch_${{github.ref_name}}
+
+jobs:
+  pre-commit:
+    runs-on: zon-ubuntu-general-dind
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - uses: pre-commit/action@v3.0.0
+
+    - uses: slackapi/slack-github-action@v1.25.0
+      if: failure() && github.ref_name == 'main'
+      with:
+        channel-id: "${{secrets.SLACK_TEAM_CONTENT_CHANNEL_ID}}"
+        slack-message: ":small_red_triangle_down: <${{env.BUILD_URL}}|${{env.PROJECT}}> tests failed"
+      env:
+        SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
