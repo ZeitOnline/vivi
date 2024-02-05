@@ -25,10 +25,8 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_ignore_3rdparty_list_is_respected(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
-        IPublishInfo(article_2).urgent = True
         IPublishInfo(article_2).published = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
@@ -52,7 +50,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_authordashboard_is_ignored_during_retraction(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -64,7 +61,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_bigquery_is_retracted(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -77,7 +73,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_comments_are_ignored_during_retraction(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -89,7 +84,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_is_retracted(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -102,7 +96,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_speechbert_is_retracted(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:

@@ -46,10 +46,8 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_ignore_3rdparty_list_is_respected(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
-        IPublishInfo(article_2).urgent = True
         IPublishInfo(article_2).published = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
@@ -73,7 +71,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_authordashboard_is_notified(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -85,7 +82,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_bigquery_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -132,7 +128,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_comments_are_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -179,7 +174,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -191,7 +185,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_skipped_date_first_released(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).date_first_released = pendulum.datetime(2020, 10, 5)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -208,7 +201,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_skipped_product_id(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
         self.assertEqual(article.product.id, 'ZEDE')
@@ -232,7 +224,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_skipped_ressort(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
         self.assertEqual(article.ressort, 'International')
@@ -257,7 +248,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_speechbert_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
