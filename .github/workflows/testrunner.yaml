@@ -44,6 +44,37 @@ jobs:
           # Has been added manually (both the key in vivi-deployment and
           # the GHA secret in vivi)
           ssh-key: ${{secrets.DEPLOY_KEY_DEPLOYMENT}}
+      - uses: ZeitOnline/gh-action-baseproject@v0.9.0
+        with:
+          project_name: ${{env.project}}
+          environment: staging
+          gar_docker_auth: true  # for docker pull dav-server
+          vault_export_token: true
+
+      - name: checkout vivi
+        run: |
+            mkdir -p deployment/work/source
+            ln -s $PWD deployment/work/source/vivi
+      # Keys have been added manually (both the key in the target repo and
+      # the GHA+Dependabot secret in vivi and vivi-deployment)
+      - name: checkout zeit.jabber
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: ZeitOnline/zeit.jabber
+          path: deployment/work/source/zeit.jabber
+          ssh-key: ${{secrets.DEPLOY_KEY_JABBER}}
+      - name: checkout zeit.ldap
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: ZeitOnline/zeit.ldap
+          path: deployment/work/source/zeit.ldap
+          ssh-key: ${{secrets.DEPLOY_KEY_LDAP}}
+      - name: checkout zeit.newsimport
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: ZeitOnline/zeit.newsimport
+          path: deployment/work/source/zeit.newsimport
+          ssh-key: ${{secrets.DEPLOY_KEY_NEWSIMPORT}}
 
       - uses: actions/setup-python@v5.0.0
         with:
@@ -69,8 +100,6 @@ jobs:
 
       - name: ./batou deploy local
         run: |
-            mkdir -p deployment/work/source
-            ln -s $PWD deployment/work/source/vivi
             cd deployment
             ./batou deploy gha
 
