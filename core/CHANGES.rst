@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.102.0 (2024-02-05)
+--------------------
+
+- ZO-4226: update tts migration script, write non-migratable articles to a file
+
+
 5.101.0 (2024-02-05)
 --------------------
 
