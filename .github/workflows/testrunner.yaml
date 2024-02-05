@@ -1,0 +1,126 @@
+name: Testrunner
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  project: vivi
+  build_url: "${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}"
+
+concurrency: test_branch_${{github.ref_name}}
+
+jobs:
+  test:
+    runs-on: zon-ubuntu-general-dind
+    permissions:
+      contents: read
+      checks: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: determine deployment branch
+        run: |
+            if [[ "${{github.ref_name}}" = "main" ]]; then
+                branch="main"
+            else
+                branch=$(echo -e "${{github.event.pull_request.body}}" | \
+                    sed -ne '/JENKINS_BATOU_BRANCH=/s/JENKINS_BATOU_BRANCH=//p' | \
+                    tr --delete ' \r\n')
+                if [[ -z "$branch" ]]; then
+                    branch=main
+                fi
+            fi
+            echo "DEPLOYMENT_BRANCH=$branch" >> $GITHUB_ENV
+      - name: checkout deployment
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: ZeitOnline/vivi-deployment
+          ref: ${{env.DEPLOYMENT_BRANCH}}
+          path: deployment
+          # Has been added manually (both the key in vivi-deployment and
+          # the GHA secret in vivi)
+          ssh-key: ${{secrets.DEPLOY_KEY_DEPLOYMENT}}
+
+      - uses: actions/setup-python@v5.0.0
+        with:
+          python-version: "3.10"
+          cache: "pip"
+          cache-dependency-path: |
+              deployment/components/source/*.txt
+      - uses: actions/setup-node@v4.0.1  # for jshint
+        with:
+          node-version: "20"
+      - uses: browser-actions/setup-firefox@v1.4.0
+        id: setup-firefox
+      - name: setup geckodriver
+        run: |
+          curl -fsSL https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz \
+          | tar -xzv geckodriver && sudo mv geckodriver /usr/local/bin/geckodriver
+      - name: setup gcc  # XXX for e.g. `pygraphviz`
+        run: |
+            export DEBIAN_FRONTEND=noninteractive
+            sudo apt-get update
+            sudo apt-get -y install --no-install-recommends \
+                build-essential graphviz-dev
+
+      - name: ./batou deploy local
+        run: |
+            mkdir -p deployment/work/source
+            ln -s $PWD deployment/work/source/vivi
+            cd deployment
+            ./batou deploy gha
+
+      - name: bin/test
+        run: |
+            # `pendulum` requires local timezone configuration
+            export TZ="Europe/Berlin"
+
+            set +e
+            deployment/bin/test -v -n 6 -m 'not selenium' -r a \
+                --junitxml=report.xml --cov=. --cov-report=
+            result=$?
+
+            deployment/bin/test -v -n 4 -m 'selenium' --reruns=3 -r aR \
+                --junitxml=report_selenium.xml --cov=. \
+                --cov-append --cov-report=html
+            selenium=$?
+
+            if [[ "$result" = "0" ]]; then
+                result=$selenium
+            fi
+            exit $result
+
+      - name: Publish test result
+        uses: enricomi/publish-unit-test-result-action@v2.12.0
+        if: always()
+        with:
+          comment_mode: "off"
+          files: "deployment/work/source/report*.xml"
+
+      - name: Publish coverage
+        uses: actions/upload-artifact@v4.3.0
+        id: coverage
+        with:
+          name: coverage-${{env.project}}
+          path: deployment/work/source/coverage-report
+          if-no-files-found: ignore
+      - name: Annotate coverage
+        uses: louisbrunner/checks-action@v2.0.0
+        with:
+          token: ${{secrets.GITHUB_TOKEN}} # unfortunately required
+          name: Coverage Report
+          conclusion: success
+          output: |
+              {"summary": "[Download](${{env.build_url}}/artifacts/${{steps.coverage.outputs.artifact-id}})"}
+
+      - uses: slackapi/slack-github-action@v1.25.0
+        if: failure() && github.ref_name == 'main'
+        with:
+          channel-id: "${{secrets.SLACK_TEAM_CONTENT_CHANNEL_ID}}"
+          slack-message: ":small_red_triangle_down: <${{env.build_url}}|${{env.project}}> tests failed"
+        env:
+          SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
