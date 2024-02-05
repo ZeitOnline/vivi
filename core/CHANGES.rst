@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.101.0 (2024-02-05)
+--------------------
+
+- ZO-4226: migrate TTS script in vivi-deployment
+  MAINT: improve _script-template.py in vivi-deployment
+
+
 5.100.0 (2024-02-01)
 --------------------
 
