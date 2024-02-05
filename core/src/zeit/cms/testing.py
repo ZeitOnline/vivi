@@ -35,7 +35,6 @@ import opentelemetry.sdk.trace.export.in_memory_span_exporter as otel_export
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
-import pyramid_dogpile_cache2
 import pytest
 import transaction
 import waitress.server
@@ -49,6 +48,7 @@ import zope.component
 import zope.component.hooks
 import zope.error.interfaces
 import zope.i18n.interfaces
+import zope.interface
 import zope.publisher.browser
 import zope.security.management
 import zope.security.proxy
@@ -58,7 +58,6 @@ import zope.testing.renormalizing
 
 import zeit.cms.application
 import zeit.cms.celery
-import zeit.cms.workflow.mock
 import zeit.cms.wsgi
 import zeit.cms.zope
 import zeit.connector.interfaces
@@ -264,38 +263,34 @@ class ZODBLayer(plone.testing.Layer):
         del self['zodbDB']
 
 
-class MockConnectorLayer(plone.testing.Layer):
+class ResetMocks:
+    """ZCA event for pluggable reset handlers that run on testTearDown."""
+
+
+class MockResetLayer(plone.testing.Layer):
+    event = (zope.interface.providedBy(ResetMocks()),)
+
     def testTearDown(self):
-        connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
-        if isinstance(connector, zeit.connector.mock.Connector):
-            connector._reset()
+        registry = zope.component.getSiteManager().adapters
+        # Like zope.event.notify(), but expects handlers to take no parameters
+        # (instead of the event object)
+        for func in registry.subscriptions(self.event, None):
+            func()
 
 
-MOCK_CONNECTOR_LAYER = MockConnectorLayer()
+MOCK_RESET_LAYER = MockResetLayer()
 
 
-class MockWorkflowLayer(plone.testing.Layer):
-    def testTearDown(self):
-        zeit.cms.workflow.mock.reset()
-
-
-MOCK_WORKFLOW_LAYER = MockWorkflowLayer()
-
-
-class CacheLayer(plone.testing.Layer):
-    def testTearDown(self):
-        pyramid_dogpile_cache2.clear()
-
-
-DOGPILE_CACHE_LAYER = CacheLayer()
+def reset_connector():
+    connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
+    if isinstance(connector, zeit.connector.mock.Connector):
+        connector._reset()
 
 
 class ZopeLayer(plone.testing.Layer):
     defaultBases = (
         CELERY_EAGER_LAYER,
-        DOGPILE_CACHE_LAYER,
-        MOCK_CONNECTOR_LAYER,
-        MOCK_WORKFLOW_LAYER,
+        MOCK_RESET_LAYER,
     )
 
     def __init__(self, name='ZopeLayer', module=None, bases=()):

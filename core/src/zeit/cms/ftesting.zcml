@@ -22,6 +22,16 @@
 
   <meta:provides feature="zeit.connector.mock" />
   <include package="zeit.connector" file="service.zcml" />
+  <subscriber
+    handler="zeit.cms.testing.reset_connector"
+    for="zeit.cms.testing.ResetMocks" />
+
+  <subscriber
+    handler="zeit.cms.workflow.mock.reset"
+    for="zeit.cms.testing.ResetMocks" />
+  <subscriber
+    handler="pyramid_dogpile_cache2.clear"
+    for="zeit.cms.testing.ResetMocks" />
 
   <include package="zeit.cms.workflow" file="mock.zcml" />
   <include package="zeit.cms.tagging" file="mock.zcml" />
