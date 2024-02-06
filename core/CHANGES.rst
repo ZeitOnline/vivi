@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.103.0 (2024-02-06)
+--------------------
+
+- ZO-4612: Create publisher payload per content object and catch errors
+
+
 5.102.0 (2024-02-05)
 --------------------
 
