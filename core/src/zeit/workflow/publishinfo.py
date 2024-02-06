@@ -83,8 +83,8 @@ class PublishInfo:
         return zeit.cms.workflow.interfaces.CAN_RETRACT_SUCCESS
 
     def matches_blacklist(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        blacklist = re.split(', *', config['blacklist'])
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
+        blacklist = re.split(', *', config.get('blacklist', ''))
         path = urllib.parse.urlparse(self.context.uniqueId).path
         for item in blacklist:
             if item and path.startswith(item):

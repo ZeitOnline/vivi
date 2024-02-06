@@ -9,7 +9,6 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.imagegroup
-import zeit.workflow.testing
 
 
 product_config = """
@@ -26,7 +25,7 @@ product_config = """
 
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.workflow.testing.CONFIG_LAYER,)
+    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,)
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

@@ -1,7 +1,4 @@
-from unittest import mock
-
 import gocept.selenium
-import plone.testing
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -10,6 +7,7 @@ from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_PUBLISH_WARNING
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
+import zeit.content.article.testing
 import zeit.workflow.publishinfo
 
 
@@ -36,17 +34,11 @@ HTTP_LAYER = zeit.cms.testing.WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYE
 WD_LAYER = zeit.cms.testing.WebdriverLayer(name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(name='SeleniumLayer', bases=(WD_LAYER,))
 
-
-class TMSMockLayer(plone.testing.Layer):
-    def testSetUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
-
-    def testTearDown(self):
-        self.patch.stop()
-
-
-TMS_MOCK_LAYER = TMSMockLayer(name='TMSMockLayer', bases=(ZOPE_LAYER,))
+ARTICLE_LAYER = zeit.cms.testing.AdditionalZCMLLayer(
+    'zeit.content.article',
+    'ctesting.zcml',
+    bases=(ZOPE_LAYER, zeit.content.article.testing.CONFIG_LAYER),
+)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
@@ -59,6 +51,25 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = WEBDRIVER_LAYER
+
+
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.retresco.interfaces.ITMSRepresentation)
+class MockTMSRepresentation:
+    result = _default_result = {}
+
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self):
+        return self.result
+
+    @classmethod
+    def reset(cls):
+        cls.result = cls._default_result
+
+
+reset_mock_tms = MockTMSRepresentation.reset  # ZCA cannot use classmethods
 
 
 @zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)

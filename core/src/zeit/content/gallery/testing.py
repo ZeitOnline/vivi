@@ -9,7 +9,6 @@ import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.crop.testing
 import zeit.push.testing
-import zeit.workflow.testing
 
 
 product_config = """

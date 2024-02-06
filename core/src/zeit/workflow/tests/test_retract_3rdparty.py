@@ -1,35 +1,24 @@
-from unittest import mock
-
 import requests_mock
 import zope.component
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
-import zeit.content.article.testing
 import zeit.workflow.publisher
 import zeit.workflow.testing
 
 
 class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
         self.gsm.registerUtility(zeit.workflow.publisher.Publisher(), IPublisher)
 
-    def tearDown(self):
-        self.patch.stop()
-        super().tearDown()
-
     def test_ignore_3rdparty_list_is_respected(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
-        IPublishInfo(article_2).urgent = True
         IPublishInfo(article_2).published = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
@@ -53,7 +42,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_authordashboard_is_ignored_during_retraction(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -65,7 +53,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_bigquery_is_retracted(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -78,7 +65,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_comments_are_ignored_during_retraction(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -90,7 +76,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_is_retracted(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -103,7 +88,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_speechbert_is_retracted(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         IPublishInfo(article).published = True
         self.assertTrue(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
@@ -143,7 +127,7 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_retract_ignores_content_without_tms_representation(self):
         content = self.repository['testcontent']
-        self.representation().return_value = None
+        zeit.workflow.testing.MockTMSRepresentation.result = None
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
         )

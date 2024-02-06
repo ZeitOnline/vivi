@@ -1,7 +1,7 @@
-from unittest import mock
 import unittest
 
 import lxml.etree
+import pendulum
 import pytest
 import requests_mock
 import zope.app.appsetup.product
@@ -17,7 +17,6 @@ import zeit.cms.related.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
 import zeit.cms.testing
-import zeit.content.article.testing
 import zeit.content.author.author
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
@@ -28,17 +27,12 @@ import zeit.workflow.testing
 
 
 class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
         self.gsm.registerUtility(zeit.workflow.publisher.Publisher(), IPublisher)
-
-    def tearDown(self):
-        self.patch.stop()
 
     @pytest.fixture(autouse=True)
     def _caplog(self, caplog):
@@ -46,10 +40,8 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_ignore_3rdparty_list_is_respected(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
-        IPublishInfo(article_2).urgent = True
         IPublishInfo(article_2).published = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
@@ -73,7 +65,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_authordashboard_is_notified(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -85,7 +76,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_bigquery_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -132,7 +122,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_comments_are_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -179,7 +168,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -190,20 +178,15 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertTrue(IPublishInfo(article).published)
 
     def test_facebooknewstab_skipped_date_first_released(self):
-        # this article has date_first_published set to an old date
-        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
-        IPublishInfo(article).urgent = True
-        self.assertTrue(IPublishInfo(article).published)
-        self.assertEqual(IPublishInfo(article).date_first_released.year, 2020)
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).date_first_released = pendulum.datetime(2020, 10, 5)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             assert 'facebooknewstab' not in result
         # set it to something else and make sure nothing else caused the skip
-        info = IPublishInfo(article)
-        info.date_first_released = info.date_first_released.replace(year=2022)
-        self.assertEqual(IPublishInfo(article).date_first_released.year, 2022)
+        IPublishInfo(article).date_first_released = pendulum.datetime(2022, 1, 1)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=False)
@@ -212,7 +195,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_skipped_product_id(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
         self.assertEqual(article.product.id, 'ZEDE')
@@ -236,7 +218,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_facebooknewstab_skipped_ressort(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         self.assertFalse(IPublishInfo(article).published)
         self.assertEqual(article.ressort, 'International')
@@ -261,7 +242,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_speechbert_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).urgent = True
         self.assertFalse(IPublishInfo(article).published)
         with requests_mock.Mocker() as rmock:
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
@@ -279,7 +259,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
                     'series',
                     'subtitle',
                     'supertitle',
-                    'tags',
                     'teaser',
                 ],
                 sorted(result_sb.keys()),
@@ -441,8 +420,6 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.TMS_MOCK_LAYER
-
     def test_tms_wait_for_index_article(self):
         article = self.repository['testcontent']
         zope.interface.alsoProvides(article, zeit.content.article.interfaces.IArticle)
@@ -462,7 +439,7 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
     def test_tms_ignores_content_without_tms_representation(self):
         content = self.repository['testcontent']
-        self.layer.representation().return_value = None
+        zeit.workflow.testing.MockTMSRepresentation.result = None
         data_factory = zope.component.getAdapter(
             content, zeit.workflow.interfaces.IPublisherData, name='tms'
         )
@@ -471,12 +448,10 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.workflow.testing.TMS_MOCK_LAYER
-
     def setUp(self):
         super().setUp()
         FEATURE_TOGGLES.set('publish_bigquery_json')
-        self.layer.representation().return_value = {
+        zeit.workflow.testing.MockTMSRepresentation.result = {
             'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}
         }
         with checked_out(self.repository['testcontent']):
@@ -496,7 +471,7 @@ class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertStartsWith('{urn:uuid:', d['properties']['document']['uuid'])
 
     def test_moves_rtr_keywords_under_tagging(self):
-        self.layer.representation().return_value = {
+        zeit.workflow.testing.MockTMSRepresentation.result = {
             'rtr_locations': [],
             'rtr_keywords': ['one', 'two'],
             'title': 'ignored',

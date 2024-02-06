@@ -35,7 +35,6 @@ import opentelemetry.sdk.trace.export.in_memory_span_exporter as otel_export
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
-import pyramid_dogpile_cache2
 import pytest
 import transaction
 import waitress.server
@@ -49,6 +48,7 @@ import zope.component
 import zope.component.hooks
 import zope.error.interfaces
 import zope.i18n.interfaces
+import zope.interface
 import zope.publisher.browser
 import zope.security.management
 import zope.security.proxy
@@ -58,7 +58,6 @@ import zope.testing.renormalizing
 
 import zeit.cms.application
 import zeit.cms.celery
-import zeit.cms.workflow.mock
 import zeit.cms.wsgi
 import zeit.cms.zope
 import zeit.connector.interfaces
@@ -167,7 +166,7 @@ class ZCMLLayer(plone.testing.Layer):
     def setUp(self):
         self['zcaRegistry'] = plone.testing.zca.pushGlobalRegistry()
         self.assert_non_browser_modules_have_no_browser_zcml()
-        zeit.cms.zope._load_zcml(self.config_file, self.features)
+        self['zcaContext'] = zeit.cms.zope._load_zcml(self.config_file, self.features)
 
     def assert_non_browser_modules_have_no_browser_zcml(self):
         # Caveat emptor: This whole method is a bunch of heuristics, but
@@ -212,6 +211,36 @@ class ZCMLLayer(plone.testing.Layer):
         self['zcaRegistry'] = plone.testing.zca.popGlobalRegistry()
 
 
+class AdditionalZCMLLayer(plone.testing.Layer):
+    """Requires a ZCMLLayer instance in the layer hierarchy above it."""
+
+    def __init__(
+        self,
+        package=None,
+        config_file='configure.zcml',
+        name='AdditionalZCMLLayer',
+        module=None,
+        bases=(),
+    ):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        if package is None:
+            package, _ = module.rsplit('.', 1)
+        if not config_file.startswith('/'):
+            config_file = str((importlib.resources.files(package) / config_file))
+        self.config_file = config_file
+        super().__init__(name=name, module=module, bases=self.defaultBases + bases)
+
+    def setUp(self):
+        self['zcaRegistryAdd'] = plone.testing.zca.pushGlobalRegistry()
+        zope.configuration.xmlconfig.include(self['zcaContext'], file=self.config_file)
+        self['zcaContext'].execute_actions()
+
+    def tearDown(self):
+        plone.testing.zca.popGlobalRegistry()
+        del self['zcaRegistryAdd']
+
+
 class ZODBLayer(plone.testing.Layer):
     def setUp(self):
         self['zodbDB-layer'] = ZODB.DB(ZODB.DemoStorage.DemoStorage(name=self.__name__ + '-layer'))
@@ -234,38 +263,34 @@ class ZODBLayer(plone.testing.Layer):
         del self['zodbDB']
 
 
-class MockConnectorLayer(plone.testing.Layer):
+class ResetMocks:
+    """ZCA event for pluggable reset handlers that run on testTearDown."""
+
+
+class MockResetLayer(plone.testing.Layer):
+    event = (zope.interface.providedBy(ResetMocks()),)
+
     def testTearDown(self):
-        connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
-        if isinstance(connector, zeit.connector.mock.Connector):
-            connector._reset()
+        registry = zope.component.getSiteManager().adapters
+        # Like zope.event.notify(), but expects handlers to take no parameters
+        # (instead of the event object)
+        for func in registry.subscriptions(self.event, None):
+            func()
 
 
-MOCK_CONNECTOR_LAYER = MockConnectorLayer()
+MOCK_RESET_LAYER = MockResetLayer()
 
 
-class MockWorkflowLayer(plone.testing.Layer):
-    def testTearDown(self):
-        zeit.cms.workflow.mock.reset()
-
-
-MOCK_WORKFLOW_LAYER = MockWorkflowLayer()
-
-
-class CacheLayer(plone.testing.Layer):
-    def testTearDown(self):
-        pyramid_dogpile_cache2.clear()
-
-
-DOGPILE_CACHE_LAYER = CacheLayer()
+def reset_connector():
+    connector = zope.component.queryUtility(zeit.connector.interfaces.IConnector)
+    if isinstance(connector, zeit.connector.mock.Connector):
+        connector._reset()
 
 
 class ZopeLayer(plone.testing.Layer):
     defaultBases = (
         CELERY_EAGER_LAYER,
-        DOGPILE_CACHE_LAYER,
-        MOCK_CONNECTOR_LAYER,
-        MOCK_WORKFLOW_LAYER,
+        MOCK_RESET_LAYER,
     )
 
     def __init__(self, name='ZopeLayer', module=None, bases=()):

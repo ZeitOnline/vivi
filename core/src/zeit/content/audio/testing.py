@@ -6,7 +6,6 @@ from zeit.cms.repository.interfaces import IRepository
 from zeit.content.audio.audio import Audio
 from zeit.content.audio.interfaces import IPodcastEpisodeInfo, ISpeechInfo, Podcast
 import zeit.cms.testing
-import zeit.workflow.testing
 
 
 T = TypeVar('T')  # Can be anything
@@ -19,10 +18,7 @@ product_config = """
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
-    bases=(
-        zeit.workflow.testing.CONFIG_LAYER,
-        zeit.cms.testing.CONFIG_LAYER,
-    ),
+    bases=(zeit.cms.testing.CONFIG_LAYER,),
 )
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', bases=(CONFIG_LAYER,))

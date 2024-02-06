@@ -200,12 +200,14 @@ class Speechbert(grok.Adapter):
     def ignore(self, method):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
         if method == 'publish':
-            ignore_genres = [x.lower() for x in config['speechbert-ignore-genres'].split()]
+            ignore_genres = [x.lower() for x in config.get('speechbert-ignore-genres', '').split()]
             genre = self.context.genre
             if genre and genre.lower() in ignore_genres:
                 return True
         if method == 'publish':
-            ignore_templates = [x.lower() for x in config['speechbert-ignore-templates'].split()]
+            ignore_templates = [
+                x.lower() for x in config.get('speechbert-ignore-templates', '').split()
+            ]
             template = self.context.template
             if template is not None and template.lower() in ignore_templates:
                 return True

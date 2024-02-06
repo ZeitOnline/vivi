@@ -22,7 +22,6 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.related.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
-import zeit.content.article.testing
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publish
@@ -50,6 +49,38 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
             zeit.workflow.publish.PUBLISH_TASK([article.uniqueId])
             assert 'PublishError' in str(info.exception)
         self.assertEqual(False, IPublishInfo(article).published)
+
+    def test_serialize_error_still_publishes_other_items(self):
+        c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
+        c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        IPublishInfo(c1).urgent = True
+        IPublishInfo(c2).urgent = True
+
+        @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+        @zope.interface.implementer(zeit.workflow.interfaces.IPublisherData)
+        class FailingPublisherData:
+            def __init__(self, context):
+                self.context = context
+
+            def publish_json(self):
+                if self.context.uniqueId == c1.uniqueId:
+                    raise RuntimeError('provoked')
+                return {}
+
+        zope.component.getGlobalSiteManager().registerAdapter(FailingPublisherData, name='test')
+        with self.assertRaises(Exception) as err:
+            # DAV doesn't have transactions, so setting published=True in before_publish
+            # (which is needed so e.g. TMS gets the correct properties)
+            # is not rolled back when an error occurs in the later serialize step.
+            # Apart from being not really correct in general
+            # (but it's "always" been like that, so the impact can't have been very high),
+            # this prevents us from simply asserting `IPublishInfo(c1).published == False`
+            with mock.patch('zeit.workflow.publisher.MockPublisher.request') as publisher:
+                IPublish(c1).publish_multiple([c1, c2])
+                self.assertIn('provoked', str(err.exception))
+                items = publisher.call_args[0][0]
+                self.assertEqual(1, len(items))
+                self.assertEqual(c2.uniqueId, items[0]['uniqueId'])
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
@@ -491,20 +522,14 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
 
 
 class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
-    layer = zeit.content.article.testing.LAYER
+    layer = zeit.workflow.testing.ARTICLE_LAYER
 
     def setUp(self):
-        self.patch = mock.patch('zeit.retresco.interfaces.ITMSRepresentation')
-        self.representation = self.patch.start()
         super().setUp()
         self.gsm = zope.component.getGlobalSiteManager()
         self.gsm.registerUtility(
             zeit.workflow.publisher.Publisher(), zeit.cms.workflow.interfaces.IPublisher
         )
-
-    def tearDown(self):
-        self.patch.stop()
-        super().tearDown()
 
     def test_object_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
