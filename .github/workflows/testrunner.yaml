@@ -5,6 +5,9 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+    # XXX GHA unfortunately does not support randomize, so https://xkcd.com/221/
+    - cron: "22 4 * * *"
   repository_dispatch:  # triggered by ZeitOnline/zeit.newsimport
     types: [test-app]
 
@@ -122,8 +125,14 @@ jobs:
             # `pendulum` requires local timezone configuration
             export TZ="Europe/Berlin"
 
+            if [[ "${{github.event_name}}" = "schedule" ]]; then
+                not_selenium='not selenium'
+            else
+                not_selenium='not selenium and not integration'
+            fi
+
             set +e
-            deployment/bin/test -v -n 6 -m 'not selenium' -r a \
+            deployment/bin/test -v -n 6 -m "$not_selenium" -r a \
                 --junitxml=report.xml --cov=. --cov-report=
             result=$?
 
@@ -161,7 +170,7 @@ jobs:
               {"summary": "[Download](${{env.build_url}}/artifacts/${{steps.coverage.outputs.artifact-id}})"}
 
       - uses: slackapi/slack-github-action@v1.25.0
-        if: failure() && github.ref_name == 'main'
+        if: failure() && github.ref_name == 'main' && github.event_name != 'schedule'
         with:
           channel-id: "${{secrets.SLACK_TEAM_CONTENT_CHANNEL_ID}}"
           slack-message: ":small_red_triangle_down: <${{env.build_url}}|${{env.project}}> tests failed"
