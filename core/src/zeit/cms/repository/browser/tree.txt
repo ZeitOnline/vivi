@@ -31,18 +31,7 @@ asynchronously:
   </div>
   <script type="text/javascript">
       var navtree = new Tree('http://localhost/++skin++cms/repository/++noop++a6643327e0acf5c60cdf036ded3f668c/@@tree.html', 'navtreecontents');
-      (function() {
-        var ident = MochiKit.Signal.connect(
-          window, 'onload', function() {
-            navtree.loadTree();
-            MochiKit.Signal.disconnect(ident);
-         });
-      })();
-      MochiKit.Signal.connect(navtree, 'state-changed', function(event) {
-        MochiKit.Signal.signal('sidebar', 'panel-content-changed');
-      });
-      </script>
-</div>
+...
 
 The noop in the URL is actually a hash of the user's tree state. Load the tree:
 
