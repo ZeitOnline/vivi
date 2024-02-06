@@ -107,6 +107,13 @@ jobs:
         run: |
             cd deployment
             ./batou deploy gha
+      - name: display log output
+        if: failure()
+        run: |
+          for i in deployment/work/supervisor/var/log/*.log; do
+              echo $i
+              cat $i
+          done
 
       - name: bin/test
         run: |
