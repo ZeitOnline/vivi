@@ -105,7 +105,7 @@ ui = [
     "js.select2",
     "js.underscore",
     "js.vanderlee_colorpicker",
-    "lxml==4.2.3",  # ZO-859
+    "lxml",
     "opentelemetry-instrumentation",
     "opentelemetry-instrumentation-celery",
     "opentelemetry-instrumentation-requests",
