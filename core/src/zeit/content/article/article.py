@@ -533,6 +533,7 @@ def calculate_checksum(context, event):
     checksum.update(body)
     article = zeit.content.article.interfaces.ISpeechbertChecksum(context)
     article.checksum = checksum.hexdigest()
+    return article.checksum
 
 
 class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
