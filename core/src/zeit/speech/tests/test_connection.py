@@ -1,5 +1,4 @@
 from unittest import mock
-import copy
 
 import pytest
 import zope.security.management
@@ -32,28 +31,27 @@ class TestSpeech(FunctionalTestCase):
         )
         assert IPublishInfo(audio).published, 'Publish you fool!'
 
-    def _setup_speech_message(self, field, value):
-        tts_created = copy.deepcopy(TTS_CREATED)
-        tts_created['articlesAudio'][0][field] = value
-        return tts_created
-
     def test_update_existing_tts_audio(self):
         audio = self.create_audio(TTS_CREATED)
         created_time = ISemanticChange(audio).last_semantic_change
         assert ISpeechInfo(audio).checksum == TTS_CREATED['articlesAudio'][0]['checksum']
-        self.repository.connector.search_result = [(audio.uniqueId)]
-        tts_msg = self.setup_speech_message('checksum', 'cookiesandcake')
-        Speech().update(tts_msg)
+        self.repository.connector.search_result = [(self.article.uniqueId)]
+        tts_msg = self.setup_speech_message(
+            'audioEntry', {'url': 'http://example.com/cats.mp3', 'duration': 1000}
+        )
+        with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
+            Speech().update(tts_msg)
         updated_time = ISemanticChange(audio).last_semantic_change
         assert updated_time > created_time, 'Semantic time should be updated'
-        assert ISpeechInfo(audio).checksum == 'cookiesandcake', 'Update your checksum'
+        audio = ICMSContent(self.unique_id)
+        assert audio.duration == 1
 
     def test_update_broken_audio_repairs_reference_to_article(self):
+        self.repository.connector.search_result = [(self.article.uniqueId)]
         audio = Speech()._create(TTS_CREATED)
         IPublish(audio).publish(background=False)
         assert ICMSContent(self.unique_id)
         assert not IAudioReferences(ICMSContent(self.article_uid)).items
-        self.repository.connector.search_result = [(self.article.uniqueId)]
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             Speech().update(TTS_CREATED)
         assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio,)

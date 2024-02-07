@@ -24,13 +24,13 @@ product_config = """\
 TTS_CREATION_STARTED = {
     'event': 'AUDIO_CREATION_STARTED',
     'uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
-    'checksum': 'd751713988987e9331980363e24189ce',
+    'checksum': '54436411ba2288d0db073246c85e0f09',
 }
 
 TTS_CREATION_FAILED = {
     'event': 'AUDIO_CREATION_FAILED',
     'uuid': 'a89ce2e3-4887-466a-a52e-edc6b9802ef9',
-    'checksum': 'd751713988987e9331980363e24189ce',
+    'checksum': '54436411ba2288d0db073246c85e0f09',
     'reason': 'AudioStream must be a Buffer',
 }
 
@@ -40,7 +40,7 @@ TTS_CREATED = {
     'articlesAudio': [
         {
             'type': 'FULL_TTS',
-            'checksum': 'd751713988987e9331980363e24189ce',
+            'checksum': '54436411ba2288d0db073246c85e0f09',
             'audioEntry': {
                 'uuid': 'e7fba272-c442-4cde-a5c9-3d75a89e5273',
                 'url': 'https://zon-speechbert/articles/a89ce2e3-4887-466a-a52e-edc6b9802ef9/full_1fd74183d02f50d5cd0731a5748019e95bbe68bd71f33cbd2c03c4d64c8a1d91a7f25f6725db6b19348bd94af09fc563.mp3',
@@ -49,7 +49,7 @@ TTS_CREATED = {
         },
         {
             'type': 'PREVIEW_TTS',
-            'checksum': 'd751713988987e9331980363e24189ce',
+            'checksum': '54436411ba2288d0db073246c85e0f09',
             'audioEntry': {
                 'uuid': '58ff08f4-cef5-45eb-a980-064bd78c42df',
                 'url': 'https://zon-speechbert/articles/a89ce2e3-4887-466a-a52e-edc6b9802ef9/preview_1fd74183d02f50d5cd0731a5748019e95bbe68bd71f33cbd2c03c4d64c8a1d91a7f25f6725db6b19348bd94af09fc563.mp3',
@@ -83,8 +83,8 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         self.unique_id = (
             f'http://xml.zeit.de/tts/{current_date.strftime("%Y-%m")}/{TTS_CREATED["uuid"]}'
         )
-        self.article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        self.article_uid = 'http://xml.zeit.de/online/2007/01/Somalia'
+        self.article_uid = 'http://xml.zeit.de/online/2022/08/trockenheit'
+        self.article = ICMSContent(self.article_uid)
         IPublishInfo(self.article).urgent = True
         IPublish(self.article).publish(background=False)
 
