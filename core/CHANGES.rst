@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.104.0 (2024-02-08)
+--------------------
+
+- ZO-3972: changefile for fix podcast migrate script
+
+- ZO-4226: checkin notification hooks deactivated by default for tts migration and publish scripts
+
+
 5.103.0 (2024-02-06)
 --------------------
 
