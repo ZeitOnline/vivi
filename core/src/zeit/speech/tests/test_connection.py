@@ -7,7 +7,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.content.audio.testing import AudioBuilder
 from zeit.speech.connection import Speech
@@ -89,7 +88,6 @@ class TestSpeech(FunctionalTestCase):
         assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 2
 
     def test_if_checksum_does_not_match_do_not_add_reference(self):
-        ISpeechbertChecksum(self.article).checksum = 'cookie'
         tts_msg = self.setup_speech_message('checksum', 'cake')
         with pytest.raises(ChecksumMismatchError):
             self.create_audio(tts_msg)

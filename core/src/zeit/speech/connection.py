@@ -12,8 +12,7 @@ from zeit.cms.content.interfaces import IUUID, ISemanticChange
 from zeit.cms.repository.interfaces import IFolder
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
-from zeit.content.article.article import calculate_checksum
-from zeit.content.article.interfaces import IArticle
+from zeit.content.article.interfaces import IArticle, ISpeechbertChecksum
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
 from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
 from zeit.speech.errors import ChecksumMismatchError
@@ -111,7 +110,7 @@ class Speech:
 
     def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
         article = self._article(speech)
-        article_checksum = calculate_checksum(article, None)
+        article_checksum = ISpeechbertChecksum(article).calculate()
         if article_checksum != ISpeechInfo(speech).checksum:
             raise ChecksumMismatchError(
                 'Speechbert checksum mismatch for article %s and speech %s',

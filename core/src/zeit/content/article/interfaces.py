@@ -4,6 +4,7 @@ import zope.schema.interfaces
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.source
 import zeit.content.image.interfaces
@@ -255,3 +256,6 @@ class ISpeechbertChecksum(zope.interface.Interface):
 
     def validate(checksum: str) -> bool:
         """Valdiate context checksum against object checksum"""
+
+    def calculate() -> str:
+        """Calculate md5 checksum of given context body"""
