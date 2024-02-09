@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Feb 16 15:28:33 2024\n"
+"POT-Creation-Date: Wed Feb 21 10:15:29 2024\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -226,7 +226,7 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:266 zeit/content/article/edit/interfaces.py:294
-#: zeit/content/article/interfaces.py:184 zeit/content/author/author.py:133
+#: zeit/content/article/interfaces.py:184 zeit/content/author/author.py:127
 #: zeit/content/author/browser/form.py:234
 msgid "Author"
 msgstr "Autor"
@@ -458,31 +458,31 @@ msgstr "Einchecken ^I"
 msgid "not allowed"
 msgstr "nicht zugelassen"
 
-#: zeit/cms/checkout/manager.py:43
+#: zeit/cms/checkout/manager.py:50
 msgid "The content object is locked by ${name}."
 msgstr "Das Objekt ist bereits von »${name}« gesperrt."
 
-#: zeit/cms/checkout/manager.py:56
+#: zeit/cms/checkout/manager.py:63
 msgid "The content you tried to check out is already in your working copy."
 msgstr "Das Objekt befindet sich bereits in Ihrer Arbeitskopie."
 
-#: zeit/cms/checkout/manager.py:110
+#: zeit/cms/checkout/manager.py:123
 msgid "Object is not local content"
 msgstr "Objekt ist kein lokaler Inhalt"
 
-#: zeit/cms/checkout/manager.py:114
+#: zeit/cms/checkout/manager.py:127
 msgid "Cannot acquire lock"
 msgstr "Sperren nicht möglich"
 
-#: zeit/cms/checkout/manager.py:131
+#: zeit/cms/checkout/manager.py:144
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
-#: zeit/cms/checkout/manager.py:172
+#: zeit/cms/checkout/manager.py:185
 msgid "Checked in with semantic change"
 msgstr "Einchecken (Datum / Uhrzeit aktualisiert)"
 
-#: zeit/cms/checkout/manager.py:174
+#: zeit/cms/checkout/manager.py:187
 msgid "Checked in"
 msgstr "Einchecken"
 
@@ -1394,7 +1394,7 @@ msgstr "Bitte mindestens 3 Schlagworte vergeben"
 msgid "Keywords"
 msgstr "Schlagworte"
 
-#: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:56
+#: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:48
 #: zeit/workflow/publish.py:456 zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr "Veröffentlicht"
@@ -1407,56 +1407,56 @@ msgstr "Nicht veröffentlicht"
 msgid "Published but has changes"
 msgstr "Veröffentlicht, hat aber Änderungen"
 
-#: zeit/cms/workflow/interfaces.py:36
+#: zeit/cms/workflow/interfaces.py:28
 msgid "Last modified by"
 msgstr "Zuletzt geändert von"
 
-#: zeit/cms/workflow/interfaces.py:43
+#: zeit/cms/workflow/interfaces.py:35
 msgid "Date last modified"
 msgstr "Zuletzt geändert am"
 
-#: zeit/cms/workflow/interfaces.py:47
+#: zeit/cms/workflow/interfaces.py:39
 msgid "Date last checked out"
 msgstr "Beginn der Bearbeitung"
 
-#: zeit/cms/workflow/interfaces.py:50
+#: zeit/cms/workflow/interfaces.py:42
 msgid "Date created"
 msgstr "Angelegt am"
 
-#: zeit/cms/workflow/interfaces.py:59
+#: zeit/cms/workflow/interfaces.py:51
 msgid "Date last published"
 msgstr "Zuletzt veröffentlicht am"
 
-#: zeit/cms/workflow/interfaces.py:63
+#: zeit/cms/workflow/interfaces.py:55
 msgid "Last published with semantic change"
 msgstr "Letzte Veröffentlichung mit inhaltlicher Änderung"
 
-#: zeit/cms/workflow/interfaces.py:67
+#: zeit/cms/workflow/interfaces.py:59
 msgid "Date first released"
 msgstr "Zuerst veröffentlicht am"
 
-#: zeit/cms/workflow/interfaces.py:71
+#: zeit/cms/workflow/interfaces.py:63
 msgid "Date of print publication"
 msgstr "Veröffentlicht (Print)"
 
-#: zeit/cms/workflow/interfaces.py:75
+#: zeit/cms/workflow/interfaces.py:67
 msgid "Last published by"
 msgstr "Letzte Veröffentlichnung von"
 
-#: zeit/cms/workflow/interfaces.py:79 zeit/workflow/browser/form.py:142
+#: zeit/cms/workflow/interfaces.py:71 zeit/workflow/browser/form.py:142
 #: zeit/workflow/browser/form.py:168
 msgid "Publish lock?"
 msgstr "Sperrvermerk"
 
-#: zeit/cms/workflow/interfaces.py:80
+#: zeit/cms/workflow/interfaces.py:72
 msgid "Please retract first"
 msgstr "Achtung: Bitte erst depublizieren!"
 
-#: zeit/cms/workflow/interfaces.py:85
+#: zeit/cms/workflow/interfaces.py:77
 msgid "Publish lock reason"
 msgstr "Sperrvermerk-Notizen"
 
-#: zeit/cms/workflow/interfaces.py:110
+#: zeit/cms/workflow/interfaces.py:102
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
 
@@ -2527,7 +2527,7 @@ msgstr "Kontakt"
 msgid "Author Favourites"
 msgstr "Schwerpunkte"
 
-#: zeit/content/author/browser/form.py:82 zeit/content/author/interfaces.py:197
+#: zeit/content/author/browser/form.py:82 zeit/content/author/interfaces.py:191
 msgid "Biography"
 msgstr "Kurzbio"
 
@@ -2701,70 +2701,58 @@ msgid "External?"
 msgstr "externer Autor"
 
 #: zeit/content/author/interfaces.py:97
-msgid "is author"
-msgstr "ist Autor"
-
-#: zeit/content/author/interfaces.py:99
-msgid "is cook"
-msgstr "ist Koch"
-
-#: zeit/content/author/interfaces.py:101
 msgid "Enable followpush?"
 msgstr "\"Autor folgen\" aktiv"
 
-#: zeit/content/author/interfaces.py:103
+#: zeit/content/author/interfaces.py:99
 msgid "Enable feedback?"
 msgstr "Feedback-Formular"
 
-#: zeit/content/author/interfaces.py:105
+#: zeit/content/author/interfaces.py:101
 msgid "Link letterbox"
 msgstr "Anonymen Briefkasten verlinken"
 
-#: zeit/content/author/interfaces.py:107
+#: zeit/content/author/interfaces.py:103
 msgid "Short Biography"
 msgstr "Kurzbio"
 
-#: zeit/content/author/interfaces.py:109
-msgid "Short Cook Biography"
-msgstr "Kurze Kochbiografie"
-
-#: zeit/content/author/interfaces.py:114
+#: zeit/content/author/interfaces.py:108
 msgid "Favourite content"
 msgstr "Wichtige Artikel"
 
-#: zeit/content/author/interfaces.py:121
+#: zeit/content/author/interfaces.py:115
 msgid "Occupation"
 msgstr "Tätigkeit (z.B. Autorin)"
 
-#: zeit/content/author/interfaces.py:124
+#: zeit/content/author/interfaces.py:118
 msgid "Label for favourite topic #1"
 msgstr "Text für Schlagwort 1"
 
-#: zeit/content/author/interfaces.py:128
+#: zeit/content/author/interfaces.py:122
 msgid "Label for favourite topic #2"
 msgstr "Text für Schlagwort 2"
 
-#: zeit/content/author/interfaces.py:132
+#: zeit/content/author/interfaces.py:126
 msgid "Label for favourite topic #3"
 msgstr "Text für Schlagwort 3"
 
-#: zeit/content/author/interfaces.py:135
+#: zeit/content/author/interfaces.py:129
 msgid "URL for favourite topic #1"
 msgstr "URL für Schlagwort 1"
 
-#: zeit/content/author/interfaces.py:137
+#: zeit/content/author/interfaces.py:131
 msgid "URL for favourite topic #2"
 msgstr "URL für Schlagwort 2"
 
-#: zeit/content/author/interfaces.py:139
+#: zeit/content/author/interfaces.py:133
 msgid "URL for favourite topic #3"
 msgstr "URL für Schlagwort 3"
 
-#: zeit/content/author/interfaces.py:190
+#: zeit/content/author/interfaces.py:184
 msgid "Location"
 msgstr "Ort"
 
-#: zeit/content/author/interfaces.py:193
+#: zeit/content/author/interfaces.py:187
 msgid "Author role"
 msgstr "Rolle"
 
@@ -4666,22 +4654,18 @@ msgid "Meta robots"
 msgstr "META-Robots"
 
 #: zeit/seo/interfaces.py:35
-msgid "Meta cook robots"
-msgstr "META-Robots Koch"
-
-#: zeit/seo/interfaces.py:37
 msgid "Hide timestamp"
 msgstr "Zeitstempel verstecken"
 
-#: zeit/seo/interfaces.py:39
+#: zeit/seo/interfaces.py:37
 msgid "Disable intext links"
 msgstr "Intextlinks deaktivieren"
 
-#: zeit/seo/interfaces.py:41
+#: zeit/seo/interfaces.py:39
 msgid "Disable enrich"
 msgstr "TMS-Enrich deaktivieren"
 
-#: zeit/seo/interfaces.py:44
+#: zeit/seo/interfaces.py:42
 msgid "Keyword entity type"
 msgstr "Schlagwort Entitätstyp"
 
@@ -4920,6 +4904,18 @@ msgstr "mit Info"
 #~ msgid "Could not publish ${name}. Article checksum is missing but required!"
 #~ msgstr ""
 #~ "Audio ${name} kann nicht veröffentlicht werden. Die Checksum zum fehlt!"
+
+#~ msgid "is author"
+#~ msgstr "ist Autor"
+
+#~ msgid "is cook"
+#~ msgstr "ist Koch"
+
+#~ msgid "Short Cook Biography"
+#~ msgstr "Kurze Kochbiografie"
+
+#~ msgid "Meta cook robots"
+#~ msgstr "META-Robots Koch"
 
 #~ msgid "Audio file"
 #~ msgstr "Audio Datei"

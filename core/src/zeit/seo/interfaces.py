@@ -32,8 +32,6 @@ class ISEO(zope.interface.Interface):
 
     meta_robots = zope.schema.Text(title=_('Meta robots'), required=False)
 
-    cook_meta_robots = zope.schema.Text(title=_('Meta cook robots'), required=False)
-
     hide_timestamp = zope.schema.Bool(title=_('Hide timestamp'), required=False)
 
     disable_intext_links = zope.schema.Bool(title=_('Disable intext links'), required=False)

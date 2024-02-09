@@ -47,12 +47,6 @@ class SEO(zeit.cms.content.dav.DAVPropertiesAdapter):
         'seo-keyword-entity-type',
     )
 
-    cook_meta_robots = zeit.cms.content.dav.DAVProperty(
-        zeit.seo.interfaces.ISEO['cook_meta_robots'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'html-cook-meta-robots',
-    )
-
     def __init__(self, context):
         self.context = context
 

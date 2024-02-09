@@ -34,7 +34,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'additional_contact_content',
         'biography',
         'display_name',
-        'cook_biography',
         'email',
         'sso_connect',
         'ssoid',
@@ -47,7 +46,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'honorar_id',
         'instagram',
         'initials',
-        'is_cook',
         'jabber',
         'lastname',
         'occupation',
@@ -120,10 +118,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     def image_group(self):
         # BBB Deprecated in favor of a separate images adapter
         return zeit.content.image.interfaces.IImages(self).image
-
-    is_author = zeit.cms.content.property.ObjectPathProperty(
-        '.is_author', IAuthor['is_author'], use_default=True
-    )
 
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):

@@ -94,10 +94,6 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
 
     external = zope.schema.Bool(title=_('External?'))
 
-    is_author = zope.schema.Bool(title=_('is author'), default=True)
-
-    is_cook = zope.schema.Bool(title=_('is cook'))
-
     enable_followpush = zope.schema.Bool(title=_('Enable followpush?'))
 
     enable_feedback = zope.schema.Bool(title=_('Enable feedback?'), default=False)
@@ -105,8 +101,6 @@ class IAuthor(zope.interface.Interface, zeit.retresco.interfaces.ISkipEnrich):
     show_letterbox_link = zope.schema.Bool(title=_('Link letterbox'), default=False)
 
     biography = zope.schema.Text(title=_('Short Biography'), required=False)
-
-    cook_biography = zope.schema.Text(title=_('Short Cook Biography'), required=False)
 
     bio_questions = zope.interface.Attribute('Our IBiographyQuestions dict')
 
