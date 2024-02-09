@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.106.0 (2024-02-09)
+--------------------
+
+MAINT:
+- increase retry delay to 5min for speech webhook
+
+
 5.105.0 (2024-02-09)
 --------------------
 
