@@ -1,5 +1,4 @@
 from unittest import mock
-import copy
 
 import pytest
 import zope.security.management
@@ -8,7 +7,6 @@ from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
-from zeit.content.article.interfaces import ISpeechbertChecksum
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.content.audio.testing import AudioBuilder
 from zeit.speech.connection import Speech
@@ -32,28 +30,27 @@ class TestSpeech(FunctionalTestCase):
         )
         assert IPublishInfo(audio).published, 'Publish you fool!'
 
-    def _setup_speech_message(self, field, value):
-        tts_created = copy.deepcopy(TTS_CREATED)
-        tts_created['articlesAudio'][0][field] = value
-        return tts_created
-
     def test_update_existing_tts_audio(self):
         audio = self.create_audio(TTS_CREATED)
         created_time = ISemanticChange(audio).last_semantic_change
         assert ISpeechInfo(audio).checksum == TTS_CREATED['articlesAudio'][0]['checksum']
-        self.repository.connector.search_result = [(audio.uniqueId)]
-        tts_msg = self.setup_speech_message('checksum', 'cookiesandcake')
-        Speech().update(tts_msg)
+        self.repository.connector.search_result = [(self.article.uniqueId)]
+        tts_msg = self.setup_speech_message(
+            'audioEntry', {'url': 'http://example.com/cats.mp3', 'duration': 1000}
+        )
+        with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
+            Speech().update(tts_msg)
         updated_time = ISemanticChange(audio).last_semantic_change
         assert updated_time > created_time, 'Semantic time should be updated'
-        assert ISpeechInfo(audio).checksum == 'cookiesandcake', 'Update your checksum'
+        audio = ICMSContent(self.unique_id)
+        assert audio.duration == 1
 
     def test_update_broken_audio_repairs_reference_to_article(self):
+        self.repository.connector.search_result = [(self.article.uniqueId)]
         audio = Speech()._create(TTS_CREATED)
         IPublish(audio).publish(background=False)
         assert ICMSContent(self.unique_id)
         assert not IAudioReferences(ICMSContent(self.article_uid)).items
-        self.repository.connector.search_result = [(self.article.uniqueId)]
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             Speech().update(TTS_CREATED)
         assert IAudioReferences(ICMSContent(self.article_uid)).items == (audio,)
@@ -91,7 +88,6 @@ class TestSpeech(FunctionalTestCase):
         assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 2
 
     def test_if_checksum_does_not_match_do_not_add_reference(self):
-        ISpeechbertChecksum(self.article).checksum = 'cookie'
         tts_msg = self.setup_speech_message('checksum', 'cake')
         with pytest.raises(ChecksumMismatchError):
             self.create_audio(tts_msg)

@@ -505,6 +505,17 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
             return True
         return self.checksum == checksum
 
+    def calculate(self) -> str:
+        speechbert = zope.component.getAdapter(
+            self.context, zeit.workflow.interfaces.IPublisherData, name='speechbert'
+        )
+        if speechbert.ignore('publish'):
+            return
+        checksum = hashlib.md5(usedforsecurity=False)
+        body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode('utf-8')
+        checksum.update(body)
+        return checksum.hexdigest()
+
     def __eq__(self, other):
         if isinstance(other, str):
             return self._validate(other)
@@ -522,17 +533,9 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
 @grok.subscribe(
     zeit.content.article.interfaces.IArticle, zeit.cms.workflow.interfaces.IBeforePublishEvent
 )
-def calculate_checksum(context, event):
-    speechbert = zope.component.getAdapter(
-        context, zeit.workflow.interfaces.IPublisherData, name='speechbert'
-    )
-    if speechbert.ignore('publish'):
-        return
-    checksum = hashlib.md5(usedforsecurity=False)
-    body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode('utf-8')
-    checksum.update(body)
+def calculate_and_set_checksum(context, event):
     article = zeit.content.article.interfaces.ISpeechbertChecksum(context)
-    article.checksum = checksum.hexdigest()
+    article.checksum = article.calculate()
 
 
 class AudioDependency(zeit.cms.workflow.dependency.DependencyBase):
