@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.105.0 (2024-02-09)
+--------------------
+
+FIX:
+- ZO-4649: calculate checksum of article body and compare against tts audio before adding audio reference
+
+
 5.104.0 (2024-02-08)
 --------------------
 
