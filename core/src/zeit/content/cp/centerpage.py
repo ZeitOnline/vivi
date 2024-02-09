@@ -263,7 +263,7 @@ class Body(zeit.edit.container.Base, grok.MultiAdapter):
 @grok.implementer(zeit.content.cp.interfaces.IBody)
 def get_editable_body(centerpage):
     return zope.component.queryMultiAdapter(
-        (centerpage, zope.security.proxy.removeSecurityProxy(centerpage.xml['body'])),
+        (centerpage, zope.security.proxy.removeSecurityProxy(centerpage.xml.find('body'))),
         zeit.content.cp.interfaces.IBody,
     )
 
@@ -337,7 +337,7 @@ ElementMaker = lxml.builder.ElementMaker(nsmap=NSMAP)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
     root = getattr(ElementMaker, context.xml.tag)(**context.xml.attrib)
-    root.append(copy.copy(context.xml.head))
+    root.append(copy.copy(context.xml.find('head')))
     body = lxml.builder.E.body()
     root.append(body)
     for region in context.body.values():

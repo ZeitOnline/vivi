@@ -1,7 +1,7 @@
 import urllib.parse
 
 import grokcore.component as grok
-import lxml.builder
+import lxml.etree
 import zope.component
 import zope.interface
 import zope.traversing.api
@@ -159,7 +159,7 @@ class TypeOnAttributeElementFactory(ElementFactory):
     tag_name = 'container'
 
     def get_xml(self):
-        container = getattr(lxml.builder.E, self.tag_name)()
+        container = lxml.etree.Element(self.tag_name)
         container.set('{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
         container.set('module', self.module)  # XXX Why? Who needs this?
         return container

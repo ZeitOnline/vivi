@@ -11,7 +11,7 @@ class ParagraphTest(unittest.TestCase):
         from zeit.content.article.edit.paragraph import Paragraph
 
         body = lxml.builder.E.body(lxml.etree.fromstring('<p>%s</p>' % p))
-        return Paragraph(None, body.p)
+        return Paragraph(None, body.find('p'))
 
     def test_setting_text_inserts_xml(self):
         p = self.get_paragraph()
@@ -58,7 +58,7 @@ class ParagraphTest(unittest.TestCase):
         from zeit.content.article.edit.paragraph import Paragraph
 
         body = lxml.builder.E.body(lxml.etree.fromstring('<p>bar</p>'))
-        p = Paragraph(None, body.p)
+        p = Paragraph(None, body.find('p'))
         p.text = 'foo'
         self.assertTrue(isinstance(p.xml, lxml.etree._Element), type(p.xml))
 
@@ -96,7 +96,7 @@ class UnorderedListTest(ParagraphTest):
         from zeit.content.article.edit.paragraph import UnorderedList
 
         body = lxml.builder.E.body(lxml.etree.fromstring('<ul>%s</ul>' % p))
-        return UnorderedList(None, body.ul)
+        return UnorderedList(None, body.find('ul'))
 
     def compare(self, input, expected):
         input = '<li>%s</li>' % input
@@ -116,7 +116,7 @@ class OrderedListTest(UnorderedListTest):
         from zeit.content.article.edit.paragraph import OrderedList
 
         body = lxml.builder.E.body(lxml.etree.fromstring('<ol>%s</ol>' % p))
-        return OrderedList(None, body.ol)
+        return OrderedList(None, body.find('ol'))
 
 
 class IntertitleTest(ParagraphTest):
@@ -124,7 +124,7 @@ class IntertitleTest(ParagraphTest):
         from zeit.content.article.edit.paragraph import Intertitle
 
         body = lxml.builder.E.body(lxml.etree.fromstring('<intertitle>%s</intertitle>' % p))
-        return Intertitle(None, body.intertitle)
+        return Intertitle(None, body.find('intertitle'))
 
 
 class LegacyInitialParagraphTest(ParagraphTest):
@@ -132,7 +132,7 @@ class LegacyInitialParagraphTest(ParagraphTest):
         from zeit.content.article.edit.paragraph import LegacyInitialParagraph
 
         body = lxml.builder.E.body(lxml.etree.fromstring('<initial>%s</initial>' % p))
-        return LegacyInitialParagraph(None, body.initial)
+        return LegacyInitialParagraph(None, body.find('initial'))
 
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
@@ -144,7 +144,7 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
         import zeit.edit.interfaces
 
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, name)
         # so they don't show up in the module library
         self.assertEqual(None, factory.title)

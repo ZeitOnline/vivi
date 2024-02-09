@@ -9,7 +9,7 @@ import zeit.cms.testing
 class XMLPickleException(zeit.cms.testing.ZeitCmsTestCase):
     def test_parse_errors_are_deserialized_as_comment(self):
         with checked_out(self.repository['testcontent'], temporary=False) as co:
-            co.xml.body.append(lxml.etree.fromstring('<em eiscafé="foo"/>'))
+            co.xml.append(lxml.etree.fromstring('<em eiscafé="foo"/>'))
             transaction.commit()
             co._p_invalidate()  # evict from ZODB cache and unpickle afresh
             co.uniqueId

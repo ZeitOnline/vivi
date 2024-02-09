@@ -33,7 +33,7 @@ class ContentList:
     ``uniqueId``.
     """
 
-    object_limit = zeit.cms.content.property.ObjectPathProperty('.object_limit')
+    object_limit = zeit.cms.content.property.ObjectPathProperty('.object_limit', zope.schema.Int())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,7 +76,10 @@ class ContentList:
         ordered = []
         for id in order:
             ordered.append(entries[id])
-        self.entries.block = ordered
+        for node in self.entries.iterchildren('block'):
+            self.entries.remove(node)
+        for node in ordered:
+            self.entries.append(node)
         self._p_changed = True
 
     def __len__(self):
@@ -156,11 +159,11 @@ class ContentList:
     @property
     def entries(self):
         __traceback_info__ = (self.uniqueId,)
-        try:
-            return self.xml['container']
-        except AttributeError:
+        result = self.xml.find('container')
+        if result is None:
             log.error('Invalid channel XML format', exc_info=True)
             raise RuntimeError('Invalid channel XML format.')
+        return result
 
     def _remove_by_id(self, unique_id):
         for entry in self.iterentries():

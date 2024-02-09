@@ -12,7 +12,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.liveblog.TickarooLiveblog(
-            self.context, lxml.builder.E.liveblog()
+            self.context, lxml.builder.E.container()
         )
 
     def test_liveblog_stores_local_values_in_xml(self):

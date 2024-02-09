@@ -11,7 +11,7 @@ import zeit.content.article.testing
 class ImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_image_can_be_set(self):
         tree = lxml.builder.E.tree(lxml.builder.E.image())
-        image = Image(None, tree.image)
+        image = Image(None, tree.find('image'))
         image.__name__ = 'myname'
         image.display_mode = 'float'
         image.variant_name = 'square'
@@ -35,7 +35,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_setting_image_to_none_removes_href(self):
         tree = lxml.builder.E.tree(lxml.builder.E.image())
-        image = Image(None, tree.image)
+        image = Image(None, tree.find('image'))
         image.xml.set('src', 'testid')
         image.references = None
         self.assertNotIn('href', image.xml.attrib)
@@ -79,7 +79,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                          """
         )
         self.assertEqual(
-            ['p', 'image', 'p'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image', 'p'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
 
     def test_empty_p_nodes_should_be_removed_on_image_migrate(self):
@@ -90,7 +90,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                """
         )
         self.assertEqual(
-            ['p', 'image'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
 
     def test_image_tail_should_be_preserved_on_migrate(self):
@@ -101,9 +101,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                """
         )
         self.assertEqual(
-            ['p', 'image', 'p'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image', 'p'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
-        self.assertEqual(' a tail', article.xml.body.division.p[1].text)
+        self.assertEqual(' a tail', article.xml.findall('body/division/p')[1].text)
 
     def test_image_should_be_moved_up_to_division_even_when_deeper_nested(self):
         article = self.get_image_article(
@@ -113,7 +113,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                """
         )
         self.assertEqual(
-            ['p', 'image', 'p'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image', 'p'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkout(self):
@@ -129,7 +129,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />"""
         )
         self.assertEqual(
-            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.body.division.image.get('src')
+            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.find('body/division/image').get('src')
         )
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(self):
@@ -160,7 +160,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         )
         article = zeit.cms.checkout.interfaces.ICheckinManager(article).checkin()
         self.assertEqual(
-            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.body.division.image.get('src')
+            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.find('body/division/image').get('src')
         )
 
     def test_image_referenced_via_IImages_is_copied_to_first_body_block(self):
@@ -292,7 +292,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as article:
-            body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+            body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
             factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'image')
             image = factory()
             image.references = image.references.create(
@@ -362,8 +362,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):
         tree = lxml.builder.E.tree(lxml.builder.E.image())
-        tree.image.set('layout', 'float-square')
-        image = Image(None, tree.image)
+        tree.find('image').set('layout', 'float-square')
+        image = Image(None, tree.find('image'))
         self.assertEqual('float', image.display_mode)
 
         image.xml.set('display_mode', 'large')
@@ -371,8 +371,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_variant_name_defaults_to_layout_if_not_set_for_bw_compat(self):
         tree = lxml.builder.E.tree(lxml.builder.E.image())
-        tree.image.set('layout', 'float-square')
-        image = Image(None, tree.image)
+        tree.find('image').set('layout', 'float-square')
+        image = Image(None, tree.find('image'))
         self.assertEqual('square', image.variant_name)
 
         image.xml.set('variant_name', 'original')
@@ -389,7 +389,7 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         import zeit.edit.interfaces
 
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'image')
         self.assertEqual('Image', factory.title)
         div = factory()

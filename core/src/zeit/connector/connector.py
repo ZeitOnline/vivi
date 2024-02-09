@@ -617,37 +617,33 @@ class Connector:
             return {}
 
         lock_info = lxml.etree.fromstring(lockdiscovery)
-        davlock = {}
+        lockinfo_node = lock_info.find('{DAV:}activelock')
+        if lockinfo_node is None:
+            return {}
 
-        try:
-            lockinfo_node = lock_info.activelock
-        except AttributeError:
-            pass
+        davlock = {}
+        owner = lockinfo_node.find('{DAV:}owner')
+        davlock['owner'] = owner.text if owner is not None else None
+        # We get timeout in "Second-1337" format. Extract, add to ref time
+        timeout = getattr(lockinfo_node.find('{DAV:}timeout'), 'text', None)
+        if not timeout:
+            timeout = None
+        elif timeout == 'Infinity':
+            timeout = TIME_ETERNITY
         else:
-            try:
-                davlock['owner'] = str(lockinfo_node['{DAV:}owner'])
-            except AttributeError:
-                davlock['owner'] = None
-            # We get timeout in "Second-1337" format. Extract, add to ref time
-            timeout = lockinfo_node.timeout
-            if not timeout:
-                timeout = None
-            elif timeout == 'Infinity':
+            m = re.match(r'second-(\d+)', timeout, re.I)
+            if m is None:
+                # Better too much than not enough
                 timeout = TIME_ETERNITY
             else:
-                m = re.match(r'second-(\d+)', str(timeout), re.I)
-                if m is None:
-                    # Better too much than not enough
-                    timeout = TIME_ETERNITY
-                else:
-                    reftime = self[id].properties.get(('cached-time', 'INTERNAL'))
-                    if not isinstance(reftime, datetime.datetime):
-                        # XXX untested
-                        reftime = datetime.datetime.now(pytz.UTC)
-                    timeout = reftime + datetime.timedelta(seconds=int(m.group(1)))
-                davlock['timeout'] = timeout
+                reftime = self[id].properties.get(('cached-time', 'INTERNAL'))
+                if not isinstance(reftime, datetime.datetime):
+                    # XXX untested
+                    reftime = datetime.datetime.now(pytz.UTC)
+                timeout = reftime + datetime.timedelta(seconds=int(m.group(1)))
+            davlock['timeout'] = timeout
 
-            davlock['locktoken'] = str(lockinfo_node.locktoken.href)
+        davlock['locktoken'] = lockinfo_node.find('{DAV:}locktoken/{DAV:}href').text
         return davlock
 
     @staticmethod

@@ -31,3 +31,19 @@ def etree_soup_fromstring(text):
     if isinstance(soup, str):
         soup = soup.encode('utf-8')
     return lxml.etree.fromstring(soup)
+
+
+def create_parent_nodes(path, parent):
+    path = str(path).split('.')[1:]
+    for i, name in enumerate(path):
+        namespace = lxml.etree.QName(parent).namespace
+        if namespace:
+            name = '{%s}%s' % (namespace, name)
+        if i == len(path) - 1:
+            break
+        node = parent.find(name)
+        if node is None:
+            node = lxml.etree.Element(name)
+            parent.append(node)
+        parent = node
+    return parent, name

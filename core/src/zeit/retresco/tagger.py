@@ -58,7 +58,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __getitem__(self, key):
         node = self._find_tag_node(key)
-        tag = self._create_tag(str(node), node.get('type', ''))
+        tag = self._create_tag(node.text, node.get('type', ''))
         return tag
 
     def __setitem__(self, key, value):
@@ -75,7 +75,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def values(self):
         tags = self.to_xml()
-        return (self._create_tag(str(node), node.get('type', '')) for node in tags.iterchildren())
+        return (self._create_tag(node.text, node.get('type', '')) for node in tags.iterchildren())
 
     def get(self, key, default=None):
         try:
@@ -173,7 +173,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         return tag
 
     def _serialize_tag(self, tag):
-        E = lxml.builder.ElementMaker()
+        E = lxml.builder.E
         return E.tag(tag.label, type=tag.entity_type or '')
 
     def _find_pinned_tags(self):
@@ -182,7 +182,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         for code in self.pinned:
             try:
                 node = self._find_tag_node(code, xml)
-                result.append(self._create_tag(str(node), node.get('type', '')))
+                result.append(self._create_tag(node.text, node.get('type', '')))
             except KeyError:
                 pass
         return result

@@ -45,10 +45,12 @@ class TextViewHelper:
                 '<division><p>Para 3</p><p>Para 4</p></division>'
             )
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
-        for division in article.xml.body.findall('division'):
+        article.xml.replace(
+            article.xml.find('body'), lxml.etree.fromstring('<body>%s</body>' % body)
+        )
+        for division in article.xml.findall('body/division'):
             division.set('type', 'page')
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         body.keys()  # force uuid generation
         view = self.view_class()
         view.context = body

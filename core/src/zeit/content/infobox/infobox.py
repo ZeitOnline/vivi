@@ -1,3 +1,5 @@
+import copy
+
 import grokcore.component as grok
 import lxml.builder
 import zope.interface
@@ -23,13 +25,14 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
             text_node = node.find('text')
             if text_node is None:
                 text_node = lxml.builder.E.text()
-            elif text_node.text:
+            elif text_node.text and text_node.text.strip():
+                text_node = copy.copy(text_node)
                 # There is text which is not wrapped into a node. Wrap it.
                 text_node = lxml.builder.E.text(
                     lxml.builder.E.p(text_node.text, *text_node.getchildren())
                 )
             text = self.html_converter.to_html(text_node)
-            result.append((str(node['title']), text))
+            result.append((node.find('title').text, text))
         return tuple(result)
 
     @contents.setter

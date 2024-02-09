@@ -80,7 +80,7 @@ def get_header_area(article):
         # XXX locate the XML object into the workingcopy so that edit
         # permissions can be found (which makes this security declaration
         # somewhat unhelpful since it doesn't work without additional setup).
-        head = article.xml['head']
+        head = article.xml.find('head')
         head = zeit.cms.content.field.located(head, article, 'header')
         head.append(lxml.builder.E.header())
     node = article.xml.xpath('//head/header')[0]

@@ -31,7 +31,7 @@ class RecipeListTest(
 
     def test_title_should_be_stored_in_xml(self):
         self.module.title = 'banana'
-        self.assertEqual(self.module.xml.xpath('//title'), ['banana'])
+        self.assertEqual(self.module.xml.xpath('//title')[0].text, 'banana')
 
     def test_set_should_add_new_ingredients(self):
         ingredients = self.setup_ingredients('banana', 'milk')
@@ -51,7 +51,7 @@ class RecipeListTest(
         banana = ingredients['banana']
         milk = ingredients['milk']
         self.module.ingredients = [banana, milk]
-        xml = self.module.xml.ingredient
+        xml = self.module.xml.find('ingredient')
         self.assertEqual('banana', xml.get('code'))
         self.assertEqual('2', xml.get('amount'))
         self.assertEqual('g', xml.get('unit'))

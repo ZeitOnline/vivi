@@ -57,7 +57,7 @@ class VolumeBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         volume = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/2010/02/ausgabe')
-        xml = volume.xml.covers.cover
+        xml = volume.xml.find('covers/cover')
         self.assertEqual('landscape', xml.get('id'))
         self.assertEqual('ZMLB', xml.get('product_id'))
         self.assertEqual('http://xml.zeit.de/imagegroup/', xml.get('href'))

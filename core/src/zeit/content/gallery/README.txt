@@ -140,8 +140,8 @@ We have not set any title or text for the entry, so they're empty:
 
 >>> entry.title is None
 True
->>> entry.text
-None
+>>> entry.text.text is None
+True
 
 The caption is pre-filled with the caption of the image:
 
@@ -285,7 +285,7 @@ Let's make sure we actually can get the saved data:
 'Der Wecker klingelt'
 >>> entry.text
 <Element text at ...>
->>> entry.text['p']
+>>> entry.text.find('p').text
 'Seit zwei Uhr in der Fr\xfch'
 >>> entry.caption
 'Gallery & caption'
@@ -647,7 +647,7 @@ thumbnail of the removed image is also removed:
 At one point we had galleries with an empty caption-tag which broke
 the system. Make sure this doesn't happen any more:
 
->>> gallery.xml['body']['column'][1]['container']['block'].append(
+>>> gallery.xml.xpath('body/column[2]/container/block')[0].append(
 ...     lxml.builder.E.caption())
 >>> list(gallery.values())
 [<zeit.content.gallery.gallery.GalleryEntry object at 0x...>]

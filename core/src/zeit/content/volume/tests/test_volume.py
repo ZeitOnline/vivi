@@ -37,7 +37,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         node = lxml.builder.E.cover(
             href='http://xml.zeit.de/imagegroup/', id='ipad', product_id=product_id
         )
-        self.volume.xml.covers.append(node)
+        self.volume.xml.find('covers').append(node)
 
     def test_set_raises_for_invalid_product(self):
         with self.assertRaises(ValueError):
@@ -45,7 +45,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
 
     def test_stores_uniqueId_in_xml_of_volume(self):
         self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
-        xml = self.volume.xml.covers.cover
+        xml = self.volume.xml.find('covers/cover')
         self.assertEqual('ipad', xml.get('id'))
         self.assertEqual('ZEI', xml.get('product_id'))
         self.assertEqual('http://xml.zeit.de/imagegroup/', xml.get('href'))
@@ -55,7 +55,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.volume.set_cover('ipad', 'ZEI', None)
         self.assertEqual(
             '<covers/>',
-            lxml.etree.tostring(self.volume.xml.covers, encoding=str),
+            zeit.cms.testing.xmltotext(self.volume.xml.find('covers')).strip(),
         )
 
     def test_raises_value_error_if_invalid_product_id_used_in_set_cover(self):

@@ -134,7 +134,7 @@ class SearchableXMLSource(XMLSource):
         tree = self._get_tree()
         if self.attribute is NotImplemented:
             # Return text value of nodes
-            return [str(node) for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
+            return [node.text for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
         # Return value of provided attribute for nodes
         return [
             str(node.get(self.attribute))

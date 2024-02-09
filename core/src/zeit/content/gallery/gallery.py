@@ -1,7 +1,7 @@
 import xml.sax.saxutils
 
+from lxml.builder import E
 import grokcore.component as grok
-import lxml.builder
 import lxml.etree
 import zope.component
 import zope.interface
@@ -108,22 +108,20 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         entry.is_crop_of = node.get('is_crop_of')
         entry.title = node.find('title')
         if entry.title is not None:
-            entry.title = str(entry.title)
+            entry.title = entry.title.text
         entry.text = node.find('text')
         if entry.text is None:
-            entry.text = lxml.builder.E.text()
-        elif entry.text.text:
+            entry.text = E.text()
+        elif entry.text.text and entry.text.text.strip():
             # Hrm. There is text which is not wrapped in another node, wrap it.
-            entry.text = lxml.builder.E.text(
-                lxml.builder.E.p(entry.text.text, *entry.text.getchildren())
-            )
+            entry.text = E.text(E.p(entry.text.text, *entry.text.getchildren()))
         entry.layout = node.get('layout')
         if entry.layout is not None:
             entry.layout = str(entry.layout)
 
         gallery_caption = node.find('caption')
         if gallery_caption is not None:
-            entry.caption = str(gallery_caption)
+            entry.caption = gallery_caption.text
 
         # XXX need location information on the entry itself for crops(),
         # but just returning entry here breaks tests, so we do both for now.
@@ -189,19 +187,20 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
     def updateOrder(self, order):
         if set(self.keys()) != set(order):
             raise ValueError('The order argument must contain the same ' 'keys as the container.')
-        ordered = []
-        for id in order:
-            ordered.append(self._get_block_for_key(id))
-        self._entries_container['block'] = ordered
+        order = [self._get_block_for_key(x) for x in order]
+        for node in self._entries_container.iterchildren():
+            self._entries_container.remove(node)
+        for node in order:
+            self._entries_container.append(node)
         self._p_changed = True
 
     @property
     def _entries_container(self):
         try:
-            return self.xml['body']['column'][1]['container']
+            return self.xml.xpath('body/column[2]/container')[0]
         except Exception:
             # Probably means we're ITMSContent and don't have a whole body.
-            return lxml.builder.E.container()
+            return E.container()
 
     def _get_block_for_key(self, key):
         matching_blocks = self._entries_container.xpath(
@@ -297,25 +296,33 @@ class EntryXMLRepresentation:
 
     @property
     def xml(self):
-        node = lxml.builder.E.block()
+        node = E.block()
         if self.context.title:
-            node['title'] = self.context.title
+            node.append(E.title(self.context.title))
 
         # Remove security proxy from lxml tree before inserting in the a
         # different tree
-        node['text'] = zope.security.proxy.removeSecurityProxy(self.context.text)
+        text = zope.security.proxy.removeSecurityProxy(self.context.text)
+        if text is not None:
+            node.append(text)
+        else:
+            node.append(E.text())
 
         if self.context.caption:
-            node.append(lxml.builder.E.caption(self.context.caption))
+            node.append(E.caption(self.context.caption))
         if self.context.is_crop_of:
             node.set('is_crop_of', self.context.is_crop_of)
 
-        node['image'] = zope.component.getAdapter(
+        ref = zope.component.getAdapter(
             self.context.image, zeit.cms.content.interfaces.IXMLReference, name='image'
         )
-        node['thumbnail'] = zope.component.getAdapter(
+        ref.tag = 'image'
+        node.append(ref)
+        ref = zope.component.getAdapter(
             self.context.thumbnail, zeit.cms.content.interfaces.IXMLReference, name='image'
         )
+        ref.tag = 'thumbnail'
+        node.append(ref)
         if self.context.layout:
             node.set('layout', self.context.layout)
         return node
@@ -326,11 +333,10 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     def get_tree(self):
         # we can't express that 'body' is allowed for IGallery objects as a
         # security declaration, since that would have to apply to the lxml element
-        body = zope.security.proxy.removeSecurityProxy(self.context).xml.body
-        try:
-            text = body['text']
-        except AttributeError:
-            text = lxml.builder.E.text()
+        body = zope.security.proxy.removeSecurityProxy(self.context).xml.find('body')
+        text = body.find('text')
+        if text is None:
+            text = E.text()
             body.append(text)
         return text
 
@@ -387,8 +393,8 @@ class SearchableText(grok.Adapter):
 
     def getSearchableText(self):
         main_text = []
-        for p in self.context.xml.body.xpath('//p'):
-            text = str(p).strip()
+        for p in self.context.xml.xpath('body//p'):
+            text = p.text.strip()
             if text:
                 main_text.append(text)
         return main_text

@@ -132,12 +132,12 @@ class TestSyncToXML(
             pass
         self.assertEllipsis(
             '...<tag...>foo</tag>...',
-            lxml.etree.tostring(self.repository['testcontent'].xml.head, encoding=str),
+            lxml.etree.tostring(self.repository['testcontent'].xml.find('head'), encoding=str),
         )
 
     def test_leaves_xml_without_head_alone(self):
         content = self.repository['testcontent']
-        content.xml.remove(content.xml.head)
+        content.xml.remove(content.xml.find('head'))
         self.setup_tags('foo')
         with self.assertNothingRaised():
             # Need to fake checkin, since other handlers re-create the <head>.

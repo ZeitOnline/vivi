@@ -1,5 +1,4 @@
 import lxml.builder
-import lxml.objectify
 import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
@@ -34,15 +33,17 @@ class PortraiboxType(zeit.cms.type.XMLContentTypeDeclaration):
 class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     """HTML content of an article."""
 
-    path = lxml.objectify.ObjectPath('.block.text')
-
     def get_tree(self):
         xml = zope.proxy.removeAllProxies(self.context.xml)
-        text = self.path(xml, None)
+        text = xml.find('block/text')
         if text is None:
-            self.path.setattr(xml, '')
-            text = self.path(xml)
-        elif len(text):
+            parent = xml.find('block')
+            if parent is None:
+                parent = lxml.builder.E.block()
+                xml.append(parent)
+            text = lxml.builder.E.text()
+            parent.append(text)
+        elif text.getchildren():
             for child in text.iterchildren():
                 if child.tag == 'p':
                     break

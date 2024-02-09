@@ -8,10 +8,11 @@ import zeit.content.article.testing
 class XMLReplaceTest(zeit.content.article.testing.FunctionalTestCase):
     def create_body(self, body):
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.etree.fromstring(
-            '<body><division type="page">%s</division></body>' % body
+        article.xml.replace(
+            article.xml.find('body'),
+            lxml.etree.fromstring('<body><division type="page">%s</division></body>' % body),
         )
-        return zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        return zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
 
     def replace(self, body, find, replace):
         body = self.create_body(body)
@@ -20,15 +21,19 @@ class XMLReplaceTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_replaces_inside_paragraphs(self):
         body = self.replace('<p>foo bar foo bar</p><p>foo</p>', 'foo', 'qux')
-        self.assertEqual(['qux bar qux bar', 'qux'], [x.text for x in body.xml.division.p])
+        self.assertEqual(
+            ['qux bar qux bar', 'qux'], [x.text for x in body.xml.findall('division/p')]
+        )
 
     def test_ignores_non_paragraph_blocks(self):
         body = self.replace('<image>foo</image>', 'foo', 'qux')
-        self.assertEqual('foo', body.xml.division.image.text)
+        self.assertEqual('foo', body.xml.find('division/image').text)
 
     def test_replaces_inside_lists(self):
         body = self.replace('<ul><li>foo bar foo</li><li>bar</li><li>foo</li></ul>', 'foo', 'qux')
-        self.assertEqual(['qux bar qux', 'bar', 'qux'], [x.text for x in body.xml.division.ul.li])
+        self.assertEqual(
+            ['qux bar qux', 'bar', 'qux'], [x.text for x in body.xml.findall('division/ul/li')]
+        )
 
     def test_returns_match_count(self):
         body = self.create_body('<p>foo bar foo bar</p><p>foo</p>')

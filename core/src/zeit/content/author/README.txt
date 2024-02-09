@@ -119,7 +119,7 @@ Changes to author objects are propagated to content on checkin:
 ...     co.lastname = 'Otherwise'
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
 ...     pass
->>> repository['testcontent'].xml['head']['author']['display_name']
+>>> repository['testcontent'].xml.find('head/author/display_name').text
 'William Otherwise'
 
 

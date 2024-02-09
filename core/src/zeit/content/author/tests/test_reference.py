@@ -159,7 +159,7 @@ class RelatedReferenceTest(zeit.content.author.testing.FunctionalTestCase):
         result.biography = 'bio'
 
         self.assertEqual(True, IAuthorBioReference.providedBy(result))
-        self.assertEqual('bio', result.xml.biography.text)
+        self.assertEqual('bio', result.xml.find('biography').text)
 
     def test_hdok_id_is_added(self):
         author = zeit.content.author.author.Author()

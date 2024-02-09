@@ -68,7 +68,7 @@ Create a channel and insert the link:
 >>> feed.insert(0, link)
 
 
->>> print(feed.xml_source)
+>>> print(zeit.cms.testing.xmltotext(feed.xml))
 <channel...>
   <title/>
   <container>
@@ -88,7 +88,7 @@ channel:
 
 >>> link.target = None
 >>> feed.updateMetadata(link)
->>> print(feed.xml_source)
+>>> print(zeit.cms.testing.xmltotext(feed.xml))
 <channel...>
   <title/>
   <container>

@@ -180,7 +180,7 @@ def migrate_image_nodes_inside_p(article, event):
                 p.addnext(getattr(lxml.builder.E, p.tag)(image.tail))
                 image.getparent().replace(image, stripped)
             if (
-                not p.countchildren()
+                not list(p)
                 and not (p.text and p.text.strip())
                 and (
                     not p.attrib

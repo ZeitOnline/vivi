@@ -13,8 +13,9 @@ import zeit.content.article.testing
 
 class VideoTest(unittest.TestCase):
     def get_video(self):
-        tree = lxml.builder.E.tree(lxml.builder.E.video())
-        video = Video(None, tree.video)
+        video = lxml.builder.E.video()
+        lxml.builder.E.tree(video)
+        video = Video(None, video)
         # Don't validate here. Validation is verified via browser test
         video._validate = mock.Mock()
         return video
@@ -84,7 +85,7 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         import zeit.edit.interfaces
 
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'video')
         self.assertEqual('Video', factory.title)
         div = factory()
@@ -103,7 +104,7 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as article:
-            body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+            body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
             factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'video')
             video = factory()
             yield video
@@ -119,7 +120,7 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
             block.video = self.repository['video']
         article = self.repository['article']
         self.assertEqual(
-            '2012-01-01T00:00:00+00:00', article.xml.body.division.video.get('expires')
+            '2012-01-01T00:00:00+00:00', article.xml.find('body/division/video').get('expires')
         )
 
 

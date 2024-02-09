@@ -227,10 +227,10 @@ def articleFromTemplate(context):
 @zope.component.adapter(
     zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectModifiedEvent
 )
-def updateTextLengthOnChange(object, event):
-    length = zope.security.proxy.removeSecurityProxy(object.xml).body.xpath('string-length()')
+def updateTextLengthOnChange(context, event):
+    length = context.xml.find('body').xpath('string-length()')
     try:
-        object.textLength = int(length)
+        context.textLength = int(length)
     except zope.security.interfaces.Unauthorized:
         # Ignore when we're not allowed to set it.
         pass
@@ -289,7 +289,7 @@ class SearchableText(grok.Adapter):
 
     def getSearchableText(self):
         main_text = []
-        for p in self.context.xml.body.xpath('//p//text()'):
+        for p in self.context.xml.xpath('body//p//text()'):
             text = str(p).strip()
             if text:
                 main_text.append(text)
@@ -445,10 +445,11 @@ def normalize_quotation_marks(context, event):
         if FEATURE_TOGGLES.find('normalize_quotes')
         else normalize_quotes_to_inch_sign
     )
-    context.xml.body = normalize(context.xml.body)
+    normalize(context.xml.find('body'))
 
-    if context.xml.find('teaser') is not None:
-        context.xml.teaser = normalize(context.xml.teaser)
+    teaser = context.xml.find('teaser')
+    if teaser is not None:
+        normalize(teaser)
 
 
 def normalize_quotes(node):
@@ -460,7 +461,6 @@ def normalize_quotes(node):
         node.tail = QUOTE_CHARACTERS_CLOSE.sub(r'\1«', node.tail)
     for child in node.iterchildren():
         normalize_quotes(child)
-    return node
 
 
 def normalize_quotes_to_inch_sign(node):
@@ -470,7 +470,6 @@ def normalize_quotes_to_inch_sign(node):
         node.tail = QUOTE_CHARACTERS.sub('"', node.tail)
     for child in node.iterchildren():
         normalize_quotes_to_inch_sign(child)
-    return node
 
 
 class ArticleMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):

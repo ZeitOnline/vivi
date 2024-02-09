@@ -23,8 +23,8 @@ class AnimationTest(zeit.content.animation.testing.FunctionalTestCase):
         animation = zeit.content.animation.animation.Animation()
         animation.article = article
         animation.images = (image, image2)
-        assert len(animation.xml.body.image) == 2
-        assert animation.xml.body.image[0].xpath('@type')[0] == 'JPG'
+        assert len(animation.xml.findall('body/image')) == 2
+        assert animation.xml.find('body/image').get('type') == 'JPG'
 
     def test_genre_attribute(self):
         article = self.article

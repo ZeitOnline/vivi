@@ -67,7 +67,7 @@ class TestRecipeCategories(
         content.categories = [summer]
         self.assertEllipsis(
             '<recipe_categories...><category code="summer"/>...',
-            lxml.etree.tostring(content.xml.head.recipe_categories, encoding=str),
+            lxml.etree.tostring(content.xml.find('head/recipe_categories'), encoding=str),
         )
 
     def test_removing_all_categories_should_leave_no_trace(self):

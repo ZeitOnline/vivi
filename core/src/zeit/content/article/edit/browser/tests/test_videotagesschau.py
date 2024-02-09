@@ -177,7 +177,9 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             '<division><p>Auch das ist Tagesschau relevant.</p>'
             '</division>'
         )
-        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
+        article.xml.replace(
+            article.xml.find('body'), lxml.etree.fromstring('<body>%s</body>' % body)
+        )
         article.title = 'Tagesschaurelevanter Artikel'
         zeit.cms.content.interfaces.IUUID(article).id = 'myid'
         config = zope.app.appsetup.product.getProductConfiguration('zeit.content.article')
@@ -206,7 +208,9 @@ class Form2(zeit.content.article.testing.FunctionalTestCase):
             '<division><p>Auch das ist Tagesschau relevant.</p>'
             '</division>'
         )
-        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
+        article.xml.replace(
+            article.xml.find('body'), lxml.etree.fromstring('<body>%s</body>' % body)
+        )
         article.title = 'Tagesschaurelevanter Artikel'
         zeit.cms.content.interfaces.IUUID(article).id = 'myid'
         config = zope.app.appsetup.product.getProductConfiguration('zeit.content.article')

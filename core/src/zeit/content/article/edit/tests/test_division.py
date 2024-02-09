@@ -11,7 +11,9 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.article = zeit.content.article.article.Article()
-        self.body = zeit.content.article.edit.body.EditableBody(self.article, self.article.xml.body)
+        self.body = zeit.content.article.edit.body.EditableBody(
+            self.article, self.article.xml.find('body')
+        )
 
     def create_division(self):
         factory = zope.component.getAdapter(

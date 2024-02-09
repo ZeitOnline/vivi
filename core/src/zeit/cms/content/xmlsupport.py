@@ -103,8 +103,6 @@ def veto_internal(event):
 class PropertyToXMLAttribute:
     """Attribute nodes reside in the head."""
 
-    path = lxml.objectify.ObjectPath('.head.attribute')
-
     def __init__(self, context):
         self.context = context
         self.properties = dict(zeit.connector.interfaces.IWebDAVProperties(context))
@@ -131,7 +129,8 @@ class PropertyToXMLAttribute:
 
     def sync(self):
         # Remove all properties in xml first
-        self.path.setattr(self.context.xml, [])
+        for node in self.context.xml.xpath('//head/attribute'):
+            node.getparent().remove(node)
 
         # Now, set each property to xml, sort them to get a consistent xml
         for (name, namespace), value in sorted(self.properties.items()):
@@ -144,11 +143,11 @@ class PropertyToXMLAttribute:
         zope.event.notify(sync_event)
         if sync_event.vetoed:
             return
-        root = self.context.xml
-        self.path.addattr(root, value)
-        node = self.path.find(root)[-1]
-        node.set('ns', namespace)
-        node.set('name', name)
+        head = self.context.xml.find('head')
+        if head is None:
+            head = lxml.builder.E.head()
+            self.context.xml.append(head)
+        head.append(lxml.builder.E.attribute(value, ns=namespace, name=name))
 
     def delAttribute(self, namespace, name):
         root = self.context.xml
@@ -261,12 +260,11 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
     target_iface = zeit.cms.content.interfaces.ICommonMetadata
 
     def update_with_context(self, entry, metadata):
-        entry['supertitle'] = metadata.teaserSupertitle
-        if not entry['supertitle']:
-            entry['supertitle'] = metadata.supertitle
-        entry['title'] = metadata.teaserTitle
-        entry['text'] = entry['description'] = metadata.teaserText
-        entry['byline'] = metadata.byline
+        update_child_node(entry, 'supertitle', metadata.teaserSupertitle or metadata.supertitle)
+        update_child_node(entry, 'title', metadata.teaserTitle)
+        update_child_node(entry, 'text', metadata.teaserText)
+        update_child_node(entry, 'description', metadata.teaserText)
+        update_child_node(entry, 'byline', metadata.byline)
         if metadata.year:
             entry.set('year', str(metadata.year))
         if metadata.volume:
@@ -281,3 +279,11 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
             return
         if type_decl.type_identifier:
             entry.set('contenttype', str(type_decl.type_identifier))
+
+
+def update_child_node(parent, name, text):
+    node = parent.find(name)
+    if node is None:
+        node = lxml.etree.Element(name)
+        parent.append(node)
+    node.text = text

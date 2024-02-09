@@ -6,7 +6,6 @@ import html.entities
 import lxml.builder
 import lxml.etree
 import lxml.html.soupparser
-import lxml.objectify
 import pendulum
 import pytz
 import zope.cachedescriptors.property
@@ -714,11 +713,8 @@ class ReferenceStep(ConversionStep):
     def to_xml(self, node):
         unique_id = node.xpath('*[contains(@class, "href")]')[0].text or ''
 
-        # Some metadata may be None, which objectify accepts for creating child
-        # nodes, but etree doesn't. Fortunately, etree doesn't mind smuggling
-        # in an objectify node here.
-        factory = getattr(lxml.objectify.E, self.content_type)
-        new_node = factory(href=unique_id)
+        new_node = lxml.etree.Element(self.content_type)
+        new_node.set('href', unique_id)
         content = zeit.cms.interfaces.ICMSContent(unique_id, None)
         if content is not None:
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)

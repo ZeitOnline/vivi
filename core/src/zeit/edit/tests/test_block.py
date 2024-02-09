@@ -23,7 +23,7 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         )
         content = self.repository['testcontent']
         self.container = zeit.edit.tests.fixture.Container(content, xml)
-        self.block = zeit.edit.tests.fixture.Block(self.container, xml.block)
+        self.block = zeit.edit.tests.fixture.Block(self.container, xml.find('block'))
         # Fake traversal ability.
         ExampleContentType.__getitem__ = lambda s, key: self.container
 

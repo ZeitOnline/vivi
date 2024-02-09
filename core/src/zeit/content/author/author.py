@@ -286,7 +286,7 @@ class BiographyQuestions(
 
     def __getitem__(self, key):
         node = self.xml.xpath('//question[@id="%s"]' % key)
-        return Question(key, self.title(key), str(node[0]) if node else None)
+        return Question(key, self.title(key), node[0].text if node else None)
 
     def __setitem__(self, key, value):
         node = self.xml.xpath('//question[@id="%s"]' % key)

@@ -72,9 +72,11 @@ class TestStructure(unittest.TestCase, gocept.testing.assertion.Ellipsis):
         content = ExampleContentType()
         prop = Structure('.head.foo', zope.schema.Text(missing_value='missing'))
         prop.__set__(content, 'qux')
-        self.assertEllipsis('<foo...>qux</foo>', lxml.etree.tostring(content.xml.head.foo))
+        self.assertEllipsis('<foo...>qux</foo>', lxml.etree.tostring(content.xml.find('head/foo')))
         prop.__set__(content, 'missing')
-        self.assertEllipsis('<foo...xsi:nil="true"/>', lxml.etree.tostring(content.xml.head.foo))
+        self.assertEllipsis(
+            '<foo...xsi:nil="true"/>', lxml.etree.tostring(content.xml.find('head/foo'))
+        )
 
 
 class TestObjectPathProperty(unittest.TestCase, gocept.testing.assertion.Ellipsis):
@@ -84,9 +86,8 @@ class TestObjectPathProperty(unittest.TestCase, gocept.testing.assertion.Ellipsi
         content = ExampleContentType()
         prop = ObjectPathProperty('.raw_query', zope.schema.Text(missing_value='missing'))
         prop.__set__(content, 'solr!')
-        self.assertEqual(content.xml.findall('raw_query'), ['solr!'])
         self.assertEllipsis(
-            '<raw_query...>solr!</raw_query>', lxml.etree.tostring(content.xml.raw_query)
+            '<raw_query...>solr!</raw_query>', lxml.etree.tostring(content.xml.find('raw_query'))
         )
         prop.__set__(content, None)
         self.assertEqual(content.xml.findall('raw_query'), [])

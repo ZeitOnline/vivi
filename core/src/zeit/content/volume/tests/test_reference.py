@@ -41,7 +41,7 @@ class VolumeReferenceTest(zeit.content.volume.testing.FunctionalTestCase):
         reference = zope.component.getAdapter(
             volume, zeit.cms.content.interfaces.IXMLReference, name='related'
         )
-        self.assertEqual(volume.teaserText, reference.description)
+        self.assertEqual(volume.teaserText, reference.find('description').text)
 
     def test_volume_can_be_adapted_to_IReference(self):
         from zeit.content.volume.interfaces import IVolumeReference

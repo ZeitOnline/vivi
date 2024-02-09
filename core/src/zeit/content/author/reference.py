@@ -4,6 +4,7 @@ import grokcore.component as grok
 import lxml.builder
 import zope.security.proxy
 
+from zeit.cms.content.xmlsupport import update_child_node
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
@@ -23,7 +24,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     target_iface = zeit.content.author.interfaces.IAuthor
 
     def update_with_context(self, node, context):
-        node.display_name = context.display_name
+        update_child_node(node, 'display_name', context.display_name)
 
 
 class AuthorshipXMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):

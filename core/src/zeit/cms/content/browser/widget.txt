@@ -55,7 +55,7 @@ The widget also supports editing subnodes. That is that the data being edited
 is not a full tree but a node in a tree.
 
 >>> content.whole_tree = lxml.etree.fromstring('<a><b/><editme><c/></editme></a>')
->>> content.xml = content.whole_tree.editme
+>>> content.xml = content.whole_tree.find('editme')
 >>> widget.setRenderedValue(content.xml)
 >>> widget._getFormValue()
 '<editme>\r\n    <c/>\r\n</editme>\r\n'

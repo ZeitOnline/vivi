@@ -31,10 +31,12 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         if not body:
             body = '<division><p>Para1</p><p/></division>' '<division><p>Para2</p><p/></division>'
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
-        for division in article.xml.body.findall('division'):
+        article.xml.replace(
+            article.xml.find('body'), lxml.etree.fromstring('<body>%s</body>' % body)
+        )
+        for division in article.xml.findall('body/division'):
             division.set('type', 'page')
-        return zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        return zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
 
     def test_keys_contain_division_contents(self):
         body = self.get_body()
@@ -76,10 +78,12 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         body = self.get_body('<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
         self.assertEqual(['id-2', 'id-3'], body.keys())
         self.assertEqual(['foo', 'division'], [child.tag for child in body.xml.iterchildren()])
-        self.assertEqual(['p', 'p'], [child.tag for child in body.xml.division.iterchildren()])
+        self.assertEqual(
+            ['p', 'p'], [child.tag for child in body.xml.find('division').iterchildren()]
+        )
         self.assertEqual(
             ['I have no division', 'Only paras'],
-            [str(child) for child in body.xml.division.iterchildren()],
+            [x.text for x in body.xml.find('division').iterchildren()],
         )
 
     def test_adding_to_articles_without_division_should_migrate(self):
@@ -150,15 +154,15 @@ class TestCleaner(unittest.TestCase):
 
     def test_should_remove_name_attributes(self):
         art = self.get_article()
-        art.xml.body.division = ''
-        self.set_key(art.xml.body.division, 'divname')
+        art.xml.find('body').append(lxml.builder.E.division())
+        self.set_key(art.xml.find('body/division'), 'divname')
         self.clean(art)
-        self.assert_key(art.xml.body.division, None)
+        self.assert_key(art.xml.find('body/division'), None)
 
     def test_should_remove_namespace(self):
         art = self.get_article()
-        art.xml.body.division = ''
-        self.set_key(art.xml.body.division, 'divname')
+        art.xml.find('body').append(lxml.builder.E.division())
+        self.set_key(art.xml.find('body/division'), 'divname')
         self.clean(art)
         self.assertNotIn('namespaces.zeit.de/CMS/cp', zeit.cms.testing.xmltotext(art.xml))
 
@@ -167,8 +171,10 @@ class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
     def test_children_should_return_elements(self):
         body = '<division type="page"><p>Para1</p><p>Para2</p></division>'
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        article.xml.replace(
+            article.xml.find('body'), lxml.etree.fromstring('<body>%s</body>' % body)
+        )
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         validator = zeit.edit.interfaces.IValidator(article)
         self.assertEqual(
             [x.__name__ for x in body.values()], [x.__name__ for x in validator.children]

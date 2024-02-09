@@ -135,7 +135,7 @@ class FunctionalTestCase(
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
 
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         return zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, factory_name)
 
 

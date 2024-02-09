@@ -59,7 +59,7 @@ class RegionFactory(zeit.edit.block.ElementFactory):
     tag_name = 'cluster'
 
     def get_xml(self):
-        return getattr(lxml.builder.E, self.tag_name)()
+        return lxml.etree.Element(self.tag_name)
 
 
 class ReferencedCpFallbackProperty(zeit.cms.content.property.ObjectPathProperty):
@@ -369,7 +369,7 @@ class AreaFactory(zeit.edit.block.ElementFactory):
     title = _('Area')
 
     def get_xml(self):
-        return getattr(lxml.builder.E, self.tag_name)()
+        return lxml.etree.Element(self.tag_name)
 
 
 @grok.adapter(zeit.content.cp.interfaces.IElement)

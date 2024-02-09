@@ -91,7 +91,7 @@ class GlobTest(zeit.edit.testing.FunctionalTestCase):
         self.area.type = 'area'
         page['testarea'] = self.area
         zope.interface.alsoProvides(self.area, zeit.edit.interfaces.IArea)
-        self.block = zeit.edit.block.SimpleElement(self.area, self.xml.p)
+        self.block = zeit.edit.block.SimpleElement(self.area, self.xml.find('p'))
         self.block.__name__ = 'bar'
         self.area['bar'] = self.block
 

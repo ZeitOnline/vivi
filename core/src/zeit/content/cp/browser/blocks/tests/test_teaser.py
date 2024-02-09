@@ -146,7 +146,9 @@ class TeaserArticleBuilder:
         return self
 
     def with_citation(self, text):
-        body = zeit.content.article.edit.body.EditableBody(self.article, self.article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(
+            self.article, self.article.xml.find('body')
+        )
         citation = body.create_item('citation', 1)
         citation.text = text
         return self

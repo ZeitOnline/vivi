@@ -22,6 +22,7 @@ import zope.publisher.interfaces
 import zope.security.proxy
 import zope.traversing.browser.absoluteurl
 
+from zeit.cms.content.util import create_parent_nodes
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.xmlsupport
@@ -121,7 +122,14 @@ class ReferenceProperty:
                 for child in value.iterchildren():
                     xml.append(copy.copy(child))
         else:
-            self.path.setattr(xml, value)
+            for node in self._reference_nodes(instance):
+                node.getparent().remove(node)
+            parent, name = create_parent_nodes(self.path, instance.xml)
+            for node in value:
+                node.tag = name
+                parent.append(node)
+            else:
+                parent.text = None
         instance._p_changed = True
 
     def _check_for_references(self, values):
@@ -150,10 +158,13 @@ class ReferenceProperty:
         return None
 
     def _reference_nodes(self, instance):
-        try:
-            return self.path.find(zope.security.proxy.getObject(instance.xml))
-        except AttributeError:
+        xml = zope.security.proxy.getObject(instance.xml)
+        if str(self.path) == '.':
+            return [xml]
+        node = self.path.find(xml, None)
+        if node is None:
             return []
+        return list(node.getparent().iterchildren(node.tag))
 
     def update_metadata(self, instance, suppress_errors=False):
         for reference in self.__get__(instance, None):

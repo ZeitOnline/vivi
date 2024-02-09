@@ -1,12 +1,12 @@
 import sys
 import xml.sax.saxutils
 
-import lxml.builder
 import lxml.etree
 import lxml.objectify
 import zope.component
 import zope.schema.interfaces
 
+from zeit.cms.content.util import create_parent_nodes
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.connector.resource
@@ -41,47 +41,43 @@ class ObjectPathProperty:
                 if node.text is not None:
                     return self.field.bind(instance).fromUnicode(str(node.text))
             except zope.schema.interfaces.ValidationError:
-                # Fall back to not using the field when the validaion fails.
+                # Fall back to not using the field when the validation fails.
                 pass
-        try:
-            value = node.pyval
-        except AttributeError:
-            return None
-        if isinstance(value, str):
-            # This is safe because lxml only uses str for optimisation
-            # reasons and unicode when non us-ascii chars are in the str:
-            value = str(value)
-        return value
+        return node.text or ''
 
     def __set__(self, instance, value):
         if self.path is None:
             # We cannot just set the new value because setting detaches the
-            # instance.xml from the original tree leaving instance independet
+            # instance.xml from the original tree leaving instance independent
             # of the xml-tree.
-            node = instance.xml
-            parent = node.getparent()
-            new_node = lxml.builder.E.root(getattr(lxml.builder.E, node.tag)(value))[node.tag]
-            parent.replace(node, new_node)
-            instance.xml = new_node
+            root = instance.xml
+            parent = root.getparent()
+            node = lxml.etree.Element(root.tag)
+            node.text = value
+            parent.replace(root, node)
+            instance.xml = node
         else:
             if value is not None:
-                self.path.setattr(instance.xml, value)
+                parent, name = create_parent_nodes(self.path, instance.xml)
+                node = parent.find(name)
+                if node is None:
+                    node = lxml.etree.Element(name)
+                    parent.append(node)
+                # XXX Previously this used self.path.setattr, relying on
+                # lxml.objectify type conversion (int and bool mostly).
+                # We probably should use self.field instead?
+                if isinstance(value, bool):
+                    value = str(value).lower()
+                node.text = str(value)
             else:
-                node = self.path.find(instance.xml, None)
+                node = self.getNode(instance)
                 if node is not None:
                     node.getparent().remove(node)
-            node = self.getNode(instance)
 
     def getNode(self, instance):
         if self.path is None:
             return instance.xml
-        try:
-            node = self.path.find(instance.xml)
-        except AttributeError:
-            return None
-        if isinstance(node, lxml.objectify.NoneElement):
-            return None
-        return node
+        return self.path.find(instance.xml, None)
 
 
 class Structure(ObjectPathProperty):
@@ -116,7 +112,7 @@ class Structure(ObjectPathProperty):
         if node is None:
             return self.field.missing_value if self.field else None
         node = lxml.etree.fromstring(str(self.remove_namespaces(node)))
-        result = [xml.sax.saxutils.escape(str(node))]
+        result = [xml.sax.saxutils.escape(node.text)]
         for child in node.iterchildren():
             result.append(lxml.etree.tostring(child, encoding=str))
         return ''.join(result)
@@ -183,20 +179,19 @@ class MultiPropertyBase:
             return self
         tree = instance.xml
         result = []
-        try:
-            element_set = self.path.find(tree)
-        except AttributeError:
-            # no keywords
-            element_set = []
-        for node in element_set:
-            result.append(self._element_factory(node, tree))
+        anchor = self.path.find(tree, None)
+        if anchor is not None:
+            for node in anchor.getparent().iterchildren(anchor.tag):
+                result.append(self._element_factory(node, tree))
         return self.result_type(elem for elem in result if elem is not None)
 
     def __set__(self, instance, value):
         # Remove nodes.
         tree = instance.xml
-        for entry in self.path.find(tree, []):
-            entry.getparent().remove(entry)
+        node = self.path.find(tree, None)
+        if node is not None:
+            for entry in node.getparent().iterchildren(node.tag):
+                entry.getparent().remove(entry)
         # Add new nodes:
         value = self.sorted(value)
         self.path.setattr(tree, [self._node_factory(entry, tree) for entry in value])
@@ -210,10 +205,11 @@ class MultiPropertyBase:
 
 class SimpleMultiProperty(MultiPropertyBase):
     def _element_factory(self, node, tree):
-        return str(node)
+        return node.text
 
     def _node_factory(self, entry, tree):
-        return entry
+        name = str(self.path).split('.')[-1]
+        return getattr(lxml.builder.E, name)(entry)
 
 
 class SingleResource(ObjectPathProperty):

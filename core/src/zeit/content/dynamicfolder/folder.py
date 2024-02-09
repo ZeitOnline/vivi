@@ -91,7 +91,7 @@ class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Fold
 
     @property
     def content_template_file(self):
-        template_file = self.config.head.findtext('cp_template')
+        template_file = self.config.find('head').findtext('cp_template')
         return zeit.cms.interfaces.ICMSContent(template_file, None)
 
     def _create_virtual_content(self, key):
@@ -163,8 +163,8 @@ class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Fold
 
         if not hasattr(self, '_v_virtual_content'):
             contents = {}
-            key_getter = self.config.body.get('key', 'text()')
-            for entry in self.config.body.getchildren():
+            key_getter = self.config.find('body').get('key', 'text()')
+            for entry in self.config.find('body').getchildren():
                 key_match = entry.xpath(key_getter)
                 if not key_match:
                     continue  # entry provides no key

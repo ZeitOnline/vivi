@@ -114,7 +114,11 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
                         % (image.uniqueId, self.context.uniqueId)
                     )
             else:
-                entry['image'] = image_node
+                existing = entry.find('image')
+                if existing is None:
+                    entry.append(image_node)
+                else:
+                    entry.replace(existing, image_node)
         else:
             # No image referenced. Remove an image node we might have produced
             # earlier.

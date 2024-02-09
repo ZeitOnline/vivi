@@ -196,12 +196,12 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         path = '//covers/cover[@id="{}" and @product_id="{}"]'.format(cover_id, product_id)
         node = self.xml.xpath(path)
         if node:
-            self.xml.covers.remove(node[0])
+            self.xml.find('covers').remove(node[0])
         if imagegroup is not None:
             node = lxml.builder.E.cover(
                 id=cover_id, product_id=product_id, href=imagegroup.uniqueId
             )
-            self.xml.covers.append(node)
+            self.xml.find('covers').append(node)
         super().__setattr__('_p_changed', True)
 
     def _is_valid_cover_id_and_product_id(self, cover_id, product_id):

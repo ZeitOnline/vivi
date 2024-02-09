@@ -64,7 +64,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
         if zeit.content.article.edit.interfaces.IDivision.providedBy(item):
             node = self.xml
         else:
-            node = self.xml.division[:][-1]
+            node = self.xml.findall('division')[-1]
 
         node.append(zope.proxy.removeAllProxies(item.xml))
 
@@ -108,7 +108,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
 @grok.implementer(zeit.content.article.edit.interfaces.IEditableBody)
 def get_editable_body(article):
     return zope.component.queryMultiAdapter(
-        (article, zope.security.proxy.removeSecurityProxy(article.xml['body'])),
+        (article, zope.security.proxy.removeSecurityProxy(article.xml.find('body'))),
         zeit.content.article.edit.interfaces.IEditableBody,
     )
 

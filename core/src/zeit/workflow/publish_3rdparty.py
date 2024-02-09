@@ -48,7 +48,7 @@ class BigQueryMixin:
         properties['tagging'] = {k: v for k, v in tms.items() if k.startswith('rtr_')}
         return {
             'properties': properties,
-            'body': badgerfish(self.context.xml.body)['body'],
+            'body': badgerfish(self.context.xml.find('body'))['body'],
         }
 
     def retract_json(self):
