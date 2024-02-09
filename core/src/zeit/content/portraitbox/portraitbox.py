@@ -16,10 +16,7 @@ import zeit.wysiwyg.html
     zeit.content.portraitbox.interfaces.IPortraitbox, zeit.cms.interfaces.IAsset
 )
 class Portraitbox(zeit.cms.content.xmlsupport.XMLContentBase):
-    default_template = (
-        '<container layout="artbox" label="portrait" '
-        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />'
-    )
+    default_template = '<container layout="artbox" label="portrait" />'
 
     name = zeit.cms.content.property.ObjectPathProperty('.block.title')
     text = zeit.cms.content.property.Structure('.block.text')

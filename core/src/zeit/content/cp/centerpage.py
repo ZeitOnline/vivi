@@ -1,11 +1,10 @@
-import collections
 import copy
 import itertools
 import xml.sax.saxutils
 
 import gocept.cache.property
-import gocept.lxml.interfaces
 import grokcore.component as grok
+import lxml.builder
 import lxml.etree
 import zope.interface
 import zope.lifecycleevent
@@ -40,12 +39,7 @@ BODY_NAME = 'body'
 )
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     default_template = """\
-<centerpage
-  xmlns:cp="http://namespaces.zeit.de/CMS/cp"
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-  xmlns:xi="http://www.w3.org/2001/XInclude"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<centerpage xmlns:cp="http://namespaces.zeit.de/CMS/cp">
   <head/>
   <body/>
 </centerpage>
@@ -249,7 +243,7 @@ class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 @grok.implementer(zeit.content.cp.interfaces.IBody)
 class Body(zeit.edit.container.Base, grok.MultiAdapter):
     grok.provides(zeit.content.cp.interfaces.IBody)
-    grok.adapts(zeit.content.cp.interfaces.ICenterPage, gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.cp.interfaces.ICenterPage, zeit.cms.interfaces.IXMLElement)
 
     __name__ = BODY_NAME
     _find_item = lxml.etree.XPath('./*[@area = $name]')
@@ -335,16 +329,8 @@ def publish_priority_cp(context):
         return zeit.cms.workflow.interfaces.PRIORITY_HIGH
 
 
-NSMAP = collections.OrderedDict(
-    (
-        ('cp', 'http://namespaces.zeit.de/CMS/cp'),
-        ('py', 'http://codespeak.net/lxml/objectify/pytype'),
-        ('xi', 'http://www.w3.org/2001/XInclude'),
-        ('xsd', 'http://www.w3.org/2001/XMLSchema'),
-        ('xsi', 'http://www.w3.org/2001/XMLSchema-instance'),
-    )
-)
-ElementMaker = lxml.objectify.ElementMaker(nsmap=NSMAP)
+NSMAP = {'cp': 'http://namespaces.zeit.de/CMS/cp'}
+ElementMaker = lxml.builder.ElementMaker(nsmap=NSMAP)
 
 
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
@@ -352,7 +338,7 @@ ElementMaker = lxml.objectify.ElementMaker(nsmap=NSMAP)
 def rendered_xml(context):
     root = getattr(ElementMaker, context.xml.tag)(**context.xml.attrib)
     root.append(copy.copy(context.xml.head))
-    body = lxml.objectify.E.body()
+    body = lxml.builder.E.body()
     root.append(body)
     for region in context.body.values():
         body.append(zeit.content.cp.interfaces.IRenderedXML(region))

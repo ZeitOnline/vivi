@@ -1,7 +1,7 @@
 import collections
 import logging
 
-from lxml.objectify import E
+from lxml.builder import E
 import grokcore.component as grok
 import lxml.etree
 import zope.interface

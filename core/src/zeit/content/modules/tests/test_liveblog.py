@@ -1,6 +1,6 @@
 from unittest import mock
 
-import lxml.etree
+import lxml.builder
 
 import zeit.content.modules.embed
 import zeit.content.modules.testing
@@ -12,7 +12,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.liveblog.TickarooLiveblog(
-            self.context, lxml.objectify.XML('<container/>')
+            self.context, lxml.builder.E.liveblog()
         )
 
     def test_liveblog_stores_local_values_in_xml(self):

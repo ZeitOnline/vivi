@@ -75,8 +75,8 @@ class HTMLConverter:
         for node in html.iterchildren():
             # support tails at the toplevel by faking a wrapper node
             xml = '<foo>%s</foo>' % lxml.etree.tostring(node, encoding=str)
-            objectified = lxml.objectify.fromstring(xml)
-            for child in objectified.iterchildren():
+            node = lxml.etree.fromstring(xml)
+            for child in node.iterchildren():
                 tree.append(child)
 
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1

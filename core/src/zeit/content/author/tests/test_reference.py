@@ -30,7 +30,7 @@ class AuthorshipXMLReferenceUpdater(zeit.content.author.testing.FunctionalTestCa
             """\
 <reference...>
   ...
-  <title xsi:nil="true"/>
+  <title/>
   ...
   <author...href="http://xml.zeit.de/shakespeare"...>
     <display_name...>William Shakespeare</display_name>
@@ -51,7 +51,7 @@ class AuthorshipXMLReferenceUpdater(zeit.content.author.testing.FunctionalTestCa
             """\
 <reference...>
   ...
-  <title xsi:nil="true"/>
+  <title/>
   ...
   <author...href="http://xml.zeit.de/shakespeare"...>
     <display_name...>William Shakespeare</display_name>

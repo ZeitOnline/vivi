@@ -1,6 +1,7 @@
 from unittest import mock
 import unittest
 
+import lxml.builder
 import zope.lifecycleevent
 
 from zeit.cms.checkout.helper import checked_out
@@ -15,9 +16,7 @@ class ReferenceTest(unittest.TestCase):
         return Reference
 
     def get_ref(self):
-        import lxml.objectify
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.ref())
+        tree = lxml.builder.E.tree(lxml.builder.E.ref())
         ref = self.test_class(None, tree.ref)
         ref._validate = mock.Mock()
         return ref

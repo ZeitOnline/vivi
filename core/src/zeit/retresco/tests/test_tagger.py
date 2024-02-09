@@ -2,7 +2,7 @@
 from unittest import mock
 import unittest
 
-import lxml.objectify
+import lxml.etree
 import zope.component
 import zope.interface
 import zope.interface.verify
@@ -397,7 +397,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         content = create_testcontent()
         tagger = Tagger(content)
         with mock.patch('zeit.retresco.tagger.Tagger.to_xml') as to_xml:
-            to_xml.return_value = lxml.objectify.fromstring(
+            to_xml.return_value = lxml.etree.fromstring(
                 """
 <rankedTags>
     <tag uuid="uid-karenduve">Karen Duve</tag>

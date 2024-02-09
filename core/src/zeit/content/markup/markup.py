@@ -12,7 +12,7 @@ import zeit.content.markup.interfaces
 
 
 MARKUP_TEMPLATE = """\
-<markup xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<markup>
     <head/>
     <body/>
 </markup>

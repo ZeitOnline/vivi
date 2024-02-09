@@ -1,4 +1,4 @@
-from lxml.objectify import E
+from lxml.builder import E
 import zope.interface
 
 import zeit.cms.content.property

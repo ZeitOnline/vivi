@@ -1,8 +1,7 @@
 from io import StringIO
 
-import gocept.lxml.objectify
 import grokcore.component as grok
-import lxml.objectify
+import lxml.etree
 import persistent
 import persistent.interfaces
 import zope.interface
@@ -28,7 +27,7 @@ class XMLRepresentationBase:
             if self.default_template is None:
                 raise NotImplementedError('default_template needs to be set in subclasses')
             xml_source = StringIO(self.default_template)
-        self.xml = gocept.lxml.objectify.fromfile(xml_source)
+        self.xml = lxml.etree.parse(xml_source).getroot()
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLContent)
@@ -195,9 +194,6 @@ def map_dav_properties_to_xml_before_checkin(context, event):
 
 COMMON_NAMESPACES = {
     'cp': 'http://namespaces.zeit.de/CMS/cp',
-    'py': 'http://codespeak.net/lxml/objectify/pytype',
-    'xsd': 'http://www.w3.org/2001/XMLSchema',
-    'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
 }
 
 

@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.interface
 import zope.schema
@@ -142,7 +142,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if context.copyright is None:
             return
         text, company, freetext, link, nofollow = context.copyright
-        node = lxml.objectify.E.copyright(text)
+        node = lxml.builder.E.copyright(text)
         if link:
             node.set('link', link)
             if nofollow:

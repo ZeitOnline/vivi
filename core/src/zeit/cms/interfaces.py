@@ -153,6 +153,10 @@ class IMetrics(zope.interface.Interface):
     """Marker interface to register opentelemetry metrics provider."""
 
 
+class IXMLElement(zope.interface.Interface):
+    """An lxml.etree.ElementBase object."""
+
+
 def normalize_filename(filename):
     # NOTE: The master version of the algorithm is implemented in JS in
     # zeit.cms.browser.js:filename.js, keep in sync!

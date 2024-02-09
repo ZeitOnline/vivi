@@ -28,18 +28,14 @@ True
 Initially there are no entries:
 
 >>> print(zeit.cms.testing.xmltotext(ib.xml))
-<container
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    layout="artbox" label="info"/>
+<container layout="artbox" label="info"/>
 
 
 The title of an infobox is a supertitle:
 
 >>> ib.supertitle = 'Altersvorsorge'
 >>> print(zeit.cms.testing.xmltotext(ib.xml))
-<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
+<container layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
 </container>
 
@@ -49,10 +45,10 @@ Add a contents element:
 ...     ('Renteninformation', '<p>Nutzen Sie die Renteninformation, etc</p>'),)
 >>> ib.supertitle = 'Altersvorsorge'
 >>> print(zeit.cms.testing.xmltotext(ib.xml))
-<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
+<container layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
   <block>
-    <title py:pytype="str">Renteninformation</title>
+    <title>Renteninformation</title>
     <text>
       <p>Nutzen Sie die Renteninformation, etc</p>
     </text>
@@ -67,16 +63,16 @@ Add a contents element:
 ...      'alle</p><p>Fitze fitze fatze</p>'))
 >>> ib.supertitle = 'Altersvorsorge'
 >>> print(zeit.cms.testing.xmltotext(ib.xml))
-<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
+<container layout="artbox" label="info">
   <supertitle...>Altersvorsorge</supertitle>
   <block>
-    <title py:pytype="str">Informationen</title>
+    <title>Informationen</title>
     <text>
       <p>Nutzen Sie die Renteninformation, etc</p>
     </text>
   </block>
   <block>
-    <title py:pytype="str">Fehlende Versicherungszeiten</title>
+    <title>Fehlende Versicherungszeiten</title>
     <text>
       <p>Pruefen Sie, ob in <strong>Ihrer</strong> Renteninformation alle</p>
       <p>Fitze fitze fatze</p>

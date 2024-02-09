@@ -26,7 +26,7 @@ True
 A book recension has an xml representation:
 
 >>> print(zeit.cms.testing.xmltotext(rec.xml))
-<entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>
+<entry xmlns="http://namespaces.zeit.de/bibinfo"/>
 
 Set values and verify the xml:
 
@@ -46,7 +46,7 @@ Set values and verify the xml:
 >>> rec.price = '25,99'
 
 >>> print(zeit.cms.testing.xmltotext(rec.xml))
-<entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<entry xmlns="http://namespaces.zeit.de/bibinfo">
   <auth-info>
     <author>Klaus</author>
     <author>Hans</author>
@@ -111,10 +111,10 @@ Let's add the recension we've created above:
 The recension is now already part of the article:
 
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
   <head>
     <header/>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
         name="has_recensions">yes</attribute>
   </head>
   <body>

@@ -4,6 +4,7 @@ from io import BytesIO
 from unittest import mock
 import unittest
 
+import lxml.etree
 import pytz
 import transaction
 import zope.component
@@ -338,13 +339,11 @@ class TestXMLSupport(zeit.connector.testing.ConnectorTest):
         self.assertEqual('<a><b/></a>', res.properties[('foo', 'bar')])
 
     def test_xml_properties_are_returned_with_surrounding_tag(self):
-        import lxml.objectify
-
         res = self.get_resource('xmltest', '')
         res.properties[('foo', 'bar')] = '<d:foo xmlns:d="bar"><a><b/></a></d:foo>'
         self.connector.add(res)
         res = self.connector[res.id]
-        prop = lxml.objectify.fromstring(res.properties[('foo', 'bar')])
+        prop = lxml.etree.fromstring(res.properties[('foo', 'bar')])
         self.assertEqual(['a'], [n.tag for n in prop.getchildren()])
 
 

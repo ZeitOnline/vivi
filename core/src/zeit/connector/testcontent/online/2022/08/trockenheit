@@ -48,7 +48,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/dpa" name="urn">urn:newsml:dpa.com:20090101:220809-99-323096</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="uuid">{urn:uuid:70be866f-1aac-422a-a38e-936722358e1c}</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/dpa" name="version">2</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
   &lt;initialized_object&gt;
     &lt;klass&gt;
       &lt;global name="Provides" module="zope.interface.declarations"/&gt;

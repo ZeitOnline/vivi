@@ -13,10 +13,7 @@ import zeit.content.advertisement.interfaces
     zeit.content.advertisement.interfaces.IAdvertisement, zeit.cms.interfaces.IEditorialContent
 )
 class Advertisement(zeit.cms.content.xmlsupport.XMLContentBase):
-    default_template = (
-        '<advertisement xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        '<head/><body/></advertisement>'
-    )
+    default_template = '<advertisement><head/><body/></advertisement>'
 
     supertitle = zeit.cms.content.property.ObjectPathProperty(
         '.body.supertitle', zeit.content.advertisement.interfaces.IAdvertisement['supertitle']

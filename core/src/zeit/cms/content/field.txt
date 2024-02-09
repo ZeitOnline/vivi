@@ -31,15 +31,15 @@ True
 Replacing node when there are siblings present
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
->>> import lxml.objectify
->>> root = lxml.objectify.E.root()
->>> root.append(lxml.objectify.E.child())
->>> root.append(lxml.objectify.E.child())
+>>> import lxml.builder
+>>> root = lxml.builder.E.root()
+>>> root.append(lxml.builder.E.child())
+>>> root.append(lxml.builder.E.child())
 >>> content = Content()
 >>> field = XMLTree()
 >>> field.__name__ = 'xml'
 >>> field.set(content, root.child)
->>> field.set(content, lxml.objectify.E.new())
+>>> field.set(content, lxml.builder.E.new())
 >>> print(zeit.cms.testing.xmltotext(root))
 <root...>
   <new/>

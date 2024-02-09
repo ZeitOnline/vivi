@@ -1,5 +1,4 @@
 import lxml.etree
-import lxml.objectify
 import zope.lifecycleevent
 
 import zeit.cms.testing
@@ -265,7 +264,6 @@ class CustomQueryTest(zeit.content.cp.testing.FunctionalTestCase):
         source = zeit.cms.content.interfaces.ICommonMetadata['serie'].source(None)
         autotest = source.find('Autotest')
         area.query = (('serie', 'eq', autotest),)
-        lxml.objectify.deannotate(area.xml, cleanup_namespaces=True)
         self.assertEllipsis(
             '<query...><condition...type="serie"...>Autotest' '</condition></query>',
             lxml.etree.tostring(area.xml.query, encoding=str),

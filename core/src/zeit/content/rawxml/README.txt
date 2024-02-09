@@ -17,11 +17,11 @@ Basics
 
 Create an intance and set some data:
 
->>> import lxml.objectify
+>>> import lxml.etree
 >>> import zeit.content.rawxml.rawxml
 >>> content = zeit.content.rawxml.rawxml.RawXML()
 >>> content.title = 'Roh'
->>> content.xml = lxml.objectify.fromstring('<a/>')
+>>> content.xml = lxml.etree.fromstring('<a/>')
 
 ``content`` provides the IRawXML interface:
 

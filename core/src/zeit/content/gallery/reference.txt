@@ -78,7 +78,7 @@ An xml reference to content also indicates the gallery:
 <reference ...type="intern" href="http://xml.zeit.de/online/content"...>
   ...
   <gallery type="intern" href="http://xml.zeit.de/gallery"...>
-    <supertitle xsi:nil="true"/>
+    <supertitle/>
     ...
   </gallery>
 </reference>

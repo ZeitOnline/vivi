@@ -2,6 +2,7 @@ import logging
 import os.path
 
 import grokcore.component as grok
+import lxml.builder
 import lxml.etree
 import zope.interface
 import zope.location.location
@@ -50,7 +51,7 @@ class ContentList:
         if unique_id is None:
             raise ValueError('Cannot add objects without uniqueId.')
         pin_map = self.pin_map()
-        entry = lxml.objectify.E.block(uniqueId=unique_id, href=unique_id)
+        entry = lxml.builder.E.block(uniqueId=unique_id, href=unique_id)
         self.entries.insert(position, entry)
         while self.object_limit and len(self) > self.object_limit:
             last = list(self.keys())[-1]
@@ -179,10 +180,7 @@ class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
     title = zeit.cms.content.property.ObjectPathProperty('.title')
 
     default_template = """\
-        <channel
-          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+        <channel>
           <title/>
           <container/>
         </channel>

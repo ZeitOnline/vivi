@@ -322,7 +322,7 @@ The url is also just returned if it is completely unrelated:
 We map all <a href=..."> according to the schema above:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <title>Title</title>
@@ -383,7 +383,7 @@ copied to the article. To see this, set a copyright and a BU for the image:
 An article looks as follow:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <title>Title</title>
@@ -433,7 +433,7 @@ the image is put into the xml:
     <title>Title</title>
     <p>Fuer menschliche</p>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
-      <bu py:pytype="str">Cap cap cap</bu>
+      <bu>Cap cap cap</bu>
      </image>
     <p>Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
@@ -445,7 +445,7 @@ There may be old content which has an <image> inside <p> nodes. The <img> is
 extracted and put before the <p>.
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <title>Title</title>
@@ -487,7 +487,7 @@ Converting html to xml also splits up paragraphs as necessary:
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
-        <bu py:pytype="str">Cap cap cap</bu>
+        <bu>Cap cap cap</bu>
     </image>
     <p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
@@ -499,7 +499,7 @@ possible at all, but it turns out it is, thus users use it, so we need to
 support it.)
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <title>Title</title>
@@ -538,7 +538,7 @@ Zellen ist <a href="#">das</a> toll.</p>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
     <p>Fuer menschliche
-    <a href="#"><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu py:pytype="str">Cap cap cap</bu></image></a>
+    <a href="#"><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu>Cap cap cap</bu></image></a>
     Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
   </body>
@@ -548,7 +548,7 @@ Zellen ist <a href="#">das</a> toll.</p>
 We are greedy against old paths in the XML:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>Fuer menschliche</p>
@@ -574,7 +574,7 @@ We are greedy against old paths in the XML:
 If the image does not longer exists, img-tag with the unique id is rendred:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>Fuer menschliche</p>
@@ -600,7 +600,7 @@ If the image does not longer exists, img-tag with the unique id is rendred:
 When the url doesn't belong to the CMS it is put out directly, as well:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>Fuer menschliche</p>
@@ -632,7 +632,7 @@ the cms, a simple <image src="..."> element is created:
 ...     <p><img src="http://images.gocept.com/bilder/asdf.jpg"/></p>
 ...     <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<article>
   <head/>
   <body>
     <p>Fuer menschliche</p>
@@ -648,7 +648,7 @@ Make sure this works also when the url starts with the repository url:
 ...     <p><img src="http://127.0.0.1/repository/bilder/asdf.jpg"/></p>
 ...     <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<article>
   <head/>
   <body>
     <p>Fuer menschliche</p>
@@ -665,7 +665,7 @@ too:
 ...     <p><img src="http://127.0.0.1/repository/testcontent"/></p>
 ...     <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<article>
   <head/>
   <body>
     <p>Fuer menschliche</p>
@@ -682,11 +682,11 @@ though it's nested.
 ...            Hurz</strong> foobar </p>
 ...     <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<article>
   <head/>
   <body>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-        <bu py:pytype="str">Cap cap cap</bu>
+        <bu>Cap cap cap</bu>
     </image>
     <p><strong> Hurz</strong> foobar </p>
     <p>Selbst wenn </p>
@@ -723,7 +723,7 @@ Embedding videos
 Videos are represented with the ``<video>`` tag in XML:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
@@ -753,7 +753,7 @@ information:
 When there is no expires or format, or empty ones, empty divs are rendered:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
@@ -841,7 +841,7 @@ Double video
 ~~~~~~~~~~~~
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <video href="http://video.zeit.de/video/20080402334ddf"
@@ -880,7 +880,7 @@ Embedding audio
 Audio is represented with the ``<audio>`` tag in XML:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
@@ -908,7 +908,7 @@ information:
 When there is no expires or empty ones, empty divs are rendered:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
@@ -957,7 +957,7 @@ It is possible to enter RAW html in the editor. In the XML it is marked up with
 the ``<raw>`` tag:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
@@ -1075,7 +1075,7 @@ Tables
 ------
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <table>
@@ -1148,7 +1148,7 @@ Portraitbox
 >>> repository['2006']['pb'] = zeit.content.portraitbox.portraitbox.Portraitbox()
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <portraitbox href="http://xml.zeit.de/2006/pb" layout="short"/>
@@ -1197,7 +1197,7 @@ nothing bad happens:
 Empty xml should convert to html:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <portraitbox/>
@@ -1221,7 +1221,7 @@ Infobox
 >>> repository['2006']['ib'] = zeit.content.infobox.infobox.Infobox()
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <infobox href="http://xml.zeit.de/2006/ib"/>
@@ -1252,7 +1252,7 @@ Timeline
 -------
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <timeline href="http://xml.zeit.de/2006/ib"/>
@@ -1286,7 +1286,7 @@ Gallery
 >>> repository['2006']['gal'] = zeit.content.gallery.gallery.Gallery()
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <gallery href="http://xml.zeit.de/2006/gal"/>
@@ -1318,7 +1318,7 @@ Gallery
 Empty xml should convert to html:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <gallery/>
@@ -1337,7 +1337,7 @@ Citation
 --------
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <citation text="Gallia est omnis divisa in partes tres"
@@ -1384,7 +1384,7 @@ Citation
 Empty citation should not break:
 
 >>> source = '''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+... <article>
 ...   <head/>
 ...   <body>
 ...     <citation/>

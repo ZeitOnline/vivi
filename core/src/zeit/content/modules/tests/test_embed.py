@@ -1,6 +1,6 @@
 from unittest import mock
 
-import lxml.objectify
+import lxml.builder
 
 import zeit.content.modules.embed
 import zeit.content.modules.testing
@@ -11,9 +11,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         super().setUp()
         self.context = mock.Mock()
         self.context.__parent__ = None
-        self.module = zeit.content.modules.embed.Embed(
-            self.context, lxml.objectify.XML('<container/>')
-        )
+        self.module = zeit.content.modules.embed.Embed(self.context, lxml.builder.E.container())
         self.module.url = 'https://twitter.com/example'
 
     def test_stores_local_values_in_xml(self):

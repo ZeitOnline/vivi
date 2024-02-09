@@ -3,6 +3,7 @@ from io import StringIO
 from unittest import mock
 import unittest
 
+import lxml.etree
 import pytz
 import zope.component
 import zope.interface
@@ -70,12 +71,10 @@ class GlobTest(zeit.edit.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
 
-        import lxml.objectify
-
         import zeit.edit.block
         import zeit.edit.container
 
-        self.xml = lxml.objectify.XML(
+        self.xml = lxml.etree.fromstring(
             """
 <body xmlns:cms="http://namespaces.zeit.de/CMS/cp">
   <p cms:type="foo">Para1</p>

@@ -1,4 +1,4 @@
-import lxml.objectify
+import lxml.builder
 import zope.component
 
 import zeit.content.article.article
@@ -22,7 +22,7 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
     def test_teaser_attribute_should_be_added_to_xml(self):
         from zeit.content.article.edit.division import Division
 
-        div = Division(None, lxml.objectify.E.division())
+        div = Division(None, lxml.builder.E.division())
         teaser = 'My div teaser'
         div.teaser = teaser
         self.assertEqual(teaser, div.teaser)

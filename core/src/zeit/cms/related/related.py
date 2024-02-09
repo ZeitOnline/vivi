@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.interface
 
@@ -39,7 +39,7 @@ def related_from_template(context):
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def BasicReference(context, suppress_errors=False):
-    reference = lxml.objectify.E.reference()
+    reference = lxml.builder.E.reference()
     reference.set('type', 'intern')
     reference.set('href', context.uniqueId)
 

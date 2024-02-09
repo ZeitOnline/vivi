@@ -1,17 +1,16 @@
 # coding: utf8
 import contextlib
 
+import lxml.builder
+
+from zeit.content.article.edit.image import Image
+import zeit.cms.interfaces
 import zeit.content.article.testing
 
 
 class ImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_image_can_be_set(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-        import zeit.cms.interfaces
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
         image = Image(None, tree.image)
         image.__name__ = 'myname'
         image.display_mode = 'float'
@@ -28,18 +27,14 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEllipsis(
             """\
 <image ... src="{image_uid}" ... is_empty="False">
-  <bu xsi:nil="true"/>
+  <bu/>
 </image>
         """.format(image_uid=image_uid),
             zeit.cms.testing.xmltotext(image.xml),
         )
 
     def test_setting_image_to_none_removes_href(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
         image = Image(None, tree.image)
         image.xml.set('src', 'testid')
         image.references = None
@@ -56,7 +51,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.connector.interfaces
 
         article_xml = """
-        <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+        <article>
             <head/>
             <body>
               <division type="page">
@@ -250,7 +245,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(None, service['image'])
 
     def test_image_block_retrieves_the_correct_xml_node(self):
-        # The lxml.objectify API offer an insiduous source of bugs: Iterating
+        # The lxml API offer an insiduous source of bugs: Iterating
         # over a single element a) is possible and b) yields all siblings with
         # the same tag. So it has been easy for SingleReferenceProperty to
         # overlook the fact that when we find a single element via xpath,
@@ -366,11 +361,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(['large', 'float'], list(source(image)))
 
     def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
         tree.image.set('layout', 'float-square')
         image = Image(None, tree.image)
         self.assertEqual('float', image.display_mode)
@@ -379,11 +370,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('large', image.display_mode)
 
     def test_variant_name_defaults_to_layout_if_not_set_for_bw_compat(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
         tree.image.set('layout', 'float-square')
         image = Image(None, tree.image)
         self.assertEqual('square', image.variant_name)

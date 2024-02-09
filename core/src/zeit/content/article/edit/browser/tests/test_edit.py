@@ -6,7 +6,7 @@ import unittest
 
 from selenium.webdriver.common.keys import Keys
 import gocept.testing.mock
-import lxml.objectify
+import lxml.etree
 import transaction
 import zope.component
 
@@ -45,7 +45,7 @@ class TextViewHelper:
                 '<division><p>Para 3</p><p>Para 4</p></division>'
             )
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
+        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
         for division in article.xml.body.findall('division'):
             division.set('type', 'page')
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)

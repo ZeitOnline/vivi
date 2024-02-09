@@ -1,23 +1,21 @@
 import unittest
 
-import lxml
+import lxml.builder
+import lxml.etree
 import zope.schema
 
+from zeit.content.article.edit.interfaces import IRawXML
 import zeit.cms.testing
 import zeit.content.article.testing
 
 
 class RawXMLTest(unittest.TestCase):
     def test_root_tag_must_be_raw(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.interfaces import IRawXML
-
         field = IRawXML['xml']
         with self.assertRaises(zope.schema.ValidationError) as e:
-            field.validate(lxml.objectify.E.foo())
+            field.validate(lxml.builder.E.foo())
             self.assertIn('The root element must be <raw>', str(e.exception))
-        field.validate(lxml.objectify.E.raw())
+        field.validate(lxml.builder.E.raw())
 
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):

@@ -1,6 +1,7 @@
 import sys
 import xml.sax.saxutils
 
+import lxml.builder
 import lxml.etree
 import lxml.objectify
 import zope.component
@@ -59,8 +60,7 @@ class ObjectPathProperty:
             # of the xml-tree.
             node = instance.xml
             parent = node.getparent()
-            new_node = lxml.objectify.E.root(getattr(lxml.objectify.E, node.tag)(value))[node.tag]
-            lxml.objectify.deannotate(new_node)
+            new_node = lxml.builder.E.root(getattr(lxml.builder.E, node.tag)(value))[node.tag]
             parent.replace(node, new_node)
             instance.xml = new_node
         else:
@@ -71,8 +71,6 @@ class ObjectPathProperty:
                 if node is not None:
                     node.getparent().remove(node)
             node = self.getNode(instance)
-            if node is not None:
-                lxml.objectify.deannotate(node)
 
     def getNode(self, instance):
         if self.path is None:
@@ -117,10 +115,9 @@ class Structure(ObjectPathProperty):
         node = self.getNode(instance)
         if node is None:
             return self.field.missing_value if self.field else None
-        node = lxml.objectify.fromstring(str(self.remove_namespaces(node)))
+        node = lxml.etree.fromstring(str(self.remove_namespaces(node)))
         result = [xml.sax.saxutils.escape(str(node))]
         for child in node.iterchildren():
-            lxml.objectify.deannotate(child)
             result.append(lxml.etree.tostring(child, encoding=str))
         return ''.join(result)
 
@@ -128,7 +125,7 @@ class Structure(ObjectPathProperty):
         if self.field and value is self.field.missing_value:
             value = None
         else:
-            value = lxml.objectify.fromstring('<xml>%s</xml>' % value)
+            value = lxml.etree.fromstring('<xml>%s</xml>' % value)
         self.path.setattr(instance.xml, value)
 
 
@@ -203,8 +200,6 @@ class MultiPropertyBase:
         # Add new nodes:
         value = self.sorted(value)
         self.path.setattr(tree, [self._node_factory(entry, tree) for entry in value])
-        if value:
-            lxml.objectify.deannotate(self.path.find(instance.xml).getparent())
 
     def _element_factory(self, node, tree):
         raise NotImplementedError('Implemented in sub classes.')

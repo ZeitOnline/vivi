@@ -76,10 +76,7 @@ class BookRecension(
 ):
     """Information about a book in a recension."""
 
-    default_template = (
-        '<entry xmlns="http://namespaces.zeit.de/bibinfo" '
-        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />'
-    )
+    default_template = '<entry xmlns="http://namespaces.zeit.de/bibinfo" />'
 
     authors = zeit.cms.content.property.SimpleMultiProperty('.auth-info.author')
     title = zeit.cms.content.property.ObjectPathProperty('.title')

@@ -1,9 +1,9 @@
-import gocept.lxml.interfaces
 import grokcore.component
 import martian
 import zope.component.zcml
 import zope.interface
 
+import zeit.cms.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
 
@@ -45,7 +45,7 @@ class SimpleElementGrokker(martian.ClassGrokker):
     martian.component(zeit.edit.block.SimpleElement)
 
     def execute(self, context, config, **kw):
-        for_ = (context.area, gocept.lxml.interfaces.IObjectified)
+        for_ = (context.area, zeit.cms.interfaces.IXMLElement)
         provides = list(zope.interface.implementedBy(context))[0]
 
         config.action(

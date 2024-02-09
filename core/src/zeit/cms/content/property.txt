@@ -4,7 +4,7 @@ XML-Properties
 
 The xml properties map to elements or attributes in an xml document. There are
 several of them. All have in common that they are execting the instance to have
-an `xml` attribute being an `lxml.objectify` tree.
+an `xml` attribute being an `lxml.etree` tree.
 
 
 ObjectPathProperty
@@ -19,12 +19,11 @@ Root as `xml`
 Normally the document root is the `xml` attribute.  Create a test class:
 
 >>> from zeit.cms.content.property import ObjectPathProperty
->>> import lxml.objectify
+>>> import lxml.etree
 >>> from unittest import mock
 >>> import persistent
 >>> class Content(persistent.Persistent):
-...     xml = lxml.objectify.fromstring(
-...         '<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"/>')
+...     xml = lxml.etree.fromstring('<a/>')
 ...     b = ObjectPathProperty('.b')
 >>> content = Content()
 >>> content._p_jar = mock.Mock()
@@ -40,7 +39,7 @@ Let's assign some values to b. Integer:
 >>> content.b
 5
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+<a>
     <b>5</b>
 </a>
 >>> content._p_changed
@@ -53,7 +52,7 @@ Float:
 >>> content.b
 47.25
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+<a>
     <b>47.25</b>
 </a>
 
@@ -61,7 +60,7 @@ Float:
 >>> content.b
 47.0
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+<a>
     <b>47.0</b>
 </a>
 
@@ -71,13 +70,12 @@ String. Note that strings are always unicode:
 >>> content.b
 'Foo'
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+<a>
     <b>Foo</b>
 </a>
 
 
-It is also possible to declare a field for the property. This helps when
-objectify guesses the data wrong:
+It is also possible to declare a field for the property:
 
 >>> import zope.schema
 >>> prop = ObjectPathProperty('.b', zope.schema.TextLine())
@@ -113,7 +111,7 @@ The `xml` attribute can also be a sub node of an xml tree. There is a special
 object path of `None` to refer directly to the node specified by `xml`. Let's
 create a test-class:
 
->>> xml_tree = lxml.objectify.fromstring('<a><b/><c/><b/><b/></a>')
+>>> xml_tree = lxml.etree.fromstring('<a><b/><c/><b/><b/></a>')
 >>> class Content(persistent.Persistent):
 ...     xml = xml_tree.b[1]
 ...     b = ObjectPathProperty(None)
@@ -150,12 +148,11 @@ The ObjectPathAttributeProperty refers to a node via an object path and then to
 an attribute of that node. Given the following XML we can access the attributes
 via ObjectPathAttributeProperty:
 
->>> xml_tree = lxml.objectify.fromstring(
+>>> xml_tree = lxml.etree.fromstring(
 ...     '<doc><a href="url">link</a><count words="5" chars="20"/></doc>')
 
 Let's define a content class using the XML. Word and character count are
-integers. Since lxml.objectify only supports str/unicode attributes we give a
-hint using a zope.schema field. We are also referencing `sencences` which is
+integers. We are also referencing `sencences` which is
 not in the document, yet:
 
 >>> from zeit.cms.content.property import ObjectPathAttributeProperty
@@ -285,7 +282,7 @@ referenced:
 >>> class Content:
 ...     res = zeit.cms.content.property.SingleResource('.res')
 ...     def __init__(self):
-...         self.xml = lxml.objectify.XML('<foo/>')
+...         self.xml = lxml.etree.fromstring('<foo/>')
 
 Create our content object:
 
@@ -309,7 +306,7 @@ Let's have a look how the resource has been referenced:
 
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo>
-  <res xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/refed</res>
+  <res>http://xml.zeit.de/refed</res>
 </foo>
 
 
@@ -348,14 +345,14 @@ which provides IXMLReference for our content object:
 ...         attributes=('foo', 'href', ))
 ...
 ...     def __init__(self):
-...         self.xml = lxml.objectify.XML(
-...             '<foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />')
+...         self.xml = lxml.etree.fromstring('<foo/>')
 ...
+>>> import lxml.builder
 >>> import zeit.cms.content.interfaces
 >>> @zope.component.adapter(Content)
 ... @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 ... def xmlref(context):
-...     return lxml.objectify.E.related(type="intern", href=context.uniqueId)
+...     return lxml.builder.E.related(type="intern", href=context.uniqueId)
 >>> gsm.registerAdapter(xmlref, name='related')
 
 Create a content object and an object which can be referenced:
@@ -372,7 +369,7 @@ True
 
 >>> content.res = referenced_obj
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<foo xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<foo>
   <ref href="http://xml.zeit.de/related" type="intern"/>
 </foo>
 
@@ -431,15 +428,14 @@ The `SimpleMultiProperty` is used for lists of simple values.
 ...     authors = zeit.cms.content.property.SimpleMultiProperty(
 ...         '.authors.author')
 ...     def __init__(self):
-...         self.xml = lxml.objectify.XML(
-...             '<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype"><head/></foo>')
+...         self.xml = lxml.etree.fromstring('<foo><head/></foo>')
 >>> content = Content()
 
 Set authors:
 
 >>> content.authors = ('Hans', 'Klaus', 'Siegfried')
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
+<foo>
   <head/>
   <authors>
     <author>Hans</author>

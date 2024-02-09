@@ -25,7 +25,7 @@ True
 
 
 >>> print(zeit.cms.testing.xmltotext(link.xml))
-<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<link>
   <head/>
   <body/>
 </link>
@@ -43,7 +43,7 @@ Does the blog source matching work?
 'Testblog'
 
 >>> print(zeit.cms.testing.xmltotext(link.xml))
-<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<link>
   <head/>
   <body>
     <target>_blank</target>
@@ -76,7 +76,7 @@ Create a channel and insert the link:
       href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com" ns0:target="_blank">
       ...
-      <title xsi:nil="true"/>
+      <title/>
       ...
     </block>
   </container>
@@ -96,7 +96,7 @@ channel:
       href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com">
       ...
-      <title xsi:nil="true"/>
+      <title/>
       ...
     </block>
   </container>

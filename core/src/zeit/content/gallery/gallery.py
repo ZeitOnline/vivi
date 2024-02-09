@@ -1,8 +1,8 @@
 import xml.sax.saxutils
 
 import grokcore.component as grok
+import lxml.builder
 import lxml.etree
-import lxml.objectify
 import zope.component
 import zope.interface
 import zope.lifecycleevent
@@ -23,7 +23,7 @@ import zeit.wysiwyg.html
 # A gallery used to be a center page, that's why we initialize it with such a
 # template.
 GALLERY_TEMPLATE = """\
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
     <head/>
     <body>
         <column layout="left"/>
@@ -111,11 +111,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
             entry.title = str(entry.title)
         entry.text = node.find('text')
         if entry.text is None:
-            entry.text = lxml.objectify.E.text()
+            entry.text = lxml.builder.E.text()
         elif entry.text.text:
             # Hrm. There is text which is not wrapped in another node, wrap it.
-            entry.text = lxml.objectify.E.text(
-                lxml.objectify.E.p(entry.text.text, *entry.text.getchildren())
+            entry.text = lxml.builder.E.text(
+                lxml.builder.E.p(entry.text.text, *entry.text.getchildren())
             )
         entry.layout = node.get('layout')
         if entry.layout is not None:
@@ -201,7 +201,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
             return self.xml['body']['column'][1]['container']
         except Exception:
             # Probably means we're ITMSContent and don't have a whole body.
-            return lxml.objectify.XML('<container/>')
+            return lxml.builder.E.container()
 
     def _get_block_for_key(self, key):
         matching_blocks = self._entries_container.xpath(
@@ -297,7 +297,7 @@ class EntryXMLRepresentation:
 
     @property
     def xml(self):
-        node = lxml.objectify.XML('<block/>')
+        node = lxml.builder.E.block()
         if self.context.title:
             node['title'] = self.context.title
 
@@ -306,7 +306,7 @@ class EntryXMLRepresentation:
         node['text'] = zope.security.proxy.removeSecurityProxy(self.context.text)
 
         if self.context.caption:
-            node.append(lxml.objectify.E.caption(self.context.caption))
+            node.append(lxml.builder.E.caption(self.context.caption))
         if self.context.is_crop_of:
             node.set('is_crop_of', self.context.is_crop_of)
 
@@ -325,13 +325,12 @@ class EntryXMLRepresentation:
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     def get_tree(self):
         # we can't express that 'body' is allowed for IGallery objects as a
-        # security declaration, since that would have to apply to the objectify
-        # element
+        # security declaration, since that would have to apply to the lxml element
         body = zope.security.proxy.removeSecurityProxy(self.context).xml.body
         try:
             text = body['text']
         except AttributeError:
-            text = lxml.objectify.E.text()
+            text = lxml.builder.E.text()
             body.append(text)
         return text
 

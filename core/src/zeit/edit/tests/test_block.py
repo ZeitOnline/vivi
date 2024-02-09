@@ -1,6 +1,6 @@
 from unittest import mock
 
-import lxml.objectify
+import lxml.etree
 import persistent.interfaces
 import zope.component
 
@@ -13,7 +13,7 @@ import zeit.edit.tests.fixture
 class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        xml = lxml.objectify.fromstring(
+        xml = lxml.etree.fromstring(
             """
         <container
           xmlns:cp="http://namespaces.zeit.de/CMS/cp"
@@ -58,8 +58,8 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         <container xmlns:cp="http://namespaces.zeit.de/CMS/cp">
             <block cp:type="block" cp:__name__="foo"/>
         </container>"""
-        xml1 = lxml.objectify.fromstring(xml)
-        xml2 = lxml.objectify.fromstring(xml)
+        xml1 = lxml.etree.fromstring(xml)
+        xml2 = lxml.etree.fromstring(xml)
         # CAUTION: xml1 == xml2 does not do what one might think it does,
         # thus block equality uses a proper in-depth xml comparison:
         self.assertNotEqual(xml1, xml2)
@@ -69,14 +69,14 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_blocks_are_unequal_when_text_nodes_differ(self):
         # Upstream xmldiff wants to write to (a copy of) text nodes, which is
-        # not possible with lxml.objectify.
-        xml1 = lxml.objectify.fromstring(
+        # not possible with lxml.
+        xml1 = lxml.etree.fromstring(
             """
         <container>
             <foo>bar</foo>
         </container>"""
         )
-        xml2 = lxml.objectify.fromstring(
+        xml2 = lxml.etree.fromstring(
             """
         <container>
             <foo>qux</foo>
@@ -87,12 +87,12 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         self.assertNotEqual(block1, block2)
 
     def test_blocks_are_unequal_when_tag_counts_differ(self):
-        xml1 = lxml.objectify.fromstring(
+        xml1 = lxml.etree.fromstring(
             """
         <foo><one/></foo>
         """
         )
-        xml2 = lxml.objectify.fromstring(
+        xml2 = lxml.etree.fromstring(
             """
         <foo><one/><two/><three/></foo>
         """
@@ -106,9 +106,7 @@ class ElementFactoryTest(zeit.edit.testing.FunctionalTestCase):
     def test_factory_returns_interface_implemented_by_element(self):
         context = mock.Mock()
         zope.interface.alsoProvides(context, persistent.interfaces.IPersistent)
-        container = zeit.edit.tests.fixture.Container(
-            context, lxml.objectify.fromstring('<container/>')
-        )
+        container = zeit.edit.tests.fixture.Container(context, lxml.builder.E.container())
         block_factory = zope.component.getAdapter(
             container, zeit.edit.interfaces.IElementFactory, 'block'
         )

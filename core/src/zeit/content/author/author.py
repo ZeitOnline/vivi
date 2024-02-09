@@ -3,7 +3,7 @@ import urllib.parse
 
 from requests.exceptions import RequestException
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import requests
 import zope.interface
 import zope.lifecycleevent
@@ -27,7 +27,7 @@ import zeit.find.interfaces
 
 @zope.interface.implementer(zeit.content.author.interfaces.IAuthor, zeit.cms.interfaces.IAsset)
 class Author(zeit.cms.content.xmlsupport.XMLContentBase):
-    default_template = '<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">' '</author>'
+    default_template = '<author></author>'
 
     for name in [
         'additional_contact_title',
@@ -293,8 +293,7 @@ class BiographyQuestions(
         if node:
             self.xml.remove(node[0])
         if value:
-            node = lxml.objectify.E.question(value, id=key)
-            lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
+            node = lxml.builder.E.question(value, id=key)
             self.xml.append(node)
         super().__setattr__('_p_changed', True)
 

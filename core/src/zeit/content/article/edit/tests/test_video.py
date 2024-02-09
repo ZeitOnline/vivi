@@ -3,19 +3,17 @@ from unittest import mock
 import contextlib
 import unittest
 
+import lxml.builder
 import pytz
 
+from zeit.content.article.edit.video import Video
 import zeit.content.article.edit.tests.test_reference
 import zeit.content.article.testing
 
 
 class VideoTest(unittest.TestCase):
     def get_video(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.video import Video
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.video())
+        tree = lxml.builder.E.tree(lxml.builder.E.video())
         video = Video(None, tree.video)
         # Don't validate here. Validation is verified via browser test
         video._validate = mock.Mock()
@@ -50,10 +48,6 @@ class VideoTest(unittest.TestCase):
         self.assertEqual(None, video.video)
 
     def test_expires_should_be_set(self):
-        import datetime
-
-        import pytz
-
         video_obj = mock.Mock()
         video_obj.uniqueId = 'vid1'
 
@@ -65,7 +59,7 @@ class VideoTest(unittest.TestCase):
         icc = mock.Mock(side_effect=cmscontent)
         video = self.get_video()
         with mock.patch('zeit.cms.interfaces.ICMSContent', new=icc):
-            video_obj.expires = datetime.datetime(2001, 4, 1, 3, 6, tzinfo=pytz.UTC)
+            video_obj.expires = datetime(2001, 4, 1, 3, 6, tzinfo=pytz.UTC)
             video.video = video_obj
             self.assertEqual('2001-04-01T03:06:00+00:00', video.xml.get('expires'))
 

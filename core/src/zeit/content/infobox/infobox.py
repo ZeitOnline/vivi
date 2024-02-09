@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.interface
 
 from zeit.cms.i18n import MessageFactory as _
@@ -12,12 +12,7 @@ import zeit.content.infobox.interfaces
 
 @zope.interface.implementer(zeit.content.infobox.interfaces.IInfobox, zeit.cms.interfaces.IAsset)
 class Infobox(zeit.cms.content.metadata.CommonMetadata):
-    default_template = (
-        '<container layout="artbox" label="info" '
-        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" '
-        'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '
-        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />'
-    )
+    default_template = '<container layout="artbox" label="info" />'
 
     supertitle = zeit.cms.content.property.ObjectPathProperty('.supertitle')
 
@@ -27,11 +22,11 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
         for node in self.xml.findall('block'):
             text_node = node.find('text')
             if text_node is None:
-                text_node = lxml.objectify.E.text()
+                text_node = lxml.builder.E.text()
             elif text_node.text:
                 # There is text which is not wrapped into a node. Wrap it.
-                text_node = lxml.objectify.E.text(
-                    lxml.objectify.E.p(text_node.text, *text_node.getchildren())
+                text_node = lxml.builder.E.text(
+                    lxml.builder.E.p(text_node.text, *text_node.getchildren())
                 )
             text = self.html_converter.to_html(text_node)
             result.append((str(node['title']), text))
@@ -42,9 +37,9 @@ class Infobox(zeit.cms.content.metadata.CommonMetadata):
         for node in self.xml.findall('block'):
             self.xml.remove(node)
         for title, text in value:
-            text_node = lxml.objectify.E.text()
+            text_node = lxml.builder.E.text()
             self.html_converter.from_html(text_node, text)
-            self.xml.append(lxml.objectify.E.block(lxml.objectify.E.title(title), text_node))
+            self.xml.append(lxml.builder.E.block(lxml.builder.E.title(title), text_node))
         self._p_changed = True
 
     @property

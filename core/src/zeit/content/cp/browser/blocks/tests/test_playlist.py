@@ -77,7 +77,7 @@ class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
            href="http://xml.zeit.de/my-playlist"
            contenttype="playlist"...>
     ...
-    <title xsi:nil="true"/>
+    <title/>
     ...
   </block>
 </container>...""",

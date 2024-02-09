@@ -5,9 +5,9 @@ lxml pickle support
 Verify the lxml pickle support.
 
 >>> import pickle
->>> import lxml.objectify
+>>> import lxml.etree
 >>> import zeit.cms.content.lxmlpickle
->>> xml = lxml.objectify.fromstring('<foo><b>zoot</b></foo><?bar?>')
+>>> xml = lxml.etree.fromstring('<foo><b>zoot</b></foo><?bar?>')
 >>> p = pickle.dumps(xml)
 >>> restored_xml = pickle.loads(p)
 >>> print(zeit.cms.testing.xmltotext(restored_xml.getroottree()))

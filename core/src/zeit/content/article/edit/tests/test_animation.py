@@ -1,4 +1,4 @@
-from lxml.objectify import E
+from lxml.builder import E
 
 from zeit.content.animation.animation import Animation
 from zeit.content.article.article import Article

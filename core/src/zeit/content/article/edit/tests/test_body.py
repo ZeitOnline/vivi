@@ -2,7 +2,8 @@ from unittest import mock
 import unittest
 
 import gocept.testing.mock
-import lxml.objectify
+import lxml.builder
+import lxml.etree
 import zope.schema
 
 from zeit.cms.checkout.interfaces import ICheckinManager, ICheckoutManager
@@ -30,7 +31,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         if not body:
             body = '<division><p>Para1</p><p/></division>' '<division><p>Para2</p><p/></division>'
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
+        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
         for division in article.xml.body.findall('division'):
             division.set('type', 'page')
         return zeit.content.article.edit.body.EditableBody(article, article.xml.body)
@@ -53,7 +54,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
     def test_add_should_add_to_last_division(self):
         body = self.get_body('<division/>')
         block = mock.Mock()
-        block.xml = lxml.objectify.E.mockblock()
+        block.xml = lxml.builder.E.mockblock()
         block.__name__ = 'myblock'
         block.__parent__ = None
         block.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', 'myblock')
@@ -86,7 +87,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         ob = mock.Mock()
         ob.__name__ = None
         ob.__parent__ = None
-        ob.xml = lxml.objectify.E.ob()
+        ob.xml = lxml.builder.E.ob()
         body.add(ob)
         # XXX assertion?!
 
@@ -98,7 +99,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         body = self.get_body('<division/>')
         block = mock.Mock()
         zope.interface.alsoProvides(block, IDivision)
-        block.xml = lxml.objectify.E.division()
+        block.xml = lxml.builder.E.division()
         block.__name__ = 'myblock'
         block.__parent__ = None
         block.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', 'myblock')
@@ -166,7 +167,7 @@ class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
     def test_children_should_return_elements(self):
         body = '<division type="page"><p>Para1</p><p>Para2</p></division>'
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
+        article.xml.body = lxml.etree.fromstring('<body>%s</body>' % body)
         body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
         validator = zeit.edit.interfaces.IValidator(article)
         self.assertEqual(

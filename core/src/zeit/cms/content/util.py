@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import lxml.objectify
+import lxml.etree
 import zope.schema.interfaces
 
 
@@ -15,7 +15,7 @@ def applySchemaData(context, schema, data, omit=()):
         setattr(context, name, value)
 
 
-def objectify_soup_fromstring(text):
+def etree_soup_fromstring(text):
     # There once (r18370) was a properly integrated variant that avoided an
     # addtional serialize/deserialize cycle, but it did not understand
     # namespaces, and could not be taught easily either, so it had to go.
@@ -30,4 +30,4 @@ def objectify_soup_fromstring(text):
     soup = ''.join([str(x) for x in soup.body.children])
     if isinstance(soup, str):
         soup = soup.encode('utf-8')
-    return lxml.objectify.fromstring(soup)
+    return lxml.etree.fromstring(soup)

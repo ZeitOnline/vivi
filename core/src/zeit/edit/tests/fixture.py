@@ -1,4 +1,3 @@
-import gocept.lxml.interfaces
 import grokcore.component as grok
 import zope.interface
 import zope.schema
@@ -24,7 +23,7 @@ class IBlock(zeit.edit.interfaces.IBlock):
 @grok.implementer(IContainer)
 class Container(zeit.edit.container.TypeOnAttributeContainer, grok.MultiAdapter):
     grok.provides(IContainer)
-    grok.adapts(IContainer, gocept.lxml.interfaces.IObjectified)
+    grok.adapts(IContainer, zeit.cms.interfaces.IXMLElement)
     type = 'container'
     grok.name(type)
 

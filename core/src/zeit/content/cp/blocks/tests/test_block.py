@@ -1,11 +1,11 @@
-import lxml.objectify
+import lxml.etree
 
 import zeit.content.cp.testing
 
 
 class UnknownBlockTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_uses_cp_specific_unknown_block(self):
-        xml = lxml.objectify.fromstring(
+        xml = lxml.etree.fromstring(
             """
         <region xmlns:cp="http://namespaces.zeit.de/CMS/cp">
           <something cp:__name__="foo"/>

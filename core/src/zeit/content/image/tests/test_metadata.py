@@ -22,7 +22,7 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
             """\
 <image...>
   ...
-  <copyright py:pytype="str" link="http://example.com"
+  <copyright link="http://example.com"
         rel="nofollow">Foo</copyright>
 </image>
 """,

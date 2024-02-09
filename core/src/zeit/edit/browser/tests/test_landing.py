@@ -1,6 +1,6 @@
 import json
 
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.publisher.browser
 
@@ -13,7 +13,7 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
-        root = zeit.edit.tests.fixture.Container(wc, lxml.objectify.fromstring('<container/>'))
+        root = zeit.edit.tests.fixture.Container(wc, lxml.builder.E.container())
         root.__name__ = 'root'
         factory = zope.component.getAdapter(root, zeit.edit.interfaces.IElementFactory, 'container')
 
@@ -70,7 +70,7 @@ class LandingZoneMove(zeit.edit.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
-        root = zeit.edit.tests.fixture.Container(wc, lxml.objectify.fromstring('<container/>'))
+        root = zeit.edit.tests.fixture.Container(wc, lxml.builder.E.container())
         root.__name__ = 'root'
         container_factory = zope.component.getAdapter(
             root, zeit.edit.interfaces.IElementFactory, 'container'

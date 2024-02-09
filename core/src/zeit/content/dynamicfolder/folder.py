@@ -8,7 +8,6 @@ import uuid
 import grokcore.component as grok
 import jinja2
 import lxml.etree
-import lxml.objectify
 import persistent
 import zope.app.locking.interfaces
 import zope.container.contained
@@ -134,7 +133,7 @@ class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Fold
             return None
 
         if not hasattr(self, '_v_config'):
-            config = lxml.objectify.fromstring(
+            config = lxml.etree.fromstring(
                 zeit.connector.interfaces.IResource(self.config_file).data.read()
             )
             for include in config.xpath('//include'):
@@ -150,7 +149,7 @@ class RepositoryDynamicFolder(DynamicFolderBase, zeit.cms.repository.folder.Fold
         data = zeit.connector.interfaces.IResource(
             zeit.cms.interfaces.ICMSContent(include.get('href'))
         ).data.read()
-        document = lxml.objectify.fromstring(data)
+        document = lxml.etree.fromstring(data)
         if include.get('xpointer'):
             return document.xpath(include.get('xpointer'))
         else:

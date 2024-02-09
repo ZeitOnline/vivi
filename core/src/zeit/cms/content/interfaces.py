@@ -374,7 +374,7 @@ class IXMLReference(zope.interface.Interface):
     might be references inside the <head> that always use a <reference> tag.
     (NOTE: These are just examples, not actual zeit.cms policy!)
 
-    Adapting to IXMLReference yields an lxml.objectify tree::
+    Adapting to IXMLReference yields an lxml.etree::
 
         node = zope.component.getAdapter(
            content, zeit.cms.content.interfaces.IXMLReference, name='image')
@@ -389,7 +389,7 @@ class IXMLReferenceUpdater(zope.interface.Interface):
     def update(xml_node, suppress_errors=False):
         """Update xml_node with data from the content object.
 
-        xml_node: lxml.objectify'ed element
+        xml_node: lxml.etree.Element
         """
 
 

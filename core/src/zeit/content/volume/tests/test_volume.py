@@ -2,8 +2,8 @@
 from datetime import datetime
 from unittest import mock
 
+import lxml.builder
 import lxml.etree
-import lxml.objectify
 import pytz
 import requests_mock
 import zope.app.appsetup.product
@@ -34,10 +34,9 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.volume.product = zeit.cms.content.sources.Product('ZEI')
 
     def add_ipad_cover(self, product_id='ZEI'):
-        node = lxml.objectify.E.cover(
+        node = lxml.builder.E.cover(
             href='http://xml.zeit.de/imagegroup/', id='ipad', product_id=product_id
         )
-        lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
         self.volume.xml.covers.append(node)
 
     def test_set_raises_for_invalid_product(self):
@@ -55,7 +54,7 @@ class TestVolumeCovers(zeit.content.volume.testing.FunctionalTestCase):
         self.volume.set_cover('ipad', 'ZEI', self.repository['imagegroup'])
         self.volume.set_cover('ipad', 'ZEI', None)
         self.assertEqual(
-            '<covers xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>',
+            '<covers/>',
             lxml.etree.tostring(self.volume.xml.covers, encoding=str),
         )
 

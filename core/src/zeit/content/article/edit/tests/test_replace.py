@@ -1,4 +1,4 @@
-import lxml.objectify
+import lxml.etree
 
 import zeit.content.article.article
 import zeit.content.article.edit.body
@@ -8,7 +8,7 @@ import zeit.content.article.testing
 class XMLReplaceTest(zeit.content.article.testing.FunctionalTestCase):
     def create_body(self, body):
         article = zeit.content.article.article.Article()
-        article.xml.body = lxml.objectify.XML(
+        article.xml.body = lxml.etree.fromstring(
             '<body><division type="page">%s</division></body>' % body
         )
         return zeit.content.article.edit.body.EditableBody(article, article.xml.body)

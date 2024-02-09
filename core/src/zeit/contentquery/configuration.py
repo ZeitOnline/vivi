@@ -1,4 +1,4 @@
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.interface
 
@@ -44,7 +44,7 @@ class CustomQueryProperty:
         if not value:
             return
 
-        E = lxml.objectify.E
+        E = lxml.builder.E
         query = E.query()
         for item in value:
             typ, operator, val = self._serialize_query_item(context, item)

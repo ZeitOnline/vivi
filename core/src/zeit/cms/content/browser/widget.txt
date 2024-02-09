@@ -19,11 +19,11 @@ Create a schema:
 Create a content object:
 
 
->>> import lxml.objectify
+>>> import lxml.etree
 >>> import zeit.cms.content.property
 >>> @zope.interface.implementer(IContent)
 ... class Content:
-...     xml = lxml.objectify.XML('<art/><?foo?>')
+...     xml = lxml.etree.fromstring('<art/><?foo?>')
 ...     snippet = zeit.cms.content.property.Structure('.title')
 >>> content = Content()
 
@@ -54,7 +54,7 @@ Editing sub-nodes
 The widget also supports editing subnodes. That is that the data being edited
 is not a full tree but a node in a tree.
 
->>> content.whole_tree = lxml.objectify.XML('<a><b/><editme><c/></editme></a>')
+>>> content.whole_tree = lxml.etree.fromstring('<a><b/><editme><c/></editme></a>')
 >>> content.xml = content.whole_tree.editme
 >>> widget.setRenderedValue(content.xml)
 >>> widget._getFormValue()

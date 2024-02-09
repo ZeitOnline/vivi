@@ -1,5 +1,4 @@
 import lxml.etree
-import lxml.objectify
 import zope.interface
 import zope.location.location
 import zope.proxy
@@ -8,7 +7,7 @@ import zope.schema.interfaces
 import zope.security.checker
 import zope.security.proxy
 
-from zeit.cms.content.util import objectify_soup_fromstring
+from zeit.cms.content.util import etree_soup_fromstring
 
 
 DEFAULT_MARKER = object()
@@ -25,9 +24,9 @@ class _XMLBase(zope.schema.Field):
     def __init__(self, *args, **kw):
         tidy_input = kw.pop('tidy_input', False)
         if tidy_input:
-            self.parse = objectify_soup_fromstring
+            self.parse = etree_soup_fromstring
         else:
-            self.parse = lxml.objectify.fromstring
+            self.parse = lxml.etree.fromstring
         super().__init__(*args, **kw)
 
     def fromUnicode(self, text):

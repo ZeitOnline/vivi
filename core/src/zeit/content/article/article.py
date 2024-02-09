@@ -5,8 +5,6 @@ import re
 
 import gocept.cache.property
 import grokcore.component as grok
-import lxml.etree
-import lxml.objectify
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
@@ -45,7 +43,7 @@ ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
 # and the XML-properties will reuse existing nodes, so the order will be as we
 # want it.
 ARTICLE_TEMPLATE = """\
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
     <head>
         <header/>
     </head>
@@ -442,22 +440,15 @@ QUOTE_CHARACTERS_CLOSE = re.compile(rf'([\w\.]){_QUOTE_CHARACTERS}')
     zeit.content.article.interfaces.IArticle, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
 )
 def normalize_quotation_marks(context, event):
-    # XXX objectify has immutable text/tail. le sigh.
     normalize = (
         normalize_quotes
         if FEATURE_TOGGLES.find('normalize_quotes')
         else normalize_quotes_to_inch_sign
     )
-    context.xml.body = lxml.objectify.fromstring(
-        lxml.etree.tostring(normalize(lxml.etree.fromstring(lxml.etree.tostring(context.xml.body))))
-    )
+    context.xml.body = normalize(context.xml.body)
 
     if context.xml.find('teaser') is not None:
-        context.xml.teaser = lxml.objectify.fromstring(
-            lxml.etree.tostring(
-                normalize(lxml.etree.fromstring(lxml.etree.tostring(context.xml.teaser)))
-            )
-        )
+        context.xml.teaser = normalize(context.xml.teaser)
 
 
 def normalize_quotes(node):

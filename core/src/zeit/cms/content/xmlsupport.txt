@@ -46,10 +46,10 @@ change and contain the property:
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>
-    ...<attribute ...
+    ...<attribute
         ns="http://namespaces.zeit.de/CMS/document"
         name="year">2004</attribute>
-    <attribute ...
+    <attribute
         ns="http://namespaces.zeit.de/CMS/document"
         name="ressort">Deutschland</attribute>...
   </head>
@@ -72,8 +72,8 @@ The checkin handler copies all webdav properties to the xml *before* the object
 is checked in. It removes all existing head.attribute nodes before adding the
 properties. Add some attributes to make sure they're removed:
 
->>> import lxml.objectify
->>> content.xml = lxml.objectify.XML("""\
+>>> import lxml.etree
+>>> content.xml = lxml.etree.fromstring("""\
 ...     <testtype>
 ...      <head>
 ...        <attribute ns="some-namespace" name="somename">somevalue</attribute>

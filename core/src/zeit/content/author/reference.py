@@ -1,11 +1,11 @@
 import copy
 
-import gocept.lxml.interfaces
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.security.proxy
 
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.author.interfaces
 
@@ -13,7 +13,7 @@ import zeit.content.author.interfaces
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='author')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    node = lxml.objectify.E.author(href=context.uniqueId, hdok=context.honorar_id or '')
+    node = lxml.builder.E.author(href=context.uniqueId, hdok=context.honorar_id or '')
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(node)
     return node
@@ -60,7 +60,7 @@ class Reference(zeit.cms.content.reference.Reference):
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='related')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLRelatedReference(context):
-    node = lxml.objectify.E.author(href=context.uniqueId)
+    node = lxml.builder.E.author(href=context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(node)
     return node
@@ -68,7 +68,7 @@ def XMLRelatedReference(context):
 
 @grok.implementer(zeit.content.author.interfaces.IAuthorBioReference)
 class RelatedReference(zeit.cms.content.reference.Reference):
-    grok.adapts(zeit.content.article.edit.interfaces.IAuthor, gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.article.edit.interfaces.IAuthor, zeit.cms.interfaces.IXMLElement)
     grok.provides(zeit.cms.content.interfaces.IReference)
     grok.name('related')
 

@@ -14,7 +14,6 @@ Terminology note: the "source" (A or C) references the "target" (B).
 import copy
 import urllib.parse
 
-import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
 import z3c.traverser.interfaces
@@ -388,7 +387,7 @@ ID_PREFIX = 'reference://'
 
 @grok.implementer(zeit.cms.content.interfaces.IReference)
 class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
-    grok.adapts(zeit.cms.content.interfaces.IXMLRepresentation, gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.cms.content.interfaces.IXMLRepresentation, zeit.cms.interfaces.IXMLElement)
     grok.baseclass()
 
     # XXX kludgy: These must be set manually after adapter call by clients.

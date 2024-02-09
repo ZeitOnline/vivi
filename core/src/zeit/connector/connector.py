@@ -10,7 +10,7 @@ import threading
 import urllib.parse
 
 import gocept.cache.property
-import gocept.lxml.objectify
+import lxml.etree
 import pytz
 import zope.cachedescriptors.property
 import zope.interface
@@ -616,7 +616,7 @@ class Connector:
         if not lockdiscovery:
             return {}
 
-        lock_info = gocept.lxml.objectify.fromstring(lockdiscovery)
+        lock_info = lxml.etree.fromstring(lockdiscovery)
         davlock = {}
 
         try:

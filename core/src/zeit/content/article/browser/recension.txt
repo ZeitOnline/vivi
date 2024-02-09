@@ -91,7 +91,7 @@ Let's have a look at the source code:
 >>> print(browser.getControl('XML Source').value.replace('\r\n', '\n'))
 <article>...
   <body ...
-    <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+    <entry xmlns="http://namespaces.zeit.de/bibinfo">
       <auth-info>
         <author>Frank Schwanitz</author>
       </auth-info>

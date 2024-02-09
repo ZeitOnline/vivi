@@ -1,7 +1,6 @@
-import gocept.lxml.interfaces
 import grokcore.component as grok
+import lxml.builder
 import lxml.etree
-import lxml.objectify
 import zope.component
 import zope.interface
 import zope.lifecycleevent
@@ -21,7 +20,7 @@ import zeit.edit.container
 import zeit.edit.interfaces
 
 
-@zope.component.adapter(zeit.content.cp.interfaces.IBody, gocept.lxml.interfaces.IObjectified)
+@zope.component.adapter(zeit.content.cp.interfaces.IBody, zeit.cms.interfaces.IXMLElement)
 @zope.interface.implementer(zeit.content.cp.interfaces.IRegion)
 class Region(zeit.content.cp.blocks.block.VisibleMixin, zeit.edit.container.Base):
     _find_item = lxml.etree.XPath(
@@ -60,7 +59,7 @@ class RegionFactory(zeit.edit.block.ElementFactory):
     tag_name = 'cluster'
 
     def get_xml(self):
-        return getattr(lxml.objectify.E, self.tag_name)()
+        return getattr(lxml.builder.E, self.tag_name)()
 
 
 class ReferencedCpFallbackProperty(zeit.cms.content.property.ObjectPathProperty):
@@ -76,7 +75,7 @@ class ReferencedCpFallbackProperty(zeit.cms.content.property.ObjectPathProperty)
         return value
 
 
-@zope.component.adapter(zeit.content.cp.interfaces.IRegion, gocept.lxml.interfaces.IObjectified)
+@zope.component.adapter(zeit.content.cp.interfaces.IRegion, zeit.cms.interfaces.IXMLElement)
 @zope.interface.implementer(zeit.content.cp.interfaces.IArea)
 class Area(
     zeit.content.cp.blocks.block.VisibleMixin,
@@ -370,7 +369,7 @@ class AreaFactory(zeit.edit.block.ElementFactory):
     title = _('Area')
 
     def get_xml(self):
-        return getattr(lxml.objectify.E, self.tag_name)()
+        return getattr(lxml.builder.E, self.tag_name)()
 
 
 @grok.adapter(zeit.content.cp.interfaces.IElement)
@@ -410,7 +409,7 @@ def cms_content_iter(context):
 @grok.adapter(zeit.content.cp.interfaces.IRegion)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml_mosaic(context):
-    root = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    root = getattr(lxml.builder.E, context.xml.tag)(**context.xml.attrib)
     for item in context.values():
         root.append(zeit.content.cp.interfaces.IRenderedXML(item))
     return root
@@ -419,7 +418,7 @@ def rendered_xml_mosaic(context):
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
-    area = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    area = getattr(lxml.builder.E, context.xml.tag)(**context.xml.attrib)
     area.attrib.pop('automatic', None)
     for block in zeit.content.cp.interfaces.IRenderedArea(context).values():
         area.append(zeit.content.cp.interfaces.IRenderedXML(block))

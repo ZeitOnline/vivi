@@ -1,5 +1,7 @@
+import lxml.builder
 import zope.component
 
+from zeit.content.article.edit.rawtext import RawText
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
@@ -8,11 +10,7 @@ import zeit.edit.interfaces
 
 class RawTextTest(zeit.content.article.testing.FunctionalTestCase):
     def get_rawtext(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.rawtext import RawText
-
-        rawtext = RawText(None, lxml.objectify.E.rawtext())
+        rawtext = RawText(None, lxml.builder.E.rawtext())
         return rawtext
 
     def test_rawtext_should_be_set(self):

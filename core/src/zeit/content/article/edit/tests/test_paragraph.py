@@ -1,6 +1,7 @@
 import unittest
 
-import lxml.objectify
+import lxml.builder
+import lxml.etree
 
 import zeit.content.article.testing
 
@@ -9,7 +10,7 @@ class ParagraphTest(unittest.TestCase):
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import Paragraph
 
-        body = lxml.objectify.E.body(lxml.objectify.XML('<p>%s</p>' % p))
+        body = lxml.builder.E.body(lxml.etree.fromstring('<p>%s</p>' % p))
         return Paragraph(None, body.p)
 
     def test_setting_text_inserts_xml(self):
@@ -56,10 +57,10 @@ class ParagraphTest(unittest.TestCase):
     def test_xml_part_of_larger_tree_should_be_updated_in_place(self):
         from zeit.content.article.edit.paragraph import Paragraph
 
-        body = lxml.objectify.E.body(lxml.objectify.XML('<p>bar</p>'))
+        body = lxml.builder.E.body(lxml.etree.fromstring('<p>bar</p>'))
         p = Paragraph(None, body.p)
         p.text = 'foo'
-        self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement), type(p.xml))
+        self.assertTrue(isinstance(p.xml, lxml.etree._Element), type(p.xml))
 
     def test_setting_html_with_block_elements_should_keep_p_as_xml_tag(self):
         p = self.get_paragraph()
@@ -92,11 +93,9 @@ class ParagraphTest(unittest.TestCase):
 
 class UnorderedListTest(ParagraphTest):
     def get_paragraph(self, p=''):
-        import lxml.objectify
-
         from zeit.content.article.edit.paragraph import UnorderedList
 
-        body = lxml.objectify.E.body(lxml.objectify.XML('<ul>%s</ul>' % p))
+        body = lxml.builder.E.body(lxml.etree.fromstring('<ul>%s</ul>' % p))
         return UnorderedList(None, body.ul)
 
     def compare(self, input, expected):
@@ -114,31 +113,25 @@ class UnorderedListTest(ParagraphTest):
 
 class OrderedListTest(UnorderedListTest):
     def get_paragraph(self, p=''):
-        import lxml.objectify
-
         from zeit.content.article.edit.paragraph import OrderedList
 
-        body = lxml.objectify.E.body(lxml.objectify.XML('<ol>%s</ol>' % p))
+        body = lxml.builder.E.body(lxml.etree.fromstring('<ol>%s</ol>' % p))
         return OrderedList(None, body.ol)
 
 
 class IntertitleTest(ParagraphTest):
     def get_paragraph(self, p=''):
-        import lxml.objectify
-
         from zeit.content.article.edit.paragraph import Intertitle
 
-        body = lxml.objectify.E.body(lxml.objectify.XML('<intertitle>%s</intertitle>' % p))
+        body = lxml.builder.E.body(lxml.etree.fromstring('<intertitle>%s</intertitle>' % p))
         return Intertitle(None, body.intertitle)
 
 
 class LegacyInitialParagraphTest(ParagraphTest):
     def get_paragraph(self, p=''):
-        import lxml.objectify
-
         from zeit.content.article.edit.paragraph import LegacyInitialParagraph
 
-        body = lxml.objectify.E.body(lxml.objectify.XML('<initial>%s</initial>' % p))
+        body = lxml.builder.E.body(lxml.etree.fromstring('<initial>%s</initial>' % p))
         return LegacyInitialParagraph(None, body.initial)
 
 

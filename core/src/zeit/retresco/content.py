@@ -2,7 +2,7 @@ import collections.abc
 import os.path
 
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.schema.interfaces
 
@@ -34,7 +34,7 @@ class Content:
         self._build_xml_image()
 
     def _build_xml_body(self):
-        E = lxml.objectify.E
+        E = lxml.builder.E
         self.xml = E.content()
         for key, value in self._tms_payload.get('xml', {}).items():
             self.xml.append(getattr(E, key)(value))
@@ -57,7 +57,7 @@ class Content:
         if not self._tms_payload_head:
             return
 
-        E = lxml.objectify.E
+        E = lxml.builder.E
         head = E.head()
         self.xml.append(head)
 
@@ -96,7 +96,7 @@ class Content:
         if not image:
             return None
 
-        E = lxml.objectify.E
+        E = lxml.builder.E
         # See zeit.content.image.imagegroup.XMLReference
         image = E.image(**{'base-id': image})
         fill_color = self._tms_payload_head.get('teaser_image_fill_color')
