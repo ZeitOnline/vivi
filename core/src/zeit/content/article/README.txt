@@ -130,7 +130,7 @@ There is an adapter which sets the text length automatically:
   <head>
     ...
     <attribute ns="http://namespaces.zeit.de/CMS/document"
-        name="text-length">194</attribute>
+        name="text-length">208</attribute>
   </head>
 </article>
 
