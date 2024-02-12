@@ -63,7 +63,7 @@ class DAVServerLayer(plone.testing.Layer):
         del self['query_url']
         del self['connector']
 
-    def wait_for_http(self, url, timeout=5, sleep=0.2):
+    def wait_for_http(self, url, timeout=10, sleep=0.2):
         http = requests.Session()
         slept = 0
         while slept < timeout:
