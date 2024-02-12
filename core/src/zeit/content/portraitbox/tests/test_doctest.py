@@ -1,5 +1,5 @@
 import zeit.cms.testing
-import zeit.content.portraitbox.interfaces
+import zeit.content.portraitbox.testing
 
 
 def test_suite():
