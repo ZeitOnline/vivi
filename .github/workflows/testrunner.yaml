@@ -87,7 +87,7 @@ jobs:
           cache: "pip"
           cache-dependency-path: |
               deployment/components/source/*.txt
-      - uses: actions/setup-node@v4.0.1  # for jshint
+      - uses: actions/setup-node@v4.0.2  # for jshint
         with:
           node-version: "20"
       - name: setup apt
