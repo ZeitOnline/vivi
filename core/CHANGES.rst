@@ -6,8 +6,7 @@ vivi.core changes
 5.107.0 (2024-02-09)
 --------------------
 
-MAINT:
-- Do not add tts to articles that are published-with-changes
+- ZO-4457: TTS migration: do not add tts to articles that are published-with-changes
 
 
 5.106.0 (2024-02-09)
@@ -20,7 +19,6 @@ MAINT:
 5.105.0 (2024-02-09)
 --------------------
 
-FIX:
 - ZO-4649: calculate checksum of article body and compare against tts audio before adding audio reference
 
 
@@ -48,7 +46,6 @@ FIX:
 --------------------
 
 - ZO-4226: migrate TTS script in vivi-deployment
-  MAINT: improve _script-template.py in vivi-deployment
 
 
 5.100.0 (2024-02-01)
