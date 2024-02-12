@@ -264,12 +264,6 @@ class SingleReferenceProperty(ReferenceProperty):
             value = (value,)
         super().__set__(instance, value)
 
-    def _reference_nodes(self, instance):
-        result = super()._reference_nodes(instance)
-        if not isinstance(result, list):
-            result = [result]
-        return result
-
     def update_metadata(self, instance, suppress_errors=False):
         reference = self.__get__(instance, None)
         if reference:

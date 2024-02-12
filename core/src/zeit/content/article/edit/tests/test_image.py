@@ -245,11 +245,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(None, service['image'])
 
     def test_image_block_retrieves_the_correct_xml_node(self):
-        # The lxml API offer an insiduous source of bugs: Iterating
-        # over a single element a) is possible and b) yields all siblings with
-        # the same tag. So it has been easy for SingleReferenceProperty to
-        # overlook the fact that when we find a single element via xpath,
-        # that already is the one we want.
+        # XXX Maybe this test should move to zeit.cms.content, because it's about
+        # SingleReferenceProperty and path=='.', not article- or image-specific.
         from zeit.cms.interfaces import ICMSContent
 
         self.repository['article'] = self.get_article()
