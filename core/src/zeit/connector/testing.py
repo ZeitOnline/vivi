@@ -1,6 +1,5 @@
 from io import BytesIO
 import contextlib
-import logging
 import os
 import socket
 import time
@@ -21,9 +20,6 @@ import zeit.cms.testing
 import zeit.connector.connector
 import zeit.connector.interfaces
 import zeit.connector.mock
-
-
-log = logging.getLogger(__name__)
 
 
 class DockerSetupError(requests.exceptions.ConnectionError):
@@ -81,10 +77,7 @@ class DAVServerLayer(plone.testing.Layer):
                 http.close()
                 return
         http.close()
-        container_logs = self['dav_container'].logs(timestamps=True).decode('utf-8').split('\n')
-        for msg in container_logs:
-            if msg:
-                log.error('%s' % msg)
+        print(self['dav_container'].logs(timestamps=True).decode('utf-8'))
         raise RuntimeError('%s did not start up' % url)
 
     def testTearDown(self):
