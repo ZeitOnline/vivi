@@ -63,7 +63,7 @@ class DAVServerLayer(plone.testing.Layer):
         del self['query_url']
         del self['connector']
 
-    def wait_for_http(self, url, timeout=5, sleep=0.2):
+    def wait_for_http(self, url, timeout=10, sleep=0.2):
         http = requests.Session()
         slept = 0
         while slept < timeout:
@@ -77,6 +77,7 @@ class DAVServerLayer(plone.testing.Layer):
                 http.close()
                 return
         http.close()
+        print(self['dav_container'].logs(timestamps=True).decode('utf-8'))
         raise RuntimeError('%s did not start up' % url)
 
     def testTearDown(self):
