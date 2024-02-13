@@ -54,13 +54,14 @@ The gallery is also noted in the xml structure:
       <container>
         <block name="DSC00109_2.JPG">
           <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu/>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu/>
           </thumbnail>
         </block>
+        ...
       </container>
     </column>
   </body>
@@ -100,23 +101,17 @@ The change is reflected in the xml:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </thumbnail>
+        ...
         </block>
         <block name="01.jpg">
           <text/>
-          <caption...>Nice image</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <caption>Nice image</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -164,24 +159,16 @@ xml:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
           <text/>
-          <caption...>Nice image</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <caption>Nice image</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -203,26 +190,18 @@ When we assign the entry the change will be reflected:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
-          <text...>
+          <text>
             <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -248,27 +227,19 @@ well:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
-          <text...>
+          <text>
             <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -316,27 +287,19 @@ True
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </thumbnail>
-        </block>
+        ...
         <block layout="image-only" name="01.jpg">
           <title>Der Wecker klingelt</title>
-          <text...>
+          <text>
             <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -362,27 +325,19 @@ When we set the layout to None again, the layout attribute is removed:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
-          <text...>
+          <text>
             <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
@@ -462,25 +417,25 @@ This is of course reflected int he XML:
       <container>
         <block name="01.jpg">
           <title>Der Wecker klingelt</title>
-          <text...>
+          <text>
             <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
             <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
         <block name="DSC00109_2.JPG">
           <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu/>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
             <bu/>
           </thumbnail>
         </block>
@@ -581,30 +536,9 @@ Note that his has *not* changed the xml so far:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
-          <title>Der Wecker klingelt</title>
-          <text...>
-            <p>Seit zwei Uhr in der Früh</p>
-          </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
-        </block>
+        ...
       </container>
     </column>
   </body>
@@ -625,10 +559,19 @@ When calling `reload_image_folder` the entry is removed from the xml:
       <container>
         <block name="DSC00109_2.JPG">
           <text/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
             <bu/>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
+            <bu/>
+          </thumbnail>
+        </block>
+        <block name="DSC00109_3.JPG">
+          <text/>
+          <image src="http://xml.zeit.de/2006/DSC00109_3.JPG" type="JPG">
+            <bu/>
+          </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_3.JPG" type="JPG">
             <bu/>
           </thumbnail>
         </block>
@@ -671,7 +614,7 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...           <container>
 ...             <block>
 ...               <text>
-...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
 ...                  <a href="fooo">link</a>
 ...               </text>
 ...               <image expires="2007-04-09" src="/cms/work/2006/DSC00109_2.JPG"
@@ -710,30 +653,31 @@ The keys also correct(ed) and the names are set:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-      <image-folder>http://xml.zeit.de/2006/</image-folder></head>
+      <image-folder>http://xml.zeit.de/2006/</image-folder>
+  </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-            <text...>
+            <text>
                <p>
-                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
                  <a href="fooo">link</a>
                </p>
              </text>
-          <image ... src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
-          <thumbnail...
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
         </block>
         <block name="01.jpg">
-          <text.../>
-          <caption...>Nice image</caption>
-          <image ... src="http://xml.zeit.de/2006/01.jpg"...
-             <bu ...>Nice image</bu>
+          <text/>
+          <caption>Nice image</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg"...
+             <bu>Nice image</bu>
              <copyright link="http://www.zeit.de">ZEIT online</copyright>
            </image>
-           <thumbnail...
+           ...
         </block>
+        ...
       </container>
     </column>
   </body>
@@ -754,7 +698,7 @@ The entries' text is wrapped in a <p> node:
 >>> print(zeit.cms.testing.xmltotext(entry.text))
 <text...>
   <p>
-                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
                  <a href="fooo">link</a>
               </p>
 </text>
@@ -774,7 +718,7 @@ Let's make sure this also works, when the image urls are not starting wich
 ...           <container>
 ...             <block>
 ...               <text>
-...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
 ...               </text>
 ...               <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG"
 ...                     width="380" align="left">
@@ -805,26 +749,28 @@ The keys also correct(ed) and the names are set:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-      <image-folder>http://xml.zeit.de/2006/</image-folder></head>
+      <image-folder>http://xml.zeit.de/2006/</image-folder>
+  </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text...>
-            <p ...>
-                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+          <text>
+            <p>
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
              </p>
           </text>
-          <image ... src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
-          <thumbnail...
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
+          ...
         </block>
         <block name="01.jpg">
-          <text.../>
+          <text/>
           <caption...
-          <image ... src="http://xml.zeit.de/2006/01.jpg" ...
-          <thumbnail...
+          <image src="http://xml.zeit.de/2006/01.jpg"...
+          ...
         </block>
+        ...
       </container>
     </column>
   </body>
