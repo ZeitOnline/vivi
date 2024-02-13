@@ -49,7 +49,7 @@ IMPORTERS = [
         'vivi_recent_audios_published_total',
         [
             {'term': {'doc_type': 'audio'}},
-            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+            {'range': {'payload.workflow.date_last_published': {'gt': 'now-1h'}}},
         ],
         'external',
     ),
@@ -57,7 +57,7 @@ IMPORTERS = [
         'vivi_recent_news_published_total',
         [
             {'term': {'payload.workflow.product-id': 'News'}},
-            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+            {'range': {'payload.workflow.date_last_published': {'gt': 'now-1h'}}},
         ],
         'external',
     ),
@@ -65,7 +65,7 @@ IMPORTERS = [
         'vivi_recent_videos_published_total',
         [
             {'term': {'doc_type': 'video'}},
-            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+            {'range': {'payload.workflow.date_last_published': {'gt': 'now-1h'}}},
         ],
         'external',
     ),
