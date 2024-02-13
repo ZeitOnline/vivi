@@ -3,4 +3,4 @@ kind: Component
 
 images:
 - name: nightwatch
-  newTag: "20240125080021"
+  newTag: "20240213070904"
