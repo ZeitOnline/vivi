@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.108.0 (2024-02-13)
+--------------------
+
+- ZO-4333: vivi-deployment: script: retract zett images with unknown copyright and write memo for them in articles
+
+- ZO-4649: Configure max retries for speech webhook celery task
+
+
 5.107.0 (2024-02-09)
 --------------------
 
