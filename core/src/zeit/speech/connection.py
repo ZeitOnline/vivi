@@ -12,10 +12,10 @@ from zeit.cms.content.interfaces import IUUID, ISemanticChange
 from zeit.cms.repository.interfaces import IFolder
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
-from zeit.content.article.interfaces import IArticle, ISpeechbertChecksum
+from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
 from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
-from zeit.speech.errors import ChecksumMismatchError
+from zeit.speech.errors import AudioReferenceError
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.speech.interfaces
@@ -94,7 +94,8 @@ class Speech:
         self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
-        article = self._assert_checksum_matches(speech)
+        article = self._assert_article_unchanged(speech)
+
         IPublish(speech).publish(background=False)
         if speech in IAudioReferences(article).items:
             return
@@ -108,12 +109,13 @@ class Speech:
             zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid), None
         )
 
-    def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
+    def _assert_article_unchanged(self, speech: IAudio) -> IArticle:
         article = self._article(speech)
-        article_checksum = ISpeechbertChecksum(article).calculate()
-        if article_checksum != ISpeechInfo(speech).checksum:
-            raise ChecksumMismatchError(
-                'Speechbert checksum mismatch for article %s and speech %s',
+        last_modified = zeit.cms.workflow.interfaces.IModified(article).date_last_modified
+        last_published = zeit.cms.workflow.interfaces.IPublishInfo(article).date_last_published
+        if last_modified > last_published:
+            raise AudioReferenceError(
+                'Article %s was modified after publish. Speech %s is not referenced.',
                 article.uniqueId,
                 speech.uniqueId,
             )
