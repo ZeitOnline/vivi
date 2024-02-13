@@ -63,7 +63,9 @@ def SPEECH_WEBHOOK_TASK(self, payload: dict):
             speech.delete(payload)
     except zeit.cms.checkout.interfaces.CheckinCheckoutError:
         config = zope.app.appsetup.product.getProductConfiguration('zeit.speech')
-        self.retry(countdown=int(config['retry-delay-seconds']))
+        self.retry(
+            countdown=int(config['retry-delay-seconds']), max_retries=int(config['max-retries'])
+        )
 
 
 def validate_request(payload: dict):

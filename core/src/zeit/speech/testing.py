@@ -17,6 +17,7 @@ product_config = """\
   principal zope.speech
   speech-folder tts
   retry-delay-seconds 0
+  max-retries 1
 </product-config>
 """
 
