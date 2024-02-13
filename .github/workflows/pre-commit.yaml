@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4.1.1
-    - uses: pre-commit/action@v3.0.0
+    - uses: pre-commit/action@v3.0.1
 
     - uses: slackapi/slack-github-action@v1.25.0
       if: failure() && github.ref_name == 'main'
