@@ -14,6 +14,7 @@ on:
 env:
   project: vivi
   build_url: "${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}"
+  team_content_alerts: C06JB4PMALW
 
 concurrency: test_branch_${{github.ref_name}}
 
@@ -172,7 +173,7 @@ jobs:
       - uses: slackapi/slack-github-action@v1.25.0
         if: failure() && github.ref_name == 'main' && github.event_name != 'schedule'
         with:
-          channel-id: "${{secrets.SLACK_TEAM_CONTENT_CHANNEL_ID}}"
+          channel-id: "${{env.team_content_alerts}}"
           slack-message: ":small_red_triangle_down: <${{env.build_url}}|${{env.project}}> tests failed"
         env:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
