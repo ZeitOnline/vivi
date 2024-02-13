@@ -55,10 +55,18 @@ def elastic(kind):
 
 
 def _collect_importers():
+    metric = Gauge('vivi_recent_content_published_total', labelnames=['content'])
     queries = {
-        'vivi_recent_audios_published_total': [{'term': {'doc_type': 'audio'}}],
-        'vivi_recent_news_published_total': [{'term': {'payload.workflow.product-id': 'News'}}],
-        'vivi_recent_videos_published_total': [{'term': {'doc_type': 'video'}}],
+        'podcast': [
+            {'term': {'doc_type': 'audio'}},
+            {'term': {'payload.audio.audio_type': 'podcast'}},
+        ],
+        'tts': [
+            {'term': {'doc_type': 'audio'}},
+            {'term': {'payload.audio.audio_type': 'tts'}},
+        ],
+        'news': [{'term': {'payload.workflow.product-id': 'News'}}],
+        'video': [{'term': {'doc_type': 'video'}}],
     }
     for name, query in queries.items():
         query = {
@@ -71,8 +79,7 @@ def _collect_importers():
                 }
             }
         }
-        metric = Gauge(name)
-        metric.labels(environment()).set(elastic('external').search(query, rows=0).hits)
+        metric.labels(environment(), name).set(elastic('external').search(query, rows=0).hits)
 
 
 def _collect_vgwort_report():
