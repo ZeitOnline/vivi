@@ -1,3 +1,4 @@
+# ruff: noqa: F821
 from zeit.cms.browser.resources import Library, SplitDirResource
 import zeit.cms.browser.resources
 import zeit.find.browser.resources
@@ -17,25 +18,25 @@ SplitDirResource(
         zeit.cms.browser.resources.base,
         zeit.cms.browser.resources.tab_js,
         zeit.find.browser.resources.find_js,
-        json_js,  # noqa
-        editor_css,  # noqa
+        json_js,
+        editor_css,
     ],
 )
 
-SplitDirResource('context.js', depends=[zeit.cms.browser.resources.base, edit_js])  # noqa
+SplitDirResource('context.js', depends=[zeit.cms.browser.resources.base, edit_js])
 
 SplitDirResource(
     'drop.js',
     depends=[zeit.cms.browser.resources.base, zeit.cms.browser.resources.dnd_js, context_js],
-)  # noqa
+)
 SplitDirResource(
     'sortable.js',
     depends=[
         zeit.cms.browser.resources.base,
-        context_js,  # noqa
+        context_js,
         drop_js,
     ],
-)  # noqa
+)
 
 SplitDirResource(
     'inlineform.js',
@@ -43,8 +44,8 @@ SplitDirResource(
         zeit.cms.browser.resources.base,
         zeit.cms.browser.resources.view_js,
         zeit.cms.browser.resources.form_js,
-        edit_js,  # noqa
-        editor_css,  # noqa
+        edit_js,
+        editor_css,
     ],
 )
 
@@ -54,9 +55,9 @@ SplitDirResource(
         zeit.cms.browser.resources.base,
         zeit.cms.browser.resources.lightbox_js,
         zeit.cms.browser.resources.tab_js,
-        context_js,  # noqa
-        edit_js,  # noqa
-        editor_css,  # noqa
+        context_js,
+        edit_js,
+        editor_css,
     ],
 )
 
@@ -66,7 +67,7 @@ SplitDirResource(
         zeit.cms.browser.resources.base,
         zeit.cms.browser.resources.view_js,
         zeit.cms.browser.resources.tab_js,
-        drop_js,  # noqa
-        editor_css,  # noqa
+        drop_js,
+        editor_css,
     ],
 )
