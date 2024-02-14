@@ -291,7 +291,7 @@ class TMS(grok.Adapter):
     def wait_for_index_update(self):
         if zeit.content.article.interfaces.IArticle.providedBy(self.context):
             # TMS supplies article body intext links, therefore publish process
-            # must wait for elastic index update
+            # must wait for elastic index update before invalidating fastly cache
             return True
         return False
 
