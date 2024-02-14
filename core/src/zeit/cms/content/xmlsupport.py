@@ -191,25 +191,6 @@ def map_dav_properties_to_xml_before_checkin(context, event):
     sync.sync()
 
 
-COMMON_NAMESPACES = {
-    'cp': 'http://namespaces.zeit.de/CMS/cp',
-}
-
-
-@grok.subscribe(
-    zeit.cms.content.interfaces.IXMLRepresentation,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent,
-)
-def cleanup_lxml(context, event):
-    unwrapped = zope.security.proxy.removeSecurityProxy(context)
-    # Keeping common ns prefixes simplifies the workingcopy xml; without them,
-    # lxml.objectify would add them to lots of child nodes.
-    lxml.etree.cleanup_namespaces(
-        unwrapped.xml, top_nsmap=COMMON_NAMESPACES, keep_ns_prefixes=COMMON_NAMESPACES.keys()
-    )
-    lxml.objectify.deannotate(unwrapped.xml, pytype=True, xsi_nil=True, xsi=False)
-
-
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 class XMLReferenceUpdater:
