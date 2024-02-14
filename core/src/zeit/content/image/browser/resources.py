@@ -1,3 +1,4 @@
+# ruff: noqa: F821
 from js.backbone import backbone
 from js.cropper import cropper
 from js.handlebars import handlebars
@@ -14,7 +15,7 @@ Resource(
     'variant.js',
     depends=[
         variant_css,
-        zeit.cms.browser.resources.base,  # noqa
+        zeit.cms.browser.resources.base,
         backbone,
         cropper,
         handlebars,

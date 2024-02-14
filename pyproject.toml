@@ -41,8 +41,6 @@ ignore = [
     "E117",
     # lambda-assignment
     "E731",
-    # undefined-name
-    "F821",
     # flake8-logging-format
     "G",
     # bad-quotes-inline-string
