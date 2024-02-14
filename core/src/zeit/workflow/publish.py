@@ -391,6 +391,7 @@ class PublishTask(PublishRetractTask):
             if to_publish:
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
+                timer.mark('Called publisher')
         except zeit.workflow.publisher.PublisherError as e:
             errors.extend(self._assign_publisher_errors_to_objects(e, published))
         except Exception as e:
