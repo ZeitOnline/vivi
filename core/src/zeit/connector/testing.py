@@ -9,7 +9,6 @@ from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
 import docker
 import plone.testing
-import pytest
 import requests
 import sqlalchemy
 import transaction
@@ -320,7 +319,6 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
         )
 
 
-@pytest.mark.slow()
 class ConnectorTest(TestCase):
     layer = REAL_CONNECTOR_LAYER
     level = 2
@@ -341,14 +339,6 @@ class SQLTest(TestCase):
 def FunctionalDocFileSuite(*paths, **kw):
     kw['package'] = 'zeit.connector'
     return zeit.cms.testing.FunctionalDocFileSuite(*paths, **kw)
-
-
-def mark_doctest_suite(suite, mark):
-    # Imitate pytest magic, see _pytest.python.transfer_markers
-    for test in suite:
-        func = test.runTest.__func__
-        mark(func)
-        test.runTest = func.__get__(test)
 
 
 def print_tree(connector, base):
