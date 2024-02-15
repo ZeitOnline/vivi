@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 class Metric:
-    def __init__(self, name, query=None, es=None, **kw):
+    def __init__(self, name, **kw):
         labels = ['environment']
         for x in kw.pop('labelnames', ()):
             labels.append(x)
@@ -32,8 +32,6 @@ class Metric:
             }
         )
         super().__init__(**kw)
-        self.query = query
-        self.es = es
 
 
 class Gauge(Metric, prometheus_client.Gauge):
@@ -44,43 +42,63 @@ class Counter(Metric, prometheus_client.Counter):
     pass
 
 
-IMPORTERS = [
-    Gauge(
-        'vivi_recent_audios_published_total',
-        [
+def environment():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+    return config['environment']
+
+
+def elastic(kind):
+    if kind == 'external':
+        return zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch)
+    elif kind == 'internal':
+        return zope.component.getUtility(zeit.find.interfaces.ICMSSearch)
+
+
+def _collect_importers():
+    metric = Gauge('vivi_recent_content_published_total', labelnames=['content'])
+    queries = {
+        'podcast': [
             {'term': {'doc_type': 'audio'}},
-            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+            {'term': {'payload.audio.audio_type': 'podcast'}},
         ],
-        'external',
-    ),
-    Gauge(
-        'vivi_recent_news_published_total',
-        [
-            {'term': {'payload.workflow.product-id': 'News'}},
-            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
+        'tts': [
+            {'term': {'doc_type': 'audio'}},
+            {'term': {'payload.audio.audio_type': 'tts'}},
         ],
-        'external',
-    ),
-    Gauge(
-        'vivi_recent_videos_published_total',
-        [
-            {'term': {'doc_type': 'video'}},
-            {'range': {'payload.document.date-last-modified': {'gt': 'now-1h'}}},
-        ],
-        'external',
-    ),
-    Gauge(
-        'vivi_recent_vgwort_reported_total',
-        [
-            {'range': {'payload.vgwort.reported_on': {'gt': 'now-1h'}}},
-        ],
-        'internal',
-    ),
-]
-TOKEN_COUNT = Gauge('vivi_available_vgwort_tokens_total')
-BROKEN = Counter(
-    'vivi_articles_with_missing_tms_authors',
-    {
+        'news': [{'term': {'payload.workflow.product-id': 'News'}}],
+        'video': [{'term': {'doc_type': 'video'}}],
+    }
+    for name, query in queries.items():
+        query = {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'range': {'payload.workflow.date_last_published': {'gt': 'now-1h'}}}
+                    ]
+                    + query
+                }
+            }
+        }
+        metric.labels(environment(), name).set(elastic('external').search(query, rows=0).hits)
+
+
+def _collect_vgwort_report():
+    metric = Gauge('vivi_recent_vgwort_reported_total')
+    query = {
+        'query': {'bool': {'filter': [{'range': {'payload.vgwort.reported_on': {'gt': 'now-1h'}}}]}}
+    }
+    metric.labels(environment()).set(elastic('internal').search(query, rows=0).hits)
+
+
+def _collect_vgwort_token_count():
+    metric = Gauge('vivi_available_vgwort_tokens_total')
+    tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
+    metric.labels(environment()).set(len(tokens))
+
+
+def _collect_missing_tms_authors():
+    metric = Counter('vivi_articles_with_missing_tms_authors')
+    query = {
         'query': {
             'bool': {
                 'filter': [
@@ -90,56 +108,8 @@ BROKEN = Counter(
             }
         },
         '_source': ['url', 'payload.head.authors'],
-    },
-    'external',
-)
-KPI_FIELDS = zeit.retresco.interfaces.KPIFieldSource()
-KPI = Gauge(
-    'tms_highest_kpi_value',
-    lambda kpi: {
-        'query': {
-            'bool': {
-                'filter': [
-                    {'term': {'doc_type': 'article'}},
-                    {'range': {'payload.document.date_first_released': {'gt': 'now-1d'}}},
-                ]
-            }
-        },
-        '_source': list(KPI_FIELDS.values()),
-        'sort': [{kpi: 'desc'}],
-    },
-    'external',
-    labelnames=['field'],
-)
-FB_TOKEN_EXPIRES = Gauge('vivi_facebook_token_expires_timestamp_seconds', labelnames=['account'])
-
-
-@zeit.cms.cli.runner()
-def collect():
-    """Collects all app-specific metrics that we have. Mostly these are based
-    on ES queries, but not all of them. This is probably *not* the best
-    factoring, but the overall amount is so little that putting in a larger
-    architecture/mechanics is just not worth it at this point.
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--pushgateway')
-    options = parser.parse_args()
-
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    environment = config['environment']
-    elastic = {
-        'external': zope.component.getUtility(zeit.retresco.interfaces.IElasticsearch),
-        'internal': zope.component.getUtility(zeit.find.interfaces.ICMSSearch),
     }
-    for metric in IMPORTERS:
-        query = {'query': {'bool': {'filter': metric.query}}}
-        es = elastic[metric.es]
-        metric.labels(environment).set(es.search(query, rows=0).hits)
-
-    tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
-    TOKEN_COUNT.labels(environment).set(len(tokens))
-
-    for row in elastic[BROKEN.es].search(BROKEN.query, rows=100):
+    for row in elastic('external').search(query, rows=100):
         content = ICMSContent('http://xml.zeit.de' + row['url'], None)
         if not IArticle.providedBy(content):
             log.info('Skip %s, not found', row['url'])
@@ -149,17 +119,43 @@ def collect():
             id = ref.target_unique_id
             if id and id not in tms:
                 log.warn('%s: author %s not found in TMS', content, id)
-                BROKEN.labels(environment).inc()
+                metric.labels(environment()).inc()
+
+
+def _collect_highest_kpi_value():
+    KPI_FIELDS = zeit.retresco.interfaces.KPIFieldSource()
+
+    def query(kpi):
+        return {
+            'query': {
+                'bool': {
+                    'filter': [
+                        {'term': {'doc_type': 'article'}},
+                        {'range': {'payload.document.date_first_released': {'gt': 'now-1d'}}},
+                    ]
+                }
+            },
+            '_source': list(KPI_FIELDS.values()),
+            'sort': [{kpi: 'desc'}],
+        }
+
+    metric = Gauge(
+        'tms_highest_kpi_value',
+        labelnames=['field'],
+    )
 
     for name, tms in KPI_FIELDS.items():
-        result = elastic[KPI.es].search(KPI.query(tms), rows=1)
+        result = elastic('external').search(query(tms), rows=1)
         try:
             row = result[0]
         except IndexError:
             pass
         else:
-            KPI.labels(environment, name).set(row.get(tms, 0))
+            metric.labels(environment(), name).set(row.get(tms, 0))
 
+
+def _collect_fb_token_expires():
+    metric = Gauge('vivi_facebook_token_expires_timestamp_seconds', labelnames=['account'])
     http = requests.Session()
     accounts = facebookAccountSource(None)
     for account in list(accounts) + [accounts.MAIN_ACCOUNT]:
@@ -173,8 +169,25 @@ def collect():
             expires = r.json()['data']['data_access_expires_at']
         except Exception:
             expires = 1
-        FB_TOKEN_EXPIRES.labels(environment, account).set(expires)
+        metric.labels(environment(), account).set(expires)
     http.close()
+
+
+@zeit.cms.cli.runner()
+def collect():
+    """Collects all app-specific metrics that we have. Mostly these are based
+    on ES queries, but not all of them. This is probably *not* the best
+    factoring, but the overall amount is so little that putting in a larger
+    architecture/mechanics is just not worth it at this point.
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--pushgateway')
+    options = parser.parse_args()
+
+    for name, func in globals().items():
+        if not name.startswith('_collect'):
+            continue
+        func()
 
     if not options.pushgateway:
         print(prometheus_client.generate_latest(REGISTRY).decode('utf-8'))
