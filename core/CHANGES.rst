@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.109.0 (2024-02-15)
+--------------------
+
+- ZO-3967: Consolidate importer metrics into vivi_recent_content_published_total wit label content (news, video, podcast, tts)
+
+
 5.108.0 (2024-02-13)
 --------------------
 
