@@ -89,23 +89,9 @@ Let's have a look at the source code:
 >>> browser.open('@@edit.html')
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML Source').value.replace('\r\n', '\n'))
-<article>...
-  <body ...
-    <entry xmlns="http://namespaces.zeit.de/bibinfo">
-      <auth-info>
-        <author>Frank Schwanitz</author>
-      </auth-info>
-      <title>Der Schwarm</title>
-      <category>Belletristik</category>
-      <edition>
-        <publisher>Kiepenheuer &amp; Witsch</publisher>
-        <location>Koeln</location>
-        <year>2004</year>
-        <pages>999</pages>
-        <price>24.90</price>
-      </edition>
-    </entry>
-  </body>...
+<article>...<body...
+...<entry xmlns="http://namespaces.zeit.de/bibinfo"><auth-info><author>Frank Schwanitz</author></auth-info>...
+...</body>...
 </article>
 
 

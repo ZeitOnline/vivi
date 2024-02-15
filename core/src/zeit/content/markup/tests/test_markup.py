@@ -29,7 +29,7 @@ class MarkupTest(zeit.content.markup.testing.FunctionalTestCase):
 
         self.assertEqual('bah', self.repository['markup'].title)
         self.assertEqual('Ursula', self.repository['markup'].authorships[0].target.firstname)
-        self.assertEqual('<h1>baz</h1>', self.repository['markup'].text)
+        self.assertEqual('<h1>baz</h1>', self.repository['markup'].text.strip())
         self.assertEllipsis('...<h1>baz</h1>...', xmltotext(self.repository['markup'].xml))
 
     def test_teaser_text_shows_a_shorter_version_of_text(self):

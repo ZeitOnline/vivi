@@ -65,4 +65,4 @@ All the data is still there:
 <Element a at ...>
 >>> lxml.etree.cleanup_namespaces(new_content.xml)
 >>> zeit.cms.testing.xmltotext(new_content.xml)
-'<a/>\n'
+'<a/>'

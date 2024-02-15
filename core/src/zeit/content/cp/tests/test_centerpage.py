@@ -44,6 +44,8 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         # Retrieve original XML after additional attributes were written.
         original = cp.xml
 
+        zeit.cms.testing.indent(original)
+        zeit.cms.testing.indent(rendered)
         self.assertXML(original, rendered)
 
 

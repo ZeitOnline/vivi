@@ -42,7 +42,8 @@ Set data:
   <block>
     <title...>Hans Wurst</title>
     <text>
-      <p><strong>Hans Wurst</strong> wursted hansig.</p>
+      <p>
+      <strong>Hans Wurst</strong> wursted hansig.</p>
     </text>
     <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
       <bu/>
