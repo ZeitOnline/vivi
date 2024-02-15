@@ -2,7 +2,9 @@ import grokcore.component as grok
 import pendulum
 import zope.dublincore.interfaces
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import zeit.cms.content.dav
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 
@@ -15,7 +17,10 @@ class RepositoryDCTimes(zeit.cms.content.dav.DAVPropertiesAdapter):
         zope.dublincore.interfaces.IDCTimes['created'], 'DAV:', 'creationdate'
     )
     modified = zeit.cms.content.dav.DAVProperty(
-        zope.dublincore.interfaces.IDCTimes['modified'], 'DAV:', 'getlastmodified'
+        zope.dublincore.interfaces.IDCTimes['modified'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'date-last-modified',
+        writeable=WRITEABLE_LIVE,
     )
 
 

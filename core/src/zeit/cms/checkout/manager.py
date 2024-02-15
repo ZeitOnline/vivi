@@ -1,4 +1,5 @@
 import grokcore.component as grok
+import pendulum
 import zope.app.locking.interfaces
 import zope.cachedescriptors.property
 import zope.component
@@ -133,11 +134,13 @@ class CheckoutManager:
                 self.context.uniqueId, 'Cannot checkin: %s' % reason
             )
         workingcopy = self.context.__parent__
+
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if semantic_change is None:
             semantic_change = sc.has_semantic_change
         if semantic_change:
             sc.update()
+
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
@@ -164,6 +167,9 @@ class CheckoutManager:
                 else:
                     msg = _('Checked in')
                 zeit.objectlog.interfaces.ILog(added).log(msg)
+        dc = zope.dublincore.interfaces.IDCTimes(added)
+        if not publishing:
+            dc.modified = pendulum.now()
         lockable = zope.app.locking.interfaces.ILockable(added, None)
         # Since publishing starts and ends with its own lock()/unlock(), it
         # would be premature to already unlock during the cycle() step.
