@@ -160,7 +160,7 @@ class SQLLayer(plone.testing.Layer):
         self['dsn'] = f'postgresql://postgres:postgres@localhost:{port}'
         self.wait_for_startup(self['dsn'])
 
-    def wait_for_startup(self, dsn, timeout=5, sleep=0.2):
+    def wait_for_startup(self, dsn, timeout=10, sleep=0.2):
         engine = sqlalchemy.create_engine(dsn)
         slept = 0
         while slept < timeout:
@@ -173,6 +173,7 @@ class SQLLayer(plone.testing.Layer):
             else:
                 engine.dispose()
                 return
+        print(self['psql_container'].logs(timestamps=True).decode('utf-8'))
         raise RuntimeError('%s did not start up' % dsn)
 
     def tearDown(self):
