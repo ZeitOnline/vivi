@@ -18,6 +18,8 @@ Currently there was no one who modified:
 >>> content = repository['testcontent']
 >>> zeit.cms.workflow.interfaces.IModified(content).last_modified_by is None
 True
+>>> zeit.cms.workflow.interfaces.IModified(content).date_last_modified is None
+True
 >>> zeit.cms.workflow.interfaces.IModified(content).date_last_checkout is None
 True
 
@@ -39,14 +41,7 @@ The last modifier is zope.user now:
 DateTime(..., tzinfo=Timezone('UTC'))
 
 
-The access time from IDCTimes can be accessed through IModified:
-
->>> import zope.dublincore.interfaces
->>> dc = zope.dublincore.interfaces.IDCTimes(content).modified
->>> wf = zeit.cms.workflow.interfaces.IModified(content).date_last_modified
->>> dc == wf
-True
->>> wf
+>>> zeit.cms.workflow.interfaces.IModified(content).date_last_modified
 DateTime(..., tzinfo=Timezone('UTC'))
 
 

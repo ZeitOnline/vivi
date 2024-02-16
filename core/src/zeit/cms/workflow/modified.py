@@ -19,15 +19,8 @@ class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IModified,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('last_modified_by', 'date_last_checkout'),
+        ('date_last_modified', 'last_modified_by', 'date_last_checkout'),
     )
-
-    @property
-    def date_last_modified(self):
-        dc = zope.dublincore.interfaces.IDCTimes(self.context, None)
-        if dc is None:
-            return None
-        return dc.modified
 
 
 @zope.component.adapter(zope.interface.Interface, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)

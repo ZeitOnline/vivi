@@ -1,9 +1,9 @@
 import grokcore.component as grok
+import pendulum
 import zope.app.locking.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.container.interfaces
-import zope.dublincore.interfaces
 import zope.event
 import zope.interface
 import zope.security.proxy
@@ -134,6 +134,10 @@ class CheckoutManager:
             )
 
         workingcopy = self.context.__parent__
+
+        modified = zeit.cms.workflow.interfaces.IModified(self.context, None)
+        if not publishing and modified is not None:
+            zope.security.proxy.getObject(modified).date_last_modified = pendulum.now()
 
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if semantic_change is None:

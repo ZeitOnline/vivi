@@ -38,3 +38,13 @@ class LastSemanticPublish(zeit.cms.testing.ZeitCmsTestCase):
         zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(content, None))
         published = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertNotEqual(None, published.date_last_published_semantic)
+
+
+class ModifiedTest(zeit.cms.testing.ZeitCmsTestCase):
+    def test_date_last_modified_is_not_updated_during_publish_cycle(self):
+        content = self.repository['testcontent']
+        mod = zeit.cms.workflow.interfaces.IModified(content)
+        self.assertEqual(None, mod.date_last_modified)
+        co = zeit.cms.checkout.interfaces.ICheckoutManager(content).checkout()
+        zeit.cms.checkout.interfaces.ICheckinManager(co).checkin(publishing=True)
+        self.assertEqual(None, mod.date_last_modified)
