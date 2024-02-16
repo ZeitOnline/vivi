@@ -143,7 +143,7 @@ class CheckoutManager:
         if semantic_change is None:
             semantic_change = sc.has_semantic_change
         if semantic_change:
-            sc.update()
+            zope.security.proxy.getObject(sc).last_semantic_change = modified.date_last_modified
 
         if event:
             zope.event.notify(

@@ -30,11 +30,7 @@ class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
     @has_semantic_change.setter
     def has_semantic_change(self, value):
         if value:
-            self.update()
-
-    def update(self):
-        mod = zeit.cms.workflow.interfaces.IModified(self.context)
-        self.last_semantic_change = mod.date_last_modified
+            self.last_semantic_change = datetime.datetime.now(pytz.UTC)
 
 
 hsc_field = zeit.cms.content.interfaces.ISemanticChange['has_semantic_change']
