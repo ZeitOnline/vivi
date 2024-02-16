@@ -7,6 +7,7 @@ import zope.interface
 import zope.security.proxy
 
 import zeit.cms.repository.folder
+import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
 
@@ -181,10 +182,10 @@ class ImageTransform:
         with image.open('w') as f:
             pil_image.save(f, format, **options)
         image.__parent__ = self.context
-        image_times = zope.dublincore.interfaces.IDCTimes(self.context, None)
-        if image_times and image_times.modified:
-            thumb_times = zope.dublincore.interfaces.IDCTimes(image)
-            thumb_times.modified = image_times.modified
+        image_times = zeit.cms.workflow.interfaces.IModified(self.context, None)
+        if image_times and image_times.date_last_modified:
+            thumb_times = zeit.cms.workflow.interfaces.IModified(image)
+            thumb_times.date_last_modified = image_times.date_last_modified
         return image
 
 

@@ -145,8 +145,8 @@ class PublicationDependencies(zeit.workflow.testing.FunctionalTestCase):
             info = IPublishInfo(item)
             info.published = True
             info.date_last_published = DAY2
-        dc = self.patches.add('zope.dublincore.interfaces.IDCTimes')
-        dc().modified = DAY3
+        mod = self.patches.add('zeit.cms.workflow.interfaces.IModified')
+        mod().date_last_modified = DAY3
 
     def publish(self, content):
         IPublishInfo(content).urgent = True

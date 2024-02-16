@@ -42,10 +42,6 @@
 
   <grant
     principal="zope.Authenticated"
-    permission="zope.dublincore.view"
-    />
-  <grant
-    principal="zope.Authenticated"
     permission="zope.View"
     />
 

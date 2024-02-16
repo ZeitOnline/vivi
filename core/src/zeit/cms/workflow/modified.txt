@@ -23,11 +23,29 @@ True
 >>> zeit.cms.workflow.interfaces.IModified(content).date_last_checkout is None
 True
 
-Checkout and checkin again:
+For checked out content there is a separate adapter.
+Its modified depends on _p_mtime but falls back to the repository time:
 
 >>> import zeit.cms.checkout.interfaces
 >>> manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
 >>> checked_out = manager.checkout()
+>>> mod = zeit.cms.workflow.interfaces.IModified(checked_out)
+>>> mod.date_last_modified == zeit.cms.workflow.interfaces.IModified(content).date_last_modified
+True
+
+After committing the object has its own modified:
+
+>>> import pendulum
+>>> import time
+>>> import transaction
+>>> before_commit_time = pendulum.now('UTC')
+>>> time.sleep(0.25)
+>>> transaction.commit()
+>>> mod.date_last_modified
+DateTime(...)
+>>> mod.date_last_modified > before_commit_time
+True
+
 >>> manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
 >>> manager.checkin()
 <zeit.cms.testcontenttype.testcontenttype.ExampleContentType...>

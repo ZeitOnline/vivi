@@ -11,7 +11,6 @@
   <securityPolicy
     component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
-  <include package="zope.dublincore" />
   <include package="zeit.cms" file="permissions.zcml" />
 
   <!-- Roles -->
@@ -79,10 +78,6 @@
   <!-- Grants -->
   <grantAll role="zope.Manager" />
 
-  <grant
-    principal="zope.Authenticated"
-    permission="zope.dublincore.view"
-    />
   <grant
     principal="zope.Authenticated"
     permission="zope.View"

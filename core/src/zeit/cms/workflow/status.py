@@ -19,12 +19,12 @@ class PublicationStatus(grok.Adapter):
             return None
         if not info.published:
             return 'not-published'
-        times = zope.dublincore.interfaces.IDCTimes(self.context)
+        modified = zeit.cms.workflow.interfaces.IModified(self.context).date_last_modified
         grace = zeit.cms.workflow.interfaces.PUBLISH_DURATION_GRACE
         if (
-            not times.modified
+            not modified
             or not info.date_last_published
-            or info.date_last_published + timedelta(seconds=grace) > times.modified
+            or info.date_last_published + timedelta(seconds=grace) > modified
         ):
             return 'published'
         return 'published-with-changes'

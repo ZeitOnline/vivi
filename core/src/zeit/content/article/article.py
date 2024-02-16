@@ -8,7 +8,6 @@ import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import zope.component
-import zope.dublincore.interfaces
 import zope.index.text.interfaces
 import zope.interface
 import zope.security.proxy

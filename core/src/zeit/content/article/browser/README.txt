@@ -47,9 +47,7 @@ We have to publish another url to see if articles are listed:
     <td>
         <span class="filename">Ford-Beerdigung</span>
     </td>
-    <td>
-      2008 3 7  12:47:16
-    </td>
+    ...
     <td>
       International
     </td>

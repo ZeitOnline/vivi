@@ -136,21 +136,6 @@
   <subscriber handler=".xmlsupport.map_dav_property_to_xml" />
   <subscriber handler=".xmlsupport.map_dav_properties_to_xml_before_checkin" />
 
-  <!-- dublin core -->
-  <class class=".dublincore.RepositoryDCTimes">
-    <require
-      interface="zope.dublincore.interfaces.IDCTimes"
-      permission="zope.View"
-      />
-  </class>
-
-  <class class=".dublincore.LocalDCTimes">
-    <require
-      interface="zope.dublincore.interfaces.IDCTimes"
-      permission="zope.View"
-      />
-  </class>
-
   <!-- semantic changes -->
   <class class=".semanticchange.SemanticChange">
     <require

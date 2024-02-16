@@ -17,6 +17,6 @@ class ListingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
             # Check that the cells are present but empty.
             self.assertEllipsis(
                 '...<td> <span class="filename">testcontent</span> </td>'
-                ' <td> 2008 ... </td> <td> </td> <td> </td>...',
+                ' <td> </td> <td> </td>...',
                 b.contents,
             )

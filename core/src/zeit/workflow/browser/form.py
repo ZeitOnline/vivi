@@ -2,7 +2,6 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.action
 import gocept.form.grouped
 import zope.component
-import zope.dublincore.interfaces
 import zope.formlib.form
 import zope.interface
 
@@ -94,7 +93,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
         'date_last_modified',
         'last_semantic_change',
         'date_last_checkout',
-        'created',
+        'date_created',
         'published',
         'date_last_published',
         'last_published_by',
@@ -155,9 +154,7 @@ class ContentWorkflow(WorkflowForm):
         zeit.objectlog.interfaces.ILog,
         zeit.cms.workflow.interfaces.IModified,
         zeit.cms.content.interfaces.ISemanticChange,
-    ).omit(*WorkflowForm.omit_fields) + zope.formlib.form.FormFields(
-        zope.dublincore.interfaces.IDCTimes, for_display=True
-    ).select('created')
+    ).omit(*WorkflowForm.omit_fields)
 
 
 @zope.component.adapter(zeit.cms.interfaces.IAsset, zeit.cms.browser.interfaces.ICMSLayer)

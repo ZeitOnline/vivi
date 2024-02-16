@@ -5,5 +5,8 @@
       interface=".interfaces.IModified"
       permission="zope.View" />
   </class>
+  <class class=".modified.LocalModified">
+    <require like_class=".modified.Modified" />
+  </class>
 
 </configure>
