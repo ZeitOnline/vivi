@@ -1,7 +1,7 @@
 from datetime import datetime
 
+import grokcore.component as grok
 import pytz
-import zope.component
 import zope.dublincore.interfaces
 import zope.interface
 
@@ -13,8 +13,7 @@ import zeit.cms.workflow.interfaces
 MIN_DATE = datetime.min.replace(tzinfo=pytz.UTC)
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.workflow.interfaces.IModified)
+@grok.implementer(zeit.cms.workflow.interfaces.IModified)
 class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IModified,
@@ -23,7 +22,7 @@ class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
     )
 
 
-@zope.component.adapter(zope.interface.Interface, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+@grok.subscribe(zope.interface.Interface, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_last_modified_by(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
@@ -31,7 +30,7 @@ def update_last_modified_by(context, event):
     zope.security.proxy.removeSecurityProxy(modified).last_modified_by = event.principal.id
 
 
-@zope.component.adapter(zope.interface.Interface, zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+@grok.subscribe(zope.interface.Interface, zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def update_date_last_checkout(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
@@ -39,7 +38,7 @@ def update_date_last_checkout(context, event):
     zope.security.proxy.removeSecurityProxy(modified).date_last_checkout = datetime.now(pytz.UTC)
 
 
-@zope.component.adapter(zope.interface.Interface, zeit.cms.workflow.interfaces.IBeforePublishEvent)
+@grok.subscribe(zope.interface.Interface, zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def update_date_last_published_semantic(context, event):
     published = zeit.cms.workflow.interfaces.IPublishInfo(context)
     date_last_published_semantic = published.date_last_published_semantic or MIN_DATE
