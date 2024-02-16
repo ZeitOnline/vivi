@@ -132,18 +132,22 @@ class CheckoutManager:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId, 'Cannot checkin: %s' % reason
             )
+
         workingcopy = self.context.__parent__
+
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if semantic_change is None:
             semantic_change = sc.has_semantic_change
         if semantic_change:
             sc.update()
+
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
                     self.context, workingcopy, self.principal, publishing
                 )
             )
+
         if ignore_conflicts:
             adapter_name = 'non-conflicting'
         else:
@@ -152,6 +156,7 @@ class CheckoutManager:
             self.context, zeit.cms.checkout.interfaces.IRepositoryContent, name=adapter_name
         )
         del workingcopy[self.context.__name__]
+
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
@@ -164,6 +169,7 @@ class CheckoutManager:
                 else:
                     msg = _('Checked in')
                 zeit.objectlog.interfaces.ILog(added).log(msg)
+
         lockable = zope.app.locking.interfaces.ILockable(added, None)
         # Since publishing starts and ends with its own lock()/unlock(), it
         # would be premature to already unlock during the cycle() step.
@@ -173,6 +179,7 @@ class CheckoutManager:
             except zope.app.locking.interfaces.LockingError:
                 # object was not locked
                 pass
+
         return added
 
     def delete(self):
