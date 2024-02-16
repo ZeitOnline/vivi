@@ -13,7 +13,6 @@ def test_suite():
             'contentmemo.txt',
             'contentuuid.txt',
             'dav.txt',
-            'dublincore.txt',
             'field.txt',
             'liveproperty.txt',
             'lxmlpickle.txt',

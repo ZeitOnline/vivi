@@ -1,9 +1,9 @@
 import grokcore.component as grok
+import pendulum
 import zope.app.locking.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.container.interfaces
-import zope.dublincore.interfaces
 import zope.event
 import zope.interface
 import zope.security.proxy
@@ -132,18 +132,26 @@ class CheckoutManager:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId, 'Cannot checkin: %s' % reason
             )
+
         workingcopy = self.context.__parent__
+
+        modified = zeit.cms.workflow.interfaces.IModified(self.context, None)
+        if not publishing and modified is not None:
+            zope.security.proxy.getObject(modified).date_last_modified = pendulum.now()
+
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if semantic_change is None:
             semantic_change = sc.has_semantic_change
         if semantic_change:
-            sc.update()
+            zope.security.proxy.getObject(sc).last_semantic_change = modified.date_last_modified
+
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
                     self.context, workingcopy, self.principal, publishing
                 )
             )
+
         if ignore_conflicts:
             adapter_name = 'non-conflicting'
         else:
@@ -152,6 +160,7 @@ class CheckoutManager:
             self.context, zeit.cms.checkout.interfaces.IRepositoryContent, name=adapter_name
         )
         del workingcopy[self.context.__name__]
+
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
@@ -164,6 +173,7 @@ class CheckoutManager:
                 else:
                     msg = _('Checked in')
                 zeit.objectlog.interfaces.ILog(added).log(msg)
+
         lockable = zope.app.locking.interfaces.ILockable(added, None)
         # Since publishing starts and ends with its own lock()/unlock(), it
         # would be premature to already unlock during the cycle() step.
@@ -173,6 +183,7 @@ class CheckoutManager:
             except zope.app.locking.interfaces.LockingError:
                 # object was not locked
                 pass
+
         return added
 
     def delete(self):

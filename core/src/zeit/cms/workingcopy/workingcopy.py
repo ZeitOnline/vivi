@@ -3,7 +3,6 @@ import z3c.traverser.interfaces
 import zope.app.security.interfaces
 import zope.component
 import zope.container.btree
-import zope.dublincore.interfaces
 import zope.interface
 import zope.publisher.interfaces
 import zope.security.interfaces
@@ -74,16 +73,6 @@ class WorkingcopyLocation(zope.container.btree.BTreeContainer):
 
             prm = zope.securitypolicy.interfaces.IPrincipalRoleManager(result)
             prm.assignRoleToPrincipal('zeit.Owner', principal_id)
-
-            try:
-                dc = zope.dublincore.interfaces.IDCDescriptiveProperties(result)
-            except TypeError:
-                pass
-            else:
-                if principal.title:
-                    dc.title = principal.title
-                if principal.description:
-                    dc.description = principal.description
         return result
 
     def _get_principal(self):

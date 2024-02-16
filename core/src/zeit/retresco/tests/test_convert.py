@@ -153,8 +153,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertStartsWith(
             str(datetime.date.today().year),
             data['payload']['document'].pop(
-                'date-last-modified',
-                # Only IXMLContent has this
+                'date_last_modified',
                 str(datetime.date.today().year),
             ),
         )

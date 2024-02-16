@@ -40,7 +40,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online, 29.12.2006</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2.1.2007 - 14:59</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">Skispringen; Vierschanzentournee; Sport; Skispringer; Skisprung; wintersport;</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>

@@ -25,7 +25,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online, dpa</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">3.1.2007 - 10:47</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>

@@ -26,7 +26,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">0</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2.1.2007 - 19:12</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">INBE; Israel; Teddy Kollek</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>

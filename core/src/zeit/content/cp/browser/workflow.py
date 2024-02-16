@@ -1,6 +1,5 @@
 import gocept.form.grouped
 import zope.component
-import zope.dublincore.interfaces
 import zope.formlib.form
 
 from zeit.cms.i18n import MessageFactory as _
@@ -40,9 +39,7 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
         zeit.objectlog.interfaces.ILog,
         zeit.cms.workflow.interfaces.IModified,
         zeit.cms.content.interfaces.ISemanticChange,
-    ).omit(*zeit.workflow.browser.form.WorkflowForm.omit_fields) + zope.formlib.form.FormFields(
-        zope.dublincore.interfaces.IDCTimes, for_display=True
-    ).select('created')
+    ).omit(*zeit.workflow.browser.form.WorkflowForm.omit_fields)
 
     @zope.formlib.form.action(_('Save state only'), name='save')
     def handle_save_state(self, action, data):

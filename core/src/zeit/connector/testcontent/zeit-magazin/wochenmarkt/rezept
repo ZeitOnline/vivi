@@ -35,7 +35,6 @@
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments_api_v2">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="comments_premoderate">no</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="corrected">yes</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2020-05-19T12:45:06.384089+00:00</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">2020-04-14T09:19:59.618155+00:00</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2020-05-19T13:55:34.458425+00:00</attribute>
     <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">2020-05-19T13:55:32.271882+00:00</attribute>

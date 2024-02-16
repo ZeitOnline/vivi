@@ -50,7 +50,6 @@
 
   <!-- Additional packages -->
 
-  <include package="zope.dublincore" />
   <include package="zope.formlib" />
 
   <include package="zope.i18n.locales"/>

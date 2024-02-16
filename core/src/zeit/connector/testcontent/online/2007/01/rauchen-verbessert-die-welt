@@ -25,7 +25,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2.1.2007 - 13:07</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">KULT; rauchen; zigarre; entschleunigung;</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>

@@ -47,6 +47,8 @@ class IModified(zope.interface.Interface):
         title=_('Date last checked out'), required=False, readonly=True
     )
 
+    date_created = zope.schema.Datetime(title=_('Date created'), required=False, readonly=True)
+
 
 class IPublishInfo(zope.interface.Interface):
     """Information about published objects."""

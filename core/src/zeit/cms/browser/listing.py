@@ -13,6 +13,7 @@ import zope.viewlet.interfaces
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.content.sources
+import zeit.cms.workflow.interfaces
 
 
 logger = logging.getLogger('zeit.cms.browser.listing')
@@ -41,18 +42,17 @@ class BaseListRepresentation:
 
     @property
     def modifiedOn(self):
-        return self._dc_date_helper('modified')
+        return self._date_helper('date_last_modified')
 
     @property
     def createdOn(self):
-        return self._dc_date_helper('created')
+        return self._date_helper('date_created')
 
-    def _dc_date_helper(self, attribute):
-        try:
-            times = zope.dublincore.interfaces.IDCTimes(self.context)
-        except TypeError:
+    def _date_helper(self, attribute):
+        modified = zeit.cms.workflow.interfaces.IModified(self.context, None)
+        if modified is None:
             return None
-        return getattr(times, attribute)
+        return getattr(modified, attribute)
 
     @property
     def type(self):

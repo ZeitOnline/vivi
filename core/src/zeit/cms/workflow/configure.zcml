@@ -1,14 +1,12 @@
-<configure
-  xmlns="http://namespaces.zope.org/zope">
-
-  <subscriber handler=".modified.update_last_modified_by" />
-  <subscriber handler=".modified.update_date_last_checkout" />
-  <subscriber handler=".modified.update_date_last_published_semantic" />
-  <adapter factory=".status.PublicationStatus" />
+<configure xmlns="http://namespaces.zope.org/zope">
 
   <class class=".modified.Modified">
-    <require interface=".interfaces.IModified"
-             permission="zope.View" />
+    <require
+      interface=".interfaces.IModified"
+      permission="zope.View" />
+  </class>
+  <class class=".modified.LocalModified">
+    <require like_class=".modified.Modified" />
   </class>
 
 </configure>

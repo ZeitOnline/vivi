@@ -529,9 +529,6 @@ class ISemanticChange(zope.interface.Interface):
         title=_('Update last semantic change'), required=False, default=False
     )
 
-    def update():
-        """Set last semantic change to last modified."""
-
 
 class IUUID(zope.interface.Interface):
     """Accessing the uuid of a content object."""

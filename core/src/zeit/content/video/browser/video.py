@@ -1,5 +1,4 @@
 import gocept.form.grouped
-import zope.dublincore.interfaces
 import zope.formlib.form
 
 from zeit.cms.content.browser.form import CommonMetadataFormBase
@@ -16,7 +15,7 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         zeit.cms.related.interfaces.IRelatedContent,
         zeit.content.image.interfaces.IImages,
         zeit.cms.workflow.interfaces.IPublishInfo,
-        zope.dublincore.interfaces.IDCTimes,
+        zeit.cms.workflow.interfaces.IModified,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
     ).select(
         'supertitle',
@@ -40,9 +39,9 @@ class Base(zeit.push.browser.form.SocialBase, zeit.push.browser.form.MobileBase)
         # remaining:
         '__name__',
         'image',
-        'created',
+        'date_created',
         'date_first_released',
-        'modified',
+        'date_last_modified',
         'expires',
         'video_still',
         'authorships',

@@ -1,36 +1,59 @@
 from datetime import datetime
 
+import grokcore.component as grok
+import pendulum
 import pytz
-import zope.component
-import zope.dublincore.interfaces
 import zope.interface
 
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.cms.workingcopy.interfaces
 
 
 MIN_DATE = datetime.min.replace(tzinfo=pytz.UTC)
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.workflow.interfaces.IModified)
+@grok.implementer(zeit.cms.workflow.interfaces.IModified)
 class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IModified,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('last_modified_by', 'date_last_checkout'),
+        ('date_last_modified', 'last_modified_by', 'date_last_checkout', 'date_created'),
     )
+
+
+class LocalModified(Modified):
+    grok.context(zeit.cms.workingcopy.interfaces.ILocalContent)
+
+    checkin = Modified.date_last_modified
 
     @property
     def date_last_modified(self):
-        dc = zope.dublincore.interfaces.IDCTimes(self.context, None)
-        if dc is None:
+        return self._zodb or self.checkin
+
+    @property
+    def _zodb(self):
+        if self.context._p_mtime is None:
             return None
-        return dc.modified
+        return pendulum.from_timestamp(self.context._p_mtime)
+
+    @date_last_modified.setter
+    def date_last_modified(self, value):
+        self.checkin = value
 
 
-@zope.component.adapter(zope.interface.Interface, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+@grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectCreatedEvent)
+def set_date_on_create(context, event):
+    if zope.lifecycleevent.IObjectCopiedEvent.providedBy(event):
+        return
+    modified = zeit.cms.workflow.interfaces.IModified(context, None)
+    if modified is None:
+        return
+    zope.security.proxy.removeSecurityProxy(modified).date_created = pendulum.now()
+
+
+@grok.subscribe(zope.interface.Interface, zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_last_modified_by(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
@@ -38,7 +61,7 @@ def update_last_modified_by(context, event):
     zope.security.proxy.removeSecurityProxy(modified).last_modified_by = event.principal.id
 
 
-@zope.component.adapter(zope.interface.Interface, zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+@grok.subscribe(zope.interface.Interface, zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def update_date_last_checkout(context, event):
     modified = zeit.cms.workflow.interfaces.IModified(context, None)
     if modified is None:
@@ -46,7 +69,7 @@ def update_date_last_checkout(context, event):
     zope.security.proxy.removeSecurityProxy(modified).date_last_checkout = datetime.now(pytz.UTC)
 
 
-@zope.component.adapter(zope.interface.Interface, zeit.cms.workflow.interfaces.IBeforePublishEvent)
+@grok.subscribe(zope.interface.Interface, zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def update_date_last_published_semantic(context, event):
     published = zeit.cms.workflow.interfaces.IPublishInfo(context)
     date_last_published_semantic = published.date_last_published_semantic or MIN_DATE

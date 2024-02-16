@@ -27,9 +27,14 @@ Initially content is not published:
 
 The content was modified last at the following time:
 
->>> import zope.dublincore.interfaces
->>> times = zope.dublincore.interfaces.IDCTimes(content)
->>> times.modified
+>>> import pendulum
+>>> import zeit.cms.workflow.interfaces
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> connector._properties['http://xml.zeit.de/testcontent'][('date_last_modified', 'http://namespaces.zeit.de/CMS/document')] = pendulum.datetime(2008, 3, 7, 12, 47, 16).isoformat()
+>>> times = zeit.cms.workflow.interfaces.IModified(content)
+>>> times.date_last_modified
 DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))
 
 When we publish the object after that time, the publication status indicates
@@ -38,7 +43,7 @@ that accordingly:
 >>> import datetime
 >>> zeit.cms.workflow.mock._published[content.uniqueId] = True
 >>> zeit.cms.workflow.mock._publish_times[content.uniqueId] = (
-...     times.modified + datetime.timedelta(seconds=5))
+...     times.date_last_modified + datetime.timedelta(seconds=5))
 >>> status.published
 'published'
 
@@ -47,7 +52,7 @@ When the publication date is before the last modification, this will be
 indicated as well:
 
 >>> zeit.cms.workflow.mock._publish_times[content.uniqueId] = (
-...     times.modified + datetime.timedelta(seconds=-5))
+...     times.date_last_modified + datetime.timedelta(seconds=-5))
 >>> status.published
 'published-with-changes'
 

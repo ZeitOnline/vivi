@@ -2,7 +2,6 @@
 import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
-import zope.dublincore.interfaces
 import zope.interface
 
 import zeit.cms.browser.interfaces

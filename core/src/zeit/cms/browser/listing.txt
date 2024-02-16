@@ -82,7 +82,7 @@ When we have local modifications the we get the third indicator. Let's try some
 >>> import zeit.connector.interfaces
 >>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
->>> connector._properties[uid][('getlastmodified', 'DAV:')] = (
+>>> connector._properties[uid][('date_last_modified', 'http://namespaces.zeit.de/CMS/document')] = (
 ...     datetime.datetime(2007, 12, 6, 12, 00, tzinfo=pytz.UTC).isoformat())
 
 We don't know when the object was published. Assume it's fresh:
@@ -156,7 +156,7 @@ When the modification date is not known we also assume it is fresh. Note that
 this case is rather constructed because in reality all objects have a
 modification time.
 
->>> connector._properties[uid][('getlastmodified', 'DAV:')] = None
+>>> connector._properties[uid][('date_last_modified', 'http://namespaces.zeit.de/CMS/document')] = None
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> print(browser.contents)
 <?xml ...

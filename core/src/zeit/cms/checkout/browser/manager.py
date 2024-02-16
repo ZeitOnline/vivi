@@ -4,7 +4,6 @@ import transaction
 import zope.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
-import zope.dublincore.interfaces
 import zope.formlib.form
 import zope.i18n
 

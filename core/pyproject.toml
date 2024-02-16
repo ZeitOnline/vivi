@@ -64,7 +64,6 @@ dependencies = [
     "zope.copypastemove",
     "zope.deferredimport",  # undeclared by zc.form
     "zope.dottedname",
-    "zope.dublincore",
     "zope.event",
     "zope.exceptions",
     "zope.file",

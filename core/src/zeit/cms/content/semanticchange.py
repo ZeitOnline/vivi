@@ -11,6 +11,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.ISemanticChange)
@@ -29,11 +30,7 @@ class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
     @has_semantic_change.setter
     def has_semantic_change(self, value):
         if value:
-            self.update()
-
-    def update(self):
-        dc = zope.dublincore.interfaces.IDCTimes(self.context)
-        self.last_semantic_change = dc.modified
+            self.last_semantic_change = datetime.datetime.now(pytz.UTC)
 
 
 hsc_field = zeit.cms.content.interfaces.ISemanticChange['has_semantic_change']
