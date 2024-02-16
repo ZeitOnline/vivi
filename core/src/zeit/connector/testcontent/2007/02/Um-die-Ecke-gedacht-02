@@ -11,7 +11,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">0</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 04.01.2007 Nr. 02</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">3.1.2007 - 15:00</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">04.01.2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">GESO; freizeit; spiel; Um die Ecke gedacht; Kreuzworträtsel</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">no</attribute>

@@ -212,7 +212,6 @@ Now the WebDAV properties are there, besides the empty one:
 
 >>> sorted(properties.keys())
 [('author', 'http://namespaces.zeit.de/CMS/document'),
- ('date-last-modified', 'http://namespaces.zeit.de/CMS/document'),
  ('text-length', 'http://namespaces.zeit.de/CMS/document'),
  ('volume', 'http://namespaces.zeit.de/CMS/document'),
  ('year', 'http://namespaces.zeit.de/CMS/document')]

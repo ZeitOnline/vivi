@@ -13,7 +13,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">DIE ZEIT, 20.12.2006 Nr. 52</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">26.12.2006 - 19:26</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint">20.12.2006</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">GESO; BEVO; Reichtum;Starnberger See</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>

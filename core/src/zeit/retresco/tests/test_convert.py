@@ -150,14 +150,6 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
         self.assertStartsWith(
             str(datetime.date.today().year), data['payload']['meta'].pop('tms_last_indexed')
         )
-        self.assertStartsWith(
-            str(datetime.date.today().year),
-            data['payload']['document'].pop(
-                'date-last-modified',
-                # Only IXMLContent has this
-                str(datetime.date.today().year),
-            ),
-        )
         self.assertStartsWith('<pickle', data['payload']['meta'].pop('provides'))
         self.assertStartsWith(
             '<ns0:rankedTags', data['payload'].get('tagging', {}).pop('keywords', '<ns0:rankedTags')

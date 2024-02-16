@@ -22,7 +22,6 @@
     <references/>
     <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">200</attribute>
     <attribute name="comments" ns="http://namespaces.zeit.de/CMS/document">1</attribute>
-    <attribute name="date-last-modified" ns="http://namespaces.zeit.de/CMS/document">8.12.2006 - 15:42</attribute>
     <attribute name="mostread" ns="http://namespaces.zeit.de/CMS/document">yes</attribute>
     <attribute name="paragraphsperpage" ns="http://namespaces.zeit.de/CMS/document">6</attribute>
     <attribute name="topic" ns="http://namespaces.zeit.de/CMS/document">Wirtschaft</attribute>

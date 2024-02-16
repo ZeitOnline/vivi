@@ -26,7 +26,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="copyrights">ZEIT online, ks</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2.1.2007 - 15:10</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="erscheint"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="keywords">Arbeitsmarkt; Mehrwertsteuer; Steuererhöhung; Mehrwertsteuererhöhung; Arbeitsplatzverlust; </attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="mostread">yes</attribute>

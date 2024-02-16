@@ -12,8 +12,7 @@ The building blocks are search vars:
 >>> volume = SearchVar('volume', 'http://namespaces.zeit.de/CMS/document')
 >>> year = SearchVar('year', 'http://namespaces.zeit.de/CMS/document')
 >>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/CMS/document')
->>> modified = SearchVar(
-...     'date-last-modified', 'http://namespaces.zeit.de/CMS/document')
+>>> modified = SearchVar('getlastmodified', 'DAV:')
 >>> etag = SearchVar('getetag', 'DAV:')
 
 Queries are built of basic terms involving search vars stitched together into

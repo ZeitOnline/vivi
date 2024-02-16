@@ -20,7 +20,6 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="comments_premoderate">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="corrected">yes</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">2022-08-10T21:35:23.213099+00:00</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_first_released">2022-08-09T06:11:30+00:00</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">2022-08-10T21:35:24.546250+00:00</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="date_last_published">2022-08-10T21:35:23.950553+00:00</attribute>

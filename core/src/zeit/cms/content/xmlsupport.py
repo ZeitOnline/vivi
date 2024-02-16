@@ -1,12 +1,10 @@
 from io import StringIO
-import datetime
 
 import gocept.lxml.objectify
 import grokcore.component as grok
 import lxml.objectify
 import persistent
 import persistent.interfaces
-import pytz
 import zope.interface
 import zope.security.interfaces
 import zope.security.proxy
@@ -110,18 +108,7 @@ class PropertyToXMLAttribute:
 
     def __init__(self, context):
         self.context = context
-        dav_properties = zeit.connector.interfaces.IWebDAVProperties(context)
-
-        # Set the date-last-modified to now
-        try:
-            dav_properties[
-                ('date-last-modified', zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
-            ] = datetime.datetime.now(pytz.UTC).isoformat()
-        except zope.security.interfaces.Forbidden:
-            # Don't do this for live properties.
-            pass
-
-        self.properties = dict(dav_properties)
+        self.properties = dict(zeit.connector.interfaces.IWebDAVProperties(context))
 
         # Now get the current live-properties
         repository = zope.component.queryUtility(zeit.cms.repository.interfaces.IRepository)
