@@ -38,28 +38,13 @@ The modified depends on _p_mtime but falls back to the DAV modification time:
 >>> dc.modified
 DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))
 
-The modified can be set:
-
->>> import pendulum
->>> dc.modified = pendulum.datetime(2009, 1, 1)
-
-But that value is only used if there is neither one in the DAV properties nor
-on _p_mtime:
-
->>> dc.modified
-DateTime(2008, 3, 7, 12, 47, 16, tzinfo=Timezone('UTC'))
->>> import zeit.connector.interfaces
->>> del zeit.connector.interfaces.IWebDAVProperties(
-...     checked_out)[('getlastmodified', 'DAV:')]
->>> dc.modified
-DateTime(2009, 1, 1, 0, 0, 0, tzinfo=Timezone('UTC'))
-
 After committing the object has its own modified:
 
->>> before_commit_time = pendulum.now('UTC')
->>> import time  # wait a bit to be sure modified is > before_commit_time
->>> time.sleep(0.25)
+>>> import pendulum
+>>> import time
 >>> import transaction
+>>> before_commit_time = pendulum.now('UTC')
+>>> time.sleep(0.25)
 >>> transaction.commit()
 >>> dc.modified
 DateTime(...)

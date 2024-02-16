@@ -24,8 +24,7 @@ class LocalDCTimes(RepositoryDCTimes):
 
     @property
     def modified(self):
-        annotated = zope.annotation.interfaces.IAnnotations(self.context).get(__name__)
-        return self._zodb or super().modified or annotated
+        return self._zodb or super().modified
 
     @property
     def _zodb(self):
@@ -35,7 +34,6 @@ class LocalDCTimes(RepositoryDCTimes):
 
     @modified.setter
     def modified(self, value):
-        # Store modified in annotations. Some code may set modified for
-        # temporary objects or to have a modified date before database commit.
-        annotations = zope.annotation.interfaces.IAnnotations(self.context)
-        annotations[__name__] = value
+        # Some code may set modified for temporary objects or to have a
+        # modified date before database commit.
+        pass
