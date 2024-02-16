@@ -24,15 +24,14 @@ class LocalDCTimes(RepositoryDCTimes):
 
     @property
     def modified(self):
-        ts = self.context._p_mtime
-        if ts is None:
-            modified = super().modified
-            if modified is None:
-                annotations = zope.annotation.interfaces.IAnnotations(self.context)
-                modified = annotations.get(__name__)
-        else:
-            modified = pendulum.from_timestamp(ts)
-        return modified
+        zodb = self.context._p_mtime
+        if zodb is not None:
+            return pendulum.from_timestamp(zodb)
+        checkin = super().modified
+        if checkin is not None:
+            return checkin
+        annotations = zope.annotation.interfaces.IAnnotations(self.context)
+        return annotations.get(__name__)
 
     @modified.setter
     def modified(self, value):
