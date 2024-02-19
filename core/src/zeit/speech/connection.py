@@ -57,7 +57,7 @@ class Speech:
         speech.audio_type = 'tts'
         folder = self._get_target_folder(data['uuid'])
         folder[data['uuid']] = speech
-        log.info('Text-to-speech was created for article uuid %s', data['uuid'])
+        log.info('Created %s for article uuid %s', speech, data['uuid'])
         self._update(data, folder[data['uuid']])
         return folder[data['uuid']]
 
@@ -73,7 +73,7 @@ class Speech:
                 elif audio['type'] == 'PREVIEW_TTS':
                     ISpeechInfo(co).preview_url = audio_entry['url']
             ISemanticChange(co).last_semantic_change = datetime.now(pytz.UTC)
-        log.info('Text-to-speech %s was updated for article uuid %s', speech.uniqueId, data['uuid'])
+        log.info('Updated %s for article uuid %s', speech, data['uuid'])
 
     def _find(self, article_uuid: str) -> Optional[IAudio]:
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -81,7 +81,7 @@ class Speech:
         if not result:
             return None
         content = zeit.cms.interfaces.ICMSContent(result[0][0])
-        log.debug('Text-to-speech %s found for %s.', content.uniqueId, article_uuid)
+        log.debug('%s found for article uuid %s.', content, article_uuid)
         return content
 
     def update(self, data: dict):
@@ -98,10 +98,12 @@ class Speech:
 
         IPublish(speech).publish(background=False)
         if speech in IAudioReferences(article).items:
+            log.debug('%s already references %s', article, speech)
             return
         with checked_out(article, raise_if_error=True) as co:
             references = IAudioReferences(co)
             references.add(speech)
+        log.info('Added reference from %s to %s', article, speech)
         IPublish(article).publish(background=False)
 
     def _article(self, speech: IAudio) -> IArticle:
@@ -115,9 +117,9 @@ class Speech:
         last_published = zeit.cms.workflow.interfaces.IPublishInfo(article).date_last_published
         if last_modified > last_published:
             raise AudioReferenceError(
-                'Article %s was modified after publish. Speech %s is not referenced.',
-                article.uniqueId,
-                speech.uniqueId,
+                '%s was modified after publish. Skipped adding reference %s.',
+                article,
+                speech,
             )
         return article
 
@@ -125,7 +127,7 @@ class Speech:
         article = self._article(speech)
         if not article:
             log.warning(
-                'No article found for Text-to-speech %s. ' 'Maybe it was already deleted?',
+                'No article found for %s. Maybe it was already deleted?',
                 speech,
             )
             return
@@ -137,7 +139,7 @@ class Speech:
         speech = self._find(data['article_uuid'])
         if not speech:
             log.warning(
-                'No Text-to-speech found for article uuid %s. '
+                'No audio object found for article uuid %s. '
                 'Maybe it was already deleted?' % data['article_uuid'],
             )
             return
@@ -145,4 +147,4 @@ class Speech:
         IPublish(speech).retract(background=False)
         unique_id = speech.uniqueId
         del speech.__parent__[speech.__name__]
-        log.info('Text-to-speech %s successfully deleted.', unique_id)
+        log.info('Deleted %s', unique_id)

@@ -143,5 +143,5 @@ class TestSpeech(FunctionalTestCase):
         self.repository.connector.search_result = []
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             Speech().delete(TTS_DELETED)
-        assert f'No article found for Text-to-speech {audio}' in self.caplog.text
-        assert not self.repository.has_key('audio')
+        assert f'No article found for {audio}' in self.caplog.text
+        assert 'audio' not in self.repository
