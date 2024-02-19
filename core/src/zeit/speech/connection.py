@@ -113,15 +113,14 @@ class Speech:
 
     def _assert_article_unchanged(self, speech: IAudio) -> IArticle:
         article = self._article(speech)
-        last_modified = zeit.cms.workflow.interfaces.IModified(article).date_last_modified
-        last_published = zeit.cms.workflow.interfaces.IPublishInfo(article).date_last_published
-        if last_modified > last_published:
-            raise AudioReferenceError(
-                '%s was modified after publish. Skipped adding reference %s.',
-                article,
-                speech,
-            )
-        return article
+        pub_status = zeit.cms.workflow.interfaces.IPublicationStatus(article).published
+        if pub_status == 'published':
+            return article
+        raise AudioReferenceError(
+            '%s was modified after publish. Skipped adding reference %s.',
+            article,
+            speech,
+        )
 
     def _remove_reference_from_article(self, speech: IAudio):
         article = self._article(speech)
