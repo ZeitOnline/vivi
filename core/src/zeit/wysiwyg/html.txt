@@ -18,7 +18,7 @@ Create an XML structure containing a body:
 ...   <body>
 ...     <title>Title</title>
 ...     <p>A paragraph</p>
-...     <p>Another <em>paragraph</em></p>
+...     <p>Another <em>paragraph</em> follows</p>
 ...     <teaser/>
 ...   </body>
 ... </article>'''
@@ -40,7 +40,7 @@ Get the HTML representation:
 
 >>> print(converter.to_html(article.xml.find('body')))
 <p>A paragraph</p>
-<p>Another <em>paragraph</em></p>
+<p>Another <em>paragraph</em> follows</p>
 
 
 The original article xml is of course unmodifed so far:
@@ -51,7 +51,7 @@ The original article xml is of course unmodifed so far:
   <body>
     <title>Title</title>
     <p>A paragraph</p>
-    <p>Another <em>paragraph</em></p>
+    <p>Another <em>paragraph</em> follows</p>
     <teaser/>
   </body>
 </article>
@@ -66,7 +66,7 @@ Now for something more complex, the intertitle:
 ...     <title>Title</title>
 ...     <p>A paragraph</p>
 ...     <intertitle>Paragraphs are nice</intertitle>
-...     <p>Another <em>paragraph</em></p>
+...     <p>Another <em>paragraph</em> follows</p>
 ...     <teaser/>
 ...   </body>
 ... </article>'''
@@ -78,16 +78,16 @@ In the html `intertitle` becomes an `h3`:
 >>> print(converter.to_html(article.xml.find('body')))
 <p>A paragraph</p>
 <h3>Paragraphs are nice</h3>
-<p>Another <em>paragraph</em></p>
+<p>Another <em>paragraph</em> follows</p>
 
 
 Now we change the HTML and see the reflection in the article XML. The `h3` in
 the html becomes an `intertitle` again:
 
 >>> converter.from_html(article.xml.find('body'), """\
-...   <p>A paragraph with more <em>markup</em></p>
+...   <p>A paragraph with more <em>markup</em> now</p>
 ...   <h3>Paragraphs are nice</h3>
-...   <p>Another <em>paragraph</em></p>
+...   <p>Another <em>paragraph</em> follows</p>
 ...   <p>Bla bla bla</p>
 ... """)
 
@@ -97,9 +97,9 @@ the html becomes an `intertitle` again:
   <body>
     <title>Title</title>
     <teaser/>
-    <p>A paragraph with more <em>markup</em></p>
+    <p>A paragraph with more <em>markup</em> now</p>
     <intertitle>Paragraphs are nice</intertitle>
-    <p>Another <em>paragraph</em></p>
+    <p>Another <em>paragraph</em> follows</p>
     <p>Bla bla bla</p>
   </body>
 </article>
@@ -134,7 +134,8 @@ saving. br's inside a <p> are kept:
     <teaser/>
     <p>Foo</p>
     <p>
-      <b>bar<br/></b>
+      <b>bar<br/>
+      </b>
     </p>
   </body>
 </article>
@@ -181,7 +182,10 @@ Support trailing text on the toplevel:
 >>> print(zeit.cms.testing.xmltotext(article.xml))
 <article>
   <head/>
-  <body><title>Title</title><teaser/><p>Test</p>er
+  <body>
+    <title>Title</title>
+    <teaser/>
+    <p>Test</p>er
   </body>
 </article>
 
@@ -350,13 +354,14 @@ The other way round:
 ...     menschliche</a></p>
 ...     <p>Selbst wenn </p>""")
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
     <p>Fuer <a href="http://xml.zeit.de/online/2007/01/eta-zapatero">
-    menschliche</a></p>
+    menschliche</a>
+    </p>
     <p>Selbst wenn </p>
   </body>
 </article>
@@ -427,12 +432,12 @@ the image is put into the xml:
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <title>Title</title>
     <p>Fuer menschliche</p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large">
       <bu>Cap cap cap</bu>
      </image>
     <p>Zellen ist das toll.</p>
@@ -481,7 +486,7 @@ Converting html to xml also splits up paragraphs as necessary:
 ...     Zellen ist <a href="#">das</a> toll.</p>
 ... <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <title>Title</title>
@@ -520,8 +525,8 @@ support it.)
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print(converter.to_html(article.xml.find('body')))
 <p>Aus winzigen embryonalen ...</p>
-<p>Fuer menschliche
-<a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/></a>
+<p>Fuer menschliche <a href="#">
+<img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/></a>
 Zellen ist <a href="#">das</a> toll.</p>
 <p>Selbst wenn </p>
 
@@ -532,13 +537,16 @@ Zellen ist <a href="#">das</a> toll.</p>
 ...     Zellen ist <a href="#">das</a> toll.</p>
 ... <p>Selbst wenn </p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
-    <p>Fuer menschliche
-    <a href="#"><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu>Cap cap cap</bu></image></a>
+    <p>Fuer menschliche <a href="#">
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large">
+      <bu>Cap cap cap</bu>
+    </image>
+    </a>
     Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
   </body>
@@ -685,10 +693,10 @@ though it's nested.
 <article>
   <head/>
   <body>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
         <bu>Cap cap cap</bu>
     </image>
-    <p><strong> Hurz</strong> foobar </p>
+    <p> <strong> Hurz</strong> foobar </p>
     <p>Selbst wenn </p>
   </body>
 </article>
@@ -786,7 +794,7 @@ On the way back the divs become a video node:
 ...     <p>Foo bar</p>''')
 
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <p>No bo po co to.</p>
@@ -806,7 +814,7 @@ If no expires date is entered, it is taken from the content object instead:
 ...     </div>
 ...     <p>Foo bar</p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <p>No bo po co to.</p>
@@ -826,7 +834,7 @@ If no format is entered, the attribute stays empty:
 ...     </div>
 ...     <p>Foo bar</p>''')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <p>No bo po co to.</p>
@@ -940,7 +948,7 @@ On the way back the divs become an audio node:
 ...     <p>Foo bar</p>''')
 
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <p>No bo po co to.</p>
@@ -1091,10 +1099,7 @@ Tables
 >>> print(converter.to_html(article.xml.find('body')))
 <table>
   <tbody>
-    <tr>
-      <td>foo</td>
-      <td>bar</td>
-    </tr>
+    <tr><td>foo</td><td>bar</td></tr>
   </tbody>
 </table>
 
@@ -1408,7 +1413,7 @@ Empty citation should not break:
 
 >>> converter.from_html(article.xml.find('body'), html)
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article ...>
+<article>
   <head/>
   <body>
     <citation/>
