@@ -4,10 +4,6 @@ Publication Status
 An object can generally be published or not. But when it's published there may
 be local changes, which have not been published
 
-Note: since publishing itself takes a while (and may modify the object in the
-process, thus setting a new modified timestamp), the comparison includes a
-fudge factor. For this test we remove that (to increase readability):
-
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()
