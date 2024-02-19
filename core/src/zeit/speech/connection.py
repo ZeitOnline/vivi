@@ -12,10 +12,10 @@ from zeit.cms.content.interfaces import IUUID, ISemanticChange
 from zeit.cms.repository.interfaces import IFolder
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
-from zeit.content.article.interfaces import IArticle, ISpeechbertChecksum
+from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
 from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
-from zeit.speech.errors import ChecksumMismatchError
+from zeit.speech.errors import AudioReferenceError
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.speech.interfaces
@@ -57,7 +57,7 @@ class Speech:
         speech.audio_type = 'tts'
         folder = self._get_target_folder(data['uuid'])
         folder[data['uuid']] = speech
-        log.info('Text-to-speech was created for article uuid %s', data['uuid'])
+        log.info('Created %s for article uuid %s', speech, data['uuid'])
         self._update(data, folder[data['uuid']])
         return folder[data['uuid']]
 
@@ -73,7 +73,7 @@ class Speech:
                 elif audio['type'] == 'PREVIEW_TTS':
                     ISpeechInfo(co).preview_url = audio_entry['url']
             ISemanticChange(co).last_semantic_change = datetime.now(pytz.UTC)
-        log.info('Text-to-speech %s was updated for article uuid %s', speech.uniqueId, data['uuid'])
+        log.info('Updated %s for article uuid %s', speech, data['uuid'])
 
     def _find(self, article_uuid: str) -> Optional[IAudio]:
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -81,7 +81,7 @@ class Speech:
         if not result:
             return None
         content = zeit.cms.interfaces.ICMSContent(result[0][0])
-        log.debug('Text-to-speech %s found for %s.', content.uniqueId, article_uuid)
+        log.debug('%s found for article uuid %s.', content, article_uuid)
         return content
 
     def update(self, data: dict):
@@ -94,13 +94,16 @@ class Speech:
         self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
-        article = self._assert_checksum_matches(speech)
         IPublish(speech).publish(background=False)
+
+        article = self._assert_article_unchanged(speech)
         if speech in IAudioReferences(article).items:
+            log.debug('%s already references %s', article, speech)
             return
         with checked_out(article, raise_if_error=True) as co:
             references = IAudioReferences(co)
             references.add(speech)
+        log.info('Added reference from %s to %s', article, speech)
         IPublish(article).publish(background=False)
 
     def _article(self, speech: IAudio) -> IArticle:
@@ -108,22 +111,22 @@ class Speech:
             zeit.cms.content.interfaces.IUUID(ISpeechInfo(speech).article_uuid), None
         )
 
-    def _assert_checksum_matches(self, speech: IAudio) -> IArticle:
+    def _assert_article_unchanged(self, speech: IAudio) -> IArticle:
         article = self._article(speech)
-        article_checksum = ISpeechbertChecksum(article).calculate()
-        if article_checksum != ISpeechInfo(speech).checksum:
-            raise ChecksumMismatchError(
-                'Speechbert checksum mismatch for article %s and speech %s',
-                article.uniqueId,
-                speech.uniqueId,
-            )
-        return article
+        pub_status = zeit.cms.workflow.interfaces.IPublicationStatus(article).published
+        if pub_status == 'published':
+            return article
+        raise AudioReferenceError(
+            '%s was modified after publish. Skipped adding reference %s.',
+            article,
+            speech,
+        )
 
     def _remove_reference_from_article(self, speech: IAudio):
         article = self._article(speech)
         if not article:
             log.warning(
-                'No article found for Text-to-speech %s. ' 'Maybe it was already deleted?',
+                'No article found for %s. Maybe it was already deleted?',
                 speech,
             )
             return
@@ -135,7 +138,7 @@ class Speech:
         speech = self._find(data['article_uuid'])
         if not speech:
             log.warning(
-                'No Text-to-speech found for article uuid %s. '
+                'No audio object found for article uuid %s. '
                 'Maybe it was already deleted?' % data['article_uuid'],
             )
             return
@@ -143,4 +146,4 @@ class Speech:
         IPublish(speech).retract(background=False)
         unique_id = speech.uniqueId
         del speech.__parent__[speech.__name__]
-        log.info('Text-to-speech %s successfully deleted.', unique_id)
+        log.info('Deleted %s', unique_id)

@@ -1,2 +1,5 @@
-class ChecksumMismatchError(Exception):
-    """An exception raised when the checksum of the article and the speech do not match."""
+class AudioReferenceError(Exception):
+    """
+    An exception raised if the article was updated after publish, to avoid publishing it with
+    unreviewed changes
+    """

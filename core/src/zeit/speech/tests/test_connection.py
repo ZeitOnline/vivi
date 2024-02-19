@@ -10,7 +10,7 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.audio.interfaces import IAudioReferences, ISpeechInfo
 from zeit.content.audio.testing import AudioBuilder
 from zeit.speech.connection import Speech
-from zeit.speech.errors import ChecksumMismatchError
+from zeit.speech.errors import AudioReferenceError
 from zeit.speech.testing import TTS_CREATED, TTS_DELETED, FunctionalTestCase
 import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.mock
@@ -87,23 +87,29 @@ class TestSpeech(FunctionalTestCase):
         assert zeit.cms.workflow.mock._publish_count[article.uniqueId] == 2
         assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 2
 
-    def test_if_checksum_does_not_match_do_not_add_reference(self):
-        tts_msg = self.setup_speech_message('checksum', 'cake')
-        with pytest.raises(ChecksumMismatchError):
-            self.create_audio(tts_msg)
+    def test_if_article_changed_do_not_add_reference(self):
+        IPublish(self.article).publish(background=False)
+        with checked_out(self.article) as co:
+            paragraph = co.body.create_item('p')
+            paragraph.text = 'the article has changed'
+        with pytest.raises(AudioReferenceError):
+            self.create_audio(TTS_CREATED)
         article = ICMSContent(self.article_uid)
         reference = IAudioReferences(article)
         assert not reference.items
 
-    def test_update_audio_fails_because_checksum_is_not_matching(self):
+    def test_update_audio_fails_if_article_changed(self):
         audio = self.create_audio(TTS_CREATED)
-        assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 1
-
-        tts_msg = self.setup_speech_message('checksum', 'cake')
+        article = ICMSContent(self.article_uid)
+        reference = IAudioReferences(article)
+        assert audio in reference.items
+        with checked_out(self.article) as co:
+            paragraph = co.body.create_item('p')
+            paragraph.text = 'the article has changed'
         self.repository.connector.search_result = [(self.article.uniqueId)]
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
-            with pytest.raises(ChecksumMismatchError):
-                Speech().update(tts_msg)
+            with pytest.raises(AudioReferenceError):
+                Speech().update(TTS_CREATED)
 
     def test_handle_delete_event(self):
         audio = self.create_audio(TTS_CREATED)
@@ -137,5 +143,5 @@ class TestSpeech(FunctionalTestCase):
         self.repository.connector.search_result = []
         with mock.patch('zeit.speech.connection.Speech._find', return_value=audio):
             Speech().delete(TTS_DELETED)
-        assert f'No article found for Text-to-speech {audio}' in self.caplog.text
-        assert not self.repository.has_key('audio')
+        assert f'No article found for {audio}' in self.caplog.text
+        assert 'audio' not in self.repository
