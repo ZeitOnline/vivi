@@ -1,4 +1,7 @@
+import logging
+
 import grokcore.component as grok
+import lxml.etree
 import pendulum
 import zope.app.locking.interfaces
 import zope.cachedescriptors.property
@@ -8,6 +11,7 @@ import zope.event
 import zope.interface
 import zope.security.proxy
 
+from zeit.cms.content.interfaces import IXMLRepresentation
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
@@ -15,6 +19,9 @@ import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.objectlog.interfaces
+
+
+log = logging.getLogger(__name__)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
@@ -101,6 +108,12 @@ class CheckoutManager:
                     added, workingcopy, self.principal, publishing
                 )
             )
+
+        # XXX Debug helper, see ZO-859
+        log_body = config.get('checkout-log-body', '').lower() == 'true'
+        if log_body and IXMLRepresentation.providedBy(added):
+            body = lxml.etree.tostring(added.xml, pretty_print=True, encoding=str)
+            log.info('%s checked out %s:\n%s', self.principal.id, added, body)
 
         return workingcopy[name]
 
