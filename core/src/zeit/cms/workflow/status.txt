@@ -12,13 +12,10 @@ fudge factor. For this test we remove that (to increase readability):
 >>> zeit.cms.testing.set_site()
 >>> principal = zeit.cms.testing.create_interaction()
 
->>> import zeit.cms.workflow.interfaces
->>> old_grace = zeit.cms.workflow.interfaces.PUBLISH_DURATION_GRACE
->>> zeit.cms.workflow.interfaces.PUBLISH_DURATION_GRACE = 0
-
 Initially content is not published:
 
 >>> import zeit.cms.interfaces
+>>> import zeit.cms.workflow.interfaces
 >>> content = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/testcontent')
 >>> status = zeit.cms.workflow.interfaces.IPublicationStatus(content)
@@ -62,4 +59,3 @@ Clean up
 
 >>> zeit.cms.workflow.mock._published.clear()
 >>> zeit.cms.workflow.mock._publish_times.clear()
->>> zeit.cms.workflow.interfaces.PUBLISH_DURATION_GRACE = old_grace

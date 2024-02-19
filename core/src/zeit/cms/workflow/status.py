@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 import grokcore.component as grok
 import zope.component
 import zope.interface
@@ -20,12 +18,7 @@ class PublicationStatus(grok.Adapter):
         if not info.published:
             return 'not-published'
         modified = zeit.cms.workflow.interfaces.IModified(self.context).date_last_modified
-        grace = zeit.cms.workflow.interfaces.PUBLISH_DURATION_GRACE
-        if (
-            not modified
-            or not info.date_last_published
-            or info.date_last_published + timedelta(seconds=grace) > modified
-        ):
+        if not modified or not info.date_last_published or info.date_last_published > modified:
             return 'published'
         return 'published-with-changes'
 
