@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.110.0 (2024-02-19)
+--------------------
+
+- ZO-4683: Only publish article after referencing tts audio if it is unchanged
+
+- ZO-4687: Store our own date_last_modified instead of relying on DAV
+
+- ZO-859: Log XML body after checkout to aid debugging
+
+
 5.109.0 (2024-02-15)
 --------------------
 
