@@ -94,9 +94,9 @@ class Speech:
         self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
-        article = self._assert_article_unchanged(speech)
-
         IPublish(speech).publish(background=False)
+
+        article = self._assert_article_unchanged(speech)
         if speech in IAudioReferences(article).items:
             log.debug('%s already references %s', article, speech)
             return
