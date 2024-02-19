@@ -15,14 +15,6 @@ CAN_RETRACT_WARNING = 'can-retract-warning'
 CAN_RETRACT_SUCCESS = 'can-retract-success'
 
 
-# During the checkout/checkin cycle() while publishing the object will be most
-# likely changed. It therefore would have a modified timestamp _after_ the
-# publication timestamp and would be shown as "published with changes", so we
-# need to be a little more lenient. (Since we cannot change `modified`, which
-# belongs to the DAV server and cannot be written by clients).
-PUBLISH_DURATION_GRACE = 60
-
-
 class PublishingError(Exception):
     """Raised when object publishing fails."""
 
