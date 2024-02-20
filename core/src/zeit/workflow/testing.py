@@ -17,6 +17,7 @@ product_config = """
     blacklist /blacklist
     publisher-base-url http://localhost:8060/test/
     facebooknewstab-startdate 2021-03-24
+    facebooknewstab-enabled true
     speechbert-ignore-genres datenvisualisierung video quiz
     speechbert-ignore-templates zon-liveblog
 </product-config>

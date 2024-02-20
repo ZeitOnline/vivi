@@ -165,6 +165,8 @@ class FacebookNewstab(grok.Adapter):
 
     def publish_json(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
+        if not config.get('facebooknewstab-enabled'):  # XXX
+            return None
         ignore_ressorts = {
             x.strip().lower() for x in config.get('facebooknewstab-ignore-ressorts', '').split(',')
         }
