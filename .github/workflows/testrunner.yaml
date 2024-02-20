@@ -50,7 +50,7 @@ jobs:
           # Has been added manually (both the key in vivi-deployment and
           # the GHA secret in vivi)
           ssh-key: ${{secrets.DEPLOY_KEY_DEPLOYMENT}}
-      - uses: ZeitOnline/gh-action-baseproject@v0.9.0
+      - uses: ZeitOnline/gh-action-baseproject@v0.10.2
         with:
           project_name: ${{env.project}}
           environment: staging
