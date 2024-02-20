@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <podcasts>
-    <podcast id="cat-jokes-pawdcast" title="Cat Jokes Pawdcast" external_id="1234" subtitle="A podcast of cat jokes" color='e5ded8' image='http://xml.zeit.de/2006/DSC00109_2.JPG' podigee_id="podigee-1234" feed='https://feeds.example.com/aRDC72E_'>
+    <podcast id="cat-jokes-pawdcast" title="Cat Jokes Pawdcast" external_id="1234" subtitle="A podcast of cat jokes" color='e5ded8' image='http://xml.zeit.de/2006/DSC00109_2.JPG' feed='https://feeds.example.com/aRDC72E_'>
         <distribution_channel id="itunes" href="http://example.com/itunes">Apple Podcasts</distribution_channel>
         <distribution_channel id="google" href="http://example.com/google">Google Podcasts</distribution_channel>
     </podcast>

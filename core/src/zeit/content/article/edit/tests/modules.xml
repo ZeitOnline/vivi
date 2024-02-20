@@ -18,7 +18,6 @@
   <module id="tickaroo_liveblog">Tickaroo Liveblog</module>
   <module id="mail">Mail-Formular</module>
   <module id="newslettersignup">Newsletter Signup Modul</module>
-  <module id="podcast">Podcast-Block</module>
   <module id="portraitbox">Porträtbox</module>
   <module id="puzzleform">Rätselformular</module>
   <module id="quiz">Quiz</module>

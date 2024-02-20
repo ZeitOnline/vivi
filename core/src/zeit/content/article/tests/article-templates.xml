@@ -7,7 +7,7 @@
     <header name="embed" allow_header_module="true">
       <title>Header-Modul oben</title>
     </header>
-    <header name="podcast" allow_header_module="true">
+    <header name="podcast">
       <title>Podcast</title>
     </header>
     <header name="narrow">

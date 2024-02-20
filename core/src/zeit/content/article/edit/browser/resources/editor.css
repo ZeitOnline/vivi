@@ -1063,8 +1063,7 @@
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -835px transparent;
 }
 
-.type-article .module-icon-audio,
-.type-article .module-icon-podcast {
+.type-article .module-icon-audio {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -776px transparent;
 }
 
@@ -2104,10 +2103,6 @@
 
 .type-article .block.type-newslettersignup .block-inner {
     height: 180px;
-}
-
-.type-article .block.type-podcast .block-inner {
-    height: 130px;
 }
 
 .type-article .block.type-portraitbox .block-inner {
