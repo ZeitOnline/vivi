@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.111.0 (2024-02-20)
+--------------------
+
+- ZO-4751: Deactivate publishing to facebooknewstab
+
+
 5.110.0 (2024-02-19)
 --------------------
 
