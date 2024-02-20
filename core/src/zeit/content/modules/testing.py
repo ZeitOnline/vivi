@@ -17,7 +17,6 @@ product_config = """\
   embed-provider-source file://{here}/tests/fixtures/embed-providers.xml
   newsletter-source file://{here}/tests/fixtures/newsletter.xml
   recipe-metadata-source file://{here}/tests/fixtures/recipe-metadata.xml
-  podigee-providers-source file://{here}/tests/fixtures/podigee-providers.xml
 </product-config>
 """.format(here=importlib.resources.files(__package__))
 

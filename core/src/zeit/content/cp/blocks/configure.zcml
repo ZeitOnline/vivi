@@ -82,15 +82,6 @@
       permission="zeit.EditContent"/>
   </class>
 
-  <class class=".podcast.PodcastBlock">
-    <require
-      interface="..interfaces.IPodcastBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IPodcastBlock"
-      permission="zeit.EditContent"/>
-  </class>
-
   <class class=".cpextra.CPExtraBlock">
     <require
       interface="..interfaces.ICPExtraBlock"

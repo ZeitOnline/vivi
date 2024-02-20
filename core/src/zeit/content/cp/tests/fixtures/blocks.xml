@@ -4,7 +4,6 @@
   <module id="headerimage" title="Headerbild"/>
   <module id="markup" title="HTML-Block"/>
   <module id="playlist" title="Video-Riegel"/>
-  <module id="podcast" title="Podcast"/>
   <module id="quiz" title="Quiz-Block"/>
   <module id="jobbox_ticker" title="Jobbox Ticker"/>
   <module id="teaser" title="Teaser"/>

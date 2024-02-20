@@ -439,10 +439,6 @@ class IQuiz(IBlock, zeit.content.modules.interfaces.IQuiz):
     pass
 
 
-class IPodcast(IBlock, zeit.content.modules.interfaces.PodcastBase):
-    pass
-
-
 class IBox(IBlock):
     """
     This box is a first step to generalizing other boxes

@@ -585,27 +585,6 @@
     weight="10"
     />
 
-  <!-- podcast -->
-
-  <browser:page
-    for="zeit.content.article.edit.interfaces.IPodcast"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-podcast"
-    class=".edit.EditPodcast"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IPodcast"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit-podcast"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="10"
-    />
-
   <!-- jobticker -->
 
    <browser:viewlet
@@ -869,10 +848,6 @@
   </class>
 
   <class class="..quiz.Quiz">
-    <implements interface="zeit.edit.interfaces.IFoldable" />
-  </class>
-
-  <class class="..podcast.Podcast">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

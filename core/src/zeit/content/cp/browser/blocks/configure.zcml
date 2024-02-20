@@ -96,7 +96,6 @@
   <include file="xml.zcml" />
   <include file="cpextra.zcml" />
   <include file="playlist.zcml" />
-  <include file="podcast.zcml" />
   <include file="quiz.zcml" />
   <include file="headerimage.zcml" />
   <include file="rawtext.zcml" />
