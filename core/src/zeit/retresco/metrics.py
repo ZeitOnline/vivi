@@ -61,10 +61,6 @@ def _collect_importers():
             {'term': {'doc_type': 'audio'}},
             {'term': {'payload.audio.audio_type': 'podcast'}},
         ],
-        'tts': [
-            {'term': {'doc_type': 'audio'}},
-            {'term': {'payload.audio.audio_type': 'tts'}},
-        ],
         'news': [{'term': {'payload.workflow.product-id': 'News'}}],
         'video': [{'term': {'doc_type': 'video'}}],
     }
