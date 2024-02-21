@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.112.0 (2024-02-21)
+--------------------
+
+- ZO-4467: deprecate cook profiles
+
+
 5.111.0 (2024-02-20)
 --------------------
 
