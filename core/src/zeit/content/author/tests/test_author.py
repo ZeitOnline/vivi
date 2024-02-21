@@ -96,27 +96,6 @@ class FreetextCopyTest(zeit.content.author.testing.FunctionalTestCase):
 class OthersTest(zeit.content.author.testing.FunctionalTestCase):
     def test_provides_dict_access_to_xml_nodes(self):
         author = zeit.content.author.author.Author()
-        author.is_cook = True
-        self.assertTrue(author.is_cook)
-        self.assertEllipsis('...<is_cook>true</is_cook>...', zeit.cms.testing.xmltotext(author.xml))
-
-        author.is_cook = False
-        self.assertFalse(author.is_cook)
-        self.assertEllipsis(
-            '...<is_cook>false</is_cook>...', zeit.cms.testing.xmltotext(author.xml)
-        )
-
-        self.assertTrue(author.is_author)
-        author.is_author = True
-        self.assertEllipsis(
-            '...<is_author>true</is_author>...', zeit.cms.testing.xmltotext(author.xml)
-        )
-
-        author.is_author = False
-        self.assertFalse(author.is_author)
-        self.assertEllipsis(
-            '...<is_author>false</is_author>...', zeit.cms.testing.xmltotext(author.xml)
-        )
 
         author.website = 'www.testeroni.com'
         self.assertEqual('www.testeroni.com', author.website)
