@@ -182,7 +182,7 @@ class MultiPropertyBase:
         anchor = self.path.find(tree, None)
         if anchor is not None:
             for node in anchor.getparent().iterchildren(anchor.tag):
-                result.append(self._element_factory(node, tree))
+                result.append(self._element_factory(node))
         return self.result_type(elem for elem in result if elem is not None)
 
     def __set__(self, instance, value):
@@ -194,20 +194,20 @@ class MultiPropertyBase:
                 entry.getparent().remove(entry)
         # Add new nodes:
         value = self.sorted(value)
-        self.path.setattr(tree, [self._node_factory(entry, tree) for entry in value])
+        self.path.setattr(tree, [self._node_factory(entry) for entry in value])
 
-    def _element_factory(self, node, tree):
+    def _element_factory(self, node):
         raise NotImplementedError('Implemented in sub classes.')
 
-    def _node_factory(self, entry, tree):
+    def _node_factory(self, entry):
         raise NotImplementedError('Implemented in sub classes.')
 
 
 class SimpleMultiProperty(MultiPropertyBase):
-    def _element_factory(self, node, tree):
+    def _element_factory(self, node):
         return node.text
 
-    def _node_factory(self, entry, tree):
+    def _node_factory(self, entry):
         name = str(self.path).split('.')[-1]
         return getattr(lxml.builder.E, name)(entry)
 
