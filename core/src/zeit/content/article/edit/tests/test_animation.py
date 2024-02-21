@@ -1,4 +1,4 @@
-from lxml.objectify import E
+from lxml.builder import E
 
 from zeit.content.animation.animation import Animation
 from zeit.content.article.article import Article
@@ -17,6 +17,8 @@ class TestAnimation(FunctionalTestCase):
         animation.article = self.repository['article']
         animation.video = self.repository['video']
         self.repository['animation'] = animation
-        animatedheader = AnimatedHeader(None, E.animation())
+        node = E.animation()
+        E.tree(node)
+        animatedheader = AnimatedHeader(None, node)
         animatedheader.animation = self.repository['animation']
         assert animatedheader.xml.get('href') == 'http://xml.zeit.de/animation'

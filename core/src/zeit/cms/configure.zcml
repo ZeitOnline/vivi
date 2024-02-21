@@ -55,11 +55,13 @@
 
   <!-- lxml security settings -->
 
-  <class class="lxml.objectify.ObjectifiedElement">
+  <class class="lxml.etree._Element">
+    <implements interface=".interfaces.IXMLElement" />
+
     <require permission="zope.View"
       attributes="
       __getitem__
-      countchildren
+      getchildren
       get
       find
       findall
@@ -80,16 +82,19 @@
       " />
   </class>
 
+  <!-- BBB -->
+  <class class="lxml.objectify.ObjectifiedElement">
+    <implements interface=".interfaces.IXMLElement" />
+    <require like_class="lxml.etree._Element" />
+  </class>
   <class class="lxml.objectify.StringElement">
-    <require like_class="lxml.objectify.ObjectifiedElement" />
+    <require like_class="lxml.etree._Element" />
   </class>
-
   <class class="lxml.objectify.IntElement">
-    <require like_class="lxml.objectify.ObjectifiedElement" />
+    <require like_class="lxml.etree._Element" />
   </class>
-
   <class class="lxml.objectify.NoneElement">
-    <require like_class="lxml.objectify.ObjectifiedElement" />
+    <require like_class="lxml.etree._Element" />
   </class>
 
   <class class="lxml.etree.ElementChildIterator">

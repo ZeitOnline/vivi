@@ -1,5 +1,6 @@
 import grokcore.component as grok
 import grokcore.component.testing
+import lxml.builder
 import zope.component
 import zope.interface
 
@@ -20,10 +21,8 @@ class ExampleElement(zeit.edit.block.SimpleElement):
 
 class TestSimpleElementGrokker(zeit.edit.testing.FunctionalTestCase):
     def test_grokking_test_element_should_register_multiadapter(self):
-        import lxml.objectify
-
         grokcore.component.testing.grok_component('ExampleElement', ExampleElement)
-        tree = lxml.objectify.E.tree()
+        tree = lxml.builder.E.tree()
         with self.assertNothingRaised():
             zope.component.getMultiAdapter(
                 (object(), tree), zeit.edit.interfaces.IElement, name='testelement'

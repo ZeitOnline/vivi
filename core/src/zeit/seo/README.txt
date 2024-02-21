@@ -39,22 +39,16 @@ Fill out the form:
 Verify the source:
 
 >>> browser.getLink('Source').click()
->>> print(browser.getControl('Source').value.replace('\r', ''))
+>>> print(browser.getControl('Source').value.replace('\r', '').replace('<attribute', '\n<attribute'))
 <testtype>
-  <head>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">...</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-robots">noindex</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-hide-timestamp">no</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="seo-disable-intext-links">yes</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="seo-keyword-entity-type">free</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
-    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="channels">Deutschland</attribute>
-  </head>
-  <body/>
-</testtype>
-<BLANKLINE>
+  <head>...
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-robots">noindex</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="html-meta-hide-timestamp">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="seo-disable-intext-links">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="seo-keyword-entity-type">free</attribute>
+...
 
 >>> content = getRootFolder()['workingcopy']['zope.user']['testcontent']
 >>> import zeit.retresco.interfaces

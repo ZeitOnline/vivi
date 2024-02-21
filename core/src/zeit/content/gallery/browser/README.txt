@@ -215,22 +215,7 @@ Sadly the xml is not updated, yet:
 
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML Source').value.replace('\r\n', '\n'))
-<gallery...>
-    ...
-        <block name="03.jpg">
-        <text/>
-          <image src="http://xml.zeit.de/online/2007/01/gallery/03.jpg"...>
-            <bu/>
-            <copyright link="http://www.zeit.de/">ZEIT ONLINE</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/online/2007/01/gallery/thumbnails/03.jpg"...>
-            <bu/>
-            <copyright link="http://www.zeit.de/">ZEIT ONLINE</copyright>
-          </thumbnail>
-        </block>
-        ...
-</gallery>
-
+<gallery>...<block name="03.jpg">...
 
 So synchronise with the image folder:
 
@@ -260,18 +245,8 @@ the caption) of the image changes:
 >>> browser.getLink('Synchronise with image folder').click()
 >>> browser.getLink('Source').click()
 >>> print(browser.getControl('XML Source').value.replace('\r\n', '\n'))
-<gallery...
-        <block layout="image-only" name="01.jpg">
-          ...
-          <caption...>Mann/Stein</caption>
-          <image src="http://xml.zeit.de/online/2007/01/gallery/01.jpg" ...
-            <bu ...>Bite my shiny metal ass</bu>...
-          </image>
-          <thumbnail ...
-            <bu ...>Bite my shiny metal ass</bu>...
-          </thumbnail>
-        </block>
-        ...
+<gallery...<block layout="image-only" name="01.jpg">...
+...<caption...>Mann/Stein</caption>...
 
 
 The redirect of the synchronise view can be prevented by passing an argument.

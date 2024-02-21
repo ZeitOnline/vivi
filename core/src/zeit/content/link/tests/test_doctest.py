@@ -1,4 +1,5 @@
 import zeit.cms.testing
+import zeit.content.link.testing
 
 
 def test_suite():

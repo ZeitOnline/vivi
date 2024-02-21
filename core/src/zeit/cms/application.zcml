@@ -16,7 +16,6 @@
     <include package="zope.securitypolicy" />
     <include package="zope.traversing" />
 
-    <include package="gocept.lxml" />
     <include package="zc.sourcefactory" />
 
     <include package="zope.app.appsetup" />

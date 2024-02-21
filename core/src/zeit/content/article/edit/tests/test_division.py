@@ -1,4 +1,4 @@
-import lxml.objectify
+import lxml.builder
 import zope.component
 
 import zeit.content.article.article
@@ -11,7 +11,9 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
         self.article = zeit.content.article.article.Article()
-        self.body = zeit.content.article.edit.body.EditableBody(self.article, self.article.xml.body)
+        self.body = zeit.content.article.edit.body.EditableBody(
+            self.article, self.article.xml.find('body')
+        )
 
     def create_division(self):
         factory = zope.component.getAdapter(
@@ -22,7 +24,7 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
     def test_teaser_attribute_should_be_added_to_xml(self):
         from zeit.content.article.edit.division import Division
 
-        div = Division(None, lxml.objectify.E.division())
+        div = Division(None, lxml.builder.E.division())
         teaser = 'My div teaser'
         div.teaser = teaser
         self.assertEqual(teaser, div.teaser)

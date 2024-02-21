@@ -2,7 +2,7 @@ import collections.abc
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.formlib.form
 import zope.formlib.widget
 import zope.interface
@@ -82,8 +82,7 @@ class EmbedParameters(
             self.xml.remove(node[0])
         if value != field.missing_value:
             value = self._converter(key).toProperty(value)
-            node = lxml.objectify.E.param(value, id=key)
-            lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
+            node = lxml.builder.E.param(value, id=key)
             self.xml.append(node)
         super().__setattr__('_p_changed', True)
 

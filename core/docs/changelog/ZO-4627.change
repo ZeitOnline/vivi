@@ -1,0 +1,1 @@
+ZO-4627: Replace lxml.objectify with plain lxml.etree usage

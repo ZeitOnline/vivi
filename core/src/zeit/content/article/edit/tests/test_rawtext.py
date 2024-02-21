@@ -1,5 +1,7 @@
+import lxml.builder
 import zope.component
 
+from zeit.content.article.edit.rawtext import RawText
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
@@ -8,17 +10,12 @@ import zeit.edit.interfaces
 
 class RawTextTest(zeit.content.article.testing.FunctionalTestCase):
     def get_rawtext(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.rawtext import RawText
-
-        rawtext = RawText(None, lxml.objectify.E.rawtext())
-        return rawtext
+        return RawText(None, lxml.builder.E.rawtext())
 
     def test_rawtext_should_be_set(self):
         rawtext = self.get_rawtext()
         rawtext.text = 'my_text'
-        self.assertEqual('my_text', rawtext.xml.xpath('text')[0])
+        self.assertEqual('my_text', rawtext.xml.find('text').text)
 
     def test_each_module_should_use_its_own_parameters(self):
         article = zeit.content.article.article.Article()
@@ -33,7 +30,7 @@ class RawTextTest(zeit.content.article.testing.FunctionalTestCase):
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
     def test_factory_should_create_rawtext_node(self):
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'rawtext')
         self.assertEqual('Raw text block', factory.title)
         div = factory()

@@ -1,8 +1,7 @@
 from io import StringIO
 
-import gocept.lxml.objectify
 import grokcore.component as grok
-import lxml.objectify
+import lxml.etree
 import persistent
 import persistent.interfaces
 import zope.interface
@@ -28,7 +27,7 @@ class XMLRepresentationBase:
             if self.default_template is None:
                 raise NotImplementedError('default_template needs to be set in subclasses')
             xml_source = StringIO(self.default_template)
-        self.xml = gocept.lxml.objectify.fromfile(xml_source)
+        self.xml = lxml.etree.parse(xml_source).getroot()
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLContent)
@@ -104,8 +103,6 @@ def veto_internal(event):
 class PropertyToXMLAttribute:
     """Attribute nodes reside in the head."""
 
-    path = lxml.objectify.ObjectPath('.head.attribute')
-
     def __init__(self, context):
         self.context = context
         self.properties = dict(zeit.connector.interfaces.IWebDAVProperties(context))
@@ -132,7 +129,8 @@ class PropertyToXMLAttribute:
 
     def sync(self):
         # Remove all properties in xml first
-        self.path.setattr(self.context.xml, [])
+        for node in self.context.xml.xpath('//head/attribute'):
+            node.getparent().remove(node)
 
         # Now, set each property to xml, sort them to get a consistent xml
         for (name, namespace), value in sorted(self.properties.items()):
@@ -145,11 +143,11 @@ class PropertyToXMLAttribute:
         zope.event.notify(sync_event)
         if sync_event.vetoed:
             return
-        root = self.context.xml
-        self.path.addattr(root, value)
-        node = self.path.find(root)[-1]
-        node.set('ns', namespace)
-        node.set('name', name)
+        head = self.context.xml.find('head')
+        if head is None:
+            head = lxml.builder.E.head()
+            self.context.xml.append(head)
+        head.append(lxml.builder.E.attribute(value, ns=namespace, name=name))
 
     def delAttribute(self, namespace, name):
         root = self.context.xml
@@ -191,28 +189,6 @@ def map_dav_properties_to_xml_before_checkin(context, event):
     )
     sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
     sync.sync()
-
-
-COMMON_NAMESPACES = {
-    'cp': 'http://namespaces.zeit.de/CMS/cp',
-    'py': 'http://codespeak.net/lxml/objectify/pytype',
-    'xsd': 'http://www.w3.org/2001/XMLSchema',
-    'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-}
-
-
-@grok.subscribe(
-    zeit.cms.content.interfaces.IXMLRepresentation,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent,
-)
-def cleanup_lxml(context, event):
-    unwrapped = zope.security.proxy.removeSecurityProxy(context)
-    # Keeping common ns prefixes simplifies the workingcopy xml; without them,
-    # lxml.objectify would add them to lots of child nodes.
-    lxml.etree.cleanup_namespaces(
-        unwrapped.xml, top_nsmap=COMMON_NAMESPACES, keep_ns_prefixes=COMMON_NAMESPACES.keys()
-    )
-    lxml.objectify.deannotate(unwrapped.xml, pytype=True, xsi_nil=True, xsi=False)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
@@ -265,12 +241,11 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
     target_iface = zeit.cms.content.interfaces.ICommonMetadata
 
     def update_with_context(self, entry, metadata):
-        entry['supertitle'] = metadata.teaserSupertitle
-        if not entry['supertitle']:
-            entry['supertitle'] = metadata.supertitle
-        entry['title'] = metadata.teaserTitle
-        entry['text'] = entry['description'] = metadata.teaserText
-        entry['byline'] = metadata.byline
+        update_child_node(entry, 'supertitle', metadata.teaserSupertitle or metadata.supertitle)
+        update_child_node(entry, 'title', metadata.teaserTitle)
+        update_child_node(entry, 'text', metadata.teaserText)
+        update_child_node(entry, 'description', metadata.teaserText)
+        update_child_node(entry, 'byline', metadata.byline)
         if metadata.year:
             entry.set('year', str(metadata.year))
         if metadata.volume:
@@ -285,3 +260,11 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
             return
         if type_decl.type_identifier:
             entry.set('contenttype', str(type_decl.type_identifier))
+
+
+def update_child_node(parent, name, text):
+    node = parent.find(name)
+    if node is None:
+        node = lxml.etree.Element(name)
+        parent.append(node)
+    node.text = text

@@ -18,9 +18,7 @@ import zeit.push.interfaces
 class Link(zeit.cms.content.metadata.CommonMetadata):
     """A type for managing links to non-local content."""
 
-    default_template = (
-        '<link xmlns:py="http://codespeak.net/lxml/objectify/pytype">' '<head/><body/></link>'
-    )
+    default_template = '<link><head/><body/></link>'
 
     url = zeit.cms.content.property.ObjectPathProperty('.body.url')
     target = zeit.cms.content.property.ObjectPathProperty('.body.target')

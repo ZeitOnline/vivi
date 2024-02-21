@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.content.cp.blocks.block
@@ -17,7 +17,6 @@ class XMLBlockFactory(zeit.content.cp.blocks.block.BlockFactory):
 
     def get_xml(self):
         container = super().get_xml()
-        raw = lxml.objectify.E.raw('\n\n\n')
-        lxml.objectify.deannotate(raw)
+        raw = lxml.builder.E.raw('\n\n\n')
         container.append(raw)
         return container

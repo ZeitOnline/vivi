@@ -9,9 +9,9 @@ The xml source adapter adapts IXMLRepresentation to IXMLSource. Let's make sure
 processing instructions which are not inside the document tree are preserverd
 Create a dummy object:
 
->>> import lxml.objectify
+>>> import lxml.etree
 >>> class XML:
-...     xml = lxml.objectify.fromstring('<a/><?foo?>')
+...     xml = lxml.etree.fromstring('<a/><?foo?>')
 
 
 Call the adapter factory -- the PI is still there. We also get the XML

@@ -495,7 +495,7 @@ class Article(Converter):
     grok.name(interface.__name__)
 
     def __call__(self):
-        body = self.context.xml.body
+        body = self.context.xml.find('body')
         result = {'payload': {}}
         search_list = []
 
@@ -680,7 +680,7 @@ def body_xml(context):
 @grok.adapter(zeit.content.article.interfaces.IArticle)
 @grok.implementer(zeit.retresco.interfaces.IBody)
 def body_article(context):
-    return context.xml.body
+    return context.xml.find('body')
 
 
 def get_xml_properties(context):

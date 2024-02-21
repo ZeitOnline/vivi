@@ -7,7 +7,7 @@ import urllib.request
 import xml.sax.saxutils
 
 from zope.app.appsetup.product import getProductConfiguration
-import gocept.lxml.objectify
+import lxml.objectify
 import pyramid_dogpile_cache2
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
@@ -66,7 +66,7 @@ class CachedXMLBase(OverridableURLConfiguration):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url,)
         logger.debug('Getting %s' % url)
-        return gocept.lxml.objectify.fromfile(load(url))
+        return lxml.objectify.parse(load(url)).getroot()
 
 
 class ShortCachedXMLBase(CachedXMLBase):
@@ -75,7 +75,7 @@ class ShortCachedXMLBase(CachedXMLBase):
     def _get_tree_from_url(self, url):
         __traceback_info__ = (url,)
         logger.debug('Getting %s' % url)
-        return gocept.lxml.objectify.fromfile(load(url))
+        return lxml.objectify.parse(load(url)).getroot()
 
 
 class SimpleXMLSourceBase(CachedXMLBase):
@@ -134,7 +134,7 @@ class SearchableXMLSource(XMLSource):
         tree = self._get_tree()
         if self.attribute is NotImplemented:
             # Return text value of nodes
-            return [str(node) for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
+            return [node.text for node in tree.xpath(self.xpath) if self.isAvailable(node, context)]
         # Return value of provided attribute for nodes
         return [
             str(node.get(self.attribute))

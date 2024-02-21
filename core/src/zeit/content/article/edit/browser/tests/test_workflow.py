@@ -8,6 +8,7 @@ import zope.component
 
 import zeit.cms.tagging.testing
 import zeit.cms.workflow.interfaces
+import zeit.content.article.edit.browser.testing
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces

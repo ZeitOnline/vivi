@@ -2,8 +2,8 @@ import logging
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
+import lxml.builder
 import lxml.etree
-import lxml.objectify
 import zope.component
 
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
@@ -58,14 +58,14 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def __getitem__(self, key):
         node = self._find_tag_node(key)
-        tag = self._create_tag(str(node), node.get('type', ''))
+        tag = self._create_tag(node.text, node.get('type', ''))
         return tag
 
     def __setitem__(self, key, value):
         tags = self.to_xml()
         if tags is self.EMPTY_NODE:
             # XXX the handling of namespaces here seems chaotic
-            E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
+            E = lxml.builder.ElementMaker(namespace=NAMESPACE)
             root = E.rankedTags()
             tags = E.rankedTags()
             root.append(tags)
@@ -75,7 +75,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     def values(self):
         tags = self.to_xml()
-        return (self._create_tag(str(node), node.get('type', '')) for node in tags.iterchildren())
+        return (self._create_tag(node.text, node.get('type', '')) for node in tags.iterchildren())
 
     def get(self, key, default=None):
         try:
@@ -140,12 +140,12 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         disabled = self.disabled + (key,)
         dav[DISABLED_PROPERTY] = DISABLED_SEPARATOR.join(disabled)
 
-    EMPTY_NODE = lxml.objectify.XML('<empty/>')
+    EMPTY_NODE = lxml.builder.E.empty()
 
     def to_xml(self):
         dav = zeit.connector.interfaces.IWebDAVProperties(self)
         try:
-            tags = lxml.objectify.fromstring(dav.get(KEYWORD_PROPERTY, ''))
+            tags = lxml.etree.fromstring(dav.get(KEYWORD_PROPERTY, ''))
         except lxml.etree.XMLSyntaxError:
             return self.EMPTY_NODE
         if tags.tag != '{%s}rankedTags' % KEYWORD_PROPERTY[1]:
@@ -173,7 +173,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         return tag
 
     def _serialize_tag(self, tag):
-        E = lxml.objectify.ElementMaker()
+        E = lxml.builder.E
         return E.tag(tag.label, type=tag.entity_type or '')
 
     def _find_pinned_tags(self):
@@ -182,7 +182,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         for code in self.pinned:
             try:
                 node = self._find_tag_node(code, xml)
-                result.append(self._create_tag(str(node), node.get('type', '')))
+                result.append(self._create_tag(node.text, node.get('type', '')))
             except KeyError:
                 pass
         return result
@@ -200,7 +200,7 @@ class Tagger(zeit.cms.content.dav.DAVPropertiesAdapter):
         if keywords is None:
             keywords = tms.extract_keywords(self.context)
 
-        E = lxml.objectify.ElementMaker(namespace=NAMESPACE)
+        E = lxml.builder.ElementMaker(namespace=NAMESPACE)
         root = E.rankedTags()
         new_tags = E.rankedTags()
         root.append(new_tags)

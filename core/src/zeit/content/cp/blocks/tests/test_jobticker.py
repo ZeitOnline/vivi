@@ -1,4 +1,4 @@
-import lxml.objectify
+import lxml.etree
 import zope.component
 
 import zeit.cms.testing
@@ -25,7 +25,7 @@ class TestJobboxtickerblock(zeit.content.cp.testing.FunctionalTestCase):
         self.assertTrue('id="{id}"'.format(id=feed.id) in zeit.cms.testing.xmltotext(block.xml))
 
     def test_feed_is_read_from_jobticker_block(self):
-        xml = lxml.objectify.fromstring(
+        xml = lxml.etree.fromstring(
             """
                 <container xmlns:cp="http://namespaces.zeit.de/CMS/cp"
                 cp:type="jobbox_ticker" module="jobbox_ticker" id="hp"/>"""
@@ -35,7 +35,7 @@ class TestJobboxtickerblock(zeit.content.cp.testing.FunctionalTestCase):
         self.assertTrue(isinstance(block.feed, zeit.content.modules.jobticker.Feed))
 
     def test_feed_is_read_from_jobticker_block_bbb(self):
-        xml = lxml.objectify.fromstring(
+        xml = lxml.etree.fromstring(
             """
                 <container xmlns:cp="http://namespaces.zeit.de/CMS/cp"
                 cp:type="jobbox_ticker" module="jobbox_ticker"

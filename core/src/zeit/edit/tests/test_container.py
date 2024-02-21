@@ -2,7 +2,8 @@ from unittest import mock
 import unittest
 
 from persistent.interfaces import IPersistent
-import lxml.objectify
+import lxml.builder
+import lxml.etree
 import zope.interface
 import zope.security.proxy
 
@@ -51,7 +52,7 @@ class TestContainer(unittest.TestCase):
 
 class UnknownBlockTest(zeit.edit.testing.FunctionalTestCase):
     def test_no_factory_for_node_returns_UnknownBlock(self):
-        xml = lxml.objectify.fromstring(
+        xml = lxml.etree.fromstring(
             """
         <container xmlns:cp="http://namespaces.zeit.de/CMS/cp">
           <block cp:type="block" cp:__name__="foo"/>
@@ -68,9 +69,7 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
         super().setUp()
         self.context = mock.Mock()
         zope.interface.alsoProvides(self.context, IPersistent)
-        self.container = zeit.edit.tests.fixture.Container(
-            self.context, lxml.objectify.fromstring('<container/>')
-        )
+        self.container = zeit.edit.tests.fixture.Container(self.context, lxml.builder.E.container())
 
     def test_slice(self):
         blocks = [self.container.create_item('block') for i in range(4)]
@@ -94,9 +93,7 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
             check_move, (zeit.edit.interfaces.IBlock, zope.lifecycleevent.IObjectMovedEvent)
         )
         block = self.container.create_item('block')
-        other = zeit.edit.tests.fixture.Container(
-            self.context, lxml.objectify.fromstring('<container/>')
-        )
+        other = zeit.edit.tests.fixture.Container(self.context, lxml.builder.E.container())
         del self.container[block.__name__]
         other.add(block)
         self.assertTrue(check_move.called)
@@ -105,7 +102,7 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
         # Annoying mechanics gymnastics to check that security works.
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
         self.container.__parent__ = wc
-        other = zeit.edit.tests.fixture.Container(wc, lxml.objectify.fromstring('<container/>'))
+        other = zeit.edit.tests.fixture.Container(wc, lxml.builder.E.container())
         block = self.container.create_item('block')
         del self.container[block.__name__]
         wrapped = zope.security.proxy.ProxyFactory(block)

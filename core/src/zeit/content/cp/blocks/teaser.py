@@ -1,7 +1,7 @@
 import copy
 
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.interface
 import zope.lifecycleevent
@@ -186,7 +186,7 @@ def set_layout_to_default_when_moved_down_from_first_position(area, event):
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml_teaserblock(context):
-    container = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    container = getattr(lxml.builder.E, context.xml.tag)(**context.xml.attrib)
 
     # Render non-content items like topiclinks.
     for child in context.xml.getchildren():
@@ -210,7 +210,7 @@ def rendered_xml_teaserblock(context):
 def rendered_xml_cmscontent(context):
     if not context.uniqueId:
         return None
-    block = lxml.objectify.E.block(uniqueId=context.uniqueId, href=context.uniqueId)
+    block = lxml.builder.E.block(uniqueId=context.uniqueId, href=context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(block, suppress_errors=True)
     return block

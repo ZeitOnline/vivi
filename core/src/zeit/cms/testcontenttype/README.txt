@@ -22,7 +22,7 @@ Instantiate and verify the inital xml:
 >>> content.__parent__ = repository
 
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype>
   <head/>
   <body/>
 </testtype>

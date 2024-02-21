@@ -71,16 +71,9 @@ class TestPlaylist(zeit.content.cp.testing.BrowserTestCase):
         self.set_referenced_playlist()
         self.browser.open('xml_source_edit.html')
         self.assertEllipsis(
-            """...
-<container cp:type="playlist"...>
-    <block type="intern"
-           href="http://xml.zeit.de/my-playlist"
-           contenttype="playlist"...>
-    ...
-    <title xsi:nil="true"/>
-    ...
-  </block>
-</container>...""",
+            """...\
+<container cp:type="playlist"...>\
+<block...href="http://xml.zeit.de/my-playlist"...""",
             self.browser.getControl('XML Source').value,
         )
 

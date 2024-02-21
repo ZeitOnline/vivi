@@ -2,7 +2,7 @@ import os
 import urllib.parse
 
 import filetype
-import lxml.objectify
+import lxml.builder
 import PIL.Image
 import requests
 import zope.cachedescriptors.property
@@ -128,7 +128,7 @@ def localimage_factory(context):
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    image = lxml.objectify.E.image()
+    image = lxml.builder.E.image()
     image.set('src', context.uniqueId)
     if '.' in context.__name__:
         base, ext = context.__name__.rsplit('.', 1)

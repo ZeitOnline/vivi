@@ -1,9 +1,12 @@
+import lxml.builder
 import zope.component
 
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.content.article.edit.topicbox import Topicbox
 import zeit.content.article.article
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zeit.content.cp.centerpage
 import zeit.content.video.video
 import zeit.edit.interfaces
 
@@ -28,18 +31,12 @@ class TestTopicbox(zeit.content.article.testing.FunctionalTestCase):
         self.tms.get_related_documents.return_value = result
 
     def get_topicbox(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.topicbox import Topicbox
-
-        box = Topicbox(None, lxml.objectify.E.topicbox())
+        box = Topicbox(None, lxml.builder.E.topicbox())
         self.repository['art'] = zeit.content.article.article.Article()
         box.__parent__ = self.repository['art']
         return box
 
     def get_cp(self, content=None):
-        import zeit.content.cp.centerpage
-
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         if content:
             region = self.repository['cp'].body.create_item('region')

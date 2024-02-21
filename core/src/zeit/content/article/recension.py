@@ -1,4 +1,3 @@
-import lxml.objectify
 import z3c.traverser.interfaces
 import zope.component
 import zope.interface
@@ -34,7 +33,7 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
 
     def append(self, recension):
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(recension)
-        self.xml['body'].append(xml_repr.xml)
+        self.xml.find('body').append(xml_repr.xml)
         self._p_changed = True
         zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(recension, self, recension.__name__))
 
@@ -44,15 +43,13 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
             raise KeyError('Invalid name: %r' % name)
         count = int(count)
         recension = self.entries[count]
-        self.xml['body'].remove(recension)
+        self.xml.find('body').remove(recension)
         self._p_changed = True
         zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(recension, self, name))
 
     @property
     def entries(self):
-        return lxml.objectify.ObjectPath('.body.{http://namespaces.zeit.de/bibinfo}entry').find(
-            self.xml, ()
-        )
+        return self.xml.find('body').findall('{http://namespaces.zeit.de/bibinfo}entry')
 
     @property
     def xml(self):
@@ -76,24 +73,21 @@ class BookRecension(
 ):
     """Information about a book in a recension."""
 
-    default_template = (
-        '<entry xmlns="http://namespaces.zeit.de/bibinfo" '
-        'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />'
-    )
+    default_template = '<entry xmlns="http://namespaces.zeit.de/bibinfo" />'
 
     authors = zeit.cms.content.property.SimpleMultiProperty('.auth-info.author')
     title = zeit.cms.content.property.ObjectPathProperty('.title')
     genre = zeit.cms.content.property.ObjectPathProperty('.genre')
     info = zeit.cms.content.property.ObjectPathProperty('.info')
     category = zeit.cms.content.property.ObjectPathProperty('.category')
-    age_limit = zeit.cms.content.property.ObjectPathProperty('.agelimit')
+    age_limit = zeit.cms.content.property.ObjectPathProperty('.agelimit', zope.schema.Int())
     original_language = zeit.cms.content.property.ObjectPathProperty('.original_language')
     translator = zeit.cms.content.property.ObjectPathProperty('.translator')
     publisher = zeit.cms.content.property.ObjectPathProperty('.edition.publisher')
     location = zeit.cms.content.property.ObjectPathProperty('.edition.location')
-    year = zeit.cms.content.property.ObjectPathProperty('.edition.year')
+    year = zeit.cms.content.property.ObjectPathProperty('.edition.year', zope.schema.Int())
     media_type = zeit.cms.content.property.ObjectPathProperty('.edition.mediatype')
-    pages = zeit.cms.content.property.ObjectPathProperty('.edition.pages')
+    pages = zeit.cms.content.property.ObjectPathProperty('.edition.pages', zope.schema.Int())
     price = zeit.cms.content.property.ObjectPathProperty(
         '.edition.price', zeit.content.article.interfaces.IBookRecension['price']
     )

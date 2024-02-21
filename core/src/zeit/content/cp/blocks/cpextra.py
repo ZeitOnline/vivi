@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.component
 
 from zeit.cms.i18n import MessageFactory as _
@@ -19,7 +19,11 @@ class CPExtraBlock(zeit.content.cp.blocks.block.Block):
     @cpextra.setter
     def cpextra(self, value):
         self.xml.set('module', value)
-        self.xml['cp_extra'] = lxml.objectify.E.cp_extra(id=value)
+        node = self.xml.find('cp_extra')
+        if node is None:
+            node = lxml.builder.E.cp_extra()
+            self.xml.append(node)
+        node.set('id', value)
 
 
 class Factory(zeit.content.cp.blocks.block.BlockFactory):

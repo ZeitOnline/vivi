@@ -12,7 +12,7 @@ Articles consist of an XMLdocument. Most properties map to XML-Elements:
 >>> from io import StringIO
 >>> from zeit.content.article.article import Article
 >>> article_xml = StringIO("""\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+... <article>
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
 ...    <title>Jahr der Überraschungen</title>
@@ -45,7 +45,7 @@ XML:
 >>> article.volume = 1
 >>> article.textLength = 4711
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
   <body>
     <supertitle>Neujahrsansprache</supertitle>
     <title>Jahr ohne Überraschungen</title>
@@ -55,9 +55,9 @@ XML:
    </subtitle>
   </body>
   <head>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="text-length">4711</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">4711</attribute>
   </head>
 </article>
 
@@ -67,7 +67,7 @@ When we set an attribute multiple times it's just changed:
 >>> article.textLength = 1000
 >>> article.textLength = 2000
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
   <body>
     <supertitle>Neujahrsansprache</supertitle>
     <title>Jahr ohne Überraschungen</title>
@@ -77,11 +77,11 @@ When we set an attribute multiple times it's just changed:
    </subtitle>
   </body>
   <head>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="year">2007</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
   </head>
 </article>
@@ -91,7 +91,7 @@ the authors in the xml:
 
 >>> article.authors = ('Bart Simpson', 'Lisa Simpson')
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
   <body>
     <supertitle>Neujahrsansprache</supertitle>
     <title>Jahr ohne Überraschungen</title>
@@ -101,13 +101,13 @@ the authors in the xml:
    </subtitle>
   </body>
   <head>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="year">2007</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="volume">1</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="text-length">2000</attribute>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
       name="author">Bart Simpson;Lisa Simpson</attribute>
   </head>
 </article>
@@ -118,7 +118,7 @@ There is an adapter which sets the text length automatically:
 >>> from zeit.content.article.article import updateTextLengthOnChange
 >>> updateTextLengthOnChange(article, object())
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
   <body>
     <supertitle>Neujahrsansprache</supertitle>
     <title>Jahr ohne Überraschungen</title>
@@ -129,8 +129,8 @@ There is an adapter which sets the text length automatically:
   </body>
   <head>
     ...
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
-        name="text-length">194</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
+        name="text-length">208</attribute>
   </head>
 </article>
 
@@ -138,11 +138,11 @@ There is an adapter which sets the text length automatically:
 It might happen that the user can change the object (i.e. workflow properties)
 but not the textLengh property. Create such an object:
 
->>> import lxml.objectify
+>>> import lxml.etree
 >>> import zope.security.interfaces
 >>> class NoChangeTextLength:
 ...
-...     xml = lxml.objectify.fromstring('<article><body/></article>')
+...     xml = lxml.etree.fromstring('<article><body/></article>')
 ...
 ...     @property
 ...     def textLength(self):
@@ -167,7 +167,7 @@ We first define some XML which contains some properties we want to be
 reflected in the WebDAV properties:
 
 >>> article_xml = StringIO("""\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+... <article>
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
 ...    <title>Jahr der Überraschungen</title>
@@ -177,15 +177,15 @@ reflected in the WebDAV properties:
 ...    </subtitle>
 ...  </body>
 ...  <head>
-...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...    <attribute ns="http://namespaces.zeit.de/CMS/document"
 ...      name="year">2007</attribute>
-...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...    <attribute ns="http://namespaces.zeit.de/CMS/document"
 ...      name="volume">2</attribute>
-...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...    <attribute ns="http://namespaces.zeit.de/CMS/document"
 ...      name="text-length">2000</attribute>
-...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...    <attribute ns="http://namespaces.zeit.de/CMS/document"
 ...     name="author">Dave Bowman</attribute>
-...    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+...    <attribute ns="http://namespaces.zeit.de/CMS/document"
 ...     name="empty"></attribute>
 ...  </head>
 ... </article>
@@ -294,12 +294,12 @@ It's now stored on the article:
 And the image is referenced in the XML structure:
 
 >>> print(zeit.cms.testing.xmltotext(article.xml))
-<article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<article>
   <head>...
-    <image ...
+    <image...
       src="http://xml.zeit.de/2006/DSC00109_2.JPG"
       type="JPG"...>
-      <bu xsi:nil="true"/>
+      <bu/>
     </image>...
   </head>
   ...
@@ -311,7 +311,7 @@ Searchable text
 All Text inside <p> elements is extracted (empty paragraphs are ignored):
 
 >>> article_xml = StringIO("""\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+... <article>
 ...  <body>
 ...    <supertitle>Neujahrsansprache</supertitle>
 ...    <title>Jahr der Überraschungen</title>

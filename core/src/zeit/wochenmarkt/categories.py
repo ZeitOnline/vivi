@@ -1,7 +1,7 @@
 import collections
 import logging
 
-from lxml.objectify import E
+from lxml.builder import E
 import grokcore.component as grok
 import lxml.etree
 import zope.interface
@@ -59,13 +59,13 @@ class RecipeCategories:
     def __set__(self, instance, value):
         recipe_categories = instance.xml.xpath('./head/recipe_categories')
         if len(recipe_categories) != 0:
-            instance.xml.head.remove(recipe_categories[0])
+            instance.xml.find('head').remove(recipe_categories[0])
         value = self._remove_duplicates(value)
         if len(value) > 0:
             el = E.recipe_categories()
             for item in value:
                 el.append(E.category(code=item.code))
-            instance.xml.head.append(el)
+            instance.xml.find('head').append(el)
 
     def _remove_duplicates(self, categories):
         result = collections.OrderedDict()

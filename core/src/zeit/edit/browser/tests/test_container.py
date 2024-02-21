@@ -1,4 +1,4 @@
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.security.management
 
@@ -16,7 +16,7 @@ class MoveTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_should_remove_item_from_source_and_add_to_target(self):
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
-        root = zeit.edit.tests.fixture.Container(wc, lxml.objectify.fromstring('<container/>'))
+        root = zeit.edit.tests.fixture.Container(wc, lxml.builder.E.container())
         factory = zope.component.getAdapter(root, zeit.edit.interfaces.IElementFactory, 'container')
         source = factory()
         target = factory()

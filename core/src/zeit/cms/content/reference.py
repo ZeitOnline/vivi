@@ -14,7 +14,6 @@ Terminology note: the "source" (A or C) references the "target" (B).
 import copy
 import urllib.parse
 
-import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
 import z3c.traverser.interfaces
@@ -23,6 +22,7 @@ import zope.publisher.interfaces
 import zope.security.proxy
 import zope.traversing.browser.absoluteurl
 
+from zeit.cms.content.util import create_parent_nodes
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.content.xmlsupport
@@ -122,7 +122,14 @@ class ReferenceProperty:
                 for child in value.iterchildren():
                     xml.append(copy.copy(child))
         else:
-            self.path.setattr(xml, value)
+            for node in self._reference_nodes(instance):
+                node.getparent().remove(node)
+            parent, name = create_parent_nodes(self.path, instance.xml)
+            for node in value:
+                node.tag = name
+                parent.append(node)
+            else:
+                parent.text = None
         instance._p_changed = True
 
     def _check_for_references(self, values):
@@ -151,10 +158,13 @@ class ReferenceProperty:
         return None
 
     def _reference_nodes(self, instance):
-        try:
-            return self.path.find(zope.security.proxy.getObject(instance.xml))
-        except AttributeError:
+        xml = zope.security.proxy.getObject(instance.xml)
+        if str(self.path) == '.':
+            return [xml]
+        node = self.path.find(xml, None)
+        if node is None:
             return []
+        return list(node.getparent().iterchildren(node.tag))
 
     def update_metadata(self, instance, suppress_errors=False):
         for reference in self.__get__(instance, None):
@@ -253,12 +263,6 @@ class SingleReferenceProperty(ReferenceProperty):
         else:
             value = (value,)
         super().__set__(instance, value)
-
-    def _reference_nodes(self, instance):
-        result = super()._reference_nodes(instance)
-        if not isinstance(result, list):
-            result = [result]
-        return result
 
     def update_metadata(self, instance, suppress_errors=False):
         reference = self.__get__(instance, None)
@@ -388,7 +392,7 @@ ID_PREFIX = 'reference://'
 
 @grok.implementer(zeit.cms.content.interfaces.IReference)
 class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
-    grok.adapts(zeit.cms.content.interfaces.IXMLRepresentation, gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.cms.content.interfaces.IXMLRepresentation, zeit.cms.interfaces.IXMLElement)
     grok.baseclass()
 
     # XXX kludgy: These must be set manually after adapter call by clients.

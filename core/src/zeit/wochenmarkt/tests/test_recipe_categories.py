@@ -2,6 +2,7 @@
 import lxml.etree
 import zope.component
 
+from zeit.wochenmarkt.categories import RecipeCategories
 import zeit.content.article.article
 import zeit.wochenmarkt.interfaces
 import zeit.wochenmarkt.testing
@@ -36,13 +37,9 @@ class TestRecipeCategories(
     zeit.wochenmarkt.testing.FunctionalTestCase, zeit.wochenmarkt.testing.RecipeCategoriesHelper
 ):
     def get_content(self):
-        from lxml import objectify
-
-        from zeit.wochenmarkt.categories import RecipeCategories
-
         class Content:
             categories = RecipeCategories()
-            xml = objectify.fromstring('<article><head/></article>')
+            xml = lxml.etree.fromstring('<article><head/></article>')
 
         return Content()
 
@@ -70,7 +67,7 @@ class TestRecipeCategories(
         content.categories = [summer]
         self.assertEllipsis(
             '<recipe_categories...><category code="summer"/>...',
-            lxml.etree.tostring(content.xml.head.recipe_categories, encoding=str),
+            lxml.etree.tostring(content.xml.find('head/recipe_categories'), encoding=str),
         )
 
     def test_removing_all_categories_should_leave_no_trace(self):

@@ -1,7 +1,6 @@
 from unittest import mock
 
 import lxml.etree
-import lxml.objectify
 
 from zeit.cms.checkout.helper import checked_out
 import zeit.content.modules.rawtext
@@ -15,7 +14,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
-            self.context, lxml.objectify.XML('<container/>')
+            self.context, lxml.etree.fromstring('<container/>')
         )
 
     def test_provides_dict_access_to_xml_nodes(self):
@@ -52,11 +51,10 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
             )
 
         module = zeit.content.modules.rawtext.RawText(
-            self.context, lxml.objectify.XML('<container/>')
+            self.context, lxml.etree.fromstring('<container/>')
         )
         module.text_reference = self.repository['embed']
         module.params['ref'] = self.repository['testcontent']
-        lxml.objectify.deannotate(module.xml, cleanup_namespaces=True)
         self.assertEllipsis(
             '<container>...<param id="ref">http://xml.zeit.de/testcontent' '</param></container>',
             lxml.etree.tostring(module.xml, encoding=str),
@@ -71,7 +69,7 @@ class EmbedParameters(zeit.content.modules.testing.FunctionalTestCase):
             co.parameter_definition = '{"p": zope.schema.Bool(default=True)}'
 
         module = zeit.content.modules.rawtext.RawText(
-            self.context, lxml.objectify.XML('<container/>')
+            self.context, lxml.etree.fromstring('<container/>')
         )
         module.text_reference = self.repository['embed']
         self.assertEqual(True, module.params['p'])
@@ -87,7 +85,7 @@ class EmbedCSS(zeit.content.modules.testing.FunctionalTestCase):
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
-            self.context, lxml.objectify.XML('<container/>')
+            self.context, lxml.etree.fromstring('<container/>')
         )
         self.module.__name__ = 'mymodule'
 
@@ -126,7 +124,7 @@ class ConsentInfo(zeit.content.modules.testing.FunctionalTestCase):
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.rawtext.RawText(
-            self.context, lxml.objectify.XML('<container/>')
+            self.context, lxml.etree.fromstring('<container/>')
         )
 
     def test_stores_local_values_in_xml(self):

@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.etree
 
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -26,4 +26,4 @@ class BlockFactory(zeit.edit.block.ElementFactory):
     title = None
 
     def get_xml(self):
-        return getattr(lxml.objectify.E, self.element_type)()
+        return lxml.etree.Element(self.element_type)

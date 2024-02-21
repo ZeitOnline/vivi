@@ -1,10 +1,11 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.interface
 import zope.schema
 
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+from zeit.cms.content.xmlsupport import update_child_node
 import zeit.cms.content.dav
 import zeit.content.image.image
 import zeit.content.image.interfaces
@@ -134,7 +135,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if context.nofollow:
             set_attribute('rel', 'nofollow')
 
-        entry['bu'] = context.caption or None
+        update_child_node(entry, 'bu', context.caption)
 
         for child in entry.iterchildren('copyright'):
             entry.remove(child)
@@ -142,7 +143,8 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if context.copyright is None:
             return
         text, company, freetext, link, nofollow = context.copyright
-        node = lxml.objectify.E.copyright(text)
+        node = lxml.builder.E.copyright()
+        node.text = text
         if link:
             node.set('link', link)
             if nofollow:

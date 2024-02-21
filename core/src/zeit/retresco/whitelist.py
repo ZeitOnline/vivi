@@ -1,5 +1,5 @@
-import gocept.lxml.objectify
 import grokcore.component as grok
+import lxml.objectify
 import zope.component
 
 from zeit.cms.interfaces import CONFIG_CACHE
@@ -81,4 +81,4 @@ class Topicpages(grok.GlobalUtility, zeit.cms.content.sources.OverridableURLConf
 
     def _load(self):
         request = zeit.cms.content.sources.load(self.url)
-        return gocept.lxml.objectify.fromfile(request)
+        return lxml.objectify.parse(request).getroot()

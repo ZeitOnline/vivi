@@ -12,10 +12,7 @@ import zeit.cms.type
 class ExampleContentType(zeit.cms.content.metadata.CommonMetadata):
     """A type for testing."""
 
-    default_template = (
-        '<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
-        '<head/><body/></testtype>'
-    )
+    default_template = '<testtype><head/><body/></testtype>'
 
 
 class ExampleContentTypeType(zeit.cms.type.XMLContentTypeDeclaration):

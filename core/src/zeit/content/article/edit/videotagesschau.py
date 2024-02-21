@@ -3,7 +3,7 @@ import hashlib
 import logging
 import time
 
-from lxml.objectify import E
+from lxml.builder import E
 from zope.index.text.interfaces import ISearchableText
 import grokcore.component as grok
 import requests

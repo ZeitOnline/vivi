@@ -1,4 +1,4 @@
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.interface
 
@@ -15,17 +15,18 @@ class CustomQueryProperty:
 
     def __get__(self, context, class_):
         """Allows value mapping via dictionary."""
-        if not hasattr(context.xml, 'query'):
+        query = context.xml.find('query')
+        if query is None:
             return ()
         result = []
-        for condition in context.xml.query.getchildren():
+        for condition in query.getchildren():
             typ = condition.get('type')
             if typ in self.mapping:
                 typ = self.mapping[typ]
             operator = condition.get('operator')
             if not operator:  # BBB
                 operator = 'eq'
-            value = self._converter(context, typ).fromProperty(str(condition))
+            value = self._converter(context, typ).fromProperty(condition.text)
             field = IConfiguration['query'].value_type.type_interface[typ]
             if zope.schema.interfaces.ICollection.providedBy(field):
                 value = value[0]
@@ -36,15 +37,14 @@ class CustomQueryProperty:
         return tuple(result)
 
     def __set__(self, context, value):
-        try:
-            context.xml.remove(context.xml.query)
-        except AttributeError:
-            pass
+        existing = context.xml.find('query')
+        if existing is not None:
+            context.xml.remove(existing)
 
         if not value:
             return
 
-        E = lxml.objectify.E
+        E = lxml.builder.E
         query = E.query()
         for item in value:
             typ, operator, val = self._serialize_query_item(context, item)

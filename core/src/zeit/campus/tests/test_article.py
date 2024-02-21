@@ -24,4 +24,4 @@ class TopicTest(zeit.campus.testing.FunctionalTestCase):
             )
             == 1
         )
-        assert tplink.xml.xpath('//head/topic/label')[0] == 'Moep'
+        assert tplink.xml.xpath('//head/topic/label')[0].text == 'Moep'

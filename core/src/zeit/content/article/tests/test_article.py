@@ -90,30 +90,31 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_article_should_not_mangle_divisions_on_create(self):
         article = self.get_article_with_paras()
-        self.assertEqual(1, len(article.xml.body.findall('division')))
+        self.assertEqual(1, len(article.xml.findall('body/division')))
 
     def test_article_should_not_mangle_divisions_on_add_to_repository(self):
         article = self.get_article_with_paras()
         self.repository['article'] = article
-        self.assertEqual(1, len(self.repository['article'].xml.body.findall('division')))
+        self.assertEqual(1, len(self.repository['article'].xml.findall('body/division')))
 
     def test_article_should_not_mangle_divisions_on_checkin(self):
         article = self.get_article_with_paras()
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
-        self.assertEqual(1, len(self.repository['article'].xml.body.findall('division')))
+        self.assertEqual(1, len(self.repository['article'].xml.findall('body/division')))
 
     def test_article_without_division_should_get_them_on_checkin(self):
         article = self.get_article_with_paras()
+        body = article.xml.find('body')
         # mangle the xml
-        for p in article.xml.body.division.getchildren():
-            article.xml.body.append(p)
-        article.xml.body.remove(article.xml.body.division)
+        for p in article.xml.find('body/division').getchildren():
+            body.append(p)
+        body.remove(body.find('division'))
         self.repository['article'] = article
         with checked_out(self.repository['article']):
             pass
-        self.assertEqual(2, len(self.repository['article'].xml.body.findall('division')))
+        self.assertEqual(2, len(self.repository['article'].xml.findall('body/division')))
 
 
 class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
@@ -326,7 +327,7 @@ class ArticleElementReferencesTest(zeit.content.article.testing.FunctionalTestCa
     def create_empty_portraitbox_reference(self):
         from zeit.content.article.edit.body import EditableBody
 
-        body = EditableBody(self.article, self.article.xml.body)
+        body = EditableBody(self.article, self.article.xml.find('body'))
         portraitbox_reference = body.create_item('portraitbox', 1)
         portraitbox_reference._validate = mock.Mock()
         return portraitbox_reference
@@ -344,7 +345,7 @@ class ArticleElementReferencesTest(zeit.content.article.testing.FunctionalTestCa
         from zeit.content.article.edit.body import EditableBody
 
         self.repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
-        body = EditableBody(self.article, self.article.xml.body)
+        body = EditableBody(self.article, self.article.xml.find('body'))
         image_group = body.create_item('image', 3)
         image_group.references = image_group.references.create(self.repository['image-group'])
         image_group._validate = mock.Mock()

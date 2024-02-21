@@ -1,5 +1,5 @@
 def contains_element(list, element):
-    """lxml.objectify elements are equal if their text contents are equal,
+    """lxml elements are equal if their text contents are equal,
     which is not at all sufficient for filtering elements via xpath, so we
     provide a custom comparision function that includes the tag name and
     attributes.

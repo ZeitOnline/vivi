@@ -4,7 +4,7 @@ import itertools
 import logging
 
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import requests
 import zope.interface
 import zope.lifecycleevent
@@ -34,7 +34,7 @@ UNIQUEID_PREFIX = zeit.cms.interfaces.ID_NAMESPACE[:-1]
 @zope.interface.implementer(zeit.content.volume.interfaces.IVolume, zeit.cms.interfaces.IAsset)
 class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
     default_template = """\
-        <volume xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+        <volume>
             <head/>
             <body/>
             <covers/>
@@ -196,13 +196,12 @@ class Volume(zeit.cms.content.xmlsupport.XMLContentBase):
         path = '//covers/cover[@id="{}" and @product_id="{}"]'.format(cover_id, product_id)
         node = self.xml.xpath(path)
         if node:
-            self.xml.covers.remove(node[0])
+            self.xml.find('covers').remove(node[0])
         if imagegroup is not None:
-            node = lxml.objectify.E.cover(
+            node = lxml.builder.E.cover(
                 id=cover_id, product_id=product_id, href=imagegroup.uniqueId
             )
-            lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
-            self.xml.covers.append(node)
+            self.xml.find('covers').append(node)
         super().__setattr__('_p_changed', True)
 
     def _is_valid_cover_id_and_product_id(self, cover_id, product_id):

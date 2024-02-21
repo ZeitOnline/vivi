@@ -2,7 +2,8 @@
 from unittest import mock
 import unittest
 
-import lxml.objectify
+import lxml.builder
+import lxml.etree
 import zope.component
 import zope.interface
 import zope.interface.verify
@@ -300,7 +301,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         zope.interface.alsoProvides(content, zeit.cms.content.interfaces.IDAVPropertiesInXML)
         sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
         sync.sync()
-        dav_attribs = '\n'.join(str(a) for a in content.xml.head.attribute[:])
+        dav_attribs = '\n'.join(str(a) for a in content.xml.findall('head/attribute'))
         self.assertNotIn('rankedTags', dav_attribs)
 
     def test_existing_tags_should_cause_rankedTags_to_be_added_to_xml(self):
@@ -315,18 +316,21 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
     """,
             )
         self.assertEqual(
-            ['Karen Duve', 'Berlin'], repository['content'].xml.head.rankedTags.getchildren()
+            ['Karen Duve', 'Berlin'],
+            [x.text for x in repository['content'].xml.find('head/rankedTags').getchildren()],
         )
 
     def test_no_tags_cause_rankedTags_element_to_be_removed_from_xml(self):
         content = create_testcontent()
-        content.xml.head.rankedTags = 'bla bla bla'
+        E = lxml.builder.E
+        content.xml.find('head').append(E.rankedTags('bla bla bla'))
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         repository['content'] = content
         with checked_out(repository['content']):
             # cycle
             pass
-        self.assertNotIn('rankedTags', repository['content'].xml.head.keys())
+        self.assertEqual(None, repository['content'].xml.find('head/rankedTags'))
+        self.assertEqual(None, repository['content'].xml.find('head/empty'))
 
     def test_checkin_should_not_fail_with_no_tags_and_no_rankedTags_element(self):
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
@@ -348,7 +352,10 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
             )
             tagger = Tagger(content)
             del tagger['☃Berlin']
-        self.assertEqual(['Karen Duve'], repository['content'].xml.head.rankedTags.getchildren())
+        self.assertEqual(
+            ['Karen Duve'],
+            [x.text for x in repository['content'].xml.find('head/rankedTags').getchildren()],
+        )
 
     def test_rankedTags_in_xml_should_be_updated_on_modified_event(self):
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
@@ -362,7 +369,10 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
     """,
             )
             zope.lifecycleevent.modified(content)
-            self.assertEqual(['Karen Duve', 'Berlin'], content.xml.head.rankedTags.getchildren())
+            self.assertEqual(
+                ['Karen Duve', 'Berlin'],
+                [x.text for x in content.xml.find('head/rankedTags').getchildren()],
+            )
 
     def test_modified_event_should_leave_non_content_alone(self):
         # regression #12394
@@ -397,7 +407,7 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         content = create_testcontent()
         tagger = Tagger(content)
         with mock.patch('zeit.retresco.tagger.Tagger.to_xml') as to_xml:
-            to_xml.return_value = lxml.objectify.fromstring(
+            to_xml.return_value = lxml.etree.fromstring(
                 """
 <rankedTags>
     <tag uuid="uid-karenduve">Karen Duve</tag>

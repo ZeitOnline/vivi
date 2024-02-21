@@ -1,6 +1,7 @@
 import logging
 
 import grokcore.component as grok
+import lxml.builder
 import zope.app.appsetup.product
 import zope.interface
 
@@ -23,15 +24,20 @@ class Banner:
     def article_id(self):
         if self.xml_banner is None:
             return None
-        if not self.xml_banner.xml.article_id:
+        article = self.xml_banner.xml.find('article_id')
+        if article is None:
             return None
-        return self.xml_banner.xml.article_id.text
+        return article.text
 
     @article_id.setter
     def article_id(self, value):
         self._ensure_unlocked()
         with checked_out(self.xml_banner) as co:
-            co.xml.article_id = value
+            node = co.xml.find('article_id')
+            if node is None:
+                co.xml.append(lxml.builder.E.article_id(value or ''))
+            else:
+                node.text = value
 
     @property
     def xml_banner(self):

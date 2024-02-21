@@ -17,11 +17,11 @@ Basics
 
 Create an intance and set some data:
 
->>> import lxml.objectify
+>>> import lxml.etree
 >>> import zeit.content.rawxml.rawxml
 >>> content = zeit.content.rawxml.rawxml.RawXML()
 >>> content.title = 'Roh'
->>> content.xml = lxml.objectify.fromstring('<a/>')
+>>> content.xml = lxml.etree.fromstring('<a/>')
 
 ``content`` provides the IRawXML interface:
 
@@ -65,4 +65,4 @@ All the data is still there:
 <Element a at ...>
 >>> lxml.etree.cleanup_namespaces(new_content.xml)
 >>> zeit.cms.testing.xmltotext(new_content.xml)
-'<a/>\n'
+'<a/>'

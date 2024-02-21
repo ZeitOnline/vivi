@@ -53,7 +53,7 @@ class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
         )
         converter = zeit.wysiwyg.html.HTMLConverter(article)
         converter.from_html(
-            article.xml['body'],
+            article.xml.find('body'),
             """\
 <div class="inline-element video">
   <div class="videoId"></div>
@@ -65,7 +65,7 @@ class VideoStepTest(zeit.wysiwyg.testing.FunctionalTestCase):
         )
         self.assertEqual(
             {'href': '', 'href2': '', 'expires': '2011-01-03T06:00:00+01:00', 'format': 'large'},
-            article.xml.body.video.attrib,
+            article.xml.find('body/video').attrib,
         )
 
 
@@ -76,7 +76,7 @@ class TopLevelTest(zeit.wysiwyg.testing.FunctionalTestCase):
             xml_source=StringIO(source)
         )
         converter = zeit.wysiwyg.html.HTMLConverter(article)
-        converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
+        converter.from_html(article.xml.find('body'), '<!-- foo --><p>Foo</p>')
         self.assertEqual(
             '<article><body><!-- foo --><p>Foo</p></body></article>',
             lxml.etree.tostring(article.xml, encoding=str),

@@ -1,7 +1,7 @@
 from unittest import mock
 
 import celery.exceptions
-import lxml.objectify
+import lxml.etree
 import plone.testing
 import requests.exceptions
 
@@ -33,7 +33,7 @@ class WebhookTest(zeit.cms.testing.ZeitCmsTestCase):
         )
         self.patch = mock.patch(
             'zeit.cms.checkout.webhook.HookSource._get_tree',
-            side_effect=lambda: lxml.objectify.fromstring(self.config),
+            side_effect=lambda: lxml.etree.fromstring(self.config),
         )
         self.patch.start()
         source = zeit.cms.checkout.webhook.HOOKS.factory

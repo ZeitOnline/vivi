@@ -5,6 +5,7 @@ Fields
 XML Tree
 ========
 
+>>> from lxml.builder import E
 >>> from zeit.cms.content.field import XMLTree
 >>> import zeit.cms.testing
 >>> field = XMLTree()
@@ -18,8 +19,8 @@ XML Tree
 True
 
 >>> content2 = Content()
->>> content.xml['child'] = 'child'
->>> content2.xml = content.xml['child']
+>>> content.xml.append(E.child('child'))
+>>> content2.xml = content.xml.find('child')
 >>> tree2 = field.fromUnicode('<child>MyNewValue</child>')
 >>> field.set(content2, tree2)
 >>> print(zeit.cms.testing.xmltotext(content.xml))
@@ -31,15 +32,15 @@ True
 Replacing node when there are siblings present
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
->>> import lxml.objectify
->>> root = lxml.objectify.E.root()
->>> root.append(lxml.objectify.E.child())
->>> root.append(lxml.objectify.E.child())
+>>> import lxml.builder
+>>> root = lxml.builder.E.root()
+>>> root.append(E.child())
+>>> root.append(E.child())
 >>> content = Content()
 >>> field = XMLTree()
 >>> field.__name__ = 'xml'
->>> field.set(content, root.child)
->>> field.set(content, lxml.objectify.E.new())
+>>> field.set(content, root.find('child'))
+>>> field.set(content, E.new())
 >>> print(zeit.cms.testing.xmltotext(root))
 <root...>
   <new/>

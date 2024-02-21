@@ -3,6 +3,7 @@ from io import StringIO
 from unittest import mock
 import unittest
 
+import lxml.etree
 import pytz
 import zope.component
 import zope.interface
@@ -70,12 +71,10 @@ class GlobTest(zeit.edit.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
 
-        import lxml.objectify
-
         import zeit.edit.block
         import zeit.edit.container
 
-        self.xml = lxml.objectify.XML(
+        self.xml = lxml.etree.fromstring(
             """
 <body xmlns:cms="http://namespaces.zeit.de/CMS/cp">
   <p cms:type="foo">Para1</p>
@@ -92,7 +91,7 @@ class GlobTest(zeit.edit.testing.FunctionalTestCase):
         self.area.type = 'area'
         page['testarea'] = self.area
         zope.interface.alsoProvides(self.area, zeit.edit.interfaces.IArea)
-        self.block = zeit.edit.block.SimpleElement(self.area, self.xml.p)
+        self.block = zeit.edit.block.SimpleElement(self.area, self.xml.find('p'))
         self.block.__name__ = 'bar'
         self.area['bar'] = self.block
 

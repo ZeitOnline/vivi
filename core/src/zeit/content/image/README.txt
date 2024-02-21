@@ -26,7 +26,7 @@ Test the image xml reference:
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG"
   type="JPG"...>
-  <bu xsi:nil="true"/>
+  <bu/>
 </image>
 
 
@@ -107,7 +107,7 @@ Reference the image via XML:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
-  <bu xsi:nil="true"/>
+  <bu/>
 </image>
 
 
@@ -124,8 +124,8 @@ Set metadata:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
-  <bu py:pytype="str">Caption</bu>
-  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+  <bu>Caption</bu>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 The interface default for the copyright is None:
@@ -144,8 +144,8 @@ Make sure we don't die when there is an invalid XML snippet stored:
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
-  <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+  <bu>5 &lt; 7</bu>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 Set the link:
@@ -161,8 +161,8 @@ Set the link:
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com" rel="nofollow"...>
-  <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+  <bu>5 &lt; 7</bu>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 The type attribute is rather complex.
@@ -184,8 +184,8 @@ in x140 is used:
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="gif"...
     href="http://www.asdf.com"...>
-  <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+  <bu>5 &lt; 7</bu>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 
@@ -204,8 +204,8 @@ one is used:
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com"...>
-  <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+  <bu>5 &lt; 7</bu>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 
@@ -223,8 +223,8 @@ Images whose names have no extension at all will be ignored:
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
     href="http://www.asdf.com"...>
-  <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+  <bu>5 &lt; 7</bu>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 <BLANKLINE>
 
@@ -238,8 +238,8 @@ If there is no image in the image group the ``type`` will be an empty string:
 >>> print(zeit.cms.testing.xmltotext(ref))
 <image ...base-id="http://xml.zeit.de/image-group/" type=""...
     href="http://www.asdf.com"...>
-  <bu py:pytype="str">5 &lt; 7</bu>
-  <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
+  <bu>5 &lt; 7</bu>
+  <copyright link="http://xyz.de">Agentur XY</copyright>
 </image>
 
 

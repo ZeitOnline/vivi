@@ -48,7 +48,7 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         article.ressort = 'Deutschland'
         portraitbox = Portraitbox()
         self.repository['portraitbox'] = portraitbox
-        body = EditableBody(article, article.xml.body)
+        body = EditableBody(article, article.xml.find('body'))
         portraitbox_reference = body.create_item('portraitbox', 1)
         portraitbox_reference._validate = mock.Mock()
         portraitbox_reference.references = portraitbox

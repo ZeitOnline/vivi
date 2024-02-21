@@ -42,7 +42,7 @@ You can edit the XML content by clicking the Edit button:
 <BLANKLINE>
   </raw>
 </container>
->>> print(update_xml('\r\n\r\n', '<foo/>'))
+>>> print(update_xml('\r\n\r\n', '\r\n<foo/>'))
 <...
 <div class="summary">Updated on...
 
@@ -80,7 +80,7 @@ Broken markup is sanitized:
 
 >>> print(update_xml(
 ...     '<foo/>',
-...     '<foo/><a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">'))
+...     '<foo/>\r\n<a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">'))
 <...
 <div class="summary">Updated on...
 

@@ -14,7 +14,7 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)
         pls.videos = (video,)
-        self.assertEqual('Bla bla', pls.xml['body']['videos']['video']['text'])
+        self.assertEqual('Bla bla', pls.xml.find('body/videos/video/text').text)
 
     def test_video_title_should_show_up_as_teaser_title_in_playlist(self):
         factory = zeit.content.video.testing.video_factory(self)
@@ -24,7 +24,7 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         factory = zeit.content.video.testing.playlist_factory(self)
         pls = next(factory)
         pls.videos = (video,)
-        self.assertEqual('The big Foo', pls.xml['body']['videos']['video']['title'])
+        self.assertEqual('The big Foo', pls.xml.find('body/videos/video/title').text)
 
     def test_security_should_allow_access_to_id_prefix(self):
         from zope.security.proxy import ProxyFactory
@@ -54,7 +54,7 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         with zeit.cms.checkout.helper.checked_out(pls):
             pass
         pls = self.repository['pls']
-        self.assertEqual('bar', pls.xml['body']['videos']['video']['title'])
+        self.assertEqual('bar', pls.xml.find('body/videos/video/title').text)
 
     def test_animation_video_reference(self):
         import zeit.content.animation.animation
@@ -64,7 +64,7 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         video = next(factory)
         animation = zeit.content.animation.animation.Animation()
         animation.video = video
-        assert animation.xml.body.video.xpath('@contenttype')[0] == 'video'
+        assert animation.xml.find('body/video').xpath('@contenttype')[0] == 'video'
 
 
 class TestReferencesAdapter(zeit.content.video.testing.TestCase):

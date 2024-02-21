@@ -1,6 +1,7 @@
 from unittest import mock
 import unittest
 
+import lxml.builder
 import zope.lifecycleevent
 
 from zeit.cms.checkout.helper import checked_out
@@ -15,10 +16,9 @@ class ReferenceTest(unittest.TestCase):
         return Reference
 
     def get_ref(self):
-        import lxml.objectify
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.ref())
-        ref = self.test_class(None, tree.ref)
+        ref = lxml.builder.E.ref()
+        lxml.builder.E.tree(ref)
+        ref = self.test_class(None, ref)
         ref._validate = mock.Mock()
         return ref
 
@@ -68,7 +68,7 @@ class ReferenceTest(unittest.TestCase):
         ref.xml.set('href', 'auniqueid')
         ref.xml.set('honk', 'hubbel')
         ref.__name__ = 'myname'  # name is kept!
-        ref.xml.achild = 'mary had a little lamb'
+        ref.xml.append(lxml.builder.E.achild('mary had a little lamb'))
         ref.references = None
         self.assertFalse('honk' in ref.xml.attrib)
         self.assertEqual('myname', ref.__name__)
@@ -160,7 +160,7 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
         import zeit.edit.interfaces
 
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, name)
         self.assertEqual(title, factory.title)
         div = factory()
@@ -216,7 +216,7 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
             pass
         self.assertEqual(
             '2005-01-02T00:00:00+00:00',
-            self.repository['article'].xml.body.division.getchildren()[0].get('expires'),
+            self.repository['article'].xml.find('body/division').getchildren()[0].get('expires'),
         )
 
     def test_gallery_metadata_should_be_updated(self):
@@ -303,7 +303,7 @@ class EmptyMarkerTest:
 
     def test_block_is_not_empty_when_created_from_reference(self):
         article = self.get_article()
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         block = zope.component.getMultiAdapter(
             (body, self.create_target(), 0), zeit.edit.interfaces.IElement
         )

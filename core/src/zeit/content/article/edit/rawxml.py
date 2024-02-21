@@ -1,6 +1,6 @@
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 
 from zeit.cms.content.property import DAVConverterWrapper, ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
@@ -18,7 +18,7 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
     title = _('Raw XML block')
 
     def get_xml(self):
-        E = lxml.objectify.E
+        E = lxml.builder.E
         raw = getattr(E, self.element_type)()
         raw.set('alldevices', 'true')
         raw.append(E.div('\n\n', **{'class': 'article__item x-spacing'}))

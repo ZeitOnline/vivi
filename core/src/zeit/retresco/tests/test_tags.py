@@ -30,8 +30,8 @@ class TestTags(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing.T
         self.content.tags = self.content.tags
         self.assertEqual(
             """\
-<rankedTags xmlns:ns="http://namespaces.zeit.de/CMS/tagging">\
-<tag uuid="uid-karenduve" url_value="karenduve" type="author">Karen Duve</tag>\
+<rankedTags xmlns:ns="http://namespaces.zeit.de/CMS/tagging">
+<tag uuid="uid-karenduve" url_value="karenduve" type="author">Karen Duve</tag>
 </rankedTags>""",
             lxml.etree.tostring(Tagger(self.content).to_xml(), encoding=str),
         )

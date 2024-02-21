@@ -1,6 +1,8 @@
 # coding: utf8
 import unittest
 
+from ..util import etree_soup_fromstring
+
 
 YOUTUBE = """\
 <iframe width="560" height="315" src="http://www.youtube.com/embed/qnydFmqHuVo"
@@ -20,15 +22,11 @@ Emily Faith Pedone (@nothinbutdream)
 """
 
 
-class TestObjectifySoup(unittest.TestCase):
+class TestEtreeSoup(unittest.TestCase):
     def test_should_parse_youtube_embed_code(self):
-        from ..util import objectify_soup_fromstring
-
-        xml = objectify_soup_fromstring(YOUTUBE)
+        xml = etree_soup_fromstring(YOUTUBE)
         self.assertEqual('iframe', xml.tag)
 
     def test_should_parse_tweet(self):
-        from ..util import objectify_soup_fromstring
-
-        xml = objectify_soup_fromstring(TWITTER)
+        xml = etree_soup_fromstring(TWITTER)
         self.assertEqual('raw', xml.tag)

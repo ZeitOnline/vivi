@@ -1,3 +1,4 @@
+import lxml.etree
 import transaction
 import zope.security.management
 
@@ -21,10 +22,9 @@ class BrowserTestCase(zeit.content.article.testing.BrowserTestCase):
         for p in article.xml.xpath('//division/*'):
             p.getparent().remove(p)
         if with_block:
-            article.xml.body.division[with_block] = ''
-            article.xml.body.division[with_block].set(
-                '{http://namespaces.zeit.de/CMS/cp}__name__', 'blockname'
-            )
+            block = lxml.etree.Element(with_block)
+            block.set('{http://namespaces.zeit.de/CMS/cp}__name__', 'blockname')
+            article.xml.find('body/division').append(block)
         article._p_changed = True
         transaction.commit()
         return article

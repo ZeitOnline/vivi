@@ -1,7 +1,7 @@
 from unittest import mock
 import collections
 
-import lxml.objectify
+import lxml.builder
 import zope.component
 import zope.interface
 
@@ -149,7 +149,7 @@ class FakeTags(collections.OrderedDict):
         return {x.uniqueId: live_prefix + x.link for x in self.values() if x.link}
 
     def to_xml(self):
-        node = lxml.objectify.E.tags(*[lxml.objectify.E.tag(x.label) for x in self.values()])
+        node = lxml.builder.E.tags(*[lxml.builder.E.tag(x.label) for x in self.values()])
         return node
 
 

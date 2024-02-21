@@ -1,9 +1,9 @@
-import gocept.lxml.interfaces
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.component
 
 import zeit.cms.content.field
+import zeit.cms.interfaces
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -16,7 +16,7 @@ HEADER_NAME = 'editable-header'
 @grok.implementer(zeit.content.article.edit.interfaces.IHeaderArea)
 class HeaderArea(zeit.content.article.edit.container.TypeOnTagContainer, grok.MultiAdapter):
     grok.provides(zeit.content.article.edit.interfaces.IHeaderArea)
-    grok.adapts(zeit.content.article.interfaces.IArticle, gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.article.interfaces.IArticle, zeit.cms.interfaces.IXMLElement)
 
     __name__ = HEADER_NAME
 
@@ -80,9 +80,9 @@ def get_header_area(article):
         # XXX locate the XML object into the workingcopy so that edit
         # permissions can be found (which makes this security declaration
         # somewhat unhelpful since it doesn't work without additional setup).
-        head = article.xml['head']
+        head = article.xml.find('head')
         head = zeit.cms.content.field.located(head, article, 'header')
-        head.append(lxml.objectify.E.header())
+        head.append(lxml.builder.E.header())
     node = article.xml.xpath('//head/header')[0]
     return zope.component.queryMultiAdapter(
         (article, zope.security.proxy.removeSecurityProxy(node)),

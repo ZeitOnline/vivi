@@ -5,7 +5,6 @@ import grokcore.component as grok
 import lxml.etree
 import lxml.html.clean
 import lxml.html.soupparser
-import lxml.objectify
 
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
@@ -39,10 +38,7 @@ class ParagraphBase(zeit.content.article.edit.block.Block):
         p = self.keep_allowed_tags(p)
         p.tag = self.type
         p.attrib.update(self.xml.attrib.items())
-        # XXX do we want to set this as the default objectify parser in the
-        # whole system?
-        parser = lxml.objectify.makeparser(remove_blank_text=False)
-        p = lxml.objectify.fromstring(lxml.etree.tostring(p), parser=parser)
+        p = lxml.etree.fromstring(lxml.etree.tostring(p))
         return p
 
 

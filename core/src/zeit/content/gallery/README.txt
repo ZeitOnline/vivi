@@ -44,7 +44,7 @@ There is one image in the image folder, so the gallery has a length of 1 now:
 The gallery is also noted in the xml structure:
 
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -53,14 +53,15 @@ The gallery is also noted in the xml structure:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
+          <text/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+            <bu/>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
+            <bu/>
           </thumbnail>
         </block>
+        ...
       </container>
     </column>
   </body>
@@ -91,7 +92,7 @@ We need to call `reload_image_folder`:
 The change is reflected in the xml:
 
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -100,24 +101,18 @@ The change is reflected in the xml:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </thumbnail>
+        ...
         </block>
         <block name="01.jpg">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption...>Nice image</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <text/>
+          <caption>Nice image</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -140,8 +135,8 @@ We have not set any title or text for the entry, so they're empty:
 
 >>> entry.title is None
 True
->>> entry.text
-None
+>>> entry.text.text is None
+True
 
 The caption is pre-filled with the caption of the image:
 
@@ -151,12 +146,12 @@ The caption is pre-filled with the caption of the image:
 When we change the entry text, the change will **not** as such reflected in the
 xml:
 
->>> import lxml.objectify
->>> entry.text = lxml.objectify.E.text(
-...     lxml.objectify.E.p('Seit zwei Uhr in der Früh'))
+>>> import lxml.builder
+>>> entry.text = lxml.builder.E.text(
+...     lxml.builder.E.p('Seit zwei Uhr in der Früh'))
 >>> entry.caption = 'Gallery & caption'
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -164,25 +159,17 @@ xml:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption...>Nice image</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <text/>
+          <caption>Nice image</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -195,7 +182,7 @@ When we assign the entry the change will be reflected:
 
 >>> gallery['01.jpg'] = entry
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -203,27 +190,19 @@ When we assign the entry the change will be reflected:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text...xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
-          <text...>
-            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
+          <text>
+            <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -240,7 +219,7 @@ well:
 >>> entry.title = 'Der Wecker klingelt'
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(entry))
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -248,28 +227,20 @@ well:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text...xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
-          <title py:pytype="str">Der Wecker klingelt</title>
-          <text...>
-            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
+          <title>Der Wecker klingelt</title>
+          <text>
+            <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -285,7 +256,7 @@ Let's make sure we actually can get the saved data:
 'Der Wecker klingelt'
 >>> entry.text
 <Element text at ...>
->>> entry.text['p']
+>>> entry.text.find('p').text
 'Seit zwei Uhr in der Fr\xfch'
 >>> entry.caption
 'Gallery & caption'
@@ -308,7 +279,7 @@ True
 >>> entry.layout = 'image-only'
 >>> gallery['01.jpg'] = entry
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -316,28 +287,20 @@ True
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text...xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </thumbnail>
-        </block>
+        ...
         <block layout="image-only" name="01.jpg">
-          <title py:pytype="str">Der Wecker klingelt</title>
-          <text...>
-            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
+          <title>Der Wecker klingelt</title>
+          <text>
+            <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -354,7 +317,7 @@ When we set the layout to None again, the layout attribute is removed:
 >>> entry.layout = None
 >>> gallery['01.jpg'] = entry
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -362,28 +325,20 @@ When we set the layout to None again, the layout attribute is removed:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text...xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
-          <title py:pytype="str">Der Wecker klingelt</title>
-          <text...>
-            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
+          <title>Der Wecker klingelt</title>
+          <text>
+            <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
       </container>
@@ -452,7 +407,7 @@ Let's change the order:
 This is of course reflected int he XML:
 
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -461,27 +416,27 @@ This is of course reflected int he XML:
     <column layout="right">
       <container>
         <block name="01.jpg">
-          <title py:pytype="str">Der Wecker klingelt</title>
-          <text...>
-            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
+          <title>Der Wecker klingelt</title>
+          <text>
+            <p>Seit zwei Uhr in der Früh</p>
           </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <caption>Gallery &amp; caption</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
+            <bu>Nice image</bu>
+            <copyright link="http://www.zeit.de">ZEIT online</copyright>
           </thumbnail>
         </block>
         <block name="DSC00109_2.JPG">
-          <text...xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
+          <text/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+            <bu/>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
+            <bu/>
           </thumbnail>
         </block>
         <block name="DSC00109_3.JPG">
@@ -573,7 +528,7 @@ KeyError: 'http://xml.zeit.de/2006/01.jpg'
 Note that his has *not* changed the xml so far:
 
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -581,30 +536,9 @@ Note that his has *not* changed the xml so far:
     <column layout="left"/>
     <column layout="right">
       <container>
-        <block name="DSC00109_2.JPG">
-          <text...xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
-          </thumbnail>
-        </block>
+        ...
         <block name="01.jpg">
-          <title py:pytype="str">Der Wecker klingelt</title>
-          <text...>
-            <p py:pytype="str">Seit zwei Uhr in der Früh</p>
-          </text>
-          <caption...>Gallery &amp; caption</caption>
-          <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu ...>Nice image</bu>
-            <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
-        </block>
+        ...
       </container>
     </column>
   </body>
@@ -615,7 +549,7 @@ When calling `reload_image_folder` the entry is removed from the xml:
 
 >>> gallery.reload_image_folder()
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
-<gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<gallery>
   <head>
     <image-folder>http://xml.zeit.de/2006/</image-folder>
   </head>
@@ -624,12 +558,21 @@ When calling `reload_image_folder` the entry is removed from the xml:
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
+          <text/>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
+            <bu/>
           </image>
-          <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"...>
-            <bu xsi:nil="true"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
+            <bu/>
+          </thumbnail>
+        </block>
+        <block name="DSC00109_3.JPG">
+          <text/>
+          <image src="http://xml.zeit.de/2006/DSC00109_3.JPG" type="JPG">
+            <bu/>
+          </image>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_3.JPG" type="JPG">
+            <bu/>
           </thumbnail>
         </block>
       </container>
@@ -647,8 +590,8 @@ thumbnail of the removed image is also removed:
 At one point we had galleries with an empty caption-tag which broke
 the system. Make sure this doesn't happen any more:
 
->>> gallery.xml['body']['column'][1]['container']['block'].append(
-...     lxml.objectify.E.caption())
+>>> gallery.xml.xpath('body/column[2]/container/block')[0].append(
+...     lxml.builder.E.caption())
 >>> list(gallery.values())
 [<zeit.content.gallery.gallery.GalleryEntry object at 0x...>]
 
@@ -660,7 +603,8 @@ The old xml format is a bit more lazy. Let's add the second image again:
 
 >>> zeit.content.gallery.testing.add_image('2006', '01.jpg')
 >>> transaction.commit()
->>> gallery.xml = lxml.objectify.XML("""\
+>>> import lxml.etree
+>>> gallery.xml = lxml.etree.fromstring("""\
 ...     <gallery>
 ...       <head>
 ...       </head>
@@ -670,7 +614,7 @@ The old xml format is a bit more lazy. Let's add the second image again:
 ...           <container>
 ...             <block>
 ...               <text>
-...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
 ...                  <a href="fooo">link</a>
 ...               </text>
 ...               <image expires="2007-04-09" src="/cms/work/2006/DSC00109_2.JPG"
@@ -709,30 +653,31 @@ The keys also correct(ed) and the names are set:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006/</image-folder></head>
+      <image-folder>http://xml.zeit.de/2006/</image-folder>
+  </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-            <text...>
+            <text>
                <p>
-                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
                  <a href="fooo">link</a>
                </p>
              </text>
-          <image ... src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
-          <thumbnail...
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
         </block>
         <block name="01.jpg">
-          <text.../>
-          <caption...>Nice image</caption>
-          <image ... src="http://xml.zeit.de/2006/01.jpg"...
-             <bu ...>Nice image</bu>
-             <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
+          <text/>
+          <caption>Nice image</caption>
+          <image src="http://xml.zeit.de/2006/01.jpg"...
+             <bu>Nice image</bu>
+             <copyright link="http://www.zeit.de">ZEIT online</copyright>
            </image>
-           <thumbnail...
+           ...
         </block>
+        ...
       </container>
     </column>
   </body>
@@ -753,7 +698,7 @@ The entries' text is wrapped in a <p> node:
 >>> print(zeit.cms.testing.xmltotext(entry.text))
 <text...>
   <p>
-                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
                  <a href="fooo">link</a>
               </p>
 </text>
@@ -763,7 +708,7 @@ The entries' text is wrapped in a <p> node:
 Let's make sure this also works, when the image urls are not starting wich
 /cms/work but are already convertet to http://xml.zeit.de urls:
 
->>> gallery.xml = lxml.objectify.XML("""\
+>>> gallery.xml = lxml.etree.fromstring("""\
 ...     <gallery>
 ...       <head>
 ...       </head>
@@ -773,7 +718,7 @@ Let's make sure this also works, when the image urls are not starting wich
 ...           <container>
 ...             <block>
 ...               <text>
-...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+...                  Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
 ...               </text>
 ...               <image expires="2007-04-09" src="http://xml.zeit.de/2006/DSC00109_2.JPG"
 ...                     width="380" align="left">
@@ -804,26 +749,28 @@ The keys also correct(ed) and the names are set:
 >>> print(zeit.cms.testing.xmltotext(gallery.xml))
 <gallery>
   <head>
-      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006/</image-folder></head>
+      <image-folder>http://xml.zeit.de/2006/</image-folder>
+  </head>
   <body>
     <column layout="left"/>
     <column layout="right">
       <container>
         <block name="DSC00109_2.JPG">
-          <text...>
-            <p ...>
-                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber...&#13;
+          <text>
+            <p>
+                 Im holländischen Kapitänsduell mit Wolfsburgs Kevin Hofland zeigte sich Rafael van der Vaart (links) engagiert wie eh und je. Der entscheidende Mann beim Heimspiel des Hamburger SV gegen den VfL Wolfsburg hieß aber&#13;
              </p>
           </text>
-          <image ... src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
-          <thumbnail...
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
+          ...
         </block>
         <block name="01.jpg">
-          <text.../>
+          <text/>
           <caption...
-          <image ... src="http://xml.zeit.de/2006/01.jpg" ...
-          <thumbnail...
+          <image src="http://xml.zeit.de/2006/01.jpg"...
+          ...
         </block>
+        ...
       </container>
     </column>
   </body>

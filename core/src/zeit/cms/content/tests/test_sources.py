@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 import importlib.resources
 
-import gocept.lxml.objectify
+import lxml.etree
 import pyramid_dogpile_cache2
 import zope.interface
 
@@ -14,7 +14,7 @@ class ExampleSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
 
     def _get_tree(self):
-        return gocept.lxml.objectify.fromstring(
+        return lxml.etree.fromstring(
             """\
 <items>
   <item id="one">One</item>
@@ -29,7 +29,7 @@ class UnresolveableSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
 
     def _get_tree(self):
-        return gocept.lxml.objectify.fromstring(
+        return lxml.etree.fromstring(
             """\
 <items>
   <item id="foo" available="foo.bar.IAintResolveable">Foo</item>
@@ -42,7 +42,7 @@ class ExampleNestedSource(zeit.cms.content.sources.SearchableXMLSource):
     attribute = NotImplemented
 
     def _get_tree(self):
-        return gocept.lxml.objectify.fromstring(
+        return lxml.etree.fromstring(
             """\
 <items>
   <cherries>

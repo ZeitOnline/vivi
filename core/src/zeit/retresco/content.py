@@ -2,7 +2,8 @@ import collections.abc
 import os.path
 
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
+import lxml.etree
 import zope.component
 import zope.schema.interfaces
 
@@ -34,17 +35,22 @@ class Content:
         self._build_xml_image()
 
     def _build_xml_body(self):
-        E = lxml.objectify.E
-        self.xml = E.content()
+        self.xml = lxml.etree.Element('content')
         for key, value in self._tms_payload.get('xml', {}).items():
-            self.xml.append(getattr(E, key)(value))
+            node = lxml.etree.Element(key)
+            if value is not None:
+                node.text = str(value)
+            self.xml.append(node)
         for container in ['body', 'teaser']:
             if container not in self._tms_payload:
                 continue
-            container = getattr(E, container)()
+            container = lxml.etree.Element(container)
             self.xml.append(container)
             for key, value in self._tms_payload[container.tag].items():
-                container.append(getattr(E, key)(value))
+                node = lxml.etree.Element(key)
+                if value is not None:
+                    node.text = str(value)
+                container.append(node)
 
     def _build_xml_head(self):
         """head items must be handled explicitly, because of their structure
@@ -57,7 +63,7 @@ class Content:
         if not self._tms_payload_head:
             return
 
-        E = lxml.objectify.E
+        E = lxml.builder.E
         head = E.head()
         self.xml.append(head)
 
@@ -96,7 +102,7 @@ class Content:
         if not image:
             return None
 
-        E = lxml.objectify.E
+        E = lxml.builder.E
         # See zeit.content.image.imagegroup.XMLReference
         image = E.image(**{'base-id': image})
         fill_color = self._tms_payload_head.get('teaser_image_fill_color')
@@ -134,7 +140,7 @@ class TMSVideo(Content, zeit.content.video.video.Video):
         if image is None:
             return
         image.tag = 'video_still'
-        self.xml.body.append(image)
+        self.xml.find('body').append(image)
 
 
 @grok.implementer(zeit.cms.content.interfaces.IKPI)

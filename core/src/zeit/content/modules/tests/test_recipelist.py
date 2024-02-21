@@ -1,10 +1,11 @@
 from unittest import mock
 
-import lxml.objectify
+import lxml.builder
+import lxml.etree
 
 from zeit.cms.interfaces import ValidationError
 from zeit.content.modules.interfaces import validate_servings
-from zeit.content.modules.recipelist import Ingredient
+from zeit.content.modules.recipelist import Ingredient, RecipeList
 import zeit.cms.testing
 import zeit.content.modules.embed
 import zeit.content.modules.testing
@@ -18,23 +19,19 @@ class RecipeListTest(
         self.context = mock.Mock()
         self.context.__parent__ = None
         self.module = zeit.content.modules.recipelist.RecipeList(
-            self.context, lxml.objectify.XML('<container/>')
+            self.context, lxml.builder.E.container()
         )
 
     def get_content(self):
-        from lxml import objectify
-
-        from zeit.content.modules.recipelist import RecipeList
-
         class Content:
-            xml = objectify.fromstring('<recipelist/>')
+            xml = lxml.builder.E.recipelist()
             recipe_list = RecipeList(self.context, xml)
 
         return Content().recipe_list
 
     def test_title_should_be_stored_in_xml(self):
         self.module.title = 'banana'
-        self.assertEqual(self.module.xml.xpath('//title'), ['banana'])
+        self.assertEqual(self.module.xml.xpath('//title')[0].text, 'banana')
 
     def test_set_should_add_new_ingredients(self):
         ingredients = self.setup_ingredients('banana', 'milk')
@@ -54,7 +51,7 @@ class RecipeListTest(
         banana = ingredients['banana']
         milk = ingredients['milk']
         self.module.ingredients = [banana, milk]
-        xml = self.module.xml.ingredient
+        xml = self.module.xml.find('ingredient')
         self.assertEqual('banana', xml.get('code'))
         self.assertEqual('2', xml.get('amount'))
         self.assertEqual('g', xml.get('unit'))
@@ -112,14 +109,14 @@ class RecipeListTest(
             validate_servings('1-a')
 
     def test_ingredients_should_receive_properties_from_whitelist(self):
-        node = lxml.objectify.XML('<ingredient code="banana" amount="1" unit="kg"/>')
+        node = lxml.etree.fromstring('<ingredient code="banana" amount="1" unit="kg"/>')
         ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.label == 'Banane'
         assert ingredient.plural == 'Bananen'
 
     def test_missing_xml_attributes_should_have_empty_string_as_default(self):
-        node = lxml.objectify.XML('<ingredient code="banana" amount="1" unit="kg"/>')
+        node = lxml.etree.fromstring('<ingredient code="banana" amount="1" unit="kg"/>')
         ingredient = Ingredient(None, None).from_xml(node)
         assert ingredient.code == 'banana'
         assert ingredient.details == ''  # not provided as xml attribute

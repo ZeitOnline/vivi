@@ -24,12 +24,11 @@ Open editor:
 
 Add ul and let it render:
 
->>> import lxml.objectify
+>>> from lxml.builder import E
 >>> article = getRootFolder()['workingcopy']['zope.user']['Somalia']
->>> for p in article.xml.body.division.getchildren():
-...     article.xml.body.division.remove(p)
->>> article.xml.body.division.append(lxml.objectify.Element('ul'))
->>> article.xml.body.division.ul.li = ['eins', 'zwei']
+>>> for p in article.xml.find('body/division').getchildren():
+...     article.xml.find('body/division').remove(p)
+>>> article.xml.find('body/division').append(E.ul(E.li('eins'), E.li('zwei')))
 >>> article._p_changed = True
 >>> import transaction
 >>> transaction.commit()
@@ -46,10 +45,9 @@ OrderedList
 
 Add ol and let it render:
 
->>> for p in article.xml.body.division.getchildren():
-...     article.xml.body.division.remove(p)
->>> article.xml.body.division.append(lxml.objectify.Element('ol'))
->>> article.xml.body.division.ol.li = ['eins', 'zwei']
+>>> for p in article.xml.find('body/division').getchildren():
+...     article.xml.find('body/division').remove(p)
+>>> article.xml.find('body/division').append(E.ol(E.li('eins'), E.li('zwei')))
 >>> article._p_changed = True
 >>> transaction.commit()
 >>> browser.open('@@contents')
@@ -62,9 +60,9 @@ Add ol and let it render:
 Intertitle
 ----------
 
->>> for p in article.xml.body.division.getchildren():
-...     article.xml.body.division.remove(p)
->>> article.xml.body.division.intertitle = 'A B C'
+>>> for p in article.xml.find('body/division').getchildren():
+...     article.xml.find('body/division').remove(p)
+>>> article.xml.find('body/division').append(E.intertitle('A B C'))
 >>> article._p_changed = True
 >>> transaction.commit()
 >>> browser.open('@@contents')

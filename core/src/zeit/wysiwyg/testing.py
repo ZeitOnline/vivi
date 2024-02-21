@@ -23,7 +23,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 @zope.component.adapter(zeit.cms.testcontenttype.interfaces.IExampleContentType)
 class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
     def get_tree(self):
-        return self.context.xml['body']
+        return self.context.xml.find('body')
 
 
 VIDEO1 = 'http://video.zeit.de/video/1'

@@ -28,7 +28,8 @@ class HeaderAreaTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_for_bw_compat_header_creates_its_xml_node_if_not_present(self):
         article = Article()
-        article.xml.head.remove(article.xml.head.header)
+        head = article.xml.find('head')
+        head.remove(head.find('header'))
         self.assertEqual([], article.header.keys())
         self.assertEqual(1, len(article.xml.xpath('//head/header')))
 

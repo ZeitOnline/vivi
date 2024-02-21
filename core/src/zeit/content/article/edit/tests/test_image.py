@@ -1,18 +1,17 @@
 # coding: utf8
 import contextlib
 
+import lxml.builder
+
+from zeit.content.article.edit.image import Image
+import zeit.cms.interfaces
 import zeit.content.article.testing
 
 
 class ImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_image_can_be_set(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-        import zeit.cms.interfaces
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
-        image = Image(None, tree.image)
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
+        image = Image(None, tree.find('image'))
         image.__name__ = 'myname'
         image.display_mode = 'float'
         image.variant_name = 'square'
@@ -28,19 +27,15 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEllipsis(
             """\
 <image ... src="{image_uid}" ... is_empty="False">
-  <bu xsi:nil="true"/>
+  <bu/>
 </image>
         """.format(image_uid=image_uid),
             zeit.cms.testing.xmltotext(image.xml),
         )
 
     def test_setting_image_to_none_removes_href(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
-        image = Image(None, tree.image)
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
+        image = Image(None, tree.find('image'))
         image.xml.set('src', 'testid')
         image.references = None
         self.assertNotIn('href', image.xml.attrib)
@@ -56,7 +51,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.connector.interfaces
 
         article_xml = """
-        <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+        <article>
             <head/>
             <body>
               <division type="page">
@@ -84,7 +79,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                          """
         )
         self.assertEqual(
-            ['p', 'image', 'p'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image', 'p'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
 
     def test_empty_p_nodes_should_be_removed_on_image_migrate(self):
@@ -95,7 +90,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                """
         )
         self.assertEqual(
-            ['p', 'image'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
 
     def test_image_tail_should_be_preserved_on_migrate(self):
@@ -106,9 +101,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                """
         )
         self.assertEqual(
-            ['p', 'image', 'p'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image', 'p'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
-        self.assertEqual(' a tail', article.xml.body.division.p[1].text)
+        self.assertEqual(' a tail', article.xml.findall('body/division/p')[1].text)
 
     def test_image_should_be_moved_up_to_division_even_when_deeper_nested(self):
         article = self.get_image_article(
@@ -118,7 +113,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                                """
         )
         self.assertEqual(
-            ['p', 'image', 'p'], [el.tag for el in article.xml.body.division.iterchildren()]
+            ['p', 'image', 'p'], [el.tag for el in article.xml.find('body/division').iterchildren()]
         )
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkout(self):
@@ -134,7 +129,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />"""
         )
         self.assertEqual(
-            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.body.division.image.get('src')
+            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.find('body/division/image').get('src')
         )
 
     def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(self):
@@ -165,7 +160,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         )
         article = zeit.cms.checkout.interfaces.ICheckinManager(article).checkin()
         self.assertEqual(
-            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.body.division.image.get('src')
+            'http://xml.zeit.de/2006/ÄÖÜ.JPG', article.xml.find('body/division/image').get('src')
         )
 
     def test_image_referenced_via_IImages_is_copied_to_first_body_block(self):
@@ -250,11 +245,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(None, service['image'])
 
     def test_image_block_retrieves_the_correct_xml_node(self):
-        # The lxml.objectify API offer an insiduous source of bugs: Iterating
-        # over a single element a) is possible and b) yields all siblings with
-        # the same tag. So it has been easy for SingleReferenceProperty to
-        # overlook the fact that when we find a single element via xpath,
-        # that already is the one we want.
+        # XXX Maybe this test should move to zeit.cms.content, because it's about
+        # SingleReferenceProperty and path=='.', not article- or image-specific.
         from zeit.cms.interfaces import ICMSContent
 
         self.repository['article'] = self.get_article()
@@ -297,7 +289,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as article:
-            body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+            body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
             factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'image')
             image = factory()
             image.references = image.references.create(
@@ -366,26 +358,18 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(['large', 'float'], list(source(image)))
 
     def test_display_mode_defaults_to_layout_if_not_set_for_bw_compat(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
-        tree.image.set('layout', 'float-square')
-        image = Image(None, tree.image)
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
+        tree.find('image').set('layout', 'float-square')
+        image = Image(None, tree.find('image'))
         self.assertEqual('float', image.display_mode)
 
         image.xml.set('display_mode', 'large')
         self.assertEqual('large', image.display_mode)
 
     def test_variant_name_defaults_to_layout_if_not_set_for_bw_compat(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.image import Image
-
-        tree = lxml.objectify.E.tree(lxml.objectify.E.image())
-        tree.image.set('layout', 'float-square')
-        image = Image(None, tree.image)
+        tree = lxml.builder.E.tree(lxml.builder.E.image())
+        tree.find('image').set('layout', 'float-square')
+        image = Image(None, tree.find('image'))
         self.assertEqual('square', image.variant_name)
 
         image.xml.set('variant_name', 'original')
@@ -402,7 +386,7 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         import zeit.edit.interfaces
 
         article = zeit.content.article.article.Article()
-        body = zeit.content.article.edit.body.EditableBody(article, article.xml.body)
+        body = zeit.content.article.edit.body.EditableBody(article, article.xml.find('body'))
         factory = zope.component.getAdapter(body, zeit.edit.interfaces.IElementFactory, 'image')
         self.assertEqual('Image', factory.title)
         div = factory()

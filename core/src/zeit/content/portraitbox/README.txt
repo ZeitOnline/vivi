@@ -17,8 +17,7 @@ Let's instanciate a box and verify the xml:
 >>> import zeit.content.portraitbox.portraitbox
 >>> pb = zeit.content.portraitbox.portraitbox.Portraitbox()
 >>> print(zeit.cms.testing.xmltotext(pb.xml))
-<container xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    layout="artbox" label="portrait"/>
+<container layout="artbox" label="portrait"/>
 
 Portraitbox is an asset:
 
@@ -39,14 +38,15 @@ Set data:
 >>> pb.text = '<p><strong>Hans Wurst</strong> wursted hansig.</p>'
 >>> pb.image = repository['2006']['DSC00109_2.JPG']
 >>> print(zeit.cms.testing.xmltotext(pb.xml))
-<container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
+<container layout="artbox" label="portrait">
   <block>
     <title...>Hans Wurst</title>
     <text>
-      <p><strong>Hans Wurst</strong> wursted hansig.</p>
+      <p>
+      <strong>Hans Wurst</strong> wursted hansig.</p>
     </text>
     <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-      <bu xsi:nil="true"/>
+      <bu/>
     </image>
   </block>
 </container>
@@ -87,9 +87,9 @@ content:
 >>> repository['pb'] = pb
 >>> pb_ref.portraitbox = pb
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<testtype>
   <head>
-    <attribute py:pytype="str" ns="http://namespaces.zeit.de/CMS/document"
+    <attribute ns="http://namespaces.zeit.de/CMS/document"
         name="artbox_portrait">http://xml.zeit.de/pb</attribute>
   </head>
   <body/>

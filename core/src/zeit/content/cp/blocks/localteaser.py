@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import zope.interface
 import zope.security.checker
 
@@ -122,7 +122,7 @@ class TeaserReference(zeit.cms.content.reference.Reference):
 @grok.adapter(zeit.cms.interfaces.ICMSContent, name='teaser')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def teaser_reference(context):
-    reference = lxml.objectify.E.reference()
+    reference = lxml.builder.E.reference()
     reference.set('uniqueId', context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(reference, suppress_errors=True)

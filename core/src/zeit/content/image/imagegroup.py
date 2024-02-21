@@ -7,7 +7,7 @@ import sys
 import urllib.parse
 
 import grokcore.component as grok
-import lxml.objectify
+import lxml.builder
 import persistent
 import PIL.ImageColor
 import z3c.traverser.interfaces
@@ -461,7 +461,7 @@ class LocalSublocations(grok.Adapter):
 @grok.adapter(zeit.content.image.interfaces.IImageGroup, name='image')
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    image = lxml.objectify.E.image()
+    image = lxml.builder.E.image()
     image.set('base-id', context.uniqueId)
 
     type = ''

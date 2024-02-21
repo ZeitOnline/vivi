@@ -50,7 +50,7 @@ Entries with text
 
 If an entry already has text, the widget is displayed:
 
->>> import lxml.objectify
+>>> import lxml.etree
 >>> import transaction
 >>> import zeit.cms.testing
 >>> import zope.event
@@ -58,7 +58,7 @@ If an entry already has text, the widget is displayed:
 >>> zeit.cms.testing.set_site()
 >>> workingcopy = getRootFolder()['workingcopy']['zope.user']
 >>> image = workingcopy['island']['01.jpg']
->>> image.text = lxml.objectify.XML('<text><p>foo</p></text>')
+>>> image.text = lxml.etree.fromstring('<text><p>foo</p></text>')
 >>> # galleries are old and don't have xmlsupport.Persistent :-(
 >>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(image))
 >>> transaction.commit()

@@ -141,16 +141,13 @@ Old cpextra blocks are migrated upon checkout.
 
 Add a centerpage with old xml to the repository:
 
->>> import lxml.objectify
+>>> import lxml.etree
 >>> import zeit.cms.repository.interfaces
 >>> cp = zeit.content.cp.centerpage.CenterPage()
->>> cp.xml = lxml.objectify.fromstring("""\
+>>> cp.xml = lxml.etree.fromstring("""\
 ... <centerpage
 ...   xmlns:cp="http://namespaces.zeit.de/CMS/cp"
-...   xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-...   xmlns:xi="http://www.w3.org/2001/XInclude"
-...   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-...   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   xmlns:xi="http://www.w3.org/2001/XInclude">
 ...   <head/>
 ...   <body>
 ...     <cluster area="feature">

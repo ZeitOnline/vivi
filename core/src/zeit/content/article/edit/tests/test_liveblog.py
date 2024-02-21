@@ -1,5 +1,8 @@
+import lxml.builder
+
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import ISemanticChange
+from zeit.content.article.edit.liveblog import Liveblog
 import zeit.content.article.testing
 import zeit.edit.interfaces
 
@@ -26,11 +29,7 @@ class LSCDefaultTest(zeit.content.article.testing.FunctionalTestCase):
 
 class LiveblogTest(zeit.content.article.testing.FunctionalTestCase):
     def get_liveblog(self):
-        import lxml.objectify
-
-        from zeit.content.article.edit.liveblog import Liveblog
-
-        liveblog = Liveblog(None, lxml.objectify.E.liveblog())
+        liveblog = Liveblog(None, lxml.builder.E.liveblog())
         return liveblog
 
     def test_liveblog_should_be_set(self):

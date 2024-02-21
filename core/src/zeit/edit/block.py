@@ -1,17 +1,17 @@
 import urllib.parse
 
-import gocept.lxml.interfaces
 import grokcore.component as grok
-import lxml.objectify
+import lxml.etree
 import zope.component
 import zope.interface
 import zope.traversing.api
 
 import zeit.cms.content.xmlsupport
+import zeit.cms.interfaces
 import zeit.edit.interfaces
 
 
-@zope.component.adapter(zeit.edit.interfaces.IContainer, gocept.lxml.interfaces.IObjectified)
+@zope.component.adapter(zeit.edit.interfaces.IContainer, zeit.cms.interfaces.IXMLElement)
 @zope.interface.implementer(zeit.edit.interfaces.IElement)
 class Element(zope.container.contained.Contained, zeit.cms.content.xmlsupport.Persistent):
     """Base class for blocks."""
@@ -159,7 +159,7 @@ class TypeOnAttributeElementFactory(ElementFactory):
     tag_name = 'container'
 
     def get_xml(self):
-        container = getattr(lxml.objectify.E, self.tag_name)()
+        container = lxml.etree.Element(self.tag_name)
         container.set('{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
         container.set('module', self.module)  # XXX Why? Who needs this?
         return container

@@ -1,13 +1,13 @@
-import gocept.lxml.interfaces
 import grokcore.component as grok
+import lxml.builder
 import lxml.etree
-import lxml.objectify
 import zope.app.appsetup.appsetup
 import zope.schema.interfaces
 import zope.security.proxy
 
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.article.edit.header import HEADER_NAME
+import zeit.cms.interfaces
 import zeit.content.article.edit.container
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -21,7 +21,7 @@ BODY_NAME = 'editable-body'
 @grok.implementer(zeit.content.article.edit.interfaces.IEditableBody)
 class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.MultiAdapter):
     grok.provides(zeit.content.article.edit.interfaces.IEditableBody)
-    grok.adapts(zeit.content.article.interfaces.IArticle, gocept.lxml.interfaces.IObjectified)
+    grok.adapts(zeit.content.article.interfaces.IArticle, zeit.cms.interfaces.IXMLElement)
 
     __name__ = BODY_NAME
 
@@ -64,7 +64,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
         if zeit.content.article.edit.interfaces.IDivision.providedBy(item):
             node = self.xml
         else:
-            node = self.xml.division[:][-1]
+            node = self.xml.findall('division')[-1]
 
         node.append(zope.proxy.removeAllProxies(item.xml))
 
@@ -92,7 +92,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
             element = self._get_element_for_node(node)
             if element:
                 if i % 7 == 0:
-                    division = lxml.objectify.E.division(type='page')
+                    division = lxml.builder.E.division(type='page')
                     self.xml.append(division)
                 i += 1
                 division.append(node)
@@ -100,7 +100,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
         # division, still create one. This method *ensures* a division exists
         # after it was called
         if division is None:
-            self.xml.append(lxml.objectify.E.division(type='page'))
+            self.xml.append(lxml.builder.E.division(type='page'))
         assert self.xml.find('division') is not None
 
 
@@ -108,7 +108,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
 @grok.implementer(zeit.content.article.edit.interfaces.IEditableBody)
 def get_editable_body(article):
     return zope.component.queryMultiAdapter(
-        (article, zope.security.proxy.removeSecurityProxy(article.xml['body'])),
+        (article, zope.security.proxy.removeSecurityProxy(article.xml.find('body'))),
         zeit.content.article.edit.interfaces.IEditableBody,
     )
 
