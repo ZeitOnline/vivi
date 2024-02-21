@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.113.0 (2024-02-21)
+--------------------
+
+- ZO-4627: Replace lxml.objectify with plain lxml.etree usage
+
+
 5.112.0 (2024-02-21)
 --------------------
 
