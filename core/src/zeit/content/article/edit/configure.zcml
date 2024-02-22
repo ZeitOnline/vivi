@@ -327,17 +327,6 @@
       />
   </class>
 
-  <class class=".podcast.Podcast">
-    <require
-      interface=".interfaces.IPodcast"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IPodcast"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <class class=".adplace.Adplace">
     <require
       interface=".interfaces.IAdplace"

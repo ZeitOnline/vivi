@@ -1,4 +1,0 @@
-<div class="block-item"
-     tal:condition="context/episode_id">
-  ID: <span tal:content="context/episode_id">Id</span>
-</div>

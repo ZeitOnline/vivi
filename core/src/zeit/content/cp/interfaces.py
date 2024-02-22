@@ -734,12 +734,6 @@ class IJobTickerBlock(zeit.content.modules.interfaces.IJobTicker, IBlock):
     feed = zope.schema.Choice(title=_('Jobbox Ticker'), required=True, source=JOBTICKER_SOURCE)
 
 
-class IPodcastBlock(IBlock, zeit.content.modules.interfaces.PodcastBase):
-    """The Podcast block with a reference to a podcast."""
-
-    pass
-
-
 class IMailBlock(zeit.content.modules.interfaces.IMail, IBlock):
     pass
 
