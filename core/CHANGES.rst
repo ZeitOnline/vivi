@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.114.0 (2024-02-23)
+--------------------
+
+- ZO-4651: remove podcast block and header (everything podigee related)
+
+
 5.113.0 (2024-02-21)
 --------------------
 
