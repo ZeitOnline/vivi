@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.115.0 (2024-02-26)
+--------------------
+
+- ZO-4712: Add xmlrpc user for content-storage-api
+
+
 5.114.0 (2024-02-23)
 --------------------
 
