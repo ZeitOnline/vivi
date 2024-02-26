@@ -94,7 +94,6 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         d.addCallbacks(
             MochiKit.Base.bind(self.replace_content, self),
             function(error) {
-                logError(error.req.status, error.req.statusText);
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(
                     error.req.responseText, "text/xml");
