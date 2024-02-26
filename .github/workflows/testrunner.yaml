@@ -34,7 +34,7 @@ jobs:
                 branch="main"
             else
                 branch=$(echo -e "${{github.event.pull_request.body}}" | \
-                    sed -ne '/JENKINS_BATOU_BRANCH=/s/JENKINS_BATOU_BRANCH=//p' | \
+                    sed -ne '/DEPLOYMENT_BRANCH=/s/DEPLOYMENT_BRANCH=//p' | \
                     tr --delete ' \r\n')
                 if [[ -z "$branch" ]]; then
                     branch=main
