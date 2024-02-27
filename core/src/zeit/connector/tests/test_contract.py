@@ -275,11 +275,10 @@ class ContractLock:
 
     def test_unlock_uses_locktoken_stored_in_connector(self):
         id = self.add_resource('foo').id
-        lock = self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
         transaction.commit()
-        unlock = self.connector.unlock(id)
+        self.connector.unlock(id)
         self.assertEqual((None, None, False), self.connector.locked(id))
-        self.assertEqual(unlock, lock)
 
 
 class ContractSearch:

@@ -404,7 +404,6 @@ class Connector:
             self.get_connection().unlock(url, locktoken)
         if invalidate:
             self._invalidate_cache(id)
-        return locktoken
 
     def locked(self, id):
         id = self._get_cannonical_id(id)

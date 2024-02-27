@@ -235,7 +235,6 @@ class Connector(zeit.connector.filesystem.Connector):
     def unlock(self, id, locktoken=None):
         id = self._get_cannonical_id(id)
         del self._locked[id]
-        return locktoken
 
     def locked(self, id):
         id = self._get_cannonical_id(id)
