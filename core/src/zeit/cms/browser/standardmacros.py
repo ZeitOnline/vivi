@@ -1,4 +1,5 @@
 import importlib.metadata
+import json
 
 import zope.app.appsetup.product
 import zope.app.basicskin.standardmacros
@@ -6,6 +7,7 @@ import zope.component
 import zope.location.interfaces
 import zope.security.proxy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.resources
@@ -68,3 +70,7 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
             return importlib.metadata.version('vivi.core')
         except Exception:
             return 'version not found'
+
+    @property
+    def toggles_as_json(self):
+        return json.dumps(FEATURE_TOGGLES.factory._values())

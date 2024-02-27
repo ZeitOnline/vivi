@@ -481,6 +481,15 @@ class FeatureToggleSource(ShortCachedXMLBase, XMLSource):
     def _overrides(self):
         return {}
 
+    def getValues(self, context):
+        return [k for k, v in self._values().items() if v]
+
+    def _values(self):
+        tree = self._get_tree()
+        result = {node.tag: bool(node) for node in tree.xpath('//*') if not node.getchildren()}
+        result.update(self._overrides())
+        return result
+
 
 FEATURE_TOGGLES = FeatureToggleSource()(None)
 

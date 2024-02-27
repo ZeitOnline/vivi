@@ -37,6 +37,7 @@
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
           var context_url = '${context/@@absolute_url}';
+          var feature_toggles = ${context/@@standard_macros/toggles_as_json};
         "/>
         <tal:comment condition="nothing">
           Make sure that application_url and context_url are available
