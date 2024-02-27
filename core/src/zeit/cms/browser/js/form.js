@@ -94,7 +94,9 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         d.addCallbacks(
             MochiKit.Base.bind(self.replace_content, self),
             function(error) {
-                alert('Ein Systemfehler ist aufgetreten: ' + error.req.responseText);
+                if (window.feature_toggles.inlineform_alert_error) {
+                    alert('Ein Systemfehler ist aufgetreten: ' + error.req.responseText);
+                }
             });
         d.addCallback(MochiKit.Base.bind(self.process_post_result, self));
         d.addCallback(function(result) {

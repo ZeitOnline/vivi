@@ -5,6 +5,7 @@
   <author_lookup_in_hdok>true</author_lookup_in_hdok>
   <content_caching>true</content_caching>
   <embed_cmp_thirdparty>true</embed_cmp_thirdparty>
+  <inlineform_alert_error>true</inlineform_alert_error>
   <breakingnews_with_channel>true</breakingnews_with_channel>
   <push_new_articles_ua_author_tag>true</push_new_articles_ua_author_tag>
   <reference_index>true</reference_index>
