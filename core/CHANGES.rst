@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.117.0 (2024-02-27)
+--------------------
+
+FIX:
+- Handle empty lines etc correctly, e.g. in markdown fields
+
+
 5.116.0 (2024-02-27)
 --------------------
 
