@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.116.0 (2024-02-27)
+--------------------
+
+- ZO-4801: Fix saving audio reference on article
+
+- ZO-4801: Display request errors that occur in JS forms (toggle: `inlineform_alert_error`)
+
+
 5.115.0 (2024-02-26)
 --------------------
 
