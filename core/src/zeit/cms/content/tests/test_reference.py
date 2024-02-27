@@ -223,6 +223,19 @@ class SingleReferencePropertyTest(SingleReferenceFixture, zeit.cms.testing.ZeitC
         content.references = content.references.create(target)
         self.assertEqual('http://xml.zeit.de/target', content.references.target.uniqueId)
 
+    def test_works_with_security_on_adapter(self):
+        target = zope.security.proxy.ProxyFactory(self.repository['target'])
+        with checked_out(self.repository['content']) as co:
+            content = zope.security.proxy.ProxyFactory(co)
+            # The IRelatedContent adapter is registered with trusted=true,
+            # but it's unclear whether this is the general contract for these:
+            # ReferenceProperty already does use removeSecurityProxy, and there
+            # also currently are some adapters that do not use trusted (e.g.
+            # z.c.audio). So we probably ought to support this case.
+            related = zeit.cms.related.related.RelatedContent(content)
+            related.related = (target,)
+            self.assertEqual('http://xml.zeit.de/target', related.related[0].uniqueId)
+
 
 class MultiResourceTest(ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):

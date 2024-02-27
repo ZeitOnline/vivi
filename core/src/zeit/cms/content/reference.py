@@ -124,7 +124,7 @@ class ReferenceProperty:
         else:
             for node in self._reference_nodes(instance):
                 node.getparent().remove(node)
-            parent, name = create_parent_nodes(self.path, instance.xml)
+            parent, name = create_parent_nodes(self.path, xml)
             for node in value:
                 node.tag = name
                 parent.append(node)
