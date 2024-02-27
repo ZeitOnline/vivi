@@ -66,7 +66,6 @@ class IConnector(zope.interface.Interface):
     """Connects the cms to the backend.
 
     This utility interfaces the CMSConnector provided by Thomas, Ralf, etc.
-
     """
 
     def listCollection(id):
@@ -92,21 +91,18 @@ class IConnector(zope.interface.Interface):
         returns an IResource instance.
 
         raises KeyError if the resource could not be found.
-
         """
 
     def __delitem__(id):
         """Remove the resource from the repository.
 
         raises KeyError if the resource could not be found.
-
         """
 
     def __setitem__(id, object):
         """Add the given `object` to the document store under the given name.
 
         The object must be adaptable to IResource.
-
         """
 
     def __contains__(id):
@@ -124,7 +120,6 @@ class IConnector(zope.interface.Interface):
         Raises PreconditionFailedError if verify_etag is True and the etags do
         not match or the resource's lock state is different from the expected
         state.
-
         """
 
     def copy(old_id, new_id):
@@ -132,7 +127,6 @@ class IConnector(zope.interface.Interface):
 
         raises KeyError if ther is no resource `old_id`
         raises CopyError if there was a problem with copying itself.
-
         """
 
     def move(old_id, new_id):
@@ -140,7 +134,6 @@ class IConnector(zope.interface.Interface):
 
         raises KeyError if ther is no resource `old_id`
         raises MoveError if there was a problem with moving itself.
-
         """
 
     def changeProperties(id, properties):
@@ -148,7 +141,6 @@ class IConnector(zope.interface.Interface):
 
         id: unique id
         properties: see IWebDAVProperties.properties
-
         """
 
     def lock(id, principal, until):
@@ -158,7 +150,6 @@ class IConnector(zope.interface.Interface):
         until: datetime until the lock is valid.
 
         returns locktoken.
-
         """
 
     def unlock(id, locktoken=None):
@@ -167,7 +158,6 @@ class IConnector(zope.interface.Interface):
         Use `locktoken` if given. Otherwise use stored locktoken.
 
         returns used locktoken.
-
         """
 
     def locked(id):
@@ -181,7 +171,6 @@ class IConnector(zope.interface.Interface):
 
         returns None, None, None if the resource is not locked.
         raises KeyError if the resource does not exist.
-
         """
 
     def search(attributes, search_expression):
@@ -191,7 +180,6 @@ class IConnector(zope.interface.Interface):
         of the requested `attributes`:
 
             (unique_id, attributes[0], attributes[1], ...)
-
         """
 
 
@@ -214,7 +202,6 @@ class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
 
     value can be the special value of DeleteProperty to indicate the property
     should be removed.
-
     """
 
 
@@ -273,7 +260,6 @@ class IResourceCache(zope.interface.Interface):
 
         The cache will be automatically invalidated if the etag of the resouce
         changes.
-
         """
 
     def sweep():
@@ -290,7 +276,6 @@ class ICache(
 
         If ``include_deleted`` is True entries marked as deleted are also
         returned.
-
         """
 
     def remove(key):
@@ -298,7 +283,6 @@ class ICache(
 
         __delitem__ marks an entry as deleted so the cache behaves as if it was
         deleted. ``remove`` really removes the entry.
-
         """
 
 
