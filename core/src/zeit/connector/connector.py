@@ -397,7 +397,7 @@ class Connector:
 
     def unlock(self, id):
         self._invalidate_cache(id)
-        locktoken = self._get_dav_lock(id).get('locktoken')
+        locktoken = self._get_my_locktoken(id)
         if locktoken:
             self._unlock(id, locktoken)
             self._invalidate_cache(id)

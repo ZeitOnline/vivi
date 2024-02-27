@@ -6,7 +6,7 @@ import transaction
 import zope.interface.verify
 
 from zeit.connector.dav.interfaces import DAVNotFoundError
-from zeit.connector.interfaces import CopyError, DeleteProperty, MoveError
+from zeit.connector.interfaces import CopyError, DeleteProperty, LockedByOtherSystemError, MoveError
 from zeit.connector.resource import Resource
 from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.interfaces
@@ -273,11 +273,21 @@ class ContractLock:
         self.assertEqual('zope.user', user)
         self.assertTrue(isinstance(until, datetime))
 
-    def test_unlock_uses_locktoken_stored_in_connector(self):
+    def test_unlock_removes_lock(self):
         id = self.add_resource('foo').id
         self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
         transaction.commit()
         self.connector.unlock(id)
+        self.assertEqual((None, None, False), self.connector.locked(id))
+
+    def test_unlock_for_unknown_user_raises(self):
+        id = self.add_resource('foo').id
+        token = self.connector.lock(id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertRaises(LockedByOtherSystemError):
+            self.connector.unlock(id)
+        self.connector._unlock(id, token)
+        self.connector.invalidate_cache(id)
         self.assertEqual((None, None, False), self.connector.locked(id))
 
 
@@ -353,6 +363,11 @@ class ContractMock(
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
     # nyi copy_inherited_functions(ContractSearch, locals())
+
+    def test_unlock_for_unknown_user_raises(self):
+        """Not worth implementing for mock; no client (i.e. test in vivi) needs
+        this behaviour.
+        """
 
 
 class ContractSQL(
