@@ -112,7 +112,7 @@ class Structure(ObjectPathProperty):
         if node is None:
             return self.field.missing_value if self.field else None
         node = lxml.etree.fromstring(str(self.remove_namespaces(node)))
-        result = [xml.sax.saxutils.escape(node.text)]
+        result = [xml.sax.saxutils.escape(node.text or '')]
         for child in node.iterchildren():
             result.append(lxml.etree.tostring(child, encoding=str))
         return ''.join(result)
