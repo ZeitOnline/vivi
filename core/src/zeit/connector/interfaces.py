@@ -152,11 +152,11 @@ class IConnector(zope.interface.Interface):
         returns locktoken.
         """
 
-    def unlock(id, locktoken=None):
-        """Unlock resource using the stored locktoken.
+    def unlock(id):
+        """Unlock resource using the stored locktoken."""
 
-        Use `locktoken` if given. Otherwise use stored locktoken.
-        """
+    def _unlock(id, locktoken):
+        """Unlock resource using the given locktoken. For tests."""
 
     def locked(id):
         """Return whether a resource is locked or not.

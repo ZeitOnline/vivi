@@ -70,8 +70,7 @@ We unlock the resource under the hood and of course expect that we can add it:
 >>> parent = 'http://xml.zeit.de/testing'
 >>> token = connector.lock(res.id, 'zope.user', until=None)
 >>> ignore = connector[res.id]  # fill cache again
->>> url = connector._id2loc(res.id)
->>> dummy = connector.get_connection().unlock(url, token)
+>>> connector._unlock(res.id, token)
 opaquelocktoken:...
 >>> connector.add(res)
 opaquelocktoken:...
@@ -85,8 +84,7 @@ Edge case 1.1: With existing resource:
 opaquelocktoken:...
 >>> token = connector.lock(res.id, 'zope.user', until=None)
 >>> ignore = connector[res.id]  # fill cache again
->>> url = connector._id2loc(res.id)
->>> dummy = connector.get_connection().unlock(url, token)
+>>> dummy = connector._unlock(res.id, token)
 opaquelocktoken:...
 >>> connector.add(res)
 opaquelocktoken:...
@@ -100,8 +98,7 @@ Edge case 1.2: Unlocking:
 opaquelocktoken:...
 >>> token = connector.lock(res.id, 'zope.user', until=None)
 >>> ignore = connector[res.id]  # fill cache again
->>> url = connector._id2loc(res.id)
->>> dummy = connector.get_connection().unlock(url, token)
+>>> dummy = connector._unlock(res.id, token)
 opaquelocktoken:...
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
@@ -120,7 +117,7 @@ Lock the resoruce under the hood; we get a useful error:
 Traceback (most recent call last):
     ...
 zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
->>> connector.unlock(res.id, token)
+>>> connector._unlock(res.id, token)
 opaquelocktoken:...
 
 Edge case 2.1: With existing resource:
@@ -136,7 +133,7 @@ opaquelocktoken:...
 Traceback (most recent call last):
     ...
 zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
->>> connector.unlock(res.id, token)
+>>> connector._unlock(res.id, token)
 opaquelocktoken:...
 >>> del connector[res.id]
 
@@ -153,7 +150,7 @@ opaquelocktoken:...
 Traceback (most recent call last):
     ...
 LockingError: http://xml.zeit.de/testing.../edge2.2 is already locked.
->>> connector.unlock(res.id, token)
+>>> connector._unlock(res.id, token)
 opaquelocktoken:...
 >>> del connector[res.id]
 
@@ -173,7 +170,7 @@ zeit.connector.dav.interfaces.DAVLockedError: (423, 'Locked',
     'http://.../cms/testing.../edge2.3',
     '<!DOCTYPE...
 
->>> connector.unlock(res.id, token)
+>>> connector._unlock(res.id, token)
 opaquelocktoken:...
 >>> del connector[res.id]
 
@@ -342,7 +339,7 @@ opaquelocktoken:...
 Traceback (most recent call last):
     ...
 LockedByOtherSystemError: ('external', datetime.datetime(...))
->>> token = connector.unlock(res.id, token)
+>>> connector._unlock(res.id, token)
 opaquelocktoken:...
 >>> del connector[res.id]
 

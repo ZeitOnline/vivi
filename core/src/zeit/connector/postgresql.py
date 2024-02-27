@@ -278,7 +278,10 @@ class Connector:
     def lock(self, uniqueid, principal, until):
         pass
 
-    def unlock(self, uniqueid, locktoken=None):
+    def unlock(self, uniqueid):
+        pass
+
+    def _unlock(self, uniqueid, locktocken):
         pass
 
     def locked(self, uniqueid):

@@ -395,15 +395,16 @@ class Connector:
         self._invalidate_cache(id)
         return token
 
-    def unlock(self, id, locktoken=None, invalidate=True):
-        if invalidate:
-            self._invalidate_cache(id)
-        url = self._id2loc(self._get_cannonical_id(id))
-        locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
+    def unlock(self, id):
+        self._invalidate_cache(id)
+        locktoken = self._get_dav_lock(id).get('locktoken')
         if locktoken:
-            self.get_connection().unlock(url, locktoken)
-        if invalidate:
+            self._unlock(id, locktoken)
             self._invalidate_cache(id)
+
+    def _unlock(self, id, locktoken):
+        url = self._id2loc(self._get_cannonical_id(id))
+        self.get_connection().unlock(url, locktoken)
 
     def locked(self, id):
         id = self._get_cannonical_id(id)
@@ -567,9 +568,8 @@ class Connector:
             self.changeProperties(id, properties, locktoken=locktoken)
         finally:
             if autolock and locktoken:  # This was _our_ lock. Cleanup:
-                self.unlock(id, locktoken=locktoken)
-            else:
-                self._invalidate_cache(id)
+                self._unlock(id, locktoken)
+            self._invalidate_cache(id)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended if needed.
