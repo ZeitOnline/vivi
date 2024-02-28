@@ -120,15 +120,16 @@ class Connector(zeit.connector.filesystem.Connector):
         if id in self._deleted:
             self._deleted.remove(id)
 
+        properties = dict(resource.properties)
         if not self._ignore_uuid_checks:
             existing_uuid = id in self and self[id].properties.get(UUID_PROPERTY)
-            new_uuid = resource.properties.get(UUID_PROPERTY)
+            new_uuid = properties.get(UUID_PROPERTY)
             if not new_uuid:
                 if existing_uuid:
                     new_uuid = existing_uuid
                 else:
                     new_uuid = '{urn:uuid:%s}' % uuid.uuid4()
-                resource.properties[UUID_PROPERTY] = new_uuid
+                properties[UUID_PROPERTY] = new_uuid
             else:
                 if existing_uuid and existing_uuid != new_uuid:
                     raise http.client.HTTPException(409, 'Conflict')
@@ -137,7 +138,7 @@ class Connector(zeit.connector.filesystem.Connector):
                 if key == self._get_cannonical_id(resource.id):
                     continue
                 existing_uuid = self._properties[key].get(UUID_PROPERTY)
-                if existing_uuid and existing_uuid == resource.properties[UUID_PROPERTY]:
+                if existing_uuid and existing_uuid == properties[UUID_PROPERTY]:
                     raise http.client.HTTPException(409, 'Conflict')
 
         # Just a very basic in-memory data storage for testing purposes.
@@ -147,19 +148,19 @@ class Connector(zeit.connector.filesystem.Connector):
         path = self._path(id)
         self._paths.setdefault(os.path.dirname(path), set()).add(os.path.basename(path))
 
-        resource.properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
+        properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
         if resource.contentType == 'httpd/unix-directory':
             # XXX kludgy. We need to be able to differentiate directories,
             # so they get a trailing slash in their CanonicalId, but also
             # don't want to store random content types, so the filemagic
             # detetection e.g. for images takes over on the next read.
-            resource.properties[('getcontenttype', 'DAV:')] = resource.contentType
-        resource.properties[('getlastmodified', 'DAV:')] = str(
+            properties[('getcontenttype', 'DAV:')] = resource.contentType
+        properties[('getlastmodified', 'DAV:')] = str(
             datetime.datetime.now(pytz.UTC).strftime('%a, %d %b %Y %H:%M:%S GMT')
         )
-        resource.properties[('getetag', 'DAV:')] = repr(time.time()) + repr(random.random())
+        properties[('getetag', 'DAV:')] = repr(time.time()) + repr(random.random())
 
-        self._set_properties(id, resource.properties)
+        self._set_properties(id, properties)
 
         zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
