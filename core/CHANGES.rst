@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.118.0 (2024-02-28)
+--------------------
+
+- ZO-4783: Don't change properties when adding a resource in mock connector, just like DAV connector
+
+
 5.117.0 (2024-02-27)
 --------------------
 
