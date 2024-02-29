@@ -5,7 +5,6 @@ from typing import Optional
 from opentelemetry.sdk.metrics._internal.aggregation import (
     AggregationTemporality,
     _DataPointVarT,
-    _ExplicitBucketHistogramAggregation,
 )
 from opentelemetry.sdk.metrics._internal.point import HistogramDataPoint
 
@@ -95,6 +94,3 @@ def collect(
     )
     self._previous_point = current_point
     return current_point
-
-
-_ExplicitBucketHistogramAggregation.collect = collect
