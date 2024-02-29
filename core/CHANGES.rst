@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.120.0 (2024-02-29)
+--------------------
+
+- ZO-4627: Fix edge cases discovered via bugsnag
+
+
+MAINT:
+- Remove opentelemetry metrics workaround, has been fixed in 1.23
+
+
 5.119.0 (2024-02-29)
 --------------------
 
