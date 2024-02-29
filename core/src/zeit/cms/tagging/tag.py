@@ -56,7 +56,7 @@ class Tag:
     SEPARATOR = '☃'
 
     def __init__(self, label, entity_type, link=None):
-        self.label = label
+        self.label = label or ''
         self.entity_type = entity_type
         self.pinned = False  # pinned state is set from outside after init
         self.__name__ = self.code  # needed to fulfill `ICMSContent`
