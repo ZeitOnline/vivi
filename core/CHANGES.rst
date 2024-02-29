@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.119.0 (2024-02-29)
+--------------------
+
+- ZO-4783: Require properties as strings in mock connector, like DAV
+
+
 5.118.0 (2024-02-28)
 --------------------
 
