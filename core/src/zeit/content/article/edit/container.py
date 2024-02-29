@@ -9,7 +9,7 @@ class TypeOnTagContainer(zeit.edit.container.Base):
     )
 
     def _get_element_type(self, xml_node):
-        return xml_node.tag
+        return xml_node.tag or '__invalid__'
 
     def _set_default_key(self, xml_node):
         key = xml_node.get('{http://namespaces.zeit.de/CMS/cp}__name__')

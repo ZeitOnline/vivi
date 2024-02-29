@@ -90,7 +90,7 @@ class EditableBody(zeit.content.article.edit.container.TypeOnTagContainer, grok.
         division = None
         for node in self.xml.getchildren():
             element = self._get_element_for_node(node)
-            if element:
+            if element is not None:
                 if i % 7 == 0:
                     division = lxml.builder.E.division(type='page')
                     self.xml.append(division)
