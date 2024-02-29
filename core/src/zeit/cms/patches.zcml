@@ -27,12 +27,6 @@
     replacement=".requests.request_with_timeout" />
 
   <monkey:patch
-    description="Workaround for https://github.com/open-telemetry/opentelemetry-python/issues/3407"
-    class="opentelemetry.sdk.metrics._internal.aggregation._ExplicitBucketHistogramAggregation"
-    original="collect"
-    replacement=".otel_patch.collect" />
-
-  <monkey:patch
     description="Remove ZoneInfo.no_cache complication which does not work with zodbpickle"
     class="pendulum.Timezone"
     original="__reduce__"
