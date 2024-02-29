@@ -304,9 +304,12 @@ class Connector(zeit.connector.filesystem.Connector):
                 'getcontenttype',
             ):
                 continue
-            stored_properties[(name, namespace)] = value
             if value is zeit.connector.interfaces.DeleteProperty:
-                del stored_properties[(name, namespace)]
+                stored_properties.pop((name, namespace), None)
+            elif not isinstance(value, str):  # XXX mimic DAV behaviour
+                raise ValueError('Expected str, got %s: %r' % (type(value), value))
+            else:
+                stored_properties[(name, namespace)] = value
         self._properties[id] = stored_properties
 
 
