@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.121.0 (2024-03-04)
+--------------------
+
+- ZO-4867: Update topicpage whitelist to use etree instead of objectify API
+
+
 5.120.0 (2024-02-29)
 --------------------
 
