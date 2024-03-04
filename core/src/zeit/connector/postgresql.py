@@ -475,12 +475,19 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
     def start_span(self, *args, **kw):
         return zeit.cms.tracing.start_span(__name__ + '.tracing', *args, **kw)
 
+    def _write(self, buffer, params):
+        for k, v in params.items():
+            buffer.write('%s=%r\n' % (k, str(v)[:100]))
+
     def _before_cur_exec(self, conn, cursor, statement, params, context, executemany):
         statement, params = super()._before_cur_exec(
             conn, cursor, statement, params, context, executemany
         )
         p = StringIO()
-        for k, v in params.items():
-            p.write('%s=%r\n' % (k, str(v)[:100]))
+        if isinstance(params, (list, tuple)):
+            for param in params:
+                self._write(p, param)
+        elif isinstance(params, dict):
+            self._write(p, params)
         context._otel_span.set_attribute('db.parameters', p.getvalue())
         return statement, params
