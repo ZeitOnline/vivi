@@ -178,25 +178,12 @@ class ContractCopyMove:
         self.assertEqual('bar', res.properties[('foo', self.NS)])
         self.assertEqual(b'mybody', res.data.read())
 
-    def test_move_to_existing_resource_overwrites(self):
-        self.add_resource('source', properties={('foo', self.NS): 'bar'})
-        self.add_resource('target')
-        self.connector.move(
-            'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
-        )
-        transaction.commit()
-        self.assertEqual(
-            ['target'], [x[0] for x in self.listCollection('http://xml.zeit.de/testing')]
-        )
-        res = self.connector['http://xml.zeit.de/testing/target']
-        self.assertEqual('bar', res.properties[('foo', self.NS)])
-
-    def test_move_to_existing_differring_resource_raises(self):
+    def test_move_to_existing_resource_raises(self):
         # Note that this currently cannot "really" occur, because
         # zeit.cms.repository.copypastemove uses INameChooser so the new name
         # is guaranteed to be unique.
-        self.add_resource('source', body=b'one')
-        self.add_resource('target', body=b'two')
+        self.add_resource('source')
+        self.add_resource('target')
         with self.assertRaises(MoveError):
             self.connector.move(
                 'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'

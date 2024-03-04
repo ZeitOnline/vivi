@@ -281,30 +281,20 @@ class Connector:
 
     def move(self, old_id, new_id):
         """Move the resource with id `old_id` to `new_id`."""
-        self._copy_or_move(
-            'move', zeit.connector.interfaces.MoveError, old_id, new_id, resolve_conflicts=True
-        )
+        self._copy_or_move('move', zeit.connector.interfaces.MoveError, old_id, new_id)
 
-    def _copy_or_move(self, method_name, exception, old_id, new_id, resolve_conflicts=False):
+    def _copy_or_move(self, method_name, exception, old_id, new_id):
         source = self[old_id]  # Makes sure source exists.
         if self._is_descendant(new_id, old_id):
             raise exception(old_id, 'Could not copy or move %s to a decendant of itself.' % old_id)
 
         logger.debug('copy: %s to %s' % (old_id, new_id))
         if self._get_cannonical_id(new_id) in self:
-            target = self[new_id]
-            # The target already exists. It's possible that there was a
-            # conflict. For non-directories verify body.
-            if not (
-                resolve_conflicts
-                and 'httpd/unix-directory' not in (source.contentType, target.contentType)
-                and source.data.read() == self[new_id].data.read()
-            ):
-                raise exception(
-                    old_id,
-                    'Could not copy or move %s to %s, '
-                    'because target alread exists.' % (old_id, new_id),
-                )
+            raise exception(
+                old_id,
+                'Could not copy or move %s to %s, '
+                'because target already exists.' % (old_id, new_id),
+            )
         # Make old_id and new_id canonical. Use the canonical old_id to deduct
         # the canonical new_id:
         old_id = self._get_cannonical_id(old_id)
