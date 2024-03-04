@@ -263,6 +263,8 @@ class Connector:
             self.get_connection().delete(self._id2loc(id), token)
         except zeit.connector.dav.interfaces.DAVNotFoundError:
             raise KeyError(id)
+        except zeit.connector.dav.interfaces.FailedDependencyError as e:
+            raise zeit.connector.interfaces.LockedByOtherSystemError(id, e) from e
         self._invalidate_cache(id)
 
     def __contains__(self, id):
