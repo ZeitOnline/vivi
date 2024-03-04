@@ -193,10 +193,10 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def move(self, old_id, new_id):
         self._prevent_overwrite(old_id, new_id, MoveError)
-        self._ignore_uuid_checks = True
         r = self[old_id]
         r.id = new_id
         try:
+            self._ignore_uuid_checks = True
             self.add(r, verify_etag=False)
         finally:
             self._ignore_uuid_checks = False
