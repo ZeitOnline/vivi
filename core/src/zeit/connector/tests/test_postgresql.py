@@ -24,7 +24,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             },
         )
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         self.assertEqual('foo', props.path.name)
         self.assertEqual('/testing', props.path.parent_path)
         self.assertEqual('testing', props.type)
@@ -43,14 +43,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         res = self.get_resource('foo', b'mybody')
         res.type = 'file'
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         blob = self.connector.bucket.blob(props.id)
         self.assertEqual(b'mybody', blob.download_as_bytes())
 
     def test_empty_body_does_not_break(self):
         res = self.get_resource('foo', b'mybody')
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         props.body = None  # Not quite clear how this happens in production
         transaction.commit()
         res = self.connector[res.id]
@@ -65,7 +65,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             },
         )
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         davprops = props.to_webdav()
         self.assertEqual(
             {
@@ -84,7 +84,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         res = self.get_resource('foo')
         self.connector.add(res)
         transaction.commit()
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         self.assertIsInstance(props.last_updated, datetime)
 
     def test_determines_size_for_gcs_upload(self):
@@ -103,7 +103,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             ),
         ]:
             self.connector.add(res)
-            props = self.connector._get_properties(res.id)
+            props = self.connector._get_content(res.id)
             blob = self.connector.bucket.blob(props.id)
             self.assertEqual(body, blob.download_as_bytes())
 
@@ -111,7 +111,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         res = self.get_resource('foo', b'mybody')
         res.type = 'file'
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         blob = self.connector.bucket.blob(props.id)
         del self.connector[res.id]
         with self.assertRaises(google.api_core.exceptions.NotFound):
@@ -121,28 +121,28 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         res = self.get_resource('foo', b'mybody')
         res.type = 'file'
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         blob = self.connector.bucket.blob(props.id)
         blob.delete()
         with self.assertNothingRaised():
             del self.connector[res.id]
 
     def test_delete_removes_rows_from_all_tables(self):
-        from zeit.connector.postgresql import Paths, Properties
+        from zeit.connector.postgresql import Content, Path
 
         res = self.get_resource('foo', b'mybody')
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         uuid = props.id
         del self.connector[res.id]
         transaction.commit()
-        self.assertEqual(None, self.connector.session.get(Paths, self.connector._pathkey(res.id)))
-        self.assertEqual(None, self.connector.session.get(Properties, uuid))
+        self.assertEqual(None, self.connector.session.get(Path, self.connector._pathkey(res.id)))
+        self.assertEqual(None, self.connector.session.get(Content, uuid))
 
     def test_search_for_uuid_uses_indexed_column(self):
         res = self.get_resource('foo', b'mybody')
         self.connector.add(res)
-        props = self.connector._get_properties(res.id)
+        props = self.connector._get_content(res.id)
         UUID = SearchVar('uuid', 'http://namespaces.zeit.de/CMS/document')
         result = self.connector.search([UUID], UUID == props.id)
         unique_id, uuid = next(result)

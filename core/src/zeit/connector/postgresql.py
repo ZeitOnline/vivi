@@ -57,8 +57,8 @@ def _build_filter(expr):
     elif op == 'eq':
         (var, value) = expr.operands
         name = var.name
-        namespace = var.namespace.replace(Properties.NS, '', 1)
-        return Properties.unsorted[namespace][name].as_string() == value
+        namespace = var.namespace.replace(Content.NS, '', 1)
+        return Content.unsorted[namespace][name].as_string() == value
     else:
         raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
@@ -118,37 +118,37 @@ class Connector:
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        props = self._get_properties(uniqueid)
-        if props is None:
-            raise KeyError(uniqueid)
-        if props.is_collection:
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        if content.is_collection:
             _get_body = partial(BytesIO, b'')
-        elif props.binary_body:
-            _get_body = partial(self._get_body, props.id)
-        elif not props.body:
+        elif content.binary_body:
+            _get_body = partial(self._get_body, content.id)
+        elif not content.body:
             _get_body = partial(BytesIO, b'')
         else:
-            _get_body = partial(BytesIO, props.body.encode('utf-8'))
+            _get_body = partial(BytesIO, content.body.encode('utf-8'))
         return CachedResource(
             uniqueid,
             uniqueid.split('/')[-1],
-            props.type,
-            props.to_webdav,
+            content.type,
+            content.to_webdav,
             _get_body,
-            'httpd/unix-directory' if props.is_collection else 'httpd/unknown',
+            'httpd/unix-directory' if content.is_collection else 'httpd/unknown',
         )
 
     property_cache = TransactionBoundCache('_v_property_cache', dict)
 
-    def _get_properties(self, uniqueid):
-        props = self.property_cache.get(uniqueid)
-        if props is not None:
-            return props
-        path = self.session.get(Paths, self._pathkey(uniqueid))
+    def _get_content(self, uniqueid):
+        content = self.property_cache.get(uniqueid)
+        if content is not None:
+            return content
+        path = self.session.get(Path, self._pathkey(uniqueid))
         if path is not None:
-            props = path.properties
-            self.property_cache[uniqueid] = props
-        return props
+            content = path.content
+            self.property_cache[uniqueid] = content
+        return content
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
@@ -178,7 +178,7 @@ class Connector:
         uniqueid = self._normalize(uniqueid)
         parent_path = '/'.join(self._pathkey(uniqueid))
         for name in self.session.execute(
-            select(Paths.name).filter_by(parent_path=parent_path)
+            select(Path.name).filter_by(parent_path=parent_path)
         ).scalars():
             yield (name, f'{ID_NAMESPACE}{parent_path}/{name}')
 
@@ -189,71 +189,74 @@ class Connector:
     def add(self, resource, verify_etag=True):
         uniqueid = self._normalize(resource.id)
         if uniqueid == ID_NAMESPACE:
-            raise KeyError('Cannot write to root object')
-        props = self._get_properties(uniqueid)
-        exists = props is not None
+            raise KeyError(f'Cannot write {uniqueid} to root object')
+        content = self._get_content(uniqueid)
+        exists = content is not None
         if not exists:
-            props = Properties()
-            path = Paths(properties=props)
+            content = Content()
+            path = Path(content=content)
             self.session.add(path)
         else:
-            path = props.path
+            path = content.path
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
-        props.from_webdav(resource.properties)
-        props.type = resource.type
-        props.is_collection = resource.contentType == 'httpd/unix-directory'
+        content.from_webdav(resource.properties)
+        content.type = resource.type
+        content.is_collection = resource.contentType == 'httpd/unix-directory'
 
-        if not props.is_collection:
-            self.body_cache.pop(props.id, None)
-            if props.binary_body:
-                blob = self.bucket.blob(props.id)
+        if not content.is_collection:
+            self.body_cache.pop(content.id, None)
+            if content.binary_body:
+                blob = self.bucket.blob(content.id)
                 data = resource.data  # may not be a static property
                 size = data.seek(0, os.SEEK_END)
                 data.seek(0)
                 with zeit.cms.tracing.use_span(
                     __name__ + '.tracing',
                     'gcs',
-                    attributes={'db.operation': 'upload', 'id': props.id, 'size': str(size)},
+                    attributes={'db.operation': 'upload', 'id': content.id, 'size': str(size)},
                 ):
                     blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
             else:
                 # vivi uses utf-8 encoding throughout, see
                 # zeit.cms.content.adapter for XML and zeit.content.text.text
-                props.body = resource.data.read().decode('utf-8')
+                content.body = resource.data.read().decode('utf-8')
 
         if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = props
+            self.property_cache[uniqueid] = content
             resource.data.seek(0)
             self.body_cache[uniqueid] = resource.data.read()
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
-        props = self._get_properties(uniqueid)
-        if props is None:
-            raise KeyError(uniqueid)
-        current = props.to_webdav()
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        current = content.to_webdav()
         current.update(properties)
-        props.from_webdav(current)
+        content.from_webdav(current)
         if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = props
+            self.property_cache[uniqueid] = content
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
         props = self._get_properties(uniqueid)
         if props is None:
             raise KeyError(uniqueid)
         if not props.is_collection and props.binary_body:
             blob = self.bucket.blob(props.id)
+        if not content.is_collection and content.binary_body:
+            blob = self.bucket.blob(content.id)
             with zeit.cms.tracing.use_span(
-                __name__ + '.tracing', 'gcs', attributes={'db.operation': 'delete', 'id': props.id}
+                __name__ + '.tracing', 'gcs', attributes={'db.operation': 'delete', 'id': content.id}
             ):
                 try:
                     blob.delete()
                 except google.api_core.exceptions.NotFound:
-                    log.info('Ignored NotFound while deleting GCS blob %s', id)
-                    pass
-        self.session.delete(props)
+                    log.info('Ignored NotFound while deleting GCS blob %s', uniqueid)
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
 
@@ -296,20 +299,20 @@ class Connector:
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
             result = self.session.execute(
-                select(Paths.id, Paths.parent_path, Paths.name).filter_by(id=uuid)
+                select(Path.id, Path.parent_path, Path.name).filter_by(id=uuid)
             )
             for item in result:
                 yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', item.id)
         else:
-            query = select(Paths).join(Properties).filter(_build_filter(expr))
+            query = select(Path).join(Content).filter(_build_filter(expr))
             result = self.session.execute(query)
             itemgetters = [
-                (itemgetter(a.namespace.replace(Properties.NS, '', 1)), itemgetter(a.name))
+                (itemgetter(a.namespace.replace(Content.NS, '', 1)), itemgetter(a.name))
                 for a in attrlist
             ]
             for item in result.scalars():
                 for nsgetter, keygetter in itemgetters:
-                    value = keygetter(nsgetter(item.properties.unsorted))
+                    value = keygetter(nsgetter(item.content.unsorted))
                     yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', value)
 
 
@@ -320,7 +323,7 @@ METADATA = sqlalchemy.MetaData()
 DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 
 
-class Paths(DBObject):
+class Path(DBObject):
     __tablename__ = 'paths'
     __table_args__ = (UniqueConstraint('parent_path', 'name', 'id'),)
 
@@ -333,15 +336,15 @@ class Paths(DBObject):
         nullable=False,
         index=True,
     )
-    properties = relationship(
-        'Properties',
+    content = relationship(
+        'Content',
         uselist=False,
         lazy='joined',
         backref=backref('path', uselist=False, cascade='all, delete-orphan', passive_deletes=True),
     )
 
 
-class Properties(DBObject):
+class Content(DBObject):
     __tablename__ = 'properties'
 
     id = Column(Uuid(as_uuid=False), primary_key=True)
@@ -439,7 +442,7 @@ class PassthroughConnector(Connector):
         resource = self.upstream[id]
         # Hacky. Remove this as it is not json-serializable, and also
         # irrelevant except for DAV caches.
-        resource.properties.data.pop(('cached-time', 'INTERNAL'), None)
+        resource.content.data.pop(('cached-time', 'INTERNAL'), None)
         savepoint = self.session.begin_nested()
         self[id] = resource
         try:
