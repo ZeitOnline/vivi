@@ -148,7 +148,7 @@ jobs:
             exit $result
 
       - name: Publish test result
-        uses: enricomi/publish-unit-test-result-action@v2.14.0
+        uses: enricomi/publish-unit-test-result-action@v2.15.1
         if: always()
         with:
           comment_mode: "off"
