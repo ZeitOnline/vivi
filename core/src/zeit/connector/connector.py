@@ -414,11 +414,9 @@ class Connector:
             # The resource does not exist on the server. This means it *cannot*
             # be locked.
             davlock = {}
-        owner = davlock.get('owner')
-        timeout = davlock.get('timeout')
-        token = davlock.get('locktoken')
-        mylock = None
 
+        owner = davlock.get('owner')
+        mylock = False
         if davlock and owner:
             # Let's see if the principal is one we know.
             try:
@@ -435,8 +433,9 @@ class Connector:
                 except zope.authentication.interfaces.PrincipalLookupError:
                     pass
                 else:
-                    mylock = (token, owner, timeout)
+                    mylock = True
 
+        timeout = davlock.get('timeout')
         if timeout == 'Infinite':
             timeout = TIME_ETERNITY
         if timeout and timeout < datetime.datetime.now(pytz.UTC):
@@ -444,7 +443,7 @@ class Connector:
             self._invalidate_cache(id)
             return self.locked(id)
 
-        return (owner, timeout, mylock is not None)
+        return (owner, timeout, mylock)
 
     def search(self, attrlist, expr):
         """Search repository behind this connector according to <expr>.
