@@ -328,7 +328,10 @@ class Connector:
                 del self[old_id]
         else:
             token = self._get_my_locktoken(old_id)
-            method(old_loc, new_loc, locktoken=token)
+            try:
+                method(old_loc, new_loc, locktoken=token)
+            except zeit.connector.dav.interfaces.DAVNotFoundError as err:
+                raise KeyError('The resource %s does not exist.', old_id) from err
 
         self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)

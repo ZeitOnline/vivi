@@ -173,8 +173,7 @@ class Connector:
 
     def listCollection(self, uniqueid):
         if uniqueid not in self:
-            # XXX mimic DAV behaviour (which likely should be KeyError instead)
-            raise DAVNotFoundError(404, 'Not Found', uniqueid, '')
+            raise KeyError(f'The resource {uniqueid} does not exist.')
         uniqueid = self._normalize(uniqueid)
         parent_path = '/'.join(self._pathkey(uniqueid))
         for name in self.session.execute(
@@ -263,7 +262,7 @@ class Connector:
     @staticmethod
     def _normalize(uniqueid):
         if not uniqueid.startswith(ID_NAMESPACE):
-            raise ValueError('The id %r is invalid.' % uniqueid)
+            raise ValueError(f'The id {uniqueid} is invalid.')
         return uniqueid.rstrip('/')
 
     @staticmethod
