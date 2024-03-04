@@ -1,9 +1,11 @@
+from enum import Enum
 from functools import partial
 from io import BytesIO, StringIO
 from logging import getLogger
 from operator import itemgetter
 from uuid import uuid4
 import collections
+import hashlib
 import os
 import os.path
 import time
@@ -20,6 +22,9 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
+    delete,
+    insert,
+    schema,
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -36,9 +41,14 @@ import zope.interface
 import zope.sqlalchemy
 
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
-from zeit.connector.dav.interfaces import DAVNotFoundError
-from zeit.connector.interfaces import DeleteProperty
-from zeit.connector.resource import CachedResource
+from zeit.connector.interfaces import (
+    CopyError,
+    DeleteProperty,
+    LockedByOtherSystemError,
+    LockingError,
+    MoveError,
+)
+from zeit.connector.resource import CachedResource, Resource
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.interfaces
@@ -48,6 +58,12 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
+
+
+class LockStatus(Enum):
+    NO_LOCK = 0
+    OTHERS_LOCK = 1
+    OWN_LOCK = 2
 
 
 def _build_filter(expr):
@@ -322,6 +338,89 @@ class Connector:
         self.property_cache.pop(old_id, None)
         self.body_cache.pop(old_id, None)
 
+    def _foreign_child_lock_exists(self, id):
+        (parent, _) = self._pathkey(id)
+        locks = self.session.query(Lock).filter(Lock.parent_path.startswith(parent)).all()
+        return any([not self._is_current_principal(lock.principal) for lock in locks])
+
+    def _get_lock_status(self, id):
+        lock_principal, until, is_my_lock = self.locked(id)
+        if lock_principal is None and until is None:
+            return LockStatus.NO_LOCK
+        elif is_my_lock:
+            return LockStatus.OWN_LOCK
+        else:
+            return LockStatus.OTHERS_LOCK
+
+    def _add_lock(self, id, principal, until):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            log.warning('Unable to add lock to resource %s that does not exist.', str(id))
+            return
+        stmt = Lock.create(path=path, principal=principal, until=until)
+        self.session.execute(stmt)
+        return self.session.get(Lock, (path.parent_path, path.name, path.id)).token
+
+    def _is_current_principal(self, principal):
+        # Let's see if the principal is one we know.
+        try:
+            import zope.authentication.interfaces  # UI-only dependency
+
+            authentication = zope.component.queryUtility(
+                zope.authentication.interfaces.IAuthentication
+            )
+        except ImportError:
+            authentication = None
+        if authentication is not None:
+            try:
+                authentication.getPrincipal(principal)
+            except zope.authentication.interfaces.PrincipalLookupError:
+                pass
+            else:
+                return True
+        return False
+
+    def lock(self, id, principal, until):
+        match self._get_lock_status(id):
+            case LockStatus.NO_LOCK:
+                return self._add_lock(id, principal, until)
+            case LockStatus.OWN_LOCK:
+                raise LockingError(id, f'You already own the lock of {id}.')
+            case LockStatus.OTHERS_LOCK:
+                raise LockedByOtherSystemError(id, f'{id} is already locked.')
+
+    def unlock(self, id):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            raise KeyError(f'The resource {id} does not exist.')
+        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        if not lock:
+            return
+        if not self._is_current_principal(lock.principal):
+            raise LockedByOtherSystemError(id, f'{id} is already locked.')
+        self.session.delete(lock)
+
+    def _unlock(self, id, token):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            raise KeyError(f'The resource {id} does not exist.')
+        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        if not lock or not lock.token == token:
+            return
+        self.session.delete(lock)
+
+    def locked(self, id):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            log.warning('The resource %s does not exist.', str(id))
+            return (None, None, False)
+        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        if lock is None:
+            return (None, None, False)
+        is_my_lock = self._is_current_principal(lock.principal)
+
+        return (lock.principal, lock.until, is_my_lock)
+
     def search(self, attrlist, expr):
         if (
             len(attrlist) == 1
@@ -347,8 +446,6 @@ class Connector:
                     value = keygetter(nsgetter(item.content.unsorted))
                     yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', value)
 
-    def unlock(self, id, locktoken=None):
-        pass
 
 factory = Connector.factory
 
@@ -376,6 +473,38 @@ class Path(DBObject):
         lazy='joined',
         backref=backref('path', uselist=False, cascade='all, delete-orphan', passive_deletes=True),
     )
+
+
+class Lock(DBObject):
+    __tablename__ = 'locks'
+
+    parent_path = Column(Unicode, primary_key=True)
+    name = Column(Unicode, primary_key=True)
+    id = Column(Uuid(as_uuid=False), primary_key=True)
+    principal = Column(Unicode, nullable=False)
+    until = Column(TIMESTAMP(timezone=True), nullable=False)
+
+    __table_args__ = (
+        schema.ForeignKeyConstraint(
+            (parent_path, name, id), (Path.parent_path, Path.name, Path.id), onupdate='CASCADE'
+        ),
+    )
+
+    @classmethod
+    def create(cls, path, principal, until):
+        stmt = insert(cls).values(
+            parent_path=path.parent_path,
+            name=path.name,
+            id=path.id,
+            principal=principal,
+            until=until,
+        )
+        return stmt
+
+    @property
+    def token(self):
+        "Backwards compatibility with DAV backend which returns a token if a lock was added."
+        return hashlib.sha256(f'{self.principal}{self.id}'.encode('utf-8')).hexdigest()
 
 
 class Content(DBObject):

@@ -287,8 +287,47 @@ class ContractLock:
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.unlock(id)
         self.connector._unlock(id, token)
-        self.connector.invalidate_cache(id)
         self.assertEqual((None, None, False), self.connector.locked(id))
+
+    def test_locking_already_locked_resource_by_same_user_raises(self):
+        id = self.add_resource('foo').id
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertRaises(LockingError):
+            self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+
+    def test_locking_already_locked_resource_raises(self):
+        id = self.add_resource('foo').id
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertRaises(LockingError):
+            self.connector.lock(
+                id, 'zope.another_user', datetime.now(pytz.UTC) + timedelta(hours=2)
+            )
+
+    def test_move_operation_removes_lock(self):
+        id = self.add_resource('foo').id
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        self.connector.move(id, 'http://xml.zeit.de/testing/bar')
+        transaction.commit()
+        self.assertEqual(
+            self.connector.locked('http://xml.zeit.de/testing/bar'), (None, None, False)
+        )
+
+    def test_move_collection_with_locked_child_raises(self):
+        collection_id = 'http://xml.zeit.de/testing/source'
+        file_id = f'{collection_id}/foo'
+        zeit.connector.testing.mkdir(self.connector, collection_id)
+        self.connector[f'{collection_id}/foo'] = Resource(None, None, 'text', BytesIO(b''))
+        transaction.commit()
+        token = self.connector.lock(
+            file_id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2)
+        )
+        transaction.commit()
+        with self.assertRaises(LockedByOtherSystemError):
+            self.connector.move(collection_id, 'http://xml.zeit.de/testing/target')
+        self.connector._unlock(file_id, token)
 
 
 class ContractSearch:
@@ -389,7 +428,7 @@ class ContractMock(
 class ContractSQL(
     ContractReadWrite,
     ContractCopyMove,
-    # ContractLock,
+    ContractLock,
     ContractSearch,
     zeit.connector.testing.SQLTest,
 ):
@@ -397,5 +436,5 @@ class ContractSQL(
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
-    # nyi copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())

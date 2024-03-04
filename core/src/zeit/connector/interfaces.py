@@ -174,6 +174,7 @@ class IConnector(zope.interface.Interface):
 
         returns used locktoken, if the id of the resource does not exist, return none
         raises KeyError if the resource with id does not exist
+        raises LockedByOtherSystemError if the resource is locked by another user
         """
 
     def _unlock(id, locktoken):

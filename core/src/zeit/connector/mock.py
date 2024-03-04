@@ -206,6 +206,8 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
+            if uid in self._locked and self._locked[uid][0] != 'zope.user':
+                raise LockedByOtherSystemError(uid, '')
             self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
 
@@ -233,6 +235,8 @@ class Connector(zeit.connector.filesystem.Connector):
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         id = self._get_cannonical_id(id)
+        if id in self._locked:
+            raise LockingError('Resource is already locked by another principal')
         self._locked[id] = (principal, until, True)
 
     def unlock(self, id):
