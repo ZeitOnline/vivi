@@ -271,23 +271,30 @@ class Connector:
         parent_path = parent_path.rstrip('/')
         return (parent_path, name)
 
-    def copy(self, old_uniqueid, new_uniqueid):
-        pass
-
-    def move(self, old_uniqueid, new_uniqueid):
-        pass
-
-    def lock(self, uniqueid, principal, until):
-        pass
-
-    def unlock(self, uniqueid):
-        pass
-
-    def _unlock(self, uniqueid, locktocken):
-        pass
-
-    def locked(self, uniqueid):
-        pass
+    def copy(self, old_id, new_id):
+        old_id = self._normalize(old_id)
+        new_id = self._normalize(new_id)
+        if new_id in self:
+            raise CopyError(
+                old_id,
+                f'Could not copy {old_id} to {new_id}, because target already exists.',
+            )
+        old_resource = self[old_id]
+        old_content = self._get_content(old_id)
+        new_content = Content()
+        new_content.unsorted = old_content.unsorted
+        new_resource = Resource(
+            new_id,
+            new_id.split('/')[-1],
+            old_resource.type,
+            old_resource.data,
+            new_content.to_webdav_attributes(),
+            old_resource.contentType,
+        )
+        self[new_id] = new_resource
+        if old_content.is_collection:
+            for name, _ in self.listCollection(old_id):
+                self.copy(f'{old_id}/{name}', f'{new_id}/{name}')
 
     def search(self, attrlist, expr):
         if (
@@ -368,11 +375,15 @@ class Content(DBObject):
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
-    def to_webdav(self):
+    def to_webdav_attributes(self):
         props = {}
         for ns, d in self.unsorted.items():
             for k, v in d.items():
                 props[(k, self.NS + ns)] = v
+        return props
+
+    def to_webdav(self):
+        props = self.to_webdav_attributes()
 
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type

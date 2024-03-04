@@ -148,3 +148,21 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         unique_id, uuid = next(result)
         self.assertEqual(res.id, unique_id)
         self.assertEqual(props.id, uuid)
+
+    def test_copy_duplicates_gcs_blob(self):
+        source = self.get_resource('foo', b'mybody')
+        source.type = 'file'
+        target = self.get_resource('bar')
+        self.connector.add(source)
+        self.connector.copy(source.id, target.id)
+
+        source_props = self.connector._get_content(source.id)
+        source_blob = self.connector.bucket.blob(source_props.id)
+
+        target_props = self.connector._get_content(target.id)
+        target_blob = self.connector.bucket.blob(target_props.id)
+
+        self.assertNotEqual(source_props.id, target_props.id)
+        self.assertNotEqual(source_blob, target_blob)
+        self.assertEqual(source_props.type, target_props.type)
+        self.assertEqual(source_blob.download_as_bytes(), target_blob.download_as_bytes())

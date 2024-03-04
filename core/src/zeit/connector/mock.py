@@ -194,6 +194,9 @@ class Connector(zeit.connector.filesystem.Connector):
     def move(self, old_id, new_id):
         self._prevent_overwrite(old_id, new_id, MoveError)
         r = self[old_id]
+
+        if new_id in self:
+            raise MoveError(new_id, f'The resource {new_id} already exists.')
         r.id = new_id
         try:
             self._ignore_uuid_checks = True
