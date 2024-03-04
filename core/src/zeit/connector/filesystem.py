@@ -12,7 +12,6 @@ import zope.app.file.image
 import zope.interface
 
 from zeit.connector.connector import CannonicalId
-from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.interfaces import ID_NAMESPACE
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
@@ -68,12 +67,7 @@ class Connector:
         path = self._path(id)
         names = self._get_collection_names(path)
         if not names:
-            try:
-                self[id]
-            except KeyError:
-                # XXX mimic the real behaviour -- real *should* probably raise
-                # KeyError, but doesn't at the moment.
-                raise DAVNotFoundError(404, 'Not Found', id, '')
+            self[id]
 
         result = []
         for name in sorted(names):

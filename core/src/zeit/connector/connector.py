@@ -131,8 +131,11 @@ class Connector:
         """List the filenames of a collection identified by <id> (see[8])."""
         __traceback_info__ = (id,)
         id = self._get_cannonical_id(id)
-        for child_id in self._get_resource_child_ids(id):
-            yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
+        try:
+            for child_id in self._get_resource_child_ids(id):
+                yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
+        except zeit.connector.dav.interfaces.DAVNotFoundError as err:
+            raise KeyError(f'The resource {id} does not exist.') from err
 
     def _get_resource_type(self, id):
         __traceback_info__ = (id,)
