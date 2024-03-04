@@ -1,6 +1,18 @@
 Locking tests
 =============
 
+Setup
++++++
+
+Make unlock visible:
+
+>>> from zeit.connector.dav.davconnection import DAVConnection
+>>> orig_unlock = DAVConnection.unlock
+>>> def unlock_print(self, url, locktoken, headers=None):
+...     print(locktoken)
+...     orig_unlock(self, url, locktoken, headers)
+>>> DAVConnection.unlock = unlock_print
+
 Simple case
 +++++++++++
 
@@ -16,6 +28,7 @@ Simple case
 ...     BytesIO(b'Pop goes the weasel!'),
 ...     contentType='text/plain')
 >>> connector.add(res)
+opaquelocktoken:...
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 
@@ -25,7 +38,7 @@ Traceback (most recent call last):
 LockingError: http://xml.zeit.de/testing.../lt1 is already locked.
 
 >>> connector.unlock(res.id)
-'opaquelocktoken:...'
+opaquelocktoken:...
 >>> del connector[res.id]
 
 Timeout of locks
@@ -57,9 +70,10 @@ We unlock the resource under the hood and of course expect that we can add it:
 >>> parent = 'http://xml.zeit.de/testing'
 >>> token = connector.lock(res.id, 'zope.user', until=None)
 >>> ignore = connector[res.id]  # fill cache again
->>> url = connector._id2loc(res.id)
->>> dummy = connector.get_connection().unlock(url, token)
+>>> connector._unlock(res.id, token)
+opaquelocktoken:...
 >>> connector.add(res)
+opaquelocktoken:...
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
 
@@ -67,11 +81,13 @@ Edge case 1.1: With existing resource:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge1.1'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> token = connector.lock(res.id, 'zope.user', until=None)
 >>> ignore = connector[res.id]  # fill cache again
->>> url = connector._id2loc(res.id)
->>> dummy = connector.get_connection().unlock(url, token)
+>>> dummy = connector._unlock(res.id, token)
+opaquelocktoken:...
 >>> connector.add(res)
+opaquelocktoken:...
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
 
@@ -79,10 +95,11 @@ Edge case 1.2: Unlocking:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge1.2'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> token = connector.lock(res.id, 'zope.user', until=None)
 >>> ignore = connector[res.id]  # fill cache again
->>> url = connector._id2loc(res.id)
->>> dummy = connector.get_connection().unlock(url, token)
+>>> dummy = connector._unlock(res.id, token)
+opaquelocktoken:...
 >>> connector.unlock(res.id)
 >>> del connector[res.id]
 
@@ -100,13 +117,14 @@ Lock the resoruce under the hood; we get a useful error:
 Traceback (most recent call last):
     ...
 zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
->>> connector.unlock(res.id, token)
-'opaquelocktoken:...'
+>>> connector._unlock(res.id, token)
+opaquelocktoken:...
 
 Edge case 2.1: With existing resource:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge2.1'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
 >>> token = connector.get_connection().lock(
@@ -115,14 +133,15 @@ Edge case 2.1: With existing resource:
 Traceback (most recent call last):
     ...
 zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
->>> connector.unlock(res.id, token)
-'opaquelocktoken:...'
+>>> connector._unlock(res.id, token)
+opaquelocktoken:...
 >>> del connector[res.id]
 
 Edge case 2.2: Locking
 
 >>> res.id = 'http://xml.zeit.de/testing/edge2.2'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
 >>> token = connector.get_connection().lock(
@@ -131,14 +150,15 @@ Edge case 2.2: Locking
 Traceback (most recent call last):
     ...
 LockingError: http://xml.zeit.de/testing.../edge2.2 is already locked.
->>> connector.unlock(res.id, token)
-'opaquelocktoken:...'
+>>> connector._unlock(res.id, token)
+opaquelocktoken:...
 >>> del connector[res.id]
 
 Edge case 2.3: PROPATCH
 
 >>> res.id = 'http://xml.zeit.de/testing/edge2.3'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> ignore = connector[res.id]  # fill cache again
 >>> url = connector._id2loc(res.id)
 >>> token = connector.get_connection().lock(
@@ -150,8 +170,8 @@ zeit.connector.dav.interfaces.DAVLockedError: (423, 'Locked',
     'http://.../cms/testing.../edge2.3',
     '<!DOCTYPE...
 
->>> connector.unlock(res.id, token)
-'opaquelocktoken:...'
+>>> connector._unlock(res.id, token)
+opaquelocktoken:...
 >>> del connector[res.id]
 
 
@@ -165,6 +185,7 @@ API to create an anonymous lock. Create a resource first:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge3'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> ignore = connector[res.id]  # fill cache again
 
 Now lock:
@@ -182,6 +203,7 @@ LockedByOtherSystemError: (None, datetime.datetime(9998, 12, 31, 23, 59, 59, 999
 Unlock the resource and remove it:
 
 >>> dummy = connector.get_connection().unlock(dav_url, token)
+opaquelocktoken:...
 >>> del connector[res.id]
 
 
@@ -190,20 +212,23 @@ Edge case 4: We think the resource is locked but it is by somebody else
 
 >>> res.id = 'http://xml.zeit.de/testing/edge4'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> ignore = connector[res.id]  # fill cache again
 >>> token = connector.lock(res.id, 'zope.user', until=None)
 >>> r2 = connector[res.id]
 >>> url = connector._id2loc(res.id)
 >>> dummy = connector.get_connection().unlock(url, token)
+opaquelocktoken:...
 >>> new_token = connector.get_connection().lock(
 ...     url, owner='external', depth=0, timeout=20)
 >>> connector.add(res)
 Traceback (most recent call last):
     ...
 zeit.connector.interfaces.LockedByOtherSystemError: ('external', datetime.datetime(...))
->>> connector.unlock(res.id)
-'opaquelocktoken:...'
+>>> connector._unlock(res.id, new_token)
+opaquelocktoken:...
 >>> connector.add(res)
+opaquelocktoken:...
 >>> del connector[res.id]
 
 Edge case 5: Null resouce locks
@@ -215,7 +240,7 @@ Edge case 5: Null resouce locks
 >>> connector[res.id].data
 <...BytesIO object at 0x...>
 >>> connector.unlock(res.id)
-'opaquelocktoken:...'
+opaquelocktoken:...
 
 
 Locking with timeout:
@@ -224,6 +249,7 @@ Locking with timeout:
 >>> import pytz
 >>> res.id = 'http://xml.zeit.de/testing/edge6'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> connector.lock(res.id, 'zope.user',
 ...     datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=120))
 'opaquelocktoken:...'
@@ -243,6 +269,7 @@ Create resource:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge6'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> connector[res.id].data.read()
 b'Pop goes the weasel!'
 
@@ -272,7 +299,7 @@ b''
 True
 
 >>> connector.unlock(res.id)
-'opaquelocktoken:...'
+opaquelocktoken:...
 
 
 Edge case 7: Getting the lock information when the lockinfo got lost
@@ -303,6 +330,7 @@ When we don't know the principal, the resource will be "LockedByOtherSystem":
 
 >>> res.id = 'http://xml.zeit.de/testing/edge7.1'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> token = connector.lock(res.id, 'external', until=None)
 >>> connector.locked(res.id)
 ('external', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
@@ -311,13 +339,15 @@ When we don't know the principal, the resource will be "LockedByOtherSystem":
 Traceback (most recent call last):
     ...
 LockedByOtherSystemError: ('external', datetime.datetime(...))
->>> token = connector.unlock(res.id, token)
+>>> connector._unlock(res.id, token)
+opaquelocktoken:...
 >>> del connector[res.id]
 
 When we know the principal, it is "our" lock:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge7.2'
 >>> connector.add(res)
+opaquelocktoken:...
 >>> token = connector.lock(res.id, 'internal', until=None)
 >>> connector.locked(res.id)
 ('internal', datetime.datetime(9998, 12, 31, 23, 59, 59, 999999, tzinfo=<UTC>),
@@ -325,3 +355,9 @@ When we know the principal, it is "our" lock:
 >>> del connector[res.id]
 >>> gsm.unregisterUtility(auth)
 True
+
+
+Teardown
+++++++++
+
+>>> DAVConnection.unlock = orig_unlock

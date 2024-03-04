@@ -5,7 +5,6 @@ import zope.generations.utility
 import zeit.connector.cache
 import zeit.connector.interfaces
 import zeit.connector.invalidator
-import zeit.connector.lockinfo
 
 
 def installLocalUtility(root, factory, name, interface, utility_name=''):

@@ -274,7 +274,7 @@ class TestMove(zeit.connector.testing.ConnectorTest):
                 lambda: self.connector.move(res.id, 'http://xml.zeit.de/testing/bar'),
             )
         finally:
-            self.connector.unlock(res.id, token)
+            self.connector._unlock(res.id, token)
 
     def test_copy_locked_resource_should_work(self):
         res = self.get_resource('foo', 'body')

@@ -395,16 +395,16 @@ class Connector:
         self._invalidate_cache(id)
         return token
 
-    def unlock(self, id, locktoken=None, invalidate=True):
-        if invalidate:
-            self._invalidate_cache(id)
-        url = self._id2loc(self._get_cannonical_id(id))
-        locktoken = locktoken or self._get_dav_lock(id).get('locktoken')
+    def unlock(self, id):
+        self._invalidate_cache(id)
+        locktoken = self._get_my_locktoken(id)
         if locktoken:
-            self.get_connection().unlock(url, locktoken)
-        if invalidate:
+            self._unlock(id, locktoken)
             self._invalidate_cache(id)
-        return locktoken
+
+    def _unlock(self, id, locktoken):
+        url = self._id2loc(self._get_cannonical_id(id))
+        self.get_connection().unlock(url, locktoken)
 
     def locked(self, id):
         id = self._get_cannonical_id(id)
@@ -414,11 +414,9 @@ class Connector:
             # The resource does not exist on the server. This means it *cannot*
             # be locked.
             davlock = {}
-        owner = davlock.get('owner')
-        timeout = davlock.get('timeout')
-        token = davlock.get('locktoken')
-        mylock = None
 
+        owner = davlock.get('owner')
+        mylock = False
         if davlock and owner:
             # Let's see if the principal is one we know.
             try:
@@ -435,8 +433,9 @@ class Connector:
                 except zope.authentication.interfaces.PrincipalLookupError:
                     pass
                 else:
-                    mylock = (token, owner, timeout)
+                    mylock = True
 
+        timeout = davlock.get('timeout')
         if timeout == 'Infinite':
             timeout = TIME_ETERNITY
         if timeout and timeout < datetime.datetime.now(pytz.UTC):
@@ -444,7 +443,7 @@ class Connector:
             self._invalidate_cache(id)
             return self.locked(id)
 
-        return (owner, timeout, mylock is not None)
+        return (owner, timeout, mylock)
 
     def search(self, attrlist, expr):
         """Search repository behind this connector according to <expr>.
@@ -568,9 +567,8 @@ class Connector:
             self.changeProperties(id, properties, locktoken=locktoken)
         finally:
             if autolock and locktoken:  # This was _our_ lock. Cleanup:
-                self.unlock(id, locktoken=locktoken)
-            else:
-                self._invalidate_cache(id)
+                self._unlock(id, locktoken)
+            self._invalidate_cache(id)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended if needed.
