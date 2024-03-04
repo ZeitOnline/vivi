@@ -329,6 +329,29 @@ class ContractLock:
             self.connector.move(collection_id, 'http://xml.zeit.de/testing/target')
         self.connector._unlock(file_id, token)
 
+    def test_delitem_collection_raises_error_if_children_are_locked(self):
+        self.assertEqual([], self.listCollection('http://xml.zeit.de/testing'))
+        collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        self.add_resource('folder/file')
+        self.add_resource('folder/one')
+        self.add_resource('two')
+        token_1 = self.connector.lock(
+            'http://xml.zeit.de/testing/folder/one',
+            'external',
+            datetime.now(pytz.UTC) + timedelta(hours=2),
+        )
+        self.connector.lock(
+            'http://xml.zeit.de/testing/two',
+            'zope.user',
+            datetime.now(pytz.UTC) + timedelta(hours=2),
+        )
+        transaction.commit()
+        with self.assertRaises(LockedByOtherSystemError):
+            del self.connector['http://xml.zeit.de/testing']
+        self.connector._unlock('http://xml.zeit.de/testing/folder/one', token_1)
+        self.connector.unlock('http://xml.zeit.de/testing/two')
+
 
 class ContractSearch:
     def test_search_unknown_metadata(self):

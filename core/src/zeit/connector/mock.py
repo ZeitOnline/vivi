@@ -14,7 +14,14 @@ import pytz
 import zope.event
 
 from zeit.connector.connector import CannonicalId
-from zeit.connector.interfaces import ID_NAMESPACE, UUID_PROPERTY, CopyError, MoveError
+from zeit.connector.interfaces import (
+    ID_NAMESPACE,
+    UUID_PROPERTY,
+    CopyError,
+    LockedByOtherSystemError,
+    LockingError,
+    MoveError,
+)
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
@@ -167,7 +174,10 @@ class Connector(zeit.connector.filesystem.Connector):
     def __delitem__(self, id):
         id = self._get_cannonical_id(id)
         self[id]  # may raise KeyError
-        for _name, uid in self.listCollection(id):
+        list_collection = self.listCollection(id)
+        for _name, uid in list_collection:
+            if uid in self._locked:
+                raise LockedByOtherSystemError(uid, '')
             del self[uid]
         self._deleted.add(id)
         self._data.pop(id, None)

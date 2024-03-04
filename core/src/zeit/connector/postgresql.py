@@ -258,20 +258,30 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-        props = self._get_properties(uniqueid)
-        if props is None:
-            raise KeyError(uniqueid)
-        if not props.is_collection and props.binary_body:
-            blob = self.bucket.blob(props.id)
+        if content.is_collection and self._foreign_child_lock_exists(uniqueid):
+            raise LockedByOtherSystemError(
+                uniqueid, f'Could not delete {uniqueid}, because it is locked.'
+            )
         if not content.is_collection and content.binary_body:
             blob = self.bucket.blob(content.id)
             with zeit.cms.tracing.use_span(
-                __name__ + '.tracing', 'gcs', attributes={'db.operation': 'delete', 'id': content.id}
+                __name__ + '.tracing',
+                'gcs',
+                attributes={'db.operation': 'delete', 'id': content.id},
             ):
                 try:
                     blob.delete()
                 except google.api_core.exceptions.NotFound:
                     log.info('Ignored NotFound while deleting GCS blob %s', uniqueid)
+
+        self.unlock(uniqueid)
+        if content.is_collection:
+            (parent, _) = self._pathkey(uniqueid)
+            stmt = delete(Path).where(Path.parent_path.startswith(parent))
+            self.session.execute(stmt)
+        else:
+            self.session.delete(content)
+
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
 
