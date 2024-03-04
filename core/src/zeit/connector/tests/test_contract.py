@@ -5,8 +5,13 @@ import pytz
 import transaction
 import zope.interface.verify
 
-from zeit.connector.dav.interfaces import DAVNotFoundError
-from zeit.connector.interfaces import CopyError, DeleteProperty, LockedByOtherSystemError, MoveError
+from zeit.connector.interfaces import (
+    CopyError,
+    DeleteProperty,
+    LockedByOtherSystemError,
+    LockingError,
+    MoveError,
+)
 from zeit.connector.resource import Resource
 from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.interfaces
@@ -58,7 +63,7 @@ class ContractReadWrite:
             self.listCollection('invalid')
 
     def test_listCollection_nonexistent_id_raises(self):
-        with self.assertRaises(DAVNotFoundError):
+        with self.assertRaises(KeyError):
             self.listCollection('http://xml.zeit.de/nonexistent')
 
     def test_listCollection_returns_name_uniqueId_pairs(self):
@@ -110,14 +115,16 @@ class ContractReadWrite:
 
     def test_delitem_collection_removes_children(self):
         collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        collection_2 = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
         self.connector['http://xml.zeit.de/testing/folder'] = collection
+        self.connector['http://xml.zeit.de/testing/folder/subfolder'] = collection_2
         self.add_resource('folder/file')
+        self.add_resource('folder/subfolder/file')
         del self.connector[collection.id + '/']  # XXX trailing slash DAV-ism
         transaction.commit()
-        with self.assertRaises(KeyError):
-            self.connector['http://xml.zeit.de/folder']
-        with self.assertRaises(KeyError):
-            self.connector['http://xml.zeit.de/folder/file']
+        for resource in ['folder', 'folder/file', 'folder/subfolder', 'folder/subfolder/file']:
+            with self.assertRaises(KeyError):
+                self.connector['http://xml.zeit.de/testing/' + resource]
 
     def test_changeProperties_updates_properties(self):
         self.add_resource(
@@ -214,6 +221,12 @@ class ContractCopyMove:
         )
         self.assertNotIn('http://xml.zeit.de/testing/source/file', self.connector)
         self.assertIn('http://xml.zeit.de/testing/target/file', self.connector)
+
+    def test_move_nonexistent_raises(self):
+        with self.assertRaises(KeyError):
+            self.connector.move(
+                'http://xml.zeit.de/nonexistent', 'http://xml.zeit.de/testing/target'
+            )
 
     def test_copy_nonexistent_raises(self):
         with self.assertRaises(KeyError):
