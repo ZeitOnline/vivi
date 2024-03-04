@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.122.0 (2024-03-04)
+--------------------
+
+- ZO-4267: Prevent unlocking a resource that was locked externally
+
+- ZO-4549: script for deleting contents in TMS indexes
+
+- ZO-4776: replace rankings.zeit.de URLs by studiengaenge.zeit.de (vivi-deployment)
+
+
 5.121.0 (2024-03-04)
 --------------------
 
