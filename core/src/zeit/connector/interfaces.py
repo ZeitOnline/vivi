@@ -81,8 +81,6 @@ class IConnector(zope.interface.Interface):
         raises ValueError if the id is not valid or does not match the
          repository.
         raises KeyError if the resource does not exist.
-
-        XXX define more error cases
         """
 
     def __getitem__(id):
@@ -97,6 +95,7 @@ class IConnector(zope.interface.Interface):
         """Remove the resource from the repository.
 
         raises KeyError if the resource could not be found.
+        raises LockedByOtherSystemError if the resource is locked by another user
         """
 
     def __setitem__(id, object):
@@ -125,15 +124,21 @@ class IConnector(zope.interface.Interface):
     def copy(old_id, new_id):
         """Copy the resource old_id to new_id.
 
-        raises KeyError if ther is no resource `old_id`
+        Copy does not duplicate any write locks active on the source.
+
         raises CopyError if there was a problem with copying itself.
+        raises KeyError if there is not resource with old_id
         """
 
     def move(old_id, new_id):
         """Move the resource with id `old_id` to `new_id`.
 
-        raises KeyError if ther is no resource `old_id`
+        A successful MOVE request on a write locked resource will not move the
+        write lock with the resource.
+
+        raises KeyError if there is no resource with old_id
         raises MoveError if there was a problem with moving itself.
+        raises LockedByOtherSystemError if the resource is deleted by another user
         """
 
     def changeProperties(id, properties):
@@ -146,14 +151,30 @@ class IConnector(zope.interface.Interface):
     def lock(id, principal, until):
         """Lock resource for principal until a given datetime.
 
+        A client MUST NOT submit the same write lock request twice.
+
+        A successful request for an write lock results in the generation of a unique lock token
+        associated with the requesting principal.
+
+        A write locked null resource, referred to as a lock-null resource is possible.
+
+        A write lock request is issued to a collection containing member URIs
+        identifying resources that are currently locked in a manner which conflicts
+        with the write lock, will fail.
+
         id: unique id
         until: datetime until the lock is valid.
 
         returns locktoken.
+        raises LockingError if lock already exists for another principal
         """
 
     def unlock(id):
-        """Unlock resource using the stored locktoken."""
+        """Unlock resource
+
+        returns used locktoken, if the id of the resource does not exist, return none
+        raises KeyError if the resource with id does not exist
+        """
 
     def _unlock(id, locktoken):
         """Unlock resource using the given locktoken. For tests."""
@@ -167,8 +188,7 @@ class IConnector(zope.interface.Interface):
             my lock: True if the lock was issued by this system, False
                 otherwise.
 
-        returns None, None, None if the resource is not locked.
-        raises KeyError if the resource does not exist.
+        returns None, None, None if the resource is not locked or is non-existant
         """
 
     def search(attributes, search_expression):
