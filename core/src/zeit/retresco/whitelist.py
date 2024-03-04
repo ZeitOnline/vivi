@@ -1,5 +1,5 @@
 import grokcore.component as grok
-import lxml.objectify
+import lxml.etree
 import zope.component
 
 from zeit.cms.interfaces import CONFIG_CACHE
@@ -59,7 +59,7 @@ class Topicpages(grok.GlobalUtility, zeit.cms.content.sources.OverridableURLConf
                 if typ is not None:
                     value = typ(value)
                 topic[name] = value
-            topic['title'] = str(node)
+            topic['title'] = node.text
             result.append(topic)
 
         rev = sort_order != 'asc'
@@ -81,4 +81,4 @@ class Topicpages(grok.GlobalUtility, zeit.cms.content.sources.OverridableURLConf
 
     def _load(self):
         request = zeit.cms.content.sources.load(self.url)
-        return lxml.objectify.parse(request).getroot()
+        return lxml.etree.parse(request).getroot()
