@@ -296,6 +296,32 @@ class Connector:
             for name, _ in self.listCollection(old_id):
                 self.copy(f'{old_id}/{name}', f'{new_id}/{name}')
 
+    def move(self, old_id, new_id):
+        old_id = self._normalize(old_id)
+        new_id = self._normalize(new_id)
+        content = self._get_content(old_id)
+        if content is None:
+            raise KeyError(f'The resource {old_id} does not exist.')
+        if new_id in self:
+            raise MoveError(
+                old_id, f'Could not move {old_id} to {new_id}, because target already exists.'
+            )
+        if content.is_collection:
+            if self._foreign_child_lock_exists(old_id):
+                raise LockedByOtherSystemError(
+                    old_id, f'Could not move {old_id} to {new_id}, because it is locked.'
+                )
+            for name, _ in self.listCollection(old_id):
+                self.move(f'{old_id}/{name}', f'{new_id}/{name}')
+
+        path = self.session.get(Path, self._pathkey(old_id))
+        (path.parent_path, path.name) = self._pathkey(new_id)
+        # unlock checks if locked and unlocks if necessary
+        self.unlock(new_id)
+
+        self.property_cache.pop(old_id, None)
+        self.body_cache.pop(old_id, None)
+
     def search(self, attrlist, expr):
         if (
             len(attrlist) == 1
@@ -321,6 +347,8 @@ class Connector:
                     value = keygetter(nsgetter(item.content.unsorted))
                     yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', value)
 
+    def unlock(self, id, locktoken=None):
+        pass
 
 factory = Connector.factory
 
