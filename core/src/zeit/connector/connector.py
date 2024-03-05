@@ -685,11 +685,9 @@ class Connector:
             self._update_child_id_cache(davres)
 
             # Remove no longer existing child entries from property_cache
-            if id.endswith('/') and IPersistentCache.providedBy(self.property_cache):
-                end = id[:-1] + chr(ord('/') + 1)
-                for key in self.property_cache.keys(min=id, max=end):
-                    if key not in self.child_name_cache:
-                        self._remove_from_caches(key, [self.property_cache])
+            for key in self._cached_ids_below_parent(self.property_cache, id):
+                if key not in self.child_name_cache:
+                    self._remove_from_caches(key, [self.property_cache])
         else:
             self._remove_from_caches(id, [self.property_cache, self.child_name_cache])
 
@@ -715,6 +713,13 @@ class Connector:
                 self._invalidate_cache(parent)
             else:
                 self._update_property_cache(davres)
+
+    def _cached_ids_below_parent(self, cache, id):
+        if not (id.endswith('/') or IPersistentCache.providedBy(cache)):
+            return iter(())
+        end = id[:-1] + chr(ord('/') + 1)
+        for key in cache.keys(min=id, max=end):
+            yield key
 
     def _get_cannonical_id(self, id):
         """Add / for collections if not appended yet."""
