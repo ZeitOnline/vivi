@@ -22,7 +22,6 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
-    delete,
     schema,
     select,
 )
@@ -257,32 +256,34 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-        if content.is_collection and self._foreign_child_lock_exists(uniqueid):
-            raise LockedByOtherSystemError(
-                uniqueid, f'Could not delete {uniqueid}, because it is locked.'
-            )
-        if not content.is_collection and content.binary_body:
-            blob = self.bucket.blob(content.id)
-            with zeit.cms.tracing.use_span(
-                __name__ + '.tracing',
-                'gcs',
-                attributes={'db.operation': 'delete', 'id': content.id},
-            ):
-                try:
-                    blob.delete()
-                except google.api_core.exceptions.NotFound:
-                    log.info('Ignored NotFound while deleting GCS blob %s', uniqueid)
 
-        self.unlock(uniqueid)
         if content.is_collection:
-            (parent, _) = self._pathkey(uniqueid)
-            stmt = delete(Path).where(Path.parent_path.startswith(parent))
-            self.session.execute(stmt)
-        else:
-            self.session.delete(content)
+            if self._foreign_child_lock_exists(uniqueid):
+                raise LockedByOtherSystemError(
+                    uniqueid, f'Could not delete {uniqueid}, because it is locked.'
+                )
+            for _, child_uid in self.listCollection(uniqueid):
+                del self[child_uid]
+        elif content.binary_body:
+            self._delete_binary(content)
+        # unlock checks if locked and unlocks if necessary
+        self.unlock(uniqueid)
+        self.session.delete(content)
 
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
+
+    def _delete_binary(self, content):
+        blob = self.bucket.blob(content.id)
+        with zeit.cms.tracing.use_span(
+            __name__ + '.tracing',
+            'gcs',
+            attributes={'db.operation': 'delete', 'id': content.id},
+        ):
+            try:
+                blob.delete()
+            except google.api_core.exceptions.NotFound:
+                log.info('Ignored NotFound while deleting GCS blob %s', content.uniqueid)
 
     @staticmethod
     def _normalize(uniqueid):
@@ -485,6 +486,10 @@ class Path(DBObject):
         backref=backref('path', uselist=False, cascade='all, delete-orphan', passive_deletes=True),
     )
 
+    @property
+    def uniqueid(self):
+        return f'{ID_NAMESPACE}{self.parent_path}/{self.name}'
+
 
 class Content(DBObject):
     __tablename__ = 'properties'
@@ -508,6 +513,10 @@ class Content(DBObject):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
         binary_types = config.get('binary-types', 'image,file,unknown').split(',')
         return self.type in binary_types
+
+    @property
+    def uniqueid(self):
+        return self.path.uniqueid
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
