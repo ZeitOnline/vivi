@@ -407,6 +407,7 @@ class Connector:
         if locktoken:
             self._unlock(id, locktoken)
             self._invalidate_cache(id)
+        return locktoken  # Needed for cleanup in ZopeConnector
 
     def _unlock(self, id, locktoken):
         url = self._id2loc(self._get_cannonical_id(id))
