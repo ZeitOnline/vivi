@@ -690,6 +690,8 @@ class Connector:
                     self._remove_from_caches(key, [self.property_cache])
         else:
             self._remove_from_caches(id, [self.property_cache, self.child_name_cache])
+            for key in self._cached_ids_below_parent(self.property_cache, id):
+                self._remove_from_caches(key, [self.property_cache, self.child_name_cache])
 
         # Update our parent's child_name_cache
         parent, name = self._id_splitlast(id)
