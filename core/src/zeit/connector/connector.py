@@ -370,12 +370,18 @@ class Connector:
 
         # Update property cache
         del properties[('cached-time', 'INTERNAL')]
+        remove = []
+        for key, value in properties.items():
+            if value is zeit.connector.interfaces.DeleteProperty:
+                remove.append(key)
         try:
             cached_properties = self.property_cache[id]
         except KeyError:
             pass
         else:
             cached_properties.update(properties)
+            for key in remove:
+                del cached_properties[key]
             self.property_cache[id] = cached_properties
 
     def lock(self, id, principal, until):
