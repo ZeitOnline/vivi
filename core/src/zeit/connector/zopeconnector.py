@@ -51,8 +51,8 @@ class ZopeConnector(zeit.connector.connector.Connector):
         datamanager.add_cleanup(self._unlock, id, locktoken)
         return locktoken
 
-    def unlock(self, id, locktoken=None):
-        locktoken = super().unlock(id, locktoken)
+    def unlock(self, id):
+        locktoken = super().unlock(id)
         self.get_datamanager().remove_cleanup(self._unlock, id, locktoken)
         return locktoken
 

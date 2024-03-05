@@ -370,12 +370,18 @@ class Connector:
 
         # Update property cache
         del properties[('cached-time', 'INTERNAL')]
+        remove = []
+        for key, value in properties.items():
+            if value is zeit.connector.interfaces.DeleteProperty:
+                remove.append(key)
         try:
             cached_properties = self.property_cache[id]
         except KeyError:
             pass
         else:
             cached_properties.update(properties)
+            for key in remove:
+                del cached_properties[key]
             self.property_cache[id] = cached_properties
 
     def lock(self, id, principal, until):
@@ -401,6 +407,7 @@ class Connector:
         if locktoken:
             self._unlock(id, locktoken)
             self._invalidate_cache(id)
+        return locktoken  # Needed for cleanup in ZopeConnector
 
     def _unlock(self, id, locktoken):
         url = self._id2loc(self._get_cannonical_id(id))

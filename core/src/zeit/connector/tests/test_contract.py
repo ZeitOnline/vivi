@@ -352,6 +352,22 @@ class ContractDAV(
     copy_inherited_functions(ContractSearch, locals())
 
 
+class ContractZopeDAV(
+    ContractReadWrite,
+    ContractCopyMove,
+    ContractLock,
+    ContractSearch,
+    zeit.connector.testing.ConnectorTest,
+):
+    layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
+    shortened_uuid = False
+
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
+
+
 class ContractMock(
     ContractReadWrite,
     ContractCopyMove,
