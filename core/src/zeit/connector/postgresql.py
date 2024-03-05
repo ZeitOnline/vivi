@@ -61,9 +61,9 @@ ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
 
 class LockStatus(Enum):
-    NO_LOCK = 0
-    OTHERS_LOCK = 1
-    OWN_LOCK = 2
+    NONE = 0
+    FOREIGN = 1
+    OWN = 2
 
 
 def _build_filter(expr):
@@ -356,11 +356,11 @@ class Connector:
     def _get_lock_status(self, id):
         lock_principal, until, is_my_lock = self.locked(id)
         if lock_principal is None and until is None:
-            return LockStatus.NO_LOCK
+            return LockStatus.NONE
         elif is_my_lock:
-            return LockStatus.OWN_LOCK
+            return LockStatus.OWN
         else:
-            return LockStatus.OTHERS_LOCK
+            return LockStatus.FOREIGN
 
     def _add_lock(self, id, principal, until):
         path = self.session.get(Path, self._pathkey(id))
@@ -392,11 +392,11 @@ class Connector:
 
     def lock(self, id, principal, until):
         match self._get_lock_status(id):
-            case LockStatus.NO_LOCK:
+            case LockStatus.NONE:
                 return self._add_lock(id, principal, until)
-            case LockStatus.OWN_LOCK:
+            case LockStatus.OWN:
                 raise LockingError(id, f'You already own the lock of {id}.')
-            case LockStatus.OTHERS_LOCK:
+            case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(id, f'{id} is already locked.')
 
     def unlock(self, id):
