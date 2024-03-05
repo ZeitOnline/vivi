@@ -410,7 +410,6 @@ class Connector:
     def _unlock(self, id, locktoken):
         url = self._id2loc(self._get_cannonical_id(id))
         self.get_connection().unlock(url, locktoken)
-        self._invalidate_cache(id)
 
     def locked(self, id):
         id = self._get_cannonical_id(id)

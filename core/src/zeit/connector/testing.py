@@ -82,7 +82,11 @@ class DAVServerLayer(plone.testing.Layer):
     def recursive_cleanup(self, uid_in):
         connector = self['connector']
         for _name, uid in connector.listCollection(uid_in):
-            connector.unlock(uid)
+            # unlock every resource, no matter the user
+            davlock = connector._get_dav_lock(uid)
+            if davlock:
+                connector._unlock(uid, davlock.get('locktoken'))
+                connector._invalidate_cache(uid)
             if connector[uid].type == 'folder':
                 self.recursive_cleanup(uid)
             del connector[uid]

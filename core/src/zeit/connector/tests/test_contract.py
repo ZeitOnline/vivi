@@ -282,12 +282,10 @@ class ContractLock:
 
     def test_unlock_for_unknown_user_raises(self):
         id = self.add_resource('foo').id
-        token = self.connector.lock(id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        self.connector.lock(id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
         transaction.commit()
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.unlock(id)
-        self.connector._unlock(id, token)
-        self.assertEqual((None, None, False), self.connector.locked(id))
 
     def test_locking_already_locked_resource_by_same_user_raises(self):
         id = self.add_resource('foo').id
