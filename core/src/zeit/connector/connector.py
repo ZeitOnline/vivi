@@ -689,7 +689,7 @@ class Connector:
                 end = id[:-1] + chr(ord('/') + 1)
                 for key in self.property_cache.keys(min=id, max=end):
                     if key not in self.child_name_cache:
-                        del self.property_cache[key]
+                        self._remove_from_caches(key, [self.property_cache])
         else:
             self._remove_from_caches(id, [self.property_cache, self.child_name_cache])
 
