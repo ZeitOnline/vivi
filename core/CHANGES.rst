@@ -6,13 +6,13 @@ vivi.core changes
 5.123.0 (2024-03-05)
 --------------------
 
-- ZO-4267-unlock: Fix unlock API for zope cache connector
+- ZO-4880: Fix unlock API for zope cache connector
 
 
 5.122.0 (2024-03-04)
 --------------------
 
-- ZO-4267: Prevent unlocking a resource that was locked externally
+- ZO-4880: Prevent unlocking a resource that was locked externally
 
 - ZO-4549: script for deleting contents in TMS indexes
 
