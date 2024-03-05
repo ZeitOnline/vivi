@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.123.0 (2024-03-05)
+--------------------
+
+- ZO-4267-unlock: Fix unlock API for zope cache connector
+
+
 5.122.0 (2024-03-04)
 --------------------
 
