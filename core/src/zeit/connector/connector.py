@@ -15,7 +15,7 @@ import pytz
 import zope.cachedescriptors.property
 import zope.interface
 
-from zeit.connector.interfaces import ID_NAMESPACE
+from zeit.connector.interfaces import ID_NAMESPACE, IPersistentCache
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
 import zeit.connector.dav.davresource
@@ -685,7 +685,6 @@ class Connector:
             self._update_child_id_cache(davres)
 
             # Remove no longer existing child entries from property_cache
-            IPersistentCache = zeit.connector.interfaces.IPersistentCache
             if id.endswith('/') and IPersistentCache.providedBy(self.property_cache):
                 end = id[:-1] + chr(ord('/') + 1)
                 for key in self.property_cache.keys(min=id, max=end):
