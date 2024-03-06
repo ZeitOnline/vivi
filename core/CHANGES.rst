@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.125.0 (2024-03-06)
+--------------------
+
+- ZO-4607: Make DAV resource class configurable, for migration
+
+
 5.124.0 (2024-03-06)
 --------------------
 
