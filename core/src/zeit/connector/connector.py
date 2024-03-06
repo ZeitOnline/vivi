@@ -85,6 +85,7 @@ class Connector:
     WebDAV implementation based on pydavclient
     """
 
+    resource_class = zeit.connector.resource.CachedResource
     long_name = 'DAV connector'
 
     def __init__(self, roots=None, prefix='http://xml.zeit.de/'):
@@ -233,7 +234,7 @@ class Connector:
             zeit.connector.dav.interfaces.DAVBadRequestError,
         ):
             raise KeyError('The resource %r does not exist.' % str(id))
-        return zeit.connector.resource.CachedResource(
+        return self.resource_class(
             str(id),
             self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(id),
