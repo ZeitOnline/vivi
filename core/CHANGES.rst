@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.124.0 (2024-03-06)
+--------------------
+
+FIX:
+- Handle XML comments in article body
+
+
 5.123.0 (2024-03-05)
 --------------------
 
