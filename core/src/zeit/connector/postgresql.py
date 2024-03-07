@@ -367,7 +367,7 @@ class Connector:
         if path is None:
             log.warning('Unable to add lock to resource %s that does not exist.', str(id))
             return
-        stmt = Lock.create(path=path, principal=principal, until=until)
+        stmt = Lock.create(path, principal, until)
         self.session.execute(stmt)
         return self.session.get(Lock, (path.parent_path, path.name, path.id)).token
 
