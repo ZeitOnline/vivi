@@ -116,7 +116,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     )
 
     avoid_create_summary = zeit.cms.content.dav.DAVProperty(
-       ICommonMetadata['avoid_create_summary'], DOCUMENT_SCHEMA_NS, 'avoid_create_summary'
+        ICommonMetadata['avoid_create_summary'], DOCUMENT_SCHEMA_NS, 'avoid_create_summary'
     )
 
     @property
