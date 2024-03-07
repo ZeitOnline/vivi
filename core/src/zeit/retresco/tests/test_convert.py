@@ -82,6 +82,7 @@ class ConvertTest(zeit.retresco.testing.FunctionalTestCase):
                         'header_layout': 'default',
                         'hide_adblocker_notification': False,
                         'hide_ligatus_recommendations': False,
+                        'avoid_create_summary': False,
                         'imagecount': '0',
                         'in_rankings': 'yes',
                         'is_content': 'yes',
