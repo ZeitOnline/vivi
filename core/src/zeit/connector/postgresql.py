@@ -351,7 +351,7 @@ class Connector:
     def _foreign_child_lock_exists(self, id):
         (parent, _) = self._pathkey(id)
         locks = self.session.query(Lock).filter(Lock.parent_path.startswith(parent)).all()
-        return any([not self._is_current_principal(lock.principal) for lock in locks])
+        return any([self._is_foreign(lock.principal) for lock in locks])
 
     def _get_lock_status(self, id):
         lock_principal, until, is_my_lock = self.locked(id)
@@ -371,7 +371,7 @@ class Connector:
         self.session.execute(stmt)
         return self.session.get(Lock, (path.parent_path, path.name, path.id)).token
 
-    def _is_current_principal(self, principal):
+    def _is_foreign(self, principal):
         # Let's see if the principal is one we know.
         try:
             import zope.authentication.interfaces  # UI-only dependency
@@ -387,8 +387,8 @@ class Connector:
             except zope.authentication.interfaces.PrincipalLookupError:
                 pass
             else:
-                return True
-        return False
+                return False
+        return True
 
     def lock(self, id, principal, until):
         match self._get_lock_status(id):
@@ -406,7 +406,7 @@ class Connector:
         lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
         if not lock:
             return
-        if not self._is_current_principal(lock.principal):
+        if self._is_foreign(lock.principal):
             raise LockedByOtherSystemError(id, f'{id} is already locked.')
         self.session.delete(lock)
 
@@ -427,7 +427,7 @@ class Connector:
         lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
         if lock is None:
             return (None, None, False)
-        is_my_lock = self._is_current_principal(lock.principal)
+        is_my_lock = not self._is_foreign(lock.principal)
 
         return (lock.principal, lock.until, is_my_lock)
 
