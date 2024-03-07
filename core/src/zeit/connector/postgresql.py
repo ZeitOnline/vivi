@@ -380,15 +380,12 @@ class Connector:
                 zope.authentication.interfaces.IAuthentication
             )
         except ImportError:
-            authentication = None
-        if authentication is not None:
-            try:
-                authentication.getPrincipal(principal)
-            except zope.authentication.interfaces.PrincipalLookupError:
-                pass
-            else:
-                return False
-        return True
+            return True
+        try:
+            authentication.getPrincipal(principal)
+        except zope.authentication.interfaces.PrincipalLookupError:
+            return True
+        return False
 
     def lock(self, id, principal, until):
         match self._get_lock_status(id):
