@@ -212,14 +212,6 @@ class FunctionalTeaserDisplayTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('Foo', view.teasers[0]['texts'][2]['content'])
         self.assertEqual('Zitat:', view.teasers[0]['texts'][1]['content'])
 
-    def test_gallery_teaser_forces_mobile_image(self):
-        self.repository['gallery'] = self.create_gallery()
-        container = self.cp.body.create_item('region').create_item('area')
-        block = zope.component.getMultiAdapter(
-            (container, self.repository['gallery'], 0), zeit.edit.interfaces.IElement
-        )
-        assert block.force_mobile_image
-
     def test_teaser_forces_mobile_image_per_default(self):
         assert self.create_teaserimage_block('large').force_mobile_image
 

@@ -108,14 +108,6 @@ def make_block_from_content(container, content, position):
     return block
 
 
-@grok.adapter(zeit.content.cp.interfaces.IArea, zeit.content.gallery.interfaces.IGallery, int)
-@grok.implementer(zeit.edit.interfaces.IElement)
-def make_block_from_gallery(container, content, position):
-    block = make_block_from_content(container, content, position)
-    block.force_mobile_image = True
-    return block
-
-
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @grok.implementer(zeit.edit.interfaces.IElementReferences)
 def cms_content_iter(context):
