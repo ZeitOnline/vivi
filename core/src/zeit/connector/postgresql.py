@@ -23,7 +23,6 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
     delete,
-    insert,
     schema,
     select,
 )
@@ -350,8 +349,13 @@ class Connector:
 
     def _foreign_child_lock_exists(self, id):
         (parent, _) = self._pathkey(id)
-        locks = self.session.query(Lock).filter(Lock.parent_path.startswith(parent)).all()
-        return any([self._is_foreign(lock.principal) for lock in locks])
+        stmt = (
+            select(Lock).join(Path, Lock.id == Path.id).filter(Path.parent_path.startswith(parent))
+        )
+        for lock in self.session.execute(stmt).scalars():
+            if self._is_foreign(lock.principal):
+                return True
+        return False
 
     def _get_lock_status(self, id):
         lock_principal, until, is_my_lock = self.locked(id)
@@ -367,9 +371,9 @@ class Connector:
         if path is None:
             log.warning('Unable to add lock to resource %s that does not exist.', str(id))
             return
-        stmt = Lock.create(path, principal, until)
-        self.session.execute(stmt)
-        return self.session.get(Lock, (path.parent_path, path.name, path.id)).token
+        lock = Lock(id=path.id, principal=principal, until=until)
+        self.session.add(lock)
+        return lock.token
 
     def _is_foreign(self, principal):
         # Let's see if the principal is one we know.
@@ -400,7 +404,7 @@ class Connector:
         path = self.session.get(Path, self._pathkey(id))
         if path is None:
             raise KeyError(f'The resource {id} does not exist.')
-        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        lock = self.session.get(Lock, path.id)
         if not lock:
             return
         if self._is_foreign(lock.principal):
@@ -411,7 +415,7 @@ class Connector:
         path = self.session.get(Path, self._pathkey(id))
         if path is None:
             raise KeyError(f'The resource {id} does not exist.')
-        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        lock = self.session.get(Lock, path.id)
         if not lock or not lock.token == token:
             return
         self.session.delete(lock)
@@ -421,7 +425,7 @@ class Connector:
         if path is None:
             log.warning('The resource %s does not exist.', str(id))
             return (None, None, False)
-        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        lock = self.session.get(Lock, path.id)
         if lock is None:
             return (None, None, False)
         is_my_lock = not self._is_foreign(lock.principal)
@@ -482,38 +486,6 @@ class Path(DBObject):
     )
 
 
-class Lock(DBObject):
-    __tablename__ = 'locks'
-
-    parent_path = Column(Unicode, primary_key=True)
-    name = Column(Unicode, primary_key=True)
-    id = Column(Uuid(as_uuid=False), primary_key=True)
-    principal = Column(Unicode, nullable=False)
-    until = Column(TIMESTAMP(timezone=True), nullable=False)
-
-    __table_args__ = (
-        schema.ForeignKeyConstraint(
-            (parent_path, name, id), (Path.parent_path, Path.name, Path.id), onupdate='CASCADE'
-        ),
-    )
-
-    @classmethod
-    def create(cls, path, principal, until):
-        stmt = insert(cls).values(
-            parent_path=path.parent_path,
-            name=path.name,
-            id=path.id,
-            principal=principal,
-            until=until,
-        )
-        return stmt
-
-    @property
-    def token(self):
-        "Backwards compatibility with DAV backend which returns a token if a lock was added."
-        return hashlib.sha256(f'{self.principal}{self.id}'.encode('utf-8')).hexdigest()
-
-
 class Content(DBObject):
     __tablename__ = 'properties'
 
@@ -571,6 +543,21 @@ class Content(DBObject):
                 continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
+
+
+class Lock(DBObject):
+    __tablename__ = 'locks'
+
+    id = Column(Uuid(as_uuid=False), primary_key=True)
+    principal = Column(Unicode, nullable=False)
+    until = Column(TIMESTAMP(timezone=True), nullable=False)
+
+    __table_args__ = (schema.ForeignKeyConstraint(['id'], ['properties.id']),)
+
+    @property
+    def token(self):
+        "Backwards compatibility with DAV backend which returns a token if a lock was added."
+        return hashlib.sha256(f'{self.principal}{self.id}'.encode('utf-8')).hexdigest()
 
 
 class PassthroughConnector(Connector):
