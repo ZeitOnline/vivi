@@ -79,15 +79,22 @@ class DAVServerLayer(plone.testing.Layer):
         print(self['dav_container'].logs(timestamps=True).decode('utf-8'))
         raise RuntimeError('%s did not start up' % url)
 
+    def recursive_cleanup(self, uid_in):
+        connector = self['connector']
+        for _name, uid in connector.listCollection(uid_in):
+            # unlock every resource, no matter the user
+            davlock = connector._get_dav_lock(uid)
+            if davlock:
+                connector._unlock(uid, davlock.get('locktoken'))
+                connector._invalidate_cache(uid)
+            if connector[uid].type == 'folder':
+                self.recursive_cleanup(uid)
+            del connector[uid]
+
     def testTearDown(self):
         transaction.abort()
-        connector = self['connector']
-        for _name, uid in connector.listCollection('http://xml.zeit.de/testing'):
-            try:
-                connector.unlock(uid)
-                del connector[uid]
-            except Exception:
-                pass
+        root_collection = 'http://xml.zeit.de/testing'
+        self.recursive_cleanup(root_collection)
 
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         connector.disconnect()

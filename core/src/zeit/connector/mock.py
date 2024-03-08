@@ -14,7 +14,14 @@ import pytz
 import zope.event
 
 from zeit.connector.connector import CannonicalId
-from zeit.connector.interfaces import ID_NAMESPACE, UUID_PROPERTY, CopyError, MoveError
+from zeit.connector.interfaces import (
+    ID_NAMESPACE,
+    UUID_PROPERTY,
+    CopyError,
+    LockedByOtherSystemError,
+    LockingError,
+    MoveError,
+)
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
@@ -167,7 +174,10 @@ class Connector(zeit.connector.filesystem.Connector):
     def __delitem__(self, id):
         id = self._get_cannonical_id(id)
         self[id]  # may raise KeyError
-        for _name, uid in self.listCollection(id):
+        list_collection = self.listCollection(id)
+        for _name, uid in list_collection:
+            if uid in self._locked:
+                raise LockedByOtherSystemError(uid, '')
             del self[uid]
         self._deleted.add(id)
         self._data.pop(id, None)
@@ -193,16 +203,21 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def move(self, old_id, new_id):
         self._prevent_overwrite(old_id, new_id, MoveError)
-        self._ignore_uuid_checks = True
         r = self[old_id]
+
+        if new_id in self:
+            raise MoveError(new_id, f'The resource {new_id} already exists.')
         r.id = new_id
         try:
+            self._ignore_uuid_checks = True
             self.add(r, verify_etag=False)
         finally:
             self._ignore_uuid_checks = False
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
+            if uid in self._locked and self._locked[uid][0] != 'zope.user':
+                raise LockedByOtherSystemError(uid, '')
             self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
 
@@ -230,6 +245,8 @@ class Connector(zeit.connector.filesystem.Connector):
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         id = self._get_cannonical_id(id)
+        if id in self._locked:
+            raise LockingError('Resource is already locked by another principal')
         self._locked[id] = (principal, until, True)
 
     def unlock(self, id):

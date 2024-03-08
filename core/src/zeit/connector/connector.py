@@ -15,7 +15,7 @@ import pytz
 import zope.cachedescriptors.property
 import zope.interface
 
-from zeit.connector.interfaces import ID_NAMESPACE
+from zeit.connector.interfaces import ID_NAMESPACE, IPersistentCache
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
 import zeit.connector.dav.davresource
@@ -132,8 +132,11 @@ class Connector:
         """List the filenames of a collection identified by <id> (see[8])."""
         __traceback_info__ = (id,)
         id = self._get_cannonical_id(id)
-        for child_id in self._get_resource_child_ids(id):
-            yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
+        try:
+            for child_id in self._get_resource_child_ids(id):
+                yield (self._id_splitlast(child_id)[1].rstrip('/'), child_id)
+        except zeit.connector.dav.interfaces.DAVNotFoundError as err:
+            raise KeyError(f'The resource {id} does not exist.') from err
 
     def _get_resource_type(self, id):
         __traceback_info__ = (id,)
@@ -261,6 +264,8 @@ class Connector:
             self.get_connection().delete(self._id2loc(id), token)
         except zeit.connector.dav.interfaces.DAVNotFoundError:
             raise KeyError(id)
+        except zeit.connector.dav.interfaces.FailedDependencyError as e:
+            raise zeit.connector.interfaces.LockedByOtherSystemError(id, e) from e
         self._invalidate_cache(id)
 
     def __contains__(self, id):
@@ -282,30 +287,20 @@ class Connector:
 
     def move(self, old_id, new_id):
         """Move the resource with id `old_id` to `new_id`."""
-        self._copy_or_move(
-            'move', zeit.connector.interfaces.MoveError, old_id, new_id, resolve_conflicts=True
-        )
+        self._copy_or_move('move', zeit.connector.interfaces.MoveError, old_id, new_id)
 
-    def _copy_or_move(self, method_name, exception, old_id, new_id, resolve_conflicts=False):
+    def _copy_or_move(self, method_name, exception, old_id, new_id):
         source = self[old_id]  # Makes sure source exists.
         if self._is_descendant(new_id, old_id):
             raise exception(old_id, 'Could not copy or move %s to a decendant of itself.' % old_id)
 
         logger.debug('copy: %s to %s' % (old_id, new_id))
         if self._get_cannonical_id(new_id) in self:
-            target = self[new_id]
-            # The target already exists. It's possible that there was a
-            # conflict. For non-directories verify body.
-            if not (
-                resolve_conflicts
-                and 'httpd/unix-directory' not in (source.contentType, target.contentType)
-                and source.data.read() == self[new_id].data.read()
-            ):
-                raise exception(
-                    old_id,
-                    'Could not copy or move %s to %s, '
-                    'because target alread exists.' % (old_id, new_id),
-                )
+            raise exception(
+                old_id,
+                'Could not copy or move %s to %s, '
+                'because target already exists.' % (old_id, new_id),
+            )
         # Make old_id and new_id canonical. Use the canonical old_id to deduct
         # the canonical new_id:
         old_id = self._get_cannonical_id(old_id)
@@ -334,7 +329,10 @@ class Connector:
                 del self[old_id]
         else:
             token = self._get_my_locktoken(old_id)
-            method(old_loc, new_loc, locktoken=token)
+            try:
+                method(old_loc, new_loc, locktoken=token)
+            except zeit.connector.dav.interfaces.DAVNotFoundError as err:
+                raise KeyError('The resource %s does not exist.', old_id) from err
 
         self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)
@@ -686,14 +684,13 @@ class Connector:
             self._update_child_id_cache(davres)
 
             # Remove no longer existing child entries from property_cache
-            IPersistentCache = zeit.connector.interfaces.IPersistentCache
-            if id.endswith('/') and IPersistentCache.providedBy(self.property_cache):
-                end = id[:-1] + chr(ord('/') + 1)
-                for key in self.property_cache.keys(min=id, max=end):
-                    if key not in self.child_name_cache:
-                        del self.property_cache[key]
+            for key in self._cached_ids_below_parent(self.property_cache, id):
+                if key not in self.child_name_cache:
+                    self._remove_from_caches(key, [self.property_cache])
         else:
             self._remove_from_caches(id, [self.property_cache, self.child_name_cache])
+            for key in self._cached_ids_below_parent(self.property_cache, id):
+                self._remove_from_caches(key, [self.property_cache, self.child_name_cache])
 
         # Update our parent's child_name_cache
         parent, name = self._id_splitlast(id)
@@ -717,6 +714,13 @@ class Connector:
                 self._invalidate_cache(parent)
             else:
                 self._update_property_cache(davres)
+
+    def _cached_ids_below_parent(self, cache, id):
+        if not (id.endswith('/') or IPersistentCache.providedBy(cache)):
+            return iter(())
+        end = id[:-1] + chr(ord('/') + 1)
+        for key in cache.keys(min=id, max=end):
+            yield key
 
     def _get_cannonical_id(self, id):
         """Add / for collections if not appended yet."""

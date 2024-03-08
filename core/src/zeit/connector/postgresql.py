@@ -1,9 +1,11 @@
+from enum import Enum
 from functools import partial
 from io import BytesIO, StringIO
 from logging import getLogger
 from operator import itemgetter
 from uuid import uuid4
 import collections
+import hashlib
 import os
 import os.path
 import time
@@ -20,6 +22,9 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
+    delete,
+    insert,
+    schema,
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -36,9 +41,14 @@ import zope.interface
 import zope.sqlalchemy
 
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
-from zeit.connector.dav.interfaces import DAVNotFoundError
-from zeit.connector.interfaces import DeleteProperty
-from zeit.connector.resource import CachedResource
+from zeit.connector.interfaces import (
+    CopyError,
+    DeleteProperty,
+    LockedByOtherSystemError,
+    LockingError,
+    MoveError,
+)
+from zeit.connector.resource import CachedResource, Resource
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.interfaces
@@ -50,6 +60,12 @@ log = getLogger(__name__)
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
 
 
+class LockStatus(Enum):
+    NONE = 0
+    FOREIGN = 1
+    OWN = 2
+
+
 def _build_filter(expr):
     op = expr.operator
     if op == 'and':
@@ -57,8 +73,8 @@ def _build_filter(expr):
     elif op == 'eq':
         (var, value) = expr.operands
         name = var.name
-        namespace = var.namespace.replace(Properties.NS, '', 1)
-        return Properties.unsorted[namespace][name].as_string() == value
+        namespace = var.namespace.replace(Content.NS, '', 1)
+        return Content.unsorted[namespace][name].as_string() == value
     else:
         raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
@@ -118,37 +134,37 @@ class Connector:
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        props = self._get_properties(uniqueid)
-        if props is None:
-            raise KeyError(uniqueid)
-        if props.is_collection:
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        if content.is_collection:
             _get_body = partial(BytesIO, b'')
-        elif props.binary_body:
-            _get_body = partial(self._get_body, props.id)
-        elif not props.body:
+        elif content.binary_body:
+            _get_body = partial(self._get_body, content.id)
+        elif not content.body:
             _get_body = partial(BytesIO, b'')
         else:
-            _get_body = partial(BytesIO, props.body.encode('utf-8'))
+            _get_body = partial(BytesIO, content.body.encode('utf-8'))
         return CachedResource(
             uniqueid,
             uniqueid.split('/')[-1],
-            props.type,
-            props.to_webdav,
+            content.type,
+            content.to_webdav,
             _get_body,
-            'httpd/unix-directory' if props.is_collection else 'httpd/unknown',
+            'httpd/unix-directory' if content.is_collection else 'httpd/unknown',
         )
 
     property_cache = TransactionBoundCache('_v_property_cache', dict)
 
-    def _get_properties(self, uniqueid):
-        props = self.property_cache.get(uniqueid)
-        if props is not None:
-            return props
-        path = self.session.get(Paths, self._pathkey(uniqueid))
+    def _get_content(self, uniqueid):
+        content = self.property_cache.get(uniqueid)
+        if content is not None:
+            return content
+        path = self.session.get(Path, self._pathkey(uniqueid))
         if path is not None:
-            props = path.properties
-            self.property_cache[uniqueid] = props
-        return props
+            content = path.content
+            self.property_cache[uniqueid] = content
+        return content
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
@@ -173,12 +189,11 @@ class Connector:
 
     def listCollection(self, uniqueid):
         if uniqueid not in self:
-            # XXX mimic DAV behaviour (which likely should be KeyError instead)
-            raise DAVNotFoundError(404, 'Not Found', uniqueid, '')
+            raise KeyError(f'The resource {uniqueid} does not exist.')
         uniqueid = self._normalize(uniqueid)
         parent_path = '/'.join(self._pathkey(uniqueid))
         for name in self.session.execute(
-            select(Paths.name).filter_by(parent_path=parent_path)
+            select(Path.name).filter_by(parent_path=parent_path)
         ).scalars():
             yield (name, f'{ID_NAMESPACE}{parent_path}/{name}')
 
@@ -189,78 +204,91 @@ class Connector:
     def add(self, resource, verify_etag=True):
         uniqueid = self._normalize(resource.id)
         if uniqueid == ID_NAMESPACE:
-            raise KeyError('Cannot write to root object')
-        props = self._get_properties(uniqueid)
-        exists = props is not None
+            raise KeyError(f'Cannot write {uniqueid} to root object')
+        content = self._get_content(uniqueid)
+        exists = content is not None
         if not exists:
-            props = Properties()
-            path = Paths(properties=props)
+            content = Content()
+            path = Path(content=content)
             self.session.add(path)
         else:
-            path = props.path
+            path = content.path
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
-        props.from_webdav(resource.properties)
-        props.type = resource.type
-        props.is_collection = resource.contentType == 'httpd/unix-directory'
+        content.from_webdav(resource.properties)
+        content.type = resource.type
+        content.is_collection = resource.contentType == 'httpd/unix-directory'
 
-        if not props.is_collection:
-            self.body_cache.pop(props.id, None)
-            if props.binary_body:
-                blob = self.bucket.blob(props.id)
+        if not content.is_collection:
+            self.body_cache.pop(content.id, None)
+            if content.binary_body:
+                blob = self.bucket.blob(content.id)
                 data = resource.data  # may not be a static property
                 size = data.seek(0, os.SEEK_END)
                 data.seek(0)
                 with zeit.cms.tracing.use_span(
                     __name__ + '.tracing',
                     'gcs',
-                    attributes={'db.operation': 'upload', 'id': props.id, 'size': str(size)},
+                    attributes={'db.operation': 'upload', 'id': content.id, 'size': str(size)},
                 ):
                     blob.upload_from_file(data, size=size, retry=DEFAULT_RETRY)
             else:
                 # vivi uses utf-8 encoding throughout, see
                 # zeit.cms.content.adapter for XML and zeit.content.text.text
-                props.body = resource.data.read().decode('utf-8')
+                content.body = resource.data.read().decode('utf-8')
 
         if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = props
+            self.property_cache[uniqueid] = content
             resource.data.seek(0)
             self.body_cache[uniqueid] = resource.data.read()
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
-        props = self._get_properties(uniqueid)
-        if props is None:
-            raise KeyError(uniqueid)
-        current = props.to_webdav()
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        current = content.to_webdav()
         current.update(properties)
-        props.from_webdav(current)
+        content.from_webdav(current)
         if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = props
+            self.property_cache[uniqueid] = content
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        props = self._get_properties(uniqueid)
-        if props is None:
-            raise KeyError(uniqueid)
-        if not props.is_collection and props.binary_body:
-            blob = self.bucket.blob(props.id)
+        content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        if content.is_collection and self._foreign_child_lock_exists(uniqueid):
+            raise LockedByOtherSystemError(
+                uniqueid, f'Could not delete {uniqueid}, because it is locked.'
+            )
+        if not content.is_collection and content.binary_body:
+            blob = self.bucket.blob(content.id)
             with zeit.cms.tracing.use_span(
-                __name__ + '.tracing', 'gcs', attributes={'db.operation': 'delete', 'id': props.id}
+                __name__ + '.tracing',
+                'gcs',
+                attributes={'db.operation': 'delete', 'id': content.id},
             ):
                 try:
                     blob.delete()
                 except google.api_core.exceptions.NotFound:
-                    log.info('Ignored NotFound while deleting GCS blob %s', id)
-                    pass
-        self.session.delete(props)
+                    log.info('Ignored NotFound while deleting GCS blob %s', uniqueid)
+
+        self.unlock(uniqueid)
+        if content.is_collection:
+            (parent, _) = self._pathkey(uniqueid)
+            stmt = delete(Path).where(Path.parent_path.startswith(parent))
+            self.session.execute(stmt)
+        else:
+            self.session.delete(content)
+
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
 
     @staticmethod
     def _normalize(uniqueid):
         if not uniqueid.startswith(ID_NAMESPACE):
-            raise ValueError('The id %r is invalid.' % uniqueid)
+            raise ValueError(f'The id {uniqueid} is invalid.')
         return uniqueid.rstrip('/')
 
     @staticmethod
@@ -269,23 +297,136 @@ class Connector:
         parent_path = parent_path.rstrip('/')
         return (parent_path, name)
 
-    def copy(self, old_uniqueid, new_uniqueid):
-        pass
+    def copy(self, old_id, new_id):
+        old_id = self._normalize(old_id)
+        new_id = self._normalize(new_id)
+        if new_id in self:
+            raise CopyError(
+                old_id,
+                f'Could not copy {old_id} to {new_id}, because target already exists.',
+            )
+        old_resource = self[old_id]
+        old_content = self._get_content(old_id)
+        new_content = Content()
+        new_content.unsorted = old_content.unsorted
+        new_resource = Resource(
+            new_id,
+            new_id.split('/')[-1],
+            old_resource.type,
+            old_resource.data,
+            new_content.to_webdav_attributes(),
+            old_resource.contentType,
+        )
+        self[new_id] = new_resource
+        if old_content.is_collection:
+            for name, _ in self.listCollection(old_id):
+                self.copy(f'{old_id}/{name}', f'{new_id}/{name}')
 
-    def move(self, old_uniqueid, new_uniqueid):
-        pass
+    def move(self, old_id, new_id):
+        old_id = self._normalize(old_id)
+        new_id = self._normalize(new_id)
+        content = self._get_content(old_id)
+        if content is None:
+            raise KeyError(f'The resource {old_id} does not exist.')
+        if new_id in self:
+            raise MoveError(
+                old_id, f'Could not move {old_id} to {new_id}, because target already exists.'
+            )
+        if content.is_collection:
+            if self._foreign_child_lock_exists(old_id):
+                raise LockedByOtherSystemError(
+                    old_id, f'Could not move {old_id} to {new_id}, because it is locked.'
+                )
+            for name, _ in self.listCollection(old_id):
+                self.move(f'{old_id}/{name}', f'{new_id}/{name}')
 
-    def lock(self, uniqueid, principal, until):
-        pass
+        path = self.session.get(Path, self._pathkey(old_id))
+        (path.parent_path, path.name) = self._pathkey(new_id)
+        # unlock checks if locked and unlocks if necessary
+        self.unlock(new_id)
 
-    def unlock(self, uniqueid):
-        pass
+        self.property_cache.pop(old_id, None)
+        self.body_cache.pop(old_id, None)
 
-    def _unlock(self, uniqueid, locktocken):
-        pass
+    def _foreign_child_lock_exists(self, id):
+        (parent, _) = self._pathkey(id)
+        locks = self.session.query(Lock).filter(Lock.parent_path.startswith(parent)).all()
+        return any([self._is_foreign(lock.principal) for lock in locks])
 
-    def locked(self, uniqueid):
-        pass
+    def _get_lock_status(self, id):
+        lock_principal, until, is_my_lock = self.locked(id)
+        if lock_principal is None and until is None:
+            return LockStatus.NONE
+        elif is_my_lock:
+            return LockStatus.OWN
+        else:
+            return LockStatus.FOREIGN
+
+    def _add_lock(self, id, principal, until):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            log.warning('Unable to add lock to resource %s that does not exist.', str(id))
+            return
+        stmt = Lock.create(path, principal, until)
+        self.session.execute(stmt)
+        return self.session.get(Lock, (path.parent_path, path.name, path.id)).token
+
+    def _is_foreign(self, principal):
+        # Let's see if the principal is one we know.
+        try:
+            import zope.authentication.interfaces  # UI-only dependency
+
+            authentication = zope.component.queryUtility(
+                zope.authentication.interfaces.IAuthentication
+            )
+        except ImportError:
+            return True
+        try:
+            authentication.getPrincipal(principal)
+        except zope.authentication.interfaces.PrincipalLookupError:
+            return True
+        return False
+
+    def lock(self, id, principal, until):
+        match self._get_lock_status(id):
+            case LockStatus.NONE:
+                return self._add_lock(id, principal, until)
+            case LockStatus.OWN:
+                raise LockingError(id, f'You already own the lock of {id}.')
+            case LockStatus.FOREIGN:
+                raise LockedByOtherSystemError(id, f'{id} is already locked.')
+
+    def unlock(self, id):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            raise KeyError(f'The resource {id} does not exist.')
+        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        if not lock:
+            return
+        if self._is_foreign(lock.principal):
+            raise LockedByOtherSystemError(id, f'{id} is already locked.')
+        self.session.delete(lock)
+
+    def _unlock(self, id, token):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            raise KeyError(f'The resource {id} does not exist.')
+        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        if not lock or not lock.token == token:
+            return
+        self.session.delete(lock)
+
+    def locked(self, id):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            log.warning('The resource %s does not exist.', str(id))
+            return (None, None, False)
+        lock = self.session.get(Lock, (path.parent_path, path.name, path.id))
+        if lock is None:
+            return (None, None, False)
+        is_my_lock = not self._is_foreign(lock.principal)
+
+        return (lock.principal, lock.until, is_my_lock)
 
     def search(self, attrlist, expr):
         if (
@@ -296,20 +437,20 @@ class Connector:
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
             result = self.session.execute(
-                select(Paths.id, Paths.parent_path, Paths.name).filter_by(id=uuid)
+                select(Path.id, Path.parent_path, Path.name).filter_by(id=uuid)
             )
             for item in result:
                 yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', item.id)
         else:
-            query = select(Paths).join(Properties).filter(_build_filter(expr))
+            query = select(Path).join(Content).filter(_build_filter(expr))
             result = self.session.execute(query)
             itemgetters = [
-                (itemgetter(a.namespace.replace(Properties.NS, '', 1)), itemgetter(a.name))
+                (itemgetter(a.namespace.replace(Content.NS, '', 1)), itemgetter(a.name))
                 for a in attrlist
             ]
             for item in result.scalars():
                 for nsgetter, keygetter in itemgetters:
-                    value = keygetter(nsgetter(item.properties.unsorted))
+                    value = keygetter(nsgetter(item.content.unsorted))
                     yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', value)
 
 
@@ -320,7 +461,7 @@ METADATA = sqlalchemy.MetaData()
 DBObject = sqlalchemy.orm.declarative_base(metadata=METADATA)
 
 
-class Paths(DBObject):
+class Path(DBObject):
     __tablename__ = 'paths'
     __table_args__ = (UniqueConstraint('parent_path', 'name', 'id'),)
 
@@ -333,15 +474,47 @@ class Paths(DBObject):
         nullable=False,
         index=True,
     )
-    properties = relationship(
-        'Properties',
+    content = relationship(
+        'Content',
         uselist=False,
         lazy='joined',
         backref=backref('path', uselist=False, cascade='all, delete-orphan', passive_deletes=True),
     )
 
 
-class Properties(DBObject):
+class Lock(DBObject):
+    __tablename__ = 'locks'
+
+    parent_path = Column(Unicode, primary_key=True)
+    name = Column(Unicode, primary_key=True)
+    id = Column(Uuid(as_uuid=False), primary_key=True)
+    principal = Column(Unicode, nullable=False)
+    until = Column(TIMESTAMP(timezone=True), nullable=False)
+
+    __table_args__ = (
+        schema.ForeignKeyConstraint(
+            (parent_path, name, id), (Path.parent_path, Path.name, Path.id), onupdate='CASCADE'
+        ),
+    )
+
+    @classmethod
+    def create(cls, path, principal, until):
+        stmt = insert(cls).values(
+            parent_path=path.parent_path,
+            name=path.name,
+            id=path.id,
+            principal=principal,
+            until=until,
+        )
+        return stmt
+
+    @property
+    def token(self):
+        "Backwards compatibility with DAV backend which returns a token if a lock was added."
+        return hashlib.sha256(f'{self.principal}{self.id}'.encode('utf-8')).hexdigest()
+
+
+class Content(DBObject):
     __tablename__ = 'properties'
 
     id = Column(Uuid(as_uuid=False), primary_key=True)
@@ -366,11 +539,15 @@ class Properties(DBObject):
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
-    def to_webdav(self):
+    def to_webdav_attributes(self):
         props = {}
         for ns, d in self.unsorted.items():
             for k, v in d.items():
                 props[(k, self.NS + ns)] = v
+        return props
+
+    def to_webdav(self):
+        props = self.to_webdav_attributes()
 
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
@@ -439,7 +616,7 @@ class PassthroughConnector(Connector):
         resource = self.upstream[id]
         # Hacky. Remove this as it is not json-serializable, and also
         # irrelevant except for DAV caches.
-        resource.properties.data.pop(('cached-time', 'INTERNAL'), None)
+        resource.content.data.pop(('cached-time', 'INTERNAL'), None)
         savepoint = self.session.begin_nested()
         self[id] = resource
         try:
@@ -475,12 +652,19 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
     def start_span(self, *args, **kw):
         return zeit.cms.tracing.start_span(__name__ + '.tracing', *args, **kw)
 
+    def _write(self, buffer, params):
+        for k, v in params.items():
+            buffer.write('%s=%r\n' % (k, str(v)[:100]))
+
     def _before_cur_exec(self, conn, cursor, statement, params, context, executemany):
         statement, params = super()._before_cur_exec(
             conn, cursor, statement, params, context, executemany
         )
         p = StringIO()
-        for k, v in params.items():
-            p.write('%s=%r\n' % (k, str(v)[:100]))
+        if isinstance(params, (list, tuple)):
+            for param in params:
+                self._write(p, param)
+        elif isinstance(params, dict):
+            self._write(p, params)
         context._otel_span.set_attribute('db.parameters', p.getvalue())
         return statement, params

@@ -40,6 +40,10 @@ class DAVRedirectError(DAVError):
     """Raised when a resource was moved."""
 
 
+class FailedDependencyError(DAVError):
+    """Raised when dependency is e.g. locked"""
+
+
 class PreconditionFailedError(http.client.HTTPException):
     """Raised when a precondition (if header) fails."""
 

@@ -19,6 +19,7 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
         http.client.MOVED_PERMANENTLY: zeit.connector.dav.interfaces.DAVRedirectError,
         http.client.NOT_FOUND: zeit.connector.dav.interfaces.DAVNotFoundError,
         http.client.BAD_REQUEST: zeit.connector.dav.interfaces.DAVBadRequestError,
+        http.client.FAILED_DEPENDENCY: zeit.connector.dav.interfaces.FailedDependencyError,
     }
 
     def lock(self, url, owner=None, depth=0, timeout=None, headers=None):

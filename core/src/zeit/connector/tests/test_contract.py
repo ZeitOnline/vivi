@@ -5,8 +5,13 @@ import pytz
 import transaction
 import zope.interface.verify
 
-from zeit.connector.dav.interfaces import DAVNotFoundError
-from zeit.connector.interfaces import CopyError, DeleteProperty, LockedByOtherSystemError, MoveError
+from zeit.connector.interfaces import (
+    CopyError,
+    DeleteProperty,
+    LockedByOtherSystemError,
+    LockingError,
+    MoveError,
+)
 from zeit.connector.resource import Resource
 from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.interfaces
@@ -58,7 +63,7 @@ class ContractReadWrite:
             self.listCollection('invalid')
 
     def test_listCollection_nonexistent_id_raises(self):
-        with self.assertRaises(DAVNotFoundError):
+        with self.assertRaises(KeyError):
             self.listCollection('http://xml.zeit.de/nonexistent')
 
     def test_listCollection_returns_name_uniqueId_pairs(self):
@@ -110,14 +115,16 @@ class ContractReadWrite:
 
     def test_delitem_collection_removes_children(self):
         collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        collection_2 = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
         self.connector['http://xml.zeit.de/testing/folder'] = collection
+        self.connector['http://xml.zeit.de/testing/folder/subfolder'] = collection_2
         self.add_resource('folder/file')
+        self.add_resource('folder/subfolder/file')
         del self.connector[collection.id + '/']  # XXX trailing slash DAV-ism
         transaction.commit()
-        with self.assertRaises(KeyError):
-            self.connector['http://xml.zeit.de/folder']
-        with self.assertRaises(KeyError):
-            self.connector['http://xml.zeit.de/folder/file']
+        for resource in ['folder', 'folder/file', 'folder/subfolder', 'folder/subfolder/file']:
+            with self.assertRaises(KeyError):
+                self.connector['http://xml.zeit.de/testing/' + resource]
 
     def test_changeProperties_updates_properties(self):
         self.add_resource(
@@ -171,25 +178,12 @@ class ContractCopyMove:
         self.assertEqual('bar', res.properties[('foo', self.NS)])
         self.assertEqual(b'mybody', res.data.read())
 
-    def test_move_to_existing_resource_overwrites(self):
-        self.add_resource('source', properties={('foo', self.NS): 'bar'})
-        self.add_resource('target')
-        self.connector.move(
-            'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
-        )
-        transaction.commit()
-        self.assertEqual(
-            ['target'], [x[0] for x in self.listCollection('http://xml.zeit.de/testing')]
-        )
-        res = self.connector['http://xml.zeit.de/testing/target']
-        self.assertEqual('bar', res.properties[('foo', self.NS)])
-
-    def test_move_to_existing_differring_resource_raises(self):
+    def test_move_to_existing_resource_raises(self):
         # Note that this currently cannot "really" occur, because
         # zeit.cms.repository.copypastemove uses INameChooser so the new name
         # is guaranteed to be unique.
-        self.add_resource('source', body=b'one')
-        self.add_resource('target', body=b'two')
+        self.add_resource('source')
+        self.add_resource('target')
         with self.assertRaises(MoveError):
             self.connector.move(
                 'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
@@ -214,6 +208,12 @@ class ContractCopyMove:
         )
         self.assertNotIn('http://xml.zeit.de/testing/source/file', self.connector)
         self.assertIn('http://xml.zeit.de/testing/target/file', self.connector)
+
+    def test_move_nonexistent_raises(self):
+        with self.assertRaises(KeyError):
+            self.connector.move(
+                'http://xml.zeit.de/nonexistent', 'http://xml.zeit.de/testing/target'
+            )
 
     def test_copy_nonexistent_raises(self):
         with self.assertRaises(KeyError):
@@ -282,13 +282,73 @@ class ContractLock:
 
     def test_unlock_for_unknown_user_raises(self):
         id = self.add_resource('foo').id
-        token = self.connector.lock(id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        self.connector.lock(id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
         transaction.commit()
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.unlock(id)
-        self.connector._unlock(id, token)
-        self.connector.invalidate_cache(id)
-        self.assertEqual((None, None, False), self.connector.locked(id))
+
+    def test_locking_already_locked_resource_by_same_user_raises(self):
+        id = self.add_resource('foo').id
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertRaises(LockingError):
+            self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+
+    def test_locking_already_locked_resource_raises(self):
+        id = self.add_resource('foo').id
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertRaises(LockingError):
+            self.connector.lock(
+                id, 'zope.another_user', datetime.now(pytz.UTC) + timedelta(hours=2)
+            )
+
+    def test_move_operation_removes_lock(self):
+        id = self.add_resource('foo').id
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        self.connector.move(id, 'http://xml.zeit.de/testing/bar')
+        transaction.commit()
+        self.assertEqual(
+            self.connector.locked('http://xml.zeit.de/testing/bar'), (None, None, False)
+        )
+
+    def test_move_collection_with_locked_child_raises(self):
+        collection_id = 'http://xml.zeit.de/testing/source'
+        file_id = f'{collection_id}/foo'
+        zeit.connector.testing.mkdir(self.connector, collection_id)
+        self.connector[f'{collection_id}/foo'] = Resource(None, None, 'text', BytesIO(b''))
+        transaction.commit()
+        token = self.connector.lock(
+            file_id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2)
+        )
+        transaction.commit()
+        with self.assertRaises(LockedByOtherSystemError):
+            self.connector.move(collection_id, 'http://xml.zeit.de/testing/target')
+        self.connector._unlock(file_id, token)
+
+    def test_delitem_collection_raises_error_if_children_are_locked(self):
+        self.assertEqual([], self.listCollection('http://xml.zeit.de/testing'))
+        collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        self.add_resource('folder/file')
+        self.add_resource('folder/one')
+        self.add_resource('two')
+        token_1 = self.connector.lock(
+            'http://xml.zeit.de/testing/folder/one',
+            'external',
+            datetime.now(pytz.UTC) + timedelta(hours=2),
+        )
+        self.connector.lock(
+            'http://xml.zeit.de/testing/two',
+            'zope.user',
+            datetime.now(pytz.UTC) + timedelta(hours=2),
+        )
+        transaction.commit()
+        with self.assertRaises(LockedByOtherSystemError):
+            del self.connector['http://xml.zeit.de/testing']
+        self.connector._unlock('http://xml.zeit.de/testing/folder/one', token_1)
+        self.connector.unlock('http://xml.zeit.de/testing/two')
 
 
 class ContractSearch:
@@ -388,14 +448,14 @@ class ContractMock(
 
 class ContractSQL(
     ContractReadWrite,
-    # ContractCopyMove,
-    # ContractLock,
+    ContractCopyMove,
+    ContractLock,
     ContractSearch,
     zeit.connector.testing.SQLTest,
 ):
     shortened_uuid = True
 
     copy_inherited_functions(ContractReadWrite, locals())
-    # nyi copy_inherited_functions(ContractCopyMove, locals())
-    # nyi copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
