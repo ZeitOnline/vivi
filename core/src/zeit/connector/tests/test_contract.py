@@ -350,6 +350,15 @@ class ContractLock:
         self.connector._unlock('http://xml.zeit.de/testing/folder/one', token_1)
         self.connector.unlock('http://xml.zeit.de/testing/two')
 
+    def test_setitem_must_not_write_on_locked_object(self):
+        res = self.get_resource('foo', body=b'one')
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        self.connector.lock(res.id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        res = self.get_resource('foo', body=b'nope')
+        with self.assertRaises(LockedByOtherSystemError):
+            self.connector['http://xml.zeit.de/testing/foo'] = res
+
 
 class ContractSearch:
     def test_search_unknown_metadata(self):

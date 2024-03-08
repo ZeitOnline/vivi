@@ -107,6 +107,9 @@ class Connector(zeit.connector.filesystem.Connector):
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
         id = self._get_cannonical_id(id)
+        (_, _, mylock) = self.locked(id)
+        if id in self._locked and not mylock:
+            raise LockedByOtherSystemError(id, '')
         iscoll = resource.type == 'collection' or resource.contentType == 'httpd/unix-directory'
         if iscoll and not id.endswith('/'):
             id = CannonicalId(id + '/')
