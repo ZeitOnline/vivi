@@ -5,7 +5,7 @@ import lxml.builder
 import zope.component
 import zope.interface
 
-from zeit.cms.tagging.tag import Tag
+from zeit.cms.tagging.tag import XML_NS, Tag
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
 
@@ -149,7 +149,8 @@ class FakeTags(collections.OrderedDict):
         return {x.uniqueId: live_prefix + x.link for x in self.values() if x.link}
 
     def to_xml(self):
-        node = lxml.builder.E.tags(*[lxml.builder.E.tag(x.label) for x in self.values()])
+        E = lxml.builder.ElementMaker(namespace=XML_NS)
+        node = E.rankedTags(*[lxml.builder.E.tag(x.label) for x in self.values()])
         return node
 
 
