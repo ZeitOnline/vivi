@@ -22,7 +22,6 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
-    schema,
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -570,11 +569,17 @@ class Content(DBObject):
 class Lock(DBObject):
     __tablename__ = 'locks'
 
-    id = Column(Uuid(as_uuid=False), primary_key=True)
+    id = Column(Uuid(as_uuid=False), ForeignKey('properties.id'), primary_key=True)
     principal = Column(Unicode, nullable=False)
     until = Column(TIMESTAMP(timezone=True), nullable=False)
 
-    __table_args__ = (schema.ForeignKeyConstraint(['id'], ['properties.id']),)
+    content = relationship(
+        'Content',
+        uselist=False,
+        # Not used in code, but needed to let sqlalchemy know about
+        # relationship between mapped classes
+        lazy='noload',
+    )
 
     @property
     def token(self):
