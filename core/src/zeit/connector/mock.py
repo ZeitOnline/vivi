@@ -177,9 +177,12 @@ class Connector(zeit.connector.filesystem.Connector):
     def __delitem__(self, id):
         id = self._get_cannonical_id(id)
         self[id]  # may raise KeyError
+        (principal, _, mylock) = self.locked(id)
+        if id in self._locked and not mylock:
+            raise LockedByOtherSystemError(id, '')
         list_collection = self.listCollection(id)
         for _name, uid in list_collection:
-            if uid in self._locked:
+            if uid in self._locked and not mylock:
                 raise LockedByOtherSystemError(uid, '')
             del self[uid]
         self._deleted.add(id)
@@ -250,9 +253,10 @@ class Connector(zeit.connector.filesystem.Connector):
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         id = self._get_cannonical_id(id)
+        my_lock = principal == 'zope.user'
         if id in self._locked:
             raise LockingError('Resource is already locked by another principal')
-        self._locked[id] = (principal, until, True)
+        self._locked[id] = (principal, until, my_lock)
 
     def unlock(self, id):
         id = self._get_cannonical_id(id)
