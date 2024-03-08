@@ -369,6 +369,18 @@ class ContractLock:
         )
         transaction.commit()
 
+    def test_copy_locked_resource(self):
+        uid = self.add_resource('foo', properties={('bar', self.NS): 'bar'}).id
+        self.connector.lock(uid, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/target')
+        transaction.commit()
+        (principal, _, my_lock) = self.connector.locked('http://xml.zeit.de/testing/foo')
+        self.assertEqual((principal, my_lock), ('zope.user', True))
+        self.assertEqual(
+            self.connector.locked('http://xml.zeit.de/testing/target'), (None, None, False)
+        )
+
 
 class ContractSearch:
     def test_search_unknown_metadata(self):
