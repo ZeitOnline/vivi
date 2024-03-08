@@ -128,6 +128,10 @@ def add_ranked_tags_to_head(content):
     if head is None:
         return
 
+    # XXX Clean up content that was edited between ZO-4627 and ZO-4913
+    for node in head.findall('{%s}rankedTags' % XML_NS):
+        head.remove(node)
+
     existing = head.find('{%s}rankedTags' % XML_NS)
     if tags is not None:
         if existing is not None:
