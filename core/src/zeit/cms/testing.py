@@ -1216,30 +1216,8 @@ def clock(dt=None):
 
 def xmltotext(xml):
     xml = copy.deepcopy(xml)
-    indent(xml)
+    lxml.etree.indent(xml)
     return lxml.etree.tostring(xml, encoding=str)
-
-
-INDENT = 2 * ' '
-
-
-def indent(node, level=1):
-    """Backport of lxml.etree.indent, introduced in 4.5.0"""
-    _indent = '\n' + INDENT * level
-
-    children = list(node)
-    if not node.text and children:
-        node.text = _indent
-
-    count = len(children)
-    for i, child in enumerate(children):
-        if list(child):
-            indent(child, level + 1)
-        if not child.tail:
-            if i == count - 1:
-                child.tail = '\n' + INDENT * (level - 1)
-            else:
-                child.tail = _indent
 
 
 class Trace:
