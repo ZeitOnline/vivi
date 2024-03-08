@@ -206,6 +206,8 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def move(self, old_id, new_id):
         self._prevent_overwrite(old_id, new_id, MoveError)
+        if old_id in self._locked and self._locked[old_id][0] != 'zope.user':
+            raise LockedByOtherSystemError(old_id, '')
         r = self[old_id]
 
         if new_id in self:

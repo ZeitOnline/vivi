@@ -381,6 +381,13 @@ class ContractLock:
             self.connector.locked('http://xml.zeit.de/testing/target'), (None, None, False)
         )
 
+    def test_move_locked_resource_raises(self):
+        uid = self.add_resource('foo', properties={('bar', self.NS): 'bar'}).id
+        self.connector.lock(uid, 'zope.external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertRaises(LockedByOtherSystemError):
+            self.connector.move(uid, 'http://xml.zeit.de/testing/target')
+
 
 class ContractSearch:
     def test_search_unknown_metadata(self):
