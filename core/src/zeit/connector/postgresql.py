@@ -190,10 +190,8 @@ class Connector:
             raise KeyError(f'The resource {uniqueid} does not exist.')
         uniqueid = self._normalize(uniqueid)
         parent_path = '/'.join(self._pathkey(uniqueid))
-        for name in self.session.execute(
-            select(Path.name).filter_by(parent_path=parent_path)
-        ).scalars():
-            yield (name, f'{ID_NAMESPACE}{parent_path}/{name}')
+        for path in self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars():
+            yield (path.name, path.uniqueid)
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
@@ -441,13 +439,11 @@ class Connector:
         ):
             # Sorely needed performance optimization.
             uuid = expr.operands[-1].replace('urn:uuid:', '')
-            result = self.session.execute(
-                select(Path.id, Path.parent_path, Path.name).filter_by(id=uuid)
-            )
-            for item in result:
-                yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', item.id)
+            path = self.session.execute(select(Path).where(Path.id == uuid)).scalar()
+            if path is not None:
+                yield (path.uniqueid, path.id)
         else:
-            query = select(Path).join(Content).filter(_build_filter(expr))
+            query = select(Path).join(Content).where(_build_filter(expr))
             result = self.session.execute(query)
             itemgetters = [
                 (itemgetter(a.namespace.replace(Content.NS, '', 1)), itemgetter(a.name))
@@ -456,7 +452,7 @@ class Connector:
             for item in result.scalars():
                 for nsgetter, keygetter in itemgetters:
                     value = keygetter(nsgetter(item.content.unsorted))
-                    yield (f'{ID_NAMESPACE}{item.parent_path}/{item.name}', value)
+                    yield (item.uniqueid, value)
 
 
 factory = Connector.factory
