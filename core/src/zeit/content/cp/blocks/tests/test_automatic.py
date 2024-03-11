@@ -50,17 +50,3 @@ class AutomaticTeaserBlockTest(zeit.content.cp.testing.FunctionalTestCase):
         self.elastic.search.return_value.hits = 1
         teaser = duo_region.values()[0]
         self.assertEqual('two-side-by-side', teaser.layout.id)
-
-    def test_automatic_teaser_block_should_not_force_mobile_image(self):
-        self.repository['t1'] = ExampleContentType()
-        cp = self.repository['cp']
-        region = cp.body['feature'].create_item('area')
-        region.kind = 'major'
-        region.count = 1
-        region.automatic = True
-        region.automatic_type = 'query'
-
-        self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/t1'}])
-        self.elastic.search.return_value.hits = 1
-        teaser = region.values()[0]
-        self.assertFalse(teaser.force_mobile_image)

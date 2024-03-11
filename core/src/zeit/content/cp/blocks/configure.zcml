@@ -36,10 +36,10 @@
 
   <class class=".automatic.AutomaticTeaserBlock">
     <require
-      interface="..interfaces.IReadAutomaticTeaserBlock"
+      interface="..interfaces.IReadTeaserBlock"
       permission="zope.View"/>
     <require
-      set_schema="..interfaces.IReadAutomaticTeaserBlock"
+      set_schema="..interfaces.IReadTeaserBlock"
       permission="zeit.EditContent"/>
     <require
       interface="..interfaces.IWriteAutomaticTeaserBlock"

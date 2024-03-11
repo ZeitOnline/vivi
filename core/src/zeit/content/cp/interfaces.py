@@ -572,12 +572,6 @@ class ILocalTeaserBlock(IReadLocalTeaserBlock, IWriteLocalTeaserBlock, ITeaserBl
     """Teaser module that allows overriding title/text/image"""
 
 
-class IReadAutomaticTeaserBlock(IReadTeaserBlock):
-    force_mobile_image = zope.schema.Bool(
-        title=_('Force image on mobile'), required=False, default=False
-    )
-
-
 class IWriteAutomaticTeaserBlock(IWriteTeaserBlock):
     def change_layout(layout):
         """Temporarily change the layout (for the duration of one area.values()
@@ -589,7 +583,7 @@ class IWriteAutomaticTeaserBlock(IWriteTeaserBlock):
         """
 
 
-class IAutomaticTeaserBlock(IReadAutomaticTeaserBlock, IWriteAutomaticTeaserBlock, ITeaserBlock):
+class IAutomaticTeaserBlock(IReadTeaserBlock, IWriteAutomaticTeaserBlock, ITeaserBlock):
     pass
 
 
