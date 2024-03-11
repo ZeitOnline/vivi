@@ -321,6 +321,15 @@ class Connector:
         path = Path(content=new_content, parent_path=parent_path, name=name)
         self.session.add(path)
 
+        if new_content.binary_body:
+            source_blob = self.bucket.blob(old_content.id)
+            with zeit.cms.tracing.use_span(
+                __name__ + '.tracing',
+                'gcs',
+                attributes={'db.operation': 'copy', 'id': new_content.id, 'size': source_blob.size},
+            ):
+                self.bucket.copy_blob(source_blob, self.bucket, new_content.id, retry=DEFAULT_RETRY)
+
         if old_content.is_collection:
             for name, _ in self.listCollection(old_id):
                 self.copy(f'{old_id}/{name}', f'{new_id}/{name}')
