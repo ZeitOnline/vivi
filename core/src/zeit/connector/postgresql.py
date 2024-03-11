@@ -46,7 +46,7 @@ from zeit.connector.interfaces import (
     LockingError,
     MoveError,
 )
-from zeit.connector.resource import CachedResource, Resource
+from zeit.connector.resource import CachedResource
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.interfaces
@@ -295,6 +295,15 @@ class Connector:
         parent_path = parent_path.rstrip('/')
         return (parent_path, name)
 
+    def _clone_row(self, row, ignored_columns=None):
+        if ignored_columns is None:
+            ignored_columns = []
+        clone = type(row)()
+        for column in row.__table__.columns:
+            if column.name not in ignored_columns:
+                setattr(clone, column.name, getattr(row, column.name))
+        return clone
+
     def copy(self, old_id, new_id):
         old_id = self._normalize(old_id)
         new_id = self._normalize(new_id)
@@ -303,19 +312,15 @@ class Connector:
                 old_id,
                 f'Could not copy {old_id} to {new_id}, because target already exists.',
             )
-        old_resource = self[old_id]
         old_content = self._get_content(old_id)
-        new_content = Content()
-        new_content.unsorted = old_content.unsorted
-        new_resource = Resource(
-            new_id,
-            new_id.split('/')[-1],
-            old_resource.type,
-            old_resource.data,
-            new_content.to_webdav_attributes(),
-            old_resource.contentType,
-        )
-        self[new_id] = new_resource
+        if old_content is None:
+            raise KeyError(f'The resource {old_id} does not exist.')
+        new_content = self._clone_row(old_content, ['id', 'last_updated'])
+        new_content.id = str(uuid4())
+        (parent_path, name) = self._pathkey(new_id)
+        path = Path(content=new_content, parent_path=parent_path, name=name)
+        self.session.add(path)
+
         if old_content.is_collection:
             for name, _ in self.listCollection(old_id):
                 self.copy(f'{old_id}/{name}', f'{new_id}/{name}')
