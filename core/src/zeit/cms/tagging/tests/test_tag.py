@@ -135,6 +135,15 @@ class TestSyncToXML(
             lxml.etree.tostring(self.repository['testcontent'].xml.find('head'), encoding=str),
         )
 
+    def test_reuses_existing_tag_node(self):
+        self.setup_tags('foo')
+        with checked_out(self.repository['testcontent']):
+            pass
+        with checked_out(self.repository['testcontent']):
+            pass
+        head = lxml.etree.tostring(self.repository['testcontent'].xml.find('head'), encoding=str)
+        self.assertEqual(2, head.count('rankedTags'))
+
     def test_leaves_xml_without_head_alone(self):
         content = self.repository['testcontent']
         content.xml.remove(content.xml.find('head'))

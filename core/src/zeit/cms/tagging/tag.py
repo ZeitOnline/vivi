@@ -107,9 +107,12 @@ class Tag:
         return '<%s.%s %s>' % (self.__class__.__module__, self.__class__.__name__, self.uniqueId)
 
 
+XML_NS = 'http://namespaces.zeit.de/CMS/tagging'
+
+
 @grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_tagging_properties(event):
-    if event.namespace == 'http://namespaces.zeit.de/CMS/tagging':
+    if event.namespace == XML_NS:
         event.veto()
 
 
@@ -125,7 +128,11 @@ def add_ranked_tags_to_head(content):
     if head is None:
         return
 
-    existing = head.find('rankedTags')
+    # XXX Clean up content that was edited between ZO-4627 and ZO-4913
+    for node in head.findall('{%s}rankedTags' % XML_NS):
+        head.remove(node)
+
+    existing = head.find('{%s}rankedTags' % XML_NS)
     if tags is not None:
         if existing is not None:
             head.replace(existing, tags)
