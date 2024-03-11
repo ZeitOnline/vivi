@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.126.0 (2024-03-11)
+--------------------
+
+- ZO-4267: Implement copy, move and lock in zeit.connector
+
+- ZO-4799: Remove obsolete rules about force_mobile_image defaults
+
+- ZO-4881: update table locks, foreign key to content table instead of paths
+
+- ZO-4882: remove locks after deletion of collection from children
+
+- ZO-4913: Add tags to XML only once
+
+
 5.125.0 (2024-03-06)
 --------------------
 
