@@ -108,12 +108,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
             self.assertEqual(body, blob.download_as_bytes())
 
     def test_delete_removes_gcs_blob(self):
+        collection_id = 'http://xml.zeit.de/testing/folder'
+        zeit.connector.testing.mkdir(self.connector, collection_id)
         res = self.get_resource('foo', b'mybody')
         res.type = 'file'
-        self.connector.add(res)
+        self.connector['http://xml.zeit.de/testing/folder/foo'] = res
         props = self.connector._get_content(res.id)
         blob = self.connector.bucket.blob(props.id)
-        del self.connector[res.id]
+        del self.connector[collection_id]
         with self.assertRaises(google.api_core.exceptions.NotFound):
             blob.download_as_bytes()
 
