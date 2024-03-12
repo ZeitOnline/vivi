@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.127.0 (2024-03-12)
+--------------------
+
+- ZO-4915: copy optimzation, clone row
+
+- ZO-4916: copy blob directly on cloud storage
+
+
 5.126.0 (2024-03-11)
 --------------------
 
