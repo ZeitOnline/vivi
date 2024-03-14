@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Thu Feb 22 09:14:39 2024\n"
+"POT-Creation-Date: Wed Mar  6 14:41:42 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -118,10 +118,10 @@ msgstr ""
 #: zeit/cms/browser/context-views-menu-item.pt:5
 #: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/lightbox.pt:2
-#: zeit/cms/browser/main_template.pt:48
-#: zeit/cms/browser/main_template.pt:181
-#: zeit/cms/browser/main_template.pt:204
-#: zeit/cms/browser/main_template.pt:222
+#: zeit/cms/browser/main_template.pt:49
+#: zeit/cms/browser/main_template.pt:182
+#: zeit/cms/browser/main_template.pt:205
+#: zeit/cms/browser/main_template.pt:223
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
 #: zeit/cms/browser/menu-context-views.pt:8
@@ -258,7 +258,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:267
 #: zeit/cms/content/browser/template.py:39
 #: zeit/cms/content/interfaces.py:170
-#: zeit/cms/content/interfaces.py:465
+#: zeit/cms/content/interfaces.py:467
 #: zeit/cms/retractlog/browser/retractlog.py:23
 #: zeit/cms/retractlog/interfaces.py:25
 #: zeit/content/advertisement/interfaces.py:24
@@ -297,7 +297,7 @@ msgstr ""
 
 #: zeit/cms/browser/listing.py:270
 #: zeit/cms/content/interfaces.py:78
-#: zeit/cms/content/interfaces.py:557
+#: zeit/cms/content/interfaces.py:559
 #: zeit/content/volume/browser/toc-listing.pt:25
 #: zeit/content/volume/browser/toc_listing.py:39
 #: zeit/contentquery/interfaces.py:199
@@ -338,7 +338,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: zeit/cms/browser/main_template.pt:180
+#: zeit/cms/browser/main_template.pt:181
 msgid "Add..."
 msgstr ""
 
@@ -703,7 +703,7 @@ msgid "color scheme dark"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:71
-#: zeit/cms/content/interfaces.py:564
+#: zeit/cms/content/interfaces.py:566
 #: zeit/content/article/edit/interfaces.py:548
 #: zeit/content/article/interfaces.py:207
 #: zeit/content/volume/interfaces.py:36
@@ -719,7 +719,7 @@ msgid "Volume"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:82
-#: zeit/cms/content/interfaces.py:561
+#: zeit/cms/content/interfaces.py:563
 #: zeit/contentquery/interfaces.py:202
 msgid "Sub ressort"
 msgstr ""
@@ -815,97 +815,101 @@ msgstr ""
 msgid "VG Wort Id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:192
+#: zeit/cms/content/interfaces.py:191
+msgid "Avoid create summary"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:194
 msgid "Comments premoderate"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:195
+#: zeit/cms/content/interfaces.py:197
 msgid "Comments allowed"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:198
+#: zeit/cms/content/interfaces.py:200
 msgid "Show commentthread"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:201
+#: zeit/cms/content/interfaces.py:203
 msgid "Banner"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:203
+#: zeit/cms/content/interfaces.py:205
 msgid "Banner in Content"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:205
+#: zeit/cms/content/interfaces.py:207
 msgid "Banner Mainad"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:207
+#: zeit/cms/content/interfaces.py:209
 msgid "Banner id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:210
+#: zeit/cms/content/interfaces.py:212
 msgid "Hide AdBlocker notification"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:214
+#: zeit/cms/content/interfaces.py:216
 #: zeit/content/volume/interfaces.py:28
 msgid "Product id"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:222
+#: zeit/cms/content/interfaces.py:224
 msgid "Overscrolling"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:224
+#: zeit/cms/content/interfaces.py:226
 msgid "CAP title"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:226
+#: zeit/cms/content/interfaces.py:228
 msgid "Deeplink URL"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:229
+#: zeit/cms/content/interfaces.py:231
 msgid "Color scheme"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:232
+#: zeit/cms/content/interfaces.py:234
 msgid "Advertisement title"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:234
+#: zeit/cms/content/interfaces.py:236
 msgid "Advertisement text"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:237
+#: zeit/cms/content/interfaces.py:239
 msgid "InterRed MediaSync ID"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:241
+#: zeit/cms/content/interfaces.py:243
 msgid "InterRed Article ID"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:289
+#: zeit/cms/content/interfaces.py:291
 msgid "Invalid hex literal"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:365
+#: zeit/cms/content/interfaces.py:367
 #: zeit/content/cp/interfaces.py:610
 msgid "XML Source"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:525
+#: zeit/cms/content/interfaces.py:527
 msgid "Last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:529
+#: zeit/cms/content/interfaces.py:531
 msgid "Update last semantic change"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:548
+#: zeit/cms/content/interfaces.py:550
 msgid "Memo"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:553
+#: zeit/cms/content/interfaces.py:555
 #: zeit/content/audio/browser/object-details-body.pt:10
 #: zeit/content/audio/interfaces.py:39
 #: zeit/content/image/browser/image_view.pt:6
@@ -913,27 +917,27 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:566
+#: zeit/cms/content/interfaces.py:568
 msgid "Month"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:595
+#: zeit/cms/content/interfaces.py:597
 msgid "Caching time browser"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:597
+#: zeit/cms/content/interfaces.py:599
 msgid "Caching time server"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:619
+#: zeit/cms/content/interfaces.py:621
 msgid "Remote image URL"
 msgstr ""
 
-#: zeit/cms/content/interfaces.py:621
+#: zeit/cms/content/interfaces.py:623
 msgid "Remote timestamp URL"
 msgstr ""
 
-#: zeit/cms/content/metadata.py:170
+#: zeit/cms/content/metadata.py:175
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
