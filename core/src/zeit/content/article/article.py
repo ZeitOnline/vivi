@@ -93,6 +93,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             'hide_ligatus_recommendations',
             'prevent_ligatus_indexing',
             'comments_sorting',
+            'avoid_create_summary',
         ),
     )
 
@@ -108,6 +109,12 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.PRINT_NAMESPACE,
         'has_audio',
         use_default=True,
+    )
+
+    avoid_create_summary = zeit.cms.content.dav.DAVProperty(
+        zeit.content.article.interfaces.IArticle['avoid_create_summary'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'avoid_create_summary',
     )
 
     @property

@@ -188,10 +188,6 @@ class ICommonMetadata(zope.interface.Interface):
 
     vg_wort_id = zope.schema.TextLine(title=_('VG Wort Id'), required=False)
 
-    avoid_create_summary = zope.schema.Bool(
-        title=_('Avoid create summary'), required=False, default=False
-    )
-
     commentsPremoderate = zope.schema.Bool(
         title=_('Comments premoderate'), required=False, default=False
     )

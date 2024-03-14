@@ -35,7 +35,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'overscrolling',
             'advertisement_title',
             'advertisement_text',
-            'avoid_create_summary',
         ),
     )
 
@@ -113,10 +112,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     _color_scheme = zeit.cms.content.dav.DAVProperty(
         ICommonMetadata['color_scheme'], DOCUMENT_SCHEMA_NS, 'color_scheme'
-    )
-
-    avoid_create_summary = zeit.cms.content.dav.DAVProperty(
-        ICommonMetadata['avoid_create_summary'], DOCUMENT_SCHEMA_NS, 'avoid_create_summary'
     )
 
     @property

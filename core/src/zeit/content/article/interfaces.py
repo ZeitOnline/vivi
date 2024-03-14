@@ -116,6 +116,10 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     has_audio = zope.schema.Bool(title=_('Has audio file'), default=False)
 
+    avoid_create_summary = zope.schema.Bool(
+        title=_('Avoid create summary'), required=False, default=False
+    )
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
