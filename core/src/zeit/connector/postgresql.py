@@ -248,6 +248,9 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
+        status = self._get_lock_status(uniqueid)
+        if status == LockStatus.FOREIGN:
+            raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)

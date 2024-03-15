@@ -247,6 +247,9 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def changeProperties(self, id, properties):
         id = self._get_cannonical_id(id)
+        (_, _, mylock) = self.locked(id)
+        if id in self._locked and not mylock:
+            raise LockedByOtherSystemError(id, '')
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         self._set_properties(id, properties)
 
