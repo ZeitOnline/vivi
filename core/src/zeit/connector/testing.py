@@ -325,6 +325,12 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
             rid, name, 'testing', BytesIO(body), properties=properties, contentType=contentType
         )
 
+    def add_resource(self, name, **kw):
+        r = self.get_resource(name, **kw)
+        r = self.connector[r.id] = r
+        transaction.commit()
+        return r
+
 
 class ConnectorTest(TestCase):
     layer = REAL_CONNECTOR_LAYER

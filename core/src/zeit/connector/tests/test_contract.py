@@ -21,12 +21,6 @@ import zeit.connector.testing
 class ContractReadWrite:
     NS = 'http://namespaces.zeit.de/CMS/testing'
 
-    def add_resource(self, name, **kw):
-        r = self.get_resource(name, **kw)
-        r = self.connector[r.id] = r
-        transaction.commit()
-        return r
-
     def listCollection(self, id):  # XXX Why is this a generator?
         return list(self.connector.listCollection(id))
 
