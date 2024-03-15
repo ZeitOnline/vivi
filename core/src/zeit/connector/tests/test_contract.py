@@ -257,6 +257,12 @@ class ContractCopyMove:
 
 
 class ContractLock:
+
+    def lock_resource(self, name, user, **kw):
+        res = self.add_resource(name, **kw)
+        self.connector.lock(res.id, user, datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+
     def test_locked_shows_lock_status(self):
         id = self.add_resource('foo').id
         self.assertEqual((None, None, False), self.connector.locked(id))
@@ -344,36 +350,29 @@ class ContractLock:
         self.connector._unlock('http://xml.zeit.de/testing/folder/one', token_1)
         self.connector.unlock('http://xml.zeit.de/testing/two')
 
-    def test_add_must_not_write_to_locked_unique_id(self):
-        res = self.add_resource('foo')
-        self.connector.lock(res.id, 'zope.external', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+    def test_add_on_foreign_locked_resource_raises(self):
+        self.lock_resource('foo', user='external')
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.add(self.get_resource('foo'))
 
-    def test_setitem_must_not_write_on_locked_object(self):
-        res = self.get_resource('foo', body=b'one')
-        self.connector['http://xml.zeit.de/testing/foo'] = res
-        self.connector.lock(res.id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+    def test_setitem_on_foreign_locked_resource_raises(self):
+        self.lock_resource('foo', user='external', body=b'one')
         res = self.get_resource('foo', body=b'nope')
         with self.assertRaises(LockedByOtherSystemError):
             self.connector['http://xml.zeit.de/testing/foo'] = res
 
-    def test_set_property_on_own_lock_resources(self):
-        uid = self.add_resource('foo', properties={('bar', self.NS): 'bar'}).id
-        self.connector.lock(uid, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+    def test_change_property_on_own_lock_resources(self):
+        self.lock_resource('foo', user='zope.user', properties={('bar', self.NS): 'bar'})
         self.connector.changeProperties(
             'http://xml.zeit.de/testing/foo',
             {('bar', self.NS): 'foo'},
         )
         transaction.commit()
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual('foo', res.properties[('bar', self.NS)])
 
-    def test_copy_locked_resource(self):
-        uid = self.add_resource('foo', properties={('bar', self.NS): 'bar'}).id
-        self.connector.lock(uid, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+    def test_copy_own_locked_resource(self):
+        self.lock_resource('foo', user='zope.user')
         self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/target')
         transaction.commit()
         (principal, _, my_lock) = self.connector.locked('http://xml.zeit.de/testing/foo')
@@ -382,26 +381,22 @@ class ContractLock:
             self.connector.locked('http://xml.zeit.de/testing/target'), (None, None, False)
         )
 
-    def test_move_locked_resource_raises(self):
-        uid = self.add_resource('foo', properties={('bar', self.NS): 'bar'}).id
-        self.connector.lock(uid, 'zope.external', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+    def test_move_foreign_locked_resource_raises(self):
+        self.lock_resource('foo', user='external')
         with self.assertRaises(LockedByOtherSystemError):
-            self.connector.move(uid, 'http://xml.zeit.de/testing/target')
+            self.connector.move(
+                'http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/target'
+            )
 
-    def test_delete_locked_resource_raises(self):
-        uid = self.add_resource('foo', properties={('bar', self.NS): 'bar'}).id
-        self.connector.lock(uid, 'zope.external', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+    def test_delete_foreign_locked_resource_raises(self):
+        self.lock_resource('foo', user='external')
         (principal, _, my_lock) = self.connector.locked('http://xml.zeit.de/testing/foo')
-        self.assertEqual((principal, my_lock), ('zope.external', False))
+        self.assertEqual((principal, my_lock), ('external', False))
         with self.assertRaises(LockedByOtherSystemError):
             del self.connector['http://xml.zeit.de/testing/foo']
 
     def test_delete_own_lock_resource(self):
-        uid = self.add_resource('foo', properties={('bar', self.NS): 'bar'}).id
-        self.connector.lock(uid, 'zope.user', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+        self.lock_resource('foo', user='zope.user')
         (principal, _, my_lock) = self.connector.locked('http://xml.zeit.de/testing/foo')
         self.assertEqual((principal, my_lock), ('zope.user', True))
         del self.connector['http://xml.zeit.de/testing/foo']
@@ -416,12 +411,10 @@ class ContractLock:
         with self.assertRaises(KeyError):
             self.connector['http://xml.zeit.de/testing/foo']
 
-    def test_changeProperties_on_locked_resource_raises(self):
-        self.add_resource('foo', properties={('foo', self.NS): 'foo', ('bar', self.NS): 'bar'})
-        res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('foo', res.properties[('foo', self.NS)])
-        self.connector.lock(res.id, 'zope.external', datetime.now(pytz.UTC) + timedelta(hours=2))
-        transaction.commit()
+    def test_changeProperties_on_foreign_locked_resource_raises(self):
+        self.lock_resource(
+            'foo', user='external', properties={('foo', self.NS): 'foo', ('bar', self.NS): 'bar'}
+        )
         with self.assertRaises(LockedByOtherSystemError):
             self.connector.changeProperties(
                 'http://xml.zeit.de/testing/foo',
