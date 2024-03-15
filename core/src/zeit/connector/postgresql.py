@@ -211,6 +211,9 @@ class Connector:
             self.session.add(path)
         else:
             path = content.path
+            status = self._get_lock_status(uniqueid)
+            if status == LockStatus.FOREIGN:
+                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         content.from_webdav(resource.properties)

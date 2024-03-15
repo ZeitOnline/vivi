@@ -350,6 +350,13 @@ class ContractLock:
         self.connector._unlock('http://xml.zeit.de/testing/folder/one', token_1)
         self.connector.unlock('http://xml.zeit.de/testing/two')
 
+    def test_add_must_not_write_to_locked_unique_id(self):
+        res = self.add_resource('foo')
+        self.connector.lock(res.id, 'zope.external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertRaises(LockedByOtherSystemError):
+            self.connector.add(self.get_resource('foo'))
+
     def test_setitem_must_not_write_on_locked_object(self):
         res = self.get_resource('foo', body=b'one')
         self.connector['http://xml.zeit.de/testing/foo'] = res
