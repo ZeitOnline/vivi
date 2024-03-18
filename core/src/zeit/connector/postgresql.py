@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 from functools import partial
 from io import BytesIO, StringIO
@@ -29,6 +30,7 @@ from sqlalchemy.orm import backref, relationship
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
 import opentelemetry.metrics
+import pytz
 import sqlalchemy
 import sqlalchemy.event
 import sqlalchemy.orm
@@ -431,7 +433,10 @@ class Connector:
         lock = self.session.get(Lock, path.id)
         if lock is None:
             return (None, None, False)
-        is_my_lock = not lock_is_foreign(lock.principal)
+        if lock.until < datetime.now(pytz.UTC):
+            self.session.delete(lock)
+            return (None, None, False)
+        is_my_lock = not self._is_foreign(lock.principal)
 
         return (lock.principal, lock.until, is_my_lock)
 
