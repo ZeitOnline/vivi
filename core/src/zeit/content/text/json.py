@@ -68,7 +68,6 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         try:
             response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)
-            schema = self._absolute_references(schema)
             resource = referencing.Resource.from_contents(schema, default_specification=DRAFT202012)
             registry = referencing.Registry().with_resource(uri=self.schema_url, resource=resource)
             response.close()
@@ -78,19 +77,6 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             message = f'{self.schema_url} returned {status}'
             log.warning(message, exc_info=True)
             raise zeit.content.text.interfaces.SchemaValidationError(message)
-
-    def _absolute_references(self, schema):
-        if isinstance(schema, list):
-            return [self._absolute_references(x) for x in schema]
-        result = {}
-        for key, value in schema.items():
-            if isinstance(value, dict):
-                result[key] = self._absolute_references(value)
-            elif key == '$ref' and value.startswith('#'):
-                result[key] = self.schema_url + value
-            else:
-                result[key] = value
-        return result
 
     def validate(self):
         schema, registry = self._get()
