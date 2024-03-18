@@ -33,6 +33,7 @@ import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
 import pytest
+import pytz
 import transaction
 import waitress.server
 import webtest.lint
@@ -1205,7 +1206,7 @@ class Freeze(datetime.datetime, metaclass=FreezeMeta):
 @contextlib.contextmanager
 def clock(dt=None):
     if dt is None:
-        dt = original.utcnow()
+        dt = original.now(pytz.UTC)
     with mock.patch('datetime.datetime', Freeze):
         Freeze.freeze(dt)
         yield Freeze

@@ -32,9 +32,10 @@ class LockAPI(zeit.cms.testing.ZeitCmsBrowserTestCase):
         with mock.patch('zope.app.locking.adapter.LockInfo', new=TimeFreezeLockInfo):
             zeit.cms.checkout.interfaces.ICheckoutManager(self.repository['testcontent']).checkout()
         b = self.browser
-        with self.assertRaises(urllib.error.HTTPError) as info:
-            b.open('http://localhost/@@lock_status' '?uniqueId=http://xml.zeit.de/testcontent')
-            self.assertEqual(409, info.exception.status)
+        with zeit.cms.testing.clock(datetime(2019, 1, 1)):
+            with self.assertRaises(urllib.error.HTTPError) as info:
+                b.open('http://localhost/@@lock_status' '?uniqueId=http://xml.zeit.de/testcontent')
+                self.assertEqual(409, info.exception.status)
         self.assert_json(
             {'locked': True, 'owner': 'zope.user', 'until': '2019-04-15T18:20:00+00:00'}
         )
