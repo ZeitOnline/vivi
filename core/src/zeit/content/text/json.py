@@ -68,17 +68,9 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         try:
             response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)
-            definitions = self._absolute_references(schema['components']['schemas'])
-            print(definitions)
-            registry = referencing.Registry().with_resources(
-                [
-                    (
-                        f'{self.schema_url}#/components/schemas/{k}',
-                        referencing.Resource.from_contents(v, default_specification=DRAFT202012),
-                    )
-                    for k, v in definitions.items()
-                ]
-            )
+            schema = self._absolute_references(schema)
+            resource = referencing.Resource.from_contents(schema, default_specification=DRAFT202012)
+            registry = referencing.Registry().with_resource(uri=self.schema_url, resource=resource)
             response.close()
             return schema, registry
         except requests.exceptions.RequestException as err:
