@@ -18,7 +18,12 @@ try:
     from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
     from opentelemetry.sdk.resources import Resource
     from opentelemetry.sdk.trace import Tracer, TracerProvider
-    from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+    from opentelemetry.sdk.trace.export import (
+        BatchSpanProcessor,
+        ConsoleSpanExporter,
+        SimpleSpanProcessor,
+    )
+    from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
     from opentelemetry.sdk.util.instrumentation import InstrumentationScope
 except ImportError:
     TracerProvider = object
@@ -199,3 +204,39 @@ def anonymize(value):
     else:
         iv = os.urandom(16)
     return Fernet(key)._encrypt_from_parts(value.encode('utf-8'), ts, iv).decode('ascii')
+
+
+class TestTrace:
+    def __init__(self, exporter):
+        self._exporter = exporter
+
+    @property
+    def spans(self):
+        return self._exporter.get_finished_spans()
+
+    def __getitem__(self, name):
+        for span in self.spans:
+            if span.name == name:
+                return span
+        raise KeyError(name)
+
+    @staticmethod
+    def provider():
+        provider = TracerProvider()
+        exporter = InMemorySpanExporter()
+        provider.add_span_processor(SimpleSpanProcessor(exporter))
+        return provider, exporter
+
+
+@contextlib.contextmanager
+def captrace():
+    provider, exporter = TestTrace.provider()
+    _testing_set_tracer_provider(provider)
+    yield TestTrace(exporter)
+    exporter.clear()
+    _testing_set_tracer_provider(None)
+
+
+def _testing_set_tracer_provider(provider):
+    opentelemetry.trace._TRACER_PROVIDER_SET_ONCE._done = False  # sigh
+    opentelemetry.trace.set_tracer_provider(provider)

@@ -18,7 +18,6 @@ import threading
 import unittest
 import xml.sax.saxutils
 
-from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
 import celery_longterm_scheduler
@@ -30,8 +29,6 @@ import kombu
 import lxml.cssselect
 import lxml.etree
 import lxml.html
-import opentelemetry.sdk.trace
-import opentelemetry.sdk.trace.export.in_memory_span_exporter as otel_export
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
@@ -1218,39 +1215,3 @@ def xmltotext(xml):
     xml = copy.deepcopy(xml)
     lxml.etree.indent(xml)
     return lxml.etree.tostring(xml, encoding=str)
-
-
-class Trace:
-    def __init__(self, exporter):
-        self._exporter = exporter
-
-    @property
-    def spans(self):
-        return self._exporter.get_finished_spans()
-
-    def __getitem__(self, name):
-        for span in self.spans:
-            if span.name == name:
-                return span
-        raise KeyError(name)
-
-    @staticmethod
-    def provider():
-        provider = opentelemetry.sdk.trace.TracerProvider()
-        exporter = otel_export.InMemorySpanExporter()
-        provider.add_span_processor(SimpleSpanProcessor(exporter))
-        return provider, exporter
-
-
-@contextlib.contextmanager
-def captrace():
-    provider, exporter = Trace.provider()
-    set_tracer_provider(provider)
-    yield Trace(exporter)
-    exporter.clear()
-    set_tracer_provider(None)
-
-
-def set_tracer_provider(provider):
-    opentelemetry.trace._TRACER_PROVIDER_SET_ONCE._done = False  # sigh
-    opentelemetry.trace.set_tracer_provider(provider)
