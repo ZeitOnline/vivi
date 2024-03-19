@@ -22,6 +22,7 @@ from zeit.connector.interfaces import (
     LockingError,
     MoveError,
 )
+from zeit.connector.lock import lock_is_foreign
 import zeit.connector.cache
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
@@ -209,7 +210,7 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def move(self, old_id, new_id):
         self._prevent_overwrite(old_id, new_id, MoveError)
-        if old_id in self._locked and self._locked[old_id][0] != 'zope.user':
+        if old_id in self._locked and lock_is_foreign(self._locked[old_id][0]):
             raise LockedByOtherSystemError(old_id, '')
         r = self[old_id]
 
@@ -224,7 +225,7 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
-            if uid in self._locked and self._locked[uid][0] != 'zope.user':
+            if uid in self._locked and lock_is_foreign(self._locked[uid][0]):
                 raise LockedByOtherSystemError(uid, '')
             self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
@@ -256,7 +257,7 @@ class Connector(zeit.connector.filesystem.Connector):
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         id = self._get_cannonical_id(id)
-        my_lock = principal == 'zope.user'
+        my_lock = not lock_is_foreign(principal)
         if id in self._locked:
             raise LockingError('Resource is already locked by another principal')
         self._locked[id] = (principal, until, my_lock)

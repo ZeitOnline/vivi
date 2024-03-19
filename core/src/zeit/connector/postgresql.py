@@ -45,6 +45,7 @@ from zeit.connector.interfaces import (
     LockingError,
     MoveError,
 )
+from zeit.connector.lock import lock_is_foreign
 from zeit.connector.resource import CachedResource
 import zeit.cms.interfaces
 import zeit.cms.tracing
@@ -374,7 +375,7 @@ class Connector:
             select(Lock).join(Path, Lock.id == Path.id).filter(Path.parent_path.startswith(parent))
         )
         for lock in self.session.execute(stmt).scalars():
-            if self._is_foreign(lock.principal):
+            if lock_is_foreign(lock.principal):
                 return True
         return False
 
@@ -396,22 +397,6 @@ class Connector:
         self.session.add(lock)
         return lock.token
 
-    def _is_foreign(self, principal):
-        # Let's see if the principal is one we know.
-        try:
-            import zope.authentication.interfaces  # UI-only dependency
-
-            authentication = zope.component.queryUtility(
-                zope.authentication.interfaces.IAuthentication
-            )
-        except ImportError:
-            return True
-        try:
-            authentication.getPrincipal(principal)
-        except zope.authentication.interfaces.PrincipalLookupError:
-            return True
-        return False
-
     def lock(self, id, principal, until):
         match self._get_lock_status(id):
             case LockStatus.NONE:
@@ -428,7 +413,7 @@ class Connector:
         lock = self.session.get(Lock, path.id)
         if not lock:
             return
-        if self._is_foreign(lock.principal):
+        if lock_is_foreign(lock.principal):
             raise LockedByOtherSystemError(id, f'{id} is already locked.')
         self.session.delete(lock)
 
@@ -449,7 +434,7 @@ class Connector:
         lock = self.session.get(Lock, path.id)
         if lock is None:
             return (None, None, False)
-        is_my_lock = not self._is_foreign(lock.principal)
+        is_my_lock = not lock_is_foreign(lock.principal)
 
         return (lock.principal, lock.until, is_my_lock)
 
