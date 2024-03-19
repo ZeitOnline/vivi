@@ -309,6 +309,64 @@ class TMS(grok.Adapter):
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Summy(grok.Adapter):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('summy')
+
+    def ignore(self, method):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
+        if method == 'publish':
+            ignore_genres = [x.lower() for x in config.get('summy-ignore-genres', '').split()]
+            genre = self.context.genre
+            if genre and genre.lower() in ignore_genres:
+                return True
+
+            ignore_templates = [
+                x.lower() for x in config.get('summy-ignore-templates', '').split()
+            ]
+            template = self.context.template
+            if template is not None and template.lower() in ignore_templates:
+                return True
+
+            ignore_ressorts = [
+                x.lower() for x in config.get('summy-ignore-ressorts', '').split()
+            ]
+            ressort = self.context.ressort
+            if ressort and ressort.lower() in ignore_ressorts:
+                return True
+
+        if self.context.product and self.context.product.is_news:
+            return True
+        return False
+
+    def get_body(self):
+        body = []
+        elements = self.context.body.xml.xpath('(//division/* | //division/ul/*)')
+        for elem in elements:
+            if elem.tag not in ('intertitle', 'li', 'p'):
+                continue
+            text = elem.xpath('.//text()')
+            if not text:
+                continue
+            body.append({'content': ' '.join([x.strip() for x in text]), 'type': elem.tag})
+        return body
+
+    def _json(self):
+        return {
+            'text': self.get_body(),
+            'avoid_create_summary': self.context.avoid_create_summary
+        }
+
+    def publish_json(self):
+        if self.ignore('publish'):
+            return {}
+        return self._json()
+
+    def retract_json(self):
+        return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class PublisherData(grok.Adapter):
     grok.context(zeit.cms.interfaces.ICMSContent)
 

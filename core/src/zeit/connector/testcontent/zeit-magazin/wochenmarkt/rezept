@@ -28,6 +28,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="access">abo</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="artbox_thema">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Eva Biringer</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="avoid_create_summary">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="banner_content">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="channels">zeit-magazin essen-trinken</attribute>
