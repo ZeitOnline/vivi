@@ -1,9 +1,12 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 
+from sqlalchemy import func, select
 import google.api_core.exceptions
+import pytz
 import transaction
 
+from zeit.connector.postgresql import Lock, _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
 import zeit.connector.testing
@@ -181,3 +184,16 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         target_blob = self.connector.bucket.blob(target_props.id)
         self.assertEqual(source_props.id, target_props.id)
         self.assertEqual(source_blob.name, target_blob.name)
+
+    def _create_lock(self, minutes):
+        res = self.get_resource(f'foo-{minutes}', b'mybody')
+        self.connector.add(res)
+        until = datetime.now(pytz.UTC) + timedelta(minutes=minutes)
+        self.connector.lock(res.id, 'someone', until)
+
+    def test_unlock_overdue_locks(self):
+        self._create_lock(5)
+        self._create_lock(-10)
+        assert self.connector.session.scalar(select(func.count(Lock.id))) == 2
+        _unlock_overdue_locks()
+        assert self.connector.session.scalar(select(func.count(Lock.id))) == 1

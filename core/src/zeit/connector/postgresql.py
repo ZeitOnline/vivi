@@ -23,6 +23,7 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
+    delete,
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -675,3 +676,16 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
             self._write(p, params)
         context._otel_span.set_attribute('db.parameters', p.getvalue())
         return statement, params
+
+
+def _unlock_overdue_locks():
+    log.info('Unlock overdue locks...')
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    stmt = delete(Lock).where(Lock.until < datetime.now(pytz.UTC))
+    connector.session.execute(stmt)
+    transaction.commit()
+
+
+@zeit.cms.cli.runner()
+def unlock_overdue_locks():
+    _unlock_overdue_locks()
