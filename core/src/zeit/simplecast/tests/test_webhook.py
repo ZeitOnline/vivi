@@ -5,6 +5,7 @@ import pytest
 import requests_mock
 import zope.component
 
+import zeit.cms.tracing
 import zeit.simplecast.interfaces
 import zeit.simplecast.json.webhook
 import zeit.simplecast.testing
@@ -157,7 +158,7 @@ class TestWebHook(zeit.simplecast.testing.BrowserTestCase):
     def test_webhook_body_is_traced(self):
         # only exemplary for `episode_updated`
         event = webhook_event('episode_updated')
-        with zeit.cms.testing.captrace() as trace:
+        with zeit.cms.tracing.captrace() as trace:
             self.browser.post(
                 'http://localhost/@@simplecast_webhook',
                 json.dumps(event),
