@@ -18,10 +18,13 @@ class JSONValidationTestCase(zeit.content.text.testing.FunctionalTestCase):
         validation.schema_url = zeit.content.text.testing.schema_url
         validation.field_name = 'uuid'
 
-        schema, ref_resolver = validation._get()
+        schema, registry = validation._get()
         pattern = '^((\\{urn:uuid:)?([a-f0-9]{8})\\}?)$'
         self.assertEqual(pattern, schema['components']['schemas']['uuid']['pattern'])
-        self.assertEqual(pattern, ref_resolver.referrer['components']['schemas']['uuid']['pattern'])
+        self.assertEqual(
+            pattern,
+            registry[validation.schema_url].contents['components']['schemas']['uuid']['pattern'],
+        )
 
     def test_validate_data_against_schema(self):
         json_content = zeit.content.text.json.JSON()

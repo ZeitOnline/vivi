@@ -1,9 +1,11 @@
 import logging
 
+from referencing.jsonschema import DRAFT202012
 import commentjson
 import grokcore.component as grok
 import jsonschema
 import openapi_schema_validator
+import referencing
 import requests
 import requests_file
 import yaml
@@ -66,9 +68,10 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
         try:
             response = self.request('GET', self.schema_url)
             schema = yaml.safe_load(response.text)
-            ref_resolver = jsonschema.validators.RefResolver.from_schema(schema)
+            resource = referencing.Resource.from_contents(schema, default_specification=DRAFT202012)
+            registry = referencing.Registry().with_resource(uri=self.schema_url, resource=resource)
             response.close()
-            return schema, ref_resolver
+            return schema, registry
         except requests.exceptions.RequestException as err:
             status = getattr(err.response, 'status_code', None)
             message = f'{self.schema_url} returned {status}'
@@ -76,15 +79,15 @@ class ValidationSchema(zeit.cms.content.dav.DAVPropertiesAdapter):
             raise zeit.content.text.interfaces.SchemaValidationError(message)
 
     def validate(self):
-        schema, ref_resolver = self._get()
+        schema, registry = self._get()
         if not schema:
             return
         if self._valid_field_name(schema):
             try:
                 openapi_schema_validator.validate(
                     self.context.data,
-                    schema['components']['schemas'][self.field_name],
-                    resolver=ref_resolver,
+                    {'$ref': f'{self.schema_url}#/components/schemas/{self.field_name}'},
+                    registry=registry,
                 )
             except jsonschema.exceptions.ValidationError as error:
                 raise zeit.content.text.interfaces.SchemaValidationError(str(error))
