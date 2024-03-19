@@ -41,17 +41,17 @@ class ImportVideoTest(zeit.brightcove.testing.FunctionalTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertEqual(True, info.published)
 
-    def test_new_video_should_create_empty_still_image_group(self):
+    def test_new_video_should_create_still_image_group(self):
         import_video(create_video())
         assert self.repository['video']['2017-05']['myvid'].video_still is None
         assert self.repository['video']['2017-05']['myvid-still'] is not None
 
-    def test_new_video_should_create_empty_still_image_group_for_missing_src(self):
+    def test_should_not_create_still_image_group_for_missing_src(self):
         video = create_video()
         del video.data['images']
         import_video(video)
         assert self.repository['video']['2017-05']['myvid'].video_still is None
-        assert self.repository['video']['2017-05']['myvid-still'] is not None
+        assert self.repository['video']['2017-05'].get('myvid-still') is None
 
     def test_changed_video_should_be_written_to_cms(self):
         bc = create_video()
@@ -251,13 +251,6 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
             ).published,
         )
 
-    def test_download_teaser_image_error_produces_empty_group(self):
-        zeit.brightcove.update.download_teaser_image(
-            self.repository, {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}}, 'thumbnail'
-        )
-        group = self.repository['foo-thumbnail']
-        assert group.master_image is None
-
     def test_download_teaser_for_locked_image_ignored(self):
         with mock.patch('zeit.content.image.imagegroup.ImageGroup.from_image') as patched:
             patched.side_effect = zope.app.locking.interfaces.LockingError()
@@ -269,17 +262,6 @@ class TestDownloadTeasers(zeit.brightcove.testing.StaticBrowserTestCase):
                 )
                 is None
             )
-
-    def test_download_teaser_image_error_uses_existing(self):
-        from zeit.content.image.testing import create_image_group_with_master_image
-
-        self.repository['foo-thumbnail'] = create_image_group_with_master_image()
-        existing = self.repository['foo-thumbnail']
-        existing.stamped = 'this'
-        new = zeit.brightcove.update.download_teaser_image(
-            self.repository, {'id': 'foo', 'images': {'thumbnail': {'src': 'foo'}}}, 'thumbnail'
-        )
-        assert new.stamped == 'this'
 
     def test_update_teaser_image_still_success(self):
         src = 'http://{0.layer[http_address]}/testdata/opernball.jpg'.format(self)

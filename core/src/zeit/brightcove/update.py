@@ -113,7 +113,7 @@ class import_video(import_base):
             return
         still = download_teaser_image(self.folder, self.bcobj.data, 'still')
         img = zeit.content.image.interfaces.IImages(cmsobj)
-        if img.image is None:
+        if img.image is None and still is not None:
             img.image = still
 
     def _commit(self):
@@ -155,13 +155,13 @@ def download_teaser_image(folder, bcdata, ttype='still'):
         )
     except Exception as exc:
         log.exception(exc)
-        image = None
+        return None
     try:
         return zeit.content.image.imagegroup.ImageGroup.from_image(folder, name, image)
     except zope.app.locking.interfaces.LockingError:
         # don't bother to try to overwrite an image, that's
         # obviously being edited.
-        pass
+        return None
 
 
 # Triggered by BC notification webhook, which we receive in
