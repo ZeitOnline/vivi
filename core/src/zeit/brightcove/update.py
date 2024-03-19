@@ -154,7 +154,7 @@ def download_teaser_image(folder, bcdata, ttype='still'):
             bcdata['images'][BC_IMG_KEYS[ttype]]['src']
         )
     except Exception as exc:
-        log.error(exc)
+        log.exception(exc)
         image = None
     try:
         return zeit.content.image.imagegroup.ImageGroup.from_image(folder, name, image)
