@@ -210,7 +210,8 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def move(self, old_id, new_id):
         self._prevent_overwrite(old_id, new_id, MoveError)
-        if old_id in self._locked and lock_is_foreign(self._locked[old_id][0]):
+        (_, _, mylock) = self.locked(old_id)
+        if id in self._locked and not mylock:
             raise LockedByOtherSystemError(old_id, '')
         r = self[old_id]
 
@@ -225,7 +226,8 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
-            if uid in self._locked and lock_is_foreign(self._locked[uid][0]):
+            (_, _, mylock) = self.locked(uid)
+            if id in self._locked and not mylock:
                 raise LockedByOtherSystemError(uid, '')
             self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
