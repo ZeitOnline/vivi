@@ -1,5 +1,6 @@
 import persistent
 import zc.sourcefactory.basic
+import zope.annotation
 import zope.container.btree
 import zope.container.contained
 import zope.interface
