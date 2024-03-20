@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from io import BytesIO
 import contextlib
 import os
@@ -10,7 +9,6 @@ from sqlalchemy import text as sql
 from sqlalchemy.exc import OperationalError
 import docker
 import plone.testing
-import pytz
 import requests
 import sqlalchemy
 import transaction
