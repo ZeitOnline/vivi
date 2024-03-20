@@ -259,7 +259,7 @@ class Connector(zeit.connector.filesystem.Connector):
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         id = self._get_cannonical_id(id)
-        my_lock = not lock_is_foreign(principal)
+        (_, _, my_lock) = self.locked(id)
         if id in self._locked:
             raise LockingError('Resource is already locked by another principal')
         self._locked[id] = (principal, until, my_lock)
@@ -273,7 +273,10 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def locked(self, id):
         id = self._get_cannonical_id(id)
-        return self._locked.get(id, (None, None, False))
+        (lock_principal, until, my_lock) = self._locked.get(id, (None, None, False))
+        if lock_principal:
+            my_lock = not lock_is_foreign(lock_principal)
+        return (lock_principal, until, my_lock)
 
     search_result_default = [
         'http://xml.zeit.de/online/2007/01/Somalia',
