@@ -195,9 +195,6 @@ class Connector:
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
-        status = self._get_lock_status(resource.id)
-        if status == LockStatus.FOREIGN:
-            raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         self.add(resource)
 
     def add(self, resource, verify_etag=True):
