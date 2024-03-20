@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.128.0 (2024-03-20)
+--------------------
+
+- ZO-4053: Update to current openapi-schema-validator API
+
+- ZO-4557: further options for accelerating publish_content.py
+
+- ZO-4724: Implement 'avoid create summary' article attribute
+
+- ZO-4967: Don't create an empty/broken image group if brightcove provides none
+
+
 5.127.0 (2024-03-12)
 --------------------
 
