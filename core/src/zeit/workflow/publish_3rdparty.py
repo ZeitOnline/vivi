@@ -316,21 +316,17 @@ class Summy(grok.Adapter):
     def ignore(self, method):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
         if method == 'publish':
-            ignore_genres = [x.lower() for x in config.get('summy-ignore-genres', '').split()]
+            ignore_genres = config.get('summy-ignore-genres', '').lower().split()
             genre = self.context.genre
             if genre and genre.lower() in ignore_genres:
                 return True
 
-            ignore_templates = [
-                x.lower() for x in config.get('summy-ignore-templates', '').split()
-            ]
+            ignore_templates = config.get('summy-ignore-templates', '').lower().split()
             template = self.context.template
             if template is not None and template.lower() in ignore_templates:
                 return True
 
-            ignore_ressorts = [
-                x.lower() for x in config.get('summy-ignore-ressorts', '').split()
-            ]
+            ignore_ressorts = config.get('summy-ignore-ressorts', '').lower().split()
             ressort = self.context.ressort
             if ressort and ressort.lower() in ignore_ressorts:
                 return True
@@ -352,10 +348,7 @@ class Summy(grok.Adapter):
         return body
 
     def _json(self):
-        return {
-            'text': self.get_body(),
-            'avoid_create_summary': self.context.avoid_create_summary
-        }
+        return {'text': self.get_body(), 'avoid_create_summary': self.context.avoid_create_summary}
 
     def publish_json(self):
         if self.ignore('publish'):

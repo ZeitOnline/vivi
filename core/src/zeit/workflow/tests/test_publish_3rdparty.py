@@ -321,9 +321,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         config['summy-ignore-ressorts'] = 'valid_ressort'
         config['summy-ignore-genres'] = 'valid_genre'
         payload = zeit.workflow.testing.publish_json(article, 'summy')
-        assert payload['text'][0] == {'content': 'Als Beilage passt gedämpfter Brokkoli.', 'type': 'p'}
-        assert payload['text'][5] == {'content': '  Rezept von Compliment to the Chef   ', 'type': 'p'}
-        assert payload['avoid_create_summary'] == False
+        parts = payload['text']
+        assert parts[0] == {'content': 'Als Beilage passt gedämpfter Brokkoli.', 'type': 'p'}
+        assert parts[5] == {'content': '  Rezept von Compliment to the Chef   ', 'type': 'p'}
+        assert payload['avoid_create_summary'] is False
 
 
 class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
