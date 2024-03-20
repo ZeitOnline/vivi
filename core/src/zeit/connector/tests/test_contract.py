@@ -257,7 +257,6 @@ class ContractCopyMove:
 
 
 class ContractLock:
-
     def lock_resource(self, name, user, **kw):
         res = self.add_resource(name, **kw)
         self.connector.lock(res.id, user, datetime.now(pytz.UTC) + timedelta(hours=2))
@@ -360,6 +359,13 @@ class ContractLock:
         res = self.get_resource('foo', body=b'nope')
         with self.assertRaises(LockedByOtherSystemError):
             self.connector['http://xml.zeit.de/testing/foo'] = res
+
+    def test_setitem_on_own_locked_resource(self):
+        self.lock_resource('foo', user='zope.user', body=b'one')
+        res = self.get_resource('foo', body=b'nope')
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        foo = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual(b'nope', foo.data.read())
 
     def test_change_property_on_own_lock_resources(self):
         self.lock_resource('foo', user='zope.user', properties={('bar', self.NS): 'bar'})
