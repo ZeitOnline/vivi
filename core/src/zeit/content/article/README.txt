@@ -267,7 +267,7 @@ None
 Get an image from the repository and attach it:
 
 >>> import zeit.cms.testing
->>> _ = zeit.cms.testing.create_interaction('hans')
+>>> _ = zeit.cms.testing.create_interaction('zope.user')
 
 >>> import datetime
 >>> import zope.component

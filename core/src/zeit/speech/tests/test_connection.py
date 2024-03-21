@@ -70,7 +70,7 @@ class TestSpeech(FunctionalTestCase):
         with zeit.cms.testing.interaction('zope.producer'):
             zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
         with pytest.raises(zeit.cms.checkout.interfaces.CheckinCheckoutError):
-            with zeit.cms.testing.interaction('zeit.speech'):
+            with zeit.cms.testing.interaction('zope.user'):
                 self.create_audio(TTS_CREATED)
 
     def test_update_audio_without_touching_the_article(self):

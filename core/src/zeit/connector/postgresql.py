@@ -22,7 +22,6 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
-    schema,
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -46,6 +45,7 @@ from zeit.connector.interfaces import (
     LockingError,
     MoveError,
 )
+from zeit.connector.lock import lock_is_foreign
 from zeit.connector.resource import CachedResource
 import zeit.cms.interfaces
 import zeit.cms.tracing
@@ -209,6 +209,9 @@ class Connector:
             self.session.add(path)
         else:
             path = content.path
+            status = self._get_lock_status(uniqueid)
+            if status == LockStatus.FOREIGN:
+                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         content.from_webdav(resource.properties)
@@ -243,6 +246,9 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
+        status = self._get_lock_status(uniqueid)
+        if status == LockStatus.FOREIGN:
+            raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)
@@ -366,7 +372,7 @@ class Connector:
             select(Lock).join(Path, Lock.id == Path.id).filter(Path.parent_path.startswith(parent))
         )
         for lock in self.session.execute(stmt).scalars():
-            if self._is_foreign(lock.principal):
+            if lock_is_foreign(lock.principal):
                 return True
         return False
 
@@ -388,22 +394,6 @@ class Connector:
         self.session.add(lock)
         return lock.token
 
-    def _is_foreign(self, principal):
-        # Let's see if the principal is one we know.
-        try:
-            import zope.authentication.interfaces  # UI-only dependency
-
-            authentication = zope.component.queryUtility(
-                zope.authentication.interfaces.IAuthentication
-            )
-        except ImportError:
-            return True
-        try:
-            authentication.getPrincipal(principal)
-        except zope.authentication.interfaces.PrincipalLookupError:
-            return True
-        return False
-
     def lock(self, id, principal, until):
         match self._get_lock_status(id):
             case LockStatus.NONE:
@@ -420,7 +410,7 @@ class Connector:
         lock = self.session.get(Lock, path.id)
         if not lock:
             return
-        if self._is_foreign(lock.principal):
+        if lock_is_foreign(lock.principal):
             raise LockedByOtherSystemError(id, f'{id} is already locked.')
         self.session.delete(lock)
 
@@ -441,7 +431,7 @@ class Connector:
         lock = self.session.get(Lock, path.id)
         if lock is None:
             return (None, None, False)
-        is_my_lock = not self._is_foreign(lock.principal)
+        is_my_lock = not lock_is_foreign(lock.principal)
 
         return (lock.principal, lock.until, is_my_lock)
 
@@ -567,11 +557,17 @@ class Content(DBObject):
 class Lock(DBObject):
     __tablename__ = 'locks'
 
-    id = Column(Uuid(as_uuid=False), primary_key=True)
+    id = Column(Uuid(as_uuid=False), ForeignKey('properties.id'), primary_key=True)
     principal = Column(Unicode, nullable=False)
     until = Column(TIMESTAMP(timezone=True), nullable=False)
 
-    __table_args__ = (schema.ForeignKeyConstraint(['id'], ['properties.id']),)
+    content = relationship(
+        'Content',
+        uselist=False,
+        # Not used in code, but needed to let sqlalchemy know about
+        # relationship between mapped classes
+        lazy='noload',
+    )
 
     @property
     def token(self):

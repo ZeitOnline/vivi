@@ -79,7 +79,7 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_article_checked_out_by_somebody_else_steals_lock_first(self):
         zope.security.management.endInteraction()
-        zeit.cms.testing.create_interaction('other')
+        zeit.cms.testing.create_interaction('zope.producer')
         ICheckoutManager(self.repository['foo']).checkout()
         zope.security.management.endInteraction()
         zeit.cms.testing.create_interaction('zope.user')
