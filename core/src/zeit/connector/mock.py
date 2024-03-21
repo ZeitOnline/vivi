@@ -108,8 +108,8 @@ class Connector(zeit.connector.filesystem.Connector):
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
         id = self._get_cannonical_id(id)
-        (_, _, mylock) = self.locked(id)
-        if id in self._locked and not mylock:
+        (principal, _, mylock) = self.locked(id)
+        if principal and not mylock:
             raise LockedByOtherSystemError(id, '')
         iscoll = resource.type == 'collection' or resource.contentType == 'httpd/unix-directory'
         if iscoll and not id.endswith('/'):
@@ -179,11 +179,12 @@ class Connector(zeit.connector.filesystem.Connector):
         id = self._get_cannonical_id(id)
         self[id]  # may raise KeyError
         (principal, _, mylock) = self.locked(id)
-        if id in self._locked and not mylock:
+        if principal and not mylock:
             raise LockedByOtherSystemError(id, '')
         list_collection = self.listCollection(id)
         for _name, uid in list_collection:
-            if uid in self._locked and not mylock:
+            (principal, _, mylock) = self.locked(uid)
+            if principal and not mylock:
                 raise LockedByOtherSystemError(uid, '')
             del self[uid]
         self._deleted.add(id)
@@ -210,8 +211,8 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def move(self, old_id, new_id):
         self._prevent_overwrite(old_id, new_id, MoveError)
-        (_, _, mylock) = self.locked(old_id)
-        if id in self._locked and not mylock:
+        (principal, _, mylock) = self.locked(old_id)
+        if principal and not mylock:
             raise LockedByOtherSystemError(old_id, '')
         r = self[old_id]
 
@@ -226,8 +227,8 @@ class Connector(zeit.connector.filesystem.Connector):
         if not new_id.endswith('/'):
             new_id = new_id + '/'
         for name, uid in self.listCollection(old_id):
-            (_, _, mylock) = self.locked(uid)
-            if id in self._locked and not mylock:
+            (principal, _, mylock) = self.locked(uid)
+            if principal and not mylock:
                 raise LockedByOtherSystemError(uid, '')
             self.move(uid, urllib.parse.urljoin(new_id, name))
         del self[old_id]
@@ -250,8 +251,8 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def changeProperties(self, id, properties):
         id = self._get_cannonical_id(id)
-        (_, _, mylock) = self.locked(id)
-        if id in self._locked and not mylock:
+        (principal, _, mylock) = self.locked(id)
+        if principal and not mylock:
             raise LockedByOtherSystemError(id, '')
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         self._set_properties(id, properties)
@@ -259,8 +260,8 @@ class Connector(zeit.connector.filesystem.Connector):
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
         id = self._get_cannonical_id(id)
-        (_, _, my_lock) = self.locked(id)
-        if id in self._locked:
+        (another_principal, _, my_lock) = self.locked(id)
+        if another_principal:
             raise LockingError('Resource is already locked by another principal')
         self._locked[id] = (principal, until, my_lock)
 
