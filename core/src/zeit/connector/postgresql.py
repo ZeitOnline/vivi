@@ -679,8 +679,11 @@ class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
 
 
 def _unlock_overdue_locks():
-    log.info('Unlock overdue locks...')
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    if not isinstance(connector, Connector):
+        log.debug('Not SQL connector, skipping lock cleanup')
+        return
+    log.info('Unlock overdue locks...')
     stmt = delete(Lock).where(Lock.until < datetime.now(pytz.UTC))
     connector.session.execute(stmt)
     transaction.commit()
