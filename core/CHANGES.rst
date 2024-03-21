@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.129.0 (2024-03-21)
+--------------------
+
+- ZO-4726: Adds summy publish task
+
+- ZO-4886: Do not write to locked object
+
+
 5.128.0 (2024-03-20)
 --------------------
 
