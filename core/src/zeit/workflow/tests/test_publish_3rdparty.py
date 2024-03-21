@@ -301,6 +301,31 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         json = zeit.workflow.testing.publish_json(article, 'speechbert')
         assert json is None
 
+    def test_summy_ignore_genre_list(self):
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
+        config['summy-ignore-genres'] = 'rezept-vorstellung'
+        payload = zeit.workflow.testing.publish_json(article, 'summy')
+        assert payload == {}
+
+    def test_summy_ignore_ressort_list(self):
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
+        config['summy-ignore-ressorts'] = 'zeit-magazin'
+        payload = zeit.workflow.testing.publish_json(article, 'summy')
+        assert payload == {}
+
+    def test_summy_payload(self):
+        article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
+        config['summy-ignore-ressorts'] = 'valid_ressort'
+        config['summy-ignore-genres'] = 'valid_genre'
+        payload = zeit.workflow.testing.publish_json(article, 'summy')
+        parts = payload['text']
+        assert parts[0] == {'content': 'Als Beilage passt gedämpfter Brokkoli.', 'type': 'p'}
+        assert parts[5] == {'content': '  Rezept von Compliment to the Chef   ', 'type': 'p'}
+        assert payload['avoid_create_summary'] is False
+
 
 class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     layer = zeit.content.article.testing.LAYER

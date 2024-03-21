@@ -194,40 +194,55 @@ class FacebookNewstab(grok.Adapter):
         return self.publish_json()
 
 
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class Speechbert(grok.Adapter):
-    grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('speechbert')
+class IgnoreMixin:
+    """Ignore publish/retract based on settings."""
+
+    #: map article attributes to settings
+    attr_setting_mapping = {
+        'genre': 'genres',
+        'template': 'templates',
+        'ressort': 'ressorts',
+    }
+
+    @property
+    def name(self):
+        return self.__class__.__dict__['grokcore.component.directive.name']
+
+    @property
+    def config(self):
+        return zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
 
     def ignore(self, method):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
-        if method == 'publish':
-            ignore_genres = [x.lower() for x in config.get('speechbert-ignore-genres', '').split()]
-            genre = self.context.genre
-            if genre and genre.lower() in ignore_genres:
-                return True
-        if method == 'publish':
-            ignore_templates = [
-                x.lower() for x in config.get('speechbert-ignore-templates', '').split()
-            ]
-            template = self.context.template
-            if template is not None and template.lower() in ignore_templates:
-                return True
         if self.context.product and self.context.product.is_news:
             return True
+        if method == 'publish':
+            for attribute, setting in self.attr_setting_mapping.items():
+                if self.is_on_ignorelist(attribute, setting):
+                    return True
         return False
 
-    def get_body(self):
-        body = []
-        elements = self.context.body.xml.xpath('(//division/* | //division/ul/*)')
-        for elem in elements:
-            if elem.tag not in ('intertitle', 'li', 'p'):
-                continue
-            text = elem.xpath('.//text()')
-            if not text:
-                continue
-            body.append({'content': ' '.join([x.strip() for x in text]), 'type': elem.tag})
-        return body
+    def is_on_ignorelist(self, attribute, setting):
+        ignore_list = [
+            x.lower() for x in self.config.get(f'{self.name}-ignore-{setting}', '').split()
+        ]
+        value = getattr(self.context, attribute)
+        return value and value.lower() in ignore_list
+
+    def publish_json(self):
+        if self.ignore('publish'):
+            return None
+        return self._json()
+
+    def retract_json(self):
+        if self.ignore('retract'):
+            return None
+        return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Speechbert(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('speechbert')
 
     def get_image(self):
         image = zeit.content.image.interfaces.IImages(self.context).image
@@ -244,7 +259,7 @@ class Speechbert(grok.Adapter):
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.context)
         payload = {
             'authors': [x.target.display_name for x in self.context.authorships if not x.role],
-            'body': self.get_body(),
+            'body': self.context.get_body(),
             'checksum': checksum.checksum,
             'channels': ' '.join([x for x in chain(*self.context.channels) if x]),
             'genre': self.context.genre,
@@ -268,16 +283,6 @@ class Speechbert(grok.Adapter):
         if self.context.serie:
             payload['series'] = self.context.serie.serienname
         return {k: v for k, v in payload.items() if v}
-
-    def publish_json(self):
-        if self.ignore('publish'):
-            return None
-        return self._json()
-
-    def retract_json(self):
-        if self.ignore('retract'):
-            return None
-        return {}
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
@@ -305,6 +310,30 @@ class TMS(grok.Adapter):
     def retract_json(self):
         if self.ignore():
             return None
+        return {}
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Summy(grok.Adapter, IgnoreMixin):
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.name('summy')
+
+    def _json(self):
+        return {
+            'text': self.context.get_body(),
+            'avoid_create_summary': self.context.avoid_create_summary,
+        }
+
+    def publish_json(self):
+        if self.ignore('publish'):
+            # this is explicitly set to empty dict
+            # because we still want to notify summy
+            # and summy will store some additional values
+            # event though it does not create a summary
+            return {}
+        return self._json()
+
+    def retract_json(self):
         return {}
 
 
