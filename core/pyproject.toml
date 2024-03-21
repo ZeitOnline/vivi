@@ -169,6 +169,7 @@ test = [
     "pytest-xdist",
     "requests-mock",
     "selenium<4",  # ZO-3157
+    "time-machine",
     "waitress",
     "webtest",
     "xlrd",

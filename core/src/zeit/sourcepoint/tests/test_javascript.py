@@ -1,10 +1,10 @@
 from datetime import datetime
 from unittest import mock
 
+import time_machine
 import transaction
 import zope.component
 
-from zeit.cms.testing import clock
 import zeit.cms.testing
 import zeit.content.text.text
 import zeit.sourcepoint.interfaces
@@ -54,17 +54,18 @@ class JavascriptDownload(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         self.assertEqual(1, len(folder))
 
+    @time_machine.travel(datetime(2019, 3, 17, 8, 33))
     def test_download_changed_from_latest_version_stores_new_entry(self):
         folder = self.repository['addefend']
         current = Text('current')
         folder['adf_20190101.js'] = current
         js = zope.component.getUtility(zeit.sourcepoint.interfaces.IJavaScript, name='addefend')
         self.assertEqual(1, len(folder))
-        with mock.patch.object(js, '_download') as download, clock(datetime(2019, 3, 17, 8, 33)):
+        with mock.patch.object(js, '_download') as download:
             download.return_value = 'new'
             js.update()
         transaction.commit()
-        self.assertEqual(['adf_20190101.js', 'adf_201903170833.js'], sorted(folder.keys()))
+        self.assertEqual(['adf_20190101.js', 'adf_201903170933.js'], sorted(folder.keys()))
         self.assertEqual(True, self.publish().publish.called)
 
     def test_download_error_is_ignored(self):
