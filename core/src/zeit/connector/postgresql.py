@@ -65,6 +65,7 @@ class LockStatus(Enum):
     NONE = 0
     FOREIGN = 1
     OWN = 2
+    TIMED_OUT = 3
 
 
 def _build_filter(expr):
@@ -212,8 +213,8 @@ class Connector:
             self.session.add(path)
         else:
             path = content.path
-            status = self._get_lock_status(uniqueid)
-            if status == LockStatus.FOREIGN:
+            lock = self._get_lock(uniqueid)
+            if lock and lock.status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
@@ -249,8 +250,8 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-        status = self._get_lock_status(uniqueid)
-        if status == LockStatus.FOREIGN:
+        lock = self._get_lock(uniqueid)
+        if lock and lock.status == LockStatus.FOREIGN:
             raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         current = content.to_webdav()
         current.update(properties)
@@ -379,38 +380,38 @@ class Connector:
                 return True
         return False
 
-    def _get_lock_status(self, id):
-        lock_principal, until, is_my_lock = self.locked(id)
-        if lock_principal is None and until is None:
-            return LockStatus.NONE
-        elif is_my_lock:
-            return LockStatus.OWN
-        else:
-            return LockStatus.FOREIGN
+    def _get_lock(self, id):
+        path = self.session.get(Path, self._pathkey(id))
+        if path is None:
+            raise KeyError(f'The resource {id} does not exist.')
+        return self.session.get(Lock, path.id)
 
-    def _add_lock(self, id, principal, until):
+    def _insert_or_update_lock(self, id, principal, until, lock):
         path = self.session.get(Path, self._pathkey(id))
         if path is None:
             log.warning('Unable to add lock to resource %s that does not exist.', str(id))
             return
-        lock = Lock(id=path.id, principal=principal, until=until)
-        self.session.add(lock)
+        if lock:
+            lock.principal = principal
+            lock.until = until
+        else:
+            lock = Lock(id=path.id, principal=principal, until=until)
+            self.session.add(lock)
         return lock.token
 
     def lock(self, id, principal, until):
-        match self._get_lock_status(id):
-            case LockStatus.NONE:
-                return self._add_lock(id, principal, until)
+        lock = self._get_lock(id)
+        status = lock.status if lock else LockStatus.NONE
+        match status:
+            case LockStatus.NONE | LockStatus.TIMED_OUT:
+                return self._insert_or_update_lock(id, principal, until, lock)
             case LockStatus.OWN:
                 raise LockingError(id, f'You already own the lock of {id}.')
             case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(id, f'{id} is already locked.')
 
     def unlock(self, id):
-        path = self.session.get(Path, self._pathkey(id))
-        if path is None:
-            raise KeyError(f'The resource {id} does not exist.')
-        lock = self.session.get(Lock, path.id)
+        lock = self._get_lock(id)
         if not lock:
             return
         if lock_is_foreign(lock.principal):
@@ -418,28 +419,23 @@ class Connector:
         self.session.delete(lock)
 
     def _unlock(self, id, token):
-        path = self.session.get(Path, self._pathkey(id))
-        if path is None:
-            raise KeyError(f'The resource {id} does not exist.')
-        lock = self.session.get(Lock, path.id)
+        lock = self._get_lock(id)
         if not lock or not lock.token == token:
             return
         self.session.delete(lock)
 
     def locked(self, id):
-        path = self.session.get(Path, self._pathkey(id))
-        if path is None:
-            log.warning('The resource %s does not exist.', str(id))
-            return (None, None, False)
-        lock = self.session.get(Lock, path.id)
-        if lock is None:
-            return (None, None, False)
-        if lock.until < datetime.now(pytz.UTC):
-            self.session.delete(lock)
-            return (None, None, False)
-        is_my_lock = not self._is_foreign(lock.principal)
-
-        return (lock.principal, lock.until, is_my_lock)
+        lock = self._get_lock(id)
+        status = lock.status if lock else LockStatus.NONE
+        match status:
+            case LockStatus.NONE | LockStatus.TIMED_OUT:
+                return (None, None, False)
+            case LockStatus.OWN:
+                return (lock.principal, lock.until, True)
+            case LockStatus.FOREIGN:
+                return (lock.principal, lock.until, False)
+            case _:
+                return (None, None, False)
 
     def search(self, attrlist, expr):
         if (
@@ -579,6 +575,17 @@ class Lock(DBObject):
     def token(self):
         "Backwards compatibility with DAV backend which returns a token if a lock was added."
         return hashlib.sha256(f'{self.principal}{self.id}'.encode('utf-8')).hexdigest()
+
+    @property
+    def status(self):
+        if self.principal is None and self.until is None:
+            return LockStatus.NONE
+        elif self.until < datetime.now(pytz.UTC):
+            return LockStatus.TIMED_OUT
+        elif not lock_is_foreign(self.principal):
+            return LockStatus.OWN
+        else:
+            return LockStatus.FOREIGN
 
 
 class PassthroughConnector(Connector):
