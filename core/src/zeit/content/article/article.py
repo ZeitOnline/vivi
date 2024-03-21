@@ -198,6 +198,18 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         body.updateOrder(ids)
         return image_block
 
+    def get_body(self):
+        body = []
+        elements = self.body.xml.xpath('(//division/* | //division/ul/*)')
+        for elem in elements:
+            if elem.tag not in ('intertitle', 'li', 'p'):
+                continue
+            text = elem.xpath('.//text()')
+            if not text:
+                continue
+            body.append({'content': ' '.join([x.strip() for x in text]), 'type': elem.tag})
+        return body
+
 
 class NoMainImageBlockReference(zeit.cms.content.reference.EmptyReference):
     """We need someone who can create references, even when the reference is
