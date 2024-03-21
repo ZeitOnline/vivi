@@ -520,7 +520,7 @@ class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
         if speechbert.ignore('publish'):
             return
         checksum = hashlib.md5(usedforsecurity=False)
-        body = json.dumps(speechbert.get_body(), ensure_ascii=False).encode('utf-8')
+        body = json.dumps(self.context.get_body(), ensure_ascii=False).encode('utf-8')
         checksum.update(body)
         return checksum.hexdigest()
 

@@ -102,6 +102,24 @@ def badgerfish(node):
     return {lxml.etree.QName(node.tag).localname: result}
 
 
+def is_on_ignorelist(context, receiver):
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
+    ignore_genres = [x.lower() for x in config.get(f'{receiver}-ignore-genres', '').split()]
+    genre = context.genre
+    if genre and genre.lower() in ignore_genres:
+        return True
+
+    ignore_templates = [x.lower() for x in config.get(f'{receiver}-ignore-templates', '').split()]
+    template = context.template
+    if template is not None and template.lower() in ignore_templates:
+        return True
+
+    ignore_ressorts = [x.lower() for x in config.get(f'{receiver}-ignore-ressorts', '').split()]
+    ressort = context.ressort
+    if ressort and ressort.lower() in ignore_ressorts:
+        return True
+
+
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
 class ArticleBigQuery(grok.Adapter, BigQueryMixin):
     grok.context(zeit.content.article.interfaces.IArticle)
@@ -200,34 +218,12 @@ class Speechbert(grok.Adapter):
     grok.name('speechbert')
 
     def ignore(self, method):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
         if method == 'publish':
-            ignore_genres = [x.lower() for x in config.get('speechbert-ignore-genres', '').split()]
-            genre = self.context.genre
-            if genre and genre.lower() in ignore_genres:
-                return True
-        if method == 'publish':
-            ignore_templates = [
-                x.lower() for x in config.get('speechbert-ignore-templates', '').split()
-            ]
-            template = self.context.template
-            if template is not None and template.lower() in ignore_templates:
+            if is_on_ignorelist(self.context, 'speechbert'):
                 return True
         if self.context.product and self.context.product.is_news:
             return True
         return False
-
-    def get_body(self):
-        body = []
-        elements = self.context.body.xml.xpath('(//division/* | //division/ul/*)')
-        for elem in elements:
-            if elem.tag not in ('intertitle', 'li', 'p'):
-                continue
-            text = elem.xpath('.//text()')
-            if not text:
-                continue
-            body.append({'content': ' '.join([x.strip() for x in text]), 'type': elem.tag})
-        return body
 
     def get_image(self):
         image = zeit.content.image.interfaces.IImages(self.context).image
@@ -244,7 +240,7 @@ class Speechbert(grok.Adapter):
         checksum = zeit.content.article.interfaces.ISpeechbertChecksum(self.context)
         payload = {
             'authors': [x.target.display_name for x in self.context.authorships if not x.role],
-            'body': self.get_body(),
+            'body': self.context.get_body(),
             'checksum': checksum.checksum,
             'channels': ' '.join([x for x in chain(*self.context.channels) if x]),
             'genre': self.context.genre,
@@ -314,41 +310,18 @@ class Summy(grok.Adapter):
     grok.name('summy')
 
     def ignore(self, method):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
         if method == 'publish':
-            ignore_genres = config.get('summy-ignore-genres', '').lower().split()
-            genre = self.context.genre
-            if genre and genre.lower() in ignore_genres:
+            if is_on_ignorelist(self.context, 'summy'):
                 return True
-
-            ignore_templates = config.get('summy-ignore-templates', '').lower().split()
-            template = self.context.template
-            if template is not None and template.lower() in ignore_templates:
-                return True
-
-            ignore_ressorts = config.get('summy-ignore-ressorts', '').lower().split()
-            ressort = self.context.ressort
-            if ressort and ressort.lower() in ignore_ressorts:
-                return True
-
         if self.context.product and self.context.product.is_news:
             return True
         return False
 
-    def get_body(self):
-        body = []
-        elements = self.context.body.xml.xpath('(//division/* | //division/ul/*)')
-        for elem in elements:
-            if elem.tag not in ('intertitle', 'li', 'p'):
-                continue
-            text = elem.xpath('.//text()')
-            if not text:
-                continue
-            body.append({'content': ' '.join([x.strip() for x in text]), 'type': elem.tag})
-        return body
-
     def _json(self):
-        return {'text': self.get_body(), 'avoid_create_summary': self.context.avoid_create_summary}
+        return {
+            'text': self.context.get_body(),
+            'avoid_create_summary': self.context.avoid_create_summary,
+        }
 
     def publish_json(self):
         if self.ignore('publish'):
