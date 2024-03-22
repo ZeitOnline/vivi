@@ -142,7 +142,7 @@ We *really* got the one from zope.app.locking:
 
 >>> try:
 ...     lock_storage.setLock(content, info)
-... except Exception, e:
+... except Exception as e:
 ...     print(e.__module__)
 zope.app.locking.interfaces
 
