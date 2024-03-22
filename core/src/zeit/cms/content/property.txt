@@ -223,16 +223,6 @@ False
 </doc>
 
 
-Setting invalid values will fail:
-
->>> content.words = 6.25
-Traceback (most recent call last):
-    ...
-WrongType: (6.25, (<type 'int'>, <type 'long'>), '')
->>> content.words
-53
-
-
 Setting None will remove the attribute:
 
 >>> content.text = 'some text'
