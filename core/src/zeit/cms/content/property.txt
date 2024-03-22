@@ -33,39 +33,9 @@ Initially b is None, since the node doesn't exist:
 >>> print(content.b)
 None
 
-Let's assign some values to b. Integer:
+Let's assign some values to b. Note that strings are always unicode:
 
->>> content.b = 5
->>> content.b
-5
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<a>
-    <b>5</b>
-</a>
->>> content._p_changed
-True
-
-
-Float:
-
->>> content.b = 47.25
->>> content.b
-47.25
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<a>
-    <b>47.25</b>
-</a>
-
->>> content.b = 47.0
->>> content.b
-47.0
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<a>
-    <b>47.0</b>
-</a>
-
-String. Note that strings are always unicode:
-
+>>> import zeit.cms.testing
 >>> content.b = 'Foo'
 >>> content.b
 'Foo'
@@ -79,27 +49,24 @@ It is also possible to declare a field for the property:
 
 >>> import zope.schema
 >>> prop = ObjectPathProperty('.b', zope.schema.TextLine())
->>> content.xml.b = 1234
+>>> content.xml.find('b').text = '1234'
 >>> prop.__get__(content, None)
 '1234'
->>> content.xml.b = '1.20'
->>> prop.__get__(content, None)
-'1.20'
 
 Invalid values fall back to the default behaviour, i.e. don't use the field for
 validation:
 
 >>> prop = ObjectPathProperty('.b', zope.schema.TextLine(max_length=2))
->>> content.xml.b = 1234
+>>> content.xml.find('b').text = '1234'
 >>> prop.__get__(content, None)
-1234
+'1234'
 
 We can also get the field's default value instead of the mssing value when the
 XML is empty:
 
 >>> prop = ObjectPathProperty(
 ...     '.b', zope.schema.TextLine(default='foo'), use_default=True)
->>> content.xml.b = None
+>>> content.xml.remove(content.xml.find('b'))
 >>> prop.__get__(content, None)
 'foo'
 
@@ -113,7 +80,7 @@ create a test-class:
 
 >>> xml_tree = lxml.etree.fromstring('<a><b/><c/><b/><b/></a>')
 >>> class Content(persistent.Persistent):
-...     xml = xml_tree.b[1]
+...     xml = xml_tree.findall('b')[1]
 ...     b = ObjectPathProperty(None)
 >>> content = Content()
 >>> content._p_jar = mock.Mock()
@@ -125,16 +92,16 @@ Initially b is an empty string, since the node exist and is empty:
 >>> content.b
 ''
 
-Let's assign some values to b. Integer:
+Let's assign some values to b.
 
->>> content.b = 4253890
+>>> content.b = 'example'
 >>> content.b
-4253890
+'example'
 >>> print(zeit.cms.testing.xmltotext(xml_tree))
 <a>
     <b/>
     <c/>
-    <b>4253890</b>
+    <b>example</b>
     <b/>
 </a>
 >>> content._p_changed
@@ -402,7 +369,7 @@ Get the value:
 'Foo <em>Bar<a href="blaubs">click</a></em>'
 
 >>> content.title = '<em>blah</em>'
->>> content.title
+>>> content.title.strip()
 '<em>blah</em>'
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo xmlns:myns="namespace">
