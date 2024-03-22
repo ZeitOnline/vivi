@@ -90,7 +90,7 @@ Set until:
 >>> connector.mylock = True
 >>> info = lock_storage.getLock(content)
 >>> info.principal_id
-'zeit.cms.unknown-dav-locker'
+'zeit.cms.unknown-locker'
 >>> isinstance(info.timeout, float)
 True
 
