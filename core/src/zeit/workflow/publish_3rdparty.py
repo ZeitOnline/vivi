@@ -206,6 +206,7 @@ class IgnoreMixin:
 
     @property
     def name(self):
+        """defined with grok.name"""
         return self.__class__.__dict__['grokcore.component.directive.name']
 
     @property
@@ -222,9 +223,7 @@ class IgnoreMixin:
         return False
 
     def is_on_ignorelist(self, attribute, setting):
-        ignore_list = [
-            x.lower() for x in self.config.get(f'{self.name}-ignore-{setting}', '').split()
-        ]
+        ignore_list = self.config.get(f'{self.name}-ignore-{setting}', '').lower().split()
         value = getattr(self.context, attribute)
         return value and value.lower() in ignore_list
 
@@ -329,7 +328,7 @@ class Summy(grok.Adapter, IgnoreMixin):
             # this is explicitly set to empty dict
             # because we still want to notify summy
             # and summy will store some additional values
-            # event though it does not create a summary
+            # even though it does not create a summary
             return {}
         return self._json()
 
