@@ -259,7 +259,7 @@ Create a mock repository:
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerAdapter(
 ...     repository_objects.get,
-...     (basestring,), zeit.cms.interfaces.ICMSContent)
+...     (str,), zeit.cms.interfaces.ICMSContent)
 
 
 Referencing a single resource
@@ -330,7 +330,7 @@ Clean up:
 
 >>> gsm.unregisterAdapter(
 ...     repository_objects.get,
-...     (basestring,), zeit.cms.interfaces.ICMSContent)
+...     (str,), zeit.cms.interfaces.ICMSContent)
 True
 
 
