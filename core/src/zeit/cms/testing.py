@@ -685,11 +685,14 @@ optionflags = (
 
 
 def DocFileSuite(*paths, **kw):
+    layer = kw.pop('layer', CONFIG_LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
     kw['encoding'] = 'utf-8'
-    return doctest.DocFileSuite(*paths, **kw)
+    test = doctest.DocFileSuite(*paths, **kw)
+    test.layer = layer
+    return test
 
 
 def FunctionalDocFileSuite(*paths, **kw):
