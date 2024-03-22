@@ -5,9 +5,7 @@ import zeit.cms.testing
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(
-        zeit.cms.testing.DocFileSuite('adapter.txt', 'property.txt', package='zeit.cms.content')
-    )
+    suite.addTest(zeit.cms.testing.DocFileSuite('property.txt', package='zeit.cms.content'))
     suite.addTest(
         zeit.cms.testing.FunctionalDocFileSuite(
             'contentmemo.txt',
