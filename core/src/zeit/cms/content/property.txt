@@ -326,84 +326,11 @@ back:
 True
 
 
-Some types support a special xml structure, like relateds. Register an adapter
-which provides IXMLReference for our content object:
-
->>> class Content:
-...     res = zeit.cms.content.property.SingleResource(
-...         '.ref', xml_reference_name='related',
-...         attributes=('foo', 'href', ))
-...
-...     def __init__(self):
-...         self.xml = lxml.etree.fromstring('<foo/>')
-...
->>> import lxml.builder
->>> import zeit.cms.content.interfaces
->>> @zope.component.adapter(Content)
-... @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
-... def xmlref(context):
-...     return lxml.builder.E.related(type="intern", href=context.uniqueId)
->>> gsm.registerAdapter(xmlref, name='related')
-
-Create a content object and an object which can be referenced:
-
->>> content = Content()
->>> referenced_obj = Content()
->>> referenced_obj.uniqueId = 'http://xml.zeit.de/related'
->>> repository_objects[referenced_obj.uniqueId] = referenced_obj
-
-Currently no object is referenced:
-
->>> content.res is None
-True
-
->>> content.res = referenced_obj
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<foo>
-  <ref href="http://xml.zeit.de/related" type="intern"/>
-</foo>
-
-Get the resource back:
-
->>> content.res
-<Content object at 0x...>
->>> content.res == referenced_obj
-True
-
-Delete the reference:
-
->>> content.res = None
-
-
-Make sure we cannot instanciate invalid combinations:
-
->>> zeit.cms.content.property.SingleResource(
-...     '.ref', xml_reference_name='related')
-Traceback (most recent call last):
-    ...
-ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
-
->>> zeit.cms.content.property.SingleResource(
-...     '.ref', attributes=('blub',))
-Traceback (most recent call last):
-    ...
-ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
-
->>> zeit.cms.content.property.SingleResource(
-...     '.ref', xml_reference_name='foo', attributes='blub')
-Traceback (most recent call last):
-    ...
-ValueError: `attributes` must be tuple, got <type 'str'>
-
-
-
 Clean up:
 
 >>> gsm.unregisterAdapter(
 ...     repository_objects.get,
 ...     (basestring,), zeit.cms.interfaces.ICMSContent)
-True
->>> gsm.unregisterAdapter(xmlref, name='related')
 True
 
 
