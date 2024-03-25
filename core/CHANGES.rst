@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.130.0 (2024-03-25)
+--------------------
+
+- ZO-4917: implementation of locking timeout
+
+- ZO-4982: remove dav specific code from LockStorage
+
+
 5.129.0 (2024-03-21)
 --------------------
 
