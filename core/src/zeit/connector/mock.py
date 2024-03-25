@@ -259,6 +259,9 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
+        if id not in self:
+            raise KeyError(f'The resource {id} does not exist')
+
         id = self._get_cannonical_id(id)
         (another_principal, _, my_lock) = self.locked(id)
         if another_principal:

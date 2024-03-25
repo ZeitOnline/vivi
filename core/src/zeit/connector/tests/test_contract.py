@@ -263,6 +263,10 @@ class ContractLock:
         self.connector.lock(res.id, user, datetime.now(pytz.UTC) + timedelta(hours=2))
         transaction.commit()
 
+    def test_lock_nonexistent_resource_raises(self):
+        with self.assertRaises(KeyError):
+            self.connector.lock('http://xml.zeit.de/testing/foo', '', datetime.now(pytz.UTC))
+
     def test_locked_shows_lock_status(self):
         id = self.add_resource('foo').id
         self.assertEqual((None, None, False), self.connector.locked(id))

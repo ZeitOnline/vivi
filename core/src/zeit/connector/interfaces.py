@@ -166,6 +166,7 @@ class IConnector(zope.interface.Interface):
         until: datetime until the lock is valid.
 
         returns locktoken.
+        raises KeyError if the resource could not be found
         raises LockingError if lock already exists for another principal
         """
 

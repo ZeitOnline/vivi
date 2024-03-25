@@ -29,7 +29,7 @@ class LockStorage:
         if locked_by is None and locked_until is None:
             return None
         if locked_by is None:
-            locked_by = 'zeit.cms.unknown-dav-locker'
+            locked_by = 'zeit.cms.unknown-locker'
         if not my_lock:
             locked_by = 'othersystem.' + locked_by
 
@@ -47,13 +47,6 @@ class LockStorage:
             self.connector.lock(object.uniqueId, lock.principal_id, until)
         except zeit.connector.interfaces.LockingError as e:
             raise zope.app.locking.interfaces.LockingError(e.uniqueId, *e.args)
-        # Now make sure the object *really* exists. In case we've create a null
-        # resource lock, we unlock and raise an error
-        if not self.connector[object.uniqueId].properties.get(('getlastmodified', 'DAV:')):
-            self.delLock(object)
-            raise zope.app.locking.interfaces.LockingError(
-                object.uniqueId, 'Object does not exist.'
-            )
 
     def delLock(self, object):
         if not zeit.cms.interfaces.ICMSContent.providedBy(object):

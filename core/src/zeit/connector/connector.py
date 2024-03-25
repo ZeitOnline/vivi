@@ -383,8 +383,7 @@ class Connector:
                 del cached_properties[key]
             self.property_cache[id] = cached_properties
 
-    def lock(self, id, principal, until):
-        """Lock resource for principal until a given datetime."""
+    def _lock(self, id, principal, until):
         url = self._id2loc(self._get_cannonical_id(id))
         token = None
         try:
@@ -399,6 +398,12 @@ class Connector:
 
         self._invalidate_cache(id)
         return token
+
+    def lock(self, id, principal, until):
+        """Lock resource for principal until a given datetime."""
+        if id not in self:
+            raise KeyError(f'The resource {id} does not exist.')
+        return self._lock(id, principal, until)
 
     def unlock(self, id):
         self._invalidate_cache(id)
@@ -532,7 +537,7 @@ class Connector:
                 self._add_collection(id)
 
         if autolock:
-            locktoken = self.lock(
+            locktoken = self._lock(
                 id, 'AUTOLOCK', datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=60)
             )
         try:

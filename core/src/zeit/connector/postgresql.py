@@ -400,6 +400,9 @@ class Connector:
         return lock.token
 
     def lock(self, id, principal, until):
+        if id not in self:
+            raise KeyError(f'The resource {id} does not exist.')
+
         lock = self._get_lock(id)
         status = lock.status if lock else LockStatus.NONE
         match status:

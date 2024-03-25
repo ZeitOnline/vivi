@@ -90,7 +90,7 @@ Set until:
 >>> connector.mylock = True
 >>> info = lock_storage.getLock(content)
 >>> info.principal_id
-'zeit.cms.unknown-dav-locker'
+'zeit.cms.unknown-locker'
 >>> isinstance(info.timeout, float)
 True
 
@@ -145,15 +145,6 @@ We *really* got the one from zope.app.locking:
 ... except Exception as e:
 ...     print(e.__module__)
 zope.app.locking.interfaces
-
-Note that it is not possible to create locks for resources which do not exist:
-
->>> content.uniqueId = 'doesnotexist'
->>> lock_storage.setLock(content, info)
-Traceback (most recent call last):
-    ...
-LockingError: ('doesnotexist', 'Object does not exist.')
-
 
 Clean up
 ========
