@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.131.0 (2024-03-25)
+--------------------
+
+MAINT:
+- Create workingcopy URLs with -2 less often
+
+
 5.130.0 (2024-03-25)
 --------------------
 
