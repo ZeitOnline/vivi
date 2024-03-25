@@ -275,6 +275,9 @@ class Connector(zeit.connector.filesystem.Connector):
     def locked(self, id):
         id = self._get_cannonical_id(id)
         (lock_principal, until, my_lock) = self._locked.get(id, (None, None, False))
+        if until and until < datetime.datetime.now(pytz.UTC):
+            del self._locked[id]
+            return (None, None, False)
         if lock_principal:
             my_lock = not lock_is_foreign(lock_principal)
         return (lock_principal, until, my_lock)

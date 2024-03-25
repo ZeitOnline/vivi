@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from io import BytesIO
+import time
 
 import pytz
 import transaction
@@ -426,6 +427,17 @@ class ContractLock:
                 'http://xml.zeit.de/testing/foo',
                 {('foo', self.NS): 'qux', ('baz', self.NS): DeleteProperty},
             )
+
+    def test_lock_timeout(self):
+        id = self.add_resource('foo').id
+        self.assertEqual((None, None, False), self.connector.locked(id))
+        self.connector.lock(id, 'zope.user', datetime.now(pytz.UTC))
+        transaction.commit()
+        if 'DAV' in self.__class__.__name__:
+            # dav needs some more time to unlock
+            time.sleep(0.9)
+        time.sleep(0.1)
+        self.assertEqual((None, None, False), self.connector.locked(id))
 
 
 class ContractSearch:
