@@ -536,7 +536,7 @@ class IReadTeaserBlock(IBlock, IReadFeed):
         title=_('Layout'), source=zeit.content.cp.layout.TeaserBlockLayoutSource()
     )
 
-    force_mobile_image = zope.schema.Bool(title=_('Force image on mobile'), default=True)
+    force_mobile_image = zope.schema.Bool(title=_('Force image on mobile'))
 
 
 class IWriteTeaserBlock(IWriteFeed):

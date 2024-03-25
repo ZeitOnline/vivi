@@ -52,6 +52,9 @@ class Block(VisibleMixin, zeit.edit.block.SimpleElement):
 
     read_more = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'read_more')
     read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'read_more_url')
+    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'force_mobile_image'
+    )
 
     @property
     def type_title(self):

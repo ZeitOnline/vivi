@@ -44,7 +44,7 @@ class LocalTeaserBlock(
         '.',
         'force_mobile_image',
         zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image'],
-        use_default=True,
+        # use_default=True,
     )
 
     def __iter__(self):

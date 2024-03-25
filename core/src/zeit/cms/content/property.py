@@ -156,7 +156,8 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
         return value
 
     def __set__(self, instance, value):
-        if value is None:
+        # breakpoint()
+        if not value:
             self.getNode(instance).attrib.pop(self.attribute_name, None)
         else:
             if not isinstance(value, str):

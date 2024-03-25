@@ -56,7 +56,7 @@ class TeaserBlock(Layoutable, zeit.content.cp.blocks.block.Block, zeit.content.c
         '.',
         'force_mobile_image',
         zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image'],
-        use_default=True,
+        # use_default=True,
     )
 
     @property
