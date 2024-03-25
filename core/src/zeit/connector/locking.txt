@@ -38,7 +38,7 @@ more:
 >>> import datetime
 >>> import pytz
 >>> until = datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=3)
->>> connector.lock(res.id, 'zope.user', until)
+>>> connector._lock(res.id, 'zope.user', until)
 'opaquelocktoken:...'
 >>> connector.locked(res.id)
 ('zope.user', datetime.datetime(..., tzinfo=<UTC>), True)
@@ -55,7 +55,7 @@ We unlock the resource under the hood and of course expect that we can add it:
 
 >>> res.id = 'http://xml.zeit.de/testing/edge1'
 >>> parent = 'http://xml.zeit.de/testing'
->>> token = connector.lock(res.id, 'zope.user', until=None)
+>>> token = connector._lock(res.id, 'zope.user', until=None)
 >>> ignore = connector[res.id]  # fill cache again
 >>> connector._unlock(res.id, token)
 >>> connector.add(res)
@@ -202,7 +202,7 @@ Edge case 5: Null resouce locks
 +++++++++++++++++++++++++++++++
 
 >>> res.id = 'http://xml.zeit.de/testing/edge5'
->>> connector.lock(res.id, 'zope.user', until=None)
+>>> connector._lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> connector[res.id].data
 <...BytesIO object at 0x...>

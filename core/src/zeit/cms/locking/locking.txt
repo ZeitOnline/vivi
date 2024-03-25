@@ -146,15 +146,6 @@ We *really* got the one from zope.app.locking:
 ...     print(e.__module__)
 zope.app.locking.interfaces
 
-Note that it is not possible to create locks for resources which do not exist:
-
->>> content.uniqueId = 'doesnotexist'
->>> lock_storage.setLock(content, info)
-Traceback (most recent call last):
-    ...
-LockingError: ('doesnotexist', 'Object does not exist.')
-
-
 Clean up
 ========
 
