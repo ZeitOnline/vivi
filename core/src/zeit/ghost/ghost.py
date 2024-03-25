@@ -29,9 +29,9 @@ def add_ghost_after_checkin(context, event):
 
 
 @zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckoutEvent
+    zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckoutEvent
 )
-def remove_ghost_after_checkout(context, event):
+def remove_ghost_on_checkout(context, event):
     """Remove ghost of checked out object, if any."""
     workingcopy = event.workingcopy
     unique_id = context.uniqueId

@@ -54,14 +54,10 @@ checked out object:
 
 >>> checked_out = ICheckoutManager(content).checkout()
 >>> list(workingcopy.keys())
-['4schanzentournee-abgesang-2']
-
-Note that we have a different local name in the workingcopy. But this doesn't
-matter and is not really visible for the user anyway. The uniqueId is correct
-though:
+['4schanzentournee-abgesang']
 
 >>> checked_out.__name__
-'4schanzentournee-abgesang-2'
+'4schanzentournee-abgesang'
 >>> checked_out.uniqueId
 'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
 
@@ -73,7 +69,7 @@ When we do a temporary checkout no ghost will be added to the workingcopy:
 >>> manager.checkin()
 <zeit.cms.repository.unknown.PersistentUnknownResource...>
 >>> list(workingcopy.keys())
-['4schanzentournee-abgesang-2']
+['4schanzentournee-abgesang']
 
 Automatic ghost removing
 ========================
@@ -121,7 +117,7 @@ Content: Ford-Beerdigung
 Content: Flugsicherheit
 Content: EU-Beitritt-rumaenien-bulgarien
 Content: Arbeitsmarktzahlen
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 
 Checkin Flugsicherheit and Arbeitsmarktzahlen:
@@ -136,7 +132,7 @@ Content: Guantanamo
 Content: Gesundheitsreform-Die
 Content: Ford-Beerdigung
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 
 We have  exactly 7 objects in the workingcopy which is our target size. When we
@@ -152,7 +148,7 @@ Content: Guantanamo
 Content: Gesundheitsreform-Die
 Content: Ford-Beerdigung
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 When we checkout yet another object, the last remaining ghost will be removed:
 
@@ -165,7 +161,7 @@ Content: Guantanamo
 Content: Gesundheitsreform-Die
 Content: Ford-Beerdigung
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 
 After checking out another object, we'll have 8 objects int he workingcopy as
@@ -181,7 +177,7 @@ Content: Guantanamo
 Content: Gesundheitsreform-Die
 Content: Ford-Beerdigung
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 When we check in a content now, we'll have a ghost despite the target size of
 7:
@@ -197,7 +193,7 @@ Content: Querdax
 Content: Guantanamo
 Content: Ford-Beerdigung
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 Checking in another object, still does not remove any ghost:
 
@@ -212,7 +208,7 @@ Content: Saarland
 Content: Guantanamo
 Content: Ford-Beerdigung
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 Note that any invalid ghosts, that are ghosts which reference deleted objects,
 are also removed when checking out any object.
@@ -236,7 +232,7 @@ Ghost  : Gesundheitsreform-Die
 Content: Saarland
 Content: Guantanamo
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
 
 
 
@@ -250,4 +246,4 @@ Ghost  : Gesundheitsreform-Die
 Content: Saarland
 Content: Guantanamo
 Content: EU-Beitritt-rumaenien-bulgarien
-Content: 4schanzentournee-abgesang-2
+Content: 4schanzentournee-abgesang
