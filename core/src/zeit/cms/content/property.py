@@ -213,43 +213,16 @@ class SimpleMultiProperty(MultiPropertyBase):
 
 
 class SingleResource(ObjectPathProperty):
-    def __init__(self, path, xml_reference_name=None, attributes=None):
-        super().__init__(path)
-        if (xml_reference_name is None) ^ (attributes is None):
-            raise ValueError(
-                'Either both `xml_reference_name` and `attributes` or neither' ' must be given.'
-            )
-        if attributes is not None and not isinstance(attributes, tuple):
-            raise ValueError('`attributes` must be tuple, got %s' % type(attributes))
-        self.xml_reference_name = xml_reference_name
-        self.attributes = attributes
-
     def __get__(self, instance, class_):
         if instance is None:
             return self
-        node = self.getNode(instance)
-        if self.attributes and node is not None:
-            for attr in self.attributes:
-                unique_id = node.get(attr)
-                if unique_id:
-                    break
-        else:
-            unique_id = super().__get__(instance, class_)
-        if not unique_id:
-            return None
+        unique_id = super().__get__(instance, class_)
         return zeit.cms.interfaces.ICMSContent(unique_id, None)
 
     def __set__(self, instance, value):
-        if value is None:
-            node = None
-        else:
-            if self.xml_reference_name:
-                node = zope.component.getAdapter(
-                    value, zeit.cms.content.interfaces.IXMLReference, name=self.xml_reference_name
-                )
-            else:
-                node = value.uniqueId
-        super().__set__(instance, node)
+        if value is not None:
+            value = value.uniqueId
+        super().__set__(instance, value)
 
     def __delete__(self, instance):
         self.__set__(instance, None)

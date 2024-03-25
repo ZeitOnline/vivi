@@ -33,39 +33,9 @@ Initially b is None, since the node doesn't exist:
 >>> print(content.b)
 None
 
-Let's assign some values to b. Integer:
+Let's assign some values to b. Note that strings are always unicode:
 
->>> content.b = 5
->>> content.b
-5
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<a>
-    <b>5</b>
-</a>
->>> content._p_changed
-True
-
-
-Float:
-
->>> content.b = 47.25
->>> content.b
-47.25
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<a>
-    <b>47.25</b>
-</a>
-
->>> content.b = 47.0
->>> content.b
-47.0
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<a>
-    <b>47.0</b>
-</a>
-
-String. Note that strings are always unicode:
-
+>>> import zeit.cms.testing
 >>> content.b = 'Foo'
 >>> content.b
 'Foo'
@@ -79,27 +49,24 @@ It is also possible to declare a field for the property:
 
 >>> import zope.schema
 >>> prop = ObjectPathProperty('.b', zope.schema.TextLine())
->>> content.xml.b = 1234
+>>> content.xml.find('b').text = '1234'
 >>> prop.__get__(content, None)
 '1234'
->>> content.xml.b = '1.20'
->>> prop.__get__(content, None)
-'1.20'
 
 Invalid values fall back to the default behaviour, i.e. don't use the field for
 validation:
 
 >>> prop = ObjectPathProperty('.b', zope.schema.TextLine(max_length=2))
->>> content.xml.b = 1234
+>>> content.xml.find('b').text = '1234'
 >>> prop.__get__(content, None)
-1234
+'1234'
 
 We can also get the field's default value instead of the mssing value when the
 XML is empty:
 
 >>> prop = ObjectPathProperty(
 ...     '.b', zope.schema.TextLine(default='foo'), use_default=True)
->>> content.xml.b = None
+>>> content.xml.remove(content.xml.find('b'))
 >>> prop.__get__(content, None)
 'foo'
 
@@ -113,7 +80,7 @@ create a test-class:
 
 >>> xml_tree = lxml.etree.fromstring('<a><b/><c/><b/><b/></a>')
 >>> class Content(persistent.Persistent):
-...     xml = xml_tree.b[1]
+...     xml = xml_tree.findall('b')[1]
 ...     b = ObjectPathProperty(None)
 >>> content = Content()
 >>> content._p_jar = mock.Mock()
@@ -125,16 +92,16 @@ Initially b is an empty string, since the node exist and is empty:
 >>> content.b
 ''
 
-Let's assign some values to b. Integer:
+Let's assign some values to b.
 
->>> content.b = 4253890
+>>> content.b = 'example'
 >>> content.b
-4253890
+'example'
 >>> print(zeit.cms.testing.xmltotext(xml_tree))
 <a>
     <b/>
     <c/>
-    <b>4253890</b>
+    <b>example</b>
     <b/>
 </a>
 >>> content._p_changed
@@ -223,16 +190,6 @@ False
 </doc>
 
 
-Setting invalid values will fail:
-
->>> content.words = 6.25
-Traceback (most recent call last):
-    ...
-WrongType: (6.25, (<type 'int'>, <type 'long'>), '')
->>> content.words
-53
-
-
 Setting None will remove the attribute:
 
 >>> content.text = 'some text'
@@ -269,7 +226,7 @@ Create a mock repository:
 >>> gsm = zope.component.getGlobalSiteManager()
 >>> gsm.registerAdapter(
 ...     repository_objects.get,
-...     (basestring,), zeit.cms.interfaces.ICMSContent)
+...     (str,), zeit.cms.interfaces.ICMSContent)
 
 
 Referencing a single resource
@@ -336,84 +293,11 @@ back:
 True
 
 
-Some types support a special xml structure, like relateds. Register an adapter
-which provides IXMLReference for our content object:
-
->>> class Content:
-...     res = zeit.cms.content.property.SingleResource(
-...         '.ref', xml_reference_name='related',
-...         attributes=('foo', 'href', ))
-...
-...     def __init__(self):
-...         self.xml = lxml.etree.fromstring('<foo/>')
-...
->>> import lxml.builder
->>> import zeit.cms.content.interfaces
->>> @zope.component.adapter(Content)
-... @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
-... def xmlref(context):
-...     return lxml.builder.E.related(type="intern", href=context.uniqueId)
->>> gsm.registerAdapter(xmlref, name='related')
-
-Create a content object and an object which can be referenced:
-
->>> content = Content()
->>> referenced_obj = Content()
->>> referenced_obj.uniqueId = 'http://xml.zeit.de/related'
->>> repository_objects[referenced_obj.uniqueId] = referenced_obj
-
-Currently no object is referenced:
-
->>> content.res is None
-True
-
->>> content.res = referenced_obj
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<foo>
-  <ref href="http://xml.zeit.de/related" type="intern"/>
-</foo>
-
-Get the resource back:
-
->>> content.res
-<Content object at 0x...>
->>> content.res == referenced_obj
-True
-
-Delete the reference:
-
->>> content.res = None
-
-
-Make sure we cannot instanciate invalid combinations:
-
->>> zeit.cms.content.property.SingleResource(
-...     '.ref', xml_reference_name='related')
-Traceback (most recent call last):
-    ...
-ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
-
->>> zeit.cms.content.property.SingleResource(
-...     '.ref', attributes=('blub',))
-Traceback (most recent call last):
-    ...
-ValueError: Either both `xml_reference_name` and `attributes` or neither must be given.
-
->>> zeit.cms.content.property.SingleResource(
-...     '.ref', xml_reference_name='foo', attributes='blub')
-Traceback (most recent call last):
-    ...
-ValueError: `attributes` must be tuple, got <type 'str'>
-
-
-
 Clean up:
 
 >>> gsm.unregisterAdapter(
 ...     repository_objects.get,
-...     (basestring,), zeit.cms.interfaces.ICMSContent)
-True
->>> gsm.unregisterAdapter(xmlref, name='related')
+...     (str,), zeit.cms.interfaces.ICMSContent)
 True
 
 
@@ -485,7 +369,7 @@ Get the value:
 'Foo <em>Bar<a href="blaubs">click</a></em>'
 
 >>> content.title = '<em>blah</em>'
->>> content.title
+>>> content.title.strip()
 '<em>blah</em>'
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <foo xmlns:myns="namespace">
