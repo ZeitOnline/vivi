@@ -136,51 +136,58 @@ class Connector:
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        content = self._get_content(uniqueid)
-        if content is None:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
-        if content.is_collection:
-            _get_body = partial(BytesIO, b'')
-        elif content.binary_body:
-            _get_body = partial(self._get_body, content.id)
-        elif not content.body:
-            _get_body = partial(BytesIO, b'')
-        else:
-            _get_body = partial(BytesIO, content.body.encode('utf-8'))
+        properties = self._get_properties(uniqueid)  # may raise KeyError
         return CachedResource(
             uniqueid,
             uniqueid.split('/')[-1],
-            content.type,
-            content.to_webdav,
-            _get_body,
-            'httpd/unix-directory' if content.is_collection else 'httpd/unknown',
+            properties.get(('type', Content.NS + 'meta'), 'unknown'),
+            lambda: properties,
+            partial(self._get_body, uniqueid),
+            is_collection=properties[('is_collection', 'internal')],
         )
 
     property_cache = TransactionBoundCache('_v_property_cache', dict)
 
-    def _get_content(self, uniqueid):
-        content = self.property_cache.get(uniqueid)
-        if content is not None:
-            return content
+    def _get_properties(self, uniqueid):
+        if uniqueid in self.property_cache:
+            return self.property_cache[uniqueid]
+
         path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is not None:
-            content = path.content
-            self.property_cache[uniqueid] = content
-        return content
+        if path is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        properties = path.content.to_webdav()
+        self.property_cache[uniqueid] = properties
+        return properties
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
-    def _get_body(self, id):
-        body = self.body_cache.get(id)
-        if body is not None:
-            return BytesIO(body)
+    def _get_body(self, uniqueid):
+        if uniqueid in self.body_cache:
+            return self.body_cache[uniqueid]
+
+        path = self.session.get(Path, self._pathkey(uniqueid))
+        content = path.content
+        if content.is_collection:
+            body = b''
+        elif content.binary_body:
+            body = self._get_binary_body(content.id)
+        elif not content.body:
+            body = b''
+        else:
+            body = content.body.encode('utf-8')
+
+        body = BytesIO(body)
+        self.body_cache[uniqueid] = body
+        body.seek(0)
+        return body
+
+    def _get_binary_body(self, id):
         blob = self.bucket.blob(id)
         with zeit.cms.tracing.use_span(
             __name__ + '.tracing', 'gcs', attributes={'db.operation': 'download', 'id': id}
         ):
             body = blob.download_as_bytes()
-        self.body_cache[id] = body
-        return BytesIO(body)
+        return body
 
     def __contains__(self, uniqueid):
         try:
@@ -241,9 +248,7 @@ class Connector:
                 content.body = resource.data.read().decode('utf-8')
 
         if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = content
-            resource.data.seek(0)
-            self.body_cache[uniqueid] = resource.data.read()
+            self.property_cache[uniqueid] = content.to_webdav()
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -257,7 +262,7 @@ class Connector:
         current.update(properties)
         content.from_webdav(current)
         if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = content
+            self.property_cache[uniqueid] = content.to_webdav()
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -292,6 +297,10 @@ class Connector:
                 blob.delete()
             except google.api_core.exceptions.NotFound:
                 log.info('Ignored NotFound while deleting GCS blob %s', content.uniqueid)
+
+    def _get_content(self, uniqueid):
+        path = self.session.get(Path, self._pathkey(uniqueid))
+        return path.content if path is not None else None
 
     @staticmethod
     def _normalize(uniqueid):
@@ -535,6 +544,7 @@ class Content(DBObject):
 
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
+        props[('is_collection', 'internal')] = self.is_collection
 
         return props
 
@@ -552,6 +562,8 @@ class Content(DBObject):
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
             if v is DeleteProperty:
+                continue
+            if ns == 'internal':
                 continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
