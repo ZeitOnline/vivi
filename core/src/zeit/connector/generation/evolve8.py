@@ -2,17 +2,14 @@ import zope.component
 import zope.component.hooks
 import zope.generations.utility
 
+import zeit.connector.invalidator
+
 
 def update(root):
-    import zeit.connector.invalidator
-
-    site_manager = zope.component.getSiteManager()
-    zeit.connector.generation.install.installLocalUtility(
-        site_manager,
-        zeit.connector.invalidator.Invalidator,
-        'connector-invalidator',
-        zeit.connector.invalidator.IInvalidator,
-    )
+    """Removes obsolete invalidator utility"""
+    sm = zope.component.getSiteManager()
+    sm.unregisterUtility(sm['connector-invalidator'], zeit.connector.invalidator.IInvalidator)
+    del sm['connector-invalidator']
 
 
 def evolve(context):
