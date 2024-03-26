@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.132.0 (2024-03-26)
+--------------------
+
+- ZO-4800: Replace unused IResource.contentType with IResource.is_collection
+
+- ZO-5026: Introduce SQL/Zope connector with zodb-based caching
+
+
 5.131.0 (2024-03-25)
 --------------------
 
