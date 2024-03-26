@@ -81,7 +81,7 @@ def _build_filter(expr):
         raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
 
-@zope.interface.implementer(zeit.connector.interfaces.IConnector)
+@zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
     def __init__(self, dsn, storage_project, storage_bucket, reconnect_tries=3, reconnect_wait=0.1):
         self.dsn = dsn
@@ -474,6 +474,13 @@ class Connector:
                 for nsgetter, keygetter in itemgetters:
                     value = keygetter(nsgetter(item.content.unsorted))
                     yield (item.uniqueid, value)
+
+    def invalidate_cache(self, uniqueid):
+        path = self.session.get(Path, self._pathkey(uniqueid))
+        if path is None:
+            self.property_cache.pop(uniqueid, None)
+        else:
+            self.property_cache[uniqueid] = path.content.to_webdav()
 
 
 factory = Connector.factory

@@ -530,6 +530,22 @@ class ContractCache:
         self.assertNotIn(res.id, self.connector.property_cache)
         self.assertEqual('foo', self.connector.property_cache[new][prop])
 
+    def test_when_storage_changed_invalidate_updates_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.change_properties_in_storage(res.id, {prop: 'bar'})
+        transaction.commit()
+        self.connector.invalidate_cache(res.id)
+        self.assertEqual('bar', self.connector.property_cache[res.id][prop])
+
+    def test_when_storage_deleted_invalidate_removes_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.delete_in_storage(res.id)
+        transaction.commit()
+        self.connector.invalidate_cache(res.id)
+        self.assertNotIn(res.id, self.connector.property_cache)
+
 
 class ContractDAV(
     ContractReadWrite,
@@ -564,6 +580,12 @@ class ContractZopeDAV(
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
     copy_inherited_functions(ContractCache, locals())
+
+    def change_properties_in_storage(self, uniqueid, properties):
+        self.layer['connector'].changeProperties(uniqueid, properties)
+
+    def delete_in_storage(self, uniqueid):
+        del self.layer['connector'][uniqueid]
 
 
 class ContractMock(
@@ -618,3 +640,15 @@ class ContractZopeSQL(
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
     copy_inherited_functions(ContractCache, locals())
+
+    def change_properties_in_storage(self, uniqueid, properties):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = connector._get_content(uniqueid)
+        current = content.to_webdav()
+        current.update(properties)
+        content.from_webdav(current)
+
+    def delete_in_storage(self, uniqueid):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = connector._get_content(uniqueid)
+        connector.session.delete(content)
