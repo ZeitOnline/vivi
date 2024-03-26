@@ -44,10 +44,9 @@ class FakeWriteableCachedProperty(zope.cachedescriptors.property.Lazy):
 
 class BaseImage:
     def __init__(self, uniqueId=None):
-        super().__init__(uniqueId, mimeType='')
+        super().__init__(uniqueId)
 
-    # Not writeable since we always calculate it, but our superclasses want to.
-    @FakeWriteableCachedProperty
+    @property
     def mimeType(self):
         with self.open() as f:
             head = f.read(261)

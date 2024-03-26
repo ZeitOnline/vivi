@@ -17,11 +17,12 @@ import zeit.connector.interfaces
 class RepositoryFile(zeit.cms.repository.repository.ContentBase):
     """A file in the repository."""
 
-    def __init__(self, uniqueId, mimeType):
+    mimeType = 'application/octet-stream'  # Required by zope.file.download
+
+    def __init__(self, uniqueId):
         super().__init__()
         self.uniqueId = uniqueId
         self.parameters = {}
-        self.mimeType = mimeType
 
     def open(self, mode='r'):
         if mode != 'r':
@@ -48,8 +49,8 @@ class LocalFile(persistent.Persistent, RepositoryFile):
 
     local_data = None
 
-    def __init__(self, uniqueId=None, mimeType=''):
-        super().__init__(uniqueId, mimeType)
+    def __init__(self, uniqueId=None):
+        super().__init__(uniqueId)
 
     def open(self, mode='r'):
         if mode not in ('r', 'w'):
@@ -74,7 +75,7 @@ class LocalFile(persistent.Persistent, RepositoryFile):
 @zope.component.adapter(RepositoryFile)
 @zope.interface.implementer(zeit.cms.workingcopy.interfaces.ILocalContent)
 def localfile_factory(context):
-    f = LocalFile(context.uniqueId, context.mimeType)
+    f = LocalFile(context.uniqueId)
     f.__name__ = context.__name__
     return f
 
@@ -87,10 +88,10 @@ class FileType(zeit.cms.type.TypeDeclaration):
     factory = RepositoryFile
 
     def content(self, resource):
-        return self.factory(resource.id, resource.contentType)
+        return self.factory(resource.id)
 
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))
 
     def resource_content_type(self, content):
-        return content.mimeType
+        return 'application/octet-stream'

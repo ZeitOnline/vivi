@@ -7,8 +7,6 @@
       foo.pdf
     </a>
   </dd>
-  <dt i18n:translate="">Content type</dt>
-  <dd tal:content="context/mimeType">application/pdf</dd>
   <dt i18n:translate="">Size</dt>
   <dd i18n:translate="">
     <span tal:replace="context/size" i18n:name="size"/> bytes
