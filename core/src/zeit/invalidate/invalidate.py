@@ -31,4 +31,4 @@ class Invalidate(zope.app.publisher.xmlrpc.XMLRPCView):
 
     def _do_invalidate(self, resource_id):
         logger.info('%s invalidated %s.' % (self.request.principal.id, resource_id))
-        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(resource_id))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(resource_id))

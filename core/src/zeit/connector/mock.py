@@ -159,7 +159,7 @@ class Connector(zeit.connector.filesystem.Connector):
 
         self._set_properties(id, properties)
 
-        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(id))
 
     def __delitem__(self, id):
         id = self._get_cannonical_id(id)
@@ -176,7 +176,7 @@ class Connector(zeit.connector.filesystem.Connector):
         self._deleted.add(id)
         self._data.pop(id, None)
         self._properties.pop(id, None)
-        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(id))
 
     def add(self, object, verify_etag=True):
         resource = zeit.connector.interfaces.IResource(object)

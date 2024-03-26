@@ -74,7 +74,7 @@ class ZopeConnector(zeit.connector.connector.Connector):
         return zope.component.getUtility(zeit.connector.interfaces.IChildNameCache)
 
     def _invalidate_cache(self, id):
-        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(id))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(id))
 
 
 factory = ZopeConnector.factory
