@@ -323,7 +323,3 @@ class IResourceInvalidatedEvent(zope.interface.Interface):
 class ResourceInvalidatedEvent:
     def __init__(self, id):
         self.id = id
-
-
-# Legacy
-ResourceInvaliatedEvent = ResourceInvalidatedEvent

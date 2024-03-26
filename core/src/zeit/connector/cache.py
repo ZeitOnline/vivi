@@ -326,6 +326,9 @@ class PersistentCache(AccessTimes, persistent.Persistent):
     def remove(self, key):
         del self._storage[get_storage_key(key)]
 
+    def pop(self, key, default):
+        return self._storage.pop(get_storage_key(key), default)
+
     def __setitem__(self, key, value):
         skey = get_storage_key(key)
         old_value = self._storage.get(skey)

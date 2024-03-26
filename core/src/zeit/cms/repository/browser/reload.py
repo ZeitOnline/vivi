@@ -11,7 +11,7 @@ class Reload(zeit.cms.browser.view.Base):
     """Reload folder (invalidate cache)."""
 
     def __call__(self):
-        zope.event.notify(zeit.connector.interfaces.ResourceInvaliatedEvent(self.context.uniqueId))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(self.context.uniqueId))
         zope.event.notify(zeit.cms.repository.interfaces.ObjectReloadedEvent(self.context))
         self.redirect(self.url(self.context, '@@view.html'))
         return ''

@@ -81,7 +81,7 @@ def _build_filter(expr):
         raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
 
-@zope.interface.implementer(zeit.connector.interfaces.IConnector)
+@zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
     def __init__(self, dsn, storage_project, storage_bucket, reconnect_tries=3, reconnect_wait=0.1):
         self.dsn = dsn
@@ -136,51 +136,58 @@ class Connector:
 
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
-        content = self._get_content(uniqueid)
-        if content is None:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
-        if content.is_collection:
-            _get_body = partial(BytesIO, b'')
-        elif content.binary_body:
-            _get_body = partial(self._get_body, content.id)
-        elif not content.body:
-            _get_body = partial(BytesIO, b'')
-        else:
-            _get_body = partial(BytesIO, content.body.encode('utf-8'))
+        properties = self._get_properties(uniqueid)  # may raise KeyError
         return CachedResource(
             uniqueid,
             uniqueid.split('/')[-1],
-            content.type,
-            content.to_webdav,
-            _get_body,
-            'httpd/unix-directory' if content.is_collection else 'httpd/unknown',
+            properties.get(('type', Content.NS + 'meta'), 'unknown'),
+            lambda: properties,
+            partial(self._get_body, uniqueid),
+            is_collection=properties[('is_collection', 'internal')],
         )
 
     property_cache = TransactionBoundCache('_v_property_cache', dict)
 
-    def _get_content(self, uniqueid):
-        content = self.property_cache.get(uniqueid)
-        if content is not None:
-            return content
+    def _get_properties(self, uniqueid):
+        if uniqueid in self.property_cache:
+            return self.property_cache[uniqueid]
+
         path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is not None:
-            content = path.content
-            self.property_cache[uniqueid] = content
-        return content
+        if path is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        properties = path.content.to_webdav()
+        self.property_cache[uniqueid] = properties
+        return properties
 
     body_cache = TransactionBoundCache('_v_body_cache', dict)
 
-    def _get_body(self, id):
-        body = self.body_cache.get(id)
-        if body is not None:
-            return BytesIO(body)
+    def _get_body(self, uniqueid):
+        if uniqueid in self.body_cache:
+            return self.body_cache[uniqueid]
+
+        path = self.session.get(Path, self._pathkey(uniqueid))
+        content = path.content
+        if content.is_collection:
+            body = b''
+        elif content.binary_body:
+            body = self._get_binary_body(content.id)
+        elif not content.body:
+            body = b''
+        else:
+            body = content.body.encode('utf-8')
+
+        body = BytesIO(body)
+        self.body_cache[uniqueid] = body
+        body.seek(0)
+        return body
+
+    def _get_binary_body(self, id):
         blob = self.bucket.blob(id)
         with zeit.cms.tracing.use_span(
             __name__ + '.tracing', 'gcs', attributes={'db.operation': 'download', 'id': id}
         ):
             body = blob.download_as_bytes()
-        self.body_cache[id] = body
-        return BytesIO(body)
+        return body
 
     def __contains__(self, uniqueid):
         try:
@@ -240,10 +247,7 @@ class Connector:
                 # zeit.cms.content.adapter for XML and zeit.content.text.text
                 content.body = resource.data.read().decode('utf-8')
 
-        if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = content
-            resource.data.seek(0)
-            self.body_cache[uniqueid] = resource.data.read()
+        self.property_cache[uniqueid] = content.to_webdav()
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -256,8 +260,7 @@ class Connector:
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)
-        if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = content
+        self.property_cache[uniqueid] = content.to_webdav()
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -292,6 +295,10 @@ class Connector:
                 blob.delete()
             except google.api_core.exceptions.NotFound:
                 log.info('Ignored NotFound while deleting GCS blob %s', content.uniqueid)
+
+    def _get_content(self, uniqueid):
+        path = self.session.get(Path, self._pathkey(uniqueid))
+        return path.content if path is not None else None
 
     @staticmethod
     def _normalize(uniqueid):
@@ -344,6 +351,8 @@ class Connector:
             for name, _ in self.listCollection(old_uniqueid):
                 self.copy(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
 
+        self.property_cache[new_uniqueid] = new_content.to_webdav()
+
     def move(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
         new_uniqueid = self._normalize(new_uniqueid)
@@ -370,6 +379,7 @@ class Connector:
         self.unlock(new_uniqueid)
 
         self.property_cache.pop(old_uniqueid, None)
+        self.property_cache[new_uniqueid] = content.to_webdav()
         self.body_cache.pop(old_uniqueid, None)
 
     def _foreign_child_lock_exists(self, uniqueid):
@@ -465,6 +475,13 @@ class Connector:
                     value = keygetter(nsgetter(item.content.unsorted))
                     yield (item.uniqueid, value)
 
+    def invalidate_cache(self, uniqueid):
+        path = self.session.get(Path, self._pathkey(uniqueid))
+        if path is None:
+            self.property_cache.pop(uniqueid, None)
+        else:
+            self.property_cache[uniqueid] = path.content.to_webdav()
+
 
 factory = Connector.factory
 
@@ -527,18 +544,15 @@ class Content(DBObject):
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
-    def to_webdav_attributes(self):
+    def to_webdav(self):
         props = {}
         for ns, d in self.unsorted.items():
             for k, v in d.items():
                 props[(k, self.NS + ns)] = v
-        return props
-
-    def to_webdav(self):
-        props = self.to_webdav_attributes()
 
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
+        props[('is_collection', 'internal')] = self.is_collection
 
         return props
 
@@ -556,6 +570,8 @@ class Content(DBObject):
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
             if v is DeleteProperty:
+                continue
+            if ns == 'internal':
                 continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
@@ -593,70 +609,26 @@ class Lock(DBObject):
             return LockStatus.FOREIGN
 
 
-class PassthroughConnector(Connector):
-    """Development helper that transparently imports content objects (whenever
-    they are accessed) into SQL from another ("upstream") Connector.
-    This offers a quick way to getting started, without having to perform any
-    elaborate migration steps first, but it is meant for convenience only,
-    not any kind of production use.
-    """
+class SQLZopeConnector(Connector):
+    @property
+    def property_cache(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IPropertyCache)
 
-    def __init__(self, dsn, storage_project, storage_bucket, repository_path):
-        import zeit.connector.filesystem
-        import zeit.connector.zopeconnector
+    def invalidate_cache(self, uniqueid):
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(uniqueid))
+        # actual invalidation is performed by `invalidate_cache` event handler
 
-        super().__init__(dsn, storage_project, storage_bucket)
-        METADATA.create_all(self.engine)  # convenience
-        if repository_path.startswith('http'):
-            self.upstream = zeit.connector.zopeconnector.ZopeConnector({'default': repository_path})
-        else:
-            self.upstream = zeit.connector.filesystem.Connector(repository_path)
-
-    @classmethod
-    @zope.interface.implementer(zeit.connector.interfaces.IConnector)
-    def factory(cls):
-        import zope.app.appsetup.product
-
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
-        return cls(
-            config['dsn'],
-            config['storage-project'],
-            config['storage-bucket'],
-            config['repository-path'],
-        )
-
-    def __getitem__(self, id):
-        try:
-            return super().__getitem__(id)
-        except KeyError:
-            return self._import(id)
-
-    def _import(self, id):
-        log.debug('_import %s', id)
-        resource = self.upstream[id]
-        # Hacky. Remove this as it is not json-serializable, and also
-        # irrelevant except for DAV caches.
-        resource.content.data.pop(('cached-time', 'INTERNAL'), None)
-        savepoint = self.session.begin_nested()
-        self[id] = resource
-        try:
-            self.session.flush()
-        except sqlalchemy.exc.IntegrityError as e:
-            log.critical("Can't import %s: %s", id, e)
-            savepoint.rollback()
-            raise KeyError(id)
-        else:
-            savepoint.commit()
-            transaction.commit()
-        return resource
-
-    def listCollection(self, id):
-        if id not in self:
-            self._import(id)
-        return super().listCollection(id)
+    def _invalidate_cache(self, uniqueid):
+        super().invalidate_cache(uniqueid)
 
 
-passthrough_factory = PassthroughConnector.factory
+@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
+def invalidate_cache(event):
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    connector._invalidate_cache(event.id)
+
+
+zope_factory = SQLZopeConnector.factory
 
 
 class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):

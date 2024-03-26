@@ -490,11 +490,77 @@ class ContractSearch:
         assert result == [('http://xml.zeit.de/testing/bar', 'egg')]
 
 
+class ContractCache:
+    def test_setitem_populates_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.assertEqual('foo', self.connector.property_cache[res.id][prop])
+
+    def test_getitem_populates_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        del self.connector.property_cache[res.id]
+        res = self.connector[res.id]
+        self.assertEqual('foo', self.connector.property_cache[res.id][prop])
+
+    def test_changeProperties_updates_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.connector.changeProperties(res.id, {prop: 'bar'})
+        self.assertEqual('bar', self.connector.property_cache[res.id][prop])
+
+    def test_delitem_removes_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        del self.connector[res.id]
+        self.assertNotIn(res.id, self.connector.property_cache)
+
+    def test_copy_populates_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        new = 'http://xml.zeit.de/testing/bar'
+        self.connector.copy(res.id, new)
+        self.assertEqual('foo', self.connector.property_cache[new][prop])
+
+    def test_move_updates_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        new = 'http://xml.zeit.de/testing/bar'
+        self.connector.move(res.id, new)
+        self.assertNotIn(res.id, self.connector.property_cache)
+        self.assertEqual('foo', self.connector.property_cache[new][prop])
+
+    def test_when_storage_changed_invalidate_updates_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.change_properties_in_storage(res.id, {prop: 'bar'})
+        transaction.commit()
+        self.connector.invalidate_cache(res.id)
+        self.assertEqual('bar', self.connector.property_cache[res.id][prop])
+
+    def test_when_storage_deleted_invalidate_removes_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.delete_in_storage(res.id)
+        transaction.commit()
+        self.connector.invalidate_cache(res.id)
+        self.assertNotIn(res.id, self.connector.property_cache)
+
+    def test_trigger_invalidate_via_event(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.change_properties_in_storage(res.id, {prop: 'bar'})
+        transaction.commit()
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(res.id))
+        self.assertEqual('bar', self.connector.property_cache[res.id][prop])
+
+
 class ContractDAV(
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
     ContractSearch,
+    # ContractCache,
     zeit.connector.testing.ConnectorTest,
 ):
     shortened_uuid = False
@@ -503,6 +569,7 @@ class ContractDAV(
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
+    # not implemented copy_inherited_functions(ContractCache, locals())
 
 
 class ContractZopeDAV(
@@ -510,6 +577,7 @@ class ContractZopeDAV(
     ContractCopyMove,
     ContractLock,
     ContractSearch,
+    ContractCache,
     zeit.connector.testing.ConnectorTest,
 ):
     layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
@@ -519,6 +587,13 @@ class ContractZopeDAV(
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
+    copy_inherited_functions(ContractCache, locals())
+
+    def change_properties_in_storage(self, uniqueid, properties):
+        self.layer['connector'].changeProperties(uniqueid, properties)
+
+    def delete_in_storage(self, uniqueid):
+        del self.layer['connector'][uniqueid]
 
 
 class ContractMock(
@@ -526,12 +601,14 @@ class ContractMock(
     ContractCopyMove,
     ContractLock,
     # ContractSearch,
+    # ContractCache,
     zeit.connector.testing.MockTest,
 ):
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
-    # nyi copy_inherited_functions(ContractSearch, locals())
+    # not implemented copy_inherited_functions(ContractSearch, locals())
+    # not implemented copy_inherited_functions(ContractCache, locals())
 
     def test_unlock_for_unknown_user_raises(self):
         """Not worth implementing for mock; no client (i.e. test in vivi) needs
@@ -544,6 +621,7 @@ class ContractSQL(
     ContractCopyMove,
     ContractLock,
     ContractSearch,
+    # ContractCache,
     zeit.connector.testing.SQLTest,
 ):
     shortened_uuid = True
@@ -552,3 +630,33 @@ class ContractSQL(
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
+    # not implemented copy_inherited_functions(ContractCache, locals())
+
+
+class ContractZopeSQL(
+    ContractReadWrite,
+    ContractCopyMove,
+    ContractLock,
+    ContractSearch,
+    ContractCache,
+    zeit.connector.testing.ZopeSQLTest,
+):
+    shortened_uuid = True
+
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
+    copy_inherited_functions(ContractCache, locals())
+
+    def change_properties_in_storage(self, uniqueid, properties):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = connector._get_content(uniqueid)
+        current = content.to_webdav()
+        current.update(properties)
+        content.from_webdav(current)
+
+    def delete_in_storage(self, uniqueid):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = connector._get_content(uniqueid)
+        connector.session.delete(content)

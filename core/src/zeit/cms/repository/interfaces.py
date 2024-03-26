@@ -208,7 +208,7 @@ class IAutomaticallyRenameable(zope.interface.Interface):
 
 class IObjectReloadedEvent(zope.interface.interfaces.IObjectEvent):
     """An event sent when a reload action is triggered through the UI, so we
-    can differentiate from zeit.connector.interfaces.ResourceInvaliatedEvent,
+    can differentiate from zeit.connector.interfaces.ResourceInvalidatedEvent,
     which is triggered by the invalidator, too.
     """
 
