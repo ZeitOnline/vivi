@@ -4,7 +4,6 @@ import zope.generations.utility
 
 import zeit.connector.cache
 import zeit.connector.interfaces
-import zeit.connector.invalidator
 
 
 def installLocalUtility(root, factory, name, interface, utility_name=''):
@@ -34,12 +33,6 @@ def install(root):
         zeit.connector.cache.ChildNameCache,
         'connector-child-name-cache',
         zeit.connector.interfaces.IChildNameCache,
-    )
-    installLocalUtility(
-        site_manager,
-        zeit.connector.invalidator.Invalidator,
-        'connector-invalidator',
-        zeit.connector.invalidator.IInvalidator,
     )
 
 

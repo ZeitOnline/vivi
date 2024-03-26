@@ -62,7 +62,6 @@ class FormBase:
             s = data.read(self.BUFFER_SIZE)
         data.close()
         target.close()
-        file.mimeType = data.headers['content-type']
 
 
 class AddForm(FormBase, zeit.cms.browser.form.AddForm):

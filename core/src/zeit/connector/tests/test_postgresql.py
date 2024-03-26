@@ -93,16 +93,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
     def test_determines_size_for_gcs_upload(self):
         body = b'mybody'
         for res in [
-            Resource(
-                'http://xml.zeit.de/testing/foo', 'foo', 'file', BytesIO(body), {}, 'text/plain'
-            ),
+            Resource('http://xml.zeit.de/testing/foo', 'foo', 'file', BytesIO(body), {}),
             WriteableCachedResource(
                 'http://xml.zeit.de/testing/foo',
                 'foo',
                 'file',
                 lambda: {},
                 lambda: BytesIO(body),
-                'text/plain',
+                is_collection=False,
             ),
         ]:
             self.connector.add(res)

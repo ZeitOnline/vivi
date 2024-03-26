@@ -30,8 +30,6 @@ Open the default metadata view of a file:
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
-  <dt>Content type</dt>
-  <dd>image/jpeg</dd>
   <dt>Size</dt>
   <dd>
     882409 bytes
@@ -43,12 +41,12 @@ Open the default metadata view of a file:
 Download the file:
 
 >>> bookmark = browser.url
+>>> browser.handleErrors = False
 >>> browser.getLink('DSC00109_2').click()
 >>> print(browser.headers)
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 882409
-Content-Type: image/jpeg
 ...
 >>> browser.contents
 b'\xff\xd8\xff\xe1\x0c\xdaExif...'
@@ -67,8 +65,6 @@ Check the file out. The edit view also contains the metadata:
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
-  <dt>Content type</dt>
-  <dd>image/jpeg</dd>
   <dt>Size</dt>
   <dd>
     882409 bytes
@@ -84,7 +80,6 @@ We can also download the file here:
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 882409
-Content-Type: image/jpeg
 ...
 >>> browser.contents
 b'\xff\xd8\xff\xe1\x0c\xdaExif...'
@@ -107,8 +102,6 @@ Let's upload a new file:
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
-  <dt>Content type</dt>
-  <dd>text/plain</dd>
   <dt>Size</dt>
   <dd>
     23 bytes
@@ -124,7 +117,6 @@ We can download the new file now:
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 23
-Content-Type: text/plain
 ...
 >>> browser.contents
 b'Mary had a little lamb.'
@@ -143,8 +135,6 @@ When we check in the file is updated in the repository:
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
-  <dt>Content type</dt>
-  <dd>text/plain</dd>
   <dt>Size</dt>
   <dd>
     23 bytes
@@ -160,7 +150,6 @@ We can still download the new file:
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
 Content-Length: 23
-Content-Type: text/plain
 ...
 >>> browser.contents
 b'Mary had a little lamb.'
@@ -177,8 +166,6 @@ The metadata preview also shows the file details:
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG">DSC00109_2.JPG</a>
   </dd>
-  <dt>Content type</dt>
-  <dd>text/plain</dd>
   <dt>Size</dt>
   <dd>
     23 bytes
@@ -218,8 +205,6 @@ After adding we're at the edit form:
   <dd>
     <a href="http://localhost/++skin++cms/workingcopy/zope.user/ogre.txt">ogre.txt</a>
   </dd>
-  <dt>Content type</dt>
-  <dd>text/plain</dd>
   <dt>Size</dt>
   <dd>
     22 bytes
@@ -235,7 +220,6 @@ We can download the file:
 Status: 200 Ok
 Content-Disposition: attachment; filename="ogre.txt"
 Content-Length: 22
-Content-Type: text/plain
 ...
 >>> browser.contents
 b'Mary had a giant ogre.'
@@ -253,8 +237,6 @@ Check it in:
   <dd>
     <a href="http://localhost/++skin++cms/repository/2006/ogre.txt">ogre.txt</a>
   </dd>
-  <dt>Content type</dt>
-  <dd>text/plain</dd>
   <dt>Size</dt>
   <dd>
     22 bytes

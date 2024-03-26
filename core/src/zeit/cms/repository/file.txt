@@ -22,7 +22,7 @@ required:
 
 >>> import zeit.cms.repository.file
 >>> f = zeit.cms.repository.file.RepositoryFile(
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG', 'image/jpeg')
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> f
 <zeit.cms.repository.file.RepositoryFile...>
 
@@ -65,11 +65,6 @@ Traceback (most recent call last):
     ...
 ValueError: w
 
-The mime type is available via the ``mimeType`` attribute
-
->>> f.mimeType
-'image/jpeg'
-
 
 LocalFile
 ---------
@@ -78,7 +73,7 @@ The LocalFile actually stores data.
 
 
 >>> local = zeit.cms.repository.file.LocalFile(
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG', 'image/jpeg')
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> local
 <zeit.cms.repository.file.LocalFile...>
 
@@ -110,15 +105,12 @@ So far we have no local copy:
 
 >>> local.local_data is None
 True
->>> local.mimeType
-'image/jpeg'
 
 The LocalFile can be opened for writing:
 
 >>> f_write = local.open('w')
 >>> _ = f_write.write(b'New data')
 >>> f_write.close()
->>> local.mimeType = 'text/plain'
 
 The file has stored the new data now:
 
@@ -156,8 +148,6 @@ Writing works as usual:
 >>> fh.read()
 b'Eine wunderbare Heiterkeit hat meine ganze Seele eingenommen'
 >>> fh.close()
->>> local.mimeType
-''
 
 A local file, which has been removed from the repository, but does not have
 data by itself will return an empty file:
@@ -194,8 +184,6 @@ False
 >>> fh.read(10)
 b'\xff\xd8\xff\xe1\x0c\xdaExif'
 >>> fh.close()
->>> f.mimeType
-'image/jpeg'
 
 When we adapt the RepositoryFile to ILocalContent we'll get a LocalFile:
 
@@ -211,7 +199,6 @@ When we change some data ...
 >>> f_write = local.open('w')
 >>> _ = f_write.write(b'Mary had a little lamb.')
 >>> f_write.close()
->>> local.mimeType = 'text/plain'
 
 ... and adapt to IRepositoryContent we'll have the file updated in the
 repository:
@@ -224,8 +211,6 @@ repository:
 >>> fh.read()
 b'Mary had a little lamb.'
 >>> fh.close()
->>> repository_file.mimeType
-'text/plain'
 
 
 Clean up:

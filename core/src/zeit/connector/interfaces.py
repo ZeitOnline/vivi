@@ -257,12 +257,7 @@ class IResource(zope.interface.Interface):
 
     data = zope.interface.Attribute('Resource main data (body, image data) as a file-like object.')
 
-    contentType = zope.schema.BytesLine(
-        title='Content Type',
-        description='The mime content type identifies the type of data.',
-        default=b'',
-        required=False,
-    )
+    is_collection = zope.schema.Bool()
 
     properties = zope.schema.Object(IWebDAVProperties, title='WebDAV properties')
 

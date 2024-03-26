@@ -109,8 +109,8 @@ class ContractReadWrite:
         self.assertNotIn(res.id, self.connector)
 
     def test_delitem_collection_removes_children(self):
-        collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
-        collection_2 = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        collection = Resource(None, None, 'image', BytesIO(b''), None, is_collection=True)
+        collection_2 = Resource(None, None, 'image', BytesIO(b''), None, is_collection=True)
         self.connector['http://xml.zeit.de/testing/folder'] = collection
         self.connector['http://xml.zeit.de/testing/folder/subfolder'] = collection_2
         self.add_resource('folder/file')
@@ -145,14 +145,14 @@ class ContractReadWrite:
     def test_collection_is_determined_by_mime_type(self):
         # XXX This is the *only* place the mime type is still used, we should
         # think about removing it.
-        collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        collection = Resource(None, None, 'image', BytesIO(b''), None, is_collection=True)
         self.connector['http://xml.zeit.de/testing/folder'] = collection
         self.add_resource('folder/file')
         self.assertEqual(
             ['file'], [x[0] for x in self.listCollection('http://xml.zeit.de/testing/folder')]
         )
         # Re-adding a collection is a no-op
-        collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        collection = Resource(None, None, 'image', BytesIO(b''), None, is_collection=True)
         self.connector['http://xml.zeit.de/testing/folder'] = collection
         self.assertEqual(
             ['file'], [x[0] for x in self.listCollection('http://xml.zeit.de/testing/folder')]
@@ -333,7 +333,7 @@ class ContractLock:
 
     def test_delitem_collection_raises_error_if_children_are_locked(self):
         self.assertEqual([], self.listCollection('http://xml.zeit.de/testing'))
-        collection = Resource(None, None, 'image', BytesIO(b''), None, 'httpd/unix-directory')
+        collection = Resource(None, None, 'image', BytesIO(b''), None, is_collection=True)
         self.connector['http://xml.zeit.de/testing/folder'] = collection
         self.add_resource('folder/file')
         self.add_resource('folder/one')

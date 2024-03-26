@@ -1,0 +1,1 @@
+ZO-4800: Replace unused IResource.contentType with IResource.is_collection

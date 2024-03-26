@@ -383,6 +383,7 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
     title = _('Image Group')
     addform = 'zeit.content.image.imagegroup.Add'
     factory = ImageGroup
+    resource_is_collection = True
 
     def content(self, resource):
         ig = self.factory()
@@ -391,9 +392,6 @@ class ImageGroupType(zeit.cms.type.TypeDeclaration):
 
     def resource_body(self, content):
         return BytesIO()
-
-    def resource_content_type(self, content):
-        return 'httpd/unix-directory'
 
 
 @zope.interface.implementer(zeit.content.image.interfaces.ILocalImageGroup)

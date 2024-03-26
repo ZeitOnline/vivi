@@ -20,12 +20,8 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         import zeit.connector.resource
 
         rid = 'http://xml.zeit.de/testing/ünicöde'
-        self.connector[rid] = zeit.connector.resource.Resource(
-            rid, None, 'text', BytesIO(b'Pop.'), contentType='text/plain'
-        )
-        self.connector[rid] = zeit.connector.resource.Resource(
-            rid, None, 'text', BytesIO(b'Paff'), contentType='text/plain'
-        )
+        self.connector[rid] = zeit.connector.resource.Resource(rid, None, 'text', BytesIO(b'Pop.'))
+        self.connector[rid] = zeit.connector.resource.Resource(rid, None, 'text', BytesIO(b'Paff'))
         self.assertEqual(b'Paff', self.connector[rid].data.read())
 
     def test_copy(self):
@@ -33,9 +29,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
         rid = 'http://xml.zeit.de/testing/ünicöde'
         new_rid = rid + '-copied'
-        self.connector[rid] = zeit.connector.resource.Resource(
-            rid, None, 'text', BytesIO(b'Pop.'), contentType='text/plain'
-        )
+        self.connector[rid] = zeit.connector.resource.Resource(rid, None, 'text', BytesIO(b'Pop.'))
         self.connector.copy(rid, new_rid)
         resource = self.connector[new_rid]
         self.assertEqual(b'Pop.', resource.data.read())
@@ -45,9 +39,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
         rid = 'http://xml.zeit.de/testing/ünicöde'
         new_rid = rid + '-renamed'
-        self.connector[rid] = zeit.connector.resource.Resource(
-            rid, None, 'text', BytesIO(b'Pop.'), contentType='text/plain'
-        )
+        self.connector[rid] = zeit.connector.resource.Resource(rid, None, 'text', BytesIO(b'Pop.'))
         self.connector.move(rid, new_rid)
         resource = self.connector[new_rid]
         self.assertEqual(b'Pop.', resource.data.read())
@@ -58,9 +50,7 @@ class ConnectorTest(zeit.connector.testing.ConnectorTest):
         import zeit.connector.resource
 
         rid = 'http://xml.zeit.de/testing/foo#bar'
-        self.connector[rid] = zeit.connector.resource.Resource(
-            rid, None, 'text', BytesIO(b'Pop.'), contentType='text/plain'
-        )
+        self.connector[rid] = zeit.connector.resource.Resource(rid, None, 'text', BytesIO(b'Pop.'))
         resource = self.connector[rid]
         self.assertEqual(b'Pop.', resource.data.read())
 
@@ -132,7 +122,6 @@ class TestResource(zeit.connector.testing.ConnectorTest):
             None,
             'text',
             BytesIO(b'Pop.'),
-            contentType='text/plain',
             properties={('foo', 'bar'): 'baz'},
         )
         res = self.connector[rid]
@@ -148,7 +137,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         super().setUp()
         self.rid = 'http://xml.zeit.de/testing/cache_test'
         self.connector[self.rid] = zeit.connector.resource.Resource(
-            self.rid, None, 'text', BytesIO(b'Pop.'), contentType='text/plain'
+            self.rid, None, 'text', BytesIO(b'Pop.')
         )
         list(self.connector.listCollection('http://xml.zeit.de/testing/'))
 
@@ -285,7 +274,7 @@ class TestMove(zeit.connector.testing.ConnectorTest):
 
     def test_move_collection_moves_all_members(self):
         coll = zeit.connector.resource.Resource(
-            'http://xml.zeit.de/testing/foo', 'foo', 'collection', BytesIO(b'')
+            'http://xml.zeit.de/testing/foo', 'foo', 'collection', BytesIO(b''), is_collection=True
         )
         self.connector.add(coll)
         res = self.get_resource('foo/one', 'body')

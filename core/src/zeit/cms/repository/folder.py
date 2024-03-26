@@ -21,6 +21,7 @@ class FolderType(zeit.cms.type.TypeDeclaration):
     title = _('Folder')
     addform = 'zeit.cms.repository.folder.Add'
     factory = Folder
+    resource_is_collection = True
 
     def content(self, resource):
         folder = self.factory()
@@ -29,9 +30,6 @@ class FolderType(zeit.cms.type.TypeDeclaration):
 
     def resource_body(self, content):
         return zeit.cms.util.MemoryFile()
-
-    def resource_content_type(self, content):
-        return 'httpd/unix-directory'
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IContentSortKey)

@@ -9,7 +9,6 @@ import time
 import urllib.parse
 import uuid
 
-import filetype
 import pytz
 import zope.event
 
@@ -97,22 +96,13 @@ class Connector(zeit.connector.filesystem.Connector):
             raise KeyError(str(id))
         return super().__getitem__(id)
 
-    def _get_content_type(self, id):
-        result = super()._get_content_type(id)
-        if result or not self.detect_mime_type:
-            return result
-        body = self._get_body(id)
-        head = body.read(261)
-        return filetype.guess_mime(head) or ''
-
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
         id = self._get_cannonical_id(id)
         (principal, _, mylock) = self.locked(id)
         if principal and not mylock:
             raise LockedByOtherSystemError(id, '')
-        iscoll = resource.type == 'collection' or resource.contentType == 'httpd/unix-directory'
-        if iscoll and not id.endswith('/'):
+        if resource.is_collection and not id.endswith('/'):
             id = CannonicalId(id + '/')
         resource.id = str(id)  # override
 
@@ -160,12 +150,8 @@ class Connector(zeit.connector.filesystem.Connector):
         self._paths.setdefault(os.path.dirname(path), set()).add(os.path.basename(path))
 
         properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = resource.type
-        if resource.contentType == 'httpd/unix-directory':
-            # XXX kludgy. We need to be able to differentiate directories,
-            # so they get a trailing slash in their CanonicalId, but also
-            # don't want to store random content types, so the filemagic
-            # detetection e.g. for images takes over on the next read.
-            properties[('getcontenttype', 'DAV:')] = resource.contentType
+        if resource.is_collection:
+            properties[('getcontenttype', 'DAV:')] = 'httpd/unix-directory'
         properties[('getlastmodified', 'DAV:')] = str(
             datetime.datetime.now(pytz.UTC).strftime('%a, %d %b %Y %H:%M:%S GMT')
         )
@@ -241,7 +227,8 @@ class Connector(zeit.connector.filesystem.Connector):
             # The target already exists. It's possible that there was a
             # conflict. Verify body.
             if (
-                'httpd/unix-directory' in (self[old_id].contentType, self[new_id].contentType)
+                self[old_id].is_collection
+                or self[new_id].is_collection
                 or self[old_id].data.read() != self[new_id].data.read()
             ):
                 raise exception(
@@ -358,18 +345,3 @@ class Connector(zeit.connector.filesystem.Connector):
 
 
 factory = Connector.factory
-
-
-class TextPlain(filetype.Type):
-    """The `filetype` library only detects binary types.
-    For some tests it is helpful to use a text type, because they can
-    manipulate the contents more easily than in binary, so we cheat a little.
-    """
-
-    prefix = b'Mary had'
-
-    def match(self, buf):
-        return buf[: len(self.prefix)] == self.prefix
-
-
-filetype.TYPES.append(TextPlain('text/plain', '.txt'))

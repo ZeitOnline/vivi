@@ -42,6 +42,3 @@ class TextType(zeit.cms.type.TypeDeclaration):
             return BytesIO(content.text.encode('utf-8'))
         else:
             return BytesIO(content.text)
-
-    def resource_content_type(self, content):
-        return 'text/plain'
