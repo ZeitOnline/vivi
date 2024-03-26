@@ -527,15 +527,11 @@ class Content(DBObject):
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
-    def to_webdav_attributes(self):
+    def to_webdav(self):
         props = {}
         for ns, d in self.unsorted.items():
             for k, v in d.items():
                 props[(k, self.NS + ns)] = v
-        return props
-
-    def to_webdav(self):
-        props = self.to_webdav_attributes()
 
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
