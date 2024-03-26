@@ -247,8 +247,7 @@ class Connector:
                 # zeit.cms.content.adapter for XML and zeit.content.text.text
                 content.body = resource.data.read().decode('utf-8')
 
-        if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = content.to_webdav()
+        self.property_cache[uniqueid] = content.to_webdav()
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -261,8 +260,7 @@ class Connector:
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)
-        if uniqueid in self.property_cache:
-            self.property_cache[uniqueid] = content.to_webdav()
+        self.property_cache[uniqueid] = content.to_webdav()
 
     def __delitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -353,6 +351,8 @@ class Connector:
             for name, _ in self.listCollection(old_uniqueid):
                 self.copy(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
 
+        self.property_cache[new_uniqueid] = new_content.to_webdav()
+
     def move(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
         new_uniqueid = self._normalize(new_uniqueid)
@@ -379,6 +379,7 @@ class Connector:
         self.unlock(new_uniqueid)
 
         self.property_cache.pop(old_uniqueid, None)
+        self.property_cache[new_uniqueid] = content.to_webdav()
         self.body_cache.pop(old_uniqueid, None)
 
     def _foreign_child_lock_exists(self, uniqueid):
