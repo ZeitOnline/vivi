@@ -614,6 +614,19 @@ class SQLZopeConnector(Connector):
     def property_cache(self):
         return zope.component.getUtility(zeit.connector.interfaces.IPropertyCache)
 
+    def invalidate_cache(self, uniqueid):
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(uniqueid))
+        # actual invalidation is performed by `invalidate_cache` event handler
+
+    def _invalidate_cache(self, uniqueid):
+        super().invalidate_cache(uniqueid)
+
+
+@zope.component.adapter(zeit.connector.interfaces.IResourceInvalidatedEvent)
+def invalidate_cache(event):
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+    connector._invalidate_cache(event.id)
+
 
 zope_factory = SQLZopeConnector.factory
 

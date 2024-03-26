@@ -546,6 +546,14 @@ class ContractCache:
         self.connector.invalidate_cache(res.id)
         self.assertNotIn(res.id, self.connector.property_cache)
 
+    def test_trigger_invalidate_via_event(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.change_properties_in_storage(res.id, {prop: 'bar'})
+        transaction.commit()
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(res.id))
+        self.assertEqual('bar', self.connector.property_cache[res.id][prop])
+
 
 class ContractDAV(
     ContractReadWrite,
