@@ -593,6 +593,15 @@ class Lock(DBObject):
             return LockStatus.FOREIGN
 
 
+class SQLZopeConnector(Connector):
+    @property
+    def property_cache(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IPropertyCache)
+
+
+zope_factory = SQLZopeConnector.factory
+
+
 class EngineTracer(opentelemetry.instrumentation.sqlalchemy.EngineTracer):
     def __init__(self, engine, **kw):
         tracer = self  # Kludge to inject zeit.cms.tracing.start_span()

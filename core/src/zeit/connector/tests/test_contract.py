@@ -552,3 +552,18 @@ class ContractSQL(
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
+
+
+class ContractZopeSQL(
+    ContractReadWrite,
+    ContractCopyMove,
+    ContractLock,
+    ContractSearch,
+    zeit.connector.testing.ZopeSQLTest,
+):
+    shortened_uuid = True
+
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
