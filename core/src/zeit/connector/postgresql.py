@@ -314,20 +314,20 @@ class Connector:
                 setattr(clone, column.name, getattr(row, column.name))
         return clone
 
-    def copy(self, old_id, new_id):
-        old_id = self._normalize(old_id)
-        new_id = self._normalize(new_id)
-        if new_id in self:
+    def copy(self, old_uniqueid, new_uniqueid):
+        old_uniqueid = self._normalize(old_uniqueid)
+        new_uniqueid = self._normalize(new_uniqueid)
+        if new_uniqueid in self:
             raise CopyError(
-                old_id,
-                f'Could not copy {old_id} to {new_id}, because target already exists.',
+                old_uniqueid,
+                f'Could not copy {old_uniqueid} to {new_uniqueid}, because target already exists.',
             )
-        old_content = self._get_content(old_id)
+        old_content = self._get_content(old_uniqueid)
         if old_content is None:
-            raise KeyError(f'The resource {old_id} does not exist.')
+            raise KeyError(f'The resource {old_uniqueid} does not exist.')
         new_content = self._clone_row(old_content, ['id', 'last_updated'])
         new_content.id = str(uuid4())
-        (parent_path, name) = self._pathkey(new_id)
+        (parent_path, name) = self._pathkey(new_uniqueid)
         path = Path(content=new_content, parent_path=parent_path, name=name)
         self.session.add(path)
 
@@ -341,37 +341,39 @@ class Connector:
                 self.bucket.copy_blob(source_blob, self.bucket, new_content.id, retry=DEFAULT_RETRY)
 
         if old_content.is_collection:
-            for name, _ in self.listCollection(old_id):
-                self.copy(f'{old_id}/{name}', f'{new_id}/{name}')
+            for name, _ in self.listCollection(old_uniqueid):
+                self.copy(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
 
-    def move(self, old_id, new_id):
-        old_id = self._normalize(old_id)
-        new_id = self._normalize(new_id)
-        content = self._get_content(old_id)
+    def move(self, old_uniqueid, new_uniqueid):
+        old_uniqueid = self._normalize(old_uniqueid)
+        new_uniqueid = self._normalize(new_uniqueid)
+        content = self._get_content(old_uniqueid)
         if content is None:
-            raise KeyError(f'The resource {old_id} does not exist.')
-        if new_id in self:
+            raise KeyError(f'The resource {old_uniqueid} does not exist.')
+        if new_uniqueid in self:
             raise MoveError(
-                old_id, f'Could not move {old_id} to {new_id}, because target already exists.'
+                old_uniqueid,
+                f'Could not move {old_uniqueid} to {new_uniqueid}, because target already exists.',
             )
         if content.is_collection:
-            if self._foreign_child_lock_exists(old_id):
+            if self._foreign_child_lock_exists(old_uniqueid):
                 raise LockedByOtherSystemError(
-                    old_id, f'Could not move {old_id} to {new_id}, because it is locked.'
+                    old_uniqueid,
+                    f'Could not move {old_uniqueid} to {new_uniqueid}, because it is locked.',
                 )
-            for name, _ in self.listCollection(old_id):
-                self.move(f'{old_id}/{name}', f'{new_id}/{name}')
+            for name, _ in self.listCollection(old_uniqueid):
+                self.move(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
 
-        path = self.session.get(Path, self._pathkey(old_id))
-        (path.parent_path, path.name) = self._pathkey(new_id)
+        path = self.session.get(Path, self._pathkey(old_uniqueid))
+        (path.parent_path, path.name) = self._pathkey(new_uniqueid)
         # unlock checks if locked and unlocks if necessary
-        self.unlock(new_id)
+        self.unlock(new_uniqueid)
 
-        self.property_cache.pop(old_id, None)
-        self.body_cache.pop(old_id, None)
+        self.property_cache.pop(old_uniqueid, None)
+        self.body_cache.pop(old_uniqueid, None)
 
-    def _foreign_child_lock_exists(self, id):
-        (parent, _) = self._pathkey(id)
+    def _foreign_child_lock_exists(self, uniqueid):
+        (parent, _) = self._pathkey(uniqueid)
         stmt = (
             select(Lock).join(Path, Lock.id == Path.id).filter(Path.parent_path.startswith(parent))
         )
@@ -380,16 +382,16 @@ class Connector:
                 return True
         return False
 
-    def _get_lock(self, id):
-        path = self.session.get(Path, self._pathkey(id))
+    def _get_lock(self, uniqueid):
+        path = self.session.get(Path, self._pathkey(uniqueid))
         if path is None:
-            raise KeyError(f'The resource {id} does not exist.')
+            raise KeyError(f'The resource {uniqueid} does not exist.')
         return self.session.get(Lock, path.id)
 
-    def _insert_or_update_lock(self, id, principal, until, lock):
-        path = self.session.get(Path, self._pathkey(id))
+    def _insert_or_update_lock(self, uniqueid, principal, until, lock):
+        path = self.session.get(Path, self._pathkey(uniqueid))
         if path is None:
-            log.warning('Unable to add lock to resource %s that does not exist.', str(id))
+            log.warning('Unable to add lock to resource %s that does not exist.', uniqueid)
             return
         if lock:
             lock.principal = principal
@@ -399,36 +401,36 @@ class Connector:
             self.session.add(lock)
         return lock.token
 
-    def lock(self, id, principal, until):
-        if id not in self:
-            raise KeyError(f'The resource {id} does not exist.')
+    def lock(self, uniqueid, principal, until):
+        if uniqueid not in self:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
 
-        lock = self._get_lock(id)
+        lock = self._get_lock(uniqueid)
         status = lock.status if lock else LockStatus.NONE
         match status:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
-                return self._insert_or_update_lock(id, principal, until, lock)
+                return self._insert_or_update_lock(uniqueid, principal, until, lock)
             case LockStatus.OWN:
-                raise LockingError(id, f'You already own the lock of {id}.')
+                raise LockingError(id, f'You already own the lock of {uniqueid}.')
             case LockStatus.FOREIGN:
-                raise LockedByOtherSystemError(id, f'{id} is already locked.')
+                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
-    def unlock(self, id):
-        lock = self._get_lock(id)
+    def unlock(self, uniqueid):
+        lock = self._get_lock(uniqueid)
         if not lock:
             return
         if lock_is_foreign(lock.principal):
-            raise LockedByOtherSystemError(id, f'{id} is already locked.')
+            raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         self.session.delete(lock)
 
-    def _unlock(self, id, token):
-        lock = self._get_lock(id)
+    def _unlock(self, uniqueid, token):
+        lock = self._get_lock(uniqueid)
         if not lock or not lock.token == token:
             return
         self.session.delete(lock)
 
-    def locked(self, id):
-        lock = self._get_lock(id)
+    def locked(self, uniqueid):
+        lock = self._get_lock(uniqueid)
         status = lock.status if lock else LockStatus.NONE
         match status:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
