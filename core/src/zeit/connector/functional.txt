@@ -36,8 +36,7 @@ There was a bug that the property changes where not visible when using
 >>> id = 'http://xml.zeit.de/testing/prop-change'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'propchange', 'text',
-...     BytesIO(b'Pop goes the weasel!'),
-...     contentType='text/plain')
+...     BytesIO(b'Pop goes the weasel!'))
 >>> connector.add(res)
 >>> connector.changeProperties(
 ...     id, {('colour', 'http://namespaces.zeit.de/test'): 'gr\xfcn'})
@@ -62,8 +61,7 @@ automatically unlocked.
 >>> id = 'http://xml.zeit.de/testing/lockrollback'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lockrollback', 'text',
-...     BytesIO(b'Pop goes the weasel!'),
-...     contentType='text/plain')
+...     BytesIO(b'Pop goes the weasel!'))
 >>> connector.add(res)
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'

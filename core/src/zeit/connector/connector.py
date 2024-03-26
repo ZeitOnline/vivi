@@ -231,7 +231,10 @@ class Connector:
         __traceback_info__ = (id,)
         id = self._get_cannonical_id(id)
         try:
-            content_type = self._get_resource_properties(id).get(('getcontenttype', 'DAV:'))
+            is_collection = (
+                self._get_resource_properties(id).get(('getcontenttype', 'DAV:'))
+                == 'httpd/unix-directory'
+            )
         except (
             zeit.connector.dav.interfaces.DAVNotFoundError,
             zeit.connector.dav.interfaces.DAVBadRequestError,
@@ -243,7 +246,7 @@ class Connector:
             self._get_resource_type(id),
             lambda: self._get_resource_properties(id),
             lambda: self._get_resource_body(id),
-            contentType=content_type,
+            is_collection=is_collection,
         )
 
     def __setitem__(self, id, object):
@@ -525,11 +528,10 @@ class Connector:
         self._invalidate_cache(id)
         locktoken = self._get_my_locktoken(id)
         autolock = locktoken is None
-        iscoll = resource.type == 'collection' or resource.contentType == 'httpd/unix-directory'
-        if iscoll and not id.endswith('/'):
+        if resource.is_collection and not id.endswith('/'):
             id = id + '/'
 
-        if iscoll:
+        if resource.is_collection:
             # It is not necessary (and not possible) to lock collections when
             # they don't exist because MKCOL does *not* overwrite anything. So
             # only lock for files
@@ -541,7 +543,7 @@ class Connector:
                 id, 'AUTOLOCK', datetime.datetime.now(pytz.UTC) + datetime.timedelta(seconds=60)
             )
         try:
-            if not iscoll:  # We are a file resource:
+            if not resource.is_collection:  # We are a file resource:
                 if hasattr(resource.data, 'seek'):
                     resource.data.seek(0)
                 # We should pass the data as IO object. This is not supported
@@ -562,7 +564,6 @@ class Connector:
                     conn.put(
                         self._id2loc(id),
                         data,
-                        mime_type=resource.contentType,
                         locktoken=locktoken,
                         etag=etag,
                         extra_headers=headers,

@@ -317,12 +317,12 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-    def get_resource(self, name, body=b'', properties=None, contentType='text/plain'):
+    def get_resource(self, name, body=b'', properties=None, is_collection=False):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
         rid = 'http://xml.zeit.de/testing/%s' % name
         return zeit.connector.resource.Resource(
-            rid, name, 'testing', BytesIO(body), properties=properties, contentType=contentType
+            rid, name, 'testing', BytesIO(body), properties=properties, is_collection=is_collection
         )
 
     def add_resource(self, name, **kw):
@@ -376,9 +376,7 @@ def mkdir(connector, id):
     # Use a made-up type `folder` to differentiate from "no meta:type", which
     # would fall back to `collection`. (Even though the latter value is what we
     # use "in reality" in zeit.cms.repository.folder.)
-    res = zeit.connector.resource.Resource(
-        id, None, 'folder', BytesIO(b''), contentType='httpd/unix-directory'
-    )
+    res = zeit.connector.resource.Resource(id, None, 'folder', BytesIO(b''), is_collection=True)
     connector.add(res)
     transaction.commit()
 
@@ -391,9 +389,7 @@ def create_folder_structure(connector):
 
     def add_file(id):
         id = 'http://xml.zeit.de/testing/%s' % id
-        res = zeit.connector.resource.Resource(
-            id, None, 'text', BytesIO(b'Pop.'), contentType='text/plain'
-        )
+        res = zeit.connector.resource.Resource(id, None, 'text', BytesIO(b'Pop.'))
         connector.add(res)
 
     add_folder('testroot')

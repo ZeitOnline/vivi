@@ -13,8 +13,7 @@ Simple case
 >>> id = 'http://xml.zeit.de/testing/lt1'
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lt1', 'text',
-...     BytesIO(b'Pop goes the weasel!'),
-...     contentType='text/plain')
+...     BytesIO(b'Pop goes the weasel!'))
 >>> connector.add(res)
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
@@ -253,15 +252,12 @@ Locking it will actually create a null resource lock:
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 
-The resource is there because it's locked, but it's body is empty (and it has
-a None content-type):
+The resource is there because it's locked, but it's body is empty:
 
 >>> connector[res.id]
 <zeit.connector.resource.CachedResource object at 0x...>
 >>> connector[res.id].data.read()
 b''
->>> connector[res.id].contentType is None
-True
 
 >>> connector.unlock(res.id)
 'opaquelocktoken:...'

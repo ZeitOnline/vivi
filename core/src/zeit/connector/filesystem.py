@@ -130,7 +130,7 @@ class Connector:
             type,
             lambda: self._get_properties(id),
             lambda: self._get_body(id),
-            contentType=self._get_content_type(id),
+            self._is_collection(id),
         )
 
     def _get_body(self, id):
@@ -147,12 +147,12 @@ class Connector:
         self.body_cache[id] = data
         return BytesIO(data)
 
-    def _get_content_type(self, id):
+    def _is_collection(self, id):
         properties = self._get_properties(id)
         if properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] == 'collection':
-            return 'httpd/unix-directory'
+            return True
         davtype = ('getcontenttype', 'DAV:')
-        return properties.get(davtype, '')
+        return properties.get(davtype, '') == 'httpd/unix-directory'
 
     def __setitem__(self, id, object):
         raise NotImplementedError()

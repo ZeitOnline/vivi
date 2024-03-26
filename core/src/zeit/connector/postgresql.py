@@ -220,7 +220,7 @@ class Connector:
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         content.from_webdav(resource.properties)
         content.type = resource.type
-        content.is_collection = resource.contentType == 'httpd/unix-directory'
+        content.is_collection = resource.is_collection
 
         if not content.is_collection:
             self.body_cache.pop(content.id, None)

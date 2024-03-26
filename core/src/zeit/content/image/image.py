@@ -154,9 +154,6 @@ class ImageType(zeit.cms.type.TypeDeclaration):
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))
 
-    def resource_content_type(self, content):
-        return content.mimeType
-
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):

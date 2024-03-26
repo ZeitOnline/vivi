@@ -50,16 +50,9 @@ Let's set some metadata on the local image:
 >>> metadata = zeit.content.image.interfaces.IImageMetadata(local)
 >>> metadata.title = 'my title'
 
-When we make a resource from a LocalImage the contentType is set correctly:
-
 >>> import zeit.connector.interfaces
->>> resource = zeit.connector.interfaces.IResource(local)
->>> resource.contentType
-'image/jpeg'
-
-The properties contain the title:
-
 >>> import pprint
+>>> resource = zeit.connector.interfaces.IResource(local)
 >>> resource.properties[('title', 'http://namespaces.zeit.de/CMS/document')]
 'my title'
 
@@ -174,7 +167,6 @@ Case 2: When there is a mix of formats the type of an image whose name ends
 in x140 is used:
 
 >>> image = zeit.content.image.image.LocalImage()
->>> image.contentType = 'image/jpeg'
 >>> with image.open('w') as f:
 ...     _ = f.write(b'foo')
 >>> group['title-120x140.gif'] = image
@@ -194,7 +186,6 @@ one is used:
 
 >>> del group['title-120x140.gif']
 >>> image = zeit.content.image.image.LocalImage()
->>> image.contentType = 'image/jpeg'
 >>> with image.open('w') as f:
 ...     _ = f.write(b'bar')
 >>> group['title-120x120.gif'] = image
@@ -213,7 +204,6 @@ Images whose names have no extension at all will be ignored:
 
 
 >>> image = zeit.content.image.image.LocalImage()
->>> image.contentType = 'image/jpeg'
 >>> with image.open('w') as f:
 ...     _ = f.write(b'blubs')
 >>> group['title-120x140'] = image

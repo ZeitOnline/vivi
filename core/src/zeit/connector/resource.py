@@ -42,7 +42,7 @@ class ReadOnlyWebDAVProperties(WebDAVProperties):
 class Resource:
     """Represents a resource in the webdav."""
 
-    def __init__(self, id, name, type, data, properties=None, contentType=''):
+    def __init__(self, id, name, type, data, properties=None, is_collection=False):
         self.id = id
         self.__name__ = name
         self.type = type
@@ -50,20 +50,20 @@ class Resource:
         if properties is None:
             properties = {}
         self.properties = WebDAVProperties(properties)
-        self.contentType = contentType
+        self.is_collection = is_collection
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IResource)
 class CachedResource:
     """Represents a resource in the webdav."""
 
-    def __init__(self, id, name, type_name, property_getter, body_getter, contentType):
+    def __init__(self, id, name, type_name, property_getter, body_getter, is_collection):
         self.id = id
         self.__name__ = name
         self.type = type_name
         self._property_getter = property_getter
         self._body_getter = body_getter
-        self.contentType = contentType
+        self.is_collection = is_collection
 
     @property
     def data(self):
@@ -77,8 +77,8 @@ class CachedResource:
 class WriteableCachedResource(CachedResource):
     """Used by mock connector"""
 
-    def __init__(self, id, name, type_name, property_getter, body_getter, contentType):
-        super().__init__(id, name, type_name, property_getter, body_getter, contentType)
+    def __init__(self, id, name, type_name, property_getter, body_getter, is_collection):
+        super().__init__(id, name, type_name, property_getter, body_getter, is_collection)
         self._properties = WebDAVProperties(self._property_getter())
 
     @property

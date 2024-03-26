@@ -41,6 +41,8 @@ class TypeDeclaration:
     addpermission = None
     register_as_type = True
 
+    resource_is_collection = False
+
     def __init__(self):
         if self.addform is None:
             package = '.'.join(self.__module__.split('.')[:-1])
@@ -51,9 +53,6 @@ class TypeDeclaration:
 
     def resource_body(self, content):
         raise NotImplementedError
-
-    def resource_content_type(self, content):
-        return None
 
     def resource_properties(self, content):
         try:
@@ -68,8 +67,8 @@ class TypeDeclaration:
             content.__name__,
             self.type,
             data=self.resource_body(content),
-            contentType=self.resource_content_type(content),
             properties=self.resource_properties(content),
+            is_collection=self.resource_is_collection,
         )
 
     # Serializing/deserializing provided interfaces is independent of the
@@ -145,9 +144,6 @@ class XMLContentTypeDeclaration(TypeDeclaration):
 
     def resource_body(self, content):
         return zeit.cms.util.MemoryFile(zeit.cms.content.interfaces.IXMLSource(content))
-
-    def resource_content_type(self, content):
-        return 'text/xml'
 
 
 def get_type(content):

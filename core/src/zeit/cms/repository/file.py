@@ -92,6 +92,3 @@ class FileType(zeit.cms.type.TypeDeclaration):
 
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))
-
-    def resource_content_type(self, content):
-        return 'application/octet-stream'

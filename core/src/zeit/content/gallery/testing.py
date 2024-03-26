@@ -44,7 +44,6 @@ def add_image(folder, filename, name=None):
 
     image = zeit.content.image.image.LocalImage()
     image.__name__ = name
-    image.contentType = 'image/jpeg'
     with image.open('w') as img:
         with open(filename, 'rb') as f:
             img.write(f.read())

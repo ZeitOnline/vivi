@@ -25,8 +25,7 @@ expressions:
 ...     BytesIO(b'Pop.'),
 ...     {('ressort', 'http://namespaces.zeit.de/CMS/document'): 'Inhaltsverzeichnis',
 ...      ('year', 'http://namespaces.zeit.de/CMS/document'): '2007',
-...      ('volume', 'http://namespaces.zeit.de/CMS/document'): '07'},
-...     contentType='text/plain')
+...      ('volume', 'http://namespaces.zeit.de/CMS/document'): '07'})
 
 
 >>> [res for res in connector.search([volume, ressort],

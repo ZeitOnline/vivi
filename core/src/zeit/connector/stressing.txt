@@ -27,8 +27,7 @@ on parallel delete on which the server just stops putting out XML.
 ...     res = Resource(id,
 ...                'stresslock',
 ...                'text',
-...                BytesIO(b'Pop goes the weasel!'),
-...                contentType = 'text/plain')
+...                BytesIO(b'Pop goes the weasel!'))
 ...     res.properties[('foo', 'bar')] = 'baz'
 ...     res.properties[('count', 'bar')] = '-1'
 ...     until = (
