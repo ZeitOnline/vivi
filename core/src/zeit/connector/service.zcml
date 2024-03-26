@@ -12,8 +12,6 @@
 
   <utility factory=".postgresql.factory"
     zcml:condition="have zeit.connector.sql"/>
-  <utility factory=".postgresql.passthrough_factory"
-    zcml:condition="have zeit.connector.sql-pass"/>
 
   <utility factory="zeit.connector.filesystem.factory"
     zcml:condition="have zeit.connector.filesystem"/>
