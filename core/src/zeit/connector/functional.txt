@@ -96,7 +96,7 @@ Make sure the resource stays locked on commit:
 >>> connector.lock(res.id, 'zope.user', until=None)
 'opaquelocktoken:...'
 >>> transaction.commit()
->>> connector._invalidate_cache(res.id)
+>>> connector.invalidate_cache(res.id)
 >>> connector.locked(res.id)
 ('zope.user', datetime.datetime(...), True)
 
@@ -122,7 +122,7 @@ Enable debugging of the http data:
 >>> import zeit.connector.dav.davbase
 >>> zeit.connector.dav.davbase.DEBUG_CONNECTION = True
 
->>> print('x'); connector._invalidate_cache(
+>>> print('x'); connector.invalidate_cache(
 ...     'http://xml.zeit.de/testing/')
 x...Referer: http://127.0.0.1\r\n...
 

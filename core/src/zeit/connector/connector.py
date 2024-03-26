@@ -261,7 +261,7 @@ class Connector:
         id = self._get_cannonical_id(id)
 
         # Invalidate the cache to make sure we have the real lock information
-        self._invalidate_cache(id)
+        self.invalidate_cache(id)
         token = self._get_my_locktoken(id)  # raises LockedByOtherSystemError
         try:
             self.get_connection().delete(self._id2loc(id), token)
@@ -269,7 +269,7 @@ class Connector:
             raise KeyError(id)
         except zeit.connector.dav.interfaces.FailedDependencyError as e:
             raise zeit.connector.interfaces.LockedByOtherSystemError(id, e) from e
-        self._invalidate_cache(id)
+        self.invalidate_cache(id)
 
     def __contains__(self, id):
         # Because we cache a lot it will be ok to just grab the object:
@@ -337,8 +337,8 @@ class Connector:
             except zeit.connector.dav.interfaces.DAVNotFoundError as err:
                 raise KeyError('The resource %s does not exist.', old_id) from err
 
-        self._invalidate_cache(old_id)
-        self._invalidate_cache(new_id)
+        self.invalidate_cache(old_id)
+        self.invalidate_cache(new_id)
 
     @staticmethod
     def _is_descendant(id1, id2):
@@ -399,7 +399,7 @@ class Connector:
             raise zeit.connector.interfaces.LockingError(id, '%s is already locked.' % id)
         # Just pass-on other exceptions. It's more informative
 
-        self._invalidate_cache(id)
+        self.invalidate_cache(id)
         return token
 
     def lock(self, id, principal, until):
@@ -409,11 +409,11 @@ class Connector:
         return self._lock(id, principal, until)
 
     def unlock(self, id):
-        self._invalidate_cache(id)
+        self.invalidate_cache(id)
         locktoken = self._get_my_locktoken(id)
         if locktoken:
             self._unlock(id, locktoken)
-            self._invalidate_cache(id)
+            self.invalidate_cache(id)
         return locktoken  # Needed for cleanup in ZopeConnector
 
     def _unlock(self, id, locktoken):
@@ -454,7 +454,7 @@ class Connector:
             timeout = TIME_ETERNITY
         if timeout and timeout < datetime.datetime.now(pytz.UTC):
             # The lock has timed out
-            self._invalidate_cache(id)
+            self.invalidate_cache(id)
             return self.locked(id)
 
         return (owner, timeout, mylock)
@@ -525,7 +525,7 @@ class Connector:
         """The grunt work of __setitem__() and add()"""
         if id.rstrip('/') == ID_NAMESPACE.rstrip('/'):
             raise KeyError('Cannot write to root object')
-        self._invalidate_cache(id)
+        self.invalidate_cache(id)
         locktoken = self._get_my_locktoken(id)
         autolock = locktoken is None
         if resource.is_collection and not id.endswith('/'):
@@ -580,7 +580,7 @@ class Connector:
         finally:
             if autolock and locktoken:  # This was _our_ lock. Cleanup:
                 self._unlock(id, locktoken)
-            self._invalidate_cache(id)
+            self.invalidate_cache(id)
 
     def _add_collection(self, id):
         # NOTE id is the collection's id. Trailing slash is appended if needed.
@@ -664,10 +664,6 @@ class Connector:
             except KeyError:
                 logger.debug('%s not in %s' % (id, cache))
 
-    def _invalidate_cache(self, id):
-        # Make an indirection here to allow zopeconnector to use events.
-        self.invalidate_cache(id)
-
     def invalidate_cache(self, id):
         """invalidate cache (and refill)."""
         try:
@@ -681,7 +677,7 @@ class Connector:
             exists = False
             new_location = e.response.getheader('location')
             if new_location:
-                self._invalidate_cache(self._loc2id(new_location))
+                self.invalidate_cache(self._loc2id(new_location))
         else:
             exists = True
 
@@ -716,8 +712,8 @@ class Connector:
                 if davres._result is None:
                     davres.update(depth=0)
             except zeit.connector.dav.interfaces.DAVNotFoundError:
-                # Apparently the parent dissapeared somehow.
-                self._invalidate_cache(parent)
+                # Apparently the parent disappeared somehow.
+                self.invalidate_cache(parent)
             else:
                 self._update_property_cache(davres)
 

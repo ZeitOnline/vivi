@@ -73,8 +73,12 @@ class ZopeConnector(zeit.connector.connector.Connector):
     def child_name_cache(self):
         return zope.component.getUtility(zeit.connector.interfaces.IChildNameCache)
 
-    def _invalidate_cache(self, id):
+    def invalidate_cache(self, id):
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(id))
+        # actual invalidation is performed by `invalidate_cache` event handler
+
+    def _invalidate_cache(self, id):
+        super().invalidate_cache(id)
 
 
 factory = ZopeConnector.factory
@@ -147,7 +151,7 @@ class ConnectorSavepoint:
 def invalidate_cache(event):
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     try:
-        connector.invalidate_cache(event.id)
+        connector._invalidate_cache(event.id)
     except ValueError:
         # The connector isn't responsible for the id, or the id is just plain
         # invalid. There is nothing to invalidate then anyway.

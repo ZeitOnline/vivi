@@ -53,7 +53,7 @@ sent again:
 
 >>> import time
 >>> time.sleep(16)
->>> connector._invalidate_cache('http://xml.zeit.de/testing/')
+>>> connector.invalidate_cache('http://xml.zeit.de/testing/')
 send: b'PROPFIND /cms/testing/ HTTP/1.1...Depth: 1\r\n...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: ''
 send: b'PROPFIND /cms/testing/ HTTP/1.1\r\n...Depth: 1...User-Agent: zeit.connector/...<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
