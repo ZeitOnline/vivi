@@ -367,6 +367,11 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         return r
 
+    def mkdir(self, name):
+        if not name.startswith(ROOT):
+            name = f'{ROOT}/{name}'
+        return mkdir(self.connector, name)
+
 
 class ConnectorTest(TestCase):
     layer = DAV_CONNECTOR_LAYER
@@ -419,6 +424,7 @@ def mkdir(connector, id):
     res = zeit.connector.resource.Resource(id, None, 'folder', BytesIO(b''), is_collection=True)
     connector.add(res)
     transaction.commit()
+    return res
 
 
 def create_folder_structure(connector):

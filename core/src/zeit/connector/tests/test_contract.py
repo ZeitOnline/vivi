@@ -191,15 +191,13 @@ class ContractCopyMove:
 
     def test_move_collection_to_existing_collection_raises(self):
         # I'm not sure this is actually desired behaviour.
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/source')
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/target')
+        source = self.mkdir('source')
+        target = self.mkdir('target')
         with self.assertRaises(MoveError):
-            self.connector.move(
-                'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
-            )
+            self.connector.move(source.id, target.id)
 
     def test_move_collection_applies_to_all_children(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/source')
+        self.mkdir('source')
         self.connector['http://xml.zeit.de/testing/source/file'] = Resource(
             None, None, 'text', BytesIO(b'')
         )
@@ -245,7 +243,7 @@ class ContractCopyMove:
             )
 
     def test_copy_collection_applies_to_all_children(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/source')
+        self.mkdir('source')
         self.connector['http://xml.zeit.de/testing/source/file'] = Resource(
             None, None, 'text', BytesIO(b'')
         )
@@ -257,9 +255,9 @@ class ContractCopyMove:
         self.assertIn('http://xml.zeit.de/testing/target/file', self.connector)
 
     def test_copy_collection_into_descendant_raises(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/target')
+        target = self.mkdir('target')
         with self.assertRaises(CopyError):
-            self.connector.copy('http://xml.zeit.de/testing', 'http://xml.zeit.de/testing/target')
+            self.connector.copy(ROOT, target.id)
 
 
 class ContractLock:
@@ -325,7 +323,7 @@ class ContractLock:
     def test_move_collection_with_locked_child_raises(self):
         collection_id = 'http://xml.zeit.de/testing/source'
         file_id = f'{collection_id}/foo'
-        zeit.connector.testing.mkdir(self.connector, collection_id)
+        self.mkdir(collection_id)
         self.connector[f'{collection_id}/foo'] = Resource(None, None, 'text', BytesIO(b''))
         transaction.commit()
         token = self.connector.lock(
@@ -539,7 +537,7 @@ class ContractCache:
     def test_setitem_collection_populates_child_name_cache(self):
         folder = 'http://xml.zeit.de/testing/foo'
         self.assertNotIn(folder, self.child_name_cache)
-        zeit.connector.testing.mkdir(self.connector, folder)
+        self.mkdir(folder)
         self.assertEqual([], self.child_name_cache[folder])
 
     def test_getitem_populates_property_cache(self):
@@ -573,10 +571,9 @@ class ContractCache:
         self.assertNotIn(res.id, self.child_name_cache[ROOT])
 
     def test_delitem_collection_removes_child_name_cache(self):
-        folder = 'http://xml.zeit.de/testing/foo'
-        zeit.connector.testing.mkdir(self.connector, folder)
-        del self.connector[folder]
-        self.assertNotIn(folder, self.child_name_cache)
+        folder = self.mkdir('foo')
+        del self.connector[folder.id]
+        self.assertNotIn(folder.id, self.child_name_cache)
 
     def test_copy_populates_property_cache(self):
         prop = ('foo', self.NS)
@@ -592,12 +589,12 @@ class ContractCache:
         self.assertIn('http://xml.zeit.de/testing/bar', self.child_name_cache[ROOT])
 
     def test_copy_collection_populates_child_name_cache(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
+        self.mkdir('foo')
         self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
         self.assertEqual([], self.child_name_cache['http://xml.zeit.de/testing/bar'])
 
     def test_copy_nonempty_collection_populates_child_name_cache(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
+        self.mkdir('foo')
         self.add_resource('foo/qux')
         self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
         self.assertEqual(
@@ -619,7 +616,7 @@ class ContractCache:
         self.assertEqual(['http://xml.zeit.de/testing/bar'], self.child_name_cache[ROOT])
 
     def test_move_collection_updates_child_name_cache(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
+        self.mkdir('foo')
         self.connector.move('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
         self.assertNotIn('http://xml.zeit.de/testing/foo', self.child_name_cache)
         self.assertEqual([], self.child_name_cache['http://xml.zeit.de/testing/bar'])
