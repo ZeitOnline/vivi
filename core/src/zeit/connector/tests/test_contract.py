@@ -627,6 +627,23 @@ class ContractCache:
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(res.id))
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
+    def test_when_storage_changed_invalidate_updates_child_name_cache(self):
+        self.add_in_storage('foo')
+        transaction.commit()
+        folder = self.id_for_folder('http://xml.zeit.de/testing')
+        self.connector.invalidate_cache(folder)
+        self.assertEqual(
+            ['http://xml.zeit.de/testing/foo'], list(self.connector.child_name_cache[folder])
+        )
+
+    def test_when_storage_deleted_invalidate_removes_child_name_cache(self):
+        res = self.add_resource('foo')
+        self.delete_in_storage(res.id)
+        transaction.commit()
+        self.connector.invalidate_cache(res.id)
+        folder = self.id_for_folder('http://xml.zeit.de/testing')
+        self.assertEqual([], list(self.connector.child_name_cache[folder]))
+
 
 class DAVProtocol:
     shortened_uuid = False
@@ -675,6 +692,9 @@ class ContractZopeDAV(
 
     def delete_in_storage(self, uniqueid):
         del self.layer['connector'][uniqueid]
+
+    def add_in_storage(self, name):
+        self.layer['connector'].add(self.get_resource(name))
 
 
 class ContractMock(
@@ -747,3 +767,16 @@ class ContractZopeSQL(
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         content = connector._get_content(uniqueid)
         connector.session.delete(content)
+
+    def add_in_storage(self, name):
+        from zeit.connector.postgresql import Content, Path
+
+        resource = self.get_resource(name)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = Content()
+        path = Path(content=content)
+        content.from_webdav(resource.properties)
+        content.type = resource.type
+        content.is_collection = resource.is_collection
+        (path.parent_path, path.name) = connector._pathkey(resource.id)
+        connector.session.add(path)

@@ -212,6 +212,8 @@ class Connector:
         if uniqueid == ID_NAMESPACE:
             parent_path = ''
         else:
+            if self._get_content(uniqueid) is None:
+                return
             parent_path = '/'.join(self._pathkey(uniqueid))
         result = [
             (x.name, x.uniqueid)
@@ -514,8 +516,13 @@ class Connector:
         path = self.session.get(Path, self._pathkey(uniqueid))
         if path is None:
             self.property_cache.pop(uniqueid, None)
+            self.child_name_cache.pop(uniqueid, None)
         else:
             self.property_cache[uniqueid] = path.content.to_webdav()
+            if path.content.is_collection:
+                self._reload_child_name_cache(uniqueid)
+        parent = os.path.split(uniqueid)[0]
+        self._reload_child_name_cache(parent)
 
 
 factory = Connector.factory
