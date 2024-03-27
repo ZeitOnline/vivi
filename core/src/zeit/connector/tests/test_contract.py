@@ -491,38 +491,38 @@ class ContractSearch:
 
 
 class ContractCache:
-    def test_setitem_populates_cache(self):
+    def test_setitem_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
-    def test_getitem_populates_cache(self):
+    def test_getitem_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         del self.connector.property_cache[res.id]
         res = self.connector[res.id]
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
-    def test_changeProperties_updates_cache(self):
+    def test_changeProperties_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.connector.changeProperties(res.id, {prop: 'bar'})
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
-    def test_delitem_removes_cache(self):
+    def test_delitem_removes_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         del self.connector[res.id]
         self.assertNotIn(res.id, self.connector.property_cache)
 
-    def test_copy_populates_cache(self):
+    def test_copy_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         new = 'http://xml.zeit.de/testing/bar'
         self.connector.copy(res.id, new)
         self.assertEqual('foo', self.connector.property_cache[new][prop])
 
-    def test_move_updates_cache(self):
+    def test_move_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         new = 'http://xml.zeit.de/testing/bar'
@@ -530,7 +530,7 @@ class ContractCache:
         self.assertNotIn(res.id, self.connector.property_cache)
         self.assertEqual('foo', self.connector.property_cache[new][prop])
 
-    def test_when_storage_changed_invalidate_updates_cache(self):
+    def test_when_storage_changed_invalidate_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.change_properties_in_storage(res.id, {prop: 'bar'})
@@ -538,7 +538,7 @@ class ContractCache:
         self.connector.invalidate_cache(res.id)
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
-    def test_when_storage_deleted_invalidate_removes_cache(self):
+    def test_when_storage_deleted_invalidate_removes_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.delete_in_storage(res.id)
