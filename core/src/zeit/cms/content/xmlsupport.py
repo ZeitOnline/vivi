@@ -94,7 +94,7 @@ def veto_dav(event):
 
 @grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def veto_internal(event):
-    if event.namespace == 'INTERNAL':
+    if event.namespace == zeit.connector.interfaces.INTERNAL_PROPERTY:
         event.veto()
 
 

@@ -91,10 +91,10 @@ INTERNAL namespace are *not* mapped:
 ...     repository['testcontent'])
 >>> properties.register_live_property('am-i', 'under-the-hood', WRITEABLE_LIVE)
 >>> properties.register_live_property('foobar', 'DAV:', WRITEABLE_LIVE)
->>> properties.register_live_property('foobar', 'INTERNAL', WRITEABLE_LIVE)
+>>> properties.register_live_property('foobar', zeit.connector.interfaces.INTERNAL_PROPERTY, WRITEABLE_LIVE)
 >>> properties[('am-i', 'under-the-hood')] = '4711'
 >>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
->>> properties[('foobar', 'INTERNAL')] = 'no-dav-sync'
+>>> properties[('foobar', zeit.connector.interfaces.INTERNAL_PROPERTY)] = 'no-dav-sync'
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <testtype>
   <head>

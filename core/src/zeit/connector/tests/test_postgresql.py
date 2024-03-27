@@ -75,7 +75,7 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
                 ('uuid', 'http://namespaces.zeit.de/CMS/document'): '{urn:uuid:%s}' % props.id,
                 ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testing',
                 ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
-                ('is_collection', 'internal'): False,
+                ('is_collection', 'INTERNAL'): False,
             },
             davprops,
         )

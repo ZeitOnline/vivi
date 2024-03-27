@@ -9,6 +9,7 @@ import pytz
 import transaction
 import zope.component
 
+from zeit.connector.interfaces import CACHED_TIME_PROPERTY
 from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.connector
 import zeit.connector.interfaces
@@ -154,24 +155,22 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         self.assertEqual([], list(children))
 
     def test_cache_time_is_not_stored_on_dav(self):
-        key = ('cached-time', 'INTERNAL')
         properties = self.connector[self.rid].properties
-        cache_time = properties[key]
-        self.connector.changeProperties(self.rid, {key: 'foo'})
+        cache_time = properties[CACHED_TIME_PROPERTY]
+        self.connector.changeProperties(self.rid, {CACHED_TIME_PROPERTY: 'foo'})
         properties = self.connector[self.rid].properties
-        self.assertNotEqual('foo', properties[key])
+        self.assertNotEqual('foo', properties[CACHED_TIME_PROPERTY])
         davres = self.connector._get_dav_resource(self.rid)
         davres.update()
-        self.assertTrue(key not in davres.get_all_properties())
+        self.assertTrue(CACHED_TIME_PROPERTY not in davres.get_all_properties())
         properties = self.connector[self.rid].properties
-        self.assertEqual(cache_time, properties[key])
+        self.assertEqual(cache_time, properties[CACHED_TIME_PROPERTY])
 
     def test_cache_time_is_not_stored_on_dav_with_add(self):
-        key = ('cached-time', 'INTERNAL')
         self.connector.add(self.connector[self.rid])
         davres = self.connector._get_dav_resource(self.rid)
         davres.update()
-        self.assertTrue(key not in davres.get_all_properties())
+        self.assertTrue(CACHED_TIME_PROPERTY not in davres.get_all_properties())
 
     def test_cache_handles_webdav_keys(self):
         key = zeit.connector.cache.WebDAVPropertyKey(('foo', 'bar'))

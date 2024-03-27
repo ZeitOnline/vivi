@@ -15,7 +15,7 @@ import pytz
 import zope.cachedescriptors.property
 import zope.interface
 
-from zeit.connector.interfaces import ID_NAMESPACE, IPersistentCache
+from zeit.connector.interfaces import CACHED_TIME_PROPERTY, ID_NAMESPACE, IPersistentCache
 import zeit.connector.cache
 import zeit.connector.dav.davconnection
 import zeit.connector.dav.davresource
@@ -191,9 +191,9 @@ class Connector:
             response_id = self._loc2id(urllib.parse.urljoin(self._roots['default'], path))
             properties = response.get_all_properties()
             cached_properties = dict(cache.get(response_id, {}))
-            cached_properties.pop(('cached-time', 'INTERNAL'), None)
+            cached_properties.pop(CACHED_TIME_PROPERTY, None)
             if cached_properties != properties:
-                properties[('cached-time', 'INTERNAL')] = now
+                properties[CACHED_TIME_PROPERTY] = now
                 cache[response_id] = properties
 
     def _update_child_id_cache(self, dav_response):
@@ -364,14 +364,14 @@ class Connector:
             locktoken = self._get_my_locktoken(id)
         davres = self._get_dav_resource(id)
         properties = dict(properties)
-        properties[('cached-time', 'INTERNAL')] = zeit.connector.interfaces.DeleteProperty
+        properties[CACHED_TIME_PROPERTY] = zeit.connector.interfaces.DeleteProperty
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         davres.change_properties(
             properties, delmark=zeit.connector.interfaces.DeleteProperty, locktoken=locktoken
         )
 
         # Update property cache
-        del properties[('cached-time', 'INTERNAL')]
+        del properties[CACHED_TIME_PROPERTY]
         remove = []
         for key, value in properties.items():
             if value is zeit.connector.interfaces.DeleteProperty:
@@ -646,7 +646,7 @@ class Connector:
                 # Better too much than not enough
                 timeout = TIME_ETERNITY
             else:
-                reftime = self[id].properties.get(('cached-time', 'INTERNAL'))
+                reftime = self[id].properties.get(CACHED_TIME_PROPERTY)
                 if not isinstance(reftime, datetime.datetime):
                     # XXX untested
                     reftime = datetime.datetime.now(pytz.UTC)

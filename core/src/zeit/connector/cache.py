@@ -18,6 +18,7 @@ import zope.interface
 import zope.security.proxy
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.connector.interfaces import CACHED_TIME_PROPERTY
 import zeit.cms.cli
 import zeit.connector.interfaces
 
@@ -410,8 +411,8 @@ class Properties(persistent.mapping.PersistentMapping):
         commited_data = commited['data']
         newstate_data = newstate['data'].copy()
 
-        commited_data.pop(('cached-time', 'INTERNAL'), None)
-        newstate_data.pop(('cached-time', 'INTERNAL'), None)
+        commited_data.pop(CACHED_TIME_PROPERTY, None)
+        newstate_data.pop(CACHED_TIME_PROPERTY, None)
         if newstate_data == commited_data:
             return newstate
         # Completely invalidate cache entry when we cannot resolve.

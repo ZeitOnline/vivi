@@ -533,9 +533,10 @@ Note that the cached time of the transaction wins which is commited last:
 
 >>> import datetime
 >>> import pytz
->>> c_1['id'][('cached-time', 'INTERNAL')] = datetime.datetime(
+>>> from zeit.connector.interfaces import CACHED_TIME_PROPERTY
+>>> c_1['id'][CACHED_TIME_PROPERTY] = datetime.datetime(
 ...     2008, 1, 1, tzinfo=pytz.UTC).isoformat()
->>> c_2['id'][('cached-time', 'INTERNAL')] = datetime.datetime(
+>>> c_2['id'][CACHED_TIME_PROPERTY] = datetime.datetime(
 ...     2009, 4, 7, tzinfo=pytz.UTC).isoformat()
 >>> transactionmanager_2.commit()
 >>> transactionmanager_1.commit()
