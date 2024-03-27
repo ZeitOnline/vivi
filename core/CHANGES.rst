@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.133.0 (2024-03-27)
+--------------------
+
+- ZO-4800: Don't copy internal properties to XML
+
+
 5.132.0 (2024-03-26)
 --------------------
 
