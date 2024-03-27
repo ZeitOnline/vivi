@@ -196,3 +196,8 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         assert self.connector.session.scalar(select(func.count(Lock.id))) == 2
         _unlock_overdue_locks()
         assert self.connector.session.scalar(select(func.count(Lock.id))) == 1
+
+    def test_invalidate_cache_of_nonexistent_content_creates_no_cache(self):
+        self.assertNotIn('http://xml.zeit.de/testing/foo', list(self.connector.child_name_cache))
+        self.connector.invalidate_cache('http://xml.zeit.de/testing/foo/bar')
+        self.assertNotIn('http://xml.zeit.de/testing/foo', list(self.connector.child_name_cache))

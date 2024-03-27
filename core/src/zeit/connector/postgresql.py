@@ -197,13 +197,37 @@ class Connector:
         except KeyError:
             return False
 
+    child_name_cache = TransactionBoundCache('_v_child_name_cache', dict)
+
     def listCollection(self, uniqueid):
-        if uniqueid not in self:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
         uniqueid = self._normalize(uniqueid)
-        parent_path = '/'.join(self._pathkey(uniqueid))
-        for path in self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars():
-            yield (path.name, path.uniqueid)
+        if uniqueid != ID_NAMESPACE and uniqueid not in self:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        if uniqueid not in self.child_name_cache:
+            self._reload_child_name_cache(uniqueid)
+        for child in list(self.child_name_cache[uniqueid]):
+            yield (self._pathkey(child)[1], child)
+
+    def _reload_child_name_cache(self, uniqueid):
+        if uniqueid == ID_NAMESPACE:
+            parent_path = ''
+        else:
+            if self._get_content(uniqueid) is None:
+                return
+            parent_path = '/'.join(self._pathkey(uniqueid))
+        result = [
+            (x.name, x.uniqueid)
+            for x in self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars()
+        ]
+        self.child_name_cache[uniqueid] = set(x[1] for x in result)
+
+    def _update_parent_child_name_cache(self, uniqueid, operation):
+        parent = os.path.split(uniqueid)[0]
+        cached = self.child_name_cache.get(parent)
+        if cached is not None:
+            operation = getattr(cached, operation)
+            operation(uniqueid)
+            self.child_name_cache[parent] = cached
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
@@ -249,6 +273,10 @@ class Connector:
                 content.body = resource.data.read().decode('utf-8')
 
         self.property_cache[uniqueid] = content.to_webdav()
+        if content.is_collection:
+            self._reload_child_name_cache(uniqueid)
+        parent = os.path.split(uniqueid)[0]
+        self._reload_child_name_cache(parent)
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -284,6 +312,8 @@ class Connector:
 
         self.property_cache.pop(uniqueid, None)
         self.body_cache.pop(uniqueid, None)
+        self.child_name_cache.pop(uniqueid, None)
+        self._update_parent_child_name_cache(uniqueid, 'remove')
 
     def _delete_binary(self, content):
         blob = self.bucket.blob(content.id)
@@ -349,10 +379,12 @@ class Connector:
                 self.bucket.copy_blob(source_blob, self.bucket, new_content.id, retry=DEFAULT_RETRY)
 
         if old_content.is_collection:
+            self.child_name_cache[new_uniqueid] = set()
             for name, _ in self.listCollection(old_uniqueid):
                 self.copy(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
 
         self.property_cache[new_uniqueid] = new_content.to_webdav()
+        self._update_parent_child_name_cache(new_uniqueid, 'add')
 
     def move(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
@@ -371,8 +403,10 @@ class Connector:
                     old_uniqueid,
                     f'Could not move {old_uniqueid} to {new_uniqueid}, because it is locked.',
                 )
+            self.child_name_cache[new_uniqueid] = set()
             for name, _ in self.listCollection(old_uniqueid):
                 self.move(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
+            self.child_name_cache.pop(old_uniqueid, None)
 
         path = self.session.get(Path, self._pathkey(old_uniqueid))
         (path.parent_path, path.name) = self._pathkey(new_uniqueid)
@@ -382,6 +416,8 @@ class Connector:
         self.property_cache.pop(old_uniqueid, None)
         self.property_cache[new_uniqueid] = content.to_webdav()
         self.body_cache.pop(old_uniqueid, None)
+        self._update_parent_child_name_cache(old_uniqueid, 'remove')
+        self._update_parent_child_name_cache(new_uniqueid, 'add')
 
     def _foreign_child_lock_exists(self, uniqueid):
         (parent, _) = self._pathkey(uniqueid)
@@ -480,8 +516,13 @@ class Connector:
         path = self.session.get(Path, self._pathkey(uniqueid))
         if path is None:
             self.property_cache.pop(uniqueid, None)
+            self.child_name_cache.pop(uniqueid, None)
         else:
             self.property_cache[uniqueid] = path.content.to_webdav()
+            if path.content.is_collection:
+                self._reload_child_name_cache(uniqueid)
+        parent = os.path.split(uniqueid)[0]
+        self._reload_child_name_cache(parent)
 
 
 factory = Connector.factory
@@ -614,6 +655,10 @@ class SQLZopeConnector(Connector):
     @property
     def property_cache(self):
         return zope.component.getUtility(zeit.connector.interfaces.IPropertyCache)
+
+    @property
+    def child_name_cache(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IChildNameCache)
 
     def invalidate_cache(self, uniqueid):
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(uniqueid))

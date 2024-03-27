@@ -22,6 +22,9 @@ import zeit.connector.interfaces
 import zeit.connector.mock
 
 
+ROOT = 'http://xml.zeit.de/testing'
+
+
 class DockerSetupError(requests.exceptions.ConnectionError):
     # for more informative error output
     pass
@@ -46,22 +49,14 @@ class DAVServerLayer(plone.testing.Layer):
         self['query_url'] = 'http://localhost:%s' % query
         self.wait_for_http(self['dav_url'])
         # We can get away without self.wait_for_http(self['query_url'])
-        zope.component.provideUtility(
-            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer
-        )
-        TBC = zeit.connector.connector.TransactionBoundCachingConnector
-        self['connector'] = TBC({'default': self['dav_url']})
-        mkdir(self['connector'], 'http://xml.zeit.de/testing')
 
     def tearDown(self):
-        self['connector'].disconnect()
         self['dav_container'].stop()
         del self['dav_container']
         self['docker'].close()
         del self['docker']
         del self['dav_url']
         del self['query_url']
-        del self['connector']
 
     def wait_for_http(self, url, timeout=10, sleep=0.2):
         http = requests.Session()
@@ -79,26 +74,6 @@ class DAVServerLayer(plone.testing.Layer):
         http.close()
         print(self['dav_container'].logs(timestamps=True).decode('utf-8'))
         raise RuntimeError('%s did not start up' % url)
-
-    def recursive_cleanup(self, uid_in):
-        connector = self['connector']
-        for _name, uid in connector.listCollection(uid_in):
-            # unlock every resource, no matter the user
-            davlock = connector._get_dav_lock(uid)
-            if davlock:
-                connector._unlock(uid, davlock.get('locktoken'))
-                connector.invalidate_cache(uid)
-            if connector[uid].type == 'folder':
-                self.recursive_cleanup(uid)
-            del connector[uid]
-
-    def testTearDown(self):
-        transaction.abort()
-        root_collection = 'http://xml.zeit.de/testing'
-        self.recursive_cleanup(root_collection)
-
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        connector.disconnect()
 
 
 DAV_SERVER_LAYER = DAVServerLayer()
@@ -125,15 +100,61 @@ class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 DAV_CONFIG_LAYER = ConfigLayer({})
 
-ZOPE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+
+class DAVDatabaseLayer(plone.testing.Layer):
+    def __init__(self, name='DAVDatabaseLayer', module=None, bases=()):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        super().__init__(name=name, module=module, bases=bases)
+
+    def setUp(self):
+        zope.component.provideUtility(
+            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer
+        )
+        TBC = zeit.connector.connector.TransactionBoundCachingConnector
+        self['connector'] = TBC({'default': self['dav_url']})
+
+    def testSetUp(self):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        with zeit.cms.testing.site(self['zodbApp']):
+            mkdir(connector, ROOT)
+        transaction.commit()
+
+    def testTearDown(self):
+        transaction.abort()
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self.recursive_cleanup(connector, ROOT)
+
+        connector.disconnect()
+
+    def recursive_cleanup(self, connector, uniqueid):
+        connector = self['connector']
+        for _name, uid in connector.listCollection(uniqueid):
+            # unlock every resource, no matter the user
+            davlock = connector._get_dav_lock(uid)
+            if davlock:
+                connector._unlock(uid, davlock.get('locktoken'))
+                connector.invalidate_cache(uid)
+            if connector[uid].type == 'folder':
+                self.recursive_cleanup(connector, uid)
+            del connector[uid]
+
+    def tearDown(self):
+        self['connector'].disconnect()
+        del self['connector']
+
+
+ZOPE_DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
 )
-ZOPE_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_ZCML_LAYER,))
+ZOPE_DAV_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_DAV_ZCML_LAYER,))
+ZOPE_DAV_CONNECTOR_LAYER = DAVDatabaseLayer(bases=(ZOPE_DAV_ZOPE_LAYER,))
 
-REAL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.nocache'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
 )
-REAL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(REAL_ZCML_LAYER,))
+DAV_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(DAV_ZCML_LAYER,))
+DAV_CONNECTOR_LAYER = DAVDatabaseLayer(bases=(DAV_ZOPE_LAYER,))
 
 
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -147,7 +168,7 @@ MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
-class SQLLayer(plone.testing.Layer):
+class SQLServerLayer(plone.testing.Layer):
     container_image = 'postgres:14'
 
     def setUp(self):
@@ -191,10 +212,10 @@ class SQLLayer(plone.testing.Layer):
         del self['docker']
 
 
-SQL_LAYER = SQLLayer()
+SQL_SERVER_LAYER = SQLServerLayer()
 
 
-class GCSLayer(plone.testing.Layer):
+class GCSServerLayer(plone.testing.Layer):
     bucket = 'vivi-test'
 
     def setUp(self):
@@ -211,20 +232,20 @@ class GCSLayer(plone.testing.Layer):
         del self['gcp_server']
 
 
-GCS_LAYER = GCSLayer()
+GCS_SERVER_LAYER = GCSServerLayer()
 
 
 class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
     defaultBases = (
-        SQL_LAYER,
-        GCS_LAYER,
+        SQL_SERVER_LAYER,
+        GCS_SERVER_LAYER,
     )
 
     def setUp(self):
         self.config = {
             'dsn': self['dsn'],
             'storage-project': 'ignored_by_emulator',
-            'storage-bucket': GCS_LAYER.bucket,
+            'storage-bucket': GCS_SERVER_LAYER.bucket,
         }
         os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()
@@ -289,7 +310,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
         sqlalchemy.event.listen(self['sql_session'], 'after_transaction_end', self.end_savepoint)
 
         with zeit.cms.testing.site(self['zodbApp']):
-            mkdir(connector, 'http://xml.zeit.de/testing')
+            mkdir(connector, ROOT)
         transaction.commit()
 
     def end_savepoint(self, session, transaction):
@@ -331,9 +352,13 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def get_resource(self, name, body=b'', properties=None, is_collection=False):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
-        rid = 'http://xml.zeit.de/testing/%s' % name
         return zeit.connector.resource.Resource(
-            rid, name, 'testing', BytesIO(body), properties=properties, is_collection=is_collection
+            f'{ROOT}/{name}',
+            name,
+            'testing',
+            BytesIO(body),
+            properties=properties,
+            is_collection=is_collection,
         )
 
     def add_resource(self, name, **kw):
@@ -342,9 +367,14 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         return r
 
+    def mkdir(self, name):
+        if not name.startswith(ROOT):
+            name = f'{ROOT}/{name}'
+        return mkdir(self.connector, name)
+
 
 class ConnectorTest(TestCase):
-    layer = REAL_CONNECTOR_LAYER
+    layer = DAV_CONNECTOR_LAYER
     level = 2
 
 
@@ -394,17 +424,17 @@ def mkdir(connector, id):
     res = zeit.connector.resource.Resource(id, None, 'folder', BytesIO(b''), is_collection=True)
     connector.add(res)
     transaction.commit()
+    return res
 
 
 def create_folder_structure(connector):
     """Create a folder structure for copy/move"""
 
     def add_folder(id):
-        mkdir(connector, 'http://xml.zeit.de/testing/%s' % id)
+        mkdir(connector, f'{ROOT}/{id}')
 
     def add_file(id):
-        id = 'http://xml.zeit.de/testing/%s' % id
-        res = zeit.connector.resource.Resource(id, None, 'text', BytesIO(b'Pop.'))
+        res = zeit.connector.resource.Resource(f'{ROOT}/{id}', None, 'text', BytesIO(b'Pop.'))
         connector.add(res)
 
     add_folder('testroot')
@@ -460,4 +490,6 @@ def copy_inherited_functions(base, locals):
     for name in dir(base):
         if not name.startswith('test_'):
             continue
+        if name in locals:
+            raise KeyError(f'{name} already exists')
         locals[name] = make_delegate(name)

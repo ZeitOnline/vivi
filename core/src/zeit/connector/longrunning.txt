@@ -15,6 +15,8 @@ Enable debugging of the http data:
 >>> import zeit.connector.dav.davbase
 >>> zeit.connector.dav.davbase.DEBUG_CONNECTION = True
 
+Have to force a reconnect, so debug is actually enabled
+>>> connector.disconnect()
 
 Remember the connection for later:
 

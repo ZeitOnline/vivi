@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from io import BytesIO
+import collections.abc
 import time
 
 import pytz
@@ -14,7 +15,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.resource import Resource
-from zeit.connector.testing import copy_inherited_functions
+from zeit.connector.testing import ROOT, copy_inherited_functions
 import zeit.connector.interfaces
 import zeit.connector.testing
 
@@ -35,7 +36,7 @@ class ContractReadWrite:
             self.connector['http://xml.zeit.de/nonexistent']
 
     def test_contains_checks_resource_existence(self):
-        self.assertIn('http://xml.zeit.de/testing', self.connector)
+        self.assertIn(ROOT, self.connector)
         self.assertNotIn('http://xml.zeit.de/nonexistent', self.connector)
 
     def test_delitem_nonexistent_id_raises(self):
@@ -62,12 +63,18 @@ class ContractReadWrite:
             self.listCollection('http://xml.zeit.de/nonexistent')
 
     def test_listCollection_returns_name_uniqueId_pairs(self):
-        self.assertEqual([], self.listCollection('http://xml.zeit.de/testing'))
+        self.assertEqual([], self.listCollection(ROOT))
         self.add_resource('one')
         self.add_resource('two')
         self.assertEqual(
             [('one', 'http://xml.zeit.de/testing/one'), ('two', 'http://xml.zeit.de/testing/two')],
-            sorted(self.listCollection('http://xml.zeit.de/testing')),
+            sorted(self.listCollection(ROOT)),
+        )
+
+    def test_listCollection_works_for_root_folder(self):
+        self.assertIn(
+            ('testing', self.id_for_folder(ROOT)),
+            self.listCollection('http://xml.zeit.de/'),
         )
 
     def test_setitem_stores_ressource(self):
@@ -166,9 +173,7 @@ class ContractCopyMove:
             'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
         )
         transaction.commit()
-        self.assertEqual(
-            ['target'], [x[0] for x in self.listCollection('http://xml.zeit.de/testing')]
-        )
+        self.assertEqual(['target'], [x[0] for x in self.listCollection(ROOT)])
         res = self.connector['http://xml.zeit.de/testing/target']
         self.assertEqual('bar', res.properties[('foo', self.NS)])
         self.assertEqual(b'mybody', res.data.read())
@@ -186,15 +191,13 @@ class ContractCopyMove:
 
     def test_move_collection_to_existing_collection_raises(self):
         # I'm not sure this is actually desired behaviour.
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/source')
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/target')
+        source = self.mkdir('source')
+        target = self.mkdir('target')
         with self.assertRaises(MoveError):
-            self.connector.move(
-                'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
-            )
+            self.connector.move(source.id, target.id)
 
     def test_move_collection_applies_to_all_children(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/source')
+        self.mkdir('source')
         self.connector['http://xml.zeit.de/testing/source/file'] = Resource(
             None, None, 'text', BytesIO(b'')
         )
@@ -222,7 +225,7 @@ class ContractCopyMove:
             'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
         )
         transaction.commit()
-        items = self.listCollection('http://xml.zeit.de/testing')
+        items = self.listCollection(ROOT)
         self.assertEqual(['source', 'target'], sorted([x[0] for x in items]))
         for _name, id in items:
             res = self.connector[id]
@@ -240,7 +243,7 @@ class ContractCopyMove:
             )
 
     def test_copy_collection_applies_to_all_children(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/source')
+        self.mkdir('source')
         self.connector['http://xml.zeit.de/testing/source/file'] = Resource(
             None, None, 'text', BytesIO(b'')
         )
@@ -252,9 +255,9 @@ class ContractCopyMove:
         self.assertIn('http://xml.zeit.de/testing/target/file', self.connector)
 
     def test_copy_collection_into_descendant_raises(self):
-        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/target')
+        target = self.mkdir('target')
         with self.assertRaises(CopyError):
-            self.connector.copy('http://xml.zeit.de/testing', 'http://xml.zeit.de/testing/target')
+            self.connector.copy(ROOT, target.id)
 
 
 class ContractLock:
@@ -320,7 +323,7 @@ class ContractLock:
     def test_move_collection_with_locked_child_raises(self):
         collection_id = 'http://xml.zeit.de/testing/source'
         file_id = f'{collection_id}/foo'
-        zeit.connector.testing.mkdir(self.connector, collection_id)
+        self.mkdir(collection_id)
         self.connector[f'{collection_id}/foo'] = Resource(None, None, 'text', BytesIO(b''))
         transaction.commit()
         token = self.connector.lock(
@@ -490,39 +493,116 @@ class ContractSearch:
         assert result == [('http://xml.zeit.de/testing/bar', 'egg')]
 
 
+class NormalizeFolders(collections.abc.MutableMapping):
+    """DAV connector requires trailing slash for uniqueId of folders, while SQL
+    connector finally stopped exposing this implementation detail.
+    To be able to talk to both, we need to normalize this, see the respective
+    `Protocol` helper class.
+    """
+
+    def __init__(self, normalize, cache):
+        self.normalize = normalize
+        self.cache = cache
+
+    def __getitem__(self, key):
+        return list(self.cache[self.normalize(key)])
+
+    def __setitem__(self, key, value):
+        self.cache[self.normalize(key)] = value
+
+    def __delitem__(self, key):
+        del self.cache[self.normalize(key)]
+
+    def __iter__(self):
+        return [self.normalize(x) for x in self.cache.keys()]
+
+    def __len__(self):
+        return len(self.cache)
+
+
 class ContractCache:
-    def test_setitem_populates_cache(self):
+    @property
+    def child_name_cache(self):
+        return NormalizeFolders(self.id_for_folder, self.connector.child_name_cache)
+
+    def test_setitem_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
-    def test_getitem_populates_cache(self):
+    def test_setitem_updates_parent_child_name_cache(self):
+        res = self.add_resource('foo')
+        self.assertEqual([res.id], self.child_name_cache[ROOT])
+
+    def test_setitem_collection_populates_child_name_cache(self):
+        folder = 'http://xml.zeit.de/testing/foo'
+        self.assertNotIn(folder, self.child_name_cache)
+        self.mkdir(folder)
+        self.assertEqual([], self.child_name_cache[folder])
+
+    def test_getitem_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         del self.connector.property_cache[res.id]
         res = self.connector[res.id]
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
-    def test_changeProperties_updates_cache(self):
+    def test_listCollection_populates_child_name_cache(self):
+        del self.child_name_cache[ROOT]
+        self.assertEqual([], self.listCollection(ROOT))
+        self.assertEqual([], self.child_name_cache[ROOT])
+
+    def test_changeProperties_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.connector.changeProperties(res.id, {prop: 'bar'})
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
-    def test_delitem_removes_cache(self):
+    def test_delitem_removes_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         del self.connector[res.id]
         self.assertNotIn(res.id, self.connector.property_cache)
 
-    def test_copy_populates_cache(self):
+    def test_delitem_removes_from_child_name_cache(self):
+        res = self.add_resource('foo')
+        self.assertIn(res.id, self.child_name_cache[ROOT])
+        del self.connector[res.id]
+        self.assertNotIn(res.id, self.child_name_cache[ROOT])
+
+    def test_delitem_collection_removes_child_name_cache(self):
+        folder = self.mkdir('foo')
+        del self.connector[folder.id]
+        self.assertNotIn(folder.id, self.child_name_cache)
+
+    def test_copy_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         new = 'http://xml.zeit.de/testing/bar'
         self.connector.copy(res.id, new)
         self.assertEqual('foo', self.connector.property_cache[new][prop])
 
-    def test_move_updates_cache(self):
+    def test_copy_updates_parent_child_name_cache(self):
+        res = self.add_resource('foo')
+        new = 'http://xml.zeit.de/testing/bar'
+        self.connector.copy(res.id, new)
+        self.assertIn('http://xml.zeit.de/testing/bar', self.child_name_cache[ROOT])
+
+    def test_copy_collection_populates_child_name_cache(self):
+        self.mkdir('foo')
+        self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
+        self.assertEqual([], self.child_name_cache['http://xml.zeit.de/testing/bar'])
+
+    def test_copy_nonempty_collection_populates_child_name_cache(self):
+        self.mkdir('foo')
+        self.add_resource('foo/qux')
+        self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
+        self.assertEqual(
+            ['http://xml.zeit.de/testing/bar/qux'],
+            self.child_name_cache['http://xml.zeit.de/testing/bar'],
+        )
+
+    def test_move_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         new = 'http://xml.zeit.de/testing/bar'
@@ -530,7 +610,18 @@ class ContractCache:
         self.assertNotIn(res.id, self.connector.property_cache)
         self.assertEqual('foo', self.connector.property_cache[new][prop])
 
-    def test_when_storage_changed_invalidate_updates_cache(self):
+    def test_move_updates_parent_child_name_cache(self):
+        res = self.add_resource('foo')
+        self.connector.move(res.id, 'http://xml.zeit.de/testing/bar')
+        self.assertEqual(['http://xml.zeit.de/testing/bar'], self.child_name_cache[ROOT])
+
+    def test_move_collection_updates_child_name_cache(self):
+        self.mkdir('foo')
+        self.connector.move('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
+        self.assertNotIn('http://xml.zeit.de/testing/foo', self.child_name_cache)
+        self.assertEqual([], self.child_name_cache['http://xml.zeit.de/testing/bar'])
+
+    def test_when_storage_changed_invalidate_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.change_properties_in_storage(res.id, {prop: 'bar'})
@@ -538,7 +629,7 @@ class ContractCache:
         self.connector.invalidate_cache(res.id)
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
-    def test_when_storage_deleted_invalidate_removes_cache(self):
+    def test_when_storage_deleted_invalidate_removes_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.delete_in_storage(res.id)
@@ -554,8 +645,40 @@ class ContractCache:
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(res.id))
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
+    def test_when_storage_changed_invalidate_updates_child_name_cache(self):
+        self.add_in_storage('foo')
+        transaction.commit()
+        self.connector.invalidate_cache(ROOT)
+        self.assertEqual(['http://xml.zeit.de/testing/foo'], self.child_name_cache[ROOT])
+
+    def test_when_storage_deleted_invalidate_removes_child_name_cache(self):
+        res = self.add_resource('foo')
+        self.delete_in_storage(res.id)
+        transaction.commit()
+        self.connector.invalidate_cache(res.id)
+        self.assertEqual([], self.child_name_cache[ROOT])
+
+
+class DAVProtocol:
+    shortened_uuid = False
+
+    def id_for_folder(self, id):
+        if not id.endswith('/'):
+            id += '/'
+        return id
+
+    def change_properties_in_storage(self, uniqueid, properties):
+        self.layer['connector'].changeProperties(uniqueid, properties)
+
+    def delete_in_storage(self, uniqueid):
+        del self.layer['connector'][uniqueid]
+
+    def add_in_storage(self, name):
+        self.layer['connector'].add(self.get_resource(name))
+
 
 class ContractDAV(
+    DAVProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -563,8 +686,6 @@ class ContractDAV(
     # ContractCache,
     zeit.connector.testing.ConnectorTest,
 ):
-    shortened_uuid = False
-
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
@@ -573,6 +694,7 @@ class ContractDAV(
 
 
 class ContractZopeDAV(
+    DAVProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -580,8 +702,7 @@ class ContractZopeDAV(
     ContractCache,
     zeit.connector.testing.ConnectorTest,
 ):
-    layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
-    shortened_uuid = False
+    layer = zeit.connector.testing.ZOPE_DAV_CONNECTOR_LAYER
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
@@ -589,14 +710,9 @@ class ContractZopeDAV(
     copy_inherited_functions(ContractSearch, locals())
     copy_inherited_functions(ContractCache, locals())
 
-    def change_properties_in_storage(self, uniqueid, properties):
-        self.layer['connector'].changeProperties(uniqueid, properties)
-
-    def delete_in_storage(self, uniqueid):
-        del self.layer['connector'][uniqueid]
-
 
 class ContractMock(
+    DAVProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -616,38 +732,11 @@ class ContractMock(
         """
 
 
-class ContractSQL(
-    ContractReadWrite,
-    ContractCopyMove,
-    ContractLock,
-    ContractSearch,
-    # ContractCache,
-    zeit.connector.testing.SQLTest,
-):
+class SQLProtocol:
     shortened_uuid = True
 
-    copy_inherited_functions(ContractReadWrite, locals())
-    copy_inherited_functions(ContractCopyMove, locals())
-    copy_inherited_functions(ContractLock, locals())
-    copy_inherited_functions(ContractSearch, locals())
-    # not implemented copy_inherited_functions(ContractCache, locals())
-
-
-class ContractZopeSQL(
-    ContractReadWrite,
-    ContractCopyMove,
-    ContractLock,
-    ContractSearch,
-    ContractCache,
-    zeit.connector.testing.ZopeSQLTest,
-):
-    shortened_uuid = True
-
-    copy_inherited_functions(ContractReadWrite, locals())
-    copy_inherited_functions(ContractCopyMove, locals())
-    copy_inherited_functions(ContractLock, locals())
-    copy_inherited_functions(ContractSearch, locals())
-    copy_inherited_functions(ContractCache, locals())
+    def id_for_folder(self, id):
+        return id
 
     def change_properties_in_storage(self, uniqueid, properties):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
@@ -660,3 +749,48 @@ class ContractZopeSQL(
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         content = connector._get_content(uniqueid)
         connector.session.delete(content)
+
+    def add_in_storage(self, name):
+        from zeit.connector.postgresql import Content, Path
+
+        resource = self.get_resource(name)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = Content()
+        path = Path(content=content)
+        content.from_webdav(resource.properties)
+        content.type = resource.type
+        content.is_collection = resource.is_collection
+        (path.parent_path, path.name) = connector._pathkey(resource.id)
+        connector.session.add(path)
+
+
+class ContractSQL(
+    SQLProtocol,
+    ContractReadWrite,
+    ContractCopyMove,
+    ContractLock,
+    ContractSearch,
+    # ContractCache,
+    zeit.connector.testing.SQLTest,
+):
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
+    # not implemented copy_inherited_functions(ContractCache, locals())
+
+
+class ContractZopeSQL(
+    SQLProtocol,
+    ContractReadWrite,
+    ContractCopyMove,
+    ContractLock,
+    ContractSearch,
+    ContractCache,
+    zeit.connector.testing.ZopeSQLTest,
+):
+    copy_inherited_functions(ContractReadWrite, locals())
+    copy_inherited_functions(ContractCopyMove, locals())
+    copy_inherited_functions(ContractLock, locals())
+    copy_inherited_functions(ContractSearch, locals())
+    copy_inherited_functions(ContractCache, locals())

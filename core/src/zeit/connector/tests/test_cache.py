@@ -14,7 +14,7 @@ import zeit.connector.testing
 
 
 class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
-    layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
+    layer = zeit.connector.testing.ZOPE_DAV_CONNECTOR_LAYER
 
     def setUp(self):
         super().setUp()

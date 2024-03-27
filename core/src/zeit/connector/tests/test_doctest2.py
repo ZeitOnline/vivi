@@ -13,5 +13,5 @@ def test_suite():
         'uuid.txt',
         'longrunning.txt',
         # 'stressing.txt',
-        layer=zeit.connector.testing.REAL_CONNECTOR_LAYER,
+        layer=zeit.connector.testing.DAV_CONNECTOR_LAYER,
     )
