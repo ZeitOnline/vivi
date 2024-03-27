@@ -110,26 +110,30 @@ class DAVDatabaseLayer(plone.testing.Layer):
         )
         TBC = zeit.connector.connector.TransactionBoundCachingConnector
         self['connector'] = TBC({'default': self['dav_url']})
-        mkdir(self['connector'], 'http://xml.zeit.de/testing')
+
+    def testSetUp(self):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        with zeit.cms.testing.site(self['zodbApp']):
+            mkdir(connector, 'http://xml.zeit.de/testing')
+        transaction.commit()
 
     def testTearDown(self):
         transaction.abort()
-        root_collection = 'http://xml.zeit.de/testing'
-        self.recursive_cleanup(root_collection)
-
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        self.recursive_cleanup(connector, 'http://xml.zeit.de/testing')
+
         connector.disconnect()
 
-    def recursive_cleanup(self, uid_in):
+    def recursive_cleanup(self, connector, uniqueid):
         connector = self['connector']
-        for _name, uid in connector.listCollection(uid_in):
+        for _name, uid in connector.listCollection(uniqueid):
             # unlock every resource, no matter the user
             davlock = connector._get_dav_lock(uid)
             if davlock:
                 connector._unlock(uid, davlock.get('locktoken'))
                 connector.invalidate_cache(uid)
             if connector[uid].type == 'folder':
-                self.recursive_cleanup(uid)
+                self.recursive_cleanup(connector, uid)
             del connector[uid]
 
     def tearDown(self):
