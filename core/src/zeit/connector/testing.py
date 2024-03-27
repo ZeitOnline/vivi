@@ -460,4 +460,6 @@ def copy_inherited_functions(base, locals):
     for name in dir(base):
         if not name.startswith('test_'):
             continue
+        if name in locals:
+            raise KeyError(f'{name} already exists')
         locals[name] = make_delegate(name)
