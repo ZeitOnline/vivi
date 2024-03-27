@@ -36,6 +36,8 @@ ID_NAMESPACE = 'http://xml.zeit.de/'
 
 RESOURCE_TYPE_PROPERTY = ('type', 'http://namespaces.zeit.de/CMS/meta')
 UUID_PROPERTY = ('uuid', 'http://namespaces.zeit.de/CMS/document')
+INTERNAL_PROPERTY = 'INTERNAL'
+CACHED_TIME_PROPERTY = ('cached-time', INTERNAL_PROPERTY)
 
 
 class ConnectorError(Exception):

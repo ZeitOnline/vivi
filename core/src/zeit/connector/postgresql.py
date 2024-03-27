@@ -42,6 +42,7 @@ import zope.sqlalchemy
 
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.connector.interfaces import (
+    INTERNAL_PROPERTY,
     CopyError,
     DeleteProperty,
     LockedByOtherSystemError,
@@ -143,7 +144,7 @@ class Connector:
             properties.get(('type', Content.NS + 'meta'), 'unknown'),
             lambda: properties,
             partial(self._get_body, uniqueid),
-            is_collection=properties[('is_collection', 'internal')],
+            is_collection=properties[('is_collection', INTERNAL_PROPERTY)],
         )
 
     property_cache = TransactionBoundCache('_v_property_cache', dict)
@@ -552,7 +553,7 @@ class Content(DBObject):
 
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
-        props[('is_collection', 'internal')] = self.is_collection
+        props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
 
         return props
 
@@ -571,7 +572,7 @@ class Content(DBObject):
         for (k, ns), v in props.items():
             if v is DeleteProperty:
                 continue
-            if ns == 'internal':
+            if ns == INTERNAL_PROPERTY:
                 continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
