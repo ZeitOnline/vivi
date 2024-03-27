@@ -1,3 +1,5 @@
+import json
+
 import zope.formlib.form
 import zope.formlib.interfaces
 
@@ -54,6 +56,15 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Article')
     folded_workingcopy = False
+
+    @property
+    def invalid_link_targets(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        if 'invalid-link-targets' not in config:
+            result = []
+        else:
+            result = config.get('invalid-link-targets', '').split(' ')
+        return json.dumps(result)
 
 
 class ArticleContentHead(zeit.edit.browser.form.InlineForm, zeit.cms.browser.form.CharlimitMixin):
