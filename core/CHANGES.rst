@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.134.0 (2024-03-27)
+--------------------
+
+- ZO-4627: Pretty print XML at least for display
+
+- ZO-5001: Use global configuration for invalid link targets in article editor as well
+
+- ZO-5020: Implement listing the root folder in SQL connector
+
+- ZO-5028: Implement child name caching for SQL connector
+
+
 5.133.0 (2024-03-27)
 --------------------
 
