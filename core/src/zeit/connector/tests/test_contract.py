@@ -15,7 +15,7 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.resource import Resource
-from zeit.connector.testing import copy_inherited_functions
+from zeit.connector.testing import ROOT, copy_inherited_functions
 import zeit.connector.interfaces
 import zeit.connector.testing
 
@@ -36,7 +36,7 @@ class ContractReadWrite:
             self.connector['http://xml.zeit.de/nonexistent']
 
     def test_contains_checks_resource_existence(self):
-        self.assertIn('http://xml.zeit.de/testing', self.connector)
+        self.assertIn(ROOT, self.connector)
         self.assertNotIn('http://xml.zeit.de/nonexistent', self.connector)
 
     def test_delitem_nonexistent_id_raises(self):
@@ -63,17 +63,17 @@ class ContractReadWrite:
             self.listCollection('http://xml.zeit.de/nonexistent')
 
     def test_listCollection_returns_name_uniqueId_pairs(self):
-        self.assertEqual([], self.listCollection('http://xml.zeit.de/testing'))
+        self.assertEqual([], self.listCollection(ROOT))
         self.add_resource('one')
         self.add_resource('two')
         self.assertEqual(
             [('one', 'http://xml.zeit.de/testing/one'), ('two', 'http://xml.zeit.de/testing/two')],
-            sorted(self.listCollection('http://xml.zeit.de/testing')),
+            sorted(self.listCollection(ROOT)),
         )
 
     def test_listCollection_works_for_root_folder(self):
         self.assertIn(
-            ('testing', self.id_for_folder('http://xml.zeit.de/testing')),
+            ('testing', self.id_for_folder(ROOT)),
             self.listCollection('http://xml.zeit.de/'),
         )
 
@@ -173,9 +173,7 @@ class ContractCopyMove:
             'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
         )
         transaction.commit()
-        self.assertEqual(
-            ['target'], [x[0] for x in self.listCollection('http://xml.zeit.de/testing')]
-        )
+        self.assertEqual(['target'], [x[0] for x in self.listCollection(ROOT)])
         res = self.connector['http://xml.zeit.de/testing/target']
         self.assertEqual('bar', res.properties[('foo', self.NS)])
         self.assertEqual(b'mybody', res.data.read())
@@ -229,7 +227,7 @@ class ContractCopyMove:
             'http://xml.zeit.de/testing/source', 'http://xml.zeit.de/testing/target'
         )
         transaction.commit()
-        items = self.listCollection('http://xml.zeit.de/testing')
+        items = self.listCollection(ROOT)
         self.assertEqual(['source', 'target'], sorted([x[0] for x in items]))
         for _name, id in items:
             res = self.connector[id]
@@ -525,8 +523,6 @@ class NormalizeFolders(collections.abc.MutableMapping):
 
 
 class ContractCache:
-    ROOT = 'http://xml.zeit.de/testing'
-
     @property
     def child_name_cache(self):
         return NormalizeFolders(self.id_for_folder, self.connector.child_name_cache)
@@ -538,7 +534,7 @@ class ContractCache:
 
     def test_setitem_updates_parent_child_name_cache(self):
         res = self.add_resource('foo')
-        self.assertEqual([res.id], self.child_name_cache[self.ROOT])
+        self.assertEqual([res.id], self.child_name_cache[ROOT])
 
     def test_setitem_collection_populates_child_name_cache(self):
         folder = 'http://xml.zeit.de/testing/foo'
@@ -554,9 +550,9 @@ class ContractCache:
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
     def test_listCollection_populates_child_name_cache(self):
-        del self.child_name_cache[self.ROOT]
-        self.assertEqual([], self.listCollection(self.ROOT))
-        self.assertEqual([], self.child_name_cache[self.ROOT])
+        del self.child_name_cache[ROOT]
+        self.assertEqual([], self.listCollection(ROOT))
+        self.assertEqual([], self.child_name_cache[ROOT])
 
     def test_changeProperties_updates_property_cache(self):
         prop = ('foo', self.NS)
@@ -572,9 +568,9 @@ class ContractCache:
 
     def test_delitem_removes_from_child_name_cache(self):
         res = self.add_resource('foo')
-        self.assertIn(res.id, self.child_name_cache[self.ROOT])
+        self.assertIn(res.id, self.child_name_cache[ROOT])
         del self.connector[res.id]
-        self.assertNotIn(res.id, self.child_name_cache[self.ROOT])
+        self.assertNotIn(res.id, self.child_name_cache[ROOT])
 
     def test_delitem_collection_removes_child_name_cache(self):
         folder = 'http://xml.zeit.de/testing/foo'
@@ -593,7 +589,7 @@ class ContractCache:
         res = self.add_resource('foo')
         new = 'http://xml.zeit.de/testing/bar'
         self.connector.copy(res.id, new)
-        self.assertIn('http://xml.zeit.de/testing/bar', self.child_name_cache[self.ROOT])
+        self.assertIn('http://xml.zeit.de/testing/bar', self.child_name_cache[ROOT])
 
     def test_copy_collection_populates_child_name_cache(self):
         zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
@@ -620,7 +616,7 @@ class ContractCache:
     def test_move_updates_parent_child_name_cache(self):
         res = self.add_resource('foo')
         self.connector.move(res.id, 'http://xml.zeit.de/testing/bar')
-        self.assertEqual(['http://xml.zeit.de/testing/bar'], self.child_name_cache[self.ROOT])
+        self.assertEqual(['http://xml.zeit.de/testing/bar'], self.child_name_cache[ROOT])
 
     def test_move_collection_updates_child_name_cache(self):
         zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
@@ -655,15 +651,15 @@ class ContractCache:
     def test_when_storage_changed_invalidate_updates_child_name_cache(self):
         self.add_in_storage('foo')
         transaction.commit()
-        self.connector.invalidate_cache(self.ROOT)
-        self.assertEqual(['http://xml.zeit.de/testing/foo'], self.child_name_cache[self.ROOT])
+        self.connector.invalidate_cache(ROOT)
+        self.assertEqual(['http://xml.zeit.de/testing/foo'], self.child_name_cache[ROOT])
 
     def test_when_storage_deleted_invalidate_removes_child_name_cache(self):
         res = self.add_resource('foo')
         self.delete_in_storage(res.id)
         transaction.commit()
         self.connector.invalidate_cache(res.id)
-        self.assertEqual([], self.child_name_cache[self.ROOT])
+        self.assertEqual([], self.child_name_cache[ROOT])
 
 
 class DAVProtocol:

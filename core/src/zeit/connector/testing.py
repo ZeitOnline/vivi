@@ -22,6 +22,9 @@ import zeit.connector.interfaces
 import zeit.connector.mock
 
 
+ROOT = 'http://xml.zeit.de/testing'
+
+
 class DockerSetupError(requests.exceptions.ConnectionError):
     # for more informative error output
     pass
@@ -114,13 +117,13 @@ class DAVDatabaseLayer(plone.testing.Layer):
     def testSetUp(self):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         with zeit.cms.testing.site(self['zodbApp']):
-            mkdir(connector, 'http://xml.zeit.de/testing')
+            mkdir(connector, ROOT)
         transaction.commit()
 
     def testTearDown(self):
         transaction.abort()
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        self.recursive_cleanup(connector, 'http://xml.zeit.de/testing')
+        self.recursive_cleanup(connector, ROOT)
 
         connector.disconnect()
 
@@ -307,7 +310,7 @@ class SQLDatabaseLayer(plone.testing.Layer):
         sqlalchemy.event.listen(self['sql_session'], 'after_transaction_end', self.end_savepoint)
 
         with zeit.cms.testing.site(self['zodbApp']):
-            mkdir(connector, 'http://xml.zeit.de/testing')
+            mkdir(connector, ROOT)
         transaction.commit()
 
     def end_savepoint(self, session, transaction):
@@ -349,9 +352,13 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     def get_resource(self, name, body=b'', properties=None, is_collection=False):
         if not isinstance(body, bytes):
             body = body.encode('utf-8')
-        rid = 'http://xml.zeit.de/testing/%s' % name
         return zeit.connector.resource.Resource(
-            rid, name, 'testing', BytesIO(body), properties=properties, is_collection=is_collection
+            f'{ROOT}/{name}',
+            name,
+            'testing',
+            BytesIO(body),
+            properties=properties,
+            is_collection=is_collection,
         )
 
     def add_resource(self, name, **kw):
@@ -418,11 +425,10 @@ def create_folder_structure(connector):
     """Create a folder structure for copy/move"""
 
     def add_folder(id):
-        mkdir(connector, 'http://xml.zeit.de/testing/%s' % id)
+        mkdir(connector, f'{ROOT}/{id}')
 
     def add_file(id):
-        id = 'http://xml.zeit.de/testing/%s' % id
-        res = zeit.connector.resource.Resource(id, None, 'text', BytesIO(b'Pop.'))
+        res = zeit.connector.resource.Resource(f'{ROOT}/{id}', None, 'text', BytesIO(b'Pop.'))
         connector.add(res)
 
     add_folder('testroot')
