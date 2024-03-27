@@ -702,6 +702,9 @@ class ContractCache:
             self.connector[res.id]
             getitem.assert_called_with('http://xml.zeit.de/testing/foo')
 
+    def test_get_collection_returns_children_from_child_name_cache(self):
+        assert False
+
 
 class DAVProtocol:
     shortened_uuid = False
