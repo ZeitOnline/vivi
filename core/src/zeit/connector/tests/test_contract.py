@@ -539,12 +539,47 @@ class ContractCache:
         del self.connector[res.id]
         self.assertNotIn(res.id, self.connector.property_cache)
 
+    def test_delitem_removes_from_child_name_cache(self):
+        folder = self.id_for_folder('http://xml.zeit.de/testing')
+        res = self.add_resource('foo')
+        self.assertIn(res.id, self.connector.child_name_cache[folder])
+        del self.connector[res.id]
+        self.assertNotIn(res.id, self.connector.child_name_cache[folder])
+
+    def test_delitem_collection_removes_child_name_cache(self):
+        folder = self.id_for_folder('http://xml.zeit.de/testing/foo')
+        zeit.connector.testing.mkdir(self.connector, folder)
+        del self.connector[folder]
+        self.assertNotIn(folder, self.connector.child_name_cache)
+
     def test_copy_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         new = 'http://xml.zeit.de/testing/bar'
         self.connector.copy(res.id, new)
         self.assertEqual('foo', self.connector.property_cache[new][prop])
+
+    def test_copy_updates_parent_child_name_cache(self):
+        res = self.add_resource('foo')
+        new = 'http://xml.zeit.de/testing/bar'
+        self.connector.copy(res.id, new)
+        folder = self.id_for_folder('http://xml.zeit.de/testing')
+        self.assertIn('http://xml.zeit.de/testing/bar', self.connector.child_name_cache[folder])
+
+    def test_copy_collection_populates_child_name_cache(self):
+        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
+        self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
+        folder = self.id_for_folder('http://xml.zeit.de/testing/bar')
+        self.assertEqual([], list(self.connector.child_name_cache[folder]))
+
+    def test_copy_nonempty_collection_populates_child_name_cache(self):
+        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
+        self.add_resource('foo/qux')
+        self.connector.copy('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
+        folder = self.id_for_folder('http://xml.zeit.de/testing/bar')
+        self.assertEqual(
+            ['http://xml.zeit.de/testing/bar/qux'], list(self.connector.child_name_cache[folder])
+        )
 
     def test_move_updates_property_cache(self):
         prop = ('foo', self.NS)
@@ -553,6 +588,20 @@ class ContractCache:
         self.connector.move(res.id, new)
         self.assertNotIn(res.id, self.connector.property_cache)
         self.assertEqual('foo', self.connector.property_cache[new][prop])
+
+    def test_move_updates_parent_child_name_cache(self):
+        res = self.add_resource('foo')
+        self.connector.move(res.id, 'http://xml.zeit.de/testing/bar')
+        cache = self.connector.child_name_cache[self.id_for_folder('http://xml.zeit.de/testing')]
+        self.assertEqual(['http://xml.zeit.de/testing/bar'], list(cache))
+
+    def test_move_collection_updates_child_name_cache(self):
+        zeit.connector.testing.mkdir(self.connector, 'http://xml.zeit.de/testing/foo')
+        self.connector.move('http://xml.zeit.de/testing/foo', 'http://xml.zeit.de/testing/bar')
+        old = self.id_for_folder('http://xml.zeit.de/testing/foo')
+        self.assertNotIn(old, self.connector.child_name_cache)
+        new = self.id_for_folder('http://xml.zeit.de/testing/bar')
+        self.assertEqual([], list(self.connector.child_name_cache[new]))
 
     def test_when_storage_changed_invalidate_updates_property_cache(self):
         prop = ('foo', self.NS)
