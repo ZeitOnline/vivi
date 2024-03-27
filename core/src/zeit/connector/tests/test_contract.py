@@ -70,6 +70,12 @@ class ContractReadWrite:
             sorted(self.listCollection('http://xml.zeit.de/testing')),
         )
 
+    def test_listCollection_works_for_root_folder(self):
+        self.assertIn(
+            ('testing', self.id_for_folder('http://xml.zeit.de/testing')),
+            self.listCollection('http://xml.zeit.de/'),
+        )
+
     def test_setitem_stores_ressource(self):
         # Note: We're also testing this implicitly, due to self.add_resource().
         res = self.get_resource('foo')
@@ -555,7 +561,17 @@ class ContractCache:
         self.assertEqual('bar', self.connector.property_cache[res.id][prop])
 
 
+class DAVProtocol:
+    shortened_uuid = False
+
+    def id_for_folder(self, id):
+        if not id.endswith('/'):
+            id += '/'
+        return id
+
+
 class ContractDAV(
+    DAVProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -563,8 +579,6 @@ class ContractDAV(
     # ContractCache,
     zeit.connector.testing.ConnectorTest,
 ):
-    shortened_uuid = False
-
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
@@ -573,6 +587,7 @@ class ContractDAV(
 
 
 class ContractZopeDAV(
+    DAVProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -581,7 +596,6 @@ class ContractZopeDAV(
     zeit.connector.testing.ConnectorTest,
 ):
     layer = zeit.connector.testing.ZOPE_DAV_CONNECTOR_LAYER
-    shortened_uuid = False
 
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
@@ -597,6 +611,7 @@ class ContractZopeDAV(
 
 
 class ContractMock(
+    DAVProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -616,7 +631,15 @@ class ContractMock(
         """
 
 
+class SQLProtocol:
+    shortened_uuid = True
+
+    def id_for_folder(self, id):
+        return id
+
+
 class ContractSQL(
+    SQLProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -624,8 +647,6 @@ class ContractSQL(
     # ContractCache,
     zeit.connector.testing.SQLTest,
 ):
-    shortened_uuid = True
-
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
@@ -634,6 +655,7 @@ class ContractSQL(
 
 
 class ContractZopeSQL(
+    SQLProtocol,
     ContractReadWrite,
     ContractCopyMove,
     ContractLock,
@@ -641,8 +663,6 @@ class ContractZopeSQL(
     ContractCache,
     zeit.connector.testing.ZopeSQLTest,
 ):
-    shortened_uuid = True
-
     copy_inherited_functions(ContractReadWrite, locals())
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())

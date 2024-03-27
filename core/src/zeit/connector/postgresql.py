@@ -198,10 +198,13 @@ class Connector:
             return False
 
     def listCollection(self, uniqueid):
-        if uniqueid not in self:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
         uniqueid = self._normalize(uniqueid)
-        parent_path = '/'.join(self._pathkey(uniqueid))
+        if uniqueid != ID_NAMESPACE and uniqueid not in self:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        if uniqueid == ID_NAMESPACE:
+            parent_path = ''
+        else:
+            parent_path = '/'.join(self._pathkey(uniqueid))
         for path in self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars():
             yield (path.name, path.uniqueid)
 
