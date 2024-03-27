@@ -44,6 +44,7 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
         if self._renderedValueSet():
             content = self._data
             content = zope.proxy.removeAllProxies(content)
+            lxml.etree.indent(content)
             content = lxml.etree.tostring(content, pretty_print=True, encoding=str)
         else:
             content = self.context.default
