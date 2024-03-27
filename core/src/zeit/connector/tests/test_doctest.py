@@ -7,5 +7,5 @@ def test_suite():
         'functional.txt',
         'invalidation-events.txt',
         'search.txt',
-        layer=zeit.connector.testing.ZOPE_CONNECTOR_LAYER,
+        layer=zeit.connector.testing.ZOPE_DAV_CONNECTOR_LAYER,
     )

@@ -580,7 +580,7 @@ class ContractZopeDAV(
     ContractCache,
     zeit.connector.testing.ConnectorTest,
 ):
-    layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
+    layer = zeit.connector.testing.ZOPE_DAV_CONNECTOR_LAYER
     shortened_uuid = False
 
     copy_inherited_functions(ContractReadWrite, locals())

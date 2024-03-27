@@ -125,15 +125,15 @@ class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 DAV_CONFIG_LAYER = ConfigLayer({})
 
-ZOPE_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+ZOPE_DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
 )
-ZOPE_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_ZCML_LAYER,))
+ZOPE_DAV_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_DAV_ZCML_LAYER,))
 
-REAL_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.nocache'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
 )
-REAL_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(REAL_ZCML_LAYER,))
+DAV_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(DAV_ZCML_LAYER,))
 
 
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
@@ -344,7 +344,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
 
 class ConnectorTest(TestCase):
-    layer = REAL_CONNECTOR_LAYER
+    layer = DAV_CONNECTOR_LAYER
     level = 2
 
 

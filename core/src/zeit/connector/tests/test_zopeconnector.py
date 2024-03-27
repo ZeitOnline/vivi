@@ -2,7 +2,7 @@ import zeit.connector.testing
 
 
 class TestMoveRollback(zeit.connector.testing.ConnectorTest):
-    layer = zeit.connector.testing.ZOPE_CONNECTOR_LAYER
+    layer = zeit.connector.testing.ZOPE_DAV_CONNECTOR_LAYER
 
     def test_move_should_revert_on_abort(self):
         import transaction
