@@ -46,22 +46,14 @@ class DAVServerLayer(plone.testing.Layer):
         self['query_url'] = 'http://localhost:%s' % query
         self.wait_for_http(self['dav_url'])
         # We can get away without self.wait_for_http(self['query_url'])
-        zope.component.provideUtility(
-            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer
-        )
-        TBC = zeit.connector.connector.TransactionBoundCachingConnector
-        self['connector'] = TBC({'default': self['dav_url']})
-        mkdir(self['connector'], 'http://xml.zeit.de/testing')
 
     def tearDown(self):
-        self['connector'].disconnect()
         self['dav_container'].stop()
         del self['dav_container']
         self['docker'].close()
         del self['docker']
         del self['dav_url']
         del self['query_url']
-        del self['connector']
 
     def wait_for_http(self, url, timeout=10, sleep=0.2):
         http = requests.Session()
@@ -79,26 +71,6 @@ class DAVServerLayer(plone.testing.Layer):
         http.close()
         print(self['dav_container'].logs(timestamps=True).decode('utf-8'))
         raise RuntimeError('%s did not start up' % url)
-
-    def testTearDown(self):
-        transaction.abort()
-        root_collection = 'http://xml.zeit.de/testing'
-        self.recursive_cleanup(root_collection)
-
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        connector.disconnect()
-
-    def recursive_cleanup(self, uid_in):
-        connector = self['connector']
-        for _name, uid in connector.listCollection(uid_in):
-            # unlock every resource, no matter the user
-            davlock = connector._get_dav_lock(uid)
-            if davlock:
-                connector._unlock(uid, davlock.get('locktoken'))
-                connector.invalidate_cache(uid)
-            if connector[uid].type == 'folder':
-                self.recursive_cleanup(uid)
-            del connector[uid]
 
 
 DAV_SERVER_LAYER = DAVServerLayer()
@@ -125,15 +97,57 @@ class ConfigLayer(zeit.cms.testing.ProductConfigLayer):
 
 DAV_CONFIG_LAYER = ConfigLayer({})
 
+
+class DAVDatabaseLayer(plone.testing.Layer):
+    def __init__(self, name='DAVDatabaseLayer', module=None, bases=()):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
+        super().__init__(name=name, module=module, bases=bases)
+
+    def setUp(self):
+        zope.component.provideUtility(
+            zeit.cms.tracing.default_tracer(), zeit.cms.interfaces.ITracer
+        )
+        TBC = zeit.connector.connector.TransactionBoundCachingConnector
+        self['connector'] = TBC({'default': self['dav_url']})
+        mkdir(self['connector'], 'http://xml.zeit.de/testing')
+
+    def testTearDown(self):
+        transaction.abort()
+        root_collection = 'http://xml.zeit.de/testing'
+        self.recursive_cleanup(root_collection)
+
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        connector.disconnect()
+
+    def recursive_cleanup(self, uid_in):
+        connector = self['connector']
+        for _name, uid in connector.listCollection(uid_in):
+            # unlock every resource, no matter the user
+            davlock = connector._get_dav_lock(uid)
+            if davlock:
+                connector._unlock(uid, davlock.get('locktoken'))
+                connector.invalidate_cache(uid)
+            if connector[uid].type == 'folder':
+                self.recursive_cleanup(uid)
+            del connector[uid]
+
+    def tearDown(self):
+        self['connector'].disconnect()
+        del self['connector']
+
+
 ZOPE_DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
 )
-ZOPE_DAV_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_DAV_ZCML_LAYER,))
+ZOPE_DAV_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZOPE_DAV_ZCML_LAYER,))
+ZOPE_DAV_CONNECTOR_LAYER = DAVDatabaseLayer(bases=(ZOPE_DAV_ZOPE_LAYER,))
 
 DAV_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     features=['zeit.connector.nocache'], bases=(zeit.cms.testing.CONFIG_LAYER, DAV_CONFIG_LAYER)
 )
-DAV_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(DAV_ZCML_LAYER,))
+DAV_ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(DAV_ZCML_LAYER,))
+DAV_CONNECTOR_LAYER = DAVDatabaseLayer(bases=(DAV_ZOPE_LAYER,))
 
 
 FILESYSTEM_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
