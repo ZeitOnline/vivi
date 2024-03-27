@@ -3,3 +3,6 @@
 <fieldset id="text-control-bottom">
   <span class="charcount"></span>
 </fieldset>
+<script type="text/javascript" tal:content="string:
+  zeit.content.article.INVALID_LINK_TARGETS = ${view/invalid_link_targets};
+"/>

@@ -6,11 +6,6 @@ zeit.cms.in_article_editor = function() {
     return Boolean(jQuery('.article-editor-inner').length);
 };
 
-var invalidHosts = [
-    'vivi.zeit.de', 'friedbert-preview.zeit.de', 'xml.zeit.de',
-    'vivi.staging.zeit.de', 'friedbert-preview.staging.zeit.de',
-    'xml.staging.zeit.de' ];
-
 
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     if (! zeit.cms.in_article_editor()) {
@@ -955,7 +950,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var nofollow = false;
         if (service === 'web') {
             var uri = new Uri($(self.href_input).val());
-            if (invalidHosts.some(v => uri.toString().includes(v))) {
+            if (zeit.content.article.INVALID_LINK_TARGETS.some(v => uri.toString().includes(v))) {
                 self.error_msg.innerHTML = '<span style="color:red;display:block;">Kein gültiges Linkziel! ZEIT Inhalte müssen nach www.zeit.de verlinken.</span>';
                 return;
             }
