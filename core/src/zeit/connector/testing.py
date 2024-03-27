@@ -147,7 +147,7 @@ MOCK_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
 MOCK_CONNECTOR_LAYER = zeit.cms.testing.ZopeLayer(bases=(MOCK_ZCML_LAYER,))
 
 
-class SQLLayer(plone.testing.Layer):
+class SQLServerLayer(plone.testing.Layer):
     container_image = 'postgres:14'
 
     def setUp(self):
@@ -191,10 +191,10 @@ class SQLLayer(plone.testing.Layer):
         del self['docker']
 
 
-SQL_LAYER = SQLLayer()
+SQL_SERVER_LAYER = SQLServerLayer()
 
 
-class GCSLayer(plone.testing.Layer):
+class GCSServerLayer(plone.testing.Layer):
     bucket = 'vivi-test'
 
     def setUp(self):
@@ -211,20 +211,20 @@ class GCSLayer(plone.testing.Layer):
         del self['gcp_server']
 
 
-GCS_LAYER = GCSLayer()
+GCS_SERVER_LAYER = GCSServerLayer()
 
 
 class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
     defaultBases = (
-        SQL_LAYER,
-        GCS_LAYER,
+        SQL_SERVER_LAYER,
+        GCS_SERVER_LAYER,
     )
 
     def setUp(self):
         self.config = {
             'dsn': self['dsn'],
             'storage-project': 'ignored_by_emulator',
-            'storage-bucket': GCS_LAYER.bucket,
+            'storage-bucket': GCS_SERVER_LAYER.bucket,
         }
         os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()
