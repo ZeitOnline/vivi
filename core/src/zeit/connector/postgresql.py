@@ -197,16 +197,27 @@ class Connector:
         except KeyError:
             return False
 
+    child_name_cache = TransactionBoundCache('_v_child_name_cache', dict)
+
     def listCollection(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         if uniqueid != ID_NAMESPACE and uniqueid not in self:
             raise KeyError(f'The resource {uniqueid} does not exist.')
+        if uniqueid not in self.child_name_cache:
+            self._update_child_name_cache(uniqueid)
+        for child in self.child_name_cache[uniqueid]:
+            yield (self._pathkey(child)[1], child)
+
+    def _update_child_name_cache(self, uniqueid):
         if uniqueid == ID_NAMESPACE:
             parent_path = ''
         else:
             parent_path = '/'.join(self._pathkey(uniqueid))
-        for path in self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars():
-            yield (path.name, path.uniqueid)
+        result = [
+            (x.name, x.uniqueid)
+            for x in self.session.execute(select(Path).filter_by(parent_path=parent_path)).scalars()
+        ]
+        self.child_name_cache[uniqueid] = [x[1] for x in result]
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
@@ -252,6 +263,10 @@ class Connector:
                 content.body = resource.data.read().decode('utf-8')
 
         self.property_cache[uniqueid] = content.to_webdav()
+        if content.is_collection:
+            self._update_child_name_cache(uniqueid)
+        parent = os.path.split(uniqueid)[0]
+        self._update_child_name_cache(parent)
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -617,6 +632,10 @@ class SQLZopeConnector(Connector):
     @property
     def property_cache(self):
         return zope.component.getUtility(zeit.connector.interfaces.IPropertyCache)
+
+    @property
+    def child_name_cache(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IChildNameCache)
 
     def invalidate_cache(self, uniqueid):
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(uniqueid))

@@ -502,12 +502,30 @@ class ContractCache:
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
 
+    def test_setitem_updates_parent_child_name_cache(self):
+        res = self.add_resource('foo')
+        folder = self.id_for_folder('http://xml.zeit.de/testing')
+        self.assertEqual([res.id], list(self.connector.child_name_cache[folder]))
+
+    def test_setitem_collection_populates_child_name_cache(self):
+        folder = self.id_for_folder('http://xml.zeit.de/testing/foo')
+        self.assertNotIn(folder, self.connector.child_name_cache)
+        zeit.connector.testing.mkdir(self.connector, folder)
+        self.assertEqual([], list(self.connector.child_name_cache[folder]))
+
     def test_getitem_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         del self.connector.property_cache[res.id]
         res = self.connector[res.id]
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
+
+    def test_listCollection_populates_child_name_cache(self):
+        root = 'http://xml.zeit.de/testing'
+        folder = self.id_for_folder(root)
+        del self.connector.child_name_cache[folder]
+        self.assertEqual([], self.listCollection(root))
+        self.assertEqual([], list(self.connector.child_name_cache[folder]))
 
     def test_changeProperties_updates_property_cache(self):
         prop = ('foo', self.NS)
