@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from io import BytesIO
+from unittest import mock
 import collections.abc
 import time
 
@@ -692,6 +693,27 @@ class ContractCache:
         transaction.commit()
         self.connector.invalidate_cache(res.id)
         self.assertFalse(self.has_body_cache(res.id))
+
+    def test_getitem_returns_object_from_property_cache(self):
+        prop = ('foo', self.NS)
+        res = self.add_resource('foo', properties={prop: 'foo'})
+        self.assertEqual('foo', self.connector.property_cache[res.id][prop])
+        with mock.patch('zeit.connector.cache.PropertyCache.__getitem__') as getitem:
+            self.connector[res.id]
+            getitem.assert_called_with('http://xml.zeit.de/testing/foo')
+
+    def test_listCollection_returns_children_from_child_name_cache(self):
+        self.add_resource('foo')
+        with mock.patch('zeit.connector.cache.ChildNameCache.__getitem__') as getitem:
+            self.listCollection(ROOT)
+            getitem.assert_called_with(ROOT)
+
+    def test_getitem_returns_body_from_body_cache(self):
+        res = self.add_resource('foo', body=b'foo')
+        self.connector[res.id].data
+        with mock.patch('zeit.connector.cache.ResourceCache.__getitem__') as getitem:
+            self.connector[res.id].data
+            getitem.assert_called_with('http://xml.zeit.de/testing/foo')
 
 
 class DAVProtocol:
