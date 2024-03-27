@@ -653,6 +653,15 @@ class DAVProtocol:
             id += '/'
         return id
 
+    def change_properties_in_storage(self, uniqueid, properties):
+        self.layer['connector'].changeProperties(uniqueid, properties)
+
+    def delete_in_storage(self, uniqueid):
+        del self.layer['connector'][uniqueid]
+
+    def add_in_storage(self, name):
+        self.layer['connector'].add(self.get_resource(name))
+
 
 class ContractDAV(
     DAVProtocol,
@@ -687,15 +696,6 @@ class ContractZopeDAV(
     copy_inherited_functions(ContractSearch, locals())
     copy_inherited_functions(ContractCache, locals())
 
-    def change_properties_in_storage(self, uniqueid, properties):
-        self.layer['connector'].changeProperties(uniqueid, properties)
-
-    def delete_in_storage(self, uniqueid):
-        del self.layer['connector'][uniqueid]
-
-    def add_in_storage(self, name):
-        self.layer['connector'].add(self.get_resource(name))
-
 
 class ContractMock(
     DAVProtocol,
@@ -723,6 +723,31 @@ class SQLProtocol:
 
     def id_for_folder(self, id):
         return id
+
+    def change_properties_in_storage(self, uniqueid, properties):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = connector._get_content(uniqueid)
+        current = content.to_webdav()
+        current.update(properties)
+        content.from_webdav(current)
+
+    def delete_in_storage(self, uniqueid):
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = connector._get_content(uniqueid)
+        connector.session.delete(content)
+
+    def add_in_storage(self, name):
+        from zeit.connector.postgresql import Content, Path
+
+        resource = self.get_resource(name)
+        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+        content = Content()
+        path = Path(content=content)
+        content.from_webdav(resource.properties)
+        content.type = resource.type
+        content.is_collection = resource.is_collection
+        (path.parent_path, path.name) = connector._pathkey(resource.id)
+        connector.session.add(path)
 
 
 class ContractSQL(
@@ -755,28 +780,3 @@ class ContractZopeSQL(
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
     copy_inherited_functions(ContractCache, locals())
-
-    def change_properties_in_storage(self, uniqueid, properties):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = connector._get_content(uniqueid)
-        current = content.to_webdav()
-        current.update(properties)
-        content.from_webdav(current)
-
-    def delete_in_storage(self, uniqueid):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = connector._get_content(uniqueid)
-        connector.session.delete(content)
-
-    def add_in_storage(self, name):
-        from zeit.connector.postgresql import Content, Path
-
-        resource = self.get_resource(name)
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = Content()
-        path = Path(content=content)
-        content.from_webdav(resource.properties)
-        content.type = resource.type
-        content.is_collection = resource.is_collection
-        (path.parent_path, path.name) = connector._pathkey(resource.id)
-        connector.session.add(path)
