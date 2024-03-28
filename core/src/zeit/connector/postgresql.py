@@ -213,6 +213,7 @@ class Connector:
             parent_path = ''
         else:
             if self._get_content(uniqueid) is None:
+                self.child_name_cache.pop(uniqueid, None)
                 return
             parent_path = '/'.join(self._pathkey(uniqueid))
         result = [
