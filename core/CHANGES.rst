@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.135.0 (2024-03-28)
+--------------------
+
+- ZO-4917: Make lock cleanup cronjob work
+
+- ZO-5027: Implement body cache for SQL connector
+
+
 5.134.0 (2024-03-27)
 --------------------
 
