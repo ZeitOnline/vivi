@@ -54,6 +54,7 @@ from zeit.connector.resource import CachedResource
 import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.cms.tracing
+import zeit.connector.cache
 import zeit.connector.interfaces
 
 
@@ -148,7 +149,7 @@ class Connector:
             is_collection=properties[('is_collection', INTERNAL_PROPERTY)],
         )
 
-    property_cache = TransactionBoundCache('_v_property_cache', dict)
+    property_cache = TransactionBoundCache('_v_property_cache', zeit.connector.cache.PropertyCache)
 
     def _get_properties(self, uniqueid):
         if uniqueid in self.property_cache:
@@ -198,7 +199,9 @@ class Connector:
         except KeyError:
             return False
 
-    child_name_cache = TransactionBoundCache('_v_child_name_cache', dict)
+    child_name_cache = TransactionBoundCache(
+        '_v_child_name_cache', zeit.connector.cache.ChildNameCache
+    )
 
     def listCollection(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
