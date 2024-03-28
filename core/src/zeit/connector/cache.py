@@ -225,9 +225,8 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         super().__init__()
         self._data = BTrees.family64.OO.BTree()
 
-    def getData(self, unique_id, properties):
+    def getData(self, unique_id, current_etag):
         key = get_storage_key(unique_id)
-        current_etag = properties[('getetag', 'DAV:')]
 
         value = self._data.get(key)
         if value is not None and not isinstance(value, Body):
@@ -250,9 +249,8 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._update_cache_access(key)
         return value.open()
 
-    def setData(self, unique_id, properties, data):
+    def setData(self, unique_id, data, current_etag):
         key = get_storage_key(unique_id)
-        current_etag = properties.get(('getetag', 'DAV:'))
         if current_etag is None:
             # When we have no etag, we must not store the data as we have no
             # means of invalidation then.

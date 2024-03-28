@@ -20,8 +20,6 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         super().setUp()
         self.cache = zeit.connector.cache.ResourceCache()
         self.getRootFolder()['cache'] = self.cache
-        self.properties1 = {('getetag', 'DAV:'): 'etag1'}
-        self.properties2 = {('getetag', 'DAV:'): 'etag2'}
         self.uniqueId = 'föö'
         self.key = zeit.connector.cache.get_storage_key(self.uniqueId)
         self.BUFFER_SIZE = zeit.connector.cache.Body().BUFFER_SIZE
@@ -31,27 +29,27 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         self.cache._etags[self.key] = 'etag1'
         data = zeit.connector.cache.SlottedStringRef(b'data')
         self.cache._data[self.key] = data
-        got = self.cache.getData(self.uniqueId, self.properties1)
+        got = self.cache.getData(self.uniqueId, 'etag1')
         self.assertEqual(b'data', got.read())
         got.close()
         del self.cache._etags[self.key]
-        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, 'etag1')
         del self.cache._etags
-        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, 'etag1')
 
     def test_missing_blob_file(self):
         body1 = self.BUFFER_SIZE * 2 * b'x'
         data1 = BytesIO(body1)
         body2 = self.BUFFER_SIZE * 2 * b'y'
         data2 = BytesIO(body2)
-        self.cache.setData(self.uniqueId, self.properties1, data1).close()
+        self.cache.setData(self.uniqueId, data1, 'etag1').close()
         transaction.commit()
         body = self.cache._data[self.key]
         os.remove(body.data.committed())
         del body.data._p_changed  # Invalidate, thus force reload
-        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
-        self.cache.setData(self.uniqueId, self.properties2, data2).close()
-        got = self.cache.getData(self.uniqueId, self.properties2)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, 'etag1')
+        self.cache.setData(self.uniqueId, data2, 'etag2').close()
+        got = self.cache.getData(self.uniqueId, 'etag2')
         self.assertEqual(body2, got.read())
         got.close()
 
@@ -65,11 +63,11 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
         os.remove(data.committed())
         del data._p_changed
-        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(KeyError, self.cache.getData, self.uniqueId, 'etag1')
         expected = self.BUFFER_SIZE * 2 * b'y'
         data2 = BytesIO(expected)
-        self.cache.setData(self.uniqueId, self.properties2, data2).close()
-        got = self.cache.getData(self.uniqueId, self.properties2)
+        self.cache.setData(self.uniqueId, data2, 'etag2').close()
+        got = self.cache.getData(self.uniqueId, 'etag2')
         self.assertEqual(expected, got.read())
         got.close()
 
@@ -79,7 +77,7 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
 
         def store():
             transaction.abort()
-            self.cache.setData(self.uniqueId, self.properties1, body).close()
+            self.cache.setData(self.uniqueId, body, 'etag1').close()
             transaction.commit()
 
         t1 = threading.Thread(target=store)
