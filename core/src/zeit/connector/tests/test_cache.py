@@ -1,11 +1,13 @@
 # coding: utf8
 from io import BytesIO
 import os
+import tempfile
 import threading
 
 import BTrees
 import pytest
 import transaction
+import zc.queue.tests
 import ZODB
 
 import zeit.cms.testing
@@ -86,3 +88,38 @@ class TestResourceCache(zeit.cms.testing.FunctionalTestCase):
         t2.start()
         t1.join()
         t2.join()
+
+    def test_no_etag_conflict_resolution(self):
+        """The SQL connector does not use etag, so conflicts always result in 'not cached'"""
+        # This is not part of cache.txt because doctests have bad isolation,
+        # and "simply" appending it does not work.
+        blob_dir = tempfile.mkdtemp()
+        storage = zc.queue.tests.ConflictResolvingMappingStorage('test')
+        storage = ZODB.blob.BlobStorage(blob_dir, storage)
+        db = ZODB.DB(storage)
+        transactionmanager_1 = transaction.TransactionManager()
+        transactionmanager_2 = transaction.TransactionManager()
+        connection_1 = db.open(transaction_manager=transactionmanager_1)
+        root_1 = connection_1.root()
+        c_1 = root_1['cache'] = zeit.connector.cache.ResourceCache()
+
+        body = b'A small file' * self.BUFFER_SIZE
+        c_1.update('id', BytesIO(body)).close()
+        transactionmanager_1.commit()
+
+        connection_2 = db.open(transaction_manager=transactionmanager_2)
+        root_2 = connection_2.root()
+        c_2 = root_2['cache']
+
+        body1 = BytesIO(b'Body 1' * self.BUFFER_SIZE)
+        body2 = BytesIO(b'Body 2' * self.BUFFER_SIZE)
+        c_1.update('id', body1).close()
+        c_2.update('id', body2).close()
+        transactionmanager_2.commit()
+        transactionmanager_1.commit()
+        connection_1.sync()
+        connection_2.sync()
+        with self.assertRaises(KeyError):
+            c_1['id']
+        with self.assertRaises(KeyError):
+            c_2['id']

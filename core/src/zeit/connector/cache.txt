@@ -328,6 +328,9 @@ b'A small fileA small...'
 b'A small fileA small...'
 >>> f.close()
 
+The SQL connector does not use etag, so conflicts always result in "not cached";
+the test for this behaviour is in test_cache.py.
+
 
 Property Cache
 ++++++++++++++

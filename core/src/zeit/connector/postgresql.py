@@ -162,7 +162,7 @@ class Connector:
         self.property_cache[uniqueid] = properties
         return properties
 
-    body_cache = TransactionBoundCache('_v_body_cache', dict)
+    body_cache = TransactionBoundCache('_v_body_cache', zeit.connector.cache.ResourceCache)
 
     def _get_body(self, uniqueid):
         if uniqueid in self.body_cache:
@@ -180,8 +180,7 @@ class Connector:
             body = content.body.encode('utf-8')
 
         body = BytesIO(body)
-        self.body_cache[uniqueid] = body
-        body.seek(0)
+        body = self.body_cache.update(uniqueid, body)
         return body
 
     def _get_binary_body(self, id):

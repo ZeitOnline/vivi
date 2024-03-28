@@ -53,7 +53,7 @@ class SlottedStringRef(StringRef):
     __slots__ = ('_str',)
 
 
-INVALID_ETAG = object()
+INVALID_ETAG = '__invalid__'
 
 
 class Body(persistent.Persistent):
@@ -98,7 +98,9 @@ class Body(persistent.Persistent):
         if etag == self.etag:
             return
         self.etag = etag
+        self.update_data(data)
 
+    def update_data(self, data):
         if data.seekable():
             data.seek(0)
         s = data.read(self.BUFFER_SIZE)
@@ -120,7 +122,9 @@ class Body(persistent.Persistent):
         target.close()
 
     def _p_resolveConflict(self, old, commited, newstate):
-        if commited[1]['etag'] == newstate[1]['etag']:
+        com_etag = commited[1]['etag']
+        new_etag = newstate[1]['etag']
+        if com_etag is not None and new_etag is not None and com_etag == new_etag:
             return commited
         # Different ETags. Invalidate the cache.
         commited[1]['etag'] = INVALID_ETAG
@@ -268,9 +272,42 @@ class ResourceCache(AccessTimes, persistent.Persistent):
         self._update_cache_access(key)
         return store.open()
 
-    def remove(self, unique_id):
+    def remove(self, unique_id, default=None):
         key = get_storage_key(unique_id)
-        self._data.pop(key, None)
+        return self._data.pop(key, default)
+
+    # Non-etag version is used by postgresql Connector
+
+    def __getitem__(self, uniqueid):
+        key = get_storage_key(uniqueid)
+        value = self._data.get(key)
+        if value is None or value.etag == INVALID_ETAG:
+            raise KeyError('Object %r is not cached.' % uniqueid)
+        self._update_cache_access(key)
+        return value.open()
+
+    def get(self, uniqueid, default=None):
+        try:
+            return self[uniqueid]
+        except KeyError:
+            return default
+
+    def __contains__(self, uniqueid):
+        key = get_storage_key(uniqueid)
+        result = key in self._data
+        self._update_cache_access(key)
+        return result
+
+    def update(self, uniqueid, value):
+        key = get_storage_key(uniqueid)
+        stored = self._data.get(key)
+        if not isinstance(stored, Body):
+            self._data[key] = stored = Body()
+        stored.update_data(value)
+        self._update_cache_access(key)
+        return stored.open()
+
+    pop = remove
 
 
 @zope.interface.implementer(zeit.connector.interfaces.IPersistentCache)
