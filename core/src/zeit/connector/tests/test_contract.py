@@ -694,7 +694,7 @@ class ContractCache:
         self.connector.invalidate_cache(res.id)
         self.assertFalse(self.has_body_cache(res.id))
 
-    def test_getitem_returns_cached_object(self):
+    def test_getitem_returns_object_from_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
@@ -703,6 +703,9 @@ class ContractCache:
             getitem.assert_called_with('http://xml.zeit.de/testing/foo')
 
     def test_get_collection_returns_children_from_child_name_cache(self):
+        assert False
+
+    def test_read_item_twice_returns_body_from_body_cache(self):
         assert False
 
 
