@@ -258,7 +258,6 @@ class Connector:
         content.is_collection = resource.is_collection
 
         if not content.is_collection:
-            self.body_cache.pop(content.id, None)
             if content.binary_body:
                 blob = self.bucket.blob(content.id)
                 data = resource.data  # may not be a static property
@@ -280,6 +279,7 @@ class Connector:
             self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
+        self.body_cache.pop(uniqueid, None)
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -526,6 +526,7 @@ class Connector:
                 self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
+        self.body_cache.pop(uniqueid, None)
 
 
 factory = Connector.factory
@@ -662,6 +663,10 @@ class SQLZopeConnector(Connector):
     @property
     def child_name_cache(self):
         return zope.component.getUtility(zeit.connector.interfaces.IChildNameCache)
+
+    @property
+    def body_cache(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IResourceCache)
 
     def invalidate_cache(self, uniqueid):
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(uniqueid))
