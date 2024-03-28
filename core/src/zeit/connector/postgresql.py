@@ -227,7 +227,6 @@ class Connector:
         if cached is not None:
             operation = getattr(cached, operation)
             operation(uniqueid)
-            self.child_name_cache[parent] = cached
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
