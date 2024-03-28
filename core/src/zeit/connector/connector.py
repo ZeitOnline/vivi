@@ -213,11 +213,11 @@ class Connector:
         data = None
         if properties.get(('getlastmodified', 'DAV:')):
             try:
-                data = self.body_cache.getData(id, properties)
+                data = self.body_cache.getData(id, properties[('getetag', 'DAV:')])
             except KeyError:
                 logger.debug('Getting body from dav: %s' % id)
                 response = self._get_dav_resource(id).get()
-                data = self.body_cache.setData(id, properties, response)
+                data = self.body_cache.setData(id, response, properties.get(('getetag', 'DAV:')))
                 if not response.isclosed():
                     additional_data = response.read()
                     assert not additional_data, additional_data

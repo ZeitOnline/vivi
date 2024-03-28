@@ -540,12 +540,24 @@ class ContractCache:
         self.mkdir(folder)
         self.assertEqual([], self.child_name_cache[folder])
 
+    def test_setitem_removes_body_cache(self):
+        res = self.add_resource('foo', body=b'foo')
+        self.connector[res.id].data
+        self.assertTrue(self.has_body_cache(res.id))
+        self.connector.add(res)
+        self.assertFalse(self.has_body_cache(res.id))
+
     def test_getitem_populates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
         del self.connector.property_cache[res.id]
         res = self.connector[res.id]
         self.assertEqual('foo', self.connector.property_cache[res.id][prop])
+
+    def test_resource_read_populates_body_cache(self):
+        res = self.add_resource('foo', body=b'foo')
+        self.connector[res.id].data
+        self.assertEqual(b'foo', self.connector.body_cache[res.id].read())
 
     def test_listCollection_populates_child_name_cache(self):
         del self.child_name_cache[ROOT]
@@ -574,6 +586,13 @@ class ContractCache:
         folder = self.mkdir('foo')
         del self.connector[folder.id]
         self.assertNotIn(folder.id, self.child_name_cache)
+
+    def test_delitem_removes_body_cache(self):
+        res = self.add_resource('foo', body=b'foo')
+        self.connector[res.id].data
+        self.assertTrue(self.has_body_cache(res.id))
+        del self.connector[res.id]
+        self.assertFalse(self.has_body_cache(res.id))
 
     def test_copy_populates_property_cache(self):
         prop = ('foo', self.NS)
@@ -621,6 +640,13 @@ class ContractCache:
         self.assertNotIn('http://xml.zeit.de/testing/foo', self.child_name_cache)
         self.assertEqual([], self.child_name_cache['http://xml.zeit.de/testing/bar'])
 
+    def test_move_removes_body_cache(self):
+        res = self.add_resource('foo', body=b'foo')
+        self.connector[res.id].data
+        self.assertTrue(self.has_body_cache(res.id))
+        self.connector.move(res.id, 'http://xml.zeit.de/testing/bar')
+        self.assertFalse(self.has_body_cache(res.id))
+
     def test_when_storage_changed_invalidate_updates_property_cache(self):
         prop = ('foo', self.NS)
         res = self.add_resource('foo', properties={prop: 'foo'})
@@ -658,6 +684,15 @@ class ContractCache:
         self.connector.invalidate_cache(res.id)
         self.assertEqual([], self.child_name_cache[ROOT])
 
+    def test_invalidate_removes_body_cache(self):
+        res = self.add_resource('foo', body=b'foo')
+        self.connector[res.id].data
+        self.assertTrue(self.has_body_cache(res.id))
+        self.change_body_in_storage(res.id, b'bar')
+        transaction.commit()
+        self.connector.invalidate_cache(res.id)
+        self.assertFalse(self.has_body_cache(res.id))
+
 
 class DAVProtocol:
     shortened_uuid = False
@@ -670,11 +705,28 @@ class DAVProtocol:
     def change_properties_in_storage(self, uniqueid, properties):
         self.layer['connector'].changeProperties(uniqueid, properties)
 
+    def change_body_in_storage(self, uniqueid, body):
+        current = self.layer['connector'][uniqueid]
+        res = Resource(
+            current.id, current.__name__, current.type, BytesIO(body), current.properties
+        )
+        self.layer['connector'].add(res)
+
     def delete_in_storage(self, uniqueid):
         del self.layer['connector'][uniqueid]
 
     def add_in_storage(self, name):
         self.layer['connector'].add(self.get_resource(name))
+
+    def has_body_cache(self, uniqueid):
+        try:
+            self.connector.body_cache.getData(
+                uniqueid, self.connector.property_cache[uniqueid][('getetag', 'DAV:')]
+            )
+        except KeyError:
+            return False
+        else:
+            return True
 
 
 class ContractDAV(
@@ -739,29 +791,33 @@ class SQLProtocol:
         return id
 
     def change_properties_in_storage(self, uniqueid, properties):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = connector._get_content(uniqueid)
+        content = self.connector._get_content(uniqueid)
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)
 
+    def change_body_in_storage(self, uniqueid, body):
+        content = self.connector._get_content(uniqueid)
+        content.body = body
+
     def delete_in_storage(self, uniqueid):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = connector._get_content(uniqueid)
-        connector.session.delete(content)
+        content = self.connector._get_content(uniqueid)
+        self.connector.session.delete(content)
 
     def add_in_storage(self, name):
         from zeit.connector.postgresql import Content, Path
 
         resource = self.get_resource(name)
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         content = Content()
         path = Path(content=content)
         content.from_webdav(resource.properties)
         content.type = resource.type
         content.is_collection = resource.is_collection
-        (path.parent_path, path.name) = connector._pathkey(resource.id)
-        connector.session.add(path)
+        (path.parent_path, path.name) = self.connector._pathkey(resource.id)
+        self.connector.session.add(path)
+
+    def has_body_cache(self, uniqueid):
+        return uniqueid in self.connector.body_cache
 
 
 class ContractSQL(

@@ -54,6 +54,7 @@ from zeit.connector.resource import CachedResource
 import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.cms.tracing
+import zeit.connector.cache
 import zeit.connector.interfaces
 
 
@@ -148,7 +149,7 @@ class Connector:
             is_collection=properties[('is_collection', INTERNAL_PROPERTY)],
         )
 
-    property_cache = TransactionBoundCache('_v_property_cache', dict)
+    property_cache = TransactionBoundCache('_v_property_cache', zeit.connector.cache.PropertyCache)
 
     def _get_properties(self, uniqueid):
         if uniqueid in self.property_cache:
@@ -161,7 +162,7 @@ class Connector:
         self.property_cache[uniqueid] = properties
         return properties
 
-    body_cache = TransactionBoundCache('_v_body_cache', dict)
+    body_cache = TransactionBoundCache('_v_body_cache', zeit.connector.cache.ResourceCache)
 
     def _get_body(self, uniqueid):
         if uniqueid in self.body_cache:
@@ -179,8 +180,7 @@ class Connector:
             body = content.body.encode('utf-8')
 
         body = BytesIO(body)
-        self.body_cache[uniqueid] = body
-        body.seek(0)
+        body = self.body_cache.update(uniqueid, body)
         return body
 
     def _get_binary_body(self, id):
@@ -198,7 +198,9 @@ class Connector:
         except KeyError:
             return False
 
-    child_name_cache = TransactionBoundCache('_v_child_name_cache', dict)
+    child_name_cache = TransactionBoundCache(
+        '_v_child_name_cache', zeit.connector.cache.ChildNameCache
+    )
 
     def listCollection(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -256,7 +258,6 @@ class Connector:
         content.is_collection = resource.is_collection
 
         if not content.is_collection:
-            self.body_cache.pop(content.id, None)
             if content.binary_body:
                 blob = self.bucket.blob(content.id)
                 data = resource.data  # may not be a static property
@@ -278,6 +279,7 @@ class Connector:
             self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
+        self.body_cache.pop(uniqueid, None)
 
     def changeProperties(self, uniqueid, properties):
         uniqueid = self._normalize(uniqueid)
@@ -524,6 +526,7 @@ class Connector:
                 self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
+        self.body_cache.pop(uniqueid, None)
 
 
 factory = Connector.factory
@@ -660,6 +663,10 @@ class SQLZopeConnector(Connector):
     @property
     def child_name_cache(self):
         return zope.component.getUtility(zeit.connector.interfaces.IChildNameCache)
+
+    @property
+    def body_cache(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IResourceCache)
 
     def invalidate_cache(self, uniqueid):
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(uniqueid))
