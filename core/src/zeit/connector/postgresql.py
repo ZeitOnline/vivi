@@ -51,6 +51,7 @@ from zeit.connector.interfaces import (
 )
 from zeit.connector.lock import lock_is_foreign
 from zeit.connector.resource import CachedResource
+import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.interfaces
@@ -213,6 +214,7 @@ class Connector:
             parent_path = ''
         else:
             if self._get_content(uniqueid) is None:
+                self.child_name_cache.pop(uniqueid, None)
                 return
             parent_path = '/'.join(self._pathkey(uniqueid))
         result = [
@@ -227,7 +229,6 @@ class Connector:
         if cached is not None:
             operation = getattr(cached, operation)
             operation(uniqueid)
-            self.child_name_cache[parent] = cached
 
     def __setitem__(self, uniqueid, resource):
         resource.id = uniqueid
