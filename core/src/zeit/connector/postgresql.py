@@ -51,6 +51,7 @@ from zeit.connector.interfaces import (
 )
 from zeit.connector.lock import lock_is_foreign
 from zeit.connector.resource import CachedResource
+import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.interfaces
