@@ -791,34 +791,30 @@ class SQLProtocol:
         return id
 
     def change_properties_in_storage(self, uniqueid, properties):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = connector._get_content(uniqueid)
+        content = self.connector._get_content(uniqueid)
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)
 
     def change_body_in_storage(self, uniqueid, body):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = connector._get_content(uniqueid)
+        content = self.connector._get_content(uniqueid)
         content.body = body
 
     def delete_in_storage(self, uniqueid):
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-        content = connector._get_content(uniqueid)
-        connector.session.delete(content)
+        content = self.connector._get_content(uniqueid)
+        self.connector.session.delete(content)
 
     def add_in_storage(self, name):
         from zeit.connector.postgresql import Content, Path
 
         resource = self.get_resource(name)
-        connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         content = Content()
         path = Path(content=content)
         content.from_webdav(resource.properties)
         content.type = resource.type
         content.is_collection = resource.is_collection
-        (path.parent_path, path.name) = connector._pathkey(resource.id)
-        connector.session.add(path)
+        (path.parent_path, path.name) = self.connector._pathkey(resource.id)
+        self.connector.session.add(path)
 
     def has_body_cache(self, uniqueid):
         return uniqueid in self.connector.body_cache
