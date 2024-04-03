@@ -98,7 +98,7 @@ class TopicpageFilterSource(
 
     product_configuration = 'zeit.content.cp'
     config_url = 'topicpage-filter-source'
-    default_filename = 'topicpage-filters.json'
+    default_filename = 'topicpage-filters-config-upload.json'
 
     def json_data(self):
         result = collections.OrderedDict()
