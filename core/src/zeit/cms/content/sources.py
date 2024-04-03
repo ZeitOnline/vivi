@@ -37,7 +37,8 @@ def load(url):
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         return connector[url].data
     else:
-        return urllib.request.urlopen(url)
+        req = urllib.request.Request(url, headers={'accept': 'application/octet-stream'})
+        return urllib.request.urlopen(req)
 
 
 class OverridableURLConfiguration:
