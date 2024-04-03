@@ -1767,17 +1767,11 @@
 .type-article #form-social .field.fieldname-facebook_magazin_text .label,
 .type-article #form-social .field.fieldname-facebook_campus_text .label,
 .type-article #form-social .field.fieldname-facebook_zett_text .label,
-.type-article #form-social .field.fieldname-short_text .label,
-.type-article #form-social .field.fieldname-twitter_ressort_text .label,
-.type-article #form-social .field.fieldname-twitter_print_text .label,
 .type-article #form-mobile .field.fieldname-mobile_text .label,
 .type-article #form-mobile .field.fieldname-mobile_image .label {
   display: none;
 }
 
-.type-article #social\.short_text,
-.type-article #social\.twitter_ressort_text,
-.type-article #social\.twitter_print_text,
 .type-article #mobile\.mobile_text {
   width: 100%;
 }
@@ -1791,24 +1785,6 @@
   margin-right: 10px;
 }
 
-.type-article #form-social .field.fieldname-twitter_ressort_enabled {
-    margin-right: 0;
-}
-
-.type-article #form-social .field.fieldname-twitter_ressort {
-   padding-top: 0; /* XXX revert to default */
-}
-
-.type-article #form-social .field.fieldname-twitter_ressort .label span {
-    text-transform: none;
-}
-
-.type-article #form-social .field.fieldname-twitter_ressort .widget {
-    clear: none;
-    width: inherit;
-    margin-top: 0;
-}
-
 /* XXX unclear why we need to repeat this from zeit.cms:forms.css */
 .type-article #form-social select {
     margin-top: -4px;  /* vertically centered appearance */
@@ -1819,10 +1795,7 @@
 .type-article #form-social .field.fieldname-facebook_main_text,
 .type-article #form-social .field.fieldname-facebook_magazin_text,
 .type-article #form-social .field.fieldname-facebook_campus_text,
-.type-article #form-social .field.fieldname-facebook_zett_text,
-.type-article #form-social .field.fieldname-short_text,
-.type-article #form-social .field.fieldname-twitter_ressort_text,
-.type-article #form-social .field.fieldname-twitter_print_text {
+.type-article #form-social .field.fieldname-facebook_zett_text {
     border-top: 1px solid #d5dee7;
     clear: both;
     display: flow-root;
@@ -1834,18 +1807,14 @@
 .type-article #form-social .field.fieldname-facebook_main_text:before,
 .type-article #form-social .field.fieldname-facebook_magazin_text:before,
 .type-article #form-social .field.fieldname-facebook_campus_text:before,
-.type-article #form-social .field.fieldname-facebook_zett_text:before,
-.type-article #form-social .field.fieldname-short_text:before ,
-.type-article #form-social .field.fieldname-twitter_ressort_text:before ,
-.type-article #form-social .field.fieldname-twitter_print_text:before {
+.type-article #form-social .field.fieldname-facebook_zett_text:before {
     display: block;
     font-variant: small-caps;
     font-weight: bold;
 }
 
 .type-article #form-social .field.fieldname-facebook_main_enabled,
-.type-article #form-social .field.fieldname-facebook_zett_enabled,
-.type-article #form-social .field.fieldname-twitter_main_enabled {
+.type-article #form-social .field.fieldname-facebook_zett_enabled {
     clear: both;
     display: flow-root;
 }
@@ -1855,15 +1824,6 @@
 }
 .type-article #form-social .field.fieldname-facebook_zett_text:before {
   content: "Facebook ze.tt";
-}
-.type-article #form-social .field.fieldname-short_text:before {
-    content: "Twitter";
-}
-.type-article #form-social .field.fieldname-twitter_print_text:before {
-    content: "Twitter DieZeit";
-}
-.type-article #form-social .field.fieldname-twitter_ressort_text:before {
-    content: "Twitter Ressort";
 }
 /* end XXX */
 

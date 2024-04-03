@@ -1,8 +1,8 @@
 import zope.generations.generations
 
 
-minimum_generation = 0
-generation = 0
+minimum_generation = 1
+generation = 1
 
 manager = zope.generations.generations.SchemaManager(
     minimum_generation, generation, 'zeit.push.generation'

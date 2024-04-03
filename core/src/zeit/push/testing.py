@@ -3,7 +3,6 @@ import logging
 import urllib.parse
 
 import gocept.selenium
-import hvac
 import plone.testing
 import zope.interface
 
@@ -31,9 +30,6 @@ class PushNotifier:
 
 product_config = """\
 <product-config zeit.push>
-  twitter-accounts file://{fixtures}/twitter-accounts.xml
-  twitter-main-account twitter-test
-  twitter-print-account twitter-print
   facebook-accounts file://{fixtures}/facebook-accounts.xml
   facebook-main-account fb-test
   facebook-magazin-account fb-magazin
@@ -75,34 +71,12 @@ class PushMockLayer(plone.testing.Layer):
     """Helper layer to reset mock notifiers."""
 
     def testSetUp(self):
-        for service in ['urbanairship', 'twitter', 'facebook', 'homepage']:
+        for service in ['urbanairship', 'facebook', 'homepage']:
             notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
             notifier.reset()
 
 
 PUSH_MOCK_LAYER = PushMockLayer()
-
-
-@zope.interface.implementer(zeit.push.interfaces.ITwitterCredentials)
-class TwitterCredentials:
-    vault = hvac.Client()
-    secret = 'zon/v1/twitter/vivi-zeitpush-tests'
-
-    def _read(self):
-        return self.vault.secrets.kv.v1.read_secret(self.secret, mount_point='')['data']
-
-    def access_token(self, account_name):
-        return self._read()['access_token']
-
-    def refresh_token(self, account_name):
-        return self._read()['refresh_token']
-
-    def update(self, account_name, access_token, refresh_token):
-        assert account_name == 'twitter-test'
-        secret = self._read()
-        secret['access_token'] = access_token
-        secret['refresh_token'] = refresh_token
-        self.vault.secrets.kv.v1.create_or_update_secret(self.secret, secret, mount_point='')
 
 
 class UrbanairshipTemplateLayer(plone.testing.Layer):
