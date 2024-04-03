@@ -35,13 +35,6 @@ class SocialBase(Base):
         (
             'facebook_main_text',
             'facebook_main_enabled',
-            'short_text',
-            'twitter_main_enabled',
-            'twitter_ressort_text',
-            'twitter_ressort_enabled',
-            'twitter_ressort',
-            'twitter_print_text',
-            'twitter_print_enabled',
         ),
         css_class='wide-widgets column-left',
     )
@@ -52,26 +45,12 @@ class SocialBase(Base):
 
     @property
     def social_form_fields(self):
-        return (
-            self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
-                'facebook_main_text', 'facebook_main_enabled'
-            )
-            + self.FormFieldsFactory(zeit.push.interfaces.IPushMessages).select('short_text')
-            + self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
-                'twitter_main_enabled',
-                'twitter_ressort_text',
-                'twitter_ressort_enabled',
-                'twitter_ressort',
-                'twitter_print_text',
-                'twitter_print_enabled',
-            )
+        return self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
+            'facebook_main_text', 'facebook_main_enabled'
         )
 
     def setUpWidgets(self, *args, **kw):
         super().setUpWidgets(*args, **kw)
-        self.set_charlimit('short_text')
-        self.set_charlimit('twitter_print_text')
-        self.set_charlimit('twitter_ressort_text')
 
 
 class MobileBase(Base):

@@ -30,22 +30,4 @@
       />
   </class>
 
-  <class class=".twitter.TwitterCredentials">
-    <require
-      interface=".interfaces.ITwitterCredentials"
-      permission="zope.View"
-      />
-    <!-- Rotterdam edge case, which comes up in zeit.securitypolicy tests -->
-    <require
-      interface="zope.container.interfaces.IReadContainer"
-      permission="zope.View"
-      />
-  </class>
-
-  <utility
-    name="zeit.cms/push"
-    provides="zope.generations.interfaces.ISchemaManager"
-    component=".generation.manager"
-    />
-
 </configure>
