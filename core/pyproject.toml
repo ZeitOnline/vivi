@@ -37,7 +37,6 @@ dependencies = [
     "requests_file",
     "sqlalchemy>=2.0.0.dev0",
     "transaction",
-    "tweepy>=4.5.0",
     "webob",
     "werkzeug",
     "z3c.celery >= 1.2.0.dev0",  # XXX Should be [ui], but is entrenched
@@ -156,7 +155,6 @@ test = [
     "gocept.pytestlayer",
     "gocept.selenium<7.1",  # ZO-3157
     "gocept.testing>=1.4.0.dev0",
-    "hvac",
     "opentelemetry-exporter-otlp",
     "opentelemetry-sdk",
     "packaging",
@@ -249,7 +247,6 @@ unlock-overdue-locks = "zeit.connector.postgresql:unlock_overdue_locks"
 update-topiclist = "zeit.retresco.connection:update_topiclist"
 tms-reindex-object = "zeit.retresco.update:reindex"
 facebook-access-token = "zeit.push.facebook:create_access_token"
-twitter-access-token = "zeit.push.twitter:create_access_token"
 ua-payload-doc = "zeit.push.urbanairship:print_payload_documentation"
 vgwort-order-tokens = "zeit.vgwort.token:order_tokens"
 vgwort-report = "zeit.vgwort.report:report_new_documents"

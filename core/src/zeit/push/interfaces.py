@@ -58,7 +58,7 @@ class IPushNotifier(zope.interface.Interface):
           `text` parameter. [only `mobile` & `facebook`]
 
         * ``account``: Send push notification using given account.
-          [only `facebook` & `twitter`]
+          [only `facebook`]
 
         """
 
@@ -155,16 +155,7 @@ class IBanner(zope.interface.Interface):
 
 
 class ITwitterCredentials(zope.interface.Interface):
-    """Stores (ephemeral) Twitter access tokens and refresh tokens."""
-
-    def access_token(account_name):
-        pass
-
-    def refresh_token(account_name):
-        pass
-
-    def update(account_name, access_token, refresh_token):
-        pass
+    """BBB"""
 
 
 class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
