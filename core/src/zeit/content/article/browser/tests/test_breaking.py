@@ -68,7 +68,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.browser.open('@@publish')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
         self.assertEqual(True, IPublishInfo(article).published)
-        for service in ['homepage', 'urbanairship', 'facebook']:
+        for service in ['homepage', 'urbanairship', 'twitter', 'facebook']:
             notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
             self.assertEqual(1, len(notifier.calls))
             self.assertEqual(article.title, notifier.calls[0][0])
@@ -90,7 +90,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         # media functionality, thus it may be "armed" again later on
         # (IPushMessages.enabled). But that should of course only apply to
         # those push services actually meant by the social media UI (i.e.
-        # Facebook), and not send "breaking news" messages again
+        # Twitter+Facebook), and not send "breaking news" messages again
         # (e.g. to mobile devices).
         self.create_breakingnews()
         self.fill_in_required_values()

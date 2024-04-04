@@ -104,14 +104,14 @@ class IPushMessages(zope.interface.Interface):
     )
 
     """A message configuration is a dict with at least the following keys:
-       - type: Kind of service (facebook, ...). Must correspond
+       - type: Kind of service (twitter, facebook, ...). Must correspond
          to the utility name of an IPushNotifier.
        - enabled: Boolean. This allows keeping the message configuration even
          when it should not be used at the moment, e.g. for different text to
          different accounts.
 
     Any other keys are type-dependent. (A common additional key is ``account``,
-    e.g. Facebook support posting to different accounts.)
+    e.g. Twitter and Facebook support posting to different accounts.)
 
     """
     message_config = zope.schema.Tuple(required=False, default=())
@@ -156,6 +156,40 @@ class IBanner(zope.interface.Interface):
 
 class ITwitterCredentials(zope.interface.Interface):
     """BBB"""
+
+
+class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
+    product_configuration = 'zeit.push'
+    config_url = 'twitter-accounts'
+    attribute = 'name'
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+        @property
+        def MAIN_ACCOUNT(self):
+            return self.factory.main_account()
+
+        @property
+        def PRINT_ACCOUNT(self):
+            return self.factory.print_account()
+
+    @classmethod
+    def main_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
+        return config['twitter-main-account']
+
+    @classmethod
+    def print_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
+        return config['twitter-print-account']
+
+    def isAvailable(self, node, context):
+        return super().isAvailable(node, context) and node.get('name') not in [
+            self.main_account(),
+            self.print_account(),
+        ]
+
+
+twitterAccountSource = TwitterAccountSource()
 
 
 class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
@@ -294,6 +328,28 @@ class IAccountData(zope.interface.Interface):
     facebook_zett_text = ToggleDependentText(
         title=_('Facebook ze.tt Text'), required=False, dependent_field='facebook_zett_enabled'
     )
+
+    twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'), required=False)
+    twitter_ressort_text = ToggleDependentText(
+        title=_('Ressort Tweet'),
+        required=False,
+        max_length=256,
+        dependent_field='twitter_ressort_enabled',
+    )
+    twitter_ressort_enabled = zope.schema.Bool(title=_('Enable Twitter Ressort'), required=False)
+    twitter_ressort = ToggleDependentChoice(
+        title=_('Additional Twitter'),
+        source=twitterAccountSource,
+        required=False,
+        dependent_field='twitter_ressort_enabled',
+    )
+    twitter_print_text = ToggleDependentText(
+        title=_('Print Tweet'),
+        required=False,
+        max_length=256,
+        dependent_field='twitter_print_enabled',
+    )
+    twitter_print_enabled = zope.schema.Bool(title=_('Enable Twitter Print'), required=False)
 
     mobile_title = zope.schema.TextLine(title=_('Mobile title'), required=False)
     mobile_text = zope.schema.Text(title=_('Mobile text'), required=False)

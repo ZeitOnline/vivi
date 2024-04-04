@@ -22,15 +22,13 @@ class SocialFormTest(zeit.content.article.testing.BrowserTestCase):
     def test_smoke_form_submit_stores_values(self):
         self.open_form()
         b = self.browser
-        self.assertFalse(b.getControl('Enable Facebook', index=0).selected)
-        b.getControl('Enable Facebook', index=0).selected = True
-        b.getControl('Facebook Main Text').value = 'fb-main'
+        self.assertFalse(b.getControl('Enable Twitter', index=0).selected)
+        b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'account': 'fb-test', 'enabled': 1, 'override_text': 'fb-main', 'type': 'facebook'},
-            push.message_config,
+            {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'}, push.message_config
         )
 
 
