@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.136.0 (2024-04-04)
+--------------------
+
+- ZO-5017: restore ui but remove the API integration to twitter
+
+
 5.135.0 (2024-03-28)
 --------------------
 
