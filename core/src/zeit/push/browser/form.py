@@ -36,12 +36,9 @@ class SocialBase(Base):
             'facebook_main_text',
             'facebook_main_enabled',
             'short_text',
-            'twitter_main_enabled',
             'twitter_ressort_text',
-            'twitter_ressort_enabled',
             'twitter_ressort',
             'twitter_print_text',
-            'twitter_print_enabled',
         ),
         css_class='wide-widgets column-left',
     )
@@ -58,12 +55,9 @@ class SocialBase(Base):
             )
             + self.FormFieldsFactory(zeit.push.interfaces.IPushMessages).select('short_text')
             + self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
-                'twitter_main_enabled',
                 'twitter_ressort_text',
-                'twitter_ressort_enabled',
                 'twitter_ressort',
                 'twitter_print_text',
-                'twitter_print_enabled',
             )
         )
 

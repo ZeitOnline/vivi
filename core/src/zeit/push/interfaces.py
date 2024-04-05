@@ -329,27 +329,21 @@ class IAccountData(zope.interface.Interface):
         title=_('Facebook ze.tt Text'), required=False, dependent_field='facebook_zett_enabled'
     )
 
-    twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'), required=False)
-    twitter_ressort_text = ToggleDependentText(
+    twitter_ressort_text = zope.schema.Text(
         title=_('Ressort Tweet'),
         required=False,
         max_length=256,
-        dependent_field='twitter_ressort_enabled',
     )
-    twitter_ressort_enabled = zope.schema.Bool(title=_('Enable Twitter Ressort'), required=False)
-    twitter_ressort = ToggleDependentChoice(
+    twitter_ressort = zope.schema.Choice(
         title=_('Additional Twitter'),
         source=twitterAccountSource,
         required=False,
-        dependent_field='twitter_ressort_enabled',
     )
-    twitter_print_text = ToggleDependentText(
+    twitter_print_text = zope.schema.Text(
         title=_('Print Tweet'),
         required=False,
         max_length=256,
-        dependent_field='twitter_print_enabled',
     )
-    twitter_print_enabled = zope.schema.Bool(title=_('Enable Twitter Print'), required=False)
 
     mobile_title = zope.schema.TextLine(title=_('Mobile title'), required=False)
     mobile_text = zope.schema.Text(title=_('Mobile text'), required=False)
