@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.137.0 (2024-04-05)
+--------------------
+
+- ZO-5017: do not send push to twitter
+
+
 5.136.0 (2024-04-04)
 --------------------
 
