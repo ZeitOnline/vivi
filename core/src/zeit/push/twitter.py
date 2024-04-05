@@ -13,7 +13,8 @@ log = logging.getLogger(__name__)
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 class Connection:
-    pass
+    def send(self, text, link, **kw):
+        pass
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
