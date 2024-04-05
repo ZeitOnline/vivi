@@ -102,6 +102,7 @@ ui = [
     "js.underscore",
     "js.vanderlee_colorpicker",
     "lxml",
+    "lxml_html_clean",
     "opentelemetry-instrumentation",
     "opentelemetry-instrumentation-celery",
     "opentelemetry-instrumentation-requests",
