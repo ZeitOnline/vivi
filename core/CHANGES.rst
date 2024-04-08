@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.138.0 (2024-04-08)
+--------------------
+
+- ZO-5017: remove push directly toggles from twitter social form
+
+
 5.137.0 (2024-04-05)
 --------------------
 
