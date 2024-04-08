@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.139.0 (2024-04-08)
+--------------------
+
+- ZO-5086: Update default filename
+
+
 5.138.0 (2024-04-08)
 --------------------
 
