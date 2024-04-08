@@ -633,21 +633,6 @@ class IQuizBlock(zeit.content.modules.interfaces.IQuiz, IBlock):
     pass
 
 
-class ILeadTime(zope.interface.Interface):
-    start = zope.schema.Datetime(title=_('From'))
-    end = zope.schema.Datetime(title=_('To'))
-
-
-class ILeadTimeCP(zope.interface.Interface):
-    """Marks a CenterPage: store ILeadTime information on articles
-    that are referenced on this CP.
-    """
-
-
-class ILeadTimeWorklist(zope.interface.Interface):
-    previous_leader = zope.schema.Choice(source=zeit.cms.content.contentsource.CMSContentSource())
-
-
 class IRenderedXML(zope.interface.Interface):
     """Recursively converts a CenterPage to an lxml tree."""
 

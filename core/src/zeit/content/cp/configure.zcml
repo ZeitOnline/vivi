@@ -140,29 +140,6 @@
     factory=".automatic.AutomaticArea"
     trusted="yes" />
 
-
-  <class class=".leadtime.LeadTime">
-    <require
-      interface=".interfaces.ILeadTime"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.ILeadTime"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <class class=".leadtime.LeadTimeWorklist">
-    <require
-      interface=".interfaces.ILeadTimeWorklist"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.ILeadTimeWorklist"
-      permission="zeit.workflow.Publish"
-      />
-  </class>
-
   <permission
     id="zeit.content.cp.EditArea"
     title="Edit Area"
