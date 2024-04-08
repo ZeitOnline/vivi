@@ -1791,10 +1791,6 @@
   margin-right: 10px;
 }
 
-.type-article #form-social .field.fieldname-twitter_ressort_enabled {
-    margin-right: 0;
-}
-
 .type-article #form-social .field.fieldname-twitter_ressort {
    padding-top: 0; /* XXX revert to default */
 }
@@ -1844,8 +1840,7 @@
 }
 
 .type-article #form-social .field.fieldname-facebook_main_enabled,
-.type-article #form-social .field.fieldname-facebook_zett_enabled,
-.type-article #form-social .field.fieldname-twitter_main_enabled {
+.type-article #form-social .field.fieldname-facebook_zett_enabled {
     clear: both;
     display: flow-root;
 }

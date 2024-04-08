@@ -68,7 +68,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.browser.open('@@publish')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
         self.assertEqual(True, IPublishInfo(article).published)
-        for service in ['homepage', 'urbanairship', 'twitter', 'facebook']:
+        for service in ['homepage', 'urbanairship', 'facebook']:
             notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
             self.assertEqual(1, len(notifier.calls))
             self.assertEqual(article.title, notifier.calls[0][0])

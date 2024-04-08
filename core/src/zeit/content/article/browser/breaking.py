@@ -110,13 +110,6 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
                     ).MAIN_ACCOUNT,
                 }
             )
-            message_config.append(
-                {
-                    'type': 'twitter',
-                    'enabled': True,
-                    'account': zeit.push.interfaces.twitterAccountSource(self.context).MAIN_ACCOUNT,
-                }
-            )
 
         article = super().create(data)
         # XXX Duplicated from .form.AddAndCheckout

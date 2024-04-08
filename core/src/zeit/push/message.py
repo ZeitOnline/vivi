@@ -223,17 +223,6 @@ class AccountData(grok.Adapter):
         self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT}, override_text=value)
 
     @property
-    def twitter_main_enabled(self):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        service = self.push.get(type='twitter', account=source.MAIN_ACCOUNT)
-        return service and service.get('enabled')
-
-    @twitter_main_enabled.setter
-    def twitter_main_enabled(self, value):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set({'type': 'twitter', 'account': source.MAIN_ACCOUNT}, enabled=value)
-
-    @property
     def twitter_ressort_text(self):
         return self._nonmain_twitter_service.get('override_text')
 
@@ -258,22 +247,6 @@ class AccountData(grok.Adapter):
             self.twitter_ressort_enabled = enabled
 
     @property
-    def twitter_ressort_enabled(self):
-        return self._nonmain_twitter_service.get('enabled')
-
-    @twitter_ressort_enabled.setter
-    def twitter_ressort_enabled(self, value):
-        service = self._nonmain_twitter_service
-        account = None
-        # BBB `variant` was introduced in zeit.push-1.21
-        if service and 'variant' not in service:
-            self.push.delete(service)
-            account = service.get('account')
-        self.push.set({'type': 'twitter', 'variant': 'ressort'}, enabled=value)
-        if account is not None:
-            self.twitter_ressort = account
-
-    @property
     def _nonmain_twitter_service(self):
         source = zeit.push.interfaces.twitterAccountSource(None)
         for service in self.push.message_config:
@@ -285,17 +258,6 @@ class AccountData(grok.Adapter):
             if service.get('account') != source.MAIN_ACCOUNT:
                 return service
         return {}
-
-    @property
-    def twitter_print_enabled(self):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        service = self.push.get(type='twitter', account=source.PRINT_ACCOUNT)
-        return service and service.get('enabled')
-
-    @twitter_print_enabled.setter
-    def twitter_print_enabled(self, value):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT}, enabled=value)
 
     @property
     def twitter_print_text(self):

@@ -79,16 +79,24 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
         browser = self.browser
         browser.open('http://localhost/++skin++vivi/repository/video')
         browser.getLink('Checkout').click()
-        browser.getControl('Short push text').value = 'See this video!'
-        browser.getControl('Enable Twitter', index=0).click()
+        browser.getControl('Enable Facebook', index=0).click()
+        browser.getControl('Facebook Main Text').value = 'See this video!'
         browser.getControl('Apply').click()
         self.assertIn('Updated on', browser.contents)
         browser.getLink('Checkin').click()
         self.assertIn('"video" has been checked in.', browser.contents)
         zeit.cms.workflow.interfaces.IPublish(video).publish(background=False)
-        twitter = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name='twitter')
-        self.assertEqual('See this video!', twitter.calls[0][0])
-        self.assertIn('http://www.zeit.de/video/my-video', twitter.calls[0][1])
-        params = twitter.calls[0][2]
+        facebook = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, 'facebook')
+        self.assertEqual('See this video!', facebook.calls[0][0])
+        self.assertIn('http://www.zeit.de/video/my-video', facebook.calls[0][1])
+        params = facebook.calls[0][2]
         del params['message']
-        self.assertEqual({'enabled': True, 'account': 'twitter-test', 'type': 'twitter'}, params)
+        self.assertEqual(
+            {
+                'type': 'facebook',
+                'enabled': True,
+                'account': 'fb-test',
+                'override_text': 'See this video!',
+            },
+            params,
+        )
