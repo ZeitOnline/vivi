@@ -11,6 +11,7 @@ log = logging.getLogger(__name__)
 
 try:
     from opentelemetry.instrumentation.celery import CeleryInstrumentor
+    from opentelemetry.instrumentation.celery import utils as otel_celery
     import celery
     import celery.loaders.app
     import celery.signals
@@ -180,5 +181,25 @@ else:
     # Export decorator, so client modules can say `@zeit.cms.celery.task()`.
     task = CELERY.task
 
+    # NOTE: Ordering matters here. We rely on the fact that celery signal
+    # handlers are called in the order they are defined, so that our nested
+    # context is attached after the upstream one, and detached before.
+    @celery.signals.task_postrun.connect(weak=False)
+    def remove_samplerate(*args, **kw):
+        task = otel_celery.retrieve_task(kw)
+        token, _ = otel_celery.retrieve_span(task, 'zeit.cms.tracing')
+        if token is not None:
+            opentelemetry.context.detach(token)
+        otel_celery.detach_span(task, 'zeit.cms.tracing')
+
     CeleryInstrumentor().instrument()
-    celery.signals.task_prerun.connect(zeit.cms.relstorage.apply_samplerate, weak=False)
+
+    @celery.signals.task_prerun.connect(weak=False)
+    def apply_samplerate(*args, **kw):
+        context = zeit.cms.relstorage.apply_samplerate()
+        if context is not None:
+            token = opentelemetry.context.attach(context)
+            task = otel_celery.retrieve_task(kw)
+            # This is a bit of a semantic misuse, but mechanically it's
+            # exactly what we want: store this bit of data on the task object.
+            otel_celery.attach_span(task, 'zeit.cms.tracing', (token, None))

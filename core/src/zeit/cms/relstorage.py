@@ -92,12 +92,12 @@ class RelStorageInstrumentor(BaseInstrumentor):
 
         @functools.wraps(wrapped_call)
         def instrumented_call(self, *args, **kw):
-            if logging.getLogger(__name__).isEnabledFor(logging.DEBUG):
-                config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+            samplerate = opentelemetry.context.get_value(__name__)
+            if samplerate:
                 operation = self.stat_name or self._compute_stat(args)
                 with tracer.start_as_current_span(
                     operation,
-                    attributes={'span.kind': 'client', 'SampleRate': config['samplerate-zodb']},
+                    attributes={'span.kind': 'client', 'SampleRate': samplerate},
                 ):
                     return wrapped_call(self, *args, **kw)
             else:
@@ -118,10 +118,8 @@ class RelStorageInstrumentor(BaseInstrumentor):
 
 def apply_samplerate(*args, **kw):
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    zodb = logging.getLogger(__name__)
-    # XXX It would be cleaner to use the otel context to transmit this
-    # information, but that's mechanically difficult due to attach/detach API.
-    if random.random() <= 1 / int(config.get('samplerate-zodb', 1)):
-        zodb.setLevel(logging.DEBUG)
+    samplerate = int(config.get('samplerate-zodb', 1))
+    if random.random() <= 1 / samplerate:
+        return opentelemetry.context.set_value(__name__, samplerate)
     else:
-        zodb.setLevel(logging.NOTSET)
+        return None
