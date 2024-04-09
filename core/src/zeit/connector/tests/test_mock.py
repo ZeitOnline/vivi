@@ -1,3 +1,4 @@
+from unittest import mock
 import io
 import logging
 
@@ -44,3 +45,9 @@ Searching: (:and
   (:eq "http://namespaces.zeit.de/CMS/document" "author" "pm"))...""",
             self.log.getvalue(),
         )
+
+    def test_foreign_lock_does_not_break_if_utility_is_missing(self):
+        from zeit.connector.lock import lock_is_foreign
+
+        with mock.patch('zeit.connector.lock.HAVE_AUTH', new=False):
+            self.assertTrue(lock_is_foreign('zope.user'))
