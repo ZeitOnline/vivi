@@ -15,6 +15,7 @@ import zope.i18n
 import zope.interface
 
 from zeit.cms.content.interfaces import IUUID
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR, CAN_RETRACT_ERROR, PRIORITY_LOW
 import zeit.cms.celery
@@ -546,6 +547,8 @@ class MultiTask:
         return super().run(ids)
 
     def _run(self, objs):
+        if FEATURE_TOGGLES.find('enable-commit-on-multi-publish'):
+            return super()._run(objs)
         self._to_log = []
         result = super()._run(objs)
         # Work around limitations of our ZODB-based DAV cache.
@@ -561,7 +564,10 @@ class MultiTask:
         raise z3c.celery.celery.Abort(self._log_messages, self._to_log, message=result)
 
     def log(self, obj, message):
-        self._to_log.append((obj, message))
+        if FEATURE_TOGGLES.find('enable-commit-on-multi-publish'):
+            super().log(obj, message)
+        else:
+            self._to_log.append((obj, message))
 
     def _assign_publisher_error_details(self, exc, objects):
         errors = []
