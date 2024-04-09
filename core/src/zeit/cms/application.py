@@ -22,6 +22,7 @@ import zope.publisher.browser
 from zeit.cms.tracing import anonymize
 import zeit.cms.cli
 import zeit.cms.relstorage
+import zeit.cms.tracing
 import zeit.cms.wsgi
 import zeit.cms.zope
 
@@ -180,7 +181,12 @@ class OpenTelemetryMiddleware(opentelemetry.instrumentation.wsgi.OpenTelemetryMi
 
 
 def otel_request_hook(span, environ):
-    context = zeit.cms.relstorage.apply_samplerate()
+    context = zeit.cms.tracing.apply_samplerate_productconfig(
+        'zeit.cms.relstorage', 'zeit.cms', 'samplerate-zodb'
+    )
+    context = zeit.cms.tracing.apply_samplerate_productconfig(
+        'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql'
+    )
     if context is not None:
         environ['zeit.cms.tracing'] = opentelemetry.context.attach(context)
 

@@ -1,6 +1,5 @@
 import functools
 import logging
-import random
 
 from opentelemetry.instrumentation.instrumentor import BaseInstrumentor
 from perfmetrics.metric import _AbstractMetricImpl as MetricImpl
@@ -9,7 +8,6 @@ import opentelemetry.trace
 import perfmetrics._util
 import ZODB.serialize
 import zodburi
-import zope.app.appsetup.product
 
 import zeit.cms.cli
 
@@ -114,12 +112,3 @@ class RelStorageInstrumentor(BaseInstrumentor):
                     continue
                 original = func.__wrapped__
                 setattr(cls, name, original)
-
-
-def apply_samplerate(*args, **kw):
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    samplerate = int(config.get('samplerate-zodb', 1))
-    if random.random() <= 1 / samplerate:
-        return opentelemetry.context.set_value(__name__, samplerate)
-    else:
-        return None
