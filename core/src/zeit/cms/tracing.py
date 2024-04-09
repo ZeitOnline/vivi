@@ -1,6 +1,7 @@
 import contextlib
 import importlib.metadata
 import os
+import random
 import re
 import socket
 import time
@@ -8,7 +9,9 @@ import time
 from cryptography.fernet import Fernet
 from opentelemetry.instrumentation.utils import http_status_to_status_code
 from opentelemetry.trace.status import Status
+import opentelemetry.context
 import opentelemetry.trace
+import zope.app.appsetup.product
 import zope.interface
 
 import zeit.cms.interfaces
@@ -178,6 +181,19 @@ def use_span(module, *args, **kw):
     span = start_span(module, *args, **kw)
     with opentelemetry.trace.use_span(span, end_on_exit=True) as span:
         yield span
+
+
+def apply_samplerate_productconfig(module, config_module, key):
+    config = zope.app.appsetup.product.getProductConfiguration(config_module)
+    samplerate = int(config.get(key, 1))
+    return apply_samplerate(module, samplerate)
+
+
+def apply_samplerate(module, samplerate):
+    if random.random() <= 1 / samplerate:
+        return opentelemetry.context.set_value(module, samplerate)
+    else:
+        return None
 
 
 def record_span(span, status_code, body):

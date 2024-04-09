@@ -22,6 +22,7 @@ import zope.publisher.browser
 from zeit.cms.tracing import anonymize
 import zeit.cms.cli
 import zeit.cms.relstorage
+import zeit.cms.tracing
 import zeit.cms.wsgi
 import zeit.cms.zope
 
@@ -84,7 +85,10 @@ class Application:
             ] + pipeline
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(
-            app, ExcludeList(['/@@health-check$', '/metrics$']), request_hook=otel_request_hook
+            app,
+            ExcludeList(['/@@health-check$', '/metrics$']),
+            request_hook=otel_request_hook,
+            response_hook=otel_response_hook,
         )
         return app
 
@@ -177,7 +181,15 @@ class OpenTelemetryMiddleware(opentelemetry.instrumentation.wsgi.OpenTelemetryMi
 
 
 def otel_request_hook(span, environ):
-    zeit.cms.relstorage.apply_samplerate(span, environ)
+    context = zeit.cms.tracing.apply_samplerate_productconfig(
+        'zeit.cms.relstorage', 'zeit.cms', 'samplerate-zodb'
+    )
+    context = zeit.cms.tracing.apply_samplerate_productconfig(
+        'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql'
+    )
+    if context is not None:
+        environ['zeit.cms.tracing'] = opentelemetry.context.attach(context)
+
     clientip = environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0]
     span.set_attribute('net.peer.ip', anonymize(clientip))
 
@@ -188,6 +200,12 @@ def otel_request_hook(span, environ):
     if len(path) >= 3 and path[1] == 'workingcopy':
         path[2] = anonymize(path[2])
         span.set_attribute('http.target', '/'.join(path))
+
+
+def otel_response_hook(span, environ, status, headers):
+    token = environ.get('zeit.cms.tracing')
+    if token is not None:
+        opentelemetry.context.detach(token)
 
 
 @grok.subscribe(zope.publisher.interfaces.IEndRequestEvent)
