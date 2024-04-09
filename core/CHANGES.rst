@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.140.0 (2024-04-09)
+--------------------
+
+- ZO-4940: feature toggle to disable transaction commit workaround for multi publish
+
+- ZO-5085: support loading config files from storage api
+
+
 5.139.0 (2024-04-08)
 --------------------
 
