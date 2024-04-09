@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.141.0 (2024-04-09)
+--------------------
+
+- ZO-5022: Enable tracing with sampling for sql connector
+
+
 5.140.0 (2024-04-09)
 --------------------
 
