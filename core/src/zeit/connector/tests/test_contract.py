@@ -79,6 +79,12 @@ class ContractReadWrite:
             self.listCollection('http://xml.zeit.de/'),
         )
 
+    def test_getitem_works_for_root_folder(self):
+        res = self.connector['http://xml.zeit.de/']
+        self.assertEqual(self.folder_type, res.type)
+        with self.assertNothingRaised():
+            res.data.read()
+
     def test_setitem_stores_ressource(self):
         # Note: We're also testing this implicitly, due to self.add_resource().
         res = self.get_resource('foo')
@@ -720,6 +726,7 @@ class ContractCache:
 
 class DAVProtocol:
     shortened_uuid = False
+    folder_type = 'collection'
 
     def id_for_folder(self, id):
         if not id.endswith('/'):
@@ -816,6 +823,7 @@ class ContractMock(
 
 class SQLProtocol:
     shortened_uuid = True
+    folder_type = 'folder'
 
     def id_for_folder(self, id):
         return id

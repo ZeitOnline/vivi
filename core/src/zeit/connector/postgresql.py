@@ -152,6 +152,10 @@ class Connector:
     property_cache = TransactionBoundCache('_v_property_cache', zeit.connector.cache.PropertyCache)
 
     def _get_properties(self, uniqueid):
+        if uniqueid == ID_NAMESPACE:
+            content = Content(id='root', type='folder', is_collection=True, unsorted={})
+            return content.to_webdav()
+
         if uniqueid in self.property_cache:
             return self.property_cache[uniqueid]
 
@@ -165,6 +169,9 @@ class Connector:
     body_cache = TransactionBoundCache('_v_body_cache', zeit.connector.cache.ResourceCache)
 
     def _get_body(self, uniqueid):
+        if uniqueid == ID_NAMESPACE:
+            return BytesIO(b'')
+
         if uniqueid in self.body_cache:
             return self.body_cache[uniqueid]
 
