@@ -9,7 +9,6 @@ import zope.component
 import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
 from zeit.content.image.testing import create_image_group_with_master_image
@@ -82,7 +81,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).publish(background=False)
             (result,) = response.last_request.json()
             result_bq = result['bigquery']
-            self.assertEqual({}, result_bq)
+            self.assertEqual(
+                'http://localhost/live-prefix/online/2007/01/Somalia',
+                result_bq['properties']['meta']['url'],
+            )
         self.assertTrue(IPublishInfo(article).published)
 
     def test_bigquery_adapters_are_registered(self):
@@ -475,7 +477,6 @@ class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
 class BigQueryPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()
-        FEATURE_TOGGLES.set('publish_bigquery_json')
         zeit.workflow.testing.MockTMSRepresentation.result = {
             'payload': {'document': {'uuid': '{urn:uuid:myuuid}'}}
         }
