@@ -60,7 +60,10 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             result_bq = result['bigquery']
-            self.assertEqual({}, result_bq)
+            self.assertEqual(
+                'http://localhost/live-prefix/online/2007/01/Somalia',
+                result_bq['properties']['meta']['url'],
+            )
         self.assertFalse(IPublishInfo(article).published)
 
     def test_comments_are_ignored_during_retraction(self):

@@ -6,7 +6,6 @@ import grokcore.component as grok
 import lxml.etree
 import zope.app.appsetup.product
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -38,8 +37,6 @@ class AuthorDashboard(grok.Adapter):
 
 class BigQueryMixin:
     def publish_json(self):
-        if not FEATURE_TOGGLES.find('publish_bigquery_json'):
-            return {}
         tms = zeit.retresco.interfaces.ITMSRepresentation(self.context)()
         if tms is None:
             return None
@@ -52,8 +49,6 @@ class BigQueryMixin:
         }
 
     def retract_json(self):
-        if not FEATURE_TOGGLES.find('publish_bigquery_json'):
-            return {}
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
         return {
             'properties': {
