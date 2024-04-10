@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.143.0 (2024-04-10)
+--------------------
+
+FIX:
+- ZO-4886: Do not break on missing ui dependencies
+
+
 5.142.0 (2024-04-10)
 --------------------
 
