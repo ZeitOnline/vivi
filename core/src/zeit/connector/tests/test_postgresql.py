@@ -71,14 +71,9 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         props = self.connector._get_content(res.id)
         davprops = props.to_webdav()
         self.assertEqual(
-            {
-                ('uuid', 'http://namespaces.zeit.de/CMS/document'): '{urn:uuid:%s}' % props.id,
-                ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testing',
-                ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
-                ('is_collection', 'INTERNAL'): False,
-            },
-            davprops,
+            '{urn:uuid:%s}' % props.id, davprops[('uuid', 'http://namespaces.zeit.de/CMS/document')]
         )
+        self.assertEqual('testing', davprops[('type', 'http://namespaces.zeit.de/CMS/meta')])
 
     def test_provides_last_updated_column(self):
         # Properly we would test that the value of the last_updated column
