@@ -406,6 +406,9 @@ class Connector:
                 old_uniqueid,
                 f'Could not move {old_uniqueid} to {new_uniqueid}, because target already exists.',
             )
+        # unlock checks if locked and unlocks if necessary
+        self.unlock(old_uniqueid)
+
         if content.is_collection:
             if self._foreign_child_lock_exists(old_uniqueid):
                 raise LockedByOtherSystemError(
@@ -418,8 +421,6 @@ class Connector:
             self.child_name_cache.pop(old_uniqueid, None)
 
         (content.path.parent_path, content.path.name) = self._pathkey(new_uniqueid)
-        # unlock checks if locked and unlocks if necessary
-        self.unlock(new_uniqueid)
 
         self.property_cache.pop(old_uniqueid, None)
         self.property_cache[new_uniqueid] = content.to_webdav()
