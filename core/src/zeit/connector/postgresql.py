@@ -454,9 +454,9 @@ class Connector:
         return lock.token
 
     def lock(self, uniqueid, principal, until):
+        uniqueid = self._normalize(uniqueid)
         if uniqueid not in self:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-
         content = self._get_content(uniqueid)
         match content.lock_status:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
@@ -467,6 +467,7 @@ class Connector:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
     def unlock(self, uniqueid):
+        uniqueid = self._normalize(uniqueid)
         lock = self._get_content(uniqueid).lock
         if not lock:
             return
@@ -476,6 +477,7 @@ class Connector:
         self._update_lock_cache(uniqueid, None)
 
     def _unlock(self, uniqueid, token):
+        uniqueid = self._normalize(uniqueid)
         lock = self._get_content(uniqueid).lock
         if not lock or not lock.token == token:
             return
@@ -492,6 +494,7 @@ class Connector:
         self.property_cache[uniqueid] = properties
 
     def locked(self, uniqueid):
+        uniqueid = self._normalize(uniqueid)
         lock = self._get_cached_lock(uniqueid)
         match lock.status:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
