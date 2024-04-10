@@ -1,4 +1,5 @@
 import gocept.form.grouped
+import zope.component
 import zope.formlib.form
 import zope.i18n
 import zope.interface
@@ -100,14 +101,13 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
         if data.pop('homepage', False):
             message_config.append({'type': 'homepage', 'enabled': True})
         if data.pop('social', False):
+            account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
             message_config.append(
                 {
                     'type': 'facebook',
                     'enabled': True,
                     'override_text': data['title'],
-                    'account': zeit.push.interfaces.facebookAccountSource(
-                        self.context
-                    ).MAIN_ACCOUNT,
+                    'account': account.name,
                 }
             )
 

@@ -5,14 +5,39 @@ import urllib.parse
 
 import grokcore.component as grok
 import requests
+import zope.app.appsetup.product
 import zope.interface
 
-from zeit.push.interfaces import facebookAccountSource
+from zeit.push.interfaces import ISocialConfig, SocialConfig
 import zeit.push.interfaces
 import zeit.push.message
 
 
 log = logging.getLogger(__name__)
+
+
+@grok.implementer(ISocialConfig)
+class FacebookConfig(SocialConfig):
+    product_configuration = 'zeit.push'
+    type = 'facebook'
+
+    def __init__(self, account):
+        self.account = account
+
+    @property
+    def token(self):
+        return self.config(f'{self.type}-{self.account}-token')
+
+    @property
+    def name(self):
+        return self.config(f'{self.type}-{self.account}-account')
+
+
+accounts = ['main', 'magazin', 'campus', 'zett']
+for account_name in accounts:
+    grok.global_utility(
+        FacebookConfig(account_name), provides=ISocialConfig, name=f'fb-{account_name}', direct=True
+    )
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
@@ -22,8 +47,10 @@ class Connection:
 
     def send(self, text, link, **kw):
         account = kw['account']
-        access_token = facebookAccountSource.factory.access_token(account)
+        access_token = 'invalid'
         log.debug('Sending %s, %s to %s', text, link, account)
+        if config := FacebookConfig.from_account_name(account):
+            access_token = config.token
         self._request(
             'POST', '/me/feed', access_token, params={'message': text.encode('utf-8'), 'link': link}
         )

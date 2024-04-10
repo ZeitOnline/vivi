@@ -1,6 +1,5 @@
 import json
 import logging
-import xml.sax.saxutils
 
 import zc.sourcefactory.basic
 import zc.sourcefactory.source
@@ -146,6 +145,10 @@ class IPushURL(zope.interface.Interface):
     """
 
 
+class ISocialConfig(zope.interface.Interface):
+    """Configuration for social media services."""
+
+
 class IBanner(zope.interface.Interface):
     """
     Utility to manage the homepage banner.
@@ -190,64 +193,6 @@ class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
 
 
 twitterAccountSource = TwitterAccountSource()
-
-
-class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
-    product_configuration = 'zeit.push'
-    config_url = 'facebook-accounts'
-    attribute = 'name'
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        @property
-        def MAIN_ACCOUNT(self):
-            return self.factory.main_account()
-
-        @property
-        def MAGAZIN_ACCOUNT(self):
-            return self.factory.magazin_account()
-
-        @property
-        def CAMPUS_ACCOUNT(self):
-            return self.factory.campus_account()
-
-        @property
-        def ZETT_ACCOUNT(self):
-            return self.factory.zett_account()
-
-    @classmethod
-    def main_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
-        return config['facebook-main-account']
-
-    @classmethod
-    def magazin_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
-        return config['facebook-magazin-account']
-
-    @classmethod
-    def campus_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
-        return config['facebook-campus-account']
-
-    @classmethod
-    def zett_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
-        return config['facebook-zett-account']
-
-    def isAvailable(self, node, context):
-        return super().isAvailable(node, context) and node.get('name') != self.main_account()
-
-    def access_token(self, value):
-        tree = self._get_tree()
-        nodes = tree.xpath(
-            '%s[@%s= %s]' % (self.title_xpath, self.attribute, xml.sax.saxutils.quoteattr(value))
-        )
-        if not nodes:
-            return 'invalid'
-        return nodes[0].get('token')
-
-
-facebookAccountSource = FacebookAccountSource()
 
 
 class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
@@ -366,3 +311,23 @@ class IAccountData(zope.interface.Interface):
         required=False,
         dependent_field='mobile_enabled',
     )
+
+
+class SocialConfig:
+    """Provide some convenience methods for social media configuration utilities,
+    which encapsulates the zope calls"""
+
+    @classmethod
+    def from_account_name(cls, account_name):
+        """Return all registered utilities of given class"""
+        for utility in zope.component.getAllUtilitiesRegisteredFor(ISocialConfig):
+            if isinstance(utility, cls) and utility.name == account_name:
+                return utility
+
+    @classmethod
+    def from_name(cls, name):
+        return zope.component.getUtility(ISocialConfig, name=name)
+
+    @classmethod
+    def config(cls, name):
+        return zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)[name]

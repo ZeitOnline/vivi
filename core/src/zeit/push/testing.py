@@ -33,7 +33,6 @@ product_config = """\
   twitter-accounts file://{fixtures}/twitter-accounts.xml
   twitter-main-account twitter-test
   twitter-print-account twitter-print
-  facebook-accounts file://{fixtures}/facebook-accounts.xml
   facebook-main-account fb-test
   facebook-magazin-account fb-magazin
   facebook-campus-account fb-campus
