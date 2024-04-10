@@ -305,6 +305,8 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
+        # unlock checks if locked and unlocks if necessary
+        self.unlock(uniqueid)
 
         if content.is_collection:
             if self._foreign_child_lock_exists(uniqueid):
@@ -315,8 +317,6 @@ class Connector:
                 del self[child_uid]
         elif content.binary_body:
             self._delete_binary(content)
-        # unlock checks if locked and unlocks if necessary
-        self.unlock(uniqueid)
         self.session.delete(content)
 
         self.property_cache.pop(uniqueid, None)
