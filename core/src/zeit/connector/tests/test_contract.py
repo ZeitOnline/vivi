@@ -1,5 +1,7 @@
+from contextlib import contextmanager
 from datetime import datetime, timedelta
 from io import BytesIO
+from unittest import mock
 import collections.abc
 import time
 
@@ -693,6 +695,28 @@ class ContractCache:
         self.connector.invalidate_cache(res.id)
         self.assertFalse(self.has_body_cache(res.id))
 
+    def test_getitem_twice_returns_cached_result(self):
+        res = self.add_resource('foo')
+
+        def get(uniqueid):
+            res = self.connector[uniqueid]
+            res.properties
+            res.data
+
+        get(res.id)
+        transaction.commit()
+        with self.disable_storage():
+            with self.assertNothingRaised():
+                get(res.id)
+
+    def test_listCollection_twice_returns_cached_result(self):
+        res = self.mkdir('foo')
+        self.listCollection(res.id)
+        transaction.commit()
+        with self.disable_storage():
+            with self.assertNothingRaised():
+                self.listCollection(res.id)
+
 
 class DAVProtocol:
     shortened_uuid = False
@@ -727,6 +751,12 @@ class DAVProtocol:
             return False
         else:
             return True
+
+    @contextmanager
+    def disable_storage(self):
+        with mock.patch.object(self.connector, 'get_connection') as conn:
+            conn.side_effect = RuntimeError('disabled')
+            yield
 
 
 class ContractDAV(
@@ -818,6 +848,13 @@ class SQLProtocol:
 
     def has_body_cache(self, uniqueid):
         return uniqueid in self.connector.body_cache
+
+    @contextmanager
+    def disable_storage(self):
+        original = self.connector.session
+        self.connector.session = mock.Mock(side_effect=RuntimeError('disabled'))
+        yield
+        self.connector.session = original
 
 
 class ContractSQL(
