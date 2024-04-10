@@ -183,15 +183,15 @@ def use_span(module, *args, **kw):
         yield span
 
 
-def apply_samplerate_productconfig(module, config_module, key):
+def apply_samplerate_productconfig(module, config_module, key, context):
     config = zope.app.appsetup.product.getProductConfiguration(config_module)
     samplerate = int(config.get(key, 1))
-    return apply_samplerate(module, samplerate)
+    return apply_samplerate(module, samplerate, context)
 
 
-def apply_samplerate(module, samplerate):
+def apply_samplerate(module, samplerate, context=None):
     if random.random() <= 1 / samplerate:
-        return opentelemetry.context.set_value(module, samplerate)
+        return opentelemetry.context.set_value(module, samplerate, context)
     else:
         return None
 

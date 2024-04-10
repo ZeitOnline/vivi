@@ -198,10 +198,13 @@ else:
     @celery.signals.task_prerun.connect(weak=False)
     def apply_samplerate(*args, **kw):
         context = zeit.cms.tracing.apply_samplerate_productconfig(
-            'zeit.cms.relstorage', 'zeit.cms', 'samplerate-zodb'
+            'zeit.cms.relstorage',
+            'zeit.cms',
+            'samplerate-zodb',
+            opentelemetry.context.get_current(),
         )
         context = zeit.cms.tracing.apply_samplerate_productconfig(
-            'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql'
+            'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
         )
         if context is not None:
             token = opentelemetry.context.attach(context)

@@ -182,10 +182,10 @@ class OpenTelemetryMiddleware(opentelemetry.instrumentation.wsgi.OpenTelemetryMi
 
 def otel_request_hook(span, environ):
     context = zeit.cms.tracing.apply_samplerate_productconfig(
-        'zeit.cms.relstorage', 'zeit.cms', 'samplerate-zodb'
+        'zeit.cms.relstorage', 'zeit.cms', 'samplerate-zodb', opentelemetry.context.get_current()
     )
     context = zeit.cms.tracing.apply_samplerate_productconfig(
-        'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql'
+        'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
     )
     if context is not None:
         environ['zeit.cms.tracing'] = opentelemetry.context.attach(context)
