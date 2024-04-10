@@ -723,6 +723,19 @@ class ContractCache:
             with self.assertNothingRaised():
                 self.listCollection(res.id)
 
+    def test_locked_returns_cached_result(self):
+        res = self.add_resource('foo')
+        self.connector.lock(
+            res.id,
+            'zope.user',
+            datetime.now(pytz.UTC) + timedelta(hours=2),
+        )
+        transaction.commit()
+        with self.disable_storage():
+            with self.assertNothingRaised():
+                (principal, _, my_lock) = self.connector.locked(res.id)
+                self.assertEqual('zope.user', principal)
+
 
 class DAVProtocol:
     shortened_uuid = False
