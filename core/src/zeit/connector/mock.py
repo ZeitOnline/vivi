@@ -48,9 +48,10 @@ class Connector(zeit.connector.filesystem.Connector):
     child_name_cache = zeit.connector.cache.AlwaysEmptyDict()
     canonical_id_cache = zeit.connector.cache.AlwaysEmptyDict()
 
-    def __init__(self, repository_path, detect_mime_type=True):
+    def __init__(self, repository_path, detect_mime_type=True, ignore_locking=False):
         super().__init__(repository_path)
         self.detect_mime_type = detect_mime_type
+        self.ignore_locking = ignore_locking  # switch off lock validation, only for zeit.web tests
         self._reset()
 
     @classmethod
@@ -61,6 +62,8 @@ class Connector(zeit.connector.filesystem.Connector):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
         connector = super().factory()
         connector.detect_mime_type = config.get('detect-mime-type', True)
+        connector.ignore_locking = config.get('ignore-locking', False)
+
         return connector
 
     def _reset(self):
@@ -263,6 +266,8 @@ class Connector(zeit.connector.filesystem.Connector):
         self.unlock(id)
 
     def locked(self, id):
+        if self.ignore_locking:
+            return (None, None, False)
         id = self._get_cannonical_id(id)
         (lock_principal, until, my_lock) = self._locked.get(id, (None, None, False))
         if until and until < datetime.datetime.now(pytz.UTC):

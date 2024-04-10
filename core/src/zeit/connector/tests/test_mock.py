@@ -1,5 +1,10 @@
+from datetime import datetime, timedelta
+from unittest import mock
 import io
 import logging
+
+from pytz import UTC
+import transaction
 
 from zeit.connector.search import SearchVar as SV
 import zeit.connector.testing
@@ -44,3 +49,20 @@ Searching: (:and
   (:eq "http://namespaces.zeit.de/CMS/document" "author" "pm"))...""",
             self.log.getvalue(),
         )
+
+    def test_foreign_lock_does_not_break_if_utility_is_missing(self):
+        from zeit.connector.lock import lock_is_foreign
+
+        with mock.patch('zeit.connector.lock.HAVE_AUTH', new=False):
+            self.assertTrue(lock_is_foreign('zope.user'))
+
+    def test_switch_of_locking(self):
+        """Locking can be switched of for zeit.web tests, therefore a resource locked by another
+        user can be altered.
+        """
+        self.connector.ignore_locking = True
+        res = self.add_resource('foo')
+        self.connector.lock(res.id, 'external', datetime.now(UTC) + timedelta(hours=2))
+        transaction.commit()
+        res = self.get_resource('foo')
+        self.connector['http://xml.zeit.de/testing/foo'] = res
