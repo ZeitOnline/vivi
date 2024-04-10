@@ -417,8 +417,7 @@ class Connector:
                 self.move(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
             self.child_name_cache.pop(old_uniqueid, None)
 
-        path = self.session.get(Path, self._pathkey(old_uniqueid))
-        (path.parent_path, path.name) = self._pathkey(new_uniqueid)
+        (content.path.parent_path, content.path.name) = self._pathkey(new_uniqueid)
         # unlock checks if locked and unlocks if necessary
         self.unlock(new_uniqueid)
 
