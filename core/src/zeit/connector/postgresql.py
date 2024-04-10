@@ -159,10 +159,10 @@ class Connector:
         if uniqueid in self.property_cache:
             return self.property_cache[uniqueid]
 
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is None:
+        content = self._get_content(uniqueid)
+        if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-        properties = path.content.to_webdav()
+        properties = content.to_webdav()
         self.property_cache[uniqueid] = properties
         return properties
 
@@ -175,8 +175,7 @@ class Connector:
         if uniqueid in self.body_cache:
             return self.body_cache[uniqueid]
 
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        content = path.content
+        content = self._get_content(uniqueid)
         if content.is_collection:
             body = b''
         elif content.binary_body:
@@ -523,13 +522,13 @@ class Connector:
                     yield (item.uniqueid, value)
 
     def invalidate_cache(self, uniqueid):
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is None:
+        content = self._get_content(uniqueid)
+        if content is None:
             self.property_cache.pop(uniqueid, None)
             self.child_name_cache.pop(uniqueid, None)
         else:
-            self.property_cache[uniqueid] = path.content.to_webdav()
-            if path.content.is_collection:
+            self.property_cache[uniqueid] = content.to_webdav()
+            if content.is_collection:
                 self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
