@@ -22,33 +22,6 @@
     />
 
   <browser:page
-    for="zope.location.interfaces.ISite"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="facebook-token.html"
-    class=".facebook.TokenForm"
-    permission="zeit.ChangeGlobalSettings"
-    />
-
-  <browser:viewlet
-    name="facebook-token"
-    for="*"
-    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
-    class=".facebook.MenuItem"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zeit.ChangeGlobalSettings"
-    weight="200"
-    />
-
-  <gocept:pagelet
-    for="zope.location.interfaces.ISite"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="generate-facebook-token"
-    class=".facebook.GenerateToken"
-    template="facebook-token.pt"
-    permission="zeit.ChangeGlobalSettings"
-    />
-
-  <browser:page
     for="*"
     name="breaking-banner-retract"
     class=".banner.Retract"
