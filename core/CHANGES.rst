@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.142.0 (2024-04-10)
+--------------------
+
+- ZO-5022: Apply samplerate for both, sql and zodb
+
+
 5.141.0 (2024-04-09)
 --------------------
 
