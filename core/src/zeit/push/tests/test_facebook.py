@@ -36,8 +36,10 @@ class FacebookTest(zeit.push.testing.TestCase):
         super().tearDown()
 
     def test_send_posts_status(self):
-        with mock.patch('zeit.push.interfaces.FacebookAccountSource.access_token') as tok:
-            tok.return_value = self.access_token
+        with mock.patch(
+            'zeit.push.facebook.FacebookConfig.token', new_callable=mock.PropertyMock
+        ) as token:
+            token.return_value = self.access_token
             self.api.send(
                 'zeit.push.tests.faceboök %s' % self.nugget, 'http://example.com', account='fb-test'
             )
@@ -58,10 +60,11 @@ class FacebookTest(zeit.push.testing.TestCase):
 
 
 class FacebookAccountsTest(zeit.push.testing.TestCase):
-    def test_main_account_is_excluded_from_source(self):
+    def test_accounts(self):
+        accounts = dict(zope.component.getUtilitiesFor(zeit.push.interfaces.ISocialConfig))
         self.assertEqual(
-            ['fb-magazin', 'fb-campus', 'fb-zett'],
-            list(zeit.push.interfaces.facebookAccountSource(None)),
+            ['fb-main', 'fb-magazin', 'fb-campus', 'fb-zett'],
+            list(accounts.keys()),
         )
 
 

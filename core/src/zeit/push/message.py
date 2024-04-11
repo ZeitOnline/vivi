@@ -134,93 +134,96 @@ class AccountData(grok.Adapter):
 
     @property
     def facebook_main_enabled(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.MAIN_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('enabled')
 
     @facebook_main_enabled.setter
     def facebook_main_enabled(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT}, enabled=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
+        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
 
     # We cannot use the key ``text``, since the first positional parameter of
     # IPushNotifier.send() is also called text, which causes TypeError.
     @property
     def facebook_main_text(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.MAIN_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('override_text')
 
     @facebook_main_text.setter
     def facebook_main_text(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAIN_ACCOUNT}, override_text=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
+        self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
 
     @property
     def facebook_magazin_enabled(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.MAGAZIN_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-magazin')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('enabled')
 
     @facebook_magazin_enabled.setter
     def facebook_magazin_enabled(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT}, enabled=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-magazin')
+        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
 
     @property
     def facebook_magazin_text(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.MAGAZIN_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-magazin')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('override_text')
 
     @facebook_magazin_text.setter
     def facebook_magazin_text(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.MAGAZIN_ACCOUNT}, override_text=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-magazin')
+        self.push.set(
+            {'type': 'facebook', 'account': account.name},
+            override_text=value,
+        )
 
     @property
     def facebook_campus_enabled(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.CAMPUS_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('enabled')
 
     @facebook_campus_enabled.setter
     def facebook_campus_enabled(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT}, enabled=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
+        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
 
     @property
     def facebook_campus_text(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.CAMPUS_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('override_text')
 
     @facebook_campus_text.setter
     def facebook_campus_text(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.CAMPUS_ACCOUNT}, override_text=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
+        self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
 
     @property
     def facebook_zett_enabled(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.ZETT_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('enabled')
 
     @facebook_zett_enabled.setter
     def facebook_zett_enabled(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT}, enabled=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
+        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
 
     @property
     def facebook_zett_text(self):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        service = self.push.get(type='facebook', account=source.ZETT_ACCOUNT)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
+        service = self.push.get(type='facebook', account=account.name)
         return service and service.get('override_text')
 
     @facebook_zett_text.setter
     def facebook_zett_text(self, value):
-        source = zeit.push.interfaces.facebookAccountSource(None)
-        self.push.set({'type': 'facebook', 'account': source.ZETT_ACCOUNT}, override_text=value)
+        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
+        self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
 
     @property
     def twitter_ressort_text(self):

@@ -1,6 +1,0 @@
-<facebook-accounts>
-  <account name="fb-test" token="None">Gocept Testaccount</account>
-  <account name="fb-magazin" token="None" secret="None">Magazin</account>
-  <account name="fb-campus" token="None" secret="None">Campus</account>
-  <account name="fb-zett" token="None" secret="None">ze.tt</account>
-</facebook-accounts>

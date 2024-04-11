@@ -81,7 +81,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         )
         facebook = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name='facebook')
         self.assertEqual(
-            zeit.push.facebook.facebookAccountSource(None).MAIN_ACCOUNT,
+            'fb-test',
             facebook.calls[0][2]['account'],
         )
 
