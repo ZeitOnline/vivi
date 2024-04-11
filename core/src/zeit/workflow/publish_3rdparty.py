@@ -1,4 +1,5 @@
 from itertools import chain
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import datetime
 import logging
 
@@ -319,7 +320,8 @@ class Summy(grok.Adapter, IgnoreMixin):
         }
 
     def publish_json(self):
-        if self.ignore('publish'):
+        toggle = FEATURE_TOGGLES.find('summy_thirdparty')
+        if self.ignore('publish') or not toggle:
             # this is explicitly set to empty dict
             # because we still want to notify summy
             # and summy will store some additional values

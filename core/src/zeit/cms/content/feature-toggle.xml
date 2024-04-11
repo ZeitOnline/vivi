@@ -16,4 +16,5 @@
   <normalize_quotes>false</normalize_quotes>
   <simplecast_webhook>true</simplecast_webhook>
   <speech_webhook>true</speech_webhook>
+  <summy_thirdparty>true</summy_thirdparty>
 </features>
