@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.144.0 (2024-04-11)
+--------------------
+
+- ZO-4974: remove feature toggle publish_bigquery_json
+
+- ZO-5050: read facebook credentials from secret store instead of config file
+
+- ZO-5125: Cache lock data in property cache for sql connector, just like dav does
+
+
+FIX:
+- ZO-4800: Remove obsolete class
+
+
 5.143.0 (2024-04-10)
 --------------------
 
