@@ -19,6 +19,7 @@ dependencies = [
     "grokcore.component",
     "jinja2 >= 2.11.0.dev0",
     "lxml",
+    "lxml-html-clean",
     "markdown",
     "markdownify",
     "martian",
