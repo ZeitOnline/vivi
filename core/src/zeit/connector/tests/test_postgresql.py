@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from io import BytesIO
+from unittest import mock
 
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
@@ -203,6 +204,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.connector.session.delete(content)
         with self.assertRaises(IntegrityError):
             transaction.commit()
+
+    def test_locking_can_be_disabled_by_config(self):
+        self._create_lock(1)
+        transaction.commit()  # clear cache
+        with mock.patch.object(self.connector, 'support_locking', new=False):
+            self.assertEqual(None, self.connector.locked('http://xml.zeit.de/testing/foo-1')[0])
+        transaction.abort()
+        self.assertNotEqual(None, self.connector.locked('http://xml.zeit.de/testing/foo-1')[0])
 
     def test_invalidate_cache_of_nonexistent_content_creates_no_cache(self):
         self.assertNotIn('http://xml.zeit.de/testing/foo', self.connector.child_name_cache)

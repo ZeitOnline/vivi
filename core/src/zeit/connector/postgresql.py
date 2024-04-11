@@ -1,3 +1,4 @@
+from ast import literal_eval
 from datetime import datetime
 from enum import Enum
 from functools import partial
@@ -27,7 +28,7 @@ from sqlalchemy import (
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import joinedload, relationship
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
 import opentelemetry.metrics
@@ -86,7 +87,15 @@ def _build_filter(expr):
 
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
-    def __init__(self, dsn, storage_project, storage_bucket, reconnect_tries=3, reconnect_wait=0.1):
+    def __init__(
+        self,
+        dsn,
+        storage_project,
+        storage_bucket,
+        reconnect_tries=3,
+        reconnect_wait=0.1,
+        support_locking=False,
+    ):
         self.dsn = dsn
         self.reconnect_tries = reconnect_tries
         self.reconnect_wait = reconnect_wait
@@ -99,6 +108,7 @@ class Connector:
         EngineTracer(self.engine, enable_commenter=True)
         self.gcs_client = storage.Client(project=storage_project)
         self.bucket = self.gcs_client.bucket(storage_bucket)
+        self.support_locking = support_locking
 
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -113,6 +123,7 @@ class Connector:
         reconnect_wait = config.get('sql-reconnect-wait')
         if reconnect_wait is not None:
             params['reconnect_wait'] = float(reconnect_wait)
+        params['support_locking'] = literal_eval(config.get('sql-locking', 'False'))
         return cls(config['dsn'], config['storage-project'], config['storage-bucket'], **params)
 
     # Inspired by <https://docs.sqlalchemy.org/en/20/core/pooling.html
@@ -175,7 +186,7 @@ class Connector:
         if uniqueid in self.body_cache:
             return self.body_cache[uniqueid]
 
-        content = self._get_content(uniqueid)
+        content = self._get_content(uniqueid, getlock=False)
         if content.is_collection:
             body = b''
         elif content.binary_body:
@@ -221,7 +232,7 @@ class Connector:
         if uniqueid == ID_NAMESPACE:
             parent_path = ''
         else:
-            if self._get_content(uniqueid) is None:
+            if self._get_content(uniqueid, getlock=False) is None:
                 self.child_name_cache.pop(uniqueid, None)
                 return
             parent_path = '/'.join(self._pathkey(uniqueid))
@@ -334,8 +345,12 @@ class Connector:
             except google.api_core.exceptions.NotFound:
                 log.info('Ignored NotFound while deleting GCS blob %s', content.uniqueid)
 
-    def _get_content(self, uniqueid):
-        path = self.session.get(Path, self._pathkey(uniqueid))
+    def _get_content(self, uniqueid, getlock=True):
+        parent, name = self._pathkey(uniqueid)
+        query = select(Path).filter_by(parent_path=parent, name=name)
+        if getlock and self.support_locking:
+            query = query.options(joinedload(Path.content).joinedload(Content.lock))
+        path = self.session.execute(query).scalars().one_or_none()
         return path.content if path is not None else None
 
     @staticmethod
@@ -605,7 +620,7 @@ class Content(DBObject):
     lock = relationship(
         'Lock',
         uselist=False,
-        lazy='joined',
+        lazy='noload',
         back_populates='content',
         cascade='delete, delete-orphan',  # Propagate `del content.lock` to DB
         passive_deletes=True,  # Disable any heuristics, only ever explicitly delete Locks
@@ -673,7 +688,7 @@ class Lock(DBObject):
     principal = Column(Unicode, nullable=False)
     until = Column(TIMESTAMP(timezone=True), nullable=False)
 
-    content = relationship('Content', uselist=False, lazy='joined', back_populates='lock')
+    content = relationship('Content', uselist=False, lazy='noload', back_populates='lock')
 
     @property
     def token(self):
