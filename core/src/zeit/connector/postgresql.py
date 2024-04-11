@@ -600,15 +600,15 @@ class Content(DBObject):
         lazy='joined',
         back_populates='content',
         cascade='all, delete-orphan',
-        passive_deletes=True,
+        passive_deletes=True,  # Handled in DB, Path.id has ondelete=cascade
     )
     lock = relationship(
         'Lock',
         uselist=False,
         lazy='joined',
         back_populates='content',
-        cascade='all, delete-orphan',
-        passive_deletes=True,
+        cascade='delete, delete-orphan',  # Propagate `del content.lock` to DB
+        passive_deletes=True,  # Disable any heuristics, only ever explicitly delete Locks
     )
 
     @property
