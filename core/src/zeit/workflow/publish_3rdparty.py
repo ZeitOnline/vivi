@@ -270,7 +270,7 @@ class Speechbert(grok.Adapter):
         return {k: v for k, v in payload.items() if v}
 
     def publish_json(self):
-        if self.ignore('publish'):
+        if self.ignore('publish') or not FEATURE_TOGGLES.find('summy_thirdparty'):
             return None
         return self._json()
 
