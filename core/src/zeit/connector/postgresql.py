@@ -27,7 +27,7 @@ from sqlalchemy import (
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import relationship
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
 import opentelemetry.metrics
@@ -570,12 +570,7 @@ class Path(DBObject):
         nullable=False,
         index=True,
     )
-    content = relationship(
-        'Content',
-        uselist=False,
-        lazy='joined',
-        backref=backref('path', uselist=False, cascade='all, delete-orphan', passive_deletes=True),
-    )
+    content = relationship('Content', uselist=False, lazy='joined', back_populates='path')
 
     @property
     def uniqueid(self):
@@ -597,6 +592,23 @@ class Content(DBObject):
         TIMESTAMP(timezone=True),
         server_default=sqlalchemy.func.now(),
         onupdate=sqlalchemy.func.now(),
+    )
+
+    path = relationship(
+        'Path',
+        uselist=False,
+        lazy='joined',
+        back_populates='content',
+        cascade='all, delete-orphan',
+        passive_deletes=True,
+    )
+    lock = relationship(
+        'Lock',
+        uselist=False,
+        lazy='joined',
+        back_populates='content',
+        cascade='all, delete-orphan',
+        passive_deletes=True,
     )
 
     @property
@@ -661,12 +673,7 @@ class Lock(DBObject):
     principal = Column(Unicode, nullable=False)
     until = Column(TIMESTAMP(timezone=True), nullable=False)
 
-    content = relationship(
-        'Content',
-        uselist=False,
-        lazy='joined',
-        backref=backref('lock', uselist=False, cascade='all, delete-orphan', passive_deletes=True),
-    )
+    content = relationship('Content', uselist=False, lazy='joined', back_populates='lock')
 
     @property
     def token(self):
