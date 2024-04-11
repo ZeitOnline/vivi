@@ -319,7 +319,8 @@ class Summy(grok.Adapter, IgnoreMixin):
         }
 
     def publish_json(self):
-        if self.ignore('publish'):
+        toogle = FEATURE_TOGGLES.find('summy_thirdparty')
+        if self.ignore('publish') or not toggle:
             # this is explicitly set to empty dict
             # because we still want to notify summy
             # and summy will store some additional values
