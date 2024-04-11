@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 from io import BytesIO
+from unittest import mock
 
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 import google.api_core.exceptions
 import pytz
 import transaction
@@ -71,14 +73,9 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         props = self.connector._get_content(res.id)
         davprops = props.to_webdav()
         self.assertEqual(
-            {
-                ('uuid', 'http://namespaces.zeit.de/CMS/document'): '{urn:uuid:%s}' % props.id,
-                ('type', 'http://namespaces.zeit.de/CMS/meta'): 'testing',
-                ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
-                ('is_collection', 'INTERNAL'): False,
-            },
-            davprops,
+            '{urn:uuid:%s}' % props.id, davprops[('uuid', 'http://namespaces.zeit.de/CMS/document')]
         )
+        self.assertEqual('testing', davprops[('type', 'http://namespaces.zeit.de/CMS/meta')])
 
     def test_provides_last_updated_column(self):
         # Properly we would test that the value of the last_updated column
@@ -196,6 +193,25 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         assert self.connector.session.scalar(select(func.count(Lock.id))) == 2
         _unlock_overdue_locks()
         assert self.connector.session.scalar(select(func.count(Lock.id))) == 1
+
+    def test_delete_content_with_lock_raises(self):
+        """We intentionally have not declared `ON DELETE CASCADE` from Lock to
+        Content (there is one for Path though), to prevent accidental deletions
+        of locked content when operating directly on the DB.
+        """
+        self._create_lock(1)
+        content = self.connector._get_content('http://xml.zeit.de/testing/foo-1')
+        self.connector.session.delete(content)
+        with self.assertRaises(IntegrityError):
+            transaction.commit()
+
+    def test_locking_can_be_disabled_by_config(self):
+        self._create_lock(1)
+        transaction.commit()  # clear cache
+        with mock.patch.object(self.connector, 'support_locking', new=False):
+            self.assertEqual(None, self.connector.locked('http://xml.zeit.de/testing/foo-1')[0])
+        transaction.abort()
+        self.assertNotEqual(None, self.connector.locked('http://xml.zeit.de/testing/foo-1')[0])
 
     def test_invalidate_cache_of_nonexistent_content_creates_no_cache(self):
         self.assertNotIn('http://xml.zeit.de/testing/foo', self.connector.child_name_cache)

@@ -246,6 +246,7 @@ class SQLConfigLayer(zeit.cms.testing.ProductConfigLayer):
             'dsn': self['dsn'],
             'storage-project': 'ignored_by_emulator',
             'storage-bucket': GCS_SERVER_LAYER.bucket,
+            'sql-locking': 'True',
         }
         os.environ.setdefault('PGDATABASE', 'vivi_test')
         super().setUp()

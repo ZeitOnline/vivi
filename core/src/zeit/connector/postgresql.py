@@ -1,3 +1,4 @@
+from ast import literal_eval
 from datetime import datetime
 from enum import Enum
 from functools import partial
@@ -27,7 +28,7 @@ from sqlalchemy import (
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import joinedload, relationship
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
 import opentelemetry.metrics
@@ -86,7 +87,15 @@ def _build_filter(expr):
 
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
-    def __init__(self, dsn, storage_project, storage_bucket, reconnect_tries=3, reconnect_wait=0.1):
+    def __init__(
+        self,
+        dsn,
+        storage_project,
+        storage_bucket,
+        reconnect_tries=3,
+        reconnect_wait=0.1,
+        support_locking=False,
+    ):
         self.dsn = dsn
         self.reconnect_tries = reconnect_tries
         self.reconnect_wait = reconnect_wait
@@ -99,6 +108,7 @@ class Connector:
         EngineTracer(self.engine, enable_commenter=True)
         self.gcs_client = storage.Client(project=storage_project)
         self.bucket = self.gcs_client.bucket(storage_bucket)
+        self.support_locking = support_locking
 
     @classmethod
     @zope.interface.implementer(zeit.connector.interfaces.IConnector)
@@ -113,6 +123,7 @@ class Connector:
         reconnect_wait = config.get('sql-reconnect-wait')
         if reconnect_wait is not None:
             params['reconnect_wait'] = float(reconnect_wait)
+        params['support_locking'] = literal_eval(config.get('sql-locking', 'False'))
         return cls(config['dsn'], config['storage-project'], config['storage-bucket'], **params)
 
     # Inspired by <https://docs.sqlalchemy.org/en/20/core/pooling.html
@@ -152,24 +163,30 @@ class Connector:
     property_cache = TransactionBoundCache('_v_property_cache', zeit.connector.cache.PropertyCache)
 
     def _get_properties(self, uniqueid):
+        if uniqueid == ID_NAMESPACE:
+            content = Content(id='root', type='folder', is_collection=True, unsorted={})
+            return content.to_webdav()
+
         if uniqueid in self.property_cache:
             return self.property_cache[uniqueid]
 
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is None:
+        content = self._get_content(uniqueid)
+        if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-        properties = path.content.to_webdav()
+        properties = content.to_webdav()
         self.property_cache[uniqueid] = properties
         return properties
 
     body_cache = TransactionBoundCache('_v_body_cache', zeit.connector.cache.ResourceCache)
 
     def _get_body(self, uniqueid):
+        if uniqueid == ID_NAMESPACE:
+            return BytesIO(b'')
+
         if uniqueid in self.body_cache:
             return self.body_cache[uniqueid]
 
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        content = path.content
+        content = self._get_content(uniqueid, getlock=False)
         if content.is_collection:
             body = b''
         elif content.binary_body:
@@ -215,7 +232,7 @@ class Connector:
         if uniqueid == ID_NAMESPACE:
             parent_path = ''
         else:
-            if self._get_content(uniqueid) is None:
+            if self._get_content(uniqueid, getlock=False) is None:
                 self.child_name_cache.pop(uniqueid, None)
                 return
             parent_path = '/'.join(self._pathkey(uniqueid))
@@ -248,8 +265,7 @@ class Connector:
             self.session.add(path)
         else:
             path = content.path
-            lock = self._get_lock(uniqueid)
-            if lock and lock.status == LockStatus.FOREIGN:
+            if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
@@ -286,8 +302,7 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-        lock = self._get_lock(uniqueid)
-        if lock and lock.status == LockStatus.FOREIGN:
+        if content.lock_status == LockStatus.FOREIGN:
             raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         current = content.to_webdav()
         current.update(properties)
@@ -299,6 +314,8 @@ class Connector:
         content = self._get_content(uniqueid)
         if content is None:
             raise KeyError(f'The resource {uniqueid} does not exist.')
+        # unlock checks if locked and unlocks if necessary
+        self.unlock(uniqueid)
 
         if content.is_collection:
             if self._foreign_child_lock_exists(uniqueid):
@@ -309,8 +326,6 @@ class Connector:
                 del self[child_uid]
         elif content.binary_body:
             self._delete_binary(content)
-        # unlock checks if locked and unlocks if necessary
-        self.unlock(uniqueid)
         self.session.delete(content)
 
         self.property_cache.pop(uniqueid, None)
@@ -330,8 +345,12 @@ class Connector:
             except google.api_core.exceptions.NotFound:
                 log.info('Ignored NotFound while deleting GCS blob %s', content.uniqueid)
 
-    def _get_content(self, uniqueid):
-        path = self.session.get(Path, self._pathkey(uniqueid))
+    def _get_content(self, uniqueid, getlock=True):
+        parent, name = self._pathkey(uniqueid)
+        query = select(Path).filter_by(parent_path=parent, name=name)
+        if getlock and self.support_locking:
+            query = query.options(joinedload(Path.content).joinedload(Content.lock))
+        path = self.session.execute(query).scalars().one_or_none()
         return path.content if path is not None else None
 
     @staticmethod
@@ -400,6 +419,11 @@ class Connector:
                 old_uniqueid,
                 f'Could not move {old_uniqueid} to {new_uniqueid}, because target already exists.',
             )
+        if content.lock:
+            if lock_is_foreign(content.lock.principal):
+                raise LockedByOtherSystemError(old_uniqueid, f'{old_uniqueid} is already locked.')
+            del content.lock
+
         if content.is_collection:
             if self._foreign_child_lock_exists(old_uniqueid):
                 raise LockedByOtherSystemError(
@@ -411,10 +435,7 @@ class Connector:
                 self.move(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
             self.child_name_cache.pop(old_uniqueid, None)
 
-        path = self.session.get(Path, self._pathkey(old_uniqueid))
-        (path.parent_path, path.name) = self._pathkey(new_uniqueid)
-        # unlock checks if locked and unlocks if necessary
-        self.unlock(new_uniqueid)
+        (content.path.parent_path, content.path.name) = self._pathkey(new_uniqueid)
 
         self.property_cache.pop(old_uniqueid, None)
         self.property_cache[new_uniqueid] = content.to_webdav()
@@ -432,12 +453,6 @@ class Connector:
                 return True
         return False
 
-    def _get_lock(self, uniqueid):
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is None:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
-        return self.session.get(Lock, path.id)
-
     def _insert_or_update_lock(self, uniqueid, principal, until, lock):
         path = self.session.get(Path, self._pathkey(uniqueid))
         if path is None:
@@ -449,40 +464,54 @@ class Connector:
         else:
             lock = Lock(id=path.id, principal=principal, until=until)
             self.session.add(lock)
+
+        self._update_lock_cache(uniqueid, principal, until)
         return lock.token
 
     def lock(self, uniqueid, principal, until):
+        uniqueid = self._normalize(uniqueid)
         if uniqueid not in self:
             raise KeyError(f'The resource {uniqueid} does not exist.')
-
-        lock = self._get_lock(uniqueid)
-        status = lock.status if lock else LockStatus.NONE
-        match status:
+        content = self._get_content(uniqueid)
+        match content.lock_status:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
-                return self._insert_or_update_lock(uniqueid, principal, until, lock)
+                return self._insert_or_update_lock(uniqueid, principal, until, content.lock)
             case LockStatus.OWN:
                 raise LockingError(id, f'You already own the lock of {uniqueid}.')
             case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
     def unlock(self, uniqueid):
-        lock = self._get_lock(uniqueid)
+        uniqueid = self._normalize(uniqueid)
+        lock = self._get_content(uniqueid).lock
         if not lock:
             return
         if lock_is_foreign(lock.principal):
             raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
         self.session.delete(lock)
+        self._update_lock_cache(uniqueid, None)
 
     def _unlock(self, uniqueid, token):
-        lock = self._get_lock(uniqueid)
+        uniqueid = self._normalize(uniqueid)
+        lock = self._get_content(uniqueid).lock
         if not lock or not lock.token == token:
             return
         self.session.delete(lock)
+        self._update_lock_cache(uniqueid, None)
+
+    def _update_lock_cache(self, uniqueid, principal, until=None):
+        properties = self._get_properties(uniqueid)
+        properties[('lock_principal', INTERNAL_PROPERTY)] = principal
+        if until is None:
+            properties.pop(('lock_until', INTERNAL_PROPERTY), None)
+        else:
+            properties[('lock_until', INTERNAL_PROPERTY)] = until
+        self.property_cache[uniqueid] = properties
 
     def locked(self, uniqueid):
-        lock = self._get_lock(uniqueid)
-        status = lock.status if lock else LockStatus.NONE
-        match status:
+        uniqueid = self._normalize(uniqueid)
+        lock = self._get_cached_lock(uniqueid)
+        match lock.status:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
                 return (None, None, False)
             case LockStatus.OWN:
@@ -491,6 +520,13 @@ class Connector:
                 return (lock.principal, lock.until, False)
             case _:
                 return (None, None, False)
+
+    def _get_cached_lock(self, uniqueid):
+        properties = self._get_properties(uniqueid)
+        return Lock(
+            principal=properties.get(('lock_principal', INTERNAL_PROPERTY)),
+            until=properties.get(('lock_until', INTERNAL_PROPERTY)),
+        )
 
     def search(self, attrlist, expr):
         if (
@@ -516,13 +552,13 @@ class Connector:
                     yield (item.uniqueid, value)
 
     def invalidate_cache(self, uniqueid):
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is None:
+        content = self._get_content(uniqueid)
+        if content is None:
             self.property_cache.pop(uniqueid, None)
             self.child_name_cache.pop(uniqueid, None)
         else:
-            self.property_cache[uniqueid] = path.content.to_webdav()
-            if path.content.is_collection:
+            self.property_cache[uniqueid] = content.to_webdav()
+            if content.is_collection:
                 self._reload_child_name_cache(uniqueid)
         parent = os.path.split(uniqueid)[0]
         self._reload_child_name_cache(parent)
@@ -549,12 +585,7 @@ class Path(DBObject):
         nullable=False,
         index=True,
     )
-    content = relationship(
-        'Content',
-        uselist=False,
-        lazy='joined',
-        backref=backref('path', uselist=False, cascade='all, delete-orphan', passive_deletes=True),
-    )
+    content = relationship('Content', uselist=False, lazy='joined', back_populates='path')
 
     @property
     def uniqueid(self):
@@ -578,6 +609,23 @@ class Content(DBObject):
         onupdate=sqlalchemy.func.now(),
     )
 
+    path = relationship(
+        'Path',
+        uselist=False,
+        lazy='joined',
+        back_populates='content',
+        cascade='all, delete-orphan',
+        passive_deletes=True,  # Handled in DB, Path.id has ondelete=cascade
+    )
+    lock = relationship(
+        'Lock',
+        uselist=False,
+        lazy='noload',
+        back_populates='content',
+        cascade='delete, delete-orphan',  # Propagate `del content.lock` to DB
+        passive_deletes=True,  # Disable any heuristics, only ever explicitly delete Locks
+    )
+
     @property
     def binary_body(self):
         config = zope.app.appsetup.product.getProductConfiguration('zeit.connector') or {}
@@ -587,6 +635,10 @@ class Content(DBObject):
     @property
     def uniqueid(self):
         return self.path.uniqueid
+
+    @property
+    def lock_status(self):
+        return self.lock.status if self.lock else LockStatus.NONE
 
     NS = 'http://namespaces.zeit.de/CMS/'
 
@@ -599,6 +651,12 @@ class Content(DBObject):
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
+
+        if self.lock:
+            props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
+            props[('lock_until', INTERNAL_PROPERTY)] = self.lock.until
+        else:
+            props[('lock_principal', INTERNAL_PROPERTY)] = None
 
         return props
 
@@ -630,13 +688,7 @@ class Lock(DBObject):
     principal = Column(Unicode, nullable=False)
     until = Column(TIMESTAMP(timezone=True), nullable=False)
 
-    content = relationship(
-        'Content',
-        uselist=False,
-        # Not used in code, but needed to let sqlalchemy know about
-        # relationship between mapped classes
-        lazy='noload',
-    )
+    content = relationship('Content', uselist=False, lazy='noload', back_populates='lock')
 
     @property
     def token(self):
