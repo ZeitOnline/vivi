@@ -335,7 +335,7 @@ class Summy(grok.Adapter, IgnoreMixin):
 class PublisherData(grok.Adapter):
     grok.context(zeit.cms.interfaces.ICMSContent)
 
-    ignore = ()  # extension point e.g. for bulk publish scripts
+    ignore = ('summy',)  # extension point e.g. for bulk publish scripts
 
     def __call__(self, action):
         uuid = zeit.cms.content.interfaces.IUUID(self.context)
