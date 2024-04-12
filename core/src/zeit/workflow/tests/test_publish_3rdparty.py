@@ -9,6 +9,7 @@ import zope.component
 import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
 from zeit.content.image.testing import create_image_group_with_master_image
@@ -314,6 +315,19 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/zeit-magazin/wochenmarkt/rezept')
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         config['summy-ignore-ressorts'] = 'zeit-magazin'
+        payload = zeit.workflow.testing.publish_json(article, 'summy')
+        assert payload == {}
+
+    def test_summy_feature_toogle(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
+        payload = zeit.workflow.testing.publish_json(article, 'summy')
+        assert payload == {'text': [], 'avoid_create_summary': None}
+
+    def test_summy_feature_toogle_deactivated(self):
+        FEATURE_TOGGLES.unset('summy_thirdparty')
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
