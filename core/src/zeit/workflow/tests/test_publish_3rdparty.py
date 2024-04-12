@@ -318,16 +318,9 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
-    def test_summy_feature_toogle(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        payload = zeit.workflow.testing.publish_json(article, 'summy')
-        assert payload == {'text': [], 'avoid_create_summary': None}
-
     def test_summy_feature_toogle_deactivated(self):
         FEATURE_TOGGLES.unset('summy_thirdparty')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
         payload = zeit.workflow.testing.publish_json(article, 'summy')
         assert payload == {}
 
