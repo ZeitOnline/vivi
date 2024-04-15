@@ -452,18 +452,22 @@ class Connector:
                 self.child_name_cache[content.uniqueid] = set()
             self._update_parent_child_name_cache(content.uniqueid, 'add')
 
-    def _clone_row(self, row, ignored_columns=None):
-        if ignored_columns is None:
-            ignored_columns = []
-        clone = type(row)()
-        for column in row.__table__.columns:
-            if column.name not in ignored_columns:
-                setattr(clone, column.name, getattr(row, column.name))
+    def _clone_row(self, row, ignored_columns=()):
+        cls = type(row)
+        clone = cls()
+        for column in self._columns(cls):
+            if column not in ignored_columns:
+                setattr(clone, column, getattr(row, column))
         return clone
 
     def _bulk_insert(self, cls, items):
-        columns = [c.key for c in sqlalchemy.orm.class_mapper(cls).columns]
-        self.session.execute(insert(cls), [{c: getattr(x, c) for c in columns} for x in items])
+        self.session.execute(
+            insert(cls), [{c: getattr(x, c) for c in self._columns(cls)} for x in items]
+        )
+
+    @staticmethod
+    def _columns(cls):
+        return [c.key for c in sqlalchemy.orm.class_mapper(cls).columns]
 
     def move(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
