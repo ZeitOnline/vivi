@@ -25,9 +25,11 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
+    bindparam,
     delete,
     insert,
     select,
+    update,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import joinedload, relationship
@@ -485,34 +487,40 @@ class Connector:
                 raise LockedByOtherSystemError(old_uniqueid, f'{old_uniqueid} is already locked.')
             del content.lock
 
+        sources = [content]
         if content.is_collection:
-            if self._foreign_child_lock_exists(old_uniqueid):
-                raise LockedByOtherSystemError(
-                    old_uniqueid,
-                    f'Could not move {old_uniqueid} to {new_uniqueid}, because it is locked.',
-                )
-            self.child_name_cache[new_uniqueid] = set()
-            for name, _ in self.listCollection(old_uniqueid):
-                self.move(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
-            self.child_name_cache.pop(old_uniqueid, None)
+            sources.extend(self._get_all_children(content.uniqueid))
 
-        (content.path.parent_path, content.path.name) = self._pathkey(new_uniqueid)
+            for child in sources:
+                if child.lock and lock_is_foreign(child.lock.principal):
+                    raise LockedByOtherSystemError(
+                        old_uniqueid,
+                        f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked.',
+                    )
 
-        self.property_cache.pop(old_uniqueid, None)
-        self.property_cache[new_uniqueid] = content.to_webdav()
-        self.body_cache.pop(old_uniqueid, None)
-        self._update_parent_child_name_cache(old_uniqueid, 'remove')
-        self._update_parent_child_name_cache(new_uniqueid, 'add')
+        updates = []
+        for content in sources:
+            source_uniqueid = content.uniqueid
+            target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
+            parent, name = self._pathkey(target_uniqueid)
+            updates.append({'key': content.id, 'parent_path': parent, 'name': name})
 
-    def _foreign_child_lock_exists(self, uniqueid):
-        parent = uniqueid.replace(ID_NAMESPACE, '', 1)
-        stmt = (
-            select(Lock).join(Path, Lock.id == Path.id).filter(Path.parent_path.startswith(parent))
-        )
-        for lock in self.session.execute(stmt).scalars():
-            if lock_is_foreign(lock.principal):
-                return True
-        return False
+            self.property_cache.pop(source_uniqueid, None)
+            self.property_cache[target_uniqueid] = content.to_webdav()
+            self.body_cache.pop(source_uniqueid, None)
+            if content.is_collection:
+                self.child_name_cache.pop(source_uniqueid, None)
+                self.child_name_cache[target_uniqueid] = set()
+            self._update_parent_child_name_cache(source_uniqueid, 'remove')
+            self._update_parent_child_name_cache(target_uniqueid, 'add')
+
+        # We're updating the primary key itself, which the normal sqlalchemy
+        # "bulk update " API does not offer, so we have to user a lower level,
+        # <https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html
+        #  #disabling-bulk-orm-update-by-primary-key-for-an-update-statement
+        #  -with-multiple-parameter-sets>
+        self.session.connection().execute(update(Path).where(Path.id == bindparam('key')), updates)
+        zope.sqlalchemy.mark_changed(self.session())
 
     def _insert_or_update_lock(self, uniqueid, principal, until, lock):
         path = self.session.get(Path, self._pathkey(uniqueid))
