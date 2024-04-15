@@ -325,7 +325,7 @@ class Connector:
             for _, child_uid in self.listCollection(uniqueid):
                 del self[child_uid]
         elif content.binary_body:
-            self._delete_binary(content.id)
+            self._delete_binary([content.id])
         self.session.delete(content)
 
         self.property_cache.pop(uniqueid, None)
@@ -333,17 +333,29 @@ class Connector:
         self.child_name_cache.pop(uniqueid, None)
         self._update_parent_child_name_cache(uniqueid, 'remove')
 
-    def _delete_binary(self, id):
-        blob = self.bucket.blob(id)
+    def _delete_binary(self, ids):
+        if not ids:
+            return
         with zeit.cms.tracing.use_span(
             __name__ + '.tracing',
             'gcs',
-            attributes={'db.operation': 'delete', 'id': id},
+            attributes={'db.operation': 'delete', 'ids': ids},
         ):
-            try:
-                blob.delete()
-            except google.api_core.exceptions.NotFound:
-                log.info('Ignored NotFound while deleting GCS blob %s', id)
+            # We'd rather use the official `with client.batch()` API, but that
+            # does not return the responses with raise_exception=False, sigh.
+            batch = self.gcs_client.batch()
+            self.gcs_client._push_batch(batch)
+            for id in ids:  # TODO respect max match size
+                self.bucket.delete_blob(id)
+            responses = batch.finish(raise_exception=False)
+            self.gcs_client._pop_batch()
+            for id, response in zip(ids, responses):
+                if 200 <= response.status_code < 300:
+                    continue
+                if response.status_code == 404:
+                    log.info('Ignored NotFound while deleting GCS blob %s', id)
+                    continue
+                raise google.cloud.exceptions.from_http_response(response)
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
