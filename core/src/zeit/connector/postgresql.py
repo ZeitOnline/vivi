@@ -522,6 +522,19 @@ class Connector:
         self.session.connection().execute(update(Path).where(Path.id == bindparam('key')), updates)
         zope.sqlalchemy.mark_changed(self.session())
 
+    def lock(self, uniqueid, principal, until):
+        uniqueid = self._normalize(uniqueid)
+        if uniqueid not in self:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        content = self._get_content(uniqueid)
+        match content.lock_status:
+            case LockStatus.NONE | LockStatus.TIMED_OUT:
+                return self._insert_or_update_lock(uniqueid, principal, until, content.lock)
+            case LockStatus.OWN:
+                raise LockingError(id, f'You already own the lock of {uniqueid}.')
+            case LockStatus.FOREIGN:
+                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+
     def _insert_or_update_lock(self, uniqueid, principal, until, lock):
         path = self.session.get(Path, self._pathkey(uniqueid))
         if path is None:
@@ -536,19 +549,6 @@ class Connector:
 
         self._update_lock_cache(uniqueid, principal, until)
         return lock.token
-
-    def lock(self, uniqueid, principal, until):
-        uniqueid = self._normalize(uniqueid)
-        if uniqueid not in self:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
-        content = self._get_content(uniqueid)
-        match content.lock_status:
-            case LockStatus.NONE | LockStatus.TIMED_OUT:
-                return self._insert_or_update_lock(uniqueid, principal, until, content.lock)
-            case LockStatus.OWN:
-                raise LockingError(id, f'You already own the lock of {uniqueid}.')
-            case LockStatus.FOREIGN:
-                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
     def unlock(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
