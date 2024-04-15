@@ -325,7 +325,7 @@ class Connector:
             for _, child_uid in self.listCollection(uniqueid):
                 del self[child_uid]
         elif content.binary_body:
-            self._delete_binary(content)
+            self._delete_binary(content.id)
         self.session.delete(content)
 
         self.property_cache.pop(uniqueid, None)
@@ -333,17 +333,17 @@ class Connector:
         self.child_name_cache.pop(uniqueid, None)
         self._update_parent_child_name_cache(uniqueid, 'remove')
 
-    def _delete_binary(self, content):
-        blob = self.bucket.blob(content.id)
+    def _delete_binary(self, id):
+        blob = self.bucket.blob(id)
         with zeit.cms.tracing.use_span(
             __name__ + '.tracing',
             'gcs',
-            attributes={'db.operation': 'delete', 'id': content.id},
+            attributes={'db.operation': 'delete', 'id': id},
         ):
             try:
                 blob.delete()
             except google.api_core.exceptions.NotFound:
-                log.info('Ignored NotFound while deleting GCS blob %s', content.uniqueid)
+                log.info('Ignored NotFound while deleting GCS blob %s', id)
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
