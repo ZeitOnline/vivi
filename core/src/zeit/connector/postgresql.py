@@ -401,15 +401,6 @@ class Connector:
         parent_path = parent_path.rstrip('/')
         return (parent_path, name)
 
-    def _clone_row(self, row, ignored_columns=None):
-        if ignored_columns is None:
-            ignored_columns = []
-        clone = type(row)()
-        for column in row.__table__.columns:
-            if column.name not in ignored_columns:
-                setattr(clone, column.name, getattr(row, column.name))
-        return clone
-
     def copy(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
         new_uniqueid = self._normalize(new_uniqueid)
@@ -460,6 +451,15 @@ class Connector:
             if content.is_collection:
                 self.child_name_cache[content.uniqueid] = set()
             self._update_parent_child_name_cache(content.uniqueid, 'add')
+
+    def _clone_row(self, row, ignored_columns=None):
+        if ignored_columns is None:
+            ignored_columns = []
+        clone = type(row)()
+        for column in row.__table__.columns:
+            if column.name not in ignored_columns:
+                setattr(clone, column.name, getattr(row, column.name))
+        return clone
 
     def _bulk_insert(self, cls, items):
         columns = [c.key for c in sqlalchemy.orm.class_mapper(cls).columns]
