@@ -8,6 +8,7 @@ from operator import itemgetter
 from uuid import uuid4
 import collections
 import hashlib
+import itertools
 import os
 import os.path
 import time
@@ -341,14 +342,17 @@ class Connector:
             'gcs',
             attributes={'db.operation': 'delete', 'ids': ids},
         ):
-            # We'd rather use the official `with client.batch()` API, but that
-            # does not return the responses with raise_exception=False, sigh.
-            batch = self.gcs_client.batch()
-            self.gcs_client._push_batch(batch)
-            for id in ids:  # TODO respect max match size
-                self.bucket.delete_blob(id)
-            responses = batch.finish(raise_exception=False)
-            self.gcs_client._pop_batch()
+            responses = []
+            for chunk in batched(ids, google.cloud.storage.batch.Batch._MAX_BATCH_SIZE - 1):
+                # We'd rather use the official `with client.batch()` API, but
+                # that does not return responses with raise_exception=False.
+                batch = self.gcs_client.batch()
+                self.gcs_client._push_batch(batch)
+                for id in chunk:
+                    self.bucket.delete_blob(id)
+                responses.extend(batch.finish(raise_exception=False))
+                self.gcs_client._pop_batch()
+
             for id, response in zip(ids, responses):
                 if 200 <= response.status_code < 300:
                     continue
@@ -717,6 +721,18 @@ class Lock(DBObject):
             return LockStatus.OWN
         else:
             return LockStatus.FOREIGN
+
+
+def batched(iterable, n):
+    """Batch data into tuples of length n. The last batch may be shorter.
+    Example: `batched('ABCDEFG', 3) --> ABC DEF G`
+    Backport from Python-3.12, see stdlib itertools recipes.
+    """
+    if n < 1:
+        raise ValueError('n must be at least one')
+    it = iter(iterable)
+    while batch := list(itertools.islice(it, n)):
+        yield batch
 
 
 class SQLZopeConnector(Connector):
