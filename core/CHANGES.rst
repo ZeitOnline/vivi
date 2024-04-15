@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.145.0 (2024-04-15)
+--------------------
+
+- ZO-5142: Allow disabling publisher services with feature toggle "disable_publisher_NAME"
+
+
 5.144.0 (2024-04-11)
 --------------------
 
