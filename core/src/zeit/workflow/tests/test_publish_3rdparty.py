@@ -9,6 +9,7 @@ import zope.component
 import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublisher, IPublishInfo
 from zeit.content.image.testing import create_image_group_with_master_image
@@ -51,13 +52,15 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             assert 'facebooknewstab' not in result
             assert 'speechbert' not in result
             assert 'authordashboard' in result
+
             zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
+            FEATURE_TOGGLES.set('disable_publisher_authordashboard')
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article_2).publish(background=False)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
             assert 'facebooknewstab' in result
-            assert 'authordashboard' in result
+            assert 'authordashboard' not in result
         zeit.workflow.publish_3rdparty.PublisherData.ignore = []  # reset
         self.assertTrue(IPublishInfo(article).published)
         self.assertTrue(IPublishInfo(article_2).published)
