@@ -460,7 +460,7 @@ class Connector:
         self._update_parent_child_name_cache(new_uniqueid, 'add')
 
     def _foreign_child_lock_exists(self, uniqueid):
-        (parent, _) = self._pathkey(uniqueid)
+        parent = uniqueid.replace(ID_NAMESPACE, '', 1)
         stmt = (
             select(Lock).join(Path, Lock.id == Path.id).filter(Path.parent_path.startswith(parent))
         )
