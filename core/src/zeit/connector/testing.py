@@ -18,6 +18,7 @@ import zope.testing.renormalizing
 
 import zeit.cms.testing
 import zeit.connector.connector
+import zeit.connector.gcsemulator  # activate monkey patches
 import zeit.connector.interfaces
 import zeit.connector.mock
 
