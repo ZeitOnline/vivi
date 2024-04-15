@@ -318,21 +318,27 @@ class Connector:
         # unlock checks if locked and unlocks if necessary
         self.unlock(uniqueid)
 
+        to_delete = [content]
         if content.is_collection:
-            if self._foreign_child_lock_exists(uniqueid):
-                raise LockedByOtherSystemError(
-                    uniqueid, f'Could not delete {uniqueid}, because it is locked.'
-                )
-            for _, child_uid in self.listCollection(uniqueid):
-                del self[child_uid]
-        elif content.binary_body:
-            self._delete_binary([content.id])
-        self.session.delete(content)
+            parent = content.uniqueid.replace(ID_NAMESPACE, '', 1)
+            query = select(Content).join(Path).where(Path.parent_path.startswith(parent))
+            query = query.options(joinedload(Content.lock))
+            to_delete.extend(self.session.execute(query).scalars())
 
-        self.property_cache.pop(uniqueid, None)
-        self.body_cache.pop(uniqueid, None)
-        self.child_name_cache.pop(uniqueid, None)
-        self._update_parent_child_name_cache(uniqueid, 'remove')
+            for child in to_delete:
+                if child.lock and lock_is_foreign(child.lock.principal):
+                    raise LockedByOtherSystemError(
+                        child.uniqueid, f'Could not delete {child.uniqueid}, because it is locked.'
+                    )
+
+        for content in to_delete:
+            self.property_cache.pop(content.uniqueid, None)
+            self.body_cache.pop(content.uniqueid, None)
+            self.child_name_cache.pop(content.uniqueid, None)
+            self._update_parent_child_name_cache(content.uniqueid, 'remove')
+
+        self._delete_binary([x.id for x in to_delete if x.binary_body])
+        self.session.execute(delete(Content).where(Content.id.in_([x.id for x in to_delete])))
 
     def _delete_binary(self, ids):
         if not ids:
