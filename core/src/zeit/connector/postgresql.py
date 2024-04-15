@@ -26,6 +26,7 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
     delete,
+    insert,
     select,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -320,10 +321,7 @@ class Connector:
 
         to_delete = [content]
         if content.is_collection:
-            parent = content.uniqueid.replace(ID_NAMESPACE, '', 1)
-            query = select(Content).join(Path).where(Path.parent_path.startswith(parent))
-            query = query.options(joinedload(Content.lock))
-            to_delete.extend(self.session.execute(query).scalars())
+            to_delete.extend(self._get_all_children(content.uniqueid))
 
             for child in to_delete:
                 if child.lock and lock_is_foreign(child.lock.principal):
@@ -337,35 +335,51 @@ class Connector:
             self.child_name_cache.pop(content.uniqueid, None)
             self._update_parent_child_name_cache(content.uniqueid, 'remove')
 
-        self._delete_binary([x.id for x in to_delete if x.binary_body])
+        responses = self._gcs_batch(
+            'delete',
+            [x.id for x in to_delete if x.binary_body],
+            lambda id: self.bucket.delete_blob(id),
+        )
+        for id, response in zip(to_delete, responses):
+            if 200 <= response.status_code < 300:
+                continue
+            if response.status_code == 404:
+                log.info('Ignored NotFound while deleting GCS blob %s', id)
+                continue
+            raise google.cloud.exceptions.from_http_response(response)
+
         self.session.execute(delete(Content).where(Content.id.in_([x.id for x in to_delete])))
 
-    def _delete_binary(self, ids):
+    def _get_all_children(self, uniqueid):
+        parent = uniqueid.replace(ID_NAMESPACE, '', 1)
+        query = (
+            select(Content)
+            .join(Path)
+            .where(Path.parent_path.startswith(parent))
+            .order_by(Path.parent_path)
+        )
+        query = query.options(joinedload(Content.lock))
+        return self.session.execute(query).scalars()
+
+    def _gcs_batch(self, span_name, ids, function):
+        responses = []
         if not ids:
-            return
+            return responses
         with zeit.cms.tracing.use_span(
             __name__ + '.tracing',
             'gcs',
-            attributes={'db.operation': 'delete', 'ids': ids},
+            attributes={'db.operation': span_name, 'ids': ids},
         ):
-            responses = []
             for chunk in batched(ids, google.cloud.storage.batch.Batch._MAX_BATCH_SIZE - 1):
                 # We'd rather use the official `with client.batch()` API, but
                 # that does not return responses with raise_exception=False.
                 batch = self.gcs_client.batch()
                 self.gcs_client._push_batch(batch)
-                for id in chunk:
-                    self.bucket.delete_blob(id)
+                for item in chunk:
+                    function(item)
                 responses.extend(batch.finish(raise_exception=False))
                 self.gcs_client._pop_batch()
-
-            for id, response in zip(ids, responses):
-                if 200 <= response.status_code < 300:
-                    continue
-                if response.status_code == 404:
-                    log.info('Ignored NotFound while deleting GCS blob %s', id)
-                    continue
-                raise google.cloud.exceptions.from_http_response(response)
+        return responses
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
@@ -404,31 +418,52 @@ class Connector:
                 old_uniqueid,
                 f'Could not copy {old_uniqueid} to {new_uniqueid}, because target already exists.',
             )
-        old_content = self._get_content(old_uniqueid)
-        if old_content is None:
+        content = self._get_content(old_uniqueid)
+        if content is None:
             raise KeyError(f'The resource {old_uniqueid} does not exist.')
-        new_content = self._clone_row(old_content, ['id', 'last_updated'])
-        new_content.id = str(uuid4())
-        (parent_path, name) = self._pathkey(new_uniqueid)
-        path = Path(content=new_content, parent_path=parent_path, name=name)
-        self.session.add(path)
 
-        if new_content.binary_body:
-            source_blob = self.bucket.blob(old_content.id)
-            with zeit.cms.tracing.use_span(
-                __name__ + '.tracing',
-                'gcs',
-                attributes={'db.operation': 'copy', 'id': new_content.id, 'size': source_blob.size},
-            ):
-                self.bucket.copy_blob(source_blob, self.bucket, new_content.id, retry=DEFAULT_RETRY)
+        sources = [content]
+        if content.is_collection:
+            sources.extend(self._get_all_children(content.uniqueid))
 
-        if old_content.is_collection:
-            self.child_name_cache[new_uniqueid] = set()
-            for name, _ in self.listCollection(old_uniqueid):
-                self.copy(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
+        targets = []
+        binary = []
+        for content in sources:
+            target = self._clone_row(content, ['id', 'last_updated'])
+            target.id = str(uuid4())
 
-        self.property_cache[new_uniqueid] = new_content.to_webdav()
-        self._update_parent_child_name_cache(new_uniqueid, 'add')
+            uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
+            (parent_path, name) = self._pathkey(uniqueid)
+            target.path = Path(id=target.id, parent_path=parent_path, name=name)
+            targets.append(target)
+
+            if content.binary_body:
+                binary.append((content.id, target.id))
+
+        responses = self._gcs_batch(
+            'copy',
+            binary,
+            lambda x: self.bucket.copy_blob(
+                self.bucket.blob(x[0]), self.bucket, x[1], retry=DEFAULT_RETRY
+            ),
+        )
+        for response in responses:
+            if 200 <= response.status_code < 300:
+                continue
+            raise google.cloud.exceptions.from_http_response(response)
+
+        self._bulk_insert(Content, targets)
+        self._bulk_insert(Path, [x.path for x in targets])
+
+        for content in targets:
+            self.property_cache[content.uniqueid] = content.to_webdav()
+            if content.is_collection:
+                self.child_name_cache[content.uniqueid] = set()
+            self._update_parent_child_name_cache(content.uniqueid, 'add')
+
+    def _bulk_insert(self, cls, items):
+        columns = [c.key for c in sqlalchemy.orm.class_mapper(cls).columns]
+        self.session.execute(insert(cls), [{c: getattr(x, c) for c in columns} for x in items])
 
     def move(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
