@@ -6,6 +6,7 @@ import grokcore.component as grok
 import lxml.etree
 import zope.app.appsetup.product
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -345,9 +346,16 @@ class PublisherData(grok.Adapter):
         ):
             if not name:  # ourselves
                 continue
-            if name in self.ignore:
+            if self._ignore(name):
                 continue
             data = getattr(adapter, f'{action}_json')()
             if data is not None:
                 result[name] = data
         return result
+
+    def _ignore(self, name):
+        if name in self.ignore:
+            return True
+        if FEATURE_TOGGLES.find(f'disable_publisher_{name}'):
+            return True
+        return False
