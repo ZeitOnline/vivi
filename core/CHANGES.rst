@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.146.0 (2024-04-16)
+--------------------
+
+- ZO-5166: Update to current IR MDB drag/drop protocol
+
+
 5.145.0 (2024-04-15)
 --------------------
 
