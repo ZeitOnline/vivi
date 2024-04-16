@@ -51,7 +51,7 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
         // The actual data is not available except in the drop event (apparently
         // this is by design), so we use a kludgy heuristic instead.
         return MochiKit.Base.arrayEqual(
-            data.types, ['text/plain', 'application/json']);
+            data.types, ['text/plain', 'application/json', 'text/html']);
     },
 
     retrieve: function(mdb_id) {
