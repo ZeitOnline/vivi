@@ -14,7 +14,8 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
         element[0].widget = self;  // for tests
 
         element.on('dragenter', function(e) {
-            if (self._accept_drag(e.originalEvent.dataTransfer)) {
+            var transfer = e.originalEvent.dataTransfer;
+            if (self._accept_drag(transfer)) {
                 self.landingzone.addClass('droppable-active');
             }
         });
@@ -22,20 +23,21 @@ zeit.content.image.DropMDBWidget = gocept.Class.extend({
             self.landingzone.removeClass('droppable-active');
         });
         element.on('dragover', function(e) {
-            e.originalEvent.dataTransfer.dropEffect = 'move';
+            var transfer = e.originalEvent.dataTransfer;
+            transfer.dropEffect = 'move';
             e.preventDefault();  // necessary to make drop work
         });
         element.on('drop', function(e) {
             e.stopPropagation();
             e.preventDefault();
             self.landingzone.removeClass('droppable-active');
-            if (! self._accept_drag(e.originalEvent.dataTransfer)) {
+            var transfer = e.originalEvent.dataTransfer;
+            if (! self._accept_drag(transfer)) {
                 return;
             }
             var mdb_id;
             try {
-                var data = JSON.parse(
-                    e.originalEvent.dataTransfer.getData('text/plain'));
+                var data = JSON.parse(transfer.getData('text/plain'));
                 mdb_id = data['data'][0];
             } catch (error) {
                 log(error);
