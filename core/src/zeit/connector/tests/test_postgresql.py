@@ -181,6 +181,14 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(source_props.id, target_props.id)
         self.assertEqual(source_blob.name, target_blob.name)
 
+    def test_regression_delitem_only_checks_locked_children_not_siblings(self):
+        self.mkdir('folder')
+        res = self.add_resource('foo')
+        self.connector.lock(res.id, 'external', datetime.now(pytz.UTC) + timedelta(hours=2))
+        transaction.commit()
+        with self.assertNothingRaised():
+            del self.connector['http://xml.zeit.de/testing/folder']
+
     def _create_lock(self, minutes):
         res = self.get_resource(f'foo-{minutes}', b'mybody')
         self.connector.add(res)

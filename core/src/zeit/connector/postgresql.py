@@ -8,6 +8,7 @@ from operator import itemgetter
 from uuid import uuid4
 import collections
 import hashlib
+import itertools
 import os
 import os.path
 import time
@@ -24,8 +25,11 @@ from sqlalchemy import (
     UnicodeText,
     UniqueConstraint,
     Uuid,
+    bindparam,
     delete,
+    insert,
     select,
+    update,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import joinedload, relationship
@@ -317,33 +321,67 @@ class Connector:
         # unlock checks if locked and unlocks if necessary
         self.unlock(uniqueid)
 
+        to_delete = [content]
         if content.is_collection:
-            if self._foreign_child_lock_exists(uniqueid):
-                raise LockedByOtherSystemError(
-                    uniqueid, f'Could not delete {uniqueid}, because it is locked.'
-                )
-            for _, child_uid in self.listCollection(uniqueid):
-                del self[child_uid]
-        elif content.binary_body:
-            self._delete_binary(content)
-        self.session.delete(content)
+            to_delete.extend(self._get_all_children(content.uniqueid))
 
-        self.property_cache.pop(uniqueid, None)
-        self.body_cache.pop(uniqueid, None)
-        self.child_name_cache.pop(uniqueid, None)
-        self._update_parent_child_name_cache(uniqueid, 'remove')
+            for child in to_delete:
+                if child.lock and lock_is_foreign(child.lock.principal):
+                    raise LockedByOtherSystemError(
+                        child.uniqueid, f'Could not delete {child.uniqueid}, because it is locked.'
+                    )
 
-    def _delete_binary(self, content):
-        blob = self.bucket.blob(content.id)
+        for content in to_delete:
+            self.property_cache.pop(content.uniqueid, None)
+            self.body_cache.pop(content.uniqueid, None)
+            self.child_name_cache.pop(content.uniqueid, None)
+            self._update_parent_child_name_cache(content.uniqueid, 'remove')
+
+        responses = self._gcs_batch(
+            'delete',
+            [x.id for x in to_delete if x.binary_body],
+            lambda id: self.bucket.delete_blob(id),
+        )
+        for id, response in zip(to_delete, responses):
+            if 200 <= response.status_code < 300:
+                continue
+            if response.status_code == 404:
+                log.info('Ignored NotFound while deleting GCS blob %s', id)
+                continue
+            raise google.cloud.exceptions.from_http_response(response)
+
+        self.session.execute(delete(Content).where(Content.id.in_([x.id for x in to_delete])))
+
+    def _get_all_children(self, uniqueid):
+        parent = uniqueid.replace(ID_NAMESPACE, '', 1)
+        query = (
+            select(Content)
+            .join(Path)
+            .where(Path.parent_path.startswith(parent))
+            .order_by(Path.parent_path)
+        )
+        query = query.options(joinedload(Content.lock))
+        return self.session.execute(query).scalars()
+
+    def _gcs_batch(self, span_name, ids, function):
+        responses = []
+        if not ids:
+            return responses
         with zeit.cms.tracing.use_span(
             __name__ + '.tracing',
             'gcs',
-            attributes={'db.operation': 'delete', 'id': content.id},
+            attributes={'db.operation': span_name, 'ids': ids},
         ):
-            try:
-                blob.delete()
-            except google.api_core.exceptions.NotFound:
-                log.info('Ignored NotFound while deleting GCS blob %s', content.uniqueid)
+            for chunk in batched(ids, google.cloud.storage.batch.Batch._MAX_BATCH_SIZE - 1):
+                # We'd rather use the official `with client.batch()` API, but
+                # that does not return responses with raise_exception=False.
+                batch = self.gcs_client.batch()
+                self.gcs_client._push_batch(batch)
+                for item in chunk:
+                    function(item)
+                responses.extend(batch.finish(raise_exception=False))
+                self.gcs_client._pop_batch()
+        return responses
 
     def _get_content(self, uniqueid, getlock=True):
         parent, name = self._pathkey(uniqueid)
@@ -365,15 +403,6 @@ class Connector:
         parent_path = parent_path.rstrip('/')
         return (parent_path, name)
 
-    def _clone_row(self, row, ignored_columns=None):
-        if ignored_columns is None:
-            ignored_columns = []
-        clone = type(row)()
-        for column in row.__table__.columns:
-            if column.name not in ignored_columns:
-                setattr(clone, column.name, getattr(row, column.name))
-        return clone
-
     def copy(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
         new_uniqueid = self._normalize(new_uniqueid)
@@ -382,31 +411,65 @@ class Connector:
                 old_uniqueid,
                 f'Could not copy {old_uniqueid} to {new_uniqueid}, because target already exists.',
             )
-        old_content = self._get_content(old_uniqueid)
-        if old_content is None:
+        content = self._get_content(old_uniqueid)
+        if content is None:
             raise KeyError(f'The resource {old_uniqueid} does not exist.')
-        new_content = self._clone_row(old_content, ['id', 'last_updated'])
-        new_content.id = str(uuid4())
-        (parent_path, name) = self._pathkey(new_uniqueid)
-        path = Path(content=new_content, parent_path=parent_path, name=name)
-        self.session.add(path)
 
-        if new_content.binary_body:
-            source_blob = self.bucket.blob(old_content.id)
-            with zeit.cms.tracing.use_span(
-                __name__ + '.tracing',
-                'gcs',
-                attributes={'db.operation': 'copy', 'id': new_content.id, 'size': source_blob.size},
-            ):
-                self.bucket.copy_blob(source_blob, self.bucket, new_content.id, retry=DEFAULT_RETRY)
+        sources = [content]
+        if content.is_collection:
+            sources.extend(self._get_all_children(content.uniqueid))
 
-        if old_content.is_collection:
-            self.child_name_cache[new_uniqueid] = set()
-            for name, _ in self.listCollection(old_uniqueid):
-                self.copy(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
+        targets = []
+        binary = []
+        for content in sources:
+            target = self._clone_row(content, ['id', 'last_updated'])
+            target.id = str(uuid4())
 
-        self.property_cache[new_uniqueid] = new_content.to_webdav()
-        self._update_parent_child_name_cache(new_uniqueid, 'add')
+            uniqueid = content.uniqueid.replace(old_uniqueid, new_uniqueid)
+            (parent_path, name) = self._pathkey(uniqueid)
+            target.path = Path(id=target.id, parent_path=parent_path, name=name)
+            targets.append(target)
+
+            if content.binary_body:
+                binary.append((content.id, target.id))
+
+        responses = self._gcs_batch(
+            'copy',
+            binary,
+            lambda x: self.bucket.copy_blob(
+                self.bucket.blob(x[0]), self.bucket, x[1], retry=DEFAULT_RETRY
+            ),
+        )
+        for response in responses:
+            if 200 <= response.status_code < 300:
+                continue
+            raise google.cloud.exceptions.from_http_response(response)
+
+        self._bulk_insert(Content, targets)
+        self._bulk_insert(Path, [x.path for x in targets])
+
+        for content in targets:
+            self.property_cache[content.uniqueid] = content.to_webdav()
+            if content.is_collection:
+                self.child_name_cache[content.uniqueid] = set()
+            self._update_parent_child_name_cache(content.uniqueid, 'add')
+
+    def _clone_row(self, row, ignored_columns=()):
+        cls = type(row)
+        clone = cls()
+        for column in self._columns(cls):
+            if column not in ignored_columns:
+                setattr(clone, column, getattr(row, column))
+        return clone
+
+    def _bulk_insert(self, cls, items):
+        self.session.execute(
+            insert(cls), [{c: getattr(x, c) for c in self._columns(cls)} for x in items]
+        )
+
+    @staticmethod
+    def _columns(cls):
+        return [c.key for c in sqlalchemy.orm.class_mapper(cls).columns]
 
     def move(self, old_uniqueid, new_uniqueid):
         old_uniqueid = self._normalize(old_uniqueid)
@@ -424,34 +487,53 @@ class Connector:
                 raise LockedByOtherSystemError(old_uniqueid, f'{old_uniqueid} is already locked.')
             del content.lock
 
+        sources = [content]
         if content.is_collection:
-            if self._foreign_child_lock_exists(old_uniqueid):
-                raise LockedByOtherSystemError(
-                    old_uniqueid,
-                    f'Could not move {old_uniqueid} to {new_uniqueid}, because it is locked.',
-                )
-            self.child_name_cache[new_uniqueid] = set()
-            for name, _ in self.listCollection(old_uniqueid):
-                self.move(f'{old_uniqueid}/{name}', f'{new_uniqueid}/{name}')
-            self.child_name_cache.pop(old_uniqueid, None)
+            sources.extend(self._get_all_children(content.uniqueid))
 
-        (content.path.parent_path, content.path.name) = self._pathkey(new_uniqueid)
+            for child in sources:
+                if child.lock and lock_is_foreign(child.lock.principal):
+                    raise LockedByOtherSystemError(
+                        old_uniqueid,
+                        f'Could not move {child.uniqueid} to {new_uniqueid}, because it is locked.',
+                    )
 
-        self.property_cache.pop(old_uniqueid, None)
-        self.property_cache[new_uniqueid] = content.to_webdav()
-        self.body_cache.pop(old_uniqueid, None)
-        self._update_parent_child_name_cache(old_uniqueid, 'remove')
-        self._update_parent_child_name_cache(new_uniqueid, 'add')
+        updates = []
+        for content in sources:
+            source_uniqueid = content.uniqueid
+            target_uniqueid = source_uniqueid.replace(old_uniqueid, new_uniqueid)
+            parent, name = self._pathkey(target_uniqueid)
+            updates.append({'key': content.id, 'parent_path': parent, 'name': name})
 
-    def _foreign_child_lock_exists(self, uniqueid):
-        (parent, _) = self._pathkey(uniqueid)
-        stmt = (
-            select(Lock).join(Path, Lock.id == Path.id).filter(Path.parent_path.startswith(parent))
-        )
-        for lock in self.session.execute(stmt).scalars():
-            if lock_is_foreign(lock.principal):
-                return True
-        return False
+            self.property_cache.pop(source_uniqueid, None)
+            self.property_cache[target_uniqueid] = content.to_webdav()
+            self.body_cache.pop(source_uniqueid, None)
+            if content.is_collection:
+                self.child_name_cache.pop(source_uniqueid, None)
+                self.child_name_cache[target_uniqueid] = set()
+            self._update_parent_child_name_cache(source_uniqueid, 'remove')
+            self._update_parent_child_name_cache(target_uniqueid, 'add')
+
+        # We're updating the primary key itself, which the normal sqlalchemy
+        # "bulk update " API does not offer, so we have to user a lower level,
+        # <https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html
+        #  #disabling-bulk-orm-update-by-primary-key-for-an-update-statement
+        #  -with-multiple-parameter-sets>
+        self.session.connection().execute(update(Path).where(Path.id == bindparam('key')), updates)
+        zope.sqlalchemy.mark_changed(self.session())
+
+    def lock(self, uniqueid, principal, until):
+        uniqueid = self._normalize(uniqueid)
+        if uniqueid not in self:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
+        content = self._get_content(uniqueid)
+        match content.lock_status:
+            case LockStatus.NONE | LockStatus.TIMED_OUT:
+                return self._insert_or_update_lock(uniqueid, principal, until, content.lock)
+            case LockStatus.OWN:
+                raise LockingError(id, f'You already own the lock of {uniqueid}.')
+            case LockStatus.FOREIGN:
+                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
     def _insert_or_update_lock(self, uniqueid, principal, until, lock):
         path = self.session.get(Path, self._pathkey(uniqueid))
@@ -467,19 +549,6 @@ class Connector:
 
         self._update_lock_cache(uniqueid, principal, until)
         return lock.token
-
-    def lock(self, uniqueid, principal, until):
-        uniqueid = self._normalize(uniqueid)
-        if uniqueid not in self:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
-        content = self._get_content(uniqueid)
-        match content.lock_status:
-            case LockStatus.NONE | LockStatus.TIMED_OUT:
-                return self._insert_or_update_lock(uniqueid, principal, until, content.lock)
-            case LockStatus.OWN:
-                raise LockingError(id, f'You already own the lock of {uniqueid}.')
-            case LockStatus.FOREIGN:
-                raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
     def unlock(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
@@ -705,6 +774,18 @@ class Lock(DBObject):
             return LockStatus.OWN
         else:
             return LockStatus.FOREIGN
+
+
+def batched(iterable, n):
+    """Batch data into tuples of length n. The last batch may be shorter.
+    Example: `batched('ABCDEFG', 3) --> ABC DEF G`
+    Backport from Python-3.12, see stdlib itertools recipes.
+    """
+    if n < 1:
+        raise ValueError('n must be at least one')
+    it = iter(iterable)
+    while batch := list(itertools.islice(it, n)):
+        yield batch
 
 
 class SQLZopeConnector(Connector):
