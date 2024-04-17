@@ -524,31 +524,23 @@ class Connector:
 
     def lock(self, uniqueid, principal, until):
         uniqueid = self._normalize(uniqueid)
-        if uniqueid not in self:
-            raise KeyError(f'The resource {uniqueid} does not exist.')
         content = self._get_content(uniqueid)
+        if content is None:
+            raise KeyError(f'The resource {uniqueid} does not exist.')
         match content.lock_status:
             case LockStatus.NONE | LockStatus.TIMED_OUT:
-                return self._insert_or_update_lock(uniqueid, principal, until, content.lock)
+                lock = content.lock
+                if not lock:
+                    lock = Lock(id=content.id)
+                    self.session.add(lock)
+                lock.principal = principal
+                lock.until = until
+                self._update_lock_cache(content.uniqueid, principal, until)
+                return lock.token
             case LockStatus.OWN:
                 raise LockingError(id, f'You already own the lock of {uniqueid}.')
             case LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
-
-    def _insert_or_update_lock(self, uniqueid, principal, until, lock):
-        path = self.session.get(Path, self._pathkey(uniqueid))
-        if path is None:
-            log.warning('Unable to add lock to resource %s that does not exist.', uniqueid)
-            return
-        if lock:
-            lock.principal = principal
-            lock.until = until
-        else:
-            lock = Lock(id=path.id, principal=principal, until=until)
-            self.session.add(lock)
-
-        self._update_lock_cache(uniqueid, principal, until)
-        return lock.token
 
     def unlock(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
