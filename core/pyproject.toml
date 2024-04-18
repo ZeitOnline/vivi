@@ -216,7 +216,7 @@ zon = [
     # zope.hookable==5.1.0   # ZO-1580
 ]
 deploy-zon = [
-    "linesman==0.3.2+py3.3",
+    "linesman==0.3.4+py3.3",
     "slowlog==0.9+py3.2",
 ]
 test-zon = [
