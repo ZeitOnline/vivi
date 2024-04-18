@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.147.0 (2024-04-18)
+--------------------
+
+- ZO-4640: Entrypoint to sync /data folder to git
+
+- ZO-4919: Use batch APIs for sql connector where possible
+
+
 5.146.0 (2024-04-16)
 --------------------
 
