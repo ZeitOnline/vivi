@@ -3,10 +3,13 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from unittest import mock
 import collections.abc
+import concurrent
 import time
+import traceback
 
 import pytz
 import transaction
+import zope.component
 import zope.interface.verify
 
 from zeit.connector.interfaces import (
@@ -18,6 +21,7 @@ from zeit.connector.interfaces import (
 )
 from zeit.connector.resource import Resource
 from zeit.connector.testing import ROOT, copy_inherited_functions
+import zeit.connector.cache
 import zeit.connector.interfaces
 import zeit.connector.testing
 
@@ -455,6 +459,72 @@ class ContractLock:
         self.assertEqual((None, None, False), self.connector.locked(id))
 
 
+class ContractConcurrency:
+    def _concurrent_operation(self, operation, *args):
+        test_result = []
+        # 2 workers, 4 operations to check what happens
+        # if the same resource is accessed concurrently
+        # and shortly after each other
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            future_resource = {executor.submit(operation, *args): i for i in range(4)}
+            for future in concurrent.futures.as_completed(future_resource):
+                try:
+                    future.result()
+                except Exception as exc:
+                    stack_trace = traceback.format_exc()
+                    test_result.append({'exc': exc, 'stack': stack_trace})
+        return test_result
+
+    def test_del_concurrent(self):
+        def _del(uid):
+            del self.connector[uid]
+
+        resource = self.add_resource('foo')
+        test_result = self._concurrent_operation(_del, resource.id)
+        self.assertEqual(len(test_result), 2, 'The second batch of operations should fail')
+        self.assertEqual(
+            type(test_result[0]['exc']),
+            KeyError,
+            'First operation already removed file, therefore KeyError expected',
+        )
+        self.assertNotIn(resource.id, self.connector)
+
+    def test_copy_concurrent(self):
+        def _copy(source, target):
+            self.connector.copy(source, target)
+
+        resource = self.add_resource('foo')
+        target = 'http://xml.zeit.de/testing/bar'
+        test_result = self._concurrent_operation(_copy, resource.id, target)
+        self.assertEqual(len(test_result), 2, 'The second batch of operations should fail')
+        self.assertTrue(isinstance(test_result[0]['exc'], CopyError))
+        self.assertIn(resource.id, self.connector)
+        self.assertIn(target, self.connector)
+
+    def test_move_concurrent(self):
+        def _move(source, target):
+            self.connector.move(source, target)
+
+        resource = self.add_resource('foo')
+        target = 'http://xml.zeit.de/testing/bar'
+        test_result = self._concurrent_operation(_move, resource.id, target)
+        transaction.commit()
+        self.assertEqual(len(test_result), 2, 'The second batch of operations should fail')
+        self.assertEqual(
+            type(test_result[0]['exc']),
+            KeyError,
+            'First operation already moved file, therefore KeyError expected',
+        )
+        self.assertNotIn(resource.id, self.connector)
+        self.assertIn(target, self.connector)
+
+    def test_add_concurrent(self):
+        resource = self.get_resource('foo')
+        test_result = self._concurrent_operation(self.connector.add, resource)
+        self.assertEqual(len(test_result), 3, 'The second batch of operations should fail')
+        self.assertIn(resource.id, self.connector)
+
+
 class ContractSearch:
     def test_search_unknown_metadata(self):
         from zeit.connector.search import SearchVar
@@ -884,6 +954,7 @@ class ContractSQL(
     ContractCopyMove,
     ContractLock,
     ContractSearch,
+    ContractConcurrency,
     # ContractCache,
     zeit.connector.testing.SQLTest,
 ):
@@ -891,6 +962,7 @@ class ContractSQL(
     copy_inherited_functions(ContractCopyMove, locals())
     copy_inherited_functions(ContractLock, locals())
     copy_inherited_functions(ContractSearch, locals())
+    copy_inherited_functions(ContractConcurrency, locals())
     # not implemented copy_inherited_functions(ContractCache, locals())
 
 

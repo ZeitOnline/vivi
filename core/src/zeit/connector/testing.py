@@ -262,6 +262,15 @@ class SQLDatabaseLayer(plone.testing.Layer):
         super().__init__(name=name, module=module, bases=bases)
 
     def setUp(self):
+        zope.component.provideUtility(
+            zeit.connector.cache.PropertyCache(), zeit.connector.interfaces.IPropertyCache
+        )
+        zope.component.provideUtility(
+            zeit.connector.cache.ChildNameCache(), zeit.connector.interfaces.IChildNameCache
+        )
+        zope.component.provideUtility(
+            zeit.connector.cache.ResourceCache(), zeit.connector.interfaces.IResourceCache
+        )
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
         engine = connector.engine
         try:
