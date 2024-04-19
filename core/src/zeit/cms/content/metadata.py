@@ -18,6 +18,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         ICommonMetadata,
         DOCUMENT_SCHEMA_NS,
         (
+            'avoid_create_summary',
             'banner_id',
             'cap_title',
             'copyrights',

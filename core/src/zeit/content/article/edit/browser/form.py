@@ -294,6 +294,13 @@ class OptionsAudioSpeechbert(zeit.edit.browser.form.InlineForm):
     css_class = 'audio-speechbert'
 
 
+class OptionsAvoidCreateSummary(zeit.edit.browser.form.InlineForm):
+    legend = _('')
+    prefix = 'options-avoid-create-summary'
+    form_fields = FormFields(IArticle).select('avoid_create_summary')
+    css_class = 'avoid-create-summary'
+
+
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     """Teaser workflow forms."""
 

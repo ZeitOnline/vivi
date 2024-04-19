@@ -221,6 +221,8 @@ class ICommonMetadata(zope.interface.Interface):
 
     overscrolling = zope.schema.Bool(title=_('Overscrolling'), required=False, default=True)
 
+    avoid_create_summary = zope.schema.Bool(title=_('Avoid create summary'), required=False, default=True)
+
     cap_title = zope.schema.TextLine(title=_('CAP title'), required=False)
 
     deeplink_url = zope.schema.URI(title=_('Deeplink URL'), required=False, default=None)
