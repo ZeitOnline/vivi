@@ -1,8 +1,6 @@
 import json
 import logging
 
-import zc.sourcefactory.basic
-import zc.sourcefactory.source
 import zope.interface
 import zope.schema
 
@@ -161,40 +159,6 @@ class ITwitterCredentials(zope.interface.Interface):
     """BBB"""
 
 
-class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
-    product_configuration = 'zeit.push'
-    config_url = 'twitter-accounts'
-    attribute = 'name'
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        @property
-        def MAIN_ACCOUNT(self):
-            return self.factory.main_account()
-
-        @property
-        def PRINT_ACCOUNT(self):
-            return self.factory.print_account()
-
-    @classmethod
-    def main_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
-        return config['twitter-main-account']
-
-    @classmethod
-    def print_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)
-        return config['twitter-print-account']
-
-    def isAvailable(self, node, context):
-        return super().isAvailable(node, context) and node.get('name') not in [
-            self.main_account(),
-            self.print_account(),
-        ]
-
-
-twitterAccountSource = TwitterAccountSource()
-
-
 class MobileButtonsSource(zeit.cms.content.sources.XMLSource):
     product_configuration = 'zeit.push'
     config_url = 'mobile-buttons'
@@ -272,22 +236,6 @@ class IAccountData(zope.interface.Interface):
     facebook_zett_enabled = zope.schema.Bool(title=_('Enable Facebook ze.tt'), required=False)
     facebook_zett_text = ToggleDependentText(
         title=_('Facebook ze.tt Text'), required=False, dependent_field='facebook_zett_enabled'
-    )
-
-    twitter_ressort_text = zope.schema.Text(
-        title=_('Ressort Tweet'),
-        required=False,
-        max_length=256,
-    )
-    twitter_ressort = zope.schema.Choice(
-        title=_('Additional Twitter'),
-        source=twitterAccountSource,
-        required=False,
-    )
-    twitter_print_text = zope.schema.Text(
-        title=_('Print Tweet'),
-        required=False,
-        max_length=256,
     )
 
     mobile_title = zope.schema.TextLine(title=_('Mobile title'), required=False)
