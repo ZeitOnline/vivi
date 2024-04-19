@@ -18,6 +18,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 
     def create_automatic_cp(self, browser):
         zeit.content.cp.browser.testing.create_cp(browser)
+        self.content_url = browser.url
         browser.open('contents')
         browser.getLink('Edit block automatic').click()
         browser.getControl('Amount of teasers').value = '3'
@@ -76,6 +77,61 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
             """\
 <region...count="3" automatic="True" automatic_type="topicpage"...>...
 <referenced_topicpage>tms-id</referenced_topicpage>...""",
+            zeit.cms.testing.xmltotext(cp.body['lead'].xml),
+        )
+
+    def test_stores_common_module_properties_and_changes_in_xml(self):
+        brwsr = self.browser
+        self.create_automatic_cp(brwsr)
+        brwsr.getControl('Automatic type', index=0).displayValue = ['topicpage']
+        brwsr.getControl(name='form.referenced_topicpage').value = 'tms-id'
+        brwsr.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', brwsr.contents)
+        brwsr.open(self.content_url)
+        brwsr.open('contents')
+        brwsr.getLink('Edit block common', index=4).click()
+        brwsr.getControl(name='form.supertitle').value = 'My Supertitle'
+        brwsr.getControl(name='form.title').value = 'My Title'
+        brwsr.getControl(name='form.read_more').value = 'My Read More'
+        brwsr.getControl(name='form.read_more_url').value = 'https://read-more.de'  # noqa
+        brwsr.getControl(name='form.force_mobile_image').value = False
+        brwsr.getControl('Apply').click()
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
+<region...<container...
+supertitle="My Supertitle"...
+title="My Title"...
+read_more="My Read More"...
+read_more_url="https://read-more.de"...
+force_mobile_image="False"...>...\
+            """,
+            zeit.cms.testing.xmltotext(cp.body['lead'].xml),
+        )
+        brwsr.open(self.content_url)
+        brwsr.open('contents')
+        brwsr.getLink('Edit block common', index=4).click()
+        brwsr.getControl(name='form.supertitle').value = 'My New Supertitle'
+        brwsr.getControl(name='form.title').value = 'My New Title'
+        brwsr.getControl(name='form.read_more').value = 'My New Read More'
+        brwsr.getControl(name='form.read_more_url').value = 'https://new-read-more.de'  # noqa
+        # this was the actual reason for this test: the checkbox
+        # was always checked despite the posted 'False' value:
+        self.assertFalse(brwsr.getControl(name='form.force_mobile_image').value)
+        brwsr.getControl(name='form.force_mobile_image').value = True
+        brwsr.getControl('Apply').click()
+        wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+        cp = list(wc.values())[0]
+        self.assertEllipsis(
+            """\
+<region...<container...
+supertitle="My New Supertitle"...
+title="My New Title"...
+read_more="My New Read More"...
+read_more_url="https://new-read-more.de"...
+force_mobile_image="True"...>...\
+            """,
             zeit.cms.testing.xmltotext(cp.body['lead'].xml),
         )
 
