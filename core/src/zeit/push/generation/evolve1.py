@@ -8,8 +8,8 @@ import zeit.push.interfaces
 def update(root):
     """Removes obsolete Twitter credentials utility"""
     sm = zope.component.getSiteManager()
-    sm.unregisterUtility(sm['twitter-credentials'], zeit.push.interfaces.ITwitterCredentials)
-    del sm['twitter-credentials']
+    sm.unregisterUtility(root['twitter-credentials'], zeit.push.interfaces.ITwitterCredentials)
+    del root['twitter-credentials']
 
 
 def evolve(context):

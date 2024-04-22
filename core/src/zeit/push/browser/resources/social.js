@@ -14,15 +14,11 @@ $(document).bind('fragment-ready', function(event) {
     $('#social\\.short_text', event.__target).unbind(
     'change.zeit.article.social.short_text').bind(
         'change.zeit.article.social.short_text', truncate_text);
-    $('#social\\.twitter_ressort_text', event.__target).unbind(
-    'change.zeit.article.social.short_text').bind(
-        'change.zeit.article.social.short_text', truncate_text);
 
 });
 
 $(document).ready(function() {
     $('#form\\.short_text').bind('change', truncate_text);
-    $('#form\\.twitter_ressort_text').bind('change', truncate_text);
 });
 
 }(jQuery));

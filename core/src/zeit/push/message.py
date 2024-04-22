@@ -226,54 +226,6 @@ class AccountData(grok.Adapter):
         self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
 
     @property
-    def twitter_ressort_text(self):
-        return self._nonmain_twitter_service.get('override_text')
-
-    @twitter_ressort_text.setter
-    def twitter_ressort_text(self, value):
-        self.push.set({'type': 'twitter', 'variant': 'ressort'}, override_text=value)
-
-    @property
-    def twitter_ressort(self):
-        return self._nonmain_twitter_service.get('account')
-
-    @twitter_ressort.setter
-    def twitter_ressort(self, value):
-        service = self._nonmain_twitter_service
-        enabled = None
-        # BBB `variant` was introduced in zeit.push-1.21
-        if service and 'variant' not in service:
-            self.push.delete(service)
-            enabled = service.get('enabled')
-        self.push.set({'type': 'twitter', 'variant': 'ressort'}, account=value)
-        if enabled is not None:
-            self.twitter_ressort_enabled = enabled
-
-    @property
-    def _nonmain_twitter_service(self):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        for service in self.push.message_config:
-            if service['type'] != 'twitter':
-                continue
-            if service.get('variant') == 'ressort':
-                return service
-            # BBB `variant` was introduced in zeit.push-1.21
-            if service.get('account') != source.MAIN_ACCOUNT:
-                return service
-        return {}
-
-    @property
-    def twitter_print_text(self):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        service = self.push.get(type='twitter', account=source.PRINT_ACCOUNT)
-        return service and service.get('override_text')
-
-    @twitter_print_text.setter
-    def twitter_print_text(self, value):
-        source = zeit.push.interfaces.twitterAccountSource(None)
-        self.push.set({'type': 'twitter', 'account': source.PRINT_ACCOUNT}, override_text=value)
-
-    @property
     def mobile_enabled(self):
         service = self._mobile_service
         return service and service.get('enabled')

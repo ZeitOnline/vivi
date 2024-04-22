@@ -30,9 +30,6 @@ class PushNotifier:
 
 product_config = """\
 <product-config zeit.push>
-  twitter-accounts file://{fixtures}/twitter-accounts.xml
-  twitter-main-account twitter-test
-  twitter-print-account twitter-print
   facebook-main-account fb-test
   facebook-magazin-account fb-magazin
   facebook-campus-account fb-campus

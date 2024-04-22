@@ -90,7 +90,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         # media functionality, thus it may be "armed" again later on
         # (IPushMessages.enabled). But that should of course only apply to
         # those push services actually meant by the social media UI (i.e.
-        # Twitter+Facebook), and not send "breaking news" messages again
+        # Facebook), and not send "breaking news" messages again
         # (e.g. to mobile devices).
         self.create_breakingnews()
         self.fill_in_required_values()

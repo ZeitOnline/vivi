@@ -30,4 +30,10 @@
       />
   </class>
 
+  <utility
+    name="zeit.cms/push"
+    provides="zope.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
 </configure>

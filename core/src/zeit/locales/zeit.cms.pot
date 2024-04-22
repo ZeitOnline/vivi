@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Apr 22 10:08:42 2024\n"
+"POT-Creation-Date: Mon Apr 22 16:13:35 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -210,7 +210,7 @@ msgstr ""
 #: zeit/cms/browser/form.py:293
 #: zeit/cms/repository/browser/file.py:89
 #: zeit/content/article/edit/browser/edit.py:300
-#: zeit/content/article/edit/browser/form.py:461
+#: zeit/content/article/edit/browser/form.py:468
 #: zeit/content/article/edit/browser/push.py:52
 #: zeit/content/article/edit/browser/reference.py:54
 #: zeit/content/cp/browser/view.py:11
@@ -584,7 +584,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:36
 #: zeit/content/article/browser/form.py:34
-#: zeit/content/article/edit/browser/form.py:369
+#: zeit/content/article/edit/browser/form.py:376
 #: zeit/content/cp/browser/form.py:60
 #: zeit/content/link/browser/form.py:39
 #: zeit/content/video/browser/video.py:60
@@ -599,7 +599,7 @@ msgid "Authors"
 msgstr ""
 
 #: zeit/cms/content/browser/form.py:44
-#: zeit/content/article/edit/browser/form.py:437
+#: zeit/content/article/edit/browser/form.py:444
 #: zeit/content/cp/browser/form.py:73
 msgid "Run in channel"
 msgstr ""
@@ -1571,7 +1571,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:289
 #: zeit/content/cp/interfaces.py:639
 #: zeit/content/image/interfaces.py:396
-#: zeit/push/interfaces.py:300
+#: zeit/push/interfaces.py:248
 msgid "Drag an image group here"
 msgstr ""
 
@@ -1624,7 +1624,7 @@ msgid "Article"
 msgstr ""
 
 #: zeit/content/animation/browser/form.py:22
-#: zeit/content/article/edit/browser/form.py:300
+#: zeit/content/article/edit/browser/form.py:307
 #: zeit/content/link/browser/form.py:33
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
@@ -1712,7 +1712,7 @@ msgid "Adplace block"
 msgstr ""
 
 #: zeit/content/article/edit/audio.py:22
-#: zeit/content/article/edit/browser/form.py:468
+#: zeit/content/article/edit/browser/form.py:475
 #: zeit/content/audio/audio.py:71
 #: zeit/content/audio/browser/configure.zcml:6
 #: zeit/content/audio/browser/form.py:17
@@ -1799,11 +1799,11 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:402
+#: zeit/content/article/edit/browser/form.py:409
 msgid "Product management"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:410
+#: zeit/content/article/edit/browser/form.py:417
 msgid "Interactive"
 msgstr ""
 
@@ -1821,7 +1821,7 @@ msgid "Social media"
 msgstr ""
 
 #: zeit/content/article/edit/browser/push.py:31
-#: zeit/push/browser/form.py:73
+#: zeit/push/browser/form.py:60
 msgid "Mobile apps"
 msgstr ""
 
@@ -4433,79 +4433,67 @@ msgstr ""
 msgid "The banner for this breaking news article has already been retracted."
 msgstr ""
 
-#: zeit/push/interfaces.py:95
+#: zeit/push/interfaces.py:93
 msgid "Short push text"
 msgstr ""
 
-#: zeit/push/interfaces.py:257
+#: zeit/push/interfaces.py:221
 msgid "Enable Facebook"
 msgstr ""
 
-#: zeit/push/interfaces.py:259
+#: zeit/push/interfaces.py:223
 msgid "Facebook Main Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:262
+#: zeit/push/interfaces.py:226
 msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/push/interfaces.py:264
+#: zeit/push/interfaces.py:228
 msgid "Facebook Magazin Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:267
+#: zeit/push/interfaces.py:231
 msgid "Enable Facebook Campus"
 msgstr ""
 
-#: zeit/push/interfaces.py:269
+#: zeit/push/interfaces.py:233
 msgid "Facebook Campus Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:272
+#: zeit/push/interfaces.py:236
 msgid "Enable Facebook ze.tt"
 msgstr ""
 
-#: zeit/push/interfaces.py:274
+#: zeit/push/interfaces.py:238
 msgid "Facebook ze.tt Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:278
-msgid "Ressort Tweet"
-msgstr ""
-
-#: zeit/push/interfaces.py:283
-msgid "Additional Twitter"
-msgstr ""
-
-#: zeit/push/interfaces.py:288
-msgid "Print Tweet"
-msgstr ""
-
-#: zeit/push/interfaces.py:293
+#: zeit/push/interfaces.py:241
 msgid "Mobile title"
 msgstr ""
 
-#: zeit/push/interfaces.py:294
+#: zeit/push/interfaces.py:242
 msgid "Mobile text"
 msgstr ""
 
-#: zeit/push/interfaces.py:295
+#: zeit/push/interfaces.py:243
 msgid "Enable mobile push"
 msgstr ""
 
-#: zeit/push/interfaces.py:297
+#: zeit/push/interfaces.py:245
 msgid "Mobile push with image"
 msgstr ""
 
-#: zeit/push/interfaces.py:299
+#: zeit/push/interfaces.py:247
 msgid "Mobile image"
 msgstr ""
 
-#: zeit/push/interfaces.py:306
+#: zeit/push/interfaces.py:254
 msgid "Mobile buttons"
 msgstr ""
 
-#: zeit/push/interfaces.py:309
+#: zeit/push/interfaces.py:257
 msgid "Payload Template"
 msgstr ""
 
