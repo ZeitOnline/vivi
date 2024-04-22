@@ -5,6 +5,7 @@ import logging
 import pytz
 import zope.app.appsetup.product
 import zope.component
+import zope.event
 import zope.interface
 
 from zeit.cms.checkout.helper import checked_out
@@ -18,6 +19,7 @@ from zeit.content.audio.interfaces import IAudio, IAudioReferences, ISpeechInfo
 from zeit.speech.errors import AudioReferenceError
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
+import zeit.connector.interfaces
 import zeit.speech.interfaces
 
 
@@ -37,6 +39,7 @@ class Speech:
         speech_folder = self.config['speech-folder']
 
         article = zeit.cms.interfaces.ICMSContent(IUUID(article_uuid))
+        zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(article.uniqueId))
         yyyy_mm = IPublishInfo(article).date_first_released.strftime('%Y-%m')
         if speech_folder not in repository:
             repository[speech_folder] = zeit.cms.repository.folder.Folder()
