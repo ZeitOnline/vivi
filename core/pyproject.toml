@@ -233,7 +233,6 @@ ui-zon = [
 
 [project.scripts]
 author-report-invalid-gcid = "zeit.content.author.honorar:report_invalid_gcid"
-brightcove-import-playlists = "zeit.brightcove.update:import_playlists"
 clean-objectlog = "zeit.objectlog.objectlog:clean"
 change-volume-access = "zeit.content.volume.volume:change_access"
 dump_references = "zeit.cms.relation.migrate:dump_references"

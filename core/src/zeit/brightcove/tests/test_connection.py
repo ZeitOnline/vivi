@@ -84,21 +84,6 @@ class CMSAPI(unittest.TestCase):
                     api._request('GET /video_fields')
                 self.assertEqual(2, token.call_count)
 
-    def test_paginates_through_playlists(self):
-        api = zeit.brightcove.connection.CMSAPI('', '', '', '', None)
-        with mock.patch.object(api, '_request') as request:
-            request.side_effect = [
-                {'count': 5},
-                [{'id': 1}, {'id': 2}],
-                [{'id': 2}, {'id': 3}, {'id': 4}],
-                [],
-            ]
-            result = api.get_all_playlists()
-            self.assertEqual([{'id': 1}, {'id': 2}, {'id': 3}, {'id': 4}], list(result))
-            self.assertEqual(0, request.call_args_list[1][1]['params']['offset'])
-            self.assertEqual(2, request.call_args_list[2][1]['params']['offset'])
-            self.assertEqual(5, request.call_args_list[3][1]['params']['offset'])
-
 
 class PlayerAPI(unittest.TestCase):
     def test_converts_sources(self):

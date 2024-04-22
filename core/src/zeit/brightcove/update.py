@@ -1,6 +1,5 @@
 import logging
 
-import gocept.runner
 import z3c.celery.celery
 import zope.event
 import zope.lifecycleevent
@@ -14,7 +13,6 @@ import zeit.brightcove.session
 import zeit.cms.celery
 import zeit.cms.cli
 import zeit.cms.interfaces
-import zeit.content.video.playlist
 import zeit.content.video.video
 
 
@@ -182,86 +180,3 @@ def publish_on_checkin(context, event):
     # publishing (to update XML references etc.)
     if not event.publishing:
         zeit.cms.workflow.interfaces.IPublish(context).publish()
-
-
-class import_playlist(import_base):
-    # Inheriting from import_video is only mechanical, so we can reuse
-    # _add() and _update(), we actually don't have anything else in common.
-
-    cms_class = zeit.content.video.playlist.Playlist
-
-    def __init__(self, bcobj):
-        log.debug('Import for playlist %s', bcobj.uniqueId)
-        self.bcobj = bcobj
-        self.cmsobj = zeit.cms.interfaces.ICMSContent(self.bcobj.uniqueId, None)
-        log.debug('CMS object resolved: %r', self.cmsobj)
-        success = self.add() or self.update()
-        if not success:
-            log.warning('Not processed: %s', self.bcobj.uniqueId)
-
-    def add(self):
-        if self.cmsobj is not None:
-            return False
-        self._add()
-        IPublish(self.cmsobj).publish(background=False)
-        return True
-
-    def update(self):
-        lsc = zeit.cms.content.interfaces.ISemanticChange(self.cmsobj).last_semantic_change
-        if self.bcobj.updated_at <= lsc:
-            return False
-        self._update()
-        IPublish(self.cmsobj).publish(background=False)
-        return False
-
-    def _add(self):
-        log.info('Adding %s', self.bcobj)
-        folder = self.bcobj.__parent__
-        cmsobj = self.cms_class()
-        self.bcobj.apply_to_cms(cmsobj)
-        # Special case of ObjectCreatedEvent, so that e.g. ISemanticChange is
-        # preserved.
-        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(cmsobj, None))
-        folder[self.bcobj.id] = cmsobj
-        self.cmsobj = folder[self.bcobj.id]
-
-    @classmethod
-    def generate_actions(cls):
-        """Fulfills the gocept.runner.transaction_per_item API by returning an
-        iterable of callables.
-        """
-        playlists = zeit.brightcove.convert.Playlist.find_all()
-        for item in playlists:
-            yield lambda: cls(item)  # noqa
-        yield lambda: cls.delete_except(playlists)
-
-    @classmethod
-    def delete_except(cls, known):
-        """There is no way in the BC API to get data about deleted playlists,
-        so we fall back on deleting any playlist that BC does not know about.
-        """
-        if not known:  # safetybelt
-            return
-        folder = zeit.brightcove.convert.playlist_location(None)
-        cms_names = set(folder.keys())
-        bc_names = {x.id for x in known}
-        for name in cms_names - bc_names:
-            log.info('Deleting <Playlist id=%s>', name)
-            cmsobj = folder[name]
-            if IPublishInfo(cmsobj).published:
-                IPublish(cmsobj).retract(background=False)
-            del folder[name]
-
-
-@zeit.cms.cli.runner(
-    ticks=120, principal=zeit.cms.cli.from_config('zeit.brightcove', 'index-principal'), once=False
-)
-def import_playlists():
-    log.info('Update run started')
-    _import_playlists()
-    log.info('Update run finished')
-
-
-@gocept.runner.transaction_per_item
-def _import_playlists():
-    return import_playlist.generate_actions()

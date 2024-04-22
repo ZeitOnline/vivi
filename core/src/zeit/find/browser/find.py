@@ -101,7 +101,6 @@ class SearchForm(JSONView):
         'infobox',
         'link',
         'markup',
-        'playlist',
         'portraitbox',
         'rawxml',
         'video',

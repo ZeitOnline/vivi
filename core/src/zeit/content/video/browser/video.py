@@ -102,9 +102,3 @@ class StillURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
         if self.context.video_still_url:
             return self.context.video_still_url
         raise TypeError('No still url')
-
-
-class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
-    title = _('View playlist')
-
-    form_fields = zope.formlib.form.FormFields(zeit.content.video.interfaces.IPlaylist)
