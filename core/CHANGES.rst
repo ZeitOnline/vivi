@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.148.0 (2024-04-22)
+--------------------
+
+- ZO-4940: invalidate cache of article if tts is created
+
+
 5.147.0 (2024-04-18)
 --------------------
 
