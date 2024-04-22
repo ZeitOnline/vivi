@@ -5,7 +5,7 @@ import pytest
 
 
 def test_publisher_invalidates_fastly(vivi, http):
-    article = '/data/nightwatch-publish.txt'
+    article = '/wirtschaft/2010-01/nightwatch-publish.txt'
 
     expected = datetime.now().isoformat()
 
