@@ -22,7 +22,6 @@ product_config = """\
     playback-timeout 3
 
     video-folder video
-    playlist-folder video/playlist
     index-principal zope.user
 </product-config>
 """

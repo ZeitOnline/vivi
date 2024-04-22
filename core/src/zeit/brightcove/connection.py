@@ -47,7 +47,6 @@ class CMSAPI:
         self._request('PATCH /videos/%s' % bcvideo.id, body=bcvideo.write_data)
 
     def find_videos(self, query, sort='created_at'):
-        # XXX Structurally very similar to get_all_playlists(), refactor?
         offset = 0
         retrieved = collections.OrderedDict()
         while True:

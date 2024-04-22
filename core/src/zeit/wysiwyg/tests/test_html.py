@@ -2,7 +2,7 @@ from io import StringIO
 
 import lxml.etree
 
-from zeit.wysiwyg.testing import PLAYLIST, VIDEO1, VIDEO2, VIDEO3
+from zeit.wysiwyg.testing import VIDEO1, VIDEO2
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.wysiwyg.html
 import zeit.wysiwyg.testing
@@ -23,17 +23,6 @@ class VideoExpiresTest(zeit.wysiwyg.testing.FunctionalTestCase):
 
     def test_empty_video_id_should_be_ignored(self):
         self.assertEqual(self.video1.expires.isoformat(), self.step._expires(VIDEO1, '', None))
-
-    def test_playlist_should_be_ignored(self):
-        self.assertEqual(
-            self.video1.expires.isoformat(), self.step._expires(VIDEO1, PLAYLIST, None)
-        )
-
-    def test_no_expires_found_should_yield_nothing(self):
-        self.assertEqual('', self.step._expires(PLAYLIST, PLAYLIST, None))
-
-    def test_no_expires_date_should_be_ignored(self):
-        self.assertEqual('', self.step._expires(VIDEO3, PLAYLIST, None))
 
     def test_two_videos_should_yield_earlier_date(self):
         self.assertEqual(self.video2.expires.isoformat(), self.step._expires(VIDEO1, VIDEO2, None))

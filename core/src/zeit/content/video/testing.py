@@ -54,24 +54,6 @@ def FunctionalDocFileSuite(*args, **kw):
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 
-def playlist_factory(self, location=''):
-    from zeit.content.video.playlist import Playlist
-
-    parent = self.repository
-    with zeit.cms.testing.site(self.getRootFolder()):
-        with zeit.cms.testing.interaction():
-            playlist = Playlist()
-            yield playlist
-            for name in location.split('/'):
-                if not name:
-                    continue
-                if name not in parent:
-                    parent[name] = zeit.cms.repository.folder.Folder()
-                parent = parent[name]
-            parent['pls'] = playlist
-    yield parent['pls']
-
-
 def video_factory(self):
     from zeit.content.image.testing import create_image_group_with_master_image
     from zeit.content.video.video import Video
