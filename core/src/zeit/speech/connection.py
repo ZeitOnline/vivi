@@ -39,6 +39,8 @@ class Speech:
         speech_folder = self.config['speech-folder']
 
         article = zeit.cms.interfaces.ICMSContent(IUUID(article_uuid))
+        # XXX Ensure we have current data (especially: date_first_released),
+        # even if e.g. multi publish did not commit the zodb cache due to errors.
         zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(article.uniqueId))
         yyyy_mm = IPublishInfo(article).date_first_released.strftime('%Y-%m')
         if speech_folder not in repository:
