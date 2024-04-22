@@ -55,15 +55,6 @@
       permission="zeit.EditContent"/>
   </class>
 
-  <class class=".playlist.PlaylistBlock">
-    <require
-      interface="..interfaces.IPlaylistBlock"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IPlaylistBlock"
-      permission="zeit.EditContent"/>
-  </class>
-
   <class class=".quiz.QuizBlock">
     <require
       interface="..interfaces.IQuizBlock"

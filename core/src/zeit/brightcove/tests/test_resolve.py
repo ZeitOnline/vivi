@@ -77,15 +77,3 @@ class BackwardCompatibleUniqueIdsTest(zeit.brightcove.testing.FunctionalTestCase
             result = ICMSContent('http://video.zeit.de/video/1234')
         self.assertEqual(expected_unique_id, result.uniqueId)
         rvi.assert_called_with('1234')
-
-    def test_playlists_should_be_resolvable(self):
-        from zeit.cms.interfaces import ICMSContent
-        from zeit.cms.repository.folder import Folder
-        from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
-
-        self.repository['video'] = Folder()
-        self.repository['video']['playlist'] = Folder()
-        self.repository['video']['playlist']['1234'] = ExampleContentType()
-        expected_unique_id = 'http://xml.zeit.de/video/playlist/1234'
-        result = ICMSContent('http://video.zeit.de/playlist/1234')
-        self.assertEqual(expected_unique_id, result.uniqueId)

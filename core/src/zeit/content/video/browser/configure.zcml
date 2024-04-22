@@ -44,24 +44,6 @@
    factory=".video.StillURL"
    />
 
-  <!-- playlist -->
-
-  <browser:page
-    for="..interfaces.IPlaylist"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    class=".video.PlaylistDisplayForm"
-    permission="zope.View"
-    />
-
-  <browser:icon
-    for="..interfaces.IPlaylist"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="zmi_icon"
-    file="../resources/playlist_icon.gif"
-    />
-
-
   <!-- common views -->
 
   <browser:page

@@ -32,9 +32,4 @@
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
     handler=".update.export_video" />
 
-  <subscriber
-    for="zeit.content.video.interfaces.IPlaylist
-         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".update.publish_on_checkin" />
-
 </configure>

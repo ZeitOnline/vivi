@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Apr  5 13:46:23 2024\n"
+"POT-Creation-Date: Mon Apr 22 10:08:42 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1426,7 +1426,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:456
+#: zeit/workflow/publish.py:457
 #: zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr ""
@@ -1556,10 +1556,10 @@ msgstr ""
 #: zeit/content/article/interfaces.py:68
 #: zeit/content/cp/interfaces.py:128
 #: zeit/content/cp/interfaces.py:288
-#: zeit/content/cp/interfaces.py:661
+#: zeit/content/cp/interfaces.py:638
 #: zeit/content/image/browser/configure.zcml:262
 #: zeit/content/image/browser/imagegroup.py:222
-#: zeit/content/image/image.py:148
+#: zeit/content/image/image.py:130
 #: zeit/content/portraitbox/interfaces.py:16
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -1569,9 +1569,9 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:205
 #: zeit/content/article/interfaces.py:69
 #: zeit/content/cp/interfaces.py:289
-#: zeit/content/cp/interfaces.py:662
+#: zeit/content/cp/interfaces.py:639
 #: zeit/content/image/interfaces.py:396
-#: zeit/push/interfaces.py:355
+#: zeit/push/interfaces.py:300
 msgid "Drag an image group here"
 msgstr ""
 
@@ -1673,19 +1673,19 @@ msgstr ""
 msgid "Retract banner"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:20
+#: zeit/content/article/browser/breaking.py:21
 msgid "breaking-news-mobile"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:21
+#: zeit/content/article/browser/breaking.py:22
 msgid "breaking-news-homepage"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:22
+#: zeit/content/article/browser/breaking.py:23
 msgid "breaking-news-social"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:81
+#: zeit/content/article/browser/breaking.py:82
 msgid "Publish and push"
 msgstr ""
 
@@ -2165,12 +2165,12 @@ msgid "Collapse preceding content"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:434
-#: zeit/content/cp/interfaces.py:711
+#: zeit/content/cp/interfaces.py:688
 msgid "Cardstack id"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:435
-#: zeit/content/cp/interfaces.py:713
+#: zeit/content/cp/interfaces.py:690
 msgid "Advertorial?"
 msgstr ""
 
@@ -2835,10 +2835,6 @@ msgstr ""
 msgid "Newsletter Signup Block"
 msgstr ""
 
-#: zeit/content/cp/blocks/playlist.py:21
-msgid "Video Bar"
-msgstr ""
-
 #: zeit/content/cp/blocks/rawtext.py:16
 msgid "raw text block"
 msgstr ""
@@ -2905,10 +2901,6 @@ msgstr ""
 
 #: zeit/content/cp/browser/blocks/layout.teaser-automatic.materialize.pt:1
 msgid "Materialize block"
-msgstr ""
-
-#: zeit/content/cp/browser/blocks/playlist.py:26
-msgid "Only playlists can be dropped on a playlist block."
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/teaser.py:172
@@ -3028,7 +3020,7 @@ msgstr ""
 msgid "Centerpage 2009"
 msgstr ""
 
-#: zeit/content/cp/configure.zcml:166
+#: zeit/content/cp/configure.zcml:143
 msgid "Edit Area"
 msgstr ""
 
@@ -3254,72 +3246,57 @@ msgid "No or empty cp:__name__ attribute."
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:612
-#: zeit/content/video/playlist.py:28
-msgid "Playlist"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:620
 msgid "CP Extra Id"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:637
-#: zeit/workflow/interfaces.py:24
-msgid "From"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:638
-#: zeit/workflow/interfaces.py:25
-msgid "To"
-msgstr ""
-
-#: zeit/content/cp/interfaces.py:666
+#: zeit/content/cp/interfaces.py:643
 msgid "Animate"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:672
+#: zeit/content/cp/interfaces.py:649
 msgid "left"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:673
+#: zeit/content/cp/interfaces.py:650
 msgid "center"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:674
+#: zeit/content/cp/interfaces.py:651
 msgid "right"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:680
+#: zeit/content/cp/interfaces.py:657
 #: zeit/content/infobox/interfaces.py:19
 msgid "Contents"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:680
+#: zeit/content/cp/interfaces.py:657
 #: zeit/content/modules/interfaces.py:137
 msgid "Use Markdown"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:683
+#: zeit/content/cp/interfaces.py:660
 msgid "Alignment"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:684
+#: zeit/content/cp/interfaces.py:661
 msgid "Choose alignment"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:716
+#: zeit/content/cp/interfaces.py:693
 msgid "Background color"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:717
+#: zeit/content/cp/interfaces.py:694
 msgid "Choose a background color"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:728
+#: zeit/content/cp/interfaces.py:705
 #: zeit/content/modules/interfaces.py:73
 msgid "Jobbox Ticker"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:746
+#: zeit/content/cp/interfaces.py:723
 msgid "Enable RSS Tracking-Parameter"
 msgstr ""
 
@@ -3354,7 +3331,6 @@ msgid "Activate content materialisation"
 msgstr ""
 
 #: zeit/content/dynamicfolder/interfaces.py:44
-#: zeit/push/browser/facebook-token.pt:11
 msgid "Configuration file"
 msgstr ""
 
@@ -4097,10 +4073,6 @@ msgstr ""
 msgid "Video-Thumbnail"
 msgstr ""
 
-#: zeit/content/video/browser/video.py:108
-msgid "View playlist"
-msgstr ""
-
 #: zeit/content/video/interfaces.py:19
 msgid "Id prefix"
 msgstr ""
@@ -4143,14 +4115,6 @@ msgstr ""
 
 #: zeit/content/video/interfaces.py:64
 msgid "Video type"
-msgstr ""
-
-#: zeit/content/video/interfaces.py:77
-msgid "Video IDs"
-msgstr ""
-
-#: zeit/content/video/interfaces.py:82
-msgid "Videos in the playlist"
 msgstr ""
 
 #: zeit/content/volume/browser/admin.py:26
@@ -4469,111 +4433,79 @@ msgstr ""
 msgid "The banner for this breaking news article has already been retracted."
 msgstr ""
 
-#: zeit/push/browser/facebook-token.pt:2
-msgid "Facebook Access Token"
-msgstr ""
-
-#: zeit/push/browser/facebook-token.pt:5
-msgid "Page name"
-msgstr ""
-
-#: zeit/push/browser/facebook-token.pt:8
-msgid "Access token"
-msgstr ""
-
-#: zeit/push/browser/facebook.py:14
-msgid "Facebook app id"
-msgstr ""
-
-#: zeit/push/browser/facebook.py:15
-msgid "Facebook app secret"
-msgstr ""
-
-#: zeit/push/browser/facebook.py:16
-msgid "Facebook page name (e.g. \"ZEIT ONLINE\")"
-msgstr ""
-
-#: zeit/push/browser/facebook.py:23
-msgid "Create"
-msgstr ""
-
-#: zeit/push/browser/facebook.py:120
-msgid "Facebook Tokens"
-msgstr ""
-
-#: zeit/push/interfaces.py:96
+#: zeit/push/interfaces.py:95
 msgid "Short push text"
 msgstr ""
 
-#: zeit/push/interfaces.py:312
+#: zeit/push/interfaces.py:257
 msgid "Enable Facebook"
 msgstr ""
 
-#: zeit/push/interfaces.py:314
+#: zeit/push/interfaces.py:259
 msgid "Facebook Main Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:317
+#: zeit/push/interfaces.py:262
 msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/push/interfaces.py:319
+#: zeit/push/interfaces.py:264
 msgid "Facebook Magazin Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:322
+#: zeit/push/interfaces.py:267
 msgid "Enable Facebook Campus"
 msgstr ""
 
-#: zeit/push/interfaces.py:324
+#: zeit/push/interfaces.py:269
 msgid "Facebook Campus Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:327
+#: zeit/push/interfaces.py:272
 msgid "Enable Facebook ze.tt"
 msgstr ""
 
-#: zeit/push/interfaces.py:329
+#: zeit/push/interfaces.py:274
 msgid "Facebook ze.tt Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:333
+#: zeit/push/interfaces.py:278
 msgid "Ressort Tweet"
 msgstr ""
 
-#: zeit/push/interfaces.py:338
+#: zeit/push/interfaces.py:283
 msgid "Additional Twitter"
 msgstr ""
 
-#: zeit/push/interfaces.py:343
+#: zeit/push/interfaces.py:288
 msgid "Print Tweet"
 msgstr ""
 
-#: zeit/push/interfaces.py:348
+#: zeit/push/interfaces.py:293
 msgid "Mobile title"
 msgstr ""
 
-#: zeit/push/interfaces.py:349
+#: zeit/push/interfaces.py:294
 msgid "Mobile text"
 msgstr ""
 
-#: zeit/push/interfaces.py:350
+#: zeit/push/interfaces.py:295
 msgid "Enable mobile push"
 msgstr ""
 
-#: zeit/push/interfaces.py:352
+#: zeit/push/interfaces.py:297
 msgid "Mobile push with image"
 msgstr ""
 
-#: zeit/push/interfaces.py:354
+#: zeit/push/interfaces.py:299
 msgid "Mobile image"
 msgstr ""
 
-#: zeit/push/interfaces.py:361
+#: zeit/push/interfaces.py:306
 msgid "Mobile buttons"
 msgstr ""
 
-#: zeit/push/interfaces.py:364
+#: zeit/push/interfaces.py:309
 msgid "Payload Template"
 msgstr ""
 
@@ -4768,6 +4700,14 @@ msgstr ""
 msgid "Publish anyway"
 msgstr ""
 
+#: zeit/workflow/interfaces.py:24
+msgid "From"
+msgstr ""
+
+#: zeit/workflow/interfaces.py:25
+msgid "To"
+msgstr ""
+
 #: zeit/workflow/interfaces.py:27
 msgid "Publication period"
 msgstr ""
@@ -4791,31 +4731,31 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:53
+#: zeit/workflow/publish.py:54
 msgid "Publication scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:73
+#: zeit/workflow/publish.py:74
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:89
+#: zeit/workflow/publish.py:90
 msgid "Collective Publication of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:105
+#: zeit/workflow/publish.py:106
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:199
+#: zeit/workflow/publish.py:200
 msgid "Objects with errors: ${objects}"
 msgstr ""
 
-#: zeit/workflow/publish.py:333
+#: zeit/workflow/publish.py:334
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:523
+#: zeit/workflow/publish.py:524
 msgid "Retracted"
 msgstr ""
 

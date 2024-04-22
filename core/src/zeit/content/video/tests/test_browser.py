@@ -42,23 +42,6 @@ class TestStill(zeit.content.video.testing.BrowserTestCase):
         self.assertEqual(url, 'http://stillurl')
 
 
-class TestPlaylist(zeit.content.video.testing.BrowserTestCase):
-    def test_playlist_should_be_viewable(self):
-        from zeit.content.video.playlist import Playlist
-
-        self.repository['453'] = Playlist()
-        self.browser.open('http://localhost/++skin++vivi/repository/453')
-        self.assert_ellipsis(
-            """...
-<...
-   <label for="form.__name__">
-           <span>File name</span>
-         </label>...
-        <div class="widget">453</div>...
-                             """
-        )
-
-
 VIDEO_PUSHMOCK_WSGI_LAYER = plone.testing.Layer(
     bases=(zeit.content.video.testing.WSGI_LAYER, zeit.push.testing.PUSH_MOCK_LAYER),
     name='VideoPushMockLayer',

@@ -125,7 +125,7 @@ class IVideo(IBlock, ILayoutable):
         title=_('Video'),
         description=_('Drag a video here'),
         required=False,
-        source=zeit.content.video.interfaces.videoOrPlaylistSource,
+        source=zeit.content.video.interfaces.videoSource,
     )
 
     layout = zope.schema.Choice(

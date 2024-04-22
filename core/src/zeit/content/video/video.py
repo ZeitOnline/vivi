@@ -141,20 +141,6 @@ class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'video'
 
 
-class Dependencies(zeit.cms.workflow.dependency.DependencyBase):
-    grok.context(zeit.content.video.interfaces.IVideo)
-    grok.name('zeit.content.video')
-
-    def get_dependencies(self):
-        relations = zope.component.getUtility(zeit.cms.relation.interfaces.IRelations)
-        dependencies = [
-            x
-            for x in relations.get_relations(self.context)
-            if zeit.content.video.interfaces.IPlaylist.providedBy(x)
-        ]
-        return dependencies
-
-
 class DependenciesImages(zeit.cms.workflow.dependency.DependencyBase):
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('zeit.content.video.still')

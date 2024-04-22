@@ -9,7 +9,6 @@ import zeit.brightcove.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.tagging.testing
-import zeit.content.video.playlist
 
 
 class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.testing.TaggingHelper):
@@ -197,16 +196,3 @@ class VideoTest(zeit.brightcove.testing.FunctionalTestCase, zeit.cms.tagging.tes
         cms = CMSVideo()
         bc.apply_to_cms(cms)
         self.assertTrue(cms.overscrolling)
-
-
-class PlaylistTest(zeit.brightcove.testing.FunctionalTestCase):
-    def test_converts_video_list(self):
-        bc = zeit.brightcove.convert.Playlist()
-        bc.data['video_ids'] = ['search-must-be-mocked']
-        playlist = zeit.content.video.playlist.Playlist()
-        with mock.patch('zeit.brightcove.resolve.query_video_id') as query:
-            query.return_value = 'http://xml.zeit.de/online/2007/01/Somalia'
-            bc.apply_to_cms(playlist)
-            self.assertEqual(
-                ['http://xml.zeit.de/online/2007/01/Somalia'], [x.uniqueId for x in playlist.videos]
-            )

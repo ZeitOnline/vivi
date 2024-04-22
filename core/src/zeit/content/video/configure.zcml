@@ -42,30 +42,10 @@
       permission="zeit.EditContent" />
   </class>
 
-  <class class=".playlist.Playlist">
-    <implements
-       interface="zope.annotation.interfaces.IAttributeAnnotatable"
-       />
-    <implements
-       interface="zeit.cms.content.interfaces.IDAVPropertiesInXML"
-       />
-    <require
-      interface=".interfaces.IPlaylist"
-      permission="zope.View" />
-    <require
-      set_schema=".interfaces.IPlaylist"
-      permission="zeit.EditContent" />
-  </class>
-
   <utility
     provides="zeit.cms.content.interfaces.ICMSContentSource"
     component=".interfaces.videoSource"
     name="video"
-    />
-
-  <utility
-    component=".interfaces.videoOrPlaylistSource"
-    name="video-or-playlist"
     />
 
 </configure>

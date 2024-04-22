@@ -605,14 +605,6 @@ class IXMLBlock(IBlock):
     )
 
 
-class IPlaylistBlock(IBlock):
-    """A block which contains the link to a video playlist."""
-
-    referenced_playlist = zope.schema.Choice(
-        title=_('Playlist'), source=zeit.content.video.interfaces.PlaylistSource()
-    )
-
-
 class ICPExtraBlock(IBlock):
     """Block which contains a cp_extra."""
 

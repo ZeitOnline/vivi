@@ -42,10 +42,6 @@ def query_video_id(video_id, default=None):
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
 def adapt_old_video_id_to_new_object(old_id):
     video_prefix = 'http://video.zeit.de/video/'
-    playlist_prefix = 'http://video.zeit.de/playlist/'
     if old_id.startswith(video_prefix):
         video_id = old_id.replace(video_prefix, '', 1)
         return zeit.cms.interfaces.ICMSContent(query_video_id(video_id), None)
-    elif old_id.startswith(playlist_prefix):
-        pls_id = old_id.replace(playlist_prefix, '', 1)
-        return zeit.brightcove.convert.playlist_location(None).get(pls_id)

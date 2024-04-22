@@ -43,7 +43,7 @@ class Content(persistent.Persistent, zope.container.contained.Contained):
     pass
 
 
-Video = Playlist = Content
+Video = Content
 
 
 def update(root):

@@ -783,27 +783,6 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 <p> </p>
 <p>Foo bar</p>
 
-On the way back the divs become a video node:
-
->>> converter.from_html(article.xml.find('body'), '''\
-...     <p>No bo po co to.</p>
-...     <div class="inline-element video">
-...       <div class="videoId">http://video.zeit.de/playlist/2345</div>
-...       <div class="expires">2009-01-01 00:00</div>
-...     </div>
-...     <p>Foo bar</p>''')
-
->>> print(zeit.cms.testing.xmltotext(article.xml))
-<article>
-  <head/>
-  <body>
-    <p>No bo po co to.</p>
-    <video ...href="http://video.zeit.de/playlist/2345"...
-          expires="2009-01-01T00:00:00+01:00" format=""/>
-    <p>Foo bar</p>
-  </body>
-</article>
-
 If no expires date is entered, it is taken from the content object instead:
 
 >>> converter.from_html(article.xml.find('body'), '''\
@@ -872,15 +851,13 @@ Double video
 >>> converter.from_html(article.xml.find('body'), '''\
 ...     <div class="inline-element video">
 ...       <div class="videoId">http://video.zeit.de/video/my-fine-videoid</div>
-...       <div class="videoId2">http://video.zeit.de/playlist/second</div>
 ...       <div class="expires">2009-01-01 00:00</div>
 ...     </div>''')
 
 >>> sorted(article.xml.find('body/video').attrib.items())
 [('expires', '2009-01-01T00:00:00+01:00'),
  ('format', ''),
- ('href', 'http://video.zeit.de/video/my-fine-videoid'),
- ('href2', 'http://video.zeit.de/playlist/second')]
+ ('href', 'http://video.zeit.de/video/my-fine-videoid'), ('href2', '')]
 
 Embedding audio
 ---------------

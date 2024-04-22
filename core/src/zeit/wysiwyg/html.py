@@ -586,7 +586,7 @@ class VideoStep(ConversionStep):
                 video_id = video_id.replace('http://video.zeit.de/', '', 1)
                 if '/' in video_id:
                     type_, id_ = video_id.split('/', 1)
-                    type_ = 'pls' if type_ == 'playlist' else 'vid'
+                    type_ = 'vid'
                     return id_, type_
             return '', ''
 
@@ -610,7 +610,6 @@ class VideoStep(ConversionStep):
             return user_entered
 
         # an expires value might
-        # - not exist on the object (if it's a Playlist)
         # - exist but be None (if a Video doesn't expire)
         all_expires = []
         maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)

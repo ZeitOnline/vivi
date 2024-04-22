@@ -12,7 +12,7 @@ class IVideoContent(
 ):
     """Video like content.
 
-    This could be a video or a playlist.
+    This could be a video.
 
     """
 
@@ -70,30 +70,6 @@ class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 videoSource = VideoSource()
-
-
-class IPlaylist(IVideoContent):
-    videos = zope.schema.Tuple(
-        title=_('Video IDs'),
-        required=False,
-        readonly=True,
-        default=(),
-        unique=False,
-        value_type=zope.schema.Choice(title=_('Videos in the playlist'), source=videoSource),
-    )
-
-
-class PlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
-    name = 'playlist'
-    check_interfaces = (IPlaylist,)
-
-
-class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
-    name = 'video-or-playlist'
-    check_interfaces = IVideo, IPlaylist
-
-
-videoOrPlaylistSource = VideoOrPlaylistSource()
 
 
 class IPlayer(zope.interface.Interface):
