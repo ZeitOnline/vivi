@@ -13,7 +13,6 @@ class AutomaticTeaserBlock(
 ):
     type = 'auto-teaser'
 
-    # XXX copy&paste from TeaserBlock
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image']
     )
