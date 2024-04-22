@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.149.0 (2024-04-22)
+--------------------
+
+- ZO-4613: remove video playlist content type
+
+- ZO-4983: Move summy attribute `avoid_create_summary` to non admin area
+
+- ZO-5089: Remove all but one twitter message option
+
+
 5.148.0 (2024-04-22)
 --------------------
 
