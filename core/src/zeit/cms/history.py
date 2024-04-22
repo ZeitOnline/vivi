@@ -79,8 +79,7 @@ def main():
     sync_content_to_filesystem(options.uniqueid, output)
 
     cmd('git add --all .')
-    cmd('git commit -m "Automated snapshot"')
-    cmd('git push')
+    cmd('git commit -m "Automated snapshot" && git push || true')
 
 
 def cmd(*args, **kw):
