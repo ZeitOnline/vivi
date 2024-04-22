@@ -170,7 +170,7 @@ jobs:
           output: |
               {"summary": "[Download](${{env.build_url}}/artifacts/${{steps.coverage.outputs.artifact-id}})"}
 
-      - uses: slackapi/slack-github-action@v1.25.0
+      - uses: slackapi/slack-github-action@v1.26.0
         if: failure() && github.ref_name == 'main' && github.event_name != 'schedule'
         with:
           channel-id: "${{env.team_content_alerts}}"
