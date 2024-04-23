@@ -12,6 +12,11 @@ class AutomaticTeaserBlock(
     zeit.content.cp.blocks.teaser.Layoutable, zeit.content.cp.blocks.block.Block
 ):
     type = 'auto-teaser'
+
+    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image']
+    )
+
     volatile = True  # Override to use default=True
 
     def __init__(self, context, xml):

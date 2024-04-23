@@ -18,6 +18,7 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 
     def create_automatic_cp(self, browser):
         zeit.content.cp.browser.testing.create_cp(browser)
+        self.content_url = browser.url
         browser.open('contents')
         browser.getLink('Edit block automatic').click()
         browser.getControl('Amount of teasers').value = '3'
@@ -78,6 +79,31 @@ class AutomaticEditForm(zeit.content.cp.testing.BrowserTestCase):
 <referenced_topicpage>tms-id</referenced_topicpage>...""",
             zeit.cms.testing.xmltotext(cp.body['lead'].xml),
         )
+
+    def test_stores_common_module_properties_and_changes_in_xml(self):
+        def _assert_force_mobile_image(self, expected_value):
+            self.browser.open(self.content_url)
+            self.browser.open('contents')
+            self.browser.getLink('Edit block common', index=4).click()
+            self.browser.getControl(name='form.supertitle').value = 'My new supertitle'
+            self.browser.getControl(name='form.force_mobile_image').value = expected_value
+            self.browser.getControl('Apply').click()
+            wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+            cp = list(wc.values())[0]
+            self.assertEllipsis(
+                f"""<region...<container...
+                supertitle="My new supertitle"...
+                force_mobile_image="{str(expected_value)}"...>...""",
+                zeit.cms.testing.xmltotext(cp.body['lead'].xml),
+            )
+
+        self.create_automatic_cp(self.browser)
+        self.browser.getControl('Automatic type', index=0).displayValue = ['topicpage']
+        self.browser.getControl(name='form.referenced_topicpage').value = 'tms-id'
+        self.browser.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', self.browser.contents)
+        _assert_force_mobile_image(self, False)
+        _assert_force_mobile_image(self, True)
 
     def test_stores_rss_feed_in_xml(self):
         b = self.browser
