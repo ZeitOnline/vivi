@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.151.0 (2024-04-23)
+--------------------
+
+MAINT:
+- Update Python from 3.10.7 to 3.10.14
+
+
 5.150.0 (2024-04-23)
 --------------------
 
