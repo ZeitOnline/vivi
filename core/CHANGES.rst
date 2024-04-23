@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.150.0 (2024-04-23)
+--------------------
+
+- ZO-4966: fix: force_mobile_image in auto areas is saved correctly (again)
+
+
 5.149.0 (2024-04-22)
 --------------------
 
