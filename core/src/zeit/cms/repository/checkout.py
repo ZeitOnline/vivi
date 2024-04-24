@@ -72,7 +72,7 @@ class AutomaticallyRenameable(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.repository.interfaces.IAutomaticallyRenameable,
-        'http//namespaces.zeit.de/CMS/meta',
+        zeit.cms.interfaces.META_SCHEMA_NS,
         ('renameable', 'rename_to'),
     )
 
