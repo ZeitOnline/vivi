@@ -14,7 +14,10 @@ class AutomaticTeaserBlock(
     type = 'auto-teaser'
 
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image']
+        '.',
+        'force_mobile_image',
+        zeit.content.cp.interfaces.ITeaserBlock['force_mobile_image'],
+        use_default=True,
     )
 
     volatile = True  # Override to use default=True
