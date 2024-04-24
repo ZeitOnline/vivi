@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.152.0 (2024-04-24)
+--------------------
+
+- ZO-4966: force_mobile_image default value should be true in automatic teasers
+
+
 5.151.0 (2024-04-23)
 --------------------
 
