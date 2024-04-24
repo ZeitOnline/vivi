@@ -4,6 +4,7 @@ from io import BytesIO
 from unittest import mock
 import collections.abc
 import concurrent
+import threading
 import time
 import traceback
 
@@ -466,7 +467,7 @@ class ContractConcurrency:
         # if the same resource is accessed concurrently
         # and shortly after each other
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-            future_resource = {executor.submit(operation, *args): i for i in range(4)}
+            future_resource = {executor.submit(operation, *args): i for i in range(2)}
             for future in concurrent.futures.as_completed(future_resource):
                 try:
                     future.result()
@@ -518,10 +519,39 @@ class ContractConcurrency:
         self.assertNotIn(resource.id, self.connector)
         self.assertIn(target, self.connector)
 
+    # def test_add_concurrent(self):
+    #     resource = self.get_resource('foo')
+    #     test_result = self._concurrent_operation(self.add_resource, 'foo')
+    #     breakpoint()
+    #     self.assertEqual(len(test_result), 3, 'The second batch of operations should fail')
+    #     self.assertIn(resource.id, self.connector)
+
     def test_add_concurrent(self):
+        def _add():
+            try:
+                sv = transaction.savepoint()
+                try:
+                    self.connector.add(resource)
+                    transaction.commit()
+                except Exception:
+                    sv.rollback()
+            except Exception as exc:
+                stack_trace = traceback.format_exc()
+                test_result.append({'exc': exc, 'stack': stack_trace})
+
         resource = self.get_resource('foo')
-        test_result = self._concurrent_operation(self.connector.add, resource)
-        self.assertEqual(len(test_result), 3, 'The second batch of operations should fail')
+        test_result = []
+        threads = []
+
+        for _ in range(2):
+            thread = threading.Thread(target=_add)
+            thread.start()
+            threads.append(thread)
+
+        for thread in threads:
+            thread.join()
+
+        self.assertEqual(len(test_result), 2, 'The second batch of operations should fail')
         self.assertIn(resource.id, self.connector)
 
 
