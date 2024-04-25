@@ -5,7 +5,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">26</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="last-semantic-change">2021-09-14T15:26:07.502568+00:00</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="author">Jakob Bauer</attribute>
-    <attribute ns="http//namespaces.zeit.de/CMS/meta" name="renameable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="renameable">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/meta" name="provides">&lt;pickle&gt;
   &lt;initialized_object&gt;
     &lt;klass&gt;
