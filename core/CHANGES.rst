@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.153.0 (2024-04-25)
+--------------------
+
+- ZO-5231: use correct namespace for property renameable
+
+
 5.152.0 (2024-04-24)
 --------------------
 
