@@ -16,6 +16,7 @@ from zeit.cms.i18n import MessageFactory as _
 
 
 DOCUMENT_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/document'
+META_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/meta'
 QPS_SCHEMA_NS = 'http://namespaces.zeit.de/QPS/attributes'
 ID_NAMESPACE = 'http://xml.zeit.de/'
 TEASER_NAMESPACE = 'http://xml.zeit.de/CMS/Teaser'
