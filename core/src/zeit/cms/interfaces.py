@@ -154,6 +154,10 @@ class IMetrics(zope.interface.Interface):
     """Marker interface to register opentelemetry metrics provider."""
 
 
+class IPrometheusRegistry(zope.interface.Interface):
+    """Marker interface to access global metrics registry."""
+
+
 class IXMLElement(zope.interface.Interface):
     """An lxml.etree.ElementBase object."""
 

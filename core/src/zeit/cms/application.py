@@ -16,11 +16,13 @@ import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.app.wsgi
 import zope.app.wsgi.paste
+import zope.component
 import zope.component.hooks
 import zope.publisher.browser
 
 from zeit.cms.tracing import anonymize
 import zeit.cms.cli
+import zeit.cms.interfaces
 import zeit.cms.relstorage
 import zeit.cms.tracing
 import zeit.cms.wsgi
@@ -152,7 +154,8 @@ grok.global_utility(BrowserRequest.factory, zope.app.publication.interfaces.IBro
 class MetricsMiddleware:
     def __init__(self, wsgi):
         self.wsgi = wsgi
-        self.metrics = prometheus_client.make_wsgi_app()
+        registry = zope.component.getUtility(zeit.cms.interfaces.IPrometheusRegistry)
+        self.metrics = prometheus_client.make_wsgi_app(registry)
 
     def __call__(self, environ, start_response):
         url = wsgiref.util.request_uri(environ)

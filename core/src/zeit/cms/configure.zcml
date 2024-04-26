@@ -50,6 +50,14 @@
 
   <utility factory=".tracing.prometheus_metrics"
     zcml:condition="have zeit.cms.tracing.prometheus"/>
+  <utility
+      factory="opentelemetry.sdk.extension.prometheus_multiprocess.MultiProcessRegistry"
+      provides=".interfaces.IPrometheusRegistry"
+    zcml:condition="have zeit.cms.tracing.prometheus"/>
+  <utility
+      factory="prometheus_client.CollectorRegistry"
+      provides=".interfaces.IPrometheusRegistry"
+    zcml:condition="not-have zeit.cms.tracing.prometheus"/>
 
   <subscriber handler=".cleanup.clean_previous_interaction" />
 
