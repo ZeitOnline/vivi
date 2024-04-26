@@ -45,8 +45,6 @@ class StorageClient:
         return r
 
     def set_property(self, path, ns, name, value):
-        if not ns.startswith('http'):
-            ns = f'http://namespaces.zeit.de/CMS/{ns}'
         self._request('put', f'/resource{path}', json={ns: {name: value}})
 
     def set_body(self, path, body):
