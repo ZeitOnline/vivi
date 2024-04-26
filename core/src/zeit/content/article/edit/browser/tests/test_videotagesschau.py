@@ -144,7 +144,9 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.assertEqual(len(brwsr.xpath('//input[@type="radio"]')), 1)
         brwsr.getControl('generate-video-recommendation').click()
         self.assertEqual(len(brwsr.xpath('//ul[@class="errors"]')), 1)
-        self.assertEllipsis('...Error while requesting tagesschau API...', brwsr.contents)
+        self.assertEllipsis(
+            '...Error while requesting API or processing recommendations...', brwsr.contents
+        )  # noqa
 
     def test_api_call_succeeds_with_basic_informations_and_different_datetime_format(self):  # noqa
         api = zope.component.getUtility(zeit.content.article.edit.interfaces.IVideoTagesschauAPI)
