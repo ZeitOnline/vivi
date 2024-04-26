@@ -9,12 +9,12 @@ def test_publisher_invalidates_fastly(vivi, http):
 
     expected = datetime.now().isoformat()
 
-    vivi.put(article, expected)
+    vivi.set_body(article, expected)
     vivi.publish(article)
 
     # vivi runs the publisher asynchronously from the API call.
     timeout = 60
-    for i in range(timeout):
+    for _ in range(timeout):
         sleep(1)
         r = http(article)
         current = r.text.strip()
@@ -39,7 +39,7 @@ def test_publisher_updates_metadata(vivi, http, config, content):
 
     # vivi runs the publisher asynchronously from the API call.
     timeout = 60
-    for i in range(timeout):
+    for _ in range(timeout):
         sleep(1)
         r = http(
             config['elasticsearch'],

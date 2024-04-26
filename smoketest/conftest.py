@@ -1,29 +1,17 @@
-from io import BytesIO
-from urllib.parse import urlparse
-import os
-import xmlrpc.client
-
 import pytest
-import webdav3.client
+import requests
 
 
-XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
     'browser': {'baseurl': 'https://www.staging.zeit.de'},
-    'vivi': {
-        'dav_url': 'http://cms-backend.staging.zeit.de:9000',
-        'xmlrpc_url': f'https://{XMLRPC_AUTH}@vivi-frontend.staging.zeit.de:9090/',
-    },
+    'storage': 'http://content-storage.staging.zon.zeit.de/internal',
     'elasticsearch': 'https://tms-es.staging.zon.zeit.de/zeit_content/_search',
 }
 
 
 CONFIG_PRODUCTION = {
     'browser': {'baseurl': 'https://www.zeit.de'},
-    'vivi': {
-        'dav_url': 'http://cms-backend.zeit.de:9000',
-        'xmlrpc_url': f'https://{XMLRPC_AUTH}@vivi-frontend.zeit.de:9090/',
-    },
+    'storage': 'http://content-storage.prod.zon.zeit.de/internal',
     'elasticsearch': 'https://tms-es.zon.zeit.de/zeit_content/_search',
 }
 
@@ -46,32 +34,33 @@ def pytest_configure(config):
     config.option.prometheus_extra_labels.append('project=vivi')
 
 
-class ViviClient:
-    def __init__(self, dav_url, xmlrpc_url):
-        self.dav = webdav3.client.Client({'webdav_hostname': dav_url})
-        self.xmlrpc = xmlrpc.client.ServerProxy(xmlrpc_url)
+class StorageClient:
+    def __init__(self, url):
+        self.url = url
+        self.http = requests.Session()
 
-    def set_property(self, unique_id, ns, name, value):
-        path = '/cms/work' + urlparse(unique_id).path
+    def _request(self, verb, url, **kw):
+        r = self.http.request(verb, self.url + '/api/v1' + url, **kw)
+        r.raise_for_status()
+        return r
+
+    def set_property(self, path, ns, name, value):
         if not ns.startswith('http'):
-            ns = 'http://namespaces.zeit.de/CMS/%s' % ns
-        self.dav.set_property(path, {'namespace': ns, 'name': name, 'value': value})
+            ns = f'http://namespaces.zeit.de/CMS/{ns}'
+        self._request('put', f'/resource{path}', json={ns: {name: value}})
 
-    def put(self, unique_id, body):
-        path = '/cms/work' + urlparse(unique_id).path
-        self.dav.upload_to(BytesIO(body.encode('utf-8')), path)
+    def set_body(self, path, body):
+        self._request(
+            'put',
+            f'/resource{path}',
+            data=body,
+            headers={'content-type': 'application/octet-stream'},
+        )
 
-    def refresh_dav_cache(self, unique_id):
-        if unique_id.startswith('/'):
-            unique_id = 'http://xml.zeit.de' + unique_id
-        self.xmlrpc.invalidate(unique_id)
-
-    def publish(self, unique_id):
-        if unique_id.startswith('/'):
-            unique_id = 'http://xml.zeit.de' + unique_id
-        self.xmlrpc.publish(unique_id)
+    def publish(self, path):
+        self._request('post', f'/publish{path}')
 
 
 @pytest.fixture(scope='session')
 def vivi(config):
-    return ViviClient(**config['vivi'])
+    return StorageClient(config['storage'])
