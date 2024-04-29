@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.154.0 (2024-04-29)
+--------------------
+
+- BEM-204: Switch to custom metrics provider to work in multiprocess conditions
+
+
 5.153.0 (2024-04-25)
 --------------------
 
