@@ -158,11 +158,9 @@ def stdout_tracer():
 
 @zope.interface.implementer(zeit.cms.interfaces.IMetrics)
 def prometheus_metrics():
-    from opentelemetry.exporter.prometheus import PrometheusMetricReader
-    from opentelemetry.sdk.metrics import MeterProvider
+    from opentelemetry.sdk.extension.prometheus_multiprocess import PrometheusMeterProvider
 
-    provider = MeterProvider([PrometheusMetricReader(prefix='')])
-    opentelemetry.metrics.set_meter_provider(provider)
+    opentelemetry.metrics.set_meter_provider(PrometheusMeterProvider())
 
 
 def start_span(module, *args, **kw):

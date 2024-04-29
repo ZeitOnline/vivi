@@ -47,8 +47,10 @@ else:
     import opentelemetry.trace
     import prometheus_client
     import zope.app.appsetup.appsetup
+    import zope.component
 
     from zeit.cms.tracing import anonymize
+    import zeit.cms.interfaces
     import zeit.cms.relstorage
     import zeit.cms.tracing
     import zeit.cms.zope
@@ -92,7 +94,8 @@ else:
 
             port = int(os.environ.get('CELERY_PROMETHEUS_PORT', 0))
             if port:
-                prometheus_client.start_http_server(port)
+                registry = zope.component.getUtility(zeit.cms.interfaces.IPrometheusRegistry)
+                prometheus_client.start_http_server(port, registry=registry)
 
         def on_worker_process_shutdown(self):
             if 'ZODB' in self.app.conf:
