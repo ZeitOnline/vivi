@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.155.0 (2024-04-29)
+--------------------
+
+- ZO-5236: Trigger image build with updated zeit.newsimport
+
+
 5.154.0 (2024-04-29)
 --------------------
 
