@@ -795,6 +795,10 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
+  <class class="..division.Division">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
   <class class="..image.Image">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
@@ -819,6 +823,10 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
+  <class class="..rawtext.RawText">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
   <class class="..citation.Citation">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
@@ -840,6 +848,10 @@
   </class>
 
   <class class="..liveblog.Liveblog">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..liveblog.TickarooLiveblog">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
