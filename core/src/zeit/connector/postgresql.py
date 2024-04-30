@@ -733,12 +733,20 @@ class Content(DBObject):
             self.path.id = id
 
         unsorted = collections.defaultdict(dict)
+        if self.unsorted:
+            previous = self.unsorted
+            for (k, ns), v in props.items():
+                if v is DeleteProperty:
+                    previous[ns.replace(self.NS, '', 1)].pop(k)
+            unsorted.update(previous)
+
         for (k, ns), v in props.items():
             if v is DeleteProperty:
                 continue
             if ns == INTERNAL_PROPERTY:
                 continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
+
         self.unsorted = unsorted
 
 

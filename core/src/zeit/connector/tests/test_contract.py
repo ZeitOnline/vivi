@@ -106,6 +106,22 @@ class ContractReadWrite:
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual(b'two', res.data.read())
 
+    def test_setitem_preserves_all_properties(self):
+        res = self.get_resource(
+            'foo',
+            properties={('foo', self.NS): 'foo'},
+        )
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        transaction.commit()
+        res = self.get_resource(
+            'foo',
+            properties={('bar', self.NS): 'bar'},
+        )
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual('foo', res.properties[('foo', self.NS)])
+        self.assertEqual('bar', res.properties[('bar', self.NS)])
+
     def test_add_is_convenience_for_setitem(self):
         self.connector.add(self.get_resource('foo'))
         res = self.connector['http://xml.zeit.de/testing/foo']
