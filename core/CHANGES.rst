@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.158.0 (2024-05-02)
+--------------------
+
+- ZO-5295: Return one item per search result (not per attribute) in sql connector
+
+
 5.157.0 (2024-05-02)
 --------------------
 
