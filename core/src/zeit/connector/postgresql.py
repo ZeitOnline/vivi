@@ -592,7 +592,7 @@ class Connector:
             if path is not None:
                 yield (path.uniqueid, path.id)
         else:
-            query = select(Path).join(Content).where(self._build_filter(expr))
+            query = select(Content).where(self._build_filter(expr))
             result = self.session.execute(query)
             itemgetters = [
                 (itemgetter(a.namespace.replace(Content.NS, '', 1)), itemgetter(a.name))
