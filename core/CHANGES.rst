@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.156.0 (2024-05-02)
+--------------------
+
+- ZO-5253: Preserve existing properties in sql setitem
+
+
 5.155.0 (2024-04-29)
 --------------------
 
