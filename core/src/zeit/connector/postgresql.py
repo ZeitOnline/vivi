@@ -9,6 +9,7 @@ from uuid import uuid4
 import collections
 import hashlib
 import itertools
+import json
 import os
 import os.path
 import time
@@ -21,6 +22,7 @@ from sqlalchemy import (
     Boolean,
     Column,
     ForeignKey,
+    Index,
     Unicode,
     UnicodeText,
     UniqueConstraint,
@@ -609,7 +611,8 @@ class Connector:
             (var, value) = expr.operands
             name = var.name
             namespace = var.namespace.replace(Content.NS, '', 1)
-            return Content.unsorted[namespace][name].as_string() == value
+            value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
+            return Content.unsorted.path_match(f'$.{namespace}.{name} == {value}')
         else:
             raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
@@ -656,6 +659,14 @@ class Path(DBObject):
 
 class Content(DBObject):
     __tablename__ = 'properties'
+    __table_args__ = (
+        Index(
+            f'ix_{__tablename__}_unsorted',
+            'unsorted',
+            postgresql_using='gin',
+            postgresql_ops={'unsorted': 'jsonb_path_ops'},
+        ),
+    )
 
     id = Column(Uuid(as_uuid=False), primary_key=True)
     type = Column(Unicode, nullable=False, server_default='unknown')
