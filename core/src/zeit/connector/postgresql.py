@@ -6,7 +6,6 @@ from io import BytesIO, StringIO
 from logging import getLogger
 from operator import itemgetter
 from uuid import uuid4
-import collections
 import hashlib
 import itertools
 import os
@@ -32,6 +31,7 @@ from sqlalchemy import (
     update,
 )
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import joinedload, relationship
 import google.api_core.exceptions
 import opentelemetry.instrumentation.sqlalchemy
@@ -662,7 +662,7 @@ class Content(DBObject):
 
     body = Column(UnicodeText)
 
-    unsorted = Column(JSONB)
+    unsorted = Column(MutableDict.as_mutable(JSONB))
 
     last_updated = Column(
         TIMESTAMP(timezone=True),
@@ -732,22 +732,20 @@ class Content(DBObject):
             self.id = id
             self.path.id = id
 
-        unsorted = collections.defaultdict(dict)
-        if self.unsorted:
-            previous = self.unsorted
-            for (k, ns), v in props.items():
-                if v is DeleteProperty:
-                    previous[ns.replace(self.NS, '', 1)].pop(k)
-            unsorted.update(previous)
+        if self.unsorted is None:
+            self.unsorted = {}
 
         for (k, ns), v in props.items():
+            ns_key = ns.replace(self.NS, '', 1)
             if v is DeleteProperty:
+                if ns_key in self.unsorted and k in self.unsorted[ns_key]:
+                    del self.unsorted[ns_key][k]
                 continue
             if ns == INTERNAL_PROPERTY:
                 continue
-            unsorted[ns.replace(self.NS, '', 1)][k] = v
-
-        self.unsorted = unsorted
+            if ns_key not in self.unsorted:
+                self.unsorted[ns_key] = {}
+            self.unsorted[ns_key][k] = v
 
 
 class Lock(DBObject):
