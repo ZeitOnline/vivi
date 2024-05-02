@@ -273,7 +273,9 @@ class Connector:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
-        content.from_webdav(resource.properties)
+        current = content.to_webdav()
+        current.update(resource.properties)
+        content.from_webdav(current)
         content.type = resource.type
         content.is_collection = resource.is_collection
 
@@ -704,6 +706,9 @@ class Content(DBObject):
     NS = 'http://namespaces.zeit.de/CMS/'
 
     def to_webdav(self):
+        if self.unsorted is None:
+            return {}
+
         props = {}
         for ns, d in self.unsorted.items():
             for k, v in d.items():
