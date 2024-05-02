@@ -599,9 +599,11 @@ class Connector:
                 for a in attrlist
             ]
             for item in result.scalars():
+                data = [item.uniqueid]
                 for nsgetter, keygetter in itemgetters:
                     value = keygetter(nsgetter(item.content.unsorted))
-                    yield (item.uniqueid, value)
+                    data.append(value)
+                yield tuple(data)
 
     def _build_filter(self, expr):
         op = expr.operator
