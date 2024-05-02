@@ -686,6 +686,15 @@ class TestFolding(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_liveblog_should_be_foldable(self):
         self.assert_foldable('liveblog')
 
+    def test_division_should_be_foldable(self):
+        self.assert_foldable('division')
+
+    def test_rawtext_should_be_foldable(self):
+        self.assert_foldable('rawtext')
+
+    def test_tickaroo_liveblog_should_be_foldable(self):
+        self.assert_foldable('tickaroo_liveblog')
+
     def test_folding_state_is_preserved_between_editing_text(self):
         self.create_block('video')
         s = self.selenium
