@@ -76,19 +76,6 @@ class LockStatus(Enum):
     TIMED_OUT = 3
 
 
-def _build_filter(expr):
-    op = expr.operator
-    if op == 'and':
-        return sqlalchemy.and_(*(_build_filter(e) for e in expr.operands))
-    elif op == 'eq':
-        (var, value) = expr.operands
-        name = var.name
-        namespace = var.namespace.replace(Content.NS, '', 1)
-        return Content.unsorted[namespace][name].as_string() == value
-    else:
-        raise RuntimeError(f'Unknown operand {op!r} while building search query')
-
-
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
     def __init__(
@@ -603,7 +590,7 @@ class Connector:
             if path is not None:
                 yield (path.uniqueid, path.id)
         else:
-            query = select(Path).join(Content).where(_build_filter(expr))
+            query = select(Path).join(Content).where(self._build_filter(expr))
             result = self.session.execute(query)
             itemgetters = [
                 (itemgetter(a.namespace.replace(Content.NS, '', 1)), itemgetter(a.name))
@@ -613,6 +600,18 @@ class Connector:
                 for nsgetter, keygetter in itemgetters:
                     value = keygetter(nsgetter(item.content.unsorted))
                     yield (item.uniqueid, value)
+
+    def _build_filter(self, expr):
+        op = expr.operator
+        if op == 'and':
+            return sqlalchemy.and_(*(self._build_filter(e) for e in expr.operands))
+        elif op == 'eq':
+            (var, value) = expr.operands
+            name = var.name
+            namespace = var.namespace.replace(Content.NS, '', 1)
+            return Content.unsorted[namespace][name].as_string() == value
+        else:
+            raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
     def invalidate_cache(self, uniqueid):
         content = self._get_content(uniqueid)
