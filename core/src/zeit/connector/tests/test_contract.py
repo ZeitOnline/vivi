@@ -492,8 +492,6 @@ class ContractSearch:
         self.add_resource('foo', body='mybody', properties={('uuid', namespace): uuid})
         var = SearchVar('uuid', namespace)
         result = list(self.connector.search([var], var == uuid))
-        if self.shortened_uuid:
-            uuid = uuid.replace('{urn:uuid:', '').replace('}', '')
         assert result == [('http://xml.zeit.de/testing/foo', uuid)]
 
     def test_search_and_operator(self):
@@ -751,7 +749,6 @@ class ContractCache:
 
 
 class DAVProtocol:
-    shortened_uuid = False
     folder_type = 'collection'
 
     def id_for_folder(self, id):
@@ -848,7 +845,6 @@ class ContractMock(
 
 
 class SQLProtocol:
-    shortened_uuid = True
     folder_type = 'folder'
 
     def id_for_folder(self, id):
