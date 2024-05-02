@@ -510,6 +510,9 @@ class ContractSearch:
         result = list(self.connector.search([ham], (foo == 'bar') & (ham == 'egg')))
         assert result == [('http://xml.zeit.de/testing/bar', 'egg')]
 
+        result = list(self.connector.search([foo, ham], (foo == 'bar') & (ham == 'egg')))
+        assert result == [('http://xml.zeit.de/testing/bar', 'bar', 'egg')]
+
 
 class NormalizeFolders(collections.abc.MutableMapping):
     """DAV connector requires trailing slash for uniqueId of folders, while SQL
