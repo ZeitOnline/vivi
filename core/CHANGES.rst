@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.159.0 (2024-05-02)
+--------------------
+
+- ZO-5302: Return uuid from sql search correctly
+
+
 5.158.0 (2024-05-02)
 --------------------
 
