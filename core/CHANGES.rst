@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.157.0 (2024-05-02)
+--------------------
+
+- ZO-5276: Use sql index to query unsorted properties
+
+
 5.156.0 (2024-05-02)
 --------------------
 
