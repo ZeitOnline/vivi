@@ -6,7 +6,7 @@ import zope.lifecycleevent
 
 from zeit.brightcove.convert import DeletedVideo
 from zeit.cms.content.sources import FEATURE_TOGGLES
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish, IPublishInfo
 from zeit.content.video.interfaces import IVideo
 import zeit.brightcove.convert
 import zeit.brightcove.session
@@ -85,7 +85,7 @@ class import_video(import_base):
             return False
         self._add()
         if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(background=False)
+            IPublish(self.cmsobj).publish(priority=PRIORITY_LOW)
             log.info('Publishing %s' % self.bcobj.uniqueId)
         return True
 
@@ -124,7 +124,7 @@ class import_video(import_base):
         self._update()
         if self.bcobj.state == 'ACTIVE':
             try:
-                IPublish(self.cmsobj).publish(background=False)
+                IPublish(self.cmsobj).publish(priority=PRIORITY_LOW)
             except z3c.celery.celery.HandleAfterAbort as e:
                 try:
                     error = e.c_args[0][1]  # Our API is a bit clumsy.
