@@ -1,0 +1,1 @@
+ZO-5305: commit transactions before running publish inside celery tasks
