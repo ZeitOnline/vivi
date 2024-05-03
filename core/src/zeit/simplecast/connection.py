@@ -7,7 +7,7 @@ import zope.component
 import zope.interface
 
 from zeit.cms.content.interfaces import ISemanticChange
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
 from zeit.content.audio.interfaces import IAudio, IPodcastEpisodeInfo
 import zeit.cms.checkout.helper
@@ -185,7 +185,7 @@ class Simplecast:
             log.info('Podcast Episode %s successfully updated.', episode.uniqueId)
 
     def publish(self, audio):
-        IPublish(audio).publish(background=False)
+        IPublish(audio).publish(priority=PRIORITY_LOW)
         log.info('Podcast Episode %s successfully published.', audio.uniqueId)
 
     def _retract(self, audio):
