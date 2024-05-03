@@ -11,7 +11,7 @@ import zope.interface
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID, ISemanticChange
 from zeit.cms.repository.interfaces import IFolder
-from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish, IPublishInfo
 from zeit.connector.search import SearchVar
 from zeit.content.article.interfaces import IArticle
 from zeit.content.audio.audio import AUDIO_SCHEMA_NS, Audio
@@ -99,8 +99,6 @@ class Speech:
         self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
-        IPublish(speech).publish(background=False)
-
         article = self._assert_article_unchanged(speech)
         if speech in IAudioReferences(article).items:
             log.debug('%s already references %s', article, speech)
@@ -109,7 +107,8 @@ class Speech:
             references = IAudioReferences(co)
             references.add(speech)
         log.info('Added reference from %s to %s', article, speech)
-        IPublish(article).publish(background=False)
+        IPublish(speech).publish(priority=PRIORITY_LOW)
+        IPublish(article).publish(priority=PRIORITY_LOW)
 
     def _article(self, speech: IAudio) -> IArticle:
         return zeit.cms.interfaces.ICMSContent(
