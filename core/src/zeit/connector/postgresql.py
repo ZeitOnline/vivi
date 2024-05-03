@@ -743,6 +743,10 @@ class Content(DBObject):
             self.id = id
             self.path.id = id
 
+        type = props.get(('type', self.NS + 'meta'))
+        if type:
+            self.type = type
+
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():
             if v is DeleteProperty:

@@ -77,6 +77,15 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         )
         self.assertEqual('testing', davprops[('type', 'http://namespaces.zeit.de/CMS/meta')])
 
+    def test_updates_type_from_dav_property(self):
+        res = self.get_resource('foo')
+        self.connector.add(res)
+        self.connector.changeProperties(
+            res.id, {('type', 'http://namespaces.zeit.de/CMS/meta'): 'changed'}
+        )
+        res = self.connector[res.id]
+        self.assertEqual('changed', res.type)
+
     def test_provides_last_updated_column(self):
         # Properly we would test that the value of the last_updated column
         # increases on INSERT and UPDATE. But our test setup wraps everything
