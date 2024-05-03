@@ -8,7 +8,7 @@ import requests
 import zope.event
 
 from zeit.cms.repository.interfaces import ObjectReloadedEvent
-from zeit.cms.workflow.interfaces import IPublish
+from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish
 import zeit.cms.interfaces
 import zeit.content.text.text
 
@@ -72,7 +72,7 @@ class JavaScript:
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content
         self.folder[filename] = obj
-        IPublish(self.folder[filename]).publish(background=False)
+        IPublish(self.folder[filename]).publish(priority=PRIORITY_LOW)
 
     def sweep(self, keep):
         zope.event.notify(ObjectReloadedEvent(self.folder))  # XXX
