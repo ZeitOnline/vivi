@@ -99,7 +99,8 @@ class Speech:
         self._add_audio_reference(speech)
 
     def _add_audio_reference(self, speech: IAudio):
-        IPublish(speech).publish(priority=PRIORITY_LOW)
+        # XXX countdown is workaround race condition between celery/redis BUG-796
+        IPublish(speech).publish(priority=PRIORITY_LOW, countdown=5)
         article = self._assert_article_unchanged(speech)
         if speech in IAudioReferences(article).items:
             log.debug('%s already references %s', article, speech)
@@ -108,7 +109,8 @@ class Speech:
             references = IAudioReferences(co)
             references.add(speech)
         log.info('Added reference from %s to %s', article, speech)
-        IPublish(article).publish(priority=PRIORITY_LOW)
+        # XXX countdown is workaround race condition between celery/redis BUG-796
+        IPublish(article).publish(priority=PRIORITY_LOW, countdown=5)
 
     def _article(self, speech: IAudio) -> IArticle:
         return zeit.cms.interfaces.ICMSContent(

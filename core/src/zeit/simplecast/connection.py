@@ -185,7 +185,8 @@ class Simplecast:
             log.info('Podcast Episode %s successfully updated.', episode.uniqueId)
 
     def publish(self, audio):
-        IPublish(audio).publish(priority=PRIORITY_LOW)
+        # XXX countdown is workaround race condition between celery/redis BUG-796
+        IPublish(audio).publish(priority=PRIORITY_LOW, countdown=5)
         log.info('Podcast Episode %s successfully published.', audio.uniqueId)
 
     def _retract(self, audio):

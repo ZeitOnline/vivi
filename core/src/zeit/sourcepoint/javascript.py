@@ -72,7 +72,8 @@ class JavaScript:
         log.info('Storing new contents as %s/%s', self.folder_id, filename)
         obj.text = content
         self.folder[filename] = obj
-        IPublish(self.folder[filename]).publish(priority=PRIORITY_LOW)
+        # XXX countdown is workaround race condition between celery/redis BUG-796
+        IPublish(self.folder[filename]).publish(priority=PRIORITY_LOW, countdown=5)
 
     def sweep(self, keep):
         zope.event.notify(ObjectReloadedEvent(self.folder))  # XXX

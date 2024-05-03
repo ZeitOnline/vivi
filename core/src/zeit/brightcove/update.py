@@ -85,7 +85,8 @@ class import_video(import_base):
             return False
         self._add()
         if self.bcobj.state == 'ACTIVE':
-            IPublish(self.cmsobj).publish(priority=PRIORITY_LOW)
+            # XXX countdown is workaround race condition between celery/redis BUG-796
+            IPublish(self.cmsobj).publish(priority=PRIORITY_LOW, countdown=5)
             log.info('Publishing %s' % self.bcobj.uniqueId)
         return True
 
@@ -124,7 +125,8 @@ class import_video(import_base):
         self._update()
         if self.bcobj.state == 'ACTIVE':
             try:
-                IPublish(self.cmsobj).publish(priority=PRIORITY_LOW)
+                # XXX countdown is workaround race condition between celery/redis BUG-796
+                IPublish(self.cmsobj).publish(priority=PRIORITY_LOW, countdown=5)
             except z3c.celery.celery.HandleAfterAbort as e:
                 try:
                     error = e.c_args[0][1]  # Our API is a bit clumsy.
