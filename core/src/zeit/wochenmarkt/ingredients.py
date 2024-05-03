@@ -8,7 +8,7 @@ import zope.component
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.cli import wait_for_commit
 from zeit.cms.interfaces import CONFIG_CACHE, ICMSContent
-from zeit.cms.workflow.interfaces import IPublish
+from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish
 import zeit.cms.cli
 import zeit.retresco.interfaces
 import zeit.wochenmarkt.interfaces
@@ -143,5 +143,5 @@ def collect_used():
     with checked_out(source) as co:
         co.xml = used
 
-    publish = IPublish(source)
-    wait_for_commit(lambda: publish.publish(background=False))
+    wait_for_commit(source)
+    IPublish(source).publish(priority=PRIORITY_LOW)
