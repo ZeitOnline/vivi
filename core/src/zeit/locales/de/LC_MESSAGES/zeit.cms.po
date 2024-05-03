@@ -614,7 +614,7 @@ msgstr "Vorlage bearbeiten"
 
 #: zeit/cms/content/browser/template.py:68
 msgid "Edit webdav properties"
-msgstr "WebDAV-Properties bearbeiten"
+msgstr "Properties bearbeiten"
 
 #: zeit/cms/content/browser/template.py:89
 msgid "Choose template"
@@ -1050,7 +1050,7 @@ msgstr "Repository Navigationbaum anzeigen"
 
 #: zeit/cms/permissions.zcml:73
 msgid "View DAV properties"
-msgstr "DAV-Properties-Reiter"
+msgstr "Properties-Reiter"
 
 #: zeit/cms/permissions.zcml:78
 msgid "Syndicate content"
@@ -1066,7 +1066,7 @@ msgstr "Objekte sperren und entsperren"
 
 #: zeit/cms/permissions.zcml:93
 msgid "Manage WebDAV locks"
-msgstr "WebDAV-Locks verwalten"
+msgstr "Locks verwalten"
 
 #: zeit/cms/permissions.zcml:99
 msgid "View global settings"
@@ -1183,7 +1183,7 @@ msgstr "Inhalt hinzufügen"
 #: zeit/cms/repository/browser/configure.zcml:223
 #: zeit/cms/repository/browser/property.py:25
 msgid "DAV Properties"
-msgstr "DAV-Properties"
+msgstr "Properties"
 
 #. Default: "Delete content"
 #: zeit/cms/repository/browser/delete.pt:3
