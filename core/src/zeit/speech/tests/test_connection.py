@@ -85,7 +85,7 @@ class TestSpeech(FunctionalTestCase):
         article = ICMSContent(self.article_uid)
         audio = ICMSContent(self.unique_id)
         assert zeit.cms.workflow.mock._publish_count[article.uniqueId] == 2
-        assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 1
+        assert zeit.cms.workflow.mock._publish_count[audio.uniqueId] == 2
 
     def test_if_article_changed_do_not_add_reference(self):
         IPublish(self.article).publish(background=False)
