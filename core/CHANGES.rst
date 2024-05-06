@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.161.0 (2024-05-06)
+--------------------
+
+- ZO-5306: Work around atomicity issues by issuing an explicit commit before calling the external publisher system
+
+
 5.160.0 (2024-05-06)
 --------------------
 

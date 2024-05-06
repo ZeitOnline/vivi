@@ -1,1 +1,0 @@
-ZO-5306: Work around atomicity issues by issuing an explicit commit before calling the external publisher system
