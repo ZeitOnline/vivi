@@ -547,7 +547,7 @@ class MultiTask:
         return super().run(ids)
 
     def _run(self, objs):
-        if FEATURE_TOGGLES.find('enable-commit-on-multi-publish'):
+        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
             return super()._run(objs)
         self._to_log = []
         result = super()._run(objs)
@@ -564,7 +564,7 @@ class MultiTask:
         raise z3c.celery.celery.Abort(self._log_messages, self._to_log, message=result)
 
     def log(self, obj, message):
-        if FEATURE_TOGGLES.find('enable-commit-on-multi-publish'):
+        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
             super().log(obj, message)
         else:
             self._to_log.append((obj, message))
