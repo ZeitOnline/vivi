@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Apr 22 16:13:35 2024\n"
+"POT-Creation-Date: Fri Apr 26 10:20:31 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -282,7 +282,7 @@ msgid "Title"
 msgstr ""
 
 #: zeit/cms/browser/listing.py:268
-#: zeit/cms/interfaces.py:92
+#: zeit/cms/interfaces.py:93
 #: zeit/cms/repository/browser/file.py:30
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
@@ -937,11 +937,11 @@ msgstr ""
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr ""
 
-#: zeit/cms/interfaces.py:53
+#: zeit/cms/interfaces.py:54
 msgid "Name contains invalid characters"
 msgstr ""
 
-#: zeit/cms/interfaces.py:71
+#: zeit/cms/interfaces.py:72
 msgid "Invalid link target"
 msgstr ""
 
@@ -1812,7 +1812,7 @@ msgid "No tagesschau video recommendation found."
 msgstr ""
 
 #: zeit/content/article/edit/browser/interfaces.py:19
-msgid "Error while requesting tagesschau API"
+msgid "Error while requesting API or processing recommendations"
 msgstr ""
 
 #: zeit/content/article/edit/browser/push.py:13
@@ -2312,7 +2312,7 @@ msgstr ""
 msgid "Topicbox"
 msgstr ""
 
-#: zeit/content/article/edit/videotagesschau.py:186
+#: zeit/content/article/edit/videotagesschau.py:190
 msgid "ARD Video"
 msgstr ""
 

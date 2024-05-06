@@ -16,5 +16,5 @@ class VideoTagesschauNoResultError(Exception):
     def doc(self):
         return {
             'empty': _('No tagesschau video recommendation found.'),
-            'technical': _('Error while requesting tagesschau API'),
+            'technical': _('Error while requesting API or processing recommendations'),
         }[self.error_type]

@@ -71,6 +71,7 @@ class VideoTagesschauAPI:
                 f'POST {api_url}?SIG_URI={self.sig_uri}'
                 f'&API_KEY={self.api_key}&ART_HASH={article_hash}',
                 json=payload,
+                timeout=3,
             )
         # TODO: more detailed exception report?
         except Exception as e:
@@ -81,7 +82,7 @@ class VideoTagesschauAPI:
             )
         if rpost.status_code == 200:
             return rpost.json()
-        # NOTE: this sleep is just a guess; better: retry loop?
+        # Wait a moment, maybe the AI has computed recommendations in a few seconds
         time.sleep(3)
         return self._request_recommendations(article, payload, article_hash)
 
@@ -106,7 +107,9 @@ class VideoTagesschauAPI:
             )
             pass
 
-    def _request(self, request, headers=None, **kw):
+    def _request(self, request, headers=None, _retries=0, **kw):
+        if _retries >= 3:
+            raise RuntimeError('Maximum retries exceeded for %s' % request)
         verb, path = request.split(' ')
         method = getattr(requests, verb.lower())
         try:
@@ -114,7 +117,7 @@ class VideoTagesschauAPI:
             return rq
         except Exception as e:
             log.error(f'ARD-API: {e}', exc_info=True)
-            pass
+            return self._request(request, headers, _retries=_retries + 1, **kw)
 
     def _prepare_payload(self, article):
         uniqueId_parts = urlparse(article.uniqueId).path.split('/')
