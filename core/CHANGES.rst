@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.160.0 (2024-05-06)
+--------------------
+
+- ZO-5186: make all article modules foldabele
+
+- ZO-5259: Respect meta:type property in sql connector
+
+- ZO-5282: retract overdue images
+
+- ZO-5305: commit transactions before running publish inside celery tasks
+
+
 5.159.0 (2024-05-02)
 --------------------
 
