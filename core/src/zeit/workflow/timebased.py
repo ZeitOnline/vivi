@@ -1,5 +1,4 @@
 import datetime
-import functools
 import logging
 
 import grokcore.component as grok
@@ -206,6 +205,6 @@ def retract_overdue_objects():
             tms.delete_id(item['doc_id'])
         else:
             publish = zeit.cms.workflow.interfaces.IPublish(content)
-            retract = functools.partial(publish.retract, background=False)
+            publish.retract(background=False)
             log.info('Retracting %s', content)
-            wait_for_commit(retract)
+            wait_for_commit(content)
