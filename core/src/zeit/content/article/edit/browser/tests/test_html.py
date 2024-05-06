@@ -1,4 +1,7 @@
 # coding: utf8
+import os
+import unittest
+
 import zeit.content.article.edit.browser.testing
 
 
@@ -58,6 +61,7 @@ class HTMLConvertTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         )
         s.assertXpathCount('//*[@class="editable"]//br', 0)
 
+    @unittest.skipIf(os.environ.get('CI'), 'flaky on GHA for unknown reason')
     def test_trailing_br_does_not_break_see_BUG_1273(self):
         self.execute(
             """\

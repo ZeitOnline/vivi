@@ -3,6 +3,60 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.161.0 (2024-05-06)
+--------------------
+
+- ZO-5306: Work around atomicity issues by issuing an explicit commit before calling the external publisher system
+
+
+5.160.0 (2024-05-06)
+--------------------
+
+- ZO-5186: make all article modules foldabele
+
+- ZO-5259: Respect meta:type property in sql connector
+
+- ZO-5282: retract overdue images
+
+- ZO-5305: commit transactions before running publish inside celery tasks
+
+
+5.159.0 (2024-05-02)
+--------------------
+
+- ZO-5302: Return uuid from sql search correctly
+
+
+5.158.0 (2024-05-02)
+--------------------
+
+- ZO-5295: Return one item per search result (not per attribute) in sql connector
+
+
+5.157.0 (2024-05-02)
+--------------------
+
+- ZO-5276: Use sql index to query unsorted properties
+
+
+5.156.0 (2024-05-02)
+--------------------
+
+- ZO-5253: Preserve existing properties in sql setitem
+
+
+5.155.0 (2024-04-29)
+--------------------
+
+- ZO-5236: Trigger image build with updated zeit.newsimport
+
+
+5.154.0 (2024-04-29)
+--------------------
+
+- BEM-204: Switch to custom metrics provider to work in multiprocess conditions
+
+
 5.153.0 (2024-04-25)
 --------------------
 

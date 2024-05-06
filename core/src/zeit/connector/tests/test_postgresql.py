@@ -77,6 +77,15 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         )
         self.assertEqual('testing', davprops[('type', 'http://namespaces.zeit.de/CMS/meta')])
 
+    def test_updates_type_from_dav_property(self):
+        res = self.get_resource('foo')
+        self.connector.add(res)
+        self.connector.changeProperties(
+            res.id, {('type', 'http://namespaces.zeit.de/CMS/meta'): 'changed'}
+        )
+        res = self.connector[res.id]
+        self.assertEqual('changed', res.type)
+
     def test_provides_last_updated_column(self):
         # Properly we would test that the value of the last_updated column
         # increases on INSERT and UPDATE. But our test setup wraps everything
@@ -148,7 +157,25 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         result = self.connector.search([UUID], UUID == props.id)
         unique_id, uuid = next(result)
         self.assertEqual(res.id, unique_id)
-        self.assertEqual(props.id, uuid)
+        self.assertEqual('{urn:uuid:%s}' % props.id, uuid)
+
+    def test_search_returns_uuid(self):
+        res = self.get_resource(
+            'foo',
+            b'mybody',
+            {
+                ('foo', 'http://namespaces.zeit.de/CMS/testing'): 'foo',
+            },
+        )
+        self.connector.add(res)
+        props = self.connector._get_content(res.id)
+        UUID = SearchVar('uuid', 'http://namespaces.zeit.de/CMS/document')
+        FOO = SearchVar('foo', 'http://namespaces.zeit.de/CMS/testing')
+        result = self.connector.search([UUID, FOO], FOO == 'foo')
+        unique_id, uuid, foo = next(result)
+        self.assertEqual(res.id, unique_id)
+        self.assertEqual('{urn:uuid:%s}' % props.id, uuid)
+        self.assertEqual('foo', foo)
 
     def test_copy_duplicates_gcs_blob(self):
         source = self.get_resource('foo', b'mybody')

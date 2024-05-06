@@ -10,7 +10,7 @@ patches:
     name: nightwatch
   patch: |-
     - op: add
-      path: /spec/template/spec/containers/0/env/-
+      path: /spec/template/spec/containers/0/env
       value:
-        name: HTTPS_PROXY
-        value: http://static-ip-proxy.ops.zeit.de:3128
+        - name: HTTPS_PROXY
+          value: http://static-ip-proxy.ops.zeit.de:3128

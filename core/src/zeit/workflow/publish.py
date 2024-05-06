@@ -7,6 +7,7 @@ import time
 import celery.result
 import celery.states
 import pytz
+import transaction
 import z3c.celery.celery
 import zope.app.appsetup.product
 import zope.component
@@ -390,6 +391,9 @@ class PublishTask(PublishRetractTask):
 
         try:
             if to_publish:
+                if FEATURE_TOGGLES.find('publish_commit_transaction'):
+                    transaction.commit()
+
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
                 timer.mark('Called publisher')
@@ -496,6 +500,8 @@ class RetractTask(PublishRetractTask):
 
         try:
             if to_retract:
+                if FEATURE_TOGGLES.find('publish_commit_transaction'):
+                    transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_retract, self.mode)
         except zeit.workflow.publisher.PublisherError as e:
@@ -547,7 +553,7 @@ class MultiTask:
         return super().run(ids)
 
     def _run(self, objs):
-        if FEATURE_TOGGLES.find('enable-commit-on-multi-publish'):
+        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
             return super()._run(objs)
         self._to_log = []
         result = super()._run(objs)
@@ -564,7 +570,7 @@ class MultiTask:
         raise z3c.celery.celery.Abort(self._log_messages, self._to_log, message=result)
 
     def log(self, obj, message):
-        if FEATURE_TOGGLES.find('enable-commit-on-multi-publish'):
+        if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
             super().log(obj, message)
         else:
             self._to_log.append((obj, message))

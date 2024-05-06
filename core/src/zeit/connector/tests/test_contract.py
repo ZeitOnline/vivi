@@ -106,6 +106,16 @@ class ContractReadWrite:
         res = self.connector['http://xml.zeit.de/testing/foo']
         self.assertEqual(b'two', res.data.read())
 
+    def test_setitem_preserves_existing_properties(self):
+        res = self.get_resource('foo', properties={('foo', self.NS): 'foo'})
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        transaction.commit()
+        res = self.get_resource('foo', properties={('bar', self.NS): 'bar'})
+        self.connector['http://xml.zeit.de/testing/foo'] = res
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual('foo', res.properties[('foo', self.NS)])
+        self.assertEqual('bar', res.properties[('bar', self.NS)])
+
     def test_add_is_convenience_for_setitem(self):
         self.connector.add(self.get_resource('foo'))
         res = self.connector['http://xml.zeit.de/testing/foo']
@@ -482,8 +492,6 @@ class ContractSearch:
         self.add_resource('foo', body='mybody', properties={('uuid', namespace): uuid})
         var = SearchVar('uuid', namespace)
         result = list(self.connector.search([var], var == uuid))
-        if self.shortened_uuid:
-            uuid = uuid.replace('{urn:uuid:', '').replace('}', '')
         assert result == [('http://xml.zeit.de/testing/foo', uuid)]
 
     def test_search_and_operator(self):
@@ -499,6 +507,9 @@ class ContractSearch:
         assert result == []
         result = list(self.connector.search([ham], (foo == 'bar') & (ham == 'egg')))
         assert result == [('http://xml.zeit.de/testing/bar', 'egg')]
+
+        result = list(self.connector.search([foo, ham], (foo == 'bar') & (ham == 'egg')))
+        assert result == [('http://xml.zeit.de/testing/bar', 'bar', 'egg')]
 
 
 class NormalizeFolders(collections.abc.MutableMapping):
@@ -738,7 +749,6 @@ class ContractCache:
 
 
 class DAVProtocol:
-    shortened_uuid = False
     folder_type = 'collection'
 
     def id_for_folder(self, id):
@@ -835,7 +845,6 @@ class ContractMock(
 
 
 class SQLProtocol:
-    shortened_uuid = True
     folder_type = 'folder'
 
     def id_for_folder(self, id):

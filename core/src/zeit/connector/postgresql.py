@@ -4,11 +4,11 @@ from enum import Enum
 from functools import partial
 from io import BytesIO, StringIO
 from logging import getLogger
-from operator import itemgetter
 from uuid import uuid4
 import collections
 import hashlib
 import itertools
+import json
 import os
 import os.path
 import time
@@ -21,6 +21,7 @@ from sqlalchemy import (
     Boolean,
     Column,
     ForeignKey,
+    Index,
     Unicode,
     UnicodeText,
     UniqueConstraint,
@@ -74,19 +75,6 @@ class LockStatus(Enum):
     FOREIGN = 1
     OWN = 2
     TIMED_OUT = 3
-
-
-def _build_filter(expr):
-    op = expr.operator
-    if op == 'and':
-        return sqlalchemy.and_(*(_build_filter(e) for e in expr.operands))
-    elif op == 'eq':
-        (var, value) = expr.operands
-        name = var.name
-        namespace = var.namespace.replace(Content.NS, '', 1)
-        return Content.unsorted[namespace][name].as_string() == value
-    else:
-        raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
 
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
@@ -273,7 +261,9 @@ class Connector:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
-        content.from_webdav(resource.properties)
+        current = content.to_webdav()
+        current.update(resource.properties)
+        content.from_webdav(current)
         content.type = resource.type
         content.is_collection = resource.is_collection
 
@@ -599,18 +589,28 @@ class Connector:
             uuid = expr.operands[-1].replace('urn:uuid:', '')
             path = self.session.execute(select(Path).where(Path.id == uuid)).scalar()
             if path is not None:
-                yield (path.uniqueid, path.id)
+                yield (path.uniqueid, '{urn:uuid:%s}' % path.id)
         else:
-            query = select(Path).join(Content).where(_build_filter(expr))
+            query = select(Content).where(self._build_filter(expr))
             result = self.session.execute(query)
-            itemgetters = [
-                (itemgetter(a.namespace.replace(Content.NS, '', 1)), itemgetter(a.name))
-                for a in attrlist
-            ]
             for item in result.scalars():
-                for nsgetter, keygetter in itemgetters:
-                    value = keygetter(nsgetter(item.content.unsorted))
-                    yield (item.uniqueid, value)
+                data = [item.uniqueid]
+                properties = item.to_webdav()
+                data.extend([properties[(a.name, a.namespace)] for a in attrlist])
+                yield tuple(data)
+
+    def _build_filter(self, expr):
+        op = expr.operator
+        if op == 'and':
+            return sqlalchemy.and_(*(self._build_filter(e) for e in expr.operands))
+        elif op == 'eq':
+            (var, value) = expr.operands
+            name = var.name
+            namespace = var.namespace.replace(Content.NS, '', 1)
+            value = json.dumps(str(value))  # Apply correct quoting for jsonpath.
+            return Content.unsorted.path_match(f'$.{namespace}.{name} == {value}')
+        else:
+            raise RuntimeError(f'Unknown operand {op!r} while building search query')
 
     def invalidate_cache(self, uniqueid):
         content = self._get_content(uniqueid)
@@ -655,6 +655,14 @@ class Path(DBObject):
 
 class Content(DBObject):
     __tablename__ = 'properties'
+    __table_args__ = (
+        Index(
+            f'ix_{__tablename__}_unsorted',
+            'unsorted',
+            postgresql_using='gin',
+            postgresql_ops={'unsorted': 'jsonb_path_ops'},
+        ),
+    )
 
     id = Column(Uuid(as_uuid=False), primary_key=True)
     type = Column(Unicode, nullable=False, server_default='unknown')
@@ -704,6 +712,9 @@ class Content(DBObject):
     NS = 'http://namespaces.zeit.de/CMS/'
 
     def to_webdav(self):
+        if self.unsorted is None:
+            return {}
+
         props = {}
         for ns, d in self.unsorted.items():
             for k, v in d.items():
@@ -731,6 +742,10 @@ class Content(DBObject):
                 id = id[10:-1]  # strip off `{urn:uuid:}`
             self.id = id
             self.path.id = id
+
+        type = props.get(('type', self.NS + 'meta'))
+        if type:
+            self.type = type
 
         unsorted = collections.defaultdict(dict)
         for (k, ns), v in props.items():

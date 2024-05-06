@@ -6,7 +6,6 @@ import lxml.builder
 import requests
 import requests.exceptions
 import requests.sessions
-import transaction
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -353,20 +352,17 @@ def _update_topiclist():
 
     with checked_out(keywords) as co:
         co.xml = _build_topic_xml(topicpages)
-    zeit.cms.workflow.interfaces.IPublish(keywords).publish(background=False)
-    try:
-        transaction.commit()
-    except Exception:
-        # We don't really care about the DAV cache, to be honest. Worst case we
-        # won't see the matching zeit.objectlog entry for this publish.
-        transaction.abort()
-        log.warning('Error during commit', exc_info=True)
+
+    if zeit.cms.cli.wait_for_commit(keywords):
+        zeit.cms.workflow.interfaces.IPublish(keywords).publish(background=False)
 
     # Refresh iterator
     topicpages = tms.get_all_topicpages()
     with checked_out(redirects) as co:
         co.text = _build_topic_redirects(topicpages)
-    zeit.cms.workflow.interfaces.IPublish(redirects).publish(background=False)
+
+    if zeit.cms.cli.wait_for_commit(redirects):
+        zeit.cms.workflow.interfaces.IPublish(redirects).publish(background=False)
 
 
 TOPIC_PAGE_ATTRIBUTES = [

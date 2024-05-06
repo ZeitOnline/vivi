@@ -82,7 +82,7 @@ class ILayoutable(zope.interface.Interface):
     )
 
 
-class IBlock(IElement, zeit.edit.interfaces.IBlock):
+class IBlock(IElement, zeit.edit.interfaces.IBlock, zeit.edit.interfaces.IFoldable):
     pass
 
 
