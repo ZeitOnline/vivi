@@ -15,7 +15,6 @@ import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -485,7 +484,6 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertFalse(publish.called)
 
     def test_error_in_one_item_continues_with_other_items(self):
-        FEATURE_TOGGLES.set('enable-commit-on-multi-publish')
         context = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
         c1 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         c2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/eta-zapatero')
