@@ -90,6 +90,20 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             )
         self.assertTrue(IPublishInfo(article).published)
 
+    def test_video_contains_seo_slug_in_url(self):
+        from zeit.content.video.video import Video
+
+        video = Video()
+        video.supertitle = 'seo slug'
+        video.title = 'cookies'
+        video.uniqueId = 'http://xml.zeit.de/video'
+        json = zope.component.getAdapter(
+            video, zeit.workflow.interfaces.IPublisherData, name='bigquery'
+        ).publish_json()
+        assert json['properties']['meta']['url'] == (
+            'http://localhost/live-prefix/video/seo-slug-cookies'
+        )
+
     def test_bigquery_adapters_are_registered(self):
         import zeit.content.article.article
         import zeit.content.cp.centerpage

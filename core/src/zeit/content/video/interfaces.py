@@ -61,6 +61,8 @@ class IVideo(IVideoContent):
 
     has_advertisement = zope.schema.Bool(title=_('Has advertisement'), default=True)
 
+    live_url_base = zope.schema.URI(title=_('URL'), required=False, readonly=True)
+
     type = zope.schema.Choice(title=_('Video type'), source=VideoTypeSource(), required=False)
 
 
