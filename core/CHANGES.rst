@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.162.0 (2024-05-07)
+--------------------
+
+- ZO-4933: Retry failed ARD API calls and less misleading error message for them
+
+
 5.161.0 (2024-05-06)
 --------------------
 
