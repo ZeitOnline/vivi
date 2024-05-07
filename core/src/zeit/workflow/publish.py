@@ -1,8 +1,6 @@
 from datetime import datetime
 import json
 import logging
-import threading
-import time
 
 import celery.result
 import celery.states
@@ -23,6 +21,7 @@ import zeit.cms.celery
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.tracing
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.objectlog.interfaces
@@ -30,7 +29,6 @@ import zeit.workflow.publisher
 
 
 logger = logging.getLogger(__name__)
-timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
 @zope.component.adapter(zeit.cms.repository.interfaces.IRepositoryContent)
@@ -148,16 +146,15 @@ class PublishRetractTask:
         ids_str = ', '.join(ids)
         info = (type(self).__name__, ids_str, self.jobid)
         __traceback_info__ = info
-        timer.start('Job %s started: %s (%s)' % info)
         logger.info('Running job %s for %s', self.jobid, ids_str)
 
         objs = []
-        for uniqueId in ids:
-            try:
-                objs.append(self.repository.getContent(uniqueId))
-            except KeyError:
-                logger.warning('Not found %s, ignoring', uniqueId)
-        timer.mark('Looked up object')
+        with zeit.cms.tracing.use_span(__name__, 'resolve content'):
+            for uniqueId in ids:
+                try:
+                    objs.append(self.repository.getContent(uniqueId))
+                except KeyError:
+                    logger.warning('Not found %s, ignoring', uniqueId)
 
         try:
             result = self._run(objs)
@@ -212,11 +209,6 @@ class PublishRetractTask:
             )
         else:
             return result
-        finally:
-            timer.mark('Done %s' % ids_str)
-            timer_logger.debug('Timings:\n%s', timer)
-            dummy, total, timer_message = timer.get_timings()[-1]
-            logger.info('%s (%2.4fs)' % (timer_message, total))
 
     def _assign_publisher_errors_to_objects(self, exc, objects):
         errors = []
@@ -273,7 +265,6 @@ class PublishRetractTask:
             logger.warning('Could not checkin %s' % obj.uniqueId)
             del checked_out.__parent__[checked_out.__name__]
             return obj
-        timer.mark('Cycled %s' % obj.uniqueId)
         return obj
 
     def recurse(self, method, obj, *args):
@@ -289,24 +280,27 @@ class PublishRetractTask:
                 continue
             seen.add(current_obj.uniqueId)
             logger.debug('%s %s' % (method, current_obj.uniqueId))
-            new_obj = method(current_obj, *args)
-            timer.mark('Called %s on %s' % (method.__name__, current_obj.uniqueId))
+            with zeit.cms.tracing.use_span(
+                __name__, f'publish {method}', attributes={'app.uniqueid': current_obj.uniqueId}
+            ):
+                new_obj = method(current_obj, *args)
             if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
                 # "strictly greater" comparison since the starting object
                 # should not count towards the limit
                 break
 
             # Dive into dependent objects
-            deps = zeit.cms.workflow.interfaces.IPublicationDependencies(new_obj)
-            if self.mode == MODE_PUBLISH:
-                stack.extend(deps.get_dependencies())
-            elif self.mode == MODE_RETRACT:
-                stack.extend(deps.get_retract_dependencies())
-            else:
-                raise ValueError(
-                    'Task mode must be %r or %r, not %r' % (MODE_PUBLISH, MODE_RETRACT, self.mode)
-                )
-            timer.mark('Got dependencies for %s' % (new_obj.uniqueId,))
+            with zeit.cms.tracing.use_span(__name__, 'publish dependencies'):
+                deps = zeit.cms.workflow.interfaces.IPublicationDependencies(new_obj)
+                if self.mode == MODE_PUBLISH:
+                    stack.extend(deps.get_dependencies())
+                elif self.mode == MODE_RETRACT:
+                    stack.extend(deps.get_retract_dependencies())
+                else:
+                    raise ValueError(
+                        'Task mode must be %r or %r, not %r'
+                        % (MODE_PUBLISH, MODE_RETRACT, self.mode)
+                    )
 
             if result_obj is None:
                 result_obj = new_obj
@@ -338,7 +332,6 @@ class PublishRetractTask:
                     )
                 )
             lockable.lock(timeout=240)
-        timer.mark('Locked %s' % obj.uniqueId)
         return obj
 
     @staticmethod
@@ -346,7 +339,6 @@ class PublishRetractTask:
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
         if lockable is not None and lockable.locked() and lockable.ownLock():
             lockable.unlock()
-        timer.mark('Unlocked %s' % obj.uniqueId)
         return obj
 
 
@@ -396,7 +388,6 @@ class PublishTask(PublishRetractTask):
 
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
-                timer.mark('Called publisher')
         except zeit.workflow.publisher.PublisherError as e:
             errors.extend(self._assign_publisher_errors_to_objects(e, published))
         except Exception as e:
@@ -442,17 +433,14 @@ class PublishTask(PublishRetractTask):
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
         info.date_last_published = datetime.now(pytz.UTC)
-        timer.mark('Set date_last_published')
         if not info.date_first_released:
             info.date_first_released = info.date_last_published
-            timer.mark('Set date_first_released')
 
         # XXX Yes this is not strictly _before_ publish. However, zeit.retresco
         # needs this point in time to perform its indexing, and the other
         # subscribers don't care either way, so it's probably not worth
         # introducing two separate events.
         zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(obj, master))
-        timer.mark('Sent BeforePublishEvent for %s' % obj.uniqueId)
 
         new_obj = self.cycle(obj)
         return new_obj
@@ -460,7 +448,6 @@ class PublishTask(PublishRetractTask):
     def after_publish(self, obj, master):
         self.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj, master))
-        timer.mark('Sent PublishedEvent for %s' % obj.uniqueId)
         return obj
 
 
@@ -602,35 +589,3 @@ class MultiRetractTask(MultiTask, RetractTask):
 @zeit.cms.celery.task(bind=True)
 def MULTI_RETRACT_TASK(self, ids):
     return MultiRetractTask(self.request.id).run(ids)
-
-
-class Timer(threading.local):
-    def start(self, message):
-        self.times = []
-        self.mark(message)
-
-    def mark(self, message):
-        self.times.append((time.time(), message))
-
-    def get_timings(self):
-        result = []
-        last = None
-        total = 0
-        for when, message in self.times:
-            if last is None:
-                diff = 0
-            else:
-                diff = when - last
-            total += diff
-            last = when
-            result.append((diff, total, message))
-        return result
-
-    def __str__(self):
-        result = []
-        for diff, total, message in self.get_timings():
-            result.append('%2.4f %2.4f %s' % (diff, total, message))
-        return '\n'.join(result)
-
-
-timer = Timer()

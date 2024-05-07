@@ -226,11 +226,10 @@ class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
         info = IPublishInfo(content)
         info.urgent = True
         self.assertFalse(info.published)
-        with mock.patch(
-            'zeit.cms.workflow.interfaces.IPublishPriority'
-        ) as priority, mock.patch.object(
-            zeit.workflow.publish.PUBLISH_TASK, 'apply_async'
-        ) as apply_async:
+        with (
+            mock.patch('zeit.cms.workflow.interfaces.IPublishPriority') as priority,
+            mock.patch.object(zeit.workflow.publish.PUBLISH_TASK, 'apply_async') as apply_async,
+        ):
             priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
             IPublish(content).publish()
         apply_async.assert_called_with(
@@ -283,7 +282,7 @@ class PublishEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             """\
 ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
-Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
+Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
             self.log.getvalue(),
         )
         self.assertIn('Published', get_object_log(content))
@@ -305,12 +304,11 @@ Done http://xml.zeit.de/online/2007/01/Somalia (...s)...""",
         self.assertEllipsis(
             """\
 ...
-    for http://xml.zeit.de/online/2007/01/Flugsicherheit,
+Running job...for http://xml.zeit.de/online/2007/01/Flugsicherheit,
         http://xml.zeit.de/online/2007/01/Saarland
 Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit,
        http://xml.zeit.de/online/2007/01/Saarland
-Done http://xml.zeit.de/online/2007/01/Flugsicherheit,
- http://xml.zeit.de/online/2007/01/Saarland (...s)...""",
+Task zeit.workflow.publish.MULTI_PUBLISH_TASK...succeeded...""",
             self.log.getvalue(),
         )
 
