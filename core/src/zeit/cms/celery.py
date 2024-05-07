@@ -80,6 +80,11 @@ else:
             }
             zeit.cms.bugsnag.configure(bugsnag_conf)
 
+            port = int(os.environ.get('CELERY_PROMETHEUS_PORT', 0))
+            if port:
+                registry = zope.component.getUtility(zeit.cms.interfaces.IPrometheusRegistry)
+                prometheus_client.start_http_server(port, registry=registry)
+
             if self.app.conf.get('worker_pool') == 'solo':
                 # When debugging there is no fork, so perform ZODB setup now.
                 self.on_worker_process_init()
@@ -91,11 +96,6 @@ else:
             conf = self.app.conf
             db = zeit.cms.zope.create_zodb_database(conf['SETTINGS']['zodbconn.uri'])
             conf['ZODB'] = db  # see z3c.celery.TransactionAwareTask
-
-            port = int(os.environ.get('CELERY_PROMETHEUS_PORT', 0))
-            if port:
-                registry = zope.component.getUtility(zeit.cms.interfaces.IPrometheusRegistry)
-                prometheus_client.start_http_server(port, registry=registry)
 
         def on_worker_process_shutdown(self):
             if 'ZODB' in self.app.conf:
