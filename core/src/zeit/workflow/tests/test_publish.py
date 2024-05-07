@@ -5,6 +5,7 @@ import json
 import logging
 import time
 
+from ZODB.POSException import ConflictError
 import gocept.testing.mock
 import pytz
 import requests_mock
@@ -15,6 +16,7 @@ import zope.i18n
 
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.interfaces import IUUID
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -81,6 +83,51 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
                 items = publisher.call_args[0][0]
                 self.assertEqual(1, len(items))
                 self.assertEqual(c2.uniqueId, items[0]['uniqueId'])
+
+    def test_conflict_error_on_commit_is_raised(self):
+        FEATURE_TOGGLES.set('publish_commit_transaction')
+
+        def provoke_conflict(*args, **kw):
+            transaction.get().join(CommitExceptionDataManager(ConflictError()))
+
+        zope.component.getGlobalSiteManager().registerHandler(
+            provoke_conflict, (zeit.cms.workflow.interfaces.IBeforePublishEvent,)
+        )
+
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        IPublishInfo(article).urgent = True
+
+        with self.assertRaises(ConflictError):
+            IPublish(article).publish(background=False)
+
+
+class NoopDatamanager:
+    """Datamanager which does nothing."""
+
+    def abort(self, trans):
+        pass
+
+    def commit(self, trans):
+        pass
+
+    def tpc_begin(self, trans):
+        pass
+
+    def tpc_abort(self, trans):
+        pass
+
+    def sortKey(self):
+        return 'anything'
+
+
+class CommitExceptionDataManager(NoopDatamanager):
+    """DataManager which raises an exception in tpc_vote."""
+
+    def __init__(self, error):
+        self.error = error
+
+    def tpc_vote(self, trans):
+        raise self.error
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):

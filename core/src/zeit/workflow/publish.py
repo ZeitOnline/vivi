@@ -6,6 +6,7 @@ import celery.result
 import celery.states
 import pytz
 import transaction
+import transaction.interfaces
 import z3c.celery.celery
 import zope.app.appsetup.product
 import zope.component
@@ -158,6 +159,8 @@ class PublishRetractTask:
 
         try:
             result = self._run(objs)
+        except transaction.interfaces.TransientError:
+            raise
         except z3c.celery.celery.Abort:
             raise
         except Exception as e:
@@ -385,9 +388,10 @@ class PublishTask(PublishRetractTask):
             if to_publish:
                 if FEATURE_TOGGLES.find('publish_commit_transaction'):
                     transaction.commit()
-
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
+        except transaction.interfaces.TransientError:
+            raise
         except zeit.workflow.publisher.PublisherError as e:
             errors.extend(self._assign_publisher_errors_to_objects(e, published))
         except Exception as e:
@@ -491,6 +495,8 @@ class RetractTask(PublishRetractTask):
                     transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_retract, self.mode)
+        except transaction.interfaces.TransientError:
+            raise
         except zeit.workflow.publisher.PublisherError as e:
             errors.extend(self._assign_publisher_errors_to_objects(e, retracted))
         except Exception as e:
