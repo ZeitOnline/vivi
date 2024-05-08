@@ -262,7 +262,7 @@ class PublishRetractTask:
             return obj
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         try:
-            obj = manager.checkin(publishing=True)
+            return manager.checkin(publishing=True)
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             # XXX this codepath is not tested!
             logger.warning('Could not checkin %s' % obj.uniqueId)
@@ -287,6 +287,8 @@ class PublishRetractTask:
                 __name__, f'publish {method}', attributes={'app.uniqueid': current_obj.uniqueId}
             ):
                 new_obj = method(current_obj, *args)
+            if new_obj is None:
+                new_obj = current_obj
             if result is None:  # Return possible update for start_obj
                 result = new_obj
             if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
@@ -311,7 +313,6 @@ class PublishRetractTask:
 
     def serialize(self, obj, result):
         result.append(zeit.workflow.interfaces.IPublisherData(obj)(self.mode))
-        return obj
 
     def log(self, obj, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -334,14 +335,12 @@ class PublishRetractTask:
                     )
                 )
             lockable.lock(timeout=240)
-        return obj
 
     @staticmethod
     def unlock(obj, master=None):
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
         if lockable is not None and lockable.locked() and lockable.ownLock():
             lockable.unlock()
-        return obj
 
 
 class PublishError(Exception):
@@ -418,7 +417,6 @@ class PublishTask(PublishRetractTask):
             for error_message in info.error_messages:
                 errors.append(zope.i18n.translate(error_message, target_language='de'))
             raise zeit.cms.workflow.interfaces.PublishingError(', '.join(errors))
-        return obj
 
     def can_retract(self, obj):
         """at least check if the object can be retracted before
@@ -429,7 +427,6 @@ class PublishTask(PublishRetractTask):
             for error_message in info.error_messages:
                 errors.append(zope.i18n.translate(error_message, target_language='de'))
             raise zeit.cms.workflow.interfaces.RetractingError(', '.join(errors))
-        return obj
 
     def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""
@@ -445,13 +442,11 @@ class PublishTask(PublishRetractTask):
         # introducing two separate events.
         zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(obj, master))
 
-        new_obj = self.cycle(obj)
-        return new_obj
+        return self.cycle(obj)
 
     def after_publish(self, obj, master):
         self.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj, master))
-        return obj
 
 
 @zeit.cms.celery.task(bind=True)
@@ -520,12 +515,10 @@ class RetractTask(PublishRetractTask):
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
         self.log(obj, _('Retracted'))
-        return obj
 
     def after_retract(self, obj, master):
         zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj, master))
-        obj = self.cycle(obj)
-        return obj
+        return self.cycle(obj)
 
     @property
     def repository(self):
