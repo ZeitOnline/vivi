@@ -25,8 +25,9 @@ class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
             zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
         )
         asynch = 'z3c.celery.celery.TransactionAwareTask._eager_use_session_'
-        with mock.patch('celery_longterm_scheduler.Task.apply_async') as apply_async, mock.patch(
-            asynch, new=True
+        with (
+            mock.patch('celery_longterm_scheduler.Task.apply_async') as apply_async,
+            mock.patch(asynch, new=True),
         ):
             workflow.add_job(
                 zeit.workflow.publish.PUBLISH_TASK, datetime.now(pytz.UTC) + timedelta(1)
@@ -39,9 +40,10 @@ class TimeBasedWorkflowTest(zeit.workflow.testing.FunctionalTestCase):
             self.assertEqual(PRIORITY_TIMEBASED, apply_async.call_args[1]['queue'])
 
     def test_should_schedule_job_for_renamed_uniqueId(self):
-        with mock.patch('zeit.cms.celery.Task.apply_async') as apply_async, checked_out(
-            self.repository['testcontent']
-        ) as co:
+        with (
+            mock.patch('zeit.cms.celery.Task.apply_async') as apply_async,
+            checked_out(self.repository['testcontent']) as co,
+        ):
             rn = zeit.cms.repository.interfaces.IAutomaticallyRenameable(co)
             rn.renameable = True
             rn.rename_to = 'changed'
@@ -127,8 +129,7 @@ class TimeBasedCeleryEndToEndTest(zeit.cms.testing.FunctionalTestCase):
             """\
 ...
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia
-Publishing http://xml.zeit.de/online/2007/01/Somalia
-Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
+Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
             self.log.getvalue(),
         )
 
@@ -151,8 +152,7 @@ Enqueuing...
 Revoked...
 End executing tasks...
 Running job {0.workflow.publish_job_id} for http://xml.zeit.de/online/2007/01/Somalia
-Publishing http://xml.zeit.de/online/2007/01/Somalia
-Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
+Publishing http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
             self.log.getvalue(),
         )
 
@@ -215,8 +215,7 @@ Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
         self.assertEllipsis(
             """...
 Running job {0.workflow.retract_job_id} for http://xml.zeit.de/online/2007/01/Somalia
-Retracting http://xml.zeit.de/online/2007/01/Somalia
-Done http://xml.zeit.de/online/2007/01/Somalia ...""".format(self),  # noqa
+Retracting http://xml.zeit.de/online/2007/01/Somalia...""".format(self),  # noqa
             self.log.getvalue(),
         )
 

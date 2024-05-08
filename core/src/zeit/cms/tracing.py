@@ -123,6 +123,7 @@ def tracer_from_product_config():
     import zope.app.appsetup.product
 
     from zeit.cms.relstorage import RelStorageInstrumentor
+    from zeit.cms.transaction import TransactionInstrumentor
 
     hostname = socket.gethostname()
     # We don't want the FQDN and date suffix.
@@ -144,6 +145,7 @@ def tracer_from_product_config():
 
     RequestsInstrumentor().instrument(tracer_provider=provider)
     RelStorageInstrumentor().instrument(tracer_provider=provider)
+    TransactionInstrumentor().instrument(tracer_provider=provider)
 
     return default_tracer()
 
