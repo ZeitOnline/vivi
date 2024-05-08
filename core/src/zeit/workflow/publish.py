@@ -299,7 +299,11 @@ class PublishRetractTask:
                 break
 
             # Dive into dependent objects
-            with zeit.cms.tracing.use_span(__name__, 'publish dependencies'):
+            with zeit.cms.tracing.use_span(
+                __name__,
+                'resolve dependencies',
+                attributes={'app.uniqueid': current_obj.uniqueId, 'app.operation': method.__name__},
+            ):
                 deps = zeit.cms.workflow.interfaces.IPublicationDependencies(new_obj)
                 if self.mode == MODE_PUBLISH:
                     stack.extend(deps.get_dependencies())
