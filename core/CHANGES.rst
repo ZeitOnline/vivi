@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.163.0 (2024-05-08)
+--------------------
+
+- BEM-204: Make use of prometheus multiprocess support for celery
+
+- ZO-5274: make staging available through external ingress
+
+
 5.162.0 (2024-05-07)
 --------------------
 
