@@ -3,6 +3,16 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.164.0 (2024-05-08)
+--------------------
+
+- ZO-5306: Persist locks for publish/retract as soon as possible, to prevent concurrent access
+
+
+MAINT:
+- Instrument transaction commit/abort for tracing
+
+
 5.163.0 (2024-05-08)
 --------------------
 
