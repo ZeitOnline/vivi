@@ -270,13 +270,13 @@ class PublishRetractTask:
             return obj
         return obj
 
-    def recurse(self, method, obj, *args):
-        """Apply method recursively on obj."""
+    def recurse(self, method, start_obj, *args):
+        """Apply method recursively on start_obj."""
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
         DEPENDENCY_PUBLISH_LIMIT = int(config.get('dependency-publish-limit', 1))
-        stack = [obj]
+        stack = [start_obj]
         seen = set()
-        result_obj = None
+        result = None
         while stack:
             current_obj = stack.pop(0)
             if current_obj.uniqueId in seen:
@@ -287,6 +287,8 @@ class PublishRetractTask:
                 __name__, f'publish {method}', attributes={'app.uniqueid': current_obj.uniqueId}
             ):
                 new_obj = method(current_obj, *args)
+            if result is None:  # Return possible update for start_obj
+                result = new_obj
             if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
                 # "strictly greater" comparison since the starting object
                 # should not count towards the limit
@@ -305,10 +307,7 @@ class PublishRetractTask:
                         % (MODE_PUBLISH, MODE_RETRACT, self.mode)
                     )
 
-            if result_obj is None:
-                result_obj = new_obj
-
-        return result_obj
+        return result
 
     def serialize(self, obj, result):
         result.append(zeit.workflow.interfaces.IPublisherData(obj)(self.mode))
