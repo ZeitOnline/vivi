@@ -209,6 +209,9 @@ else:
         context = zeit.cms.tracing.apply_samplerate_productconfig(
             'zeit.connector.postgresql.tracing', 'zeit.cms', 'samplerate-sql', context
         )
+        context = zeit.cms.tracing.apply_samplerate_productconfig(
+            'zeit.workflow.publish', 'zeit.cms', 'samplerate-publish', context
+        )
         if context is not None:
             token = opentelemetry.context.attach(context)
             task = otel_celery.retrieve_task(kw)
