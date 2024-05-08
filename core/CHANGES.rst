@@ -3,6 +3,13 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.165.0 (2024-05-08)
+--------------------
+
+MAINT:
+- Instrument publish for tracing
+
+
 5.164.0 (2024-05-08)
 --------------------
 
