@@ -474,6 +474,7 @@ class RetractTask(PublishRetractTask):
             if not info.published:
                 logger.warning('Retracting object %s which is not published.', obj.uniqueId)
             try:
+                obj = self.recurse(self.lock, obj, obj)
                 obj = self.recurse(self.before_retract, obj, obj)
             except Exception as e:
                 errors.append((obj, e))
@@ -506,6 +507,7 @@ class RetractTask(PublishRetractTask):
         for obj in retracted:
             try:
                 self.recurse(self.after_retract, obj, obj)
+                obj = self.recurse(self.unlock, obj, obj)
             except Exception as e:
                 errors.append((obj, e))
 
@@ -515,8 +517,6 @@ class RetractTask(PublishRetractTask):
         return 'Retracted.'
 
     def before_retract(self, obj, master):
-        """Do things before the actual retract."""
-        self.lock(obj)
         zope.event.notify(zeit.cms.workflow.interfaces.BeforeRetractEvent(obj, master))
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
@@ -524,10 +524,8 @@ class RetractTask(PublishRetractTask):
         return obj
 
     def after_retract(self, obj, master):
-        """Do things after retract."""
         zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj, master))
         obj = self.cycle(obj)
-        self.unlock(obj)
         return obj
 
     @property
