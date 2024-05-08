@@ -284,7 +284,9 @@ class PublishRetractTask:
             seen.add(current_obj.uniqueId)
             logger.debug('%s %s' % (method, current_obj.uniqueId))
             with zeit.cms.tracing.use_span(
-                __name__, f'publish {method}', attributes={'app.uniqueid': current_obj.uniqueId}
+                __name__,
+                f'publish {method.__name__}',
+                attributes={'app.uniqueid': current_obj.uniqueId},
             ):
                 new_obj = method(current_obj, *args)
             if new_obj is None:
