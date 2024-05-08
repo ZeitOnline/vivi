@@ -6,6 +6,7 @@ import celery.result
 import celery.states
 import pytz
 import transaction
+import transaction.interfaces
 import z3c.celery.celery
 import zope.app.appsetup.product
 import zope.component
@@ -158,6 +159,8 @@ class PublishRetractTask:
 
         try:
             result = self._run(objs)
+        except transaction.interfaces.TransientError:
+            raise
         except z3c.celery.celery.Abort:
             raise
         except Exception as e:
@@ -259,7 +262,7 @@ class PublishRetractTask:
             return obj
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         try:
-            obj = manager.checkin(publishing=True)
+            return manager.checkin(publishing=True)
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             # XXX this codepath is not tested!
             logger.warning('Could not checkin %s' % obj.uniqueId)
@@ -267,13 +270,13 @@ class PublishRetractTask:
             return obj
         return obj
 
-    def recurse(self, method, obj, *args):
-        """Apply method recursively on obj."""
+    def recurse(self, method, start_obj, *args):
+        """Apply method recursively on start_obj."""
         config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
         DEPENDENCY_PUBLISH_LIMIT = int(config.get('dependency-publish-limit', 1))
-        stack = [obj]
+        stack = [start_obj]
         seen = set()
-        result_obj = None
+        result = None
         while stack:
             current_obj = stack.pop(0)
             if current_obj.uniqueId in seen:
@@ -284,6 +287,10 @@ class PublishRetractTask:
                 __name__, f'publish {method}', attributes={'app.uniqueid': current_obj.uniqueId}
             ):
                 new_obj = method(current_obj, *args)
+            if new_obj is None:
+                new_obj = current_obj
+            if result is None:  # Return possible update for start_obj
+                result = new_obj
             if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
                 # "strictly greater" comparison since the starting object
                 # should not count towards the limit
@@ -302,14 +309,10 @@ class PublishRetractTask:
                         % (MODE_PUBLISH, MODE_RETRACT, self.mode)
                     )
 
-            if result_obj is None:
-                result_obj = new_obj
-
-        return result_obj
+        return result
 
     def serialize(self, obj, result):
         result.append(zeit.workflow.interfaces.IPublisherData(obj)(self.mode))
-        return obj
 
     def log(self, obj, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -332,14 +335,12 @@ class PublishRetractTask:
                     )
                 )
             lockable.lock(timeout=240)
-        return obj
 
     @staticmethod
     def unlock(obj, master=None):
         lockable = zope.app.locking.interfaces.ILockable(obj, None)
         if lockable is not None and lockable.locked() and lockable.ownLock():
             lockable.unlock()
-        return obj
 
 
 class PublishError(Exception):
@@ -361,19 +362,36 @@ class PublishTask(PublishRetractTask):
     def _run(self, objs):
         logger.info('Publishing %s' % ', '.join(obj.uniqueId for obj in objs))
         errors = []
-        published = []
+
+        okay = []
         for obj in objs:
             try:
-                obj = self.recurse(self.can_publish, obj)
-                obj = self.recurse(self.lock, obj, obj)
-                obj = self.recurse(self.before_publish, obj, obj)
+                okay.append(self.recurse(self.can_publish, obj))
             except Exception as e:
                 errors.append((obj, e))
-            else:
-                published.append(obj)
+
+        objs = okay
+        okay = []
+        for obj in objs:
+            try:
+                okay.append(self.recurse(self.lock, obj))
+            except Exception as e:
+                errors.append((obj, e))
+        locked = okay
+        if FEATURE_TOGGLES.find('publish_commit_transaction'):
+            # Persist locks as soon as possible, to prevent concurrent access.
+            transaction.commit()
+
+        objs = okay
+        okay = []
+        for obj in objs:
+            try:
+                okay.append(self.recurse(self.before_publish, obj, obj))
+            except Exception as e:
+                errors.append((obj, e))
 
         to_publish = []
-        for obj in published:
+        for obj in okay:
             try:
                 deps = []
                 self.recurse(self.serialize, obj, deps)
@@ -384,22 +402,32 @@ class PublishTask(PublishRetractTask):
         try:
             if to_publish:
                 if FEATURE_TOGGLES.find('publish_commit_transaction'):
+                    # Persist changes before having an external system read them.
                     transaction.commit()
-
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
+        except transaction.interfaces.TransientError:
+            raise
         except zeit.workflow.publisher.PublisherError as e:
-            errors.extend(self._assign_publisher_errors_to_objects(e, published))
+            errors.extend(self._assign_publisher_errors_to_objects(e, okay))
         except Exception as e:
-            for obj in published:
+            for obj in okay:
                 errors.append((obj, e))
 
-        for obj in published:
+        for obj in okay:
             try:
                 self.recurse(self.after_publish, obj, obj)
-                obj = self.recurse(self.unlock, obj, obj)
             except Exception as e:
                 errors.append((obj, e))
+
+        for obj in locked:
+            try:
+                self.recurse(self.unlock, obj, obj)
+            except Exception as e:
+                errors.append((obj, e))
+        # No commit here, as it would also commit any after_publish changes.
+        # We may leave objects locked, if an error occurred, but that's the
+        # lesser evil of the two.
 
         if errors:
             raise MultiPublishError(errors)
@@ -415,7 +443,6 @@ class PublishTask(PublishRetractTask):
             for error_message in info.error_messages:
                 errors.append(zope.i18n.translate(error_message, target_language='de'))
             raise zeit.cms.workflow.interfaces.PublishingError(', '.join(errors))
-        return obj
 
     def can_retract(self, obj):
         """at least check if the object can be retracted before
@@ -426,7 +453,6 @@ class PublishTask(PublishRetractTask):
             for error_message in info.error_messages:
                 errors.append(zope.i18n.translate(error_message, target_language='de'))
             raise zeit.cms.workflow.interfaces.RetractingError(', '.join(errors))
-        return obj
 
     def before_publish(self, obj, master):
         """Do everything necessary before the actual publish."""
@@ -442,13 +468,11 @@ class PublishTask(PublishRetractTask):
         # introducing two separate events.
         zope.event.notify(zeit.cms.workflow.interfaces.BeforePublishEvent(obj, master))
 
-        new_obj = self.cycle(obj)
-        return new_obj
+        return self.cycle(obj)
 
     def after_publish(self, obj, master):
         self.log(obj, _('Published'))
         zope.event.notify(zeit.cms.workflow.interfaces.PublishedEvent(obj, master))
-        return obj
 
 
 @zeit.cms.celery.task(bind=True)
@@ -464,20 +488,30 @@ class RetractTask(PublishRetractTask):
     def _run(self, objs):
         logger.info('Retracting %s' % ', '.join(obj.uniqueId for obj in objs))
         errors = []
-        retracted = []
+
+        okay = []
         for obj in objs:
             info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
             if not info.published:
                 logger.warning('Retracting object %s which is not published.', obj.uniqueId)
             try:
-                obj = self.recurse(self.before_retract, obj, obj)
+                okay.append(self.recurse(self.lock, obj, obj))
             except Exception as e:
                 errors.append((obj, e))
-            else:
-                retracted.append(obj)
+        locked = okay
+        if FEATURE_TOGGLES.find('publish_commit_transaction'):
+            transaction.commit()
+
+        objs = okay
+        okay = []
+        for obj in objs:
+            try:
+                okay.append(self.recurse(self.before_retract, obj, obj))
+            except Exception as e:
+                errors.append((obj, e))
 
         to_retract = []
-        for obj in retracted:
+        for obj in okay:
             try:
                 deps = []
                 self.recurse(self.serialize, obj, deps)
@@ -491,15 +525,23 @@ class RetractTask(PublishRetractTask):
                     transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_retract, self.mode)
+        except transaction.interfaces.TransientError:
+            raise
         except zeit.workflow.publisher.PublisherError as e:
-            errors.extend(self._assign_publisher_errors_to_objects(e, retracted))
+            errors.extend(self._assign_publisher_errors_to_objects(e, okay))
         except Exception as e:
-            for obj in retracted:
+            for obj in okay:
                 errors.append((obj, e))
 
-        for obj in retracted:
+        for obj in okay:
             try:
                 self.recurse(self.after_retract, obj, obj)
+            except Exception as e:
+                errors.append((obj, e))
+
+        for obj in locked:
+            try:
+                self.recurse(self.unlock, obj, obj)
             except Exception as e:
                 errors.append((obj, e))
 
@@ -509,20 +551,14 @@ class RetractTask(PublishRetractTask):
         return 'Retracted.'
 
     def before_retract(self, obj, master):
-        """Do things before the actual retract."""
-        self.lock(obj)
         zope.event.notify(zeit.cms.workflow.interfaces.BeforeRetractEvent(obj, master))
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = False
         self.log(obj, _('Retracted'))
-        return obj
 
     def after_retract(self, obj, master):
-        """Do things after retract."""
         zope.event.notify(zeit.cms.workflow.interfaces.RetractedEvent(obj, master))
-        obj = self.cycle(obj)
-        self.unlock(obj)
-        return obj
+        return self.cycle(obj)
 
     @property
     def repository(self):

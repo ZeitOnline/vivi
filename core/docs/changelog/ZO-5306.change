@@ -1,0 +1,1 @@
+ZO-5306: Persist locks for publish/retract as soon as possible, to prevent concurrent access
