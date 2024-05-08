@@ -362,19 +362,36 @@ class PublishTask(PublishRetractTask):
     def _run(self, objs):
         logger.info('Publishing %s' % ', '.join(obj.uniqueId for obj in objs))
         errors = []
-        published = []
+
+        okay = []
         for obj in objs:
             try:
-                obj = self.recurse(self.can_publish, obj)
-                obj = self.recurse(self.lock, obj, obj)
-                obj = self.recurse(self.before_publish, obj, obj)
+                okay.append(self.recurse(self.can_publish, obj))
             except Exception as e:
                 errors.append((obj, e))
-            else:
-                published.append(obj)
+
+        objs = okay
+        okay = []
+        for obj in objs:
+            try:
+                okay.append(self.recurse(self.lock, obj))
+            except Exception as e:
+                errors.append((obj, e))
+        locked = okay
+        if FEATURE_TOGGLES.find('publish_commit_transaction'):
+            # Persist locks as soon as possible, to prevent concurrent access.
+            transaction.commit()
+
+        objs = okay
+        okay = []
+        for obj in objs:
+            try:
+                okay.append(self.recurse(self.before_publish, obj, obj))
+            except Exception as e:
+                errors.append((obj, e))
 
         to_publish = []
-        for obj in published:
+        for obj in okay:
             try:
                 deps = []
                 self.recurse(self.serialize, obj, deps)
@@ -385,23 +402,32 @@ class PublishTask(PublishRetractTask):
         try:
             if to_publish:
                 if FEATURE_TOGGLES.find('publish_commit_transaction'):
+                    # Persist changes before having an external system read them.
                     transaction.commit()
                 publisher = zope.component.getUtility(zeit.cms.workflow.interfaces.IPublisher)
                 publisher.request(to_publish, self.mode)
         except transaction.interfaces.TransientError:
             raise
         except zeit.workflow.publisher.PublisherError as e:
-            errors.extend(self._assign_publisher_errors_to_objects(e, published))
+            errors.extend(self._assign_publisher_errors_to_objects(e, okay))
         except Exception as e:
-            for obj in published:
+            for obj in okay:
                 errors.append((obj, e))
 
-        for obj in published:
+        for obj in okay:
             try:
                 self.recurse(self.after_publish, obj, obj)
-                obj = self.recurse(self.unlock, obj, obj)
             except Exception as e:
                 errors.append((obj, e))
+
+        for obj in locked:
+            try:
+                self.recurse(self.unlock, obj, obj)
+            except Exception as e:
+                errors.append((obj, e))
+        # No commit here, as it would also commit any after_publish changes.
+        # We may leave objects locked, if an error occurred, but that's the
+        # lesser evil of the two.
 
         if errors:
             raise MultiPublishError(errors)
@@ -462,21 +488,30 @@ class RetractTask(PublishRetractTask):
     def _run(self, objs):
         logger.info('Retracting %s' % ', '.join(obj.uniqueId for obj in objs))
         errors = []
-        retracted = []
+
+        okay = []
         for obj in objs:
             info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
             if not info.published:
                 logger.warning('Retracting object %s which is not published.', obj.uniqueId)
             try:
-                obj = self.recurse(self.lock, obj, obj)
-                obj = self.recurse(self.before_retract, obj, obj)
+                okay.append(self.recurse(self.lock, obj, obj))
             except Exception as e:
                 errors.append((obj, e))
-            else:
-                retracted.append(obj)
+        locked = okay
+        if FEATURE_TOGGLES.find('publish_commit_transaction'):
+            transaction.commit()
+
+        objs = okay
+        okay = []
+        for obj in objs:
+            try:
+                okay.append(self.recurse(self.before_retract, obj, obj))
+            except Exception as e:
+                errors.append((obj, e))
 
         to_retract = []
-        for obj in retracted:
+        for obj in okay:
             try:
                 deps = []
                 self.recurse(self.serialize, obj, deps)
@@ -493,15 +528,20 @@ class RetractTask(PublishRetractTask):
         except transaction.interfaces.TransientError:
             raise
         except zeit.workflow.publisher.PublisherError as e:
-            errors.extend(self._assign_publisher_errors_to_objects(e, retracted))
+            errors.extend(self._assign_publisher_errors_to_objects(e, okay))
         except Exception as e:
-            for obj in retracted:
+            for obj in okay:
                 errors.append((obj, e))
 
-        for obj in retracted:
+        for obj in okay:
             try:
                 self.recurse(self.after_retract, obj, obj)
-                obj = self.recurse(self.unlock, obj, obj)
+            except Exception as e:
+                errors.append((obj, e))
+
+        for obj in locked:
+            try:
+                self.recurse(self.unlock, obj, obj)
             except Exception as e:
                 errors.append((obj, e))
 
