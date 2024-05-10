@@ -1,4 +1,5 @@
 from configparser import ConfigParser
+import argparse
 import logging
 import os
 import os.path
@@ -169,3 +170,14 @@ def login(username):
     z3c.celery.celery.login_principal(
         z3c.celery.celery.get_principal(username), 'console.PUBLISH_TASK'
     )
+
+
+def principal_from_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--user', '-u', help='username, e.g. email')
+    options, left = parser.parse_known_args()
+    sys.argv = sys.argv[:1] + left
+    if not options.user:
+        parser.print_help()
+        raise SystemExit(1)
+    return options.user
