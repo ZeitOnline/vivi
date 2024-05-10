@@ -56,7 +56,7 @@ class Application:
         ('vhm', 'call:repoze.vhm.middleware:make_filter'),
     ]
 
-    tracing_exclude = ['/@@health-check$', '/metrics$']
+    tracing_exclude = ['/%40%40health-check$', '/metrics$']
 
     def __call__(self, global_conf=None, **local_conf):
         settings = os.environ.copy()
