@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.166.0 (2024-05-10)
+--------------------
+
+- ZO-5192: Report complete video url including seo slug to google pub/sub
+
+
+FIX:
+- Actually exclude healthcheck from tracing
+
+
+MAINT:
+- Convert publish/retract helper scripts to entrypoints
+
+
 5.165.0 (2024-05-08)
 --------------------
 
