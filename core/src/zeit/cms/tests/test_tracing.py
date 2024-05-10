@@ -31,3 +31,10 @@ class TracerSmokeTest(zeit.cms.testing.ZeitCmsTestCase):
         span = zeit.cms.tracing.start_span('test.tracing', 'example')
         self.assertEqual(42, span.attributes['SampleRate'])
         opentelemetry.context.detach(token)
+
+
+class TracingTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
+    def test_healthcheck_is_not_recorded(self):
+        with zeit.cms.tracing.captrace() as trace:
+            self.browser.open('/@@health-check')
+            self.assertEqual(0, len(trace.spans))

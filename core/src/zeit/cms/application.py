@@ -56,6 +56,8 @@ class Application:
         ('vhm', 'call:repoze.vhm.middleware:make_filter'),
     ]
 
+    tracing_exclude = ['/@@health-check$', '/metrics$']
+
     def __call__(self, global_conf=None, **local_conf):
         settings = os.environ.copy()
         settings.update(local_conf)
@@ -88,7 +90,7 @@ class Application:
         app = zeit.cms.wsgi.wsgi_pipeline(app, pipeline, settings)
         app = OpenTelemetryMiddleware(
             app,
-            ExcludeList(['/@@health-check$', '/metrics$']),
+            ExcludeList(self.tracing_exclude),
             request_hook=otel_request_hook,
             response_hook=otel_response_hook,
         )
