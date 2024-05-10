@@ -121,6 +121,12 @@ class VideoBigQuery(grok.Adapter, BigQueryMixin):
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('bigquery')
 
+    @property
+    def live_url(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        live_prefix = config['live-prefix']
+        return self.context.live_url_base.replace(zeit.cms.interfaces.ID_NAMESPACE, live_prefix)
+
 
 class CommentsMixin:
     def publish_json(self):

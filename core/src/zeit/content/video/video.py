@@ -115,6 +115,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         titles = (t for t in (self.supertitle, self.title) if t)
         return zeit.cms.interfaces.normalize_filename(' '.join(titles))
 
+    @property
+    def live_url_base(self):
+        return f'{self.uniqueId}/{self.seo_slug}'
+
 
 @zope.component.adapter(zeit.content.video.interfaces.IVideo)
 @zope.interface.implementer(zeit.content.image.interfaces.IImages)
@@ -158,4 +162,4 @@ class DependenciesImages(zeit.cms.workflow.dependency.DependencyBase):
 @grok.adapter(zeit.content.video.interfaces.IVideo)
 @grok.implementer(zeit.push.interfaces.IPushURL)
 def video_push_url(context):
-    return context.uniqueId + '/' + context.seo_slug
+    return context.live_url_base
