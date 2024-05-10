@@ -27,6 +27,7 @@ import kombu
 import lxml.cssselect
 import lxml.etree
 import lxml.html
+import opentelemetry.util.http
 import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
@@ -362,7 +363,10 @@ class WSGILayer(plone.testing.Layer):
                 for key, value in zeit.cms.application.FANSTATIC_SETTINGS.items()
             },
         )
-        self['wsgi_app'] = zeit.cms.application.OpenTelemetryMiddleware(self['wsgi_app'])
+        self['wsgi_app'] = zeit.cms.application.OpenTelemetryMiddleware(
+            self['wsgi_app'],
+            opentelemetry.util.http.ExcludeList(zeit.cms.application.Application.tracing_exclude),
+        )
 
     def testSetUp(self):
         # Switch database to the currently active DemoStorage.
