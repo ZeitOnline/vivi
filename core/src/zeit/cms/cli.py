@@ -7,6 +7,8 @@ import signal
 import sys
 import time
 
+import transaction
+
 import zeit.cms.logging
 
 
@@ -137,31 +139,22 @@ else:
             return run
 
 
-def wait_for_commit(content, max_attempts=3):
-    import transaction
-    import zope.event
-
-    attempts = 0
-    try:
-        transaction.commit()
-    except Exception:
-        transaction.abort()
-        time.sleep(0.5)
-        while attempts <= max_attempts:
-            # If commit could not be performed, we try again with explicit
-            # cache invalidation. Otherwise there is nothing left to commit
-            # after the first `transaction.abort()`.
-            zope.event.notify(zeit.connector.interfaces.ResourceInvalidatedEvent(content.uniqueId))
-            try:
-                transaction.commit()
-                break
-            except Exception:
-                transaction.abort()
-                time.sleep(0.5)
-                attempts += 1
-    if attempts > max_attempts:
-        return False
-    return True
+def commit_with_retry(*, attempts=3, wait=0.5):
+    # We (ab)use `for` as a repeatable `with`. Simplified version of e.g.
+    # https://stamina.hynek.me/en/stable/tutorial.html#arbitrary-code-blocks
+    # as we don't catch exceptions raised inside the block here.
+    for i in range(1, attempts + 1):
+        yield i
+        try:
+            transaction.commit()
+        except transaction.interfaces.TransientError:
+            log.info('ConflictError, retry attempt %s/%s', i, attempts)
+            transaction.abort()
+            if i == attempts:
+                raise
+            time.sleep(wait)
+        else:
+            break
 
 
 def login(username):

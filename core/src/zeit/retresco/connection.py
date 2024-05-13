@@ -6,6 +6,7 @@ import lxml.builder
 import requests
 import requests.exceptions
 import requests.sessions
+import transaction
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -350,19 +351,20 @@ def _update_topiclist():
     tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
     topicpages = tms.get_all_topicpages()
 
-    with checked_out(keywords) as co:
-        co.xml = _build_topic_xml(topicpages)
+    for _ in zeit.cms.cli.commit_with_retry():
+        with checked_out(keywords) as co:
+            co.xml = _build_topic_xml(topicpages)
 
-    if zeit.cms.cli.wait_for_commit(keywords):
-        zeit.cms.workflow.interfaces.IPublish(keywords).publish(background=False)
+    zeit.cms.workflow.interfaces.IPublish(keywords).publish(background=False)
+    transaction.commit()
 
     # Refresh iterator
     topicpages = tms.get_all_topicpages()
-    with checked_out(redirects) as co:
-        co.text = _build_topic_redirects(topicpages)
+    for _ in zeit.cms.cli.commit_with_retry():
+        with checked_out(redirects) as co:
+            co.text = _build_topic_redirects(topicpages)
 
-    if zeit.cms.cli.wait_for_commit(redirects):
-        zeit.cms.workflow.interfaces.IPublish(redirects).publish(background=False)
+    zeit.cms.workflow.interfaces.IPublish(redirects).publish(background=False)
 
 
 TOPIC_PAGE_ATTRIBUTES = [

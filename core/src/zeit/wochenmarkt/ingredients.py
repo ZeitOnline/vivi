@@ -6,7 +6,7 @@ import lxml.etree
 import zope.component
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.cli import wait_for_commit
+from zeit.cms.cli import commit_with_retry
 from zeit.cms.interfaces import CONFIG_CACHE, ICMSContent
 from zeit.cms.workflow.interfaces import PRIORITY_LOW, IPublish
 import zeit.cms.cli
@@ -139,9 +139,9 @@ def collect_used():
     ingredients = zope.component.getUtility(zeit.wochenmarkt.interfaces.IIngredientsWhitelist)
     used = ingredients.collect_used()
 
-    source = ICMSContent('http://xml.zeit.de/data/ingredients_in_use.xml')
-    with checked_out(source) as co:
-        co.xml = used
+    for _ in commit_with_retry():
+        source = ICMSContent('http://xml.zeit.de/data/ingredients_in_use.xml')
+        with checked_out(source) as co:
+            co.xml = used
 
-    wait_for_commit(source)
     IPublish(source).publish(priority=PRIORITY_LOW)
