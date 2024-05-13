@@ -20,6 +20,7 @@ from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
+from zeit.cms.testing import CommitExceptionDataManager
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.related.interfaces
 import zeit.cms.testing
@@ -99,35 +100,6 @@ class PublishTest(zeit.workflow.testing.FunctionalTestCase):
 
         with self.assertRaises(ConflictError):
             IPublish(article).publish(background=False)
-
-
-class NoopDatamanager:
-    """Datamanager which does nothing."""
-
-    def abort(self, trans):
-        pass
-
-    def commit(self, trans):
-        pass
-
-    def tpc_begin(self, trans):
-        pass
-
-    def tpc_abort(self, trans):
-        pass
-
-    def sortKey(self):
-        return 'anything'
-
-
-class CommitExceptionDataManager(NoopDatamanager):
-    """DataManager which raises an exception in tpc_vote."""
-
-    def __init__(self, error):
-        self.error = error
-
-    def tpc_vote(self, trans):
-        raise self.error
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
