@@ -27,22 +27,23 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4.1.4
+      - uses: actions/checkout@v4.1.5
       - name: determine deployment branch
         run: |
             if [[ "${{github.ref_name}}" = "main" ]]; then
                 branch="main"
             else
-                branch=$(echo -e "${{github.event.pull_request.body}}" | \
-                    sed -ne '/DEPLOYMENT_BRANCH=/s/DEPLOYMENT_BRANCH=//p' | \
-                    tr --delete ' \r\n')
+                branch=$(awk -F= '/DEPLOYMENT_BRANCH *=/ { gsub(/ /, "", $2); printf $2 }' <<'EOF'
+            ${{github.event.pull_request.body}}
+            EOF
+                )
                 if [[ -z "$branch" ]]; then
                     branch=main
                 fi
             fi
             echo "DEPLOYMENT_BRANCH=$branch" >> $GITHUB_ENV
       - name: checkout deployment
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.5
         with:
           repository: ZeitOnline/vivi-deployment
           ref: ${{env.DEPLOYMENT_BRANCH}}
@@ -64,19 +65,19 @@ jobs:
       # Keys have been added manually (both the key in the target repo and
       # the GHA+Dependabot secret in vivi and vivi-deployment)
       - name: checkout zeit.jabber
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.5
         with:
           repository: ZeitOnline/zeit.jabber
           path: deployment/work/source/zeit.jabber
           ssh-key: ${{secrets.DEPLOY_KEY_JABBER}}
       - name: checkout zeit.ldap
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.5
         with:
           repository: ZeitOnline/zeit.ldap
           path: deployment/work/source/zeit.ldap
           ssh-key: ${{secrets.DEPLOY_KEY_LDAP}}
       - name: checkout zeit.newsimport
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.5
         with:
           repository: ZeitOnline/zeit.newsimport
           path: deployment/work/source/zeit.newsimport
