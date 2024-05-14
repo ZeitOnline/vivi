@@ -34,8 +34,6 @@ class FacebookTest(zeit.campus.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository' '/campus/article/@@checkout')
         b.open('@@edit.form.social?show_form=1')
-        self.assertFalse(b.getControl('Enable Facebook Campus').selected)
-        b.getControl('Enable Facebook Campus').selected = True
         b.getControl('Facebook Campus Text').value = 'campus'
         b.getControl('Apply').click()
         article = self.get_article()
@@ -43,7 +41,6 @@ class FacebookTest(zeit.campus.testing.BrowserTestCase):
         self.assertIn(
             {
                 'type': 'facebook',
-                'enabled': True,
                 'account': 'fb-campus',
                 'override_text': 'campus',
             },

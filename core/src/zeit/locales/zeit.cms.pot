@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Fri Apr 26 10:20:31 2024\n"
+"POT-Creation-Date: Mon May 13 10:53:17 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1426,7 +1426,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:457
+#: zeit/workflow/publish.py:461
 #: zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr ""
@@ -2312,7 +2312,7 @@ msgstr ""
 msgid "Topicbox"
 msgstr ""
 
-#: zeit/content/article/edit/videotagesschau.py:190
+#: zeit/content/article/edit/videotagesschau.py:189
 msgid "ARD Video"
 msgstr ""
 
@@ -4719,31 +4719,31 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:54
+#: zeit/workflow/publish.py:55
 msgid "Publication scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:74
+#: zeit/workflow/publish.py:75
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:90
+#: zeit/workflow/publish.py:91
 msgid "Collective Publication of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:106
+#: zeit/workflow/publish.py:107
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:200
+#: zeit/workflow/publish.py:201
 msgid "Objects with errors: ${objects}"
 msgstr ""
 
-#: zeit/workflow/publish.py:334
+#: zeit/workflow/publish.py:335
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:524
+#: zeit/workflow/publish.py:530
 msgid "Retracted"
 msgstr ""
 
@@ -4768,19 +4768,19 @@ msgstr ""
 msgid "not necessary"
 msgstr ""
 
-#: zeit/workflow/timebased.py:137
+#: zeit/workflow/timebased.py:136
 msgid "timebased-publish-add"
 msgstr ""
 
-#: zeit/workflow/timebased.py:138
+#: zeit/workflow/timebased.py:137
 msgid "timebased-publish-cancel"
 msgstr ""
 
-#: zeit/workflow/timebased.py:139
+#: zeit/workflow/timebased.py:138
 msgid "timebased-retract-add"
 msgstr ""
 
-#: zeit/workflow/timebased.py:140
+#: zeit/workflow/timebased.py:139
 msgid "timebased-retract-cancel"
 msgstr ""
 

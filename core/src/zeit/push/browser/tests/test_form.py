@@ -24,7 +24,6 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
         b = self.browser
-        b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Facebook Main Text').value = 'fb-main'
         b.getControl('Enable mobile push').selected = True
         b.getControl('Mobile title').value = 'mobile title'
@@ -36,7 +35,7 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         # are not included in the base form.
         self.assertEqual(2, len(push.message_config))
         self.assertIn(
-            {'type': 'facebook', 'enabled': True, 'account': 'fb-test', 'override_text': 'fb-main'},
+            {'type': 'facebook', 'account': 'fb-test', 'override_text': 'fb-main'},
             push.message_config,
         )
         self.assertIn(
@@ -53,10 +52,8 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         )
 
         self.open_form()
-        self.assertTrue(b.getControl('Enable Facebook', index=0).selected)
         self.assertTrue(b.getControl('Enable mobile push').selected)
 
-        b.getControl('Enable Facebook', index=0).selected = False
         b.getControl('Enable mobile push').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
@@ -65,7 +62,6 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         self.assertIn(
             {
                 'type': 'facebook',
-                'enabled': False,
                 'account': 'fb-test',
                 'override_text': 'fb-main',
             },
@@ -85,7 +81,6 @@ class SocialFormTest(zeit.push.testing.BrowserTestCase):
         )
 
         self.open_form()
-        self.assertFalse(b.getControl('Enable Facebook', index=0).selected)
         self.assertFalse(b.getControl('Enable mobile push').selected)
 
     def test_stores_facebook_main_override_text(self):
@@ -178,7 +173,6 @@ class SocialAddFormTest(SocialFormTest):
         b.getControl('File name').value = 'social'
         b.getControl('Title').value = 'Social content'
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']
-        b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Facebook Main Text').value = 'fb-main'
         b.getControl('Payload Template').displayValue = ['Foo']
         b.getControl(name='form.mobile_enabled').value = False
@@ -186,7 +180,7 @@ class SocialAddFormTest(SocialFormTest):
         content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/social')
         push = zeit.push.interfaces.IPushMessages(content)
         self.assertIn(
-            {'account': 'fb-test', 'enabled': 1, 'override_text': 'fb-main', 'type': 'facebook'},
+            {'account': 'fb-test', 'override_text': 'fb-main', 'type': 'facebook'},
             push.message_config,
         )
 

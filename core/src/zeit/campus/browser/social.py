@@ -6,7 +6,7 @@ import zeit.push.interfaces
 
 
 class SocialBase(zeit.push.browser.form.SocialBase):
-    campus_fields = ('facebook_campus_text', 'facebook_campus_enabled')
+    campus_fields = ('facebook_campus_text',)
 
     social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
     social_fields.fields = social_fields.fields[:2] + campus_fields + social_fields.fields[2:]

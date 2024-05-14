@@ -18,8 +18,6 @@ class FacebookTest(zeit.magazin.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository' '/magazin/article/@@checkout')
         b.open('@@edit.form.social?show_form=1')
-        self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
-        b.getControl('Enable Facebook Magazin').selected = True
         b.getControl('Facebook Magazin Text').value = 'magazin'
         b.getControl('Apply').click()
         article = self.get_article()
@@ -27,7 +25,6 @@ class FacebookTest(zeit.magazin.testing.BrowserTestCase):
         self.assertIn(
             {
                 'type': 'facebook',
-                'enabled': True,
                 'account': 'fb-magazin',
                 'override_text': 'magazin',
             },

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon Apr 22 16:13:35 2024\n"
+"POT-Creation-Date: Mon May 13 10:53:17 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: zeit/addcentral/sidebar.pt:10 zeit/addcentral/sidebar.py:39
 #: zeit/cms/browser/form.py:220 zeit/cms/menu.zcml:17 zeit/cms/menu.zcml:24
@@ -249,7 +249,7 @@ msgstr "Autor"
 msgid "Title"
 msgstr "Titel"
 
-#: zeit/cms/browser/listing.py:268 zeit/cms/interfaces.py:92
+#: zeit/cms/browser/listing.py:268 zeit/cms/interfaces.py:93
 #: zeit/cms/repository/browser/file.py:30
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/dynamicfolder/browser/folder.py:25
@@ -895,11 +895,11 @@ msgstr "Remote Zeitstempel URL"
 msgid "Access changed from \"${old}\" to \"${new}\""
 msgstr "Verfügbarkeit geändert von \"${old}\" nach \"${new}\""
 
-#: zeit/cms/interfaces.py:53
+#: zeit/cms/interfaces.py:54
 msgid "Name contains invalid characters"
 msgstr "Dateiname enthält ungültige Zeichen"
 
-#: zeit/cms/interfaces.py:71
+#: zeit/cms/interfaces.py:72
 msgid "Invalid link target"
 msgstr ""
 "Kein gültiges Linkziel. ZEIT Inhalte müssen nach www.zeit.de verlinken."
@@ -1390,7 +1390,7 @@ msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:457 zeit/workflow/publishinfo.py:61
+#: zeit/workflow/publish.py:461 zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1765,12 +1765,12 @@ msgid "No tagesschau video recommendation found."
 msgstr "Keine Videoempfehlungen gefunden."
 
 #: zeit/content/article/edit/browser/interfaces.py:19
-msgid "Error while requesting tagesschau API"
-msgstr "Fehler beim Abrufen oder Verarbeiten der Videoempfehlungen."
+msgid "Error while requesting API or processing recommendations"
+msgstr "Fehler beim Abrufen oder Verarbeiten der Videoempfehlungen"
 
 #: zeit/content/article/edit/browser/push.py:13 zeit/push/browser/form.py:34
 msgid "Social media"
-msgstr "Social Media und Apps"
+msgstr "Social Media"
 
 #: zeit/content/article/edit/browser/push.py:31 zeit/push/browser/form.py:60
 msgid "Mobile apps"
@@ -2247,7 +2247,7 @@ msgstr "Rezeptlisten-Block bearbeiten"
 msgid "Topicbox"
 msgstr "Themenbox"
 
-#: zeit/content/article/edit/videotagesschau.py:186
+#: zeit/content/article/edit/videotagesschau.py:189
 msgid "ARD Video"
 msgstr "ARD Video"
 
@@ -4671,31 +4671,31 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:54
+#: zeit/workflow/publish.py:55
 msgid "Publication scheduled"
 msgstr "wird veröffentlicht"
 
-#: zeit/workflow/publish.py:74
+#: zeit/workflow/publish.py:75
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
-#: zeit/workflow/publish.py:90
+#: zeit/workflow/publish.py:91
 msgid "Collective Publication of ${count} objects"
 msgstr "Sammelveröffentlichung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:106
+#: zeit/workflow/publish.py:107
 msgid "Collective Retraction of ${count} objects"
 msgstr "Sammeldepublizierung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:200
+#: zeit/workflow/publish.py:201
 msgid "Objects with errors: ${objects}"
 msgstr "Inhalte mit Fehlern: ${objects}"
 
-#: zeit/workflow/publish.py:334
+#: zeit/workflow/publish.py:335
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:524
+#: zeit/workflow/publish.py:530
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -4719,19 +4719,19 @@ msgstr "${name}: ${new_value}"
 msgid "not necessary"
 msgstr "nicht nötig"
 
-#: zeit/workflow/timebased.py:137
+#: zeit/workflow/timebased.py:136
 msgid "timebased-publish-add"
 msgstr "Automatisch veröffentlichen am ${date} (job #${job})"
 
-#: zeit/workflow/timebased.py:138
+#: zeit/workflow/timebased.py:137
 msgid "timebased-publish-cancel"
 msgstr "Abgebrochen: automatisches Veröffentlichen (job #${job})"
 
-#: zeit/workflow/timebased.py:139
+#: zeit/workflow/timebased.py:138
 msgid "timebased-retract-add"
 msgstr "Automatisch zurückziehen am ${date} (job #${job})"
 
-#: zeit/workflow/timebased.py:140
+#: zeit/workflow/timebased.py:139
 msgid "timebased-retract-cancel"
 msgstr "Abgebrochen: automatisches Zurückziehen (job #${job})"
 

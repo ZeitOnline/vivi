@@ -211,32 +211,13 @@ class ToggleDependentChoice(ToggleDependentField, zope.schema.Choice):
     pass
 
 
-class ToggleDependentText(ToggleDependentField, zope.schema.Text):
-    pass
-
-
 class IAccountData(zope.interface.Interface):
     """Convenience access to IPushMessages.message_config entries"""
 
-    facebook_main_enabled = zope.schema.Bool(title=_('Enable Facebook'), required=False)
-    facebook_main_text = ToggleDependentText(
-        title=_('Facebook Main Text'), required=False, dependent_field='facebook_main_enabled'
-    )
-
-    facebook_magazin_enabled = zope.schema.Bool(title=_('Enable Facebook Magazin'), required=False)
-    facebook_magazin_text = ToggleDependentText(
-        title=_('Facebook Magazin Text'), required=False, dependent_field='facebook_magazin_enabled'
-    )
-
-    facebook_campus_enabled = zope.schema.Bool(title=_('Enable Facebook Campus'), required=False)
-    facebook_campus_text = ToggleDependentText(
-        title=_('Facebook Campus Text'), required=False, dependent_field='facebook_campus_enabled'
-    )
-
-    facebook_zett_enabled = zope.schema.Bool(title=_('Enable Facebook ze.tt'), required=False)
-    facebook_zett_text = ToggleDependentText(
-        title=_('Facebook ze.tt Text'), required=False, dependent_field='facebook_zett_enabled'
-    )
+    facebook_main_text = zope.schema.Text(title=_('Facebook Main Text'), required=False)
+    facebook_magazin_text = zope.schema.Text(title=_('Facebook Magazin Text'), required=False)
+    facebook_campus_text = zope.schema.Text(title=_('Facebook Campus Text'), required=False)
+    facebook_zett_text = zope.schema.Text(title=_('Facebook ze.tt Text'), required=False)
 
     mobile_title = zope.schema.TextLine(title=_('Mobile title'), required=False)
     mobile_text = zope.schema.Text(title=_('Mobile text'), required=False)
