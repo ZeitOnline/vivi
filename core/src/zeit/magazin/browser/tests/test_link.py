@@ -48,7 +48,6 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
         b = self.browser
-        b.getControl('Enable Facebook Magazin').selected = True
         b.getControl('Facebook Magazin Text').value = 'fb-magazin'
         b.getControl('Apply').click()
         content = self.get_content()
@@ -56,31 +55,11 @@ class ZMOFacebookFields(zeit.magazin.testing.BrowserTestCase):
         self.assertIn(
             {
                 'type': 'facebook',
-                'enabled': True,
                 'account': 'fb-magazin',
                 'override_text': 'fb-magazin',
             },
             push.message_config,
         )
-        self.open_form()
-        self.assertTrue(b.getControl('Enable Facebook Magazin').selected)
-
-        b.getControl('Enable Facebook Magazin').selected = False
-        b.getControl('Apply').click()
-        content = self.get_content()
-        push = zeit.push.interfaces.IPushMessages(content)
-        self.assertIn(
-            {
-                'type': 'facebook',
-                'enabled': False,
-                'account': 'fb-magazin',
-                'override_text': 'fb-magazin',
-            },
-            push.message_config,
-        )
-
-        self.open_form()
-        self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
 
     def test_stores_facebook_magazin_override_text(self):
         self.open_form()

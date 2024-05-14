@@ -62,24 +62,28 @@ class TestVideoEdit(zeit.content.video.testing.BrowserTestCase):
         browser = self.browser
         browser.open('http://localhost/++skin++vivi/repository/video')
         browser.getLink('Checkout').click()
-        browser.getControl('Enable Facebook', index=0).click()
-        browser.getControl('Facebook Main Text').value = 'See this video!'
+        browser.getControl('Enable mobile push').selected = True
+        browser.getControl('Mobile title').value = 'mobile title'
+        browser.getControl('Mobile text').value = 'See this video!'
+        browser.getControl('Payload Template').value = 'foo.json'
         browser.getControl('Apply').click()
-        self.assertIn('Updated on', browser.contents)
         browser.getLink('Checkin').click()
         self.assertIn('"video" has been checked in.', browser.contents)
         zeit.cms.workflow.interfaces.IPublish(video).publish(background=False)
-        facebook = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, 'facebook')
-        self.assertEqual('See this video!', facebook.calls[0][0])
-        self.assertIn('http://www.zeit.de/video/my-video', facebook.calls[0][1])
-        params = facebook.calls[0][2]
+        push = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, 'urbanairship')
+        self.assertEqual('See this video!', push.calls[0][0])
+        self.assertIn('http://www.zeit.de/video/my-video', push.calls[0][1])
+        params = push.calls[0][2]
         del params['message']
         self.assertEqual(
             {
-                'type': 'facebook',
-                'enabled': True,
-                'account': 'fb-test',
+                'enabled': 1,
                 'override_text': 'See this video!',
+                'payload_template': 'foo.json',
+                'title': 'mobile title',
+                'type': 'mobile',
+                'uses_image': 0,
+                'variant': 'manual',
             },
             params,
         )

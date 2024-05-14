@@ -132,17 +132,6 @@ class AccountData(grok.Adapter):
     def push(self):
         return zeit.push.interfaces.IPushMessages(self.context)
 
-    @property
-    def facebook_main_enabled(self):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
-        service = self.push.get(type='facebook', account=account.name)
-        return service and service.get('enabled')
-
-    @facebook_main_enabled.setter
-    def facebook_main_enabled(self, value):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
-        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
-
     # We cannot use the key ``text``, since the first positional parameter of
     # IPushNotifier.send() is also called text, which causes TypeError.
     @property
@@ -155,17 +144,6 @@ class AccountData(grok.Adapter):
     def facebook_main_text(self, value):
         account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
         self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
-
-    @property
-    def facebook_magazin_enabled(self):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-magazin')
-        service = self.push.get(type='facebook', account=account.name)
-        return service and service.get('enabled')
-
-    @facebook_magazin_enabled.setter
-    def facebook_magazin_enabled(self, value):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-magazin')
-        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
 
     @property
     def facebook_magazin_text(self):
@@ -182,17 +160,6 @@ class AccountData(grok.Adapter):
         )
 
     @property
-    def facebook_campus_enabled(self):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
-        service = self.push.get(type='facebook', account=account.name)
-        return service and service.get('enabled')
-
-    @facebook_campus_enabled.setter
-    def facebook_campus_enabled(self, value):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
-        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
-
-    @property
     def facebook_campus_text(self):
         account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
         service = self.push.get(type='facebook', account=account.name)
@@ -202,17 +169,6 @@ class AccountData(grok.Adapter):
     def facebook_campus_text(self, value):
         account = zeit.push.interfaces.SocialConfig.from_name('fb-campus')
         self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
-
-    @property
-    def facebook_zett_enabled(self):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
-        service = self.push.get(type='facebook', account=account.name)
-        return service and service.get('enabled')
-
-    @facebook_zett_enabled.setter
-    def facebook_zett_enabled(self, value):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
-        self.push.set({'type': 'facebook', 'account': account.name}, enabled=value)
 
     @property
     def facebook_zett_text(self):

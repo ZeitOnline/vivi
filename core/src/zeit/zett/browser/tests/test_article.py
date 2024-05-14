@@ -17,13 +17,11 @@ class FacebookTest(zeit.zett.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository' '/zett/article/@@checkout')
         b.open('@@edit.form.social?show_form=1')
-        self.assertFalse(b.getControl('Enable Facebook ze.tt').selected)
-        b.getControl('Enable Facebook ze.tt').selected = True
         b.getControl('Facebook ze.tt Text').value = 'zett'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'facebook', 'enabled': True, 'account': 'fb-zett', 'override_text': 'zett'},
+            {'type': 'facebook', 'account': 'fb-zett', 'override_text': 'zett'},
             push.message_config,
         )

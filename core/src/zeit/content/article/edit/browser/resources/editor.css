@@ -1818,12 +1818,6 @@
     font-weight: bold;
 }
 
-.type-article #form-social .field.fieldname-facebook_main_enabled,
-.type-article #form-social .field.fieldname-facebook_zett_enabled {
-    clear: both;
-    display: flow-root;
-}
-
 .type-article #form-social .field.fieldname-facebook_main_text:before {
     content: "Facebook";
 }

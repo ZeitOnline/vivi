@@ -5,7 +5,7 @@ import zeit.push.interfaces
 
 
 class SocialBase(zeit.push.browser.form.SocialBase):
-    magazin_fields = ('facebook_magazin_text', 'facebook_magazin_enabled')
+    magazin_fields = ('facebook_magazin_text',)
 
     social_fields = copy.copy(zeit.push.browser.form.SocialBase.social_fields)
     social_fields.fields = social_fields.fields[:2] + magazin_fields + social_fields.fields[2:]

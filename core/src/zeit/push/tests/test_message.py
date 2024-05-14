@@ -78,12 +78,15 @@ class MessageTest(zeit.push.testing.TestCase):
     def test_accountdata_validation_raises_error(self):
         content = self.create_content('mytext')
         data = zeit.push.interfaces.IAccountData(content)
-        data.facebook_main_enabled = True
+        data.mobile_enabled = True
         errors = zope.schema.getSchemaValidationErrors(zeit.push.interfaces.IAccountData, data)
         assert errors == [
-            ('facebook_main_text', zope.schema.interfaces.RequiredMissing('facebook_main_text'))
+            (
+                'mobile_payload_template',
+                zope.schema.interfaces.RequiredMissing('mobile_payload_template'),
+            )
         ]
 
-        data.facebook_main_enabled = False
+        data.mobile_enabled = False
         errors = zope.schema.getSchemaValidationErrors(zeit.push.interfaces.IAccountData, data)
         assert not errors

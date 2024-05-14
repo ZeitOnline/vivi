@@ -34,7 +34,6 @@ class SocialBase(Base):
         _('Social media'),
         (
             'facebook_main_text',
-            'facebook_main_enabled',
             'short_text',
         ),
         css_class='wide-widgets column-left',
@@ -47,7 +46,7 @@ class SocialBase(Base):
     @property
     def social_form_fields(self):
         return self.FormFieldsFactory(zeit.push.interfaces.IAccountData).select(
-            'facebook_main_text', 'facebook_main_enabled'
+            'facebook_main_text',
         ) + self.FormFieldsFactory(zeit.push.interfaces.IPushMessages).select('short_text')
 
     def setUpWidgets(self, *args, **kw):
