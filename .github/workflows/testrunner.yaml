@@ -64,12 +64,6 @@ jobs:
             ln -s $PWD deployment/work/source/vivi
       # Keys have been added manually (both the key in the target repo and
       # the GHA+Dependabot secret in vivi and vivi-deployment)
-      - name: checkout zeit.jabber
-        uses: actions/checkout@v4.1.5
-        with:
-          repository: ZeitOnline/zeit.jabber
-          path: deployment/work/source/zeit.jabber
-          ssh-key: ${{secrets.DEPLOY_KEY_JABBER}}
       - name: checkout zeit.ldap
         uses: actions/checkout@v4.1.5
         with:
