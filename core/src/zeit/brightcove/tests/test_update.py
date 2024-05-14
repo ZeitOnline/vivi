@@ -10,6 +10,7 @@ import zope.security.management
 
 from zeit.brightcove.update import import_video
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import ICMSContent
 import zeit.brightcove.testing
 import zeit.cms.content.interfaces
@@ -345,6 +346,13 @@ class ExportTest(zeit.brightcove.testing.FunctionalTestCase):
 
     def test_changes_are_not_written_during_publish(self):
         zeit.cms.workflow.interfaces.IPublish(self.repository['myvid']).publish(background=False)
+        self.assertEqual(False, self.request.called)
+
+    def test_changes_are_not_written_if_disabled(self):
+        FEATURE_TOGGLES.set('video_disable_export_on_checkin')
+        with zeit.cms.checkout.helper.checked_out(self.repository['myvid']):
+            pass
+        transaction.commit()
         self.assertEqual(False, self.request.called)
 
     def test_changes_are_written_on_commit(self):

@@ -172,13 +172,7 @@ def import_video_async(video_id):
 
 
 def export_video(context, event):
-    if not event.publishing:
-        session = zeit.brightcove.session.get()
-        session.update_video(zeit.brightcove.convert.Video.from_cms(context))
-
-
-def publish_on_checkin(context, event):
-    # prevent infinite loop, since there is a checkout/checkin cycle during
-    # publishing (to update XML references etc.)
-    if not event.publishing:
-        zeit.cms.workflow.interfaces.IPublish(context).publish()
+    if event.publishing or FEATURE_TOGGLES.find('video_disable_export_on_checkin'):
+        return
+    session = zeit.brightcove.session.get()
+    session.update_video(zeit.brightcove.convert.Video.from_cms(context))
