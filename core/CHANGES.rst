@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.167.0 (2024-05-14)
+--------------------
+
+- ZO-5138: simplify Social Media connections and configuration
+
+- ZO-5358: Replace invalidate-based wait_for_commit helper with commit_with_retry
+
+
+MAINT:
+- Allow disabling video export with feature toggle
+
+
 5.166.0 (2024-05-10)
 --------------------
 
