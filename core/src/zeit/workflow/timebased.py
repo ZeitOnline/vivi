@@ -6,7 +6,7 @@ import pytz
 import zope.component
 import zope.interface
 
-from zeit.cms.cli import wait_for_commit
+from zeit.cms.cli import commit_with_retry
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import PRIORITY_TIMEBASED
@@ -205,6 +205,6 @@ def retract_overdue_objects():
             tms.delete_id(item['doc_id'])
         else:
             publish = zeit.cms.workflow.interfaces.IPublish(content)
-            publish.retract(background=False)
-            log.info('Retracting %s', content)
-            wait_for_commit(content)
+            for _ in commit_with_retry():
+                log.info('Retracting %s', content)
+                publish.retract(background=False)

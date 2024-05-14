@@ -931,6 +931,35 @@ class TestCatalog:
         pass
 
 
+class NoopDatamanager:
+    """Datamanager which does nothing."""
+
+    def abort(self, trans):
+        pass
+
+    def commit(self, trans):
+        pass
+
+    def tpc_begin(self, trans):
+        pass
+
+    def tpc_abort(self, trans):
+        pass
+
+    def sortKey(self):
+        return 'anything'
+
+
+class CommitExceptionDataManager(NoopDatamanager):
+    """DataManager which raises an exception in tpc_vote."""
+
+    def __init__(self, error):
+        self.error = error
+
+    def tpc_vote(self, trans):
+        raise self.error
+
+
 def copy_inherited_functions(base, locals):
     """py.test annotates the test function object with data, e.g. required
     fixtures. Normal inheritance means that there is only *one* function object
