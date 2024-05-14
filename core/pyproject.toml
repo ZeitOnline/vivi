@@ -174,7 +174,6 @@ test = [
     "webtest",
     "xlrd",
     "xmldiff",
-    "zeit.jabber",  # to be able run its test in local env
     "zope.app.wsgi",
     "zope.configuration",
     "zope.error",
