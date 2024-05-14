@@ -33,9 +33,10 @@ jobs:
             if [[ "${{github.ref_name}}" = "main" ]]; then
                 branch="main"
             else
-                branch=$(echo -e "${{github.event.pull_request.body}}" | \
-                    sed -ne '/DEPLOYMENT_BRANCH=/s/DEPLOYMENT_BRANCH=//p' | \
-                    tr --delete ' \r\n')
+                branch=$(awk -F= '/DEPLOYMENT_BRANCH *=/ { gsub(/ /, "", $2); printf $2 }' <<'EOF'
+            ${{github.event.pull_request.body}}
+            EOF
+                )
                 if [[ -z "$branch" ]]; then
                     branch=main
                 fi
