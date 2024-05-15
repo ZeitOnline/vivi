@@ -73,3 +73,7 @@ def validate_request(payload: dict):
     uuid = payload.get('uuid') or payload.get('article_uuid')
     if not all([event_type, uuid]):
         raise InvalidSpeechMessageError(f'Missing field in payload: {payload}')
+    if event_type == 'AUDIO_CREATED':
+        articles_audio = payload.get('articlesAudio', [])
+        if not all(article.get('checksum') for article in articles_audio):
+            raise InvalidSpeechMessageError(f'Missing field checksum in payload: {payload}')
