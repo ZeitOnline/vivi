@@ -1,5 +1,6 @@
 from unittest.mock import patch
 from urllib.error import HTTPError
+import copy
 import json
 
 import celery.exceptions
@@ -32,6 +33,19 @@ class TestWebhook(BrowserTestCase):
                 json.dumps({'event': 'AUDIO_CREATED'}),
                 'application/json',
             )
+
+    def test_event_raises_validation_error_if_checksum_is_missing(self):
+        broken_event = copy.deepcopy(TTS_CREATED)
+        broken_event['articlesAudio'][0].pop('checksum')
+        with patch.object(self.speech, 'update', return_value=None):
+            with pytest.raises(
+                HTTPError, match='HTTP Error 400: Missing field checksum in payload:.+'
+            ):
+                self.browser.post(
+                    'http://localhost/@@speech_webhook',
+                    json.dumps(broken_event),
+                    'application/json',
+                )
 
     def test_retryable_error_is_retried(self):
         events = {'update': TTS_CREATED, 'delete': TTS_DELETED}
