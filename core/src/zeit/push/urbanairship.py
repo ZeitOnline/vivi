@@ -16,7 +16,6 @@ import zope.app.appsetup.product
 import zope.interface
 import zope.lifecycleevent
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
@@ -130,7 +129,6 @@ class Message(zeit.push.message.Message):
                 'zon_link': self.url,
                 'app_link': self.app_link,
                 'image': self.image_url,
-                'author_push_uuids': self.author_push_uuids,
                 'uuid': zeit.cms.content.interfaces.IUUID(self.context).shortened,
             }
         )
@@ -152,17 +150,6 @@ class Message(zeit.push.message.Message):
     @property
     def text(self):
         return self.config.get('override_text', self.context.title)
-
-    @property
-    def author_push_uuids(self):
-        author_uuids = []
-        for author_reference in self.context.authorships:
-            if author_reference.target and author_reference.target.enable_followpush:
-                uuid = zeit.cms.content.interfaces.IUUID(author_reference.target)
-                # Use shortened id. Friedbert adds them to UA in
-                # zeit.web.site.view_author.Author.followpush_config
-                author_uuids.append(uuid.shortened)
-        return author_uuids
 
     @property
     def image_url(self):
@@ -295,26 +282,3 @@ Pushnachricht zugegriffen werden::\n"""
 
 def json_dump_sphinx(obj):
     return re.sub('^', '    ', json.dumps(obj, indent=2, sort_keys=True), flags=re.MULTILINE)
-
-
-@grok.subscribe(zeit.content.article.interfaces.IArticle, zope.lifecycleevent.IObjectCreatedEvent)
-def set_author_as_default_push_template(context, event):
-    if not FEATURE_TOGGLES.find('push_new_articles_ua_author_tag'):
-        return
-    push = zeit.push.interfaces.IPushMessages(context)
-    # Breaking News are also IArticle's and add messages
-    # we don't want to mess it up
-    if push.messages:
-        return
-    template_name = zope.app.appsetup.product.getProductConfiguration('zeit.push').get(
-        'urbanairship-author-push-template-name'
-    )
-    push.message_config = [
-        {
-            'type': 'mobile',
-            'enabled': True,
-            # No bw-compat needed, as it has not been enabled in production yet
-            'variant': 'automatic-author',
-            'payload_template': template_name,
-        }
-    ]

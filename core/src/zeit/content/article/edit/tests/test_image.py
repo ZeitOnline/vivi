@@ -223,13 +223,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(self.repository['article']) as co:
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.set({'type': 'mobile'}, enabled=False)
+
             image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
             IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
             zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
-            push = zeit.push.interfaces.IPushMessages(co)
-            # This uses the author push message that's already present,
-            # which is more convenient/lazy than setting up our own.
             service = push.get(type='mobile')
             self.assertEqual(image_id, service['image'])
 
