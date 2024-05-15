@@ -38,6 +38,7 @@ product_config = """\
   push-target-url http://www.zeit.de/
   mobile-image-url http://img.zeit.de/
   urbanairship-audience-group subscriptions
+  urbanairship-expire-interval 60
   mobile-buttons file://{fixtures}/mobile-buttons.xml
   push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
   homepage-banner-uniqueid http://xml.zeit.de/banner

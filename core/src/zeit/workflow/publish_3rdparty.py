@@ -4,6 +4,7 @@ import logging
 
 import grokcore.component as grok
 import lxml.etree
+import pendulum
 import zope.app.appsetup.product
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
@@ -20,6 +21,59 @@ import zeit.workflow.interfaces
 
 
 log = logging.getLogger(__name__)
+
+
+@grok.implementer(zeit.workflow.interfaces.IPublisherData)
+class Airship(grok.Adapter):
+    grok.context(zeit.cms.content.interfaces.ICommonMetadata)
+    grok.name('airship')
+
+    def publish_json(self):
+        if not FEATURE_TOGGLES.find('push_airship_via_publisher'):
+            return None
+
+        message = None
+        info = zeit.push.interfaces.IPushMessages(self.context)
+        for config in info.message_config:
+            if config['type'] == 'mobile' and config.get('enabled'):
+                message = info._create_message(config['type'], self.context, config)
+                # This assumes there ever can be only one airship config,
+                # even though the data structure would allow for multiple.
+                break
+        if message is None:
+            return None
+
+        # Prevent calling Airship more than once. NOTE: This is a write in an
+        # otherwise reading operation. But this is pretty much the only spot to
+        # do this, because here we can rely the fact that there has to be a
+        # commit before publisher is called. If that commit succeeds, the
+        # disabling is persisted, no matter what else happens afterwards
+        # (airship errors, zodb conflict errors, etc). And if that commit
+        # fails, publisher (and thus Airship) is not called.
+        info.set(message.config, enabled=False)
+
+        return {
+            'kind': message.config.get('payload_template', 'unknown'),
+            'pushes': self._absolute_expiry(message.render()),
+        }
+
+    def _absolute_expiry(self, pushes):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+        expire_interval = int(config['urbanairship-expire-interval'])
+
+        now = pendulum.now()
+        # See https://docs.urbanairship.com/api/ua/#schemas-pushobject
+        for push in pushes:
+            expiry = push.setdefault('options', {}).setdefault('expiry', expire_interval)
+            # We transmit an absolute timestamp, not relative seconds, as a
+            # safetybelt against (very) delayed pushes. The format must not
+            # contain microseconds, so no `isoformat`.
+            expiry = now.add(seconds=expiry)
+            push['options']['expiry'] = expiry.strftime('%Y-%m-%dT%H:%M:%S')
+        return pushes
+
+    def retract_json(self):
+        return None
 
 
 @grok.implementer(zeit.workflow.interfaces.IPublisherData)
