@@ -217,7 +217,6 @@ class IAccountData(zope.interface.Interface):
     facebook_main_text = zope.schema.Text(title=_('Facebook Main Text'), required=False)
     facebook_magazin_text = zope.schema.Text(title=_('Facebook Magazin Text'), required=False)
     facebook_campus_text = zope.schema.Text(title=_('Facebook Campus Text'), required=False)
-    facebook_zett_text = zope.schema.Text(title=_('Facebook ze.tt Text'), required=False)
 
     mobile_title = zope.schema.TextLine(title=_('Mobile title'), required=False)
     mobile_text = zope.schema.Text(title=_('Mobile text'), required=False)

@@ -171,17 +171,6 @@ class AccountData(grok.Adapter):
         self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
 
     @property
-    def facebook_zett_text(self):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
-        service = self.push.get(type='facebook', account=account.name)
-        return service and service.get('override_text')
-
-    @facebook_zett_text.setter
-    def facebook_zett_text(self, value):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-zett')
-        self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
-
-    @property
     def mobile_enabled(self):
         service = self._mobile_service
         return service and service.get('enabled')

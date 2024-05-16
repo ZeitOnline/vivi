@@ -7,7 +7,6 @@
   <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.zett" />
-  <include package="zeit.zett.browser" />
 
   <include package="zeit.content.article" file="ctesting.zcml"/>
   <include package="zeit.content.cp" file="ctesting.zcml"/>

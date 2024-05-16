@@ -1767,7 +1767,6 @@
 .type-article #form-social .field.fieldname-facebook_main_text .label,
 .type-article #form-social .field.fieldname-facebook_magazin_text .label,
 .type-article #form-social .field.fieldname-facebook_campus_text .label,
-.type-article #form-social .field.fieldname-facebook_zett_text .label,
 .type-article #form-social .field.fieldname-short_text .label,
 .type-article #form-mobile .field.fieldname-mobile_text .label,
 .type-article #form-mobile .field.fieldname-mobile_image .label {
@@ -1798,7 +1797,6 @@
 .type-article #form-social .field.fieldname-facebook_main_text,
 .type-article #form-social .field.fieldname-facebook_magazin_text,
 .type-article #form-social .field.fieldname-facebook_campus_text,
-.type-article #form-social .field.fieldname-facebook_zett_text,
 .type-article #form-social .field.fieldname-short_text {
     border-top: 1px solid #d5dee7;
     clear: both;
@@ -1811,7 +1809,6 @@
 .type-article #form-social .field.fieldname-facebook_main_text:before,
 .type-article #form-social .field.fieldname-facebook_magazin_text:before,
 .type-article #form-social .field.fieldname-facebook_campus_text:before,
-.type-article #form-social .field.fieldname-facebook_zett_text:before,
 .type-article #form-social .field.fieldname-short_text:before {
     display: block;
     font-variant: small-caps;
@@ -1820,9 +1817,6 @@
 
 .type-article #form-social .field.fieldname-facebook_main_text:before {
     content: "Facebook";
-}
-.type-article #form-social .field.fieldname-facebook_zett_text:before {
-  content: "Facebook ze.tt";
 }
 .type-article #form-social .field.fieldname-short_text:before {
     content: "Twitter";

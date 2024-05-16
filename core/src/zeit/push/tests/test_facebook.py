@@ -63,7 +63,7 @@ class FacebookAccountsTest(zeit.push.testing.TestCase):
     def test_accounts(self):
         accounts = dict(zope.component.getUtilitiesFor(zeit.push.interfaces.ISocialConfig))
         self.assertEqual(
-            ['fb-main', 'fb-magazin', 'fb-campus', 'fb-zett'],
+            ['fb-main', 'fb-magazin', 'fb-campus'],
             list(accounts.keys()),
         )
 
