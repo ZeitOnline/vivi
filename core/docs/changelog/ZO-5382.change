@@ -1,1 +1,0 @@
-ZO-5382: Call Airship via publisher instead of zeit.push AfterPublishEvent (toggle: `push_airship_via_publisher`)

@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.170.0 (2024-05-16)
+--------------------
+
+- ZO-5382: Call Airship via publisher instead of zeit.push AfterPublishEvent (toggle: `push_airship_via_publisher`)
+
+
 5.169.0 (2024-05-16)
 --------------------
 
