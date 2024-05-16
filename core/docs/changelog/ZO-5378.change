@@ -1,1 +1,0 @@
-ZO-5378: if checksum is missing in AUDIO_CREATED event return 400 BAD_REQUEST to speechbert

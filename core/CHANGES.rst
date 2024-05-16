@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.168.0 (2024-05-16)
+--------------------
+
+- ZO-5378: if checksum is missing in AUDIO_CREATED event return 400 BAD_REQUEST to speechbert
+
+
 5.167.0 (2024-05-14)
 --------------------
 
