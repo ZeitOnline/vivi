@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.169.0 (2024-05-16)
+--------------------
+
+- ZO-5196: switch vivi staging to internal ingress
+
+
 5.168.0 (2024-05-16)
 --------------------
 
