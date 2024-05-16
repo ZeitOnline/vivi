@@ -463,6 +463,51 @@ class SpeechbertPayloadTest(zeit.workflow.testing.FunctionalTestCase):
         assert payload['body'] == [{'type': 'p', 'content': 'before during after'}]
 
 
+class AirshipTest(zeit.workflow.testing.FunctionalTestCase):
+    def setUp(self):
+        super().setUp()
+
+        FEATURE_TOGGLES.set('push_airship_via_publisher')
+
+        # We don't care about the whole zeit.push templating infrastructure here
+        self.patch = unittest.mock.patch('zeit.push.urbanairship.Message.render')
+        render = self.patch.start()
+        render.return_value = [{}]
+
+    def tearDown(self):
+        self.patch.stop()
+        super().tearDown()
+
+    def test_no_push_configures_skips_task(self):
+        content = self.repository['testcontent']
+        data = zeit.workflow.testing.publish_json(content, 'airship')
+        self.assertEqual(None, data)
+
+        info = zeit.push.interfaces.IPushMessages(content)
+        info.message_config = [
+            {'type': 'unrelated', 'enabled': True},
+            {'type': 'mobile', 'enabled': False},
+        ]
+        data = zeit.workflow.testing.publish_json(content, 'airship')
+        self.assertEqual(None, data)
+
+    def test_delegates_payload_to_message_template(self):
+        content = self.repository['testcontent']
+        info = zeit.push.interfaces.IPushMessages(content)
+        info.message_config = [{'type': 'mobile', 'enabled': True}]
+        data = zeit.workflow.testing.publish_json(content, 'airship')
+        self.assertEqual(['kind', 'pushes'], list(data.keys()))
+
+    def test_sets_absolute_expiry(self):
+        content = self.repository['testcontent']
+        info = zeit.push.interfaces.IPushMessages(content)
+        info.message_config = [{'type': 'mobile', 'enabled': True}]
+        data = zeit.workflow.testing.publish_json(content, 'airship')
+        expiry = data['pushes'][0]['options']['expiry']
+        with self.assertNothingRaised():
+            pendulum.parse(expiry)
+
+
 class TMSPayloadTest(zeit.workflow.testing.FunctionalTestCase):
     def test_tms_wait_for_index_article(self):
         article = self.repository['testcontent']

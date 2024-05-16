@@ -38,7 +38,7 @@ product_config = """\
   push-target-url http://www.zeit.de/
   mobile-image-url http://img.zeit.de/
   urbanairship-audience-group subscriptions
-  urbanairship-author-push-template-name authors.json
+  urbanairship-expire-interval 60
   mobile-buttons file://{fixtures}/mobile-buttons.xml
   push-payload-templates http://xml.zeit.de/data/urbanairship-templates/
   homepage-banner-uniqueid http://xml.zeit.de/banner
@@ -103,12 +103,6 @@ class UrbanairshipTemplateLayer(plone.testing.Layer):
     def testSetUp(self):
         self.create_template('', 'foo.json')
         self.create_template('', 'eilmeldung.json')
-        self.create_template(
-            (importlib.resources.files(__package__) / 'tests/fixtures/authors.json').read_text(
-                'utf-8'
-            ),
-            'authors.json',
-        )
 
 
 URBANAIRSHIP_TEMPLATE_LAYER = UrbanairshipTemplateLayer()

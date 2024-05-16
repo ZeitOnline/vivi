@@ -212,27 +212,3 @@ class TwitterShorteningTest(zeit.push.testing.SeleniumTestCase):
         s.type(input, original)
         s.keyPress(input, Keys.TAB)
         self.assertEqual(original, s.getValue(input))
-
-
-class AuthorPushTest(zeit.push.testing.BrowserTestCase):
-    def get_article(self):
-        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
-        return list(wc.values())[0]
-
-    def test_author_push_is_enabled_on_article_creation(self):
-        self.browser.open('http://localhost:8080/++skin++vivi/repository/online/2007/01/')
-        menu = self.browser.getControl(name='add_menu')
-        menu.displayValue = ['Article']
-        url = menu.value[0]
-        self.browser.open(url)
-        article = self.get_article()
-        push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(
-            {
-                'type': 'mobile',
-                'payload_template': 'authors.json',
-                'variant': 'automatic-author',
-                'enabled': True,
-            },
-            push.messages[0].config,
-        )

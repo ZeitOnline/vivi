@@ -6,6 +6,7 @@ import gocept.selenium
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.content.image.testing
+import zeit.push.testing
 
 
 product_config = """
@@ -23,7 +24,7 @@ product_config = """
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
     product_config,
-    bases=(zeit.content.cp.testing.CONFIG_LAYER, zeit.content.image.testing.CONFIG_LAYER),
+    bases=(zeit.content.cp.testing.CONFIG_LAYER, zeit.push.testing.CONFIG_LAYER),
 )
 
 

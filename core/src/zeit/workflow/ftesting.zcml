@@ -13,4 +13,6 @@
   <include package="zeit.workflow.json" />
   <include package="zeit.workflow.xmlrpc" />
 
+  <include package="zeit.push" />
+
 </configure>

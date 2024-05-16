@@ -7,7 +7,6 @@
   <embed_cmp_thirdparty>true</embed_cmp_thirdparty>
   <inlineform_alert_error>true</inlineform_alert_error>
   <breakingnews_with_channel>true</breakingnews_with_channel>
-  <push_new_articles_ua_author_tag>true</push_new_articles_ua_author_tag>
   <reference_index>true</reference_index>
   <tms_enrich_on_checkin>true</tms_enrich_on_checkin>
   <video_import_images>true</video_import_images>

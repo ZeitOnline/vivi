@@ -8,6 +8,7 @@ import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.content.article.testing
+import zeit.push.testing
 import zeit.workflow.publishinfo
 
 
@@ -24,7 +25,7 @@ product_config = """
 """
 
 CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
-    product_config, bases=(zeit.cms.testing.CONFIG_LAYER,)
+    product_config, bases=(zeit.push.testing.CONFIG_LAYER,)
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))
