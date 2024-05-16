@@ -8,6 +8,7 @@ import pendulum
 import zope.app.appsetup.product
 
 from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.type
@@ -16,6 +17,7 @@ import zeit.content.cp.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.video.interfaces
+import zeit.objectlog.interfaces
 import zeit.retresco.interfaces
 import zeit.workflow.interfaces
 
@@ -52,8 +54,24 @@ class Airship(grok.Adapter):
         # fails, publisher (and thus Airship) is not called.
         info.set(message.config, enabled=False)
 
+        kind = message.config.get('payload_template', 'unknown')
+        # XXX Stopgap so the user gets _some_ kind of feedback. But of course,
+        # the Airship call has not actually happened yet, and if an error
+        # occurs, the user currently will not be told about it.
+        zeit.objectlog.interfaces.ILog(self.context).log(
+            _(
+                'Push notification for "${name}" sent.'
+                ' (Message: "${message}", Details: ${details})',
+                mapping={
+                    'name': 'Airship',
+                    'message': message.text,
+                    'details': f'Template {kind}',
+                },
+            )
+        )
+
         return {
-            'kind': message.config.get('payload_template', 'unknown'),
+            'kind': kind,
             'pushes': self._absolute_expiry(message.render()),
         }
 
