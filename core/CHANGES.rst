@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.171.0 (2024-05-17)
+--------------------
+
+- ZO-5272: Return celery failure correctly
+
+
 5.170.0 (2024-05-16)
 --------------------
 
