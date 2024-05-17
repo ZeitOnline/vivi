@@ -68,7 +68,7 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.browser.open('@@publish')
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
         self.assertEqual(True, IPublishInfo(article).published)
-        for service in ['homepage', 'urbanairship', 'facebook']:
+        for service in ['homepage', 'urbanairship']:
             notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
             self.assertEqual(1, len(notifier.calls))
             self.assertEqual(article.title, notifier.calls[0][0])
@@ -78,11 +78,6 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         )
         self.assertEqual(
             'eilmeldung.json', urbanairship.calls[0][2]['message'].config['payload_template']
-        )
-        facebook = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name='facebook')
-        self.assertEqual(
-            'fb-test',
-            facebook.calls[0][2]['account'],
         )
 
     def test_banners_and_mobile_are_disabled_after_publish(self):
