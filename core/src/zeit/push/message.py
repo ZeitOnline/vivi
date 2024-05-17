@@ -136,14 +136,16 @@ class AccountData(grok.Adapter):
     # IPushNotifier.send() is also called text, which causes TypeError.
     @property
     def facebook_main_text(self):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
-        service = self.push.get(type='facebook', account=account.name)
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+        service = self.push.get(type='facebook', account=config['facebook-main-account'])
         return service and service.get('override_text')
 
     @facebook_main_text.setter
     def facebook_main_text(self, value):
-        account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
-        self.push.set({'type': 'facebook', 'account': account.name}, override_text=value)
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+        self.push.set(
+            {'type': 'facebook', 'account': config['facebook-main-account']}, override_text=value
+        )
 
     @property
     def mobile_enabled(self):

@@ -5,81 +5,12 @@ import urllib.parse
 
 import grokcore.component as grok
 import requests
-import zope.app.appsetup.product
-import zope.interface
 
-from zeit.push.interfaces import ISocialConfig, SocialConfig
 import zeit.push.interfaces
 import zeit.push.message
 
 
 log = logging.getLogger(__name__)
-
-
-@grok.implementer(ISocialConfig)
-class FacebookConfig(SocialConfig):
-    product_configuration = 'zeit.push'
-    type = 'facebook'
-
-    def __init__(self, account):
-        self.account = account
-
-    @property
-    def token(self):
-        return self.config(f'{self.type}-{self.account}-token')
-
-    @property
-    def name(self):
-        return self.config(f'{self.type}-{self.account}-account')
-
-
-accounts = ['main', 'magazin', 'campus', 'zett']
-for account_name in accounts:
-    grok.global_utility(
-        FacebookConfig(account_name), provides=ISocialConfig, name=f'fb-{account_name}', direct=True
-    )
-
-
-@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-class Connection:
-    def __init__(self, url):
-        self.url = url
-
-    def send(self, text, link, **kw):
-        account = kw['account']
-        access_token = 'invalid'
-        log.debug('Sending %s, %s to %s', text, link, account)
-        if config := FacebookConfig.from_account_name(account):
-            access_token = config.token
-        self._request(
-            'POST', '/me/feed', access_token, params={'message': text.encode('utf-8'), 'link': link}
-        )
-
-    def _request(self, method, path, access_token, **kw):
-        kw.setdefault('params', {})['access_token'] = access_token
-        http = requests.Session()
-        try:
-            func = getattr(http, method.lower())
-            r = func(self.url + path, **kw)
-            if not r.ok:
-                r.reason = '%s (%s)' % (r.reason, r.text)
-            r.raise_for_status()
-
-            data = r.json()
-            if 'error' in data:
-                # XXX Don't know how to differentiate technical/semantic errors
-                raise zeit.push.interfaces.TechnicalError(str(data['error']))
-            return data
-        except requests.exceptions.RequestException as e:
-            raise zeit.push.interfaces.TechnicalError(str(e))
-        finally:
-            http.close()
-
-
-@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
-    return Connection(config['facebook-base-url'].rstrip('/'))
 
 
 class Message(zeit.push.message.Message):
