@@ -28,7 +28,7 @@
     />
 
   <browser:page
-    for="zeit.cms.interfaces.ICMSContent"
+    for="zope.location.interfaces.ISite"
     name="job-status"
     class=".task.Status"
     attribute="getStatus"
@@ -36,7 +36,7 @@
     />
 
   <browser:page
-    for="zeit.cms.interfaces.ICMSContent"
+    for="zope.location.interfaces.ISite"
     name="job-error"
     class=".task.Status"
     attribute="getError"
@@ -44,7 +44,7 @@
     />
 
   <browser:page
-    for="zeit.cms.interfaces.ICMSContent"
+    for="zope.location.interfaces.ISite"
     name="job-result"
     class=".task.Status"
     attribute="getResult"
