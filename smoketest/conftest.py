@@ -1,10 +1,14 @@
+import os
+
 import pytest
 import requests
 
 
+XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
     'browser': {'baseurl': 'https://www.staging.zeit.de'},
     'storage': 'http://content-storage.staging.zon.zeit.de/internal',
+    'vivi': f'https://{XMLRPC_AUTH}@vivi.staging.zon.zeit.de',
     'elasticsearch': 'https://tms-es.staging.zon.zeit.de/zeit_content/_search',
 }
 
@@ -12,6 +16,7 @@ CONFIG_STAGING = {
 CONFIG_PRODUCTION = {
     'browser': {'baseurl': 'https://www.zeit.de'},
     'storage': 'http://content-storage.prod.zon.zeit.de/internal',
+    'vivi': f'https://{XMLRPC_AUTH}@vivi-frontend.zeit.de:9090',
     'elasticsearch': 'https://tms-es.zon.zeit.de/zeit_content/_search',
 }
 
@@ -35,12 +40,13 @@ def pytest_configure(config):
 
 
 class StorageClient:
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, storage_url, vivi_url):
+        self.storage_url = storage_url
+        self.vivi_url = vivi_url
         self.http = requests.Session()
 
     def _request(self, verb, url, **kw):
-        r = self.http.request(verb, self.url + '/api/v1' + url, **kw)
+        r = self.http.request(verb, self.storage_url + '/api/v1' + url, **kw)
         r.raise_for_status()
         return r
 
@@ -56,9 +62,19 @@ class StorageClient:
         )
 
     def publish(self, path):
-        self._request('post', f'/publish{path}')
+        return self._request('post', f'/publish{path}').json()['job-id']
+
+    def job_status(self, job):
+        r = self.http.get(self.vivi_url + '/@@job-status', params={'job': job})
+        r.raise_for_status()
+        return r.json()
+
+    def job_result(self, job):
+        r = self.http.get(self.vivi_url + '/@@job-result', params={'job': job})
+        r.raise_for_status()
+        return r.text
 
 
 @pytest.fixture(scope='session')
 def vivi(config):
-    return StorageClient(config['storage'])
+    return StorageClient(config['storage'], config['vivi'])

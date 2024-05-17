@@ -23,7 +23,11 @@ jobs:
         --override-type=json --overrides='[
           {"op": "add", "path": "/spec/serviceAccount", "value": "baseproject"},
           {"op": "add", "path": "/spec/containers/0/env", "value": [
-            {"name": "HTTPS_PROXY", "value": "http://static-ip-proxy.ops.zeit.de:3128"}
+            {"name": "HTTPS_PROXY", "value": "http://static-ip-proxy.ops.zeit.de:3128"},
+            {"name": "VIVI_XMLRPC_PASSWORD", "valueFrom": {"secretKeyRef": {
+              "name": "principals",
+              "key": "vivi_zeit.cms.principals_system.nightwatch"
+            }}}
           ]}
         ]'
 

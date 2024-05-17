@@ -58,3 +58,18 @@ def test_publisher_updates_metadata(vivi, http, config, content):
             break
     else:
         pytest.fail('%s did not increase after %s seconds' % (current, timeout))
+
+
+def test_publish_image_works(vivi, config):
+    image = '/wirtschaft/2010-01/china-exportschlager'
+    job = vivi.publish(image)
+
+    timeout = 60
+    for _ in range(timeout):
+        sleep(1)
+        if vivi.job_status(job) == 'SUCCESS':
+            break
+    else:
+        pytest.fail(
+            'Publish returned error after %s seconds:\n%s' % (timeout, vivi.job_result(job))
+        )
