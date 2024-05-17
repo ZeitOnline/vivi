@@ -15,7 +15,11 @@ class Status:
         return json.dumps(self._result(job).failed())
 
     def getResult(self, job):
-        return json.dumps(self._result(job).get())
+        result = self._result(job)
+        if result.state == 'SUCCESS':
+            return result.get()
+        else:
+            return result.traceback
 
     def _result(self, job):
         return celery.result.AsyncResult(job)
