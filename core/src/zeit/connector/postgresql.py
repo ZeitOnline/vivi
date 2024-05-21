@@ -676,6 +676,7 @@ class Content(DBObject):
         TIMESTAMP(timezone=True),
         server_default=sqlalchemy.func.now(),
         onupdate=sqlalchemy.func.now(),
+        index=True,
     )
 
     path = relationship(
