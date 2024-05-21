@@ -20,7 +20,6 @@ import zeit.push.interfaces
 class IPushServices(zope.interface.Interface):
     mobile = zope.schema.Bool(title=_('breaking-news-mobile'), required=False, default=True)
     homepage = zope.schema.Bool(title=_('breaking-news-homepage'), required=False, default=True)
-    social = zope.schema.Bool(title=_('breaking-news-social'), required=False, default=True)
 
 
 class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
@@ -54,7 +53,6 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
                 'commentsPremoderate',
                 'homepage',
                 'mobile',
-                'social',
             ),
             css_class='wide-widgets column-left',
         ),
@@ -100,16 +98,6 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
             )
         if data.pop('homepage', False):
             message_config.append({'type': 'homepage', 'enabled': True})
-        if data.pop('social', False):
-            account = zeit.push.interfaces.SocialConfig.from_name('fb-main')
-            message_config.append(
-                {
-                    'type': 'facebook',
-                    'enabled': True,
-                    'override_text': data['title'],
-                    'account': account.name,
-                }
-            )
 
         article = super().create(data)
         # XXX Duplicated from .form.AddAndCheckout

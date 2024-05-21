@@ -2,7 +2,6 @@ import argparse
 import logging
 
 import prometheus_client
-import requests
 import zope.app.appsetup.product
 import zope.component
 
@@ -10,7 +9,6 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.content.article.interfaces import IArticle
 import zeit.cms.cli
 import zeit.find.interfaces
-import zeit.push.facebook
 import zeit.push.interfaces
 import zeit.retresco.interfaces
 
@@ -149,26 +147,6 @@ def _collect_highest_kpi_value():
             pass
         else:
             metric.labels(environment(), name).set(row.get(tms, 0))
-
-
-def _collect_fb_token_expires():
-    metric = Gauge('vivi_facebook_token_expires_timestamp_seconds', labelnames=['account'])
-    http = requests.Session()
-    facebook = dict(zope.component.getUtilitiesFor(zeit.push.interfaces.ISocialConfig))
-    for account in facebook.values():
-        if not isinstance(account, zeit.push.facebook.FacebookConfig):
-            continue
-        r = http.get(
-            'https://graph.facebook.com/debug_token',
-            params={'input_token': account.token, 'access_token': account.token},
-        )
-        try:
-            r.raise_for_status()
-            expires = r.json()['data']['data_access_expires_at']
-        except Exception:
-            expires = 1
-        metric.labels(environment(), account.name).set(expires)
-    http.close()
 
 
 @zeit.cms.cli.runner()

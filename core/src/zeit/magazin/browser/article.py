@@ -2,9 +2,7 @@ import zope.interface
 
 from zeit.content.article.edit.browser.form import FormFields
 import zeit.cms.browser.interfaces
-import zeit.content.article.edit.browser.push
 import zeit.edit.browser.form
-import zeit.magazin.browser.social
 
 
 class NextRead(zeit.edit.browser.form.InlineForm):
@@ -21,7 +19,3 @@ class NextRead(zeit.edit.browser.form.InlineForm):
     def __call__(self):
         zope.interface.alsoProvides(self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super().__call__()
-
-
-class Social(zeit.content.article.edit.browser.push.Social, zeit.magazin.browser.social.SocialBase):
-    pass

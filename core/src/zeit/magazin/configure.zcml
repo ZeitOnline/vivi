@@ -33,20 +33,6 @@
     />
 
   <adapter
-    factory=".interfaces.IZMOGallery"
-    for=".interfaces.IZMOSection"
-    provides="zeit.cms.section.interfaces.ISectionMarker"
-    name="gallery"
-    />
-
-  <adapter
-    factory=".interfaces.IZMOLink"
-    for=".interfaces.IZMOSection"
-    provides="zeit.cms.section.interfaces.ISectionMarker"
-    name="link"
-    />
-
-  <adapter
     factory=".interfaces.IZMOPortraitbox"
     for=".interfaces.IZMOSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"

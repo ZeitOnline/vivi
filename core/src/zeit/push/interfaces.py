@@ -143,10 +143,6 @@ class IPushURL(zope.interface.Interface):
     """
 
 
-class ISocialConfig(zope.interface.Interface):
-    """Configuration for social media services."""
-
-
 class IBanner(zope.interface.Interface):
     """
     Utility to manage the homepage banner.
@@ -215,9 +211,6 @@ class IAccountData(zope.interface.Interface):
     """Convenience access to IPushMessages.message_config entries"""
 
     facebook_main_text = zope.schema.Text(title=_('Facebook Main Text'), required=False)
-    facebook_magazin_text = zope.schema.Text(title=_('Facebook Magazin Text'), required=False)
-    facebook_campus_text = zope.schema.Text(title=_('Facebook Campus Text'), required=False)
-    facebook_zett_text = zope.schema.Text(title=_('Facebook ze.tt Text'), required=False)
 
     mobile_title = zope.schema.TextLine(title=_('Mobile title'), required=False)
     mobile_text = zope.schema.Text(title=_('Mobile text'), required=False)
@@ -240,23 +233,3 @@ class IAccountData(zope.interface.Interface):
         required=False,
         dependent_field='mobile_enabled',
     )
-
-
-class SocialConfig:
-    """Provide some convenience methods for social media configuration utilities,
-    which encapsulates the zope calls"""
-
-    @classmethod
-    def from_account_name(cls, account_name):
-        """Return all registered utilities of given class"""
-        for utility in zope.component.getAllUtilitiesRegisteredFor(ISocialConfig):
-            if isinstance(utility, cls) and utility.name == account_name:
-                return utility
-
-    @classmethod
-    def from_name(cls, name):
-        return zope.component.getUtility(ISocialConfig, name=name)
-
-    @classmethod
-    def config(cls, name):
-        return zope.app.appsetup.product.getProductConfiguration(cls.product_configuration)[name]

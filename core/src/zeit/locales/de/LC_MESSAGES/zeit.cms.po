@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon May 13 10:53:17 2024\n"
+"POT-Creation-Date: Fri May 17 13:35:03 2024\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1390,7 +1390,7 @@ msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12 zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:461 zeit/workflow/publishinfo.py:61
+#: zeit/workflow/publish.py:480 zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1529,7 +1529,7 @@ msgstr "Bild"
 #: zeit/content/article/edit/interfaces.py:205
 #: zeit/content/article/interfaces.py:69 zeit/content/cp/interfaces.py:289
 #: zeit/content/cp/interfaces.py:639 zeit/content/image/interfaces.py:396
-#: zeit/push/interfaces.py:248
+#: zeit/push/interfaces.py:222
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
 
@@ -1557,9 +1557,7 @@ msgstr "Animation"
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/markup/browser/configure.zcml:18
 #: zeit/content/volume/browser/configure.zcml:19
-#: zeit/magazin/browser/configure.zcml:46
-#: zeit/magazin/browser/configure.zcml:74
-#: zeit/magazin/browser/configure.zcml:100
+#: zeit/magazin/browser/configure.zcml:38
 msgid "Edit metadata"
 msgstr "Metadaten bearbeiten"
 
@@ -1638,11 +1636,7 @@ msgstr "Push versenden"
 msgid "breaking-news-homepage"
 msgstr "Eilmeldungsbanner anzeigen"
 
-#: zeit/content/article/browser/breaking.py:23
-msgid "breaking-news-social"
-msgstr "Auf Facebook und Twitter posten"
-
-#: zeit/content/article/browser/breaking.py:82
+#: zeit/content/article/browser/breaking.py:80
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
@@ -1772,7 +1766,7 @@ msgstr "Fehler beim Abrufen oder Verarbeiten der Videoempfehlungen"
 msgid "Social media"
 msgstr "Social Media"
 
-#: zeit/content/article/edit/browser/push.py:31 zeit/push/browser/form.py:60
+#: zeit/content/article/edit/browser/push.py:31 zeit/push/browser/form.py:59
 msgid "Mobile apps"
 msgstr "Push/Eilmeldung"
 
@@ -1939,7 +1933,7 @@ msgstr "Seiten-Überschrift"
 
 #: zeit/content/article/edit/interfaces.py:125
 #: zeit/content/article/edit/video.py:66 zeit/content/video/browser/video.py:84
-#: zeit/content/video/browser/video.py:88 zeit/content/video/video.py:137
+#: zeit/content/video/browser/video.py:88 zeit/content/video/video.py:141
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
 msgstr "Video"
@@ -1998,7 +1992,7 @@ msgstr "Seitenverhältnis"
 #: zeit/content/article/edit/interfaces.py:235
 #: zeit/content/article/edit/reference.py:77
 #: zeit/content/gallery/browser/configure.zcml:61
-#: zeit/content/gallery/gallery.py:260 zeit/magazin/browser/configure.zcml:91
+#: zeit/content/gallery/gallery.py:260
 msgid "Gallery"
 msgstr "Bildergalerie"
 
@@ -2032,7 +2026,7 @@ msgstr "breit / groß"
 #: zeit/content/article/edit/reference.py:149
 #: zeit/content/portraitbox/interfaces.py:30
 #: zeit/content/portraitbox/portraitbox.py:29
-#: zeit/magazin/browser/configure.zcml:37
+#: zeit/magazin/browser/configure.zcml:29
 msgid "Portraitbox"
 msgstr "Porträtbox"
 
@@ -2081,7 +2075,7 @@ msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:392
 #: zeit/content/article/edit/interfaces.py:402
-#: zeit/content/audio/interfaces.py:37
+#: zeit/content/audio/interfaces.py:37 zeit/content/video/interfaces.py:64
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2171,7 +2165,6 @@ msgstr "Filter"
 #: zeit/content/image/interfaces.py:67
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/content/link/browser/form.py:47 zeit/content/link/link.py:52
-#: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
 msgstr "Link"
 
@@ -4059,7 +4052,7 @@ msgstr "Standbild-Copyright"
 msgid "Has advertisement"
 msgstr "Werbung"
 
-#: zeit/content/video/interfaces.py:64
+#: zeit/content/video/interfaces.py:66
 msgid "Video type"
 msgstr "Typ"
 
@@ -4340,19 +4333,19 @@ msgstr "Der Name {name} ist nicht eindeutig in {parent}."
 msgid "Search"
 msgstr "Suche"
 
-#: zeit/magazin/interfaces.py:61
+#: zeit/magazin/interfaces.py:51
 msgid "Next read"
 msgstr "Fokussierter Next-Read"
 
-#: zeit/magazin/interfaces.py:70
+#: zeit/magazin/interfaces.py:60
 msgid "Related layout"
 msgstr "Related Layout"
 
-#: zeit/magazin/interfaces.py:76
+#: zeit/magazin/interfaces.py:66
 msgid "Next read layout"
 msgstr "Next-Read Layout"
 
-#: zeit/magazin/interfaces.py:83
+#: zeit/magazin/interfaces.py:73
 msgid "long text (ZMO)"
 msgstr "langer Text - ZEITmagazin ONLINE"
 
@@ -4376,63 +4369,35 @@ msgstr "Das Banner dieser Eilmeldung ist bereits depubliziert."
 msgid "Short push text"
 msgstr "Tweet"
 
-#: zeit/push/interfaces.py:221
-msgid "Enable Facebook"
-msgstr "Direkt auf Facebook ZEIT ONLINE veröffentlichen"
-
-#: zeit/push/interfaces.py:223
+#: zeit/push/interfaces.py:213
 msgid "Facebook Main Text"
 msgstr "Facebook-Posting ZEIT ONLINE"
 
-#: zeit/push/interfaces.py:226
-msgid "Enable Facebook Magazin"
-msgstr "Direkt auf Facebook ZEITmagazin veröffentlichen"
-
-#: zeit/push/interfaces.py:228
-msgid "Facebook Magazin Text"
-msgstr "Facebook-Posting ZEITmagazin"
-
-#: zeit/push/interfaces.py:231
-msgid "Enable Facebook Campus"
-msgstr "Direkt auf Facebook ZEIT Campus veröffentlichen"
-
-#: zeit/push/interfaces.py:233
-msgid "Facebook Campus Text"
-msgstr "Facebook-Posting ZEITcampus"
-
-#: zeit/push/interfaces.py:236
-msgid "Enable Facebook ze.tt"
-msgstr "Direkt auf Facebook ze.tt veröffentlichen"
-
-#: zeit/push/interfaces.py:238
-msgid "Facebook ze.tt Text"
-msgstr "Facebook-Posting ze.tt"
-
-#: zeit/push/interfaces.py:241
+#: zeit/push/interfaces.py:215
 msgid "Mobile title"
 msgstr "Absender"
 
-#: zeit/push/interfaces.py:242
+#: zeit/push/interfaces.py:216
 msgid "Mobile text"
 msgstr "Push-Text"
 
-#: zeit/push/interfaces.py:243
+#: zeit/push/interfaces.py:217
 msgid "Enable mobile push"
 msgstr "Pushnachricht über mobile Apps versenden"
 
-#: zeit/push/interfaces.py:245
+#: zeit/push/interfaces.py:219
 msgid "Mobile push with image"
 msgstr "Mit Bild pushen"
 
-#: zeit/push/interfaces.py:247
+#: zeit/push/interfaces.py:221
 msgid "Mobile image"
 msgstr "Mobiles Bild"
 
-#: zeit/push/interfaces.py:254
+#: zeit/push/interfaces.py:228
 msgid "Mobile buttons"
 msgstr "Push mit Buttons"
 
-#: zeit/push/interfaces.py:257
+#: zeit/push/interfaces.py:231
 msgid "Payload Template"
 msgstr "Empfänger"
 
@@ -4671,19 +4636,19 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:55
+#: zeit/workflow/publish.py:54
 msgid "Publication scheduled"
 msgstr "wird veröffentlicht"
 
-#: zeit/workflow/publish.py:75
+#: zeit/workflow/publish.py:74
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
-#: zeit/workflow/publish.py:91
+#: zeit/workflow/publish.py:90
 msgid "Collective Publication of ${count} objects"
 msgstr "Sammelveröffentlichung (${count} Objekte)"
 
-#: zeit/workflow/publish.py:107
+#: zeit/workflow/publish.py:106
 msgid "Collective Retraction of ${count} objects"
 msgstr "Sammeldepublizierung (${count} Objekte)"
 
@@ -4691,11 +4656,11 @@ msgstr "Sammeldepublizierung (${count} Objekte)"
 msgid "Objects with errors: ${objects}"
 msgstr "Inhalte mit Fehlern: ${objects}"
 
-#: zeit/workflow/publish.py:335
+#: zeit/workflow/publish.py:338
 msgid "The object ${name} is locked by ${user}."
 msgstr "Das Objekt »${name}« ist bereits von »${user}« gesperrt."
 
-#: zeit/workflow/publish.py:530
+#: zeit/workflow/publish.py:563
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -4809,6 +4774,30 @@ msgstr "Format"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "breaking-news-social"
+#~ msgstr "Auf Facebook und Twitter posten"
+
+#~ msgid "Enable Facebook"
+#~ msgstr "Direkt auf Facebook ZEIT ONLINE veröffentlichen"
+
+#~ msgid "Enable Facebook Magazin"
+#~ msgstr "Direkt auf Facebook ZEITmagazin veröffentlichen"
+
+#~ msgid "Facebook Magazin Text"
+#~ msgstr "Facebook-Posting ZEITmagazin"
+
+#~ msgid "Enable Facebook Campus"
+#~ msgstr "Direkt auf Facebook ZEIT Campus veröffentlichen"
+
+#~ msgid "Facebook Campus Text"
+#~ msgstr "Facebook-Posting ZEITcampus"
+
+#~ msgid "Enable Facebook ze.tt"
+#~ msgstr "Direkt auf Facebook ze.tt veröffentlichen"
+
+#~ msgid "Facebook ze.tt Text"
+#~ msgstr "Facebook-Posting ze.tt"
 
 #~ msgid "Ressort Tweet"
 #~ msgstr "Ressort Tweet"

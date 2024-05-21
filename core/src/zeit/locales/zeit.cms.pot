@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Unknown\n"
-"POT-Creation-Date: Mon May 13 10:53:17 2024\n"
+"POT-Creation-Date: Fri May 17 13:35:03 2024\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1426,7 +1426,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:48
-#: zeit/workflow/publish.py:461
+#: zeit/workflow/publish.py:480
 #: zeit/workflow/publishinfo.py:61
 msgid "Published"
 msgstr ""
@@ -1571,7 +1571,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:289
 #: zeit/content/cp/interfaces.py:639
 #: zeit/content/image/interfaces.py:396
-#: zeit/push/interfaces.py:248
+#: zeit/push/interfaces.py:222
 msgid "Drag an image group here"
 msgstr ""
 
@@ -1599,9 +1599,7 @@ msgstr ""
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/markup/browser/configure.zcml:18
 #: zeit/content/volume/browser/configure.zcml:19
-#: zeit/magazin/browser/configure.zcml:46
-#: zeit/magazin/browser/configure.zcml:74
-#: zeit/magazin/browser/configure.zcml:100
+#: zeit/magazin/browser/configure.zcml:38
 msgid "Edit metadata"
 msgstr ""
 
@@ -1681,11 +1679,7 @@ msgstr ""
 msgid "breaking-news-homepage"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:23
-msgid "breaking-news-social"
-msgstr ""
-
-#: zeit/content/article/browser/breaking.py:82
+#: zeit/content/article/browser/breaking.py:80
 msgid "Publish and push"
 msgstr ""
 
@@ -1821,7 +1815,7 @@ msgid "Social media"
 msgstr ""
 
 #: zeit/content/article/edit/browser/push.py:31
-#: zeit/push/browser/form.py:60
+#: zeit/push/browser/form.py:59
 msgid "Mobile apps"
 msgstr ""
 
@@ -1994,7 +1988,7 @@ msgstr ""
 #: zeit/content/article/edit/video.py:66
 #: zeit/content/video/browser/video.py:84
 #: zeit/content/video/browser/video.py:88
-#: zeit/content/video/video.py:137
+#: zeit/content/video/video.py:141
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:21
 msgid "Video"
 msgstr ""
@@ -2055,7 +2049,6 @@ msgstr ""
 #: zeit/content/article/edit/reference.py:77
 #: zeit/content/gallery/browser/configure.zcml:61
 #: zeit/content/gallery/gallery.py:260
-#: zeit/magazin/browser/configure.zcml:91
 msgid "Gallery"
 msgstr ""
 
@@ -2090,7 +2083,7 @@ msgstr ""
 #: zeit/content/article/edit/reference.py:149
 #: zeit/content/portraitbox/interfaces.py:30
 #: zeit/content/portraitbox/portraitbox.py:29
-#: zeit/magazin/browser/configure.zcml:37
+#: zeit/magazin/browser/configure.zcml:29
 msgid "Portraitbox"
 msgstr ""
 
@@ -2142,6 +2135,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:392
 #: zeit/content/article/edit/interfaces.py:402
 #: zeit/content/audio/interfaces.py:37
+#: zeit/content/video/interfaces.py:64
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2233,7 +2227,6 @@ msgstr ""
 #: zeit/content/link/browser/configure.zcml:8
 #: zeit/content/link/browser/form.py:47
 #: zeit/content/link/link.py:52
-#: zeit/magazin/browser/configure.zcml:65
 msgid "Link"
 msgstr ""
 
@@ -4113,7 +4106,7 @@ msgstr ""
 msgid "Has advertisement"
 msgstr ""
 
-#: zeit/content/video/interfaces.py:64
+#: zeit/content/video/interfaces.py:66
 msgid "Video type"
 msgstr ""
 
@@ -4401,19 +4394,19 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: zeit/magazin/interfaces.py:61
+#: zeit/magazin/interfaces.py:51
 msgid "Next read"
 msgstr ""
 
-#: zeit/magazin/interfaces.py:70
+#: zeit/magazin/interfaces.py:60
 msgid "Related layout"
 msgstr ""
 
-#: zeit/magazin/interfaces.py:76
+#: zeit/magazin/interfaces.py:66
 msgid "Next read layout"
 msgstr ""
 
-#: zeit/magazin/interfaces.py:83
+#: zeit/magazin/interfaces.py:73
 msgid "long text (ZMO)"
 msgstr ""
 
@@ -4437,63 +4430,35 @@ msgstr ""
 msgid "Short push text"
 msgstr ""
 
-#: zeit/push/interfaces.py:221
-msgid "Enable Facebook"
-msgstr ""
-
-#: zeit/push/interfaces.py:223
+#: zeit/push/interfaces.py:213
 msgid "Facebook Main Text"
 msgstr ""
 
-#: zeit/push/interfaces.py:226
-msgid "Enable Facebook Magazin"
-msgstr ""
-
-#: zeit/push/interfaces.py:228
-msgid "Facebook Magazin Text"
-msgstr ""
-
-#: zeit/push/interfaces.py:231
-msgid "Enable Facebook Campus"
-msgstr ""
-
-#: zeit/push/interfaces.py:233
-msgid "Facebook Campus Text"
-msgstr ""
-
-#: zeit/push/interfaces.py:236
-msgid "Enable Facebook ze.tt"
-msgstr ""
-
-#: zeit/push/interfaces.py:238
-msgid "Facebook ze.tt Text"
-msgstr ""
-
-#: zeit/push/interfaces.py:241
+#: zeit/push/interfaces.py:215
 msgid "Mobile title"
 msgstr ""
 
-#: zeit/push/interfaces.py:242
+#: zeit/push/interfaces.py:216
 msgid "Mobile text"
 msgstr ""
 
-#: zeit/push/interfaces.py:243
+#: zeit/push/interfaces.py:217
 msgid "Enable mobile push"
 msgstr ""
 
-#: zeit/push/interfaces.py:245
+#: zeit/push/interfaces.py:219
 msgid "Mobile push with image"
 msgstr ""
 
-#: zeit/push/interfaces.py:247
+#: zeit/push/interfaces.py:221
 msgid "Mobile image"
 msgstr ""
 
-#: zeit/push/interfaces.py:254
+#: zeit/push/interfaces.py:228
 msgid "Mobile buttons"
 msgstr ""
 
-#: zeit/push/interfaces.py:257
+#: zeit/push/interfaces.py:231
 msgid "Payload Template"
 msgstr ""
 
@@ -4719,19 +4684,19 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:55
+#: zeit/workflow/publish.py:54
 msgid "Publication scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:75
+#: zeit/workflow/publish.py:74
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:91
+#: zeit/workflow/publish.py:90
 msgid "Collective Publication of ${count} objects"
 msgstr ""
 
-#: zeit/workflow/publish.py:107
+#: zeit/workflow/publish.py:106
 msgid "Collective Retraction of ${count} objects"
 msgstr ""
 
@@ -4739,11 +4704,11 @@ msgstr ""
 msgid "Objects with errors: ${objects}"
 msgstr ""
 
-#: zeit/workflow/publish.py:335
+#: zeit/workflow/publish.py:338
 msgid "The object ${name} is locked by ${user}."
 msgstr ""
 
-#: zeit/workflow/publish.py:530
+#: zeit/workflow/publish.py:563
 msgid "Retracted"
 msgstr ""
 

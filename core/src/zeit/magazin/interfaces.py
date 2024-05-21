@@ -40,16 +40,6 @@ class IZMOCenterPage(
     pass
 
 
-class IZMOGallery(
-    zeit.content.gallery.interfaces.IGallery, zeit.cms.section.interfaces.ISectionMarker
-):
-    pass
-
-
-class IZMOLink(zeit.content.link.interfaces.ILink, zeit.cms.section.interfaces.ISectionMarker):
-    pass
-
-
 class IZMOPortraitbox(
     zeit.content.portraitbox.interfaces.IPortraitbox, zeit.cms.section.interfaces.ISectionMarker
 ):

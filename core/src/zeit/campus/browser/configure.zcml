@@ -47,14 +47,6 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
-  <browser:page
-    for="..interfaces.IZCOArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.social"
-    class=".article.Social"
-    permission="zope.View"
-    />
-
   <!-- infobox -->
 
   <browser:page
@@ -80,58 +72,6 @@
     for="..interfaces.IZCOInfobox"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".infobox.Display"
-    permission="zope.View"
-    />
-
-  <!-- link -->
-
-  <browser:page
-    for="..interfaces.IZCOFolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".link.Add"
-    name="zeit.content.link.Add"
-    permission="zeit.AddContent"
-    menu="zeit-add-menu" title="Link"
-    />
-
-  <browser:page
-    name="edit.html"
-    for="..interfaces.IZCOLink"
-    class=".link.Edit"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
-    />
-
-  <browser:page
-    name="view.html"
-    for="..interfaces.IZCOLink"
-    class=".link.Display"
-    permission="zope.View"
-    />
-
-  <!-- gallery -->
-
-  <browser:page
-    for="..interfaces.IZCOFolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".gallery.Add"
-    name="zeit.content.gallery.Add"
-    permission="zeit.AddContent"
-    menu="zeit-add-menu" title="Gallery"
-    />
-
-  <browser:page
-    name="edit.html"
-    for="..interfaces.IZCOGallery"
-    class=".gallery.Edit"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
-    />
-
-  <browser:page
-    name="view.html"
-    for="..interfaces.IZCOGallery"
-    class=".gallery.Display"
     permission="zope.View"
     />
 

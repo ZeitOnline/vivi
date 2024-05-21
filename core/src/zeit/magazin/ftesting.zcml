@@ -8,8 +8,6 @@
   <include package="zeit.magazin.browser" />
 
   <include package="zeit.content.article" file="ctesting.zcml"/>
-  <include package="zeit.content.gallery" file="ctesting.zcml" />
-  <include package="zeit.content.link" file="ctesting.zcml" />
   <include package="zeit.content.portraitbox" file="ctesting.zcml" />
 
   <include package="zeit.push" file="ctesting.zcml" />

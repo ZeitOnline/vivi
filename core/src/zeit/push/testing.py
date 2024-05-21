@@ -31,9 +31,6 @@ class PushNotifier:
 product_config = """\
 <product-config zeit.push>
   facebook-main-account fb-test
-  facebook-magazin-account fb-magazin
-  facebook-campus-account fb-campus
-  facebook-zett-account fb-zett
   facebook-breaking-news-expiration 1800
   push-target-url http://www.zeit.de/
   mobile-image-url http://img.zeit.de/
@@ -70,7 +67,7 @@ class PushMockLayer(plone.testing.Layer):
     """Helper layer to reset mock notifiers."""
 
     def testSetUp(self):
-        for service in ['urbanairship', 'facebook', 'homepage']:
+        for service in ['urbanairship', 'homepage']:
             notifier = zope.component.getUtility(zeit.push.interfaces.IPushNotifier, name=service)
             notifier.reset()
 
