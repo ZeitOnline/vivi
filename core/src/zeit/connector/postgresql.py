@@ -56,12 +56,12 @@ from zeit.connector.interfaces import (
     MoveError,
 )
 from zeit.connector.lock import lock_is_foreign
-from zeit.connector.resource import CachedResource
 import zeit.cms.cli
 import zeit.cms.interfaces
 import zeit.cms.tracing
 import zeit.connector.cache
 import zeit.connector.interfaces
+import zeit.connector.resource
 
 
 log = getLogger(__name__)
@@ -79,6 +79,8 @@ class LockStatus(Enum):
 
 @zope.interface.implementer(zeit.connector.interfaces.ICachingConnector)
 class Connector:
+    resource_class = zeit.connector.resource.CachedResource
+
     def __init__(
         self,
         dsn,
@@ -143,7 +145,7 @@ class Connector:
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         properties = self._get_properties(uniqueid)  # may raise KeyError
-        return CachedResource(
+        return self.resource_class(
             uniqueid,
             uniqueid.split('/')[-1],
             properties.get(('type', Content.NS + 'meta'), 'unknown'),
