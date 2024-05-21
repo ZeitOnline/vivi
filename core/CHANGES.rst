@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.172.0 (2024-05-21)
+--------------------
+
+- ZO-5209: Make sql resource class overridable
+
+
 5.171.0 (2024-05-17)
 --------------------
 
