@@ -203,8 +203,6 @@
                             "importsource": "k4",
                             "ipad_template": "geschichte",
                             "last-modified-by": "import",
-                            "long_text": "\"An Ihrer Stelle w\u00fcrde ich hier keine Leute anquatschen. Sonst haben Sie ganz schnell mal eine Faust im Gesicht.\" Dieses Zitat hat Moritz von Uslar aus Dinkslaken-Lohberg mitgebracht.",
-                            "message_config": "<pickle>\n  <list>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n  </list>\n</pickle>",
                             "product-id": "ZMLB",
                             "product-name": "ZEIT Magazin",
                             "publish_job_id": "649738063",

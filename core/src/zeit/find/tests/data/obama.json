@@ -130,9 +130,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "EPA-Chef Scott #Pruitt tritt nach einer Serie von Skandalen zur\u00fcck.",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Scott Pruitt, Chef der US-Umweltbeh\u00f6rde #EPA, gibt sein Amt auf.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/politik/ausland/2018-07/scott-pruitt/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "cms_icon": "/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png",
@@ -239,8 +237,7 @@
               "urgent": true,
               "product-id": "ZEDE",
               "published": true,
-              "refined": "no",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n      <item key=\"uses_image\">\n          <false/>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "refined": "no"
             },
             "vivi": {
               "cms_icon": "/@@/zeit-content-link-interfaces-ILink-zmi_icon.png",
@@ -369,9 +366,7 @@
               "last-modified-by": "import",
               "product-id": "ZEI",
               "published": true,
-              "short_text": "Wenn die Ungleichheit gro\u00df ist, ist Chancengleichheit nur eine Illusion.",
               "product-name": "DIE ZEIT",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/2018/28/einkommen-soziale-mobilitaet-verteilung/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Sag mir, was deine Eltern verdienen, und ich sag dir, was du verdienen wirst.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>wandelderarbeit</unicode>\n      </item>\n      <item key=\"enabled\">\n          <true/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Die Gatsby-Kurve zeigt: Wenn die Schere zwischen Arm und Reich weit ge\u00f6ffnet ist, gibt es keine Chancengleichheit.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZEI-2018-28-Kurve-Gatsby"
             },
             "vivi": {
@@ -495,9 +490,7 @@
               "last-modified-by": "import",
               "product-id": "ZEI",
               "published": true,
-              "short_text": "Ist der #Klimaschutz wegen der Populisten in Gefahr, Mister Gore?",
               "product-name": "DIE ZEIT",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/2018/28/al-gore-umwelt/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Ist die Klimaschutzpolitik wegen der Populisten in Gefahr, Mister Gore?</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Al Gore: \"Alle, die sich mit der #Klimakrise befassen, schwanken gelegentlich zwischen Hoffnung und Verzweiflung. Ich bin am Ende immer f\u00fcr die Hoffnung.\" #Klimaschutz</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZEI-2018-28-ITV-Al-Gore"
             },
             "vivi": {
@@ -620,9 +613,7 @@
               "last-modified-by": "import",
               "product-id": "ZEI",
               "published": true,
-              "short_text": "F\u00fcr viel Aufregung sorgt derzeit die Nachricht von den mehr als 2.300 Kindern, die an der Grenze zu Mexiko von ihren Eltern getrennt wurden. Was dabei untergeht: Die Inhaftierung von Migranten ist f\u00fcr manche ein gutes Gesch\u00e4ft. #USA #Trump",
               "product-name": "DIE ZEIT",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Die Inhaftierung von Fl\u00fcchtlingen ist ein lukratives Gesch\u00e4ft.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Mit der Inhaftierung von Fl\u00fcchtlingen werden in den #USA Milliarden Dollar j\u00e4hrlich umgesetzt \u2013 und es d\u00fcrften noch weit mehr werden. Dahinter steckt die Null-Toleranz-Politik von Donald #Trump. </unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZEI-2018-28-Detention-Business"
             },
             "vivi": {
@@ -743,9 +734,7 @@
               "last-modified-by": "import",
               "product-id": "ZEI",
               "published": true,
-              "short_text": "In den USA bekommen die Republikaner jetzt den Supreme Court unter ihre Kontrolle. Sie k\u00f6nnten das Land grundlegend ver\u00e4ndern und das Recht auf Abtreibung und die Ehe f\u00fcr alle kippen.",
               "product-name": "DIE ZEIT",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/politik/ausland/2018-07/usa-supreme-court/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Schon immer wird in den USA mithilfe der Gerichte Politik gemacht.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>In den USA bekommen die Republikaner jetzt den Supreme Court unter ihre Kontrolle. Schon immer wird in den Vereinigten Staaten mithilfe der Gerichte Politik gemacht.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZEI-2018-28-US-Justiz"
             },
             "vivi": {
@@ -867,9 +856,7 @@
               "last-modified-by": "import",
               "product-id": "ZEI",
               "published": true,
-              "short_text": "#Trump tritt in der #Nato wie ein Schutzgeldeintreiber auf \u2013 doch er hat gute Gr\u00fcnde daf\u00fcr.",
               "product-name": "DIE ZEIT",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/2018/28/nato-donald-trump/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Es geht um das gegenseitige Beistandsversprechen, Artikel 5 des Nordatlantikvertrags.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>#Deutschland wird Geld in die R\u00fcstung stecken m\u00fcssen, in die #Nato und in die #EU-Verteidigung, schreibt J\u00f6rg Lau.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZEI-2018-28-01-Leiter-links-Text"
             },
             "vivi": {
@@ -1267,9 +1254,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Donald #Trump hat es eilig: Er will schon am 9. Juli einen #Kennedy-Nachfolger am Obersten Gericht ernennen \u2013 und sich damit jahrzehntelang Einfluss verschaffen.",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/politik/ausland/2018-06/donald-trump-kennedy/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>#Trump will schon am 9. Juli einen Kandidaten f\u00fcr das Oberste Gericht benennen \u2013 und damit die Macht der Republikaner auf lange Sicht festigen.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "cms_icon": "/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png",
@@ -1492,7 +1477,6 @@
               "edited": "no",
               "product-id": "ZEDE",
               "images_added": "no",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n      <item key=\"uses_image\">\n          <false/>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "retract_job_id": "b4c0dcbc-9a4a-4ef6-bed6-1e82c37a0d0d",
               "corrected": "no",
               "seo_optimized": "no",
@@ -1692,7 +1676,6 @@
               "product-id": "ZEI",
               "published": true,
               "product-name": "DIE ZEIT",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <none/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZEI-2018-27-Merkel-Elegie-neu"
             },
             "vivi": {
@@ -1910,9 +1893,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Anthony Kennedy, Richter am Obersten Gerichtshof der USA, geht in Rente. Jetzt kann US-Pr\u00e4sident Donald Trump den Supreme Court noch konservativer machen.",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>US-Pr\u00e4sident Donald Trump kann den Supreme Court noch konservativer machen: Anthony Kennedy, Richter am Obersten Gerichtshof der USA, geht in Rente.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/politik/ausland/2018-06/anthony-kennedy-usa/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "cms_icon": "/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png",
@@ -2137,9 +2118,7 @@
               "seo_optimized": "yes",
               "urgent": false,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "\"Die Idee, ein Land habe sich gro\u00df ver\u00e4ndert, seit ein cholerischer Twitter-Bot regiert, ist naiv.\" Unsere Kolumnistin @sudelheft reist durch die USA",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>\"Die Idee, ein Land habe sich gro\u00df ver\u00e4ndert, seit ein cholerischer Twitter-Bot regiert, ist naiv.\" Unsere Kolumnistin Ronja von R\u00f6nne reist durch die USA.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_kul</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>\"Viel Spa\u00df im Trump-Land\" hie\u00df es, oder einfach: \"Geile Zeit, dahinzufahren.\" Unsere Kolumnistin @sudelheft reist durch die USA</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "cms_icon": "/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png",
@@ -2364,9 +2343,7 @@
               "seo_optimized": "yes",
               "urgent": false,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Die Folgen des Zollstreits zwischen #China und den #USA: Amerikanische Schweinebauern klagen, #Daimler muss eine Gewinnwarnung ausgeben. #z\u00f6lle #handelsstreit",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/wirtschaft/2018-06/usa-china-handelsstreit-bauer/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>China ist der gr\u00f6\u00dfte Abnehmer f\u00fcr Schweinef\u00fc\u00dfe aus den USA. Wegen der neuen Z\u00f6lle ist der Markt nun eingebrochen. </unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_wir</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>#China will mit seinen Importz\u00f6llen gezielt die amerikanischen Landwirte treffen. Und ist dabei erfolgreich. #handelsstreit</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fwirtschaft%2F2018-06%2Fusa-china-handelsstreit-strafzoelle-donald-trump",
@@ -2476,9 +2453,7 @@
               "last-modified-by": "import",
               "product-id": "ZEI",
               "published": true,
-              "short_text": "Die Facebooks, Googles oder Amazons dieser Welt sind Giganten. Was in ihrem Inneren geschieht, was mit unser aller Daten passiert und welche Grenzen dabei \u00fcberschritten werden \u2013 das wei\u00df kaum jemand. ",
               "product-name": "DIE ZEIT",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/2018/26/datenschutz-whistleblower/</unicode>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Facebook, Google und Co. sind zu m\u00e4chtig geworden. Es wird Zeit, unsere Daten zu verteidigen.</unicode>\n      </item>\n      <item key=\"payload_template\">\n          <unicode>lesetipp.json</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n      <item key=\"uses_image\">\n          <false/>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Die Facebooks, Googles oder Amazons dieser Welt sind Giganten, von denen die Welt nur eine glitzernde Oberfl\u00e4che erkennen kann. Was in ihrem Inneren geschieht, was mit unser aller Daten passiert und welche Grenzen dabei \u00fcberschritten werden \u2013 das wei\u00df kaum jemand. Es wird Zeit, unsere Daten zu verteidigen.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <true/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_dig</unicode>\n      </item>\n      <item key=\"enabled\">\n          <true/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Demokratien werden im digitalen Zeitalter nicht nur von ihren Feinden oder \u00dcberwachungsfantasien von Regierungen bedroht. Sie werden auch bedroht von transnationalen Akteuren in der Wirtschaft. Es wird Zeit, unsere Daten zu verteidigen.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZEI-2018-26-Begleittext-Whistleblower"
             },
             "vivi": {
@@ -2791,9 +2766,7 @@
               ]
             },
             "workflow": {
-              "short_text": "China zielt mit seinen Vergeltungsma\u00dfnahmen vor allem auf Regionen mit vielen Trump-W\u00e4hlern.",
-              "product-id": "ZEDE",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Auch deutsche Firmen in den USA leiden unter dem eskalierenden Streit.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <true/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Unternehmer f\u00fcrchten sich vor den Folgen. Aber selbst einige Demokraten stehen hinter Donald Trump.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/wirtschaft/2018-06/zoelle-usa-bauern/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "product-id": "ZEDE"
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fwirtschaft%2F2018-06%2Fusa",
@@ -2994,9 +2967,7 @@
               "seo_optimized": "yes",
               "urgent": false,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "\"Ich habe den Eindruck, dass das vor allem eine innenpolitische Entscheidung ist\", sagt ein Menschenrechtsaktivist \u00fcber den Ausstieg der #USA aus dem #UN-#Menschenrechtsrat.",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>John Bolton ist wieder da \u2013 und hat kr\u00e4ftig den Austritt der USA aus dem UN-Menschenrechtsrat bef\u00f6rdert, sagt ein Aktivist. </unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Der #UN-Menschenrechtsrat wird ohne die #USA diplomatische Kraft verlieren. Doch Amerika hat dort auch eigene Interessen verfolgt, erkl\u00e4rt der Aktivist Florian Irminger. #Menschenrechtsrat</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/politik/ausland/2018-06/menschenrechtsrates/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fpolitik%2Fausland%2F2018-06%2Fmenschenrechtsrat-un-austritt-usa-folgen-gemeinschaft",
@@ -3407,9 +3378,7 @@
               "last-modified-by": "import",
               "product-id": "ZTWI",
               "published": true,
-              "short_text": "Macht, Attit\u00fcde, Ausdruck. Mit der richtigen #K\u00f6rpersprache und dem richtigen Kost\u00fcm schaffen Sie es ganz nach oben.",
               "product-name": "ZEIT Wissen",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Innere Werte? Vergessen Sie's. Inszenierung ist alles. </unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_wis</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Sich gro\u00df machen. Raum einnehmen. Macht demonstrieren. Auf die richtige Inszenierung kommt es an. Im Tierreich und in der Politik. </unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/wissen/2018-06/ausstrahlung-charisma-schoenheit-michelle-obama/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n      <item key=\"uses_image\">\n          <false/>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>",
               "id": "ZTWI-2018-04-Ausstrahlung"
             },
             "vivi": {
@@ -3581,9 +3550,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Die Konflikte, die im #Asylstreit offen ausbrechen, k\u00f6nnten weitreichende Folgen haben \u2013 nicht nur f\u00fcr das deutsche Parteiensystem, sondern f\u00fcr Europa.",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Statt mit Merkel f\u00fcr den \"geordneten Multilateralismus\" zu streiten, sto\u00dfen nun auch S\u00f6der &amp; Co. in das Trump'sche Horn des Unilateralismus.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Zerlegt sich die Union, k\u00f6nnten Deutschland italienische Verh\u00e4ltnisse drohen. #Asylstreit</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Unionsstreit: Italienische Verh\u00e4ltnisse in Deutschland? Das ist inzwischen denkbar</unicode>\n      </item>\n      <item key=\"payload_template\">\n          <unicode>lesetipp.json</unicode>\n      </item>\n      <item key=\"title\">\n          <unicode>Kommentar</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n      <item key=\"uses_image\">\n          <false/>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fpolitik%2Fdeutschland%2F2018-06%2Funionsstreit-cdu-csu-angela-merkel-horst-seehofer-5vor8",
@@ -3790,9 +3757,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Bilder von weinenden Kindern, die an der Grenze von ihren Eltern getrennt wurden, haben die Einwanderungsdebatte in den #USA ver\u00e4ndert. #Trump",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Auch Republikaner kritisieren den Pr\u00e4sidenten f\u00fcr die harte Einwanderungspolitik. Doch Trump geht in die Offensive.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Auch Republikaner fordern Trump auf, den getrennten Einwanderfamilien zu helfen. #Trump</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/politik/ausland/2018-06/usa-einwanderung-kinder/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fpolitik%2Fausland%2F2018-06%2Fusa-donald-trump-einwanderung-familien-kinder",
@@ -3986,9 +3951,7 @@
               "product-id": "ZEDE",
               "corrected": "yes",
               "seo_optimized": "yes",
-              "urgent": false,
-              "short_text": "#Trump stellt viele Gewissheiten infrage, doch der Umgang mit ihm ist nur eine von vielen Baustellen, an denen die #EU arbeiten muss. Die internationalen Beziehungen ver\u00e4ndern sich rasant.",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Die internationalen Beziehungen ver\u00e4ndern sich rasant. Auf wen ist noch Verlass in der Welt?</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <true/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <true/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Der richtige Umgang mit #Trump ist nur eine von vielen Baustellen, an denen die #EU arbeiten muss. Die internationalen Beziehungen ver\u00e4ndern sich rasant.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "urgent": false
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fpolitik%2Fausland%2F2018-06%2Fweltpolitik-usa-china-europa-weltordnung-umbruch-5vor8",
@@ -4088,9 +4051,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Wenn Worte allein nicht reichen, muss man handeln, denkt sich die #CSU. Und das Handeln beschr\u00e4nkt sich nicht nur darauf, Seehofers Masterplan zur Migrationspolitik umzusetzen. Der eigentliche Akt besteht darin, Merkel zu st\u00fcrzen.",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>S\u00f6ders Bayern-\u00fcber-alles-Haltung spielt die nationale Karte aus. Seine unausgesprochene Botschaft: Wir Deutschen waren lange genug die Deppen.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Zwischen #CDU und #CSU w\u00fcrde mehr zerbrechen als die Fraktionsgemeinschaft im Bundestag, wenn die Bayern weiter den Trump machen.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fpolitik%2Fdeutschland%2F2018-06%2Fcdu-csu-soeder-seehofer-nationalismus-5vor8",
@@ -4196,9 +4157,7 @@
               "seo_optimized": "yes",
               "urgent": false,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Brit Bennetts Roman \"Die M\u00fctter\" erz\u00e4hlt \u00fcber die gesellschaftliche Enge der USA. ",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Brit Bennett erz\u00e4hlt spannend und klug \u00fcber Hautfarbe und Geschlecht, \u00fcber Rassismus und patriarchale Strukturen im Amerika der j\u00fcngsten Vergangenheit und Gegenwart.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_kul</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Trauer ist keine Linie, auf der man sich endlos weiter von seinem Verlust entfernt. Brit Bennetts herausragender Roman \"Die M\u00fctter\"</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/kultur/literatur/2018-06/brit-bennett/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fkultur%2Fliteratur%2F2018-06%2Fdie-muetter-brit-bennett-roman",
@@ -4402,9 +4361,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "In Seoul hatte sich US-Au\u00dfenminister Mike #Pompeo noch zuversichtlich gezeigt, dass Nordkorea bis 2020 atomar abr\u00fcsten werde. In Peking sprach er von \"Risiken\" und \"viel mehr Arbeit\".",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_pol</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>US-Au\u00dfenminister Mike #Pompeo \u00e4u\u00dferte sich in #Peking skeptisch \u00fcber eine atomare #Abr\u00fcstung Nordkoreas. Es best\u00fcnden noch Risiken bei der Umsetzung.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/politik/ausland/2018-06/mike-pompeo-trump-kim/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fpolitik%2Fausland%2F2018-06%2Fmike-pompeo-peking-nordkorea-trump-kim-abruestung",
@@ -4508,9 +4465,7 @@
               "seo_optimized": "yes",
               "urgent": true,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "2026 wird also eine WM an einer Mauer ausgetragen. #worldcup2026",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/sport/2018-06/wm-2026/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Eine WM an der Mauer \u2026</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonlinesport</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Der Gewinner hei\u00dft Trump. @OliFritsch \u00fcber die Vergabe der Fu\u00dfball-WM 2026 nach Amerika #worldcup2026</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fsport%2F2018-06%2Ffussball-wm-2026-usa-kanada-mexiko-fifa",
@@ -4618,9 +4573,7 @@
               "seo_optimized": "yes",
               "urgent": false,
               "product-id": "ZEDE",
-              "published": true,
-              "short_text": "Donald #Trump f\u00fchrte im offiziellen Trailer zu seinem Treffen mit Kim Jong Un eine vergessene politische Kategorie wieder ein, schreibt @davidhug. #TrumpKimSummit",
-              "message_config": "<pickle>\n  <tuple>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Vielleicht hatte ja der Schriftsteller Milan Kundera recht, als er schrieb, die Verbr\u00fcderung aller Menschen werde letztlich nur durch den Kitsch zu begr\u00fcnden sein.</unicode>\n      </item>\n      <item key=\"type\">\n          <string>facebook</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <string>zeitonline</string>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"account\">\n          <unicode>zeitonline_kul</unicode>\n      </item>\n      <item key=\"enabled\">\n          <false/>\n      </item>\n      <item key=\"override_text\">\n          <unicode>Donald #Trump hat zu seinem Treffen mit Kim Jong Un einen alten Begriff reanimiert. @davidhug \u00fcber die pomp\u00f6se Rhetorik des Schicksals #TrumpKimSummit</unicode>\n      </item>\n      <item key=\"type\">\n          <string>twitter</string>\n      </item>\n      <item key=\"variant\">\n          <string>ressort</string>\n      </item>\n    </dictionary>\n    <dictionary>\n      <item key=\"image\">\n          <unicode>http://xml.zeit.de/kultur/2018-06/trump-video/</unicode>\n      </item>\n      <item key=\"type\">\n          <string>mobile</string>\n      </item>\n    </dictionary>\n  </tuple>\n</pickle>"
+              "published": true
             },
             "vivi": {
               "range_details": "http://ccreport.zeit.de/zeit_clickcounter/cc/clicks?url=www.zeit.de%2Fkultur%2F2018-06%2Fdonald-trump-kim-jong-un-video-mythos",
