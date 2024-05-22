@@ -9,6 +9,7 @@ import time
 
 import transaction
 import transaction.interfaces
+import zope.component
 import zope.component.hooks
 
 import zeit.cms.logging
@@ -217,3 +218,55 @@ def principal_from_args():
         parser.print_help()
         raise SystemExit(1)
     return options.user
+
+
+@runner(principal=principal_from_args)
+def provide_interface():
+    import zope.container.contained
+    import zope.dottedname.resolve
+    import zope.interface
+    import zope.proxy
+
+    from zeit.cms.type import _provides_dav_property
+    import zeit.cms.content.interfaces
+    import zeit.cms.interfaces
+    import zeit.connector.interfaces
+
+    parser = argparse.ArgumentParser(description='Provide an interface to a content object')
+    parser.add_argument('uniqueId')
+    parser.add_argument('interface')
+    options = parser.parse_args()
+
+    content = zeit.cms.interfaces.ICMSContent(options.uniqueId)
+    # Unwrap so we don't get confused by interface-declarations of any proxy.
+    content = zope.proxy.removeAllProxies(content)
+    # Dear Zope, why is ContainedProxy not a zope.proxy?
+    content = zope.container.contained.getProxiedObject(content)
+    iface = zope.dottedname.resolve.resolve(options.interface)
+    connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
+    try:
+        # We don't want to store this in the DAV property, since it always comes
+        # from the Repository when needed.
+        zope.interface.noLongerProvides(content, zeit.cms.repository.interfaces.IRepositoryContent)
+    except Exception:
+        pass
+
+    zope.interface.alsoProvides(content, iface)
+    # work around security, reimplement the parts of DAVProperty.__set__ and
+    # LiveProperties.__setitem__ that actually set the value
+    read_properties = zeit.cms.interfaces.IWebDAVReadProperties(content)
+    field = _provides_dav_property.field.bind(content)
+    converter = zope.component.getMultiAdapter(
+        (field, read_properties), zeit.cms.content.interfaces.IDAVPropertyConverter
+    )
+    dav_value = converter.toProperty(content.__provides__)
+    connector.changeProperties(
+        content.uniqueId,
+        {(_provides_dav_property.name, _provides_dav_property.namespace): dav_value},
+    )
+
+    # Committing is not technically necessary (neither DAV nor the connector care),
+    # but it's good form, and if it's there, nobody will be confused as to why it's
+    # missing and whether it would have been needed.
+    transaction.commit()
