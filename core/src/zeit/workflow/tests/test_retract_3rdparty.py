@@ -18,27 +18,15 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
     def test_ignore_3rdparty_list_is_respected(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         self.assertFalse(IPublishInfo(article).published)
-        article_2 = ICMSContent('http://xml.zeit.de/online/2007/01/Schrempp')
-        IPublishInfo(article_2).published = True
-        self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert', 'facebooknewstab']
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
             response = rmock.post('http://localhost:8060/test/retract', status_code=200)
             IPublish(article).retract(background=True)
             (result,) = response.last_request.json()
-            assert 'facebooknewstab' not in result
             assert 'speechbert' not in result
-            assert 'bigquery' in result
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
-            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
-            IPublish(article_2).retract(background=False)
-            (result,) = response.last_request.json()
-            assert 'speechbert' not in result
-            assert 'facebooknewstab' in result
             assert 'bigquery' in result
         zeit.workflow.publish_3rdparty.PublisherData.ignore = []  # reset
         self.assertFalse(IPublishInfo(article).published)
-        self.assertFalse(IPublishInfo(article_2).published)
 
     def test_authordashboard_is_ignored_during_retraction(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -75,18 +63,6 @@ class Retract3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article).retract(background=False)
             (result,) = response.last_request.json()
             assert 'comments' not in result
-        self.assertFalse(IPublishInfo(article).published)
-
-    def test_facebooknewstab_is_retracted(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).published = True
-        self.assertTrue(IPublishInfo(article).published)
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/retract', status_code=200)
-            IPublish(article).retract(background=False)
-            (result,) = response.last_request.json()
-            result_fbnt = result['facebooknewstab']
-            self.assertEqual({}, result_fbnt)
         self.assertFalse(IPublishInfo(article).published)
 
     def test_speechbert_is_retracted(self):

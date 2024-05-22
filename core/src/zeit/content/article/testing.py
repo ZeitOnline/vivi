@@ -62,7 +62,7 @@ CONFIG_LAYER = zeit.cms.testing.ProductConfigLayer(
         zeit.wochenmarkt.testing.CONFIG_LAYER,
     ),
     # XXX Kludge because we depend on zeit.workflow.publish_3rdparty in our tests
-    patches={'zeit.workflow': {'facebooknewstab-startdate': '2021-03-24'}},
+    patches={'zeit.workflow': {}},
 )
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(bases=(CONFIG_LAYER,))
 ZOPE_LAYER = zeit.cms.testing.ZopeLayer(bases=(ZCML_LAYER,))

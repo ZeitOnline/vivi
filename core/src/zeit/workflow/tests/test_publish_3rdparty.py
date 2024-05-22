@@ -45,11 +45,10 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
         IPublishInfo(article_2).published = True
         self.assertTrue(IPublishInfo(article_2).published)
         with requests_mock.Mocker() as rmock:
-            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert', 'facebooknewstab']
+            zeit.workflow.publish_3rdparty.PublisherData.ignore = ['speechbert']
             response = rmock.post('http://localhost:8060/test/publish', status_code=200)
             IPublish(article).publish(background=True)
             (result,) = response.last_request.json()
-            assert 'facebooknewstab' not in result
             assert 'speechbert' not in result
             assert 'authordashboard' in result
 
@@ -59,7 +58,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             IPublish(article_2).publish(background=False)
             (result,) = response.last_request.json()
             assert 'speechbert' not in result
-            assert 'facebooknewstab' in result
             assert 'authordashboard' not in result
         zeit.workflow.publish_3rdparty.PublisherData.ignore = []  # reset
         self.assertTrue(IPublishInfo(article).published)
@@ -184,80 +182,6 @@ class Publisher3rdPartyTest(zeit.workflow.testing.FunctionalTestCase):
             )
             is not None
         )
-
-    def test_facebooknewstab_is_published(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        self.assertFalse(IPublishInfo(article).published)
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            result_fbnt = result['facebooknewstab']
-            self.assertEqual({}, result_fbnt)
-        self.assertTrue(IPublishInfo(article).published)
-
-    def test_facebooknewstab_skipped_date_first_released(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        IPublishInfo(article).date_first_released = pendulum.datetime(2020, 10, 5)
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' not in result
-        # set it to something else and make sure nothing else caused the skip
-        IPublishInfo(article).date_first_released = pendulum.datetime(2022, 1, 1)
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' in result
-
-    def test_facebooknewstab_skipped_product_id(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        self.assertFalse(IPublishInfo(article).published)
-        self.assertEqual(article.product.id, 'ZEDE')
-        # we add more products than needed for the test to make sure
-        # the config parsing works correctly
-        config['facebooknewstab-ignore-products'] = 'ADV, VAB, ZEDE'
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' not in result
-        # set it to something else and make sure nothing else caused the skip
-        with checked_out(article) as co:
-            co.product = zeit.cms.content.sources.Product('ZTGS')
-        self.assertEqual(article.product.id, 'ZTGS')
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' in result
-
-    def test_facebooknewstab_skipped_ressort(self):
-        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow')
-        self.assertFalse(IPublishInfo(article).published)
-        self.assertEqual(article.ressort, 'International')
-        # we add more products than needed for the test to make sure
-        # the config parsing works correctly, that is also why there is
-        # a space in front of International
-        config['facebooknewstab-ignore-ressorts'] = ','.join(['Administratives', ' International'])
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' not in result
-        # set it to something else and make sure nothing else caused the skip
-        with checked_out(article) as co:
-            co.ressort = 'Politik'
-        self.assertEqual(article.ressort, 'Politik')
-        with requests_mock.Mocker() as rmock:
-            response = rmock.post('http://localhost:8060/test/publish', status_code=200)
-            IPublish(article).publish(background=False)
-            (result,) = response.last_request.json()
-            assert 'facebooknewstab' in result
 
     def test_speechbert_is_published(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
