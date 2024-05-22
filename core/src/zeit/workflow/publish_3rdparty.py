@@ -1,5 +1,4 @@
 from itertools import chain
-import datetime
 import logging
 
 import grokcore.component as grok
@@ -230,42 +229,6 @@ class GalleryComments(grok.Adapter, CommentsMixin):
 class VideoComments(grok.Adapter, CommentsMixin):
     grok.context(zeit.content.video.interfaces.IVideo)
     grok.name('comments')
-
-
-@grok.implementer(zeit.workflow.interfaces.IPublisherData)
-class FacebookNewstab(grok.Adapter):
-    grok.context(zeit.content.article.interfaces.IArticle)
-    grok.name('facebooknewstab')
-
-    def publish_json(self):
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.workflow') or {}
-        if not config.get('facebooknewstab-enabled'):  # XXX
-            return None
-        ignore_ressorts = {
-            x.strip().lower() for x in config.get('facebooknewstab-ignore-ressorts', '').split(',')
-        }
-        ressort = self.context.ressort
-        if ressort.lower() in ignore_ressorts:
-            return None
-        product_id = self.context.product.id
-        ignore_products = {
-            x.strip().lower() for x in config.get('facebooknewstab-ignore-products', '').split(',')
-        }
-        if product_id.lower() in ignore_products:
-            return None
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        date_first_released = info.date_first_released
-        facebooknewstab_startdate = datetime.datetime.strptime(
-            config['facebooknewstab-startdate'], '%Y-%m-%d'
-        ).replace(tzinfo=datetime.timezone.utc)
-        if date_first_released is not None:
-            if date_first_released < facebooknewstab_startdate:
-                # Ignore resources before the cut off date.
-                return None
-        return {}
-
-    def retract_json(self):
-        return self.publish_json()
 
 
 class IgnoreMixin:
