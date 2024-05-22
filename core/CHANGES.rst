@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.173.0 (2024-05-22)
+--------------------
+
+- ZO-5138: remove social media channels for ze.tt, campus and magazin
+
+- ZO-5138: remove facebook metric account expires
+
+- ZO-5138: Remove checkbox in breaking news "social media" that posts to facebook and twitter
+
+- ZO-5138: remove facebook api calls from push
+
+
 5.172.0 (2024-05-21)
 --------------------
 
