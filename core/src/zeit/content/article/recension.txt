@@ -114,8 +114,6 @@ The recension is now already part of the article:
 <article>
   <head>
     <header/>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-        name="has_recensions">yes</attribute>
   </head>
   <body>
     ...

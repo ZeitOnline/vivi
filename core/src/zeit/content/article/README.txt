@@ -37,7 +37,7 @@ Changes Are Reflected in The Properties And the XML
 ===================================================
 
 
-We change some attributes now and see that the changes are reflected in the
+We change some attributes now and see that the changes are partly reflected in the
 XML:
 
 >>> article.title = 'Jahr ohne \xdcberraschungen'
@@ -54,85 +54,33 @@ XML:
      selbst zu überra schen. Von einer Reformpause will sie nichts wissen
    </subtitle>
   </body>
-  <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="text-length">4711</attribute>
-  </head>
 </article>
-
+>>> print(article.year)
+2007
+>>> print(article.volume)
+1
+>>> print(article.textLength)
+4711
 
 When we set an attribute multiple times it's just changed:
 
 >>> article.textLength = 1000
 >>> article.textLength = 2000
->>> print(zeit.cms.testing.xmltotext(article.xml))
-<article>
-  <body>
-    <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne Überraschungen</title>
-    <subtitle>
-     Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
-   </subtitle>
-  </body>
-  <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="volume">1</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="text-length">2000</attribute>
-  </head>
-</article>
+>>> print(article.textLength)
+2000
 
-`Authors` is a tuple stored in a webdav property. We assign authors we also see
-the authors in the xml:
+`Authors` is a tuple stored in a webdav property.
 
 >>> article.authors = ('Bart Simpson', 'Lisa Simpson')
->>> print(zeit.cms.testing.xmltotext(article.xml))
-<article>
-  <body>
-    <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne Überraschungen</title>
-    <subtitle>
-     Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
-   </subtitle>
-  </body>
-  <head>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="volume">1</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="text-length">2000</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-      name="author">Bart Simpson;Lisa Simpson</attribute>
-  </head>
-</article>
-
+>>> print(article.authors)
+('Bart Simpson', 'Lisa Simpson')
 
 There is an adapter which sets the text length automatically:
 
 >>> from zeit.content.article.article import updateTextLengthOnChange
 >>> updateTextLengthOnChange(article, object())
->>> print(zeit.cms.testing.xmltotext(article.xml))
-<article>
-  <body>
-    <supertitle>Neujahrsansprache</supertitle>
-    <title>Jahr ohne Überraschungen</title>
-    <subtitle>
-     Kanzlerin Angela Merkel ruft die Deutschen auf, sich auch 2007 wieder
-     selbst zu überra schen. Von einer Reformpause will sie nichts wissen
-   </subtitle>
-  </body>
-  <head>
-    ...
-    <attribute ns="http://namespaces.zeit.de/CMS/document"
-        name="text-length">208</attribute>
-  </head>
-</article>
+>>> print(article.textLength)
+208
 
 
 It might happen that the user can change the object (i.e. workflow properties)
@@ -243,13 +191,13 @@ Resource Factory
 The resource factory creates Resource objects from articles:
 
 >>> article = Article()
->>> article.authors = ('Tom', 'Jerry')
+>>> article.title = 'Tom and Jerry'
 >>> resource = ArticleType().resource(article)
 >>> resource.type
 'article'
 >>> print(resource.data.read().decode('utf-8'))
 <?xml version='1.0' ...
-  ...Tom...Jerry...
+  ...Tom and Jerry...
 
 
 Attached Images
