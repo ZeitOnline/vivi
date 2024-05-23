@@ -32,6 +32,7 @@ import plone.testing
 import plone.testing.zca
 import plone.testing.zodb
 import pytest
+import selenium.webdriver
 import transaction
 import waitress.server
 import webtest.lint
@@ -632,14 +633,20 @@ HTTP_LAYER = WSGIServerLayer(name='HTTPLayer', bases=(WSGI_LAYER,))
 
 class WebdriverLayer(gocept.selenium.WebdriverLayer):
     def get_firefox_webdriver_args(self):
-        args = super().get_firefox_webdriver_args()
-        options = args['options']
+        options = selenium.webdriver.FirefoxOptions()
+        if self['headless']:
+            options.add_argument('-headless')
+
+        profile_path = os.environ.get('GOCEPT_WEBDRIVER_FF_PROFILE')
+        if profile_path:
+            options.set_preference('profile', profile_path)
+
         # The default 'info' is still way too verbose
         options.log.level = 'error'
         binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
         if binary:
             options.binary_location = binary
-        return args
+        return {'options': options}
 
     def _stop_selenium(self):
         super()._stop_selenium()
