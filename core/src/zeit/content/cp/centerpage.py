@@ -182,9 +182,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
             if not entry.get('uniqueId', '').startswith(TEASER_ID_NAMESPACE):
                 entry.set('href', content.uniqueId)
                 entry.set('uniqueId', content.uniqueId)
-            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content, None)
-            if updater is not None:
-                updater.update(entry)
 
             modified = zeit.cms.workflow.interfaces.IModified(content, None)
             if modified is not None:

@@ -13,8 +13,6 @@ import zeit.content.volume.interfaces
 @grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLRelatedReference(context):
     node = lxml.builder.E.volume(href=context.uniqueId)
-    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(node)
     return node
 
 

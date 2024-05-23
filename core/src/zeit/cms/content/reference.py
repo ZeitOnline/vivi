@@ -45,9 +45,6 @@ class ReferenceProperty:
         contained within <head>::
 
           images = ReferenceProperty('.head.image', xml_reference_name='image')
-
-        The metadata copied into the XML nodes is updated via
-        IXMLReferenceUpdater on checkin.
         """
         self.path = lxml.objectify.ObjectPath(path)
         self.xml_reference_name = xml_reference_name
@@ -438,8 +435,6 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
         if self.target is None:
             return
         self._update_target_unique_id()
-        updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(self.target)
-        updater.update(self.xml, suppress_errors)
         self._p_changed = True
 
     def _update_target_unique_id(self):

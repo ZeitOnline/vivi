@@ -54,15 +54,6 @@ class ReferenceTest(unittest.TestCase):
         # second assignment doesn't fail
         ref.references = None
 
-    def test_setting_object_should_update_node_with_xmlreferenceupdater(self):
-        ref = self.get_ref()
-        obj = mock.Mock()
-        obj.uniqueId = 'my-id'
-        with mock.patch('zeit.cms.content.interfaces.IXMLReferenceUpdater') as xru:
-            ref.references = obj
-            xru.assert_called_with(obj, None)
-            xru.return_value.update.assert_called_with(ref.xml)
-
     def test_setting_none_removes_other_attributes_and_child_nodes(self):
         ref = self.get_ref()
         ref.xml.set('href', 'auniqueid')

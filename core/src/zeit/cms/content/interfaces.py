@@ -383,16 +383,6 @@ class IXMLReference(zope.interface.Interface):
     """
 
 
-class IXMLReferenceUpdater(zope.interface.Interface):
-    """Objects that update metadata etc on XML references."""
-
-    def update(xml_node, suppress_errors=False):
-        """Update xml_node with data from the content object.
-
-        xml_node: lxml.etree.Element
-        """
-
-
 class IReference(
     IXMLRepresentation, zeit.cms.interfaces.ICMSContent, zope.location.interfaces.ILocation
 ):

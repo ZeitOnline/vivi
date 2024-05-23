@@ -43,9 +43,6 @@ def BasicReference(context, suppress_errors=False):
     reference.set('type', 'intern')
     reference.set('href', context.uniqueId)
 
-    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(reference, suppress_errors)
-
     return reference
 
 

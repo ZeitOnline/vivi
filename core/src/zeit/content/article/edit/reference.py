@@ -40,9 +40,6 @@ class Reference(zeit.content.article.edit.block.Block):
             self._validate(value)
             self.is_empty = False
             self.xml.set('href', value.uniqueId)
-            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(value, None)
-            if updater is not None:
-                updater.update(self.xml)
 
     def _validate(self, value):
         field = zope.interface.providedBy(self).declared[0]['references']

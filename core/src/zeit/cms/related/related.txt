@@ -229,19 +229,17 @@ After sending the event the metadata is updated:
 ...     zeit.cms.checkout.interfaces.BeforeCheckinEvent(
 ...         content, None, zope.security.testing.Principal('hans.wurst')))
 >>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype...>
-  <head>...
+<testtype>
+  <head>
     <references>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related"
-        ...year="2007" issue="19"...>
+      <reference type="intern" href="http://xml.zeit.de/related"/>
         ...
         <title>I relate the title</title>
         <text>Dude.</text>
         <description>Dude.</description>
         ...
       </reference>
-      <reference...type="intern" href="http://xml.zeit.de/related2"...>
+      <reference type="intern" href="http://xml.zeit.de/related2"/>
         ...
         <title/>
         <text/>

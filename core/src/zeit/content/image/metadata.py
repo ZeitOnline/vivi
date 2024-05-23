@@ -1,11 +1,9 @@
 import grokcore.component as grok
-import lxml.builder
 import zope.component
 import zope.interface
 import zope.schema
 
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
-from zeit.cms.content.xmlsupport import update_child_node
 import zeit.cms.content.dav
 import zeit.content.image.image
 import zeit.content.image.interfaces
@@ -109,44 +107,3 @@ def metadata_for_image(image):
 @grok.implementer(zeit.content.image.interfaces.IImageMetadata)
 def metadata_for_synthetic(context):
     return zeit.content.image.interfaces.IImageMetadata(context.__parent__)
-
-
-class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    target_iface = zeit.content.image.interfaces.IImageMetadata
-
-    def update_with_context(self, entry, context):
-        def set_attribute(name, value):
-            if value:
-                entry.set(name, value)
-            else:
-                entry.attrib.pop(name, None)
-
-        set_attribute('origin', context.origin)
-        set_attribute('title', context.title)
-        set_attribute('alt', context.alt)
-
-        # XXX This is really ugly: XMLReference type 'related' uses href for
-        # the uniqueId, but type 'image' uses 'src' or 'base-id' instead, and
-        # reuses 'href' for the link information. And since XMLReferenceUpdater
-        # is called for all types of reference, we need to handle both ways.
-        if entry.get('src') or entry.get('base-id'):
-            set_attribute('href', context.links_to)
-
-        if context.nofollow:
-            set_attribute('rel', 'nofollow')
-
-        update_child_node(entry, 'bu', context.caption)
-
-        for child in entry.iterchildren('copyright'):
-            entry.remove(child)
-
-        if context.copyright is None:
-            return
-        text, company, freetext, link, nofollow = context.copyright
-        node = lxml.builder.E.copyright()
-        node.text = text
-        if link:
-            node.set('link', link)
-            if nofollow:
-                node.set('rel', 'nofollow')
-        entry.append(node)

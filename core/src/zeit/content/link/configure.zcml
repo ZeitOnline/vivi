@@ -17,6 +17,4 @@
       />
   </class>
 
-  <adapter factory=".link.XMLReferenceUpdater" name="zeit.content.link" />
-
 </configure>

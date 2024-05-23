@@ -117,8 +117,6 @@ class ContentList:
             raise KeyError(content.uniqueId)
         entry.set('href', content.uniqueId)
         entry.set('uniqueId', content.uniqueId)
-        updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
-        updater.update(entry, suppress_errors)
 
     def getMetadata(self, content):
         return zope.location.location.located(Entry(self.entry_map[content.uniqueId]), self)
@@ -257,14 +255,6 @@ class FakeEntry:
         self.uniqueId = id
         self.__name__ = os.path.basename(id)
         self.title = str(entry.find('title'))
-
-
-@grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
-class FakeXMLReferenceUpdater(grok.Adapter):
-    grok.context(FakeEntry)
-
-    def update(self, node, suppress_errors=False):
-        pass
 
 
 @grok.implementer(zeit.cms.redirect.interfaces.IRenameInfo)

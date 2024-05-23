@@ -139,10 +139,6 @@
     />
 
   <adapter
-    factory=".article.ArticleMetadataUpdater"
-    name="zeit.content.article.interfaces.IArticleMetadata"/>
-
-  <adapter
     factory=".interfaces.IZONArticle"
     for="zeit.cms.section.interfaces.IZONSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"

@@ -714,10 +714,6 @@ class ReferenceStep(ConversionStep):
 
         new_node = lxml.etree.Element(self.content_type)
         new_node.set('href', unique_id)
-        content = zeit.cms.interfaces.ICMSContent(unique_id, None)
-        if content is not None:
-            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
-            updater.update(new_node)
         return new_node
 
     def references(self, node):

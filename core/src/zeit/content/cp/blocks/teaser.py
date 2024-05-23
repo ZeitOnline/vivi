@@ -203,6 +203,4 @@ def rendered_xml_cmscontent(context):
     if not context.uniqueId:
         return None
     block = lxml.builder.E.block(uniqueId=context.uniqueId, href=context.uniqueId)
-    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(block, suppress_errors=True)
     return block

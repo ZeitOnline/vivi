@@ -11,10 +11,7 @@
     />
   <adapter factory=".publishinfo.NotPublishablePublishInfo" />
   <adapter factory=".publishinfo.workflowProperties" />
-  <adapter
-    factory=".timebased.XMLReferenceUpdater"
-    name="timebased-workflow"
-    />
+
   <subscriber handler=".publishinfo.log_workflow_changes" />
   <subscriber handler=".workflow.log_workflow_changes" />
 
