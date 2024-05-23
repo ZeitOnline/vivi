@@ -75,31 +75,5 @@ An xml reference to content also indicates the gallery:
 >>> node = zope.component.getAdapter(
 ...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
 >>> print(zeit.cms.testing.xmltotext(node))
-<reference ...type="intern" href="http://xml.zeit.de/online/content"...>
-  ...
-  <gallery type="intern" href="http://xml.zeit.de/gallery"...>
-    <supertitle/>
-    ...
-  </gallery>
-</reference>
+<reference type="intern" href="http://xml.zeit.de/online/content"/>
 
-When the xml reference is produced a second time there is still only one
-gallery node (used to be a bug which produced a new one each time):
-
->>> updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
->>> updater.update(node)
->>> len(node.findall('gallery'))
-1
-
-
-When the reference is removed the <gallery> tag is removed:
-
->>> import zeit.cms.checkout.helper
->>> with zeit.cms.checkout.helper.checked_out(content) as co:
-...     gref = zeit.content.gallery.interfaces.IGalleryReference(co)
-...     gref.gallery = None
->>> content = repository['online']['content']
->>> node = zope.component.getAdapter(
-...     content, zeit.cms.content.interfaces.IXMLReference, name='related')
->>> '<gallery' in zeit.cms.testing.xmltotext(node)
-False

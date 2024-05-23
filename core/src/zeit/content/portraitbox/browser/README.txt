@@ -55,9 +55,7 @@ Verify the source:
 <container... layout="artbox" label="portrait">
   <block>
     <title...>Hans Wurst</title>
-    <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-      <bu/>
-    </image>
+    <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
     <text>
       <p><strong>HW</strong> is in da house</p>
     </text>

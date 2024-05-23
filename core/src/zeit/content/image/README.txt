@@ -24,10 +24,7 @@ Test the image xml reference:
 ...     image,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG"
-  type="JPG"...>
-  <bu/>
-</image>
+<image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
 
 
 When the image is adapted to ILocalContent we'll get a LocalImage:
@@ -99,9 +96,7 @@ Reference the image via XML:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
-  <bu/>
-</image>
+<image base-id="http://xml.zeit.de/image-group/" type="jpg"/>
 
 
 Set metadata:
@@ -116,10 +111,7 @@ Set metadata:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
-  <bu>Caption</bu>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
-</image>
+<image base-id="http://xml.zeit.de/image-group/" type="jpg"/>
 
 The interface default for the copyright is None:
 
@@ -136,10 +128,7 @@ Make sure we don't die when there is an invalid XML snippet stored:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...>
-  <bu>5 &lt; 7</bu>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
-</image>
+<image base-id="http://xml.zeit.de/image-group/" type="jpg"/>
 
 Set the link:
 
@@ -152,11 +141,7 @@ Set the link:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    href="http://www.asdf.com" rel="nofollow"...>
-  <bu>5 &lt; 7</bu>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
-</image>
+<image base-id="http://xml.zeit.de/image-group/" type="jpg"/>
 
 The type attribute is rather complex.
 
@@ -174,11 +159,7 @@ in x140 is used:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type="gif"...
-    href="http://www.asdf.com"...>
-  <bu>5 &lt; 7</bu>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
-</image>
+<image base-id="http://xml.zeit.de/image-group/" type="gif"/>
 
 
 Case 3: When there is a mix of formats and no image ends in x140 the "first"
@@ -193,11 +174,7 @@ one is used:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    href="http://www.asdf.com"...>
-  <bu>5 &lt; 7</bu>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
-</image>
+<image base-id="http://xml.zeit.de/image-group/" type="jpg"/>
 
 
 Images whose names have no extension at all will be ignored:
@@ -211,12 +188,7 @@ Images whose names have no extension at all will be ignored:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
-    href="http://www.asdf.com"...>
-  <bu>5 &lt; 7</bu>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
-</image>
-<BLANKLINE>
+<image base-id="http://xml.zeit.de/image-group/" type="jpg"/>
 
 If there is no image in the image group the ``type`` will be an empty string:
 
@@ -226,11 +198,7 @@ If there is no image in the image group the ``type`` will be an empty string:
 ...     group,
 ...     zeit.cms.content.interfaces.IXMLReference, name='image')
 >>> print(zeit.cms.testing.xmltotext(ref))
-<image ...base-id="http://xml.zeit.de/image-group/" type=""...
-    href="http://www.asdf.com"...>
-  <bu>5 &lt; 7</bu>
-  <copyright link="http://xyz.de">Agentur XY</copyright>
-</image>
+<image base-id="http://xml.zeit.de/image-group/" type=""/>
 
 
 There is also a view for the metadata:

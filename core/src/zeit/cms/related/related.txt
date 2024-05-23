@@ -69,14 +69,7 @@ Let's have a look at the source:
 <testtype...>
   <head>...
     <references>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related"...>
-        <supertitle/>
-        <title/>
-        <text/>
-        <description/>
-        <byline/>
-      </reference>
+      <reference type="intern" href="http://xml.zeit.de/related"/>
     </references>
   </head>
   <body/>
@@ -101,14 +94,7 @@ Assigning the same content object again doesn't change the xml:
 <testtype...>
   <head>...
     <references>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related"...>
-        <supertitle/>
-        <title/>
-        <text/>
-        <description/>
-        <byline/>
-      </reference>
+      <reference type="intern" href="http://xml.zeit.de/related"/>
     </references>
   </head>
   <body/>
@@ -125,18 +111,8 @@ Let's add another related content:
 <testtype...>
   <head>...
     <references>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related"...>
-        ...
-        <title/>
-        ...
-      </reference>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related2"...>
-        ...
-        <title/>
-        ...
-      </reference>
+      <reference type="intern" href="http://xml.zeit.de/related"/>
+      <reference type="intern" href="http://xml.zeit.de/related2"/>
     </references>
   </head>
   <body/>
@@ -162,22 +138,8 @@ So far nothing has changed:
 <testtype...>
   <head>...
     <references>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related"...>
-        ...
-        <title/>
-        <text/>
-        <description/>
-        ...
-      </reference>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related2"...>
-        ...
-        <title/>
-        <text/>
-        <description/>
-        ...
-      </reference>
+      <reference type="intern" href="http://xml.zeit.de/related"/>
+      <reference type="intern" href="http://xml.zeit.de/related2"/>
     </references>
   </head>
   <body/>
@@ -192,22 +154,8 @@ when we reassign the two objects the metadata will be reflected in the xml:
 <testtype...>
   <head>...
     <references>
-      <reference...
-        type="intern" href="http://xml.zeit.de/related"
-        ...year="2006" issue="19"...>
-        ...
-        <title>I relate the title</title>
-        <text>Dude.</text>
-        <description>Dude.</description>
-        ...
-      </reference>
-      <reference... type="intern" href="http://xml.zeit.de/related2"...>
-        ...
-        <title/>
-        ...
-        <description/>
-        ...
-      </reference>
+      <reference type="intern" href="http://xml.zeit.de/related"/>
+      <reference type="intern" href="http://xml.zeit.de/related2"/>
     </references>
   </head>
   <body/>
@@ -233,19 +181,7 @@ After sending the event the metadata is updated:
   <head>
     <references>
       <reference type="intern" href="http://xml.zeit.de/related"/>
-        ...
-        <title>I relate the title</title>
-        <text>Dude.</text>
-        <description>Dude.</description>
-        ...
-      </reference>
       <reference type="intern" href="http://xml.zeit.de/related2"/>
-        ...
-        <title/>
-        <text/>
-        <description/>
-        ...
-      </reference>
     </references>
     ...
   </head>
