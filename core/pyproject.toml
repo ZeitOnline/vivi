@@ -154,7 +154,6 @@ test = [
     "gocept.httpserverlayer>=1.4.0.dev0",
     "gocept.jasmine",
     "gocept.jslint>=0.2",
-    "gocept.pytestlayer",
     "gocept.selenium<7.1",  # ZO-3157
     "gocept.testing>=1.4.0.dev0",
     "opentelemetry-exporter-otlp",
@@ -177,6 +176,7 @@ test = [
     "zope.app.wsgi",
     "zope.configuration",
     "zope.error",
+    "zope.pytestlayer",
     "zope.testbrowser",
     "zope.testing>=3.8.0",
 ]
