@@ -3,6 +3,7 @@ from unittest import mock
 import json
 import unittest
 
+from selenium.webdriver.common.by import By
 import gocept.testing.mock
 import zope.component
 
@@ -180,6 +181,6 @@ class InputWidgetUI(zeit.cms.testing.SeleniumTestCase, zeit.cms.tagging.testing.
         sel.assertXpathCount('//li/a[@href="http://localhost/live-prefix/thema/t1"]', 1)
         self.assertEqual(
             'with-topic-page',
-            sel.selenium.find_element_by_link_text('t1 (Test)').get_attribute('class'),
+            sel.selenium.find_element(By.LINK_TEXT, 't1 (Test)').get_attribute('class'),
         )
         sel.assertXpathCount('//li/a[@href="http://localhost/live-prefix/thema/t2"]', 0)

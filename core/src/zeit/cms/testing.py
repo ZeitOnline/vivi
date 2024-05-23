@@ -16,12 +16,14 @@ import threading
 import unittest
 import xml.sax.saxutils
 
+from selenium.webdriver.common.by import By
 import celery.contrib.testing.app
 import celery.contrib.testing.worker
 import celery_longterm_scheduler
 import gocept.httpserverlayer.custom
 import gocept.jslint
 import gocept.selenium
+import gocept.selenium.wd_selenese
 import gocept.testing.assertion
 import kombu
 import lxml.cssselect
@@ -778,6 +780,19 @@ def selenium_teardown_authcache(self):
 
 original_teardown = gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown
 gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = selenium_teardown_authcache
+
+
+# XXX copy&paste to fix incorrect API usage (find_elements_by_xpath was removed)
+def assertOrdered(self, locator1, locator2):
+    if self._find(locator2).id not in {
+        x.id for x in self.selenium.find_elements(By.XPATH, locator1 + '/following-sibling::*')
+    }:
+        raise self.failureException(
+            'Element order did not match expected %r,%r' % (locator1, locator2)
+        )
+
+
+gocept.selenium.wd_selenese.Selenese.assertOrdered = assertOrdered
 
 
 @pytest.mark.selenium()
