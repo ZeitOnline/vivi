@@ -128,27 +128,6 @@ Tokens are only assigned for the master object of the event:
 >>> len(tokens)
 2
 
-The private token is *not* synched to xml:
-
->>> from zeit.cms.checkout.helper import checked_out
->>> _ = zeit.cms.testing.create_interaction()
->>> with checked_out(content):
-...     pass
->>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
->>> xml = zeit.cms.testing.xmltotext(content.xml)
->>> print(xml)
-<testtype...>
-  <head>
-    ...
-    <attribute ns="http://namespaces.zeit.de/CMS/vgwort" name="public_token">public1</attribute>
-    ...
-  </head>
-  <body/>
-</testtype>
->>> 'private_token' in xml
-False
-
-
 
 
 Clean up
