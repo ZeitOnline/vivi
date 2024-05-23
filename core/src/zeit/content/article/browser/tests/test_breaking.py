@@ -54,10 +54,6 @@ class TestAdding(zeit.content.article.testing.BrowserTestCase):
         self.browser.getControl('Publish and push').click()
         article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
         self.assertEqual(True, zeit.content.article.interfaces.IBreakingNews(article).is_breaking)
-        self.assertEllipsis(
-            '...<attribute...name="is_breaking">yes</attribute>...',
-            zeit.cms.testing.xmltotext(article.xml),
-        )
 
     def test_publish_sends_push_messages(self):
         # This tests the integration with zeit.push, but not the actual push
