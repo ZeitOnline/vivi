@@ -289,21 +289,6 @@ class TestTagger(zeit.retresco.testing.FunctionalTestCase, zeit.retresco.testing
         node = tagger.to_xml()
         self.assertEqual('rankedTags', node.tag)
 
-    def test_rankedTags_dav_property_should_not_be_added_to_xml_directly(self):
-        content = create_testcontent()
-        self.set_tags(
-            content,
-            """
-<tag uuid="uid-karenduve">Karen Duve</tag>
-<tag uuid="uid-berlin">Berlin</tag>
-""",
-        )
-        zope.interface.alsoProvides(content, zeit.cms.content.interfaces.IDAVPropertiesInXML)
-        sync = zeit.cms.content.interfaces.IDAVPropertyXMLSynchroniser(content)
-        sync.sync()
-        dav_attribs = '\n'.join(str(a) for a in content.xml.findall('head/attribute'))
-        self.assertNotIn('rankedTags', dav_attribs)
-
     def test_existing_tags_should_cause_rankedTags_to_be_added_to_xml(self):
         repository = zope.component.getUtility(zeit.cms.repository.interfaces.IRepository)
         repository['content'] = create_testcontent()

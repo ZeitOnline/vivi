@@ -464,26 +464,6 @@ class IDAVPropertiesInXML(zope.interface.Interface):
     """
 
 
-class IDAVPropertyXMLSynchroniser(zope.interface.Interface):
-    """Synchronises dav properties to XML."""
-
-    def set(namespace, name):
-        """Set value for the DAV property (name, namespace)."""
-
-    def sync():
-        """Synchronise all properties."""
-
-
-class ISynchronisingDAVPropertyToXMLEvent(zope.interface.Interface):
-    namespace = zope.interface.Attribute('DAV property namespace')
-    name = zope.interface.Attribute('DAV property name')
-    value = zope.interface.Attribute('DAV property value')
-    vetoed = zope.schema.Bool(title='True if sync was vetoed.', readonly=True, default=False)
-
-    def veto():
-        """Called by subscribers to veto the property being added to xml."""
-
-
 class IContentSortKey(zope.interface.Interface):
     """Content objects can be adapted to this interface to get a sort key.
 

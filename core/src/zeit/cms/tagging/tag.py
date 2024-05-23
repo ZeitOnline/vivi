@@ -110,12 +110,6 @@ class Tag:
 XML_NS = 'http://namespaces.zeit.de/CMS/tagging'
 
 
-@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
-def veto_tagging_properties(event):
-    if event.namespace == XML_NS:
-        event.veto()
-
-
 def add_ranked_tags_to_head(content):
     tagger = zeit.cms.tagging.interfaces.ITagger(content, None)
     if tagger:

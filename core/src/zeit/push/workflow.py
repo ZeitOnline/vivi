@@ -72,12 +72,6 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
         self.message_config = tuple(config)
 
 
-@grok.subscribe(zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
-def ignore_push_properties(event):
-    if event.name == 'message_config':
-        event.veto()
-
-
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
 def send_push_on_publish(context, event):
     """Send push notifications for each enabled service.
