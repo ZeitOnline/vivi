@@ -636,7 +636,9 @@ class WebdriverLayer(gocept.selenium.WebdriverLayer):
         options = args['options']
         # The default 'info' is still way too verbose
         options.log.level = 'error'
-        options.binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+        binary = os.environ.get('GOCEPT_WEBDRIVER_FF_BINARY')
+        if binary:
+            options.binary_location = binary
         return args
 
     def _stop_selenium(self):
