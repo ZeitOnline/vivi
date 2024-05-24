@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:monkey="http://namespaces.plone.org/monkey"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="collective.monkeypatcher">
 
   <include package="collective.monkeypatcher" />
@@ -31,5 +32,13 @@
     class="pendulum.Timezone"
     original="__reduce__"
     replacement=".pendulum_patch.reduce_without_nocache" />
+
+  <monkey:patch
+    zcml:condition="installed opentelemetry.sdk.extension.prometheus_multiprocess"
+    description="Work around open-telemetry/opentelemetry-python-contrib#XXX which declares ms, but reports values in s"
+    class="opentelemetry.sdk.extension.prometheus_multiprocess.provider.PrometheusHistogram"
+    original="record"
+    preserveOriginal="true"
+    replacement=".otel_patch.record_with_requests_bugfix" />
 
 </configure>
