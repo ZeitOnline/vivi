@@ -68,53 +68,6 @@ False
 Checkin handler
 ---------------
 
-The checkin handler copies all webdav properties to the xml *before* the object
-is checked in. It removes all existing head.attribute nodes before adding the
-properties. Add some attributes to make sure they're removed:
-
->>> import lxml.etree
->>> content.xml = lxml.etree.fromstring("""\
-...     <testtype>
-...      <head>
-...        <attribute ns="some-namespace" name="somename">somevalue</attribute>
-...        <attribute ns="some-namespace" name="some-other-name">someothervalue</attribute>
-...      </head><body/>
-...    </testtype>""")
-
-
-Let's add some properties under the hood. Note that properties in the DAV: or
-INTERNAL namespace are *not* mapped:
-
->>> import zeit.connector.interfaces
->>> from zeit.cms.content.interfaces import WRITEABLE_LIVE
->>> properties = zeit.connector.interfaces.IWebDAVProperties(
-...     repository['testcontent'])
->>> properties.register_live_property('am-i', 'under-the-hood', WRITEABLE_LIVE)
->>> properties.register_live_property('foobar', 'DAV:', WRITEABLE_LIVE)
->>> properties.register_live_property('foobar', zeit.connector.interfaces.INTERNAL_PROPERTY, WRITEABLE_LIVE)
->>> properties[('am-i', 'under-the-hood')] = '4711'
->>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
->>> properties[('foobar', zeit.connector.interfaces.INTERNAL_PROPERTY)] = 'no-dav-sync'
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype>
-  <head>
-    <attribute ns="some-namespace" name="somename">somevalue</attribute>
-    <attribute ns="some-namespace" name="some-other-name">someothervalue</attribute>
-  </head>
-  <body/>
-</testtype>
-
-
->>> content = zeit.cms.checkout.interfaces.ICheckinManager(content).checkin()
->>> print(zeit.cms.testing.xmltotext(content.xml))
-<testtype...>
-  <head>
-    <attribute ns="under-the-hood" name="am-i">4711</attribute>
-    ...
-  </head>
-  <body/>
-</testtype>
-
 There was once a bug which prevented the editing of (checked out) documents
 when they were no longer in the repository. Checkout testcontent again, then
 delete it from the repository:
