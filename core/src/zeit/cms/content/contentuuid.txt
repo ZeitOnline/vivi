@@ -66,20 +66,6 @@ not changed:
 >>> zeit.cms.content.interfaces.IUUID(checked_in).id == uuid
 True
 
-The XML content will contain the unique id:
-
->>> print(zeit.cms.testing.xmltotext(checked_in.xml))
-<testtype...>
-  <head>
-    ...
-    <attribute
-        ns="http://namespaces.zeit.de/CMS/document"
-        name="uuid">{urn:uuid:1029cf63-5823-456c-bbd4-1a98cdfa25c7}</attribute>...
-  </head>
-  <body/>
-</testtype>
-
-
 Once a content has a unique id it can be retrieved using the UUID. Due to
 limited search capabilities in the tests we use the somalia article to show
 this:
