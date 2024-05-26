@@ -347,20 +347,20 @@ def _update_topiclist():
     if not zeit.content.text.interfaces.IText.providedBy(redirects):
         raise ValueError('%s is not a text document' % config['topic-redirect-id'])
 
-    log.info('Retrieving all topic pages from TMS')
     tms = zope.component.getUtility(zeit.retresco.interfaces.ITMS)
-    topicpages = tms.get_all_topicpages()
 
     for _ in zeit.cms.cli.commit_with_retry():
+        log.info('Retrieving all topic pages from TMS')
+        topicpages = tms.get_all_topicpages()
         with checked_out(keywords) as co:
             co.xml = _build_topic_xml(topicpages)
 
     zeit.cms.workflow.interfaces.IPublish(keywords).publish(background=False)
     transaction.commit()
 
-    # Refresh iterator
-    topicpages = tms.get_all_topicpages()
     for _ in zeit.cms.cli.commit_with_retry():
+        # Refresh iterator
+        topicpages = tms.get_all_topicpages()
         with checked_out(redirects) as co:
             co.text = _build_topic_redirects(topicpages)
 
