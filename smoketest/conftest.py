@@ -16,7 +16,7 @@ CONFIG_STAGING = {
 CONFIG_PRODUCTION = {
     'browser': {'baseurl': 'https://www.zeit.de'},
     'storage': 'http://content-storage.prod.zon.zeit.de/internal',
-    'vivi': f'https://{XMLRPC_AUTH}@vivi-frontend.zeit.de:9090',
+    'vivi': f'https://{XMLRPC_AUTH}@vivi.prod.zon.zeit.de',
     'elasticsearch': 'https://tms-es.zon.zeit.de/zeit_content/_search',
 }
 
