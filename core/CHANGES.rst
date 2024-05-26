@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.174.0 (2024-05-26)
+--------------------
+
+- ZO-4751: Remove unused facebook newstab integration
+
+- ZO-5394: Calculate requests client duration metric as ms
+
+
+FIX:
+- Refresh topicpages iterator on retry due to conflict
+
+
 5.173.0 (2024-05-22)
 --------------------
 
