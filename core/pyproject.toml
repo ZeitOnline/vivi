@@ -201,7 +201,6 @@ deploy = [
     "slowlog",
     "waitress",
     "zeit.ldap",
-    "zeit.newsimport",
 ]
 
 zon = [

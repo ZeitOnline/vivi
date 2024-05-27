@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<rubrics>
+    <rubric id="sportsline">dpasport</rubric>
+    <rubric id="badenwuerttemberg">dpaBW</rubric>
+    <rubric id="bayern">dpaBY</rubric>
+    <rubric id="berlinbrandenburg">dpaBEBB</rubric>
+    <rubric id="hamburgschleswigholstein">dpaHHSH</rubric>
+    <rubric id="hessen">dpaHE</rubric>
+    <rubric id="mecklenburgvorpommern">dpaMV</rubric>
+    <rubric id="niedersachsen">dpaNI</rubric>
+    <rubric id="nordrheinwestfalen">dpaNW</rubric>
+    <rubric id="sachsen">dpaSN</rubric>
+    <rubric id="sachsenanhalt">dpaST</rubric>
+    <rubric id="thueringen">dpaTH</rubric>
+    <rubric id="rheinlandpfalzsaarland">dpaRPSL</rubric>
+    <rubric id="serviceline">dpaserv</rubric>
+</rubrics>

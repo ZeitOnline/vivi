@@ -1,0 +1,29 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zcml="http://namespaces.zope.org/zcml">
+
+  <grok:grok package="." exclude="testing" />
+
+  <utility
+   provides="zeit.newsimport.interfaces.IDPA"
+   factory=".connection.set_up_weblines_profile"
+   name="weblines"
+   />
+
+   <utility
+   provides="zeit.newsimport.interfaces.IDPA"
+   factory=".connection.set_up_nextline_profile"
+   name="nextline"
+   />
+
+  <class class="zeit.newsimport.news.NewsProperties">
+    <require
+      interface="zeit.newsimport.interfaces.IDPANews"
+      permission="zope.View" />
+    <require
+      set_schema="zeit.newsimport.interfaces.IDPANews"
+      permission="zeit.EditContent" />
+  </class>
+
+</configure>
