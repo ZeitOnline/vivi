@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.177.0 (2024-05-27)
+--------------------
+
+- ZO-5455: Explicitly create git branch
+
+
 5.176.0 (2024-05-27)
 --------------------
 
