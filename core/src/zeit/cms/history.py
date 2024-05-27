@@ -75,6 +75,7 @@ def main():
 
     cmd('git fetch --depth=1')
     cmd('git reset --hard origin/main')
+    cmd('git branch -u origin/main main')
 
     sync_content_to_filesystem(options.uniqueid, output)
 
