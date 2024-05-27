@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.175.0 (2024-05-27)
+--------------------
+
+- ZO-5455: set config history upstream branch
+
+- ZO-5460: Restore IZMOGallery+IZMOLink interfaces
+
+
 5.174.0 (2024-05-26)
 --------------------
 
