@@ -8,7 +8,7 @@ import sys
 import time
 
 import transaction
-import ZODB.POSException
+import transaction.interfaces
 import zope.component.hooks
 
 import zeit.cms.logging
@@ -128,7 +128,7 @@ else:
                 else:
                     try:
                         self.commit()
-                    except ZODB.POSException.ConflictError:
+                    except transaction.interfaces.TransientError:
                         # Ignore silently, the next run will be a retry anyway.
                         log.warning('Conflict error', exc_info=True)
                         self.abort()
