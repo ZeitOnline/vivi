@@ -109,6 +109,7 @@ else:
 
     class MainLoop(gocept.runner.runner.MainLoop):
         def __call__(self):
+            # copy&paste to adjust exception handling in `once` mode.
             old_site = zope.component.hooks.getSite()
             zope.component.hooks.setSite(self.app)
 
@@ -122,16 +123,22 @@ else:
                 except (KeyboardInterrupt, SystemExit):
                     self.abort()
                     break
-                except Exception as e:
-                    log.error('Error in worker: %s', repr(e), exc_info=True)
+                except Exception:
                     self.abort()
+                    if self.once:
+                        raise
+                    else:
+                        log.error('Error in worker', exc_info=True)
                 else:
                     try:
                         self.commit()
                     except transaction.interfaces.TransientError:
-                        # Ignore silently, the next run will be a retry anyway.
-                        log.warning('Conflict error', exc_info=True)
                         self.abort()
+                        if self.once:
+                            raise
+                        else:
+                            # Ignore silently, the next run will retry.
+                            log.warning('Conflict error', exc_info=True)
 
                 if self.once or ticks is gocept.runner.Exit:
                     self._is_running = False
