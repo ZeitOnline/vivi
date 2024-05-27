@@ -1,5 +1,5 @@
 from ast import literal_eval
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from functools import partial
 from io import BytesIO, StringIO
@@ -526,6 +526,8 @@ class Connector:
                     lock = Lock(id=content.id)
                     self.session.add(lock)
                 lock.principal = principal
+                if until is None:
+                    until = datetime.now(pytz.UTC) + timedelta(hours=1)
                 lock.until = until
                 self._update_lock_cache(content.uniqueid, principal, until)
                 return lock.token

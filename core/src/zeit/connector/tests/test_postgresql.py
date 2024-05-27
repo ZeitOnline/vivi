@@ -252,3 +252,12 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertNotIn('http://xml.zeit.de/testing/foo', self.connector.child_name_cache)
         self.connector.invalidate_cache('http://xml.zeit.de/testing/foo/bar')
         self.assertNotIn('http://xml.zeit.de/testing/foo', self.connector.child_name_cache)
+
+    def test_lock_with_missing_timeout(self):
+        res = self.get_resource('foo', b'mybody')
+        self.connector.add(res)
+        self.connector.lock(res.id, 'someone', None)
+        transaction.commit()
+        lock_status = self.connector.locked(res.id)
+        now = datetime.now(pytz.UTC)
+        self.assertGreaterEqual(lock_status[1], now)
