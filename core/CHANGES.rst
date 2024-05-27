@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.176.0 (2024-05-27)
+--------------------
+
+- ZO-5461: fix steal lock
+
+
 5.175.0 (2024-05-27)
 --------------------
 
