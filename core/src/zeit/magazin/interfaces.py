@@ -79,3 +79,14 @@ class IHamburgSection(zeit.cms.section.interfaces.ISection):
 
 class IHamburgContent(zeit.cms.interfaces.ICMSContent, zeit.cms.section.interfaces.ISectionMarker):
     pass
+
+
+# BBB for existing content
+class IZMOGallery(
+    zeit.content.gallery.interfaces.IGallery, zeit.cms.section.interfaces.ISectionMarker
+):
+    pass
+
+
+class IZMOLink(zeit.content.link.interfaces.ILink, zeit.cms.section.interfaces.ISectionMarker):
+    pass
