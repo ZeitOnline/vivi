@@ -70,12 +70,12 @@ def main():
     if create_repo:
         cmd('git config user.email zon-ops@zeit.de')
         cmd('git config user.name zon-ops')
+        cmd('git checkout -b main')
         cmd('git remote add origin git+ssh://git@github.com/ZeitOnline/vivi-config-history')
         cmd(f'git config core.sshCommand "ssh -i {options.sshkey}"')
 
     cmd('git fetch --depth=1')
     cmd('git reset --hard origin/main')
-    cmd('git branch -u origin/main main')
 
     sync_content_to_filesystem(options.uniqueid, output)
 
