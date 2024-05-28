@@ -8,6 +8,8 @@ import sys
 import time
 
 import transaction
+import transaction.interfaces
+import zope.component.hooks
 
 import zeit.cms.logging
 
@@ -16,8 +18,6 @@ log = logging.getLogger(__name__)
 
 
 def zope_shell():
-    import zope.component.hooks
-
     import zeit.cms.zope
 
     settings = parse_paste_ini()
@@ -107,6 +107,49 @@ except ImportError:
         return None
 else:
 
+    class MainLoop(gocept.runner.runner.MainLoop):
+        def __call__(self):
+            # copy&paste to adjust exception handling in `once` mode.
+            old_site = zope.component.hooks.getSite()
+            zope.component.hooks.setSite(self.app)
+
+            self._is_running = True
+
+            while self._is_running:
+                ticks = None
+                self.begin()
+                try:
+                    ticks = self.worker()
+                except (KeyboardInterrupt, SystemExit):
+                    self.abort()
+                    break
+                except Exception:
+                    self.abort()
+                    if self.once:
+                        raise
+                    else:
+                        log.error('Error in worker', exc_info=True)
+                else:
+                    try:
+                        self.commit()
+                    except transaction.interfaces.TransientError:
+                        self.abort()
+                        if self.once:
+                            raise
+                        else:
+                            # Ignore silently, the next run will retry.
+                            log.warning('Conflict error', exc_info=True)
+
+                if self.once or ticks is gocept.runner.Exit:
+                    self._is_running = False
+                else:
+                    if ticks is None:
+                        ticks = self.ticks
+                    log.debug('Sleeping %s seconds' % ticks)
+                    time.sleep(ticks)
+
+            zope.component.hooks.setSite(old_site)
+
     class runner(gocept.runner.appmain):
         def __init__(self, ticks=1, principal=None, once=True):
             super().__init__(ticks=ticks, principal=principal)
@@ -123,7 +166,7 @@ else:
                     root = db.open().root()
                     # zope.app.publication.ZopePublication.root_name
                     app = root['Application']
-                    mloop = gocept.runner.runner.MainLoop(
+                    mloop = MainLoop(
                         app,
                         self.ticks,
                         worker_method,
