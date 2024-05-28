@@ -8,8 +8,6 @@ on:
   schedule:
     # XXX GHA unfortunately does not support randomize, so https://xkcd.com/221/
     - cron: "22 4 * * *"
-  repository_dispatch:  # triggered by ZeitOnline/zeit.newsimport
-    types: [test-app]
 
 env:
   project: vivi
@@ -70,12 +68,6 @@ jobs:
           repository: ZeitOnline/zeit.ldap
           path: deployment/work/source/zeit.ldap
           ssh-key: ${{secrets.DEPLOY_KEY_LDAP}}
-      - name: checkout zeit.newsimport
-        uses: actions/checkout@v4.1.6
-        with:
-          repository: ZeitOnline/zeit.newsimport
-          path: deployment/work/source/zeit.newsimport
-          ssh-key: ${{secrets.DEPLOY_KEY_NEWSIMPORT}}
 
       - uses: actions/setup-python@v5.1.0
         with:
