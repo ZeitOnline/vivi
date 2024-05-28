@@ -1,0 +1,2292 @@
+{
+    "entries":
+    [
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "FrtFWI6diB1UuYcvwPZThpqwHG8NUQxplrYvHc1Yw",
+            "updated": "2021-12-15T09:30:03Z",
+            "urn": "urn:newsml:dpa.com:20090101:211215-99-389758",
+            "version_created": "2021-12-15T10:28:56+01:00",
+            "version": 5,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 3,
+            "kicker": "Eine Dachzeile",
+            "headline": "Beispielmeldung Überschrift",
+            "subhead": "Und eine Unterzeile",
+            "teaser": "Und ein Teaser",
+            "byline": null,
+            "dateline": null,
+            "article_html": "<section class=\"main\"><h2>Zwischenüberschrift</h2><p><em>\"kursiver Text(em)\" , \"</em><strong>Fetter Text (strong)\" </strong>und<strong><em> \"kursive Fettung\".</em></strong></p><p>Eine ungeordnete Liste:</p><ul><li>James Blunt freut sich, als Kind die Welt gesehen zu haben</li><li>Angelo Kelly: «Wir müssen heute besser singen»</li><li>Mighty-Oaks-Sänger Ian Hooper hadert mit Donald Trumps Auftreten</li></ul><p>Eine sortierte Liste:</p><ol><li>James Blunt freut sich, als Kind die Welt gesehen zu haben<br/></li><li>Angelo Kelly: «Wir müssen heute besser singen»<br/></li><li>Mighty-Oaks-Sänger Ian Hooper hadert mit Donald Trumps Auftreten </li></ol><h2>Externe Links</h2><p>Hamburg (dpa) - <a class=\"externalLink\" href=\"https://mightyoaksmusic.com/\">Mighty Oaks</a>-Sänger Ian Hooper hadert mit dem neuen US-Präsidenten Donald Trump. «Dass er den Handschlag verweigert hat, ist echt peinlich», sagte er der Deutschen Presse-Agentur in Hamburg zum US-Besuch von Bundeskanzlerin Angela Merkel. </p><p>«Er hat sich wie ein kleines Kind verhalten. Ich glaube, dass Trump eigentlich nicht viel Grund hat, wütend auf die deutsche Politik zu sein», sagte der Frontmann der Folkpop-Band, die am Freitag ihr zweites Album «Dreamers» veröffentlicht. Hooper, der vor seiner Musikkarriere in München Internationale Politik studiert hat, führt Trumps Erfolg auf politische Versäumnisse zurück. Es gebe in den USA Regionen, die die Politik vergessen habe. Dies räche sich nun.</p><h2>Tabelle</h2><table border=\"1\" caption=\"Tabellenüberschrift\"><tbody><tr><td>foo</td><td>bar</td><td>baz</td></tr><tr><td>aaa</td><td>bbb</td><td>ccc</td></tr><tr><td>111</td><td>222</td><td>333</td></tr></tbody></table><h2>Embeds</h2><p><strong>Tweet</strong></p><dnl-twitterembed src=\"https://twitter.com/ianwhooper/status/845235807866769409\"></dnl-twitterembed><p><strong>Youtube-Video</strong></p><dnl-youtubeembed src=\"https://www.youtube-nocookie.com/embed/fyWS-sZWxdc\"></dnl-youtubeembed><p><strong>Datawrapper</strong></p><dnl-dwchart src=\"https://datawrapper.dwcdn.net/XYWNw/3/\"></dnl-dwchart><h2>Positioniertes Bild</h2><dnl-image ref=\"urn:newsml:dpa.com:20090101:211215-99-387847\" caption=\"Ein positioniertes Bild\" creditline=\"David Inderlied/dpa/Illustration\"></dnl-image></section>",
+            "infobox_html": "<section class=\"infobox\"><p>Eine Infobox</p></section>",
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2021, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:211215-99-389758/5",
+            "notepad":
+            {
+                "header_html": "<header><h3>Notizblock</h3></header>",
+                "public_html": "<section class=\"np-public\"><h4>Redaktionelle Hinweise</h4><ul><li>redaktionelle Hinweise</li><li>noch ein Hinweis</li></ul><h4>Orte</h4><ul><li>[dpa](Mittelweg 38, 20148 Hamburg, Deutschland)</li></ul><h4>Service</h4><ul><li>Serviceangabe1</li><li>Serviceangabe2</li></ul></section>",
+                "nonpublic_html": "<section class=\"np-nonpublic\"><p class=\"np-constraint\">Die folgenden Informationen sind nicht zur Veröffentlichung bestimmt</p><h4>Ansprechpartner</h4><ul><li>Ansprechpartner 1</li><li>Ansprechpartner 2</li></ul><h4>Kontakte</h4><ul><li>Autor: bbb</li><li>Redaktion: aaa</li></ul></section>"
+            },
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:211215-99-387847",
+                    "version": 1,
+                    "rank": 1,
+                    "version_created": "2021-12-15T07:27:37+01:00",
+                    "headline": "Blaulicht",
+                    "is_featureimage": true,
+                    "caption": "Das Blaulicht an einem Polizeiwagen leuchtet.",
+                    "creditline": "David Inderlied/dpa/Illustration",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1365,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.labline.test1",
+                    "qcode": "dnlpath:weblines.labline.test1",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Leute",
+                    "qcode": "dpasubject:521",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "foo",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "bar",
+                    "qcode": null,
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "baz",
+                    "qcode": null,
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "International",
+                    "qcode": "dpacountry:196",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "vm",
+                    "qcode": "dpacat:vm"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Überblick",
+                    "qcode": "dpatextgenre:21"
+                },
+                {
+                    "type": "dnltype:poi",
+                    "name": "dpa, Mittelweg 38, 20148 Hamburg, Deutschland",
+                    "qcode": null,
+                    "geojson":
+                    {
+                        "type": "Feature",
+                        "properties":
+                        {
+                            "name": "dpa",
+                            "formatted_address": "Mittelweg 38, 20148 Hamburg, Deutschland",
+                            "locality": "Hamburg",
+                            "administrative_area_level_1": "Hamburg",
+                            "country": "Deutschland"
+                        },
+                        "geometry":
+                        {
+                            "type": "Point",
+                            "coordinates":
+                            [
+                                9.99452,
+                                53.56964
+                            ]
+                        }
+                    }
+                },
+                {
+                    "type": "dnltype:scope",
+                    "name": "Hamburg",
+                    "qcode": "dpax-kgs8:02000000"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "3",
+                    "qcode": "urgency:3"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.regiolinegeo.bayern"
+            ],
+            "rubric_names":
+            [
+                "weblines.regiolinegeo.bayern"
+            ],
+            "dpasubject_names":
+            [
+                "Leute"
+            ],
+            "geosubject_names":
+            [
+                "International"
+            ],
+            "keyword_names":
+            [
+                "foo",
+                "bar",
+                "baz"
+            ],
+            "desk_names":
+            [
+                "vm"
+            ],
+            "genre_names":
+            [
+                "Überblick"
+            ],
+            "poi_names":
+            [
+                "dpa, Mittelweg 38, 20148 Hamburg, Deutschland"
+            ],
+            "scope_names":
+            [
+                "Hamburg"
+            ],
+            "_wireq_receipt": "AQEB93"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "0vqrngJOREWwqOK6rYleuDtamUP0JtKZIhRQc7WH4",
+            "updated": "2022-01-24T11:07:16Z",
+            "urn": "urn:newsml:dpa.com:20090101:220123-99-817158",
+            "version_created": "2022-01-23T10:44:26+01:00",
+            "version": 3,
+            "pubstatus": "canceled",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 4,
+            "kicker": "Musik",
+            "headline": "Warum Harry Wijnvoord jetzt einen Schlager singt",
+            "subhead": null,
+            "teaser": "In den 90ern brachte Harry Wijnvoord im Fernsehen Kühlschränke und Gartenmöbel unter die Leute. Nun will er ihnen etwas anderes geben: einen Schlager, der das Fernweh-Gefühl in Pandemie-Zeiten in Worte fasst.",
+            "byline": "Von Jonas-Erik Schmidt, dpa",
+            "dateline": "Senden (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Harry Wijnvoord hat eine Stimme, die einen wie eine warme Decke einwickeln und in die 90er-Jahre zurückschicken kann. </p><p>Wenn der Niederländer spricht, mit diesem eigenen Zungenschlag, hat man plötzlich alles wieder vor Augen: ihn selbst im Anzug, seinen Sidekick Walter Freiwald, diese blinkende Jahrmarkt-Kulisse und ein Publikum, das wie von Sinnen «Weniger!», «Mehr!» oder «50!» brüllt. «Der Preis ist heiß», eine RTL-Show, bei der es galt, Preise von Produkten zu raten, war Wijnvoords großes Ding. Von 1989 bis 1997.</p><p>Rund 25 Jahre später hat Wijnvoord nun entschieden, seine Stimme noch für etwas anderes zu verwenden. Er singt - man darf staunen - einen Schlager. «Ich bin kein Typ, der still sitzt», sagt Wijnvoord, der heute im Münsterland lebt, der Deutschen Presse-Agentur. «Ich strebe keine Popstar-Karriere mehr an», versichert er zugleich. «Aber ich habe ja eine Stimme und die kann ich zu Gehör bringen.»</p><p>In den vergangenen Jahren hat es immer mehr Show- und Pop-Personal auf die Schlager-Bühne gezogen. Das einst etwas belächelte Genre gilt spätestens seit dem immensen Erfolg von Helene Fischer (37) als entstaubt, vorzeigbar und überdies auch als recht krisenfest. Dass sich nun aber ausgerechnet ein 72-jähriger Gameshow-Veteran noch mal berufen fühlt, da mitzumischen, kann dennoch ein bisschen wundern.</p><h2>Ein Gefühl von Fernweh</h2><p>Wijnvoord begründet es auch ganz anders. Zum einen ist da Corona. Kürzlich sei er auf Fuerteventura gewesen, sagt er, er habe einfach «rausgemusst». Um dieses von der Pandemie geboosterte Fernweh-Gefühl - seit jeher ein Grundmotiv schmachtvoller Schlager-Stücke - dreht sich auch sein Lied, das «Wind im Gesicht» heißt und am 25. Januar erscheinen soll. Wijnvoord Text darin: «Ich will endlich wieder raus. Will die Schönheit fremder Länder sehen. Und mit Menschen, die ich mag, tanz' ich in den neuen Tag.» Musikalisch kann man das irgendwo zwischen Howard Carpendale und den Amigos verorten.</p><p>Er und seine Frau - die eine Damenboutique in Lüdinghausen habe - seien leidenschaftliche Reisende, schildert Wijnvoord. Und was das Singen angehe: Da habe er überhaupt keine Scheu. «Rein in das Studio und singen», sei seine Devise gewesen. «Ich war noch nie ein Schisser.» Früher habe er bereits häufig irische und englische Folklore gesungen. Und: «Ich kann sechs Griffe auf der Gitarre.»</p><p>Wer sich angesichts dessen näher mit dem Wijnvoord'schen Gesamtwerk beschäftigt, stellt auch fest, dass «Wind im Gesicht» bei weitem nicht sein erster Ausflug ins Musik-Fach ist. Es gibt vereinzelte Aufnahmen und aus dem Jahr 1996 sogar ein ganzes Album. Auch damals ging es in gewisser Weise um Fernweh, denn der Titel lautete «Olé Mallorca, wir kommen». Textlich war Wijnvoord allerdings deutlich offensiver unterwegs als heute. Ein Lied trug den Titel «Damenwahl in Arenal», ein anderes «Ja die Oma will nach Palma». Es waren die 90er.</p><p>«Das war im Prinzip mein letztes Werk», sagt Wijnvoord. Dass «Wind im Gesicht», das ihm der Kölner Musikproduzent Jürgen Triebel geschrieben hat, aber sein letzter Schlager ist, davon ist nicht auszugehen. «Es wird noch mehr kommen», sagt Wijnvoord. Und im Geiste hört man Menschen enthemmt «Weniger!», «Mehr!» und «50!» brüllen.</p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220123-99-817158/3",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220123-99-817232",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-01-23T10:40:53+01:00",
+                    "headline": "Harry Wijnvoord",
+                    "is_featureimage": true,
+                    "caption": "Harry Wijnvoord singt.",
+                    "creditline": "Rolf Vennenbernd/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1366,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.boulevard.entertainment",
+                    "qcode": "dnlpath:weblines.infoline_rs.boulevard.entertainment",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.starline.leute",
+                    "qcode": "dnlpath:weblines.starline.leute",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.starline.topnews",
+                    "qcode": "dnlpath:weblines.starline.topnews",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Medien",
+                    "qcode": "dpasubject:368",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Fernsehen",
+                    "qcode": "dpasubject:165",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Leute",
+                    "qcode": "dpasubject:521",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Musik",
+                    "qcode": "dpasubject:130",
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Schlager",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Corona",
+                    "qcode": null,
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Covid-19",
+                    "qcode": null,
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Nordrhein-Westfalen",
+                    "qcode": "dpaarea:10",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Niederlande",
+                    "qcode": "dpacountry:121",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "vm",
+                    "qcode": "dpacat:vm"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "KORR-Bericht",
+                    "qcode": "dpatextgenre:14"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "4",
+                    "qcode": "urgency:4"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.boulevard.entertainment",
+                "weblines.starline.leute",
+                "weblines.starline.topnews"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.boulevard.entertainment",
+                "weblines.starline.leute",
+                "weblines.starline.topnews"
+            ],
+            "dpasubject_names":
+            [
+                "Medien",
+                "Fernsehen",
+                "Leute",
+                "Musik"
+            ],
+            "geosubject_names":
+            [
+                "Nordrhein-Westfalen",
+                "Niederlande"
+            ],
+            "keyword_names":
+            [
+                "Schlager",
+                "Corona",
+                "Covid-19"
+            ],
+            "desk_names":
+            [
+                "vm"
+            ],
+            "genre_names":
+            [
+                "KORR-Bericht"
+            ],
+            "poi_names":
+            [],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBaIneiTX9WE8ywww1%2Bvwly9iY6B3iidLB5tIi%2F0UWbIiCBinTLctm4OtwJJsZthWFU7TTLN0tq9wZrHHMRahrAbYbrY80BGqic0lTvDRWYvrFcRNyTgCRlzfmemAPNAguYkQFY%2BV7M47QbcNamlDnmabCF4CA%2FpxyWm8VUyy1Q1nq%2FvcpB6jezWMDkVa%2BJSrSZLB8NDgO3NhFcshUFykfa6rGUBRMllbT2n1TgvkbbArVML7Hy0SpOLT127PA3%2FVgFMIc1dVVjSTHiggby91yuHefGm2SjiPVnBfIgZzIuYJMEzG8jR7daPyemYuaDSOzRGLGH0hrw3T0jG7VvmrPYw%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "5mI9vq4o9Q18qglhv6KWiIa9qGeced0OmvLh3O8M",
+            "updated": "2022-01-25T06:23:00Z",
+            "urn": "urn:newsml:dpa.com:20090101:220122-99-809079",
+            "version_created": "2022-01-22T13:37:45+01:00",
+            "version": 1,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 2,
+            "kicker": null,
+            "headline": "Zwei weitere Corona-Fälle bei deutschen Handballern",
+            "subhead": null,
+            "teaser": null,
+            "byline": null,
+            "dateline": "Bratislava (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Deutschlands Handballer verzeichnen bei der Europameisterschaft zwei weitere Corona-Fälle. Rückraumspieler Christoph Steinert und Kreisläufer Sebastian Firnhaber wurden am Samstag positiv getestet und fallen aus, teilte der Deutsche Handballbund mit.</p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220122-99-809079/1",
+            "notepad": null,
+            "associations":
+            [],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.eilmeldungen",
+                    "qcode": "dnlpath:weblines.infoline_rs.eilmeldungen",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Handball",
+                    "qcode": "dpasubject:778",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "EM",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Männer",
+                    "qcode": null,
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Nationalmannschaft",
+                    "qcode": null,
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Corona",
+                    "qcode": null,
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Covid-19",
+                    "qcode": null,
+                    "rank": 5
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Schweden",
+                    "qcode": "dpacountry:145",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Slowakei",
+                    "qcode": "dpacountry:152",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "sp",
+                    "qcode": "dpacat:sp"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Meldung",
+                    "qcode": "dpatextgenre:1"
+                },
+                {
+                    "type": "dnltype:poi",
+                    "name": "Teamhotel Bratislava, Metodova 4, 821 08 Bratislava-Ružinov, Slowakei",
+                    "qcode": null,
+                    "geojson":
+                    {
+                        "type": "Feature",
+                        "properties":
+                        {
+                            "name": "Teamhotel Bratislava",
+                            "formatted_address": "Metodova 4, 821 08 Bratislava-Ružinov, Slowakei",
+                            "administrative_area_level_1": "Bratislavský kraj",
+                            "country": "Slowakei"
+                        },
+                        "geometry":
+                        {
+                            "type": "Point",
+                            "coordinates":
+                            [
+                                17.129264,
+                                48.1573879
+                            ]
+                        }
+                    }
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "2",
+                    "qcode": "urgency:2"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.eilmeldungen"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.eilmeldungen"
+            ],
+            "dpasubject_names":
+            [
+                "Handball"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland",
+                "Schweden",
+                "Slowakei"
+            ],
+            "keyword_names":
+            [
+                "EM",
+                "Männer",
+                "Nationalmannschaft",
+                "Corona",
+                "Covid-19"
+            ],
+            "desk_names":
+            [
+                "sp"
+            ],
+            "genre_names":
+            [
+                "Meldung"
+            ],
+            "poi_names":
+            [
+                "Teamhotel Bratislava, Metodova 4, 821 08 Bratislava-Ružinov, Slowakei"
+            ],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBL0DPrxBBQqcNb9qoO8FqsZiKoXkFRUvcV9Ov3oe%2BSQQkMNhk8Z%2BMyiSWF1qpWx%2FhQzcBrSGVTJnpFO3NNSSNPwd2bmI82R9SzjiFi2ATLzP4ys%2B8nweSKXRU%2BgKmHmGTbJ6MhxOEWyE4nZIDwkVpUbQcyI5wCI2AMSE6nhxIR3T4qZ8n4OUzRPP4nCullXP0YbmmGIbEm5HIpSNlBAzUb7aWWQCma%2B4PwbSc7M%2F3amZtNPdTl2DVnPdzPyCMX7wpTEYuVT7%2BJiJwORj90mEJ0A%2F5z6UpuyVK7KmikjbP9tsvSyK6hniV4kA9SNRO1WsmmWmlXpiK3Ikxfd11QyLxoQ%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.22",
+            "entry_id": "XzcZqRHIHnmt6eqV4Rp7Ti3BWbHOIgF2639nsT1is0",
+            "updated": "2022-02-23T07:18:16Z",
+            "urn": "urn:newsml:dpa.com:20090101:220223-99-246996",
+            "version_created": "2022-02-23T08:01:42+01:00",
+            "version": 3,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": null,
+            "urgency": 4,
+            "kicker": null,
+            "headline": "Energiekosten",
+            "subhead": null,
+            "teaser": null,
+            "byline": null,
+            "dateline": null,
+            "article_html": null,
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "Fernando Gutierrez-Juarez/dpa-Zentralbild/dpa",
+            "copyrightnotice": null,
+            "autopublishnotice": "© dpa-infocom, dpa:220223-99-246996/3",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220223-99-246996",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-02-23T08:01:42+01:00",
+                    "headline": "Energiekosten",
+                    "is_featureimage": true,
+                    "caption": "Der Bundesverband der energie- und Wasserwirtschaft (BDEW) fordert die Ampel-Koalition angesichts steigender Energiepreise zu umfassenden Entlastungen der Verbraucher auf.",
+                    "creditline": "Fernando Gutierrez-Juarez/dpa-Zentralbild/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1365,
+                            "fovealarea":
+                            {
+                                "left": 512,
+                                "top": 340,
+                                "right": 1536,
+                                "bottom": 1023
+                            },
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.wirtschaft",
+                    "qcode": "dnlpath:weblines.infoline_rs.wirtschaft",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Wohnen",
+                    "qcode": "dpasubject:303",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Wetter",
+                    "qcode": "dpasubject:116",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Klima",
+                    "qcode": "dpasubject:476",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Energie",
+                    "qcode": "dpasubject:323",
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Jahreszeiten",
+                    "qcode": "dpasubject:27",
+                    "rank": 5
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Verbraucher",
+                    "qcode": "dpasubject:425",
+                    "rank": 6
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Konflikte",
+                    "qcode": "dpasubject:114",
+                    "rank": 7
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Winter",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Herbst",
+                    "qcode": null,
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Winter",
+                    "qcode": null,
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Inflation",
+                    "qcode": null,
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Heizkörper",
+                    "qcode": null,
+                    "rank": 5
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Symbolbild",
+                    "qcode": null,
+                    "rank": 6
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Symbolfoto",
+                    "qcode": null,
+                    "rank": 7
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Symbol",
+                    "qcode": null,
+                    "rank": 8
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "symbolisch",
+                    "qcode": null,
+                    "rank": 9
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Kälte",
+                    "qcode": null,
+                    "rank": 10
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "heizen",
+                    "qcode": null,
+                    "rank": 11
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Heizungskosten",
+                    "qcode": null,
+                    "rank": 12
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Alltag",
+                    "qcode": null,
+                    "rank": 13
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Wohnung",
+                    "qcode": null,
+                    "rank": 14
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "heizen",
+                    "qcode": null,
+                    "rank": 15
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "Wirtschaft",
+                    "qcode": "dpacat:wi"
+                },
+                {
+                    "type": "dnltype:poi",
+                    "name": null,
+                    "qcode": null,
+                    "geojson": null
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "4",
+                    "qcode": "urgency:4"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.wirtschaft"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.wirtschaft"
+            ],
+            "dpasubject_names":
+            [
+                "Wohnen",
+                "Wetter",
+                "Klima",
+                "Energie",
+                "Jahreszeiten",
+                "Verbraucher",
+                "Konflikte"
+            ],
+            "geosubject_names":
+            [],
+            "keyword_names":
+            [
+                "Winter",
+                "Herbst",
+                "Winter",
+                "Inflation",
+                "Heizkörper",
+                "Symbolbild",
+                "Symbolfoto",
+                "Symbol",
+                "symbolisch",
+                "Kälte",
+                "heizen",
+                "Heizungskosten",
+                "Alltag",
+                "Wohnung",
+                "heizen"
+            ],
+            "desk_names":
+            [
+                "wi"
+            ],
+            "genre_names":
+            [],
+            "poi_names":
+            [
+                null
+            ],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBwKJir0yuW9zlDTs2u0PyyIOvOVA3GvinHgFCk%2F8ebTtFtEI3qWhSk7c6FChRVgn5RjTNPiC64hEfoaXwmuf92zCWDbn6ET4BwmqZNIfMGAkliiMEBxqXgNnCowqZHI8aya2dul2CxOQ%2Fy7r2lhqe%2FL0904PKt1cSRuwM3iPRiFtxdXIgIoRRuyjEIeuIHIEhr9t4GmJ7z03tlgfVkZkONNFobc50Ug%2BADglbyIMMeiKGliwRE9kWpWPS%2FKYlnF6tzl0JZ6Fa1wdRxDwo%2F%2FS6UFz41TA%2FJYdyTHKrpRU18QoZ%2FcJp5ZJj00lj8qT1ZX8iOzsLrQwa6PCMY5kXVNE2jg%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "FXc3Brsa98wiRkOxYAcu1nWt2wDDFEVeb5NWuADbAs",
+            "updated": "2022-01-24T11:07:16Z",
+            "urn": "urn:newsml:dpa.com:20090101:220123-99-815932",
+            "version_created": "2022-01-23T09:41:41+01:00",
+            "version": 3,
+            "pubstatus": "withheld",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 4,
+            "kicker": "Jahresbilanz",
+            "headline": "Deutsche Bank mit Milliardengewinn",
+            "subhead": null,
+            "teaser": "Deutschlands größtes Geldhaus fährt erstmals seit Jahren wieder einen Milliardengewinn ein. Doch verdient die Bank ihre Kapitalkosten? Die Erwartungen an Konzernchef Sewing bleiben hoch.",
+            "byline": null,
+            "dateline": "Frankfurt/Main (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Erneut schwarze Zahlen in einem Gesamtjahr, dieses Mal sogar ein Milliardenüberschuss - Deutsche-Bank-Chef Christian Sewing dürfte am kommenden Donnerstag mit Stolz die Bilanz des größten deutschen Geldhauses für das Jahr 2021 präsentieren. </p><p>Doch der deutsche Branchenprimus hat längst nicht alle selbstgesteckten Ziele erreicht und das Umfeld für Banken bleibt schwierig.</p><h2>Gut 1,6 Milliarden Euro Gewinn </h2><p>Analysten rechnen für das Gesamtjahr 2021 mit rund 3,5 Milliarden Euro Vorsteuergewinn bei der Deutschen Bank. Vom Nettogewinn von knapp 2,1 Milliarden Euro müssen noch Zinszahlungen an die Inhaber bestimmter Anleihen abgezogen werden, so dass unter dem Strich nach jüngsten von der Bank veröffentlichten Marktschätzungen gut 1,6 Milliarden Euro Gewinn stehen dürften. Die Bank dürfte auch davon profitiert haben, dass sie deutlich weniger Geld für mögliche Kreditausfälle zurücklegen musste als im Corona-Jahr 2020.</p><p>Im Schlussquartal 2021 ist die Deutsche Bank nach Einschätzung der Analysten unter dem Strich allerdings in die roten Zahlen gerutscht - unter anderem wegen Kosten für den Konzernumbau. Zuvor hatte das Institut fünf Quartale in Folge positiv abgeschlossen. Im Gesamtjahr 2020 hatte die Deutsche Bank nach fünf Verlustjahren in Folge mit 113 Millionen Euro erstmals unter dem Strich wieder Gewinn erzielt.</p><p>Sewing war im April 2018 auf den Chefposten der Bank gerückt und hatte dem Institut eine grundlegende Neuaufstellung verordnet - inklusive des Abbaus Tausender Stellen. Er stutzte das Investmentbanking, aus dem weltweiten Aktienhandel zog sich die Deutsche Bank ganz zurück.</p><p>Nicht aufgegangen ist bislang der Plan, das Institut weniger abhängig vom schwankungsanfälligen Kapitalmarktgeschäft zu machen. Nach Einschätzung von Analysten dürfte die Investmentbank im vergangenen Jahr mit gut 3,8 Milliarden Euro als einzige Sparte der Deutschen Bank beim Vorsteuergewinn die Milliardengrenze überschritten haben. Zum Vergleich: Im Privatkundengeschäft erwarten die Experten im Schnitt gerade einmal 600 Millionen Euro Gewinn vor Steuern.</p><p>Finanzvorstand James von Moltke hatte Anfang Januar dem «Handelsblatt» gesagt, er rechne im laufenden Jahr im Investmentbanking «mit einer Normalisierung, also mit etwas geringeren Erträgen». Der Vorstand gehe davon aus, dass das Geschäft mit Unternehmens- und Privatkunden «eine größere Rolle als Wachstumstreiber übernehmen» werde.</p><h2>Hoffen auf bessere Bonitätsnoten</h2><p>Rückenwind erhofft sich das Geldhaus von wieder verbesserten Bonitätsnoten. «Wir schätzen, dass die Rating-Herabstufungen in der Vergangenheit uns Erträge im dreistelligen Millionenbereich gekostet haben», sagte von Moltke. «Nach den Heraufstufungen im vergangenen Jahr sehen wir, dass Kunden wieder mehr Geschäft mit uns machen.»</p><p>Den Konzernumbau, der letztlich teurer war als geplant, sieht Konzernchef Sewing auf der Zielgeraden, wie der Manager Ende Oktober betonte: «Insgesamt haben wir bereits 90 Prozent der erwarteten Belastungen durch die Transformation geschultert und sind auf bestem Weg, die Umbaukosten bis Ende des Jahres fast vollständig verdaut zu haben.»</p><p>Altlasten abgebaut, Kosten gesenkt - Sewing und sein Team haben einige ihrer Kernversprechen erfüllt. Nun muss das Management die Investoren noch davon überzeugen, dass die Bank auch dauerhaft genug Geld verdient. «Das Renditeziel von acht Prozent ist unser Nordstern, die zentrale Orientierung für die gesamte Bank und den gesamten Umbau», versicherte Finanzchef von Moltke Anfang Januar. Er sei «sehr zuversichtlich», dass die Bank ihre selbst gesetzten Vorgaben im laufenden Jahr erfüllen werde.</p><p>Schon Ende Oktober hatte Konzernchef Sewing bekräftigt, die Bank sei «auf einem sehr guten Weg, um eine Rendite auf das materielle Eigenkapital von 8 Prozent nach Steuern zu erreichen, die wir uns für 2022 vorgenommen haben». Am 10. März will der Vorstand den Investoren darlegen, wie Deutschlands größtes Geldhaus in den kommenden Jahren in Sachen Profitabilität weiter zulegen könnte.</p><p>Ein erster Lichtblick für die Aktionäre: Sewings bisherige Bilanz macht Hoffnung, dass die Deutsche Bank nach zwei Nullrunden für das Geschäftsjahr 2021 wieder eine Dividende zahlt. Analysten gehen im Schnitt von 30 Cent je Aktie aus.</p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220123-99-815932/3",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220123-99-816728",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-01-23T09:40:15+01:00",
+                    "headline": "Deutsche Bank",
+                    "is_featureimage": true,
+                    "caption": "Die Zentrale der Deutschen Bank in Frankfurt am Main.",
+                    "creditline": "Arne Dedert/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1322,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.wirtschaft",
+                    "qcode": "dnlpath:weblines.infoline_rs.wirtschaft",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Banken",
+                    "qcode": "dpasubject:343",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Hessen",
+                    "qcode": "dpaarea:7",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "Wirtschaft",
+                    "qcode": "dpacat:wi"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Vorbericht",
+                    "qcode": "dpatextgenre:24"
+                },
+                {
+                    "type": "dnltype:poi",
+                    "name": "Deutsche Bank, Taunusanlage 12, 60325 Frankfurt am Main, Deutschland",
+                    "qcode": null,
+                    "geojson":
+                    {
+                        "type": "Feature",
+                        "properties":
+                        {
+                            "name": "Deutsche Bank",
+                            "formatted_address": "Taunusanlage 12, 60325 Frankfurt am Main, Deutschland",
+                            "locality": "Frankfurt am Main",
+                            "administrative_area_level_1": "Hessen",
+                            "country": "Deutschland"
+                        },
+                        "geometry":
+                        {
+                            "type": "Point",
+                            "coordinates":
+                            [
+                                8.6681872,
+                                50.113816
+                            ]
+                        }
+                    }
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "4",
+                    "qcode": "urgency:4"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.wirtschaft"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.wirtschaft"
+            ],
+            "dpasubject_names":
+            [
+                "Banken"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland",
+                "Hessen"
+            ],
+            "keyword_names":
+            [],
+            "desk_names":
+            [
+                "wi"
+            ],
+            "genre_names":
+            [
+                "Vorbericht"
+            ],
+            "poi_names":
+            [
+                "Deutsche Bank, Taunusanlage 12, 60325 Frankfurt am Main, Deutschland"
+            ],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBEgEswqoznvxDMUN%2FZrNxmlZ0QHL7r1iLHdVnger5Px4iMS69bZf%2FfaLFR3W0FIMUx7tkdOtLHKOxZ83zc5cvIEjKoY7rSmfn4%2BkRG8%2FJ%2F2k9YF2AHoyCDsgKus%2BUVexIXNYAnaG6e3XFzMRsU6dCu4%2F%2Ft5QgbYdIOkr2Wk8NUwb0SRWfuWdIp6Q4WGj2tfc7SU%2FXCfmm7yTxDoS1cxyG3QLXSGh%2B09GXfHwUsJo0X%2B5AWXisQyDJsJy4tpyjYIkmQwRiLj8bwX8pLSLex1YTn6vufEnGGr7XSOjNP%2FY3nPYqNx%2BSL3bOsyEz2e9jx%2F7hs6mYdd0gGBDkZnhF%2FG7wBA%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "G5uXqnWIZT1kESnFWBzFQbavtXPdY1kSeonqhYeQ0",
+            "updated": "2022-01-25T06:23:00Z",
+            "urn": "urn:newsml:dpa.com:20090101:220124-99-824187",
+            "version_created": "2022-01-24T03:41:26+01:00",
+            "version": 2,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 4,
+            "kicker": "RTL-Show",
+            "headline": "Endgültiges Dschungel-Aus für Lucas Cordalis",
+            "subhead": null,
+            "teaser": "Tag drei im RTL-Dschungelcamp bringt Widerliches, Ungerechtes, Ungeheuerliches über Vorlieben auf einer Porno-Plattform - und das traurige Aus für einen Dschungel-Traum.",
+            "byline": null,
+            "dateline": "Berlin (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Aus der Traum des Thronerben: Der Sänger Lucas Cordalis wird nicht mehr ins RTL-Dschungelcamp einziehen. </p><p>Das Risiko sei einfach zu groß, sagten die Moderatoren Sonja Zietlow und Daniel Hartwich am Sonntagabend zu Beginn der Show «Ich bin ein Star - Holt mich hier raus». Cordalis war zwar mit zum Drehort nach Südafrika gereist, dort aber positiv auf Corona getestet worden. Zuletzt hatten Sender - und wohl auch Cordalis selbst - auf einen verspäteten Einzug gehofft. Diese Hoffnung hat sich nun zerschlagen. </p><p>Dem Ehemann von Reality-Star Daniela Katzenberger gehe es gut, er habe keinerlei Symptome, hatte der Sender kurz vor dem Start der Show mitgeteilt. Bei dem Sänger sei die Infektion bei einem PCR-Test nach der Einreise in Südafrika nachgewiesen worden. </p><p>Der 54-Jährige ist der Sohn des ersten «Dschungelkönigs» Costa Cordalis und seine Teilnahme hatte schon rund ein Jahr vor dem Start festgestanden. «Sie haben mich oft gefragt und ich habe immer nein gesagt», hatte Cordalis Mitte 2021 gesagt. «Ich dachte: Ein König in der Familie reicht. Aber mein Vater lebt jetzt nicht mehr und ich denke, er würde sich freuen, wenn ich da weit komme.»</p><p>Die 15. Staffel der Reality-Show «Ich bin ein Star - Holt mich hier raus!» hatte am Freitag begonnen. Wer der verbliebenen elf Kandidaten die Dschungelkrone aufsetzen darf, soll am 5. Februar feststehen. </p><h2>Dschungel-Debatten</h2><p>Cordalis verpasste so, wie Linda Nobat Mit-Camperin Janina Youssefian in der Episode vom Sonntagabend ziemlich unverschleiert unterbelichtet nannte und dafür dann eine Entschuldigung forderte - von Youssefian. Nachdem die beiden dann trotzdem zusammen ihre Dschungelprüfung im tier- und ekelschleimverseuchten «Traumahaus der Stars» über die Bühne gebracht und dabei fünf Sterne gefunden hatten, musste Nobat die Souveränität der anderen allerdings neidlos anerkennen. In der Folge am Montag müssen die beiden wieder ran - allerdings unterstützt von Anouschka Renzi und Harald Glööckler. </p><p>Cordalis hörte auch nicht live, was Österreicherin Tara Tabitha über den Account ihrer Füße (Größe 37) auf einer Pornoplattform zu berichten wusste. Die brachten ihr dort offenbar gutes Geld - auch dank des gewinnbringenden Verkaufs tagelang getragener Socken und abgeschnittener Zehennägel. </p><p>Doch obwohl es nach diesem Bericht so schien, als könne Tabitha nicht mehr viel schocken auf dieser Welt, bewahrte sie das nicht vor einem vorübergehenden Zusammenbruch. Der Grund: Die Erkenntnis, dass Flirtpartner Filip Pavlovic möglicherweise doch kein so großes Interesse an ihr hat wie erhofft - und dass das Ganze auch noch gefilmt wird. «Habe das Gefühl, dass mir die ganze Zeit jemand zuschaut.» Ach was. </p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220124-99-824187/2",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220124-99-824186",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-01-24T03:40:28+01:00",
+                    "headline": "Lucas Cordalis",
+                    "is_featureimage": true,
+                    "caption": "Lucas Cordalis darf nicht in den Dschungel ziehen.",
+                    "creditline": "Henning Kaiser/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1362,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.boulevard.entertainment",
+                    "qcode": "dnlpath:weblines.infoline_rs.boulevard.entertainment",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.starline.fernsehen",
+                    "qcode": "dnlpath:weblines.starline.fernsehen",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.starline.topnews",
+                    "qcode": "dnlpath:weblines.starline.topnews",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Leute",
+                    "qcode": "dpasubject:521",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Medien",
+                    "qcode": "dpasubject:368",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Fernsehen",
+                    "qcode": "dpasubject:165",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Südafrika",
+                    "qcode": "dpacountry:160",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "vm",
+                    "qcode": "dpacat:vm"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Zusammenfassung",
+                    "qcode": "dpatextgenre:26"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "4",
+                    "qcode": "urgency:4"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.boulevard.entertainment",
+                "weblines.starline.fernsehen",
+                "weblines.starline.topnews"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.boulevard.entertainment",
+                "weblines.starline.fernsehen",
+                "weblines.starline.topnews"
+            ],
+            "dpasubject_names":
+            [
+                "Leute",
+                "Medien",
+                "Fernsehen"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland",
+                "Südafrika"
+            ],
+            "keyword_names":
+            [],
+            "desk_names":
+            [
+                "vm"
+            ],
+            "genre_names":
+            [
+                "Zusammenfassung"
+            ],
+            "poi_names":
+            [],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEB4P6ibd9Bhzi9oUCJhgAwenEBcSraqpecfnCjLKdBtjnHx87bL1v1JZg8oAttqjq2FcyhE6cBCGNkT50F2T%2FYQQ4Mqja1YGJt2Yd3BSRrACzfJmUK4GRw1F%2ByXcaBFcn9tDuSkuIchTll%2BKOiiPiOvwAuY2wp4ExAD31fSspp0ABM%2Br7T0oej5zUtBhVZCXNjJzZ1Rcpp6%2BL1FgMYbLfoN6upcNocloXnrgrRSVCASvRZKze3GLw4zQnLKMGjtHthlGgLCsqyzTqJkJYtd3DZz%2FSbtcShwYnImmKO7KuF8jXivpKvvyuaHhprQHpzDitES0K1dSTenM%2BaAB79nkCWHw%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "QRg8fxPgtR2AMz92J8lujhKYDAsCeRnV76xVyikBk",
+            "updated": "2022-01-25T06:23:00Z",
+            "urn": "urn:newsml:dpa.com:20090101:220123-99-814873",
+            "version_created": "2022-01-23T09:30:21+01:00",
+            "version": 3,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 3,
+            "kicker": "Pandemie",
+            "headline": "Harmloses Omikron? Wie kritisch die Infektion ist",
+            "subhead": null,
+            "teaser": "Omikron lässt viele Warnmeldungen auf dem Handy aufleuchten und Tests anschlagen. Daten zeigen, dass schwere Verläufe seltener sind als bei Delta. Wie gefährlich ist die Infektion für den Einzelnen?",
+            "byline": "Von Josefine Kaukemüller, dpa",
+            "dateline": "Berlin (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Eine immense Omikron-Welle rollt durch Deutschland, längst ist die Virusvariante vorherrschend. Was sicher scheint: Omikron verbreitet sich zwar besonders schnell, schwere Verläufe sind aber seltener.</p><p>Im Podcast «Coronavirus-Update» des NDR fasst Virologin Sandra Ciesek zusammen: Nie sei das Risiko, sich zu infizieren, größer gewesen - zugleich sei das Risiko für eine schwere Erkrankung, wenn man geimpft oder geboostert sei, niedrig wie nie. Wie Omikron das individuelle Risiko bei einer Infektion verändert - und warum Experten weiter zu Vorsicht mahnen:</p><p>Der Hamburger Intensivmediziner Stefan Kluge verweist auf Daten aus mehreren Ländern, die zeigen, dass das Risiko, mit Omikron ins Krankenhaus zu müssen, im Vergleich zu Delta in allen Altersgruppen wohl um mehr als die Hälfte reduziert ist. «Das ist eine gute Nachricht», so der Lungenfacharzt.</p><h2>Kürzere Hospitalisierung</h2><p>Virologin Ciesek beruft sich im Podcast auf eine noch im Preprint - also ohne Überprüfung von Fachkollegen - veröffentlichte Studie aus Südkalifornien, die klinische Verläufe bei Omikron-Patienten mit denen von Patienten mit Delta vergleicht. Mit breiter Datenbasis zeige sich, dass Patienten mit Omikron seltener beatmet werden müssen und auf der Intensivstation liegen. Im Schnitt lägen sie bei Hospitalisierung zudem drei oder vier Tage kürzer im Krankenhaus.</p><p>Nach allgemeiner Einschätzung gelten Corona-Infektionen, bei denen man ins Krankenhaus muss, als schwere Verläufe. Christian Karagiannidis, wissenschaftlicher Leiter des Divi-Intensivregisters, sagt: «Wir wissen noch nicht so viel darüber, wie schwer bei Omikron das Lungenversagen ist, wenn die Erkrankten auf die Intensivstation müssen.» Er gehe «nach ersten vorsichtigen Berichten» aus dem Ausland aber nicht davon aus, dass der Einsatz von Herz-Lungen-Maschinen (Ecmo) bei Omikron so häufig nötig sei wie bei Delta.</p><h2>Großer Einflussfaktor: <u>D</u>er Impfstatus</h2><p>Ein enormer Einflussfaktor für den individuellen Schweregrad einer Infektion ist den Experten zufolge der Impfstatus. Die Grundimmunisierung mit Auffrischimpfung schützt nach wissenschaftlichem Konsens zwar bei Omikron nicht unbedingt vor Ansteckung, aber zuverlässig vor schweren Verläufen.</p><p>Mit Blick auf US-Daten sagt Karagiannidis, derzeit seien etwa 90 Prozent der dort mit Corona im Krankenhaus liegenden Menschen ungeimpft. «Das ist sicher die Risikogruppe, bei der auch Omikron einen schweren Verlauf nehmen kann», so der Intensivmediziner. Er warnt auch vor dem Long-Covid-Risiko nach Erkrankung vor allem der Ungeimpften, das nicht unbedingt mit ihrem Schweregrad zusammenhänge.</p><h2>Mild heißt nicht unbedingt harmlos</h2><p>Typische Symptome einer Omikron-Infektion sind laut Kluge Schnupfen, Husten, Hals- und Kopfschmerzen - besonders bei Geimpften seien sie oft gering ausgeprägt. Geruchs- und Geschmacksstörungen, wie sie bei Delta-Infektionen häufiger aufgetreten seien, sehe man selten. Doch auch die als leicht oder mild bezeichneten Verläufe sind den Experten zufolge nicht auf die leichte Schulter zu nehmen. Karagiannidis macht klar, dass auch sie «einen ziemlich mitnehmen» könnten und man ebenfalls mit deutlichen Krankheitssymptomen und sehr eingeschränkt im Bett liegen könne, teils für längere Zeit.</p><p>Auch Ciesek verweist darauf, dass Infizierte, auch wenn sie laut Definition nicht schwer erkrankt seien, viel betroffener von einer Omikron-Infektion sein können als von einem «banalen Schnupfen». Sie mahnt, niemand wisse, wie der individuelle Verlauf sei, wenn man erkranke. Omikron auf die leichte Schulter zu nehmen oder sich gar vorsätzlich zu infizieren, sei der falsche Weg.</p><h2>Auch Ältere und chronisch Kranke im Fokus</h2><p>Neben den Ungeimpften ist es die Gruppe der Menschen höheren Alters, die den Experten auch in der Omikron-Welle besondere Sorgen macht. Bei den Über-60-Jährigen sei die Inzidenz derzeit noch vergleichsweise niedrig, so Karagiannidis. «Da müssen wir unglaublich gut hingucken in den nächsten Wochen.» Bei vollständig geimpften hochaltrigen Menschen gebe es immer wieder Impfdurchbrüche - mit welcher Krankheitsschwere sich diese entwickeln, bleibe abzuwarten. «Es wird sich noch viel stärker dahin verschieben, dass Ungeimpfte und Ältere von Infektionen betroffen sein werden.»</p><p>Bei gesunden, jungen Erwachsenen sei das Risiko eines schweren Verlaufs vor allem mit Impfschutz sehr gering, bei Omikron noch reduzierter, so Kluge. Doch er betont, dass dies sich mit zunehmendem Alter ändere: Man wisse, «dass der stärkste Risikofaktor, schwer zu erkranken, das Alter ist». Mit jeder Dekade steige das Sterbe-Risiko.</p><p>Für Menschen mit schweren Vorerkrankungen wie Krebs, Herz-Kreislauf- oder Lungenerkrankungen könne eine Infektion, besonders wenn sie ungeimpft seien, ebenfalls extrem gefährlich sein. «Alter und Vorerkrankungen scheinen bei Omikron genau die gleiche Rolle als Risikofaktoren zu spielen wie bei Delta und vorherigen Varianten», stellt Kluge klar.</p><h2>Entwarnung bei Kindern?</h2><p>Experten nehmen an, dass Corona-Infektionen für Kinder und Jugendliche allgemein weniger kritisch sind als für Erwachsene. Das liege daran, dass ihr Immunsystem anpassungsfähiger sei und das Virus stärker schon in den Atemwegen abgefangen werde, erklärt der Präsident der Deutschen Gesellschaft für Kinder- und Jugendmedizin (DGKJ), Jörg Dötsch. Mit Blick auf Omikron verweist er auf US-Studiendaten, nach denen für Unter-Fünfjährige das Risiko, ins Krankenhaus zu müssen, ein Drittel so groß sei wie bei Delta.</p><p>Jakob Maske, Sprecher des Berufsverbands der Kinder- und Jugendärzte, schildert aus seinem Berufsalltag in einer Berliner Kinderarztpraxis, die meisten derzeit positiv getesteten Kinder seien «völlig gesund und symptomfrei». Sie kämen wegen positiver Schnelltests in den Schulen zum PCR-Test in die Praxis und nicht wegen Beschwerden. Einige Kindern hätten Schnupfen, teils Husten und Fieber oder Magen-Darm-Probleme.</p><p>Dötsch erklärt, gerade bei Jüngeren könne die Infektion auch Fieberkrämpfe bewirken. Bei Omikron fielen die Symptome aber in der Regel leichter aus als etwa bei Delta. Bei den seltenen schweren Verläufen bei Kindern könnten allerdings schwere Atemprobleme bis hin zur Beatmung auftreten. Auch Komplikationen an den Blutgefäßen wie Blutgerinnsel seien denkbar, sagt Dötsch. Weil diese Dinge bei Kindern so viel unwahrscheinlicher seien als bei Erwachsenen, könne man aber sagen: «Bei Kindern in der Gesamtheit ist der Verlauf milder.»</p></section>",
+            "infobox_html": null,
+            "linkbox_html": "<section class=\"linkbox\"><ul><li><a href=\"http://dpaq.de/zv9OR\">Studie aus Kalifornien zu Krankheitsverlauf mit Omikron</a></li><li><a href=\"http://dpaq.de/W36hN\">Aktueller Podcast NDR Info</a></li><li><a href=\"http://dpaq.de/MzHYX\">RKI-Wochenbericht vom 20.1.</a></li></ul></section>",
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220123-99-814873/3",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220123-99-814923",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-01-23T04:12:55+01:00",
+                    "headline": "Intensivstation",
+                    "is_featureimage": true,
+                    "caption": "Eine Intensivfachpflegerin betreut auf einer Intensivstation einen Covid-19-Patienten. (Archivbild)",
+                    "creditline": "Christoph Soeder/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1365,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline.brennpunkte",
+                    "qcode": "dnlpath:weblines.infoline.brennpunkte",
+                    "is_current": false
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.panorama",
+                    "qcode": "dnlpath:weblines.infoline_rs.panorama",
+                    "is_current": false
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.topthemen",
+                    "qcode": "dnlpath:weblines.infoline_rs.topthemen",
+                    "is_current": false
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.wissenschaft",
+                    "qcode": "dnlpath:weblines.infoline_rs.wissenschaft",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Gesundheit",
+                    "qcode": "dpasubject:346",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Krankheiten",
+                    "qcode": "dpasubject:495",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Wissenschaft",
+                    "qcode": "dpasubject:106",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Corona",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Covid-19",
+                    "qcode": null,
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Omikron",
+                    "qcode": null,
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Infektion",
+                    "qcode": null,
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "Politik",
+                    "qcode": "dpacat:pl"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "KORR-Bericht",
+                    "qcode": "dpatextgenre:14"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "3",
+                    "qcode": "urgency:3"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.wissenschaft"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline.brennpunkte",
+                "weblines.infoline_rs.panorama",
+                "weblines.infoline_rs.topthemen",
+                "weblines.infoline_rs.wissenschaft"
+            ],
+            "dpasubject_names":
+            [
+                "Gesundheit",
+                "Krankheiten",
+                "Wissenschaft"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland"
+            ],
+            "keyword_names":
+            [
+                "Corona",
+                "Covid-19",
+                "Omikron",
+                "Infektion"
+            ],
+            "desk_names":
+            [
+                "pl"
+            ],
+            "genre_names":
+            [
+                "KORR-Bericht"
+            ],
+            "poi_names":
+            [],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEB8mADafSj5GQPkcMFy3uYhtPPszzrrMw4UdlSoGZ3fixv4IuDzhZ9zJqcTjabXiq72qzCdB4O8pl1yA171e47NBMylxmOxt3ZzBEzaQ2Q6Gcww6Ie86PkwRVexKtGZXRTXoxGVNi6lWs96HpwQPbeWsCjvIIIA4FMhg%2FnkDXupCdBgr1drxEuAWBmvyRJpNMWea5MUM4POsFKiHuWM5Q%2B5cvksdurYxE3YOR%2BVNH1Qmq2K3UUei7uvK00%2BADkkg8HJ1mqJXcw%2FA%2BeUY4jtZCiAEz3wG1f6qXdAIJHvQMowPOmrEPxMCbJA0k1Tkx6NdKDOp4LMD1coy9I5enZCfm9gw%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "RnxG5fhQQ4KWww1ca7Awu661oehhq9oJalABpI2fSg",
+            "updated": "2022-01-24T11:07:16Z",
+            "urn": "urn:newsml:dpa.com:20090101:220123-99-815011",
+            "version_created": "2022-01-23T09:36:50+01:00",
+            "version": 3,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 4,
+            "kicker": "Konjunktur",
+            "headline": "Corona hat riesige wirtschaftliche Schäden verursacht",
+            "subhead": null,
+            "teaser": "Anfang Januar 2020 gibt es in der chinesischen Millionenmetropole Wuhan immer mehr Fälle einer rätselhaften Lungenkrankheit. Was die Pandemie seitdem in der deutschen Volkswirtschaft angerichtet hat.",
+            "byline": "Von Andreas Hoenig, dpa",
+            "dateline": "Berlin/Köln (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Die Corona-Pandemie hat in den vergangenen beiden Jahren zu riesigen wirtschaftlichen Schäden geführt. Das Institut der deutschen Wirtschaft (IW) in Köln kommt in einer Analyse zum Ergebnis, dass der Wertschöpfungsausfall bei rund 350 Milliarden Euro liegt. </p><p>Ein Großteil davon gehe auf Ausfälle beim privaten Konsum zurück, unter anderem wegen Lockdown-Maßnahmen. Selbst wenn zum Jahresende 2022 beim Bruttoinlandsprodukt das Vorkrisenniveau wieder erreicht werden sollte, bestehe auch dann noch eine «markante Lücke» zur Wirtschaftsleistung im Vergleich dazu, wenn es die Pandemie nicht gegeben hätte, heißt es in einem IW-Kurzbericht. Dieser lag der Deutschen Presse-Agentur vor. «Erst mit einem kräftigen Wirtschaftswachstum in den nächsten Jahren können Stück für Stück die Wertschöpfungs- und Einkommenslücken infolge der Pandemie wieder geschlossen werden.»</p><h2>BPI-Wachstum von 3,6 Prozent</h2><p>Die Bundesregierung rechnet in diesem Jahr mit einem schwächeren Wirtschaftswachstum in Deutschland. Wie die Deutsche Presse-Agentur aus Regierungskreisen erfahren hatte, erwartet die Regierung nun noch ein Wachstum des Bruttoinlandsprodukts von 3,6 Prozent. Die Vorgängerregierung war im Herbst noch von 4,1 Prozent Wachstum in diesem Jahr ausgegangen. Die Prognose ist Teil des Jahreswirtschaftsberichts, der am Mittwoch im Kabinett beschlossen werden soll. </p><p>2021 legte die deutsche Wirtschaft mit 2,7 Prozent Wachstum zwar wieder zu. Allerdings fiel der vom Statistischen Bundesamt anhand erster Zahlen vermeldete Zuwachs des Bruttoinlandsprodukts geringer aus als lange erhofft. </p><h2>Wirtschaftsleistungen eingebrochen</h2><p>Im Krisenjahr 2020 war die Wirtschaftsleistung nach jüngsten Daten um 4,6 Prozent eingebrochen. Vor allem wegen eines flächendeckenden Lockdowns sowie unterbrochener Lieferketten und Produktionsausfälle im Frühjahr 2020 nach dem Ausbruch der Pandemie war die Konjunktur eingebrochen. Die Politik hatte milliardenschwere Hilfsmaßnahmen beschlossen, um die Folgen für Jobs und Firmen abzumildern. </p><p>Laut der IW-Modellrechnung dürften über die vergangenen acht Quartale hinweg Ausfälle beim privaten Konsum in Deutschland von insgesamt 270 Milliarden Euro eingetreten sein. Beim privaten Konsum sei es auch zu «Verhaltensänderungen» gekommen, erläuterte der Autor der Analyse, Michael Grömling. Das bedeute: Auch wenn Kinos, Theater und Restaurants wieder offen waren, hätten sich viele Bürgerinnen und Bürger trotzdem aus Vorsichtsgründen zurückgehalten und auf einen Kino- oder Restaurantbesuch verzichtet. </p><h2>Verbraucher legen Geld auf die hohe Kante</h2><p>Während der Pandemie hat sich die Sparquote der privaten Haushalte deutlich erhöht - sprich: die Verbraucher legten Geld auf die hohe Kante. Im Jahresgutachten der «Wirtschaftsweisen» hieß es, wenn pandemiebedingte Einschränkungen oder länger anhaltende<br/>Liefer- und Kapazitätsengpässe schneller überwunden werden, könne die «aufgestaute» Konsum- und Investitionsnachfrage für einen dynamischeren Aufschwung sorgen.</p><p>Denn während der Pandemie wurde auch deutlich weniger investiert. Laut IW-Studie gab es bei den sogenannten Bruttoanlageinvestitionen zum Beispiel in Maschinen «merkliche Ausfälle». Hätte es die Pandemie nicht gegeben, wären die gesamten Investitionen in Deutschland in den vergangenen beiden Jahren in preisbereinigter Betrachtung um rund 60 Milliarden Euro höher ausgefallen. Dies wirke langfristig bremsend auf die wirtschaftliche Entwicklung.</p><p>Zwar stehen laut IW den Einbußen beim privaten Konsum und bei den Investitionen kräftige Impulse vonseiten des Staatskonsums entgegen - infolge von Konjunkturpaketen und pandemiebedingter Zusatzausgaben. Auch vom Export kamen merklich positive Konjunkturimpulse. Dennoch ergebe sich ein Wertschöpfungsausfall in Höhe von fast 350 Milliarden Euro. Auch in den kommenden Quartalen werde es zu beträchtlichen Einbußen kommen - im Vergleich zu einer pandemiefreien Zeit. Die Einbußen könnten sich allein im ersten Quartal 2022 auf weitere 50 Milliarden Euro belaufen, wenn es infolge der Omikron-Welle zu deutlichen Beeinträchtigungen im Wirtschaftsleben komme. </p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220123-99-815011/3",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220123-99-815015",
+                    "version": 4,
+                    "rank": 1,
+                    "version_created": "2022-01-23T07:37:34+01:00",
+                    "headline": "Hamburger Hafen",
+                    "is_featureimage": true,
+                    "caption": "Erst mit einem kräftigen Wirtschaftswachstum in den nächsten Jahren können Stück für Stück die Lücken wieder geschlossen.",
+                    "creditline": "Marcus Brandt/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1365,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.wirtschaft",
+                    "qcode": "dnlpath:weblines.infoline_rs.wirtschaft",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Konjunktur",
+                    "qcode": "dpasubject:431",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Gesundheit",
+                    "qcode": "dpasubject:346",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Krankheiten",
+                    "qcode": "dpasubject:495",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "Wirtschaft",
+                    "qcode": "dpacat:wi"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Zusammenfassung",
+                    "qcode": "dpatextgenre:26"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "4",
+                    "qcode": "urgency:4"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.wirtschaft"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.wirtschaft"
+            ],
+            "dpasubject_names":
+            [
+                "Konjunktur",
+                "Gesundheit",
+                "Krankheiten"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland"
+            ],
+            "keyword_names":
+            [],
+            "desk_names":
+            [
+                "wi"
+            ],
+            "genre_names":
+            [
+                "Zusammenfassung"
+            ],
+            "poi_names":
+            [],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBYsGglvQyTAbdDVNPun77kXubv69H8Co97XDwCobkPoGdEIxW0YSjjXECM%2FDc8CnT%2FBmrI6K6KVKD0HnAIlwc3BIdmOF7RumESkCgKYqvBCcjENmGyabBpWjqqsV7HggBoirUPdlZ1HsNwz9%2FEjf6Y33XJexFFsBMSIHLOHAmE7yP1Qn5Jme9gtXNOkvdhdnWc4aAFtQYOjmDdrcW5AvGTRXinS%2FCxByTR5Dmy00wNGB9xYsxuC1PlI4%2FhKdSPkEME6eT0ERh95ZK4lus3bglDm9i%2BUpGhHJudmIQskStM79vfFcKzNmBhnooTC3kJWT1OUVAJdWf2JGLfWZVns9m5w%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "WCHdpiuFTQEXRQpXXGI0OF8x3IAvfXEjYtXDBG8diQ",
+            "updated": "2022-01-24T11:07:15Z",
+            "urn": "urn:newsml:dpa.com:20090101:220122-99-813223",
+            "version_created": "2022-01-22T21:19:25+01:00",
+            "version": 1,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 2,
+            "kicker": null,
+            "headline": "Marine-Inspekteur Schönbach räumt Posten nach umstrittenen Äußerungen ",
+            "subhead": null,
+            "teaser": null,
+            "byline": null,
+            "dateline": "Berlin (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Der Inspekteur der Deutschen Marine, Kay-Achim Schönbach, räumt seinen Posten nach umstrittenen Äußerungen zum Ukraine-Konflikt. Das teilte das Verteidigungsministerium am Samstagabend den Obleuten im Bundestag mit, wie die Deutsche Presse-Agentur erfuhr.</p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220122-99-813223/1",
+            "notepad": null,
+            "associations":
+            [],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.eilmeldungen",
+                    "qcode": "dnlpath:weblines.infoline_rs.eilmeldungen",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Konflikte",
+                    "qcode": "dpasubject:114",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Militär",
+                    "qcode": "dpasubject:172",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Bundeswehr",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Ukraine",
+                    "qcode": "dpacountry:181",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Russland",
+                    "qcode": "dpacountry:139",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Indien",
+                    "qcode": "dpacountry:61",
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "Politik",
+                    "qcode": "dpacat:pl"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Meldung",
+                    "qcode": "dpatextgenre:1"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "2",
+                    "qcode": "urgency:2"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.eilmeldungen"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.eilmeldungen"
+            ],
+            "dpasubject_names":
+            [
+                "Konflikte",
+                "Militär"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland",
+                "Ukraine",
+                "Russland",
+                "Indien"
+            ],
+            "keyword_names":
+            [
+                "Bundeswehr"
+            ],
+            "desk_names":
+            [
+                "pl"
+            ],
+            "genre_names":
+            [
+                "Meldung"
+            ],
+            "poi_names":
+            [],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEB4%2Fc5dVK5mSyu4tc6Ui61wuR7xqxJ5lommc9qpehPBtEKzjxFqa2FMDQle0UDnGCbXWrrc1gzabjZic49ByqJCulceel%2BlWqTG1zlx%2FA2tpqQi4owicFV9Xt6Spn%2FRb7hRGM%2BYygWpkZT0EkJPARrWC3l5u%2BaiqsvHgfZa7%2FOLMpzgMb5ODYKj0nLHiJoQSDtT5QOXkkGPhJ1uhYApQpeCrnLz54mFZ73lg%2F%2Bz5Ry0XuutFV6fRhf944XGid7DKEr4Whtn%2BJw8haFqPRKIC7%2F5gV6bX7W6BD3nNSPTAOkc9XBAEf1Lk7vKN9Duu%2FUM5Fs3OEwcMjAGLKfi3quR7uz8A%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "WCHdpiuFTQEXRQpXXGI0OF8x3IAvfXEjYtXDBG8diQ",
+            "updated": "2022-01-24T11:07:15Z",
+            "urn": "urn:newsml:dpa.com:20090101:220122-99-813223",
+            "version_created": "2022-01-22T21:19:25+01:00",
+            "version": 1,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 2,
+            "kicker": null,
+            "headline": "Marine-Inspekteur Schönbach räumt Posten nach umstrittenen Äußerungen ",
+            "subhead": null,
+            "teaser": null,
+            "byline": null,
+            "dateline": "Berlin (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Der Inspekteur der Deutschen Marine, Kay-Achim Schönbach, räumt seinen Posten nach umstrittenen Äußerungen zum Ukraine-Konflikt. Das teilte das Verteidigungsministerium am Samstagabend den Obleuten im Bundestag mit, wie die Deutsche Presse-Agentur erfuhr.</p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220122-99-813223/1",
+            "notepad": null,
+            "associations":
+            [],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.eilmeldungen",
+                    "qcode": "dnlpath:weblines.infoline_rs.eilmeldungen",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Konflikte",
+                    "qcode": "dpasubject:114",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Militär",
+                    "qcode": "dpasubject:172",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Bundeswehr",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Ukraine",
+                    "qcode": "dpacountry:181",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Russland",
+                    "qcode": "dpacountry:139",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Indien",
+                    "qcode": "dpacountry:61",
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "Politik",
+                    "qcode": "dpacat:pl"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Meldung",
+                    "qcode": "dpatextgenre:1"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "2",
+                    "qcode": "urgency:2"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.eilmeldungen"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.eilmeldungen"
+            ],
+            "dpasubject_names":
+            [
+                "Konflikte",
+                "Militär"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland",
+                "Ukraine",
+                "Russland",
+                "Indien"
+            ],
+            "keyword_names":
+            [
+                "Bundeswehr"
+            ],
+            "desk_names":
+            [
+                "pl"
+            ],
+            "genre_names":
+            [
+                "Meldung"
+            ],
+            "poi_names":
+            [],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBGDZVcLz6mvpV9QWUbhG6f2DBkcYeDeu%2BDpmxnrC2W13nyppDbOE4biAGtIZgjTfUIDd%2BuvWnuwsSOpg9EcxEJDRV4OHNFH468PrkM4OjkmcWg4uHEGEdWsp8UjPgD4a31uH%2Fdjh73L5menPtN61ikaRcHYsv0HKyY42ZAXD5NCcTzPXbehVMNuAGM6vmOLmiGYx35hwnYL3saLbUHrWwtQWUuxonFXdG4W32fVrV%2BHT1v7rMl9EbHe5qScE98I6AC7poJePolY6cQWTsJHN5zo%2BJkL4u%2BQiHUxG0HCNCaNThlq%2FKU%2BHC0zClo9%2BC40vMAeZWvWVX13gHEo9FXzh89A%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "jJBGo80MBr6verOqYMI23tQLQ20xCPGYY4ghEgSZiQ",
+            "updated": "2022-01-24T11:07:16Z",
+            "urn": "urn:newsml:dpa.com:20090101:220123-99-814873",
+            "version_created": "2022-01-23T09:30:21+01:00",
+            "version": 3,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 3,
+            "kicker": "Pandemie",
+            "headline": "Harmloses Omikron? Wie kritisch die Infektion ist",
+            "subhead": null,
+            "teaser": "Omikron lässt viele Warnmeldungen auf dem Handy aufleuchten und Tests anschlagen. Daten zeigen, dass schwere Verläufe seltener sind als bei Delta. Wie gefährlich ist die Infektion für den Einzelnen?",
+            "byline": "Von Josefine Kaukemüller, dpa",
+            "dateline": "Berlin (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Eine immense Omikron-Welle rollt durch Deutschland, längst ist die Virusvariante vorherrschend. Was sicher scheint: Omikron verbreitet sich zwar besonders schnell, schwere Verläufe sind aber seltener.</p><p>Im Podcast «Coronavirus-Update» des NDR fasst Virologin Sandra Ciesek zusammen: Nie sei das Risiko, sich zu infizieren, größer gewesen - zugleich sei das Risiko für eine schwere Erkrankung, wenn man geimpft oder geboostert sei, niedrig wie nie. Wie Omikron das individuelle Risiko bei einer Infektion verändert - und warum Experten weiter zu Vorsicht mahnen:</p><p>Der Hamburger Intensivmediziner Stefan Kluge verweist auf Daten aus mehreren Ländern, die zeigen, dass das Risiko, mit Omikron ins Krankenhaus zu müssen, im Vergleich zu Delta in allen Altersgruppen wohl um mehr als die Hälfte reduziert ist. «Das ist eine gute Nachricht», so der Lungenfacharzt.</p><h2>Kürzere Hospitalisierung</h2><p>Virologin Ciesek beruft sich im Podcast auf eine noch im Preprint - also ohne Überprüfung von Fachkollegen - veröffentlichte Studie aus Südkalifornien, die klinische Verläufe bei Omikron-Patienten mit denen von Patienten mit Delta vergleicht. Mit breiter Datenbasis zeige sich, dass Patienten mit Omikron seltener beatmet werden müssen und auf der Intensivstation liegen. Im Schnitt lägen sie bei Hospitalisierung zudem drei oder vier Tage kürzer im Krankenhaus.</p><p>Nach allgemeiner Einschätzung gelten Corona-Infektionen, bei denen man ins Krankenhaus muss, als schwere Verläufe. Christian Karagiannidis, wissenschaftlicher Leiter des Divi-Intensivregisters, sagt: «Wir wissen noch nicht so viel darüber, wie schwer bei Omikron das Lungenversagen ist, wenn die Erkrankten auf die Intensivstation müssen.» Er gehe «nach ersten vorsichtigen Berichten» aus dem Ausland aber nicht davon aus, dass der Einsatz von Herz-Lungen-Maschinen (Ecmo) bei Omikron so häufig nötig sei wie bei Delta.</p><h2>Großer Einflussfaktor: <u>D</u>er Impfstatus</h2><p>Ein enormer Einflussfaktor für den individuellen Schweregrad einer Infektion ist den Experten zufolge der Impfstatus. Die Grundimmunisierung mit Auffrischimpfung schützt nach wissenschaftlichem Konsens zwar bei Omikron nicht unbedingt vor Ansteckung, aber zuverlässig vor schweren Verläufen.</p><p>Mit Blick auf US-Daten sagt Karagiannidis, derzeit seien etwa 90 Prozent der dort mit Corona im Krankenhaus liegenden Menschen ungeimpft. «Das ist sicher die Risikogruppe, bei der auch Omikron einen schweren Verlauf nehmen kann», so der Intensivmediziner. Er warnt auch vor dem Long-Covid-Risiko nach Erkrankung vor allem der Ungeimpften, das nicht unbedingt mit ihrem Schweregrad zusammenhänge.</p><h2>Mild heißt nicht unbedingt harmlos</h2><p>Typische Symptome einer Omikron-Infektion sind laut Kluge Schnupfen, Husten, Hals- und Kopfschmerzen - besonders bei Geimpften seien sie oft gering ausgeprägt. Geruchs- und Geschmacksstörungen, wie sie bei Delta-Infektionen häufiger aufgetreten seien, sehe man selten. Doch auch die als leicht oder mild bezeichneten Verläufe sind den Experten zufolge nicht auf die leichte Schulter zu nehmen. Karagiannidis macht klar, dass auch sie «einen ziemlich mitnehmen» könnten und man ebenfalls mit deutlichen Krankheitssymptomen und sehr eingeschränkt im Bett liegen könne, teils für längere Zeit.</p><p>Auch Ciesek verweist darauf, dass Infizierte, auch wenn sie laut Definition nicht schwer erkrankt seien, viel betroffener von einer Omikron-Infektion sein können als von einem «banalen Schnupfen». Sie mahnt, niemand wisse, wie der individuelle Verlauf sei, wenn man erkranke. Omikron auf die leichte Schulter zu nehmen oder sich gar vorsätzlich zu infizieren, sei der falsche Weg.</p><h2>Auch Ältere und chronisch Kranke im Fokus</h2><p>Neben den Ungeimpften ist es die Gruppe der Menschen höheren Alters, die den Experten auch in der Omikron-Welle besondere Sorgen macht. Bei den Über-60-Jährigen sei die Inzidenz derzeit noch vergleichsweise niedrig, so Karagiannidis. «Da müssen wir unglaublich gut hingucken in den nächsten Wochen.» Bei vollständig geimpften hochaltrigen Menschen gebe es immer wieder Impfdurchbrüche - mit welcher Krankheitsschwere sich diese entwickeln, bleibe abzuwarten. «Es wird sich noch viel stärker dahin verschieben, dass Ungeimpfte und Ältere von Infektionen betroffen sein werden.»</p><p>Bei gesunden, jungen Erwachsenen sei das Risiko eines schweren Verlaufs vor allem mit Impfschutz sehr gering, bei Omikron noch reduzierter, so Kluge. Doch er betont, dass dies sich mit zunehmendem Alter ändere: Man wisse, «dass der stärkste Risikofaktor, schwer zu erkranken, das Alter ist». Mit jeder Dekade steige das Sterbe-Risiko.</p><p>Für Menschen mit schweren Vorerkrankungen wie Krebs, Herz-Kreislauf- oder Lungenerkrankungen könne eine Infektion, besonders wenn sie ungeimpft seien, ebenfalls extrem gefährlich sein. «Alter und Vorerkrankungen scheinen bei Omikron genau die gleiche Rolle als Risikofaktoren zu spielen wie bei Delta und vorherigen Varianten», stellt Kluge klar.</p><h2>Entwarnung bei Kindern?</h2><p>Experten nehmen an, dass Corona-Infektionen für Kinder und Jugendliche allgemein weniger kritisch sind als für Erwachsene. Das liege daran, dass ihr Immunsystem anpassungsfähiger sei und das Virus stärker schon in den Atemwegen abgefangen werde, erklärt der Präsident der Deutschen Gesellschaft für Kinder- und Jugendmedizin (DGKJ), Jörg Dötsch. Mit Blick auf Omikron verweist er auf US-Studiendaten, nach denen für Unter-Fünfjährige das Risiko, ins Krankenhaus zu müssen, ein Drittel so groß sei wie bei Delta.</p><p>Jakob Maske, Sprecher des Berufsverbands der Kinder- und Jugendärzte, schildert aus seinem Berufsalltag in einer Berliner Kinderarztpraxis, die meisten derzeit positiv getesteten Kinder seien «völlig gesund und symptomfrei». Sie kämen wegen positiver Schnelltests in den Schulen zum PCR-Test in die Praxis und nicht wegen Beschwerden. Einige Kindern hätten Schnupfen, teils Husten und Fieber oder Magen-Darm-Probleme.</p><p>Dötsch erklärt, gerade bei Jüngeren könne die Infektion auch Fieberkrämpfe bewirken. Bei Omikron fielen die Symptome aber in der Regel leichter aus als etwa bei Delta. Bei den seltenen schweren Verläufen bei Kindern könnten allerdings schwere Atemprobleme bis hin zur Beatmung auftreten. Auch Komplikationen an den Blutgefäßen wie Blutgerinnsel seien denkbar, sagt Dötsch. Weil diese Dinge bei Kindern so viel unwahrscheinlicher seien als bei Erwachsenen, könne man aber sagen: «Bei Kindern in der Gesamtheit ist der Verlauf milder.»</p></section>",
+            "infobox_html": null,
+            "linkbox_html": "<section class=\"linkbox\"><ul><li><a href=\"http://dpaq.de/zv9OR\">Studie aus Kalifornien zu Krankheitsverlauf mit Omikron</a></li><li><a href=\"http://dpaq.de/W36hN\">Aktueller Podcast NDR Info</a></li><li><a href=\"http://dpaq.de/MzHYX\">RKI-Wochenbericht vom 20.1.</a></li></ul></section>",
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220123-99-814873/3",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220123-99-814923",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-01-23T04:12:55+01:00",
+                    "headline": "Intensivstation",
+                    "is_featureimage": true,
+                    "caption": "Eine Intensivfachpflegerin betreut auf einer Intensivstation einen Covid-19-Patienten. (Archivbild)",
+                    "creditline": "Christoph Soeder/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1365,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline.brennpunkte",
+                    "qcode": "dnlpath:weblines.infoline.brennpunkte",
+                    "is_current": false
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.panorama",
+                    "qcode": "dnlpath:weblines.infoline_rs.panorama",
+                    "is_current": false
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.topthemen",
+                    "qcode": "dnlpath:weblines.infoline_rs.topthemen",
+                    "is_current": false
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.wissenschaft",
+                    "qcode": "dnlpath:weblines.infoline_rs.wissenschaft",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Gesundheit",
+                    "qcode": "dpasubject:346",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Krankheiten",
+                    "qcode": "dpasubject:495",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Wissenschaft",
+                    "qcode": "dpasubject:106",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Corona",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Covid-19",
+                    "qcode": null,
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Omikron",
+                    "qcode": null,
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Infektion",
+                    "qcode": null,
+                    "rank": 4
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "Politik",
+                    "qcode": "dpacat:pl"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "KORR-Bericht",
+                    "qcode": "dpatextgenre:14"
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "3",
+                    "qcode": "urgency:3"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.wissenschaft"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline.brennpunkte",
+                "weblines.infoline_rs.panorama",
+                "weblines.infoline_rs.topthemen",
+                "weblines.infoline_rs.wissenschaft"
+            ],
+            "dpasubject_names":
+            [
+                "Gesundheit",
+                "Krankheiten",
+                "Wissenschaft"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland"
+            ],
+            "keyword_names":
+            [
+                "Corona",
+                "Covid-19",
+                "Omikron",
+                "Infektion"
+            ],
+            "desk_names":
+            [
+                "pl"
+            ],
+            "genre_names":
+            [
+                "KORR-Bericht"
+            ],
+            "poi_names":
+            [],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBzOBcKa%2FuC3qz1IfBHAsg03p3A9w3MtUz6pgr0GKxCq4ZMt2C1RH7ysw88bFXgCTKHfU7fi05TWAwHQkvX4yMjz9gNOm1OL39mU0tuq7AJfxp5I1YIKfE5j6kUPSE9otitQHCz7UOIdtNiL3kXsQ02ayNMoNUdeHipmCPYP7F7VS18TipmdxQOQHlEgriZmzDgCn7WBSfXgrSEAxLl1pqDjGR15QlqTxkWkEciwSNEJ8TAMfqWpHzB4PbxbwWpHbI50d%2BBkmhdQWuHhyKXYEc93X5%2FvwDDsanBd3f68ePC4i96Hj%2BkMyLgCkOhvqVYyoKaC%2Flrn%2BRuTjIAQdD1SdRUA%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.20",
+            "entry_id": "lRzsrTQE3aRc4N4YxavHMGaioN4t762pbG64Hg0g",
+            "updated": "2022-01-25T06:23:00Z",
+            "urn": "urn:newsml:dpa.com:20090101:220123-99-821967",
+            "version_created": "2022-01-23T19:44:48+01:00",
+            "version": 2,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 4,
+            "kicker": "Brandenburg",
+            "headline": "Ex-«Glücksrad»-Fee Gilzer scheitert bei Bürgermeisterwahl",
+            "subhead": null,
+            "teaser": "Das Dschungelcamp hatte sie gewonnen, bei der Bürgermeisterwahl im brandenburgischen Oberkrämer bekam Ex-«Glücksrad»-Fee Maren Gilzer nur 6,1 Prozent der Stimmen. Das reicht nicht für die Stichwahl.",
+            "byline": null,
+            "dateline": "Oberkrämer (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Die «Glücksrad»-Fee und Ex-Dschungelkönigin Maren Gilzer kommt nicht in die Stichwahl zur Wahl des Bürgermeisters im brandenburgischen Oberkrämer. Die 61-Jährige erhielt nach dem vorläufigen Ergebnis 6,1 Prozent der Stimmen, wie die amtsfreie Gemeinde im Kreis Oberhavel auf der <a class=\"externalLink\" href=\"http://wahlen.oberkraemer.de/2022BM1/index.html\">Internetseite</a> mitteilt. </p><p>Der 54-jährige Polizeibeamte Wolfgang Geppert (BVB/Freie Wähler) erhielt 32,7 Prozent der Stimmen, die 32-jährige Juristin und stellvertretende Bürgermeisterin Carolin Schmiel (Bürger für Oberkrämer/BfO) kam auf 25,5 Prozent. Sie kommen damit in die Stichwahl am 13. Februar.</p><p>Gilzer hatte sich für die FDP um den Posten beworben. Die 61-Jährige war in den 1990er Jahren als «Buchstabenfee» in der Sat.1-Sendung «Glücksrad» bekannt geworden. 2015 wurde sie in der RTL-Reality-Show «Ich bin ein Star - holt mich hier raus» von den Zuschauern zur Dschungelkönigin gewählt.</p><p>Noch-Bürgermeister Peter Leys (BfürO) verabschiedet sich nach rund 14 Jahren Amtszeit am 1. März in den Ruhestand. Die Gemeinde Oberkrämer ist ein Zusammenschluss von sieben Dörfern mit rund 12 000 Einwohnern und Einwohnerinnen. Die Wahlbeteiligung lag bei 49,3 Prozent.</p></section>",
+            "infobox_html": null,
+            "linkbox_html": null,
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220123-99-821967/2",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220123-99-821975",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-01-23T19:44:27+01:00",
+                    "headline": "Maren Gilzer-Kuhlmann",
+                    "is_featureimage": true,
+                    "caption": "Maren Gilzer-Kuhlmann bei einem Wahlkampfauftritt in Oberkrämer.",
+                    "creditline": "Bernd Settnik/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1430,
+                            "fovealarea": null,
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.boulevard.entertainment",
+                    "qcode": "dnlpath:weblines.infoline_rs.boulevard.entertainment",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.starline.leute",
+                    "qcode": "dnlpath:weblines.starline.leute",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.starline.topnews",
+                    "qcode": "dnlpath:weblines.starline.topnews",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Leute",
+                    "qcode": "dpasubject:521",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Wahlen",
+                    "qcode": "dpasubject:583",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Bürgermeisterwahl",
+                    "qcode": null,
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Maren Gilzer",
+                    "qcode": null,
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:keyword",
+                    "name": "Oberkrämer",
+                    "qcode": null,
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Deutschland",
+                    "qcode": "dpacountry:1",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Brandenburg",
+                    "qcode": "dpaarea:4",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "vm",
+                    "qcode": "dpacat:vm"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Meldung",
+                    "qcode": "dpatextgenre:1"
+                },
+                {
+                    "type": "dnltype:poi",
+                    "name": "Gemeinde Oberkrämer, Perwenitzer Weg 2, 16727 Oberkrämer, Deutschland",
+                    "qcode": null,
+                    "geojson":
+                    {
+                        "type": "Feature",
+                        "properties":
+                        {
+                            "name": "Gemeinde Oberkrämer",
+                            "formatted_address": "Perwenitzer Weg 2, 16727 Oberkrämer, Deutschland",
+                            "locality": "Oberkrämer",
+                            "country": "Deutschland"
+                        },
+                        "geometry":
+                        {
+                            "type": "Point",
+                            "coordinates":
+                            [
+                                13.1102703,
+                                52.6955002
+                            ]
+                        }
+                    }
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "4",
+                    "qcode": "urgency:4"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.boulevard.entertainment",
+                "weblines.starline.leute",
+                "weblines.starline.topnews"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.boulevard.entertainment",
+                "weblines.starline.leute",
+                "weblines.starline.topnews"
+            ],
+            "dpasubject_names":
+            [
+                "Leute",
+                "Wahlen"
+            ],
+            "geosubject_names":
+            [
+                "Deutschland",
+                "Brandenburg"
+            ],
+            "keyword_names":
+            [
+                "Bürgermeisterwahl",
+                "Maren Gilzer",
+                "Oberkrämer"
+            ],
+            "desk_names":
+            [
+                "vm"
+            ],
+            "genre_names":
+            [
+                "Meldung"
+            ],
+            "poi_names":
+            [
+                "Gemeinde Oberkrämer, Perwenitzer Weg 2, 16727 Oberkrämer, Deutschland"
+            ],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBo5DRx%2FAy%2BwXI7vCwBNUpzhat0UpOi%2FESzPv%2FQiyCwbV9Q7UvSkx0PtVIMlXn%2B6CR9Z%2FmmE7wYc6y1J46HRKR1Vnxrg4H7%2Ft%2BEww0OidGThHB0YArFtuGLewCVv09Kuc8JAHm3M4xmz21x7HUlyOJ%2FC%2FN4GKsmgEO4c%2BsY6FPvEld3LsTpJL1I8Zyj4wPp6wuCRhV0n98OO5vSUS%2BPZewk7YepRYrvJF4PBrMk5ZWglj0hhXhlY4LrRoFzcfgXTIhQ25%2BK98%2FlK6md2DmaScWp0kFGuCVdqMgI0V1r7TzKtq4C78K3TgDFqUxjejrFNbIPhvVWfIQ5ezVs21SXMDQQw%3D%3D"
+        },
+        {
+            "format": "digitalwires@0.5.22",
+            "entry_id": "F7HzqQ6iD8mWY27rk1h9wNelRiaX8pr4Va2DxA7Bo",
+            "updated": "2022-02-03T13:21:33Z",
+            "urn": "urn:newsml:dpa.com:20090101:220202-99-942809",
+            "version_created": "2022-02-02T11:42:18+01:00",
+            "version": 2,
+            "pubstatus": "usable",
+            "embargoed": null,
+            "language": "de",
+            "urgency": 4,
+            "kicker": "Umwelt",
+            "headline": "Great Barrier Reef erneut von Korallenbleiche bedroht",
+            "subhead": null,
+            "teaser": "Die Temperaturen des Meerwassers liegen am Great Barrier Reef bereits seit Wochen bis zu 1,5 Grad höher als normal. Für die Korallen bedeutet das extremen Stress. Und der Sommer ist noch nicht vorbei.",
+            "byline": null,
+            "dateline": "Sydney (dpa) - ",
+            "article_html": "<section class=\"main\"><p>Als Folge extrem hoher Temperaturen an der australischen Ostküste ist das Great Barrier Reef Experten zufolge erneut von einer Korallenbleiche bedroht.</p><p>Die Korallen zeigten wegen überdurchschnittlich warmen Meerwassers bereits erste Zeichen von Stress, zitierte die Zeitung «The Age» am Mittwoch David Wachenfeld, Chefwissenschaftler bei der für das Riff verantwortlichen Marineparkbehörde (GBRMPA).</p><p>Im Ozean vor einigen Orten wie Cooktown, Townsville und Mackay seien Berichten zufolge bereits kleinere Bleichen festgestellt worden. Auf der Südhalbkugel ist derzeit Sommer, Australien meldete zuletzt teilweise Hitzerekorde.</p><p>Es wäre die vierte Bleiche in nur sechs Jahren nach 2016, 2017 und 2020. Die Unesco hatte im vergangenen Jahr gedroht, das Riff auf die Rote Liste des «gefährdeten» Welterbes zu setzen. Auf Druck der australischen Regierung war das Great Barrier Reef der Herabstufung aber gerade noch einmal entgangen. Erst 2023 soll wieder über das Naturwunder beraten werden.</p><h2>Nächste vier Wochen absolut kritisch</h2><p>«Wir haben jetzt zwei Drittel des Sommers hinter uns, es gibt eine ziemlich große Anhäufung von Hitzestress da draußen, und die nächsten vier Wochen sind absolut kritisch», sagte Wachenfeld. Die Meerestemperaturen für den größten Teil des Riffs seien seit Beginn des Sommers meist zwischen 0,5 und 1,5 Grad höher gewesen als normal, betonte er. Wie stark das einzigartige Riff, das sich über mehr als 340.000 Quadratkilometer ausdehnt, letztlich geschädigt werde, hänge nun vom Wetter in den kommenden Wochen ab. </p><p>Um das Great Barrier Reef zu retten, seien dringend extreme Maßnahmen weltweit zur Reduzierung der Treibhausgasemissionen sowie auch lokale Maßnahmen nötig, so Wachenfeld. Australien selbst hat aber eine der höchsten CO2-Emissionen pro Kopf und ist einer der größten Kohleexporteure der Welt. Während sich immer mehr Länder dem Kampf gegen die Erderwärmung verpflichten, sendet die konservative Regierung in Canberra immer wieder Signale, dass das Land langfristig an fossilen Brennstoffen festhalten will.</p><p>Premierminister Scott Morrison hat erst vor wenigen Tagen ein Maßnahmen-Paket zum Schutz des Riffs vorgestellt. Über neun Jahre sollen insgesamt eine Milliarde Australische Dollar (630 Millionen Euro) in Maßnahmen zum Erhalt des Ökosystems investiert werden. Um den Klimawandel geht es dabei aber nicht: Vor allem soll mit dem Geld die Verschmutzung des Great Barrier Reefs durch Abwässer aus der Landwirtschaft verhindert werden.</p></section>",
+            "infobox_html": null,
+            "linkbox_html": "<section class=\"linkbox\"><ul><li><a href=\"http://dpaq.de/7kXz3\">Bericht The Age</a></li></ul></section>",
+            "creditline": "dpa",
+            "copyrightnotice": "Copyright 2022, dpa (www.dpa.de). Alle Rechte vorbehalten",
+            "autopublishnotice": "© dpa-infocom, dpa:220202-99-942809/2",
+            "notepad": null,
+            "associations":
+            [
+                {
+                    "type": "image",
+                    "urn": "urn:newsml:dpa.com:20090101:220202-99-942804",
+                    "version": 3,
+                    "rank": 1,
+                    "version_created": "2022-02-02T10:45:31+01:00",
+                    "headline": "Korallenbleiche am Great Barrier Reef",
+                    "is_featureimage": true,
+                    "caption": "Korallen am Great Barrier Reef, die von der Korallenbleiche betroffen sind, vor der Küste von Cairns.",
+                    "creditline": "Daniel Naupold/dpa",
+                    "renditions":
+                    [
+                        {
+                            "size": 2048,
+                            "width": 2048,
+                            "height": 1536,
+                            "fovealarea":
+                            {
+                                "left": 512,
+                                "top": 382,
+                                "right": 1536,
+                                "bottom": 1150
+                            },
+                            "mimetype": "image/jpeg",
+                            "url": "http://dpa_api_test.com/urn:newsml:dpa.com:20090101:220202-99-942804-v3-s2048.jpeg?signature=e6Qiar5amxZC-SYJQjB4WKokbjc&expires=1644105600"
+                        }
+                    ]
+                }
+            ],
+            "categories":
+            [
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.panorama",
+                    "qcode": "dnlpath:weblines.infoline_rs.panorama",
+                    "is_current": false
+                },
+                {
+                    "type": "dnltype:rubric",
+                    "name": "weblines.infoline_rs.wissenschaft",
+                    "qcode": "dnlpath:weblines.infoline_rs.wissenschaft",
+                    "is_current": true
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Klima",
+                    "qcode": "dpasubject:476",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Wissenschaft",
+                    "qcode": "dpasubject:106",
+                    "rank": 2
+                },
+                {
+                    "type": "dnltype:dpasubject",
+                    "name": "Umwelt",
+                    "qcode": "dpasubject:99",
+                    "rank": 3
+                },
+                {
+                    "type": "dnltype:geosubject",
+                    "name": "Australien",
+                    "qcode": "dpacountry:16",
+                    "rank": 1
+                },
+                {
+                    "type": "dnltype:desk",
+                    "name": "vm",
+                    "qcode": "dpacat:vm"
+                },
+                {
+                    "type": "dnltype:genre",
+                    "name": "Meldung",
+                    "qcode": "dpatextgenre:1"
+                },
+                {
+                    "type": "dnltype:poi",
+                    "name": "Great Barrier Reef, Great Barrier Reef, Australien",
+                    "qcode": null,
+                    "geojson":
+                    {
+                        "type": "Feature",
+                        "properties":
+                        {
+                            "name": "Great Barrier Reef",
+                            "formatted_address": "Great Barrier Reef, Australien",
+                            "country": "Australien"
+                        },
+                        "geometry":
+                        {
+                            "type": "Point",
+                            "coordinates":
+                            [
+                                147.6991918,
+                                -18.2870668
+                            ]
+                        }
+                    }
+                },
+                {
+                    "type": "dnltype:urgency",
+                    "name": "4",
+                    "qcode": "urgency:4"
+                },
+                {
+                    "type": "dnltype:provider",
+                    "name": "dpa",
+                    "qcode": "dnlprov:dpa"
+                }
+            ],
+            "current_rubric_names":
+            [
+                "weblines.infoline_rs.wissenschaft"
+            ],
+            "rubric_names":
+            [
+                "weblines.infoline_rs.panorama",
+                "weblines.infoline_rs.wissenschaft"
+            ],
+            "dpasubject_names":
+            [
+                "Klima",
+                "Wissenschaft",
+                "Umwelt"
+            ],
+            "geosubject_names":
+            [
+                "Australien"
+            ],
+            "keyword_names":
+            [],
+            "desk_names":
+            [
+                "vm"
+            ],
+            "genre_names":
+            [
+                "Meldung"
+            ],
+            "poi_names":
+            [
+                "Great Barrier Reef, Great Barrier Reef, Australien"
+            ],
+            "scope_names":
+            [],
+            "_wireq_receipt": "AQEBoA5dNgeZOVMlpeqADJbonkHnOtV3wqanjl%2F%2BxFlPa1zc%2F64D2N%2BVmoFuhSENoA3vrV2lzfoPMN3kWEUROzJ6iKorfq9xRU%2BKtiWP2GRAa7WzJauwCYo3TGn7ritEFEMYUICHteOwaaVK6Q8o0oAQ1a86EWOWxn80N62VVP07YeoOWxozBLajS9cvZXO0bgctq4xy55Ex%2FIwMZbPRNQQR0Z5nLIbbLJ44igST13wZFrix07%2FVte30R1im5Ddl3D3o8qpeq4sYX5TqUGR42wtuW%2Bhlz6wlTklz9ZSfUhaSScOCp%2FdF9CcvesKaKKGZY7Bi6YMstGQmuqY7xOSy7ZLymQ%3D%3D"
+        }
+    ]
+}
