@@ -234,18 +234,18 @@ class ArticleEntry(Entry):
         topicbox.topicpage_filter = 'dpa-import'
 
     def add_main_image(self, article):
+        """do_import publishes the image with transaction commit
+        therefore do not lock the article and try to publish the image
+        if you want to prevent locking errors"""
         news = zeit.newsimport.news.Image(self.entry, article)
-        image = news.do_import()
-        if image is not None:
-            article.main_image = article.main_image.create(image)
-            teaser_image = zeit.content.image.interfaces.IImages(article)
-            teaser_image.image = image
+        return news.do_import()
 
     def add_autopublish_notice(self, article):
         notice = article.body.create_item('p', len(article.body.values()))
         notice.text = self.entry['autopublishnotice']
 
     def apply_to_cms(self, article):
+        image = self.add_main_image(article)
         with zeit.cms.checkout.helper.checked_out(article) as co:
             co.supertitle = self.supertitle
             co.title = self.entry['headline']
@@ -264,7 +264,10 @@ class ArticleEntry(Entry):
             self.set_body(co)
             self.put_table_in_box(co)
             self.add_topicbox(co)
-            self.add_main_image(co)
+            if image is not None:
+                co.main_image = co.main_image.create(image)
+                teaser_image = zeit.content.image.interfaces.IImages(co)
+                teaser_image.image = image
             self.add_autopublish_notice(co)
 
             news_properties = zeit.newsimport.interfaces.IDPANews(co)
