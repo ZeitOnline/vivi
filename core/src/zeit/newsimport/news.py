@@ -36,7 +36,6 @@ log = logging.getLogger(__name__)
 
 DPA_IMPORT_SCHEMA_NS = 'http://namespaces.zeit.de/CMS/dpa'
 URN = SearchVar('urn', DPA_IMPORT_SCHEMA_NS)
-DOC_ID = SearchVar('doc-id', 'http://namespaces.zeit.de/CMS/import')
 
 
 @grok.implementer(zeit.newsimport.interfaces.IDPANews)
@@ -116,17 +115,9 @@ class Entry:
         raise NotImplementedError()
 
     def find_existing_content(self, urn):
-        """
-        Find existing content checking both namespaces to account for change in
-        name.
-        """
         connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
         result = list(connector.search([URN], (URN == str(urn))))
-
-        if len(result) == 0:
-            doc_id = urn.replace(':', '-')
-            result = list(connector.search([DOC_ID], (DOC_ID == str(doc_id))))
 
         if len(result) > 1:
             log.warning('Multiple results found for id: %s', urn)
@@ -141,7 +132,9 @@ class Entry:
             log.debug('Content %s found for %s.', content.uniqueId, urn)
             return content
         except TypeError as error:
-            log.error('Content %s found for %s. But not found in DAV: %s', result[0][0], urn, error)
+            log.error(
+                'Content %s found for %s. But not found in Storage: %s', result[0][0], urn, error
+            )
             return None
 
     def publish(self, content):
