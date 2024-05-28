@@ -11,7 +11,9 @@
 * Converting ``ICMSContent`` objects to a nested dict structure and back again
   with ``ITMSRepresentation`` and ``ITMSContent``
 """
+
 import collections
+import logging
 
 import zope.interface
 
@@ -232,7 +234,11 @@ class KPIFieldSource(zeit.cms.content.sources.CachedXMLBase, collections.UserDic
 
     @property
     def data(self):
-        return self._data()
+        try:
+            return self._data()
+        except Exception:
+            logging.getLogger(__name__).exception('KPIFieldSource failed to load')
+            return {}
 
     @data.setter
     def data(self, value):
