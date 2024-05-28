@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.180.0 (2024-05-28)
+--------------------
+
+- ZO-3458: Update to Python-3.12
+
+- ZO-5477: fix image import for dpa news
+
+
 5.179.0 (2024-05-28)
 --------------------
 
