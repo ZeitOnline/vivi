@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.179.0 (2024-05-28)
+--------------------
+
+- ZO-5456: move zeit.newsimport into vivi
+
+- ZO-5457: Raise exceptions from cli.runner
+
+
 5.178.0 (2024-05-27)
 --------------------
 
