@@ -16,4 +16,6 @@
   <normalize_quotes>false</normalize_quotes>
   <simplecast_webhook>true</simplecast_webhook>
   <speech_webhook>true</speech_webhook>
+  <publish_commit_transaction>true</publish_commit_transaction>
+  <publish_multiple_abort_transaction>false</publish_multiple_abort_transaction>
 </features>
