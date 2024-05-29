@@ -18,6 +18,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.content.article.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.transform
 import zeit.retresco.interfaces
@@ -83,6 +84,10 @@ def unindex_on_remove(context, event):
 def index_workflow_properties(context, event):
     content = context.context
     if zeit.cms.checkout.interfaces.ILocalContent.providedBy(content):
+        return
+    # XXX We should also skip this for other "checkin and publish" workflows.
+    breaking = zeit.content.article.interfaces.IBreakingNews(content, None)
+    if breaking and breaking.is_breaking:
         return
     name = event.field.__name__
     if name in zeit.workflow.interfaces.IContentWorkflow.names(all=False):
