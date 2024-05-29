@@ -7,7 +7,7 @@ import requests
 XMLRPC_AUTH = 'nightwatch:' + os.environ['VIVI_XMLRPC_PASSWORD']
 CONFIG_STAGING = {
     'browser': {'baseurl': 'https://www.staging.zeit.de'},
-    'storage': 'http://content-storage.staging.zon.zeit.de/internal',
+    'storage': 'https://content-storage.staging.zon.zeit.de/internal',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.staging.zon.zeit.de',
     'elasticsearch': 'https://tms-es.staging.zon.zeit.de/zeit_content/_search',
 }
@@ -15,7 +15,7 @@ CONFIG_STAGING = {
 
 CONFIG_PRODUCTION = {
     'browser': {'baseurl': 'https://www.zeit.de'},
-    'storage': 'http://content-storage.prod.zon.zeit.de/internal',
+    'storage': 'https://content-storage.prod.zon.zeit.de/internal',
     'vivi': f'https://{XMLRPC_AUTH}@vivi.prod.zon.zeit.de',
     'elasticsearch': 'https://tms-es.zon.zeit.de/zeit_content/_search',
 }
