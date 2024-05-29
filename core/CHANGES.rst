@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.181.0 (2024-05-29)
+--------------------
+
+- ZO-5481: Prevent superfluous duplicate TMS index tasks for breaking news
+
+
 5.180.0 (2024-05-28)
 --------------------
 
