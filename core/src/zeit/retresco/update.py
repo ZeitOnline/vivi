@@ -82,6 +82,13 @@ def index_after_add(event):
         return
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
+    # On one hand, we might want to model "is created with/out checkin" as a
+    # property of ITypeDeclaration, instead of enumerating special cases here.
+    # On the other hand, this behaviour only applies to vivi UI, and not e.g. any
+    # importer code, so it's not really all that generically applicable.
+    if zeit.content.article.interfaces.IArticle.providedBy(context):
+        # Articles are always created with checkin, which already triggers indexing
+        return
     log.info('AfterAdd: Creating index job for %s', context.uniqueId)
     index_async.delay(context.uniqueId)
 
