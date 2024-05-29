@@ -127,6 +127,12 @@ class ICheckinCheckoutEvent(zope.interface.interfaces.IObjectEvent):
         references etc.)."""
     )
 
+    will_publish_soon = zope.interface.Attribute(
+        """Flag to indicate a workflow where publish will soon follow the checkin.
+
+        (XXX kludgy workaround for concurrency issues)"""
+    )
+
 
 class IBeforeCheckoutEvent(ICheckinCheckoutEvent):
     """Generated just before a content object is checked out."""
@@ -166,11 +172,12 @@ class IAfterDeleteEvent(ICheckinCheckoutEvent):
 
 
 class EventBase(zope.interface.interfaces.ObjectEvent):
-    def __init__(self, object, workingcopy, principal, publishing=False):
+    def __init__(self, object, workingcopy, principal, publishing=False, will_publish_soon=False):
         super().__init__(object)
         self.workingcopy = workingcopy
         self.principal = principal
         self.publishing = publishing
+        self.will_publish_soon = will_publish_soon
 
 
 @zope.interface.implementer(IBeforeCheckoutEvent)

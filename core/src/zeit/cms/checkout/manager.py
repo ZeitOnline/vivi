@@ -137,7 +137,14 @@ class CheckoutManager:
                 return False
         return True
 
-    def checkin(self, event=True, semantic_change=None, ignore_conflicts=False, publishing=False):
+    def checkin(
+        self,
+        event=True,
+        semantic_change=None,
+        ignore_conflicts=False,
+        publishing=False,
+        will_publish_soon=False,
+    ):
         if not self.canCheckin:
             reason = self.last_validation_error
             if reason is None:
@@ -161,7 +168,7 @@ class CheckoutManager:
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
-                    self.context, workingcopy, self.principal, publishing
+                    self.context, workingcopy, self.principal, publishing, will_publish_soon
                 )
             )
 
@@ -177,7 +184,7 @@ class CheckoutManager:
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
-                    added, workingcopy, self.principal, publishing
+                    added, workingcopy, self.principal, publishing, will_publish_soon
                 )
             )
             if not publishing:

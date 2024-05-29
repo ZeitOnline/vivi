@@ -46,7 +46,7 @@ def index_after_add(event):
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
-    if event.publishing:
+    if event.publishing or event.will_publish_soon:
         return
     # XXX Work around race condition between celery/redis (applies already
     # in tpc_vote) and DAV-cache in ZODB (applies only in tpc_finish, so
