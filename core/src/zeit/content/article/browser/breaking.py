@@ -129,7 +129,7 @@ class Add(zeit.cms.browser.form.AddForm, zeit.cms.browser.form.CharlimitMixin):
         # run (which e.g. set default values of ICommonMetadata fields), but
         # the user won't want to edit anything right now, so we check in
         # immediately (and redirect to a view that triggers publishing).
-        self._created_object = ICheckinManager(self._created_object).checkin()
+        self._created_object = ICheckinManager(self._created_object).checkin(will_publish_soon=True)
         self._checked_out = False
 
         IPublishInfo(self._created_object).urgent = True

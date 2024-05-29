@@ -67,10 +67,19 @@ class Checkout(zeit.cms.browser.view.Base):
 
 
 class CheckinAndRedirect:
-    def perform_checkin(self, semantic_change=None, event=True, ignore_conflicts=False):
+    def perform_checkin(
+        self,
+        semantic_change=None,
+        event=True,
+        ignore_conflicts=False,
+        will_publish_soon=False,
+    ):
         try:
             checked_in = self.manager.checkin(
-                semantic_change=semantic_change, event=event, ignore_conflicts=ignore_conflicts
+                semantic_change=semantic_change,
+                event=event,
+                ignore_conflicts=ignore_conflicts,
+                will_publish_soon=will_publish_soon,
             )
         except zeit.cms.repository.interfaces.ConflictError:
             return self._handle_conflict()
@@ -130,12 +139,23 @@ class CheckinAndRedirect:
 
 
 class Checkin(zeit.cms.browser.view.Base, CheckinAndRedirect):
-    def __call__(self, semantic_change=True, event=True, ignore_conflicts=False):
+    def __call__(
+        self,
+        semantic_change=True,
+        event=True,
+        ignore_conflicts=False,
+        will_publish_soon=False,
+    ):
         if semantic_change == 'None':
             semantic_change = None
         else:
             semantic_change = bool(semantic_change)
-        return self.perform_checkin(semantic_change, bool(event), bool(ignore_conflicts))
+        return self.perform_checkin(
+            semantic_change,
+            bool(event),
+            bool(ignore_conflicts),
+            bool(will_publish_soon),
+        )
 
 
 class CheckinConflictError(zeit.cms.browser.view.Base):

@@ -18,6 +18,7 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
+import zeit.content.article.interfaces
 import zeit.content.image.imagegroup
 import zeit.content.image.transform
 import zeit.retresco.interfaces
@@ -27,26 +28,9 @@ import zeit.workflow.interfaces
 log = logging.getLogger(__name__)
 
 
-@grok.subscribe(zope.lifecycleevent.IObjectMovedEvent)
-def index_after_add(event):
-    # We don't use the "extended" (object, event) method, as we are not
-    # interested in the events which are dispatched to sublocations.
-    context = event.object
-    if zope.lifecycleevent.IObjectRemovedEvent.providedBy(event):
-        return
-    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
-        return
-    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
-        return
-    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
-        return
-    log.info('AfterAdd: Creating index job for %s', context.uniqueId)
-    index_async.delay(context.uniqueId)
-
-
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
-    if event.publishing:
+    if event.publishing or event.will_publish_soon:
         return
     # XXX Work around race condition between celery/redis (applies already
     # in tpc_vote) and DAV-cache in ZODB (applies only in tpc_finish, so
@@ -70,6 +54,45 @@ def index_after_retract(context, event):
     index_async.apply_async((context.uniqueId, False), countdown=5)
 
 
+@grok.subscribe(zope.lifecycleevent.IObjectMovedEvent)
+def index_after_move(event):
+    # We don't use the "extended" (object, event) method, as we are not
+    # interested in the events which are dispatched to sublocations.
+    context = event.object
+    if zope.lifecycleevent.IObjectAddedEvent.providedBy(event):
+        return
+    if zope.lifecycleevent.IObjectRemovedEvent.providedBy(event):
+        return
+    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
+        return
+    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        return
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
+        return
+    log.info('Move: Creating index job for %s', context.uniqueId)
+    index_async.delay(context.uniqueId)
+
+
+@grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
+def index_after_add(event):
+    context = event.object
+    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
+        return
+    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        return
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
+        return
+    # On one hand, we might want to model "is created with/out checkin" as a
+    # property of ITypeDeclaration, instead of enumerating special cases here.
+    # On the other hand, this behaviour only applies to vivi UI, and not e.g. any
+    # importer code, so it's not really all that generically applicable.
+    if zeit.content.article.interfaces.IArticle.providedBy(context):
+        # Articles are always created with checkin, which already triggers indexing
+        return
+    log.info('AfterAdd: Creating index job for %s', context.uniqueId)
+    index_async.delay(context.uniqueId)
+
+
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectRemovedEvent)
 def unindex_on_remove(context, event):
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.oldParent):
@@ -83,6 +106,10 @@ def unindex_on_remove(context, event):
 def index_workflow_properties(context, event):
     content = context.context
     if zeit.cms.checkout.interfaces.ILocalContent.providedBy(content):
+        return
+    # XXX We should also skip this for other "checkin and publish" workflows.
+    breaking = zeit.content.article.interfaces.IBreakingNews(content, None)
+    if breaking and breaking.is_breaking:
         return
     name = event.field.__name__
     if name in zeit.workflow.interfaces.IContentWorkflow.names(all=False):
