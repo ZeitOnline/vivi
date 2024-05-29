@@ -28,23 +28,6 @@ import zeit.workflow.interfaces
 log = logging.getLogger(__name__)
 
 
-@grok.subscribe(zope.lifecycleevent.IObjectMovedEvent)
-def index_after_add(event):
-    # We don't use the "extended" (object, event) method, as we are not
-    # interested in the events which are dispatched to sublocations.
-    context = event.object
-    if zope.lifecycleevent.IObjectRemovedEvent.providedBy(event):
-        return
-    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
-        return
-    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
-        return
-    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
-        return
-    log.info('AfterAdd: Creating index job for %s', context.uniqueId)
-    index_async.delay(context.uniqueId)
-
-
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
     if event.publishing or event.will_publish_soon:
@@ -69,6 +52,38 @@ def index_before_publish(context, event):
 def index_after_retract(context, event):
     log.info('AfterRetract: Creating async index job for %s', context.uniqueId)
     index_async.apply_async((context.uniqueId, False), countdown=5)
+
+
+@grok.subscribe(zope.lifecycleevent.IObjectMovedEvent)
+def index_after_move(event):
+    # We don't use the "extended" (object, event) method, as we are not
+    # interested in the events which are dispatched to sublocations.
+    context = event.object
+    if zope.lifecycleevent.IObjectAddedEvent.providedBy(event):
+        return
+    if zope.lifecycleevent.IObjectRemovedEvent.providedBy(event):
+        return
+    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
+        return
+    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        return
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
+        return
+    log.info('Move: Creating index job for %s', context.uniqueId)
+    index_async.delay(context.uniqueId)
+
+
+@grok.subscribe(zope.lifecycleevent.IObjectAddedEvent)
+def index_after_add(event):
+    context = event.object
+    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
+        return
+    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        return
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(event.newParent):
+        return
+    log.info('AfterAdd: Creating index job for %s', context.uniqueId)
+    index_async.delay(context.uniqueId)
 
 
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zope.lifecycleevent.IObjectRemovedEvent)
