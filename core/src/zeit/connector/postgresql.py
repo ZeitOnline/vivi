@@ -7,6 +7,7 @@ from logging import getLogger
 from uuid import uuid4
 import collections
 import hashlib
+import inspect
 import itertools
 import json
 import os
@@ -145,6 +146,18 @@ class Connector:
     def __getitem__(self, uniqueid):
         uniqueid = self._normalize(uniqueid)
         properties = self._get_properties(uniqueid)  # may raise KeyError
+        if not properties.get(('lock_principal', 'INTERNAL')):
+            if uniqueid.endswith('-image-group'):
+                stack = inspect.stack()
+                log.debug('Call stack: %s', '\n'.join([f'{x[0]}' for x in stack[0:11]]))
+                log.info('__getitem__(%s): No lock on %s', id(self), uniqueid)
+        elif uniqueid.endswith('-image-group'):
+            log.info(
+                '__getitem__(%s): Lock on %s by %s',
+                id(self),
+                uniqueid,
+                properties[('lock_principal', 'INTERNAL')],
+            )
         return self.resource_class(
             uniqueid,
             uniqueid.split('/')[-1],
@@ -262,6 +275,10 @@ class Connector:
             if content.lock_status == LockStatus.FOREIGN:
                 raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
 
+        if exists and uniqueid.endswith('-image-group'):
+            properties = self._get_properties(uniqueid)
+            log.info('add: Lock on %s by %s', uniqueid, properties[('lock_principal', 'INTERNAL')])
+
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
         current.update(resource.properties)
@@ -300,6 +317,21 @@ class Connector:
             raise KeyError(f'The resource {uniqueid} does not exist.')
         if content.lock_status == LockStatus.FOREIGN:
             raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+
+        if uniqueid.endswith('-image-group'):
+            pending_changes = self._get_properties(uniqueid)
+            if pending_changes[('lock_principal', 'INTERNAL')]:
+                log.info(
+                    'changeProperties(%s): Lock on %s by %s',
+                    id(self),
+                    uniqueid,
+                    pending_changes[('lock_principal', 'INTERNAL')],
+                )
+            else:
+                log.info('changeProperties(%s): No lock on %s', id(self), uniqueid)
+        # if pending_changes:
+        #     properties.update(pending_changes)
+
         current = content.to_webdav()
         current.update(properties)
         content.from_webdav(current)
@@ -524,6 +556,7 @@ class Connector:
                 lock = content.lock
                 if not lock:
                     lock = Lock(id=content.id)
+                    log.info('Locking %s ...', uniqueid)
                     self.session.add(lock)
                 lock.principal = principal
                 if until is None:
@@ -543,6 +576,7 @@ class Connector:
             return
         if lock_is_foreign(lock.principal):
             raise LockedByOtherSystemError(uniqueid, f'{uniqueid} is already locked.')
+        log.info('Unlocking %s ...', uniqueid)
         self.session.delete(lock)
         self._update_lock_cache(uniqueid, None)
 
@@ -728,7 +762,7 @@ class Content(DBObject):
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
-
+        # XXX breaks everything cache related ... not yet commited!!!
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
             props[('lock_until', INTERNAL_PROPERTY)] = self.lock.until
