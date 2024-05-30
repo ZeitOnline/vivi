@@ -9,7 +9,8 @@ import google.api_core.exceptions
 import pytz
 import transaction
 
-from zeit.connector.postgresql import Lock, _unlock_overdue_locks
+from zeit.cms.repository.interfaces import ConflictError
+from zeit.connector.postgresql import CHECK_PROPERTY, Lock, _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
 import zeit.connector.testing
@@ -274,3 +275,37 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         lock = self.connector.session.scalars(stmt).one()
         self.assertEqual('someone', lock.principal)
         self.assertEqual(lock, content.lock)
+
+
+class ContractValidation(zeit.connector.testing.SQLTest):
+    NS = 'http://namespaces.zeit.de/CMS/testing'
+
+    def test_setitem_generates_checksum(self):
+        res = self.add_resource('foo', body=b'cookies', properties={('foo', self.NS): 'coffee'})
+        self.assertTrue(res.properties[CHECK_PROPERTY])
+
+    def test_empty_body_does_not_break_checksum(self):
+        res = self.add_resource('foo', body=b'', properties={('foo', self.NS): 'coffee'})
+        self.assertEqual(None, res.properties[CHECK_PROPERTY])
+
+    def test_conflicting_writes(self):
+        self.connector.add(
+            self.get_resource('foo', body=b'cookies', properties={CHECK_PROPERTY: '1'})
+        )
+        with self.assertRaises(ConflictError):
+            self.connector.add(
+                self.get_resource('foo', body=b'cake', properties={CHECK_PROPERTY: '2'})
+            )
+
+    def test_folder_requires_no_checksum(self):
+        collection = Resource(None, None, 'folder', BytesIO(b''), None, is_collection=True)
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        folder = self.connector['http://xml.zeit.de/testing/folder']
+        self.assertEqual(None, folder.properties[CHECK_PROPERTY])
+
+    def test_image_checksum_does_not_break(self):
+        res = self.get_resource('foo', b'mybody')
+        res.type = 'file'
+        self.connector.add(res)
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual(None, res.properties[CHECK_PROPERTY])
