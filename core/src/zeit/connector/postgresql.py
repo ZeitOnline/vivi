@@ -529,6 +529,7 @@ class Connector:
                 if until is None:
                     until = datetime.now(pytz.UTC) + timedelta(hours=1)
                 lock.until = until
+                content.lock = lock
                 self._update_lock_cache(content.uniqueid, principal, until)
                 return lock.token
             case LockStatus.OWN:

@@ -261,3 +261,13 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         lock_status = self.connector.locked(res.id)
         now = datetime.now(pytz.UTC)
         self.assertGreaterEqual(lock_status[1], now)
+
+    def test_lock_update_relationship(self):
+        res = self.get_resource('foo', b'mybody')
+        self.connector.add(res)
+        self.connector.lock(res.id, 'someone', None)
+        content = self.connector._get_content(res.id)
+        stmt = select(Lock).where(Lock.id == content.id)
+        lock = self.connector.session.scalars(stmt).one()
+        self.assertEqual('someone', lock.principal)
+        self.assertEqual(lock, content.lock)
