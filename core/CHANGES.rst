@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.182.0 (2024-05-31)
+--------------------
+
+- ZO-5477: explicitly associates the lock with the content object
+
+
 5.181.0 (2024-05-29)
 --------------------
 
