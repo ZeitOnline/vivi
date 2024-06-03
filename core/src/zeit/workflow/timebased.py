@@ -3,6 +3,7 @@ import logging
 
 import grokcore.component as grok
 import pytz
+import z3c.celery.celery
 import zope.component
 import zope.interface
 
@@ -207,4 +208,10 @@ def retract_overdue_objects():
             publish = zeit.cms.workflow.interfaces.IPublish(content)
             for _ in commit_with_retry():
                 log.info('Retracting %s', content)
-                publish.retract(background=False)
+                try:
+                    publish.retract(background=False)
+                except z3c.celery.celery.HandleAfterAbort as e:
+                    if 'LockingError' in e.message:  # kludgy
+                        log.warning('Skip %s due to %s', content, e.message)
+                        break
+                    raise
