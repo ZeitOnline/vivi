@@ -3,9 +3,9 @@ from io import BytesIO
 from unittest import mock
 
 from sqlalchemy import func, select
+from sqlalchemy import text as sql
 from sqlalchemy.exc import IntegrityError
 import google.api_core.exceptions
-import pytest
 import pytz
 import transaction
 
@@ -230,7 +230,6 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         _unlock_overdue_locks()
         assert self.connector.session.scalar(select(func.count(Lock.id))) == 1
 
-    @pytest.mark.xfail(reason='The relationship IS on DELETE CASCADE!')
     def test_delete_content_with_lock_raises(self):
         """We intentionally have not declared `ON DELETE CASCADE` from Lock to
         Content (there is one for Path though), to prevent accidental deletions
@@ -238,8 +237,10 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         """
         self._create_lock(1)
         content = self.connector._get_content('http://xml.zeit.de/testing/foo-1')
-        self.connector.session.delete(content)
         with self.assertRaises(IntegrityError):
+            self.connector.session.execute(
+                sql('DELETE FROM properties WHERE id=:id'), {'id': content.id}
+            )
             transaction.commit()
 
     def test_locking_can_be_disabled_by_config(self):
