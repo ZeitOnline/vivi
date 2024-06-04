@@ -79,18 +79,32 @@ class Publish:
         """Publish multiple objects."""
         if not objects:
             logger.warning(
-                'Not starting a publishing task, because no objects' ' to publish were given'
+                'Not starting a publishing task, because no objects to publish were given'
             )
-            return None
-        ids = [self.context.uniqueId]
+            return []
+        results = []
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.log(
                 obj,
                 _('Collective Publication of ${count} objects', mapping={'count': len(objects)}),
             )
-            ids.append(obj.uniqueId)
-        return self._execute_task(MULTI_PUBLISH_TASK, ids, priority, background, **kw)
+
+            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+            if info.can_publish() == CAN_PUBLISH_ERROR:
+                self.log(obj, 'Publish pre-conditions not satisfied.')
+                continue
+            results.append(
+                self._execute_task(
+                    PUBLISH_TASK,
+                    [obj.uniqueId],
+                    priority,
+                    background,
+                    _('Publication scheduled ${uniqueid}', mapping={'uniqueid': obj.uniqueId}),
+                    **kw,
+                )
+            )
+        return results
 
     def retract_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
         """Retract multiple objects."""
@@ -613,15 +627,6 @@ class MultiTask:
             if obj is not None:
                 errors.append((obj, PublishError.from_detail(msg, error)))
         return errors
-
-
-class MultiPublishTask(MultiTask, PublishTask):
-    """Publish multiple objects"""
-
-
-@zeit.cms.celery.task(bind=True)
-def MULTI_PUBLISH_TASK(self, ids):
-    return MultiPublishTask(self.request.id).run(ids)
 
 
 class MultiRetractTask(MultiTask, RetractTask):
