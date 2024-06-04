@@ -70,13 +70,13 @@ class VolumeAdminBrowserTest(zeit.content.volume.testing.BrowserTestCase):
         # Cause the VolumeAdminForm has additional actions
         # check if base class and subclass actions are used.
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/' '2015/01/ausgabe/@@admin.html')
+        b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@admin.html')
         self.assertIn('Apply', self.browser.contents)
         self.assertIn('Publish content', self.browser.contents)
 
     def publish_content(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/' '2015/01/ausgabe/@@publish-all')
+        b.open('http://localhost/++skin++vivi/repository/2015/01/ausgabe/@@publish-all')
 
     def test_publish_button_publishes_volume_content(self):
         self.elastic.search.return_value = zeit.cms.interfaces.Result([{'url': '/testcontent'}])
@@ -140,7 +140,7 @@ class PublishAllContent(zeit.content.volume.testing.SeleniumTestCase):
     def test_multi_publish_errors_are_logged_on_volume(self):
         s = self.selenium
         self.open('/repository/ausgabe/@@admin.html', self.login_as)
-        with mock.patch('zeit.workflow.publish.MultiPublishTask.recurse') as recurse:
+        with mock.patch('zeit.workflow.publish.PublishTask.recurse') as recurse:
             recurse.side_effect = RuntimeError('provoked')
             s.click('id=form.actions.publish-all')
             s.waitForElementPresent('css=li.busy[action=start_job]')

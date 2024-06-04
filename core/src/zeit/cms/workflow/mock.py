@@ -65,10 +65,11 @@ class MockPublish:
         return self._result()
 
     def publish_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
+        results = []
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
-            self.publish(priority, background, obj)
-        return self._result()
+            results.append(self.publish(priority, background, obj))
+        return results
 
     def retract_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
         for obj in objects:

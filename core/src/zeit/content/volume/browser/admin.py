@@ -52,8 +52,8 @@ class PublishAll:
     # See zeit.workflow.json.publish.Publish.publish()
     def __call__(self):
         all_content_to_publish = self.context.content_with_references_for_publishing()
-        job = IPublish(self.context).publish_multiple(
+        jobs = IPublish(self.context).publish_multiple(
             all_content_to_publish,
             priority=zeit.cms.workflow.interfaces.IPublishPriority(self.context),
         )
-        return json.dumps(job.id)
+        return json.dumps([job.id for job in jobs])
