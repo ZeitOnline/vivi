@@ -7,7 +7,6 @@ import time
 
 from ZODB.POSException import ConflictError
 import gocept.testing.mock
-import pytest
 import pytz
 import requests_mock
 import transaction
@@ -251,7 +250,7 @@ class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
             priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
             IPublish(content).publish()
         apply_async.assert_called_with(
-            (['http://xml.zeit.de/testcontent'],), queue='publish_lowprio'
+            (['http://xml.zeit.de/testcontent'], None), queue='publish_lowprio'
         )
 
 
@@ -306,6 +305,7 @@ Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
         self.assertIn('Published', get_object_log(content))
 
     def test_publish_multiple_via_celery_end_to_end(self):
+        context = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
         c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
         c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
         i1 = IPublishInfo(c1)
@@ -315,7 +315,7 @@ Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
         i1.urgent = True
         i2.urgent = True
 
-        publish = IPublish(c1).publish_multiple([c1, c2])
+        publish = IPublish(context).publish_multiple([c1, c2])
         transaction.commit()
         self.assertEqual(len(publish), 2)
         self.assertTrue(all('Published.' == p.get() for p in publish))
@@ -372,6 +372,7 @@ zeit.workflow.publish.PUBLISH_TASK...succeeded...
 """,
             self.log.getvalue(),
         )
+        self.assertIn('Objects with errors: ${objects}', get_object_log(context))
 
 
 class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
@@ -410,10 +411,6 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
             translate_object_log(self.content)[-1].replace(self.message, ''),
         )
 
-    @pytest.mark.xfail(
-        reason='No longer works after splitting the one task into multiple for every article.'
-        'But we like to implement it again, so we keep the test.'
-    )
     def test_publisher_errors_multi_are_assigned_to_source_object(self):
         main = ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
         IPublishInfo(main).urgent = True
@@ -423,13 +420,15 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
         with self.assertRaises(Exception):
             IPublish(main).publish_multiple([self.content, main], background=False)
         log = translate_object_log(self.content)[-1].replace(self.message, '')
-        self.assertEqual('testing returned 500: Subsystem (500), Details: Provoked', log)
-        self.assertNotIn('Unrelated', log)
+        self.assertIn(
+            'testing returned 500, Details: '
+            '[{"status": 500, "title": "Subsystem", "detail": "Provoked"',
+            log,
+        )
+        # because every object is processed in a separate task,
+        # the errors inside the task belong to the source object
+        self.assertIn('Unrelated', log)
 
-    @pytest.mark.xfail(
-        reason='No longer works after splitting the one task into multiple for every article.'
-        'But we like to implement it again, so we keep the test.'
-    )
     def test_publisher_errors_multi_writes_summary_on_original_object(self):
         main = ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
         IPublishInfo(main).urgent = True
@@ -439,7 +438,7 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
         with self.assertRaises(Exception):
             IPublish(main).publish_multiple([self.content, main], background=False)
         self.assertEqual(
-            f'Objects with errors: {main.uniqueId}, {self.content.uniqueId}',
+            f'Objects with errors: {self.content.uniqueId}',
             translate_object_log(main)[-1].replace(self.message, ''),
         )
 
@@ -545,8 +544,8 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
                 [c1, 'http://xml.zeit.de/online/2007/01/Somalia'],
                 background=False,
             )
-            run.assert_any_call([c1.uniqueId])
-            run.assert_any_call([c2.uniqueId])
+            run.assert_any_call([c1.uniqueId], self.repository.uniqueId)
+            run.assert_any_call([c2.uniqueId], self.repository.uniqueId)
 
     def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch('zeit.workflow.publisher.Publisher.request') as publish:
