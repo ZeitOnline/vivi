@@ -3,6 +3,18 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.183.0 (2024-06-06)
+--------------------
+
+- ZO-5454: newsimport retract works even if called multiple times for the same article
+
+- ZO-5484: Skip retracting currently locked objects
+
+
+FIX:
+- Fix nondeterministic runtime error in metrics collection
+
+
 5.182.0 (2024-05-31)
 --------------------
 
