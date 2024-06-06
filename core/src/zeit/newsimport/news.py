@@ -481,9 +481,9 @@ def process_task(entry, profile_name='weblines'):
             log.info('Published %s (as %s).', entry['urn'], content.uniqueId)
     else:
         try:
-            content = news.retract()
-            del content.__parent__[content.__name__]
-            metrics.COUNT_RETRACT.inc()
+            if content := news.retract():
+                del content.__parent__[content.__name__]
+                metrics.COUNT_RETRACT.inc()
         except Exception:
             log.error('Error while retracting %s', entry['urn'])
             metrics.COUNT_RETRACT_ERROR.inc()

@@ -448,6 +448,12 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
         article = ICMSContent(self.layer['dpa_article_id'], None)
         self.assertEqual(None, article)
         self.assertEqual(2, self.layer['dpa_mock'].delete_entry.call_count)
+        # should throw no errors if retract already happened
+        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
+            zeit.newsimport.news.process_task(entry)
+            self.assertFalse(retract.called)
+        transaction.commit()
+        self.assertEqual(3, self.layer['dpa_mock'].delete_entry.call_count)
 
     def test_delete_entry_if_entry_causes_no_updates(self):
         entry = self.dpa.get_entries()[0]
