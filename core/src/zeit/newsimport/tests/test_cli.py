@@ -41,4 +41,4 @@ class TestConcoleScript(zeit.newsimport.testing.FunctionalTestCase):
             article = ICMSContent(self.layer['dpa_article_id'])
             transaction.commit()
             self.assertTrue(IPublishInfo(article).published)
-            self.assertEqual(11, self.layer['dpa_mock'].delete_entry.call_count)
+            self.assertEqual(13, self.layer['dpa_mock'].delete_entry.call_count)
