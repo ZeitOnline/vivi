@@ -160,7 +160,7 @@ def collect():
     parser.add_argument('--pushgateway')
     options = parser.parse_args()
 
-    for name, func in globals().items():
+    for name, func in list(globals().items()):
         if not name.startswith('_collect'):
             continue
         func()
