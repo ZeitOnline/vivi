@@ -51,8 +51,7 @@ class Publish:
             [self.context.uniqueId],
             priority,
             background,
-            None,
-            _('Publication scheduled'),
+            message=_('Publication scheduled'),
             **kw,
         )
 
@@ -72,12 +71,11 @@ class Publish:
             [self.context.uniqueId],
             priority,
             background,
-            None,
-            _('Retracting scheduled'),
+            message=_('Retracting scheduled'),
             **kw,
         )
 
-    def publish_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
+    def publish_multiple(self, objects, priority=PRIORITY_LOW, **kw):
         """Publish multiple objects."""
         if not objects:
             logger.warning(
@@ -101,9 +99,8 @@ class Publish:
                     PUBLISH_TASK,
                     [obj.uniqueId],
                     priority,
-                    background,
+                    True,
                     self.context.uniqueId,
-                    _('Publication scheduled ${uniqueid}', mapping={'uniqueid': obj.uniqueId}),
                     **kw,
                 )
             )

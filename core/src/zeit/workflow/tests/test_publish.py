@@ -226,8 +226,10 @@ class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         info = IPublishInfo(article)
         info.urgent = True
-        IPublish(article).publish_multiple([article.uniqueId], background=False)
+        IPublish(article).publish(background=False)
         self.assertTrue(info.published)
+        IPublish(article).retract_multiple([article.uniqueId], background=True)
+        self.assertFalse(info.published)
 
     def test_ignores_invalid_unique_ids(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
@@ -418,16 +420,10 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
             {'title': 'Unrelated', 'source': {'pointer': IUUID(main).shortened}}
         )
         with self.assertRaises(Exception):
-            IPublish(main).publish_multiple([self.content, main], background=False)
+            IPublish(main).retract_multiple([self.content, main], background=False)
         log = translate_object_log(self.content)[-1].replace(self.message, '')
-        self.assertIn(
-            'testing returned 500, Details: '
-            '[{"status": 500, "title": "Subsystem", "detail": "Provoked"',
-            log,
-        )
-        # because every object is processed in a separate task,
-        # the errors inside the task belong to the source object
-        self.assertIn('Unrelated', log)
+        self.assertEqual('testing returned 500: Subsystem (500), Details: Provoked', log)
+        self.assertNotIn('Unrelated', log)
 
     def test_publisher_errors_multi_writes_summary_on_original_object(self):
         main = ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
@@ -436,7 +432,7 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
             {'title': 'Unrelated', 'source': {'pointer': IUUID(main).shortened}}
         )
         with self.assertRaises(Exception):
-            IPublish(main).publish_multiple([self.content, main], background=False)
+            IPublish(main).publish_multiple([self.content, main])
         self.assertEqual(
             f'Objects with errors: {self.content.uniqueId}',
             translate_object_log(main)[-1].replace(self.message, ''),
@@ -507,17 +503,18 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         self.assertIn(self.error, translate_object_log(c1))
         self.assertIn(self.error, translate_object_log(c2))
         self.assertIn('LockingError', translate_object_log(c3)[-1])
+        log_messages = translate_object_log(c1)
         self.assertIn(
-            'Publication scheduled http://xml.zeit.de/online/2007/01/Flugsicherheit',
-            translate_object_log(c1),
+            'Objects with errors: http://xml.zeit.de/online/2007/01/Flugsicherheit',
+            log_messages,
         )
         self.assertIn(
-            'Publication scheduled http://xml.zeit.de/online/2007/01/Saarland',
-            translate_object_log(c1),
+            'Objects with errors: http://xml.zeit.de/online/2007/01/Saarland',
+            log_messages,
         )
         self.assertIn(
-            'Publication scheduled http://xml.zeit.de/online/2007/01/Querdax',
-            translate_object_log(c1),
+            'Objects with errors: http://xml.zeit.de/online/2007/01/Querdax',
+            log_messages,
         )
 
 
@@ -527,10 +524,10 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         c2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/eta-zapatero')
         IPublishInfo(c1).urgent = True
         IPublishInfo(c2).urgent = True
-        IPublish(self.repository).publish_multiple([c1, c2], background=False)
+        IPublish(self.repository).publish_multiple([c1, c2])
         self.assertTrue(IPublishInfo(c1).published)
         self.assertTrue(IPublishInfo(c2).published)
-        IPublish(self.repository).retract_multiple([c1, c2], background=False)
+        IPublish(self.repository).retract_multiple([c1, c2])
         self.assertFalse(IPublishInfo(c1).published)
         self.assertFalse(IPublishInfo(c2).published)
 
@@ -542,38 +539,14 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
             IPublishInfo(c2).urgent = True
             IPublish(self.repository).publish_multiple(
                 [c1, 'http://xml.zeit.de/online/2007/01/Somalia'],
-                background=False,
             )
             run.assert_any_call([c1.uniqueId], self.repository.uniqueId)
             run.assert_any_call([c2.uniqueId], self.repository.uniqueId)
 
     def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch('zeit.workflow.publisher.Publisher.request') as publish:
-            IPublish(self.repository).publish_multiple([], background=False)
+            IPublish(self.repository).publish_multiple([])
             self.assertFalse(publish.called)
-
-    def test_publish_multiple_aborts_with_first_failure_if_not_using_async(self):
-        context = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
-        c1 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        c2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/eta-zapatero')
-        IPublishInfo(c1).urgent = True
-        IPublishInfo(c2).urgent = True
-
-        calls = []
-
-        def after_publish(context, event):
-            calls.append(context.uniqueId)
-            if context.uniqueId == c1.uniqueId:
-                raise RuntimeError('provoked')
-
-        zope.component.getGlobalSiteManager().registerHandler(
-            after_publish,
-            (zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent),
-        )
-
-        with self.assertRaises(RuntimeError):
-            IPublish(context).publish_multiple([c1, c2], background=False)
-        self.assertNotIn(c2.uniqueId, calls)
 
 
 class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
