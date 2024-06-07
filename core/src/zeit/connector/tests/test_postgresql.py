@@ -308,4 +308,4 @@ class ContractValidation(zeit.connector.testing.SQLTest):
         res.type = 'file'
         self.connector.add(res)
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('d80f93b8617f4efdddcaa2729696bff4', res.properties[CHECK_PROPERTY])
+        self.assertEqual('ad705906dd2680277ea3ad7e109fb1a4', res.properties[CHECK_PROPERTY])

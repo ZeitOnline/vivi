@@ -778,7 +778,7 @@ class Content(DBObject):
             return None
         if self.binary_body:
             alg = hashlib.md5(usedforsecurity=False)
-            meta = json.dumps(self.unsorted, ensure_ascii=False).encode('utf-8')
+            meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False).encode('utf-8')
             alg.update(meta)
             return alg.hexdigest()
         body = self.body
