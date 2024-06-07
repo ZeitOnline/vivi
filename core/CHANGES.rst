@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.184.0 (2024-06-07)
+--------------------
+
+- ZO-5409: Remove "platform" configuration axis
+
+
 5.183.0 (2024-06-06)
 --------------------
 
