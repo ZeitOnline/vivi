@@ -777,7 +777,10 @@ class Content(DBObject):
         if self.is_collection:
             return None
         if self.binary_body:
-            return None
+            alg = hashlib.md5(usedforsecurity=False)
+            meta = json.dumps(self.unsorted, ensure_ascii=False).encode('utf-8')
+            alg.update(meta)
+            return alg.hexdigest()
         body = self.body
         if not body:
             return None

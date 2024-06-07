@@ -303,9 +303,9 @@ class ContractValidation(zeit.connector.testing.SQLTest):
         folder = self.connector['http://xml.zeit.de/testing/folder']
         self.assertEqual(None, folder.properties[CHECK_PROPERTY])
 
-    def test_image_checksum_does_not_break(self):
-        res = self.get_resource('foo', b'mybody')
+    def test_create_image_generates_checksum(self):
+        res = self.get_resource('foo', b'mybody', properties={('foo', self.NS): 'bar'})
         res.type = 'file'
         self.connector.add(res)
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual(None, res.properties[CHECK_PROPERTY])
+        self.assertEqual('d80f93b8617f4efdddcaa2729696bff4', res.properties[CHECK_PROPERTY])
