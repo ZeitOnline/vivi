@@ -776,16 +776,14 @@ class Content(DBObject):
         """but now we have to get the body every time, we use to_webdav, sigh"""
         if self.is_collection:
             return None
-        if self.binary_body:
-            alg = hashlib.md5(usedforsecurity=False)
-            meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False).encode('utf-8')
-            alg.update(meta)
-            return alg.hexdigest()
-        body = self.body
-        if not body:
-            return None
+
         alg = hashlib.md5(usedforsecurity=False)
-        alg.update(body.encode('utf-8'))
+        meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False)
+        if self.binary_body:
+            alg.update(meta.encode('utf-8'))
+            return alg.hexdigest()
+        text = f'{meta}{self.body}'
+        alg.update(text.encode('utf-8'))
         return alg.hexdigest()
 
 

@@ -282,11 +282,11 @@ class ContractValidation(zeit.connector.testing.SQLTest):
 
     def test_setitem_generates_checksum(self):
         res = self.add_resource('foo', body=b'cookies', properties={('foo', self.NS): 'coffee'})
-        self.assertTrue(res.properties[CHECK_PROPERTY])
+        self.assertEqual('000ca6541faa17098d0a004afe35971c', res.properties[CHECK_PROPERTY])
 
     def test_empty_body_does_not_break_checksum(self):
         res = self.add_resource('foo', body=b'', properties={('foo', self.NS): 'coffee'})
-        self.assertEqual(None, res.properties[CHECK_PROPERTY])
+        self.assertEqual('57845fdbbb05eeaa9dca9de2f78d772b', res.properties[CHECK_PROPERTY])
 
     def test_conflicting_writes(self):
         self.connector.add(
