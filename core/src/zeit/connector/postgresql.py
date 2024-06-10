@@ -46,6 +46,7 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
@@ -739,7 +740,9 @@ class Content(DBObject):
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
-        props[CHECK_PROPERTY] = self._set_checksum()
+
+        if FEATURE_TOGGLES.find('content_checksum'):
+            props[CHECK_PROPERTY] = self._set_checksum()
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal

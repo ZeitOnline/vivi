@@ -9,6 +9,7 @@ import google.api_core.exceptions
 import pytz
 import transaction
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.postgresql import CHECK_PROPERTY, Lock, _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
@@ -281,14 +282,17 @@ class ContractValidation(zeit.connector.testing.SQLTest):
     NS = 'http://namespaces.zeit.de/CMS/testing'
 
     def test_setitem_generates_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
         res = self.add_resource('foo', body=b'cookies', properties={('foo', self.NS): 'coffee'})
         self.assertEqual('000ca6541faa17098d0a004afe35971c', res.properties[CHECK_PROPERTY])
 
     def test_empty_body_does_not_break_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
         res = self.add_resource('foo', body=b'', properties={('foo', self.NS): 'coffee'})
         self.assertEqual('57845fdbbb05eeaa9dca9de2f78d772b', res.properties[CHECK_PROPERTY])
 
     def test_conflicting_writes(self):
+        FEATURE_TOGGLES.set('content_checksum')
         self.connector.add(
             self.get_resource('foo', body=b'cookies', properties={CHECK_PROPERTY: '1'})
         )
@@ -298,12 +302,14 @@ class ContractValidation(zeit.connector.testing.SQLTest):
             )
 
     def test_folder_requires_no_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
         collection = Resource(None, None, 'folder', BytesIO(b''), None, is_collection=True)
         self.connector['http://xml.zeit.de/testing/folder'] = collection
         folder = self.connector['http://xml.zeit.de/testing/folder']
         self.assertEqual(None, folder.properties[CHECK_PROPERTY])
 
     def test_create_image_generates_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
         res = self.get_resource('foo', b'mybody', properties={('foo', self.NS): 'bar'})
         res.type = 'file'
         self.connector.add(res)
