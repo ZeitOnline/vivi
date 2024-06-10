@@ -268,10 +268,11 @@ class Connector:
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
-        content_checksum = current.get(CHECK_PROPERTY)
-        resource_checksum = resource.properties.get(CHECK_PROPERTY)
-        if resource_checksum and content_checksum and resource_checksum != content_checksum:
-            raise ConflictError(uniqueid, f'{uniqueid} body has changed.')
+        if verify_etag:
+            content_checksum = current.get(CHECK_PROPERTY)
+            resource_checksum = resource.properties.get(CHECK_PROPERTY)
+            if resource_checksum and content_checksum and resource_checksum != content_checksum:
+                raise ConflictError(uniqueid, f'{uniqueid} body has changed.')
 
         current.update(resource.properties)
         content.from_webdav(current)
