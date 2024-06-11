@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.186.0 (2024-06-11)
+--------------------
+
+- ZO-5482: do not check for tasks in multi publish
+
+
 5.185.0 (2024-06-11)
 --------------------
 
