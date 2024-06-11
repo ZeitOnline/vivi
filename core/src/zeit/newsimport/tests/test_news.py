@@ -493,6 +493,15 @@ class TestProcess(zeit.newsimport.testing.FunctionalTestCase):
         )
         self.assertEqual(1, self.layer['dpa_mock'].delete_entry.call_count)
 
+    def test_exception_is_no_reraised(self):
+        entry = self.dpa.get_entries()[0]
+        with mock.patch('zeit.newsimport.news.Entry.find_existing_content') as fi:
+            fi.side_effect = Exception('Provoked')
+            zeit.newsimport.news.process_task(entry)
+            transaction.commit()
+
+        self.assertEqual(0, self.layer['dpa_mock'].delete_entry.call_count)
+
 
 class DPATOTMSTest(zeit.newsimport.testing.FunctionalTestCase):
     layer = zeit.newsimport.testing.CELERY_LAYER

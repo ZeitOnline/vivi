@@ -474,7 +474,7 @@ def process_task(entry, profile_name='weblines'):
         except Exception:
             log.error('Error while publishing %s', entry['urn'])
             metrics.COUNT_PUBLISH_ERROR.inc()
-            raise
+            return
         if content is None:
             log.info('Skipped import of %s', entry['urn'])
         else:
@@ -487,7 +487,7 @@ def process_task(entry, profile_name='weblines'):
         except Exception:
             log.error('Error while retracting %s', entry['urn'])
             metrics.COUNT_RETRACT_ERROR.inc()
-            raise
+            return
         if content is None:
             log.info('Skipped retracting %s, not found in vivi', entry['urn'])
         else:
