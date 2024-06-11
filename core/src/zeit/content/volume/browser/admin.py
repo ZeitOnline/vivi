@@ -56,4 +56,4 @@ class PublishAll:
             all_content_to_publish,
             priority=zeit.cms.workflow.interfaces.IPublishPriority(self.context),
         )
-        return json.dumps(None)
+        return json.dumps('')

@@ -81,6 +81,9 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
 
     poll_until_complete: function(context, job, objectlog) {
         var self = this;
+        if (!job) {
+            return;
+        }
         var d = MochiKit.Async.loadJSONDoc(
             window.application_url + '/@@job-status', {'job': job});
         // status is defined in celery.result.AsyncResult.state
