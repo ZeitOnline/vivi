@@ -273,7 +273,11 @@ class Connector:
             content_checksum = current.get(CHECK_PROPERTY)
             resource_checksum = resource.properties.get(CHECK_PROPERTY)
             if resource_checksum and content_checksum and resource_checksum != content_checksum:
-                raise ConflictError(uniqueid, f'{uniqueid} body has changed.')
+                raise ConflictError(
+                    uniqueid,
+                    f'{uniqueid} body has changed. Resource checksum {resource_checksum} '
+                    'does not match stored checksum {content_checksum}.',
+                )
 
         current.update(resource.properties)
         content.from_webdav(current)
@@ -777,17 +781,15 @@ class Content(DBObject):
         self.unsorted = unsorted
 
     def _set_checksum(self):
-        """but now we have to get the body every time, we use to_webdav, sigh"""
         if self.is_collection:
             return None
 
         alg = hashlib.sha256(usedforsecurity=False)
         meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False)
-        if self.binary_body:
-            alg.update(meta.encode('utf-8'))
+        alg.update(meta.encode('utf-8'))
+        if self.binary_body or not self.body:
             return alg.hexdigest()
-        text = f'{meta}{self.body}'
-        alg.update(text.encode('utf-8'))
+        alg.update(self.body.encode('utf-8'))
         return alg.hexdigest()
 
 
