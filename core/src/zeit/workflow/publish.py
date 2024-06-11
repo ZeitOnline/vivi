@@ -51,7 +51,7 @@ class Publish:
             [self.context.uniqueId],
             priority,
             background,
-            _('Publication scheduled'),
+            message=_('Publication scheduled'),
             **kw,
         )
 
@@ -71,26 +71,40 @@ class Publish:
             [self.context.uniqueId],
             priority,
             background,
-            _('Retracting scheduled'),
+            message=_('Retracting scheduled'),
             **kw,
         )
 
-    def publish_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
+    def publish_multiple(self, objects, priority=PRIORITY_LOW, **kw):
         """Publish multiple objects."""
         if not objects:
             logger.warning(
-                'Not starting a publishing task, because no objects' ' to publish were given'
+                'Not starting a publishing task, because no objects to publish were given'
             )
-            return None
-        ids = [self.context.uniqueId]
+            return []
+        results = []
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.log(
                 obj,
                 _('Collective Publication of ${count} objects', mapping={'count': len(objects)}),
             )
-            ids.append(obj.uniqueId)
-        return self._execute_task(MULTI_PUBLISH_TASK, ids, priority, background, **kw)
+
+            info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+            if info.can_publish() == CAN_PUBLISH_ERROR:
+                self.log(obj, 'Publish pre-conditions not satisfied.')
+                continue
+            results.append(
+                self._execute_task(
+                    PUBLISH_TASK,
+                    [obj.uniqueId],
+                    priority,
+                    True,
+                    self.context.uniqueId,
+                    **kw,
+                )
+            )
+        return results
 
     def retract_multiple(self, objects, priority=PRIORITY_LOW, background=True, **kw):
         """Retract multiple objects."""
@@ -99,22 +113,34 @@ class Publish:
                 'Not starting a retract task, because no objects' ' to retract were given'
             )
             return None
-        ids = [self.context.uniqueId]
+        ids = []
         for obj in objects:
             obj = zeit.cms.interfaces.ICMSContent(obj)
             self.log(
                 obj, _('Collective Retraction of ${count} objects', mapping={'count': len(objects)})
             )
             ids.append(obj.uniqueId)
-        return self._execute_task(MULTI_RETRACT_TASK, ids, priority, background, **kw)
+        return self._execute_task(
+            MULTI_RETRACT_TASK,
+            ids,
+            priority,
+            background,
+            self.context.uniqueId,
+            **kw,
+        )
 
-    def _execute_task(self, task, ids, priority, background, message=None, **kw):
+    def _execute_task(
+        self, task, ids, priority, background, collect_errors_on=None, message=None, **kw
+    ):
+        """`collect_errors_on` is an addtional target for objectlog error messages if given"""
         if background:
             if message:
                 self.log(self.context, message)
-            return task.apply_async((ids,), queue=self.get_priority(priority), **kw)
+            return task.apply_async(
+                (ids, collect_errors_on), queue=self.get_priority(priority), **kw
+            )
         else:
-            result = task(ids)
+            result = task(ids, collect_errors_on)
             return celery.result.EagerResult('eager', result, celery.states.SUCCESS)
 
     def log(self, obj, msg):
@@ -140,9 +166,8 @@ class PublishRetractTask:
 
     def __init__(self, jobid):
         self.jobid = jobid
-        self.context = None  # extension point for MultiTask
 
-    def run(self, ids):
+    def run(self, ids, collect_errors_on=None):
         """Run task in worker."""
         ids_str = ', '.join(ids)
         info = (type(self).__name__, ids_str, self.jobid)
@@ -194,10 +219,10 @@ class PublishRetractTask:
                 to_log = [(obj, message) for obj in objs]
                 with_error = [obj.uniqueId for obj in objs]
 
-            if self.context is not None:
+            if log_target := zeit.cms.interfaces.ICMSContent(collect_errors_on, None):
                 to_log.append(
                     (
-                        self.context,
+                        log_target,
                         _(
                             'Objects with errors: ${objects}',
                             mapping={'objects': ', '.join(sorted(with_error))},
@@ -482,8 +507,8 @@ class PublishTask(PublishRetractTask):
 
 
 @zeit.cms.celery.task(bind=True)
-def PUBLISH_TASK(self, ids):
-    return PublishTask(self.request.id).run(ids)
+def PUBLISH_TASK(self, ids, collect_errors_on=None):
+    return PublishTask(self.request.id).run(ids, collect_errors_on)
 
 
 class RetractTask(PublishRetractTask):
@@ -572,15 +597,11 @@ class RetractTask(PublishRetractTask):
 
 
 @zeit.cms.celery.task(bind=True)
-def RETRACT_TASK(self, ids):
-    return RetractTask(self.request.id).run(ids)
+def RETRACT_TASK(self, ids, collect_errors_on=None):
+    return RetractTask(self.request.id).run(ids, collect_errors_on)
 
 
 class MultiTask:
-    def run(self, ids):
-        self.context = zeit.cms.interfaces.ICMSContent(ids.pop(0), None)
-        return super().run(ids)
-
     def _run(self, objs):
         if not FEATURE_TOGGLES.find('publish_multiple_abort_transaction'):
             return super()._run(objs)
@@ -615,19 +636,10 @@ class MultiTask:
         return errors
 
 
-class MultiPublishTask(MultiTask, PublishTask):
-    """Publish multiple objects"""
-
-
-@zeit.cms.celery.task(bind=True)
-def MULTI_PUBLISH_TASK(self, ids):
-    return MultiPublishTask(self.request.id).run(ids)
-
-
 class MultiRetractTask(MultiTask, RetractTask):
     """Retract multiple objects"""
 
 
 @zeit.cms.celery.task(bind=True)
-def MULTI_RETRACT_TASK(self, ids):
-    return MultiRetractTask(self.request.id).run(ids)
+def MULTI_RETRACT_TASK(self, ids, collect_errors_on=None):
+    return MultiRetractTask(self.request.id).run(ids, collect_errors_on)

@@ -10,6 +10,7 @@ import gocept.testing.mock
 import pytz
 import requests_mock
 import transaction
+import z3c.celery.celery
 import zope.app.appsetup.product
 import zope.component
 import zope.i18n
@@ -225,16 +226,16 @@ class SynchronousPublishTest(zeit.workflow.testing.FunctionalTestCase):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         info = IPublishInfo(article)
         info.urgent = True
-        IPublish(article).publish_multiple([article.uniqueId], background=False)
+        IPublish(article).publish(background=False)
         self.assertTrue(info.published)
+        IPublish(article).retract_multiple([article.uniqueId], background=True)
+        self.assertFalse(info.published)
 
     def test_ignores_invalid_unique_ids(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
         info = IPublishInfo(article)
         info.urgent = True
-        zeit.workflow.publish.MULTI_PUBLISH_TASK(
-            ['http://xml.zeit.de/nonexistent', article.uniqueId]
-        )
+        zeit.workflow.publish.PUBLISH_TASK(['http://xml.zeit.de/nonexistent', article.uniqueId])
         self.assertTrue(info.published)
 
 
@@ -251,7 +252,7 @@ class PublishPriorityTest(zeit.workflow.testing.FunctionalTestCase):
             priority.return_value = zeit.cms.workflow.interfaces.PRIORITY_LOW
             IPublish(content).publish()
         apply_async.assert_called_with(
-            (['http://xml.zeit.de/testcontent'],), queue='publish_lowprio'
+            (['http://xml.zeit.de/testcontent'], None), queue='publish_lowprio'
         )
 
 
@@ -306,6 +307,7 @@ Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
         self.assertIn('Published', get_object_log(content))
 
     def test_publish_multiple_via_celery_end_to_end(self):
+        context = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
         c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
         c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
         i1 = IPublishInfo(c1)
@@ -315,23 +317,64 @@ Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
         i1.urgent = True
         i2.urgent = True
 
-        publish = IPublish(c1).publish_multiple([c1, c2])
+        publish = IPublish(context).publish_multiple([c1, c2])
         transaction.commit()
-        self.assertEqual('Published.', publish.get())
+        self.assertEqual(len(publish), 2)
+        self.assertTrue(all('Published.' == p.get() for p in publish))
         transaction.begin()
         self.assertEllipsis(
             """\
 ...
-Running job...for http://xml.zeit.de/online/2007/01/Flugsicherheit,
-        http://xml.zeit.de/online/2007/01/Saarland
-Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit,
-       http://xml.zeit.de/online/2007/01/Saarland
-Task zeit.workflow.publish.MULTI_PUBLISH_TASK...succeeded...""",
+Running job...for http://xml.zeit.de/online/2007/01/Flugsicherheit
+Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit
+Task zeit.workflow.publish.PUBLISH_TASK...succeeded...
+Running job...for http://xml.zeit.de/online/2007/01/Saarland
+Publishing http://xml.zeit.de/online/2007/01/Saarland
+Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
             self.log.getvalue(),
         )
 
         self.assertIn('Published', get_object_log(c1))
         self.assertIn('Published', get_object_log(c2))
+
+    def test_publish_multiple_continues_if_tasks_fail(self):
+        def after_publish(context, event):
+            if context.uniqueId == c1.uniqueId:
+                raise RuntimeError('provoked')
+
+        zope.component.getGlobalSiteManager().registerHandler(
+            after_publish,
+            (zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent),
+        )
+        context = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
+        c1 = ICMSContent('http://xml.zeit.de/online/2007/01/Flugsicherheit')
+        c2 = ICMSContent('http://xml.zeit.de/online/2007/01/Saarland')
+        i1 = IPublishInfo(c1)
+        i2 = IPublishInfo(c2)
+        self.assertFalse(i1.published)
+        self.assertFalse(i2.published)
+        i1.urgent = True
+        i2.urgent = True
+
+        publish = IPublish(context).publish_multiple([c1, c2])
+        transaction.commit()
+        self.assertEqual(len(publish), 2)
+        with self.assertRaises(z3c.celery.celery.HandleAfterAbort):
+            [p.get() for p in publish]
+        transaction.begin()
+        self.assertEllipsis(
+            """\
+...
+Running job...for http://xml.zeit.de/online/2007/01/Flugsicherheit...
+Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit...
+Error during publish/retract...RuntimeError: provoked...
+Running job...for http://xml.zeit.de/online/2007/01/Saarland...
+Publishing http://xml.zeit.de/online/2007/01/Saarland...
+zeit.workflow.publish.PUBLISH_TASK...succeeded...
+""",
+            self.log.getvalue(),
+        )
+        self.assertIn('Objects with errors: ${objects}', get_object_log(context))
 
 
 class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
@@ -377,7 +420,7 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
             {'title': 'Unrelated', 'source': {'pointer': IUUID(main).shortened}}
         )
         with self.assertRaises(Exception):
-            IPublish(main).publish_multiple([self.content, main], background=False)
+            IPublish(main).retract_multiple([self.content, main], background=False)
         log = translate_object_log(self.content)[-1].replace(self.message, '')
         self.assertEqual('testing returned 500: Subsystem (500), Details: Provoked', log)
         self.assertNotIn('Unrelated', log)
@@ -389,9 +432,9 @@ class PublishErrorTest(zeit.workflow.testing.FunctionalTestCase):
             {'title': 'Unrelated', 'source': {'pointer': IUUID(main).shortened}}
         )
         with self.assertRaises(Exception):
-            IPublish(main).publish_multiple([self.content, main], background=False)
+            IPublish(main).publish_multiple([self.content, main])
         self.assertEqual(
-            f'Objects with errors: {main.uniqueId}, {self.content.uniqueId}',
+            f'Objects with errors: {self.content.uniqueId}',
             translate_object_log(main)[-1].replace(self.message, ''),
         )
 
@@ -451,20 +494,27 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
         publish = IPublish(c1).publish_multiple([c1, c2, c3])
         transaction.commit()
 
+        self.assertEqual(len(publish), 3)
         with self.assertRaises(Exception) as err:
-            publish.get()
+            [p.get() for p in publish]
         transaction.begin()
 
         self.assertIn('678', str(err.exception))
         self.assertIn(self.error, translate_object_log(c1))
         self.assertIn(self.error, translate_object_log(c2))
         self.assertIn('LockingError', translate_object_log(c3)[-1])
+        log_messages = translate_object_log(c1)
         self.assertIn(
-            'Objects with errors: '
-            'http://xml.zeit.de/online/2007/01/Flugsicherheit, '
-            'http://xml.zeit.de/online/2007/01/Querdax, '
-            'http://xml.zeit.de/online/2007/01/Saarland',
-            translate_object_log(c1),
+            'Objects with errors: http://xml.zeit.de/online/2007/01/Flugsicherheit',
+            log_messages,
+        )
+        self.assertIn(
+            'Objects with errors: http://xml.zeit.de/online/2007/01/Saarland',
+            log_messages,
+        )
+        self.assertIn(
+            'Objects with errors: http://xml.zeit.de/online/2007/01/Querdax',
+            log_messages,
         )
 
 
@@ -482,61 +532,21 @@ class MultiPublishRetractTest(zeit.workflow.testing.FunctionalTestCase):
         self.assertFalse(IPublishInfo(c2).published)
 
     def test_accepts_uniqueId_as_well_as_ICMSContent(self):
-        with mock.patch('zeit.workflow.publish.MultiPublishTask.run') as run:
+        with mock.patch('zeit.workflow.publish.PublishTask.run') as run:
+            c1 = self.repository['testcontent']
+            c2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+            IPublishInfo(c1).urgent = True
+            IPublishInfo(c2).urgent = True
             IPublish(self.repository).publish_multiple(
-                [self.repository['testcontent'], 'http://xml.zeit.de/online/2007/01/Somalia'],
-                background=False,
+                [c1, 'http://xml.zeit.de/online/2007/01/Somalia'],
             )
-            ids = run.call_args[0][0]
-            self.assertEqual(
-                [
-                    'http://xml.zeit.de/',
-                    'http://xml.zeit.de/testcontent',
-                    'http://xml.zeit.de/online/2007/01/Somalia',
-                ],
-                ids,
-            )
+            run.assert_any_call([c1.uniqueId], self.repository.uniqueId)
+            run.assert_any_call([c2.uniqueId], self.repository.uniqueId)
 
     def test_empty_list_of_objects_does_not_run_publish(self):
         with mock.patch('zeit.workflow.publisher.Publisher.request') as publish:
-            IPublish(self.repository).publish_multiple([], background=False)
+            IPublish(self.repository).publish_multiple([])
             self.assertFalse(publish.called)
-
-    def test_error_in_one_item_continues_with_other_items(self):
-        context = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Querdax')
-        c1 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
-        c2 = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/2007/01/eta-zapatero')
-        IPublishInfo(c1).urgent = True
-        IPublishInfo(c2).urgent = True
-
-        calls = []
-
-        def after_publish(context, event):
-            calls.append(context.uniqueId)
-            if context.uniqueId == c1.uniqueId:
-                raise RuntimeError('provoked')
-
-        zope.component.getGlobalSiteManager().registerHandler(
-            after_publish,
-            (zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent),
-        )
-
-        with self.assertRaises(RuntimeError):
-            IPublish(context).publish_multiple([c1, c2], background=False)
-
-        # PublishedEvent still happens for c2, even though c1 raised
-        self.assertIn(c2.uniqueId, calls)
-        # Error is logged
-        log = zeit.objectlog.interfaces.ILog(c1)
-        self.assertEqual(
-            [
-                '${name}: ${new_value}',
-                'Collective Publication of ${count} objects',
-                'Published',
-                'Error during publish/retract: ${exc}: ${message}',
-            ],
-            [x.message for x in log.get_log()],
-        )
 
 
 class NewPublisherTest(zeit.workflow.testing.FunctionalTestCase):
