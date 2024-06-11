@@ -781,7 +781,7 @@ class Content(DBObject):
         if self.is_collection:
             return None
 
-        alg = hashlib.md5(usedforsecurity=False)
+        alg = hashlib.sha256(usedforsecurity=False)
         meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False)
         if self.binary_body:
             alg.update(meta.encode('utf-8'))

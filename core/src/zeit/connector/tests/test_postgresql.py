@@ -284,12 +284,18 @@ class ContractValidation(zeit.connector.testing.SQLTest):
     def test_setitem_generates_checksum(self):
         FEATURE_TOGGLES.set('content_checksum')
         res = self.add_resource('foo', body=b'cookies', properties={('foo', self.NS): 'coffee'})
-        self.assertEqual('000ca6541faa17098d0a004afe35971c', res.properties[CHECK_PROPERTY])
+        self.assertEqual(
+            '4aa8c4d2a04ecdb13a745352677f261af9f92471af4152de2ee471fe2a6865ef',
+            res.properties[CHECK_PROPERTY],
+        )
 
     def test_empty_body_does_not_break_checksum(self):
         FEATURE_TOGGLES.set('content_checksum')
         res = self.add_resource('foo', body=b'', properties={('foo', self.NS): 'coffee'})
-        self.assertEqual('57845fdbbb05eeaa9dca9de2f78d772b', res.properties[CHECK_PROPERTY])
+        self.assertEqual(
+            '4fe7418985ce0d5c34cf69208ecde17c531c7bf900500bf2eebbd0b2f7c4c1ba',
+            res.properties[CHECK_PROPERTY],
+        )
 
     def test_conflicting_writes(self):
         FEATURE_TOGGLES.set('content_checksum')
@@ -314,4 +320,7 @@ class ContractValidation(zeit.connector.testing.SQLTest):
         res.type = 'file'
         self.connector.add(res)
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual('ad705906dd2680277ea3ad7e109fb1a4', res.properties[CHECK_PROPERTY])
+        self.assertEqual(
+            '350f0ec7a03db95579f697056177e7a8ceba0a9c170e79d280fe78efda56f04f',
+            res.properties[CHECK_PROPERTY],
+        )
