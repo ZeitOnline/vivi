@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.187.0 (2024-06-11)
+--------------------
+
+- ZO-5567: continue news import even if 1 article fails
+
+
 5.186.0 (2024-06-11)
 --------------------
 
