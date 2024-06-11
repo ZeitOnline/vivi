@@ -3,6 +3,14 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.185.0 (2024-06-11)
+--------------------
+
+- ZO-5181: Script for removing kpi tables
+
+- ZO-5482: move multi publish into per article celery task
+
+
 5.184.0 (2024-06-07)
 --------------------
 
