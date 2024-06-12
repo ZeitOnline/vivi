@@ -365,7 +365,8 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     def add_resource(self, name, **kw):
         r = self.get_resource(name, **kw)
-        r = self.connector[r.id] = r
+        self.connector[r.id] = r
+        r = self.connector[r.id]
         transaction.commit()
         return r
 

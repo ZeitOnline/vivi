@@ -46,7 +46,9 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
+from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
     INTERNAL_PROPERTY,
     CopyError,
@@ -68,6 +70,8 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
+CHECK = 'body_checksum'
+CHECK_PROPERTY = (CHECK, INTERNAL_PROPERTY)
 
 
 class LockStatus(Enum):
@@ -264,6 +268,17 @@ class Connector:
 
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
+
+        if verify_etag:
+            content_checksum = current.get(CHECK_PROPERTY)
+            resource_checksum = resource.properties.get(CHECK_PROPERTY)
+            if resource_checksum and content_checksum and resource_checksum != content_checksum:
+                raise ConflictError(
+                    uniqueid,
+                    f'{uniqueid} body has changed. Resource checksum {resource_checksum} '
+                    'does not match stored checksum {content_checksum}.',
+                )
+
         current.update(resource.properties)
         content.from_webdav(current)
         content.type = resource.type
@@ -730,6 +745,9 @@ class Content(DBObject):
         props[('type', self.NS + 'meta')] = self.type
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
 
+        if FEATURE_TOGGLES.find('content_checksum'):
+            props[CHECK_PROPERTY] = self._set_checksum()
+
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
             props[('lock_until', INTERNAL_PROPERTY)] = self.lock.until
@@ -761,6 +779,18 @@ class Content(DBObject):
                 continue
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
+
+    def _set_checksum(self):
+        if self.is_collection:
+            return None
+
+        alg = hashlib.sha256(usedforsecurity=False)
+        meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False)
+        alg.update(meta.encode('utf-8'))
+        if self.binary_body or not self.body:
+            return alg.hexdigest()
+        alg.update(self.body.encode('utf-8'))
+        return alg.hexdigest()
 
 
 class Lock(DBObject):

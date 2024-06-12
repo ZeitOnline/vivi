@@ -9,7 +9,9 @@ import google.api_core.exceptions
 import pytz
 import transaction
 
-from zeit.connector.postgresql import Lock, _unlock_overdue_locks
+from zeit.cms.content.sources import FEATURE_TOGGLES
+from zeit.cms.repository.interfaces import ConflictError
+from zeit.connector.postgresql import CHECK_PROPERTY, Lock, _unlock_overdue_locks
 from zeit.connector.resource import Resource, WriteableCachedResource
 from zeit.connector.search import SearchVar
 import zeit.connector.testing
@@ -274,3 +276,51 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         lock = self.connector.session.scalars(stmt).one()
         self.assertEqual('someone', lock.principal)
         self.assertEqual(lock, content.lock)
+
+
+class ContractValidation(zeit.connector.testing.SQLTest):
+    NS = 'http://namespaces.zeit.de/CMS/testing'
+
+    def test_setitem_generates_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
+        res = self.add_resource('foo', body=b'cookies', properties={('foo', self.NS): 'coffee'})
+        self.assertEqual(
+            '4aa8c4d2a04ecdb13a745352677f261af9f92471af4152de2ee471fe2a6865ef',
+            res.properties[CHECK_PROPERTY],
+        )
+
+    def test_empty_body_does_not_break_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
+        res = self.add_resource('foo', body=b'', properties={('foo', self.NS): 'coffee'})
+        self.assertEqual(
+            '4fe7418985ce0d5c34cf69208ecde17c531c7bf900500bf2eebbd0b2f7c4c1ba',
+            res.properties[CHECK_PROPERTY],
+        )
+
+    def test_conflicting_writes(self):
+        FEATURE_TOGGLES.set('content_checksum')
+        self.connector.add(
+            self.get_resource('foo', body=b'cookies', properties={CHECK_PROPERTY: '1'})
+        )
+        with self.assertRaises(ConflictError):
+            self.connector.add(
+                self.get_resource('foo', body=b'cake', properties={CHECK_PROPERTY: '2'})
+            )
+
+    def test_folder_requires_no_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
+        collection = Resource(None, None, 'folder', BytesIO(b''), None, is_collection=True)
+        self.connector['http://xml.zeit.de/testing/folder'] = collection
+        folder = self.connector['http://xml.zeit.de/testing/folder']
+        self.assertEqual(None, folder.properties[CHECK_PROPERTY])
+
+    def test_create_image_generates_checksum(self):
+        FEATURE_TOGGLES.set('content_checksum')
+        res = self.get_resource('foo', b'mybody', properties={('foo', self.NS): 'bar'})
+        res.type = 'file'
+        self.connector.add(res)
+        res = self.connector['http://xml.zeit.de/testing/foo']
+        self.assertEqual(
+            '350f0ec7a03db95579f697056177e7a8ceba0a9c170e79d280fe78efda56f04f',
+            res.properties[CHECK_PROPERTY],
+        )
