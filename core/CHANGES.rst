@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.188.0 (2024-06-12)
+--------------------
+
+- ZO-5471: Connector add must check for inconsistencies before overwrite
+
+
 5.187.0 (2024-06-11)
 --------------------
 
