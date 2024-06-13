@@ -272,6 +272,12 @@ class Connector:
         if verify_etag:
             content_checksum = current.get(CHECK_PROPERTY)
             resource_checksum = resource.properties.get(CHECK_PROPERTY)
+            log.info(
+                'Verify body checksum for %s with resource_checksum %s and content_checksum %s',
+                uniqueid,
+                resource_checksum,
+                content_checksum,
+            )
             if resource_checksum and content_checksum and resource_checksum != content_checksum:
                 raise ConflictError(
                     uniqueid,
