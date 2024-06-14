@@ -791,8 +791,14 @@ class Content(DBObject):
             return None
 
         alg = hashlib.sha256(usedforsecurity=False)
-        meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False)
-        alg.update(meta.encode('utf-8'))
+        document = self.unsorted.get('document')
+        if document:
+            document = json.dumps(sorted(document), ensure_ascii=False)
+            alg.update(document.encode('utf-8'))
+        workflow = self.unsorted.get('workflow')
+        if workflow:
+            workflow = json.dumps(sorted(workflow), ensure_ascii=False)
+            alg.update(workflow.encode('utf-8'))
         if self.binary_body or not self.body:
             return alg.hexdigest()
         alg.update(self.body.encode('utf-8'))
