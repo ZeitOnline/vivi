@@ -324,3 +324,28 @@ class ContractValidation(zeit.connector.testing.SQLTest):
             '350f0ec7a03db95579f697056177e7a8ceba0a9c170e79d280fe78efda56f04f',
             res.properties[CHECK_PROPERTY],
         )
+
+    def test_unsorted_properties_generate_same_checksum(self):
+        res_1 = self.add_resource(
+            'foo',
+            body=b'cookies',
+            properties={
+                ('foo ', 'http://namespaces.zeit.de/CMS/document'): 1,
+                ('bar ', 'http://namespaces.zeit.de/CMS/document'): 2,
+                ('baz ', 'http://namespaces.zeit.de/CMS/document'): 3,
+                ('foo ', 'http://namespaces.zeit.de/CMS/workflow'): 1,
+                ('bar ', 'http://namespaces.zeit.de/CMS/workflow'): 2,
+            },
+        )
+        res_2 = self.add_resource(
+            'foo',
+            body=b'cookies',
+            properties={
+                ('foo ', 'http://namespaces.zeit.de/CMS/document'): 1,
+                ('baz ', 'http://namespaces.zeit.de/CMS/document'): 3,
+                ('bar ', 'http://namespaces.zeit.de/CMS/document'): 2,
+                ('bar ', 'http://namespaces.zeit.de/CMS/workflow'): 2,
+                ('foo ', 'http://namespaces.zeit.de/CMS/workflow'): 1,
+            },
+        )
+        self.assertEqual(res_1.properties[CHECK_PROPERTY], res_2.properties[CHECK_PROPERTY])
