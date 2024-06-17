@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.189.0 (2024-06-17)
+--------------------
+
+- ZO-5560: add proxy staging proxy service
+
+
 5.188.0 (2024-06-12)
 --------------------
 
