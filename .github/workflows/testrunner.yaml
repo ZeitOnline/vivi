@@ -25,7 +25,7 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
       - name: determine deployment branch
         run: |
             if [[ "${{github.ref_name}}" = "main" ]]; then
@@ -41,7 +41,7 @@ jobs:
             fi
             echo "DEPLOYMENT_BRANCH=$branch" >> $GITHUB_ENV
       - name: checkout deployment
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           repository: ZeitOnline/vivi-deployment
           ref: ${{env.DEPLOYMENT_BRANCH}}
@@ -63,7 +63,7 @@ jobs:
       # Keys have been added manually (both the key in the target repo and
       # the GHA+Dependabot secret in vivi and vivi-deployment)
       - name: checkout zeit.ldap
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
         with:
           repository: ZeitOnline/zeit.ldap
           path: deployment/work/source/zeit.ldap
