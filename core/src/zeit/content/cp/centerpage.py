@@ -1,6 +1,5 @@
 import copy
 import itertools
-import xml.sax.saxutils
 
 import gocept.cache.property
 import grokcore.component as grok
@@ -13,8 +12,6 @@ import zope.security.proxy
 
 from zeit.cms.content.cache import writeabledict
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.redirect.interfaces import IRenameInfo
-from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -152,62 +149,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         '.head.og_meta.og_image', zeit.content.cp.interfaces.ICenterPage['og_image']
     )
 
-    def updateMetadata(self, content):
-        # Note that this method is a shortcut using XPath to query instead of
-        # instantiating all blocks and their content objects to find the
-        # matching one (since that's probably too expensive). So actually the
-        # updating should be performed by the respective blocks (or their
-        # ReferenceProperties) and not by duplicating their
-        # implementation/serialzation details here.
-
-        # Support renaming (see doc/implementation/move.txt).
-        possible_ids = set((content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
-        unique_ids = ' or '.join(['@href=%s' % xml.sax.saxutils.quoteattr(x) for x in possible_ids])
-        # @uniqueId is for free teasers only, and those can't be renamed.
-        query = '//block[@uniqueId={id} or {unique_ids}]'.format(
-            id=xml.sax.saxutils.quoteattr(content.uniqueId), unique_ids=unique_ids
-        )
-        for entry in self.xml.xpath(query):
-            if entry.get('uniqueId', content.uniqueId) not in possible_ids:
-                # ``entry`` is a free teaser, but ``content`` is the referenced
-                # object. Skip it, since the metadata of the free teaser itself
-                # is what counts.
-                continue
-
-            # migration code
-            node = entry.find('references')
-            if node is not None:
-                entry.remove(node)
-
-            if not entry.get('uniqueId', '').startswith(TEASER_ID_NAMESPACE):
-                entry.set('href', content.uniqueId)
-                entry.set('uniqueId', content.uniqueId)
-
-            modified = zeit.cms.workflow.interfaces.IModified(content, None)
-            if modified is not None:
-                date = ''
-                if modified.date_last_modified:
-                    date = modified.date_last_modified.isoformat()
-                entry.set('date-last-modified', date)
-
-            publish_info = zeit.cms.workflow.interfaces.IPublishInfo(content, None)
-            if publish_info is not None:
-                date = ''
-                if publish_info.date_first_released:
-                    date = publish_info.date_first_released.isoformat()
-                entry.set('date-first-released', date)
-                date = ''
-                if publish_info.date_last_published:
-                    date = publish_info.date_last_published.isoformat()
-                entry.set('date-last-published', date)
-
-            lsc = zeit.cms.content.interfaces.ISemanticChange(content, None)
-            if lsc is not None:
-                date = ''
-                if lsc.last_semantic_change:
-                    date = lsc.last_semantic_change.isoformat()
-                entry.set('last-semantic-change', date)
-
     @property
     def type(self):
         return self._type_xml
@@ -290,18 +231,6 @@ def cms_content_iter(context):
 @grok.implementer(zeit.edit.interfaces.IElementReferences)
 def centerpage_content_iter(context):
     return zeit.edit.interfaces.IElementReferences(context.body)
-
-
-@zope.component.adapter(
-    zeit.content.cp.interfaces.ICenterPage, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
-)
-def update_centerpage_on_checkin(context, event):
-    if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-        'zeit.content.cp.update_metadata'
-    ):
-        return
-    for content in zeit.edit.interfaces.IElementReferences(context):
-        context.updateMetadata(content)
 
 
 @zope.component.adapter(zope.interface.Interface, zope.lifecycleevent.IObjectModifiedEvent)

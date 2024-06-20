@@ -69,7 +69,6 @@
     trusted="yes"
     />
   <subscriber handler=".centerpage.modified_propagator" />
-  <subscriber handler=".centerpage.update_centerpage_on_checkin" />
   <subscriber
     for="zope.interface.Interface
          zope.lifecycleevent.IObjectMovedEvent"

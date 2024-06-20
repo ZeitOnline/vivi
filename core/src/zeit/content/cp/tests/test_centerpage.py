@@ -7,7 +7,6 @@ import lxml.etree
 import zope.component
 import zope.copypastemove.interfaces
 
-from zeit.cms.checkout.helper import checked_out
 import zeit.cms.content.sources
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -50,32 +49,6 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertXML(original, rendered)
 
 
-class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
-    def create_teaser(self, cp):
-        import zeit.edit.interfaces
-
-        factory = zope.component.getAdapter(
-            cp.body['lead'], zeit.edit.interfaces.IElementFactory, name='teaser'
-        )
-        return factory()
-
-    def test_moving_referenced_article_updates_uniqueId_on_cp_checkin(self):
-        cp = zeit.content.cp.centerpage.CenterPage()
-        t1 = self.create_teaser(cp)
-        self.create_teaser(cp)
-        t1.insert(0, self.repository['testcontent'])
-
-        zope.copypastemove.interfaces.IObjectMover(self.repository['testcontent']).moveTo(
-            self.repository, 'changed'
-        )
-        self.repository['cp'] = cp
-        with checked_out(self.repository['cp']):
-            pass
-        self.assertIn(
-            'http://xml.zeit.de/changed', zeit.cms.testing.xmltotext(self.repository['cp'].xml)
-        )
-
-
 class TestContentIter(unittest.TestCase):
     def test_unresolveable_blocks_should_not_be_adapted(self):
         from zeit.content.cp.centerpage import cms_content_iter
@@ -99,15 +72,6 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
         copier.copyTo(self.repository['online'])
         with self.assertNothingRaised():
             self.repository['cp']
-
-    def test_handles_unicode_uniqueIds(self):
-        content = self.repository[
-            'ümläut'
-        ] = zeit.cms.testcontenttype.testcontenttype.ExampleContentType()
-        cp = zeit.content.cp.centerpage.CenterPage()
-        cp.body['lead'].create_item('teaser').append(content)
-        with self.assertNothingRaised():
-            cp.updateMetadata(content)
 
     def test_homepage_has_different_publish_priority(self):
         cp = self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
