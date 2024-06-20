@@ -46,7 +46,6 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
@@ -70,8 +69,6 @@ log = getLogger(__name__)
 
 
 ID_NAMESPACE = zeit.connector.interfaces.ID_NAMESPACE[:-1]
-CHECK = 'body_checksum'
-CHECK_PROPERTY = (CHECK, INTERNAL_PROPERTY)
 
 
 class LockStatus(Enum):
@@ -269,14 +266,14 @@ class Connector:
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
-        if verify_etag:
-            content_checksum = current.get(CHECK_PROPERTY)
-            resource_checksum = resource.properties.get(CHECK_PROPERTY)
-            if resource_checksum and content_checksum and resource_checksum != content_checksum:
+        if False and verify_etag:  # XXX feature toggle?
+            current_checksum = current[('body_checksum', INTERNAL_PROPERTY)]
+            new_checksum = resource.properties[('body_checksum', INTERNAL_PROPERTY)]
+            if current_checksum != new_checksum:
                 raise ConflictError(
                     uniqueid,
-                    f'{uniqueid} body has changed. Resource checksum {resource_checksum} '
-                    'does not match stored checksum {content_checksum}.',
+                    f'{uniqueid} body has changed. New checksum {new_checksum} '
+                    'does not match stored checksum {current_checksum}.',
                 )
 
         current.update(resource.properties)
@@ -745,8 +742,8 @@ class Content(DBObject):
         props[('type', self.NS + 'meta')] = self.type
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
 
-        if FEATURE_TOGGLES.find('content_checksum'):
-            props[CHECK_PROPERTY] = self._set_checksum()
+        if False:  # XXX feature toggle?
+            props[('body_checksum', INTERNAL_PROPERTY)] = self._set_checksum()
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
