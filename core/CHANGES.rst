@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.190.0 (2024-06-20)
+--------------------
+
+- ZO-5471: Disable sql checksum implementation
+
+
 5.189.0 (2024-06-17)
 --------------------
 
