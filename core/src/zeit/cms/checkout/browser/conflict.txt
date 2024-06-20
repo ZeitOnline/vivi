@@ -29,6 +29,15 @@ actually works:
 >>> a.getLink('Checkin').click()
 >>> a.getLink('Checkout').click()
 
+Change content:
+
+>>> import lxml.etree
+>>> article = getRootFolder()['workingcopy']['zope.user']['testcontent']
+>>> article.xml.replace(article.xml.find('body'), lxml.etree.fromstring('<body>foo</body>'))
+>>> article._p_changed = True
+>>> import transaction
+>>> transaction.commit()
+
 
 2. B checks out document X
 
@@ -83,6 +92,15 @@ Now check in:
 The delete button removes the workingcopy:
 
 >>> a.getLink('Checkout').click()
+
+Change content:
+
+>>> article = getRootFolder()['workingcopy']['zope.user']['testcontent']
+>>> article.xml.replace(article.xml.find('body'), lxml.etree.fromstring('<body>bar</body>'))
+>>> article._p_changed = True
+>>> import transaction
+>>> transaction.commit()
+
 >>> b.open('http://localhost/++skin++cms/repository/testcontent/@@locks.html')
 >>> b.getControl('Steal').click()
 >>> b.open('http://localhost/++skin++cms/repository/testcontent')
