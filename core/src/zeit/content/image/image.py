@@ -116,8 +116,6 @@ def XMLReference(context):
         image.set('type', ext)
     else:
         image.set('type', context.format.lower())
-    # The image reference can be seen like an element in a feed. Let the magic
-    # update the xml node.
     return image
 
 
