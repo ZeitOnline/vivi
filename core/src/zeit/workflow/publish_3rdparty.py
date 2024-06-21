@@ -145,11 +145,12 @@ def badgerfish(node):
     result = {}
     children = list(node.iterchildren())
 
-    if children and (node.text or any(x.tail for x in children)):
+    node_text = node.text.strip() if node.text else False
+    if children and (node_text or any(x.tail.strip() for x in children if x.tail)):
         result['$'] = ' '.join([x.strip() for x in node.xpath('.//text()')])
         children = []
-    elif node.text:
-        result['$'] = node.text
+    elif node_text:
+        result['$'] = node_text
 
     for key, value in node.attrib.items():
         key = lxml.etree.QName(key).localname
