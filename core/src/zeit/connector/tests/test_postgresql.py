@@ -290,7 +290,7 @@ class ContractChecksum(zeit.connector.testing.SQLTest):
         res = self.add_resource('foo', body=b'cookies', properties={('foo', self.NS): 'coffee'})
         self.assertEqual(
             '4aa8c4d2a04ecdb13a745352677f261af9f92471af4152de2ee471fe2a6865ef',
-            res.properties[self.self.CHECK_PROPERTY],
+            res.properties[self.CHECK_PROPERTY],
         )
 
     def test_empty_body_does_not_break_checksum(self):
