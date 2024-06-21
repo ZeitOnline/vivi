@@ -362,18 +362,8 @@ Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
         with self.assertRaises(z3c.celery.celery.HandleAfterAbort):
             [p.get() for p in publish]
         transaction.begin()
-        self.assertEllipsis(
-            """\
-...
-Running job...for http://xml.zeit.de/online/2007/01/Flugsicherheit
-Publishing http://xml.zeit.de/online/2007/01/Flugsicherheit
-Error during publish/retract...RuntimeError: provoked...
-Running job...for http://xml.zeit.de/online/2007/01/Saarland
-Publishing http://xml.zeit.de/online/2007/01/Saarland...
-zeit.workflow.publish.PUBLISH_TASK...succeeded...
-""",
-            self.log.getvalue(),
-        )
+        self.assertIn('Error during publish/retract: ${exc}: ${message}', get_object_log(c1))
+        self.assertIn('Published', get_object_log(c2))
         self.assertIn('Objects with errors: ${objects}', get_object_log(context))
 
 
