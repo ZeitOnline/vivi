@@ -81,7 +81,6 @@ When the target is removed from the link, the attribute is removed from the
 channel:
 
 >>> link.target = None
->>> feed.updateMetadata(link)
 >>> print(zeit.cms.testing.xmltotext(feed.xml))
 <channel...>
   <title/>
