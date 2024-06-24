@@ -360,7 +360,8 @@ Task zeit.workflow.publish.PUBLISH_TASK...succeeded...""",
         transaction.commit()
         self.assertEqual(len(publish), 2)
         with self.assertRaises(z3c.celery.celery.HandleAfterAbort):
-            [p.get() for p in publish]
+            publish[0].get()
+        publish[1].get()
         transaction.begin()
         self.assertIn('Error during publish/retract: ${exc}: ${message}', get_object_log(c1))
         self.assertIn('Published', get_object_log(c2))
@@ -486,10 +487,13 @@ class PublishErrorEndToEndTest(zeit.cms.testing.FunctionalTestCase):
 
         self.assertEqual(len(publish), 3)
         with self.assertRaises(Exception) as err:
-            [p.get() for p in publish]
+            publish.pop(0).get()
+        self.assertIn('678', str(err.exception))
+        for job in publish:
+            with self.assertRaises(Exception):
+                job.get()
         transaction.begin()
 
-        self.assertIn('678', str(err.exception))
         self.assertIn(self.error, translate_object_log(c1))
         self.assertIn(self.error, translate_object_log(c2))
         self.assertIn('LockingError', translate_object_log(c3)[-1])
