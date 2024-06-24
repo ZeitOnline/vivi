@@ -743,7 +743,7 @@ class Content(DBObject):
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
 
         if False:  # XXX feature toggle?
-            props[('body_checksum', INTERNAL_PROPERTY)] = self._set_checksum()
+            props[('body_checksum', INTERNAL_PROPERTY)] = self._body_checksum()
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
@@ -777,7 +777,7 @@ class Content(DBObject):
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
 
-    def _set_checksum(self):
+    def _body_checksum(self):
         if self.is_collection:
             return None
 
