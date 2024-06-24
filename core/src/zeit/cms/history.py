@@ -3,6 +3,8 @@ import logging
 import os
 import subprocess
 
+import transaction
+
 from zeit.cms.repository.interfaces import ICollection
 from zeit.connector.interfaces import IResource
 import zeit.cms.cli
@@ -79,6 +81,8 @@ def main():
     cmd('git reset --hard origin/main')
 
     sync_content_to_filesystem(options.uniqueid, output)
+    # Avoid ConflictError in zeit.connector cache, we're readonly anyway.
+    transaction.abort()
 
     cmd('git add --all .')
     cmd('git commit -m "Automated snapshot" && git push || true')
