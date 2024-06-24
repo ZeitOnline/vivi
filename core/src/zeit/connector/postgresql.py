@@ -267,10 +267,10 @@ class Connector:
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
-        if not FEATURE_TOGGLES.find('disable_connector_body_checksum') and verify_etag:
+        if not FEATURE_TOGGLES.find('disable_connector_body_checksum') and verify_etag and exists:
             current_checksum = current[('body_checksum', INTERNAL_PROPERTY)]
-            new_checksum = resource.properties[('body_checksum', INTERNAL_PROPERTY)]
-            if current_checksum != new_checksum:
+            new_checksum = resource.properties.get(('body_checksum', INTERNAL_PROPERTY))
+            if new_checksum is not None and current_checksum != new_checksum:
                 raise ConflictError(
                     uniqueid,
                     f'{uniqueid} body has changed. New checksum {new_checksum} '
