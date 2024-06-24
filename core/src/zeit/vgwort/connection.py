@@ -105,6 +105,7 @@ class PixelService(VGWortWebService):
     namespace = 'http://vgwort.de/1.0/PixelService/xsd'
 
     def order_pixels(self, amount):
+        log.info('orderPixel, amount=%s', amount)
         result = self.call('orderPixel', amount)
         for pixel in result.pixels.pixel:
             yield (pixel.publicIdentificationId, pixel.privateIdentificationId)
