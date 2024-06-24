@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from io import BytesIO
 from unittest import mock
-import unittest
 
 from sqlalchemy import func, select
 from sqlalchemy import text as sql
@@ -10,7 +9,6 @@ import google.api_core.exceptions
 import pytz
 import transaction
 
-from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import INTERNAL_PROPERTY
 from zeit.connector.postgresql import Lock, _unlock_overdue_locks
@@ -280,29 +278,19 @@ class SQLConnectorTest(zeit.connector.testing.SQLTest):
         self.assertEqual(lock, content.lock)
 
 
-@unittest.skip('implementation disabled, needs feature toggle')
 class ContractChecksum(zeit.connector.testing.SQLTest):
     NS = 'http://namespaces.zeit.de/CMS/testing'
     CHECK_PROPERTY = ('body_checksum', INTERNAL_PROPERTY)
 
     def test_setitem_generates_checksum(self):
-        FEATURE_TOGGLES.set('content_checksum')
-        res = self.add_resource('foo', body=b'cookies', properties={('foo', self.NS): 'coffee'})
-        self.assertEqual(
-            '4aa8c4d2a04ecdb13a745352677f261af9f92471af4152de2ee471fe2a6865ef',
-            res.properties[self.CHECK_PROPERTY],
-        )
+        res = self.add_resource('foo', body=b'cookies')
+        self.assertNotEqual(None, res.properties[self.CHECK_PROPERTY])
 
-    def test_empty_body_does_not_break_checksum(self):
-        FEATURE_TOGGLES.set('content_checksum')
-        res = self.add_resource('foo', body=b'', properties={('foo', self.NS): 'coffee'})
-        self.assertEqual(
-            '4fe7418985ce0d5c34cf69208ecde17c531c7bf900500bf2eebbd0b2f7c4c1ba',
-            res.properties[self.CHECK_PROPERTY],
-        )
+    def test_empty_body_has_empty_checksum(self):
+        res = self.add_resource('foo', body=b'')
+        self.assertEqual(None, res.properties[self.CHECK_PROPERTY])
 
     def test_conflicting_writes(self):
-        FEATURE_TOGGLES.set('content_checksum')
         self.connector.add(
             self.get_resource('foo', body=b'cookies', properties={self.CHECK_PROPERTY: '1'})
         )
@@ -311,20 +299,14 @@ class ContractChecksum(zeit.connector.testing.SQLTest):
                 self.get_resource('foo', body=b'cake', properties={self.CHECK_PROPERTY: '2'})
             )
 
-    def test_folder_requires_no_checksum(self):
-        FEATURE_TOGGLES.set('content_checksum')
-        collection = Resource(None, None, 'folder', BytesIO(b''), None, is_collection=True)
-        self.connector['http://xml.zeit.de/testing/folder'] = collection
+    def test_collection_has_empty_checksum(self):
+        self.mkdir('folder')
         folder = self.connector['http://xml.zeit.de/testing/folder']
         self.assertEqual(None, folder.properties[self.CHECK_PROPERTY])
 
-    def test_create_image_generates_checksum(self):
-        FEATURE_TOGGLES.set('content_checksum')
-        res = self.get_resource('foo', b'mybody', properties={('foo', self.NS): 'bar'})
+    def test_binary_has_empty_checksum(self):
+        res = self.get_resource('foo', b'mybody')
         res.type = 'file'
         self.connector.add(res)
         res = self.connector['http://xml.zeit.de/testing/foo']
-        self.assertEqual(
-            '350f0ec7a03db95579f697056177e7a8ceba0a9c170e79d280fe78efda56f04f',
-            res.properties[self.CHECK_PROPERTY],
-        )
+        self.assertEqual(None, res.properties[self.CHECK_PROPERTY])

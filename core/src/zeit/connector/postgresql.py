@@ -46,6 +46,7 @@ import zope.component
 import zope.interface
 import zope.sqlalchemy
 
+from zeit.cms.content.sources import FEATURE_TOGGLES
 from zeit.cms.interfaces import DOCUMENT_SCHEMA_NS
 from zeit.cms.repository.interfaces import ConflictError
 from zeit.connector.interfaces import (
@@ -266,14 +267,14 @@ class Connector:
         (path.parent_path, path.name) = self._pathkey(uniqueid)
         current = content.to_webdav()
 
-        if False and verify_etag:  # XXX feature toggle?
+        if not FEATURE_TOGGLES.find('disable_connector_body_checksum') and verify_etag and exists:
             current_checksum = current[('body_checksum', INTERNAL_PROPERTY)]
-            new_checksum = resource.properties[('body_checksum', INTERNAL_PROPERTY)]
-            if current_checksum != new_checksum:
+            new_checksum = resource.properties.get(('body_checksum', INTERNAL_PROPERTY))
+            if new_checksum is not None and current_checksum != new_checksum:
                 raise ConflictError(
                     uniqueid,
                     f'{uniqueid} body has changed. New checksum {new_checksum} '
-                    'does not match stored checksum {current_checksum}.',
+                    f'does not match stored checksum {current_checksum}.',
                 )
 
         current.update(resource.properties)
@@ -741,9 +742,7 @@ class Content(DBObject):
         props[('uuid', self.NS + 'document')] = '{urn:uuid:%s}' % self.id
         props[('type', self.NS + 'meta')] = self.type
         props[('is_collection', INTERNAL_PROPERTY)] = self.is_collection
-
-        if False:  # XXX feature toggle?
-            props[('body_checksum', INTERNAL_PROPERTY)] = self._set_checksum()
+        props[('body_checksum', INTERNAL_PROPERTY)] = self._body_checksum()
 
         if self.lock:
             props[('lock_principal', INTERNAL_PROPERTY)] = self.lock.principal
@@ -777,15 +776,13 @@ class Content(DBObject):
             unsorted[ns.replace(self.NS, '', 1)][k] = v
         self.unsorted = unsorted
 
-    def _set_checksum(self):
-        if self.is_collection:
+    def _body_checksum(self):
+        # Excluding binary_body here trades off correctness for performance.
+        # We assume that editing binary content types happens only rarely,
+        # and thus can do without the additional conflict protection.
+        if self.is_collection or not self.body or self.binary_body:
             return None
-
         alg = hashlib.sha256(usedforsecurity=False)
-        meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False)
-        alg.update(meta.encode('utf-8'))
-        if self.binary_body or not self.body:
-            return alg.hexdigest()
         alg.update(self.body.encode('utf-8'))
         return alg.hexdigest()
 
