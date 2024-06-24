@@ -1,6 +1,5 @@
 import datetime
 import logging
-import sys
 
 import grokcore.component as grok
 import pytz
@@ -104,8 +103,8 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 def report_new_documents():
     log.info('Report start')
     if in_daily_maintenance_window():
-        sys.stderr.write('VGWort API maintenance window between 04:00-06:00, exiting\n')
-        sys.exit(2)
+        log.info('Skip inside daily VG-Wort API maintenance window')
+        return
 
     vgwort = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
     source = zope.component.getUtility(zeit.vgwort.interfaces.IReportableContentSource)
