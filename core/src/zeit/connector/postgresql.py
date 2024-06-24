@@ -274,7 +274,7 @@ class Connector:
                 raise ConflictError(
                     uniqueid,
                     f'{uniqueid} body has changed. New checksum {new_checksum} '
-                    'does not match stored checksum {current_checksum}.',
+                    f'does not match stored checksum {current_checksum}.',
                 )
 
         current.update(resource.properties)
