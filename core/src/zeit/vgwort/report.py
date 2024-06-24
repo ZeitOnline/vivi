@@ -1,17 +1,14 @@
 import datetime
 import logging
-import os.path
-import sys
-import tempfile
 
 import grokcore.component as grok
 import pytz
-import zc.lockfile
 import ZODB.POSException
 import zope.app.appsetup.product
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.vgwort.connection import in_daily_maintenance_window
 import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -104,40 +101,26 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.vgwort', 'token-principal'))
 def report_new_documents():
-    lock_file_name = os.path.join(tempfile.gettempdir(), 'vgwort-run-lock')
-    try:
-        lock = zc.lockfile.LockFile(lock_file_name)
-    except zc.lockfile.LockError:
-        sys.stderr.write('VGWort report alredy running? Could not lock {}\n'.format(lock_file_name))
-        sys.exit(1)
-
     log.info('Report start')
-    now = datetime.datetime.now()
-    today = datetime.datetime(now.year, now.month, now.day)
-    four = today.replace(hour=3, minute=50)
-    six = today.replace(hour=6, minute=10)
-    if four <= now <= six:
-        sys.stderr.write('VGWort API maintenance window between 04:00-06:00, exiting\n')
-        sys.exit(2)
+    if in_daily_maintenance_window():
+        log.info('Skip inside daily VG-Wort API maintenance window')
+        return
 
     vgwort = zope.component.getUtility(zeit.vgwort.interfaces.IMessageService)
-    try:
-        source = zope.component.getUtility(zeit.vgwort.interfaces.IReportableContentSource)
-        for i, content in enumerate(source):
+    source = zope.component.getUtility(zeit.vgwort.interfaces.IReportableContentSource)
+    for i, content in enumerate(source):
+        try:
+            report(content)
+        except Exception as e:
             try:
-                report(content)
-            except Exception as e:
-                try:
-                    if e.args[0][0] == 401:
-                        raise
-                except IndexError:
-                    pass
-                log.warning('Error reporting %s, ignoring', content, exc_info=True)
-            # XXX vgwort returns 401 after some requests for unknown reasons.
-            if i % 6 == 0 and 'client' in vgwort.__dict__:
-                del vgwort.client
-    finally:
-        lock.close()
+                if e.args[0][0] == 401:
+                    raise
+            except IndexError:
+                pass
+            log.warning('Error reporting %s, ignoring', content, exc_info=True)
+        # XXX vgwort returns 401 after some requests for unknown reasons.
+        if i % 6 == 0 and 'client' in vgwort.__dict__:
+            del vgwort.client
     log.info('Report end')
 
 

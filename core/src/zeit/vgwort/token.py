@@ -15,6 +15,7 @@ import zope.lifecycleevent
 import zope.security.proxy
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.vgwort.connection import in_daily_maintenance_window
 import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -154,6 +155,10 @@ def remove_vgwort_properties_after_copy(context, event):
 
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.vgwort', 'token-principal'))
 def order_tokens():
+    if in_daily_maintenance_window():
+        log.info('Skip inside daily VG-Wort API maintenance window')
+        return
+
     _order_tokens()
 
 

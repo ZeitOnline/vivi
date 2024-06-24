@@ -4,6 +4,7 @@ import threading
 import urllib.parse
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import pendulum
 import requests
 import requests.auth
 import requests.exceptions
@@ -104,6 +105,7 @@ class PixelService(VGWortWebService):
     namespace = 'http://vgwort.de/1.0/PixelService/xsd'
 
     def order_pixels(self, amount):
+        log.info('orderPixel, amount=%s', amount)
         result = self.call('orderPixel', amount)
         for pixel in result.pixels.pixel:
             yield (pixel.publicIdentificationId, pixel.privateIdentificationId)
@@ -236,3 +238,12 @@ class MockMessageService:
         if self.error:
             raise self.error('Provoked error')
         self.calls.append(content)
+
+
+def in_daily_maintenance_window():
+    # See "METIS Integrationsbeschreibung 3.2.1.1"
+    # https://tom.vgwort.de/Documents/pdfs/dokumentation/metis/DOC_Verlagsmeldung.pdf
+    now = pendulum.now('Europe/Berlin')
+    start = now.replace(hour=2, minute=50, second=0, microsecond=0)
+    end = now.replace(hour=7, minute=40, second=0, microsecond=0)
+    return start <= now <= end
