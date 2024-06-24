@@ -244,5 +244,5 @@ def in_daily_maintenance_window():
     # https://tom.vgwort.de/Documents/pdfs/dokumentation/metis/DOC_Verlagsmeldung.pdf
     now = pendulum.now('Europe/Berlin')
     start = now.replace(hour=2, minute=50, second=0, microsecond=0)
-    end = now.replace(hour=6, minute=10, second=0, microsecond=0)
+    end = now.replace(hour=7, minute=40, second=0, microsecond=0)
     return start <= now <= end
