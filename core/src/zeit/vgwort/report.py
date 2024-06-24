@@ -9,6 +9,7 @@ import zope.app.appsetup.product
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.vgwort.connection import in_daily_maintenance_window
 import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -102,11 +103,7 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 @zeit.cms.cli.runner(principal=zeit.cms.cli.from_config('zeit.vgwort', 'token-principal'))
 def report_new_documents():
     log.info('Report start')
-    now = datetime.datetime.now()
-    today = datetime.datetime(now.year, now.month, now.day)
-    four = today.replace(hour=3, minute=50)
-    six = today.replace(hour=6, minute=10)
-    if four <= now <= six:
+    if in_daily_maintenance_window():
         sys.stderr.write('VGWort API maintenance window between 04:00-06:00, exiting\n')
         sys.exit(2)
 
