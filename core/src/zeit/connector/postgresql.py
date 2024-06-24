@@ -777,14 +777,12 @@ class Content(DBObject):
         self.unsorted = unsorted
 
     def _body_checksum(self):
-        if self.is_collection:
+        # Excluding binary_body here trades off correctness for performance.
+        # We assume that editing binary content types happens only rarely,
+        # and thus can do without the additional conflict protection.
+        if self.is_collection or not self.body or self.binary_body:
             return None
-
         alg = hashlib.sha256(usedforsecurity=False)
-        meta = json.dumps(sorted(self.unsorted.items()), ensure_ascii=False)
-        alg.update(meta.encode('utf-8'))
-        if self.binary_body or not self.body:
-            return alg.hexdigest()
         alg.update(self.body.encode('utf-8'))
         return alg.hexdigest()
 
