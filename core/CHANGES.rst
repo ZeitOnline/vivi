@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.192.1 (2024-06-25)
+--------------------
+
+- ZO-5637: Move helper function to interfaces to avoid importing SOAP machinery
+
+
 5.192.0 (2024-06-25)
 --------------------
 

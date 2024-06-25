@@ -1,1 +1,0 @@
-ZO-5637: Move helper function to interfaces to avoid importing SOAP machinery
