@@ -683,7 +683,7 @@ class Content(DBObject):
     )
 
     id = Column(Uuid(as_uuid=False), primary_key=True)
-    type = Column(Unicode, nullable=False, server_default='unknown')
+    type = Column(Unicode, nullable=False, server_default='unknown', index=True)
     is_collection = Column(Boolean, nullable=False, server_default='false')
 
     body = Column(UnicodeText)
