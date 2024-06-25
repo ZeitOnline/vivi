@@ -6,7 +6,9 @@ vivi.core changes
 5.191.0 (2024-06-25)
 --------------------
 
-- ZO-4275: remove XMLReferenceUpdater
+- ZO-5471: Reactivate sql checksum/conflict validation
+
+- ZO-4275: Remove XMLReferenceUpdater
 
 - ZO-5193: handle also whitespaces including XML for Big Query JSON transformation
 
