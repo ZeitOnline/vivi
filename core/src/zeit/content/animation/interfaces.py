@@ -28,7 +28,7 @@ class IAnimation(
 
     article = zope.schema.Choice(
         title=_('Article'),
-        source=zeit.cms.content.contentsource.cmsContentSource,
+        source=zeit.content.article.interfaces.articleSource,
         required=True,
     )
 
