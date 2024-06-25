@@ -8,7 +8,7 @@ import zope.app.appsetup.product
 import zope.interface
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
-from zeit.vgwort.connection import in_daily_maintenance_window
+from zeit.vgwort.interfaces import in_daily_maintenance_window
 import zeit.cms.cli
 import zeit.cms.content.dav
 import zeit.cms.interfaces

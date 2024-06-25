@@ -1,4 +1,5 @@
 # coding: utf8
+import pendulum
 import zope.interface
 import zope.schema
 
@@ -111,3 +112,12 @@ class IReportableContentSource(zope.interface.Interface):
         """store that the object encountered a semantic error while reporting
         to VGWort.
         """
+
+
+def in_daily_maintenance_window():
+    # See "METIS Integrationsbeschreibung 3.2.1.1"
+    # https://tom.vgwort.de/Documents/pdfs/dokumentation/metis/DOC_Verlagsmeldung.pdf
+    now = pendulum.now('Europe/Berlin')
+    start = now.replace(hour=2, minute=50, second=0, microsecond=0)
+    end = now.replace(hour=7, minute=40, second=0, microsecond=0)
+    return start <= now <= end

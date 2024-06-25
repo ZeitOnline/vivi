@@ -3,7 +3,7 @@
   xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
 
-  <grok:grok package="." exclude="browser cli connection" />
+  <grok:grok package="." exclude="browser connection" />
 
   <utility
     name="zeit.cms/vgwort"
