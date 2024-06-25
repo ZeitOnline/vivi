@@ -1,3 +1,4 @@
+import grokcore.component as grok
 import zope.component
 import zope.interface
 
@@ -11,7 +12,7 @@ import zeit.cms.type
 import zeit.content.animation.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
-import zeit.push.interfaces
+import zeit.content.audio.interfaces
 
 
 @zope.interface.implementer(
@@ -44,3 +45,15 @@ class AnimationType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.animation.interfaces.IAnimation
     title = _('Animation')
     type = 'animation'
+
+
+@grok.adapter(zeit.content.animation.interfaces.IAnimation)
+@grok.implementer(zeit.content.image.interfaces.IImages)
+def animation_images(context):
+    return zeit.content.image.interfaces.IImages(context.article)
+
+
+@grok.adapter(zeit.content.animation.interfaces.IAnimation)
+@grok.implementer(zeit.content.audio.interfaces.IAudioReferences)
+def animation_audios(context):
+    return zeit.content.audio.interfaces.IAudioReferences(context.article)
