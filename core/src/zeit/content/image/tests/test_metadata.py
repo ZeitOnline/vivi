@@ -20,11 +20,7 @@ class ImageMetadataTest(zeit.content.image.testing.FunctionalTestCase):
         ref = zope.component.getAdapter(image, IXMLReference, name='image')
         self.assertEllipsis(
             """\
-<image...>
-  ...
-  <copyright link="http://example.com"
-        rel="nofollow">Foo</copyright>
-</image>
+<image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
 """,
             zeit.cms.testing.xmltotext(ref),
         )

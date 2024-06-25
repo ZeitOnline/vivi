@@ -8,7 +8,6 @@ import zope.interface
 import zope.location.location
 import zope.proxy
 
-from zeit.cms.redirect.interfaces import IRenameInfo
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
@@ -56,7 +55,6 @@ class ContentList:
         while self.object_limit and len(self) > self.object_limit:
             last = list(self.keys())[-1]
             self._remove_by_id(last)
-        self.updateMetadata(content, skip_missing=True, suppress_errors=suppress_errors)
         self.restorePinning(pin_map)
         self._p_changed = True
 
@@ -104,21 +102,6 @@ class ContentList:
             if key == content_id:
                 return id + 1
         return None
-
-    def updateMetadata(self, content, skip_missing=False, suppress_errors=False):
-        possible_ids = set((content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
-        for id in possible_ids:
-            entry = self.entry_map.get(id)
-            if entry is not None:
-                break
-        else:
-            if skip_missing:
-                return
-            raise KeyError(content.uniqueId)
-        entry.set('href', content.uniqueId)
-        entry.set('uniqueId', content.uniqueId)
-        updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
-        updater.update(entry, suppress_errors)
 
     def getMetadata(self, content):
         return zope.location.location.located(Entry(self.entry_map[content.uniqueId]), self)
@@ -257,14 +240,6 @@ class FakeEntry:
         self.uniqueId = id
         self.__name__ = os.path.basename(id)
         self.title = str(entry.find('title'))
-
-
-@grok.implementer(zeit.cms.content.interfaces.IXMLReferenceUpdater)
-class FakeXMLReferenceUpdater(grok.Adapter):
-    grok.context(FakeEntry)
-
-    def update(self, node, suppress_errors=False):
-        pass
 
 
 @grok.implementer(zeit.cms.redirect.interfaces.IRenameInfo)

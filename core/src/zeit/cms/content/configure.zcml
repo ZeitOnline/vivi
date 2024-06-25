@@ -123,14 +123,6 @@
       />
   </class>
 
-  <!-- XML support -->
-  <adapter factory=".xmlsupport.XMLReferenceUpdaterRunner" />
-
-  <adapter
-    factory=".xmlsupport.CommonMetadataUpdater"
-    name="commonmetadata"
-    />
-
   <!-- automatic xml updating -->
   <adapter factory=".xmlsupport.PropertyToXMLAttribute" />
   <subscriber handler=".xmlsupport.map_dav_property_to_xml" />

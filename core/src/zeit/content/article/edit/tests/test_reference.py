@@ -54,15 +54,6 @@ class ReferenceTest(unittest.TestCase):
         # second assignment doesn't fail
         ref.references = None
 
-    def test_setting_object_should_update_node_with_xmlreferenceupdater(self):
-        ref = self.get_ref()
-        obj = mock.Mock()
-        obj.uniqueId = 'my-id'
-        with mock.patch('zeit.cms.content.interfaces.IXMLReferenceUpdater') as xru:
-            ref.references = obj
-            xru.assert_called_with(obj, None)
-            xru.return_value.update.assert_called_with(ref.xml)
-
     def test_setting_none_removes_other_attributes_and_child_nodes(self):
         ref = self.get_ref()
         ref.xml.set('href', 'auniqueid')
@@ -189,69 +180,6 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         # support tagging in the real world, so skip the setup of the parent
         # class and doe the one of the grandparent.
         super(zeit.content.article.testing.FunctionalTestCase, self).setUp()
-
-    def assert_updated(self, referenced, factory_name, reference_field=False):
-        self.repository['refed'] = referenced
-        #
-        article = self.get_article()
-        reference = self.get_factory(article, factory_name)()
-        if reference_field:
-            reference.references = reference.references.create(self.repository['refed'])
-        else:
-            reference.references = self.repository['refed']
-        self.repository['article'] = article
-
-        #
-        import datetime
-
-        import pytz
-
-        import zeit.workflow.interfaces
-
-        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(self.repository['refed'])
-        workflow.release_period = (None, datetime.datetime(2005, 1, 2, tzinfo=pytz.UTC))
-
-        #
-        with checked_out(self.repository['article']):
-            pass
-        self.assertEqual(
-            '2005-01-02T00:00:00+00:00',
-            self.repository['article'].xml.find('body/division').getchildren()[0].get('expires'),
-        )
-
-    def test_gallery_metadata_should_be_updated(self):
-        from zeit.content.gallery.gallery import Gallery
-
-        self.assert_updated(Gallery(), 'gallery')
-
-    def test_portraitbox_metadata_should_be_updated(self):
-        from zeit.content.portraitbox.portraitbox import Portraitbox
-
-        portraitbox = Portraitbox()
-        portraitbox.text = 'huzenpups'
-        self.assert_updated(portraitbox, 'portraitbox')
-
-    def test_infobox_metadata_should_be_updated(self):
-        from zeit.content.infobox.infobox import Infobox
-
-        self.assert_updated(Infobox(), 'infobox')
-
-    def test_image_metadata_should_be_updated(self):
-        from zeit.content.image.image import LocalImage
-
-        self.assert_updated(LocalImage(), 'image', reference_field=True)
-
-    def test_author_metadata_should_be_updated(self):
-        from zeit.content.author.author import Author
-
-        self.assert_updated(Author(), 'author', reference_field=True)
-
-    def test_volume_metadata_should_be_updated(self):
-        from zeit.content.volume.volume import Volume
-
-        volume = Volume()
-        volume.product = zeit.cms.content.sources.Product('ZEI')
-        self.assert_updated(volume, 'volume', reference_field=True)
 
     def test_empty_reference_should_not_break_metadata_update(self):
         for typ in ['gallery', 'portraitbox', 'infobox', 'image', 'author', 'volume']:

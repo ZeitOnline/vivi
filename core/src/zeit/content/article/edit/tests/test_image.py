@@ -26,9 +26,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('fade-in', image.animation)
         self.assertEllipsis(
             """\
-<image ... src="{image_uid}" ... is_empty="False">
-  <bu/>
-</image>
+<image ... src="{image_uid}" ... is_empty="False"/>
         """.format(image_uid=image_uid),
             zeit.cms.testing.xmltotext(image.xml),
         )

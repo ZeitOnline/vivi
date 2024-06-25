@@ -54,12 +54,8 @@ The gallery is also noted in the xml structure:
       <container>
         <block name="DSC00109_2.JPG">
           <text/>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
-            <bu/>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
-            <bu/>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"/>
         </block>
         ...
       </container>
@@ -106,14 +102,8 @@ The change is reflected in the xml:
         <block name="01.jpg">
           <text/>
           <caption>Nice image</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"/>
         </block>
       </container>
     </column>
@@ -163,14 +153,8 @@ xml:
         <block name="01.jpg">
           <text/>
           <caption>Nice image</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"/>
         </block>
       </container>
     </column>
@@ -196,14 +180,8 @@ When we assign the entry the change will be reflected:
             <p>Seit zwei Uhr in der Früh</p>
           </text>
           <caption>Gallery &amp; caption</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"/>
         </block>
       </container>
     </column>
@@ -234,14 +212,8 @@ well:
             <p>Seit zwei Uhr in der Früh</p>
           </text>
           <caption>Gallery &amp; caption</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"/>
         </block>
       </container>
     </column>
@@ -294,14 +266,8 @@ True
             <p>Seit zwei Uhr in der Früh</p>
           </text>
           <caption>Gallery &amp; caption</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"/>
         </block>
       </container>
     </column>
@@ -332,14 +298,8 @@ When we set the layout to None again, the layout attribute is removed:
             <p>Seit zwei Uhr in der Früh</p>
           </text>
           <caption>Gallery &amp; caption</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"/>
         </block>
       </container>
     </column>
@@ -421,23 +381,13 @@ This is of course reflected int he XML:
             <p>Seit zwei Uhr in der Früh</p>
           </text>
           <caption>Gallery &amp; caption</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg">
-            <bu>Nice image</bu>
-            <copyright link="http://www.zeit.de">ZEIT online</copyright>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"/>
         </block>
         <block name="DSC00109_2.JPG">
           <text/>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
-            <bu/>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
-            <bu/>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"/>
         </block>
         <block name="DSC00109_3.JPG">
           ...
@@ -559,21 +509,13 @@ When calling `reload_image_folder` the entry is removed from the xml:
       <container>
         <block name="DSC00109_2.JPG">
           <text/>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
-            <bu/>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG">
-            <bu/>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_2.JPG" type="JPG"/>
         </block>
         <block name="DSC00109_3.JPG">
           <text/>
-          <image src="http://xml.zeit.de/2006/DSC00109_3.JPG" type="JPG">
-            <bu/>
-          </image>
-          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_3.JPG" type="JPG">
-            <bu/>
-          </thumbnail>
+          <image src="http://xml.zeit.de/2006/DSC00109_3.JPG" type="JPG"/>
+          <thumbnail src="http://xml.zeit.de/2006/thumbnails/DSC00109_3.JPG" type="JPG"/>
         </block>
       </container>
     </column>
@@ -666,15 +608,12 @@ The keys also correct(ed) and the names are set:
                  <a href="fooo">link</a>
                </p>
              </text>
-          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG"...
+          <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>...
         </block>
         <block name="01.jpg">
           <text/>
           <caption>Nice image</caption>
-          <image src="http://xml.zeit.de/2006/01.jpg"...
-             <bu>Nice image</bu>
-             <copyright link="http://www.zeit.de">ZEIT online</copyright>
-           </image>
+          <image src="http://xml.zeit.de/2006/01.jpg" type="jpg"/>...
            ...
         </block>
         ...

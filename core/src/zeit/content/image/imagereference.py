@@ -92,41 +92,6 @@ def images_from_template(context):
     return ImagesAdapter(context)
 
 
-class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    """Add the *first* referenced image to the feed entry."""
-
-    target_iface = zeit.content.image.interfaces.IImages
-
-    def update_with_context(self, entry, images):
-        if images.image is not None:
-            # only add first image
-            image = images.image
-            image_node = zope.component.queryAdapter(
-                image, zeit.cms.content.interfaces.IXMLReference, name='image'
-            )
-            if image_node is None:
-                if not self.suppress_errors:
-                    raise ValueError(
-                        (
-                            "Could not create xml reference 'image' for %s which "
-                            'is referenced in %s.'
-                        )
-                        % (image.uniqueId, self.context.uniqueId)
-                    )
-            else:
-                existing = entry.find('image')
-                if existing is None:
-                    entry.append(image_node)
-                else:
-                    entry.replace(existing, image_node)
-        else:
-            # No image referenced. Remove an image node we might have produced
-            # earlier.
-            image_node = entry.find('image')
-            if image_node is not None:
-                entry.remove(image_node)
-
-
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent, zeit.cms.checkout.interfaces.IBeforeCheckinEvent
 )

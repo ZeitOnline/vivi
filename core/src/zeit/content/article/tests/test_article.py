@@ -307,18 +307,6 @@ class DefaultTemplateByContentType(zeit.content.article.testing.FunctionalTestCa
             self.assertEqual('default', article.header_layout)
 
 
-class ArticleXMLReferenceUpdate(zeit.content.article.testing.FunctionalTestCase):
-    def test_writes_genre_as_attribute(self):
-        self.repository['article'] = self.get_article()
-        with checked_out(self.repository['article']) as co:
-            co.genre = 'nachricht'
-
-        reference = zope.component.queryAdapter(
-            self.repository['article'], zeit.cms.content.interfaces.IXMLReference, name='related'
-        )
-        self.assertIn('genre="nachricht"', zeit.cms.testing.xmltotext(reference))
-
-
 class ArticleElementReferencesTest(zeit.content.article.testing.FunctionalTestCase):
     def setUp(self):
         super().setUp()

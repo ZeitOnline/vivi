@@ -72,13 +72,7 @@ Create a channel and insert the link:
 <channel...>
   <title/>
   <container>
-    <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"...
-      href="http://xml.zeit.de/link"...
-      ns0:href="http://gocept.com" ns0:target="_blank">
-      ...
-      <title/>
-      ...
-    </block>
+    <block uniqueId="http://xml.zeit.de/link" href="http://xml.zeit.de/link"/>
   </container>
   <object_limit>50</object_limit>
 </channel>
@@ -87,18 +81,11 @@ When the target is removed from the link, the attribute is removed from the
 channel:
 
 >>> link.target = None
->>> feed.updateMetadata(link)
 >>> print(zeit.cms.testing.xmltotext(feed.xml))
 <channel...>
   <title/>
   <container>
-    <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"...
-      href="http://xml.zeit.de/link"...
-      ns0:href="http://gocept.com">
-      ...
-      <title/>
-      ...
-    </block>
+    <block uniqueId="http://xml.zeit.de/link" href="http://xml.zeit.de/link"/>
   </container>
   <object_limit>50</object_limit>
 </channel>
@@ -121,11 +108,7 @@ representation of that object's related content includes the target URL:
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <...
 <references>
-  <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"
-             type="intern" href="http://xml.zeit.de/link"...
-             ns0:href="http://gocept.com">
-    ...
-  </reference>
+  <reference type="intern" href="http://xml.zeit.de/link"/>
 </references>
 ...
 
@@ -137,10 +120,6 @@ rel=nofollow support
 >>> print(zeit.cms.testing.xmltotext(content.xml))
 <...
 <references>
-  <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"
-             type="intern" href="http://xml.zeit.de/link"...
-             ns0:href="http://gocept.com" ns0:rel="nofollow">
-    ...
-  </reference>
+  <reference type="intern" href="http://xml.zeit.de/link"/>
 </references>
 ...

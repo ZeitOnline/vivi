@@ -31,12 +31,8 @@ The teaser block contains a list of teasers.
 <container ...
     cp:type="teaser" module="leader"...
     cp:__name__="id-fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
-  <block ...href="http://xml.zeit.de/testcontent"...>
-    ...
-    <title/>
-    ...
-  </block>
-  <block ...href="http://xml.zeit.de/2007/test".../>
+  <block uniqueId="http://xml.zeit.de/testcontent" href="http://xml.zeit.de/testcontent"/>
+  <block uniqueId="http://xml.zeit.de/2007/test" href="http://xml.zeit.de/2007/test"/>
 </container>
 
 

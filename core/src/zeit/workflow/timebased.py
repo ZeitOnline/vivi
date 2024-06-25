@@ -140,23 +140,6 @@ _('timebased-retract-add')
 _('timebased-retract-cancel')
 
 
-class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    """Add the expire/publication time to feed entry."""
-
-    target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
-
-    def update_with_context(self, entry, workflow):
-        date = ''
-        if workflow.released_from:
-            date = workflow.released_from.isoformat()
-        entry.set('publication-date', date)
-
-        date = ''
-        if workflow.released_to:
-            date = workflow.released_to.isoformat()
-        entry.set('expires', date)
-
-
 @grok.subscribe(zeit.cms.interfaces.ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
 def schedule_imported_retract_jobs(context, event):
     """Since the print-import (exporter.zeit.de) works only on the DAV-level,

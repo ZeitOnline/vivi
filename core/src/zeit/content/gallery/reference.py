@@ -30,20 +30,3 @@ def gallery_reference_browse_location(context, source):
     return zope.component.queryMultiAdapter(
         (context.__parent__, source), zeit.cms.browser.interfaces.IDefaultBrowsingLocation
     )
-
-
-class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    target_iface = zeit.content.gallery.interfaces.IGalleryReference
-
-    def update_with_context(self, node, reference):
-        for gallery_node in node.findall('gallery'):
-            node.remove(gallery_node)
-        if reference.gallery is not None:
-            related = 'related'
-            if self.suppress_errors:
-                related += '_suppress_errors'
-            gref = zope.component.getAdapter(
-                reference.gallery, zeit.cms.content.interfaces.IXMLReference, name=related
-            )
-            gref.tag = 'gallery'
-            node.append(gref)

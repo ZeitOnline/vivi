@@ -491,14 +491,6 @@ def normalize_quotes_to_inch_sign(node):
         normalize_quotes_to_inch_sign(child)
 
 
-class ArticleMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    target_iface = zeit.content.article.interfaces.IArticle
-
-    def update_with_context(self, node, context):
-        if context.genre:
-            node.set('genre', context.genre)
-
-
 @zope.interface.implementer(zeit.content.article.interfaces.ISpeechbertChecksum)
 class Speechbert(zeit.cms.content.dav.DAVPropertiesAdapter):
     checksum = zeit.cms.content.dav.DAVProperty(

@@ -476,10 +476,6 @@ def XMLReference(context):
             type = ext
 
     image.set('type', type)
-    # The image reference can be seen like an element in a feed. Let the magic
-    # update the xml node.
-    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(image)
     return image
 
 

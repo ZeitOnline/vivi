@@ -3,7 +3,6 @@ from unittest import mock
 import zope.copypastemove.interfaces
 
 from zeit.cms.checkout.helper import checked_out
-from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import ExampleContentType
@@ -84,26 +83,6 @@ class ImageReferenceTest(zeit.content.image.testing.FunctionalTestCase):
         ref.caption = ''  # the caption field is non-None
         self.assertEqual(None, ref.title)
         self.assertEqual('', ref.caption)
-
-    def test_updater_suppress_errors(self):
-        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
-        content = ICheckoutManager(self.repository['testcontent']).checkout()
-        zeit.content.image.interfaces.IImages(content).image = image
-
-        # This error condition cannot be synthesized easily (would need to make
-        # an ImageGroup lose its metadata so it's treated as a Folder), and
-        # even mocking it is rather complicated, sigh.
-        def mock_query(*args, **kw):
-            if kw.get('name') == 'image':
-                return None
-            return queryAdapter(*args, **kw)
-
-        queryAdapter = zope.component.queryAdapter
-
-        with mock.patch('zope.component.queryAdapter', mock_query):
-            with self.assertNothingRaised():
-                updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
-                updater.update(content.xml, suppress_errors=True)
 
     def test_colorpicker_should_generate_proper_xml(self):
         content = self.repository['testcontent']

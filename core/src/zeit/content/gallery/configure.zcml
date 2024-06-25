@@ -64,7 +64,6 @@
     component=".interfaces.gallerySource"
     name="zeit.content.gallery"
     />
-  <adapter factory=".reference.XMLReferenceUpdater" name="gallery" />
 
   <!-- Metadata -->
   <adapter factory=".gallery.EntryMetadata" />

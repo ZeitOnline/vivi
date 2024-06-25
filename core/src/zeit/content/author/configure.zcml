@@ -38,15 +38,6 @@
   </class>
 
   <adapter
-    factory=".reference.XMLReferenceUpdater"
-    name="zeit.content.author"
-    />
-  <adapter
-    factory=".reference.AuthorshipXMLReferenceUpdater"
-    name="zeit.cms.content.interfaces.ICommonMetadata.authorships"
-    />
-
-  <adapter
     factory=".author.AuthorImages"
     provides="zeit.content.image.interfaces.IImages"
     trusted="yes"

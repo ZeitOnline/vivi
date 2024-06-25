@@ -116,10 +116,6 @@ def XMLReference(context):
         image.set('type', ext)
     else:
         image.set('type', context.format.lower())
-    # The image reference can be seen like an element in a feed. Let the magic
-    # update the xml node.
-    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(image)
     return image
 
 
@@ -135,22 +131,6 @@ class ImageType(zeit.cms.type.TypeDeclaration):
 
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))
-
-
-@zope.component.adapter(zeit.content.image.interfaces.IImage)
-class XMLReferenceUpdater(zeit.workflow.timebased.XMLReferenceUpdater):
-    target_iface = zeit.workflow.interfaces.ITimeBasedPublishing
-
-    def update_with_context(self, entry, workflow):
-        super().update_with_context(entry, workflow)
-
-        parent = zope.security.proxy.removeSecurityProxy(workflow).context.__parent__
-        if not zeit.content.image.interfaces.IImageGroup.providedBy(parent):
-            return
-
-        if not entry.get('expires'):
-            parent_workflow = self.target_iface(parent)
-            super().update_with_context(entry, parent_workflow)
 
 
 KiB = 1024

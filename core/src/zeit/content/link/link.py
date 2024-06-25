@@ -53,27 +53,6 @@ class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
     type = 'link'
 
 
-@zope.component.adapter(zeit.content.link.interfaces.ILink)
-class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
-    def update(self, entry, suppress_errors=False):
-        url = self.context.url
-        if not url:
-            url = ''
-        entry.set('{http://namespaces.zeit.de/CMS/link}href', url)
-
-        target_attribute = '{http://namespaces.zeit.de/CMS/link}target'
-        if self.context.target:
-            entry.set(target_attribute, self.context.target)
-        else:
-            entry.attrib.pop(target_attribute, None)
-
-        rel_attribute = '{http://namespaces.zeit.de/CMS/link}rel'
-        if self.context.nofollow:
-            entry.set(rel_attribute, 'nofollow')
-        else:
-            entry.attrib.pop(rel_attribute, None)
-
-
 @grok.adapter(zeit.content.link.interfaces.ILink)
 @grok.implementer(zeit.push.interfaces.IPushURL)
 def link_push_url(context):

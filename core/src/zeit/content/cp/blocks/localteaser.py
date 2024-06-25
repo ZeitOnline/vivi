@@ -124,8 +124,6 @@ class TeaserReference(zeit.cms.content.reference.Reference):
 def teaser_reference(context):
     reference = lxml.builder.E.reference()
     reference.set('uniqueId', context.uniqueId)
-    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(reference, suppress_errors=True)
     return reference
 
 

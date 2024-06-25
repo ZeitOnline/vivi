@@ -117,23 +117,6 @@ class ReferencePropertyTest(ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual('bar', content.xml.find('body/references/reference').get('foo'))
         self.assertTrue(content._p_changed)
 
-    def test_metadata_of_reference_is_updated_on_checkin(self):
-        self.repository['target'].teaserTitle = 'foo'
-        content = self.repository['content']
-        with checked_out(content) as co:
-            co.references = (co.references.create(self.repository['target']),)
-        self.assertEqual(
-            'foo', self.repository['content'].xml.find('body/references/reference/title').text
-        )
-
-        with checked_out(self.repository['target']) as co:
-            co.teaserTitle = 'bar'
-        with checked_out(self.repository['content']):
-            pass
-        self.assertEqual(
-            'bar', self.repository['content'].xml.find('body/references/reference/title').text
-        )
-
     def test_set_accepts_references(self):
         content = self.repository['content']
         target = self.repository['target']
@@ -252,24 +235,6 @@ class MultiResourceTest(ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
         self.assertIsInstance(content.related, tuple)
         self.assertEqual('http://xml.zeit.de/target', content.related[0].uniqueId)
 
-    def test_should_be_updated_on_checkin(self):
-        self.repository['target'].teaserTitle = 'foo'
-
-        content = self.repository['content']
-        with checked_out(content) as co:
-            co.related = (self.repository['target'],)
-
-        with checked_out(self.repository['target']) as co:
-            co.teaserTitle = 'bar'
-        with checked_out(self.repository['content']):
-            pass
-
-        body = self.repository['content'].xml.find('body')
-        # Since ExampleContentType (our reference target) implements
-        # ICommonMetadata, its XMLReferenceUpdater will write 'title' (among
-        # others) into the XML.
-        self.assertEqual('bar', body.find('references/reference/title').text)
-
 
 class SingleResourceTest(ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
     def setUp(self):
@@ -285,21 +250,6 @@ class SingleResourceTest(ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
         self.assertTrue(content._p_changed)
         self.assertIsInstance(content.related, ExampleContentType)
         self.assertEqual('http://xml.zeit.de/target', content.related.uniqueId)
-
-    def test_should_be_updated_on_checkin(self):
-        self.repository['target'].teaserTitle = 'foo'
-
-        content = self.repository['content']
-        with checked_out(content) as co:
-            co.related = self.repository['target']
-
-        with checked_out(self.repository['target']) as co:
-            co.teaserTitle = 'bar'
-        with checked_out(self.repository['content']):
-            pass
-
-        body = self.repository['content'].xml.find('body')
-        self.assertEqual('bar', body.find('references/reference/title').text)
 
 
 class ReferenceTraversalBase:

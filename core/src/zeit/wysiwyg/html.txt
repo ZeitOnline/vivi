@@ -437,9 +437,7 @@ the image is put into the xml:
   <body>
     <title>Title</title>
     <p>Fuer menschliche</p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large">
-      <bu>Cap cap cap</bu>
-     </image>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large"/>
     <p>Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
     <p>Selbst wenn </p>
@@ -491,9 +489,7 @@ Converting html to xml also splits up paragraphs as necessary:
   <body>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
-        <bu>Cap cap cap</bu>
-    </image>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large"/>
     <p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
   </body>
@@ -543,9 +539,7 @@ Zellen ist <a href="#">das</a> toll.</p>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
     <p>Fuer menschliche <a href="#">
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large">
-      <bu>Cap cap cap</bu>
-    </image>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" layout="large"/>
     </a>
     Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
@@ -693,9 +687,7 @@ though it's nested.
 <article>
   <head/>
   <body>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG">
-        <bu>Cap cap cap</bu>
-    </image>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"/>
     <p> <strong> Hurz</strong> foobar </p>
     <p>Selbst wenn </p>
   </body>
@@ -1291,9 +1283,7 @@ Gallery
 <article...>
   <head/>
   <body>
-    <gallery href="http://xml.zeit.de/2006/gal" ...>
-      <supertitle...
-    </gallery>
+    <gallery href="http://xml.zeit.de/2006/gal"/>
   </body>
 </article>
 

@@ -66,9 +66,7 @@ The author image group is stored using the IImages interface.
 >>> print(zeit.cms.testing.xmltotext(shakespeare.xml))
 <author...>
   ...
-  <image_group... base-id="http://xml.zeit.de/2007/03/group/" ...>
-  ...
-  </image_group>
+  <image_group base-id="http://xml.zeit.de/2007/03/group/" type="jpg"/>
 </author>
 
 Using authors
@@ -87,12 +85,7 @@ It takes precedence over the freetext authors:
 >>> print(zeit.cms.testing.xmltotext(repository['testcontent'].xml))
 <testtype...>
   <head>
-    <author...href="http://xml.zeit.de/shakespeare"...>
-      <image...base-id="http://xml.zeit.de/2007/03/group/"...>
-      ...
-      </image>
-      <display_name>William Shakespeare</display_name>
-    </author>
+    <author href="http://xml.zeit.de/shakespeare" hdok=""/>
     <attribute ... name="author">William Shakespeare</attribute>
     ...
   </head>
@@ -119,8 +112,6 @@ Changes to author objects are propagated to content on checkin:
 ...     co.lastname = 'Otherwise'
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
 ...     pass
->>> repository['testcontent'].xml.find('head/author/display_name').text
-'William Otherwise'
 
 
 Publishing

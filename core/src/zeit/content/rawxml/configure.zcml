@@ -16,6 +16,4 @@
       />
   </class>
 
-  <adapter factory=".rawxml.RawXMLMetadataUpdater" name="rawxml" />
-
 </configure>

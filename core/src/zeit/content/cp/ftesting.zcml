@@ -4,8 +4,6 @@
    i18n_domain="zope"
    >
 
-  <meta:provides feature="zeit.content.cp.update_metadata" />
-
   <include package="zeit.cms" file="ftesting.zcml" />
 
   <exclude package="zeit.content.cp" file="mock-workflow.zcml" />
