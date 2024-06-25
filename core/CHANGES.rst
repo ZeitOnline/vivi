@@ -3,6 +3,12 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.192.0 (2024-06-25)
+--------------------
+
+- ZO-5665: Allow accessing IAudioReferences of IAnimation objects
+
+
 5.191.0 (2024-06-25)
 --------------------
 
