@@ -3,6 +3,20 @@ vivi.core changes
 
 .. towncrier release notes start
 
+5.191.0 (2024-06-25)
+--------------------
+
+- ZO-4275: remove XMLReferenceUpdater
+
+- ZO-5193: handle also whitespaces including XML for Big Query JSON transformation
+
+- ZO-5421: Add CLI entrypoints that used to be deployment scripts
+
+- ZO-5599: Prevent ConflictError in confighistory job
+
+- ZO-5637: Silently ignore maintenance window in vgwort order token cronjob
+
+
 5.190.0 (2024-06-20)
 --------------------
 
