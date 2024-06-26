@@ -455,15 +455,6 @@ class ITemplate(IXMLRepresentation):
     title = zope.schema.TextLine(title=_('Title'))
 
 
-class IDAVPropertiesInXML(zope.interface.Interface):
-    """Marker interface for objects which store their webdav properties in xml.
-
-    It is common for articles and CPs to store their webdav properties in the
-    xml, too. That is in addition to the Metadata stored as webdav properties.
-
-    """
-
-
 class IContentSortKey(zope.interface.Interface):
     """Content objects can be adapted to this interface to get a sort key.
 

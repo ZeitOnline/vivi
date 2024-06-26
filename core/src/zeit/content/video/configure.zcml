@@ -5,12 +5,7 @@
   <grok:grok package="." exclude="browser" />
 
   <class class=".video.Video">
-    <implements
-       interface="zope.annotation.interfaces.IAttributeAnnotatable"
-       />
-    <implements
-       interface="zeit.cms.content.interfaces.IDAVPropertiesInXML"
-       />
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
       interface=".interfaces.IVideo"
       permission="zope.View" />

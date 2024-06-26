@@ -6,8 +6,6 @@
 
   <class class=".markup.Markup">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML "/>
-
     <require
       interface=".interfaces.IMarkup"
       permission="zope.View" />
