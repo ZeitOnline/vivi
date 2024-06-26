@@ -111,6 +111,15 @@ def report_new_documents():
     for i, content in enumerate(source):
         try:
             report(content)
+
+            info = zeit.vgwort.interfaces.IReportInfo(content)
+            data = {
+                x: getattr(info, x)
+                for x in zope.schema.getFieldNames(zope.vgwort.interfaces.IReportInfo)
+            }
+            for _ in zeit.cms.cli.commit_with_retry():
+                for key, value in data.items():
+                    setattr(info, key, value)
         except Exception as e:
             try:
                 if e.args[0][0] == 401:
